@@ -1,0 +1,69 @@
+{
+  "id": "yanluo",
+  "name": "Yanluo",
+
+  "image": "/heroes/yanluo.webp",
+
+  "faction": "Hearts",
+  "role": "Hefty",
+  "class": "Warrior",
+  "rarity": "Legendary",
+
+  "description": "Momus is the god of mockery, sencure, sarcasm, and reproach, as well as the guardian of writers and poets. He delights in exposing the flaws of gods and mortals, reveling in just critique.",
+
+  "ratings": {
+    "overall": "S",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+
+  "stats": {
+    "hp": 12840,
+    "atk": 842,
+    "armor": 620,
+    "magicRes": 710,
+
+    "dodgeRate": 5,
+    "hitBonus": 8,
+
+    "critRate": 12,
+    "critRes": 10,
+    "critDmgBonus": 50,
+    "critDmgReduction": 20,
+
+    "energy": 100
+  },
+
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Soothing Rain",
+      "icon": "/icons/skills/soothing_rain.webp",
+      "description": "Restores HP to allies over time.",
+      "upgrades": {
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      }
+    },
+    {
+      "id": "skill_2",
+      "name": "Life Barrier",
+      "icon": "/icons/skills/life_barrier.webp",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
+    }
+  ],
+
+  "relic": {
+    "name": "Hero’s Relic",
+    "icon": "/icons/relics/heros_relic.webp",
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy."
+  }
+}

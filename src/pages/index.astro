@@ -1,6 +1,10 @@
 ---
 import HeroCard from "../components/HeroCard.astro";
 import { heroes } from "../data/heroes";
+/* 🔤 Alphabetisch nach Name sortieren */
+const sortedHeroes = [...heroes].sort((a, b) =>
+  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+);
 ---
 
 <!-- HERO HEADER -->
@@ -39,7 +43,7 @@ import { heroes } from "../data/heroes";
         <img src="/icons/classes/assassin.webp" alt="Assassin" />
       </button>
     </div>
-    
+
     <!-- ROLE FILTER -->
     <div class="filter-group">
       <span class="filter-label">Role</span>
@@ -102,21 +106,18 @@ import { heroes } from "../data/heroes";
 <div class="resultcontent">
   <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
 
-  <div class="grid" id="heroGrid">
-    {heroes.map(hero => (
+    <div class="grid" id="heroGrid">
+    {sortedHeroes.map(hero => (
       <div
-        class={`hero-wrapper rarity-${(hero.rarity ?? "").toLowerCase()}`}
-        data-name={(hero.name ?? "").toLowerCase()}
-        data-class={(hero.class ?? "").toLowerCase()}
-        data-role={(hero.role ?? "").toLowerCase()}
-        data-rarity={(hero.rarity ?? "").toLowerCase()}
+        class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
+        data-name={hero.name.toLowerCase()}
+        data-class={hero.class.toLowerCase()}
+        data-rarity={hero.rarity.toLowerCase()}
       >
-
-        <!-- ICON STACK -->
         <div class="icon-stack">
-          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} alt={hero.faction} />
-          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} alt={hero.role} />
-          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} alt={hero.class} />
+          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
+          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} />
+          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} />
         </div>
 
         <HeroCard hero={hero} />
