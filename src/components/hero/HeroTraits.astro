@@ -1,5 +1,8 @@
 ---
-const { strengths = [], weaknesses = [] } = Astro.props;
+const { hero } = Astro.props;
+
+const strengths = hero?.traits?.strengths ?? [];
+const weaknesses = hero?.traits?.weaknesses ?? [];
 ---
 
 <section class="hero-traits">

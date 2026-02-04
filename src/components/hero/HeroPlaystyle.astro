@@ -1,5 +1,8 @@
 ---
-const { bestWhen, avoidWhen } = Astro.props;
+const { hero } = Astro.props;
+
+const bestWhen = hero?.playstyle?.bestWhen ?? [];
+const avoidWhen = hero?.playstyle?.avoidWhen ?? [];
 ---
 
 <section class="hero-playstyle">
@@ -8,16 +11,24 @@ const { bestWhen, avoidWhen } = Astro.props;
   <div class="columns">
     <div>
       <h4>Ideal, wenn:</h4>
-      <ul>
-        {bestWhen.map(i => <li>{i}</li>)}
-      </ul>
+      {bestWhen.length > 0 ? (
+        <ul>
+          {bestWhen.map(i => <li>{i}</li>)}
+        </ul>
+      ) : (
+        <p>Keine Angaben</p>
+      )}
     </div>
 
     <div>
       <h4>Vermeiden, wenn:</h4>
-      <ul>
-        {avoidWhen.map(a => <li>{a}</li>)}
-      </ul>
+      {avoidWhen.length > 0 ? (
+        <ul>
+          {avoidWhen.map(a => <li>{a}</li>)}
+        </ul>
+      ) : (
+        <p>Keine Angaben</p>
+      )}
     </div>
   </div>
 </section>
