@@ -143,9 +143,13 @@ html, body {
 /* HERO HEADER */
 .hero-header {
   height: 360px;
-  background: url("/bg.jpg") center / cover fixed;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center 150%; /* 👈 höheres Bild */
+  background-attachment: fixed;
   position: relative;
 }
+
 .hero-header::after {
   content: "";
   position: absolute;
