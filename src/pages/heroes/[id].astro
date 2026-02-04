@@ -2,7 +2,7 @@
 import HeroHeader from "../../components/hero/HeroHeader.astro";
 import { heroes, getHeroById } from "../../data/heroes";
 
-/* 🔑 STATIC PATHS */
+
 export function getStaticPaths() {
   return heroes.map(hero => ({
     params: { id: hero.id }
