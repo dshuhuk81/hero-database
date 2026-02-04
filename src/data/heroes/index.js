@@ -1,24 +1,63 @@
-import tefnut from "./tefnut.json";
-import poseidon from "./poseidon.json";
-import amunra from "./amunra.json";
-import anubis from "./anubis.json";
-import aquarius from "./aquarius.json";
-import ares from "./ares.json";
-import athena from "./athena.json";
-import artemis from "./artemis.json";
-import bastet from "./bastet.json";
-import aries from "./aries.json";
+// Auto-Import aller Hero JSON Dateien
+const heroModules = import.meta.glob("./*.json", { eager: true });
 
+// Rohdaten sammeln
+const rawHeroes = Object.values(heroModules).map(m => m.default);
 
-export const heroes = [
-  tefnut,
-  poseidon,
-  amunra,
-  anubis,
-  aquarius,
-  ares,
-  artemis,
-  athena,
-  bastet,
-  aries
-];
+/* ============================
+   ADAPTER / NORMALIZER
+   ============================ */
+function adaptHero(raw) {
+  return {
+    id: raw.id,
+    name: raw.name,
+
+    image: raw.image ?? `/heroes/${raw.id}.webp`,
+
+    faction: raw.faction,
+    role: raw.role,
+    class: raw.class,
+    rarity: raw.rarity,
+
+    description: raw.description ?? "",
+
+    ratings: {
+      overall: raw.ratings?.overall ?? null,
+      grimSurge: raw.ratings?.grimSurge ?? null,
+      delusionsDen: raw.ratings?.delusionsDen ?? null,
+      torrentRift: raw.ratings?.torrentRift ?? null,
+      pvp: raw.ratings?.pvp ?? null,
+    },
+    /* 👇 BACKWARD COMPAT (nur für Cards) */
+    rating: raw.ratings?.overall ?? null,
+
+    stats: {
+      hp: raw.stats?.hp ?? 0,
+      atk: raw.stats?.atk ?? 0,
+      armor: raw.stats?.armor ?? 0,
+      magicRes: raw.stats?.magicRes ?? 0,
+
+      dodgeRate: raw.stats?.dodgeRate ?? 0,
+      hitBonus: raw.stats?.hitBonus ?? 0,
+
+      critRate: raw.stats?.critRate ?? 0,
+      critRes: raw.stats?.critRes ?? 0,
+      critDmgBonus: raw.stats?.critDmgBonus ?? 0,
+      critDmgReduction: raw.stats?.critDmgReduction ?? 0,
+
+      energy: raw.stats?.energy ?? 0,
+    },
+
+    skills: raw.skills ?? [],
+    relic: raw.relic ?? null,
+  };
+}
+
+/* ============================
+   PUBLIC API
+   ============================ */
+export const heroes = rawHeroes.map(adaptHero);
+
+export function getHeroById(id) {
+  return heroes.find(hero => hero.id === id);
+}

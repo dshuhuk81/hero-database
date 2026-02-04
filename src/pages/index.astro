@@ -31,6 +31,22 @@ import { heroes } from "../data/heroes";
         <img src="/icons/classes/support.webp" alt="Support" />
       </button>
     </div>
+    <!-- ROLE FILTER -->
+    <div class="filter-group">
+      <span class="filter-label">Role</span>
+
+      <button class="chip role-chip" data-role="nimble" title="Nimble">
+        <img src="/icons/roles/nimble.webp" alt="Nimble" />
+      </button>
+
+      <button class="chip role-chip" data-role="arcane" title="Arcane">
+        <img src="/icons/roles/arcane.webp" alt="Arcane" />
+      </button>
+
+      <button class="chip role-chip" data-role="hefty" title="Hefty">
+        <img src="/icons/roles/hefty.webp" alt="Hefty" />
+      </button>
+    </div>
 
     <!-- SEARCH -->
     <div class="filter-group">
@@ -83,6 +99,7 @@ import { heroes } from "../data/heroes";
         class={`hero-wrapper rarity-${(hero.rarity ?? "").toLowerCase()}`}
         data-name={(hero.name ?? "").toLowerCase()}
         data-class={(hero.class ?? "").toLowerCase()}
+        data-role={(hero.role ?? "").toLowerCase()}
         data-rarity={(hero.rarity ?? "").toLowerCase()}
       >
 
@@ -147,7 +164,7 @@ html, body {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 24px;
 
   background:
     linear-gradient(
@@ -171,7 +188,7 @@ html, body {
 .filter-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 16px;
 }
 .filter-label {
@@ -214,18 +231,46 @@ html, body {
 .class-chip.active img {
   filter: brightness(1.4);
 }
+.role-chip img {
+  width: 36px;
+  height: 36px;
+  filter: grayscale(100%) brightness(1.2);
+}
+
+.role-chip.active img {
+  filter: brightness(1.4);
+}
 
 /* RARITY STARS */
+/* Grundzustand: Outline */
 .rarity-star {
   width: 28px;
   height: 28px;
-  fill: currentColor;
+
+  fill: none;                /* 👈 nicht gefüllt */
+  stroke: currentColor;      /* 👈 Kontur in Rarity-Farbe */
+  stroke-width: 1.2;
+
+  transition:
+    fill 0.2s ease,
+    filter 0.2s ease,
+    transform 0.15s ease;
 }
 .rarity-chip.common { color: #4ade80; }
 .rarity-chip.epic { color: #a855f7; }
 .rarity-chip.legendary { color: #facc15; }
 .rarity-chip.active .rarity-star {
-  filter: drop-shadow(0 0 8px currentColor);
+  fill: currentColor;
+  opacity: 1;
+
+  filter:
+    drop-shadow(0 0 6px currentColor)
+    drop-shadow(0 0 12px rgba(255,255,255,0.15));
+}
+
+.rarity-chip:hover .rarity-star {
+  fill: currentColor;
+  opacity: 0.4;
 }
 
 
@@ -380,37 +425,71 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
   const resetButton = document.getElementById("resetFilters");
   const heroCounter = document.getElementById("heroCounter");
+  const roleChips = document.querySelectorAll(".role-chip");
 
   const heroCards = document.querySelectorAll(".hero-wrapper");
   const classChips = document.querySelectorAll(".class-chip");
   const rarityChips = document.querySelectorAll(".rarity-chip");
-
+  
+  let activeRoles = new Set();  
   let activeClasses = new Set();
   let activeRarities = new Set();
 
   function applyFilters() {
-    const query = (searchInput.value || "").toLowerCase();
-    let visible = 0;
+  const query = (searchInput.value || "").toLowerCase();
+  let visible = 0;
 
-    heroCards.forEach(card => {
-      const name = card.dataset.name;
-      const cls = card.dataset.class;
-      const rarity = card.dataset.rarity;
+  heroCards.forEach(card => {
+    const name = card.dataset.name;
+    const cls = card.dataset.class;
+    const role = card.dataset.role;
+    const rarity = card.dataset.rarity;
 
-      const show =
-        (!query || name.includes(query)) &&
-        (activeClasses.size === 0 || activeClasses.has(cls)) &&
-        (activeRarities.size === 0 || activeRarities.has(rarity));
+    const matchesSearch =
+      !query ||
+      name.includes(query) ||
+      cls.includes(query) ||
+      role.includes(query) ||
+      rarity.includes(query);
 
-      card.style.display = show ? "block" : "none";
-      if (show) visible++;
-    });
+    const matchesClass =
+      activeClasses.size === 0 || activeClasses.has(cls);
 
-    heroCounter.textContent =
-      visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
-  }
+    const matchesRole =
+      activeRoles.size === 0 || activeRoles.has(role);
+
+    const matchesRarity =
+      activeRarities.size === 0 || activeRarities.has(rarity);
+
+    const show =
+      matchesSearch && matchesClass && matchesRole && matchesRarity;
+
+    card.style.display = show ? "block" : "none";
+    if (show) visible++;
+  });
+
+  heroCounter.textContent =
+    visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
+}
+
 
   searchInput.addEventListener("input", applyFilters);
+
+  roleChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const r = chip.dataset.role;
+
+      if (activeRoles.has(r)) {
+        activeRoles.delete(r);
+        chip.classList.remove("active");
+      } else {
+        activeRoles.add(r);
+        chip.classList.add("active");
+      }
+
+      applyFilters();
+    });
+  });
 
   classChips.forEach(chip => {
     chip.addEventListener("click", () => {
@@ -434,8 +513,10 @@ document.addEventListener("DOMContentLoaded", () => {
     searchInput.value = "";
     activeClasses.clear();
     activeRarities.clear();
+    activeRoles.clear();
     document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
     applyFilters();
+    document.querySelectorAll(".role-chip.active").forEach(c => c.classList.remove("active"));
   });
 
   applyFilters();

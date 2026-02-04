@@ -98,10 +98,11 @@ const { hero } = Astro.props;
 }
 
 /* ================================
-   RATING BADGE (FIXED!)
+   RATING BADGE – EXTENDED TIERS
    ================================ */
 
 .rating-badge {
+  position: absolute;
   top: 8px;
   right: 8px;
 
@@ -115,19 +116,65 @@ const { hero } = Astro.props;
 
   font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 
   border-radius: 999px;
   white-space: nowrap;
 
   backdrop-filter: blur(6px);
-  background: rgba(0,0,0,0.65);
+  -webkit-backdrop-filter: blur(6px);
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+
+  z-index: 4;
 }
 
-/* Rating Colors */
-.rating-ss { background: linear-gradient(135deg,#ffd700,#ffb700); color:#2b1b00;}
-.rating-s  { background: linear-gradient(135deg,#caa9ff,#9f6bff); color:#160a2e;}
-.rating-a  { background: linear-gradient(135deg,#7dd3fc,#38bdf8); color:#002030;}
-.rating-b  { background: linear-gradient(135deg,#a7f3d0,#34d399); color:#00331f;}
-.rating-c  { background: linear-gradient(135deg,#fde68a,#facc15); color:#3a2a00;}
-.rating-d  { background: linear-gradient(135deg,#fca5a5,#ef4444); color:#3a0000;}
+/* 🔴 SSS – GOD TIER */
+.rating-sss {
+  background: linear-gradient(135deg, #ff4d4d, #b91c1c);
+  color: #fff5f5;
+  box-shadow:
+    0 0 12px rgba(255, 60, 60, 0.6),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+/* 🟡 SS – TOP TIER */
+.rating-ss {
+  background: linear-gradient(135deg, #ffe066, #facc15);
+  color: #3a2a00;
+}
+
+/* 🟡 S – HIGH TIER */
+.rating-s {
+  background: linear-gradient(135deg, #fde68a, #fbbf24);
+  color: #3a2a00;
+}
+
+/* 🟠 A – STRONG */
+.rating-a {
+  background: linear-gradient(135deg, #fdba74, #fb923c);
+  color: #3b1d00;
+}
+
+/* 🟣 B – SOLID */
+.rating-b {
+  background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
+  color: #1e103a;
+}
+
+/* 🔵 C – NICHE */
+.rating-c {
+  background: linear-gradient(135deg, #93c5fd, #3b82f6);
+  color: #001a33;
+}
+
+/* 🟦 D – WEAK */
+.rating-d {
+  background: linear-gradient(135deg, #5eead4, #14b8a6);
+  color: #002c26;
+}
+
 </style>
