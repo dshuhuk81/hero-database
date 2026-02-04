@@ -1,5 +1,12 @@
 ---
 import { getHeroById } from "../../data/heroes";
+/* 🔑 WICHTIG */
+export function getStaticPaths() {
+  return heroes.map(hero => ({
+    params: { id: hero.id }
+  }));
+}
+
 const { id } = Astro.params;
 const hero = getHeroById(id);
 if (!hero) throw new Error("Hero not found");
