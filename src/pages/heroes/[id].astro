@@ -1,0 +1,39 @@
+---
+import { heroes } from "../../data/heroes";
+
+import HeroHeader from "../../components/hero/HeroHeader.astro";
+import HeroSummary from "../../components/hero/HeroSummary.astro";
+import HeroTraits from "../../components/hero/HeroTraits.astro";
+import HeroPlaystyle from "../../components/hero/HeroPlaystyle.astro";
+import HeroSynergy from "../../components/hero/HeroSynergy.astro";
+
+export function getStaticPaths() {
+  return heroes.map(hero => ({
+    params: { id: hero.id }
+  }));
+}
+
+const { id } = Astro.params;
+const hero = heroes.find(h => h.id === id);
+---
+<head>
+  <meta charset="utf-8" />
+</head>
+<HeroHeader hero={hero} />
+
+<HeroSummary summary={hero.summary} />
+
+<HeroTraits
+  strengths={hero.strengths}
+  weaknesses={hero.weaknesses}
+/>
+
+<HeroPlaystyle
+  bestWhen={hero.bestWhen}
+  avoidWhen={hero.avoidWhen}
+/>
+
+<HeroSynergy
+  formation={hero.recommendedFormation}
+  note={hero.synergyNote}
+/>

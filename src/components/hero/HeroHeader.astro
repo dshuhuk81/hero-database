@@ -1,0 +1,36 @@
+---
+const { hero } = Astro.props;
+---
+
+<section class="hero-header">
+  <div class="portrait">
+    <img src={hero.image} alt={hero.name} />
+  </div>
+
+  <div class="info">
+    <h1>{hero.name}</h1>
+    <p class="role">
+      {hero.role} · {hero.playstyle}
+    </p>
+    <p class="faction">
+      Fraktion: {hero.faction}
+    </p>
+  </div>
+</section>
+
+<style>
+.hero-header {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.portrait img {
+  width: 160px;
+  border-radius: 12px;
+}
+
+.role {
+  font-weight: 600;
+}
+</style>

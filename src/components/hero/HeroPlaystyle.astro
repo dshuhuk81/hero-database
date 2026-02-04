@@ -1,0 +1,31 @@
+---
+const { bestWhen, avoidWhen } = Astro.props;
+---
+
+<section class="hero-playstyle">
+  <h2>So spielst du diesen Helden</h2>
+
+  <div class="columns">
+    <div>
+      <h4>Ideal, wenn:</h4>
+      <ul>
+        {bestWhen.map(i => <li>{i}</li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h4>Vermeiden, wenn:</h4>
+      <ul>
+        {avoidWhen.map(a => <li>{a}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+</style>
