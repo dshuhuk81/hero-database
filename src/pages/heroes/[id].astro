@@ -1,15 +1,10 @@
 ---
-import HeroHeader from "../../components/hero/HeroHeader.astro";
-import HeroSummary from "../../components/hero/HeroSummary.astro";
-import HeroPlaystyle from "../../components/hero/HeroPlaystyle.astro";
-import HeroSynergy from "../../components/hero/HeroSynergy.astro";
-import HeroTraits from "../../components/hero/HeroTraits.astro";
-
 import { heroes, getHeroById } from "../../data/heroes";
 
+/* STATIC PATHS */
 export function getStaticPaths() {
-  return heroes.map(hero => ({
-    params: { id: hero.id }
+  return heroes.map((hero) => ({
+    params: { id: hero.id },
   }));
 }
 
@@ -19,9 +14,362 @@ const hero = getHeroById(id);
 if (!hero) {
   throw new Error(`Hero with id "${id}" not found`);
 }
-
 ---
-<HeroHeader hero={hero} />
-<HeroSummary hero={hero} />
-<HeroTraits hero={hero} />
-<HeroPlaystyle hero={hero} />
+
+<head>
+  <meta charset="utf-8" />
+</head>
+
+<div class="hero-detail-page">
+  <!-- STICKY HEADER -->
+  <header class="hero-detail-header">
+    <div class="header-inner header-with-back">
+      <a href="/" class="back-button">← Back</a>
+
+      <div class="header-center">
+        <h1 class="hero-title">{hero.name}</h1>
+
+        <nav class="hero-tabs">
+          <button class="tab active">Attributes</button>
+          <button class="tab">Skills</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="hero-detail-content">
+    <section class="hero-overview">
+      <!-- LEFT -->
+      <div>
+        <!-- LARGE HERO NAME -->
+        <h2 class="hero-name-large">{hero.name}</h2>
+
+        <!-- FACTION -->
+        <div class="hero-faction">
+          <img
+            src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
+            alt={hero.faction}
+            class="faction-icon"
+          />
+          <span class="faction-label">{hero.faction}</span>
+        </div>
+
+        <!-- IDENTITY CARDS -->
+        <div class="hero-identity-cards">
+          <div class="identity-card">
+            <h4>Class</h4>
+            <div class="identity-content">
+              <img
+                class="identity-icons"
+                src={`/icons/classes/${hero.class.toLowerCase()}.webp`}
+                alt={hero.class}
+              />
+              <span>{hero.class}</span>
+            </div>
+          </div>
+
+          <div class="identity-card">
+            <h4>Role</h4>
+            <div class="identity-content">
+              <img
+                class="identity-icons"
+                src={`/icons/roles/${hero.role.toLowerCase()}.webp`}
+                alt={hero.role}
+              />
+              <span>{hero.role}</span>
+            </div>
+          </div>
+
+          <div class="identity-card">
+            <h4>Rarity</h4>
+
+            <div class="identity-content rarity-content">
+              <!-- Stern -->
+              <svg class="rarity-star" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"
+                ></path>
+              </svg>
+
+              <span>{hero.rarity}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="hero-visual" style={`background-image: url(${hero.image});`}>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="hero-stats">
+      <h2>Stats</h2>
+
+      <div class="stats-grid">
+        <div>HP <span>{hero.stats.hp}</span></div>
+        <div>ATK <span>{hero.stats.atk}</span></div>
+        <div>Armor <span>{hero.stats.armor}</span></div>
+        <div>M-Res <span>{hero.stats.magicRes}</span></div>
+        <div>Dodge <span>{hero.stats.dodgeRate}%</span></div>
+        <div>Hit <span>{hero.stats.hitBonus}%</span></div>
+        <div>Crit Rate <span>{hero.stats.critRate}%</span></div>
+        <div>Crit RES <span>{hero.stats.critRes}%</span></div>
+        <div>Crit DMG <span>{hero.stats.critDmgBonus}%</span></div>
+        <div>Crit Red <span>{hero.stats.critDmgReduction}%</span></div>
+        <div>Energy <span>{hero.stats.energy}</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<style>
+  .identity-icons {
+    height: 24px;
+    width: 24px;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background:
+      radial-gradient(
+        ellipse at 30% -10%,
+        rgba(120, 90, 200, 0.15),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse at 80% 20%,
+        rgba(255, 215, 100, 0.08),
+        transparent 55%
+      ),
+      linear-gradient(to bottom, #0d0b10, #07060c);
+    color: #e6e6eb;
+    font-family:
+      Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+
+  /* PAGE */
+  .hero-detail-page {
+    min-height: 100vh;
+  }
+
+  .rarity-stars {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .rarity-star {
+    width: 24px;
+    height: 24px;
+    fill: #facc15;
+    filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.6));
+  }
+
+  .rarity-label {
+    margin-left: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  /* HEADER */
+  .hero-detail-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 16, 0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 24px 14px;
+  }
+
+  .header-with-back {
+    position: relative;
+  }
+  .identity-card h4 {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    color: #ffffff;
+    columns: auto;
+    font-family:
+      "Source Sans Pro", ui-sans-serif, system-ui, sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+  }
+
+  .identity-content span {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    color: #ffffff;
+    columns: auto;
+    font-family:
+      Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0px 0px 0px;
+    text-align: center;
+    text-transform: capitalize;
+    text-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .back-button {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+  }
+
+  /* HEADER CENTER */
+  .header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-title {
+    margin: 0;
+    font-size: 1.9rem;
+  }
+
+  /* TABS */
+  .hero-tabs {
+    display: flex;
+    gap: 26px;
+  }
+
+  .tab {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .tab.active {
+    color: #fff;
+    border-bottom: 2px solid #facc15;
+  }
+
+  /* CONTENT */
+  .hero-detail-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  /* OVERVIEW */
+  .hero-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  /* LARGE NAME */
+  .hero-name-large {
+    font-size: 72px;
+    line-height: 1.05;
+    font-weight: 600;
+    padding: 48px 0px 16px;
+  }
+
+  /* FACTION */
+  .hero-faction {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  /* IDENTITY CARDS */
+  .hero-identity-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .identity-card {
+    background-color: #00000040;
+    border: 1px solid #ffffff33;
+    border-radius: 12px;
+    box-sizing: border-box;
+    columns: auto;
+    padding: 8px;
+  }
+
+  /* IMAGE HERO VISUAL */
+.hero-visual {
+  height: 420px;                 /* 👈 HIER steuerst du die Höhe */
+  border-radius: 18px;
+
+  background-size: cover;        /* ❗ schneidet zu, skaliert NICHT */
+  background-position: center 30%; /* oder center / 50% 30% */
+  background-repeat: no-repeat;
+
+  overflow: hidden;
+  /*
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.65),
+    inset 0 0 0 1px rgba(255,255,255,0.06);*/
+  }
+
+  /* Faction Label */
+  .faction-label {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    color: #ffffff;
+    columns: auto;
+    font-family:
+      Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .faction-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* STATS */
+  .hero-stats {
+    margin-top: 64px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .identity-content {
+    align-items: center;
+    border-radius: 12px;
+    box-sizing: border-box;
+    columns: auto;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    padding: 8px;
+  }
+</style>

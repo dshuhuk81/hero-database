@@ -1,0 +1,85 @@
+{
+  "Tank": {
+    "hp": 12000,
+    "atk": 700,
+    "armor": 650,
+    "magicRes": 600,
+    "dodgeRate": 5,
+    "hitBonus": 6,
+    "critRate": 8,
+    "critRes": 12,
+    "critDmgBonus": 40,
+    "critDmgReduction": 25,
+    "energy": 100
+  },
+
+  "Warrior": {
+    "hp": 9500,
+    "atk": 980,
+    "armor": 480,
+    "magicRes": 420,
+    "dodgeRate": 6,
+    "hitBonus": 8,
+    "critRate": 12,
+    "critRes": 8,
+    "critDmgBonus": 55,
+    "critDmgReduction": 15,
+    "energy": 100
+  },
+
+  "Assassin": {
+    "hp": 7200,
+    "atk": 1200,
+    "armor": 360,
+    "magicRes": 380,
+    "dodgeRate": 12,
+    "hitBonus": 10,
+    "critRate": 22,
+    "critRes": 6,
+    "critDmgBonus": 75,
+    "critDmgReduction": 10,
+    "energy": 100
+  },
+
+  "Archer": {
+    "hp": 7800,
+    "atk": 1100,
+    "armor": 390,
+    "magicRes": 410,
+    "dodgeRate": 10,
+    "hitBonus": 12,
+    "critRate": 20,
+    "critRes": 6,
+    "critDmgBonus": 65,
+    "critDmgReduction": 12,
+    "energy": 100
+  },
+
+  "Mage": {
+    "hp": 7400,
+    "atk": 1150,
+    "armor": 340,
+    "magicRes": 520,
+    "dodgeRate": 8,
+    "hitBonus": 10,
+    "critRate": 18,
+    "critRes": 8,
+    "critDmgBonus": 70,
+    "critDmgReduction": 10,
+    "energy": 120
+  },
+
+  "Support": {
+    "hp": 8600,
+    "atk": 820,
+    "armor": 430,
+    "magicRes": 540,
+    "dodgeRate": 6,
+    "hitBonus": 8,
+    "critRate": 10,
+    "critRes": 14,
+    "critDmgBonus": 35,
+    "critDmgReduction": 30,
+    "energy": 120
+  }
+}

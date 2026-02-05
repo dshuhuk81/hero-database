@@ -1,0 +1,15 @@
+---
+const { summary } = Astro.props;
+---
+
+<section class="hero-summary">
+  <h2>Kurzüberblick</h2>
+  <p>{summary}</p>
+</section>
+
+<style>
+.hero-summary {
+  margin-top: 32px;
+  font-size: 1.05rem;
+}
+</style>
