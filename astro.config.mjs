@@ -1,4 +1,4 @@
-import { defineConfig } from "astro";
+import { defineConfig } from "astro/config";
 
 export default defineConfig({
   site: "https://dshuhuk81.github.io",
