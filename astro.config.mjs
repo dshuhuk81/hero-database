@@ -1,5 +1,7 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro";
 
-// https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  site: "https://dshuhuk81.github.io",
+  base: "/hero-database/",
+  output: "static",
+});
