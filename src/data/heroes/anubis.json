@@ -40,7 +40,7 @@
     {
       "id": "skill_1",
       "name": "Soothing Rain",
-      "icon": "icons/skills/soothing_rain.webp",
+      "icon": "/icons/skills/soothing_rain.webp",
       "description": "Restores HP to allies over time.",
       "upgrades": {
         "level2": "Healing increased by 20%.",
@@ -51,7 +51,29 @@
     {
       "id": "skill_2",
       "name": "Life Barrier",
-      "icon": "icons/skills/life_barrier.webp",
+      "icon": "/icons/skills/life_barrier.webp",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
+    }
+    {
+      "id": "skill_3",
+      "name": "Life Barrier",
+      "icon": "/icons/skills/life_barrier.webp",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
+    }
+    {
+      "id": "skill_4",
+      "name": "Life Barrier",
+      "icon": "/icons/skills/life_barrier.webp",
       "description": "Grants a shield when allies fall low.",
       "upgrades": {
         "level2": "Shield strength increased.",
@@ -63,7 +85,12 @@
 
   "relic": {
     "name": "Hero’s Relic",
-    "icon": "icons/relics/heros_relic.webp",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy."
+    "icon": "/icons/relics/heros_relic.webp",
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
   }
 }
