@@ -4,8 +4,8 @@ const { hero } = Astro.props;
 
 <a
   class="hero-card"
-  href={`/heroes/${hero.id}`}
-  style={`--hero-image: url(/heroes/${hero.id}.webp);`}
+  href={`heroes/${hero.id}`}
+  style={`--hero-image: url(heroes/${hero.id}.webp);`}
 >
   {hero.rating && (
     <div class={`rating-badge rating-${hero.rating.toLowerCase()}`}>
