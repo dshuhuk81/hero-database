@@ -1,18 +1,18 @@
 {
-  "id": "isis",
-  "name": "Isis",
+  "id": "anubis",
+  "name": "Anubis",
 
-  "image": "/heroes/isis.webp",
+  "image": "/heroes/anubis.webp",
 
-  "faction": "Hearts",
+  "faction": "Clubs",
   "role": "Nimble",
-  "class": "Archer",
+  "class": "Assassin",
   "rarity": "Legendary",
 
-  "description": "Momus is the god of mockery, sencure, sarcasm, and reproach, as well as the guardian of writers and poets. He delights in exposing the flaws of gods and mortals, reveling in just critique.",
+  "description": "Poseidon, god of the sea and quakes, presides over tides, storms, and tremors. He can summon towering surges or calm the waters.",
 
   "ratings": {
-    "overall": "SSS",
+    "overall": "S",
     "grimSurge": "S",
     "delusionsDen": "A",
     "torrentRift": "B",
@@ -20,16 +20,20 @@
   },
 
   "stats": {
-    "hp": 251767,
-    "atk": 26062,
-    "armor": 5232,
-    "magicRes": 5072,
+    "hp": 248296,
+    "atk": 25253,
+    "armor": 5195,
+    "magicRes": 5035,
 
-    "dodgeRate":7,
+    "dodgeRate": 11,
     "hitBonus": 0,
 
-    "critRate": 10,
-    "critRes": 2
+    "critRate": 6,
+    "critRes": 2,
+    "critDmgBonus": 0,
+    "critDmgReduction": 0,
+
+    "energy": 0
   },
 
   "skills": [
