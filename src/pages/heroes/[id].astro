@@ -14,6 +14,30 @@ const hero = getHeroById(id);
 if (!hero) {
   throw new Error(`Hero with id "${id}" not found`);
 }
+
+
+const PERCENT_STATS = new Set([
+  "dodgeRate",
+  "hitBonus",
+  "critRate",
+  "critRes",
+  "critDmgBonus",
+  "critDmgReduction",
+]);
+
+const STAT_LABELS = {
+  hp: "HP",
+  atk: "ATK",
+  armor: "Armor",
+  magicRes: "M-Res",
+  dodgeRate: "Dodge",
+  hitBonus: "Hit",
+  critRate: "Crit Rate",
+  critRes: "Crit RES",
+  critDmgBonus: "Crit DMG",
+  critDmgReduction: "Crit Red",
+  energy: "Energy",
+};
 ---
 
 <head>
@@ -107,24 +131,31 @@ if (!hero) {
     <section class="hero-stats">
       <h2>Stats</h2>
 
-      <div class="stats-grid">
-        <div>HP <span>{hero.stats.hp}</span></div>
-        <div>ATK <span>{hero.stats.atk}</span></div>
-        <div>Armor <span>{hero.stats.armor}</span></div>
-        <div>M-Res <span>{hero.stats.magicRes}</span></div>
-        <div>Dodge <span>{hero.stats.dodgeRate}%</span></div>
-        <div>Hit <span>{hero.stats.hitBonus}%</span></div>
-        <div>Crit Rate <span>{hero.stats.critRate}%</span></div>
-        <div>Crit RES <span>{hero.stats.critRes}%</span></div>
-        <div>Crit DMG <span>{hero.stats.critDmgBonus}%</span></div>
-        <div>Crit Red <span>{hero.stats.critDmgReduction}%</span></div>
-        <div>Energy <span>{hero.stats.energy}</span></div>
+        <div class="stats-grid">
+          {Object.entries(STAT_LABELS).map(([key, label]) => (
+            <div>
+              {label}
+              <span>
+                {hero.stats[key]}
+                {PERCENT_STATS.has(key) ? "%" : ""}
+                {hero.rankings?.[key] && (
+                  <small class="stat-rank">#{hero.rankings[key]}</small>
+                )}
+              </span>
+            </div>
+          ))}
       </div>
     </section>
   </main>
 </div>
 
 <style>
+  .stat-rank {
+  margin-left: 6px;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
   .identity-icons {
     height: 24px;
     width: 24px;
