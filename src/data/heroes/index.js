@@ -90,6 +90,28 @@ export const heroesWithRankings = heroes.map(hero => ({
   rankings: statRankings[hero.id] ?? {},
 }));
 
+
+/* ============================
+   MAX VALUES PRO STAT
+   ============================ */
+function computeStatMaxima(heroes) {
+  const maxima = {};
+
+  for (const stat of RANKABLE_STATS) {
+    const values = heroes
+      .map(h => h.stats?.[stat])
+      .filter(v => typeof v === "number");
+
+    maxima[stat] = values.length > 0 ? Math.max(...values) : null;
+  }
+
+  return maxima;
+}
+
+
+export const statMaxima = computeStatMaxima(heroes);
+
+
 /* ============================
    PUBLIC API
    ============================ */

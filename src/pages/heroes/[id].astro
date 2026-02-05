@@ -1,5 +1,6 @@
 ---
-import { heroes, getHeroById } from "../../data/heroes";
+import { heroes, getHeroById, statMaxima } from "../../data/heroes";
+
 
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -68,7 +69,13 @@ const STAT_LABELS = {
       <div>
         <!-- LARGE HERO NAME -->
         <h2 class="hero-name-large">{hero.name}</h2>
-
+        
+        <!-- Description  -->
+        {hero.description && (
+          <p class="hero-description">
+            {hero.description}
+          </p>
+        )}
         <!-- FACTION -->
         <div class="hero-faction">
           <img
@@ -129,55 +136,157 @@ const STAT_LABELS = {
 
     <!-- STATS -->
     <section class="hero-stats">
-      <h2>Base-Stats (LvL1)</h2>
+        <h2>Base-Stats (LvL1)</h2>
 
         <div class="stats-grid">
           {Object.entries(STAT_LABELS).map(([key, label]) => (
-            <div>
-              {label}
-              <span class="stat-value">
-                {hero.stats[key]}
+            <div class="stat-row">
+              <span class="stat-label">{label}</span>
 
-                {hero.rankings?.[key] && (
-                  <small
-                    class={`stat-rank ${
-                      hero.rankings[key] === 1
+              <div class="stat-right">
+                <span class="stat-value">
+                  <span class="stat-current">
+                    {hero.stats[key]}
+                    <span class="stat-max"> / {statMaxima[key]}</span>
+                  </span>
+
+                  {hero.rankings?.[key] && (
+                    <small class="stat-rank">
+                      #{hero.rankings[key]}
+                    </small>
+                  )}
+                </span>
+
+                <!-- 🔥 STAT BAR -->
+                <div class="stat-bar">
+                  <div
+                    class={`stat-bar-fill ${
+                      hero.rankings?.[key] === 1
                         ? "rank-1"
-                        : hero.rankings[key] === 2
+                        : hero.rankings?.[key] === 2
                         ? "rank-2"
-                        : hero.rankings[key] === 3
+                        : hero.rankings?.[key] === 3
                         ? "rank-3"
-                        : hero.rankings[key] <= 10
+                        : hero.rankings?.[key] <= 10
                         ? "rank-top"
-                        : ""
+                        : "rank-default"
                     }`}
-                  >
-                    #{hero.rankings[key]}
-                  </small>
-                )}
-              </span>
-
+                    style={`width: ${
+                      statMaxima[key]
+                        ? Math.min((hero.stats[key] / statMaxima[key]) * 100, 100)
+                        : 0
+                    }%`}
+                  />
+                </div>
+              </div>
             </div>
           ))}
-      </div>
-    </section>
+        </div>
+
+      </section>
+
   </main>
 </div>
 
 <style>
-
-  /* ===============================
-   STAT HIGHLIGHTING
+/* ===============================
+   STAT BARS
    =============================== */
 
-.stat-value {
-  display: inline-flex;
-  align-items: center;
+.stat-row {
+  display: flex;
+  flex-direction: column;
   gap: 6px;
 }
 
-/* Rank Badge */
+.stat-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Hintergrund */
+.stat-bar {
+  height: 6px;
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+/* Füllung */
+.stat-bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    #facc15,
+    #f59e0b
+  );
+  box-shadow: 0 0 10px rgba(250,204,21,0.6);
+  transition: width 0.4s ease;
+}
+/* Rank 1 – Gold */
+.stat-bar-fill.rank-1 {
+  background: linear-gradient(90deg, #facc15, #fde68a);
+  box-shadow: 0 0 10px rgba(250,204,21,0.8);
+}
+
+/* Rank 2 – Silber */
+.stat-bar-fill.rank-2 {
+  background: linear-gradient(90deg, #e5e7eb, #f9fafb);
+}
+
+/* Rank 3 – Bronze */
+.stat-bar-fill.rank-3 {
+  background: linear-gradient(90deg, #f59e0b, #fcd34d);
+}
+
+/* Top 10 – Blau/Violett */
+.stat-bar-fill.rank-top {
+  background: linear-gradient(90deg, #818cf8, #a5b4fc);
+}
+
+/* ===============================
+   HERO DESCRIPTION
+   =============================== */
+.hero-description {
+  max-width: 560px;
+
+  margin: 0px 0 24px;
+  padding: 0;
+
+  font-size: 0.95rem;
+  line-height: 1.55;
+
+  color: rgba(230, 230, 235, 0.75);
+
+  /* leichte visuelle Trennung */
+  text-wrap: pretty;
+}
+  /* ===============================
+   STAT HIGHLIGHTING
+   =============================== */
+.stat-max {
+  margin-left: 6px;
+  font-size: 0.7rem;
+  opacity: 0.6;
+  
+}
+
+.stat-value {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 6px;
+}
+
+.stat-current {
+  white-space: nowrap;
+}
+
 .stat-rank {
+  margin-left: auto; /* 👈 MAGIE */
   font-size: 0.7rem;
   opacity: 0.75;
 }
@@ -206,11 +315,6 @@ const STAT_LABELS = {
   color: #a5b4fc;
 }
 
-  .stat-rank {
-  margin-left: 6px;
-  font-size: 0.7rem;
-  opacity: 0.7;
-}
 
   .identity-icons {
     height: 24px;
@@ -378,7 +482,8 @@ const STAT_LABELS = {
     font-size: 72px;
     line-height: 1.05;
     font-weight: 600;
-    padding: 48px 0px 16px;
+    padding: 48px 0 24px 0;
+    margin:0;
   }
 
   /* FACTION */
@@ -460,3 +565,4 @@ const STAT_LABELS = {
     padding: 8px;
   }
 </style>
+
