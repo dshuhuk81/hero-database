@@ -20,27 +20,27 @@ const sortedHeroes = [...heroes].sort((a, b) =>
       <span class="filter-label">Class</span>
 
       <button class="chip class-chip" data-class="tank" title="Tank">
-        <img src={`${Astro.base}icons/classes/tank.webp`} alt="Tank" />
+        <img src="/icons/classes/tank.webp" alt="Tank" />
       </button>
 
       <button class="chip class-chip" data-class="warrior" title="Warrior">
-        <img src={`${Astro.base}icons/classes/warrior.webp`} alt="Warrior" />
+        <img src="/icons/classes/warrior.webp" alt="Warrior" />
       </button>
 
       <button class="chip class-chip" data-class="archer" title="Archer">
-        <img src={`${Astro.base}icons/classes/archer.webp`} alt="Archer" />
+        <img src="/icons/classes/archer.webp" alt="Archer" />
       </button>
 
       <button class="chip class-chip" data-class="mage" title="Mage">
-        <img src={`${Astro.base}icons/classes/mage.webp`} alt="Mage" />
+        <img src="/icons/classes/mage.webp" alt="Mage" />
       </button>
       
       <button class="chip class-chip" data-class="support" title="Support">
-        <img src={`${Astro.base}icons/classes/support.webp`} alt="Support" />
+        <img src="/icons/classes/support.webp" alt="Support" />
       </button>
             
       <button class="chip class-chip" data-class="assassin" title="Assassin">
-        <img src={`${Astro.base}icons/classes/assassin.webp`} alt="Assassin" />
+        <img src="/icons/classes/assassin.webp" alt="Assassin" />
       </button>
     </div>
 
@@ -49,15 +49,15 @@ const sortedHeroes = [...heroes].sort((a, b) =>
       <span class="filter-label">Role</span>
 
       <button class="chip role-chip" data-role="nimble" title="Nimble">
-        <img src={`${Astro.base}icons/roles/nimble.webp`} alt="Nimble" />
+        <img src="/icons/roles/nimble.webp" alt="Nimble" />
       </button>
 
       <button class="chip role-chip" data-role="arcane" title="Arcane">
-        <img src={`${Astro.base}icons/roles/arcane.webp`} alt="Arcane" />
+        <img src="/icons/roles/arcane.webp" alt="Arcane" />
       </button>
 
       <button class="chip role-chip" data-role="hefty" title="Hefty">
-        <img src={`${Astro.base}icons/roles/hefty.webp`} alt="Hefty" />
+        <img src="/icons/roles/hefty.webp" alt="Hefty" />
       </button>
     </div>
 
@@ -96,7 +96,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
 
     <!-- RESET -->
     <div class="filter-group">
-      <button id="resetFilters" class="reset-button">Reset Filter</button>
+      <button id="resetFilters" class="reset-button">Reset Filters</button>
     </div>
 
   </section>
@@ -115,9 +115,9 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         data-rarity={hero.rarity.toLowerCase()}
       >
         <div class="icon-stack">
-          <img src={`${Astro.base}icons/factions/${hero.faction.toLowerCase()}.webp`} />
-          <img src={`${Astro.base}icons/roles/${hero.role.toLowerCase()}.webp`} />
-          <img src={`${Astro.base}icons/classes/${hero.class.toLowerCase()}.webp`} />
+          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
+          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} />
+          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} />
         </div>
 
         <HeroCard hero={hero} />
@@ -143,7 +143,7 @@ html, body {
 /* HERO HEADER */
 .hero-header {
   height: 360px;
-  background-image: url("bg.jpg");
+  background-image: url("/bg.jpg");
   background-size: cover;
   background-position: center 150%; /* 👈 höheres Bild */
   background-attachment: fixed;

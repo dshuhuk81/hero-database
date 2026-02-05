@@ -16,28 +16,6 @@ if (!hero) {
   throw new Error(`Hero with id "${id}" not found`);
 }
 
-const TIER_RATINGS = [
-  {
-    group: "Overall",
-    items: [
-      { label: "Overall", key: "overall" },
-    ],
-  },
-  {
-    group: "PvE",
-    items: [
-      { label: "Grim Surge", key: "grimSurge" },
-      { label: "Delusion's Den", key: "delusionsDen" },
-      { label: "Torrent Rift", key: "torrentRift" },
-    ],
-  },
-  {
-    group: "PvP",
-    items: [
-      { label: "PvP", key: "pvp" },
-    ],
-  },
-];
 
 const PERCENT_STATS = new Set([
   "dodgeRate",
@@ -61,20 +39,6 @@ const STAT_LABELS = {
   critDmgReduction: "Crit Red",
   energy: "Energy",
 };
-const TIER_GROUPS = [
-  {
-    title: "PvE",
-    items: [
-      { key: "grimSurge", label: "Grim Surge" },
-      { key: "delusionsDen", label: "Delusion's Den" },
-      { key: "torrentRift", label: "Torrent Rift" },
-    ],
-  },
-  {
-    title: "PvP",
-    items: [{ key: "pvp", label: "PvP" }],
-  },
-];
 ---
 
 <head>
@@ -93,7 +57,6 @@ const TIER_GROUPS = [
         <nav class="hero-tabs">
           <button class="tab active">Attributes</button>
           <button class="tab">Skills</button>
-          <button class="tab">Team Recommendations</button>
         </nav>
       </div>
     </div>
@@ -116,7 +79,7 @@ const TIER_GROUPS = [
         <!-- FACTION -->
         <div class="hero-faction">
           <img
-            src={`${Astro.base}icons/factions/${hero.faction.toLowerCase()}.webp`}
+            src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
             alt={hero.faction}
             class="faction-icon"
           />
@@ -130,7 +93,7 @@ const TIER_GROUPS = [
             <div class="identity-content">
               <img
                 class="identity-icons"
-                src={`${Astro.base}icons/classes/${hero.faction.toLowerCase()}.webp`}
+                src={`/icons/classes/${hero.class.toLowerCase()}.webp`}
                 alt={hero.class}
               />
               <span>{hero.class}</span>
@@ -142,7 +105,7 @@ const TIER_GROUPS = [
             <div class="identity-content">
               <img
                 class="identity-icons"
-                src={`${Astro.base}icons/roles/${hero.faction.toLowerCase()}.webp`}
+                src={`/icons/roles/${hero.role.toLowerCase()}.webp`}
                 alt={hero.role}
               />
               <span>{hero.role}</span>
@@ -167,7 +130,7 @@ const TIER_GROUPS = [
       </div>
 
       <!-- RIGHT -->
-      <div class="hero-visual" style={`background-image: url(${Astro.base}heroes/${hero.id}.webp);`}>
+      <div class="hero-visual" style={`background-image: url(${hero.image});`}>
       </div>
     </section>
 
@@ -221,139 +184,11 @@ const TIER_GROUPS = [
         </div>
 
       </section>
-      <section class="hero-tier-rating">
-  <h2>Tier Rating</h2>
 
-  <div class="tier-layout">
-    <!-- OVERALL -->
-    <div class="tier-overall">
-      <span class="tier-title">Overall</span>
-      <span class={`tier-value tier-${hero.ratings?.overall?.toLowerCase()}`}>
-        {hero.ratings?.overall ?? "-"}
-      </span>
-    </div>
-
-    <!-- GROUPS -->
-    <div class="tier-groups">
-      {TIER_GROUPS.map(group => (
-        <div class="tier-group">
-          <h3>{group.title}</h3>
-
-          <div class="tier-cards">
-            {group.items.map(item => (
-              <div class="tier-card">
-                <span class="tier-card-label">{item.label}</span>
-                <span
-                  class={`tier-card-value tier-${
-                    hero.ratings?.[item.key]?.toLowerCase() ?? "none"
-                  }`}
-                >
-                  {hero.ratings?.[item.key] ?? "-"}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
   </main>
 </div>
 
 <style>
- /* ===============================
-   TIER RATING
-   =============================== */
-
-.hero-tier-rating {
-  margin-top: 96px;
-}
-
-.tier-layout {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 48px;
-  align-items: start;
-}
-
-/* OVERALL */
-.tier-overall {
-  background: radial-gradient(
-    circle at top,
-    rgba(255,120,80,0.35),
-    rgba(0,0,0,0.6)
-  );
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 18px;
-  padding: 24px;
-  text-align: center;
-}
-
-.tier-title {
-  display: block;
-  font-size: 0.85rem;
-  opacity: 0.7;
-  margin-bottom: 8px;
-}
-
-.tier-value {
-  font-size: 56px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
-/* GROUPS */
-.tier-groups {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.tier-group h3 {
-  margin: 0 0 12px;
-  font-size: 0.9rem;
-  opacity: 0.8;
-  text-transform: uppercase;
-}
-
-.tier-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.tier-card {
-  min-width: 160px;
-  padding: 12px 14px;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.tier-card-label {
-  font-size: 0.85rem;
-  opacity: 0.85;
-}
-
-.tier-card-value {
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-/* ===============================
-   TIER COLORS
-   =============================== */
-.tier-sss { color: #ff5e3a; text-shadow: 0 0 12px rgba(255,94,58,0.7); }
-.tier-s  { color: #facc15; text-shadow: 0 0 10px rgba(250,204,21,0.6); }
-.tier-a  { color: #fb923c; }
-.tier-b  { color: #a855f7; }
-.tier-c  { color: #38bdf8; }
-.tier-d  { color: #9ca3af; }
-.tier-none { opacity: 0.3; }
 /* ===============================
    STAT BARS
    =============================== */
