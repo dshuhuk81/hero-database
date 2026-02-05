@@ -129,19 +129,34 @@ const STAT_LABELS = {
 
     <!-- STATS -->
     <section class="hero-stats">
-      <h2>Stats</h2>
+      <h2>Base-Stats (LvL1)</h2>
 
         <div class="stats-grid">
           {Object.entries(STAT_LABELS).map(([key, label]) => (
             <div>
               {label}
-              <span>
+              <span class="stat-value">
                 {hero.stats[key]}
-                {PERCENT_STATS.has(key) ? "%" : ""}
+
                 {hero.rankings?.[key] && (
-                  <small class="stat-rank">#{hero.rankings[key]}</small>
+                  <small
+                    class={`stat-rank ${
+                      hero.rankings[key] === 1
+                        ? "rank-1"
+                        : hero.rankings[key] === 2
+                        ? "rank-2"
+                        : hero.rankings[key] === 3
+                        ? "rank-3"
+                        : hero.rankings[key] <= 10
+                        ? "rank-top"
+                        : ""
+                    }`}
+                  >
+                    #{hero.rankings[key]}
+                  </small>
                 )}
               </span>
+
             </div>
           ))}
       </div>
@@ -150,6 +165,47 @@ const STAT_LABELS = {
 </div>
 
 <style>
+
+  /* ===============================
+   STAT HIGHLIGHTING
+   =============================== */
+
+.stat-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Rank Badge */
+.stat-rank {
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+
+/* Top 1 */
+.stat-rank.rank-1 {
+  color: #facc15;
+  text-shadow: 0 0 6px rgba(250,204,21,0.8);
+  font-weight: 700;
+}
+
+/* Top 2 */
+.stat-rank.rank-2 {
+  color: #e5e7eb;
+  text-shadow: 0 0 6px rgba(229,231,235,0.7);
+}
+
+/* Top 3 */
+.stat-rank.rank-3 {
+  color: #f59e0b;
+  text-shadow: 0 0 6px rgba(245,158,11,0.7);
+}
+
+/* Optional: Top 10 */
+.stat-rank.rank-top {
+  color: #a5b4fc;
+}
+
   .stat-rank {
   margin-left: 6px;
   font-size: 0.7rem;
