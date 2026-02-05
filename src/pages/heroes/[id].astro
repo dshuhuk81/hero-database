@@ -116,7 +116,7 @@ const TIER_GROUPS = [
         <!-- FACTION -->
         <div class="hero-faction">
           <img
-            src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
+            src={`${import.meta.env.BASE_URL}icons/factions/${hero.faction.toLowerCase()}.webp`}
             alt={hero.faction}
             class="faction-icon"
           />
@@ -130,7 +130,7 @@ const TIER_GROUPS = [
             <div class="identity-content">
               <img
                 class="identity-icons"
-                src={`/icons/classes/${hero.class.toLowerCase()}.webp`}
+                src={`${import.meta.env.BASE_URL}icons/classes/${hero.faction.toLowerCase()}.webp`}
                 alt={hero.class}
               />
               <span>{hero.class}</span>
@@ -142,7 +142,7 @@ const TIER_GROUPS = [
             <div class="identity-content">
               <img
                 class="identity-icons"
-                src={`/icons/roles/${hero.role.toLowerCase()}.webp`}
+                src={`${import.meta.env.BASE_URL}icons/roles/${hero.faction.toLowerCase()}.webp`}
                 alt={hero.role}
               />
               <span>{hero.role}</span>
@@ -167,7 +167,7 @@ const TIER_GROUPS = [
       </div>
 
       <!-- RIGHT -->
-      <div class="hero-visual" style={`background-image: url(${hero.image});`}>
+      <div class="hero-visual" style={`background-image: url(${import.meta.env.BASE_URL}heroes/${hero.id}.webp);`}>
       </div>
     </section>
 
