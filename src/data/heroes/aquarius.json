@@ -57,11 +57,38 @@
         "level4": "Triggers automatically once per battle."
       }
     }
+    {
+      "id": "skill_3",
+      "name": "Life Barrier",
+      "icon": "/icons/skills/life_barrier.webp",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
+    }
+    {
+      "id": "skill_4",
+      "name": "Life Barrier",
+      "icon": "/icons/skills/life_barrier.webp",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
+    }
   ],
 
   "relic": {
     "name": "Hero’s Relic",
     "icon": "/icons/relics/heros_relic.webp",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy."
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
   }
 }
