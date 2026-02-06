@@ -12,7 +12,7 @@ export interface Hero {
   description: string;
 
   ratings: {
-    overall: "SS" | "S" | "A" | "B" | "C" | "D";
+    overall: "SSS" | "SS" | "S" | "A" | "B" | "C";
     grimSurge?: string;
     delusionsDen?: string;
     torrentRift?: string;

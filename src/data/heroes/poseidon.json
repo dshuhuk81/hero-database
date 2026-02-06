@@ -27,52 +27,52 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Raging Tide",
+      "description": "Gains 200 Energy upon entering battle. (Unlock at Relic Lv.1)",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Poseidon casts Rogue Wave upon entering battle, but it deals 50% reduced DMG. (Unlock at Relic Lv.10)",
+        "level3": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
+        "level4": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)"
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Rogue Wave",
+      "description": "Poseidon raises his trident, summoning two tidal waves on both sides of the battlefield. Enemies within range are pushed 2 meters and take DMG equal to 200% of his ATK.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "When the two tidal waves meet in the middle, they create a violent swell, knocking down enemies at the center and dealing additional DMG equal to 100% of ATK.",
+        "level3": "Increases DMG dealt to 220%.",
+        "level4": "Increases DMG dealt to 250%."
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Waterspout",
+      "description": "Poseidon drives his trident into the ground under the current target, triggering a tidal wave that deals DMG equal to 200% of ATK to enemies in a small area and knocking them down.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 220%.",
+        "level3": "Also reduces the target's M-RES by 20%.",
+        "level4": "Increases DMG dealt to 240%."
       }
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Tidal Trident",
+      "description": "After every two attacks, Poseidon charges his trident. The next attack deals DMG equal to 200% of ATK to the target and restores 100 Energy to himself.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 230%.",
+        "level3": "Increases Energy restored to 150.",
+        "level4": "Grants him a shield equal to 200% of ATK. (Unlocks at Lv.261)"
       }
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Tidal Aegis",
+    "description": "Poseidon gathers the ocean energy, gaining a shield equal to 270% of ATK for 5s.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "Shield Strength increases to 300%.",
+      "level3": "Increases ATK by 10% while the shield is active.",
+      "level4": "Shield Strength increases to 330%. (Unlocks at Lv.281)"
     }
   }
 }

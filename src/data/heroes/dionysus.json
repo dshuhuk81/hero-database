@@ -24,55 +24,55 @@
     "critRate": 4,
     "critRes": 8
   },
-  "skills": [
+   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Toast of the Gods",
+      "description": "Grants all allies the [Frenzy] state for 5s: ATK SPD +50%, Energy Regen +30%, Skill CD -30%, Move SPD +50%, ATK +20%.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "While in the [Frenzy] state, increases ATK SPD to 60% and Energy Regen to 35%.",
+        "level3": "Duration extends to 7s.",
+        "level4": "Using this skill also removes all debuffs from an ally and makes them immune to Crowd Control for 2s."
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Vintage Vivace",
+      "description": "Dionysus no longer performs Normal Attacks. Instead, she wanders the battlefield and raises a toast every 2.5s, restoring HP equal to 120% of ATK to the most vulnerable ally.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Restores HP equal to 160% of ATK.",
+        "level3": "The healed unit also gains 30% DMG RED.",
+        "level4": "Restores HP equal to 200% of ATK."
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Bacchic Blessing",
+      "description": "Dionysus raises a toast, increasing all allies' P&M-RES by 15% for 15s for each unique ally class on the battlefield.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases all allies' P&M-RES by 20%.",
+        "level3": "For each unique ally class on the battlefield, grants all allies a shield equal to 50% of her ATK.",
+        "level4": "Duration extends to 20s."
       }
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Drunken Phantasm",
+      "description": "When Dionysus takes DMG from a nearby enemy, she reduces the DMG taken by 50% and blinks behind the safest ally. This can only trigger once every 8s.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Reduces 70% of the next DMG taken.",
+        "level3": "This effect can only trigger once every 6s.",
+        "level4": "Becomes immune to the next DMG taken."
       }
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Revelry Queen",
+    "description": "When casting Bacchic Blessing, Dionysus buffs her allies based on their classes. This effect lasts until the battle ends and can stack up to 3 times.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "Tank/Warrior: DMG RED +20%. Mage/Archer: DMG bonus +20%. Support/Assassin: Energy Regen +25%.",
+      "level3": "Reduces Bacchic Blessing's cooldown to 20s.",
+      "level4": "Casts Bacchic Blessing upon entering battle and restores 200 Energy to each affected Deity if at least 3 classes are affected."
     }
   }
 }
