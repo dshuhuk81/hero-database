@@ -116,6 +116,8 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
         data-name={hero.name.toLowerCase()}
         data-class={hero.class.toLowerCase()}
+        data-role={hero.role.toLowerCase()}    
+
         data-rarity={hero.rarity.toLowerCase()}
       >
         <div class="icon-stack">
