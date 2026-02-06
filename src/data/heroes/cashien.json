@@ -1,16 +1,12 @@
 {
   "id": "cashien",
   "name": "Cashien",
-
-  "image": "/heroes/cancashiencer.webp",
-
+  "image": "/heroes/cashien.webp",
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Support",
   "rarity": "Legendary",
-
-  "description": "Caishen, guardian of wealth, rules over the flow of riches, success, and opportunity. Able to grant fortune or strip possessions, Caishen rewards diligence and punishes greed.",  
-
+  "description": "Caishen, guardian of wealth, rules over the flow of riches, success, and opportunity. Able to grant fortune or strip possessions, Caishen rewards diligence and punishes greed.",
   "ratings": {
     "overall": "S",
     "grimSurge": "S",
@@ -18,7 +14,6 @@
     "torrentRift": "B",
     "pvp": "A"
   },
-
   "stats": {
     "hp": 253729,
     "atk": 25529,
@@ -32,12 +27,10 @@
     "critDmgReduction": 0,
     "energy": 0
   },
-
   "skills": [
     {
       "id": "skill_1",
       "name": "Soothing Rain",
-      "icon": "/icons/skills/soothing_rain.webp",
       "description": "Restores HP to allies over time.",
       "upgrades": {
         "level2": "Healing increased by 20%.",
@@ -48,7 +41,6 @@
     {
       "id": "skill_2",
       "name": "Life Barrier",
-      "icon": "/icons/skills/life_barrier.webp",
       "description": "Grants a shield when allies fall low.",
       "upgrades": {
         "level2": "Shield strength increased.",
@@ -59,7 +51,6 @@
     {
       "id": "skill_3",
       "name": "Life Barrier",
-      "icon": "/icons/skills/life_barrier.webp",
       "description": "Grants a shield when allies fall low.",
       "upgrades": {
         "level2": "Shield strength increased.",
@@ -70,7 +61,6 @@
     {
       "id": "skill_4",
       "name": "Life Barrier",
-      "icon": "/icons/skills/life_barrier.webp",
       "description": "Grants a shield when allies fall low.",
       "upgrades": {
         "level2": "Shield strength increased.",
@@ -79,15 +69,13 @@
       }
     }
   ],
-
   "relic": {
     "name": "Hero’s Relic",
-    "icon": "/icons/relics/heros_relic.webp",
     "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
     "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
+      "level2": "Shield strength increased.",
+      "level3": "Cooldown reduced.",
+      "level4": "Triggers automatically once per battle."
+    }
   }
 }

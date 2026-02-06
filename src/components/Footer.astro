@@ -1,0 +1,188 @@
+---
+// src/components/Footer.astro
+interface Feature {
+  icon: string;
+  label: string;
+    url: string;  // 👈 NEU
+}
+
+const features: Feature[] = [
+  { 
+    icon: "/icons/footer/feature1.webp", 
+    label: "GPH Discord",
+    url: "https://discord.com/invite/TJTr4wJEAm"  // 👈 Dein Discord-Link},
+    },
+  { 
+    icon: "/icons/footer/feature2.webp", 
+    label: "GPH Youtube",
+    url: "https://www.youtube.com/@gameplayhorizon"  // 👈 Dein YouTube-Link    
+    // 
+    }
+  /* { icon: "/icons/footer/feature3.webp", label: "Feature Three" },*/
+];
+---
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <!-- CLAIM -->
+    <div class="footer-titles">
+        <h2 class="footer-claim">Motto Immortal<br> Ultimate Hero Database</h2>
+        <span>made by Frieren (discord: ds_frieren)<!--, supported by @gameplayhorizon -->
+</span>
+    </div>
+    <!-- FEATURES 
+    <div class="footer-features">
+      {features.map(feature => (
+        <a href={feature.url} target="_blank" rel="noopener noreferrer" class="feature-item">
+          <div class="feature-icon">
+            <img src={feature.icon} alt={feature.label} />
+          </div>
+          <span class="feature-label">{feature.label}</span>
+        </a>
+      ))}
+    </div>-->
+
+    <!-- LINKS -->
+    <div class="footer-links">
+        <a href="/privacy" class="footer-link">Privacy Policy</a>
+    </div>
+
+    <!-- COPYRIGHT -->
+    <p class="footer-copyright">
+      © {new Date().getFullYear()} Hero Database. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+<style>
+
+  /* ===============================
+     FOOTER
+     =============================== */
+     .footer-titles {
+    margin: 0 0 48px;
+
+     }
+  .site-footer {
+    margin-top: 120px;
+    padding: 64px 24px 32px;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 10, 16, 0.5),
+      rgba(7, 6, 12, 0.95)
+    );
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* CLAIM */
+  .footer-claim {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* FEATURES */
+  .footer-features {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* ICON CIRCLE */
+  .feature-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .feature-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(250, 204, 21, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(250, 204, 21, 0.2);
+  }
+
+  .feature-icon img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  /* LABEL */
+  .feature-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(230, 230, 235, 0.85);
+  }
+
+  /* LINKS */
+  .footer-links {
+    margin-bottom: 24px;
+  }
+
+  .footer-link {
+    color: rgba(230, 230, 235, 0.7);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+  }
+
+  .footer-link:hover {
+    color: #facc15;
+  }
+
+  /* COPYRIGHT */
+  .footer-copyright {
+    font-size: 0.85rem;
+    color: rgba(230, 230, 235, 0.5);
+    margin: 0;
+  }
+
+  /* ===============================
+     RESPONSIVE
+     =============================== */
+  @media (max-width: 768px) {
+    .footer-claim {
+      font-size: 1.5rem;
+      margin-bottom: 32px;
+    }
+
+    .footer-features {
+      gap: 32px;
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+    }
+
+    .feature-icon img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

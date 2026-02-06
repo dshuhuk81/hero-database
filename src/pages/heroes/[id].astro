@@ -1,6 +1,7 @@
 ---
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
-
+import SkillCard from "../../components/hero/SkillCard.astro";
+import Footer from "../../components/Footer.astro";  // 👈 NEU
 
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -15,7 +16,6 @@ const hero = getHeroById(id);
 if (!hero) {
   throw new Error(`Hero with id "${id}" not found`);
 }
-
 
 const PERCENT_STATS = new Set([
   "dodgeRate",
@@ -55,8 +55,8 @@ const STAT_LABELS = {
         <h1 class="hero-title">{hero.name}</h1>
 
         <nav class="hero-tabs">
-          <button class="tab active">Attributes</button>
-          <button class="tab">Skills</button>
+          <button class="tab active" data-tab="attributes">Attributes</button>
+          <button class="tab" data-tab="skills">Skills</button>
         </nav>
       </div>
     </div>
@@ -64,78 +64,78 @@ const STAT_LABELS = {
 
   <!-- CONTENT -->
   <main class="hero-detail-content">
-    <section class="hero-overview">
-      <!-- LEFT -->
-      <div>
-        <!-- LARGE HERO NAME -->
-        <h2 class="hero-name-large">{hero.name}</h2>
-        
-        <!-- Description  -->
-        {hero.description && (
-          <p class="hero-description">
-            {hero.description}
-          </p>
-        )}
-        <!-- FACTION -->
-        <div class="hero-faction">
-          <img
-            src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
-            alt={hero.faction}
-            class="faction-icon"
-          />
-          <span class="faction-label">{hero.faction}</span>
+    <!-- TAB: ATTRIBUTES -->
+    <div class="tab-content active" data-content="attributes">
+      <section class="hero-overview">
+        <!-- LEFT -->
+        <div>
+          <!-- LARGE HERO NAME -->
+          <h2 class="hero-name-large">{hero.name}</h2>
+
+          <!-- Description  -->
+          {hero.description && (
+            <p class="hero-description">
+              {hero.description}
+            </p>
+          )}
+          
+          <!-- FACTION -->
+          <div class="hero-faction">
+            <img
+              src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
+              alt={hero.faction}
+              class="faction-icon"
+            />
+            <span class="faction-label">{hero.faction}</span>
+          </div>
+
+          <!-- IDENTITY CARDS -->
+          <div class="hero-identity-cards">
+            <div class="identity-card">
+              <h4>Class</h4>
+              <div class="identity-content">
+                <img
+                  class="identity-icons"
+                  src={`/icons/classes/${hero.class.toLowerCase()}.webp`}
+                  alt={hero.class}
+                />
+                <span>{hero.class}</span>
+              </div>
+            </div>
+
+            <div class="identity-card">
+              <h4>Role</h4>
+              <div class="identity-content">
+                <img
+                  class="identity-icons"
+                  src={`/icons/roles/${hero.role.toLowerCase()}.webp`}
+                  alt={hero.role}
+                />
+                <span>{hero.role}</span>
+              </div>
+            </div>
+
+            <div class="identity-card">
+              <h4>Rarity</h4>
+              <div class="identity-content rarity-content">
+                <svg class="rarity-star" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"
+                  ></path>
+                </svg>
+                <span>{hero.rarity}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- IDENTITY CARDS -->
-        <div class="hero-identity-cards">
-          <div class="identity-card">
-            <h4>Class</h4>
-            <div class="identity-content">
-              <img
-                class="identity-icons"
-                src={`/icons/classes/${hero.class.toLowerCase()}.webp`}
-                alt={hero.class}
-              />
-              <span>{hero.class}</span>
-            </div>
-          </div>
-
-          <div class="identity-card">
-            <h4>Role</h4>
-            <div class="identity-content">
-              <img
-                class="identity-icons"
-                src={`/icons/roles/${hero.role.toLowerCase()}.webp`}
-                alt={hero.role}
-              />
-              <span>{hero.role}</span>
-            </div>
-          </div>
-
-          <div class="identity-card">
-            <h4>Rarity</h4>
-
-            <div class="identity-content rarity-content">
-              <!-- Stern -->
-              <svg class="rarity-star" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"
-                ></path>
-              </svg>
-
-              <span>{hero.rarity}</span>
-            </div>
-          </div>
+        <!-- RIGHT -->
+        <div class="hero-visual" style={`background-image: url(${hero.image});`}>
         </div>
-      </div>
+      </section>
 
-      <!-- RIGHT -->
-      <div class="hero-visual" style={`background-image: url(${hero.image});`}>
-      </div>
-    </section>
-
-    <!-- STATS -->
-    <section class="hero-stats">
+      <!-- STATS -->
+      <section class="hero-stats">
         <h2>Base-Stats (LvL1)</h2>
 
         <div class="stats-grid">
@@ -157,7 +157,7 @@ const STAT_LABELS = {
                   )}
                 </span>
 
-                <!-- 🔥 STAT BAR -->
+                <!-- STAT BAR -->
                 <div class="stat-bar">
                   <div
                     class={`stat-bar-fill ${
@@ -182,151 +182,190 @@ const STAT_LABELS = {
             </div>
           ))}
         </div>
-
       </section>
+    </div>
 
+    <!-- TAB: SKILLS -->
+      <div class="tab-content" data-content="skills">
+        <section class="hero-skills">
+          <h2>Skills</h2>
+          
+          <!-- Skills -->
+          <div class="skills-container">
+            {hero.skills && hero.skills.map((skill, index) => (
+              <SkillCard
+                name={skill.name}
+                icon={`/skills/${hero.id}_skill_${index + 1}.webp`}  // 👈 hero-spezifisch
+                description={skill.description}
+                upgrades={skill.upgrades}
+                type={`Skill ${index + 1}`}
+                stars={3}
+                showGrid={true}
+              />
+            ))}
+
+            <!-- Relic -->
+            {hero.relic && (
+              <SkillCard
+                name={hero.relic.name}
+                icon={`/skills/${hero.id}_relic.webp`}  // 👈 hero-spezifisch
+                description={hero.relic.description}
+                upgrades={hero.relic.upgrades}
+                type="Relic"
+                stars={0}
+                showGrid={false}
+              />
+            )}
+          </div>
+        </section>
+      </div>
+      <!-- end of -->
   </main>
+    <Footer />  <!-- 👈 NEU -->
+
 </div>
 
 <style>
-/* ===============================
-   STAT BARS
-   =============================== */
-
-.stat-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.stat-right {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* Hintergrund */
-.stat-bar {
-  height: 6px;
-  width: 100%;
-  background: rgba(255,255,255,0.08);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-/* Füllung */
-.stat-bar-fill {
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    #facc15,
-    #f59e0b
-  );
-  box-shadow: 0 0 10px rgba(250,204,21,0.6);
-  transition: width 0.4s ease;
-}
-/* Rank 1 – Gold */
-.stat-bar-fill.rank-1 {
-  background: linear-gradient(90deg, #facc15, #fde68a);
-  box-shadow: 0 0 10px rgba(250,204,21,0.8);
-}
-
-/* Rank 2 – Silber */
-.stat-bar-fill.rank-2 {
-  background: linear-gradient(90deg, #e5e7eb, #f9fafb);
-}
-
-/* Rank 3 – Bronze */
-.stat-bar-fill.rank-3 {
-  background: linear-gradient(90deg, #f59e0b, #fcd34d);
-}
-
-/* Top 10 – Blau/Violett */
-.stat-bar-fill.rank-top {
-  background: linear-gradient(90deg, #818cf8, #a5b4fc);
-}
-
-/* ===============================
-   HERO DESCRIPTION
-   =============================== */
-.hero-description {
-  max-width: 560px;
-
-  margin: 0px 0 24px;
-  padding: 0;
-
-  font-size: 0.95rem;
-  line-height: 1.55;
-
-  color: rgba(230, 230, 235, 0.75);
-
-  /* leichte visuelle Trennung */
-  text-wrap: pretty;
-}
   /* ===============================
-   STAT HIGHLIGHTING
-   =============================== */
-.stat-max {
-  margin-left: 6px;
-  font-size: 0.7rem;
-  opacity: 0.6;
+     TAB CONTENT
+     =============================== */
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* ===============================
+     STAT BARS
+     =============================== */
+
+  .stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stat-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Hintergrund */
+  .stat-bar {
+    height: 6px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  /* Füllung */
+  .stat-bar-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #facc15, #f59e0b);
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+    transition: width 0.4s ease;
+  }
   
-}
+  /* Rank 1 – Gold */
+  .stat-bar-fill.rank-1 {
+    background: linear-gradient(90deg, #facc15, #fde68a);
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+  }
 
-.stat-value {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 6px;
-}
+  /* Rank 2 – Silber */
+  .stat-bar-fill.rank-2 {
+    background: linear-gradient(90deg, #e5e7eb, #f9fafb);
+  }
 
-.stat-current {
-  white-space: nowrap;
-}
+  /* Rank 3 – Bronze */
+  .stat-bar-fill.rank-3 {
+    background: linear-gradient(90deg, #f59e0b, #fcd34d);
+  }
 
-.stat-rank {
-  margin-left: auto; /* 👈 MAGIE */
-  font-size: 0.7rem;
-  opacity: 0.75;
-}
+  /* Top 10 – Blau/Violett */
+  .stat-bar-fill.rank-top {
+    background: linear-gradient(90deg, #818cf8, #a5b4fc);
+  }
 
-/* Top 1 */
-.stat-rank.rank-1 {
-  color: #facc15;
-  text-shadow: 0 0 6px rgba(250,204,21,0.8);
-  font-weight: 700;
-}
+  /* ===============================
+     HERO DESCRIPTION
+     =============================== */
+  .hero-description {
+    max-width: 560px;
+    margin: 0px 0 24px;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(230, 230, 235, 0.75);
+    text-wrap: pretty;
+  }
+  
+  /* ===============================
+     STAT HIGHLIGHTING
+     =============================== */
+  .stat-max {
+    margin-left: 6px;
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
 
-/* Top 2 */
-.stat-rank.rank-2 {
-  color: #e5e7eb;
-  text-shadow: 0 0 6px rgba(229,231,235,0.7);
-}
+  .stat-value {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 6px;
+  }
 
-/* Top 3 */
-.stat-rank.rank-3 {
-  color: #f59e0b;
-  text-shadow: 0 0 6px rgba(245,158,11,0.7);
-}
+  .stat-current {
+    white-space: nowrap;
+  }
 
-/* Optional: Top 10 */
-.stat-rank.rank-top {
-  color: #a5b4fc;
-}
+  .stat-rank {
+    margin-left: auto;
+    font-size: 0.7rem;
+    opacity: 0.75;
+  }
 
+  /* Top 1 */
+  .stat-rank.rank-1 {
+    color: #facc15;
+    text-shadow: 0 0 6px rgba(250, 204, 21, 0.8);
+    font-weight: 700;
+  }
+
+  /* Top 2 */
+  .stat-rank.rank-2 {
+    color: #e5e7eb;
+    text-shadow: 0 0 6px rgba(229, 231, 235, 0.7);
+  }
+
+  /* Top 3 */
+  .stat-rank.rank-3 {
+    color: #f59e0b;
+    text-shadow: 0 0 6px rgba(245, 158, 11, 0.7);
+  }
+
+  /* Optional: Top 10 */
+  .stat-rank.rank-top {
+    color: #a5b4fc;
+  }
 
   .identity-icons {
     height: 24px;
     width: 24px;
   }
+  
   html,
   body {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    background:
-      radial-gradient(
+    background: radial-gradient(
         ellipse at 30% -10%,
         rgba(120, 90, 200, 0.15),
         transparent 60%
@@ -338,8 +377,7 @@ const STAT_LABELS = {
       ),
       linear-gradient(to bottom, #0d0b10, #07060c);
     color: #e6e6eb;
-    font-family:
-      Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    font-family: Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 
@@ -386,13 +424,13 @@ const STAT_LABELS = {
   .header-with-back {
     position: relative;
   }
+  
   .identity-card h4 {
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
     color: #ffffff;
     columns: auto;
-    font-family:
-      "Source Sans Pro", ui-sans-serif, system-ui, sans-serif,
+    font-family: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif,
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
       "Noto Color Emoji";
     font-size: 14px;
@@ -411,8 +449,7 @@ const STAT_LABELS = {
     box-sizing: border-box;
     color: #ffffff;
     columns: auto;
-    font-family:
-      Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    font-family: Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 14px;
     line-height: 20px;
@@ -456,6 +493,10 @@ const STAT_LABELS = {
     background: none;
     border: none;
     color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
   }
 
   .tab.active {
@@ -483,7 +524,7 @@ const STAT_LABELS = {
     line-height: 1.05;
     font-weight: 600;
     padding: 48px 0 24px 0;
-    margin:0;
+    margin: 0;
   }
 
   /* FACTION */
@@ -511,19 +552,13 @@ const STAT_LABELS = {
   }
 
   /* IMAGE HERO VISUAL */
-.hero-visual {
-  height: 420px;                 /* 👈 HIER steuerst du die Höhe */
-  border-radius: 18px;
-
-  background-size: cover;        /* ❗ schneidet zu, skaliert NICHT */
-  background-position: center 30%; /* oder center / 50% 30% */
-  background-repeat: no-repeat;
-
-  overflow: hidden;
-  /*
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.65),
-    inset 0 0 0 1px rgba(255,255,255,0.06);*/
+  .hero-visual {
+    height: 420px;
+    border-radius: 18px;
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    overflow: hidden;
   }
 
   /* Faction Label */
@@ -532,12 +567,12 @@ const STAT_LABELS = {
     box-sizing: border-box;
     color: #ffffff;
     columns: auto;
-    font-family:
-      Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    font-family: Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 24px;
     line-height: 32px;
   }
+  
   .faction-icon {
     width: 48px;
     height: 48px;
@@ -564,5 +599,57 @@ const STAT_LABELS = {
     justify-content: center;
     padding: 8px;
   }
+
+  /* SKILLS SECTION */
+  /* SKILLS SECTION */
+  .hero-skills {
+    margin-top: 24px;
+  }
+
+  .hero-skills h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  /* 🔥 NEU: Skills Grid (Flex mit Wrap) */
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  /* Optional: Responsive Breakpoints */
+  @media (max-width: 1200px) {
+    .skills-container {
+      gap: 0.75rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .skills-container {
+      flex-direction: column;
+    }
+  }
 </style>
 
+<script>
+  // Tab Switching
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-tab');
+
+      // Remove active from all tabs
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      // Add active to clicked tab
+      tab.classList.add('active');
+      const activeContent = document.querySelector(`[data-content="${target}"]`);
+      if (activeContent) {
+        activeContent.classList.add('active');
+      }
+    });
+  });
+</script>
