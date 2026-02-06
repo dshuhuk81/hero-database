@@ -1,7 +1,9 @@
 ---
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
 import SkillCard from "../../components/hero/SkillCard.astro";
-import Footer from "../../components/Footer.astro";  // 👈 NEU
+import Footer from "../../components/Footer.astro";  
+import RatingCard from "../../components/hero/RatingCard.astro";  // 👈 NEU
+
 
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -183,6 +185,10 @@ const STAT_LABELS = {
           ))}
         </div>
       </section>
+       <!-- 🔥 NEU: RATINGS -->
+        {hero.ratings && (
+          <RatingCard ratings={hero.ratings} />
+        )}
     </div>
 
     <!-- TAB: SKILLS -->
