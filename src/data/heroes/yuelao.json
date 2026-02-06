@@ -30,52 +30,52 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Fated Affection",
+      "description": "Yuelao heals several allies in sequence, each heal restoring HP equal to 140% of ATK, repeating 6 times. If a linked unit is healed, the other linked unit also receives the healing.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Each heal restores HP equal to 160% of ATK.",
+        "level3": "Allies healed gain 20% increased CRIT Rate for 5s. This effect cannot stack on the same target.",
+        "level4": "It now heals 8 times."
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Red Thread of Fate",
+      "description": "Yuelao links the ally with the highest ATK and the ally with the highest HP with a red thread, making them share 10% of their ATK, HP, Armor, and M-RES. This skill refunds its CD if no valid targets exist.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases the shared attributes to 12.5%.",
+        "level3": "If one linked ally falls, they transfer 50% of their remaining Energy to the other.",
+        "level4": "Increases the shared attributes to 15%."
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Bond of Fated Pair",
+      "description": "Yuelao increases the ATK of the ally with the highest ATK by 15% for 8s and restores 150 Energy to them. If that ally is linked, Yuelao will also increase the ATK of the other linked ally and restore their Energy.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases ATK bonus to 20%.",
+        "level3": "Energy Regen increases to 180.",
+        "level4": "Increases ATK bonus to 25%. (Unlocks at Lv.261)"
       }
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Lanterns of Destiny",
+      "description": "Yuelao restores HP equal to 200% of ATK to the most vulnerable ally. If that ally is linked, Yuelao will also restore HP to the other linked ally.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Restores HP equal to 220% ATK.",
+        "level3": "Increases the allies' CRIT RES by 30% for 6s.",
+        "level4": "Restores HP equal to 250% ATK. (Unlocks at Lv.281)"
       }
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Fate Bound",
+    "description": "The linked unit with the highest max HP will take 20% of the DMG dealt to the linked unit with the highest ATK. The linked unit with the highest ATK restores HP equal to 20% of the DMG dealt to the unit with the highest HP when dealing DMG.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "When both linked units attack the same target, they deal an additional 15% DMG.",
+      "level3": "The ally with the highest HP takes 30% of the DMG dealt to the ally with the highest ATK. (Unlock at Relic Lv.20)",
+      "level4": "The ally with the highest ATK restores HP equal to 30% of the DMG they deal to the ally with the highest HP. (Unlock at Relic Lv.30)"
     }
   }
 }
