@@ -555,6 +555,113 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           min-width: 40px;
         }
       }
+      
+        /* ===============================
+        RARITY BORDERS & GLOW
+        =============================== */
+
+        /* Hero Avatar mit Rarity-Border */
+        .hero-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        }
+
+        /* Common */
+        [data-rarity="common"] .hero-avatar {
+        border-color: rgba(74, 222, 128, 0.55);
+        }
+
+        /* Epic */
+        [data-rarity="epic"] .hero-avatar {
+        border-color: rgba(168, 85, 247, 0.6);
+        }
+
+        /* Legendary */
+        [data-rarity="legendary"] .hero-avatar {
+        border-color: rgba(250, 204, 21, 0.75);
+        }
+
+        /* GLOW EFFECT on Hover*/
+        .hero-row {
+        position: relative;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.2s ease;
+        } 
+        /*      
+        .hero-row::before {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 8px;
+        opacity: 0;
+        filter: blur(12px);
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+        } */
+
+        /* Common Glow */
+        [data-rarity="common"].hero-row::before {
+        background: radial-gradient(
+        circle at 50% 50%,
+        rgba(74, 222, 128, 0.4),
+        transparent 60%
+        );
+        }
+
+        /* Epic Glow */
+        [data-rarity="epic"].hero-row::before {
+        background: radial-gradient(
+        circle at 50% 50%,
+        rgba(168, 85, 247, 0.5),
+        transparent 60%
+        );
+        }
+
+        /* Legendary Glow */
+        [data-rarity="legendary"].hero-row::before {
+        background: radial-gradient(
+        circle at 50% 50%,
+        rgba(250, 204, 21, 0.6),
+        transparent 60%
+        );
+        }
+
+        /* Show Glow on Hover */
+        .hero-row:hover::before {
+        opacity: 1;
+        }
+
+        /* Legendary: Permanent subtle Glow */
+        [data-rarity="legendary"].hero-row::before {
+        opacity: 0.3;
+        }
+
+        [data-rarity="legendary"].hero-row:hover::before {
+        opacity: 0.8;
+        }
+
+        /* Avatar Glow on Hover */
+        .hero-row:hover .hero-avatar {
+        box-shadow: 0 0 16px currentColor;
+        transform: scale(1.05);
+        }
+
+        [data-rarity="common"]:hover .hero-avatar {
+        box-shadow: 0 0 16px rgba(74, 222, 128, 0.6);
+        }
+
+        [data-rarity="epic"]:hover .hero-avatar {
+        box-shadow: 0 0 16px rgba(168, 85, 247, 0.6);
+        }
+
+        [data-rarity="legendary"]:hover .hero-avatar {
+        box-shadow: 0 0 20px rgba(250, 204, 21, 0.8);
+        }
     </style>
 
     <script>
