@@ -1,0 +1,273 @@
+---
+// src/components/SkillCard.astro
+interface Props {
+  name: string;
+  icon: string;
+  description: string;
+  upgrades: {
+    level2?: string;
+    level3?: string;
+    level4?: string;
+    level5?: string;
+  };
+  type?: string; // z.B. "Basic ATK", "Ultimate", "Passive", "Relic"
+  stars?: number; // 0-5
+  showGrid?: boolean; // Grid anzeigen?
+}
+
+const { 
+  name, 
+  icon, 
+  description, 
+  upgrades, 
+  type = "Skill", 
+  stars = 0,
+  showGrid = false 
+} = Astro.props;
+---
+
+<div class="skill-card">
+  <!-- HEADER -->
+  <div class="skill-header">
+    <div class="skill-left">
+      <!-- ICON -->
+      <img src={icon} alt={name} class="skill-icon" />
+      
+      <!-- INFO -->
+      <div class="skill-info">
+        <h3 class="skill-name">{name}</h3>
+        
+        {type && <span class="skill-type">{type}</span>}
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <p class="skill-description">{description}</p>
+
+  <!-- UPGRADES -->
+  {(upgrades.level2 || upgrades.level3 || upgrades.level4 || upgrades.level5) && (
+    <div class="skill-upgrades">
+      {upgrades.level2 && (
+        <div class="upgrade-row">
+          <span class="upgrade-label">LvL. 2</span>
+          <span class="upgrade-text">{upgrades.level2}</span>
+        </div>
+      )}
+      {upgrades.level3 && (
+        <div class="upgrade-row">
+          <span class="upgrade-label">LvL. 3</span>
+          <span class="upgrade-text">{upgrades.level3}</span>
+        </div>
+      )}
+      {upgrades.level4 && (
+        <div class="upgrade-row">
+          <span class="upgrade-label">LvL. 4</span>
+          <span class="upgrade-text">{upgrades.level4}</span>
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
+<style>
+  /* ===============================
+     SKILL CARD
+     =============================== */
+.skill-card {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 0; /* 👈 entfernen, da Flex-Gap das übernimmt */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    
+    /* 🔥 FIXE BREITE */
+    width: 100%;
+    max-width: 320px; /* 👈 Alle Cards gleich breit */
+    flex-shrink: 0;   /* 👈 Verhindert Schrumpfen */
+  }
+
+
+  /* ===============================
+     HEADER
+     =============================== */
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .skill-left {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  /* ICON */
+  .skill-icon {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #d4af37;
+    border-radius: 6px;
+    object-fit: cover;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+  }
+
+  /* INFO */
+  .skill-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .skill-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .skill-type {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ddd;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* STARS */
+  .skill-stars {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  .star-icon {
+    width: 18px;
+    height: 18px;
+    fill: #d4af37;
+    filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.6));
+  }
+
+  /* ===============================
+     GRID (rechts oben)
+     =============================== */
+  .skill-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .grid-row {
+    display: flex;
+    gap: 3px;
+  }
+
+  .grid-row span {
+    width: 16px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+  }
+
+  .grid-row span.active {
+    background: #4a9eff;
+    box-shadow: 0 0 6px rgba(74, 158, 255, 0.6);
+    border-color: #4a9eff;
+  }
+
+  /* ===============================
+     DESCRIPTION
+     =============================== */
+  .skill-description {
+    color: rgba(230, 230, 235, 0.85);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.95rem;
+  }
+
+  /* ===============================
+     UPGRADES
+     =============================== */
+  .skill-upgrades {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .upgrade-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+  }
+
+  .upgrade-label {
+    background: #4caf50;
+    color: #fff;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    min-width: 75px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+  }
+
+  .upgrade-text {
+    color: #4caf50;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  /* ===============================
+     RESPONSIVE
+     =============================== */
+  @media (max-width: 768px) {
+    .skill-card {
+      max-width: 100%; /* Mobile: volle Breite */
+    }
+    .skill-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skill-icon {
+      width: 64px;
+      height: 64px;
+    }
+
+    .skill-name {
+      font-size: 1.25rem;
+    }
+
+    .upgrade-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .upgrade-label {
+      width: 100%;
+    }
+  }
+</style>

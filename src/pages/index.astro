@@ -1,12 +1,16 @@
 ---
 import HeroCard from "../components/HeroCard.astro";
 import { heroes } from "../data/heroes";
+import Footer from "../components/Footer.astro";  
+import Sidebar from "../components/Sidebar.astro";  // 👈 NEU
+
+
 /* 🔤 Alphabetisch nach Name sortieren */
 const sortedHeroes = [...heroes].sort((a, b) =>
   a.name.localeCompare(b.name, "en", { sensitivity: "base" })
 );
 ---
-
+<Sidebar />  <!-- 👈 NEU -->
 <!-- HERO HEADER -->
 <section class="hero-header"></section>
 
@@ -126,6 +130,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
   </div>
 </div>
 </div>
+<Footer />  <!-- 👈 NEU -->
 
 <style>
 /* RESET & BASE */
@@ -295,9 +300,9 @@ html, body {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 210px);
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); /* 👈 flexibel */
   gap: 20px;
-  justify-content: flex-start; /* 👈 wichtig */
+  justify-content: center; /* 👈 zentriert das Grid */
 }
 
 /* ================================

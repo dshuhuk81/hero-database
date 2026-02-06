@@ -1,0 +1,715 @@
+---
+// src/pages/tierlist.astro
+import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
+import { heroes } from "../data/heroes";
+
+// Alphabetisch sortiert als Default
+const sortedHeroes = [...heroes].sort((a, b) =>
+  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tier List - Hero Database</title>
+  </head>
+
+  <body>
+    <Sidebar />
+    
+    <div class="page-wrapper">
+      <!-- HERO HEADER -->
+      <section class="hero-header"></section>
+
+      <h1 class="title">Hero Tier List</h1>
+
+      <div class="content-wrapper">
+        <!-- FILTERS (wie index.astro) -->
+        <section class="filters">
+          <!-- CLASS FILTER -->
+          <div class="filter-group">
+            <span class="filter-label">Class</span>
+            <button class="chip class-chip" data-class="tank" title="Tank">
+              <img src="/icons/classes/tank.webp" alt="Tank" />
+            </button>
+            <button class="chip class-chip" data-class="warrior" title="Warrior">
+              <img src="/icons/classes/warrior.webp" alt="Warrior" />
+            </button>
+            <button class="chip class-chip" data-class="archer" title="Archer">
+              <img src="/icons/classes/archer.webp" alt="Archer" />
+            </button>
+            <button class="chip class-chip" data-class="mage" title="Mage">
+              <img src="/icons/classes/mage.webp" alt="Mage" />
+            </button>
+            <button class="chip class-chip" data-class="support" title="Support">
+              <img src="/icons/classes/support.webp" alt="Support" />
+            </button>
+            <button class="chip class-chip" data-class="assassin" title="Assassin">
+              <img src="/icons/classes/assassin.webp" alt="Assassin" />
+            </button>
+          </div>
+
+          <!-- ROLE FILTER -->
+          <div class="filter-group">
+            <span class="filter-label">Role</span>
+            <button class="chip role-chip" data-role="nimble" title="Nimble">
+              <img src="/icons/roles/nimble.webp" alt="Nimble" />
+            </button>
+            <button class="chip role-chip" data-role="arcane" title="Arcane">
+              <img src="/icons/roles/arcane.webp" alt="Arcane" />
+            </button>
+            <button class="chip role-chip" data-role="hefty" title="Hefty">
+              <img src="/icons/roles/hefty.webp" alt="Hefty" />
+            </button>
+          </div>
+
+          <!-- SEARCH -->
+          <div class="filter-group">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search hero..."
+              class="search-input"
+            />
+          </div>
+
+          <!-- RARITY FILTER -->
+          <div class="filter-group">
+            <span class="filter-label">Rarity</span>
+            <button class="chip rarity-chip common" data-rarity="common" title="Common">
+              <svg viewBox="0 0 24 24" class="rarity-star">
+                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+              </svg>
+            </button>
+            <button class="chip rarity-chip epic" data-rarity="epic" title="Epic">
+              <svg viewBox="0 0 24 24" class="rarity-star">
+                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+              </svg>
+            </button>
+            <button class="chip rarity-chip legendary" data-rarity="legendary" title="Legendary">
+              <svg viewBox="0 0 24 24" class="rarity-star">
+                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- RESET -->
+          <div class="filter-group">
+            <button id="resetFilters" class="reset-button">Reset Filters</button>
+          </div>
+        </section>
+
+        <!-- RESULTS COUNTER -->
+        <div class="resultcontent">
+          <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
+
+          <!-- TIER TABLE -->
+          <div class="table-container">
+            <table class="tier-table" id="tierTable">
+              <thead>
+                <tr>
+                  <th class="sortable" data-sort="name">
+                    Hero
+                    <span class="sort-indicator"></span>
+                  </th>
+                  <th class="sortable" data-sort="overall">
+                    Overall
+                    <span class="sort-indicator"></span>
+                  </th>
+                  <th class="sortable" data-sort="grimSurge">
+                    Grim Surge
+                    <span class="sort-indicator"></span>
+                  </th>
+                  <th class="sortable" data-sort="delusionsDen">
+                    Delusions Den
+                    <span class="sort-indicator"></span>
+                  </th>
+                  <th class="sortable" data-sort="torrentRift">
+                    Torrent Rift
+                    <span class="sort-indicator"></span>
+                  </th>
+                  <th class="sortable" data-sort="pvp">
+                    PvP
+                    <span class="sort-indicator"></span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tierTableBody">
+                {sortedHeroes.map(hero => (
+                  <tr 
+                    class="hero-row"
+                    data-name={hero.name.toLowerCase()}
+                    data-class={hero.class.toLowerCase()}
+                    data-role={hero.role.toLowerCase()}
+                    data-rarity={hero.rarity.toLowerCase()}
+                    data-overall={hero.ratings?.overall || 'N/A'}
+                    data-grimsurge={hero.ratings?.grimSurge || 'N/A'}
+                    data-delusionsden={hero.ratings?.delusionsDen || 'N/A'}
+                    data-torrentrift={hero.ratings?.torrentRift || 'N/A'}
+                    data-pvp={hero.ratings?.pvp || 'N/A'}
+                  >
+                    <td class="hero-cell">
+                      <a href={`/heroes/${hero.id}`} class="hero-link">
+                        <img src={hero.image} alt={hero.name} class="hero-avatar" />
+                        <span class="hero-name">{hero.name}</span>
+                      </a>
+                    </td>
+                    <td class="rating-cell">
+                      <span class={`rating-badge rating-${hero.ratings?.overall?.toLowerCase() || 'na'}`}>
+                        {hero.ratings?.overall || 'N/A'}
+                      </span>
+                    </td>
+                    <td class="rating-cell">
+                      <span class={`rating-badge rating-${hero.ratings?.grimSurge?.toLowerCase() || 'na'}`}>
+                        {hero.ratings?.grimSurge || 'N/A'}
+                      </span>
+                    </td>
+                    <td class="rating-cell">
+                      <span class={`rating-badge rating-${hero.ratings?.delusionsDen?.toLowerCase() || 'na'}`}>
+                        {hero.ratings?.delusionsDen || 'N/A'}
+                      </span>
+                    </td>
+                    <td class="rating-cell">
+                      <span class={`rating-badge rating-${hero.ratings?.torrentRift?.toLowerCase() || 'na'}`}>
+                        {hero.ratings?.torrentRift || 'N/A'}
+                      </span>
+                    </td>
+                    <td class="rating-cell">
+                      <span class={`rating-badge rating-${hero.ratings?.pvp?.toLowerCase() || 'na'}`}>
+                        {hero.ratings?.pvp || 'N/A'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+
+    <style>
+      /* BASE */
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: "Spectral", "Roboto", system-ui, sans-serif;
+        background:
+          radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+          radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+          linear-gradient(to bottom, #0d0b10, #07060c);
+        color: #e6e6eb;
+      }
+
+      /* PAGE WRAPPER */
+      .page-wrapper {
+        margin-left: 96px;
+      }
+
+      /* HERO HEADER */
+      .hero-header {
+        height: 360px;
+        background-image: url("/bg.jpg");
+        background-size: cover;
+        background-position: center 150%;
+        background-attachment: fixed;
+        position: relative;
+      }
+
+      .hero-header::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35)),
+          linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.45));
+      }
+
+      /* TITLE */
+      .title {
+        text-align: center;
+        margin: 32px 0;
+        font-weight: 600;
+        font-size: 2.5rem;
+      }
+
+      /* CONTENT WRAPPER */
+      .content-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+
+      /* FILTERS (kopiert von index.astro) */
+      .filters {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 24px;
+        background: linear-gradient(to bottom, rgba(35, 32, 48, 0.85), rgba(18, 16, 26, 0.95));
+        backdrop-filter: blur(14px);
+        padding: 18px 28px;
+        border-radius: 18px;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.08),
+          inset 0 -1px 0 rgba(0,0,0,0.6),
+          0 20px 50px rgba(0,0,0,0.75);
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .filter-label {
+        font-weight: 600;
+        opacity: 0.85;
+      }
+
+      .search-input {
+        min-width: 280px;
+        height: 32px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        color: #fff;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+
+      /* CHIPS */
+      .chip {
+        background: none;
+        border: none;
+        padding: 4px;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.2s, transform 0.15s;
+      }
+
+      .chip:hover {
+        opacity: 1;
+        transform: translateY(-1px);
+      }
+
+      .chip.active {
+        opacity: 1;
+      }
+
+      .class-chip img, .role-chip img {
+        width: 36px;
+        height: 36px;
+        filter: grayscale(100%) brightness(1.2);
+      }
+
+      .class-chip.active img, .role-chip.active img {
+        filter: brightness(1.4);
+      }
+
+      /* RARITY STARS */
+      .rarity-star {
+        width: 28px;
+        height: 28px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.2;
+        transition: fill 0.2s ease, filter 0.2s ease, transform 0.15s ease;
+      }
+
+      .rarity-chip.common { color: #4ade80; }
+      .rarity-chip.epic { color: #a855f7; }
+      .rarity-chip.legendary { color: #facc15; }
+
+      .rarity-chip.active .rarity-star {
+        fill: currentColor;
+        opacity: 1;
+        filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 12px rgba(255,255,255,0.15));
+      }
+
+      .rarity-chip:hover .rarity-star {
+        fill: currentColor;
+        opacity: 0.4;
+      }
+
+      /* RESET BUTTON */
+      .reset-button {
+        height: 36px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #e6e6eb;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+      }
+
+      .reset-button:hover {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-1px);
+      }
+
+      /* HERO COUNTER */
+      .hero-counter {
+        margin: 24px 0 16px;
+        text-align: center;
+        font-size: 1.125rem;
+      }
+
+      /* TABLE */
+      .table-container {
+        overflow-x: auto;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .tier-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      /* TABLE HEADER */
+      thead th {
+        background: linear-gradient(to bottom, rgba(35, 32, 48, 0.95), rgba(18, 16, 26, 0.98));
+        padding: 16px 12px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      thead th.sortable {
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s ease;
+      }
+
+      thead th.sortable:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* SORT INDICATOR */
+      .sort-indicator {
+        display: inline-block;
+        margin-left: 8px;
+        opacity: 0.3;
+      }
+
+      .sort-indicator::after {
+        content: "⇅";
+      }
+
+      th.sort-asc .sort-indicator::after {
+        content: "↑";
+        opacity: 1;
+        color: #facc15;
+      }
+
+      th.sort-desc .sort-indicator::after {
+        content: "↓";
+        opacity: 1;
+        color: #facc15;
+      }
+
+      /* TABLE ROWS */
+      .hero-row {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.2s ease;
+      }
+
+      .hero-row:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      /* HERO CELL */
+      .hero-cell {
+        padding: 12px;
+      }
+
+      .hero-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.2s ease;
+      }
+
+      .hero-link:hover {
+        color: #facc15;
+      }
+
+      .hero-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .hero-name {
+        font-weight: 500;
+        font-size: 1rem;
+      }
+
+      /* RATING CELL */
+      .rating-cell {
+        padding: 12px;
+        text-align: center;
+      }
+
+      .rating-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        min-width: 50px;
+        text-align: center;
+      }
+
+      /* RATING COLORS */
+      .rating-sss {
+        background: linear-gradient(135deg, #ff6b6b, #ff8787);
+        color: #fff;
+        box-shadow: 0 0 12px rgba(255, 107, 107, 0.4);
+      }
+
+      .rating-ss {
+        background: linear-gradient(135deg, #ffd93d, #ffe66d);
+        color: #1a1a1a;
+        box-shadow: 0 0 12px rgba(255, 217, 61, 0.4);
+      }
+
+      .rating-s {
+        background: linear-gradient(135deg, #a8e6cf, #c4f0d9);
+        color: #1a1a1a;
+        box-shadow: 0 0 12px rgba(168, 230, 207, 0.4);
+      }
+
+      .rating-a {
+        background: linear-gradient(135deg, #74b9ff, #a29bfe);
+        color: #fff;
+      }
+
+      .rating-b {
+        background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+        color: #2d3436;
+      }
+
+      .rating-c {
+        background: linear-gradient(135deg, #636e72, #7f8c8d);
+        color: #fff;
+      }
+
+      .rating-na {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(230, 230, 235, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .page-wrapper {
+          margin-left: 0;
+          margin-bottom: 64px;
+        }
+
+        .title {
+          font-size: 1.75rem;
+        }
+
+        .tier-table {
+          font-size: 0.875rem;
+        }
+
+        thead th {
+          padding: 10px 8px;
+          font-size: 0.85rem;
+        }
+
+        .hero-avatar {
+          width: 40px;
+          height: 40px;
+        }
+
+        .rating-badge {
+          padding: 4px 10px;
+          font-size: 0.85rem;
+          min-width: 40px;
+        }
+      }
+    </style>
+
+    <script>
+      // TIER RANKING ORDER
+      const TIER_ORDER: Record<string, number> = {
+        'SSS': 7,
+        'SS': 6,
+        'S': 5,
+        'A': 4,
+        'B': 3,
+        'C': 2,
+        'N/A': 1
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("searchInput") as HTMLInputElement;
+        const resetButton = document.getElementById("resetFilters") as HTMLButtonElement;
+        const heroCounter = document.getElementById("heroCounter") as HTMLParagraphElement;
+        const tableBody = document.getElementById("tierTableBody") as HTMLTableSectionElement;
+        
+        const roleChips = document.querySelectorAll(".role-chip");
+        const classChips = document.querySelectorAll(".class-chip");
+        const rarityChips = document.querySelectorAll(".rarity-chip");
+        const sortableHeaders = document.querySelectorAll(".sortable");
+        
+        let activeRoles = new Set<string>();
+        let activeClasses = new Set<string>();
+        let activeRarities = new Set<string>();
+        let currentSort = { column: 'name', direction: 'asc' };
+
+        // FILTER FUNCTION
+        function applyFilters() {
+          const query = (searchInput?.value || "").toLowerCase();
+          const rows = tableBody.querySelectorAll(".hero-row") as NodeListOf<HTMLTableRowElement>;
+          let visible = 0;
+
+          rows.forEach(row => {
+            const name = row.dataset.name || '';
+            const cls = row.dataset.class || '';
+            const role = row.dataset.role || '';
+            const rarity = row.dataset.rarity || '';
+
+            const matchesSearch = !query || name.includes(query) || cls.includes(query) || role.includes(query);
+            const matchesClass = activeClasses.size === 0 || activeClasses.has(cls);
+            const matchesRole = activeRoles.size === 0 || activeRoles.has(role);
+            const matchesRarity = activeRarities.size === 0 || activeRarities.has(rarity);
+
+            const show = matchesSearch && matchesClass && matchesRole && matchesRarity;
+
+            row.style.display = show ? "" : "none";
+            if (show) visible++;
+          });
+
+          if (heroCounter) {
+            heroCounter.textContent = visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
+          }
+        }
+
+        // SORT FUNCTION
+        function sortTable(column: string) {
+          const rows = Array.from(tableBody.querySelectorAll(".hero-row")) as HTMLTableRowElement[];
+          
+          // Toggle direction
+          if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+          } else {
+            currentSort.column = column;
+            currentSort.direction = 'asc';
+          }
+
+          // Sort rows
+          rows.sort((a, b) => {
+            let aVal: string | number = '';
+            let bVal: string | number = '';
+
+            if (column === 'name') {
+              aVal = a.dataset.name || '';
+              bVal = b.dataset.name || '';
+              return currentSort.direction === 'asc' 
+                ? aVal.localeCompare(bVal)
+                : bVal.localeCompare(aVal);
+            } else {
+              // Rating columns
+              const dataKey = column.toLowerCase().replace(/([A-Z])/g, (m) => m.toLowerCase());
+              aVal = TIER_ORDER[(a.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
+              bVal = TIER_ORDER[(b.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
+              
+              return currentSort.direction === 'asc' 
+                ? aVal - bVal
+                : bVal - aVal;
+            }
+          });
+
+          // Re-append rows
+          rows.forEach(row => tableBody.appendChild(row));
+
+          // Update header indicators
+          sortableHeaders.forEach(th => {
+            th.classList.remove('sort-asc', 'sort-desc');
+            if (th.getAttribute('data-sort') === column) {
+              th.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+            }
+          });
+
+          applyFilters();
+        }
+
+        // EVENT LISTENERS
+        searchInput?.addEventListener("input", applyFilters);
+
+        classChips.forEach(chip => {
+          chip.addEventListener("click", () => {
+            const c = (chip as HTMLElement).dataset.class || '';
+            chip.classList.toggle("active");
+            activeClasses.has(c) ? activeClasses.delete(c) : activeClasses.add(c);
+            applyFilters();
+          });
+        });
+
+        roleChips.forEach(chip => {
+          chip.addEventListener("click", () => {
+            const r = (chip as HTMLElement).dataset.role || '';
+            chip.classList.toggle("active");
+            activeRoles.has(r) ? activeRoles.delete(r) : activeRoles.add(r);
+            applyFilters();
+          });
+        });
+
+        rarityChips.forEach(chip => {
+          chip.addEventListener("click", () => {
+            const r = (chip as HTMLElement).dataset.rarity || '';
+            chip.classList.toggle("active");
+            activeRarities.has(r) ? activeRarities.delete(r) : activeRarities.add(r);
+            applyFilters();
+          });
+        });
+
+        sortableHeaders.forEach(th => {
+          th.addEventListener("click", () => {
+            const column = th.getAttribute('data-sort');
+            if (column) sortTable(column);
+          });
+        });
+
+        resetButton?.addEventListener("click", () => {
+          if (searchInput) searchInput.value = "";
+          activeClasses.clear();
+          activeRarities.clear();
+          activeRoles.clear();
+          document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
+          sortTable('name'); // Reset to default sort
+        });
+
+        applyFilters();
+      });
+    </script>
+  </body>
+</html>

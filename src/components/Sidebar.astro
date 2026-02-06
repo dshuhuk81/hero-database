@@ -1,0 +1,205 @@
+---
+// src/components/Sidebar.astro
+interface NavItem {
+  icon: string;
+  label: string;
+  href: string;
+}
+
+const navItems: NavItem[] = [
+  {
+    icon: "/icons/sidebar/home.webp",
+    label: "Heroes",
+    href: "/"
+  },
+  {
+    icon: "/icons/sidebar/tierlist.webp",
+    label: "Tier List",
+    href: "/tierlist"
+  }
+];
+
+// Aktuelle Seite ermitteln (für active State)
+const currentPath = Astro.url.pathname;
+---
+
+<aside class="sidebar">
+  <nav class="sidebar-nav">
+    {navItems.map(item => (
+      <a 
+        href={item.href} 
+        class={`nav-item ${currentPath === item.href ? 'active' : ''}`}
+        title={item.label}
+      >
+        <div class="nav-icon">
+          <img src={item.icon} alt={item.label} />
+        </div>
+        <span class="nav-label">{item.label}</span>
+      </a>
+    ))}
+  </nav>
+</aside>
+
+<style>
+  /* ===============================
+     SIDEBAR
+     =============================== */
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 96px;
+    background: linear-gradient(
+      to bottom,
+      rgba(18, 16, 26, 0.95),
+      rgba(10, 10, 16, 0.98)
+    );
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding-top: 24px;
+  }
+
+  /* NAVIGATION */
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 12px;
+  }
+
+  /* NAV ITEM */
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: rgba(230, 230, 235, 0.6);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(230, 230, 235, 0.9);
+    transform: translateX(2px);
+  }
+
+  /* ACTIVE STATE */
+  .nav-item.active {
+    background: rgba(250, 204, 21, 0.1);
+    color: #facc15;
+    border: 1px solid rgba(250, 204, 21, 0.3);
+  }
+
+  .nav-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: #facc15;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ICON */
+  .nav-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .nav-item:hover .nav-icon {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .nav-item.active .nav-icon {
+    background: rgba(250, 204, 21, 0.15);
+    border-color: rgba(250, 204, 21, 0.4);
+  }
+
+  .nav-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: brightness(0.8);
+    transition: filter 0.3s ease;
+  }
+
+  .nav-item:hover .nav-icon img,
+  .nav-item.active .nav-icon img {
+    filter: brightness(1.2);
+  }
+
+  /* LABEL */
+  .nav-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* ===============================
+     RESPONSIVE
+     =============================== */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: 64px;
+      top: auto;
+      bottom: 0;
+      padding: 0;
+      border-right: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-nav {
+      flex-direction: row;
+      justify-content: space-around;
+      padding: 8px 16px;
+      gap: 0;
+    }
+
+    .nav-item {
+      padding: 8px 16px;
+      gap: 4px;
+    }
+
+    .nav-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav-icon img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .nav-label {
+      font-size: 0.7rem;
+    }
+
+    .nav-item.active::before {
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+    }
+  }
+</style>

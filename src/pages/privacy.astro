@@ -1,0 +1,154 @@
+---
+// src/pages/privacy.astro
+import Footer from "../components/Footer.astro";  // 👈 NEU
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy - Hero Database</title>
+  </head>
+
+  <body>
+    <div class="privacy-page">
+      <header class="privacy-header">
+        <a href="/" class="back-link">← Back to Heroes</a>
+        <h1>Privacy Policy</h1>
+      </header>
+
+      <main class="privacy-content">
+        <section>
+          <h2>1. Introduction</h2>
+          <p>
+            Welcome to Hero Database. This privacy policy explains how we collect,
+            use, and protect your information when you use our service.
+          </p>
+        </section>
+
+        <section>
+          <h2>2. Information We Collect</h2>
+          <p>
+            We collect information that you provide directly to us, including when
+            you create an account, use our services, or contact us for support.
+          </p>
+        </section>
+
+        <section>
+          <h2>3. How We Use Your Information</h2>
+          <p>
+            We use the information we collect to provide, maintain, and improve
+            our services, and to communicate with you.
+          </p>
+        </section>
+
+        <section>
+          <h2>4. Data Security</h2>
+          <p>
+            We implement appropriate technical and organizational measures to
+            protect your personal information against unauthorized access or
+            disclosure.
+          </p>
+        </section>
+
+        <section>
+          <h2>5. Contact Us</h2>
+          <p>
+            If you have any questions about this privacy policy, please contact us
+            at privacy@herodatabase.com
+          </p>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        background: radial-gradient(
+            ellipse at 30% -10%,
+            rgba(120, 90, 200, 0.15),
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 80% 20%,
+            rgba(255, 215, 100, 0.08),
+            transparent 55%
+          ),
+          linear-gradient(to bottom, #0d0b10, #07060c);
+        color: #e6e6eb;
+        font-family: Spectral, ui-sans-serif, system-ui, sans-serif;
+      }
+
+      .privacy-page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .privacy-header {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 64px 24px 32px;
+        text-align: center;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 24px;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 0.2s ease;
+      }
+
+      .back-link:hover {
+        color: #facc15;
+      }
+
+      .privacy-header h1 {
+        font-size: 3rem;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .privacy-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 24px;
+        flex: 1;
+      }
+
+      .privacy-content section {
+        margin-bottom: 48px;
+      }
+
+      .privacy-content h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin: 0 0 16px;
+        color: #fff;
+      }
+
+      .privacy-content p {
+        line-height: 1.7;
+        color: rgba(230, 230, 235, 0.85);
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .privacy-header h1 {
+          font-size: 2rem;
+        }
+
+        .privacy-content h2 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </body>
+</html>
