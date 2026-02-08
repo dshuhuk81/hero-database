@@ -201,7 +201,7 @@ const STAT_LABELS = {
             {hero.skills && hero.skills.map((skill, index) => (
               <SkillCard
                 name={skill.name}
-                icon={`/skills/${hero.id}_skill_${index + 1}.webp`}  // 👈 hero-spezifisch
+                icon={skill.image || `/skills/${hero.id}_skill_${index + 1}.webp`}  // 👈 hero-spezifisch
                 description={skill.description}
                 upgrades={skill.upgrades}
                 type={`Skill ${index + 1}`}
@@ -214,7 +214,7 @@ const STAT_LABELS = {
             {hero.relic && (
               <SkillCard
                 name={hero.relic.name}
-                icon={`/skills/${hero.id}_relic.webp`}  // 👈 hero-spezifisch
+                icon={hero.relic.image || `/skills/${hero.id}_relic.webp`}  // 👈 hero-spezifisch
                 description={hero.relic.description}
                 upgrades={hero.relic.upgrades}
                 type="Relic"

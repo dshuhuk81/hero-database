@@ -28,54 +28,59 @@
     "energy": 0
   },
   "skills": [
-  {
-    "id": "skill_1",
-    "name": "Aegis of Halo",
-    "description": "At combat start, Athena creates an aura near herself, reducing DMG taken by allies within by 10%. On the first cast, the aura grows to medium size, granting allies inside a shield equal to 200% of Athena's ATK while permanently enhancing the aura: she gains 5% DMG RED & ATK for each ally within the aura. On the second cast, all allies within the aura gain an additional 40% ATK SPD.",
-    "upgrades": {
-      "level2": "On the first cast, she gains 7.5% DMG RED & ATK for each ally within the aura.",
-      "level3": "Increases the shield strength to 240%.",
-      "level4": "On the second cast, all allies within the aura gain 60% ATK SPD."
+    {
+      "id": "skill_1",
+      "name": "Aegis of Halo",
+      "description": "At combat start, Athena creates an aura near herself, reducing DMG taken by allies within by 10%. On the first cast, the aura grows to medium size, granting allies inside a shield equal to 200% of Athena's ATK while permanently enhancing the aura: she gains 5% DMG RED & ATK for each ally within the aura. On the second cast, all allies within the aura gain an additional 40% ATK SPD.",
+      "upgrades": {
+        "level2": "On the first cast, she gains 7.5% DMG RED & ATK for each ally within the aura.",
+        "level3": "Increases the shield strength to 240%.",
+        "level4": "On the second cast, all allies within the aura gain 60% ATK SPD."
+      },
+      "image": "/skills/athena_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Divine Strike",
+      "description": "Swings the Aegis to deal DMG equal to 250% of ATK to the target and stun them for 1.5s.",
+      "upgrades": {
+        "level2": "She also gains a shield equal to 150% of ATK.",
+        "level3": "Increases DMG dealt to 270%.",
+        "level4": "Shield Strength increases to 200% ATK."
+      },
+      "image": "/skills/athena_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Blessing of Halo",
+      "description": "Athena blesses the ally with the highest ATK, increasing their ATK SPD by 25%.",
+      "upgrades": {
+        "level2": "Increases ATK SPD to 35%.",
+        "level3": "Increases CRIT Rate by an additional 10%.",
+        "level4": "Increases ATK SPD to 45%. (Unlocks at Lv.261)"
+      },
+      "image": "/skills/athena_skill_3.webp"
+    },
+    {
+      "id": "skill_4",
+      "name": "Lay on Hands",
+      "description": "Showers the weakest ally and those nearby with sacred light, healing them for 200% ATK as HP and increasing their M-RES by 20% for 8s.",
+      "upgrades": {
+        "level2": "Restores HP equal to 220% ATK.",
+        "level3": "Increases the duration of M-RES boost by 12s.",
+        "level4": "Restores HP equal to 240% ATK. (Unlocks at Lv.281)"
+      },
+      "image": "/skills/athena_skill_4.webp"
     }
-  },
-  {
-    "id": "skill_2",
-    "name": "Divine Strike",
-    "description": "Swings the Aegis to deal DMG equal to 250% of ATK to the target and stun them for 1.5s.",
+  ],
+  "relic": {
+    "name": "Haloed Ablution",
+    "description": "Upon casting Aegis of Halo 3 times in a battle, deals 5% max HP (up to 200% ATK) as True DMG per sec to enemies within range for 8s.",
     "upgrades": {
-      "level2": "She also gains a shield equal to 150% of ATK.",
-      "level3": "Increases DMG dealt to 270%.",
-      "level4": "Shield Strength increases to 200% ATK."
-    }
-  },
-  {
-    "id": "skill_3",
-    "name": "Blessing of Halo",
-    "description": "Athena blesses the ally with the highest ATK, increasing their ATK SPD by 25%.",
-    "upgrades": {
-      "level2": "Increases ATK SPD to 35%.",
-      "level3": "Increases CRIT Rate by an additional 10%.",
-      "level4": "Increases ATK SPD to 45%. (Unlocks at Lv.261)"
-    }
-  },
-  {
-    "id": "skill_4",
-    "name": "Lay on Hands",
-    "description": "Showers the weakest ally and those nearby with sacred light, healing them for 200% ATK as HP and increasing their M-RES by 20% for 8s.",
-    "upgrades": {
-      "level2": "Restores HP equal to 220% ATK.",
-      "level3": "Increases the duration of M-RES boost by 12s.",
-      "level4": "Restores HP equal to 240% ATK. (Unlocks at Lv.281)"
-    }
+      "level2": "For each surviving ally (excluding minions) within the aura, Athena gains 25% Armor, 25% M-RES, and 10% Energy Regen. (Unlock at Relic Lv.10)",
+      "level3": "Athena gains the enhanced first-cast effect of Aegis of Halo at combat start. (Unlock at Relic Lv.20)",
+      "level4": "Athena gains 50% DMG RED when there are at least 3 allies within her aura. (Unlock at Relic Lv.30)"
+    },
+    "image": "/skills/athena_relic.webp"
   }
-],
-"relic": {
-  "name": "Haloed Ablution",
-  "description": "Upon casting Aegis of Halo 3 times in a battle, deals 5% max HP (up to 200% ATK) as True DMG per sec to enemies within range for 8s.",
-  "upgrades": {
-    "level2": "For each surviving ally (excluding minions) within the aura, Athena gains 25% Armor, 25% M-RES, and 10% Energy Regen. (Unlock at Relic Lv.10)",
-    "level3": "Athena gains the enhanced first-cast effect of Aegis of Halo at combat start. (Unlock at Relic Lv.20)",
-    "level4": "Athena gains 50% DMG RED when there are at least 3 allies within her aura. (Unlock at Relic Lv.30)"
-  }
-}
 }
