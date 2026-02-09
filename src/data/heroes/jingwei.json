@@ -28,56 +28,56 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Howling Hurricane",
+      "description": "Jingwei enters Hurricane form, firing a whirlwind at the farthest enemy every 1.5s, dealing DMG equal to 150% of ATK. Energy is not immediately drained on activation; each whirlwind costs 260 Energy.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Increases DMG dealt by each whirlwind to 175% of ATK.",
+        "level3": "Increases DMG dealt by each whirlwind to 200% of ATK.",
+        "level4": "Increases DMG dealt to enemies with less than 50% HP by 20%."
       },
       "image": "/skills/jingwei_skill_1.webp"
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Withering Wings",
+      "description": "Jingwei leaps and strikes the farthest enemy, dealing DMG equal to 200% of ATK and causing that enemy to take 20% increased DMG from her for 5s.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 220% of ATK.",
+        "level3": "Increases DMG taken by hit enemies by 30%.",
+        "level4": "Increases DMG dealt to 250% of ATK."
       },
       "image": "/skills/jingwei_skill_2.webp"
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Grand Nosedive",
+      "description": "For every 3 Ultimates cast by other allies, Jingwei’s ATK is increased by 10%, stacking up to 3 times.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Each stack increases ATK by 12.5%.",
+        "level3": "Each stack increases ATK by 15%.",
+        "level4": "At maximum stacks, increases CRIT Rate to 40%."
       },
       "image": "/skills/jingwei_skill_3.webp"
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Keen Senses",
+      "description": "When Jingwei deals DMG, it is amplified based on the distance between her and the target, up to a maximum of 20% extra DMG for distances over 11 meters.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Deals up to 24% bonus DMG.",
+        "level3": "Deals up to 28% bonus DMG.",
+        "level4": "Reduces the maximum trigger distance to 9 meters."
       },
       "image": "/skills/jingwei_skill_4.webp"
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Final Feather",
+    "description": "Howling Hurricane creates an extra whirlwind with a 60% DMG bonus.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "Jingwei gains Super Armor during Howling Hurricane.",
+      "level3": "Howling Hurricane creates an extra whirlwind with a 65% DMG bonus.",
+      "level4": "Howling Hurricane creates an extra whirlwind with an 80% DMG bonus."
     },
     "image": "/skills/jingwei_relic.webp"
   }

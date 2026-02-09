@@ -19,12 +19,11 @@ const navItems: NavItem[] = [
   },
   {
     icon: "/icons/sidebar/changelog.svg",
-    label: "Changelog",
+    label: "Changes",
     href: "/changelog"
   }
 ];
 
-// Aktuelle Seite ermitteln (für active State)
 const currentPath = Astro.url.pathname;
 ---
 
@@ -46,9 +45,6 @@ const currentPath = Astro.url.pathname;
 </aside>
 
 <style>
-  /* ===============================
-     SIDEBAR - MODERN & MINIMAL
-     =============================== */
   .sidebar {
     position: fixed;
     left: 0;
@@ -63,17 +59,19 @@ const currentPath = Astro.url.pathname;
     display: flex;
     flex-direction: column;
     padding-top: 32px;
+    /* FIX: Font-Rendering stabilisieren */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  /* NAVIGATION */
   .sidebar-nav {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 0 10px;
+    padding: 0 4px;
   }
 
-  /* NAV ITEM - CLEAN & SIMPLE */
   .nav-item {
     display: flex;
     flex-direction: column;
@@ -83,17 +81,19 @@ const currentPath = Astro.url.pathname;
     border-radius: 10px;
     text-decoration: none;
     color: rgba(230, 230, 235, 0.5);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.2s ease, background-color 0.2s ease;
     position: relative;
+    width: 60px;
+    flex-shrink: 0;
+    /* FIX: Stabilisiert Layout */
+    contain: layout style;
   }
 
-  /* HOVER - SUBTLE */
-  .nav-item:hover {
+  .nav-item:hover:not(.active) {
     color: rgba(230, 230, 235, 0.9);
     background: rgba(255, 255, 255, 0.04);
   }
 
-  /* ACTIVE STATE - ACCENT BAR */
   .nav-item.active {
     color: #facc15;
     background: transparent;
@@ -110,24 +110,22 @@ const currentPath = Astro.url.pathname;
     background: linear-gradient(180deg, #facc15, #f59e0b);
     border-radius: 0 3px 3px 0;
     box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
+    transition: none;
   }
 
-  /* ICON - NO BOX */
   .nav-icon {
     width: 32px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    transition: none;
   }
 
-  .nav-item:hover .nav-icon {
+  .nav-item:hover:not(.active) .nav-icon {
     transform: translateY(-2px);
-  }
-
-  .nav-item.active .nav-icon {
-    transform: scale(1.1);
+    transition: transform 0.2s ease;
   }
 
   .nav-icon img {
@@ -135,29 +133,35 @@ const currentPath = Astro.url.pathname;
     height: 24px;
     object-fit: contain;
     filter: brightness(0.7) saturate(0);
-    transition: filter 0.25s ease;
+    transition: filter 0.15s ease;
+    display: block;
+    transform: translateZ(0);
   }
 
-  .nav-item:hover .nav-icon img {
+  .nav-item:hover:not(.active) .nav-icon img {
     filter: brightness(1) saturate(0);
   }
 
   .nav-item.active .nav-icon img {
     filter: brightness(1.3) saturate(1) drop-shadow(0 0 8px rgba(250, 204, 21, 0.4));
+    transform: translateZ(0);
   }
 
-  /* LABEL */
   .nav-label {
     font-size: 0.7rem;
     font-weight: 500;
     text-align: center;
     line-height: 1.2;
     letter-spacing: 0.3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60px;
+    transition: none;
+
+  font-family: ui-monospace, 'Courier New', monospace;
+  /* ODER: Web-Font mit festen Metriken laden */
   }
 
-  /* ===============================
-     RESPONSIVE
-     =============================== */
   @media (max-width: 768px) {
     .sidebar {
       width: 100%;
@@ -182,6 +186,8 @@ const currentPath = Astro.url.pathname;
     .nav-item {
       padding: 8px 20px;
       gap: 4px;
+      width: auto;
+      flex: 1;
     }
 
     .nav-icon {
@@ -196,6 +202,7 @@ const currentPath = Astro.url.pathname;
 
     .nav-label {
       font-size: 0.65rem;
+      max-width: none;
     }
 
     .nav-item.active::before {

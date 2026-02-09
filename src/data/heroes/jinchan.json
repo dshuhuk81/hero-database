@@ -38,7 +38,7 @@
         "level3": "Adds shield on heal.",
         "level4": "Removes one debuff."
       },
-      "image": "/skills/jinchan_skill_1.webp"
+      "image": "/skills/virgo_skill_1.webp"
     },
     {
       "id": "skill_2",
@@ -49,7 +49,7 @@
         "level3": "Cooldown reduced.",
         "level4": "Triggers automatically once per battle."
       },
-      "image": "/skills/jinchan_skill_2.webp"
+      "image": "/skills/virgo_skill_2.webp"
     },
     {
       "id": "skill_3",
@@ -60,28 +60,7 @@
         "level3": "Cooldown reduced.",
         "level4": "Triggers automatically once per battle."
       },
-      "image": "/skills/jinchan_skill_3.webp"
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      },
-      "image": "/skills/jinchan_skill_4.webp"
+      "image": "/skills/virgo_skill_3.webp"
     }
-  ],
-  "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
-    "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    },
-    "image": "/skills/jinchan_relic.webp"
-  }
+  ]
 }

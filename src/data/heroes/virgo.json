@@ -58,27 +58,6 @@
         "level4": "Triggers automatically once per battle."
       },
       "image": "/skills/virgo_skill_3.webp"
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      },
-      "image": "/skills/virgo_skill_4.webp"
     }
-  ],
-  "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
-    "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    },
-    "image": "/skills/virgo_relic.webp"
-  }
+  ]
 }
