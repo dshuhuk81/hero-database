@@ -47,6 +47,9 @@ function adaptHero(raw) {
     // Backward-Compat (Grid / Cards)
     rating: raw.ratings?.overall ?? null,
 
+    // ✅ WICHTIG: recommendedRelicLevel hinzufügen
+    recommendedRelicLevel: raw.recommendedRelicLevel,
+
     // ✅ Stats kommen NUR aus Hero-JSON
     stats: raw.stats ?? {},
 

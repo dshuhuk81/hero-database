@@ -1,0 +1,400 @@
+---
+// src/pages/changelog.astro
+import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
+
+// Changelog Einträge - hier kannst du neue Änderungen hinzufügen
+const changelogEntries = [
+  {
+    date: "2026-02-09",
+    version: "1.2.0",
+    title: "Relic Priority & Skill Images",
+    changes: [
+      {
+        type: "feature",
+        text: "Added Relic Priority levels to all heroes"
+      },
+      {
+        type: "feature",
+        text: "Hero-specific skill and relic images implemented"
+      },
+      {
+        type: "improvement",
+        text: "Improved accessibility with better color contrast"
+      },
+      {
+        type: "improvement",
+        text: "Enhanced mobile responsiveness for hero detail pages"
+      }
+    ]
+  },
+  {
+    date: "2026-02-08",
+    version: "1.1.0",
+    title: "Hero Stats & Rankings",
+    changes: [
+      {
+        type: "feature",
+        text: "Added stat rankings for all heroes"
+      },
+      {
+        type: "feature",
+        text: "Visual stat bars with color-coded rankings"
+      },
+      {
+        type: "improvement",
+        text: "Improved hero card hover effects"
+      }
+    ]
+  },
+  {
+    date: "2026-02-05",
+    version: "1.0.0",
+    title: "Initial Release",
+    changes: [
+      {
+        type: "feature",
+        text: "Hero database with 60+ heroes"
+      },
+      {
+        type: "feature",
+        text: "Filter by class, role, and rarity"
+      },
+      {
+        type: "feature",
+        text: "Detailed hero pages with stats and skills"
+      },
+      {
+        type: "feature",
+        text: "Tier list view"
+      }
+    ]
+  }
+];
+
+// Helper für Datums-Formatierung
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('de-DE', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+---
+
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Changelog - Motto Immortal Database</title>
+  </head>
+  <body>
+    <Sidebar />
+
+    <main class="changelog-page">
+      <div class="page-header">
+        <h1>Changelog</h1>
+        <p class="subtitle">Alle Änderungen und Updates im Überblick</p>
+      </div>
+
+      <div class="timeline-container">
+        {changelogEntries.map((entry, index) => (
+          <div class="timeline-entry">
+            <div class="timeline-marker">
+              <div class="timeline-dot"></div>
+              {index < changelogEntries.length - 1 && (
+                <div class="timeline-line"></div>
+              )}
+            </div>
+
+            <div class="entry-content">
+              <div class="entry-header">
+                <div class="version-badge">{entry.version}</div>
+                <div class="entry-meta">
+                  <h2 class="entry-title">{entry.title}</h2>
+                  <time class="entry-date">{formatDate(entry.date)}</time>
+                </div>
+              </div>
+
+              <ul class="changes-list">
+                {entry.changes.map(change => (
+                  <li class={`change-item change-${change.type}`}>
+                    <span class="change-badge">
+                      {change.type === 'feature' ? '✨' : 
+                       change.type === 'improvement' ? '🔧' : 
+                       change.type === 'fix' ? '🐛' : '📝'}
+                    </span>
+                    <span class="change-text">{change.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  /* ===============================
+     BASE & LAYOUT
+     =============================== */
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Spectral, ui-sans-serif, system-ui, sans-serif;
+    background: radial-gradient(
+        ellipse at 30% -10%,
+        rgba(120, 90, 200, 0.15),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse at 80% 20%,
+        rgba(255, 215, 100, 0.08),
+        transparent 55%
+      ),
+      linear-gradient(to bottom, #0d0b10, #07060c);
+    color: #e6e6eb;
+    min-height: 100vh;
+  }
+
+  /* ===============================
+     PAGE LAYOUT
+     =============================== */
+  .changelog-page {
+    margin-left: 96px; /* Sidebar width */
+    padding: 80px 24px 120px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ===============================
+     HEADER
+     =============================== */
+  .page-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .page-header h1 {
+    font-size: 3.5rem;
+    font-weight: 600;
+    margin: 0 0 16px;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: rgba(230, 230, 235, 0.7);
+    margin: 0;
+  }
+
+  /* ===============================
+     TIMELINE
+     =============================== */
+  .timeline-container {
+    position: relative;
+  }
+
+  .timeline-entry {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 64px;
+    position: relative;
+  }
+
+  .timeline-entry:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ===============================
+     TIMELINE MARKER
+     =============================== */
+  .timeline-marker {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .timeline-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
+    position: relative;
+    z-index: 2;
+  }
+
+  .timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: calc(100% + 44px);
+    background: linear-gradient(
+      to bottom,
+      rgba(250, 204, 21, 0.5),
+      rgba(250, 204, 21, 0.1)
+    );
+  }
+
+  /* ===============================
+     ENTRY CONTENT
+     =============================== */
+  .entry-content {
+    flex: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(35, 32, 48, 0.6),
+      rgba(18, 16, 26, 0.8)
+    );
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .entry-content:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  }
+
+  /* ===============================
+     ENTRY HEADER
+     =============================== */
+  .entry-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .version-badge {
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
+    flex-shrink: 0;
+  }
+
+  .entry-meta {
+    flex: 1;
+  }
+
+  .entry-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: #fff;
+  }
+
+  .entry-date {
+    font-size: 0.9rem;
+    color: rgba(230, 230, 235, 0.6);
+  }
+
+  /* ===============================
+     CHANGES LIST
+     =============================== */
+  .changes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .change-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .change-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Change Type Colors */
+  .change-feature {
+    border-left-color: #10b981;
+  }
+
+  .change-improvement {
+    border-left-color: #818cf8;
+  }
+
+  .change-fix {
+    border-left-color: #f59e0b;
+  }
+
+  .change-badge {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .change-text {
+    line-height: 1.6;
+    color: rgba(230, 230, 235, 0.9);
+  }
+
+  /* ===============================
+     RESPONSIVE
+     =============================== */
+  @media (max-width: 768px) {
+    .changelog-page {
+      margin-left: 0;
+      padding: 40px 16px 100px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+    }
+
+    .timeline-entry {
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+    }
+
+    .entry-content {
+      padding: 20px;
+    }
+
+    .entry-header {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .entry-title {
+      font-size: 1.25rem;
+    }
+
+    .change-item {
+      padding: 10px 12px;
+    }
+  }
+</style>
