@@ -1,0 +1,566 @@
+---
+// TeamComps.astro - Fixed to use existing heroes data
+import { getHeroById } from "../data/heroes";
+
+interface FormationHero {
+  heroId: string;
+  position: string;
+}
+
+interface TeamComp {
+  title: string;
+  description: string;
+  formation: FormationHero[];
+}
+
+interface Props {
+  currentHeroId: string;
+  pveTeam: TeamComp;
+  pvpTeam: TeamComp;
+}
+
+const { currentHeroId, pveTeam, pvpTeam } = Astro.props;
+
+// Prepare formation data using existing getHeroById
+function renderHeroCard(heroId: string, position: string) {
+  const hero = getHeroById(heroId);
+  
+  if (!hero) {
+    console.warn(`Hero ${heroId} not found`);
+    return null;
+  }
+  
+  const isCurrentHero = hero.id === currentHeroId;
+  
+  return {
+    hero,
+    isCurrentHero,
+    position
+  };
+}
+
+// Prepare PVE formation
+const pveBackRow = ['back-left', 'back-right'].map(pos => {
+  const formationHero = pveTeam.formation.find(h => h.position === pos);
+  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+});
+
+const pveFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
+  const formationHero = pveTeam.formation.find(h => h.position === pos);
+  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+});
+
+// Prepare PVP formation
+const pvpBackRow = ['back-left', 'back-right'].map(pos => {
+  const formationHero = pvpTeam.formation.find(h => h.position === pos);
+  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+});
+
+const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
+  const formationHero = pvpTeam.formation.find(h => h.position === pos);
+  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+});
+---
+
+<div class="team-comps-container">
+  <!-- PVE Section -->
+  <section class="team-comp-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="section-icon pve">⚔️</span>
+        {pveTeam.title}
+      </h2>
+    </div>
+    
+    <div class="formation-grid">
+      <!-- Back Row -->
+      <div class="formation-row back-row">
+        {pveBackRow.map((heroData) => {
+          if (!heroData) {
+            return <div class="hero-card-slot empty"></div>;
+          }
+          
+          const { hero, isCurrentHero, position } = heroData;
+          
+          return (
+            <div class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} data-position={position}>
+              <div class="hero-card-inner">
+                <div class="hero-image-wrapper">
+                  <img 
+                    src={hero.image} 
+                    alt={hero.name}
+                    class="hero-image"
+                  />
+                  {isCurrentHero && (
+                    <div class="current-hero-badge">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div class="hero-info">
+                  <h4 class="hero-name">{hero.name}</h4>
+                  <div class="hero-meta">
+                    <img 
+                      src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
+                      alt={hero.faction}
+                      class="faction-icon-small"
+                      title={hero.faction}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
+      <!-- Front Row -->
+      <div class="formation-row front-row">
+        {pveFrontRow.map((heroData) => {
+          if (!heroData) {
+            return <div class="hero-card-slot empty"></div>;
+          }
+          
+          const { hero, isCurrentHero, position } = heroData;
+          
+          return (
+            <div class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} data-position={position}>
+              <div class="hero-card-inner">
+                <div class="hero-image-wrapper">
+                  <img 
+                    src={hero.image} 
+                    alt={hero.name}
+                    class="hero-image"
+                  />
+                  {isCurrentHero && (
+                    <div class="current-hero-badge">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div class="hero-info">
+                  <h4 class="hero-name">{hero.name}</h4>
+                  <div class="hero-meta">
+                    <img 
+                      src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
+                      alt={hero.faction}
+                      class="faction-icon-small"
+                      title={hero.faction}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+    
+    <p class="team-description">{pveTeam.description}</p>
+  </section>
+
+  <!-- Divider -->
+  <div class="section-divider"></div>
+
+  <!-- PVP Section -->
+  <section class="team-comp-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="section-icon pvp">⚡</span>
+        {pvpTeam.title}
+      </h2>
+    </div>
+    
+    <div class="formation-grid">
+      <!-- Back Row -->
+      <div class="formation-row back-row">
+        {pvpBackRow.map((heroData) => {
+          if (!heroData) {
+            return <div class="hero-card-slot empty"></div>;
+          }
+          
+          const { hero, isCurrentHero, position } = heroData;
+          
+          return (
+            <div class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} data-position={position}>
+              <div class="hero-card-inner">
+                <div class="hero-image-wrapper">
+                  <img 
+                    src={hero.image} 
+                    alt={hero.name}
+                    class="hero-image"
+                  />
+                  {isCurrentHero && (
+                    <div class="current-hero-badge">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div class="hero-info">
+                  <h4 class="hero-name">{hero.name}</h4>
+                  <div class="hero-meta">
+                    <img 
+                      src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
+                      alt={hero.faction}
+                      class="faction-icon-small"
+                      title={hero.faction}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
+      <!-- Front Row -->
+      <div class="formation-row front-row">
+        {pvpFrontRow.map((heroData) => {
+          if (!heroData) {
+            return <div class="hero-card-slot empty"></div>;
+          }
+          
+          const { hero, isCurrentHero, position } = heroData;
+          
+          return (
+            <div class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} data-position={position}>
+              <div class="hero-card-inner">
+                <div class="hero-image-wrapper">
+                  <img 
+                    src={hero.image} 
+                    alt={hero.name}
+                    class="hero-image"
+                  />
+                  {isCurrentHero && (
+                    <div class="current-hero-badge">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div class="hero-info">
+                  <h4 class="hero-name">{hero.name}</h4>
+                  <div class="hero-meta">
+                    <img 
+                      src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
+                      alt={hero.faction}
+                      class="faction-icon-small"
+                      title={hero.faction}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+    
+    <p class="team-description">{pvpTeam.description}</p>
+  </section>
+</div>
+
+<style>
+  /* Team Comps Container */
+  .team-comps-container {
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Section Styles */
+  .team-comp-section {
+    margin-bottom: 4rem;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .section-icon {
+    font-size: 1.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .section-icon.pve {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1));
+  }
+
+  .section-icon.pvp {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.1));
+  }
+
+  /* Formation Grid */
+  .formation-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .formation-row {
+    display: grid;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  .formation-row.back-row {
+    grid-template-columns: repeat(2, minmax(140px, 200px));
+  }
+
+  .formation-row.front-row {
+    grid-template-columns: repeat(3, minmax(140px, 200px));
+  }
+
+  /* Hero Card */
+  .hero-card,
+  .hero-card-slot {
+    position: relative;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+    border-radius: 0.75rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .hero-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 
+      0 10px 25px -5px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(139, 92, 246, 0.3);
+  }
+
+  .hero-card-slot.empty {
+    background: rgba(15, 23, 42, 0.4);
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    min-height: 240px;
+    cursor: default;
+  }
+
+  /* Current Hero Highlight */
+  .hero-card.current-hero {
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1));
+    box-shadow: 
+      0 0 0 1px rgba(245, 158, 11, 0.5),
+      0 0 20px rgba(245, 158, 11, 0.3);
+  }
+
+  .hero-card.current-hero:hover {
+    border-color: #fbbf24;
+    box-shadow: 
+      0 10px 25px -5px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(245, 158, 11, 0.5);
+  }
+
+  /* Hero Card Inner */
+  .hero-card-inner {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Hero Image */
+  .hero-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.3s ease;
+    object-position: center 20%; /* 20% von oben */
+
+
+  }
+
+  .hero-card:hover .hero-image {
+    transform: scale(1.05);
+  }
+
+  /* Current Hero Badge */
+  .current-hero-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+    50% {
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.6);
+    }
+  }
+
+  /* Hero Info */
+  .hero-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .hero-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Faction Icon */
+  .faction-icon-small {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Team Description */
+  .team-description {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.25rem 1.5rem;
+    border-radius: 0.75rem;
+    border-left: 4px solid rgba(139, 92, 246, 0.5);
+    margin: 0;
+  }
+
+  /* Section Divider */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.1) 20%,
+      rgba(255, 255, 255, 0.1) 80%,
+      transparent
+    );
+    margin: 4rem 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .formation-row.back-row,
+    .formation-row.front-row {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .team-comps-container {
+      padding: 1rem 0;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .formation-grid {
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+
+    .formation-row {
+      gap: 1rem;
+    }
+
+    .formation-row.back-row,
+    .formation-row.front-row {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .hero-card-inner {
+      padding: 0.75rem;
+    }
+
+    .hero-name {
+      font-size: 0.875rem;
+    }
+
+    .team-description {
+      font-size: 0.9375rem;
+      padding: 1rem 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .formation-row.back-row,
+    .formation-row.front-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+    }
+
+    .hero-name {
+      font-size: 0.8125rem;
+    }
+    
+    .faction-icon-small {
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>
