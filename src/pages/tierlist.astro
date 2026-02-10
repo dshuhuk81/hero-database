@@ -36,85 +36,88 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
 
           <!-- TIER TABLE -->
-          <div class="table-container">
-            <table class="tier-table" id="tierTable">
-              <thead>
-                <tr>
-                  <th class="sortable" data-sort="name">
-                    Hero
-                    <span class="sort-indicator"></span>
-                  </th>
-                  <th class="sortable" data-sort="overall">
-                    Overall
-                    <span class="sort-indicator"></span>
-                  </th>
-                  <th class="sortable" data-sort="grimSurge">
-                    Grim Surge
-                    <span class="sort-indicator"></span>
-                  </th>
-                  <th class="sortable" data-sort="delusionsDen">
-                    Delusions Den
-                    <span class="sort-indicator"></span>
-                  </th>
-                  <th class="sortable" data-sort="torrentRift">
-                    Torrent Rift
-                    <span class="sort-indicator"></span>
-                  </th>
-                  <th class="sortable" data-sort="pvp">
-                    PvP
-                    <span class="sort-indicator"></span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="tierTableBody">
-                {sortedHeroes.map(hero => (
-                  <tr 
-                    class="hero-row"
-                    data-name={hero.name.toLowerCase()}
-                    data-class={hero.class.toLowerCase()}
-                    data-role={hero.role.toLowerCase()}
-                    data-rarity={hero.rarity.toLowerCase()}
-                    data-overall={hero.ratings?.overall || 'N/A'}
-                    data-grimsurge={hero.ratings?.grimSurge || 'N/A'}
-                    data-delusionsden={hero.ratings?.delusionsDen || 'N/A'}
-                    data-torrentrift={hero.ratings?.torrentRift || 'N/A'}
-                    data-pvp={hero.ratings?.pvp || 'N/A'}
-                  >
-                    <td class="hero-cell">
-                      <a href={`/heroes/${hero.id}`} class="hero-link">
-                        <img src={hero.image} alt={hero.name} class="hero-avatar" />
-                        <span class="hero-name">{hero.name}</span>
-                      </a>
-                    </td>
-                    <td class="rating-cell">
-                      <span class={`rating-badge rating-${hero.ratings?.overall?.toLowerCase() || 'na'}`}>
-                        {hero.ratings?.overall || 'N/A'}
-                      </span>
-                    </td>
-                    <td class="rating-cell">
-                      <span class={`rating-badge rating-${hero.ratings?.grimSurge?.toLowerCase() || 'na'}`}>
-                        {hero.ratings?.grimSurge || 'N/A'}
-                      </span>
-                    </td>
-                    <td class="rating-cell">
-                      <span class={`rating-badge rating-${hero.ratings?.delusionsDen?.toLowerCase() || 'na'}`}>
-                        {hero.ratings?.delusionsDen || 'N/A'}
-                      </span>
-                    </td>
-                    <td class="rating-cell">
-                      <span class={`rating-badge rating-${hero.ratings?.torrentRift?.toLowerCase() || 'na'}`}>
-                        {hero.ratings?.torrentRift || 'N/A'}
-                      </span>
-                    </td>
-                    <td class="rating-cell">
-                      <span class={`rating-badge rating-${hero.ratings?.pvp?.toLowerCase() || 'na'}`}>
-                        {hero.ratings?.pvp || 'N/A'}
-                      </span>
-                    </td>
+          <!-- FIX: Zwei-Wrapper-Lösung für sticky thead + overflow-x -->
+          <div class="table-scroll-x">
+            <div class="table-inner">
+              <table class="tier-table" id="tierTable">
+                <thead>
+                  <tr>
+                    <th class="sortable" data-sort="name">
+                      Hero
+                      <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable" data-sort="overall">
+                      Overall
+                      <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable" data-sort="grimSurge">
+                      Grim Surge
+                      <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable" data-sort="delusionsDen">
+                      Delusions Den
+                      <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable" data-sort="torrentRift">
+                      Torrent Rift
+                      <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable" data-sort="pvp">
+                      PvP
+                      <span class="sort-indicator"></span>
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody id="tierTableBody">
+                  {sortedHeroes.map(hero => (
+                    <tr 
+                      class="hero-row"
+                      data-name={hero.name.toLowerCase()}
+                      data-class={hero.class.toLowerCase()}
+                      data-role={hero.role.toLowerCase()}
+                      data-rarity={hero.rarity.toLowerCase()}
+                      data-overall={hero.ratings?.overall || 'N/A'}
+                      data-grimsurge={hero.ratings?.grimSurge || 'N/A'}
+                      data-delusionsden={hero.ratings?.delusionsDen || 'N/A'}
+                      data-torrentrift={hero.ratings?.torrentRift || 'N/A'}
+                      data-pvp={hero.ratings?.pvp || 'N/A'}
+                    >
+                      <td class="hero-cell">
+                        <a href={`/heroes/${hero.id}`} class="hero-link">
+                          <img src={hero.image} alt={hero.name} class="hero-avatar" />
+                          <span class="hero-name">{hero.name}</span>
+                        </a>
+                      </td>
+                      <td class="rating-cell">
+                        <span class={`rating-badge rating-${hero.ratings?.overall?.toLowerCase() || 'na'}`}>
+                          {hero.ratings?.overall || 'N/A'}
+                        </span>
+                      </td>
+                      <td class="rating-cell">
+                        <span class={`rating-badge rating-${hero.ratings?.grimSurge?.toLowerCase() || 'na'}`}>
+                          {hero.ratings?.grimSurge || 'N/A'}
+                        </span>
+                      </td>
+                      <td class="rating-cell">
+                        <span class={`rating-badge rating-${hero.ratings?.delusionsDen?.toLowerCase() || 'na'}`}>
+                          {hero.ratings?.delusionsDen || 'N/A'}
+                        </span>
+                      </td>
+                      <td class="rating-cell">
+                        <span class={`rating-badge rating-${hero.ratings?.torrentRift?.toLowerCase() || 'na'}`}>
+                          {hero.ratings?.torrentRift || 'N/A'}
+                        </span>
+                      </td>
+                      <td class="rating-cell">
+                        <span class={`rating-badge rating-${hero.ratings?.pvp?.toLowerCase() || 'na'}`}>
+                          {hero.ratings?.pvp || 'N/A'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -297,12 +300,17 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         font-size: 1.125rem;
       }
 
-      /* TABLE */
-      .table-container {
+      /* TABLE - FIX: Zwei-Wrapper statt einem */
+      .table-scroll-x {
         overflow-x: auto;
+        overflow-y: visible;
         border-radius: 12px;
-        background: rgba(0, 0, 0, 0.2);
         border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .table-inner {
+        min-width: 600px;
+        background: rgba(0, 0, 0, 0.2);
       }
 
       .tier-table {
@@ -310,9 +318,9 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         border-collapse: collapse;
       }
 
-      /* TABLE HEADER */
+      /* TABLE HEADER - sticky funktioniert jetzt */
       thead th {
-        background: linear-gradient(to bottom, rgba(35, 32, 48, 0.95), rgba(18, 16, 26, 0.98));
+        background: #1a1720;
         padding: 16px 12px;
         text-align: left;
         font-weight: 600;
