@@ -8,11 +8,11 @@ interface Feature {
 
 const features: Feature[] = [
   { 
-    icon: "/icons/footer/feature1.webp", 
-    label: "GPH Discord",
-    url: "https://discord.com/invite/TJTr4wJEAm"  // 👈 Dein Discord-Link},
-    },
-  { 
+    icon: "/icons/footer/protip85.jpg", 
+    label: "Prototip85 Youtube",
+    url: "https://www.youtube.com/@prototip85"  // 👈 Dein Discord-Link},
+    }/*
+    { 
     icon: "/icons/footer/feature2.webp", 
     label: "GPH Youtube",
     url: "https://www.youtube.com/@gameplayhorizon"  // 👈 Dein YouTube-Link    
@@ -29,10 +29,10 @@ const features: Feature[] = [
     <!-- CLAIM -->
     <div class="footer-titles">
         <h2 class="footer-claim">Motto Immortal<br> Ultimate Hero Database</h2>
-        <span>made by Frieren (discord: ds_frieren)<!--, supported by @gameplayhorizon -->
+        <span>made by Frieren (discord: ds_frieren) & protip85<!--, supported by @gameplayhorizon -->
 </span>
     </div>
-    <!-- FEATURES 
+    <!-- FEATURES -->
     <div class="footer-features">
       {features.map(feature => (
         <a href={feature.url} target="_blank" rel="noopener noreferrer" class="feature-item">
@@ -42,7 +42,7 @@ const features: Feature[] = [
           <span class="feature-label">{feature.label}</span>
         </a>
       ))}
-    </div>-->
+    </div>
 
     <!-- LINKS -->
     <div class="footer-links">
