@@ -3,6 +3,7 @@
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
+import Filter from "../components/filter.astro";
 
 // Alphabetisch sortiert als Default
 const sortedHeroes = [...heroes].sort((a, b) =>
@@ -27,80 +28,8 @@ const sortedHeroes = [...heroes].sort((a, b) =>
       <h1 class="title">Hero Tier List</h1>
 
       <div class="content-wrapper">
-        <!-- FILTERS (wie index.astro) -->
-        <section class="filters">
-          <!-- CLASS FILTER -->
-          <div class="filter-group">
-            <span class="filter-label">Class</span>
-            <button class="chip class-chip" data-class="tank" title="Tank">
-              <img src="/icons/classes/tank.webp" alt="Tank" />
-            </button>
-            <button class="chip class-chip" data-class="warrior" title="Warrior">
-              <img src="/icons/classes/warrior.webp" alt="Warrior" />
-            </button>
-            <button class="chip class-chip" data-class="archer" title="Archer">
-              <img src="/icons/classes/archer.webp" alt="Archer" />
-            </button>
-            <button class="chip class-chip" data-class="mage" title="Mage">
-              <img src="/icons/classes/mage.webp" alt="Mage" />
-            </button>
-            <button class="chip class-chip" data-class="support" title="Support">
-              <img src="/icons/classes/support.webp" alt="Support" />
-            </button>
-            <button class="chip class-chip" data-class="assassin" title="Assassin">
-              <img src="/icons/classes/assassin.webp" alt="Assassin" />
-            </button>
-          </div>
-
-          <!-- ROLE FILTER -->
-          <div class="filter-group">
-            <span class="filter-label">Role</span>
-            <button class="chip role-chip" data-role="nimble" title="Nimble">
-              <img src="/icons/roles/nimble.webp" alt="Nimble" />
-            </button>
-            <button class="chip role-chip" data-role="arcane" title="Arcane">
-              <img src="/icons/roles/arcane.webp" alt="Arcane" />
-            </button>
-            <button class="chip role-chip" data-role="hefty" title="Hefty">
-              <img src="/icons/roles/hefty.webp" alt="Hefty" />
-            </button>
-          </div>
-
-          <!-- SEARCH -->
-          <div class="filter-group">
-            <input
-              type="text"
-              id="searchInput"
-              placeholder="Search hero..."
-              class="search-input"
-            />
-          </div>
-
-          <!-- RARITY FILTER -->
-          <div class="filter-group">
-            <span class="filter-label">Rarity</span>
-            <button class="chip rarity-chip common" data-rarity="common" title="Common">
-              <svg viewBox="0 0 24 24" class="rarity-star">
-                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-              </svg>
-            </button>
-            <button class="chip rarity-chip epic" data-rarity="epic" title="Epic">
-              <svg viewBox="0 0 24 24" class="rarity-star">
-                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-              </svg>
-            </button>
-            <button class="chip rarity-chip legendary" data-rarity="legendary" title="Legendary">
-              <svg viewBox="0 0 24 24" class="rarity-star">
-                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-              </svg>
-            </button>
-          </div>
-
-          <!-- RESET -->
-          <div class="filter-group">
-            <button id="resetFilters" class="reset-button">Reset Filters</button>
-          </div>
-        </section>
+        <Filter />
+        
 
         <!-- RESULTS COUNTER -->
         <div class="resultcontent">

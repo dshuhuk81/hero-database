@@ -1,0 +1,549 @@
+---
+import { heroes } from "../data/heroes";
+
+const allFactions = [...new Set(heroes.map(h => h.faction))].sort();
+---
+
+<!-- ═══════════════════════════════════
+     FILTER BAR
+════════════════════════════════════ -->
+<div class="filter-bar" id="filterBar">
+
+  <!-- ROW 1: Class · Role · Rarity · Search · Reset -->
+  <div class="filter-row filter-row--main">
+
+    <!-- CLASS -->
+    <div class="filter-group">
+      <span class="filter-label">Class</span>
+      <div class="chip-row">
+        <button class="chip class-chip" data-class="tank" title="Tank">
+          <img src="/icons/classes/tank.webp" alt="Tank" />
+        </button>
+        <button class="chip class-chip" data-class="warrior" title="Warrior">
+          <img src="/icons/classes/warrior.webp" alt="Warrior" />
+        </button>
+        <button class="chip class-chip" data-class="archer" title="Archer">
+          <img src="/icons/classes/archer.webp" alt="Archer" />
+        </button>
+        <button class="chip class-chip" data-class="mage" title="Mage">
+          <img src="/icons/classes/mage.webp" alt="Mage" />
+        </button>
+        <button class="chip class-chip" data-class="support" title="Support">
+          <img src="/icons/classes/support.webp" alt="Support" />
+        </button>
+        <button class="chip class-chip" data-class="assassin" title="Assassin">
+          <img src="/icons/classes/assassin.webp" alt="Assassin" />
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <!-- ROLE -->
+    <div class="filter-group">
+      <span class="filter-label">Role</span>
+      <div class="chip-row">
+        <button class="chip role-chip" data-role="nimble" title="Nimble">
+          <img src="/icons/roles/nimble.webp" alt="Nimble" />
+        </button>
+        <button class="chip role-chip" data-role="arcane" title="Arcane">
+          <img src="/icons/roles/arcane.webp" alt="Arcane" />
+        </button>
+        <button class="chip role-chip" data-role="hefty" title="Hefty">
+          <img src="/icons/roles/hefty.webp" alt="Hefty" />
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <!-- RARITY -->
+    <div class="filter-group">
+      <span class="filter-label">Rarity</span>
+      <div class="chip-row">
+        <button class="chip rarity-chip common" data-rarity="common" title="Common">
+          <svg viewBox="0 0 24 24" class="rarity-star">
+            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+          </svg>
+        </button>
+        <button class="chip rarity-chip epic" data-rarity="epic" title="Epic">
+          <svg viewBox="0 0 24 24" class="rarity-star">
+            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+          </svg>
+        </button>
+        <button class="chip rarity-chip legendary" data-rarity="legendary" title="Legendary">
+          <svg viewBox="0 0 24 24" class="rarity-star">
+            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <!-- SEARCH -->
+    <div class="filter-group filter-group--search">
+      <span class="filter-label">Search</span>
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Hero name..."
+          class="search-input"
+        />
+        <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+    </div>
+
+    <!-- RESET -->
+    <div class="filter-group filter-group--reset">
+      <span class="filter-label">&nbsp;</span>
+      <button id="resetFilters" class="reset-button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        Reset
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ROW 2: Faction -->
+  <div class="filter-row filter-row--faction">
+    <div class="filter-group filter-group--wide">
+      <span class="filter-label">Faction</span>
+      <div class="chip-row">
+        {allFactions.map(faction => (
+          <button
+            class="chip faction-chip"
+            data-faction={faction.toLowerCase()}
+            title={faction}
+          >
+            <img
+              src={`/icons/factions/${faction.toLowerCase()}.webp`}
+              alt={faction}
+            />
+            <span class="faction-name">{faction}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVE FILTER TAGS -->
+  <div class="active-tags" id="activeTags"></div>
+
+</div>
+
+<style>
+.filter-bar {
+  background:
+    linear-gradient(to bottom, rgba(35,32,48,0.9), rgba(18,16,26,0.97));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 16px 24px 12px;
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.6),
+    0 20px 50px rgba(0,0,0,0.75);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: sticky;
+  top: 12px;
+  z-index: 100;
+}
+
+.filter-row {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.filter-row--faction {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 4px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.filter-group--search {
+  flex: 1;
+  min-width: 180px;
+  max-width: 300px;
+}
+.filter-group--reset {
+  flex-shrink: 0;
+}
+.filter-group--wide {
+  width: 100%;
+}
+
+.filter-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  padding-left: 2px;
+  line-height: 1;
+}
+
+.chip-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.filter-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,0.08);
+  align-self: flex-end;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+/* ── BASE CHIP ────────────────────────────────────────── */
+.chip {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 5px;
+  cursor: pointer;
+  color: #e6e6eb;
+  opacity: 0.5;
+  transition: opacity 0.18s, transform 0.15s, border-color 0.18s, box-shadow 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.chip:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.2);
+}
+.chip.active {
+  opacity: 1;
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.09);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* ── CLASS & ROLE CHIPS ───────────────────────────────── */
+.class-chip img,
+.role-chip img {
+  width: 30px;
+  height: 30px;
+  filter: grayscale(100%) brightness(1.1);
+  transition: filter 0.18s;
+}
+.class-chip:hover img, .class-chip.active img,
+.role-chip:hover img,  .role-chip.active img {
+  filter: brightness(1.4);
+}
+
+/* ── FACTION CHIPS ────────────────────────────────────── */
+.faction-chip {
+  border-radius: 20px;
+  padding: 4px 10px 4px 5px;
+}
+.faction-chip img {
+  width: 22px;
+  height: 22px;
+  filter: grayscale(60%) brightness(1.1);
+  transition: filter 0.18s;
+  border-radius: 50%;
+}
+.faction-chip:hover img,
+.faction-chip.active img {
+  filter: brightness(1.3) saturate(1.2);
+}
+.faction-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #e6e6eb;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+/* ── RARITY CHIPS ─────────────────────────────────────── */
+.rarity-star {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  transition: fill 0.2s, filter 0.2s;
+}
+.rarity-chip.common    { color: #4ade80; }
+.rarity-chip.epic      { color: #a855f7; }
+.rarity-chip.legendary { color: #facc15; }
+.rarity-chip.active .rarity-star,
+.rarity-chip:hover .rarity-star    { fill: currentColor; }
+.rarity-chip.active .rarity-star   { filter: drop-shadow(0 0 6px currentColor); }
+.rarity-chip:hover .rarity-star    { opacity: 0.6; }
+.rarity-chip.active:hover .rarity-star { opacity: 1; }
+
+/* ── SEARCH ───────────────────────────────────────────── */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 9px;
+  width: 14px;
+  height: 14px;
+  color: rgba(255,255,255,0.35);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 30px 0 30px;
+  border-radius: 8px;
+  color: #e6e6eb;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.85rem;
+  transition: border-color 0.18s, background 0.18s;
+  outline: none;
+}
+.search-input:focus {
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.08);
+}
+.search-input::placeholder { color: rgba(255,255,255,0.25); }
+.search-clear {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 2px;
+  display: none;
+  line-height: 1;
+}
+.search-clear.visible { display: block; }
+.search-clear:hover   { color: rgba(255,255,255,0.7); }
+
+/* ── RESET BUTTON ─────────────────────────────────────── */
+.reset-button {
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.reset-button:hover {
+  color: #e6e6eb;
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.06);
+}
+.reset-button.has-active {
+  color: #e6e6eb;
+  border-color: rgba(255,255,255,0.25);
+}
+
+/* ── ACTIVE TAGS ──────────────────────────────────────── */
+.active-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.active-tags:not(:empty) {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 4px;
+}
+.active-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.active-tag:hover      { background: rgba(255,255,255,0.12); color: #fff; }
+.active-tag-x          { opacity: 0.5; font-size: 0.65rem; }
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .filter-divider        { display: none; }
+  .filter-row--main      { gap: 10px 12px; }
+  .filter-group--search  { max-width: 100%; }
+}
+</style>
+
+<style is:global>
+/* Dynamisch per JS erzeugt → braucht globales Scoping */
+.active-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.active-tag:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.active-tag-x { opacity: 0.5; font-size: 0.65rem; }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput  = document.getElementById("searchInput");
+  const searchClear  = document.getElementById("searchClear");
+  const resetButton  = document.getElementById("resetFilters");
+  const heroCounter  = document.getElementById("heroCounter");
+  const activeTags   = document.getElementById("activeTags");
+
+  const heroCards    = document.querySelectorAll(".hero-wrapper");
+  const classChips   = document.querySelectorAll(".class-chip");
+  const roleChips    = document.querySelectorAll(".role-chip");
+  const rarityChips  = document.querySelectorAll(".rarity-chip");
+  const factionChips = document.querySelectorAll(".faction-chip");
+
+  let activeClasses  = new Set();
+  let activeRoles    = new Set();
+  let activeRarities = new Set();
+  let activeFactions = new Set();
+
+  /* ── APPLY FILTERS ─────────────────────── */
+  function applyFilters() {
+    const query = (searchInput.value || "").toLowerCase();
+    let visible = 0;
+
+    heroCards.forEach(card => {
+      const matchesSearch  = !query || card.dataset.name.includes(query);
+      const matchesClass   = activeClasses.size  === 0 || activeClasses.has(card.dataset.class);
+      const matchesRole    = activeRoles.size    === 0 || activeRoles.has(card.dataset.role);
+      const matchesRarity  = activeRarities.size === 0 || activeRarities.has(card.dataset.rarity);
+      const matchesFaction = activeFactions.size === 0 || activeFactions.has(card.dataset.faction);
+
+      const show = matchesSearch && matchesClass && matchesRole && matchesRarity && matchesFaction;
+      card.style.display = show ? "block" : "none";
+      if (show) visible++;
+    });
+
+    if (heroCounter) {
+      heroCounter.textContent = visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
+    }
+
+    searchClear.classList.toggle("visible", searchInput.value.length > 0);
+    resetButton.classList.toggle("has-active",
+      !!(activeClasses.size || activeRoles.size || activeRarities.size || activeFactions.size || searchInput.value)
+    );
+
+    renderTags();
+  }
+
+  /* ── ACTIVE TAGS ────────────────────────── */
+  function capitalize(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function unchip(selector, dataAttr, value) {
+    document.querySelectorAll(selector).forEach(chip => {
+      if (chip.dataset[dataAttr] === value) chip.classList.remove("active");
+    });
+  }
+
+  function renderTags() {
+    activeTags.innerHTML = "";
+
+    const addTag = (label, removeFn) => {
+      const tag = document.createElement("button");
+      tag.className = "active-tag";
+      tag.innerHTML = `${label} <span class="active-tag-x">✕</span>`;
+      tag.addEventListener("click", removeFn);
+      activeTags.appendChild(tag);
+    };
+
+    activeClasses.forEach(v  => addTag(`Class: ${capitalize(v)}`,   () => { activeClasses.delete(v);  unchip(".class-chip",   "class",   v); applyFilters(); }));
+    activeRoles.forEach(v    => addTag(`Role: ${capitalize(v)}`,    () => { activeRoles.delete(v);    unchip(".role-chip",    "role",    v); applyFilters(); }));
+    activeRarities.forEach(v => addTag(`Rarity: ${capitalize(v)}`,  () => { activeRarities.delete(v); unchip(".rarity-chip",  "rarity",  v); applyFilters(); }));
+    activeFactions.forEach(v => addTag(`Faction: ${capitalize(v)}`, () => { activeFactions.delete(v); unchip(".faction-chip", "faction", v); applyFilters(); }));
+  }
+
+  /* ── CHIP TOGGLE HELPER ─────────────────── */
+  function bindChips(chips, activeSet) {
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const key = chip.dataset[Object.keys(chip.dataset)[0]];
+        if (activeSet.has(key)) {
+          activeSet.delete(key);
+          chip.classList.remove("active");
+        } else {
+          activeSet.add(key);
+          chip.classList.add("active");
+        }
+        applyFilters();
+      });
+    });
+  }
+
+  bindChips(classChips,   activeClasses);
+  bindChips(roleChips,    activeRoles);
+  bindChips(rarityChips,  activeRarities);
+  bindChips(factionChips, activeFactions);
+
+  /* ── SEARCH ─────────────────────────────── */
+  searchInput.addEventListener("input", applyFilters);
+  searchClear.addEventListener("click", () => {
+    searchInput.value = "";
+    applyFilters();
+    searchInput.focus();
+  });
+
+  /* ── RESET ──────────────────────────────── */
+  resetButton.addEventListener("click", () => {
+    searchInput.value = "";
+    activeClasses.clear();
+    activeRoles.clear();
+    activeRarities.clear();
+    activeFactions.clear();
+    document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
+    applyFilters();
+  });
+
+  applyFilters();
+});
+</script>
