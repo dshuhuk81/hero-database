@@ -5,7 +5,6 @@ import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
 import Filter from "../components/filter.astro";
 
-// Alphabetisch sortiert als Default
 const sortedHeroes = [...heroes].sort((a, b) =>
   a.name.localeCompare(b.name, "en", { sensitivity: "base" })
 );
@@ -22,52 +21,47 @@ const sortedHeroes = [...heroes].sort((a, b) =>
     <Sidebar />
     
     <div class="page-wrapper">
-      <!-- HERO HEADER
-      <section class="hero-header"></section> -->
-
       <h1 class="title">Hero Tier List</h1>
 
       <div class="content-wrapper">
         <Filter />
-        
 
-        <!-- RESULTS COUNTER -->
         <div class="resultcontent">
           <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
 
-          <!-- TIER TABLE -->
-          <!-- FIX: Zwei-Wrapper-Lösung für sticky thead + overflow-x -->
-          <div class="table-scroll-x">
-            <div class="table-inner">
-              <table class="tier-table" id="tierTable">
+          <div class="table-wrapper">
+
+            <!-- STICKY HEADER (eigener div, außerhalb des scroll-containers) -->
+            <div class="table-header-sticky">
+              <table class="tier-table tier-table--header">
                 <thead>
                   <tr>
-                    <th class="sortable" data-sort="name">
-                      Hero
-                      <span class="sort-indicator"></span>
+                    <th class="sortable col-hero" data-sort="name">
+                      Hero <span class="sort-indicator"></span>
                     </th>
-                    <th class="sortable" data-sort="overall">
-                      Overall
-                      <span class="sort-indicator"></span>
+                    <th class="sortable col-rating" data-sort="overall">
+                      Overall <span class="sort-indicator"></span>
                     </th>
-                    <th class="sortable" data-sort="grimSurge">
-                      Grim Surge
-                      <span class="sort-indicator"></span>
+                    <th class="sortable col-rating" data-sort="grimSurge">
+                      Grim Surge <span class="sort-indicator"></span>
                     </th>
-                    <th class="sortable" data-sort="delusionsDen">
-                      Delusions Den
-                      <span class="sort-indicator"></span>
+                    <th class="sortable col-rating" data-sort="delusionsDen">
+                      Delusions Den <span class="sort-indicator"></span>
                     </th>
-                    <th class="sortable" data-sort="torrentRift">
-                      Torrent Rift
-                      <span class="sort-indicator"></span>
+                    <th class="sortable col-rating" data-sort="torrentRift">
+                      Torrent Rift <span class="sort-indicator"></span>
                     </th>
-                    <th class="sortable" data-sort="pvp">
-                      PvP
-                      <span class="sort-indicator"></span>
+                    <th class="sortable col-rating" data-sort="pvp">
+                      PvP <span class="sort-indicator"></span>
                     </th>
                   </tr>
                 </thead>
+              </table>
+            </div>
+
+            <!-- SCROLLBARER BODY -->
+            <div class="table-scroll">
+              <table class="tier-table tier-table--body" id="tierTable">
                 <tbody id="tierTableBody">
                   {sortedHeroes.map(hero => (
                     <tr 
@@ -82,33 +76,33 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                       data-torrentrift={hero.ratings?.torrentRift || 'N/A'}
                       data-pvp={hero.ratings?.pvp || 'N/A'}
                     >
-                      <td class="hero-cell">
+                      <td class="hero-cell col-hero">
                         <a href={`/heroes/${hero.id}`} class="hero-link">
                           <img src={hero.image} alt={hero.name} class="hero-avatar" />
                           <span class="hero-name">{hero.name}</span>
                         </a>
                       </td>
-                      <td class="rating-cell">
+                      <td class="rating-cell col-rating">
                         <span class={`rating-badge rating-${hero.ratings?.overall?.toLowerCase() || 'na'}`}>
                           {hero.ratings?.overall || 'N/A'}
                         </span>
                       </td>
-                      <td class="rating-cell">
+                      <td class="rating-cell col-rating">
                         <span class={`rating-badge rating-${hero.ratings?.grimSurge?.toLowerCase() || 'na'}`}>
                           {hero.ratings?.grimSurge || 'N/A'}
                         </span>
                       </td>
-                      <td class="rating-cell">
+                      <td class="rating-cell col-rating">
                         <span class={`rating-badge rating-${hero.ratings?.delusionsDen?.toLowerCase() || 'na'}`}>
                           {hero.ratings?.delusionsDen || 'N/A'}
                         </span>
                       </td>
-                      <td class="rating-cell">
+                      <td class="rating-cell col-rating">
                         <span class={`rating-badge rating-${hero.ratings?.torrentRift?.toLowerCase() || 'na'}`}>
                           {hero.ratings?.torrentRift || 'N/A'}
                         </span>
                       </td>
-                      <td class="rating-cell">
+                      <td class="rating-cell col-rating">
                         <span class={`rating-badge rating-${hero.ratings?.pvp?.toLowerCase() || 'na'}`}>
                           {hero.ratings?.pvp || 'N/A'}
                         </span>
@@ -118,6 +112,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                 </tbody>
               </table>
             </div>
+
           </div>
         </div>
       </div>
@@ -126,7 +121,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
     </div>
 
     <style>
-      /* BASE */
       html, body {
         margin: 0;
         padding: 0;
@@ -138,12 +132,10 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         color: #e6e6eb;
       }
 
-      /* PAGE WRAPPER */
       .page-wrapper {
         margin-left: 96px;
       }
 
-      /* HERO HEADER */
       .hero-header {
         height: 360px;
         background-image: url("/bg.jpg");
@@ -162,7 +154,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.45));
       }
 
-      /* TITLE */
       .title {
         text-align: center;
         margin: 32px 0;
@@ -170,14 +161,12 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         font-size: 2.5rem;
       }
 
-      /* CONTENT WRAPPER */
       .content-wrapper {
         max-width: 1400px;
         margin: 0 auto;
         padding: 0 16px;
       }
 
-      /* FILTERS (kopiert von index.astro) */
       .filters {
         display: flex;
         justify-content: center;
@@ -216,7 +205,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         border: 1px solid rgba(255,255,255,0.2);
       }
 
-      /* CHIPS */
       .chip {
         background: none;
         border: none;
@@ -231,9 +219,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         transform: translateY(-1px);
       }
 
-      .chip.active {
-        opacity: 1;
-      }
+      .chip.active { opacity: 1; }
 
       .class-chip img, .role-chip img {
         width: 36px;
@@ -245,7 +231,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         filter: brightness(1.4);
       }
 
-      /* RARITY STARS */
       .rarity-star {
         width: 28px;
         height: 28px;
@@ -270,7 +255,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         opacity: 0.4;
       }
 
-      /* RESET BUTTON */
       .reset-button {
         height: 36px;
         padding: 0 18px;
@@ -293,52 +277,67 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         transform: translateY(-1px);
       }
 
-      /* HERO COUNTER */
       .hero-counter {
         margin: 24px 0 16px;
         text-align: center;
         font-size: 1.125rem;
       }
 
-      /* TABLE - FIX: Zwei-Wrapper statt einem */
-      .table-scroll-x {
-        overflow-x: auto;
-        overflow-y: visible;
+      /* ── TABLE WRAPPER ─────────────────────────────── */
+      .table-wrapper {
         border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: visible; /* nur für border-radius */
       }
 
-      .table-inner {
-        min-width: 600px;
-        background: rgba(0, 0, 0, 0.2);
+      /* STICKY HEADER — kein overflow-Container darüber */
+      .table-header-sticky {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        overflow-x: hidden; /* Header scrollt mit JS synchronisiert */
+        background: #1a1720;
       }
 
+      /* SCROLLBARER BODY */
+      .table-scroll {
+        overflow-x: auto;
+      }
+
+      /* BEIDE Tabellen teilen dieselben Spaltenbreiten */
       .tier-table {
         width: 100%;
         border-collapse: collapse;
+        table-layout: fixed;
       }
 
-      /* TABLE HEADER - sticky funktioniert jetzt */
-      thead th {
+      /* Spaltenbreiten — in beiden Tabellen identisch */
+      .col-hero   { width: 260px; }
+      .col-rating { width: 120px; }
+
+      /* HEADER TH */
+      .tier-table--header thead th {
         background: #1a1720;
         padding: 16px 12px;
         text-align: left;
         font-weight: 600;
         font-size: 0.95rem;
         border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-        position: sticky;
-        top: 0;
-        z-index: 10;
       }
 
-      thead th.sortable {
+      .tier-table--header thead th.sortable {
         cursor: pointer;
         user-select: none;
         transition: background 0.2s ease;
       }
 
-      thead th.sortable:hover {
+      .tier-table--header thead th.sortable:hover {
         background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* BODY */
+      .tier-table--body {
+        background: rgba(0, 0, 0, 0.2);
       }
 
       /* SORT INDICATOR */
@@ -348,9 +347,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         opacity: 0.3;
       }
 
-      .sort-indicator::after {
-        content: "⇅";
-      }
+      .sort-indicator::after { content: "⇅"; }
 
       th.sort-asc .sort-indicator::after {
         content: "↑";
@@ -364,7 +361,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         color: #facc15;
       }
 
-      /* TABLE ROWS */
       .hero-row {
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         transition: background 0.2s ease;
@@ -374,7 +370,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         background: rgba(255, 255, 255, 0.03);
       }
 
-      /* HERO CELL */
       .hero-cell {
         padding: 12px;
       }
@@ -388,9 +383,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         transition: color 0.2s ease;
       }
 
-      .hero-link:hover {
-        color: #facc15;
-      }
+      .hero-link:hover { color: #facc15; }
 
       .hero-avatar {
         width: 48px;
@@ -398,6 +391,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         border-radius: 8px;
         object-fit: cover;
         border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
       }
 
       .hero-name {
@@ -405,7 +399,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         font-size: 1rem;
       }
 
-      /* RATING CELL */
       .rating-cell {
         padding: 12px;
         text-align: center;
@@ -421,7 +414,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         text-align: center;
       }
 
-      /* RATING COLORS */
       .rating-sss {
         background: linear-gradient(135deg, #ff6b6b, #ff8787);
         color: #fff;
@@ -461,192 +453,88 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
+      /* RARITY BORDERS */
+      [data-rarity="common"] .hero-avatar    { border-color: rgba(74, 222, 128, 0.55); }
+      [data-rarity="epic"] .hero-avatar      { border-color: rgba(168, 85, 247, 0.6); }
+      [data-rarity="legendary"] .hero-avatar { border-color: rgba(250, 204, 21, 0.75); }
+
+      .hero-row {
+        position: relative;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.2s ease;
+      }
+
+      [data-rarity="legendary"].hero-row::before { opacity: 0.3; }
+      [data-rarity="legendary"].hero-row:hover::before { opacity: 0.8; }
+      .hero-row:hover::before { opacity: 1; }
+
+      .hero-row:hover .hero-avatar          { box-shadow: 0 0 16px currentColor; transform: scale(1.05); }
+      [data-rarity="common"]:hover .hero-avatar    { box-shadow: 0 0 16px rgba(74, 222, 128, 0.6); }
+      [data-rarity="epic"]:hover .hero-avatar      { box-shadow: 0 0 16px rgba(168, 85, 247, 0.6); }
+      [data-rarity="legendary"]:hover .hero-avatar { box-shadow: 0 0 20px rgba(250, 204, 21, 0.8); }
+
       /* RESPONSIVE */
       @media (max-width: 768px) {
-        .page-wrapper {
-          margin-left: 0;
-          margin-bottom: 64px;
-        }
+        .page-wrapper   { margin-left: 0; margin-bottom: 64px; }
+        .title          { font-size: 1.75rem; }
+        .tier-table     { font-size: 0.875rem; }
+        .col-hero       { width: 180px; }
+        .col-rating     { width: 80px; }
 
-        .title {
-          font-size: 1.75rem;
-        }
-
-        .tier-table {
-          font-size: 0.875rem;
-        }
-
-        thead th {
+        .tier-table--header thead th {
           padding: 10px 8px;
           font-size: 0.85rem;
         }
 
-        .hero-avatar {
-          width: 40px;
-          height: 40px;
-        }
-
-        .rating-badge {
-          padding: 4px 10px;
-          font-size: 0.85rem;
-          min-width: 40px;
-        }
+        .hero-avatar    { width: 40px; height: 40px; }
+        .rating-badge   { padding: 4px 10px; font-size: 0.85rem; min-width: 40px; }
       }
-      
-        /* ===============================
-        RARITY BORDERS & GLOW
-        =============================== */
-
-        /* Hero Avatar mit Rarity-Border */
-        .hero-avatar {
-        width: 48px;
-        height: 48px;
-        border-radius: 8px;
-        object-fit: cover;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-        }
-
-        /* Common */
-        [data-rarity="common"] .hero-avatar {
-        border-color: rgba(74, 222, 128, 0.55);
-        }
-
-        /* Epic */
-        [data-rarity="epic"] .hero-avatar {
-        border-color: rgba(168, 85, 247, 0.6);
-        }
-
-        /* Legendary */
-        [data-rarity="legendary"] .hero-avatar {
-        border-color: rgba(250, 204, 21, 0.75);
-        }
-
-        /* GLOW EFFECT on Hover*/
-        .hero-row {
-        position: relative;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        transition: background 0.2s ease;
-        } 
-        /*      
-        .hero-row::before {
-        content: "";
-        position: absolute;
-        inset: -4px;
-        border-radius: 8px;
-        opacity: 0;
-        filter: blur(12px);
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        z-index: -1;
-        } */
-
-        /* Common Glow */
-        [data-rarity="common"].hero-row::before {
-        background: radial-gradient(
-        circle at 50% 50%,
-        rgba(74, 222, 128, 0.4),
-        transparent 60%
-        );
-        }
-
-        /* Epic Glow */
-        [data-rarity="epic"].hero-row::before {
-        background: radial-gradient(
-        circle at 50% 50%,
-        rgba(168, 85, 247, 0.5),
-        transparent 60%
-        );
-        }
-
-        /* Legendary Glow */
-        [data-rarity="legendary"].hero-row::before {
-        background: radial-gradient(
-        circle at 50% 50%,
-        rgba(250, 204, 21, 0.6),
-        transparent 60%
-        );
-        }
-
-        /* Show Glow on Hover */
-        .hero-row:hover::before {
-        opacity: 1;
-        }
-
-        /* Legendary: Permanent subtle Glow */
-        [data-rarity="legendary"].hero-row::before {
-        opacity: 0.3;
-        }
-
-        [data-rarity="legendary"].hero-row:hover::before {
-        opacity: 0.8;
-        }
-
-        /* Avatar Glow on Hover */
-        .hero-row:hover .hero-avatar {
-        box-shadow: 0 0 16px currentColor;
-        transform: scale(1.05);
-        }
-
-        [data-rarity="common"]:hover .hero-avatar {
-        box-shadow: 0 0 16px rgba(74, 222, 128, 0.6);
-        }
-
-        [data-rarity="epic"]:hover .hero-avatar {
-        box-shadow: 0 0 16px rgba(168, 85, 247, 0.6);
-        }
-
-        [data-rarity="legendary"]:hover .hero-avatar {
-        box-shadow: 0 0 20px rgba(250, 204, 21, 0.8);
-        }
     </style>
 
     <script>
-      // TIER RANKING ORDER
       const TIER_ORDER: Record<string, number> = {
-        'SSS': 7,
-        'SS': 6,
-        'S': 5,
-        'A': 4,
-        'B': 3,
-        'C': 2,
-        'N/A': 1
+        'SSS': 7, 'SS': 6, 'S': 5, 'A': 4, 'B': 3, 'C': 2, 'N/A': 1
       };
 
       document.addEventListener("DOMContentLoaded", () => {
-        const searchInput = document.getElementById("searchInput") as HTMLInputElement;
-        const resetButton = document.getElementById("resetFilters") as HTMLButtonElement;
-        const heroCounter = document.getElementById("heroCounter") as HTMLParagraphElement;
-        const tableBody = document.getElementById("tierTableBody") as HTMLTableSectionElement;
-        
-        const roleChips = document.querySelectorAll(".role-chip");
-        const classChips = document.querySelectorAll(".class-chip");
-        const rarityChips = document.querySelectorAll(".rarity-chip");
-        const sortableHeaders = document.querySelectorAll(".sortable");
-        
-        let activeRoles = new Set<string>();
-        let activeClasses = new Set<string>();
-        let activeRarities = new Set<string>();
-        let currentSort = { column: 'name', direction: 'asc' };
+        const searchInput    = document.getElementById("searchInput") as HTMLInputElement;
+        const resetButton    = document.getElementById("resetFilters") as HTMLButtonElement;
+        const heroCounter    = document.getElementById("heroCounter") as HTMLParagraphElement;
+        const tableBody      = document.getElementById("tierTableBody") as HTMLTableSectionElement;
+        const headerScroll   = document.querySelector(".table-header-sticky") as HTMLElement;
+        const bodyScroll     = document.querySelector(".table-scroll") as HTMLElement;
 
-        // FILTER FUNCTION
+        const roleChips      = document.querySelectorAll(".role-chip");
+        const classChips     = document.querySelectorAll(".class-chip");
+        const rarityChips    = document.querySelectorAll(".rarity-chip");
+        const sortableHeaders = document.querySelectorAll(".sortable");
+
+        // Horizontales Scroll-Sync: Body scrollt → Header folgt
+        bodyScroll?.addEventListener("scroll", () => {
+          if (headerScroll) headerScroll.scrollLeft = bodyScroll.scrollLeft;
+        });
+
+        let activeRoles    = new Set<string>();
+        let activeClasses  = new Set<string>();
+        let activeRarities = new Set<string>();
+        let currentSort    = { column: 'name', direction: 'asc' };
+
         function applyFilters() {
           const query = (searchInput?.value || "").toLowerCase();
-          const rows = tableBody.querySelectorAll(".hero-row") as NodeListOf<HTMLTableRowElement>;
+          const rows  = tableBody.querySelectorAll(".hero-row") as NodeListOf<HTMLTableRowElement>;
           let visible = 0;
 
           rows.forEach(row => {
-            const name = row.dataset.name || '';
-            const cls = row.dataset.class || '';
-            const role = row.dataset.role || '';
+            const name   = row.dataset.name   || '';
+            const cls    = row.dataset.class  || '';
+            const role   = row.dataset.role   || '';
             const rarity = row.dataset.rarity || '';
 
-            const matchesSearch = !query || name.includes(query) || cls.includes(query) || role.includes(query);
-            const matchesClass = activeClasses.size === 0 || activeClasses.has(cls);
-            const matchesRole = activeRoles.size === 0 || activeRoles.has(role);
-            const matchesRarity = activeRarities.size === 0 || activeRarities.has(rarity);
-
-            const show = matchesSearch && matchesClass && matchesRole && matchesRarity;
+            const show =
+              (!query || name.includes(query) || cls.includes(query) || role.includes(query)) &&
+              (activeClasses.size  === 0 || activeClasses.has(cls))   &&
+              (activeRoles.size    === 0 || activeRoles.has(role))     &&
+              (activeRarities.size === 0 || activeRarities.has(rarity));
 
             row.style.display = show ? "" : "none";
             if (show) visible++;
@@ -657,45 +545,33 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           }
         }
 
-        // SORT FUNCTION
         function sortTable(column: string) {
           const rows = Array.from(tableBody.querySelectorAll(".hero-row")) as HTMLTableRowElement[];
-          
-          // Toggle direction
+
           if (currentSort.column === column) {
             currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
           } else {
-            currentSort.column = column;
+            currentSort.column    = column;
             currentSort.direction = 'asc';
           }
 
-          // Sort rows
           rows.sort((a, b) => {
-            let aVal: string | number = '';
-            let bVal: string | number = '';
-
             if (column === 'name') {
-              aVal = a.dataset.name || '';
-              bVal = b.dataset.name || '';
-              return currentSort.direction === 'asc' 
+              const aVal = a.dataset.name || '';
+              const bVal = b.dataset.name || '';
+              return currentSort.direction === 'asc'
                 ? aVal.localeCompare(bVal)
                 : bVal.localeCompare(aVal);
             } else {
-              // Rating columns
-              const dataKey = column.toLowerCase().replace(/([A-Z])/g, (m) => m.toLowerCase());
-              aVal = TIER_ORDER[(a.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
-              bVal = TIER_ORDER[(b.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
-              
-              return currentSort.direction === 'asc' 
-                ? aVal - bVal
-                : bVal - aVal;
+              const dataKey = column.toLowerCase().replace(/([A-Z])/g, m => m.toLowerCase());
+              const aVal = TIER_ORDER[(a.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
+              const bVal = TIER_ORDER[(b.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
+              return currentSort.direction === 'asc' ? aVal - bVal : bVal - aVal;
             }
           });
 
-          // Re-append rows
           rows.forEach(row => tableBody.appendChild(row));
 
-          // Update header indicators
           sortableHeaders.forEach(th => {
             th.classList.remove('sort-asc', 'sort-desc');
             if (th.getAttribute('data-sort') === column) {
@@ -706,7 +582,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           applyFilters();
         }
 
-        // EVENT LISTENERS
         searchInput?.addEventListener("input", applyFilters);
 
         classChips.forEach(chip => {
@@ -749,11 +624,12 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           activeRarities.clear();
           activeRoles.clear();
           document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
-          sortTable('name'); // Reset to default sort
+          sortTable('name');
         });
 
         applyFilters();
       });
     </script>
+    
   </body>
 </html>
