@@ -1,0 +1,84 @@
+{
+  "id": "freya",
+  "name": "Freya",
+  "image": "/heroes/freya.webp",
+  "faction": "Spades",
+  "role": "Arcane",
+  "class": "Support",
+  "rarity": "Legendary",
+  "description": "Freya's use is mostly situational. She performs well in Delusions Den and Torrent Rift, as well as in Odysseus, but her performance in other areas is average.",
+  "ratings": {
+    "overall": "SS",
+    "grimSurge": "B",
+    "delusionsDen": "SSS",
+    "torrentRift": "S",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 0,
+  "stats": {
+    "hp": 242830,
+    "atk": 24776,
+    "armor": 5076,
+    "magicRes": 4933,
+    "dodgeRate": 7,
+    "hitBonus": 0,
+    "critRate": 4,
+    "critRes": 8
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Splendor of Love",
+      "description": "Freya harnesses the power of nature, channeling for 8s and restoring HP equal to 100% of ATK to all allies each second.",
+      "upgrades": {
+        "level2": "Restores HP equal to 110% of ATK per second.",
+        "level3": "Freya gains Super Armor during her Ultimate.",
+        "level4": "Restores HP equal to 120% of ATK per second."
+      },
+      "image": "/skills/freya_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Flower Whispers",
+      "description": "Restores HP equal to 100% of ATK to the most vulnerable ally, then restores HP equal to 100% of ATK per second for 3s.",
+      "upgrades": {
+        "level2": "Restores an additional 75 Energy to the target.",
+        "level3": "Increases initial and over-time Energy restoration to 120%.",
+        "level4": "Increases Energy restoration to 150."
+      },
+      "image": "/skills/freya_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Petal Palette",
+      "description": "Increases all healing effects from Freya by 15%.",
+      "upgrades": {
+        "level2": "Increases healing effect by 20%.",
+        "level3": "Increases healing effect on allies with less than 50% HP by 20%.",
+        "level4": "Increases healing effect by 30%."
+      },
+      "image": "/skills/freya_skill_3.webp"
+    },
+    {
+      "id": "skill_4",
+      "name": "Lethal Petal",
+      "description": "Stuns an enemy for 3s, dealing DMG equal to 100% of ATK per second.",
+      "upgrades": {
+        "level2": "Increases DMG per second to 120% of ATK.",
+        "level3": "Stun duration increases to 4s.",
+        "level4": "Stunned enemies take 20% increased DMG."
+      },
+      "image": "/skills/freya_skill_4.webp"
+    }
+  ],
+  "relic": {
+    "name": "Ward of Splendor",
+    "description": "All allies take 20% reduced DMG during Splendor of Love.",
+    "upgrades": {
+      "level2": "Gains 300 Energy upon entering battle.",
+      "level3": "Reduces DMG taken by 30%.",
+      "level4": "Reduces DMG taken by 40%."
+    },
+    "image": "/skills/freya_relic.webp"
+  }
+}

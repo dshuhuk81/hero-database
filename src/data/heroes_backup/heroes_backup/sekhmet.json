@@ -1,0 +1,87 @@
+{
+  "id": "sekhmet",
+  "name": "Sekhmet",
+  "image": "/heroes/sekhmet.webp",
+  "faction": "Diamonds",
+  "role": "Hefty",
+  "class": "Warrior",
+  "rarity": "Legendary",
+  "description": "Sekhmet is the goddess of fire, war, vengeance, menstruation, and medicine.",
+  "ratings": {
+    "overall": "B",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 0,
+  "stats": {
+    "hp": 246437,
+    "atk": 24949,
+    "armor": 5123,
+    "magicRes": 4941,
+    "dodgeRate": 1,
+    "hitBonus": 12.5,
+    "critRate": 6,
+    "critRes": 2,
+    "critDmgBonus": 0,
+    "critDmgReduction": 0,
+    "energy": 0
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Taste My Claws!",
+      "description": "Performs 3 kicks and deals DMG to enemies in a cone. The first 2 hits deal DMG equal to 80% of ATK, and the last hit deals DMG equal to 120% of ATK and knocks back the target.",
+      "upgrades": {
+        "level2": "Increases the last hit's DMG to 150% of ATK.",
+        "level3": "Increases DMG of the first 2 hits to 90% of ATK.",
+        "level4": "Increases the last hit's DMG to 180% of ATK."
+      },
+      "image": "/skills/sekhmet_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Dare Anger Me?!",
+      "description": "Sekhmet launches an enemy, strikes the target 6 times, each dealing DMG equal to 30% of ATK, and finishes with a heavy blow dealing DMG equal to 400% of ATK. She is immune to Crowd Control for the skill's duration.",
+      "upgrades": {
+        "level2": "Increases the last hit's DMG to 500% of ATK.",
+        "level3": "Takes 50% reduced DMG during the skill.",
+        "level4": "The last hit deals extra DMG equal to 10% of the target's lost HP (up to 250% of her ATK)."
+      },
+      "image": "/skills/sekhmet_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Roaring Fury",
+      "description": "Dealing DMG increases her ATK by 5%, stacking up to 20 times.",
+      "upgrades": {
+        "level2": "Every 5 stacks grant an extra 10% ATK SPD.",
+        "level3": "Each stack increases her ATK by 7.5%.",
+        "level4": "At maximum stacks, Normal Attacks also stun the target for 0.5s."
+      },
+      "image": "/skills/sekhmet_skill_3.webp"
+    },
+    {
+      "id": "skill_4",
+      "name": "You Challenge Me?",
+      "description": "Initiates a duel with the nearest enemy. Both participants will always prioritize attacking each other, and they take 50% less DMG from enemies not involved in the duel. The duel lasts 8s or until one participant falls.",
+      "upgrades": {
+        "level2": "Increases DMG dealt to the duel target by 10% during the duel.",
+        "level3": "Increases her Lifesteal by 20% during the duel.",
+        "level4": "Duration extends to 10s."
+      },
+      "image": "/skills/sekhmet_skill_4.webp"
+    }
+  ],
+  "relic": {
+    "name": "Bond of Life and Death",
+    "description": "When Roaring Fury is fully stacked, Normal Attacks deal extra DMG equal to 10% of the target's max HP (up to 200% of her ATK).",
+    "upgrades": {
+      "level2": "Enhances You Challenge Me?: The target cannot gain DMG RED.",
+      "level3": "You Challenge Me?: Increases the max HP and ATK by 6% during the duel for every nearby ally.",
+      "level4": "You Challenge Me?: Increases the max HP and ATK by 8% during the duel for every nearby ally."
+    },
+    "image": "/skills/sekhmet_relic.webp"
+  }
+}

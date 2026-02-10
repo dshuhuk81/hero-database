@@ -1,0 +1,111 @@
+{
+  "id": "amunra",
+  "name": "Amunra",
+  "image": "/heroes/amunra.webp",
+  "faction": "Starglint",
+  "role": "Arcane",
+  "class": "Warrior",
+  "rarity": "Legendary",
+  "description": "Amun-Ra is mostly situational. He performs well in Delusions Den and PVP, as well as in Odysseus, but his performance in other areas is average.",
+  "teamComps": {
+    "pve": {
+      "title": "Best PVE Setup",
+      "description": "Maximum AoE-DMG with Starglint synergy.",
+      "formation": [
+        {"heroId": "dionysus", "position": "back-left"},
+        {"heroId": "freya", "position": "back-right"},
+        {"heroId": "amunra", "position": "front-left"},
+        {"heroId": "zeus", "position": "front-center"},
+        {"heroId": "nyx", "position": "front-right"}
+      ]
+    },
+    "pvp": {
+      "title": "Best PVP Setup",
+      "description": "Control Meta with Black Hole setup.",
+      "formation": [
+        {"heroId": "dionysus", "position": "back-left"},
+        {"heroId": "anubis", "position": "back-right"},
+        {"heroId": "amunra", "position": "front-left"},
+        {"heroId": "nyx", "position": "front-center"},
+        {"heroId": "freya", "position": "front-right"}
+      ]
+    }
+  },
+  "ratings": {
+    "overall": "SS",
+    "grimSurge": "A",
+    "delusionsDen": "SS",
+    "torrentRift": "S",
+    "pvp": "SS"
+  },
+  "recommendedRelicLevel": 30,
+  "stats": {
+    "hp": 248000,
+    "atk": 25129,
+    "armor": 5153,
+    "magicRes": 5014,
+    "dodgeRate": 1,
+    "hitBonus": 10,
+    "critRate": 6,
+    "critRes": 2,
+    "critDmgBonus": 0,
+    "critDmgReduction": 0,
+    "energy": 100
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Aten's Radiance",
+      "description": "Amun-Ra releases solar energy and rises into air, gaining Super Armor. He fires a solar blade to strike the nearest enemy and nearby targets, dealing DMG equal to 100% of ATK. When cast, it does not drain Energy but consumes 200 Energy per sec.",
+      "upgrades": {
+        "level2": "Solar blades heal Amun-Ra for 100% of the DMG dealt.",
+        "level3": "Increases the DMG of solar blades to 140% ATK.",
+        "level4": "Reduces the attack interval of solar blades to 0.7s."
+      },
+      "image": "/skills/amunra_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Blinding Sun-Disk",
+      "description": "Amun-Ra creates a Solar Aura near himself for 6s, dealing DMG equal to 100% of ATK per sec to enemies inside and reducing their ATK by 20%.",
+      "upgrades": {
+        "level2": "Enemies inside Solar Aura have their ATK reduced by 30%.",
+        "level3": "Increases DMG per instance to 125% ATK.",
+        "level4": "Extends the duration of Solar Aura to 8s."
+      },
+      "image": "/skills/amunra_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Glare of Ra",
+      "description": "Amun-Ra gains 100% Dodge Rate for 8s at combat start.",
+      "upgrades": {
+        "level2": "Re-enters this state each time he casts the Ultimate.",
+        "level3": "Dodging an attack restores 50 Energy to Amun-Ra for the duration. This can only trigger once per sec.",
+        "level4": "Additionally gains 50% Effect RES for the duration. (Unlocks at Lv.261)"
+      },
+      "image": "/skills/amunra_skill_3.webp"
+    },
+    {
+      "id": "skill_4",
+      "name": "The Dawn on Benben",
+      "description": "Increases all allies' M-RES and Armor by 50% for 15s at combat start. Amun-Ra gains Energy Regen boost, increasing his Energy Regen by 50%, until any ally falls.",
+      "upgrades": {
+        "level2": "When the Energy Regen boost expires, all allies instantly restore 200 Energy.",
+        "level3": "Increases his M-RES & Armor to 75%.",
+        "level4": "Increases his Energy Regen to 80%. (Unlocks at Lv.281)"
+      },
+      "image": "/skills/amunra_skill_4.webp"
+    }
+  ],
+  "relic": {
+    "name": "Sun-Blinded",
+    "description": "Blinding Sun-Disk remains permanently when cast, and its range moderately expands during Aten's Radiance. Enemies within range of Blinding Sun-Disk for 4s are stunned for 1s.",
+    "upgrades": {
+      "level2": "Enemies within range of Blinding Sun-Disk for 4s are stunned for 1.5s. (Unlock at Relic Lv.10)",
+      "level3": "Enemies within range of Blinding Sun-Disk for 4s are stunned for 2s. (Unlock at Relic Lv.20)",
+      "level4": "The enhanced Blinding Sun-Disk creates a black hole during Aten's Radiance, slowly pulling all enemies on the battlefield toward Amun-Ra. (Unlock at Relic Lv.30)"
+    },
+    "image": "/skills/amunra_relic.webp"
+  }
+}

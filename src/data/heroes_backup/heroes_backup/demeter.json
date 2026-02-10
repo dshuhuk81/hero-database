@@ -1,0 +1,84 @@
+{
+  "id": "demeter",
+  "name": "Demeter",
+  "image": "/heroes/demeter.webp",
+  "faction": "Spades",
+  "role": "Hefty",
+  "class": "Tank",
+  "rarity": "Legendary",
+  "description": "Demeter, earth goddess of agriculture, grain, harvest, and materia love, is often depicted as kind and gentle.",
+  "ratings": {
+    "overall": "C",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 0,
+  "stats": {
+    "hp": 242952,
+    "atk": 24555,
+    "armor": 5068,
+    "magicRes": 4908,
+    "dodgeRate": 1,
+    "hitBonus": 4,
+    "critRate": 0,
+    "critRes": 12
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "The Earth’s Vigor",
+      "description": "Demeter roots herself, restraining enemies around her for 3s, dealing DMG equal to 100% of ATK every second. Each enemy restores HP equal to 90% of ATK to her per second. Demeter gains Super Armor for the duration.",
+      "upgrades": {
+        "level2": "Increases DMG per second to 110% of ATK.",
+        "level3": "Each enemy restores HP equal to 100% of her ATK per second.",
+        "level4": "Increases DMG per second to 120% of ATK."
+      },
+      "image": "/skills/demeter_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Sprawling Thorns",
+      "description": "Demeter controls vines to restrain the farthest enemy, dealing DMG equal to 270% of ATK and draining 100 Energy from them.",
+      "upgrades": {
+        "level2": "Increases DMG dealt to 300% of ATK.",
+        "level3": "Energy drained increases to 150.",
+        "level4": "Increases DMG dealt to 330% of ATK."
+      },
+      "image": "/skills/demeter_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Return of the Maiden",
+      "description": "Restores 2% HP every 0.2s for 3s when Demeter’s HP drops below 50%. Can be triggered once per battle.",
+      "upgrades": {
+        "level2": "Restores 3% HP every 0.2s.",
+        "level3": "Duration extends to 4s.",
+        "level4": "Can trigger twice per battle and once every 6s."
+      },
+      "image": "/skills/demeter_skill_3.webp"
+    },
+    {
+      "id": "skill_4",
+      "name": "Harvest’s Blessing",
+      "description": "Demeter grants a shield equal to 200% of ATK to herself and the most vulnerable ally. The shield lasts up to 10s.",
+      "upgrades": {
+        "level2": "Shield strength increases to 220% of ATK.",
+        "level3": "Increases M-RES by 50% while the shield is active.",
+        "level4": "Shield strength increases to 250% of ATK."
+      },
+      "image": "/skills/demeter_skill_4.webp"
+    }
+  ],
+  "relic": {
+    "name": "Four Seasons’ Bounty",
+    "description": "Demeter enters battle with 3 stacks of Abundance. Each stack reduces DMG taken by 15%. For every 30% of max HP lost, one stack is consumed. Stacks are regained when her HP is restored to a certain level.",
+    "upgrades": {
+      "level2": "When Demeter has 3 stacks of Abundance, she is immune to Crowd Control.",
+      "level3": "Each stack of Abundance reduces DMG taken by 17.5%.",
+      "level4": "Each stack of Abundance reduces DMG taken by 20%."
+    },
+    "image": "/skills/demeter_relic.webp"
+  }
+}

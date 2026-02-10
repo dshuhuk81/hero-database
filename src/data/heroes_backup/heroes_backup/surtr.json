@@ -1,0 +1,84 @@
+{
+  "id": "surtr",
+  "name": "Surtr",
+  "image": "/heroes/surtr.webp",
+  "faction": "Hearts",
+  "role": "Arcane",
+  "class": "Mage",
+  "rarity": "Legendary",
+  "description": "Surtr, godess of desctruction and renewal, is the greatest Fiery Jotunn and the executor of Ragnarok.",
+  "ratings": {
+    "overall": "C",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 0,
+  "stats": {
+    "hp": 240964,
+    "atk": 24649,
+    "armor": 5028,
+    "magicRes": 4877,
+    "dodgeRate": 1,
+    "hitBonus": 0,
+    "critRate": 10,
+    "critRes": 8
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Burn to Ashes",
+      "description": "Channels fire to forge a giant flaming greatsword, locks the farthest enemy, and slashes in their direction, dealing DMG equal to 300% of ATK to all enemies in a rectangle. If the target's current HP is above 70%, the DMG is increased by 25%.",
+      "upgrades": {
+        "level2": "Increases DMG dealt to 330%.",
+        "level3": "Deals 35% increased DMG to enemies with HP above 50%.",
+        "level4": "Increases DMG dealt to 360%."
+      },
+      "image": "/skills/surtr_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Fiery Scourge",
+      "description": "Roots the nearest enemy in a flaming cage for 3s, allowing attacks but dealing DMG equal to 100% of ATK per sec to them.",
+      "upgrades": {
+        "level2": "Deals 110% ATK as DMG per sec.",
+        "level3": "Rooted enemies take 15% increased M-DMG.",
+        "level4": "Deals 120% ATK as DMG per sec. (Unlocks at Lv.261)"
+      },
+      "image": "/skills/surtr_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Unquenchable Flame",
+      "description": "Surtr gains a shield equal to 240% ATK for every 3 skills cast.",
+      "upgrades": {
+        "level2": "Surtr gains a shield equal to 270% ATK for every 3 skills cast.",
+        "level3": "Surtr's ATK is increased by 20% when he is shielded.",
+        "level4": "Surtr gains a shield equal to 300% ATK for every 3 skills cast. (Unlocks at Lv.281)"
+      },
+      "image": "/skills/surtr_skill_3.webp"
+    },
+    {
+      "id": "skill_4",
+      "name": "Skyward Inferno",
+      "description": "Summons a blazing sword to orbit her and then locks the nearest target to deal DMG equal to 300% of her ATK.",
+      "upgrades": {
+        "level2": "Deals 320% ATK as DMG.",
+        "level3": "Reduces healing received by hit enemies by 50% for 6s.",
+        "level4": "Deals 350% ATK as DMG."
+      },
+      "image": "/skills/surtr_skill_4.webp"
+    }
+  ],
+  "relic": {
+    "name": "Soul Scorch",
+    "description": "After Surtr casts his Ultimate, Skyward Inferno will also attack the 2 nearest enemies until the battle ends. (Unlock at Relic Lv.1)",
+    "upgrades": {
+      "level2": "Surtr's Ultimate grants Skyward Inferno CD exemption for 6s. (Unlock at Relic Lv.10)",
+      "level3": "Increases the casting speed of Skyward Inferno by 50%. (Unlock at Relic Lv.20)",
+      "level4": "Surtr's Ultimate grants Skyward Inferno CD exemption for 10s. (Unlock at Relic Lv.30)"
+    },
+    "image": "/skills/surtr_relic.webp"
+  }
+}

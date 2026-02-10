@@ -1,0 +1,64 @@
+{
+  "id": "capricorn",
+  "name": "Capricorn",
+  "image": "/heroes/capricorn.webp",
+  "faction": "Spades",
+  "role": "Arcane",
+  "class": "Assassin",
+  "rarity": "Epic",
+  "description": "Oannios, goddess of Capricorn, embodies the rebellion and free will of both mortals and gods.",
+  "ratings": {
+    "overall": "B",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 0,
+  "stats": {
+    "hp": 245371,
+    "atk": 24986,
+    "armor": 5124,
+    "magicRes": 4980,
+    "dodgeRate": 16,
+    "hitBonus": 0,
+    "critRate": 6,
+    "critRes": 2,
+    "critDmgBonus": 5
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Soothing Rain",
+      "description": "Restores HP to allies over time.",
+      "upgrades": {
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      },
+      "image": "/skills/virgo_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      },
+      "image": "/skills/virgo_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      },
+      "image": "/skills/virgo_skill_3.webp"
+    }
+  ]
+}

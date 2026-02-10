@@ -1,0 +1,63 @@
+{
+  "id": "scorpio",
+  "name": "Scorpio",
+  "image": "/heroes/scorpio.webp",
+  "faction": "Spades",
+  "role": "Nimble",
+  "class": "Assassin",
+  "rarity": "Epic",
+  "description": "Melard, known as Scorpio, embodies cold-blooded creatures. One glimpse of her face awakens deep, frequent dread and reveals her devastating power.",
+  "ratings": {
+    "overall": "B",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 0,
+  "stats": {
+    "hp": 240040,
+    "atk": 24492,
+    "armor": 5023,
+    "magicRes": 4860,
+    "dodgeRate": 16,
+    "hitBonus": 0,
+    "critRate": 8.5,
+    "critRes": 2
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Soothing Rain",
+      "description": "Restores HP to allies over time.",
+      "upgrades": {
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      },
+      "image": "/skills/virgo_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      },
+      "image": "/skills/virgo_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      },
+      "image": "/skills/virgo_skill_3.webp"
+    }
+  ]
+}

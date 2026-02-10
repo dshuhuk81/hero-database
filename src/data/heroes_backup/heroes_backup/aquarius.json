@@ -1,0 +1,64 @@
+{
+  "id": "aquarius",
+  "name": "Aquarius",
+  "image": "/heroes/aquarius.webp",
+  "faction": "Spades",
+  "role": "Hefty",
+  "class": "Tank",
+  "rarity": "Epic",
+  "description": "Doxia, known as Aquarius is the goddess of wisdom, truth and knowledge. Her nearly human-sized vessel is both a source of insight and a wellspring of understanding.",
+  "ratings": {
+    "overall": "B",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 0,
+  "stats": {
+    "hp": 242140,
+    "atk": 24544,
+    "armor": 5038,
+    "magicRes": 4898,
+    "dodgeRate": 1,
+    "hitBonus": 4,
+    "critRate": 0,
+    "critRes": 12,
+    "energy": 100
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Soothing Rain",
+      "description": "Restores HP to allies over time.",
+      "upgrades": {
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      },
+      "image": "/skills/virgo_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      },
+      "image": "/skills/virgo_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      },
+      "image": "/skills/virgo_skill_3.webp"
+    }
+  ]
+}

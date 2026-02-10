@@ -1,0 +1,84 @@
+{
+  "id": "zeus",
+  "name": "Zeus",
+  "image": "/heroes/zeus.webp",
+  "faction": "Starglint",
+  "role": "Arcane",
+  "class": "Mage",
+  "rarity": "Legendary",
+  "description": "Zeus, king of gods and mortals, rules over the sky, thunder, and justice. High among the clouds with Lightning Bolt in hand, he casts his gaze across the world, and all beings bow beneath his might.",
+  "ratings": {
+    "overall": "SSS",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
+  },
+  "recommendedRelicLevel": 30,
+  "stats": {
+    "hp": 241819,
+    "atk": 24752,
+    "armor": 5035,
+    "magicRes": 4883,
+    "dodgeRate": 1,
+    "hitBonus": 0,
+    "critRate": 10,
+    "critRes": 8
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Almighty Thunderstrike",
+      "description": "Zeus summons his Echoes and rains down thunderbolts, striking all units 3 times, each dealing DMG equal to 120% of ATK.",
+      "upgrades": {
+        "level2": "Increases DMG dealt to 160%.",
+        "level3": "Gains 500 Energy on entry.",
+        "level4": "Increases DMG dealt to 200%."
+      },
+      "image": "/skills/zeus_skill_1.webp"
+    },
+    {
+      "id": "skill_2",
+      "name": "Supreme Judgment",
+      "description": "Zeus judges the current target, dealing DMG equal to 270% of ATK plus 8% of the target’s current HP (up to 100% of Zeus’s current ATK).",
+      "upgrades": {
+        "level2": "Increases DMG dealt to 300% of ATK.",
+        "level3": "This skill ignores Dodge Rate.",
+        "level4": "Deals DMG equal to 12% of the target’s current HP (up to 150% of Zeus’s current ATK)."
+      },
+      "image": "/skills/zeus_skill_2.webp"
+    },
+    {
+      "id": "skill_3",
+      "name": "Almighty Advent",
+      "description": "Summons an Echo that inherits 35% of Zeus’s max HP and 75% of his ATK, lasting 15s. If a single hit deals DMG exceeding 20% of his max HP, Zeus creates an Echo and blinks to the safest ally (Passive). This effect has a 20s cooldown.",
+      "upgrades": {
+        "level2": "Echoes inherit 50% of Zeus’s max HP.",
+        "level3": "Echoes inherit the Overload Unleash effect.",
+        "level4": "Echoes inherit 100% of Zeus’s ATK."
+      },
+      "image": "/skills/zeus_skill_3.webp"
+    },
+    {
+      "id": "skill_4",
+      "name": "Overload Unleash",
+      "description": "Increases ATK SPD by 8% and Ultimate DMG by 2% when gaining a buff from an ally. This effect can stack up to 10 times. At max stacks, Zeus gains Thundercrack, dealing 30% increased DMG.",
+      "upgrades": {
+        "level2": "Increases ATK SPD by 12% and Ultimate DMG by 3%.",
+        "level3": "Triggers Thundercrack upon reaching 8 stacks.",
+        "level4": "Increases DMG dealt by 50%."
+      },
+      "image": "/skills/zeus_skill_4.webp"
+    }
+  ],
+  "relic": {
+    "name": "Divine Pulse",
+    "description": "When Zeus casts Almighty Thunderstrike, all Echoes on the field also cast it, dealing 70% of the original DMG.",
+    "upgrades": {
+      "level2": "After each Normal Attack, the next attack triggers Supreme Judgment. Increases Supreme Judgment DMG by 20%.",
+      "level3": "When Zeus casts Almighty Thunderstrike, all Echoes also cast it, dealing 100% of the original DMG.",
+      "level4": "Echoes can also trigger Divine Pulse and Supreme Judgment."
+    },
+    "image": "/skills/zeus_relic.webp"
+  }
+}
