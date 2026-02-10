@@ -12,7 +12,7 @@ from googleapiclient.discovery import build
 FOLDER_PATH      = "src/data/heroes"          # Ordner mit den Helden-JSON Dateien
 CREDENTIALS_FILE = "google_credentials.json"  # OAuth Client-ID Datei
 TOKEN_FILE       = "token.json"               # Wird automatisch erstellt nach erstem Login
-SPREADSHEET_ID   = "D1Cfw5NuxihHm_277IdbED9fYpXXyw3YKyEzz_OyTryMI"     # Aus der Google Sheets URL
+SPREADSHEET_ID   = "1Cfw5NuxihHm_277IdbED9fYpXXyw3YKyEzz_OyTryMI"     # Aus der Google Sheets URL
 SHEET_NAME       = "Ratings"                  # Name des Tabellenblatts
 # ============================================================
 
