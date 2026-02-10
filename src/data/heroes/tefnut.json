@@ -26,6 +26,60 @@
     "critRate": 4,
     "critRes": 8
   },
+  "teamComps": {
+    "pve": {
+      "title": "Best PVE Setup",
+      "description": "",
+      "formation": [
+        {
+          "heroId": "khepri",
+          "position": "back-left"
+        },
+        {
+          "heroId": "geb",
+          "position": "back-right"
+        },
+        {
+          "heroId": "tefnut",
+          "position": "front-left"
+        },
+        {
+          "heroId": "hela",
+          "position": "front-center"
+        },
+        {
+          "heroId": "nyx",
+          "position": "front-right"
+        }
+      ]
+    },
+    "pvp": {
+      "title": "Best PVP Setup",
+      "description": "",
+      "formation": [
+        {
+          "heroId": "athena",
+          "position": "back-left"
+        },
+        {
+          "heroId": "cancer",
+          "position": "back-right"
+        },
+        {
+          "heroId": "tefnut",
+          "position": "front-left"
+        },
+        {
+          "heroId": "freya",
+          "position": "front-center"
+        },
+        {
+          "heroId": "nyx",
+          "position": "front-right"
+        }
+      ]
+    }
+  },
   "skills": [
     {
       "id": "skill_1",
