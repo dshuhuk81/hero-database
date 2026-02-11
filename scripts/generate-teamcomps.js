@@ -7,6 +7,17 @@ const OUT_DIR = path.join(ROOT, "src", "data", "derived");
 const OUT_FILE = path.join(OUT_DIR, "teamCompsByHeroId.json");
 const CONFIG_FILE = path.join(OUT_DIR, "builder.config.json");
 
+const TEXT_FILE = path.join(ROOT, "src", "config", "text", "coachTexts.en.json");
+
+let TEXTS = null;
+if (fs.existsSync(TEXT_FILE)) {
+  TEXTS = readJson(TEXT_FILE);
+} else {
+  console.warn(`⚠️ Missing text file: ${TEXT_FILE} (fallback to inline strings)`);
+  TEXTS = {};
+}
+
+
 // Positions in UI are mislabeled:
 // row2 positions: back-left/back-right = actual frontline left/right
 // row3 positions: front-left/front-center/front-right = actual backline
@@ -35,6 +46,18 @@ function getAllHeroes() {
   const files = fs.readdirSync(HERO_DIR).filter((f) => f.endsWith(".json"));
   return files.map((f) => readJson(path.join(HERO_DIR, f)));
 }
+
+function t(pathStr, fallback = "") {
+  // pathStr like: "winConditions.tempoDoubleCarry.long"
+  const parts = (pathStr ?? "").split(".");
+  let cur = TEXTS;
+  for (const p of parts) {
+    if (!cur || typeof cur !== "object" || !(p in cur)) return fallback;
+    cur = cur[p];
+  }
+  return typeof cur === "string" ? cur : fallback;
+}
+
 
 function extractText(hero) {
   const skills = hero.skills ?? [];
@@ -216,12 +239,12 @@ function scoreHero(hero, tags) {
 
 // ------ Analyze WinDanger -------
 function analyzeWinDanger(team, mode, lang = "en") {
-  const isEN = lang === "en";
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const metaOf = (h) => h.__meta ?? h.meta ?? {};
   const scOf = (h) => h.__scores ?? {};
 
   const frontlineCount = team.filter((h) => tagsOf(h).has("frontline") || tagsOf(h).has("tank")).length;
+
   const carries = team.filter((h) => {
     const t = tagsOf(h);
     return t.has("assassin") || t.has("mage") || t.has("ranged") || t.has("burst");
@@ -241,64 +264,35 @@ function analyzeWinDanger(team, mode, lang = "en") {
   const delayedDive = team.some((h) => metaOf(h).engageStyle === "delayed_dive");
   const collapse = team.some((h) => (metaOf(h).ccCollapse ?? 0) >= 1);
 
-  // ---- Win Condition (pick best matching) ----
-  let win = "";
-  if (tempoTotal >= 800 && carries >= 2) {
-    win = isEN
-      ? "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion)."
-      : "Tempo-Engines beschleunigen Ult-Zyklen und erzeugen Burst-Windows (Double-Carry Conversion).";
-  } else if (collapse && (frontlineCount >= 3 || controlSignals >= 2)) {
-    win = isEN
-      ? "Collapse/control chains cluster enemies for melee AoE and consistent fight control."
-      : "Collapse-/Control-Ketten clustern Gegner für Melee-AoE und konstante Fight-Kontrolle.";
-  } else if (frontlineCount >= 2 && sustainSignals >= 1) {
-    win = isEN
-      ? "Stable frontline + sustain wins long fights through consistency and uptime."
-      : "Stabile Frontline + Sustain gewinnt lange Fights über Consistency und Uptime.";
-  } else if (burstTotal >= 1200 && carries >= 2) {
-    win = isEN
-      ? "Burst composition: play around short engage windows and quick target elimination."
-      : "Burst-Komposition: spiele kurze Engage-Windows und schnelle Target-Elimination.";
-  } else if (controlSignals >= 2) {
-    win = isEN
-      ? "Control pressure: chain CC to deny enemy tempo and secure picks."
-      : "Control-Pressure: chain CC, um gegnerisches Tempo zu stoppen und Picks zu sichern.";
-  } else {
-    win = isEN
-      ? "Balanced plan: stabilize early and convert advantages through team synergy."
-      : "Balanced-Plan: stabilisiere early und konvertiere Vorteile über Team-Synergie.";
-  }
+  // --- decide KEYS ---
+  let winKey = "balancedScaling";
+  if (tempoTotal >= 800 && carries >= 2) winKey = "tempoDoubleCarry";
+  else if (collapse && (frontlineCount >= 3 || controlSignals >= 2)) winKey = "controlCollapse";
+  else if (frontlineCount >= 2 && sustainSignals >= 1) winKey = "frontlineSustain";
+  else if (burstTotal >= 1200 && carries >= 2) winKey = "burstWindows";
+  else if (controlSignals >= 2) winKey = "controlChain";
 
-  // ---- Danger (pick biggest risk) ----
-  let danger = "";
-  if (frontlineCount === 0) {
-    danger = isEN
-      ? "No true frontline — fragile if fights drag on or if the enemy collapses early."
-      : "Keine echte Frontline — fragil, wenn Fights lang werden oder Gegner early collapst.";
-  } else if (frontlineCount === 1 && mode === "pvp") {
-    danger = isEN
-      ? "Single frontline in PvP — vulnerable to coordinated dives and early burst."
-      : "Nur eine Frontline in PvP — anfällig für koordinierte Dives und early Burst.";
-  } else if (tempoTotal >= 800 && carries <= 1) {
-    danger = isEN
-      ? "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
-      : "Tempo ohne genügend Carry-Conversion — füge 1–2 echte Carries hinzu, um Engines zu nutzen.";
-  } else if (sustainSignals === 0) {
-    danger = isEN
-      ? "Low sustain — if the first burst window fails, the team may lose extended fights."
-      : "Wenig Sustain — wenn das erste Burst-Window scheitert, verliert das Team lange Fights.";
-  } else if (delayedDive && anchors === 0) {
-    danger = isEN
-      ? "Delayed diver without a strong anchor — risk of losing control before the engage timing."
-      : "Delayed Diver ohne starken Anchor — Risiko, vor dem Timing die Kontrolle zu verlieren.";
-  } else {
-    danger = isEN
-      ? "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
-      : "Allgemeines Risiko: achte auf Positioning und gib dem Gegner kein freies First-Engage.";
-  }
+  let dangerKey = "generic";
+  if (frontlineCount === 0) dangerKey = "noFrontline";
+  else if (frontlineCount === 1 && mode === "pvp") dangerKey = "singleFrontlinePvp";
+  else if (tempoTotal >= 800 && carries <= 1) dangerKey = "tempoNoConversion";
+  else if (sustainSignals === 0) dangerKey = "lowSustain";
+  else if (delayedDive && anchors === 0) dangerKey = "delayedDiveNoAnchor";
 
-  return { winCondition: win, danger };
+  // --- resolve text (fallbacks keep build safe) ---
+  const winCondition =
+    t(`winConditions.${winKey}.long`, "") ||
+    t(`winConditions.${winKey}`, "") ||
+    "";
+
+  const danger =
+    t(`danger.${dangerKey}.long`, "") ||
+    t(`danger.${dangerKey}`, "") ||
+    "";
+
+  return { winKey, dangerKey, winCondition, danger };
 }
+
 
 
 // ---------- archetypes ----------
@@ -960,7 +954,6 @@ function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
 }
 
 function analyzeMatchupsLight(team, mode, lang = "en") {
-  const isEN = lang === "en";
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const metaOf = (h) => h.__meta ?? h.meta ?? {};
   const scOf = (h) => h.__scores ?? {};
@@ -977,8 +970,8 @@ function analyzeMatchupsLight(team, mode, lang = "en") {
     team.some((h) => ["single", "team"].includes(metaOf(h).cleanse));
 
   const antiAssassin = team.some((h) => tagsOf(h).has("antiAssassin"));
-
   const controlCount = team.filter((h) => tagsOf(h).has("control") || tagsOf(h).has("taunt")).length;
+
   const tempoTotal = team.reduce((a, h) => a + (scOf(h).tempo ?? 0), 0);
   const burstTotal = team.reduce((a, h) => a + (scOf(h).burst ?? 0), 0);
 
@@ -989,81 +982,42 @@ function analyzeMatchupsLight(team, mode, lang = "en") {
 
   const anchors = team.filter((h) => (metaOf(h).frontAnchor ?? 0) >= 2).length;
 
-  const strong = [];
-  const weak = [];
+  const strongKeys = [];
+  const weakKeys = [];
 
-  // -----------------------------
-  // STRONG VS (What you beat)
-  // -----------------------------
+  // STRONG
+  if (tempoTotal >= 800 && carries >= 2) strongKeys.push("slowScaling");
+  if (controlCount >= 2) strongKeys.push("lowCleanse");
+  if (frontlineCount >= 2 && sustainSignals >= 1) strongKeys.push("pokeAttrition");
+  if (burstTotal >= 1200 && carries >= 2) strongKeys.push("fragileBackline");
+  if (mode === "pvp" && antiAssassin) strongKeys.push("diveAssassins");
 
-  // Tempo + double carry punishes slow comps
-  if (tempoTotal >= 800 && carries >= 2) {
-    strong.push(isEN ? "Slow / scaling-only teams" : "Langsame / reine Scaling-Teams");
-  }
+  // WEAK
+  if (frontlineCount === 0) weakKeys.push("hardEngage");
+  else if (frontlineCount === 1 && mode === "pvp") weakKeys.push("coordinatedDiveBurst");
+  if (sustainSignals === 0) weakKeys.push("extendedSustain");
+  if (!cleanse && controlCount <= 1) weakKeys.push("heavyCCLock");
+  if (tempoTotal >= 800 && carries <= 1) weakKeys.push("tankStall");
+  if (mode === "pvp" && !antiAssassin) weakKeys.push("burstAssassinsOnCarries");
+  if (anchors === 0 && frontlineCount <= 1) weakKeys.push("earlyPressureLaneFocus");
 
-  // Control chains punish low-cleanse teams
-  if (controlCount >= 2) {
-    strong.push(isEN ? "Low-cleanse teams (CC chain value)" : "Teams ohne Cleanse (CC-Chain Value)");
-  }
+  const uniq = (arr) => [...new Set(arr)].slice(0, 3);
 
-  // Sustain + frontline beats poke/attrition
-  if (frontlineCount >= 2 && sustainSignals >= 1) {
-    strong.push(isEN ? "Poke / attrition teams" : "Poke / Attrition-Teams");
-  }
+  const strongVsKeys = uniq(strongKeys);
+  const weakVsKeys = uniq(weakKeys);
 
-  // Burst double carry punishes fragile backlines
-  if (burstTotal >= 1200 && carries >= 2) {
-    strong.push(isEN ? "Fragile backlines (fast pick potential)" : "Fragile Backlines (schnelle Picks)");
-  }
+  // resolve
+  const strongVs = strongVsKeys
+    .map((k) => t(`matchups.strong.${k}`, ""))
+    .filter(Boolean);
 
-  // Anti-assassin helps vs dive
-  if (mode === "pvp" && antiAssassin) {
-    strong.push(isEN ? "Dive assassin comps" : "Dive-Assassin Comps");
-  }
+  const weakVs = weakVsKeys
+    .map((k) => t(`matchups.weak.${k}`, ""))
+    .filter(Boolean);
 
-  // -----------------------------
-  // WEAK VS (What beats you)
-  // -----------------------------
-
-  // No/low frontline is vulnerable
-  if (frontlineCount === 0) {
-    weak.push(isEN ? "Hard engage / collapse openers" : "Hard-Engage / Collapse-Opener");
-  } else if (frontlineCount === 1 && mode === "pvp") {
-    weak.push(isEN ? "Coordinated dive + burst" : "Koordinierte Dives + Burst");
-  }
-
-  // No sustain loses extended fights
-  if (sustainSignals === 0) {
-    weak.push(isEN ? "Extended fights / sustain teams" : "Lange Fights / Sustain-Teams");
-  }
-
-  // No cleanse suffers CC lock
-  if (!cleanse && controlCount <= 1) {
-    weak.push(isEN ? "Heavy CC lock teams" : "Heavy-CC-Lock Teams");
-  }
-
-  // Tempo without conversion
-  if (tempoTotal >= 800 && carries <= 1) {
-    weak.push(isEN ? "High-tank + stall (tempo wasted)" : "High-Tank + Stall (Tempo verpufft)");
-  }
-
-  // If no anti-assassin in PvP, warn vs assassins
-  if (mode === "pvp" && !antiAssassin) {
-    weak.push(isEN ? "Burst assassins targeting carries" : "Burst-Assassins auf Carries");
-  }
-
-  // If no anchors & low frontline, warn vs early pressure
-  if (anchors === 0 && frontlineCount <= 1) {
-    weak.push(isEN ? "Early pressure / lane focus" : "Früher Druck / Lane-Fokus");
-  }
-
-  // Deduplicate & cap (keep it light)
-  const uniq = (arr) => [...new Set(arr)];
-  return {
-    strongVs: uniq(strong).slice(0, 3),
-    weakVs: uniq(weak).slice(0, 3)
-  };
+  return { strongVsKeys, weakVsKeys, strongVs, weakVs };
 }
+
 
 
 
@@ -1372,6 +1326,11 @@ for (const anchor of enrichedHeroes) {
       danger: pveWD.danger,
       strongVs: pveMU.strongVs,
       weakVs: pveMU.weakVs,
+      winKey: pveWD.winKey,
+      dangerKey: pveWD.dangerKey,
+      strongVsKeys: pveMU.strongVsKeys,
+      weakVsKeys: pveMU.weakVsKeys,
+
     },
     pvp: {
       title: pvpInfo.title,
@@ -1383,6 +1342,11 @@ for (const anchor of enrichedHeroes) {
       danger: pvpWD.danger,
       strongVs: pvpMU.strongVs,
       weakVs: pvpMU.weakVs,
+      winKey: pveWD.winKey,
+      dangerKey: pvpWD.dangerKey,
+      strongVsKeys: pvpMU.strongVsKeys,
+      weakVsKeys: pvpMU.weakVsKeys,
+
     }
   };
 }
