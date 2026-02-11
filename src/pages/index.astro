@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetButton = document.getElementById("resetFilters");
   const heroCounter = document.getElementById("heroCounter");
   const roleChips = document.querySelectorAll(".role-chip");
-
+  const factionChips = document.querySelectorAll(".faction-chip");
   const heroCards = document.querySelectorAll(".hero-wrapper");
   const classChips = document.querySelectorAll(".class-chip");
   const rarityChips = document.querySelectorAll(".rarity-chip");
@@ -236,6 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeRoles = new Set();  
   let activeClasses = new Set();
   let activeRarities = new Set();
+  let activeFactions = new Set();
 
   function applyFilters() {
   const query = (searchInput.value || "").toLowerCase();
@@ -246,12 +247,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const cls = card.dataset.class;
     const role = card.dataset.role;
     const rarity = card.dataset.rarity;
+    const faction = card.dataset.faction;
 
     const matchesSearch =
       !query ||
       name.includes(query) ||
       cls.includes(query) ||
       role.includes(query) ||
+      faction.includes(query) ||
       rarity.includes(query);
 
     const matchesClass =
@@ -263,8 +266,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const matchesRarity =
       activeRarities.size === 0 || activeRarities.has(rarity);
 
+    const matchesFaction =
+      activeFactions.size === 0 || activeFactions.has(faction);
+      
     const show =
-      matchesSearch && matchesClass && matchesRole && matchesRarity;
+      matchesSearch && matchesClass && matchesRole && matchesFaction && matchesRarity;
 
     card.style.display = show ? "block" : "none";
     if (show) visible++;
@@ -302,6 +308,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  factionChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const c = chip.dataset.faction;
+      chip.classList.toggle("active");
+      activeFactions.has(c) ? activeFactions.delete(c) : activeFactions.add(c);
+      applyFilters();
+    });
+  });
+
   rarityChips.forEach(chip => {
     chip.addEventListener("click", () => {
       const r = chip.dataset.rarity;
@@ -316,6 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
     activeClasses.clear();
     activeRarities.clear();
     activeRoles.clear();
+    activeFactions.clear();
     document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
     applyFilters();
     document.querySelectorAll(".role-chip.active").forEach(c => c.classList.remove("active"));

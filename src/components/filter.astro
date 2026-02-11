@@ -49,6 +49,29 @@
       </button>
     </div>
 
+    <!-- FACTION -->
+    <div class="filter-group">
+      <span class="filter-label">Faction</span>
+
+      <button class="chip faction-chip" data-faction="hearts" title="hearts">
+        <img src="/icons/factions/hearts.webp" alt="hearts" />
+      </button>
+
+      <button class="chip faction-chip" data-faction="clubs" title="clubs">
+        <img src="/icons/factions/clubs.webp" alt="clubs" />
+      </button>
+
+      <button class="chip faction-chip" data-faction="diamonds" title="diamonds">
+        <img src="/icons/factions/diamonds.webp" alt="diamonds" />
+      </button>
+       <button class="chip faction-chip" data-faction="spades" title="spades">
+        <img src="/icons/factions/spades.webp" alt="spades" />
+      </button>
+       <button class="chip faction-chip" data-faction="starglint" title="starglint">
+        <img src="/icons/factions/starglint.webp" alt="starglint" />
+      </button>
+    </div>
+
     <!-- SEARCH -->
     <div class="filter-group">
       <input
@@ -195,21 +218,12 @@
 .chip.active {
   opacity: 1;
 }
-.class-chip img {
+.class-chip img, .faction-chip img, .role-chip img {
   width: 36px;
   height: 36px;
   filter: grayscale(100%) brightness(1.2);
 }
-.class-chip.active img {
-  filter: brightness(1.4);
-}
-.role-chip img {
-  width: 36px;
-  height: 36px;
-  filter: grayscale(100%) brightness(1.2);
-}
-
-.role-chip.active img {
+.class-chip.active img, .faction-chip.active img, .role-chip.active img {
   filter: brightness(1.4);
 }
 
