@@ -18,6 +18,13 @@
     "taunt": ["taunt"],
     "control": ["stun", "knock", "knock down", "ensnare", "silence", "freeze", "root"],
     "energy": ["energy", "drain"],
-    "antiAssassin": ["most vulnerable", "farthest enemy", "counter", "dodge"]
+    "antiAssassin": ["most vulnerable", "farthest enemy", "counter", "dodge"],
+    "diver": ["dash", "charge", "leap", "dive", "backline"],
+    "bruiser": ["damage reduction", "lifesteal", "sustain", "gain armor", "gain shield"],
+    "energy_start": ["starts with", "start the battle with", "initial energy", "gain 300 energy"],
+    "reflect": ["reflect", "attackers take damage", "damage reflection"],
+    "aura": ["aura", "within", "nearby allies"],
+    "lifesteal_aura": ["lifesteal aura", "steal hp", "heals all teammates", "restore hp to all allies"],
+    "melee_support": ["shield", "barrier", "aura damage", "nearby enemies", "nearby allies"]
   }
 }
