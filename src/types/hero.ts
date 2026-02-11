@@ -53,7 +53,7 @@ export interface FormationHero {
 
 export interface TeamComp {
   title: string;
-  description: string;
+  /*description: string;*/
   formation: FormationHero[];
 }
 

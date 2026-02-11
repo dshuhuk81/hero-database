@@ -56,6 +56,7 @@ function extractText(hero) {
 function tagHero(hero, cfg) {
   const text = extractText(hero);
   const tags = new Set();
+  const m = hero.meta ?? {};
 
   for (const [tag, keywords] of Object.entries(cfg.keywordTags ?? {})) {
     for (const kw of keywords) {
@@ -65,7 +66,26 @@ function tagHero(hero, cfg) {
       }
     }
   }
+  // Row / positioning
+  if (m.preferredRow === "frontline") tags.add("frontline");
+  if (m.preferredRow === "backline") tags.add("backline");
 
+  // Engage / movement
+  if (m.engageStyle === "delayed_dive" || m.backlineAccess >= 1) tags.add("diver");
+  if (m.backlineAccess >= 2) tags.add("jump"); // oder "dash" je nachdem wie du’s nutzen willst
+
+  // Support details
+  if (m.cleanse === "team" || m.cleanse === "single") tags.add("cleanse");
+  if (m.lifestealAuraTeam) tags.add("lifesteal_aura");
+
+  // Energy profile -> tempo tags
+  const ep = Array.isArray(m.energyProfile) ? m.energyProfile : [];
+  if (ep.includes("push")) tags.add("energy_push");
+  if (ep.includes("regen")) tags.add("energy_regen");
+  if (ep.includes("start")) tags.add("energy_start");
+
+  // Special CC clustering
+  if (m.ccCollapse >= 1) tags.add("control"); // oder ein extra tag "cc_collapse"
   // class-based tags (deterministic)
   const cls = lower(hero.class);
   if (cls.includes("tank")) tags.add("tank");
@@ -90,7 +110,9 @@ function tagHero(hero, cfg) {
 }
 
 function scoreHero(hero, tags) {
+  const m = hero.meta ?? {};
   const s = hero.stats ?? {};
+  const ep = Array.isArray(m.energyProfile) ? m.energyProfile : [];
 
   // normalize-ish (these numbers are huge; we use sqrt)
   const hp = Math.sqrt(Math.max(0, s.hp ?? 0));
@@ -98,25 +120,53 @@ function scoreHero(hero, tags) {
   const armor = Math.sqrt(Math.max(0, s.armor ?? 0));
   const mres = Math.sqrt(Math.max(0, s.magicRes ?? 0));
   const dodge = s.dodgeRate ?? 0;
-
   const tempo =
+    // klassische Tag-basierte Tempo-Signale
     (tags.includes("energy_push") ? 320 : 0) +
     (tags.includes("energy_regen") ? 200 : 0) +
     (tags.includes("cdr") ? 140 : 0) +
     (tags.includes("haste") ? 160 : 0) +
     (tags.includes("buff_atk") ? 90 : 0) +
     (tags.includes("buff_team") ? 70 : 0) +
-    (tags.includes("energy_start") ? 60 : 0);
+    (tags.includes("energy_start") ? 60 : 0) +
 
-  const survivability =
-    hp * 1.2 +
-    armor * 1.0 +
-    mres * 1.0 +
-    dodge * 10 +
-    (tags.includes("shield") ? 80 : 0) +
-    (tags.includes("taunt") ? 60 : 0) +
-    (tags.includes("reflect") ? 60 : 0) +
-    (tags.includes("energy_start") ? 40 : 0);
+    // --- META SUPPORT (neu) ---
+
+    // Energy Profile (strukturierte Variante statt Keyword)
+    (ep.includes("push") ? 320 : 0) +
+    (ep.includes("regen") ? 200 : 0) +
+    (ep.includes("start") ? 140 : 0) +
+    (ep.includes("teamwide") ? 80 : 0) +
+
+    // startet mit Energie (z.B. Geb 300 Start Energy)
+    (m.startsWithEnergy ? 120 : 0) +
+
+    // braucht Energie um zu funktionieren (z.B. Heracles delayed dive)
+    ((m.needsEnergyToFunction ?? 0) * 60);
+
+ const survivability =
+  hp * 1.2 +
+  armor * 1.0 +
+  mres * 1.0 +
+  dodge * 10 +
+
+  // bestehende Tag-Boni
+  (tags.includes("shield") ? 80 : 0) +
+  (tags.includes("taunt") ? 60 : 0) +
+  (tags.includes("reflect") ? 60 : 0) +
+  (tags.includes("energy_start") ? 40 : 0) +
+
+  // --- META INTEGRATION ---
+
+  // echter Front-Anchor (z.B. Geb links)
+  ((m.frontAnchor ?? 0) * 80) +
+
+  // wie gut kann er viel Druck tanken
+  ((m.threatSoak ?? 0) * 60) +
+
+  // braucht Schutz (z.B. fragile carries)
+  // negative Wirkung auf Survivability-Wert
+  ((m.needsProtection ?? 0) * -50);
 
   const healing =
     (tags.includes("healer") ? atk * 2.2 : 0) +
@@ -124,11 +174,18 @@ function scoreHero(hero, tags) {
     (tags.includes("shield") ? 50 : 0) +
     (tags.includes("lifesteal_aura") ? 90 : 0);
 
-  const control =
-    (tags.includes("control") ? 200 : 0) +
-    (tags.includes("taunt") ? 120 : 0) +
-    // Tempo-Supports: CDR ist quasi "mehr casts" => wirkt wie Utility/Control
-    (tags.includes("cdr") ? 90 : 0);
+ const control =
+  (tags.includes("control") ? 200 : 0) +
+  (tags.includes("taunt") ? 120 : 0) +
+
+  // CDR erhöht effektive Utility
+  (tags.includes("cdr") ? 90 : 0) +
+
+  // --- META INTEGRATION ---
+
+  // CC der Gegner clustert (Geb Collapse etc.)
+  ((m.ccCollapse ?? 0) * 90);
+
 
   const burst =
     atk * (tags.includes("assassin") ? 1.6 : 1.0) +
@@ -474,14 +531,33 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
 
 // ---------- synergy bonus ----------
 function teamSynergyBonus(team, mode) {
+  let bonus = 0;
+
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const countTag = (tag) => team.reduce((acc, h) => acc + (tagsOf(h).has(tag) ? 1 : 0), 0);
   const hasTag = (tag) => team.some((h) => tagsOf(h).has(tag));
 
+  const metaOf = (h) => h.__meta ?? h.meta ?? {};
+  const countMeta = (key, min = 1) =>
+    team.reduce((a, h) => a + (((metaOf(h)[key] ?? 0) >= min) ? 1 : 0), 0);
+
+  // --- META SYNERGY RULES (now bonus exists) ---
+  const anchorCount = countMeta("frontAnchor", 2);
+  const delayedDiveCount = team.filter((h) => metaOf(h).engageStyle === "delayed_dive").length;
+  if (anchorCount >= 1 && delayedDiveCount >= 1) bonus += 90;
+
+  const collapse = countMeta("ccCollapse", 1);
+  const meleeish = team.filter((h) => {
+    const t = tagsOf(h);
+    return t.has("frontline") || t.has("warrior") || t.has("tank") || t.has("assassin");
+  }).length;
+  if (collapse >= 1 && meleeish >= 3) bonus += 110;
+
+  // --- existing synergy calculations ---
   const tempoTotal = team.reduce((a, h) => a + (h.__scores?.tempo ?? 0), 0);
 
   const carryCount = team.filter((h) => {
-    const t = new Set(h.__tags ?? []);
+    const t = tagsOf(h);
     return t.has("assassin") || t.has("mage") || t.has("ranged") || t.has("burst");
   }).length;
 
@@ -503,14 +579,11 @@ function teamSynergyBonus(team, mode) {
     return t.has("diver") || t.has("dash") || t.has("jump");
   });
 
-  let bonus = 0;
-
   // --- TEMPO: engine -> carry conversion ---
   if (tempoTotal > 0) {
     const conversion = carryCount >= 2 ? 1.0 : carryCount === 1 ? 0.65 : 0.25;
     bonus += Math.min(220, (tempoTotal / 6) * conversion);
 
-    // PvP cares more about first-ult cycles / tempo spikes
     if (mode === "pvp") {
       bonus += Math.min(120, (tempoTotal / 10) * conversion);
     }
@@ -539,6 +612,7 @@ function teamSynergyBonus(team, mode) {
 
   return Math.min(bonus, 650);
 }
+
 
 function evaluateTeam(team, anchor, mode, cfg) {
   const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
@@ -618,32 +692,73 @@ function assignFormation(anchor, team, cfg) {
 
   const override = POSITION_OVERRIDES[anchor.id]?.prefer ?? null;
 
-  function scoreHighPressureFront(h) {
-    const t = tagsOf(h);
-    const s = scOf(h);
-    return (
-      (t.has("tank") ? 5000 : 0) +
-      (t.has("taunt") ? 1200 : 0) +
-      (t.has("reflect") ? 900 : 0) +
-      (t.has("shield") ? 700 : 0) +
-      (t.has("control") ? 500 : 0) +
-      (t.has("energy_start") ? 350 : 0) +
-      (s.survivability ?? 0)
-    );
-  }
+function scoreHighPressureFront(h) {
+  const t = tagsOf(h);
+  const s = scOf(h);
+  const m = h.__meta ?? h.meta ?? {};
 
-  function scoreLowPressureFront(h) {
-    const t = tagsOf(h);
-    const s = scOf(h);
-    return (
-      (t.has("diver") || t.has("dash") || t.has("jump") ? 1200 : 0) +
-      (t.has("lifesteal_aura") ? 500 : 0) +
-      (t.has("shield") ? 350 : 0) +
-      (t.has("assassin") ? 250 : 0) +
-      (s.survivability ?? 0) * 0.7 +
-      (s.burst ?? 0) * 0.35
-    );
-  }
+  return (
+    // bestehende Tank-Priorisierung
+    (t.has("tank") ? 5000 : 0) +
+    (t.has("taunt") ? 1200 : 0) +
+    (t.has("reflect") ? 900 : 0) +
+    (t.has("shield") ? 700 : 0) +
+    (t.has("control") ? 500 : 0) +
+    (t.has("energy_start") ? 350 : 0) +
+
+    // --- META INTEGRATION ---
+
+    // echter Front-Anchor (Geb-Typ)
+    ((m.frontAnchor ?? 0) * 900) +
+
+    // wie gut hält er 3 Angreifer aus
+    ((m.threatSoak ?? 0) * 600) +
+
+    // startet mit Energie (sofortiger Impact im 3v1 Druck)
+    (m.startsWithEnergy ? 450 : 0) +
+
+    // CC der Gegner clustert (gut bei hoher Gegnerdichte)
+    ((m.ccCollapse ?? 0) * 350) +
+
+    // normale Survivability als Fallback
+    (s.survivability ?? 0)
+  );
+}
+function scoreLowPressureFront(h) {
+  const t = tagsOf(h);
+  const s = scOf(h);
+  const m = h.__meta ?? h.meta ?? {};
+
+  return (
+    // mobile / dive-orientierte Helden
+    (t.has("diver") || t.has("dash") || t.has("jump") ? 1200 : 0) +
+
+    // Assassin-Tendenz
+    (t.has("assassin") ? 250 : 0) +
+
+    // Sustain-Unterstützung
+    (t.has("lifesteal_aura") ? 500 : 0) +
+    (t.has("shield") ? 350 : 0) +
+
+    // --- META INTEGRATION ---
+
+    // explizite safer-lane Präferenz (Heracles)
+    (m.lanePreference === "safer_lane" ? 900 : 0) +
+
+    // delayed dive Timing
+    (m.engageStyle === "delayed_dive" ? 700 : 0) +
+
+    // braucht Energie bevor er richtig stark ist
+    ((m.needsEnergyToFunction ?? 0) * 250) +
+
+    // etwas Burst-Wert hier relevanter
+    ((s.burst ?? 0) * 0.35) +
+
+    // etwas Survivability bleibt wichtig
+    ((s.survivability ?? 0) * 0.7)
+  );
+}
+
 
   const candidates = [...uniqueTeam];
 
@@ -703,7 +818,8 @@ const heroes = getAllHeroes();
 const enrichedHeroes = heroes.map((h) => {
   const tags = tagHero(h, cfg);
   const scores = scoreHero(h, tags);
-  return { ...h, __tags: tags, __scores: scores };
+  return { ...h, __meta: h.meta ?? {}, __tags: tags, __scores: scores };
+
 });
 
 const output = {};
