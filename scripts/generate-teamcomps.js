@@ -392,23 +392,77 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
 function evaluateTeam(team, anchor, mode, cfg, plan) {
   const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
 
-  // base sum
   let score = 0;
-  for (const h of team) {
-    score += heroWeightedScore(h, weights);
-  }
+  for (const h of team) score += heroWeightedScore(h, weights);
 
-  // hard prioritize faction bonus
   const bonus = factionBonusValue(team.map((h) => h.faction));
-  // scale it big so max-bonus wins
   score += bonus * 100;
 
-  // small extra: anchor faction presence
   const anchorPresence = team.filter((h) => h.faction === anchor.faction || h.faction === "Starglint").length;
   score += anchorPresence * 10;
 
+  score += teamSynergyBonus(team, mode);
+
   return score;
 }
+
+
+/* Neue Funktion */
+function teamSynergyBonus(team, mode) {
+  const tagsOf = (h) => new Set(h.__tags ?? []);
+
+  const countTag = (tag) => team.reduce((acc, h) => acc + (tagsOf(h).has(tag) ? 1 : 0), 0);
+  const hasAny = (...tags) => team.some((h) => tags.some((t) => tagsOf(h).has(t)));
+
+  const frontlineCount = countTag("frontline") + countTag("tank") * 0; // frontline ist eh gesetzt
+  const controlCount = countTag("control") + countTag("taunt");
+  const sustainCount = countTag("healer") + countTag("shield") + countTag("lifesteal_aura");
+
+  const hasPressureTank =
+    team.some((h) => {
+      const t = tagsOf(h);
+      return t.has("tank") || t.has("taunt") || t.has("reflect") || (t.has("shield") && t.has("frontline"));
+    });
+
+  const hasDiver =
+    team.some((h) => {
+      const t = tagsOf(h);
+      // diver/dash/jump sind optional tags – greifen erst, wenn du keywords in config ergänzt
+      return t.has("diver") || t.has("dash") || t.has("jump");
+    });
+
+  const hasAssassinOrBurst = hasAny("assassin") || countTag("burst") > 0; // burst-tag existiert evtl. nicht, harmless
+
+  let bonus = 0;
+
+  // 1) Sustain Layer (global wichtig)
+  if (sustainCount >= 1) bonus += 180;
+  if (sustainCount >= 2) bonus += 80; // stacking but capped
+
+  // 2) CC / Control Chain
+  if (controlCount >= 1) bonus += 120;
+  if (controlCount >= 2) bonus += 120;
+
+  // 3) Melee cluster (Heuristik: viele Frontliner/close-range)
+  // Wenn du später einen "melee" tag hinzufügst, kannst du hier verbessern.
+  // Für jetzt: frontline >= 2 ist gut, >=3 sehr gut
+  if (frontlineCount >= 2) bonus += 90;
+  if (frontlineCount >= 3) bonus += 70;
+
+  // 4) Pressure Tank + Diver Combo (Heracles Prinzip, aber global)
+  if (hasPressureTank && hasDiver) bonus += 160;
+
+  // 5) PvP: extra Wert auf anti-assassin / tempo
+  if (mode === "pvp") {
+    const antiAssassinCount = countTag("antiAssassin") + (countTag("shield") > 0 ? 0.5 : 0);
+    if (antiAssassinCount >= 1) bonus += 100;
+    if (hasAssassinOrBurst) bonus += 60;
+  }
+
+  // Soft cap to avoid overpowering base stats too much
+  return Math.min(bonus, 600);
+}
+
 
 function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
   const plans = getFactionPlans(anchor.faction);
@@ -459,111 +513,78 @@ function assignFormation(anchor, team, cfg) {
 
   if (!team || team.length === 0) team = [anchor];
 
-  const override = POSITION_OVERRIDES[anchor.id]?.prefer ?? null;
-
   const ensureUnique = (arr) => {
     const seen = new Set();
     return arr.filter((h) => (seen.has(h.id) ? false : (seen.add(h.id), true)));
   };
 
-  // Unique team of max 5
   const uniqueTeam = ensureUnique(team).slice(0, 5);
 
-  // Helper: prefer tanky for high-pressure (left frontline)
-  function scoreHighPressureFront(hero) {
-    const tags = hero.__tags ?? [];
-    const s = hero.__scores ?? {};
+  const tagsOf = (h) => new Set(h.__tags ?? []);
+  const scOf = (h) => h.__scores ?? {};
+
+  // High-pressure (left frontline): true tank tools > raw survivability
+  function scoreHighPressureFront(h) {
+    const t = tagsOf(h);
+    const s = scOf(h);
     return (
-      (tags.includes("tank") ? 5000 : 0) +
-      (tags.includes("taunt") ? 1200 : 0) +
-      (tags.includes("shield") ? 800 : 0) +
-      (tags.includes("control") ? 600 : 0) +
+      (t.has("tank") ? 5000 : 0) +
+      (t.has("taunt") ? 1200 : 0) +
+      (t.has("reflect") ? 900 : 0) +
+      (t.has("shield") ? 700 : 0) +
+      (t.has("control") ? 500 : 0) +
       (s.survivability ?? 0)
     );
   }
 
-  // Helper: prefer diver/bruiser for low-pressure (right frontline)
-  function scoreLowPressureFront(hero) {
-    const tags = hero.__tags ?? [];
-    const s = hero.__scores ?? {};
+  // Low-pressure (right frontline): bruiser/diver that wants to live + scale
+  function scoreLowPressureFront(h) {
+    const t = tagsOf(h);
+    const s = scOf(h);
     return (
-      (tags.includes("assassin") ? 700 : 0) +
-      (tags.includes("energy") ? 400 : 0) +
-      (tags.includes("shield") ? 250 : 0) +
-      // "diver" tag if you add it later, harmless if missing now
-      (tags.includes("diver") ? 1200 : 0) +
-      (s.survivability ?? 0) * 0.6 +
-      (s.burst ?? 0) * 0.5
+      (t.has("diver") || t.has("dash") || t.has("jump") ? 1200 : 0) +
+      (t.has("lifesteal_aura") ? 500 : 0) +
+      (t.has("shield") ? 350 : 0) +
+      (t.has("assassin") ? 250 : 0) +
+      (s.survivability ?? 0) * 0.7 +
+      (s.burst ?? 0) * 0.35
     );
   }
 
-  // Decide who goes to frontline slots (row2)
-  let frontLeft = null;  // row2[0] = back-left (actual frontline left, high pressure)
-  let frontRight = null; // row2[1] = back-right (actual frontline right, low pressure)
+  // Pick 2 frontline heroes (prefer tagged frontline, else just best scores)
+  const candidates = [...uniqueTeam].sort((a, b) => (scOf(b).survivability ?? 0) - (scOf(a).survivability ?? 0));
 
-  const candidates = uniqueTeam.slice(); // includes anchor
+  // Choose front-left (high pressure)
+  let frontLeft = [...candidates].sort((a, b) => scoreHighPressureFront(b) - scoreHighPressureFront(a))[0] ?? anchor;
 
-  // If anchor has override to a specific frontline slot, place anchor there
-  if (override === row2[0]) frontLeft = anchor;
-  if (override === row2[1]) frontRight = anchor;
+  // Remaining for front-right
+  const rem = candidates.filter((h) => h.id !== frontLeft.id);
+  let frontRight = [...rem].sort((a, b) => scoreLowPressureFront(b) - scoreLowPressureFront(a))[0] ?? rem[0] ?? anchor;
 
-  // If override is set but not a frontline slot, we still handle it later in backline.
-  const remainingForFront = candidates.filter(h => h.id !== frontLeft?.id && h.id !== frontRight?.id);
-
-  // Pick frontLeft (high pressure): best tanky candidate, avoid placing anchor twice
-  if (!frontLeft) {
-    frontLeft = [...remainingForFront]
-      .sort((a, b) => scoreHighPressureFront(b) - scoreHighPressureFront(a))[0] ?? remainingForFront[0] ?? anchor;
-  }
-
-  // Remove chosen
-  let rem2 = remainingForFront.filter(h => h.id !== frontLeft.id);
-
-  // Pick frontRight (low pressure): best bruiser/diver candidate, avoid duplicating frontLeft
-  if (!frontRight) {
-    frontRight = [...rem2]
-      .sort((a, b) => scoreLowPressureFront(b) - scoreLowPressureFront(a))[0] ?? rem2[0] ?? anchor;
-  }
-
-  // Build frontline array (2 slots)
   let r2 = ensureUnique([frontLeft, frontRight]).slice(0, 2);
 
-  // Build backline (3 slots) from remaining
-  let r3 = ensureUnique(uniqueTeam).filter(h => !r2.some(x => x.id === h.id));
+  // Backline = remaining 3
+  let r3 = ensureUnique(uniqueTeam).filter((h) => !r2.some((x) => x.id === h.id)).slice(0, 3);
 
-  // If anchor has override to a backline position, apply it (rare)
-  if (override && row3.includes(override)) {
-    // ensure anchor is in r3 and placed first; ordering doesn't matter much because we map by slot index
-    r3 = [anchor, ...r3.filter(h => h.id !== anchor.id)];
-  }
-
-  // Ensure 3
-  r3 = r3.slice(0, 3);
-
-  // Final safety: if we still have less than 5 (shouldn't), fill from uniqueTeam
-  const used = new Set([...r2, ...r3].map(h => h.id));
-  const extras = ensureUnique(uniqueTeam).filter(h => !used.has(h.id));
+  // Ensure 2+3 even if weird edge cases
+  const used = new Set([...r2, ...r3].map((h) => h.id));
+  const extras = ensureUnique(uniqueTeam).filter((h) => !used.has(h.id));
   while (r2.length < 2 && extras.length) r2.push(extras.shift());
   while (r3.length < 3 && extras.length) r3.push(extras.shift());
 
-  // Force anchor if missing
-  const hasAnchor = (arr) => arr.some(h => h.id === anchor.id);
-  if (!hasAnchor(r2) && !hasAnchor(r3)) {
-    // Put anchor into backline by default
-    r3[0] = anchor;
-  }
+  // Guarantee anchor exists
+  const hasAnchor = (arr) => arr.some((h) => h.id === anchor.id);
+  if (!hasAnchor(r2) && !hasAnchor(r3)) r3[0] = anchor;
 
-  // Produce formation mapped to your current position keys
-  const formation = [
-    { heroId: r2[0].id, position: row2[0] }, // back-left (actual frontline left)
-    { heroId: r2[1].id, position: row2[1] }, // back-right (actual frontline right)
-    { heroId: r3[0].id, position: row3[0] }, // front-left (actual back-left)
-    { heroId: r3[1].id, position: row3[1] }, // front-center (actual back-center)
-    { heroId: r3[2].id, position: row3[2] }  // front-right (actual back-right)
+  return [
+    { heroId: r2[0].id, position: row2[0] }, // back-left = actual frontline left
+    { heroId: r2[1].id, position: row2[1] }, // back-right = actual frontline right
+    { heroId: r3[0].id, position: row3[0] },
+    { heroId: r3[1].id, position: row3[1] },
+    { heroId: r3[2].id, position: row3[2] }
   ];
-
-  return formation;
 }
+
 
 
 
