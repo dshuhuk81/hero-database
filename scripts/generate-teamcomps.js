@@ -870,6 +870,108 @@ function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
 
   return best;
 }
+function describeFormation(anchor, team, cfg, lang = "en") {
+  const isEN = lang === "en";
+  const metaOf = (h) => h.__meta ?? h.meta ?? {};
+  const tagsOf = (h) => new Set(h.__tags ?? []);
+
+  const formation = assignFormation(anchor, team, cfg);
+
+  const byId = new Map(team.map((h) => [h.id, h]));
+  const notes = formation.map((slot) => {
+    const h = byId.get(slot.heroId);
+    const t = tagsOf(h);
+    const m = metaOf(h);
+
+    const pos = slot.position;
+
+    // Determine lane type from config
+    const isHighPressure = pos === cfg.positions.row2[0]; // back-left = high pressure frontline
+    const isLowPressure = pos === cfg.positions.row2[1];  // back-right = safer frontline
+    const isBackline = cfg.positions.row3.includes(pos);
+
+    let reason = "";
+
+    // --- High-pressure frontline (front-left) ---
+    if (isHighPressure) {
+      if ((m.frontAnchor ?? 0) >= 2) {
+        reason = isEN
+          ? "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+          : "Anchor-Tank für die High-Pressure-Lane (hält mehrere Angreifer aus).";
+      } else if (t.has("tank") || t.has("taunt")) {
+        reason = isEN
+          ? "Main frontline holder (tank/taunt) to stabilize the early fight."
+          : "Haupt-Frontliner (Tank/Taunt) zur Stabilisierung des Early-Fights.";
+      } else {
+        reason = isEN
+          ? "Most durable option placed to soak early pressure."
+          : "Robusteste Option platziert, um frühen Druck zu tanken.";
+      }
+    }
+
+    // --- Safer frontline (front-right) ---
+    else if (isLowPressure) {
+      if (m.lanePreference === "safer_lane" || m.engageStyle === "delayed_dive") {
+        reason = isEN
+          ? "Safer lane for delayed engage: builds energy safely, then dives at the right moment."
+          : "Sichere Lane für delayed engage: baut sicher Energie, dann Dive zum richtigen Moment.";
+      } else if (t.has("diver") || t.has("dash") || t.has("jump")) {
+        reason = isEN
+          ? "Mobile frontline: safer lane lets them survive longer before committing."
+          : "Mobiler Frontliner: sichere Lane hilft, länger zu überleben bevor er commitet.";
+      } else {
+        reason = isEN
+          ? "Lower-pressure lane to reduce early focus and preserve team stability."
+          : "Low-Pressure-Lane reduziert frühen Fokus und hält das Team stabil.";
+      }
+    }
+
+    // --- Backline positions ---
+    else if (isBackline) {
+      if ((m.needsProtection ?? 0) >= 2) {
+        reason = isEN
+          ? "Fragile core placed in the backline for protection."
+          : "Fragiler Kern in der Backline für Schutz platziert.";
+      } else if (t.has("healer") || t.has("support")) {
+        reason = isEN
+          ? "Support/backline utility position to keep buffs/heals safe."
+          : "Support/Utility in der Backline, um Buffs/Heals sicher zu halten.";
+      } else if (t.has("mage") || t.has("ranged")) {
+        reason = isEN
+          ? "Damage dealer kept backline to maximize uptime and avoid early collapse."
+          : "Damage Dealer in der Backline für maximale Uptime und gegen frühes Collapsen.";
+      } else if (t.has("assassin") || (m.backlineAccess ?? 0) >= 1) {
+        reason = isEN
+          ? "Flanking threat: starts safer, then accesses enemy backline."
+          : "Flank-Druck: startet sicherer und erreicht später die gegnerische Backline.";
+      } else {
+        reason = isEN
+          ? "Backline slot to reduce early focus and maintain consistent output."
+          : "Backline-Slot reduziert frühen Fokus und hält Output konstant.";
+      }
+    }
+
+    // Fallback (should rarely happen)
+    if (!reason) {
+      reason = isEN ? "Position chosen for overall team stability." : "Position für Team-Stabilität gewählt.";
+    }
+
+    return { position: pos, heroId: slot.heroId, note: reason };
+  });
+
+  // Optional 1-liner summary for UI
+  const hasAnchor = team.some((h) => (metaOf(h).frontAnchor ?? 0) >= 2);
+  const hasDelayedDive = team.some((h) => metaOf(h).engageStyle === "delayed_dive");
+  const summary = isEN
+    ? (hasAnchor && hasDelayedDive
+        ? "Anchor holds high pressure while delayed diver plays the safer lane for timed engagement."
+        : "Formation optimized to protect backline and stabilize the early fight.")
+    : (hasAnchor && hasDelayedDive
+        ? "Anchor hält High-Pressure, Delayed Diver spielt die sichere Lane für getimtes Engagen."
+        : "Formation optimiert, um Backline zu schützen und den Early-Fight zu stabilisieren.");
+
+  return { formation, formationNotes: notes, formationSummary: summary };
+}
 
 // ---------- formation ----------
 function assignFormation(anchor, team, cfg) {
@@ -1052,7 +1154,8 @@ for (const anchor of enrichedHeroes) {
 
   const pveTeam = pickBestTeamForAnchor(enrichedHeroes, anchor, "pve", cfg);
   const pvpTeam = pickBestTeamForAnchor(enrichedHeroes, anchor, "pvp", cfg);
-
+  const pveForm = describeFormation(anchor, pveTeam, cfg, lang);
+  const pvpForm = describeFormation(anchor, pvpTeam, cfg, lang);
   const pveInfo = describeTeam(pveTeam, "pve", lang);
   const pvpInfo = describeTeam(pvpTeam, "pvp", lang);
 
@@ -1060,12 +1163,16 @@ for (const anchor of enrichedHeroes) {
     pve: {
       title: pveInfo.title,
       description: pveInfo.description,
-      formation: assignFormation(anchor, pveTeam, cfg)
+      formation: pveForm.formation,
+      formationNotes: pveForm.formationNotes,
+      formationSummary: pveForm.formationSummary
     },
     pvp: {
       title: pvpInfo.title,
       description: pvpInfo.description,
-      formation: assignFormation(anchor, pvpTeam, cfg)
+      formation: pvpForm.formation,
+      formationNotes: pvpForm.formationNotes,
+      formationSummary: pvpForm.formationSummary
     }
   };
 }

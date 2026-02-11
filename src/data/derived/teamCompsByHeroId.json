@@ -17,14 +17,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-center"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-center",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -50,7 +78,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-center",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "anubis": {
@@ -67,18 +123,46 @@
           "position": "back-right"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
           "heroId": "diana",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "diana",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -104,7 +188,35 @@
           "heroId": "capricorn",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "capricorn",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "aquarius": {
@@ -121,7 +233,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-left"
         },
         {
@@ -129,10 +241,38 @@
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "aquarius",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -158,7 +298,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "aquarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "ares": {
@@ -186,7 +354,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "ares",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -212,7 +408,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "ares",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "aries": {
@@ -240,7 +464,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "athena",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "aries",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -266,7 +518,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "aries",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "artemis": {
@@ -287,14 +567,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "artemis",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-center",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -320,7 +628,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "artemis",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "anubis",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "athena": {
@@ -348,7 +684,35 @@
           "heroId": "sagittarius",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -374,7 +738,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "bastet": {
@@ -402,7 +794,35 @@
           "heroId": "sagittarius",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "bastet",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -428,7 +848,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "bastet",
+          "note": "Flanking threat: starts safer, then accesses enemy backline."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "cancer": {
@@ -456,7 +904,35 @@
           "heroId": "cashien",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cancer",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -482,7 +958,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cancer",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "canopicjar": {
@@ -503,14 +1007,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "athena",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "canopicjar",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -536,7 +1068,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "canopicjar",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "capricorn": {
@@ -553,18 +1113,46 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
           "heroId": "diana",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "capricorn",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "diana",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -590,7 +1178,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "capricorn",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "cashien": {
@@ -618,18 +1234,46 @@
           "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "prometheus",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "nyx",
           "position": "back-right"
         },
         {
@@ -641,10 +1285,38 @@
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "surtr",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "demeter": {
@@ -672,7 +1344,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "demeter",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -691,14 +1391,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "demeter",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "diana": {
@@ -726,7 +1454,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "dionysus",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "diana",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Sustain + CC + Tempo + Double Carry)",
@@ -752,7 +1508,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "diana",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "dionysus": {
@@ -780,7 +1564,35 @@
           "heroId": "zeus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -806,7 +1618,35 @@
           "heroId": "zeus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "fengyi": {
@@ -834,7 +1674,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "fengyi",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -860,7 +1728,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "fengyi",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "freya": {
@@ -888,7 +1784,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "freya",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -914,7 +1838,35 @@
           "heroId": "anubis",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "jormungandr",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "freya",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "anubis",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "geb": {
@@ -942,7 +1894,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -968,7 +1948,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "gemini": {
@@ -996,7 +2004,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "gemini",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1022,7 +2058,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "gemini",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "hecate": {
@@ -1043,14 +2107,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "hecate",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Double Carry)",
@@ -1076,7 +2168,35 @@
           "heroId": "tefnut",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "hecate",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "hela": {
@@ -1104,7 +2224,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "hela",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Sustain + CC + Tempo + Double Carry)",
@@ -1130,7 +2278,35 @@
           "heroId": "tefnut",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "hela",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "hladgunnr": {
@@ -1158,7 +2334,35 @@
           "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "hladgunnr",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1173,18 +2377,46 @@
           "position": "back-right"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nuwa",
           "position": "front-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "hladgunnr",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nuwa",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "horus": {
@@ -1212,7 +2444,35 @@
           "heroId": "hela",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "dionysus",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "horus",
+          "note": "Flanking threat: starts safer, then accesses enemy backline."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "hela",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -1231,14 +2491,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "horus",
+          "note": "Flanking threat: starts safer, then accesses enemy backline."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "iris": {
@@ -1266,7 +2554,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "iris",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1292,7 +2608,35 @@
           "heroId": "scorpio",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "iris",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "isis": {
@@ -1313,14 +2657,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "isis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1346,7 +2718,35 @@
           "heroId": "yanluo",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "isis",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "jinchan": {
@@ -1374,7 +2774,35 @@
           "heroId": "cashien",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "jinchan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1400,7 +2828,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "jinchan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "jingwei": {
@@ -1428,7 +2884,35 @@
           "heroId": "surtr",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "jingwei",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1454,7 +2938,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "jingwei",
+          "note": "Flanking threat: starts safer, then accesses enemy backline."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "jormungandr": {
@@ -1482,7 +2994,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "jormungandr",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1508,7 +3048,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "jormungandr",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "anubis",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "khepri": {
@@ -1536,7 +3104,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "khepri",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -1555,14 +3151,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "khepri",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "kraken": {
@@ -1590,7 +3214,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "kraken",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -1609,14 +3261,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "kraken",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "leo": {
@@ -1637,14 +3317,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "athena",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "leo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1663,14 +3371,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "leo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "libra": {
@@ -1698,18 +3434,46 @@
           "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "surtr",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "libra",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -1721,10 +3485,38 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "libra",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "medusa": {
@@ -1752,7 +3544,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "medusa",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1778,7 +3598,35 @@
           "heroId": "scorpio",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "medusa",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "momus": {
@@ -1806,7 +3654,35 @@
           "heroId": "tefnut",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "momus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -1832,7 +3708,35 @@
           "heroId": "tefnut",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "momus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "nemesis": {
@@ -1860,7 +3764,35 @@
           "heroId": "hela",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nemesis",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "hela",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Double Carry)",
@@ -1875,18 +3807,46 @@
           "position": "back-right"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
           "heroId": "scorpio",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nemesis",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "nezha": {
@@ -1914,7 +3874,35 @@
           "heroId": "zeus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nezha",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1940,7 +3928,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nezha",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "nuwa": {
@@ -1957,18 +3973,46 @@
           "position": "back-right"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-center"
         },
         {
           "heroId": "amunra",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-right",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1994,7 +4038,35 @@
           "heroId": "amunra",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-right",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "nymphia": {
@@ -2022,7 +4094,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nymphia",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2048,7 +4148,35 @@
           "heroId": "scorpio",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "nymphia",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "nyx": {
@@ -2076,7 +4204,35 @@
           "heroId": "zeus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2102,7 +4258,35 @@
           "heroId": "zeus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "pan": {
@@ -2130,7 +4314,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2156,7 +4368,35 @@
           "heroId": "anubis",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "jormungandr",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "anubis",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "phoenix": {
@@ -2184,7 +4424,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "phoenix",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2210,7 +4478,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "phoenix",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "pisces": {
@@ -2238,7 +4534,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "pisces",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2264,7 +4588,35 @@
           "heroId": "scorpio",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "pisces",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "poseidon": {
@@ -2281,7 +4633,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
@@ -2289,10 +4641,38 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2307,18 +4687,46 @@
           "position": "back-right"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-left"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
           "heroId": "tefnut",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "prometheus": {
@@ -2346,7 +4754,35 @@
           "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -2369,10 +4805,38 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "cashien",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "ratatoskr": {
@@ -2400,7 +4864,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "ratatoskr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -2426,7 +4918,35 @@
           "heroId": "anubis",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "jormungandr",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "ratatoskr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "anubis",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "sagittarius": {
@@ -2454,7 +4974,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2480,7 +5028,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "scorpio": {
@@ -2508,7 +5084,35 @@
           "heroId": "hela",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "hela",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -2534,7 +5138,35 @@
           "heroId": "medusa",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "scorpio",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "medusa",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "sekhmet": {
@@ -2562,7 +5194,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "sekhmet",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -2588,7 +5248,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "sekhmet",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "set": {
@@ -2616,7 +5304,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "set",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "sagittarius",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -2642,7 +5358,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "set",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nuwa",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "surtr": {
@@ -2670,7 +5414,35 @@
           "heroId": "cashien",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2696,7 +5468,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "tailao": {
@@ -2717,14 +5517,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "surtr",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tailao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -2743,14 +5571,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tailao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "taurus": {
@@ -2778,18 +5634,46 @@
           "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "taurus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -2797,14 +5681,42 @@
           "position": "front-left"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yanluo",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "taurus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "tefnut": {
@@ -2832,7 +5744,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2858,7 +5798,35 @@
           "heroId": "scorpio",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "poseidon",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "tefnut",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "scorpio",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "treant": {
@@ -2886,7 +5854,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "treant",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2912,7 +5908,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "anubis",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "treant",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "ullr": {
@@ -2929,7 +5953,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -2937,21 +5961,49 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "ullr",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "surtr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -2963,10 +6015,38 @@
           "position": "front-center"
         },
         {
-          "heroId": "cancer",
+          "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "ullr",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "ushabti": {
@@ -2994,7 +6074,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "ushabti",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3020,7 +6128,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "geb",
+          "note": "Anchor tank for the high-pressure lane (absorbs multiple attackers)."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "ushabti",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "athena",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "virgo": {
@@ -3048,7 +6184,35 @@
           "heroId": "pan",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "virgo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -3074,7 +6238,35 @@
           "heroId": "anubis",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "jormungandr",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "virgo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "anubis",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "yanluo": {
@@ -3102,7 +6294,35 @@
           "heroId": "yuelao",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nyx",
+          "note": "Most durable option placed to soak early pressure."
+        },
+        {
+          "position": "back-right",
+          "heroId": "surtr",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -3125,10 +6345,38 @@
           "position": "front-center"
         },
         {
-          "heroId": "cancer",
+          "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "yuelao": {
@@ -3156,7 +6404,35 @@
           "heroId": "cashien",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "cashien",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -3182,7 +6458,35 @@
           "heroId": "nyx",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "prometheus",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+        },
+        {
+          "position": "front-left",
+          "heroId": "yuelao",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-center",
+          "heroId": "yanluo",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "nyx",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   },
   "zeus": {
@@ -3210,7 +6514,35 @@
           "heroId": "dionysus",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        },
+        {
+          "position": "front-right",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3236,7 +6568,35 @@
           "heroId": "amunra",
           "position": "front-right"
         }
-      ]
+      ],
+      "formationNotes": [
+        {
+          "position": "back-left",
+          "heroId": "nuwa",
+          "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
+        },
+        {
+          "position": "back-right",
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+        },
+        {
+          "position": "front-left",
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+        },
+        {
+          "position": "front-center",
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "amunra",
+          "note": "Backline slot to reduce early focus and maintain consistent output."
+        }
+      ],
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
     }
   }
 }

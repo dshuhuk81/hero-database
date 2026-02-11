@@ -7,10 +7,18 @@ interface FormationHero {
   position: string;
 }
 
+interface FormationNote {
+  heroId: string;
+  position: string;
+  note: string;
+}
+
 interface TeamComp {
   title: string;
   description: string;
   formation: FormationHero[];
+  formationSummary?: string;
+  formationNotes?: FormationNote[];
 }
 
 interface Props {
@@ -19,47 +27,68 @@ interface Props {
   pvpTeam: TeamComp;
 }
 
-const { currentHeroId, pveTeam, pvpTeam } = Astro.props;
+const { currentHeroId, pveTeam, pvpTeam } = Astro.props as Props;
 
-// Prepare formation data using existing getHeroById
-function renderHeroCard(heroId: string, position: string) {
+const pveNotesMap = new Map(
+  (pveTeam.formationNotes ?? []).map((x) => [x.position, x.note])
+);
+
+const pvpNotesMap = new Map(
+  (pvpTeam.formationNotes ?? []).map((x) => [x.position, x.note])
+);
+
+function renderHeroCard(heroId: string, position: string, note?: string) {
   const hero = getHeroById(heroId);
-  
+
   if (!hero) {
     console.warn(`Hero ${heroId} not found`);
     return null;
   }
-  
+
   const isCurrentHero = hero.id === currentHeroId;
-  
+
   return {
     hero,
     isCurrentHero,
-    position
+    position,
+    note
   };
 }
 
+
 // Prepare PVE formation
-const pveBackRow = ['back-left', 'back-right'].map(pos => {
-  const formationHero = pveTeam.formation.find(h => h.position === pos);
-  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+const pveBackRow = ["back-left", "back-right"].map((pos) => {
+  const formationHero = pveTeam.formation.find((h) => h.position === pos);
+  return formationHero
+    ? renderHeroCard(formationHero.heroId, pos, pveNotesMap.get(pos))
+    : null;
 });
 
-const pveFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
-  const formationHero = pveTeam.formation.find(h => h.position === pos);
-  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+
+const pveFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
+  const formationHero = pveTeam.formation.find((h) => h.position === pos);
+  return formationHero
+    ? renderHeroCard(formationHero.heroId, pos, pveNotesMap.get(pos))
+    : null;
 });
+
 
 // Prepare PVP formation
-const pvpBackRow = ['back-left', 'back-right'].map(pos => {
-  const formationHero = pvpTeam.formation.find(h => h.position === pos);
-  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+const pvpBackRow = ["back-left", "back-right"].map((pos) => {
+  const formationHero = pvpTeam.formation.find((h) => h.position === pos);
+  return formationHero
+    ? renderHeroCard(formationHero.heroId, pos, pvpNotesMap.get(pos))
+    : null;
 });
 
-const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
-  const formationHero = pvpTeam.formation.find(h => h.position === pos);
-  return formationHero ? renderHeroCard(formationHero.heroId, pos) : null;
+
+const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
+  const formationHero = pvpTeam.formation.find((h) => h.position === pos);
+  return formationHero
+    ? renderHeroCard(formationHero.heroId, pos, pvpNotesMap.get(pos))
+    : null;
 });
+
 ---
 
 <div class="team-comps-container">
@@ -71,7 +100,10 @@ const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
         {pveTeam.title}
       </h2>
     </div>
-    
+    {pveTeam.formationSummary && (
+      <p class="formation-summary">{pveTeam.formationSummary}</p>
+    )}
+
     <div class="formation-grid">
       <!-- Back Row -->
       <div class="formation-row back-row">
@@ -174,7 +206,10 @@ const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
         {pvpTeam.title}
       </h2>
     </div>
-    
+    {pvpTeam.formationSummary && (
+        <p class="formation-summary">{pvpTeam.formationSummary}</p>
+    )}
+
     <div class="formation-grid">
       <!-- Back Row -->
       <div class="formation-row back-row">
@@ -226,7 +261,7 @@ const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
             return <div class="hero-card-slot empty"></div>;
           }
           
-          const { hero, isCurrentHero, position } = heroData;
+          const { hero, isCurrentHero, position, note } = heroData;
           
           return (
             <div class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} data-position={position}>
@@ -255,7 +290,12 @@ const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
                       title={hero.faction}
                     />
                   </div>
+                  {note && (
+                   <p class="hero-position-note">{note}</p>
+                  )}
                 </div>
+
+
               </div>
             </div>
           );
@@ -263,7 +303,7 @@ const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
       </div>
     </div>
     
-    <p class="team-description">{pveTeam.description}</p>
+    <p class="team-description">{pvpTeam.description}</p>
   </section>
 </div>
 
@@ -563,4 +603,24 @@ const pvpFrontRow = ['front-left', 'front-center', 'front-right'].map(pos => {
       height: 20px;
     }
   }
+
+  .formation-summary {
+  margin: 0 0 1rem 0;
+  padding: 0.9rem 1.1rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.hero-position-note {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+}
+
 </style>
