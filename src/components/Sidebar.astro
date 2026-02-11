@@ -25,7 +25,7 @@ const navItems: NavItem[] = [
 ];
 
 const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
-const currentPath = Astro.url.pathname;
+const currentPath = normalize(Astro.url.pathname);   // ← normalize auch hier
 const isActive = (href: string) => normalize(href) === currentPath;
 
 ---
