@@ -52,7 +52,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -106,7 +108,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "anubis": {
@@ -162,7 +166,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -216,7 +222,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Burst composition: play around short engage windows and quick target elimination.",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "aquarius": {
@@ -272,7 +280,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -291,11 +301,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ],
@@ -317,16 +327,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "ares": {
@@ -382,7 +394,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -436,7 +450,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "aries": {
@@ -492,7 +508,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -546,7 +564,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "artemis": {
@@ -567,11 +587,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-right"
         }
       ],
@@ -593,16 +613,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "pan",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "dionysus",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -656,7 +678,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "athena": {
@@ -677,11 +701,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ],
@@ -703,16 +727,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -766,7 +792,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "bastet": {
@@ -822,7 +850,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -876,7 +906,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "cancer": {
@@ -932,7 +964,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -986,7 +1020,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "canopicjar": {
@@ -1007,11 +1043,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-right"
         }
       ],
@@ -1033,16 +1069,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1096,7 +1134,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "capricorn": {
@@ -1113,11 +1153,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
@@ -1138,12 +1178,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "pan",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -1152,7 +1192,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -1206,7 +1248,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Burst composition: play around short engage windows and quick target elimination.",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "cashien": {
@@ -1262,18 +1306,20 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -1285,20 +1331,20 @@
           "position": "front-center"
         },
         {
-          "heroId": "surtr",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
       "formationNotes": [
         {
           "position": "back-left",
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
         },
         {
           "position": "back-right",
-          "heroId": "nyx",
-          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
         },
         {
           "position": "front-left",
@@ -1312,11 +1358,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "surtr",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "demeter": {
@@ -1372,7 +1420,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1426,7 +1476,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "diana": {
@@ -1482,7 +1534,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Sustain + CC + Tempo + Double Carry)",
@@ -1536,7 +1590,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "dionysus": {
@@ -1592,7 +1648,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1646,7 +1704,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "fengyi": {
@@ -1702,7 +1762,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1756,7 +1818,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "freya": {
@@ -1812,7 +1876,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -1866,7 +1932,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "geb": {
@@ -1922,7 +1990,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1976,7 +2046,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "gemini": {
@@ -2032,7 +2104,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2086,7 +2160,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "hecate": {
@@ -2142,7 +2218,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Double Carry)",
@@ -2196,7 +2274,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "hela": {
@@ -2252,7 +2332,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Sustain + CC + Tempo + Double Carry)",
@@ -2306,7 +2388,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "hladgunnr": {
@@ -2323,7 +2407,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-left"
         },
         {
@@ -2331,7 +2415,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -2348,7 +2432,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -2358,11 +2442,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -2416,7 +2502,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "horus": {
@@ -2472,7 +2560,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -2526,7 +2616,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "iris": {
@@ -2582,7 +2674,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2636,7 +2730,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "isis": {
@@ -2692,7 +2788,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2746,7 +2844,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "jinchan": {
@@ -2802,18 +2902,20 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "prometheus",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "nyx",
           "position": "back-right"
         },
         {
@@ -2825,20 +2927,20 @@
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "surtr",
           "position": "front-right"
         }
       ],
       "formationNotes": [
         {
           "position": "back-left",
-          "heroId": "prometheus",
+          "heroId": "nuwa",
           "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
         },
         {
           "position": "back-right",
-          "heroId": "nuwa",
-          "note": "Mobile frontline: safer lane lets them survive longer before committing."
+          "heroId": "nyx",
+          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
         },
         {
           "position": "front-left",
@@ -2852,11 +2954,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "nyx",
+          "heroId": "surtr",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "jingwei": {
@@ -2912,7 +3016,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2966,7 +3072,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "jormungandr": {
@@ -3022,7 +3130,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3037,15 +3147,15 @@
           "position": "back-right"
         },
         {
-          "heroId": "nyx",
+          "heroId": "pan",
           "position": "front-left"
         },
         {
-          "heroId": "anubis",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "anubis",
           "position": "front-right"
         }
       ],
@@ -3062,21 +3172,23 @@
         },
         {
           "position": "front-left",
-          "heroId": "nyx",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "anubis",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "pan",
+          "heroId": "anubis",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "khepri": {
@@ -3132,7 +3244,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -3151,11 +3265,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ],
@@ -3177,16 +3291,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "kraken": {
@@ -3242,7 +3358,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -3261,11 +3379,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ],
@@ -3287,16 +3405,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "leo": {
@@ -3317,11 +3437,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ],
@@ -3343,16 +3463,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -3406,7 +3528,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "libra": {
@@ -3427,11 +3551,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -3453,16 +3577,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -3516,7 +3642,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "medusa": {
@@ -3572,7 +3700,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3626,7 +3756,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "momus": {
@@ -3643,7 +3775,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-left"
         },
         {
@@ -3651,7 +3783,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ],
@@ -3668,7 +3800,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -3678,11 +3810,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -3736,7 +3870,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "nemesis": {
@@ -3753,11 +3889,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
@@ -3778,12 +3914,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -3792,7 +3928,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Double Carry)",
@@ -3846,7 +3984,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "nezha": {
@@ -3902,7 +4042,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3956,7 +4098,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "nuwa": {
@@ -4012,7 +4156,9 @@
           "note": "Backline slot to reduce early focus and maintain consistent output."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4066,7 +4212,9 @@
           "note": "Backline slot to reduce early focus and maintain consistent output."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "nymphia": {
@@ -4122,7 +4270,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4176,7 +4326,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "nyx": {
@@ -4232,7 +4384,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4286,7 +4440,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "pan": {
@@ -4342,7 +4498,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4396,7 +4554,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "phoenix": {
@@ -4452,7 +4612,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4506,7 +4668,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "pisces": {
@@ -4562,7 +4726,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4616,7 +4782,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "poseidon": {
@@ -4672,7 +4840,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4687,11 +4857,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-center"
         },
         {
@@ -4712,12 +4882,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -4726,7 +4896,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "prometheus": {
@@ -4782,7 +4954,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -4805,7 +4979,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "cancer",
           "position": "front-right"
         }
       ],
@@ -4832,11 +5006,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "cashien",
+          "heroId": "cancer",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "ratatoskr": {
@@ -4892,7 +5068,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -4946,7 +5124,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "sagittarius": {
@@ -5002,7 +5182,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -5056,7 +5238,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "scorpio": {
@@ -5073,11 +5257,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -5098,12 +5282,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -5112,7 +5296,9 @@
           "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -5166,7 +5352,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
     }
   },
   "sekhmet": {
@@ -5222,7 +5410,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5276,7 +5466,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "set": {
@@ -5332,7 +5524,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5386,7 +5580,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "surtr": {
@@ -5442,7 +5638,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -5496,7 +5694,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "tailao": {
@@ -5517,11 +5717,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -5543,16 +5743,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5571,11 +5773,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-right"
         }
       ],
@@ -5597,16 +5799,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "taurus": {
@@ -5623,7 +5827,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-left"
         },
         {
@@ -5631,7 +5835,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -5648,7 +5852,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -5658,11 +5862,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5681,11 +5887,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -5707,16 +5913,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "tefnut": {
@@ -5772,7 +5980,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -5791,11 +6001,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-center"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -5817,16 +6027,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "treant": {
@@ -5882,7 +6094,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -5936,7 +6150,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "ullr": {
@@ -5953,7 +6169,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-left"
         },
         {
@@ -5961,7 +6177,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -5978,7 +6194,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -5988,11 +6204,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -6011,11 +6229,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-right"
         }
       ],
@@ -6037,16 +6255,18 @@
         },
         {
           "position": "front-center",
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "ushabti": {
@@ -6102,7 +6322,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -6156,7 +6378,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "virgo": {
@@ -6212,7 +6436,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -6266,7 +6492,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   },
   "yanluo": {
@@ -6322,7 +6550,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -6345,7 +6575,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -6372,11 +6602,13 @@
         },
         {
           "position": "front-right",
-          "heroId": "dionysus",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "yuelao": {
@@ -6432,7 +6664,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -6486,7 +6720,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
     }
   },
   "zeus": {
@@ -6542,7 +6778,9 @@
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -6596,7 +6834,9 @@
           "note": "Backline slot to reduce early focus and maintain consistent output."
         }
       ],
-      "formationSummary": "Formation optimized to protect backline and stabilize the early fight."
+      "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
+      "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
     }
   }
 }

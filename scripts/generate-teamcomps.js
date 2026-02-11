@@ -213,6 +213,94 @@ function scoreHero(hero, tags) {
   return { survivability, healing, control, burst, scaling, antiAssassin, tempo };
 }
 
+
+// ------ Analyze WinDanger -------
+function analyzeWinDanger(team, mode, lang = "en") {
+  const isEN = lang === "en";
+  const tagsOf = (h) => new Set(h.__tags ?? []);
+  const metaOf = (h) => h.__meta ?? h.meta ?? {};
+  const scOf = (h) => h.__scores ?? {};
+
+  const frontlineCount = team.filter((h) => tagsOf(h).has("frontline") || tagsOf(h).has("tank")).length;
+  const carries = team.filter((h) => {
+    const t = tagsOf(h);
+    return t.has("assassin") || t.has("mage") || t.has("ranged") || t.has("burst");
+  }).length;
+
+  const sustainSignals =
+    team.filter((h) => tagsOf(h).has("healer")).length +
+    team.filter((h) => tagsOf(h).has("shield")).length +
+    team.filter((h) => tagsOf(h).has("lifesteal_aura")).length;
+
+  const controlSignals = team.filter((h) => tagsOf(h).has("control") || tagsOf(h).has("taunt")).length;
+
+  const tempoTotal = team.reduce((a, h) => a + (scOf(h).tempo ?? 0), 0);
+  const burstTotal = team.reduce((a, h) => a + (scOf(h).burst ?? 0), 0);
+
+  const anchors = team.filter((h) => (metaOf(h).frontAnchor ?? 0) >= 2).length;
+  const delayedDive = team.some((h) => metaOf(h).engageStyle === "delayed_dive");
+  const collapse = team.some((h) => (metaOf(h).ccCollapse ?? 0) >= 1);
+
+  // ---- Win Condition (pick best matching) ----
+  let win = "";
+  if (tempoTotal >= 800 && carries >= 2) {
+    win = isEN
+      ? "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion)."
+      : "Tempo-Engines beschleunigen Ult-Zyklen und erzeugen Burst-Windows (Double-Carry Conversion).";
+  } else if (collapse && (frontlineCount >= 3 || controlSignals >= 2)) {
+    win = isEN
+      ? "Collapse/control chains cluster enemies for melee AoE and consistent fight control."
+      : "Collapse-/Control-Ketten clustern Gegner für Melee-AoE und konstante Fight-Kontrolle.";
+  } else if (frontlineCount >= 2 && sustainSignals >= 1) {
+    win = isEN
+      ? "Stable frontline + sustain wins long fights through consistency and uptime."
+      : "Stabile Frontline + Sustain gewinnt lange Fights über Consistency und Uptime.";
+  } else if (burstTotal >= 1200 && carries >= 2) {
+    win = isEN
+      ? "Burst composition: play around short engage windows and quick target elimination."
+      : "Burst-Komposition: spiele kurze Engage-Windows und schnelle Target-Elimination.";
+  } else if (controlSignals >= 2) {
+    win = isEN
+      ? "Control pressure: chain CC to deny enemy tempo and secure picks."
+      : "Control-Pressure: chain CC, um gegnerisches Tempo zu stoppen und Picks zu sichern.";
+  } else {
+    win = isEN
+      ? "Balanced plan: stabilize early and convert advantages through team synergy."
+      : "Balanced-Plan: stabilisiere early und konvertiere Vorteile über Team-Synergie.";
+  }
+
+  // ---- Danger (pick biggest risk) ----
+  let danger = "";
+  if (frontlineCount === 0) {
+    danger = isEN
+      ? "No true frontline — fragile if fights drag on or if the enemy collapses early."
+      : "Keine echte Frontline — fragil, wenn Fights lang werden oder Gegner early collapst.";
+  } else if (frontlineCount === 1 && mode === "pvp") {
+    danger = isEN
+      ? "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      : "Nur eine Frontline in PvP — anfällig für koordinierte Dives und early Burst.";
+  } else if (tempoTotal >= 800 && carries <= 1) {
+    danger = isEN
+      ? "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      : "Tempo ohne genügend Carry-Conversion — füge 1–2 echte Carries hinzu, um Engines zu nutzen.";
+  } else if (sustainSignals === 0) {
+    danger = isEN
+      ? "Low sustain — if the first burst window fails, the team may lose extended fights."
+      : "Wenig Sustain — wenn das erste Burst-Window scheitert, verliert das Team lange Fights.";
+  } else if (delayedDive && anchors === 0) {
+    danger = isEN
+      ? "Delayed diver without a strong anchor — risk of losing control before the engage timing."
+      : "Delayed Diver ohne starken Anchor — Risiko, vor dem Timing die Kontrolle zu verlieren.";
+  } else {
+    danger = isEN
+      ? "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      : "Allgemeines Risiko: achte auf Positioning und gib dem Gegner kein freies First-Engage.";
+  }
+
+  return { winCondition: win, danger };
+}
+
+
 // ---------- archetypes ----------
 function getArchetype(anchor) {
   const tags = anchor.__tags ?? [];
@@ -1158,6 +1246,8 @@ for (const anchor of enrichedHeroes) {
   const pvpForm = describeFormation(anchor, pvpTeam, cfg, lang);
   const pveInfo = describeTeam(pveTeam, "pve", lang);
   const pvpInfo = describeTeam(pvpTeam, "pvp", lang);
+  const pveWD = analyzeWinDanger(pveTeam, "pve", lang);
+  const pvpWD = analyzeWinDanger(pvpTeam, "pvp", lang);
 
   output[anchor.id] = {
     pve: {
@@ -1165,14 +1255,18 @@ for (const anchor of enrichedHeroes) {
       description: pveInfo.description,
       formation: pveForm.formation,
       formationNotes: pveForm.formationNotes,
-      formationSummary: pveForm.formationSummary
+      formationSummary: pveForm.formationSummary,
+      winCondition: pveWD.winCondition,
+      danger: pveWD.danger,
     },
     pvp: {
       title: pvpInfo.title,
       description: pvpInfo.description,
       formation: pvpForm.formation,
       formationNotes: pvpForm.formationNotes,
-      formationSummary: pvpForm.formationSummary
+      formationSummary: pvpForm.formationSummary,
+      winCondition: pvpWD.winCondition,
+      danger: pvpWD.danger,
     }
   };
 }
