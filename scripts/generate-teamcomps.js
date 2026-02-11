@@ -98,6 +98,14 @@ function scoreHero(hero, tags) {
   const armor = Math.sqrt(Math.max(0, s.armor ?? 0));
   const mres = Math.sqrt(Math.max(0, s.magicRes ?? 0));
   const dodge = s.dodgeRate ?? 0;
+  const tempo =
+    (tags.includes("energy_push") ? 320 : 0) +
+    (tags.includes("energy_regen") ? 200 : 0) +
+    (tags.includes("cdr") ? 140 : 0) +
+    (tags.includes("haste") ? 160 : 0) +
+    (tags.includes("buff_atk") ? 90 : 0) +
+    (tags.includes("buff_team") ? 70 : 0) +
+    (tags.includes("energy_start") ? 60 : 0);
 
   const survivability =
     hp * 1.2 +
@@ -145,7 +153,7 @@ function scoreHero(hero, tags) {
     (tags.includes("tank") ? 40 : 0) +
     (tags.includes("shield") ? 40 : 0);
 
-  return { survivability, healing, control, burst, scaling, antiAssassin };
+return { survivability, healing, control, burst, scaling, antiAssassin, tempo };
 }
 
 // ---------- archetypes ----------
@@ -301,7 +309,8 @@ function heroWeightedScore(h, weights) {
     sc.control * weights.control +
     sc.burst * weights.burst +
     sc.scaling * weights.scaling +
-    sc.antiAssassin * weights.antiAssassin
+    sc.antiAssassin * weights.antiAssassin +
+    sc.tempo * (weights.tempo ?? 0)
   );
 }
 
@@ -313,9 +322,15 @@ function matchesNeed(hero, needAny = []) {
 
 function matchesPrefer(hero, preferAny = []) {
   if (!preferAny || preferAny.length === 0) return 0;
-  const tags = hero.__tags ?? [];
-  return preferAny.reduce((acc, t) => acc + (tags.includes(t) ? 1 : 0), 0);
+  const tags = new Set(hero.__tags ?? []);
+  const sc = hero.__scores ?? {};
+  return preferAny.reduce((acc, k) => {
+    if (tags.has(k)) return acc + 1;
+    if (typeof sc[k] === "number") return acc + Math.min(2, sc[k] / 300); // small normalized bump
+    return acc;
+  }, 0);
 }
+
 /*FIX */
 function rand01() {
   return Math.random();
@@ -379,9 +394,11 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
     // filter by needs
     const needFiltered = sorted.filter((h) => canPick(h, picked) && matchesNeed(h, slotDef.needAny));
     const baseList = (needFiltered.length ? needFiltered : sorted.filter((h) => canPick(h, picked)));
-
-    // take topK by (base + prefer bump)
-    const scoreFn = (h) => heroWeightedScore(h, weights) + matchesPrefer(h, slotDef.preferAny) * 80;
+    const scarcity = needFiltered.length ? (topK / Math.max(1, needFiltered.length)) : 0;
+    const scoreFn = (h) =>
+      heroWeightedScore(h, weights) +
+      matchesPrefer(h, slotDef.preferAny) * 80 +
+      scarcity * 60;
     return topKBy(baseList, scoreFn, topK);
   }
 
@@ -463,6 +480,11 @@ function teamSynergyBonus(team, mode) {
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const countTag = (tag) => team.reduce((acc, h) => acc + (tagsOf(h).has(tag) ? 1 : 0), 0);
   const hasTag = (tag) => team.some((h) => tagsOf(h).has(tag));
+  const tempoTotal = team.reduce((a,h)=> a + ((h.__scores?.tempo) ?? 0), 0);
+  const carryCount = team.filter(h => {
+    const t = new Set(h.__tags ?? []);
+    return t.has("assassin") || t.has("mage") || t.has("ranged");
+  }).length;
   const hasEnergyPush = hasTag("energy_push") || hasTag("energy_regen");
   const hasTempo = hasEnergyPush || hasTag("haste") || hasTag("cdr");
 
@@ -490,7 +512,10 @@ function teamSynergyBonus(team, mode) {
   });
 
   let bonus = 0;
-
+  if (tempoTotal > 0) {
+    const conversion = carryCount >= 2 ? 1.0 : carryCount === 1 ? 0.65 : 0.25;
+    bonus += Math.min(220, (tempoTotal / 6) * conversion);
+  }
   // Sustain layer
   if (sustainCount >= 1) bonus += 180;
   if (sustainCount >= 2) bonus += 80;
@@ -529,6 +554,7 @@ function teamSynergyBonus(team, mode) {
 
 function evaluateTeam(team, anchor, mode, cfg, plan) {
   const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
+  const factionW = weights.faction ?? 1.0;
 
   let score = 0;
   for (const h of team) score += heroWeightedScore(h, weights);
@@ -543,6 +569,7 @@ function evaluateTeam(team, anchor, mode, cfg, plan) {
 
   // global synergy bonus
   score += teamSynergyBonus(team, mode);
+  score += bonus * 100 * factionW;
 
   return score;
 }
