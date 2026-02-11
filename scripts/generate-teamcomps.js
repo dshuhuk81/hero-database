@@ -303,6 +303,31 @@ function matchesPrefer(hero, preferAny = []) {
   const tags = hero.__tags ?? [];
   return preferAny.reduce((acc, t) => acc + (tags.includes(t) ? 1 : 0), 0);
 }
+/*FIX */
+function rand01() {
+  return Math.random();
+}
+
+// weighted random pick: pick from topK but not always the top1
+function pickWithNoise(candidates, scoreFn, noise = 0.06) {
+  let best = null;
+  let bestVal = -Infinity;
+
+  for (const c of candidates) {
+    const base = scoreFn(c);
+    const jitter = 1 + (rand01() * 2 - 1) * noise; // ±noise
+    const val = base * jitter;
+    if (val > bestVal) {
+      bestVal = val;
+      best = c;
+    }
+  }
+  return best;
+}
+
+function topKBy(arr, scoreFn, k) {
+  return [...arr].sort((a, b) => scoreFn(b) - scoreFn(a)).slice(0, k);
+}
 
 function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
   const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
@@ -324,59 +349,101 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
     return true;
   });
 
-  // Sort by base weighted score
+  // base ranking (deterministic baseline)
   const sorted = [...allowed].sort((a, b) => heroWeightedScore(b, weights) - heroWeightedScore(a, weights));
 
-  const team = [anchor];
-  const picked = new Set([anchor.id]);
+  // --- randomized search parameters ---
+  const tries = cfg.randomSearch?.tries ?? 60;      // how many team variants per plan
+  const topK = cfg.randomSearch?.topK ?? 14;        // candidate pool per slot
+  const noise = cfg.randomSearch?.noise ?? 0.08;    // 0.05–0.12 is good
+  const fillTopK = cfg.randomSearch?.fillTopK ?? 20;
 
-  function canPick(h) {
-    if (picked.has(h.id)) return false;
-    return true;
+  function canPick(h, picked) {
+    return !picked.has(h.id);
   }
 
-  function pickForSlot(slotDef) {
-    const candidates = sorted.filter((h) => canPick(h) && matchesNeed(h, slotDef.needAny));
-    if (candidates.length === 0) {
-      const relaxed = sorted.filter((h) => canPick(h));
-      if (relaxed.length === 0) return null;
-      return relaxed[0];
+  function slotCandidateList(slotDef, picked) {
+    // filter by needs
+    const needFiltered = sorted.filter((h) => canPick(h, picked) && matchesNeed(h, slotDef.needAny));
+    const baseList = (needFiltered.length ? needFiltered : sorted.filter((h) => canPick(h, picked)));
+
+    // take topK by (base + prefer bump)
+    const scoreFn = (h) => heroWeightedScore(h, weights) + matchesPrefer(h, slotDef.preferAny) * 80;
+    return topKBy(baseList, scoreFn, topK);
+  }
+
+  // build ONE team with randomness
+  function buildOne() {
+    const team = [anchor];
+    const picked = new Set([anchor.id]);
+
+    for (const slot of slots) {
+      const candidates = slotCandidateList(slot, picked);
+      if (!candidates.length) continue;
+
+      const scoreFn = (h) => heroWeightedScore(h, weights) + matchesPrefer(h, slot.preferAny) * 80;
+      const pick = pickWithNoise(candidates, scoreFn, noise);
+      if (!pick) continue;
+
+      picked.add(pick.id);
+      team.push(pick);
+      if (team.length >= 5) break;
     }
 
-    let best = null;
-    let bestVal = -Infinity;
+    // fill to 5 from top remaining (with a little randomness too)
+    const remaining = sorted.filter((h) => !picked.has(h.id));
+    const fillPool = remaining.slice(0, fillTopK);
 
-    for (const h of candidates.slice(0, 60)) {
-      const base = heroWeightedScore(h, weights);
-      const prefer = matchesPrefer(h, slotDef.preferAny) * 50;
-      const val = base + prefer;
-      if (val > bestVal) {
-        bestVal = val;
-        best = h;
-      }
+    while (team.length < 5 && fillPool.length) {
+      const pick = pickWithNoise(
+        fillPool,
+        (h) => heroWeightedScore(h, weights),
+        noise * 0.6
+      );
+      if (!pick) break;
+      picked.add(pick.id);
+      team.push(pick);
+      // remove chosen from fillPool
+      const idx = fillPool.findIndex((x) => x.id === pick.id);
+      if (idx >= 0) fillPool.splice(idx, 1);
     }
-    return best;
+
+    return uniqById(team).slice(0, 5);
   }
 
-  for (const slot of slots) {
-    const pick = pickForSlot(slot);
-    if (!pick) continue;
-    picked.add(pick.id);
-    team.push(pick);
-    if (team.length >= 5) break;
+  // Evaluate many variants & keep best
+  let bestTeam = null;
+  let bestScore = -Infinity;
+
+  // a few deterministic tries first (noise=0) so results stay sane
+  for (let i = 0; i < 6; i++) {
+    const t = buildOne();
+    if (t.length < 5) continue;
+    const s = evaluateTeam(t, anchor, mode, cfg, plan);
+    if (s > bestScore) {
+      bestScore = s;
+      bestTeam = t;
+    }
   }
 
-  // Fill to 5 with best remaining in allowed pool
-  for (const h of sorted) {
-    if (team.length >= 5) break;
-    if (picked.has(h.id)) continue;
-    picked.add(h.id);
-    team.push(h);
+  for (let i = 0; i < tries; i++) {
+    const t = buildOne();
+    if (t.length < 5) continue;
+    const s = evaluateTeam(t, anchor, mode, cfg, plan);
+    if (s > bestScore) {
+      bestScore = s;
+      bestTeam = t;
+    }
   }
 
-  const finalTeam = uniqById(team).slice(0, 5);
-  return { team: finalTeam, secondFaction, archetype };
+  // fallback
+  if (!bestTeam || bestTeam.length < 5) {
+    bestTeam = [anchor, ...sorted.slice(0, 4)];
+  }
+
+  return { team: bestTeam, secondFaction, archetype };
 }
+
 
 // ---------- synergy bonus ----------
 function teamSynergyBonus(team, mode) {

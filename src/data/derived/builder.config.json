@@ -31,5 +31,11 @@
     "lifesteal_aura": ["lifesteal", "steal hp", "vamp", "heals all teammates", "restore hp to all allies"],
 
     "antiAssassin": ["cannot be targeted", "reduce assassin", "reveal", "anti-assassin", "mark", "prevent dodge"]
+  },
+  "randomSearch": {
+    "tries": 60,
+    "topK": 14,
+    "fillTopK": 20,
+    "noise": 0.08
   }
 }
