@@ -7,60 +7,6 @@
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "Amun-Ra is mostly situational. He performs well in Delusions Den and PVP, as well as in Odysseus, but his performance in other areas is average.",
-  "teamComps": {
-    "pve": {
-      "title": "Best PVE Setup",
-      "description": "Maximum AoE-DMG with Starglint synergy.",
-      "formation": [
-        {
-          "heroId": "dionysus",
-          "position": "back-left"
-        },
-        {
-          "heroId": "freya",
-          "position": "back-right"
-        },
-        {
-          "heroId": "amunra",
-          "position": "front-left"
-        },
-        {
-          "heroId": "zeus",
-          "position": "front-center"
-        },
-        {
-          "heroId": "nyx",
-          "position": "front-right"
-        }
-      ]
-    },
-    "pvp": {
-      "title": "Best PVP Setup",
-      "description": "Control Meta with Black Hole setup.",
-      "formation": [
-        {
-          "heroId": "dionysus",
-          "position": "back-left"
-        },
-        {
-          "heroId": "anubis",
-          "position": "back-right"
-        },
-        {
-          "heroId": "amunra",
-          "position": "front-left"
-        },
-        {
-          "heroId": "nyx",
-          "position": "front-center"
-        },
-        {
-          "heroId": "freya",
-          "position": "front-right"
-        }
-      ]
-    }
-  },
   "ratings": {
     "overall": "SS",
     "grimSurge": "A",
