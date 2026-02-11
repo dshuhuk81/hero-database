@@ -115,17 +115,30 @@ function scoreHero(hero, tags) {
     (tags.includes("shield") ? 50 : 0) +
     (tags.includes("lifesteal_aura") ? 90 : 0);
 
-  const control = (tags.includes("control") ? 200 : 0) + (tags.includes("taunt") ? 120 : 0);
-
+  const control =
+      (tags.includes("control") ? 200 : 0) +
+      (tags.includes("taunt") ? 120 : 0) +
+      // Tempo-Supports: CDR ist quasi "mehr casts" => wirkt wie Utility/Control
+      (tags.includes("cdr") ? 90 : 0);
+      
   const burst =
     atk * (tags.includes("assassin") ? 1.6 : 1.0) +
     (tags.includes("mage") ? 20 : 0) +
-    (tags.includes("diver") ? 15 : 0);
+    (tags.includes("diver") ? 15 : 0) +
+    // haste/buff wirkt indirekt auf damage output, kleiner Bonus reicht
+    (tags.includes("haste") ? 70 : 0) +
+    (tags.includes("buff_atk") ? 60 : 0);
 
   const scaling =
     (tags.includes("energy") ? 120 : 0) +
     (tags.includes("energy_start") ? 140 : 0) +
-    (tags.includes("mage") ? 40 : 0);
+    (tags.includes("mage") ? 40 : 0) +
+    // Das ist der eigentliche Fix: Team-Energy Push muss stark zählen
+    (tags.includes("energy_push") ? 320 : 0) +
+    (tags.includes("energy_regen") ? 180 : 0) +
+    // Teamweite Buffs sind selten, aber sehr wertvoll
+    (tags.includes("buff_team") ? 90 : 0);
+
 
   const antiAssassin =
     (tags.includes("antiAssassin") ? 180 : 0) +
@@ -450,6 +463,13 @@ function teamSynergyBonus(team, mode) {
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const countTag = (tag) => team.reduce((acc, h) => acc + (tagsOf(h).has(tag) ? 1 : 0), 0);
   const hasTag = (tag) => team.some((h) => tagsOf(h).has(tag));
+  const hasEnergyPush = hasTag("energy_push") || hasTag("energy_regen");
+  const hasTempo = hasEnergyPush || hasTag("haste") || hasTag("cdr");
+
+  const hasCarry = team.some(h => {
+    const t = new Set(h.__tags ?? []);
+    return t.has("assassin") || t.has("mage") || t.has("ranged");
+  });
 
   const controlCount = countTag("control") + countTag("taunt");
   const sustainCount = countTag("healer") + countTag("shield") + countTag("lifesteal_aura");
@@ -490,6 +510,18 @@ function teamSynergyBonus(team, mode) {
   if (mode === "pvp") {
     if (hasTag("antiAssassin")) bonus += 120;
     if (hasTag("energy_start")) bonus += 60;
+  }
+  // Tempo-Bonus: Energy/haste/cdr ist besonders stark, wenn du Carries hast
+  if (hasTempo) bonus += 90;
+  if (hasEnergyPush) bonus += 140;
+
+  // Tempo + Carry Synergie (das ist, was Cashien/Yuelao/Dionysus “wertvoll” macht)
+  if (hasEnergyPush && hasCarry) bonus += 140;
+
+  // PvP: Tempo ist noch wichtiger (Ult-Cycling, First-CC, Burst windows)
+  if (mode === "pvp") {
+    if (hasTempo) bonus += 60;
+    if (hasEnergyPush && hasCarry) bonus += 80;
   }
 
   return Math.min(bonus, 650);

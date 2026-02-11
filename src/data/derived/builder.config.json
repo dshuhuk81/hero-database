@@ -30,7 +30,58 @@
     "aura": ["aura", "within", "nearby allies", "all allies within"],
     "lifesteal_aura": ["lifesteal", "steal hp", "vamp", "heals all teammates", "restore hp to all allies"],
 
-    "antiAssassin": ["cannot be targeted", "reduce assassin", "reveal", "anti-assassin", "mark", "prevent dodge"]
+    "antiAssassin": ["cannot be targeted", "reduce assassin", "reveal", "anti-assassin", "mark", "prevent dodge"],
+    "energy_push": [
+      "restores energy",
+      "restore energy",
+      "grants energy",
+      "grant energy",
+      "energy to allies",
+      "allies gain energy",
+      "energy per sec",
+      "energy per second",
+      "gain 100 energy",
+      "gain 150 energy",
+      "gain 200 energy",
+      "restores 100 energy",
+      "restores 150 energy",
+      "restores 200 energy"
+    ],
+    "energy_regen": [
+      "energy regen",
+      "energy regeneration",
+      "increases energy regen",
+      "increase energy regen",
+      "energy regen +"
+    ],
+    "cdr": [
+      "skill cd",
+      "cooldown",
+      "cooldown reduction",
+      "cd -",
+      "reduces cooldown",
+      "reduce cooldown"
+    ],
+    "haste": [
+      "atk spd",
+      "attack speed",
+      "move spd",
+      "move speed",
+      "frenzy"
+    ],
+    "buff_atk": [
+      "increase atk",
+      "increases atk",
+      "atk increased",
+      "atk +"
+    ],
+    "buff_team": [
+      "all allies",
+      "allied heroes",
+      "all teammates",
+      "nearby allies",
+      "within"
+    ]
   },
   "randomSearch": {
     "tries": 60,
