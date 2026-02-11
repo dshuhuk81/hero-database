@@ -958,6 +958,115 @@ function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
 
   return best;
 }
+
+function analyzeMatchupsLight(team, mode, lang = "en") {
+  const isEN = lang === "en";
+  const tagsOf = (h) => new Set(h.__tags ?? []);
+  const metaOf = (h) => h.__meta ?? h.meta ?? {};
+  const scOf = (h) => h.__scores ?? {};
+
+  const frontlineCount = team.filter((h) => tagsOf(h).has("frontline") || tagsOf(h).has("tank")).length;
+
+  const healerCount = team.filter((h) => tagsOf(h).has("healer")).length;
+  const shieldCount = team.filter((h) => tagsOf(h).has("shield")).length;
+  const lifestealAura = team.some((h) => tagsOf(h).has("lifesteal_aura") || metaOf(h).lifestealAuraTeam === true);
+  const sustainSignals = healerCount + shieldCount + (lifestealAura ? 1 : 0);
+
+  const cleanse =
+    team.some((h) => tagsOf(h).has("cleanse")) ||
+    team.some((h) => ["single", "team"].includes(metaOf(h).cleanse));
+
+  const antiAssassin = team.some((h) => tagsOf(h).has("antiAssassin"));
+
+  const controlCount = team.filter((h) => tagsOf(h).has("control") || tagsOf(h).has("taunt")).length;
+  const tempoTotal = team.reduce((a, h) => a + (scOf(h).tempo ?? 0), 0);
+  const burstTotal = team.reduce((a, h) => a + (scOf(h).burst ?? 0), 0);
+
+  const carries = team.filter((h) => {
+    const t = tagsOf(h);
+    return t.has("assassin") || t.has("mage") || t.has("ranged") || t.has("burst");
+  }).length;
+
+  const anchors = team.filter((h) => (metaOf(h).frontAnchor ?? 0) >= 2).length;
+
+  const strong = [];
+  const weak = [];
+
+  // -----------------------------
+  // STRONG VS (What you beat)
+  // -----------------------------
+
+  // Tempo + double carry punishes slow comps
+  if (tempoTotal >= 800 && carries >= 2) {
+    strong.push(isEN ? "Slow / scaling-only teams" : "Langsame / reine Scaling-Teams");
+  }
+
+  // Control chains punish low-cleanse teams
+  if (controlCount >= 2) {
+    strong.push(isEN ? "Low-cleanse teams (CC chain value)" : "Teams ohne Cleanse (CC-Chain Value)");
+  }
+
+  // Sustain + frontline beats poke/attrition
+  if (frontlineCount >= 2 && sustainSignals >= 1) {
+    strong.push(isEN ? "Poke / attrition teams" : "Poke / Attrition-Teams");
+  }
+
+  // Burst double carry punishes fragile backlines
+  if (burstTotal >= 1200 && carries >= 2) {
+    strong.push(isEN ? "Fragile backlines (fast pick potential)" : "Fragile Backlines (schnelle Picks)");
+  }
+
+  // Anti-assassin helps vs dive
+  if (mode === "pvp" && antiAssassin) {
+    strong.push(isEN ? "Dive assassin comps" : "Dive-Assassin Comps");
+  }
+
+  // -----------------------------
+  // WEAK VS (What beats you)
+  // -----------------------------
+
+  // No/low frontline is vulnerable
+  if (frontlineCount === 0) {
+    weak.push(isEN ? "Hard engage / collapse openers" : "Hard-Engage / Collapse-Opener");
+  } else if (frontlineCount === 1 && mode === "pvp") {
+    weak.push(isEN ? "Coordinated dive + burst" : "Koordinierte Dives + Burst");
+  }
+
+  // No sustain loses extended fights
+  if (sustainSignals === 0) {
+    weak.push(isEN ? "Extended fights / sustain teams" : "Lange Fights / Sustain-Teams");
+  }
+
+  // No cleanse suffers CC lock
+  if (!cleanse && controlCount <= 1) {
+    weak.push(isEN ? "Heavy CC lock teams" : "Heavy-CC-Lock Teams");
+  }
+
+  // Tempo without conversion
+  if (tempoTotal >= 800 && carries <= 1) {
+    weak.push(isEN ? "High-tank + stall (tempo wasted)" : "High-Tank + Stall (Tempo verpufft)");
+  }
+
+  // If no anti-assassin in PvP, warn vs assassins
+  if (mode === "pvp" && !antiAssassin) {
+    weak.push(isEN ? "Burst assassins targeting carries" : "Burst-Assassins auf Carries");
+  }
+
+  // If no anchors & low frontline, warn vs early pressure
+  if (anchors === 0 && frontlineCount <= 1) {
+    weak.push(isEN ? "Early pressure / lane focus" : "Früher Druck / Lane-Fokus");
+  }
+
+  // Deduplicate & cap (keep it light)
+  const uniq = (arr) => [...new Set(arr)];
+  return {
+    strongVs: uniq(strong).slice(0, 3),
+    weakVs: uniq(weak).slice(0, 3)
+  };
+}
+
+
+
 function describeFormation(anchor, team, cfg, lang = "en") {
   const isEN = lang === "en";
   const metaOf = (h) => h.__meta ?? h.meta ?? {};
@@ -1248,6 +1357,9 @@ for (const anchor of enrichedHeroes) {
   const pvpInfo = describeTeam(pvpTeam, "pvp", lang);
   const pveWD = analyzeWinDanger(pveTeam, "pve", lang);
   const pvpWD = analyzeWinDanger(pvpTeam, "pvp", lang);
+  const pveMU = analyzeMatchupsLight(pveTeam, "pve", lang);
+  const pvpMU = analyzeMatchupsLight(pvpTeam, "pvp", lang);
+
 
   output[anchor.id] = {
     pve: {
@@ -1258,6 +1370,8 @@ for (const anchor of enrichedHeroes) {
       formationSummary: pveForm.formationSummary,
       winCondition: pveWD.winCondition,
       danger: pveWD.danger,
+      strongVs: pveMU.strongVs,
+      weakVs: pveMU.weakVs,
     },
     pvp: {
       title: pvpInfo.title,
@@ -1267,6 +1381,8 @@ for (const anchor of enrichedHeroes) {
       formationSummary: pvpForm.formationSummary,
       winCondition: pvpWD.winCondition,
       danger: pvpWD.danger,
+      strongVs: pvpMU.strongVs,
+      weakVs: pvpMU.weakVs,
     }
   };
 }

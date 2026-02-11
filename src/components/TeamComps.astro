@@ -19,6 +19,8 @@ interface TeamComp {
   formation: FormationHero[];
   formationSummary?: string;
   formationNotes?: FormationNote[];
+  strongVs?: string[];
+  weakVs?: string[];
 }
 
 interface Props {
@@ -142,8 +144,12 @@ const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
           )}
         </details>
       </div>
-
-
+      {((pveTeam.strongVs?.length ?? 0) > 0 || (pveTeam.weakVs?.length ?? 0) > 0) && (
+        <div class="matchup-chips">
+          {(pveTeam.strongVs ?? []).map((t) => <span class="chip strong">✅ {t}</span>)}
+          {(pveTeam.weakVs ?? []).map((t) => <span class="chip weak">⚠️ {t}</span>)}
+        </div>
+      )}
 
     <div class="formation-grid">
       <!-- Back Row -->
@@ -278,6 +284,12 @@ const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
           )}
         </details>
       </div>
+      {((pveTeam.strongVs?.length ?? 0) > 0 || (pveTeam.weakVs?.length ?? 0) > 0) && (
+        <div class="matchup-chips">
+          {(pveTeam.strongVs ?? []).map((t) => <span class="chip strong">✅ {t}</span>)}
+          {(pveTeam.weakVs ?? []).map((t) => <span class="chip weak">⚠️ {t}</span>)}
+        </div>
+      )}
 
     <div class="formation-grid">
       <!-- Back Row -->
@@ -377,6 +389,31 @@ const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
 </div>
 
 <style>
+  .matchup-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: -0.5rem 0 1.25rem; /* zieht näher an coach-card */
+}
+
+.chip {
+  font-size: 0.82rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.18);
+  color: rgba(255,255,255,0.86);
+  line-height: 1.2;
+}
+
+.chip.strong {
+  border-color: rgba(34,197,94,0.30);
+}
+
+.chip.weak {
+  border-color: rgba(239,68,68,0.30);
+}
+
 .coach-card {
   margin: 0.75rem 0 1.25rem;
   padding: 1rem 1.1rem;

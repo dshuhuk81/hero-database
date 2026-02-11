@@ -54,7 +54,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -110,7 +116,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "anubis": {
@@ -127,11 +139,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -152,12 +164,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "dionysus",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "pan",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -168,7 +180,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -224,7 +244,16 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Burst composition: play around short engage windows and quick target elimination.",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "aquarius": {
@@ -282,7 +311,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -338,7 +374,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "ares": {
@@ -396,7 +438,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -452,7 +500,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "aries": {
@@ -510,7 +566,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -566,7 +628,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "artemis": {
@@ -587,11 +657,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ],
@@ -613,18 +683,25 @@
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "pan",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -639,7 +716,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "nyx",
+          "heroId": "pan",
           "position": "front-left"
         },
         {
@@ -647,7 +724,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -664,7 +741,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "nyx",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -674,13 +751,21 @@
         },
         {
           "position": "front-right",
-          "heroId": "pan",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "athena": {
@@ -701,11 +786,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-right"
         }
       ],
@@ -727,18 +812,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -794,7 +885,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "bastet": {
@@ -852,7 +951,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -908,7 +1015,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "cancer": {
@@ -966,7 +1079,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1022,7 +1142,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "canopicjar": {
@@ -1043,11 +1171,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ],
@@ -1069,18 +1197,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1136,7 +1270,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "capricorn": {
@@ -1153,11 +1295,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -1178,12 +1320,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "dionysus",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "pan",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -1194,7 +1336,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -1250,7 +1400,16 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Burst composition: play around short engage windows and quick target elimination.",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "cashien": {
@@ -1308,7 +1467,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -1364,7 +1530,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "demeter": {
@@ -1422,7 +1596,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1478,7 +1660,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "diana": {
@@ -1536,7 +1724,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Sustain + CC + Tempo + Double Carry)",
@@ -1592,7 +1787,16 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "dionysus": {
@@ -1650,7 +1854,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1706,7 +1916,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "fengyi": {
@@ -1764,7 +1980,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -1820,7 +2044,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "freya": {
@@ -1878,7 +2108,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -1934,7 +2171,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "geb": {
@@ -1992,7 +2235,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -2048,7 +2297,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "gemini": {
@@ -2106,7 +2363,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2162,7 +2427,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "hecate": {
@@ -2220,7 +2491,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Double Carry)",
@@ -2276,7 +2554,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "hela": {
@@ -2334,7 +2620,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Sustain + CC + Tempo + Double Carry)",
@@ -2390,7 +2683,16 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "hladgunnr": {
@@ -2407,7 +2709,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -2415,7 +2717,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ],
@@ -2432,7 +2734,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -2442,13 +2744,20 @@
         },
         {
           "position": "front-right",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -2467,11 +2776,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -2493,18 +2802,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "horus": {
@@ -2562,7 +2877,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -2581,11 +2904,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -2607,18 +2930,27 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "iris": {
@@ -2676,7 +3008,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2732,7 +3071,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "isis": {
@@ -2753,11 +3098,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -2779,18 +3124,25 @@
         },
         {
           "position": "front-center",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -2809,11 +3161,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -2835,18 +3187,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "jinchan": {
@@ -2904,18 +3262,25 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -2927,20 +3292,20 @@
           "position": "front-center"
         },
         {
-          "heroId": "surtr",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
       "formationNotes": [
         {
           "position": "back-left",
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "note": "Main frontline holder (tank/taunt) to stabilize the early fight."
         },
         {
           "position": "back-right",
-          "heroId": "nyx",
-          "note": "Lower-pressure lane to reduce early focus and preserve team stability."
+          "heroId": "nuwa",
+          "note": "Mobile frontline: safer lane lets them survive longer before committing."
         },
         {
           "position": "front-left",
@@ -2954,13 +3319,21 @@
         },
         {
           "position": "front-right",
-          "heroId": "surtr",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "jingwei": {
@@ -3018,7 +3391,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3074,7 +3454,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "jormungandr": {
@@ -3132,7 +3518,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Fragile backlines (fast pick potential)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3147,15 +3541,15 @@
           "position": "back-right"
         },
         {
-          "heroId": "pan",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "anubis",
           "position": "front-center"
         },
         {
-          "heroId": "anubis",
+          "heroId": "pan",
           "position": "front-right"
         }
       ],
@@ -3172,23 +3566,29 @@
         },
         {
           "position": "front-left",
-          "heroId": "pan",
-          "note": "Support/backline utility position to keep buffs/heals safe."
-        },
-        {
-          "position": "front-center",
           "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
-          "position": "front-right",
+          "position": "front-center",
           "heroId": "anubis",
+          "note": "Support/backline utility position to keep buffs/heals safe."
+        },
+        {
+          "position": "front-right",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "khepri": {
@@ -3246,7 +3646,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -3265,11 +3672,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -3291,18 +3698,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "kraken": {
@@ -3360,7 +3773,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -3416,7 +3836,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "leo": {
@@ -3474,7 +3900,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -3530,7 +3962,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "libra": {
@@ -3551,11 +3991,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ],
@@ -3577,18 +4017,25 @@
         },
         {
           "position": "front-center",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -3644,7 +4091,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "medusa": {
@@ -3702,7 +4157,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -3758,7 +4219,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "momus": {
@@ -3816,7 +4283,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -3872,7 +4346,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "nemesis": {
@@ -3889,11 +4369,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -3914,12 +4394,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -3930,7 +4410,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Double Carry)",
@@ -3945,11 +4432,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
@@ -3970,12 +4457,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -3986,7 +4473,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "nezha": {
@@ -4007,11 +4502,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-center"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ],
@@ -4033,18 +4528,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
-          "note": "Support/backline utility position to keep buffs/heals safe."
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         },
         {
           "position": "front-right",
-          "heroId": "zeus",
-          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4100,7 +4601,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "nuwa": {
@@ -4117,11 +4624,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-left"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -4142,13 +4649,13 @@
         },
         {
           "position": "front-left",
-          "heroId": "dionysus",
-          "note": "Support/backline utility position to keep buffs/heals safe."
+          "heroId": "zeus",
+          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
         },
         {
           "position": "front-center",
-          "heroId": "zeus",
-          "note": "Damage dealer kept backline to maximize uptime and avoid early collapse."
+          "heroId": "dionysus",
+          "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
@@ -4158,7 +4665,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4214,7 +4727,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "nymphia": {
@@ -4272,7 +4791,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4328,7 +4853,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "nyx": {
@@ -4386,7 +4917,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4442,7 +4979,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "pan": {
@@ -4500,7 +5043,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4556,7 +5106,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "phoenix": {
@@ -4614,7 +5170,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4670,7 +5232,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "pisces": {
@@ -4728,7 +5296,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4784,7 +5358,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "poseidon": {
@@ -4842,7 +5422,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -4898,7 +5485,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "prometheus": {
@@ -4956,7 +5549,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -4979,7 +5579,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cancer",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ],
@@ -5006,13 +5606,21 @@
         },
         {
           "position": "front-right",
-          "heroId": "cancer",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "ratatoskr": {
@@ -5070,7 +5678,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -5126,7 +5740,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "sagittarius": {
@@ -5184,7 +5804,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -5240,7 +5866,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "scorpio": {
@@ -5257,11 +5889,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
@@ -5282,12 +5914,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -5298,7 +5930,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Control Pressure (Sustain + CC + Tempo + Double Carry)",
@@ -5354,7 +5993,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Control pressure: chain CC to deny enemy tempo and secure picks.",
-      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst."
+      "danger": "Single frontline in PvP — vulnerable to coordinated dives and early burst.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "Coordinated dive + burst",
+        "Early pressure / lane focus"
+      ]
     }
   },
   "sekhmet": {
@@ -5371,7 +6018,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
@@ -5379,7 +6026,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "athena",
           "position": "front-right"
         }
       ],
@@ -5396,7 +6043,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "athena",
+          "heroId": "dionysus",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -5406,13 +6053,19 @@
         },
         {
           "position": "front-right",
-          "heroId": "dionysus",
+          "heroId": "athena",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5468,7 +6121,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "set": {
@@ -5526,7 +6187,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5541,11 +6208,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "athena",
+          "heroId": "nuwa",
           "position": "front-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "athena",
           "position": "front-center"
         },
         {
@@ -5566,12 +6233,12 @@
         },
         {
           "position": "front-left",
-          "heroId": "athena",
+          "heroId": "nuwa",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-center",
-          "heroId": "nuwa",
+          "heroId": "athena",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -5582,7 +6249,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Collapse/control chains cluster enemies for melee AoE and consistent fight control.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "surtr": {
@@ -5640,7 +6315,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -5696,7 +6377,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "tailao": {
@@ -5754,7 +6441,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5773,11 +6467,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -5799,18 +6493,26 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "taurus": {
@@ -5827,7 +6529,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -5835,7 +6537,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ],
@@ -5852,7 +6554,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -5862,13 +6564,20 @@
         },
         {
           "position": "front-right",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -5924,7 +6633,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "tefnut": {
@@ -5982,7 +6699,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -6001,11 +6725,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-right"
         }
       ],
@@ -6027,18 +6751,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "treant": {
@@ -6096,7 +6826,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -6115,11 +6852,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ],
@@ -6141,18 +6878,24 @@
         },
         {
           "position": "front-center",
-          "heroId": "nyx",
+          "heroId": "pan",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
           "position": "front-right",
-          "heroId": "pan",
+          "heroId": "nyx",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "ullr": {
@@ -6169,7 +6912,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -6177,7 +6920,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ],
@@ -6194,7 +6937,7 @@
         },
         {
           "position": "front-left",
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "note": "Support/backline utility position to keep buffs/heals safe."
         },
         {
@@ -6204,13 +6947,20 @@
         },
         {
           "position": "front-right",
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "note": "Support/backline utility position to keep buffs/heals safe."
         }
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -6266,7 +7016,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "ushabti": {
@@ -6324,7 +7082,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -6380,7 +7144,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   },
   "virgo": {
@@ -6438,7 +7208,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
@@ -6494,7 +7270,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": []
     }
   },
   "yanluo": {
@@ -6552,7 +7334,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)"
+      ],
+      "weakVs": [
+        "Early pressure / lane focus"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -6608,7 +7397,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "yuelao": {
@@ -6666,7 +7463,14 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
@@ -6722,7 +7526,15 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Stable frontline + sustain wins long fights through consistency and uptime.",
-      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines."
+      "danger": "Tempo without enough carry conversion — add 1–2 real carries to utilize engines.",
+      "strongVs": [
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams",
+        "Dive assassin comps"
+      ],
+      "weakVs": [
+        "High-tank + stall (tempo wasted)"
+      ]
     }
   },
   "zeus": {
@@ -6780,7 +7592,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
@@ -6836,7 +7654,13 @@
       ],
       "formationSummary": "Formation optimized to protect backline and stabilize the early fight.",
       "winCondition": "Tempo engines accelerate ultimate cycles into burst windows (double carry conversion).",
-      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage."
+      "danger": "General risk: watch positioning and avoid giving the enemy an uncontested first engage.",
+      "strongVs": [
+        "Slow / scaling-only teams",
+        "Low-cleanse teams (CC chain value)",
+        "Poke / attrition teams"
+      ],
+      "weakVs": []
     }
   }
 }
