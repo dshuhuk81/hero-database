@@ -70,6 +70,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                       data-class={hero.class.toLowerCase()}
                       data-role={hero.role.toLowerCase()}
                       data-rarity={hero.rarity.toLowerCase()}
+                      data-faction={hero.faction.toLowerCase()}
                       data-overall={hero.ratings?.overall || 'N/A'}
                       data-grimsurge={hero.ratings?.grimSurge || 'N/A'}
                       data-delusionsden={hero.ratings?.delusionsDen || 'N/A'}
@@ -507,6 +508,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         const roleChips      = document.querySelectorAll(".role-chip");
         const classChips     = document.querySelectorAll(".class-chip");
         const rarityChips    = document.querySelectorAll(".rarity-chip");
+        const factionChips   = document.querySelectorAll(".faction-chip");
         const sortableHeaders = document.querySelectorAll(".sortable");
 
         // Horizontales Scroll-Sync: Body scrollt → Header folgt
@@ -517,6 +519,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         let activeRoles    = new Set<string>();
         let activeClasses  = new Set<string>();
         let activeRarities = new Set<string>();
+        let activeFactions = new Set<string>(); 
         let currentSort    = { column: 'name', direction: 'asc' };
 
         function applyFilters() {
@@ -529,11 +532,13 @@ const sortedHeroes = [...heroes].sort((a, b) =>
             const cls    = row.dataset.class  || '';
             const role   = row.dataset.role   || '';
             const rarity = row.dataset.rarity || '';
+            const faction = row.dataset.faction || '';
 
             const show =
-              (!query || name.includes(query) || cls.includes(query) || role.includes(query)) &&
+              (!query || name.includes(query) || cls.includes(query) || faction.includes(query) || role.includes(query)) &&
               (activeClasses.size  === 0 || activeClasses.has(cls))   &&
               (activeRoles.size    === 0 || activeRoles.has(role))     &&
+              (activeFactions.size === 0 || activeFactions.has(faction)) &&
               (activeRarities.size === 0 || activeRarities.has(rarity));
 
             row.style.display = show ? "" : "none";
@@ -602,6 +607,15 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           });
         });
 
+        factionChips.forEach(chip => {
+          chip.addEventListener("click", () => {
+            const c = (chip as HTMLElement).dataset.faction || '';
+            chip.classList.toggle("active");
+            activeFactions.has(c) ? activeFactions.delete(c) : activeFactions.add(c);
+            applyFilters();
+          });
+        });
+
         rarityChips.forEach(chip => {
           chip.addEventListener("click", () => {
             const r = (chip as HTMLElement).dataset.rarity || '';
@@ -623,6 +637,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           activeClasses.clear();
           activeRarities.clear();
           activeRoles.clear();
+          activeFactions.clear();
           document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
           sortTable('name');
         });

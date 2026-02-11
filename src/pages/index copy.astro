@@ -1,0 +1,342 @@
+---
+import HeroCard from "../components/HeroCard.astro";
+import { heroes } from "../data/heroes";
+import Footer from "../components/Footer.astro";  
+import Sidebar from "../components/Sidebar.astro";  // 👈 NEU
+import Filter from "../components/filter.astro";  // 👈 NEU
+
+
+/* 🔤 Alphabetisch nach Name sortieren */
+const sortedHeroes = [...heroes].sort((a, b) =>
+  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+);
+---
+<Sidebar />  <!-- 👈 NEU -->
+<!-- HERO HEADER -->
+<section class="hero-header"></section>
+
+<h1 class="title">Choose your hero</h1>
+
+<div class="content-wrapper">
+  
+<Filter />
+
+<!-- RESULTS -->
+<div class="resultcontent">
+  <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
+
+    <div class="grid" id="heroGrid">
+    {sortedHeroes.map(hero => (
+      <div
+        class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
+          data-name={hero.name.toLowerCase()}
+          data-class={hero.class.toLowerCase()}
+          data-role={hero.role.toLowerCase()}    
+          data-faction={hero.faction.toLowerCase()}
+          data-rarity={hero.rarity.toLowerCase()}
+      >
+        <div class="icon-stack">
+          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
+          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} />
+          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} />
+        </div>
+
+        <HeroCard hero={hero} />
+      </div>
+    ))}
+  </div>
+</div>
+</div>
+<Footer />  <!-- 👈 NEU -->
+
+<style>
+/* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+}
+
+/* ===============================
+   PAGE LAYOUT WITH SIDEBAR
+   =============================== */
+body {
+  margin-left: 80px; /* Sidebar width */
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px; /* Mobile bottom nav */
+  }
+}
+
+/* HERO HEADER */
+.hero-header {
+  height: 360px;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center 150%; /* 👈 höheres Bild */
+  background-attachment: fixed;
+  position: relative;
+}
+
+.hero-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35)),
+    linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.45));
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  margin: 32px 0;
+  font-weight: 600;
+}
+
+/* FILTERS  */
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.hero-counter {
+  margin-bottom: 24px;
+  margin-top: 16px;
+  text-align: center;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); /* 👈 flexibel */
+  gap: 20px;
+  justify-content: center; /* 👈 zentriert das Grid */
+}
+
+/* ================================
+   HERO WRAPPER – GLOW BASIS
+   ================================ */
+
+.hero-wrapper {
+  position: relative;
+  width: 210px;
+  border-radius: 6px;
+}
+
+/* Common */
+.hero-wrapper.rarity-common {
+  border: 1px solid rgba(74, 222, 128, 0.55); /* grün */
+}
+
+/* Epic */
+.hero-wrapper.rarity-epic {
+  border: 1px solid rgba(168, 85, 247, 0.6); /* purple */
+}
+
+/* Legendary */
+.hero-wrapper.rarity-legendary {
+  border: 1px solid rgba(250, 204, 21, 0.75); /* gold */
+}
+
+/* Grund-Glow (aus) */
+.hero-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+    pointer-events: none;
+
+  border-radius: 20px;
+
+  opacity: 0;
+  filter: blur(18px);
+
+  pointer-events: none;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* Legendary Grundzustand */
+.hero-wrapper.rarity-legendary::before {
+  background: radial-gradient(
+    circle at 50% 20%,
+    rgba(255, 215, 100, 0.7),
+    rgba(255, 215, 100, 0.25) 45%,
+    transparent 70%
+  );
+  opacity: 0.25;
+}
+
+/* Epic Grundzustand */
+.hero-wrapper.rarity-epic::before {
+  background: radial-gradient(
+    circle at 50% 20%,
+    rgba(160, 90, 255, 0.6),
+    rgba(160, 90, 255, 0.25) 45%,
+    transparent 70%
+  );
+  opacity: 0.6;
+}
+
+/* ================================
+   HOVER: LEGENDARY BOOST
+   ================================ */
+
+.hero-wrapper.rarity-legendary .hero-card:hover::before {
+  transform: scale(1.18); /* 👈 etwas stärker als normal */
+}
+
+/* Glow verstärken bei Hover */
+.hero-wrapper.rarity-legendary:hover::before {
+  opacity: 1;
+  filter: blur(26px);
+}
+
+
+/* ICON STACK */
+.icon-stack {
+  position: absolute;
+  top: 10px;
+  left: -14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+.icon-stack img {
+  width: 20px;
+  height: 20px;
+  background: #0e0e0e;
+  border-radius: 50%;
+  padding: 3px;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("searchInput");
+  const resetButton = document.getElementById("resetFilters");
+  const heroCounter = document.getElementById("heroCounter");
+  const roleChips = document.querySelectorAll(".role-chip");
+  const factionChips = document.querySelectorAll(".faction-chip");
+  const heroCards = document.querySelectorAll(".hero-wrapper");
+  const classChips = document.querySelectorAll(".class-chip");
+  const rarityChips = document.querySelectorAll(".rarity-chip");
+  
+  let activeRoles = new Set();  
+  let activeClasses = new Set();
+  let activeRarities = new Set();
+  let activeFactions = new Set();
+
+  function applyFilters() {
+  const query = (searchInput.value || "").toLowerCase();
+  let visible = 0;
+
+  heroCards.forEach(card => {
+    const name = card.dataset.name;
+    const cls = card.dataset.class;
+    const role = card.dataset.role;
+    const rarity = card.dataset.rarity;
+    const faction = card.dataset.faction;
+
+    const matchesSearch =
+      !query ||
+      name.includes(query) ||
+      cls.includes(query) ||
+      role.includes(query) ||
+      faction.includes(query) ||
+      rarity.includes(query);
+
+    const matchesClass =
+      activeClasses.size === 0 || activeClasses.has(cls);
+
+    const matchesRole =
+      activeRoles.size === 0 || activeRoles.has(role);
+
+    const matchesRarity =
+      activeRarities.size === 0 || activeRarities.has(rarity);
+
+    const matchesFaction =
+      activeFactions.size === 0 || activeFactions.has(faction);
+      
+    const show =
+      matchesSearch && matchesClass && matchesRole && matchesFaction && matchesRarity;
+
+    card.style.display = show ? "block" : "none";
+    if (show) visible++;
+  });
+
+  heroCounter.textContent =
+    visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
+}
+
+
+  searchInput.addEventListener("input", applyFilters);
+
+  roleChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const r = chip.dataset.role;
+
+      if (activeRoles.has(r)) {
+        activeRoles.delete(r);
+        chip.classList.remove("active");
+      } else {
+        activeRoles.add(r);
+        chip.classList.add("active");
+      }
+
+      applyFilters();
+    });
+  });
+
+  classChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const c = chip.dataset.class;
+      chip.classList.toggle("active");
+      activeClasses.has(c) ? activeClasses.delete(c) : activeClasses.add(c);
+      applyFilters();
+    });
+  });
+
+  factionChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const c = chip.dataset.faction;
+      chip.classList.toggle("active");
+      activeFactions.has(c) ? activeFactions.delete(c) : activeFactions.add(c);
+      applyFilters();
+    });
+  });
+
+  rarityChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const r = chip.dataset.rarity;
+      chip.classList.toggle("active");
+      activeRarities.has(r) ? activeRarities.delete(r) : activeRarities.add(r);
+      applyFilters();
+    });
+  });
+
+  resetButton.addEventListener("click", () => {
+    searchInput.value = "";
+    activeClasses.clear();
+    activeRarities.clear();
+    activeRoles.clear();
+    activeFactions.clear();
+    document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
+    applyFilters();
+    document.querySelectorAll(".role-chip.active").forEach(c => c.classList.remove("active"));
+  });
+
+  applyFilters();
+});
+</script>
