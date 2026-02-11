@@ -1,5 +1,5 @@
 ---
-// src/components/Sidebar.astro
+ 
 interface NavItem {
   icon: string;
   label: string;
@@ -24,17 +24,20 @@ const navItems: NavItem[] = [
   }
 ];
 
+const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
 const currentPath = Astro.url.pathname;
+const isActive = (href: string) => normalize(href) === currentPath;
+
 ---
 
 <aside class="sidebar">
   <nav class="sidebar-nav">
-    {navItems.map(item => (
-      <a 
-        href={item.href} 
-        class={`nav-item ${currentPath === item.href ? 'active' : ''}`}
-        title={item.label}
-      >
+    {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`nav-item ${isActive(item.href) ? "active" : ""}`}
+          title={item.label}
+        >
         <div class="nav-icon">
           <img src={item.icon} alt={item.label} />
         </div>
