@@ -67,11 +67,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
@@ -259,11 +259,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
@@ -287,11 +287,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
@@ -391,11 +391,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "athena",
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -553,11 +553,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -1123,11 +1123,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -1147,7 +1147,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
@@ -1155,7 +1155,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
@@ -1367,11 +1367,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ]
@@ -1609,11 +1609,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -1717,11 +1717,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
@@ -1771,11 +1771,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-right"
         }
       ]
@@ -1875,15 +1875,15 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-center"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -1903,11 +1903,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -2361,11 +2361,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-left"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
@@ -2403,8 +2403,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -2415,15 +2415,15 @@
           "position": "back-right"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "surtr",
           "position": "front-center"
         },
         {
-          "heroId": "cancer",
+          "heroId": "yanluo",
           "position": "front-right"
         }
       ]
@@ -2551,11 +2551,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -2609,11 +2609,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
@@ -2821,7 +2821,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -2829,7 +2829,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ]
@@ -2855,7 +2855,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cancer",
+          "heroId": "yanluo",
           "position": "front-right"
         }
       ]
@@ -2905,11 +2905,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-center"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -2983,7 +2983,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -2991,7 +2991,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ]
@@ -3001,11 +3001,11 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -3013,11 +3013,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "yanluo",
           "position": "front-right"
         }
       ]
@@ -3179,7 +3179,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "cancer",
           "position": "front-right"
         }
       ]
