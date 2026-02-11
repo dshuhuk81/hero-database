@@ -672,7 +672,7 @@ function evaluateTeam(team, anchor, mode, cfg) {
   return score;
 }
 
-function describeTeam(team, mode) {
+function describeTeam(team, mode, lang = "en") {
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const metaOf = (h) => h.__meta ?? h.meta ?? {};
 
@@ -680,87 +680,83 @@ function describeTeam(team, mode) {
   const hasTag = (tag) => team.some((h) => tagsOf(h).has(tag));
   const countMeta = (key, min = 1) =>
     team.reduce((a, h) => a + (((metaOf(h)[key] ?? 0) >= min) ? 1 : 0), 0);
-  const hasMetaVal = (key, val) => team.some((h) => metaOf(h)[key] === val);
 
-  // Core signals
   const anchors = countMeta("frontAnchor", 2);
   const collapse = countMeta("ccCollapse", 1);
   const sustainEngines = countMeta("sustainEngine", 1);
   const delayedDivers = team.filter((h) => metaOf(h).engageStyle === "delayed_dive").length;
 
-  const tempoEngines = team.filter((h) => (h.__scores?.tempo ?? 0) >= 300).length; // grobe Schwelle
+  const tempoEngines = team.filter((h) => (h.__scores?.tempo ?? 0) >= 300).length;
   const carries = team.filter((h) => {
     const t = tagsOf(h);
     return t.has("assassin") || t.has("mage") || t.has("ranged") || t.has("burst");
   }).length;
 
   const frontline = team.filter((h) => tagsOf(h).has("frontline") || tagsOf(h).has("tank")).length;
-  const cleanse = hasTag("cleanse") || ["team", "single"].includes(metaOf(team[0] ?? {}).cleanse); // fallback
   const antiAssassin = hasTag("antiAssassin");
 
-  // Derive style labels (short)
-  const style = [];
-  if (anchors >= 1) style.push("Front Anchor");
-  if (delayedDivers >= 1) style.push("Delayed Dive");
-  if (tempoEngines >= 1) style.push("Tempo Engine");
-  if (sustainEngines >= 1 || hasTag("lifesteal_aura") || countTag("healer") >= 1) style.push("Sustain Core");
-  if (collapse >= 1 || countTag("control") + countTag("taunt") >= 2) style.push("CC Chain");
+  const isEN = lang === "en";
 
-  // Title rules
-  let titleBase = mode === "pvp" ? "PvP: " : "PvE: ";
+  const t = {
+    pvp: isEN ? "PvP: " : "PvP: ",
+    pve: isEN ? "PvE: " : "PvE: ",
+
+    stableFront: isEN ? "Stable Frontline" : "Stabile Frontline",
+    tempoBurst: isEN ? "Tempo Burst" : "Tempo Burst",
+    balanced: isEN ? "Balanced Core" : "Solider Kern",
+    meleeCluster: isEN ? "Melee CC Cluster" : "Melee CC Cluster",
+
+    threat: isEN
+      ? "• Threat management: Anchor absorbs high pressure while diver builds energy safely."
+      : "• Threat-Management: Anchor hält High-Pressure, Diver baut sicher Energie.",
+
+    tempoConvert: isEN
+      ? "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows."
+      : "• Tempo → Damage: Engines beschleunigen Ult-Zyklen und erzeugen Burst-Fenster.",
+
+    sustain: isEN
+      ? "• Sustain: Shields, healing or lifesteal stabilize extended fights."
+      : "• Sustain: Schilde, Heilung oder Lifesteal stabilisieren längere Kämpfe.",
+
+    cc: isEN
+      ? "• Crowd Control: Multiple CC tools enable reliable chain setups."
+      : "• Crowd Control: Mehrere CC-Tools erlauben zuverlässige Ketten.",
+
+    collapse: isEN
+      ? "• Setup: Collapse CC clusters enemies for AoE and melee synergy."
+      : "• Setup: Collapse-CC clustert Gegner für AoE- und Melee-Synergien.",
+
+    antiAss: isEN
+      ? "• PvP protection: Anti-assassin tools secure the backline."
+      : "• PvP-Schutz: Anti-Assassin-Tools sichern die Backline."
+  };
+
+  let titleBase = mode === "pvp" ? t.pvp : t.pve;
+
   if (mode === "pvp") {
-    if (tempoEngines >= 1 && carries >= 2) titleBase += "Tempo Burst";
-    else if (anchors >= 1 && (sustainEngines >= 1 || countTag("healer") >= 1)) titleBase += "Stable Frontline";
-    else titleBase += "Balanced Pressure";
+    if (tempoEngines >= 1 && carries >= 2) titleBase += t.tempoBurst;
+    else if (anchors >= 1) titleBase += t.stableFront;
+    else titleBase += t.balanced;
   } else {
-    if ((sustainEngines >= 1 || countTag("healer") >= 1) && anchors >= 1) titleBase += "Sustain Frontline";
-    else if (collapse >= 1 && frontline >= 3) titleBase += "Melee CC Cluster";
-    else titleBase += "Solid Core";
+    if (collapse >= 1 && frontline >= 3) titleBase += t.meleeCluster;
+    else titleBase += t.stableFront;
   }
 
-  // Description bullets (human-facing)
   const lines = [];
 
-  // Formation / threat mgmt
-  if (anchors >= 1 && delayedDivers >= 1) {
-    lines.push("• Threat-Management: Anchor hält High-Pressure, Delayed Diver baut sicher Energie und engaged später.");
-  } else if (anchors >= 1) {
-    lines.push("• Stabiler Frontline-Kern: Anchor absorbiert frühen Druck und schafft Raum fürs Team.");
-  }
-
-  // Tempo conversion
-  if (tempoEngines >= 1) {
-    if (carries >= 2) lines.push("• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.");
-    else lines.push("• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.");
-  }
-
-  // Sustain / cleanse
-  if (sustainEngines >= 1 || countTag("healer") >= 1 || hasTag("lifesteal_aura")) {
-    lines.push("• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.");
-  }
-  if (cleanse) lines.push("• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.");
-
-  // CC
-  if (collapse >= 1) lines.push("• Setup: Collapse-CC clustert Gegner → perfekt für AoE / Melee-Ketten.");
-  else if (countTag("control") + countTag("taunt") >= 2) lines.push("• Control: Mehrere CC-Tools erlauben Chain-Setups.");
-
-  // PvP extras
-  if (mode === "pvp") {
-    if (antiAssassin) lines.push("• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.");
-    if (hasMetaVal("targetPriority", "highest_dps")) lines.push("• Win-Condition: Backline-Hunter jagt Highest DPS und bricht Tempo des Gegners.");
-  }
-
-  // Fallback if empty
-  if (lines.length === 0) {
-    lines.push("• Solide Allround-Komposition mit brauchbarer Rollenverteilung.");
-  }
+  if (anchors >= 1 && delayedDivers >= 1) lines.push(t.threat);
+  if (tempoEngines >= 1) lines.push(t.tempoConvert);
+  if (sustainEngines >= 1 || countTag("healer") >= 1 || hasTag("lifesteal_aura")) lines.push(t.sustain);
+  if (collapse >= 1) lines.push(t.collapse);
+  else if (countTag("control") >= 2) lines.push(t.cc);
+  if (mode === "pvp" && antiAssassin) lines.push(t.antiAss);
 
   return {
-    title: `${titleBase}${style.length ? ` (${style.join(" + ")})` : ""}`,
-    description: lines.join("\n"),
-    styleTags: style
+    title: titleBase,
+    description: lines.join("\n")
   };
 }
+
 
 
 function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
@@ -953,11 +949,13 @@ const enrichedHeroes = heroes.map((h) => {
 const output = {};
 
 for (const anchor of enrichedHeroes) {
+  const lang = cfg.language ?? "en";
+
   const pveTeam = pickBestTeamForAnchor(enrichedHeroes, anchor, "pve", cfg);
   const pvpTeam = pickBestTeamForAnchor(enrichedHeroes, anchor, "pvp", cfg);
 
-  const pveInfo = describeTeam(pveTeam, "pve");
-  const pvpInfo = describeTeam(pvpTeam, "pvp");
+  const pveInfo = describeTeam(pveTeam, "pve", lang);
+  const pvpInfo = describeTeam(pvpTeam, "pvp", lang);
 
   output[anchor.id] = {
     pve: {

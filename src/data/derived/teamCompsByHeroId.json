@@ -1,8 +1,8 @@
 {
   "amunra": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -17,18 +17,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -55,8 +55,8 @@
   },
   "anubis": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -81,8 +81,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -109,8 +109,8 @@
   },
   "aquarius": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "aquarius",
@@ -121,7 +121,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
@@ -129,14 +129,14 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -151,11 +151,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -163,8 +163,8 @@
   },
   "ares": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "ares",
@@ -175,22 +175,22 @@
           "position": "back-right"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -205,11 +205,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
@@ -217,8 +217,8 @@
   },
   "aries": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -233,18 +233,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -271,8 +271,8 @@
   },
   "artemis": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -297,8 +297,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -325,8 +325,8 @@
   },
   "athena": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -351,8 +351,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Front Anchor + Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Threat-Management: Anchor hält High-Pressure, Delayed Diver baut sicher Energie und engaged später.\n• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Setup: Collapse-CC clustert Gegner → perfekt für AoE / Melee-Ketten.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Stable Frontline",
+      "description": "• Threat management: Anchor absorbs high pressure while diver builds energy safely.\n• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Setup: Collapse CC clusters enemies for AoE and melee synergy.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "geb",
@@ -379,8 +379,8 @@
   },
   "bastet": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -391,11 +391,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "athena",
           "position": "front-center"
         },
         {
@@ -405,8 +405,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.\n• Win-Condition: Backline-Hunter jagt Highest DPS und bricht Tempo des Gegners.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -433,8 +433,8 @@
   },
   "cancer": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -459,8 +459,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -487,8 +487,8 @@
   },
   "canopicjar": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -503,18 +503,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -541,8 +541,8 @@
   },
   "capricorn": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -553,11 +553,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
@@ -567,8 +567,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -595,8 +595,8 @@
   },
   "cashien": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -621,8 +621,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -649,8 +649,8 @@
   },
   "demeter": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "demeter",
@@ -675,8 +675,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -703,8 +703,8 @@
   },
   "diana": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -729,8 +729,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -745,11 +745,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -757,8 +757,8 @@
   },
   "dionysus": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -783,8 +783,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -811,8 +811,8 @@
   },
   "fengyi": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -837,8 +837,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -865,8 +865,8 @@
   },
   "freya": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -891,8 +891,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -919,8 +919,8 @@
   },
   "geb": {
     "pve": {
-      "title": "PvE: Sustain Frontline (Front Anchor + Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Threat-Management: Anchor hält High-Pressure, Delayed Diver baut sicher Energie und engaged später.\n• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Setup: Collapse-CC clustert Gegner → perfekt für AoE / Melee-Ketten.",
+      "title": "PvE: Melee CC Cluster",
+      "description": "• Threat management: Anchor absorbs high pressure while diver builds energy safely.\n• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Setup: Collapse CC clusters enemies for AoE and melee synergy.",
       "formation": [
         {
           "heroId": "geb",
@@ -945,8 +945,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Front Anchor + Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Threat-Management: Anchor hält High-Pressure, Delayed Diver baut sicher Energie und engaged später.\n• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Setup: Collapse-CC clustert Gegner → perfekt für AoE / Melee-Ketten.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Stable Frontline",
+      "description": "• Threat management: Anchor absorbs high pressure while diver builds energy safely.\n• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Setup: Collapse CC clusters enemies for AoE and melee synergy.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "geb",
@@ -973,8 +973,8 @@
   },
   "gemini": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "gemini",
@@ -999,8 +999,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1027,8 +1027,8 @@
   },
   "hecate": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1043,18 +1043,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1069,11 +1069,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -1081,8 +1081,8 @@
   },
   "hela": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1107,8 +1107,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1135,8 +1135,8 @@
   },
   "heracles": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -1161,8 +1161,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Front Anchor + Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Threat-Management: Anchor hält High-Pressure, Delayed Diver baut sicher Energie und engaged später.\n• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Setup: Collapse-CC clustert Gegner → perfekt für AoE / Melee-Ketten.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Stable Frontline",
+      "description": "• Threat management: Anchor absorbs high pressure while diver builds energy safely.\n• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Setup: Collapse CC clusters enemies for AoE and melee synergy.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "geb",
@@ -1189,8 +1189,8 @@
   },
   "hladgunnr": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -1201,7 +1201,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-left"
         },
         {
@@ -1209,14 +1209,14 @@
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -1231,11 +1231,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -1243,8 +1243,8 @@
   },
   "horus": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1269,8 +1269,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1285,11 +1285,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -1297,8 +1297,8 @@
   },
   "iris": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1323,8 +1323,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1351,8 +1351,8 @@
   },
   "isis": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1367,18 +1367,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -1405,8 +1405,8 @@
   },
   "jinchan": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1431,8 +1431,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -1459,8 +1459,8 @@
   },
   "jingwei": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1485,23 +1485,23 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
-          "heroId": "prometheus",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "jingwei",
           "position": "back-right"
         },
         {
-          "heroId": "jingwei",
+          "heroId": "yanluo",
           "position": "front-left"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "cancer",
           "position": "front-center"
         },
         {
@@ -1513,8 +1513,8 @@
   },
   "jormungandr": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "jormungandr",
@@ -1539,8 +1539,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1567,8 +1567,8 @@
   },
   "khepri": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -1593,8 +1593,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1621,8 +1621,8 @@
   },
   "kraken": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -1647,8 +1647,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1663,11 +1663,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -1675,8 +1675,8 @@
   },
   "leo": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -1691,18 +1691,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "athena",
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "sagittarius",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1717,11 +1717,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
@@ -1729,8 +1729,8 @@
   },
   "libra": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -1755,8 +1755,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -1783,8 +1783,8 @@
   },
   "medusa": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1809,8 +1809,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1837,8 +1837,8 @@
   },
   "momus": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "momus",
@@ -1863,8 +1863,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "momus",
@@ -1875,7 +1875,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
@@ -1883,7 +1883,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -1891,8 +1891,8 @@
   },
   "nemesis": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1917,8 +1917,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1929,11 +1929,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-center"
         },
         {
@@ -1945,8 +1945,8 @@
   },
   "nezha": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1961,18 +1961,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -1987,11 +1987,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-center"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
@@ -1999,8 +1999,8 @@
   },
   "nuwa": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2011,11 +2011,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-center"
         },
         {
@@ -2025,8 +2025,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2053,8 +2053,8 @@
   },
   "nymphia": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2079,8 +2079,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2107,8 +2107,8 @@
   },
   "nyx": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2133,8 +2133,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2161,8 +2161,8 @@
   },
   "pan": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2187,8 +2187,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2215,8 +2215,8 @@
   },
   "phoenix": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -2241,8 +2241,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2269,8 +2269,8 @@
   },
   "pisces": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2295,8 +2295,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2311,11 +2311,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-center"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -2323,8 +2323,8 @@
   },
   "poseidon": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -2349,8 +2349,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2361,7 +2361,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "scorpio",
           "position": "front-left"
         },
         {
@@ -2369,7 +2369,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -2377,8 +2377,8 @@
   },
   "prometheus": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -2403,8 +2403,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -2423,7 +2423,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "cancer",
           "position": "front-right"
         }
       ]
@@ -2431,8 +2431,8 @@
   },
   "ratatoskr": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2457,8 +2457,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2485,8 +2485,8 @@
   },
   "sagittarius": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -2511,8 +2511,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2539,8 +2539,8 @@
   },
   "scorpio": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2565,8 +2565,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2593,8 +2593,8 @@
   },
   "sekhmet": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -2619,8 +2619,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2647,8 +2647,8 @@
   },
   "set": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -2673,8 +2673,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2701,8 +2701,8 @@
   },
   "surtr": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2727,8 +2727,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -2755,8 +2755,8 @@
   },
   "tailao": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -2771,18 +2771,18 @@
           "position": "front-left"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -2809,8 +2809,8 @@
   },
   "taurus": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "taurus",
@@ -2821,7 +2821,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -2829,14 +2829,14 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -2863,8 +2863,8 @@
   },
   "tefnut": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2889,8 +2889,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Utility: Cleanse reduziert CC-Lock und erhöht Consistency.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2905,11 +2905,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-center"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -2917,8 +2917,8 @@
   },
   "treant": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -2943,8 +2943,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -2971,8 +2971,8 @@
   },
   "ullr": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "ullr",
@@ -2983,7 +2983,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-left"
         },
         {
@@ -2991,14 +2991,14 @@
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -3013,11 +3013,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -3025,8 +3025,8 @@
   },
   "ushabti": {
     "pve": {
-      "title": "PvE: Solid Core (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "heracles",
@@ -3051,8 +3051,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Delayed Dive + Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -3079,8 +3079,8 @@
   },
   "virgo": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -3105,8 +3105,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Sustain Core + CC Chain)",
-      "description": "• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -3133,8 +3133,8 @@
   },
   "yanluo": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nyx",
@@ -3159,8 +3159,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -3179,7 +3179,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cancer",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ]
@@ -3187,8 +3187,8 @@
   },
   "yuelao": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -3213,8 +3213,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Balanced Pressure (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo vorhanden: Stärker, wenn du mindestens 1–2 Carries im Team hast.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Balanced Core",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "prometheus",
@@ -3241,8 +3241,8 @@
   },
   "zeus": {
     "pve": {
-      "title": "PvE: Solid Core (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.",
+      "title": "PvE: Stable Frontline",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.",
       "formation": [
         {
           "heroId": "nuwa",
@@ -3267,8 +3267,8 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Tempo Burst (Tempo Engine + Sustain Core + CC Chain)",
-      "description": "• Tempo → Damage: Engines beschleunigen Ult-/Cast-Zyklen, Carries verwerten das in Kill-Windows.\n• Sustain: Heilung/Schilde/Lifesteal stabilisieren längere Fights.\n• Control: Mehrere CC-Tools erlauben Chain-Setups.\n• PvP-Schutz: Anti-Assassin Tools sichern Backline gegen Dives.",
+      "title": "PvP: Tempo Burst",
+      "description": "• Tempo → Damage: Engines accelerate ultimate cycles and create burst windows.\n• Sustain: Shields, healing or lifesteal stabilize extended fights.\n• Crowd Control: Multiple CC tools enable reliable chain setups.\n• PvP protection: Anti-assassin tools secure the backline.",
       "formation": [
         {
           "heroId": "nuwa",
