@@ -1,263 +1,438 @@
 ---
  
 ---
-<section class="filters">
+
+<!-- ═══════════════════════════════════
+     FILTER BAR (styled like newer variant)
+     Keeps all functional hooks (ids/classes/data-*)
+════════════════════════════════════ -->
+<section class="filters filter-bar" id="filterBar">
+
+  <!-- ROW 1: Class · Role · Rarity · Search · Reset -->
+  <div class="filter-row filter-row--main">
 
     <!-- CLASS FILTER -->
     <div class="filter-group">
       <span class="filter-label">Class</span>
+      <div class="chip-row">
+        <button class="chip class-chip" data-class="tank" title="Tank">
+          <img src="/icons/classes/tank.webp" alt="Tank" />
+        </button>
 
-      <button class="chip class-chip" data-class="tank" title="Tank">
-        <img src="/icons/classes/tank.webp" alt="Tank" />
-      </button>
+        <button class="chip class-chip" data-class="warrior" title="Warrior">
+          <img src="/icons/classes/warrior.webp" alt="Warrior" />
+        </button>
 
-      <button class="chip class-chip" data-class="warrior" title="Warrior">
-        <img src="/icons/classes/warrior.webp" alt="Warrior" />
-      </button>
+        <button class="chip class-chip" data-class="archer" title="Archer">
+          <img src="/icons/classes/archer.webp" alt="Archer" />
+        </button>
 
-      <button class="chip class-chip" data-class="archer" title="Archer">
-        <img src="/icons/classes/archer.webp" alt="Archer" />
-      </button>
+        <button class="chip class-chip" data-class="mage" title="Mage">
+          <img src="/icons/classes/mage.webp" alt="Mage" />
+        </button>
 
-      <button class="chip class-chip" data-class="mage" title="Mage">
-        <img src="/icons/classes/mage.webp" alt="Mage" />
-      </button>
-      
-      <button class="chip class-chip" data-class="support" title="Support">
-        <img src="/icons/classes/support.webp" alt="Support" />
-      </button>
-            
-      <button class="chip class-chip" data-class="assassin" title="Assassin">
-        <img src="/icons/classes/assassin.webp" alt="Assassin" />
-      </button>
+        <button class="chip class-chip" data-class="support" title="Support">
+          <img src="/icons/classes/support.webp" alt="Support" />
+        </button>
+
+        <button class="chip class-chip" data-class="assassin" title="Assassin">
+          <img src="/icons/classes/assassin.webp" alt="Assassin" />
+        </button>
+      </div>
     </div>
+
+    <div class="filter-divider"></div>
 
     <!-- ROLE FILTER -->
     <div class="filter-group">
       <span class="filter-label">Role</span>
+      <div class="chip-row">
+        <button class="chip role-chip" data-role="nimble" title="Nimble">
+          <img src="/icons/roles/nimble.webp" alt="Nimble" />
+        </button>
 
-      <button class="chip role-chip" data-role="nimble" title="Nimble">
-        <img src="/icons/roles/nimble.webp" alt="Nimble" />
-      </button>
+        <button class="chip role-chip" data-role="arcane" title="Arcane">
+          <img src="/icons/roles/arcane.webp" alt="Arcane" />
+        </button>
 
-      <button class="chip role-chip" data-role="arcane" title="Arcane">
-        <img src="/icons/roles/arcane.webp" alt="Arcane" />
-      </button>
-
-      <button class="chip role-chip" data-role="hefty" title="Hefty">
-        <img src="/icons/roles/hefty.webp" alt="Hefty" />
-      </button>
+        <button class="chip role-chip" data-role="hefty" title="Hefty">
+          <img src="/icons/roles/hefty.webp" alt="Hefty" />
+        </button>
+      </div>
     </div>
 
-    <!-- FACTION -->
-    <div class="filter-group">
-      <span class="filter-label">Faction</span>
-
-      <button class="chip faction-chip" data-faction="hearts" title="hearts">
-        <img src="/icons/factions/hearts.webp" alt="hearts" />
-      </button>
-
-      <button class="chip faction-chip" data-faction="clubs" title="clubs">
-        <img src="/icons/factions/clubs.webp" alt="clubs" />
-      </button>
-
-      <button class="chip faction-chip" data-faction="diamonds" title="diamonds">
-        <img src="/icons/factions/diamonds.webp" alt="diamonds" />
-      </button>
-       <button class="chip faction-chip" data-faction="spades" title="spades">
-        <img src="/icons/factions/spades.webp" alt="spades" />
-      </button>
-       <button class="chip faction-chip" data-faction="starglint" title="starglint">
-        <img src="/icons/factions/starglint.webp" alt="starglint" />
-      </button>
-    </div>
-
-    <!-- SEARCH -->
-    <div class="filter-group">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search hero..."
-        class="search-input"
-      />
-    </div>
+    <div class="filter-divider"></div>
 
     <!-- RARITY FILTER -->
     <div class="filter-group">
       <span class="filter-label">Rarity</span>
+      <div class="chip-row">
+        <button class="chip rarity-chip common" data-rarity="common" title="Common">
+          <svg viewBox="0 0 24 24" class="rarity-star">
+            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+          </svg>
+        </button>
 
-      <button class="chip rarity-chip common" data-rarity="common" title="Common">
-        <svg viewBox="0 0 24 24" class="rarity-star">
-          <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-        </svg>
-      </button>
+        <button class="chip rarity-chip epic" data-rarity="epic" title="Epic">
+          <svg viewBox="0 0 24 24" class="rarity-star">
+            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+          </svg>
+        </button>
 
-      <button class="chip rarity-chip epic" data-rarity="epic" title="Epic">
-        <svg viewBox="0 0 24 24" class="rarity-star">
-          <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-        </svg>
-      </button>
+        <button class="chip rarity-chip legendary" data-rarity="legendary" title="Legendary">
+          <svg viewBox="0 0 24 24" class="rarity-star">
+            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-      <button class="chip rarity-chip legendary" data-rarity="legendary" title="Legendary">
-        <svg viewBox="0 0 24 24" class="rarity-star">
-          <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
+    <div class="filter-divider"></div>
+
+    <!-- SEARCH -->
+    <div class="filter-group filter-group--search">
+      <span class="filter-label">Search</span>
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
-      </button>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search hero..."
+          class="search-input"
+        />
+        <!-- optional: falls dein JS das nutzt (stört sonst nicht) -->
+        <button class="search-clear" id="searchClear" aria-label="Clear search" type="button">✕</button>
+      </div>
     </div>
 
     <!-- RESET -->
-    <div class="filter-group">
-      <button id="resetFilters" class="reset-button">Reset Filters</button>
+    <div class="filter-group filter-group--reset">
+      <span class="filter-label">&nbsp;</span>
+      <button id="resetFilters" class="reset-button" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        Reset Filters
+      </button>
     </div>
 
-  </section>
+  </div>
+
+  <!-- ROW 2: Faction -->
+  <div class="filter-row filter-row--faction">
+    <div class="filter-group filter-group--wide">
+      <span class="filter-label">Faction</span>
+
+      <div class="chip-row">
+        <button class="chip faction-chip" data-faction="hearts" title="hearts">
+          <img src="/icons/factions/hearts.webp" alt="hearts" />
+          <span class="faction-name">Hearts</span>
+        </button>
+
+        <button class="chip faction-chip" data-faction="clubs" title="clubs">
+          <img src="/icons/factions/clubs.webp" alt="clubs" />
+          <span class="faction-name">Clubs</span>
+        </button>
+
+        <button class="chip faction-chip" data-faction="diamonds" title="diamonds">
+          <img src="/icons/factions/diamonds.webp" alt="diamonds" />
+          <span class="faction-name">Diamonds</span>
+        </button>
+
+        <button class="chip faction-chip" data-faction="spades" title="spades">
+          <img src="/icons/factions/spades.webp" alt="spades" />
+          <span class="faction-name">Spades</span>
+        </button>
+
+        <button class="chip faction-chip" data-faction="starglint" title="starglint">
+          <img src="/icons/factions/starglint.webp" alt="starglint" />
+          <span class="faction-name">Starglint</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</section>
 
 <style>
-  /* RESET BUTTON */
-.reset-button {
-  height: 36px;
-  padding: 0 18px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 0.85rem;
-  font-weight: 500;
-
-  color: #e6e6eb;
-  background: rgba(255, 255, 255, 0.08);
-
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 999px; /* 👈 richtig rund */
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease;
-}
-.reset-button:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
-}
-
-.reset-button:active {
-  transform: translateY(0);
-}
-  /* FILTERS */
+/* (Optional) keep existing wrapper helper if you use it elsewhere */
 .content-wrapper {
-  max-width: 1400px;  /* 👈 NOW MATCHES TIERLIST */
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
-.filters {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 24px;
-
+/* ── FILTER BAR ───────────────────────────────────────── */
+.filter-bar {
+  position: relative;
   background:
-    linear-gradient(
-      to bottom,
-      rgba(35, 32, 48, 0.85),
-      rgba(18, 16, 26, 0.95)
-    );
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  padding: 18px 28px;
+    linear-gradient(to bottom, rgba(35,32,48,0.90), rgba(18,16,26,0.97));
+  padding: 16px 24px 12px;
   border-radius: 18px;
-
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.08),
     inset 0 -1px 0 rgba(0,0,0,0.6),
     0 20px 50px rgba(0,0,0,0.75);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 100;
 }
 
+/* Blur on ::before to avoid stacking-context surprises */
+.filter-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.filter-row {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.filter-row--faction {
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 4px;
+}
+
+/* ── GROUPS ───────────────────────────────────────────── */
 .filter-group {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 6px;
 }
+
+.filter-group--search {
+  flex: 1;
+  min-width: 180px;
+  max-width: 300px;
+}
+
+.filter-group--reset {
+  flex-shrink: 0;
+}
+
+.filter-group--wide {
+  width: 100%;
+}
+
 .filter-label {
-  font-weight: 600;
-  opacity: 0.85;
-
-}
-.search-input {
-  min-width: 280px;
-  height: 32px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  color: #fff;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  padding-left: 2px;
+  line-height: 1;
 }
 
+.chip-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
 
-/* CHIPS */
+.filter-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,0.08);
+  align-self: flex-end;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+
+/* ── BASE CHIP ────────────────────────────────────────── */
 .chip {
-  background: none;
-  border: none;
-  padding: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 5px;
   cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s, transform 0.15s;
+  color: #e6e6eb;
+  opacity: 0.5;
+  transition: opacity 0.18s, transform 0.15s, border-color 0.18s, box-shadow 0.18s, background 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
+
 .chip:hover {
-  opacity: 1;
+  opacity: 0.85;
   transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.2);
 }
+
 .chip.active {
   opacity: 1;
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.09);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.4);
 }
-.class-chip img, .faction-chip img, .role-chip img {
-  width: 36px;
-  height: 36px;
-  filter: grayscale(100%) brightness(1.2);
+
+/* ── CLASS & ROLE CHIPS ───────────────────────────────── */
+.class-chip img,
+.role-chip img {
+  width: 30px;
+  height: 30px;
+  filter: grayscale(100%) brightness(1.1);
+  transition: filter 0.18s;
 }
-.class-chip.active img, .faction-chip.active img, .role-chip.active img {
+
+.class-chip:hover img, .class-chip.active img,
+.role-chip:hover img,  .role-chip.active img {
   filter: brightness(1.4);
 }
 
-/* RARITY STARS */
-/* Grundzustand: Outline */
+/* ── FACTION CHIPS ────────────────────────────────────── */
+.faction-chip {
+  border-radius: 20px;
+  padding: 4px 10px 4px 5px;
+}
+
+.faction-chip img {
+  width: 22px;
+  height: 22px;
+  filter: grayscale(60%) brightness(1.1);
+  transition: filter 0.18s;
+  border-radius: 50%;
+}
+
+.faction-chip:hover img,
+.faction-chip.active img {
+  filter: brightness(1.3) saturate(1.2);
+}
+
+.faction-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #e6e6eb;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+/* ── RARITY CHIPS ─────────────────────────────────────── */
 .rarity-star {
-  width: 28px;
-  height: 28px;
-
-  fill: none;                /* 👈 nicht gefüllt */
-  stroke: currentColor;      /* 👈 Kontur in Rarity-Farbe */
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
   stroke-width: 1.2;
-
-  transition:
-    fill 0.2s ease,
-    filter 0.2s ease,
-    transform 0.15s ease;
+  transition: fill 0.2s, filter 0.2s;
 }
-.rarity-chip.common { color: #4ade80; }
-.rarity-chip.epic { color: #a855f7; }
+
+.rarity-chip.common    { color: #4ade80; }
+.rarity-chip.epic      { color: #a855f7; }
 .rarity-chip.legendary { color: #facc15; }
-.rarity-chip.active .rarity-star {
-  fill: currentColor;
-  opacity: 1;
 
-  filter:
-    drop-shadow(0 0 6px currentColor)
-    drop-shadow(0 0 12px rgba(255,255,255,0.15));
-}
-
+.rarity-chip.active .rarity-star,
 .rarity-chip:hover .rarity-star {
   fill: currentColor;
-  opacity: 0.4;
 }
 
+.rarity-chip.active .rarity-star { filter: drop-shadow(0 0 6px currentColor); }
+.rarity-chip:hover .rarity-star  { opacity: 0.6; }
+.rarity-chip.active:hover .rarity-star { opacity: 1; }
 
+/* ── SEARCH ───────────────────────────────────────────── */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 9px;
+  width: 14px;
+  height: 14px;
+  color: rgba(255,255,255,0.35);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 30px 0 30px;
+  border-radius: 8px;
+  color: #e6e6eb;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.85rem;
+  transition: border-color 0.18s, background 0.18s;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.08);
+}
+
+.search-input::placeholder { color: rgba(255,255,255,0.25); }
+
+.search-clear {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 2px;
+  display: none; /* can be toggled by your existing JS (if any) */
+  line-height: 1;
+}
+
+.search-clear.visible { display: block; }
+.search-clear:hover   { color: rgba(255,255,255,0.7); }
+
+/* ── RESET BUTTON ─────────────────────────────────────── */
+.reset-button {
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.reset-button:hover {
+  color: #e6e6eb;
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.06);
+}
+
+/* If your JS toggles something like .has-active, keep this hook */
+.reset-button.has-active {
+  color: #e6e6eb;
+  border-color: rgba(255,255,255,0.25);
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .filter-divider        { display: none; }
+  .filter-row--main      { gap: 10px 12px; }
+  .filter-group--search  { max-width: 100%; }
+}
 </style>
