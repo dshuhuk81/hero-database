@@ -538,8 +538,8 @@ for (const anchor of enrichedHeroes) {
   const pvpTeam = pickBestTeamForAnchor(enrichedHeroes, anchor, "pvp", cfg);
 
   output[anchor.id] = {
-    pve: { title: "Best PVE Setup", description: "", formation: assignFormation(anchor, pveTeam, cfg) },
-    pvp: { title: "Best PVP Setup", description: "", formation: assignFormation(anchor, pvpTeam, cfg) }
+    pve: { title: "PVE Example", description: "", formation: assignFormation(anchor, pveTeam, cfg) },
+    pvp: { title: "PVP Example", description: "", formation: assignFormation(anchor, pvpTeam, cfg) }
   };
 }
 

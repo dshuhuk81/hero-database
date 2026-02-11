@@ -17,7 +17,6 @@ export function getStaticPaths() {
 const { id } = Astro.params;
 const hero = getHeroById(id);
 const currentHero = await import(`../../data/heroes/${id}.json`);
-/*const hasTeamComps = currentHero?.teamComps?.pve && currentHero?.teamComps?.pvp;*/
 const teamComps = currentHero.teamComps ?? teamCompsByHeroId[id] ?? null;
 const hasTeamComps = teamComps?.pve && teamComps?.pvp;
 
