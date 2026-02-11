@@ -67,11 +67,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -121,7 +121,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
@@ -129,7 +129,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -171,11 +171,11 @@
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-right"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-left"
         },
         {
@@ -183,21 +183,21 @@
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -221,11 +221,11 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "back-right"
         },
         {
@@ -237,21 +237,21 @@
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -287,11 +287,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "pan",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "pan",
           "position": "front-right"
         }
       ]
@@ -309,7 +309,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "pan",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
@@ -317,7 +317,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "pan",
           "position": "front-right"
         }
       ]
@@ -326,10 +326,10 @@
   "athena": {
     "pve": {
       "title": "PvE: Sustain Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
@@ -341,25 +341,25 @@
           "position": "front-left"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "sagittarius",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta synergy: Anchor holds high-pressure while delayed diver builds energy safely and engages at the right moment.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
           "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -367,11 +367,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
@@ -379,11 +379,11 @@
   },
   "bastet": {
     "pve": {
-      "title": "PvE: Sustain Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
+      "title": "PvE: Burst Clear (Sustain + CC + Tempo + Double Carry)",
+      "description": "• Structure: Single frontline — positioning and timing matter more, avoid getting collapsed early.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-left"
         },
         {
@@ -391,11 +391,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "athena",
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -406,14 +406,14 @@
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -491,11 +491,11 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "back-right"
         },
         {
@@ -503,25 +503,25 @@
           "position": "front-left"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "sagittarius",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -691,11 +691,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "pan",
           "position": "front-center"
         },
         {
-          "heroId": "pan",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -920,14 +920,14 @@
   "geb": {
     "pve": {
       "title": "PvE: Sustain Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.\n• Meta synergy: Anchor holds high-pressure while delayed diver builds energy safely and engages at the right moment.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
       "formation": [
         {
           "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-right"
         },
         {
@@ -935,25 +935,25 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta synergy: Anchor holds high-pressure while delayed diver builds energy safely and engages at the right moment.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
           "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -965,7 +965,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
@@ -1069,11 +1069,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "tefnut",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "tefnut",
           "position": "front-right"
         }
       ]
@@ -1133,60 +1133,6 @@
       ]
     }
   },
-  "heracles": {
-    "pve": {
-      "title": "PvE: Sustain Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
-      "formation": [
-        {
-          "heroId": "nyx",
-          "position": "back-left"
-        },
-        {
-          "heroId": "heracles",
-          "position": "back-right"
-        },
-        {
-          "heroId": "athena",
-          "position": "front-left"
-        },
-        {
-          "heroId": "sagittarius",
-          "position": "front-center"
-        },
-        {
-          "heroId": "dionysus",
-          "position": "front-right"
-        }
-      ]
-    },
-    "pvp": {
-      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta synergy: Anchor holds high-pressure while delayed diver builds energy safely and engages at the right moment.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
-      "formation": [
-        {
-          "heroId": "geb",
-          "position": "back-left"
-        },
-        {
-          "heroId": "heracles",
-          "position": "back-right"
-        },
-        {
-          "heroId": "athena",
-          "position": "front-left"
-        },
-        {
-          "heroId": "nuwa",
-          "position": "front-center"
-        },
-        {
-          "heroId": "nyx",
-          "position": "front-right"
-        }
-      ]
-    }
-  },
   "hladgunnr": {
     "pve": {
       "title": "PvE: Balanced Core (Sustain + CC + Tempo + Double Carry)",
@@ -1201,7 +1147,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-left"
         },
         {
@@ -1209,7 +1155,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ]
@@ -1227,15 +1173,15 @@
           "position": "back-right"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "yanluo",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -1367,11 +1313,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-center"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ]
@@ -1431,15 +1377,15 @@
       ]
     },
     "pvp": {
-      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "prometheus",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -1451,7 +1397,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "surtr",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -1679,11 +1625,11 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "back-right"
         },
         {
@@ -1691,25 +1637,25 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -1717,11 +1663,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-right"
         }
       ]
@@ -1745,11 +1691,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "yuelao",
+          "heroId": "cashien",
           "position": "front-center"
         },
         {
-          "heroId": "cashien",
+          "heroId": "yuelao",
           "position": "front-right"
         }
       ]
@@ -1759,11 +1705,11 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "prometheus",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "nyx",
           "position": "back-right"
         },
         {
@@ -1771,11 +1717,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-center"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
@@ -1929,7 +1875,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-left"
         },
         {
@@ -1937,7 +1883,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-right"
         }
       ]
@@ -2011,11 +1957,11 @@
           "position": "back-right"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "zeus",
           "position": "front-left"
         },
         {
-          "heroId": "zeus",
+          "heroId": "dionysus",
           "position": "front-center"
         },
         {
@@ -2037,7 +1983,7 @@
           "position": "back-right"
         },
         {
-          "heroId": "amunra",
+          "heroId": "dionysus",
           "position": "front-left"
         },
         {
@@ -2045,7 +1991,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "dionysus",
+          "heroId": "amunra",
           "position": "front-right"
         }
       ]
@@ -2095,11 +2041,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "scorpio",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "scorpio",
           "position": "front-right"
         }
       ]
@@ -2219,7 +2165,7 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
@@ -2242,14 +2188,14 @@
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -2423,7 +2369,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "cancer",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
@@ -2486,10 +2432,10 @@
   "sagittarius": {
     "pve": {
       "title": "PvE: Sustain Frontline (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
@@ -2512,14 +2458,14 @@
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -2597,15 +2543,15 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "sekhmet",
           "position": "back-right"
         },
         {
-          "heroId": "sekhmet",
+          "heroId": "athena",
           "position": "front-left"
         },
         {
@@ -2613,21 +2559,21 @@
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
@@ -2635,11 +2581,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "athena",
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -2651,7 +2597,7 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• Burst plan: Look for short engage windows and finish targets quickly.\n• Meta core: Sustain engine supports prolonged frontline dominance.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nyx",
           "position": "back-left"
         },
         {
@@ -2663,37 +2609,37 @@
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "sagittarius",
           "position": "front-center"
         },
         {
-          "heroId": "sagittarius",
+          "heroId": "dionysus",
           "position": "front-right"
         }
       ]
     },
     "pvp": {
       "title": "PvP: Stable Frontline (Frontline + Sustain + CC + Tempo)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta core: Sustain engine supports prolonged frontline dominance.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.\n• Meta core: Sustain engine supports prolonged frontline dominance.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "set",
           "position": "back-right"
         },
         {
-          "heroId": "set",
+          "heroId": "athena",
           "position": "front-left"
         },
         {
-          "heroId": "nyx",
+          "heroId": "nuwa",
           "position": "front-center"
         },
         {
-          "heroId": "athena",
+          "heroId": "nyx",
           "position": "front-right"
         }
       ]
@@ -2797,11 +2743,11 @@
           "position": "front-left"
         },
         {
-          "heroId": "yanluo",
+          "heroId": "nyx",
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "yanluo",
           "position": "front-right"
         }
       ]
@@ -2839,11 +2785,11 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "prometheus",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "nyx",
           "position": "back-right"
         },
         {
@@ -2855,7 +2801,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "cashien",
           "position": "front-right"
         }
       ]
@@ -3001,11 +2947,11 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo present: Stronger if you pair it with 1–2 real carries.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
       "formation": [
         {
-          "heroId": "prometheus",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
-          "heroId": "nuwa",
+          "heroId": "nyx",
           "position": "back-right"
         },
         {
@@ -3017,7 +2963,7 @@
           "position": "front-center"
         },
         {
-          "heroId": "nyx",
+          "heroId": "cancer",
           "position": "front-right"
         }
       ]
@@ -3029,7 +2975,7 @@
       "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.",
       "formation": [
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-left"
         },
         {
@@ -3052,14 +2998,14 @@
     },
     "pvp": {
       "title": "PvP: Tempo Burst (Frontline + Sustain + CC + Tempo + Double Carry)",
-      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• PvP safety: Anti-assassin tools help defend your carries against dives.",
+      "description": "• Structure: Double frontline stabilizes early fights and protects the backline.\n• Sustain: Healing/shields/lifesteal improve consistency in extended fights.\n• Control: Multiple CC tools enable reliable chain setups and deny enemy tempo.\n• Tempo → Damage: Energy/CDR/haste engines accelerate ult cycles and create kill windows.\n• PvP safety: Anti-assassin tools help defend your carries against dives.\n• Meta setup: Collapse CC clusters enemies — perfect for melee AoE and crowd control chains.",
       "formation": [
         {
-          "heroId": "nuwa",
+          "heroId": "geb",
           "position": "back-left"
         },
         {
-          "heroId": "heracles",
+          "heroId": "nuwa",
           "position": "back-right"
         },
         {
