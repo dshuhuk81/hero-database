@@ -33,7 +33,11 @@ const isActive = (href: string) => normalize(href) === currentPath;
 <aside class="sidebar">
   <nav class="sidebar-nav">
     {navItems.map((item) => (
-        <a class={isActive(item.href) ? "active" : ""} href={item.href}> 
+        <a
+          href={item.href}
+          class={`nav-item ${isActive(item.href) ? "active" : ""}`}
+          title={item.label}
+        > 
         <div class="nav-icon">
           <img src={item.icon} alt={item.label} />
         </div>
