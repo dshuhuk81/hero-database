@@ -1,122 +1,140 @@
 {
   "meta": {
-    "version": "1.0",
-    "tone": "analytical"
+    "version": "2.0",
+    "tone": "competitive-mobile"
   },
+
   "formation": {
     "anchorRight": {
-      "short": "Right-side anchor for safer scaling.",
-      "long": "Place the primary frontline on the safer lane to stabilize early tempo and avoid multi-angle pressure."
+      "short": "Safer frontline position.",
+      "long": "Place your main tank on the safer side to protect your backline and stabilize early fights."
     },
     "pressureLeft": {
-      "short": "High-pressure left lane.",
-      "long": "Front-left typically absorbs pressure from multiple enemies. Use durable tanks or control anchors here."
+      "short": "High-impact frontline lane.",
+      "long": "The left frontline often takes early pressure. Use durable tanks or control heroes here."
     },
     "collapseMelee": {
-      "short": "Melee collapse synergy.",
-      "long": "Multiple melee heroes stack AoE pressure and crowd control chains to dominate clustered fights."
+      "short": "Close-range overwhelm.",
+      "long": "Multiple melee heroes group enemies together and dominate clustered fights."
     },
     "engineCore": {
-      "short": "Engine core formation.",
-      "long": "Energy push, cooldown reduction and haste accelerate carry conversion cycles."
+      "short": "Energy-focused core.",
+      "long": "Energy gain and cooldown boosts allow faster ultimate rotations and stronger mid-fight bursts."
     }
   },
+
   "winConditions": {
     "tempoDoubleCarry": {
-      "short": "Accelerate burst cycles.",
-      "long": "Tempo engines accelerate ultimate rotations, enabling repeated burst windows and fast carry conversion."
+      "short": "Rapid ultimate rotations.",
+      "long": "Energy acceleration enables frequent ultimate bursts, allowing your carries to snowball fights before enemies can respond."
     },
+
     "controlChain": {
-      "short": "Chain crowd control.",
-      "long": "Layered control denies enemy tempo and locks priority targets during engage windows."
+      "short": "Lockdown before they cast.",
+      "long": "Chain crowd control effects to prevent enemies from using key abilities and secure kills early."
     },
+
     "frontlineSustain": {
-      "short": "Win long fights.",
-      "long": "Stable frontline combined with sustain wins extended engagements through consistency."
+      "short": "Win the long fight.",
+      "long": "A stable frontline with sustain outlasts enemy burst and slowly overwhelms opponents in extended battles."
     },
+
     "burstWindow": {
-      "short": "Short engage bursts.",
-      "long": "Play around decisive engage windows and eliminate high-value targets quickly."
+      "short": "Explosive engage timing.",
+      "long": "Wait for the right moment, unleash ultimates together, and eliminate priority targets instantly."
     },
+
     "collapsePressure": {
-      "short": "Cluster and overwhelm.",
-      "long": "Force enemies into tight spaces and overwhelm them with stacked AoE damage."
+      "short": "Force tight fights.",
+      "long": "Collapse onto grouped enemies and overwhelm them with stacked AoE damage and control."
     },
+
     "balancedScaling": {
-      "short": "Stable scaling plan.",
-      "long": "Maintain tempo parity early and convert mid-game advantages into controlled victories."
+      "short": "Safe scaling path.",
+      "long": "Maintain steady pressure early and convert mid-game power spikes into controlled victories."
     },
 
     "controlCollapse": {
-      "short": "Cluster and overwhelm.",
-      "long": "Force enemies into tight spaces and overwhelm them with stacked AoE damage."
+      "short": "Lock and overwhelm.",
+      "long": "Control enemies in tight spaces and follow up with concentrated burst damage."
     },
+
     "burstWindows": {
-      "short": "Short engage bursts.",
-      "long": "Play around decisive engage windows and eliminate high-value targets quickly."
+      "short": "Burst rotations.",
+      "long": "Play around synchronized ultimate cycles to repeatedly eliminate high-value targets."
     }
   },
+
   "danger": {
     "noFrontline": {
-      "short": "Fragile frontline.",
-      "long": "Lack of a true anchor makes the team vulnerable to early collapse or extended engagements."
+      "short": "Frontline may collapse.",
+      "long": "Without a true tank, early focus fire can quickly break your formation."
     },
+
     "singleFrontlinePvp": {
-      "short": "Single anchor risk.",
-      "long": "Only one frontline unit increases vulnerability against coordinated PvP dive setups."
+      "short": "Solo tank risk.",
+      "long": "A single frontline hero is vulnerable to coordinated dive and burst compositions."
     },
+
     "tempoNoConversion": {
-      "short": "Engines without carries.",
-      "long": "Energy acceleration without enough burst or scaling carries leads to wasted tempo."
+      "short": "Energy without damage.",
+      "long": "Fast ultimate cycles are wasted if you lack the damage to secure kills."
     },
+
     "lowSustain": {
-      "short": "Low sustain.",
-      "long": "If the initial burst window fails, the team may struggle in prolonged fights."
+      "short": "Weak in long fights.",
+      "long": "If your first burst fails, extended fights may turn against you."
     },
+
     "delayedNoAnchor": {
-      "short": "Delayed diver risk.",
-      "long": "Delayed engage heroes require stable anchors — otherwise tempo collapses before impact."
+      "short": "Dive needs protection.",
+      "long": "Delayed engage heroes require a stable frontline. Without one, they may fall before contributing."
     },
+
     "ccVulnerable": {
-      "short": "CC vulnerable.",
-      "long": "Heavy enemy crowd control can lock key heroes before tempo engines activate."
+      "short": "Vulnerable to lockdown.",
+      "long": "Heavy crowd control can prevent your carries from casting key abilities."
     },
+
     "generic": {
-      "short": "Position carefully.",
-      "long": "Avoid giving the enemy an uncontested first engage and respect pressure lanes."
+      "short": "Watch positioning.",
+      "long": "Avoid giving enemies a clean engage and protect your backline during ultimate rotations."
     },
 
     "delayedDiveNoAnchor": {
-      "short": "Delayed diver risk.",
-      "long": "Delayed engage heroes require stable anchors — otherwise tempo collapses before impact."
+      "short": "Unprotected dive risk.",
+      "long": "Dive heroes without frontline support can be eliminated before their engage lands."
     }
   },
+
   "matchups": {
     "strong": {
-      "slowScaling": "Excels against teams that rely on delayed scaling without early tempo tools.",
-      "lowCleanse": "Control chains gain maximum value against teams lacking reliable cleanse tools.",
-      "poke": "Sustain + collapse pressure neutralizes slow attrition compositions.",
-      "fragileBackline": "Fast engage and dive tools eliminate exposed backline carries quickly.",
-      "dive": "Frontline clustering and AoE control punish reckless dive assassins.",
+      "slowScaling": "Excels against teams that rely on late power spikes.",
+      "lowCleanse": "Dominates teams without cleanse or immunity tools.",
+      "poke": "Shrugs off poke damage and wins sustained exchanges.",
+      "fragileBackline": "Punishes exposed backline damage dealers.",
+      "dive": "Stable frontline punishes reckless dive attempts.",
 
-      "pokeAttrition": "Sustain + collapse pressure neutralizes slow attrition compositions.",
-      "diveAssassins": "Frontline clustering and AoE control punish reckless dive assassins."
+      "pokeAttrition": "Outlasts poke-heavy teams and wins extended fights.",
+      "diveAssassins": "Frontline durability counters assassin dive pressure."
     },
-    "weak": {
-      "hardEngage": "Teams with instant collapse openers may deny tempo engines before activation.",
-      "extendedSustain": "Long sustain-heavy fights reduce burst value and tempo advantage.",
-      "heavyCC": "Lockdown compositions can interrupt carry conversion cycles.",
-      "stall": "High-tank stall setups waste tempo windows and extend fights unfavorably.",
-      "assassinFocus": "Backline carries may fall quickly against high-burst assassin comps.",
-      "earlyPressure": "Strong lane pressure can destabilize anchors before scaling stabilizes.",
 
-      "heavyCCLock": "Lockdown compositions can interrupt carry conversion cycles.",
-      "tankStall": "High-tank stall setups waste tempo windows and extend fights unfavorably.",
-      "burstAssassinsOnCarries": "Backline carries may fall quickly against high-burst assassin comps.",
-      "earlyPressureLaneFocus": "Strong lane pressure can destabilize anchors before scaling stabilizes.",
-      "coordinatedDiveBurst": "Teams with instant collapse openers may deny tempo engines before activation."
+    "weak": {
+      "hardEngage": "Struggles against instant burst engage.",
+      "extendedSustain": "May lose prolonged sustain wars.",
+      "heavyCC": "Can be locked down before casting ultimates.",
+      "stall": "Tank-heavy teams delay your win condition.",
+      "assassinFocus": "Backline carries are vulnerable to assassin focus.",
+      "earlyPressure": "Strong early aggression can destabilize your setup.",
+
+      "heavyCCLock": "Heavy lockdown can interrupt your ultimate rotations.",
+      "tankStall": "High-durability teams drag fights beyond your burst window.",
+      "burstAssassinsOnCarries": "Assassin burst threatens exposed damage dealers.",
+      "earlyPressureLaneFocus": "Early focus can break your frontline before scaling.",
+      "coordinatedDiveBurst": "Coordinated dive and burst can overwhelm your formation."
     }
   },
+
   "uiLabels": {
     "formation": "Formation",
     "win": "Win Condition",
