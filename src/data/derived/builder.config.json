@@ -12,19 +12,24 @@
     "preferCounts": [4, "3+2", 3]
   },
   "keywordTags": {
-    "healer": ["restore hp", "heals", "healing"],
-    "shield": ["shield", "barrier"],
-    "cleanse": ["dispels", "removes", "debuff"],
+    "control": ["stun", "freeze", "root", "silence", "knock", "knockback", "pull", "taunt", "fear", "charm"],
     "taunt": ["taunt"],
-    "control": ["stun", "knock", "knock down", "ensnare", "silence", "freeze", "root"],
-    "energy": ["energy", "drain"],
-    "antiAssassin": ["most vulnerable", "farthest enemy", "counter", "dodge"],
-    "diver": ["dash", "charge", "leap", "dive", "backline"],
-    "bruiser": ["damage reduction", "lifesteal", "sustain", "gain armor", "gain shield"],
-    "energy_start": ["starts with", "start the battle with", "initial energy", "gain 300 energy"],
-    "reflect": ["reflect", "attackers take damage", "damage reflection"],
-    "aura": ["aura", "within", "nearby allies"],
-    "lifesteal_aura": ["lifesteal aura", "steal hp", "heals all teammates", "restore hp to all allies"],
-    "melee_support": ["shield", "barrier", "aura damage", "nearby enemies", "nearby allies"]
+    "shield": ["shield", "barrier", "damage absorption"],
+    "cleanse": ["dispel", "cleanse", "remove debuff"],
+    "healer": ["restore hp", "heals", "healing", "regenerat"],
+
+    "diver": ["dash", "charge", "leap", "dive", "jump to", "teleport", "backline"],
+    "dash": ["dash", "charge"],
+    "jump": ["jump", "leap", "teleport"],
+
+    "energy": ["energy", "gain energy", "restore energy"],
+    "energy_start": ["starts with", "start the battle with", "initial energy", "begins the battle with"],
+
+    "reflect": ["reflect", "reflection", "attackers take", "damage reflection", "returned damage"],
+
+    "aura": ["aura", "within", "nearby allies", "all allies within"],
+    "lifesteal_aura": ["lifesteal", "steal hp", "vamp", "heals all teammates", "restore hp to all allies"],
+
+    "antiAssassin": ["cannot be targeted", "reduce assassin", "reveal", "anti-assassin", "mark", "prevent dodge"]
   }
 }

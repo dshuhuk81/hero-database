@@ -6,12 +6,13 @@ const HERO_DIR = path.join(ROOT, "src", "data", "heroes");
 const OUT_DIR = path.join(ROOT, "src", "data", "derived");
 const OUT_FILE = path.join(OUT_DIR, "teamCompsByHeroId.json");
 const CONFIG_FILE = path.join(OUT_DIR, "builder.config.json");
+
 // Positions in UI are mislabeled:
 // row2 positions: back-left/back-right = actual frontline left/right
 // row3 positions: front-left/front-center/front-right = actual backline
 const POSITION_OVERRIDES = {
   heracles: {
-    prefer: "back-right" // actual FRONT-RIGHT
+    prefer: "back-right" // actual FRONT-RIGHT (safer lane)
   }
 };
 
@@ -104,18 +105,27 @@ function scoreHero(hero, tags) {
     mres * 1.0 +
     dodge * 10 +
     (tags.includes("shield") ? 80 : 0) +
-    (tags.includes("taunt") ? 60 : 0);
+    (tags.includes("taunt") ? 60 : 0) +
+    (tags.includes("reflect") ? 60 : 0) +
+    (tags.includes("energy_start") ? 40 : 0);
 
   const healing =
     (tags.includes("healer") ? atk * 2.2 : 0) +
     (tags.includes("cleanse") ? 80 : 0) +
-    (tags.includes("shield") ? 50 : 0);
+    (tags.includes("shield") ? 50 : 0) +
+    (tags.includes("lifesteal_aura") ? 90 : 0);
 
   const control = (tags.includes("control") ? 200 : 0) + (tags.includes("taunt") ? 120 : 0);
 
-  const burst = atk * (tags.includes("assassin") ? 1.6 : 1.0) + (tags.includes("mage") ? 20 : 0);
+  const burst =
+    atk * (tags.includes("assassin") ? 1.6 : 1.0) +
+    (tags.includes("mage") ? 20 : 0) +
+    (tags.includes("diver") ? 15 : 0);
 
-  const scaling = (tags.includes("energy") ? 120 : 0) + (tags.includes("mage") ? 40 : 0);
+  const scaling =
+    (tags.includes("energy") ? 120 : 0) +
+    (tags.includes("energy_start") ? 140 : 0) +
+    (tags.includes("mage") ? 40 : 0);
 
   const antiAssassin =
     (tags.includes("antiAssassin") ? 180 : 0) +
@@ -214,7 +224,6 @@ const ARCHETYPES = {
 
 // ---------- faction planning ----------
 function factionBonusValue(teamFactions) {
-  // Your game bonuses:
   // 3 -> 15, 3+2 -> 25, 4 -> 30, 5 -> 35
   // Starglint wildcard
   const nonStar = teamFactions.filter((f) => f !== "Starglint");
@@ -252,10 +261,16 @@ function bestSecondFaction(pool, anchorFaction) {
 
   for (const f of factions) {
     const candidates = pool.filter((h) => h.faction === f);
-    // quality proxy: top few candidates sum
     const quality = candidates
       .slice(0, 8)
-      .reduce((a, h) => a + (h.__scores?.burst ?? 0) + (h.__scores?.survivability ?? 0) + (h.__scores?.control ?? 0), 0);
+      .reduce(
+        (a, h) =>
+          a +
+          (h.__scores?.burst ?? 0) +
+          (h.__scores?.survivability ?? 0) +
+          (h.__scores?.control ?? 0),
+        0
+      );
     if (quality > bestQuality) {
       bestQuality = quality;
       best = f;
@@ -315,51 +330,26 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
   const team = [anchor];
   const picked = new Set([anchor.id]);
 
-  // Enforce faction counts progressively
-  function countFaction(faction) {
-    return team.filter((h) => h.faction === faction).length;
-  }
-  function countNonStarFaction(faction) {
-    return team.filter((h) => h.faction === faction && h.faction !== "Starglint").length;
-  }
-  function countStar() {
-    return team.filter((h) => h.faction === "Starglint").length;
-  }
-
   function canPick(h) {
     if (picked.has(h.id)) return false;
-
-    // Hard plan constraints:
-    if (plan.kind === "same") {
-      // allow main faction + Starglint; others should not happen (already filtered)
-      return true;
-    }
-    if (plan.kind === "split") {
-      // only main/second/starglint already filtered
-      return true;
-    }
     return true;
   }
 
-  // slot picking: needAny first, then preferAny, then score
   function pickForSlot(slotDef) {
     const candidates = sorted.filter((h) => canPick(h) && matchesNeed(h, slotDef.needAny));
     if (candidates.length === 0) {
-      // fallback: relax needs
       const relaxed = sorted.filter((h) => canPick(h));
       if (relaxed.length === 0) return null;
       return relaxed[0];
     }
 
-    // Score with prefer as tie-breaker
     let best = null;
     let bestVal = -Infinity;
 
     for (const h of candidates.slice(0, 60)) {
       const base = heroWeightedScore(h, weights);
-      const prefer = matchesPrefer(h, slotDef.preferAny) * 50; // prefer bump
+      const prefer = matchesPrefer(h, slotDef.preferAny) * 50;
       const val = base + prefer;
-
       if (val > bestVal) {
         bestVal = val;
         best = h;
@@ -384,9 +374,58 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
     team.push(h);
   }
 
-  // Ensure exactly 5
   const finalTeam = uniqById(team).slice(0, 5);
   return { team: finalTeam, secondFaction, archetype };
+}
+
+// ---------- synergy bonus ----------
+function teamSynergyBonus(team, mode) {
+  const tagsOf = (h) => new Set(h.__tags ?? []);
+  const countTag = (tag) => team.reduce((acc, h) => acc + (tagsOf(h).has(tag) ? 1 : 0), 0);
+  const hasTag = (tag) => team.some((h) => tagsOf(h).has(tag));
+
+  const controlCount = countTag("control") + countTag("taunt");
+  const sustainCount = countTag("healer") + countTag("shield") + countTag("lifesteal_aura");
+
+  const frontlineCount = team.reduce(
+    (acc, h) => acc + ((tagsOf(h).has("frontline") || tagsOf(h).has("tank")) ? 1 : 0),
+    0
+  );
+
+  const hasPressureTank = team.some((h) => {
+    const t = tagsOf(h);
+    return t.has("tank") || t.has("taunt") || t.has("reflect") || (t.has("shield") && t.has("frontline"));
+  });
+
+  const hasDiver = team.some((h) => {
+    const t = tagsOf(h);
+    return t.has("diver") || t.has("dash") || t.has("jump");
+  });
+
+  let bonus = 0;
+
+  // Sustain layer
+  if (sustainCount >= 1) bonus += 180;
+  if (sustainCount >= 2) bonus += 80;
+
+  // CC-chain / setup tools
+  if (controlCount >= 1) bonus += 120;
+  if (controlCount >= 2) bonus += 120;
+
+  // Melee cluster proxy
+  if (frontlineCount >= 2) bonus += 90;
+  if (frontlineCount >= 3) bonus += 70;
+
+  // Pressure tank creates space for diver
+  if (hasPressureTank && hasDiver) bonus += 160;
+
+  // PvP tempo
+  if (mode === "pvp") {
+    if (hasTag("antiAssassin")) bonus += 120;
+    if (hasTag("energy_start")) bonus += 60;
+  }
+
+  return Math.min(bonus, 650);
 }
 
 function evaluateTeam(team, anchor, mode, cfg, plan) {
@@ -395,74 +434,19 @@ function evaluateTeam(team, anchor, mode, cfg, plan) {
   let score = 0;
   for (const h of team) score += heroWeightedScore(h, weights);
 
+  // hard prioritize faction bonus
   const bonus = factionBonusValue(team.map((h) => h.faction));
   score += bonus * 100;
 
+  // small extra: anchor faction presence
   const anchorPresence = team.filter((h) => h.faction === anchor.faction || h.faction === "Starglint").length;
   score += anchorPresence * 10;
 
+  // global synergy bonus
   score += teamSynergyBonus(team, mode);
 
   return score;
 }
-
-
-/* Neue Funktion */
-function teamSynergyBonus(team, mode) {
-  const tagsOf = (h) => new Set(h.__tags ?? []);
-
-  const countTag = (tag) => team.reduce((acc, h) => acc + (tagsOf(h).has(tag) ? 1 : 0), 0);
-  const hasAny = (...tags) => team.some((h) => tags.some((t) => tagsOf(h).has(t)));
-
-  const frontlineCount = countTag("frontline") + countTag("tank") * 0; // frontline ist eh gesetzt
-  const controlCount = countTag("control") + countTag("taunt");
-  const sustainCount = countTag("healer") + countTag("shield") + countTag("lifesteal_aura");
-
-  const hasPressureTank =
-    team.some((h) => {
-      const t = tagsOf(h);
-      return t.has("tank") || t.has("taunt") || t.has("reflect") || (t.has("shield") && t.has("frontline"));
-    });
-
-  const hasDiver =
-    team.some((h) => {
-      const t = tagsOf(h);
-      // diver/dash/jump sind optional tags – greifen erst, wenn du keywords in config ergänzt
-      return t.has("diver") || t.has("dash") || t.has("jump");
-    });
-
-  const hasAssassinOrBurst = hasAny("assassin") || countTag("burst") > 0; // burst-tag existiert evtl. nicht, harmless
-
-  let bonus = 0;
-
-  // 1) Sustain Layer (global wichtig)
-  if (sustainCount >= 1) bonus += 180;
-  if (sustainCount >= 2) bonus += 80; // stacking but capped
-
-  // 2) CC / Control Chain
-  if (controlCount >= 1) bonus += 120;
-  if (controlCount >= 2) bonus += 120;
-
-  // 3) Melee cluster (Heuristik: viele Frontliner/close-range)
-  // Wenn du später einen "melee" tag hinzufügst, kannst du hier verbessern.
-  // Für jetzt: frontline >= 2 ist gut, >=3 sehr gut
-  if (frontlineCount >= 2) bonus += 90;
-  if (frontlineCount >= 3) bonus += 70;
-
-  // 4) Pressure Tank + Diver Combo (Heracles Prinzip, aber global)
-  if (hasPressureTank && hasDiver) bonus += 160;
-
-  // 5) PvP: extra Wert auf anti-assassin / tempo
-  if (mode === "pvp") {
-    const antiAssassinCount = countTag("antiAssassin") + (countTag("shield") > 0 ? 0.5 : 0);
-    if (antiAssassinCount >= 1) bonus += 100;
-    if (hasAssassinOrBurst) bonus += 60;
-  }
-
-  // Soft cap to avoid overpowering base stats too much
-  return Math.min(bonus, 600);
-}
-
 
 function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
   const plans = getFactionPlans(anchor.faction);
@@ -471,17 +455,13 @@ function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
   let bestScore = -Infinity;
 
   for (const plan of plans) {
-    // build team
     const built = buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan);
     const team = built.team;
 
-    // discard if team incomplete
     if (!team || team.length < 5) continue;
 
-    // evaluate
     const score = evaluateTeam(team, anchor, mode, cfg, plan);
 
-    // If this plan promised a bonus, but we didn't reach it, penalize
     const actualBonus = factionBonusValue(team.map((h) => h.faction));
     const promised = plan.bonus ?? 0;
     const planPenalty = actualBonus < promised ? (promised - actualBonus) * 150 : 0;
@@ -493,23 +473,24 @@ function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
       best = team;
     }
 
-    // Early exit: if we achieved max bonus (35) with reasonable team, keep it
     if (actualBonus === 35 && plan.name === "5_same") break;
   }
-// ---- hard fallback: always return 5 heroes ----
-if (!best || best.length < 5) {
-  const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
-  const pool = enrichedHeroes.filter(h => h.id !== anchor.id);
-  const sorted = [...pool].sort((a, b) => heroWeightedScore(b, weights) - heroWeightedScore(a, weights));
-  best = [anchor, ...sorted.slice(0, 4)];
-}
+
+  // hard fallback: always return 5 heroes
+  if (!best || best.length < 5) {
+    const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
+    const pool = enrichedHeroes.filter((h) => h.id !== anchor.id);
+    const sorted = [...pool].sort((a, b) => heroWeightedScore(b, weights) - heroWeightedScore(a, weights));
+    best = [anchor, ...sorted.slice(0, 4)];
+  }
+
   return best;
 }
 
 // ---------- formation ----------
 function assignFormation(anchor, team, cfg) {
-  const row2 = cfg.positions.row2; // ["back-left","back-right"] (actual frontline)
-  const row3 = cfg.positions.row3; // ["front-left","front-center","front-right"] (actual backline)
+  const row2 = cfg.positions.row2; // ["back-left","back-right"] = actual frontline
+  const row3 = cfg.positions.row3; // ["front-left","front-center","front-right"] = actual backline
 
   if (!team || team.length === 0) team = [anchor];
 
@@ -519,11 +500,11 @@ function assignFormation(anchor, team, cfg) {
   };
 
   const uniqueTeam = ensureUnique(team).slice(0, 5);
-
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const scOf = (h) => h.__scores ?? {};
 
-  // High-pressure (left frontline): true tank tools > raw survivability
+  const override = POSITION_OVERRIDES[anchor.id]?.prefer ?? null;
+
   function scoreHighPressureFront(h) {
     const t = tagsOf(h);
     const s = scOf(h);
@@ -533,11 +514,11 @@ function assignFormation(anchor, team, cfg) {
       (t.has("reflect") ? 900 : 0) +
       (t.has("shield") ? 700 : 0) +
       (t.has("control") ? 500 : 0) +
+      (t.has("energy_start") ? 350 : 0) +
       (s.survivability ?? 0)
     );
   }
 
-  // Low-pressure (right frontline): bruiser/diver that wants to live + scale
   function scoreLowPressureFront(h) {
     const t = tagsOf(h);
     const s = scOf(h);
@@ -551,42 +532,51 @@ function assignFormation(anchor, team, cfg) {
     );
   }
 
-  // Pick 2 frontline heroes (prefer tagged frontline, else just best scores)
-  const candidates = [...uniqueTeam].sort((a, b) => (scOf(b).survivability ?? 0) - (scOf(a).survivability ?? 0));
+  const candidates = [...uniqueTeam];
 
-  // Choose front-left (high pressure)
-  let frontLeft = [...candidates].sort((a, b) => scoreHighPressureFront(b) - scoreHighPressureFront(a))[0] ?? anchor;
+  let frontLeft = null;
+  let frontRight = null;
 
-  // Remaining for front-right
-  const rem = candidates.filter((h) => h.id !== frontLeft.id);
-  let frontRight = [...rem].sort((a, b) => scoreLowPressureFront(b) - scoreLowPressureFront(a))[0] ?? rem[0] ?? anchor;
+  // deterministic override for anchor (Heracles)
+  if (override === row2[0]) frontLeft = anchor;
+  if (override === row2[1]) frontRight = anchor;
+
+  const remaining = candidates.filter((h) => h.id !== frontLeft?.id && h.id !== frontRight?.id);
+
+  if (!frontLeft) {
+    frontLeft = [...remaining].sort((a, b) => scoreHighPressureFront(b) - scoreHighPressureFront(a))[0] ?? anchor;
+  }
+
+  const rem2 = remaining.filter((h) => h.id !== frontLeft.id);
+
+  if (!frontRight) {
+    frontRight =
+      [...rem2].sort((a, b) => scoreLowPressureFront(b) - scoreLowPressureFront(a))[0] ?? rem2[0] ?? anchor;
+  }
 
   let r2 = ensureUnique([frontLeft, frontRight]).slice(0, 2);
+  let r3 = ensureUnique(uniqueTeam)
+    .filter((h) => !r2.some((x) => x.id === h.id))
+    .slice(0, 3);
 
-  // Backline = remaining 3
-  let r3 = ensureUnique(uniqueTeam).filter((h) => !r2.some((x) => x.id === h.id)).slice(0, 3);
-
-  // Ensure 2+3 even if weird edge cases
+  // ensure 2+3
   const used = new Set([...r2, ...r3].map((h) => h.id));
   const extras = ensureUnique(uniqueTeam).filter((h) => !used.has(h.id));
   while (r2.length < 2 && extras.length) r2.push(extras.shift());
   while (r3.length < 3 && extras.length) r3.push(extras.shift());
 
-  // Guarantee anchor exists
+  // force anchor if missing
   const hasAnchor = (arr) => arr.some((h) => h.id === anchor.id);
   if (!hasAnchor(r2) && !hasAnchor(r3)) r3[0] = anchor;
 
   return [
-    { heroId: r2[0].id, position: row2[0] }, // back-left = actual frontline left
-    { heroId: r2[1].id, position: row2[1] }, // back-right = actual frontline right
+    { heroId: r2[0].id, position: row2[0] }, // back-left = frontline left (high pressure)
+    { heroId: r2[1].id, position: row2[1] }, // back-right = frontline right (safer)
     { heroId: r3[0].id, position: row3[0] },
     { heroId: r3[1].id, position: row3[1] },
     { heroId: r3[2].id, position: row3[2] }
   ];
 }
-
-
-
 
 // ---------- main ----------
 const cfg = fs.existsSync(CONFIG_FILE)
@@ -610,8 +600,8 @@ for (const anchor of enrichedHeroes) {
   const pvpTeam = pickBestTeamForAnchor(enrichedHeroes, anchor, "pvp", cfg);
 
   output[anchor.id] = {
-    pve: { title: "PVE Example", description: "", formation: assignFormation(anchor, pveTeam, cfg) },
-    pvp: { title: "PVP Example", description: "", formation: assignFormation(anchor, pvpTeam, cfg) }
+    pve: { title: "Best PVE Setup", description: "", formation: assignFormation(anchor, pveTeam, cfg) },
+    pvp: { title: "Best PVP Setup", description: "", formation: assignFormation(anchor, pvpTeam, cfg) }
   };
 }
 
