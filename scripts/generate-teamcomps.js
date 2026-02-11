@@ -98,6 +98,7 @@ function scoreHero(hero, tags) {
   const armor = Math.sqrt(Math.max(0, s.armor ?? 0));
   const mres = Math.sqrt(Math.max(0, s.magicRes ?? 0));
   const dodge = s.dodgeRate ?? 0;
+
   const tempo =
     (tags.includes("energy_push") ? 320 : 0) +
     (tags.includes("energy_regen") ? 200 : 0) +
@@ -124,11 +125,11 @@ function scoreHero(hero, tags) {
     (tags.includes("lifesteal_aura") ? 90 : 0);
 
   const control =
-      (tags.includes("control") ? 200 : 0) +
-      (tags.includes("taunt") ? 120 : 0) +
-      // Tempo-Supports: CDR ist quasi "mehr casts" => wirkt wie Utility/Control
-      (tags.includes("cdr") ? 90 : 0);
-      
+    (tags.includes("control") ? 200 : 0) +
+    (tags.includes("taunt") ? 120 : 0) +
+    // Tempo-Supports: CDR ist quasi "mehr casts" => wirkt wie Utility/Control
+    (tags.includes("cdr") ? 90 : 0);
+
   const burst =
     atk * (tags.includes("assassin") ? 1.6 : 1.0) +
     (tags.includes("mage") ? 20 : 0) +
@@ -147,13 +148,12 @@ function scoreHero(hero, tags) {
     // Teamweite Buffs sind selten, aber sehr wertvoll
     (tags.includes("buff_team") ? 90 : 0);
 
-
   const antiAssassin =
     (tags.includes("antiAssassin") ? 180 : 0) +
     (tags.includes("tank") ? 40 : 0) +
     (tags.includes("shield") ? 40 : 0);
 
-return { survivability, healing, control, burst, scaling, antiAssassin, tempo };
+  return { survivability, healing, control, burst, scaling, antiAssassin, tempo };
 }
 
 // ---------- archetypes ----------
@@ -331,7 +331,6 @@ function matchesPrefer(hero, preferAny = []) {
   }, 0);
 }
 
-/*FIX */
 function rand01() {
   return Math.random();
 }
@@ -381,9 +380,9 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
   const sorted = [...allowed].sort((a, b) => heroWeightedScore(b, weights) - heroWeightedScore(a, weights));
 
   // --- randomized search parameters ---
-  const tries = cfg.randomSearch?.tries ?? 60;      // how many team variants per plan
-  const topK = cfg.randomSearch?.topK ?? 14;        // candidate pool per slot
-  const noise = cfg.randomSearch?.noise ?? 0.08;    // 0.05–0.12 is good
+  const tries = cfg.randomSearch?.tries ?? 60; // how many team variants per plan
+  const topK = cfg.randomSearch?.topK ?? 14; // candidate pool per slot
+  const noise = cfg.randomSearch?.noise ?? 0.08; // 0.05–0.12 is good
   const fillTopK = cfg.randomSearch?.fillTopK ?? 20;
 
   function canPick(h, picked) {
@@ -393,12 +392,14 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
   function slotCandidateList(slotDef, picked) {
     // filter by needs
     const needFiltered = sorted.filter((h) => canPick(h, picked) && matchesNeed(h, slotDef.needAny));
-    const baseList = (needFiltered.length ? needFiltered : sorted.filter((h) => canPick(h, picked)));
-    const scarcity = needFiltered.length ? (topK / Math.max(1, needFiltered.length)) : 0;
+    const baseList = needFiltered.length ? needFiltered : sorted.filter((h) => canPick(h, picked));
+    const scarcity = needFiltered.length ? topK / Math.max(1, needFiltered.length) : 0;
+
     const scoreFn = (h) =>
       heroWeightedScore(h, weights) +
       matchesPrefer(h, slotDef.preferAny) * 80 +
       scarcity * 60;
+
     return topKBy(baseList, scoreFn, topK);
   }
 
@@ -425,14 +426,11 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
     const fillPool = remaining.slice(0, fillTopK);
 
     while (team.length < 5 && fillPool.length) {
-      const pick = pickWithNoise(
-        fillPool,
-        (h) => heroWeightedScore(h, weights),
-        noise * 0.6
-      );
+      const pick = pickWithNoise(fillPool, (h) => heroWeightedScore(h, weights), noise * 0.6);
       if (!pick) break;
       picked.add(pick.id);
       team.push(pick);
+
       // remove chosen from fillPool
       const idx = fillPool.findIndex((x) => x.id === pick.id);
       if (idx >= 0) fillPool.splice(idx, 1);
@@ -449,7 +447,7 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
   for (let i = 0; i < 6; i++) {
     const t = buildOne();
     if (t.length < 5) continue;
-    const s = evaluateTeam(t, anchor, mode, cfg, plan);
+    const s = evaluateTeam(t, anchor, mode, cfg);
     if (s > bestScore) {
       bestScore = s;
       bestTeam = t;
@@ -459,7 +457,7 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
   for (let i = 0; i < tries; i++) {
     const t = buildOne();
     if (t.length < 5) continue;
-    const s = evaluateTeam(t, anchor, mode, cfg, plan);
+    const s = evaluateTeam(t, anchor, mode, cfg);
     if (s > bestScore) {
       bestScore = s;
       bestTeam = t;
@@ -474,24 +472,18 @@ function buildTeamWithPlan(enrichedHeroes, anchor, mode, cfg, plan) {
   return { team: bestTeam, secondFaction, archetype };
 }
 
-
 // ---------- synergy bonus ----------
 function teamSynergyBonus(team, mode) {
   const tagsOf = (h) => new Set(h.__tags ?? []);
   const countTag = (tag) => team.reduce((acc, h) => acc + (tagsOf(h).has(tag) ? 1 : 0), 0);
   const hasTag = (tag) => team.some((h) => tagsOf(h).has(tag));
-  const tempoTotal = team.reduce((a,h)=> a + ((h.__scores?.tempo) ?? 0), 0);
-  const carryCount = team.filter(h => {
-    const t = new Set(h.__tags ?? []);
-    return t.has("assassin") || t.has("mage") || t.has("ranged");
-  }).length;
-  const hasEnergyPush = hasTag("energy_push") || hasTag("energy_regen");
-  const hasTempo = hasEnergyPush || hasTag("haste") || hasTag("cdr");
 
-  const hasCarry = team.some(h => {
+  const tempoTotal = team.reduce((a, h) => a + (h.__scores?.tempo ?? 0), 0);
+
+  const carryCount = team.filter((h) => {
     const t = new Set(h.__tags ?? []);
-    return t.has("assassin") || t.has("mage") || t.has("ranged");
-  });
+    return t.has("assassin") || t.has("mage") || t.has("ranged") || t.has("burst");
+  }).length;
 
   const controlCount = countTag("control") + countTag("taunt");
   const sustainCount = countTag("healer") + countTag("shield") + countTag("lifesteal_aura");
@@ -512,10 +504,18 @@ function teamSynergyBonus(team, mode) {
   });
 
   let bonus = 0;
+
+  // --- TEMPO: engine -> carry conversion ---
   if (tempoTotal > 0) {
     const conversion = carryCount >= 2 ? 1.0 : carryCount === 1 ? 0.65 : 0.25;
     bonus += Math.min(220, (tempoTotal / 6) * conversion);
+
+    // PvP cares more about first-ult cycles / tempo spikes
+    if (mode === "pvp") {
+      bonus += Math.min(120, (tempoTotal / 10) * conversion);
+    }
   }
+
   // Sustain layer
   if (sustainCount >= 1) bonus += 180;
   if (sustainCount >= 2) bonus += 80;
@@ -531,37 +531,25 @@ function teamSynergyBonus(team, mode) {
   // Pressure tank creates space for diver
   if (hasPressureTank && hasDiver) bonus += 160;
 
-  // PvP tempo
+  // PvP-specific utilities
   if (mode === "pvp") {
     if (hasTag("antiAssassin")) bonus += 120;
     if (hasTag("energy_start")) bonus += 60;
-  }
-  // Tempo-Bonus: Energy/haste/cdr ist besonders stark, wenn du Carries hast
-  if (hasTempo) bonus += 90;
-  if (hasEnergyPush) bonus += 140;
-
-  // Tempo + Carry Synergie (das ist, was Cashien/Yuelao/Dionysus “wertvoll” macht)
-  if (hasEnergyPush && hasCarry) bonus += 140;
-
-  // PvP: Tempo ist noch wichtiger (Ult-Cycling, First-CC, Burst windows)
-  if (mode === "pvp") {
-    if (hasTempo) bonus += 60;
-    if (hasEnergyPush && hasCarry) bonus += 80;
   }
 
   return Math.min(bonus, 650);
 }
 
-function evaluateTeam(team, anchor, mode, cfg, plan) {
+function evaluateTeam(team, anchor, mode, cfg) {
   const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
   const factionW = weights.faction ?? 1.0;
 
   let score = 0;
   for (const h of team) score += heroWeightedScore(h, weights);
 
-  // hard prioritize faction bonus
+  // faction bonus (weighted by config)
   const bonus = factionBonusValue(team.map((h) => h.faction));
-  score += bonus * 100;
+  score += bonus * 100 * factionW;
 
   // small extra: anchor faction presence
   const anchorPresence = team.filter((h) => h.faction === anchor.faction || h.faction === "Starglint").length;
@@ -569,7 +557,6 @@ function evaluateTeam(team, anchor, mode, cfg, plan) {
 
   // global synergy bonus
   score += teamSynergyBonus(team, mode);
-  score += bonus * 100 * factionW;
 
   return score;
 }
@@ -586,7 +573,7 @@ function pickBestTeamForAnchor(enrichedHeroes, anchor, mode, cfg) {
 
     if (!team || team.length < 5) continue;
 
-    const score = evaluateTeam(team, anchor, mode, cfg, plan);
+    const score = evaluateTeam(team, anchor, mode, cfg);
 
     const actualBonus = factionBonusValue(team.map((h) => h.faction));
     const promised = plan.bonus ?? 0;
