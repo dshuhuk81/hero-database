@@ -541,37 +541,70 @@ function teamSynergyBonus(team, mode) {
   const countMeta = (key, min = 1) =>
     team.reduce((a, h) => a + (((metaOf(h)[key] ?? 0) >= min) ? 1 : 0), 0);
 
-  // --- META SYNERGY RULES (now bonus exists) ---
+  // ---------------- META SYNERGY ----------------
+
   const anchorCount = countMeta("frontAnchor", 2);
-  const delayedDiveCount = team.filter((h) => metaOf(h).engageStyle === "delayed_dive").length;
-  if (anchorCount >= 1 && delayedDiveCount >= 1) bonus += 90;
+  const delayedDiveCount = team.filter(
+    (h) => metaOf(h).engageStyle === "delayed_dive"
+  ).length;
+
+  if (anchorCount >= 1 && delayedDiveCount >= 1) {
+    bonus += 90;
+  }
 
   const collapse = countMeta("ccCollapse", 1);
   const meleeish = team.filter((h) => {
     const t = tagsOf(h);
-    return t.has("frontline") || t.has("warrior") || t.has("tank") || t.has("assassin");
+    return (
+      t.has("frontline") ||
+      t.has("warrior") ||
+      t.has("tank") ||
+      t.has("assassin")
+    );
   }).length;
-  if (collapse >= 1 && meleeish >= 3) bonus += 110;
 
-  // --- existing synergy calculations ---
-  const tempoTotal = team.reduce((a, h) => a + (h.__scores?.tempo ?? 0), 0);
+  if (collapse >= 1 && meleeish >= 3) {
+    bonus += 110;
+  }
+
+  // ---------------- EXISTING SYNERGY ----------------
+
+  const tempoTotal = team.reduce(
+    (a, h) => a + (h.__scores?.tempo ?? 0),
+    0
+  );
 
   const carryCount = team.filter((h) => {
     const t = tagsOf(h);
-    return t.has("assassin") || t.has("mage") || t.has("ranged") || t.has("burst");
+    return (
+      t.has("assassin") ||
+      t.has("mage") ||
+      t.has("ranged") ||
+      t.has("burst")
+    );
   }).length;
 
   const controlCount = countTag("control") + countTag("taunt");
-  const sustainCount = countTag("healer") + countTag("shield") + countTag("lifesteal_aura");
+  const sustainCount =
+    countTag("healer") +
+    countTag("shield") +
+    countTag("lifesteal_aura");
 
   const frontlineCount = team.reduce(
-    (acc, h) => acc + ((tagsOf(h).has("frontline") || tagsOf(h).has("tank")) ? 1 : 0),
+    (acc, h) =>
+      acc +
+      (tagsOf(h).has("frontline") || tagsOf(h).has("tank") ? 1 : 0),
     0
   );
 
   const hasPressureTank = team.some((h) => {
     const t = tagsOf(h);
-    return t.has("tank") || t.has("taunt") || t.has("reflect") || (t.has("shield") && t.has("frontline"));
+    return (
+      t.has("tank") ||
+      t.has("taunt") ||
+      t.has("reflect") ||
+      (t.has("shield") && t.has("frontline"))
+    );
   });
 
   const hasDiver = team.some((h) => {
@@ -579,9 +612,14 @@ function teamSynergyBonus(team, mode) {
     return t.has("diver") || t.has("dash") || t.has("jump");
   });
 
-  // --- TEMPO: engine -> carry conversion ---
+  // -------- TEMPO ENGINE → CARRY CONVERSION --------
+
   if (tempoTotal > 0) {
-    const conversion = carryCount >= 2 ? 1.0 : carryCount === 1 ? 0.65 : 0.25;
+    const conversion =
+      carryCount >= 2 ? 1.0 :
+      carryCount === 1 ? 0.65 :
+      0.25;
+
     bonus += Math.min(220, (tempoTotal / 6) * conversion);
 
     if (mode === "pvp") {
@@ -593,18 +631,18 @@ function teamSynergyBonus(team, mode) {
   if (sustainCount >= 1) bonus += 180;
   if (sustainCount >= 2) bonus += 80;
 
-  // CC-chain / setup tools
+  // CC-chain
   if (controlCount >= 1) bonus += 120;
   if (controlCount >= 2) bonus += 120;
 
-  // Melee cluster proxy
+  // Melee cluster
   if (frontlineCount >= 2) bonus += 90;
   if (frontlineCount >= 3) bonus += 70;
 
-  // Pressure tank creates space for diver
+  // Pressure tank + diver synergy
   if (hasPressureTank && hasDiver) bonus += 160;
 
-  // PvP-specific utilities
+  // PvP utilities
   if (mode === "pvp") {
     if (hasTag("antiAssassin")) bonus += 120;
     if (hasTag("energy_start")) bonus += 60;
@@ -612,7 +650,6 @@ function teamSynergyBonus(team, mode) {
 
   return Math.min(bonus, 650);
 }
-
 
 function evaluateTeam(team, anchor, mode, cfg) {
   const weights = cfg.modeWeights?.[mode] ?? cfg.modeWeights?.pve;
