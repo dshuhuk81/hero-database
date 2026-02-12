@@ -19,8 +19,18 @@ interface TeamComp {
   formation: FormationHero[];
   formationSummary?: string;
   formationNotes?: FormationNote[];
-  strongVs?: string[];
-  weakVs?: string[];
+  winCondition?: string;
+  danger?: string;
+  mechanics?: {
+    engineType: string;
+    keyInteractions: Array<{
+      actors: string[];
+      mechanism: string;
+      timing: string;
+    }>;
+    winConditionMechanic: string;
+    counterplayVulnerability: string;
+  };
 }
 
 interface Props {
@@ -28,17 +38,6 @@ interface Props {
   pveTeam: TeamComp;
   pvpTeam: TeamComp;
 }
-
-interface TeamComp {
-  title: string;
-  description: string;
-  formation: FormationHero[];
-  formationSummary?: string;
-  formationNotes?: FormationNote[];
-  winCondition?: string;
-  danger?: string;
-}
-
 
 const { currentHeroId, pveTeam, pvpTeam } = Astro.props as Props;
 
@@ -119,6 +118,7 @@ const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
             {pveTeam.formationSummary && <span class="badge neutral">Formation</span>}
             {pveTeam.winCondition && <span class="badge win">Win</span>}
             {pveTeam.danger && <span class="badge danger">Risk</span>}
+            {pveTeam.mechanics && <span class="badge mechanic">⚙️ Mechanics</span>}
           </div>
 
           {pveTeam.formationSummary && (
@@ -140,6 +140,50 @@ const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
             <div class="coach-row">
               <span class="coach-label danger">Danger</span>
               <span class="coach-text">{pveTeam.danger}</span>
+            </div>
+          )}
+          
+          {/* NEW: Mechanical Breakdown */}
+          {pveTeam.mechanics && (
+            <div class="mechanics-panel">
+              <div class="engine-type">
+                <span class="label">Engine:</span>
+                <span class="badge-engine">{pveTeam.mechanics.engineType.replace(/_/g, ' ')}</span>
+              </div>
+              
+              {pveTeam.mechanics.keyInteractions.length > 0 && (
+                <div class="interactions-list">
+                  {pveTeam.mechanics.keyInteractions.map((interaction) => {
+                    const heroData = interaction.actors.map(id => getHeroById(id)).filter(Boolean);
+                    return (
+                      <div class="interaction">
+                        <div class="actors">
+                          {heroData.map(hero => (
+                            <img 
+                              src={hero.image} 
+                              alt={hero.name}
+                              class="interaction-hero-icon"
+                              title={hero.name}
+                            />
+                          ))}
+                          <span class="timing-badge">{interaction.timing.replace(/_/g, ' ')}</span>
+                        </div>
+                        <p class="mechanism">{interaction.mechanism}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              
+              <div class="win-mechanic">
+                <span class="label">💡 How to Win:</span>
+                <p>{pveTeam.mechanics.winConditionMechanic}</p>
+              </div>
+              
+              <div class="vulnerability">
+                <span class="label">⚠️ Vulnerability:</span>
+                <p>{pveTeam.mechanics.counterplayVulnerability}</p>
+              </div>
             </div>
           )}
         </details>
@@ -259,6 +303,7 @@ const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
             {pvpTeam.formationSummary && <span class="badge neutral">Formation</span>}
             {pvpTeam.winCondition && <span class="badge win">Win</span>}
             {pvpTeam.danger && <span class="badge danger">Risk</span>}
+            {pvpTeam.mechanics && <span class="badge mechanic">⚙️ Mechanics</span>}
           </div>
 
           {pvpTeam.formationSummary && (
@@ -282,12 +327,56 @@ const pvpFrontRow = ["front-left", "front-center", "front-right"].map((pos) => {
               <span class="coach-text">{pvpTeam.danger}</span>
             </div>
           )}
+          
+          {/* NEW: Mechanical Breakdown */}
+          {pvpTeam.mechanics && (
+            <div class="mechanics-panel">
+              <div class="engine-type">
+                <span class="label">Engine:</span>
+                <span class="badge-engine">{pvpTeam.mechanics.engineType.replace(/_/g, ' ')}</span>
+              </div>
+              
+              {pvpTeam.mechanics.keyInteractions.length > 0 && (
+                <div class="interactions-list">
+                  {pvpTeam.mechanics.keyInteractions.map((interaction) => {
+                    const heroData = interaction.actors.map(id => getHeroById(id)).filter(Boolean);
+                    return (
+                      <div class="interaction">
+                        <div class="actors">
+                          {heroData.map(hero => (
+                            <img 
+                              src={hero.image} 
+                              alt={hero.name}
+                              class="interaction-hero-icon"
+                              title={hero.name}
+                            />
+                          ))}
+                          <span class="timing-badge">{interaction.timing.replace(/_/g, ' ')}</span>
+                        </div>
+                        <p class="mechanism">{interaction.mechanism}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              
+              <div class="win-mechanic">
+                <span class="label">💡 How to Win:</span>
+                <p>{pvpTeam.mechanics.winConditionMechanic}</p>
+              </div>
+              
+              <div class="vulnerability">
+                <span class="label">⚠️ Vulnerability:</span>
+                <p>{pvpTeam.mechanics.counterplayVulnerability}</p>
+              </div>
+            </div>
+          )}
         </details>
       </div>
-      {((pveTeam.strongVs?.length ?? 0) > 0 || (pveTeam.weakVs?.length ?? 0) > 0) && (
+      {((pvpTeam.strongVs?.length ?? 0) > 0 || (pvpTeam.weakVs?.length ?? 0) > 0) && (
         <div class="matchup-chips">
-          {(pveTeam.strongVs ?? []).map((t) => <span class="chip strong">✅ {t}</span>)}
-          {(pveTeam.weakVs ?? []).map((t) => <span class="chip weak">⚠️ {t}</span>)}
+          {(pvpTeam.strongVs ?? []).map((t) => <span class="chip strong">✅ {t}</span>)}
+          {(pvpTeam.weakVs ?? []).map((t) => <span class="chip weak">⚠️ {t}</span>)}
         </div>
       )}
 
@@ -844,6 +933,123 @@ margin: 0.5rem 0;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.72);
   text-align: center;
+}
+/* Mechanical Breakdown Styles */
+.badge.mechanic {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(109, 40, 217, 0.15));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.mechanics-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(139, 92, 246, 0.05);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.engine-type {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.engine-type .label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.badge-engine {
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(109, 40, 217, 0.2));
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #c4b5fd;
+}
+
+.interactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.interaction {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border-left: 3px solid rgba(139, 92, 246, 0.5);
+}
+
+.actors {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.interaction-hero-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(139, 92, 246, 0.4);
+  object-fit: cover;
+  object-position: top center;
+}
+
+.timing-badge {
+  margin-left: auto;
+  padding: 0.125rem 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: capitalize;
+}
+
+.mechanism {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.win-mechanic,
+.vulnerability {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.win-mechanic {
+  background: rgba(34, 197, 94, 0.1);
+  border-left: 3px solid rgba(34, 197, 94, 0.5);
+}
+
+.vulnerability {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid rgba(239, 68, 68, 0.5);
+}
+
+.win-mechanic .label,
+.vulnerability .label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 0.375rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.win-mechanic p,
+.vulnerability p {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
 }
 
 </style>

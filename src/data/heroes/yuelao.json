@@ -8,14 +8,12 @@
   "rarity": "Legendary",
   "description": "Yuelao, god of romance and marriage, uses his red threads to unite destined couples.",
   "ratings": {
-    "overall": "SS",
-    "grimSurge": "SS",
-    "delusionsDen": "SS",
-    "torrentRift": "SS",
-    "pvp": "SS",
-    "odyssey": "SS"
+    "overall": "S",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 10,
   "stats": {
     "hp": 252926,
     "atk": 25451,
@@ -38,8 +36,7 @@
         "level2": "Each heal restores HP equal to 160% of ATK.",
         "level3": "Allies healed gain 20% increased CRIT Rate for 5s. This effect cannot stack on the same target.",
         "level4": "It now heals 8 times."
-      },
-      "image": "/skills/yuelao_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -49,8 +46,7 @@
         "level2": "Increases the shared attributes to 12.5%.",
         "level3": "If one linked ally falls, they transfer 50% of their remaining Energy to the other.",
         "level4": "Increases the shared attributes to 15%."
-      },
-      "image": "/skills/yuelao_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -60,8 +56,7 @@
         "level2": "Increases ATK bonus to 20%.",
         "level3": "Energy Regen increases to 180.",
         "level4": "Increases ATK bonus to 25%. (Unlocks at Lv.261)"
-      },
-      "image": "/skills/yuelao_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -71,8 +66,7 @@
         "level2": "Restores HP equal to 220% ATK.",
         "level3": "Increases the allies' CRIT RES by 30% for 6s.",
         "level4": "Restores HP equal to 250% ATK. (Unlocks at Lv.281)"
-      },
-      "image": "/skills/yuelao_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -82,7 +76,6 @@
       "level2": "When both linked units attack the same target, they deal an additional 15% DMG.",
       "level3": "The ally with the highest HP takes 30% of the DMG dealt to the ally with the highest ATK. (Unlock at Relic Lv.20)",
       "level4": "The ally with the highest ATK restores HP equal to 30% of the DMG they deal to the ally with the highest HP. (Unlock at Relic Lv.30)"
-    },
-    "image": "/skills/yuelao_relic.webp"
+    }
   }
 }

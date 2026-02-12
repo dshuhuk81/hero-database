@@ -42,14 +42,10 @@ function adaptHero(raw) {
       delusionsDen: raw.ratings?.delusionsDen ?? null,
       torrentRift: raw.ratings?.torrentRift ?? null,
       pvp: raw.ratings?.pvp ?? null,
-      odyssey: raw.ratings?.odyssey ?? null,
     },
 
     // Backward-Compat (Grid / Cards)
     rating: raw.ratings?.overall ?? null,
-
-    // ✅ WICHTIG: recommendedRelicLevel hinzufügen
-    recommendedRelicLevel: raw.recommendedRelicLevel,
 
     // ✅ Stats kommen NUR aus Hero-JSON
     stats: raw.stats ?? {},

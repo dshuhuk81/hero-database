@@ -12,10 +12,8 @@
     "grimSurge": "S",
     "delusionsDen": "A",
     "torrentRift": "B",
-    "pvp": "A",
-    "odyssey": "B"
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 0,
   "stats": {
     "hp": 248406,
     "atk": 24898,
@@ -29,57 +27,52 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Battlefield Storm",
-      "description": "Ares swings his weapon, dealing DMG equal to 100% of ATK per second to surrounding enemies for 6s. He is immune to Crowd Control for the duration.",
+      "name": "Soothing Rain",
+      "description": "Restores HP to allies over time.",
       "upgrades": {
-        "level2": "Increases DMG per second to 110% of ATK.",
-        "level3": "Gains a shield equal to 200% of ATK when the Ultimate ends.",
-        "level4": "Increases DMG per second to 120% of ATK."
-      },
-      "image": "/skills/ares_skill_1.webp"
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      }
     },
     {
       "id": "skill_2",
-      "name": "Flesh Grinder",
-      "description": "Ares deals DMG equal to 200% of ATK to nearby enemies and reduces their Armor by 15% for 6s.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Reduces Armor by 20%.",
-        "level3": "Increases Armor reduction duration to 8s.",
-        "level4": "Reduces Armor by 25%."
-      },
-      "image": "/skills/ares_skill_2.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_3",
-      "name": "Unyielding Will",
-      "description": "The first time Ares takes lethal DMG, he becomes immune to the lethal DMG and gains immunity to all DMG and Crowd Control for 5s (can only trigger once per battle).",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Permanently increases Lifesteal by 20% upon triggering.",
-        "level3": "Increases the immunity duration to 7s.",
-        "level4": "Permanently increases Lifesteal by 30% upon triggering."
-      },
-      "image": "/skills/ares_skill_3.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_4",
-      "name": "War God Spirit",
-      "description": "Ares's ATK increases as his HP drops, with a maximum boost of 90% ATK.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Increases ATK boost up to 105%.",
-        "level3": "Also gains up to 30% CRIT Rate.",
-        "level4": "Increases ATK boost up to 120%."
-      },
-      "image": "/skills/ares_skill_4.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     }
   ],
   "relic": {
-    "name": "Celestial Dusk",
-    "description": "During Battlefield Storm, Ares takes 80% reduced DMG.",
+    "name": "Hero’s Relic",
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
     "upgrades": {
-      "level2": "While Battlefield Storm is active, Ares gains a shield equal to 200% ATK upon defeating an enemy.",
-      "level3": "During Battlefield Storm, Ares is immune to all DMG. This does not affect the duration of other immunity skills.",
-      "level4": "While Battlefield Storm is active, Ares gains a shield equal to 240% ATK upon defeating an enemy."
-    },
-    "image": "/skills/ares_relic.webp"
+      "level2": "Shield strength increased.",
+      "level3": "Cooldown reduced.",
+      "level4": "Triggers automatically once per battle."
+    }
   }
 }

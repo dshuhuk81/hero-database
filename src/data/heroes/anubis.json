@@ -12,10 +12,8 @@
     "grimSurge": "A",
     "delusionsDen": "S",
     "torrentRift": "S",
-    "pvp": "SS",
-    "odyssey": "SS"
+    "pvp": "SS"
   },
-  "recommendedRelicLevel": 20,
   "stats": {
     "hp": 248296,
     "atk": 25253,
@@ -38,8 +36,7 @@
         "level2": "Increases DMG dealt to 500% ATK.",
         "level3": "Increases Anubis's ATK by 20% upon defeating a target. This boost lasts until the battle ends.",
         "level4": "After defeating a target, Anubis restores 25% of his max HP."
-      },
-      "image": "/skills/anubis_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -49,8 +46,7 @@
         "level2": "When dealing DMG, steals 150 Energy from the target.",
         "level3": "Stun now lasts for 3s.",
         "level4": "Increases DMG dealt to 300% ATK."
-      },
-      "image": "/skills/anubis_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -60,8 +56,7 @@
         "level2": "Increases Anubis's ATK by 20% until the battle ends when triggered.",
         "level3": "Increases Lifesteal by 20% until the battle ends when triggered.",
         "level4": "Increases ATK by 30% and grants 30% Lifesteal when triggered. (Unlocks at Lv.261)"
-      },
-      "image": "/skills/anubis_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -71,8 +66,7 @@
         "level2": "Increases DMG dealt to 235% ATK.",
         "level3": "Increases healing reduction to 80%.",
         "level4": "DMG dealt increases to 260% ATK. (Unlocks at Lv.281)"
-      },
-      "image": "/skills/anubis_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -82,7 +76,6 @@
       "level2": "Enemies cannot receive healing during Featherfall Judgment. (Unlock at Relic Lv.10)",
       "level3": "If an enemy drops below 5% HP after taking DMG from Featherfall Judgment, it executes that enemy. (Unlock at Relic Lv.20)",
       "level4": "Increases DMG dealt by Featherfall Judgment by 50% to enemies with less than 50% HP. (Unlock at Relic Lv.30)"
-    },
-    "image": "/skills/anubis_relic.webp"
+    }
   }
 }

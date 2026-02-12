@@ -2,7 +2,7 @@
   "id": "jormungandr",
   "name": "Jormungandr",
   "image": "/heroes/jormungandr.webp",
-  "faction": "Clubs",
+  "faction": "Spades",
   "role": "Hefty",
   "class": "Warrior",
   "rarity": "Legendary",
@@ -12,10 +12,8 @@
     "grimSurge": "S",
     "delusionsDen": "A",
     "torrentRift": "B",
-    "pvp": "A",
-    "odyssey": "B"
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 1,
   "stats": {
     "hp": 250056,
     "atk": 25235,
@@ -38,8 +36,7 @@
         "level2": "Leaves a poison pool when falling. The poison pool lasts 10s and deals damage every second equal to twice the poison mist damage. (Unlock at Relic Lv.10)",
         "level3": "Damage per second increased to 85% of ATK. (Unlock at Relic Lv.20)",
         "level4": "Damage per second increased to 100% of ATK. (Unlock at Relic Lv.30)"
-      },
-      "image": "/skills/jormungandr_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -49,8 +46,7 @@
         "level2": "Becomes invincible for the skill’s duration.",
         "level3": "Damage per hit increased to 110% of ATK.",
         "level4": "Damage per hit increased to 120% of ATK."
-      },
-      "image": "/skills/jormungandr_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -60,8 +56,7 @@
         "level2": "Gains a shield equal to 250% of ATK for 6s.",
         "level3": "Damage increased to 220% of ATK.",
         "level4": "Gains a shield equal to 300% of ATK for 6s."
-      },
-      "image": "/skills/jormungandr_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -71,8 +66,7 @@
         "level2": "Reflects 70% of damage taken.",
         "level3": "Reflects 80% of damage taken.",
         "level4": "Reflects 100% of damage taken. (Unlocks at Lv.261)"
-      },
-      "image": "/skills/jormungandr_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -82,7 +76,6 @@
       "level2": "Enemies hit are taunted for 3s.",
       "level3": "Damage increased to 220% of ATK.",
       "level4": "Pulled enemies take 10% increased damage for the next 3s. (Unlocks at Lv.281)"
-    },
-    "image": "/skills/jormungandr_relic.webp"
+    }
   }
 }

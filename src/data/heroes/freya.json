@@ -2,20 +2,18 @@
   "id": "freya",
   "name": "Freya",
   "image": "/heroes/freya.webp",
-  "faction": "Clubs",
+  "faction": "Spades",
   "role": "Arcane",
   "class": "Support",
   "rarity": "Legendary",
   "description": "Freya's use is mostly situational. She performs well in Delusions Den and Torrent Rift, as well as in Odysseus, but her performance in other areas is average.",
   "ratings": {
-    "overall": "SSS",
-    "grimSurge": "SSS",
+    "overall": "SS",
+    "grimSurge": "B",
     "delusionsDen": "SSS",
-    "torrentRift": "SSS",
-    "pvp": "SSS",
-    "odyssey": "SSS"
+    "torrentRift": "S",
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 0,
   "stats": {
     "hp": 242830,
     "atk": 24776,
@@ -29,57 +27,52 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Splendor of Love",
-      "description": "Freya harnesses the power of nature, channeling for 8s and restoring HP equal to 100% of ATK to all allies each second.",
+      "name": "Soothing Rain",
+      "description": "Restores HP to allies over time.",
       "upgrades": {
-        "level2": "Restores HP equal to 110% of ATK per second.",
-        "level3": "Freya gains Super Armor during her Ultimate.",
-        "level4": "Restores HP equal to 120% of ATK per second."
-      },
-      "image": "/skills/freya_skill_1.webp"
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      }
     },
     {
       "id": "skill_2",
-      "name": "Flower Whispers",
-      "description": "Restores HP equal to 100% of ATK to the most vulnerable ally, then restores HP equal to 100% of ATK per second for 3s.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Restores an additional 75 Energy to the target.",
-        "level3": "Increases initial and over-time Energy restoration to 120%.",
-        "level4": "Increases Energy restoration to 150."
-      },
-      "image": "/skills/freya_skill_2.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_3",
-      "name": "Petal Palette",
-      "description": "Increases all healing effects from Freya by 15%.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Increases healing effect by 20%.",
-        "level3": "Increases healing effect on allies with less than 50% HP by 20%.",
-        "level4": "Increases healing effect by 30%."
-      },
-      "image": "/skills/freya_skill_3.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_4",
-      "name": "Lethal Petal",
-      "description": "Stuns an enemy for 3s, dealing DMG equal to 100% of ATK per second.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Increases DMG per second to 120% of ATK.",
-        "level3": "Stun duration increases to 4s.",
-        "level4": "Stunned enemies take 20% increased DMG."
-      },
-      "image": "/skills/freya_skill_4.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     }
   ],
   "relic": {
-    "name": "Ward of Splendor",
-    "description": "All allies take 20% reduced DMG during Splendor of Love.",
+    "name": "Hero’s Relic",
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
     "upgrades": {
-      "level2": "Gains 300 Energy upon entering battle.",
-      "level3": "Reduces DMG taken by 30%.",
-      "level4": "Reduces DMG taken by 40%."
-    },
-    "image": "/skills/freya_relic.webp"
+      "level2": "Shield strength increased.",
+      "level3": "Cooldown reduced.",
+      "level4": "Triggers automatically once per battle."
+    }
   }
 }

@@ -8,23 +8,11 @@
   "rarity": "Epic",
   "description": "Geb is the guardian of earth and nature. His rocky form is draped in lush vegetation, a microcosm of the natural world.",
   "ratings": {
-    "overall": "B",
-    "grimSurge": "C",
-    "delusionsDen": "C",
-    "torrentRift": "C",
-    "pvp": "B",
-    "odyssey": "A"
-  },
-  "recommendedRelicLevel": 0,
-  "meta": {
-  "preferredRow": "frontline",
-  "lanePreference": "high_pressure_ok",
-  "frontAnchor": 2,
-  "threatSoak": 2,
-  "startsWithEnergy": true,
-  "ccCollapse": 2,
-  "reflectSynergy": 2,
-  "opening": "instant_cc"
+    "overall": "C",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
   },
   "stats": {
     "hp": 242773,
@@ -39,57 +27,52 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Unstoppable",
-      "description": "Geb enters the [Boulder] state, gaining a shield equal to 30% of his max HP. He then rolls forward, continuously knocking back enemies in front and dealing DMG equal to 100% of ATK.",
+      "name": "Soothing Rain",
+      "description": "Restores HP to allies over time.",
       "upgrades": {
-        "level2": "Increases DMG per hit to 115% of ATK.",
-        "level3": "Increases shield strength to 40% of max HP.",
-        "level4": "Increases DMG per hit to 130% of ATK."
-      },
-      "image": "/skills/geb_skill_1.webp"
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      }
     },
     {
       "id": "skill_2",
-      "name": "Stone Armor",
-      "description": "Geb grants himself a shield equal to 15% of max HP, lasting up to 6s.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Shield strength increases to 20% of max HP.",
-        "level3": "Takes 10% less DMG while shielded.",
-        "level4": "Shield strength increases to 25% of max HP."
-      },
-      "image": "/skills/geb_skill_2.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_3",
-      "name": "Heart of the Earth",
-      "description": "Geb has rocky skin. The closer an enemy is to Geb, the less DMG they deal to him, with a maximum reduction of 30%.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Reduces up to 37.5% DMG.",
-        "level3": "Reduces up to 45% DMG.",
-        "level4": "Reduces the ATK SPD of nearby enemies by 25%."
-      },
-      "image": "/skills/geb_skill_3.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_4",
-      "name": "Nature’s Wrath",
-      "description": "Geb strikes nearby enemies 3 times, each hit dealing DMG equal to 100% of ATK. The last hit knocks down enemies.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Increases DMG dealt to 110% of ATK.",
-        "level3": "Reduces the Hit Rate of hit enemies by 30% for 5s.",
-        "level4": "Increases DMG dealt to 120% of ATK."
-      },
-      "image": "/skills/geb_skill_4.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     }
   ],
   "relic": {
-    "name": "Earthshaker",
-    "description": "When shielded, Geb deals DMG equal to 5% of his max HP to the attacker each time he takes DMG.",
+    "name": "Hero’s Relic",
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
     "upgrades": {
-      "level2": "Geb gains a shield equal to 30% of max HP at combat start.",
-      "level3": "Gains 300 Energy when the battle starts.",
-      "level4": "Geb gains a shield equal to 50% of max HP at combat start."
-    },
-    "image": "/skills/geb_relic.webp"
+      "level2": "Shield strength increased.",
+      "level3": "Cooldown reduced.",
+      "level4": "Triggers automatically once per battle."
+    }
   }
 }

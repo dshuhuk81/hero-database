@@ -9,13 +9,11 @@
   "description": "Melard, known as Scorpio, embodies cold-blooded creatures. One glimpse of her face awakens deep, frequent dread and reveals her devastating power.",
   "ratings": {
     "overall": "B",
-    "grimSurge": "B",
-    "delusionsDen": "B",
+    "grimSurge": "S",
+    "delusionsDen": "A",
     "torrentRift": "B",
-    "pvp": "B",
-    "odyssey": "B"
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 0,
   "stats": {
     "hp": 240040,
     "atk": 24492,
@@ -35,8 +33,7 @@
         "level2": "Healing increased by 20%.",
         "level3": "Adds shield on heal.",
         "level4": "Removes one debuff."
-      },
-      "image": "/skills/virgo_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -46,8 +43,7 @@
         "level2": "Shield strength increased.",
         "level3": "Cooldown reduced.",
         "level4": "Triggers automatically once per battle."
-      },
-      "image": "/skills/virgo_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -57,8 +53,26 @@
         "level2": "Shield strength increased.",
         "level3": "Cooldown reduced.",
         "level4": "Triggers automatically once per battle."
-      },
-      "image": "/skills/virgo_skill_3.webp"
+      }
+    },
+    {
+      "id": "skill_4",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
+      "upgrades": {
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     }
-  ]
+  ],
+  "relic": {
+    "name": "Hero’s Relic",
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "upgrades": {
+      "level2": "Shield strength increased.",
+      "level3": "Cooldown reduced.",
+      "level4": "Triggers automatically once per battle."
+    }
+  }
 }

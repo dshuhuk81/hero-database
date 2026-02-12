@@ -9,13 +9,11 @@
   "description": "Nuwa is the goddess of creation who breathed life into clay, shaping it into humans with warmth and soul. SHe is also the one who gathered the five-colored stones to mend heaven and earth when they shattered.",
   "ratings": {
     "overall": "SSS",
-    "grimSurge": "SS",
-    "delusionsDen": "SSS",
-    "torrentRift": "SS",
-    "pvp": "SSS",
-    "odyssey": "SSS"
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 30,
   "stats": {
     "hp": 242574,
     "atk": 24669,
@@ -29,57 +27,52 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Law of Creation",
-      "description": "At combat start, summons a Bulwark Figurine that charges the nearest enemy, dealing DMG equal to 270% of ATK and stunning them for 2s. The Bulwark Figurine inherits 200% of her max HP and 100% of her ATK. Activating the skill deploys a barrier equal to 1600% of ATK for 6s that absorbs damage for allies behind it. If a Bulwark Figurine already exists, its HP is fully restored and the barrier is redeployed.",
+      "name": "Soothing Rain",
+      "description": "Restores HP to allies over time.",
       "upgrades": {
-        "level2": "The shield absorbs DMG equal to 2200% of ATK.",
-        "level3": "The shield absorbs DMG equal to 3000% of ATK.",
-        "level4": "While the barrier is active, the Bulwark Figurine takes 20% reduced DMG."
-      },
-      "image": "/skills/nuwa_skill_1.webp"
+        "level2": "Healing increased by 20%.",
+        "level3": "Adds shield on heal.",
+        "level4": "Removes one debuff."
+      }
     },
     {
       "id": "skill_2",
-      "name": "Divine Embrace",
-      "description": "Grants a shield equal to 240% of ATK to a frontline ally and all allies within 3 meters. While the shield is active, it blocks one incoming Crowd Control effect.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Shield strength increases to 270% of ATK.",
-        "level3": "Nuwa gains a shield when casting the skill.",
-        "level4": "Takes 50% less DMG while shielded."
-      },
-      "image": "/skills/nuwa_skill_2.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_3",
-      "name": "Children of the Clay",
-      "description": "Summons a Greataxe Figurine inheriting 150% of her max HP and 120% of her ATK. It attacks the farthest enemy, dealing DMG equal to 300% of ATK and stunning them for 1s. If a Greataxe Figurine already exists, it is fully healed and leaps into enemy clusters, dealing 300% ATK DMG and knocking enemies down.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Increases Greataxe Figurine stun duration to 1.5s.",
-        "level3": "Leaps high and lands, taunting enemies within range for 5s and gaining 100% Armor for the duration.",
-        "level4": "Increases smash DMG and clustered area DMG to 330% of ATK."
-      },
-      "image": "/skills/nuwa_skill_3.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     },
     {
       "id": "skill_4",
-      "name": "Sky Salvation",
-      "description": "Summons a Support Figurine inheriting 100% of her max HP and 150% of her ATK. It heals the most vulnerable ally for 100% ATK every 2.5s. If a Support Figurine already exists, it is fully healed and instead heals the most vulnerable ally for 300% ATK.",
+      "name": "Life Barrier",
+      "description": "Grants a shield when allies fall low.",
       "upgrades": {
-        "level2": "Grants buffs based on ally position: frontline allies gain 10% Dodge Rate, backline allies gain 10% DMG bonus for 10s.",
-        "level3": "Support Figurine now heals for 110% ATK with each Normal Attack.",
-        "level4": "When a Bulwark Figurine is on the battlefield, she heals it every 2.5s."
-      },
-      "image": "/skills/nuwa_skill_4.webp"
+        "level2": "Shield strength increased.",
+        "level3": "Cooldown reduced.",
+        "level4": "Triggers automatically once per battle."
+      }
     }
   ],
   "relic": {
-    "name": "Primordial Spirit",
-    "description": "Casting her Ultimate instantly triggers Children of the Clay and Sky Salvation once.",
+    "name": "Hero’s Relic",
+    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
     "upgrades": {
-      "level2": "Nuwa gains an additional 30% DMG Reduction for each Figurine on the battlefield.",
-      "level3": "Nuwa gains 100 Energy for each Figurine defeated.",
-      "level4": "Whenever an ally summons a minion, Nuwa blesses it with Divine Embrace, granting it a shield."
-    },
-    "image": "/skills/nuwa_relic.webp"
+      "level2": "Shield strength increased.",
+      "level3": "Cooldown reduced.",
+      "level4": "Triggers automatically once per battle."
+    }
   }
 }

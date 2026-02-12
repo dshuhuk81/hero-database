@@ -9,13 +9,11 @@
   "description": "Irena, known as Aries, rules over war and courage, granting mortals the will to fight and the spirit to press forward.",
   "ratings": {
     "overall": "A",
-    "grimSurge": "A",
+    "grimSurge": "S",
     "delusionsDen": "A",
-    "torrentRift": "A",
-    "pvp": "A",
-    "odyssey": "A"
+    "torrentRift": "B",
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 0,
   "stats": {
     "hp": 246417,
     "atk": 25038,
@@ -35,8 +33,7 @@
         "level2": "Healing increased by 20%.",
         "level3": "Adds shield on heal.",
         "level4": "Removes one debuff."
-      },
-      "image": "/skills/aries_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -46,8 +43,7 @@
         "level2": "Shield strength increased.",
         "level3": "Cooldown reduced.",
         "level4": "Triggers automatically once per battle."
-      },
-      "image": "/skills/aries_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -57,8 +53,7 @@
         "level2": "Shield strength increased.",
         "level3": "Cooldown reduced.",
         "level4": "Triggers automatically once per battle."
-      },
-      "image": "/skills/aries_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -68,8 +63,7 @@
         "level2": "Shield strength increased.",
         "level3": "Cooldown reduced.",
         "level4": "Triggers automatically once per battle."
-      },
-      "image": "/skills/aries_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -79,7 +73,6 @@
       "level2": "Shield strength increased.",
       "level3": "Cooldown reduced.",
       "level4": "Triggers automatically once per battle."
-    },
-    "image": "/skills/aries_relic.webp"
+    }
   }
 }

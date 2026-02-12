@@ -8,14 +8,12 @@
   "rarity": "Legendary",
   "description": "Caishen, guardian of wealth, rules over the flow of riches, success, and opportunity. Able to grant fortune or strip possessions, Caishen rewards diligence and punishes greed.",
   "ratings": {
-    "overall": "SSS",
-    "grimSurge": "SSS",
-    "delusionsDen": "SSS",
-    "torrentRift": "SSS",
-    "pvp": "SSS",
-    "odyssey": "SSS"
+    "overall": "S",
+    "grimSurge": "S",
+    "delusionsDen": "A",
+    "torrentRift": "B",
+    "pvp": "A"
   },
-  "recommendedRelicLevel": 0,
   "stats": {
     "hp": 253729,
     "atk": 25529,
@@ -30,59 +28,54 @@
     "energy": 0
   },
   "skills": [
-    {
-      "id": "skill_1",
-      "name": "Golden Rejuvenation",
-      "description": "Deals DMG equal to 270% of ATK to a target and restores 200 Energy to himself.",
-      "upgrades": {
-        "level2": "Increases ATK bonus to 300%.",
-        "level3": "Restores 300 Energy to himself.",
-        "level4": "Increases ATK bonus to 330%. (Unlocks at Lv.281)"
-      },
-      "image": "/skills/cashien_skill_1.webp"
-    },
-    {
-      "id": "skill_2",
-      "name": "Rollin' in Riches",
-      "description": "Caishen restores 100 Energy to allies in a large area around him and then restores 25 Energy per sec to them for the next 10s.",
-      "upgrades": {
-        "level2": "Increases Energy Regen to 30.",
-        "level3": "Also increases ATK of allies within range by 15% for 5s.",
-        "level4": "Increases Energy Regen to 35."
-      },
-      "image": "/skills/cashien_skill_2.webp"
-    },
-    {
-      "id": "skill_3",
-      "name": "Lucky Star Alight",
-      "description": "Before falling, becomes immune to the DMG and invincible for 2s. It can only trigger once.",
-      "upgrades": {
-        "level2": "Additionally restores HP equal to 200% ATK.",
-        "level3": "Additionally restores HP equal to 300% ATK.",
-        "level4": "The effect now trigger twice. (Unlocks at Lv.261)"
-      },
-      "image": "/skills/cashien_skill_3.webp"
-    },
-    {
-      "id": "skill_4",
-      "name": "Endless Fortune",
-      "description": "Caishen is surrounded by 2 Golden Ingots upon entering battle. When a nearby ally's HP drops below 50%, an Ingot is consumed to restore 25% max HP to that ally. Using a Golden Ingot has an 8s CD for each Deity. Caishen can have a maximum of 3 Golden Ingots. Once all Golden Ingots are used, they are automatically replenished to full. This effect has a 20s CD.",
-      "upgrades": {
-        "level2": "Increases healing effect to 27%.",
-        "level3": "Golden Ingots +1 at combat start.",
-        "level4": "Increases healing effect to 30%."
-      },
-      "image": "/skills/cashien_skill_4.webp"
-    }
-  ],
-  "relic": {
-    "name": "Fortune Leverage",
-    "description": "The first time an ally reaches 700 Energy, grants them 300 Energy.",
+  {
+    "id": "skill_1",
+    "name": "Golden Rejuvenation",
+    "description": "Deals DMG equal to 270% of ATK to a target and restores 200 Energy to himself.",
     "upgrades": {
-      "level2": "The first time an ally reaches 650 Energy, grants them 350 Energy.",
-      "level3": "This effect can trigger repeatedly with a 15s CD. (Unlock at Relic Lv.20)",
-      "level4": "The first time an ally reaches 600 Energy, grants them 400 Energy. (Unlock at Relic Lv.30)"
-    },
-    "image": "/skills/cashien_relic.webp"
+      "level2": "Increases ATK bonus to 300%.",
+      "level3": "Restores 300 Energy to himself.",
+      "level4": "Increases ATK bonus to 330%. (Unlocks at Lv.281)"
+    }
+  },
+  {
+    "id": "skill_2",
+    "name": "Rollin' in Riches",
+    "description": "Caishen restores 100 Energy to allies in a large area around him and then restores 25 Energy per sec to them for the next 10s.",
+    "upgrades": {
+      "level2": "Increases Energy Regen to 30.",
+      "level3": "Also increases ATK of allies within range by 15% for 5s.",
+      "level4": "Increases Energy Regen to 35."
+    }
+  },
+  {
+    "id": "skill_3",
+    "name": "Lucky Star Alight",
+    "description": "Before falling, becomes immune to the DMG and invincible for 2s. It can only trigger once.",
+    "upgrades": {
+      "level2": "Additionally restores HP equal to 200% ATK.",
+      "level3": "Additionally restores HP equal to 300% ATK.",
+      "level4": "The effect now trigger twice. (Unlocks at Lv.261)"
+    }
+  },
+  {
+    "id": "skill_4",
+    "name": "Endless Fortune",
+    "description": "Caishen is surrounded by 2 Golden Ingots upon entering battle. When a nearby ally's HP drops below 50%, an Ingot is consumed to restore 25% max HP to that ally. Using a Golden Ingot has an 8s CD for each Deity. Caishen can have a maximum of 3 Golden Ingots. Once all Golden Ingots are used, they are automatically replenished to full. This effect has a 20s CD.",
+    "upgrades": {
+      "level2": "Increases healing effect to 27%.",
+      "level3": "Golden Ingots +1 at combat start.",
+      "level4": "Increases healing effect to 30%."
+    }
   }
+],
+"relic": {
+  "name": "Fortune Leverage",
+  "description": "The first time an ally reaches 700 Energy, grants them 300 Energy.",
+  "upgrades": {
+    "level2": "The first time an ally reaches 650 Energy, grants them 350 Energy.",
+    "level3": "This effect can trigger repeatedly with a 15s CD. (Unlock at Relic Lv.20)",
+    "level4": "The first time an ally reaches 600 Energy, grants them 400 Energy. (Unlock at Relic Lv.30)"
+  }
+}
 }
