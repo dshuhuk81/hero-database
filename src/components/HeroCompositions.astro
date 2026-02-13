@@ -166,7 +166,16 @@ function badgeClass(label) {
               })}
             </div>
           </div>
-
+          {c.synergy?.length > 0 && (
+            <div class="synergy-box">
+              <h4>Synergy</h4>
+              <ul>
+                {c.synergy.map(s => (
+                  <li>{s.text}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <!-- Sources (facts-only) -->
           <details class="sources">
             <summary>Show sources (facts)</summary>

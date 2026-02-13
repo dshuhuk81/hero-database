@@ -56,6 +56,129 @@ function keywordTagsForHero(hero) {
   return tags.slice(0, 3);
 }
 
+// Synergy
+
+function buildSynergyMap(team) {
+  const map = new Map();
+  for (const h of team) {
+    map.set(h.id, synergyTagsForHero(h));
+  }
+  return map;
+}
+function detectPairSynergies(team) {
+  const tagMap = buildSynergyMap(team);
+  const results = [];
+
+  for (const a of team) {
+    for (const b of team) {
+      if (a.id === b.id) continue;
+
+      const aTags = tagMap.get(a.id);
+      const bTags = tagMap.get(b.id);
+
+      // ATK Speed → Hit Scaler
+      if (
+        aTags.has("ATK_SPEED_PROVIDER") &&
+        (
+          bTags.has("BASIC_ATTACK_SCALER") ||
+          bTags.has("ON_HIT_SCALER") ||
+          bTags.has("FAST_STACKING_WITH_HITS")
+        )
+      ) {
+        results.push({
+          type: "pair",
+          from: a.name,
+          to: b.name,
+          text: `${a.name} increases Attack Speed, enhancing ${b.name}'s hit-based scaling.`
+        });
+      }
+
+      // Energy → Ult Dependent
+      if (
+        aTags.has("ENERGY_PROVIDER") &&
+        bTags.has("ULT_DEPENDENT")
+      ) {
+        results.push({
+          type: "pair",
+          from: a.name,
+          to: b.name,
+          text: `${a.name} provides Energy support, accelerating ${b.name}'s ultimate usage.`
+        });
+      }
+
+      // DEF Shred → AoE
+      if (
+        aTags.has("DEF_SHRED_OR_AMP") &&
+        bTags.has("AOE_DAMAGE_PROFILE")
+      ) {
+        results.push({
+          type: "pair",
+          from: a.name,
+          to: b.name,
+          text: `${a.name} reduces defenses, amplifying ${b.name}'s AoE damage.`
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+function detectTeamSynergies(team) {
+  const tagMap = buildSynergyMap(team);
+  const tags = new Set();
+
+  for (const h of team) {
+    for (const t of tagMap.get(h.id)) {
+      tags.add(t);
+    }
+  }
+
+  const results = [];
+
+  if (tags.has("ENERGY_PROVIDER") && tags.has("ULT_DEPENDENT")) {
+    results.push({
+      type: "team",
+      text: "Energy support accelerates ultimate-based damage cycles."
+    });
+  }
+
+  if (tags.has("DEF_SHRED_OR_AMP") && tags.has("AOE_DAMAGE_PROFILE")) {
+    results.push({
+      type: "team",
+      text: "Defense reduction enhances team-wide AoE burst."
+    });
+  }
+
+  if (tags.has("ATK_SPEED_PROVIDER") && tags.has("FAST_STACKING_WITH_HITS")) {
+    results.push({
+      type: "team",
+      text: "Attack Speed boosts stacking-based damage scaling."
+    });
+  }
+
+  return results;
+}
+
+function synergyExplanation(team) {
+  const pair = detectPairSynergies(team);
+  const teamLevel = detectTeamSynergies(team);
+
+  // Remove duplicates
+  const uniqueTexts = new Set();
+  const combined = [];
+
+  for (const x of [...pair, ...teamLevel]) {
+    if (!uniqueTexts.has(x.text)) {
+      uniqueTexts.add(x.text);
+      combined.push(x);
+    }
+  }
+
+  return combined.slice(0, 5); // limit output
+}
+
+
 // Team Fingerprint -----
 function teamKeyFromIds(ids) {
   return [...ids].sort().join("|");
@@ -473,6 +596,7 @@ async function main() {
 
     const mkComp = (cand, label) => {
       const team = cand.teamIds.map(id => heroById[id]);
+      const synergy = synergyExplanation(team); // Synergy
       const formation = buildFormation(team);
       const facts = buildFacts(team);
       const fb = factionBonus(team);
@@ -498,6 +622,7 @@ async function main() {
         rankingScore: Math.round(cand.score * 10) / 10,
         summary,
         facts,
+        synergy
       };
     };
 

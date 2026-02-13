@@ -28,52 +28,57 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Lunar Illumination",
+      "description": "Launches a Moonlight Shockwave in a straight line, dealing DMG equal to 260% of ATK to enemies along the path.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
-      }
+        "level2": "Reduces the Armor of hit enemies by 20% for 5s.",
+        "level3": "Increases DMG dealt to 285% of ATK.",
+        "level4": "Reduces the Armor of hit enemies by 20% for 10s."
+      },
+      "image": "/skills/diana_skill_1.webp"
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Waxing Blessing",
+      "description": "Increases ATK SPD by 40% and Move SPD by 20% for all allies for 7s, and grants 15 Energy per second for the duration. Casts immediately at combat start.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
+        "level2": "Increases ATK SPD to 50%.",
+        "level3": "Increases Energy gained per second to 20.",
+        "level4": "Extends the duration to 10s."
+      },
+      "image": "/skills/diana_skill_2.webp"
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Crescent’s Mark",
+      "description": "Permanently marks the enemy with the highest Armor, reducing their Armor by 20%.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
+        "level2": "Can now mark 2 enemies.",
+        "level3": "Marked enemies also have their CRIT RES reduced by 10%.",
+        "level4": "Marked enemies now have their Armor reduced by 25%."
+      },
+      "image": "/skills/diana_skill_3.webp"
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Moonlit Ambush",
+      "description": "Diana launches 3 quick attacks. The first 2 attacks deal DMG equal to 50% of ATK, and the 3rd attack deals DMG equal to 150% of ATK.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
+        "level2": "Increases the last hit’s DMG to 170% of ATK.",
+        "level3": "The final hit is guaranteed to be a CRIT Hit.",
+        "level4": "Increases the last hit’s DMG to 200% of ATK."
+      },
+      "image": "/skills/diana_skill_4.webp"
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Selene’s Boon",
+    "description": "Blesses the ally with the highest ATK with moonlight. When the ally deals DMG, they deal extra DMG equal to 100% of Diana’s ATK to the target. Triggers once per second.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    }
+      "level2": "The first time Waxing Blessing is cast in battle, ATK SPD and Move SPD bonuses are doubled.",
+      "level3": "When either Diana or the moonlight-blessed ally casts an Ultimate, the other restores 100 Energy.",
+      "level4": "Extra DMG dealt is increased to 150% of Diana’s ATK."
+    },
+    "image": "/skills/diana_relic.webp"
   }
 }

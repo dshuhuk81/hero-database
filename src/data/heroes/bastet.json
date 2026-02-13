@@ -28,52 +28,57 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Nile Dance",
+      "description": "Bastet gracefully leaps toward the position of the enemy with the highest ATK, dealing DMG equal to 160% of ATK to enemies around her each time she lands.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
-      }
+        "level2": "Increases DMG per hit to 180% of ATK.",
+        "level3": "Increases DMG per instance to 200% of ATK.",
+        "level4": "Removes the cooldown of Feline Agility during the skill."
+      },
+      "image": "/skills/bastet_skill_1.webp"
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Bastet’s Spin",
+      "description": "Bastet spins her body and strikes nearby enemies 3 times, dealing DMG equal to 100% of ATK per strike and reducing their Hit Rate by 15% for 5s.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
+        "level2": "Increases DMG per hit to 110% of ATK.",
+        "level3": "Reduces the Hit Rate of hit enemies by 20%.",
+        "level4": "Increases DMG per hit to 120% of ATK."
+      },
+      "image": "/skills/bastet_skill_2.webp"
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Furball",
+      "description": "Creates orbs that orbit Bastet for 15s, dealing DMG equal to 42% of ATK per second to nearby enemies.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
+        "level2": "Increases DMG dealt to 50% of ATK.",
+        "level3": "Duration extends to 30s.",
+        "level4": "Increases DMG dealt to 60% of ATK."
+      },
+      "image": "/skills/bastet_skill_3.webp"
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Feline Agility",
+      "description": "When Bastet takes a single hit dealing DMG exceeding 10% of her max HP, she becomes immune to the DMG and gains 30% Dodge Rate for 6s. Can trigger once every 15s.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
+        "level2": "Dodge bonus lasts for 8s.",
+        "level3": "Gains a 50% Dodge Rate.",
+        "level4": "Dodge bonus lasts for 10s."
+      },
+      "image": "/skills/bastet_skill_4.webp"
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Feline Celerity",
+    "description": "Gains 25% Dodge Rate when HP drops below 50%.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    }
+      "level2": "When dodging a hit, deals 100% ATK as DMG to the attacker.",
+      "level3": "Gains 35% Dodge Rate when HP drops below 50%.",
+      "level4": "When dodging a hit, deals 200% ATK as DMG to the attacker."
+    },
+    "image": "/skills/bastet_relic.webp"
   }
 }

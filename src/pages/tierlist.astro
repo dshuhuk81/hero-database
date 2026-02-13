@@ -86,6 +86,8 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                         <a href={`/heroes/${hero.id}`} class="hero-link">
                           <img src={hero.image} alt={hero.name} class="hero-avatar" />
                           <span class="hero-name">{hero.name}</span>
+                          <img class="factions-icon" src={`/icons/classes/${hero.class.toLowerCase()}.webp`} />
+                          <img class="factions-icon" src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
                         </a>
                       </td>
                       <td class="rating-cell col-rating">
@@ -132,6 +134,10 @@ const sortedHeroes = [...heroes].sort((a, b) =>
     </div>
 
     <style>
+      .factions-icon{
+        height: 16px;
+        width: 16px;
+      }
       html, body {
         margin: 0;
         padding: 0;
