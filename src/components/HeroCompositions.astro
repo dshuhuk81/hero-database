@@ -50,9 +50,16 @@ function badgeClass(label) {
     <div class="comp-list">
       {comps.map((c, idx) => (
         <article class="comp">
-          <div class="header">
-            <strong>Team #{idx + 1}</strong>
-            <small>Ranking (internal): {c.rankingScore}</small>
+                  <div class="header">
+            <strong>
+              {c.label === "meta" && "Meta"}
+              {c.label === "bonus35" && "35% Faction"}
+              {c.label === "mixed" && "Mixed"}
+              {c.label === "bestBonus" && "Best Bonus"}
+              {!c.label && `Team #${idx + 1}`}
+            </strong>
+
+            <small>Score: {Math.round(c.rankingScore)}</small>
           </div>
 
           <div class="bonus">
@@ -169,14 +176,47 @@ function badgeClass(label) {
               ))}
             </ul>
           </details>
+          
         </article>
+        
       ))}
     </div>
   )}
 </section>
 
 <style>
-  .comp-card { padding: 1rem; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; }
+  .comp-type {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+.comp-meta {
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  color: #1a1a1a;
+}
+
+.comp-bonus35 {
+  background: linear-gradient(135deg, #818cf8, #6366f1);
+  color: white;
+}
+.comp {
+  position: relative;
+}
+
+.comp-mixed {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+  .comp-card { padding: 1rem;}
   .top { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; }
   .comp-list { display: grid; gap: 1rem; margin-top: .75rem; }
   .comp { padding: 1rem; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(0,0,0,.18); }
@@ -201,9 +241,9 @@ function badgeClass(label) {
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 2rem;
-    background: rgba(0, 0, 0, 0.3);
+ 
     border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+
   }
 
   .formation-row {

@@ -7,7 +7,7 @@ interface Props {
     delusionsDen?: string;
     torrentRift?: string;
     pvp?: string;
-    odyssey?: string;
+    pve?: string;
   };
 }
 
@@ -15,11 +15,12 @@ const { ratings } = Astro.props;
 
 const ratingCategories = [
   { key: 'overall', label: 'Overall', icon: '⭐' },
+  { key: 'pve', label: 'PvE', icon: '⚡' },
+  { key: 'pvp', label: 'PvP', icon: '⚡'},
   { key: 'grimSurge', label: 'Grim Surge', icon: '⚔️' },
   { key: 'delusionsDen', label: 'Delusions Den', icon: '🏛️' },
   { key: 'torrentRift', label: 'Torrent Rift', icon: '🌊' },
-  { key: 'pvp', label: 'PvP', icon: '⚡' },
-  { key: 'odyssey', label: 'Odyssey', icon: '⚡'},
+
 ];
 ---
           <!--<div class="rating-icon">{category.icon}</div>-->

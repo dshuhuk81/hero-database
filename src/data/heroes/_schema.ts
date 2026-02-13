@@ -17,6 +17,7 @@ export interface Hero {
     delusionsDen?: string;
     torrentRift?: string;
     pvp?: string;
+    pve?: string;
   };
 
   stats: {

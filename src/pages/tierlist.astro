@@ -42,6 +42,12 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                     <th class="sortable col-rating" data-sort="overall">
                       Overall <span class="sort-indicator"></span>
                     </th>
+                    <th class="sortable col-rating" data-sort="pve">
+                      PvE <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable col-rating" data-sort="pvp">
+                      PvP <span class="sort-indicator"></span>
+                    </th>
                     <th class="sortable col-rating" data-sort="grimSurge">
                       Grim Surge <span class="sort-indicator"></span>
                     </th>
@@ -51,9 +57,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                     <th class="sortable col-rating" data-sort="torrentRift">
                       Torrent Rift <span class="sort-indicator"></span>
                     </th>
-                    <th class="sortable col-rating" data-sort="pvp">
-                      PvP <span class="sort-indicator"></span>
-                    </th>
+
                   </tr>
                 </thead>
               </table>
@@ -76,6 +80,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                       data-delusionsden={hero.ratings?.delusionsDen || 'N/A'}
                       data-torrentrift={hero.ratings?.torrentRift || 'N/A'}
                       data-pvp={hero.ratings?.pvp || 'N/A'}
+                       data-pve={hero.ratings?.pve || 'N/A'}
                     >
                       <td class="hero-cell col-hero">
                         <a href={`/heroes/${hero.id}`} class="hero-link">
@@ -86,6 +91,16 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                       <td class="rating-cell col-rating">
                         <span class={`rating-badge rating-${hero.ratings?.overall?.toLowerCase() || 'na'}`}>
                           {hero.ratings?.overall || 'N/A'}
+                        </span>
+                      </td>
+                      <td class="rating-cell col-rating">
+                        <span class={`rating-badge rating-${hero.ratings?.pve?.toLowerCase() || 'na'}`}>
+                          {hero.ratings?.pve || 'N/A'}
+                        </span>
+                      </td>
+                      <td class="rating-cell col-rating">
+                        <span class={`rating-badge rating-${hero.ratings?.pvp?.toLowerCase() || 'na'}`}>
+                          {hero.ratings?.pvp || 'N/A'}
                         </span>
                       </td>
                       <td class="rating-cell col-rating">
@@ -101,11 +116,6 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                       <td class="rating-cell col-rating">
                         <span class={`rating-badge rating-${hero.ratings?.torrentRift?.toLowerCase() || 'na'}`}>
                           {hero.ratings?.torrentRift || 'N/A'}
-                        </span>
-                      </td>
-                      <td class="rating-cell col-rating">
-                        <span class={`rating-badge rating-${hero.ratings?.pvp?.toLowerCase() || 'na'}`}>
-                          {hero.ratings?.pvp || 'N/A'}
                         </span>
                       </td>
                     </tr>
@@ -313,8 +323,8 @@ const sortedHeroes = [...heroes].sort((a, b) =>
       }
 
       /* Spaltenbreiten — in beiden Tabellen identisch */
-      .col-hero   { width: 260px; }
-      .col-rating { width: 120px; }
+      .col-hero   { width: 200px; }
+      .col-rating { width: 120px; text-align-last: center;}
 
       /* HEADER TH */
       .tier-table--header thead th {

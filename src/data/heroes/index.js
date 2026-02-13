@@ -42,6 +42,7 @@ function adaptHero(raw) {
       delusionsDen: raw.ratings?.delusionsDen ?? null,
       torrentRift: raw.ratings?.torrentRift ?? null,
       pvp: raw.ratings?.pvp ?? null,
+      pve: raw.ratings?.pve ?? null,
     },
 
     // Backward-Compat (Grid / Cards)
