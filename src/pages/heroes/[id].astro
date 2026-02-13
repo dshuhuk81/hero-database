@@ -3,7 +3,7 @@ import { heroes, getHeroById, statMaxima } from "../../data/heroes";
 import SkillCard from "../../components/hero/SkillCard.astro";
 import Footer from "../../components/Footer.astro";  
 import RatingCard from "../../components/hero/RatingCard.astro";
-import TeamComps from '../../components/TeamComps.astro';
+import HeroCompositions from '../../components/HeroCompositions.astro';
 
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -64,8 +64,6 @@ const STAT_LABELS = {
           <button class="tab" data-tab="synergies">
              Compositions
           </button>
-   
-
         </nav>
       </div>
     </div>
@@ -247,14 +245,7 @@ const STAT_LABELS = {
 
       <!-- TAB: SYNERGIEN -->
       <div class="tab-content" data-content="synergies">
-       
-        <!--{hasTeamComps && (
-          <TeamComps 
-          currentHeroId={currentHero.id}
-          pveTeam={currentHero.teamComps.pve}
-          pvpTeam={currentHero.teamComps.pvp}
-          />
-        )}-->
+       <HeroCompositions heroId={id} />
       </div>
   </main>
   <Footer />
