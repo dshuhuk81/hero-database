@@ -7,18 +7,16 @@ interface Feature {
 }
 
 const features: Feature[] = [
-  /*{ 
+  { 
     icon: "/icons/footer/protip85.jpg", 
     label: "Prototip85 Youtube",
     url: "https://www.youtube.com/@prototip85"  // 👈 Dein Discord-Link},
-    }/*
+    },
     { 
-    icon: "/icons/footer/feature2.webp", 
+    icon: "/icons/footer/channels4_profile.jpg", 
     label: "GPH Youtube",
     url: "https://www.youtube.com/@gameplayhorizon"  // 👈 Dein YouTube-Link    
-    // 
     }
-  /* { icon: "/icons/footer/feature3.webp", label: "Feature Three" },*/
 ];
 ---
 <head>
@@ -28,8 +26,8 @@ const features: Feature[] = [
   <div class="footer-content">
     <!-- CLAIM -->
     <div class="footer-titles">
-        <h2 class="footer-claim">Motto Immortal<br> Ultimate Hero Database</h2>
-        <span>made by Frieren (discord: ds_frieren) & xviilux<!--, supported by @gameplayhorizon -->
+        <h2 class="footer-claim">Motto Immortal<br>Hero Database by Frieren</h2>
+        <span>Special thanks to xviiluxCheck and the Motto Immortals Community:<!--, supported by @gameplayhorizon -->
 </span>
     </div>
     <!-- FEATURES -->
@@ -37,7 +35,7 @@ const features: Feature[] = [
       {features.map(feature => (
         <a href={feature.url} target="_blank" rel="noopener noreferrer" class="feature-item">
           <div class="feature-icon">
-            <img src={feature.icon} alt={feature.label} />
+            <img style="border-radius: 999px" src={feature.icon} alt={feature.label} />
           </div>
           <span class="feature-label">{feature.label}</span>
         </a>
