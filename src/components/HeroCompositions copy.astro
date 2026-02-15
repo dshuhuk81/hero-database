@@ -1,0 +1,478 @@
+---
+import teamCompsByHeroId from "../data/derived/teamCompsByHeroId.json";
+import { getHeroById } from "../data/heroes";
+
+const { heroId, badgeStyle = "neutral" } = Astro.props; // "neutral" | "colored"
+const mode = Astro.props.mode ?? "general";
+const comps = teamCompsByHeroId?.[heroId]?.[mode] ?? [];
+
+function hero(hid) { return getHeroById(hid); }
+function heroName(hid) { return hero(hid)?.name ?? hid; }
+function heroImg(hid) {
+  const img = hero(hid)?.image;
+  if (typeof img !== "string" || img.length === 0) return "";
+  // Ensure absolute path from site root
+  return img.startsWith("/") ? img : `/${img}`;
+}
+
+function heroTags(comp, hid) {
+  // bevorzugt summary (neu)
+  const fromSummary = comp?.summary?.heroes?.find(x => x.id === hid)?.tags;
+  return Array.isArray(fromSummary) ? fromSummary : [];
+}
+
+function badgeClass(label) {
+  if (badgeStyle !== "colored") return "badge";
+
+  // farbige Kategorien (nur UI, keine Meta)
+  const map = {
+    "Heal": "badge heal",
+    "Shield": "badge shield",
+    "Cleanse": "badge cleanse",
+    "Control": "badge control",
+    "AoE": "badge aoe",
+    "Energy": "badge energy",
+    "Cooldown": "badge cooldown",
+    "Backline": "badge backline",
+    "Def Shred": "badge shred",
+  };
+  return map[label] ?? "badge";
+}
+---
+
+<section class="comp-card">
+  <div class="top">
+    <h3>Compositions</h3>
+  </div>
+
+  {comps.length === 0 ? (
+    <p>No compositions generated yet. Run <code>node scripts/generator.js</code>.</p>
+  ) : (
+    <div class="comp-list">
+      {comps.map((c, idx) => (
+        <article class="comp">
+                  <div class="header">
+            <strong>
+              {c.label === "meta" && "Meta"}
+              {c.label === "bonus35" && "35% Faction"}
+              {c.label === "mixed" && "Mixed"}
+              {c.label === "bestBonus" && "Best Bonus"}
+              {!c.label && `Team #${idx + 1}`}
+            </strong>
+
+            <small>Score: {Math.round(c.rankingScore)}</small>
+          </div>
+
+          <div class="bonus">
+            {c.summary?.factionBonusPct != null ? (
+              <span class="pill">Faction Bonus: {c.summary.factionBonusPct}% ATK & HP</span>
+            ) : (
+              <span class="pill">Faction Bonus: (see sources)</span>
+            )}
+          </div>
+
+          <!-- Formation Grid (2 oben / 3 unten) im TeamComps-Stil -->
+          <div class="formation-grid">
+            <!-- Front Row (2) -->
+            <div class="formation-row front-row">
+              {c.formation.front.map((hid) => {
+                const h = hero(hid);
+                if (!h) return <div class="hero-card-slot empty"></div>;
+                const isCurrentHero = h.id === heroId;
+                const tags = heroTags(c, hid).slice(0, 3);
+
+                return (
+                  <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
+                    <div class="hero-card-inner">
+                      <div class="hero-image-wrapper">
+                        <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
+                        {isCurrentHero && (
+                          <div class="current-hero-badge" title="Current hero">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                              <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+
+                      <div class="hero-info">
+                        <h4 class="hero-name">{heroName(hid)}</h4>
+                        <div class="hero-meta">
+                          <img
+                            src={`/icons/factions/${h.faction.toLowerCase()}.webp`}
+                            alt={h.faction}
+                            class="faction-icon-small"
+                            title={h.faction}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+
+                        {tags.length > 0 && (
+                          <div class="tag-row">
+                            {tags.map((t) => <span class={badgeClass(t)}>{t}</span>)}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+
+            <!-- Back Row (3) -->
+            <div class="formation-row back-row">
+              {c.formation.back.map((hid) => {
+                const h = hero(hid);
+                if (!h) return <div class="hero-card-slot empty"></div>;
+                const isCurrentHero = h.id === heroId;
+                const tags = heroTags(c, hid).slice(0, 3);
+
+                return (
+                  <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
+                    <div class="hero-card-inner">
+                      <div class="hero-image-wrapper">
+                        <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
+                        {isCurrentHero && (
+                          <div class="current-hero-badge" title="Current hero">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                              <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+
+                      <div class="hero-info">
+                        <h4 class="hero-name">{heroName(hid)}</h4>
+                        <div class="hero-meta">
+                          <img
+                            src={`/icons/factions/${h.faction.toLowerCase()}.webp`}
+                            alt={h.faction}
+                            class="faction-icon-small"
+                            title={h.faction}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+
+                        {tags.length > 0 && (
+                          <div class="tag-row">
+                            {tags.map((t) => <span class={badgeClass(t)}>{t}</span>)}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+          {c.synergy?.length > 0 && (
+            <div class="synergy-box">
+              <h4>Synergy</h4>
+              <ul>
+                {c.synergy.map(s => (
+                  <li>{s.text}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <!-- Sources (facts-only) -->
+          <details class="sources">
+            <summary>Show sources (facts)</summary>
+            <ul class="facts">
+              {c.facts.map((f) => (
+                <li><strong>{f.title}:</strong> {f.value}</li>
+              ))}
+            </ul>
+          </details>
+          
+        </article>
+        
+      ))}
+    </div>
+  )}
+</section>
+
+<style>
+  .comp-type {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+.comp-meta {
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  color: #1a1a1a;
+}
+
+.comp-bonus35 {
+  background: linear-gradient(135deg, #818cf8, #6366f1);
+  color: white;
+}
+.comp {
+  position: relative;
+}
+
+.comp-mixed {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+  .comp-card { padding: 1rem;}
+  .top { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; }
+  .comp-list { display: grid; gap: 1rem; margin-top: .75rem; }
+  .comp { padding: 1rem; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(0,0,0,.18); }
+  .header { display:flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+
+  .bonus { margin-top: .5rem; }
+  .pill {
+    display:inline-block;
+    padding:.35rem .6rem;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    font-size:.85rem;
+    opacity:.95;
+  }
+
+  /* === Formation Grid (aus TeamComps abgeleitet) === */
+  .formation-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 2rem;
+ 
+    border-radius: 1rem;
+
+  }
+
+  .formation-row {
+    display: grid;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  .formation-row.back-row {
+    grid-template-columns: repeat(3, minmax(140px, 200px));
+  }
+
+  .formation-row.front-row {
+    grid-template-columns: repeat(2, minmax(140px, 200px));
+  }
+
+  /* Hero Card (aus TeamComps abgeleitet) */
+  .hero-card,
+  .hero-card-slot {
+    position: relative;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+    border-radius: 0.75rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .hero-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(139, 92, 246, 0.3);
+  }
+
+  .hero-card-slot.empty {
+    background: rgba(15, 23, 42, 0.4);
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    min-height: 240px;
+    cursor: default;
+  }
+
+  /* Current Hero Highlight */
+  .hero-card.current-hero {
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1));
+    box-shadow:
+      0 0 0 1px rgba(245, 158, 11, 0.5),
+      0 0 20px rgba(245, 158, 11, 0.3);
+  }
+
+  .hero-card.current-hero:hover {
+    border-color: #fbbf24;
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(245, 158, 11, 0.5);
+  }
+
+  .hero-card-inner {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hero-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-card:hover .hero-image {
+    transform: scale(1.05);
+  }
+
+  .current-hero-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+    50% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.6); }
+  }
+
+  .hero-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .hero-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .faction-icon-small {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Tags / Badges Row (nutzt vorhandene badgeClass) */
+  .tag-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:.4rem;
+    justify-content:center;
+    margin-top: .35rem;
+  }
+
+  /* Neutral badges */
+  .badge {
+    padding: .18rem .45rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    font-size: .75rem;
+    opacity: .95;
+  }
+
+  /* Colored badges */
+  .badge.heal { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.35); }
+  .badge.shield { background: rgba(59,130,246,.18); border-color: rgba(59,130,246,.35); }
+  .badge.cleanse { background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.32); }
+  .badge.control { background: rgba(168,85,247,.18); border-color: rgba(168,85,247,.35); }
+  .badge.aoe { background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.35); }
+  .badge.energy { background: rgba(250,204,21,.18); border-color: rgba(250,204,21,.35); }
+  .badge.cooldown { background: rgba(99,102,241,.18); border-color: rgba(99,102,241,.35); }
+  .badge.backline { background: rgba(244,63,94,.18); border-color: rgba(244,63,94,.35); }
+  .badge.shred { background: rgba(148,163,184,.18); border-color: rgba(148,163,184,.35); }
+
+  .sources { margin-top: .85rem; }
+  .facts { margin-top: .5rem; padding-left: 1.25rem; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .formation-row.back-row,
+    .formation-row.front-row {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .formation-grid {
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+
+    .formation-row {
+      gap: 1rem;
+    }
+
+    .formation-row.back-row,
+    .formation-row.front-row {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .hero-card-inner {
+      padding: 0.75rem;
+    }
+
+    .hero-name {
+      font-size: 0.875rem;
+    }
+
+    .faction-icon-small {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .formation-row.back-row,
+    .formation-row.front-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-name {
+      font-size: 0.8125rem;
+    }
+  }
+</style>

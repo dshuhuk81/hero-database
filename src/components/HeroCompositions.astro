@@ -3,19 +3,18 @@ import teamCompsByHeroId from "../data/derived/teamCompsByHeroId.json";
 import { getHeroById } from "../data/heroes";
 
 const { heroId, badgeStyle = "neutral" } = Astro.props; // "neutral" | "colored"
-const comps = teamCompsByHeroId?.[heroId] ?? [];
+const mode = Astro.props.mode ?? "general";
+const comps = teamCompsByHeroId?.[heroId]?.[mode] ?? [];
 
 function hero(hid) { return getHeroById(hid); }
 function heroName(hid) { return hero(hid)?.name ?? hid; }
 function heroImg(hid) {
   const img = hero(hid)?.image;
   if (typeof img !== "string" || img.length === 0) return "";
-  // Ensure absolute path from site root
   return img.startsWith("/") ? img : `/${img}`;
 }
 
 function heroTags(comp, hid) {
-  // bevorzugt summary (neu)
   const fromSummary = comp?.summary?.heroes?.find(x => x.id === hid)?.tags;
   return Array.isArray(fromSummary) ? fromSummary : [];
 }
@@ -23,9 +22,15 @@ function heroTags(comp, hid) {
 function badgeClass(label) {
   if (badgeStyle !== "colored") return "badge";
 
-  // farbige Kategorien (nur UI, keine Meta)
   const map = {
+    // NEW heal split
+    "Ally Heal": "badge heal",
+    "Self Heal": "badge heal",
+    "Anti-Heal": "badge antiheal",
+
+    // Backward compatible (falls alte JSONs noch "Heal" haben)
     "Heal": "badge heal",
+
     "Shield": "badge shield",
     "Cleanse": "badge cleanse",
     "Control": "badge control",
@@ -35,6 +40,7 @@ function badgeClass(label) {
     "Backline": "badge backline",
     "Def Shred": "badge shred",
   };
+
   return map[label] ?? "badge";
 }
 ---
@@ -50,7 +56,7 @@ function badgeClass(label) {
     <div class="comp-list">
       {comps.map((c, idx) => (
         <article class="comp">
-                  <div class="header">
+          <div class="header">
             <strong>
               {c.label === "meta" && "Meta"}
               {c.label === "bonus35" && "35% Faction"}
@@ -58,7 +64,6 @@ function badgeClass(label) {
               {c.label === "bestBonus" && "Best Bonus"}
               {!c.label && `Team #${idx + 1}`}
             </strong>
-
             <small>Score: {Math.round(c.rankingScore)}</small>
           </div>
 
@@ -70,9 +75,7 @@ function badgeClass(label) {
             )}
           </div>
 
-          <!-- Formation Grid (2 oben / 3 unten) im TeamComps-Stil -->
           <div class="formation-grid">
-            <!-- Front Row (2) -->
             <div class="formation-row front-row">
               {c.formation.front.map((hid) => {
                 const h = hero(hid);
@@ -98,7 +101,7 @@ function badgeClass(label) {
                         <h4 class="hero-name">{heroName(hid)}</h4>
                         <div class="hero-meta">
                           <img
-                            src={`/icons/factions/${h.faction.toLowerCase()}.webp`}
+                            src={`/icons/factions/${String(h.faction ?? "").toLowerCase()}.webp`}
                             alt={h.faction}
                             class="faction-icon-small"
                             title={h.faction}
@@ -119,7 +122,6 @@ function badgeClass(label) {
               })}
             </div>
 
-            <!-- Back Row (3) -->
             <div class="formation-row back-row">
               {c.formation.back.map((hid) => {
                 const h = hero(hid);
@@ -145,7 +147,7 @@ function badgeClass(label) {
                         <h4 class="hero-name">{heroName(hid)}</h4>
                         <div class="hero-meta">
                           <img
-                            src={`/icons/factions/${h.faction.toLowerCase()}.webp`}
+                            src={`/icons/factions/${String(h.faction ?? "").toLowerCase()}.webp`}
                             alt={h.faction}
                             class="faction-icon-small"
                             title={h.faction}
@@ -166,6 +168,7 @@ function badgeClass(label) {
               })}
             </div>
           </div>
+
           {c.synergy?.length > 0 && (
             <div class="synergy-box">
               <h4>Synergy</h4>
@@ -176,7 +179,7 @@ function badgeClass(label) {
               </ul>
             </div>
           )}
-          <!-- Sources (facts-only) -->
+
           <details class="sources">
             <summary>Show sources (facts)</summary>
             <ul class="facts">
@@ -185,15 +188,34 @@ function badgeClass(label) {
               ))}
             </ul>
           </details>
-          
         </article>
-        
       ))}
     </div>
   )}
 </section>
 
 <style>
+.synergy-box{
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.22);
+}
+.synergy-box h4{
+  margin: 0 0 .5rem 0;
+  font-size: .95rem;
+  opacity: .95;
+}
+.synergy-box ul{
+  margin: 0;
+  padding-left: 1.1rem;
+  opacity: .9;
+}
+.synergy-box li{
+  margin: .25rem 0;
+}
+  .badge.antiheal { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.35); }
   .comp-type {
   position: absolute;
   top: 12px;

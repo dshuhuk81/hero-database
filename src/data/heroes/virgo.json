@@ -28,52 +28,30 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Scientific Field",
+      "description": "Virgo stuns an enemy for 4s and deals DMG equal to 450% of ATK.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
-      }
+        "level2": "DMG increases to 500% ATK.",
+        "level3": "DMG increases to 550% ATK."      }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Golden Triangle",
+      "description": "Deals DMG equal to 210% of ATK to an enemy and those around it.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "DMG increases to 230% ATK.",
+        "level3": "Reduces healing received by hit enemies by 50% for 5s.",
+        "level4": "DMG increases to 260% ATK."
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Logos Support",
+      "description": "Virgo grants a shield equal to 200% of her ATK to the frontmost ally for 5s. While active, the shield deals DMG equal to 60% of her ATK per sec to surrounding enemies.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Shield Strength increases to 220%.",
+        "level3": "Increases the DMG dealt per sec by 75% when the shield is active."
       }
     }
-  ],
-  "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
-    "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    }
-  }
+  ]
 }
