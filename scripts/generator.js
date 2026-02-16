@@ -10,6 +10,10 @@ const CFG = {
   attemptsPerHero: 800,
   keepTop: 3, // exactly 3 comps per mode (meta / bonus35 OR bestBonus / mixed)
   candidatePoolSize: 30,
+
+  // ✅ NEW
+  synergyStrict: true,   // only emit synergy statements if evidence for BOTH sides exists
+  synergyDebug: true,    // export debug bundle per comp for UI inspection
 };
 
 // -----------------------------
@@ -75,7 +79,7 @@ function keywordTagsForHero(hero) {
   // Generic HP restore (can be self-heal; we only label as Self Heal if no Ally Heal)
   const genericHpRestore = /\b(restores?\s+hp|recovers?\s+hp)\b/.test(text);
 
-  // Anti-heal patterns (Nyx case etc.)
+  // Anti-heal patterns
   const antiHeal =
     /\b(cannot receive (?:shields? or )?healing|cannot be healed|prevents? healing|healing reduction|reduce(s|d)? healing|healing is reduced|stop(s|ped)? healing|ban(s|ned)? healing)\b/.test(text);
 
@@ -190,161 +194,412 @@ function buildFormation(team) {
   const back = team.filter(h => !front.includes(h.id)).map(h => h.id);
   return { front, back };
 }
+// -----------------------------
+// Synergy tags/score + explanation (STRICT + EVIDENCE + DEBUG EXPORT)
+// -----------------------------
+const SYNERGY_TAGS = {
+  ATK_SPEED_TEAM_PROVIDER: "ATK_SPEED_TEAM_PROVIDER",
+  ATK_SPEED_SELF_ONLY: "ATK_SPEED_SELF_ONLY",
 
-// -----------------------------
-// Synergy tags/score + explanation
-// -----------------------------
-function synergyTagsForHero(hero) {
-  const t = fullSkillText(hero).toLowerCase();
+  ENERGY_TEAM_PROVIDER: "ENERGY_TEAM_PROVIDER",
+  CDR_TEAM_PROVIDER: "CDR_TEAM_PROVIDER",
+
+  DEF_SHRED_OR_AMP: "DEF_SHRED_OR_AMP",
+
+  BASIC_ATTACK_SCALER: "BASIC_ATTACK_SCALER",
+  ON_HIT_SCALER: "ON_HIT_SCALER",
+  FAST_STACKING_WITH_HITS: "FAST_STACKING_WITH_HITS",
+
+  ULT_DEPENDENT: "ULT_DEPENDENT",
+  AOE_DAMAGE_PROFILE: "AOE_DAMAGE_PROFILE",
+};
+
+const ALL_SYNERGY_TAG_LIST = Object.values(SYNERGY_TAGS);
+
+// STRICT MODE: nur Synergy-Aussagen, wenn BEIDE Seiten Evidence haben
+const SYNERGY_STRICT_MODE = Boolean(CFG.synergyStrict);
+
+// Optional: Debug-Export in JSON (für UI)
+const SYNERGY_DEBUG_EXPORT = Boolean(CFG.synergyDebug);
+
+// --- Snippet helper: kurzer Auszug um das Match herum ---
+function snippetAround(text, matchIndex, maxLen = 180) {
+  const raw = String(text || "");
+  const idx = Math.max(0, Number(matchIndex || 0));
+  const start = Math.max(0, idx - Math.floor(maxLen / 2));
+  const end = Math.min(raw.length, start + maxLen);
+  const s = raw.slice(start, end).replace(/\s+/g, " ").trim();
+  return (start > 0 ? "…" : "") + s + (end < raw.length ? "…" : "");
+}
+
+// Evidence patterns pro Tag (dediziert, kein random snippet)
+const TAG_EVIDENCE_PATTERNS = {
+  [SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER]: [
+    // allies + atk speed/haste
+    /\b(all allies|allies|ally)\b[\s\S]{0,120}\b(atk spd|attack speed|haste)\b/i,
+    /\b(atk spd|attack speed|haste)\b[\s\S]{0,120}\b(all allies|allies|ally)\b/i,
+  ],
+
+  [SYNERGY_TAGS.ATK_SPEED_SELF_ONLY]: [
+  // self-ish phrases; und NICHT "all allies/allies/ally" im näheren Umfeld
+  /\b(gains?|gain|increases?|increased|grant\w*|bonus)\b[\s\S]{0,40}\b(atk\s*spd|attack\s*speed|haste)\b(?![\s\S]{0,80}\b(all allies|allies|ally)\b)/i,
+  /\b(my|her|his|self)\b[\s\S]{0,20}\b(atk\s*spd|attack\s*speed|haste)\b/i,
+],
+
+  [SYNERGY_TAGS.ENERGY_TEAM_PROVIDER]: [
+    /\b(all allies|allies|ally)\b[\s\S]{0,160}\b(energy regen|energy regeneration|restore\w* energy|gain\w* energy)\b/i,
+    /\b(energy regen|energy regeneration|restore\w* energy|gain\w* energy)\b[\s\S]{0,160}\b(all allies|allies|ally)\b/i,
+  ],
+
+  [SYNERGY_TAGS.DEF_SHRED_OR_AMP]: [
+  // enemy defense reduction only
+  /\b(reduce[sd]?|lower[sd]?|decrease[sd]?)\b[\s\S]{0,40}\b(enemy|enemies|target|their)\b[\s\S]{0,40}\b(defense|armou?r|magic\s*res|physical\s*res|resistance)\b/i,
+  /\b(defense\s*down|armou?r\s*down)\b/i,
+  /\b(armou?r\s*pen)\b/i,
+  /\b(enemy|enemies|target)\b[\s\S]{0,60}\b(takes?)\b[\s\S]{0,20}\b(increased)\b[\s\S]{0,20}\b(damage|dmg)\b/i,
+  /\b(m-?res|p-?res)\b/i
+  ],
+
+  [SYNERGY_TAGS.BASIC_ATTACK_SCALER]: [
+    // FIX: keine "unterminated group" mehr, saubere Gruppe + word boundaries
+    /\b(?:after every|every)\s+\d+\s+normal attacks?\b/i,
+  ],
+
+  [SYNERGY_TAGS.CDR_TEAM_PROVIDER]: [
+    // reduce cooldown phrasing
+      /\b(all allies|allies|ally)\b[\s\S]{0,140}\b(reduc\w*)\b[\s\S]{0,40}\b(cooldown|skill\s*cd|cd)\b/i,
+
+      // "Skill CD -30%" / "Cooldown -30%" style
+      /\b(all allies|allies|ally)\b[\s\S]{0,140}\b(skill\s*cd|cooldown|cd)\b\s*[-–—]\s*\d{1,3}%/i,
+      /\b(all allies|allies|ally)\b[\s\S]{0,140}\b(skill\s*cd|cooldown|cd)\b\s*-\s*\d{1,3}%/i,
+  ],
+
+  [SYNERGY_TAGS.ON_HIT_SCALER]: [
+    /\b(on hit|each hit|per hit|per attack)\b/i,
+  ],
+
+  [SYNERGY_TAGS.FAST_STACKING_WITH_HITS]: [
+    /\b(stacks?|stacking)\b[\s\S]{0,120}\b(on hit|each hit|per hit|per attack|normal attacks?|basic attacks?)\b/i,
+  ],
+
+  [SYNERGY_TAGS.ULT_DEPENDENT]: [
+    /\b(ultimate|ultimates?|ult)\b[\s\S]{0,120}\b(when|after|upon|per)\b/i,
+  ],
+
+  [SYNERGY_TAGS.AOE_DAMAGE_PROFILE]: [
+    /\b(aoe|all enemies|nearby enemies|in a large area)\b[\s\S]{0,120}\b(dmg|damage)\b/i,
+  ],
+};
+
+// Liefert Evidence-Objekt oder null
+function evidenceForTag(hero, tag) {
+  const raw = fullSkillText(hero) || "";
+  const patterns = TAG_EVIDENCE_PATTERNS[tag] || [];
+
+  for (const re of patterns) {
+    const m = raw.match(re);
+    if (m && m.index != null) {
+      return {
+        heroId: hero.id,
+        heroName: hero.name,
+        tag,
+        snippet: snippetAround(raw, m.index),
+        // optional: hilfreich beim Debuggen (nicht im UI nötig, aber ok)
+        match: String(m[0] || ""),
+      };
+    }
+  }
+  return null;
+}
+
+// Baut Profil: tags + evidenceByTag (strict: Tag nur wenn Evidence vorhanden)
+function synergyProfileForHero(hero) {
+  const raw = fullSkillText(hero) || "";
+  const t = raw.toLowerCase();
+  const forbidsNormals = /\bno longer performs normal attacks\b/i.test(raw);
+
+  // 1) Evidence zuerst ermitteln (pro Tag)
+  const evidenceByTag = {};
+  for (const tag of ALL_SYNERGY_TAG_LIST) {
+    evidenceByTag[tag] = evidenceForTag(hero, tag);
+  }
+
+  // 2) Tags setzen – NUR wenn Evidence da ist (strict foundation)
   const tags = new Set();
 
-  const hasAllies = /\b(all allies|allies|ally)\b/.test(t);
-
-  // --- ATK SPEED: TEAM vs SELF ---
-  const atkSpdAny = /\b(atk spd|attack speed|haste)\b/.test(t);
-  const incWords = /\b(increas|grant|gain|bonus)\w*\b/.test(t);
-
-  const atkSpdTeam =
-    hasAllies &&
-    atkSpdAny &&
-    incWords;
-
-  // “her ATK SPD…” / “Isis gains…” without allies
-  const atkSpdSelf =
-    atkSpdAny &&
-    incWords &&
-    !atkSpdTeam;
-
-  if (atkSpdTeam) tags.add("ATK_SPEED_TEAM_PROVIDER");
-  if (atkSpdSelf) tags.add("ATK_SPEED_SELF_ONLY");
-
-  // --- ENERGY / CDR provider: nur wenn allies erwähnt ---
-  if (hasAllies && /\b(reduc)\w*\b/.test(t) && /\b(cooldown|skill cd|cd)\b/.test(t)) {
-    tags.add("CDR_TEAM_PROVIDER");
-  }
-  if (hasAllies && /\b(energy regen|energy regeneration|gain\w* energy|restore\w* energy)\b/.test(t)) {
-    tags.add("ENERGY_TEAM_PROVIDER");
+  // ATK SPEED: team beats self-only (wenn team evidence vorhanden, self-only nicht setzen)
+  if (evidenceByTag[SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER]) {
+    tags.add(SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER);
+  } else if (evidenceByTag[SYNERGY_TAGS.ATK_SPEED_SELF_ONLY]) {
+    tags.add(SYNERGY_TAGS.ATK_SPEED_SELF_ONLY);
   }
 
-  // --- DEF shred / amp bleibt ok (gegnerbezogen) ---
-  if (/\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(t)) {
-    tags.add("DEF_SHRED_OR_AMP");
+  if (evidenceByTag[SYNERGY_TAGS.ENERGY_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.ENERGY_TEAM_PROVIDER);
+  if (evidenceByTag[SYNERGY_TAGS.CDR_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.CDR_TEAM_PROVIDER);
+  if (evidenceByTag[SYNERGY_TAGS.DEF_SHRED_OR_AMP]) tags.add(SYNERGY_TAGS.DEF_SHRED_OR_AMP);
+
+  // Receiver/Hit-Mechanics – wenn Hero keine Normal Attacks macht: diese Tags NICHT setzen
+  if (!forbidsNormals) {
+    if (evidenceByTag[SYNERGY_TAGS.BASIC_ATTACK_SCALER]) tags.add(SYNERGY_TAGS.BASIC_ATTACK_SCALER);
+    if (evidenceByTag[SYNERGY_TAGS.ON_HIT_SCALER]) tags.add(SYNERGY_TAGS.ON_HIT_SCALER);
+    if (evidenceByTag[SYNERGY_TAGS.FAST_STACKING_WITH_HITS]) tags.add(SYNERGY_TAGS.FAST_STACKING_WITH_HITS);
   }
 
-  // --- Receiver: Hit scaling nur wenn es explizit um hits/normal attacks geht ---
-  const forbidsNormals = /\bno longer performs normal attacks\b/.test(t);
+  if (evidenceByTag[SYNERGY_TAGS.ULT_DEPENDENT]) tags.add(SYNERGY_TAGS.ULT_DEPENDENT);
+  if (evidenceByTag[SYNERGY_TAGS.AOE_DAMAGE_PROFILE]) tags.add(SYNERGY_TAGS.AOE_DAMAGE_PROFILE);
 
-  const normalAttackTrigger =
-    /\bafter every \d+ normal attacks?\b/.test(t) ||
-    /\bevery \d+ normal attacks?\b/.test(t);
+  return { tags, evidenceByTag, forbidsNormals };
+}
 
-  const onHit =
-    /\b(on hit|each hit|per hit|per attack)\b/.test(t);
-
-  const stackingWithHits =
-    /\b(stacks?|stacking)\b/.test(t) && (onHit || /\bnormal attacks?|basic attacks?\b/.test(t));
-
-  if (!forbidsNormals && normalAttackTrigger) tags.add("BASIC_ATTACK_SCALER");
-  if (!forbidsNormals && onHit) tags.add("ON_HIT_SCALER");
-  if (!forbidsNormals && stackingWithHits) tags.add("FAST_STACKING_WITH_HITS");
-
-  // Ult dependent ok:
-  if (/\b(ultimate|ultimates?|ult)\b/.test(t) && /\b(when|after|upon)\b/.test(t)) {
-    tags.add("ULT_DEPENDENT");
-  }
-
-  // AoE profile ok:
-  if (/\b(aoe|all enemies|nearby enemies|in a large area)\b/.test(t) && /\b(dmg|damage)\b/.test(t)) {
-    tags.add("AOE_DAMAGE_PROFILE");
-  }
-
-  return tags;
+// TagMap pro Team (einheitlich)
+function buildSynergyMap(team) {
+  const map = new Map();
+  for (const h of team) map.set(h.id, synergyProfileForHero(h));
+  return map;
 }
 
 function synergyScore(team) {
-  const tagById = new Map(team.map(h => [h.id, synergyTagsForHero(h)]));
-  const has = (tag) => team.some(h => tagById.get(h.id)?.has(tag));
+  const prof = buildSynergyMap(team);
+  const has = (tag) => team.some(h => prof.get(h.id)?.tags?.has(tag));
 
   let s = 0;
 
-  const atkSpeedProviders = team.filter(h => tagById.get(h.id)?.has("ATK_SPEED_PROVIDER"));
+  // ATK Speed TEAM provider + hit scalers
+  const atkSpeedProviders = team.filter(h => prof.get(h.id)?.tags?.has(SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER));
   const hitScalers = team.filter(h => {
-    const tg = tagById.get(h.id);
-    return tg?.has("BASIC_ATTACK_SCALER") || tg?.has("ON_HIT_SCALER") || tg?.has("FAST_STACKING_WITH_HITS");
+    const tg = prof.get(h.id)?.tags;
+    return tg?.has(SYNERGY_TAGS.BASIC_ATTACK_SCALER) || tg?.has(SYNERGY_TAGS.ON_HIT_SCALER) || tg?.has(SYNERGY_TAGS.FAST_STACKING_WITH_HITS);
   });
+
   if (atkSpeedProviders.length && hitScalers.length) {
     const cross = atkSpeedProviders.some(p => hitScalers.some(r => r.id !== p.id));
     s += cross ? 35 : 18;
   }
 
-  if (has("ENERGY_PROVIDER") && has("ULT_DEPENDENT")) s += 25;
-  if (has("DEF_SHRED_OR_AMP") && has("AOE_DAMAGE_PROFILE")) s += 18;
+  // Energy TEAM provider + ult dependent
+  if (has(SYNERGY_TAGS.ENERGY_TEAM_PROVIDER) && has(SYNERGY_TAGS.ULT_DEPENDENT)) s += 25;
+
+  // DEF shred + AoE profile
+  if (has(SYNERGY_TAGS.DEF_SHRED_OR_AMP) && has(SYNERGY_TAGS.AOE_DAMAGE_PROFILE)) s += 18;
 
   return Math.min(s, 90);
 }
 
-function buildSynergyMap(team) {
-  const map = new Map();
-  for (const h of team) map.set(h.id, synergyTagsForHero(h));
-  return map;
-}
-
+// Pair synergies (strict + evidence on both sides)
 function detectPairSynergies(team) {
-  const tagMap = buildSynergyMap(team);
+  const prof = buildSynergyMap(team);
   const results = [];
 
   for (const a of team) {
     for (const b of team) {
       if (a.id === b.id) continue;
 
-      const aTags = tagMap.get(a.id);
-      const bTags = tagMap.get(b.id);
+      const aP = prof.get(a.id);
+      const bP = prof.get(b.id);
+      const aTags = aP.tags;
+      const bTags = bP.tags;
 
+      // 1) ATK SPEED TEAM → HIT SCALER
       if (
-      aTags.has("ATK_SPEED_TEAM_PROVIDER") &&
-      (bTags.has("BASIC_ATTACK_SCALER") || bTags.has("ON_HIT_SCALER") || bTags.has("FAST_STACKING_WITH_HITS"))
+        aTags.has(SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER) &&
+        (bTags.has(SYNERGY_TAGS.BASIC_ATTACK_SCALER) || bTags.has(SYNERGY_TAGS.ON_HIT_SCALER) || bTags.has(SYNERGY_TAGS.FAST_STACKING_WITH_HITS))
       ) {
-        results.push({ type: "pair", from: a.name, to: b.name, text: `${a.name} increases Attack Speed, enhancing ${b.name}'s hit-based scaling.` });
+        const evA = aP.evidenceByTag[SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER];
+        const evB =
+          bP.evidenceByTag[SYNERGY_TAGS.BASIC_ATTACK_SCALER] ||
+          bP.evidenceByTag[SYNERGY_TAGS.ON_HIT_SCALER] ||
+          bP.evidenceByTag[SYNERGY_TAGS.FAST_STACKING_WITH_HITS];
+
+        if (!SYNERGY_STRICT_MODE || (evA && evB)) {
+          results.push({
+            type: "pair",
+            kind: "ATK_SPEED_TEAM__HIT_SCALER",
+            from: a.name,
+            to: b.name,
+            text: `${a.name} increases allies' Attack Speed, which benefits ${b.name}'s hit/normal-attack based effects.`,
+            evidence: (evA && evB) ? [evA, evB] : [],
+          });
+        }
       }
 
-      if (aTags.has("ENERGY_PROVIDER") && bTags.has("ULT_DEPENDENT")) {
-        results.push({ type: "pair", from: a.name, to: b.name, text: `${a.name} provides Energy support, accelerating ${b.name}'s ultimate usage.` });
+      // 2) ENERGY TEAM → ULT DEPENDENT
+      if (aTags.has(SYNERGY_TAGS.ENERGY_TEAM_PROVIDER) && bTags.has(SYNERGY_TAGS.ULT_DEPENDENT)) {
+        const evA = aP.evidenceByTag[SYNERGY_TAGS.ENERGY_TEAM_PROVIDER];
+        const evB = bP.evidenceByTag[SYNERGY_TAGS.ULT_DEPENDENT];
+
+        if (!SYNERGY_STRICT_MODE || (evA && evB)) {
+          results.push({
+            type: "pair",
+            kind: "ENERGY_TEAM__ULT_DEPENDENT",
+            from: a.name,
+            to: b.name,
+            text: `${a.name} provides Energy to allies, accelerating ${b.name}'s ultimate usage.`,
+            evidence: (evA && evB) ? [evA, evB] : [],
+          });
+        }
       }
 
-      if (aTags.has("DEF_SHRED_OR_AMP") && bTags.has("AOE_DAMAGE_PROFILE")) {
-        results.push({ type: "pair", from: a.name, to: b.name, text: `${a.name} reduces defenses, amplifying ${b.name}'s AoE damage.` });
+      // 3) DEF SHRED → AOE DAMAGE
+      if (aTags.has(SYNERGY_TAGS.DEF_SHRED_OR_AMP) && bTags.has(SYNERGY_TAGS.AOE_DAMAGE_PROFILE)) {
+        const evA = aP.evidenceByTag[SYNERGY_TAGS.DEF_SHRED_OR_AMP];
+        const evB = bP.evidenceByTag[SYNERGY_TAGS.AOE_DAMAGE_PROFILE];
+
+        if (!SYNERGY_STRICT_MODE || (evA && evB)) {
+          results.push({
+            type: "pair",
+            kind: "DEF_SHRED__AOE_DAMAGE",
+            from: a.name,
+            to: b.name,
+            text: `${a.name} reduces enemy defenses, amplifying ${b.name}'s AoE damage windows.`,
+            evidence: (evA && evB) ? [evA, evB] : [],
+          });
+        }
       }
     }
   }
-  return results;
+
+  // Dedupe
+  const seen = new Set();
+  return results.filter(x => {
+    const k = `${x.kind}|${x.from}|${x.to}|${x.text}`;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 
+// Team synergies (strict + evidence: pick one provider + one receiver)
 function detectTeamSynergies(team) {
-  const tagMap = buildSynergyMap(team);
+  const prof = buildSynergyMap(team);
   const tags = new Set();
-  for (const h of team) for (const t of tagMap.get(h.id)) tags.add(t);
+  for (const h of team) for (const t of prof.get(h.id).tags) tags.add(t);
 
   const results = [];
-  if (tags.has("ENERGY_PROVIDER") && tags.has("ULT_DEPENDENT")) results.push({ type: "team", text: "Energy support accelerates ultimate-based damage cycles." });
-  if (tags.has("DEF_SHRED_OR_AMP") && tags.has("AOE_DAMAGE_PROFILE")) results.push({ type: "team", text: "Defense reduction enhances team-wide AoE burst." });
-  if (tags.has("ATK_SPEED_PROVIDER") && tags.has("FAST_STACKING_WITH_HITS")) results.push({ type: "team", text: "Attack Speed boosts stacking-based damage scaling." });
-  return results;
+
+  if (tags.has(SYNERGY_TAGS.ENERGY_TEAM_PROVIDER) && tags.has(SYNERGY_TAGS.ULT_DEPENDENT)) {
+    const provider = team.find(h => prof.get(h.id).tags.has(SYNERGY_TAGS.ENERGY_TEAM_PROVIDER));
+    const receiver = team.find(h => prof.get(h.id).tags.has(SYNERGY_TAGS.ULT_DEPENDENT));
+    const evA = provider ? prof.get(provider.id).evidenceByTag[SYNERGY_TAGS.ENERGY_TEAM_PROVIDER] : null;
+    const evB = receiver ? prof.get(receiver.id).evidenceByTag[SYNERGY_TAGS.ULT_DEPENDENT] : null;
+
+    if (!SYNERGY_STRICT_MODE || (evA && evB)) {
+      results.push({
+        type: "team",
+        kind: "ENERGY_TEAM__ULT_DEPENDENT",
+        text: "Energy support in the team accelerates ultimate-based damage cycles.",
+        evidence: (evA && evB) ? [evA, evB] : [],
+      });
+    }
+  }
+
+  if (tags.has(SYNERGY_TAGS.DEF_SHRED_OR_AMP) && tags.has(SYNERGY_TAGS.AOE_DAMAGE_PROFILE)) {
+    const shredder = team.find(h => prof.get(h.id).tags.has(SYNERGY_TAGS.DEF_SHRED_OR_AMP));
+    const aoe = team.find(h => prof.get(h.id).tags.has(SYNERGY_TAGS.AOE_DAMAGE_PROFILE));
+    const evA = shredder ? prof.get(shredder.id).evidenceByTag[SYNERGY_TAGS.DEF_SHRED_OR_AMP] : null;
+    const evB = aoe ? prof.get(aoe.id).evidenceByTag[SYNERGY_TAGS.AOE_DAMAGE_PROFILE] : null;
+
+    if (!SYNERGY_STRICT_MODE || (evA && evB)) {
+      results.push({
+        type: "team",
+        kind: "DEF_SHRED__AOE_DAMAGE",
+        text: "Defense reduction in the team enhances AoE burst windows.",
+        evidence: (evA && evB) ? [evA, evB] : [],
+      });
+    }
+  }
+
+  if (tags.has(SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER) && tags.has(SYNERGY_TAGS.FAST_STACKING_WITH_HITS)) {
+    const provider = team.find(h => prof.get(h.id).tags.has(SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER));
+    const stacker = team.find(h => prof.get(h.id).tags.has(SYNERGY_TAGS.FAST_STACKING_WITH_HITS));
+    const evA = provider ? prof.get(provider.id).evidenceByTag[SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER] : null;
+    const evB = stacker ? prof.get(stacker.id).evidenceByTag[SYNERGY_TAGS.FAST_STACKING_WITH_HITS] : null;
+
+    if (!SYNERGY_STRICT_MODE || (evA && evB)) {
+      results.push({
+        type: "team",
+        kind: "ATK_SPEED_TEAM__FAST_STACKING",
+        text: "Attack Speed buffs help hit-stacking mechanics ramp faster.",
+        evidence: (evA && evB) ? [evA, evB] : [],
+      });
+    }
+  }
+
+  // Dedupe
+  const seen = new Set();
+  return results.filter(x => {
+    const k = `${x.kind}|${x.text}`;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 
 function synergyExplanation(team) {
   const pair = detectPairSynergies(team);
   const teamLevel = detectTeamSynergies(team);
 
-  const uniqueTexts = new Set();
+  // Deduplicate by kind/from/to/text
+  const seen = new Set();
   const combined = [];
   for (const x of [...pair, ...teamLevel]) {
-    if (!uniqueTexts.has(x.text)) {
-      uniqueTexts.add(x.text);
-      combined.push(x);
-    }
+    const key = `${x.type}|${x.kind || ""}|${x.from || ""}|${x.to || ""}|${x.text}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    combined.push(x);
   }
-  return combined.slice(0, 5);
+
+  // STRICT: wenn evidence fehlt, rausfiltern (zusätzliche Sicherung)
+  const filtered = SYNERGY_STRICT_MODE
+    ? combined.filter(x => Array.isArray(x.evidence) && x.evidence.length >= 2)
+    : combined;
+
+  return filtered.slice(0, 5);
 }
+
+// Debug export: pro Hero, pro Tag: evidence oder null
+function buildSynergyDebug(team) {
+  const prof = buildSynergyMap(team);
+
+  const heroes = team.map(h => {
+    const p = prof.get(h.id);
+    const tagRows = ALL_SYNERGY_TAG_LIST.map(tag => {
+      const ev = p.evidenceByTag[tag] || null;
+      return {
+        tag,
+        hasEvidence: Boolean(ev),
+        snippet: ev?.snippet ?? null,
+        match: ev?.match ?? null,
+      };
+    });
+
+    return {
+      heroId: h.id,
+      heroName: h.name,
+      forbidsNormals: Boolean(p.forbidsNormals),
+      detectedTags: Array.from(p.tags),
+      tags: tagRows,
+    };
+  });
+
+  return {
+    strictMode: SYNERGY_STRICT_MODE,
+    heroes,
+  };
+}
+
+/*
+  WICHTIG: In mkComp(...) bitte ergänzen:
+
+  const synergy = synergyExplanation(team);
+  const synergyDebug = SYNERGY_DEBUG_EXPORT ? buildSynergyDebug(team) : null;
+
+  return {
+    ...
+    synergy,
+    synergyDebug,
+  };
+*/
+
 
 // -----------------------------
 // Facts (optional, mostly unchanged)
@@ -606,6 +861,8 @@ async function main() {
           formation,
         };
 
+        const synergyDebug = CFG.synergyDebug ? buildSynergyDebug(team) : undefined;
+
         return {
           mode,
           label,
@@ -615,6 +872,7 @@ async function main() {
           summary,
           facts,
           synergy,
+         synergyDebug,
         };
       };
 

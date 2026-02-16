@@ -25,17 +25,29 @@
     "critRate": 12.5,
     "critRes": 2
   },
-  "skills": [
+   "skills": [
     {
       "id": "skill_1",
+      "name": "Logos Support",
+      "description": "Virgo grants a shield equal to 200% of her ATK to the frontmost ally for 5s. While active, the shield deals DMG equal to 60% of her ATK per sec to surrounding enemies.",
+      "upgrades": {
+        "level2": "Shield Strength increases to 220%.",
+        "level3": "Increases the DMG dealt per sec by 75% when the shield is active.",
+        "level4": ""
+      }
+    },
+    {
+      "id": "skill_2",
       "name": "Scientific Field",
       "description": "Virgo stuns an enemy for 4s and deals DMG equal to 450% of ATK.",
       "upgrades": {
         "level2": "DMG increases to 500% ATK.",
-        "level3": "DMG increases to 550% ATK."      }
+        "level3": "DMG increases to 550% ATK.",
+        "level4": ""
+      }
     },
     {
-      "id": "skill_2",
+      "id": "skill_3",
       "name": "Golden Triangle",
       "description": "Deals DMG equal to 210% of ATK to an enemy and those around it.",
       "upgrades": {
@@ -43,15 +55,15 @@
         "level3": "Reduces healing received by hit enemies by 50% for 5s.",
         "level4": "DMG increases to 260% ATK."
       }
-    },
-    {
-      "id": "skill_3",
-      "name": "Logos Support",
-      "description": "Virgo grants a shield equal to 200% of her ATK to the frontmost ally for 5s. While active, the shield deals DMG equal to 60% of her ATK per sec to surrounding enemies.",
-      "upgrades": {
-        "level2": "Shield Strength increases to 220%.",
-        "level3": "Increases the DMG dealt per sec by 75% when the shield is active."
-      }
     }
-  ]
+  ],
+  "relic": {
+    "name": "",
+    "description": "",
+    "upgrades": {
+      "level2": "",
+      "level3": "",
+      "level4": ""
+    }
+  }
 }

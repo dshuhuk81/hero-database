@@ -28,52 +28,42 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Soothe",
+      "description": "Castor heals Pollux, restoring HP equal to 240% of ATK.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Heals HP equal to 270% ATK. (Unlocks at Lv.21)",
+        "level3": "Increases Castor's Armor by an additional 30% for the next 8s. (Unlocks at Lv.121)",
+        "level4": "Heals HP equal to 300% ATK. (Unlocks at Lv.161)"
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Under My Wing!",
+      "description": "Pollux consumes 30% of current HP to summon Castor, who will leap into the enemy-clustered area, dealing DMG equal to 240% of ATK to surrounding enemies. If Castor is already on the battlefield, Pollux fully restores Castor's HP and deals DMG equal to 300% of ATK to enemies around Castor. (Castor's base attributes are identical to Pollux's).",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Castor's HP increases by 20% in battle.",
+        "level3": "Increases DMG dealt to 260% of ATK and 330% of ATK.",
+        "level4": ""
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Fight Alongside",
+      "description": "Pollux deals DMG equal to 240% of ATK to the enemy with the highest ATK among those currently attacking Castor and blinds them for 3s (Blind: reduces Hit Rate by 80%).",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 270% ATK. (Unlocks at Lv.81)",
+        "level3": "Blind now lasts for 4s. (Unlocks at Lv.141)",
+        "level4": ""
       }
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "",
+    "description": "",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "",
+      "level3": "",
+      "level4": ""
     }
   }
 }

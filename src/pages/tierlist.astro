@@ -5,9 +5,20 @@ import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
 import Filter from "../components/filter.astro";
 
-const sortedHeroes = [...heroes].sort((a, b) =>
-  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
-);
+const TIER_ORDER = { SSS: 7, SS: 6, S: 5, A: 4, B: 3, C: 2, "N/A": 1 };
+
+const sortedHeroes = [...heroes].sort((a, b) => {
+  const aTier = (a.ratings?.overall || "N/A").toUpperCase();
+  const bTier = (b.ratings?.overall || "N/A").toUpperCase();
+  const aVal = TIER_ORDER[aTier] ?? 0;
+  const bVal = TIER_ORDER[bTier] ?? 0;
+
+  // DESC: best first
+  if (bVal !== aVal) return bVal - aVal;
+
+  // Tie-breaker: Name A–Z
+  return a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+});
 ---
 
 <html lang="en">
@@ -536,7 +547,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
         let activeClasses  = new Set<string>();
         let activeRarities = new Set<string>();
         let activeFactions = new Set<string>(); 
-        let currentSort    = { column: 'name', direction: 'asc' };
+        let currentSort = { column: null, direction: null };
 
         function applyFilters() {
           const query = (searchInput?.value || "").toLowerCase();
@@ -566,14 +577,19 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           }
         }
 
-        function sortTable(column: string) {
-          const rows = Array.from(tableBody.querySelectorAll(".hero-row")) as HTMLTableRowElement[];
+        function sortTable(column, forceDirection = null) {
+          const rows = Array.from(tableBody.querySelectorAll(".hero-row"));
 
-          if (currentSort.column === column) {
-            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+          if (forceDirection) {
+            currentSort.column = column;
+            currentSort.direction = forceDirection;
           } else {
-            currentSort.column    = column;
-            currentSort.direction = 'asc';
+            if (currentSort.column === column) {
+              currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+              currentSort.column = column;
+              currentSort.direction = column === 'name' ? 'asc' : 'desc';
+            }
           }
 
           rows.sort((a, b) => {
@@ -584,10 +600,13 @@ const sortedHeroes = [...heroes].sort((a, b) =>
                 ? aVal.localeCompare(bVal)
                 : bVal.localeCompare(aVal);
             } else {
-              const dataKey = column.toLowerCase().replace(/([A-Z])/g, m => m.toLowerCase());
-              const aVal = TIER_ORDER[(a.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
-              const bVal = TIER_ORDER[(b.dataset[dataKey] as string)?.toUpperCase() || 'N/A'] || 0;
-              return currentSort.direction === 'asc' ? aVal - bVal : bVal - aVal;
+              const dataKey = column.toLowerCase();
+              const aVal = TIER_ORDER[(a.dataset[dataKey]?.toUpperCase()) || 'N/A'] || 0;
+              const bVal = TIER_ORDER[(b.dataset[dataKey]?.toUpperCase()) || 'N/A'] || 0;
+
+              return currentSort.direction === 'asc'
+                ? aVal - bVal
+                : bVal - aVal;
             }
           });
 
@@ -655,10 +674,10 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           activeRoles.clear();
           activeFactions.clear();
           document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
-          sortTable('name');
+         sortTable('overall', 'desc');
         });
 
-        applyFilters();
+        sortTable('overall', 'desc');
       });
     </script>
     

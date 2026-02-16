@@ -64,7 +64,7 @@ const STAT_LABELS = {
         <nav class="hero-tabs">
           <button class="tab active" data-tab="attributes">Attributes</button>
           <button class="tab" data-tab="skills">Skills</button>
-          <button class="tab" data-tab="synergies">Compositions</button>
+          <button class="tab" data-tab="synergies">Compositions<span class="alpha-chip">Alpha</span></button>
         </nav>
       </div>
     </div>
@@ -276,7 +276,16 @@ const STAT_LABELS = {
 </div>
 
 <style>
-
+.alpha-chip {
+  position: absolute;
+  top:-6px;
+  right: -10px;
+  font-size: 8px;
+  color: white;
+  background-color: red;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
   .comp-toolbar{
   display:flex;
   align-items:center;
@@ -589,6 +598,7 @@ const STAT_LABELS = {
     padding: 8px 12px;
     font-size: 1rem;
     transition: all 0.2s ease;
+    position: relative;
   }
 
   .tab.active {

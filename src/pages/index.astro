@@ -10,6 +10,58 @@ import Filter from "../components/filter.astro";  // 👈 NEU
 const sortedHeroes = [...heroes].sort((a, b) =>
   a.name.localeCompare(b.name, "en", { sensitivity: "base" })
 );
+
+function escapeRegExp(str) {
+  return String(str || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function fullSkillText(h) {
+  const parts = [];
+  for (const sk of (h.skills || [])) {
+    if (sk?.description) parts.push(sk.description);
+    if (sk?.upgrades) parts.push(...Object.values(sk.upgrades));
+  }
+  if (h.relic?.description) parts.push(h.relic.description);
+  if (h.relic?.upgrades) parts.push(...Object.values(h.relic.upgrades));
+  return parts.join(" ");
+}
+
+// exakt wie im Generator (damit UI/Generator konsistent bleiben)
+function keywordTagsForHero(hero) {
+  const text = fullSkillText(hero).toLowerCase();
+  const tags = [];
+  const add = (label, ok) => { if (ok && !tags.includes(label)) tags.push(label); };
+
+  const allyHeal =
+    /\b(heals?|restores?|recovers?)\s+(?:hp|health)?\s*(?:to)?\s*(allies?|ally)\b/.test(text) ||
+    /\b(heals?|restores?|recovers?)\s+(allies?|ally)\b/.test(text);
+
+  const heroName = escapeRegExp(hero?.name?.toLowerCase?.() || "");
+  const selfHeal =
+    (heroName && new RegExp(`\\b(heals?|restores?|recovers?)\\s+${heroName}\\b`).test(text)) ||
+    /\bheals?\s+self\b/.test(text);
+
+  const genericHpRestore = /\b(restores?\s+hp|recovers?\s+hp)\b/.test(text);
+
+  const antiHeal =
+    /\b(cannot receive (?:shields? or )?healing|cannot be healed|prevents? healing|healing reduction|reduce(s|d)? healing|healing is reduced|stop(s|ped)? healing|ban(s|ned)? healing)\b/.test(text);
+
+  add("Ally Heal", allyHeal);
+  add("Self Heal", !allyHeal && (selfHeal || genericHpRestore));
+  add("Anti-Heal", antiHeal);
+
+  add("Shield", /\bshield\b/.test(text));
+  add("Cleanse", /\b(removes? (one|a) debuff|remove debuff|cleanse)\b/.test(text));
+  add("Control", /\b(stun|silence|freeze|root|sleep|charm|taunt|knock)\w*\b/.test(text));
+  add("AoE", /\b(all enemies|nearby enemies|in a large area|aoe)\b/.test(text));
+  add("Energy", /\benergy\b/.test(text));
+  add("Cooldown", /\b(cooldown|cd)\b/.test(text));
+  add("Backline", /\b(farthest enemy|back row|rear row|behind|teleport|blink)\b/.test(text));
+  add("Def Shred", /\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(text));
+
+  // hier bewusst NICHT slice(0,3) – für Filter lieber "voll"
+  return tags;
+}
 ---
 <Sidebar />  <!-- 👈 NEU -->
 <!-- HERO HEADER -->
@@ -34,6 +86,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           data-role={hero.role.toLowerCase()}    
           data-faction={hero.faction.toLowerCase()}
           data-rarity={hero.rarity.toLowerCase()}
+          data-tags={keywordTagsForHero(hero).join("|").toLowerCase()}
       >
         <div class="icon-stack">
           <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
@@ -232,6 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const heroCards = document.querySelectorAll(".hero-wrapper");
   const classChips = document.querySelectorAll(".class-chip");
   const rarityChips = document.querySelectorAll(".rarity-chip");
+  const tagChips = document.querySelectorAll(".tag-chip");
+
+  let activeTag = null; // single select    
   
   let activeRoles = new Set();  
   let activeClasses = new Set();
@@ -248,6 +304,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const role = card.dataset.role;
     const rarity = card.dataset.rarity;
     const faction = card.dataset.faction;
+
+    const tags = (card.dataset.tags || "");
+    const matchesTag =
+      !activeTag || tags.includes(activeTag);
 
     const matchesSearch =
       !query ||
@@ -268,9 +328,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const matchesFaction =
       activeFactions.size === 0 || activeFactions.has(faction);
-      
+
     const show =
-      matchesSearch && matchesClass && matchesRole && matchesFaction && matchesRarity;
+      matchesSearch && matchesClass && matchesRole && matchesFaction && matchesRarity && matchesTag;
 
     card.style.display = show ? "block" : "none";
     if (show) visible++;
@@ -326,6 +386,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+//* Neue Tag Chips 
+  tagChips.forEach(chip => {
+  chip.addEventListener("click", () => {
+    const t = (chip.dataset.tag || "").toLowerCase();
+
+    // toggle (single select)
+    if (activeTag === t) {
+      activeTag = null;
+      chip.classList.remove("active");
+    } else {
+      activeTag = t;
+      tagChips.forEach(x => x.classList.remove("active"));
+      chip.classList.add("active");
+    }
+
+    applyFilters();
+  });
+});
+
   resetButton.addEventListener("click", () => {
     searchInput.value = "";
     activeClasses.clear();
@@ -335,6 +414,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
     applyFilters();
     document.querySelectorAll(".role-chip.active").forEach(c => c.classList.remove("active"));
+    activeTag = null;
+    tagChips.forEach(x => x.classList.remove("active"));
   });
 
   applyFilters();

@@ -29,52 +29,42 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Swarpblaster",
+      "description": "Capricorn swaps positions with the symmetrically opposite enemy at combat start and drains 50% of their max HP, which is slowly restored over 5s.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "The target takes 10% increased DMG during the effect.",
+        "level3": "The lost HP is slowly restored over 8s.",
+        "level4": "The target takes 20% increased DMG during the effect."
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Blade Dance",
+      "description": "Capricorn combines her blades and dances, dealing DMG equal to 100% of ATK 4 times to surrounding enemies. She restores HP equal to 20% of ATK for each enemy hit.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "DMG dealt per hit increases to 115% ATK.",
+        "level3": "DMG dealt per hit increases to 130% ATK.",
+        "level4": ""
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Soulbind",
+      "description": "Capricorn stuns an enemy for 5s, dealing DMG equal to 50% of ATK to them per sec.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "DMG dealt per sec increases to 60% ATK.",
+        "level3": "When cast, it increases her ATK SPD by 20% for the next 5s.",
+        "level4": ""
       }
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "",
+    "description": "",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "",
+      "level3": "",
+      "level4": ""
     }
   }
 }

@@ -121,36 +121,60 @@
 
   </div>
 
-  <!-- ROW 2: Faction -->
+  <!-- ROW 2: Faction & Tags -->
   <div class="filter-row filter-row--faction">
-    <div class="filter-group filter-group--wide">
+    <div class="filter-group">
       <span class="filter-label">Faction</span>
+        <div class="chip-row">
+          <button class="chip faction-chip" data-faction="hearts" title="hearts">
+            <img src="/icons/factions/hearts.webp" alt="hearts" />
+            <span class="faction-name">Hearts</span>
+          </button>
 
-      <div class="chip-row">
-        <button class="chip faction-chip" data-faction="hearts" title="hearts">
-          <img src="/icons/factions/hearts.webp" alt="hearts" />
-          <span class="faction-name">Hearts</span>
-        </button>
+          <button class="chip faction-chip" data-faction="clubs" title="clubs">
+            <img src="/icons/factions/clubs.webp" alt="clubs" />
+            <span class="faction-name">Clubs</span>
+          </button>
 
-        <button class="chip faction-chip" data-faction="clubs" title="clubs">
-          <img src="/icons/factions/clubs.webp" alt="clubs" />
-          <span class="faction-name">Clubs</span>
-        </button>
+          <button class="chip faction-chip" data-faction="diamonds" title="diamonds">
+            <img src="/icons/factions/diamonds.webp" alt="diamonds" />
+            <span class="faction-name">Diamonds</span>
+          </button>
 
-        <button class="chip faction-chip" data-faction="diamonds" title="diamonds">
-          <img src="/icons/factions/diamonds.webp" alt="diamonds" />
-          <span class="faction-name">Diamonds</span>
-        </button>
+          <button class="chip faction-chip" data-faction="spades" title="spades">
+            <img src="/icons/factions/spades.webp" alt="spades" />
+            <span class="faction-name">Spades</span>
+          </button>
 
-        <button class="chip faction-chip" data-faction="spades" title="spades">
-          <img src="/icons/factions/spades.webp" alt="spades" />
-          <span class="faction-name">Spades</span>
-        </button>
+          <button class="chip faction-chip" data-faction="starglint" title="starglint">
+            <img src="/icons/factions/starglint.webp" alt="starglint" />
+            <span class="faction-name">Starglint</span>
+          </button>
+        </div>
+        </div>
+    <!-- ROW 3: Tags (Index-only filter) -->
+    <!-- TAG FILTER (Index only) -->
+    <div class="filter-group">
+      <span class="filter-label">Tags</span>
 
-        <button class="chip faction-chip" data-faction="starglint" title="starglint">
-          <img src="/icons/factions/starglint.webp" alt="starglint" />
-          <span class="faction-name">Starglint</span>
-        </button>
+      <div class="tag-scroll">
+        <div class="chip-row chip-row--tags">
+          <!-- deine tag buttons -->
+          <button class="chip tag-chip tag-allyheal" data-tag="ally heal" type="button">Ally Heal</button>
+          <button class="chip tag-chip tag-selfheal" data-tag="self heal" type="button">Self Heal</button>
+          <button class="chip tag-chip tag-antiheal" data-tag="anti-heal" type="button">Anti-Heal</button>
+
+          <button class="chip tag-chip tag-shield" data-tag="shield" type="button">Shield</button>
+          <button class="chip tag-chip tag-cleanse" data-tag="cleanse" type="button">Cleanse</button>
+          <button class="chip tag-chip tag-control" data-tag="control" type="button">Control</button>
+
+          <button class="chip tag-chip tag-aoe" data-tag="aoe" type="button">AoE</button>
+          <button class="chip tag-chip tag-energy" data-tag="energy" type="button">Energy</button>
+          <button class="chip tag-chip tag-cooldown" data-tag="cooldown" type="button">Cooldown</button>
+
+          <button class="chip tag-chip tag-backline" data-tag="backline" type="button">Backline</button>
+          <button class="chip tag-chip tag-shred" data-tag="def shred" type="button">Def Shred</button>
+        </div>
       </div>
     </div>
   </div>
@@ -158,6 +182,123 @@
 </section>
 
 <style>
+
+/* ── TAG CHIPS (Index-only visuals) ───────────────────── */
+/* Wrapper für den Scroll-Fade */
+.tag-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  padding-bottom: 4px; /* damit scrollbar nicht “klebt” */
+  flex-wrap: nowrap;
+  scrollbar-width: none; /* Firefox */
+}
+
+.tag-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+/* Default: darf auf großen Screens gern wrappen */
+.chip-row--tags {
+  flex-wrap: wrap;
+}
+
+/* Ab schmalerem Screen: NICHT mehr wrappen, sondern scrollen */
+@media (max-width: 1100px) {
+  .chip-row--tags {
+    flex-wrap: nowrap;
+
+    /* bisschen Luft unten, falls Scrollbar erscheint */
+    padding-bottom: 6px;
+
+    /* optional: kleine “snap”-Hilfe beim Scrollen */
+    scroll-snap-type: x proximity;
+  }
+
+  /* Chips sollen nicht schrumpfen, damit der Scroll Sinn macht */
+  .chip-row--tags .tag-chip {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  /* Scrollbar möglichst unauffällig */
+  .chip-row--tags::-webkit-scrollbar { height: 8px; }
+  .chip-row--tags::-webkit-scrollbar-track { background: transparent; }
+  .chip-row--tags::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+  }
+  .chip-row--tags:hover::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.20);
+  }
+
+  /* Fade links/rechts (damit “abgeschnitten” edel wirkt) */
+  .tag-scroll::before,
+  .tag-scroll::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 6px; /* passt zur padding-bottom der row */
+    width: 28px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .tag-scroll::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(18,16,26,0.97), rgba(18,16,26,0));
+  }
+
+  .tag-scroll::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(18,16,26,0.97), rgba(18,16,26,0));
+  }
+}
+/* Basis: bleibt kompatibel zu .chip */
+.tag-chip {
+  opacity: 0.85; /* etwas sichtbarer als normale chips */
+  height: 32px;
+}
+
+/* Active darf NICHT die Tag-Farbe verlieren */
+.tag-chip.active {
+  opacity: 1;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.14), 0 4px 12px rgba(0,0,0,0.35);
+}
+
+/* Farben (wie deine badges) */
+.tag-allyheal, .tag-selfheal { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.35); }
+.tag-antiheal { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.35); }
+
+.tag-shield  { background: rgba(59,130,246,.18); border-color: rgba(59,130,246,.35); }
+.tag-cleanse { background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.32); }
+.tag-control { background: rgba(168,85,247,.18); border-color: rgba(168,85,247,.35); }
+
+.tag-aoe      { background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.35); }
+.tag-energy   { background: rgba(250,204,21,.18); border-color: rgba(250,204,21,.35); }
+.tag-cooldown { background: rgba(99,102,241,.18); border-color: rgba(99,102,241,.35); }
+
+.tag-backline { background: rgba(244,63,94,.18); border-color: rgba(244,63,94,.35); }
+.tag-shred    { background: rgba(148,163,184,.18); border-color: rgba(148,163,184,.35); }
+
+/* Wichtig: wenn .chip.active background setzt → Tag-Farbe wiederherstellen */
+.tag-chip.active.tag-allyheal,
+.tag-chip.active.tag-selfheal { background: rgba(16,185,129,.22); border-color: rgba(16,185,129,.45); }
+
+.tag-chip.active.tag-antiheal { background: rgba(239,68,68,.22); border-color: rgba(239,68,68,.45); }
+
+.tag-chip.active.tag-shield   { background: rgba(59,130,246,.22); border-color: rgba(59,130,246,.45); }
+.tag-chip.active.tag-cleanse  { background: rgba(34,197,94,.20); border-color: rgba(34,197,94,.42); }
+.tag-chip.active.tag-control  { background: rgba(168,85,247,.22); border-color: rgba(168,85,247,.45); }
+
+.tag-chip.active.tag-aoe      { background: rgba(245,158,11,.22); border-color: rgba(245,158,11,.45); }
+.tag-chip.active.tag-energy   { background: rgba(250,204,21,.22); border-color: rgba(250,204,21,.45); }
+.tag-chip.active.tag-cooldown { background: rgba(99,102,241,.22); border-color: rgba(99,102,241,.45); }
+
+.tag-chip.active.tag-backline { background: rgba(244,63,94,.22); border-color: rgba(244,63,94,.45); }
+.tag-chip.active.tag-shred    { background: rgba(148,163,184,.22); border-color: rgba(148,163,184,.45); }
+
 /* (Optional) keep existing wrapper helper if you use it elsewhere */
 .content-wrapper {
   max-width: 1400px;
@@ -199,12 +340,22 @@
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 4px 16px;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .filter-row--faction {
-  padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  margin-top: 4px;
+  display: flex;
+  flex-wrap: nowrap;          /* verhindert Umbruch */
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.filter-row--faction > .filter-group {
+  flex: 0 0 auto;             /* keine 100%-Basis */
+  min-width: 0;               /* wichtig für overflow children */
 }
 
 /* ── GROUPS ───────────────────────────────────────────── */
@@ -297,7 +448,7 @@
 }
 
 /* ── FACTION CHIPS ────────────────────────────────────── */
-.faction-chip {
+.faction-chip, .tag-chip {
   border-radius: 20px;
   padding: 4px 10px 4px 5px;
 }

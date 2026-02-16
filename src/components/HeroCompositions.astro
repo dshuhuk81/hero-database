@@ -22,13 +22,21 @@ function heroTags(comp, hid) {
 function badgeClass(label) {
   if (badgeStyle !== "colored") return "badge";
 
+  // 1) Normalize input (trim, collapse spaces, unify hyphens)
+  const raw = String(label ?? "");
+  const key = raw
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/[‐-–—]/g, "-"); // normalize different dash chars
+
+  // 2) Canonical mapping (exact labels)
   const map = {
-    // NEW heal split
+    // Heal split
     "Ally Heal": "badge heal",
     "Self Heal": "badge heal",
     "Anti-Heal": "badge antiheal",
 
-    // Backward compatible (falls alte JSONs noch "Heal" haben)
+    // Backward compatible
     "Heal": "badge heal",
 
     "Shield": "badge shield",
@@ -41,7 +49,27 @@ function badgeClass(label) {
     "Def Shred": "badge shred",
   };
 
-  return map[label] ?? "badge";
+  // 3) Aliases (common drift / typos / variants)
+  const alias = {
+    "Anti Heal": "Anti-Heal",
+    "Antiheal": "Anti-Heal",
+    "DefShred": "Def Shred",
+    "Defense Shred": "Def Shred",
+    "DEF Shred": "Def Shred",
+    "Aoe": "AoE",
+  };
+
+  const canonical = map[key] ? key : (alias[key] ?? key);
+
+  // 4) Fallback: case-insensitive match (last resort)
+  if (!map[canonical]) {
+    const lower = canonical.toLowerCase();
+    const ci = Object.keys(map).find(k => k.toLowerCase() === lower);
+    if (ci) return map[ci];
+    return "badge unknown"; // visually highlight unknowns
+  }
+
+  return map[canonical];
 }
 ---
 
@@ -171,23 +199,98 @@ function badgeClass(label) {
 
           {c.synergy?.length > 0 && (
             <div class="synergy-box">
-              <h4>Synergy</h4>
+            <h4>Synergy</h4>
               <ul>
-                {c.synergy.map(s => (
-                  <li>{s.text}</li>
-                ))}
+              {c.synergy.map(s => (
+              <li>
+              <div>{s.text}</div>
+
+              {Array.isArray(s.evidence) && s.evidence.length > 0 && (
+                <details class="synergy-evidence">
+                  <summary>Show proof</summary>
+                  <ul>
+                    {s.evidence.map(ev => (
+                      <li><strong>{ev.heroName}</strong> ({ev.tag}): <em>{ev.snippet}</em></li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+              </li>
+              ))}
               </ul>
             </div>
           )}
+          {c.synergyDebug && (
+            <details class="synergy-debug">
+              <summary>
+                Synergy Debug (Strict: {c.synergyDebug.strictMode ? "ON" : "OFF"})
+              </summary>
 
-          <details class="sources">
+              <div class="synergy-debug-inner">
+                {c.synergyDebug.heroes?.map(hd => (
+                  <details class="synergy-debug-hero">
+                    <summary>
+                      <strong>{hd.heroName}</strong>
+                      <span class="sd-meta">
+                        {hd.forbidsNormals && <span class="sd-pill warn">No Normal Attacks</span>}
+                        {Array.isArray(hd.detectedTags) && hd.detectedTags.length > 0 ? (
+                          <span class="sd-pill ok">{hd.detectedTags.length} detected</span>
+                        ) : (
+                          <span class="sd-pill">0 detected</span>
+                        )}
+                      </span>
+                    </summary>
+
+                    {/* Detected tags quick row */}
+                    {Array.isArray(hd.detectedTags) && hd.detectedTags.length > 0 && (
+                      <div class="sd-detected">
+                        {hd.detectedTags.map(t => (
+                          <span class="sd-chip">{t}</span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Full tag table: Evidence / No evidence */}
+                    <div class="sd-table">
+                      {hd.tags?.map(row => (
+                        <div class={`sd-row ${row.hasEvidence ? "has" : "missing"}`}>
+                          <div class="sd-tag">
+                            <code>{row.tag}</code>
+                          </div>
+
+                          <div class="sd-status">
+                            {row.hasEvidence ? (
+                              <span class="sd-pill ok">EVIDENCE</span>
+                            ) : (
+                              <span class="sd-pill danger">NO EVIDENCE</span>
+                            )}
+                          </div>
+
+                          <div class="sd-snippet">
+                            {row.hasEvidence && row.snippet ? (
+                              <em>{row.snippet}</em>
+                            ) : (
+                              <span class="sd-muted">
+                                No matching regex document found (or tag not applicable).
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </details>
+          )}
+          {/* <details class="sources">
             <summary>Show sources (facts)</summary>
             <ul class="facts">
               {c.facts.map((f) => (
                 <li><strong>{f.title}:</strong> {f.value}</li>
               ))}
             </ul>
-          </details>
+          </details>  */}
         </article>
       ))}
     </div>
@@ -195,6 +298,113 @@ function badgeClass(label) {
 </section>
 
 <style>
+
+  .badge.unknown {
+  background: rgba(148,163,184,.12);
+  border-color: rgba(148,163,184,.28);
+  opacity: .9;
+}
+.synergy-debug {
+  margin-top: 1rem;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 12px;
+  background: rgba(0,0,0,.18);
+  padding: .75rem 1rem;
+}
+.synergy-debug summary { cursor: pointer; opacity: .9; }
+
+.synergy-debug-inner { margin-top: .75rem; display: grid; gap: .75rem; }
+
+.synergy-debug-hero {
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  padding: .6rem .75rem;
+  background: rgba(255,255,255,.03);
+}
+.synergy-debug-hero summary { cursor: pointer; display:flex; justify-content: space-between; align-items:center; gap: .75rem; }
+
+.sd-meta { display:flex; gap: .4rem; align-items:center; }
+
+.sd-pill {
+  display:inline-block;
+  padding:.18rem .45rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  font-size:.72rem;
+  opacity:.95;
+}
+.sd-pill.ok { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.35); }
+.sd-pill.danger { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.35); }
+.sd-pill.warn { background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.35); }
+
+.sd-detected { margin-top: .5rem; display:flex; flex-wrap:wrap; gap:.35rem; }
+.sd-chip {
+  font-size: .72rem;
+  padding: .15rem .4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  opacity: .95;
+}
+
+.sd-table { margin-top: .6rem; display: grid; gap: .45rem; }
+.sd-row {
+  display: grid;
+  grid-template-columns: 260px 120px 1fr;
+  gap: .6rem;
+  align-items: start;
+  padding: .5rem .55rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.20);
+}
+.sd-row.has { border-color: rgba(16,185,129,.22); }
+.sd-row.missing { border-color: rgba(239,68,68,.18); opacity: .95; }
+
+.sd-tag code { font-size: .75rem; }
+.sd-snippet em { font-size: .78rem; opacity: .92; }
+.sd-muted { font-size: .78rem; opacity: .65; }
+
+@media (max-width: 900px) {
+  .sd-row { grid-template-columns: 1fr; }
+}
+  .synergy-item {
+  margin-bottom: 1rem;
+  padding: 0.6rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+}
+
+.synergy-text {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.synergy-evidence summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.evidence-block {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.25);
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.evidence-tag {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-bottom: 0.2rem;
+}
+
+.evidence-snippet {
+  font-style: italic;
+  opacity: 0.9;
+}
 .synergy-box{
   margin-top: 1rem;
   padding: 1rem 1.25rem;

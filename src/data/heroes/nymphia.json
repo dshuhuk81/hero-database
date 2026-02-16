@@ -29,54 +29,24 @@
     "energy": 100
   },
   "skills": [
-    {
-      "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
-      "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+      {
+        "id": "skill_1",
+        "name": "Bubble Pop",
+        "description": "Nymphia charges up briefly and fires a water bubble, dealing DMG equal to 360% of ATK to the nearest enemy and those around it.",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        }
       }
-    },
-    {
-      "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+    ],
+    "relic": {
+      "name": "",
+      "description": "",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
-    },
-    {
-      "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "",
+        "level3": "",
+        "level4": ""
       }
     }
-  ],
-  "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
-    "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    }
-  }
 }
