@@ -34,8 +34,7 @@
         "level2": "Reduces the Armor of hit enemies by 20% for 5s.",
         "level3": "Increases DMG dealt to 285% of ATK.",
         "level4": "Reduces the Armor of hit enemies by 20% for 10s."
-      },
-      "image": "/skills/diana_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -45,8 +44,7 @@
         "level2": "Increases ATK SPD to 50%.",
         "level3": "Increases Energy gained per second to 20.",
         "level4": "Extends the duration to 10s."
-      },
-      "image": "/skills/diana_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -56,8 +54,7 @@
         "level2": "Can now mark 2 enemies.",
         "level3": "Marked enemies also have their CRIT RES reduced by 10%.",
         "level4": "Marked enemies now have their Armor reduced by 25%."
-      },
-      "image": "/skills/diana_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -67,8 +64,7 @@
         "level2": "Increases the last hit’s DMG to 170% of ATK.",
         "level3": "The final hit is guaranteed to be a CRIT Hit.",
         "level4": "Increases the last hit’s DMG to 200% of ATK."
-      },
-      "image": "/skills/diana_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -78,7 +74,6 @@
       "level2": "The first time Waxing Blessing is cast in battle, ATK SPD and Move SPD bonuses are doubled.",
       "level3": "When either Diana or the moonlight-blessed ally casts an Ultimate, the other restores 100 Energy.",
       "level4": "Extra DMG dealt is increased to 150% of Diana’s ATK."
-    },
-    "image": "/skills/diana_relic.webp"
+    }
   }
 }

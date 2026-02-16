@@ -31,52 +31,52 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Blossoming Fire Lotus",
+      "description": "Nezha deals 200% ATK as DMG to enemies within 3 meters. Enters the [Lotus Embodied] state, gaining 15% Lifesteal, enhancing other skills, and dealing 90% ATK as DMG per sec to enemies within 3 meters.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Lotus Embodied reduces the Armor of nearby enemies by 10% for 2s. This effect can stack.",
+        "level3": "Increases Lifesteal gained to 30%.",
+        "level4": "The duration of Lotus Embodied extends to 15s."
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Lotus Ward",
+      "description": "Blesses two frontline allies with Soul Fire at combat start (Passive), increasing ATK by 10% and Armor & M-RES by 30% until the battle ends. When any of them falls, Nezha retrieves Soul Fire.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Soul Fire now grants 20% ATK and 40% Armor & M-RES.",
+        "level3": "Gains a shield equal to 200% of ATK when retrieving Soul Fire.",
+        "level4": "Soul Fire now grants 30% ATK and 50% Armor & M-RES."
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Windfire Charge",
+      "description": "Charges towards the enemy with the highest ATK, dealing DMG equal to 80% of ATK to the target and all enemies along the path. While in the [Lotus Embodied] state, deals DMG equal to 120% of ATK to the target and enemies along the path and knocks them down.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 100% ATK. DMG is increased to 140% ATK in the [Lotus Embodied] state.",
+        "level3": "Increases ATK by 25% while in Lotus Embodied.",
+        "level4": "Increases ATK SPD by 25% for 10s when the skill ends."
       }
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Armillary Coil",
+      "description": "Whips Cosmic Sash to pull 2 nearest enemies within 1 meter and sweeps with Fire-Tipped Spear to deal DMG equal to 100% of ATK. He deals DMG equal to 160% of ATK and knocks down enemies while in the [Lotus Embodied] state.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 120% ATK. DMG is increased to 180% ATK in the [Lotus Embodied] state.",
+        "level3": "Enemies hit by Nezha in the [Lotus Embodied] state take 20% more DMG from him for 8s.",
+        "level4": "He can now pull up to 3 enemies."
       }
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Rage of Reincarnation",
+    "description": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 15%, and reduces DMG taken by 10% for 25s. This effect can stack up to 5 times.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 30%, and reduces DMG taken by 10% for 25s. This effect can stack up to 5 times.",
+      "level3": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 30%, and reduces DMG taken by 25% for 25s. This effect can stack up to 5 times.",
+      "level4": "Gains 300 bonus Energy and increases Energy Regen by 30% at combat start."
     }
   }
 }

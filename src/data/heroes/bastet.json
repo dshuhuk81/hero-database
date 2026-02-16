@@ -34,8 +34,7 @@
         "level2": "Increases DMG per hit to 180% of ATK.",
         "level3": "Increases DMG per instance to 200% of ATK.",
         "level4": "Removes the cooldown of Feline Agility during the skill."
-      },
-      "image": "/skills/bastet_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -45,8 +44,7 @@
         "level2": "Increases DMG per hit to 110% of ATK.",
         "level3": "Reduces the Hit Rate of hit enemies by 20%.",
         "level4": "Increases DMG per hit to 120% of ATK."
-      },
-      "image": "/skills/bastet_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -56,8 +54,7 @@
         "level2": "Increases DMG dealt to 50% of ATK.",
         "level3": "Duration extends to 30s.",
         "level4": "Increases DMG dealt to 60% of ATK."
-      },
-      "image": "/skills/bastet_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -67,8 +64,7 @@
         "level2": "Dodge bonus lasts for 8s.",
         "level3": "Gains a 50% Dodge Rate.",
         "level4": "Dodge bonus lasts for 10s."
-      },
-      "image": "/skills/bastet_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -78,7 +74,6 @@
       "level2": "When dodging a hit, deals 100% ATK as DMG to the attacker.",
       "level3": "Gains 35% Dodge Rate when HP drops below 50%.",
       "level4": "When dodging a hit, deals 200% ATK as DMG to the attacker."
-    },
-    "image": "/skills/bastet_relic.webp"
+    }
   }
 }

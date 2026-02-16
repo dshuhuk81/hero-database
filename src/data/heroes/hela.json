@@ -34,8 +34,7 @@
         "level2": "Increases the DMG of each Nether Fireball to 280% of ATK.",
         "level3": "Increases the explosion DMG of each Nether Fireball to 200% of ATK.",
         "level4": "Hela shoots an extra Nether Fireball."
-      },
-      "image": "/skills/hela_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",
@@ -45,8 +44,7 @@
         "level2": "Steals HP equal to 50% of ATK from the target every 0.5s.",
         "level3": "Reduces DMG taken by 50% during the skill.",
         "level4": "Steals 50 Energy from the target every 0.5s."
-      },
-      "image": "/skills/hela_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -56,8 +54,7 @@
         "level2": "Absorbs 10% of the fallen unit's ATK.",
         "level3": "Energy Regen increases to 150.",
         "level4": "Increases ATK absorbed to 20%. (Unlocks at Lv.261)"
-      },
-      "image": "/skills/hela_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -67,8 +64,7 @@
         "level2": "Increases DMG dealt to 260% of ATK.",
         "level3": "Gains 10% bonus DMG per cast (stacking).",
         "level4": "Gains 20% bonus DMG per cast (stacking). (Unlocks at Lv.281)"
-      },
-      "image": "/skills/hela_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -78,7 +74,6 @@
       "level2": "Increases DMG bonus to 200%. (Unlock at Relic Lv.10)",
       "level3": "Upon exploding, the souls restore Energy to Hela equal to the Energy restored by Soul Devourer. (Unlock at Relic Lv.20)",
       "level4": "Increases DMG bonus to 240%. (Unlock at Relic Lv.30)"
-    },
-    "image": "/skills/hela_relic.webp"
+    }
   }
 }

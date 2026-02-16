@@ -29,52 +29,31 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Stream's Wisdom",
+      "description": "Aquarius grants all allies a shield that absorbs DMG equal to 240% of ATK for 6s.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Shield Strength increases to 270% ATK.",
+        "level3": "Shield Strength increases to 300% ATK."
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Surge",
+      "description": "Aquarius locks onto the nearest enemy and then unleashes a torrent below the target, dealing 270% ATK as DMG and knocking them down.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "DMG increases to 290% ATK.",
+        "level3": "Increases Aquarius's M-RES by 100% for 10s after casting the skill.",
+        "level4": "DMG increases to 320% ATK."
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Wavelet",
+      "description": "Aquarius applies a 6s shield to the weakest ally, absorbing DMG equal to 200% of ATK.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Shield Strength increases to 220% ATK.",
+        "level3": "The shielded unit takes 20% less DMG for the next 5s."
       }
     }
-  ],
-  "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
-    "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    }
-  }
+  ]
 }

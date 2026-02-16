@@ -45,8 +45,7 @@
         "level2": "Restores HP equal to 220% of ATK.",
         "level3": "Restores HP equal to 75% of ATK when attacked.",
         "level4": "Restores HP equal to 250% of ATK."
-      },
-      "image": "/skills/tefnut_skill_2.webp"
+      }
     },
     {
       "id": "skill_3",
@@ -56,8 +55,7 @@
         "level2": "When the shield expires, deals DMG equal to 150% of ATK to enemies within 3 meters.",
         "level3": "Shield strength increases to 300% of ATK.",
         "level4": "When the shield expires, deals DMG equal to 180% of ATK to enemies within 3 meters."
-      },
-      "image": "/skills/tefnut_skill_3.webp"
+      }
     },
     {
       "id": "skill_4",
@@ -67,8 +65,7 @@
         "level2": "Tefnut gains 50 Energy for each enemy hit by the splashes (can trigger up to 5 times per cast).",
         "level3": "Hit enemies have their M-RES reduced by 20% for 6s.",
         "level4": "Increases DMG dealt to 220% of ATK."
-      },
-      "image": "/skills/tefnut_skill_4.webp"
+      }
     }
   ],
   "relic": {
@@ -78,7 +75,6 @@
       "level2": "Allies within Soothing Rain's range take 50% less DMG.",
       "level3": "Upon taking lethal DMG, Tefnut becomes immune to that DMG and gains a Life Barrier shield. This effect can only trigger once per battle.",
       "level4": "Dispels one debuff from allies within range every 2s during Soothing Rain."
-    },
-    "image": "/skills/tefnut_relic.webp"
+    }
   }
 }
