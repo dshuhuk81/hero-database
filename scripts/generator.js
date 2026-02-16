@@ -232,62 +232,88 @@ function snippetAround(text, matchIndex, maxLen = 180) {
   return (start > 0 ? "…" : "") + s + (end < raw.length ? "…" : "");
 }
 
-// Evidence patterns pro Tag (dediziert, kein random snippet)
 const TAG_EVIDENCE_PATTERNS = {
   [SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER]: [
-    // allies + atk speed/haste
-    /\b(all allies|allies|ally)\b[\s\S]{0,120}\b(atk spd|attack speed|haste)\b/i,
-    /\b(atk spd|attack speed|haste)\b[\s\S]{0,120}\b(all allies|allies|ally)\b/i,
+    // allies + atk speed/haste (both orders)
+    /\b(all allies|allies|ally)\b[\s\S]{0,140}\b(atk\s*spd|attack\s*speed|attack\s*spd|haste)\b/i,
+    /\b(atk\s*spd|attack\s*speed|attack\s*spd|haste)\b[\s\S]{0,140}\b(all allies|allies|ally)\b/i,
+
+    // "increase allies' Attack Speed by X%"
+    /\b(increase[sd]?|grant(?:s|ed)?|provide[sd]?|boost(?:s|ed)?)\b[\s\S]{0,60}\b(all allies|allies|ally)\b[\s\S]{0,80}\b(atk\s*spd|attack\s*speed|attack\s*spd|haste)\b/i,
   ],
 
   [SYNERGY_TAGS.ATK_SPEED_SELF_ONLY]: [
-  // self-ish phrases; und NICHT "all allies/allies/ally" im näheren Umfeld
-  /\b(gains?|gain|increases?|increased|grant\w*|bonus)\b[\s\S]{0,40}\b(atk\s*spd|attack\s*speed|haste)\b(?![\s\S]{0,80}\b(all allies|allies|ally)\b)/i,
-  /\b(my|her|his|self)\b[\s\S]{0,20}\b(atk\s*spd|attack\s*speed|haste)\b/i,
-],
+    // self-ish phrasing; explicitly exclude ally words nearby
+    /\b(gains?|gain|increases?|increased|grant(?:s|ed)?|bonus)\b[\s\S]{0,50}\b(atk\s*spd|attack\s*speed|attack\s*spd|haste)\b(?![\s\S]{0,120}\b(all allies|allies|ally)\b)/i,
+    /\b(self|himself|herself)\b[\s\S]{0,40}\b(atk\s*spd|attack\s*speed|attack\s*spd|haste)\b/i,
+  ],
 
   [SYNERGY_TAGS.ENERGY_TEAM_PROVIDER]: [
-    /\b(all allies|allies|ally)\b[\s\S]{0,160}\b(energy regen|energy regeneration|restore\w* energy|gain\w* energy)\b/i,
-    /\b(energy regen|energy regeneration|restore\w* energy|gain\w* energy)\b[\s\S]{0,160}\b(all allies|allies|ally)\b/i,
-  ],
+    // allies + energy gain/restore/regen (both orders)
+    /\b(all allies|allies|ally)\b[\s\S]{0,180}\b(restore[sd]?|gain[sd]?|regenerate[sd]?|regen(?:eration)?)\b[\s\S]{0,60}\benergy\b/i,
+    /\b(restore[sd]?|gain[sd]?|regenerate[sd]?|regen(?:eration)?)\b[\s\S]{0,60}\benergy\b[\s\S]{0,180}\b(all allies|allies|ally)\b/i,
 
-  [SYNERGY_TAGS.DEF_SHRED_OR_AMP]: [
-  // enemy defense reduction only
-  /\b(reduce[sd]?|lower[sd]?|decrease[sd]?)\b[\s\S]{0,40}\b(enemy|enemies|target|their)\b[\s\S]{0,40}\b(defense|armou?r|magic\s*res|physical\s*res|resistance)\b/i,
-  /\b(defense\s*down|armou?r\s*down)\b/i,
-  /\b(armou?r\s*pen)\b/i,
-  /\b(enemy|enemies|target)\b[\s\S]{0,60}\b(takes?)\b[\s\S]{0,20}\b(increased)\b[\s\S]{0,20}\b(damage|dmg)\b/i,
-  /\b(m-?res|p-?res)\b/i
-  ],
-
-  [SYNERGY_TAGS.BASIC_ATTACK_SCALER]: [
-    // FIX: keine "unterminated group" mehr, saubere Gruppe + word boundaries
-    /\b(?:after every|every)\s+\d+\s+normal attacks?\b/i,
+    // "grants/provides Energy to allies"
+    /\b(grant(?:s|ed)?|provide[sd]?|share[sd]?)\b[\s\S]{0,60}\benergy\b[\s\S]{0,120}\b(all allies|allies|ally)\b/i,
   ],
 
   [SYNERGY_TAGS.CDR_TEAM_PROVIDER]: [
-    // reduce cooldown phrasing
-      /\b(all allies|allies|ally)\b[\s\S]{0,140}\b(reduc\w*)\b[\s\S]{0,40}\b(cooldown|skill\s*cd|cd)\b/i,
+    // allies + reduce cooldown (both orders)
+    /\b(all allies|allies|ally)\b[\s\S]{0,180}\b(reduc\w*|decreas\w*|lower\w*|shorten\w*)\b[\s\S]{0,60}\b(cooldown|cool\s*down|skill\s*cd|cd)\b/i,
+    /\b(reduc\w*|decreas\w*|lower\w*|shorten\w*)\b[\s\S]{0,60}\b(cooldown|cool\s*down|skill\s*cd|cd)\b[\s\S]{0,180}\b(all allies|allies|ally)\b/i,
 
-      // "Skill CD -30%" / "Cooldown -30%" style
-      /\b(all allies|allies|ally)\b[\s\S]{0,140}\b(skill\s*cd|cooldown|cd)\b\s*[-–—]\s*\d{1,3}%/i,
-      /\b(all allies|allies|ally)\b[\s\S]{0,140}\b(skill\s*cd|cooldown|cd)\b\s*-\s*\d{1,3}%/i,
+    // "Skill CD -30%" / "Cooldown -30%" style
+    /\b(all allies|allies|ally)\b[\s\S]{0,160}\b(skill\s*cd|cool\s*down|cooldown|cd)\b\s*[-–—]\s*\d{1,3}%\b/i,
+    /\b(all allies|allies|ally)\b[\s\S]{0,160}\b(skill\s*cd|cool\s*down|cooldown|cd)\b[\s\S]{0,40}\b(cooldown\s*reduction|cdr)\b/i,
+  ],
+
+  [SYNERGY_TAGS.DEF_SHRED_OR_AMP]: [
+    // explicit defense/armor/resistance reduction on enemies/targets
+    /\b(reduce[sd]?|lower[sd]?|decrease[sd]?|shred(?:s|ded)?)\b[\s\S]{0,60}\b(enemy|enemies|target|their)\b[\s\S]{0,80}\b(defense|armou?r|magic\s*res|physical\s*res|m-?res|p-?res|resistance)\b/i,
+    /\b(enemy|enemies|target|their)\b[\s\S]{0,80}\b(defense|armou?r|magic\s*res|physical\s*res|m-?res|p-?res|resistance)\b[\s\S]{0,40}\b(reduce[sd]?|lower[sd]?|decrease[sd]?|down)\b/i,
+
+    // "Defense Down" style
+    /\b(defense\s*down|armou?r\s*down)\b/i,
+
+    // penetration / ignore defense
+    /\b(armou?r|defense)\b[\s\S]{0,20}\b(pen(?:etration)?|ignore)\b/i,
+
+    // damage taken increased (amp)
+    /\b(enemy|enemies|target)\b[\s\S]{0,80}\b(takes?|take)\b[\s\S]{0,40}\b(increased|more)\b[\s\S]{0,20}\b(damage|dmg)\b/i,
+    /\b(increase[sd]?|amplif(?:y|ies|ied))\b[\s\S]{0,40}\b(damage|dmg)\b[\s\S]{0,60}\b(taken)\b[\s\S]{0,60}\b(enemy|enemies|target)\b/i,
+
+    // "M-RES -20%" / "Magic RES -20%" with enemy/target context (dash/percent styles)
+    /\b(enemy|enemies|target|their)\b[\s\S]{0,80}\b(m-?res|p-?res|magic\s*res|physical\s*res|resistance)\b[\s\S]{0,20}\b[-–—]\s*\d{1,3}%\b/i,
+    /\b(m-?res|p-?res|magic\s*res|physical\s*res|resistance)\b[\s\S]{0,20}\b[-–—]\s*\d{1,3}%\b[\s\S]{0,120}\b(enemy|enemies|target|their)\b/i,
+  ],
+
+  [SYNERGY_TAGS.BASIC_ATTACK_SCALER]: [
+    // "After every two attacks" / "every 3 normal attacks" / numeric or word numbers
+    /\b(?:after\s+every|every)\s+(?:\d+|one|two|three|four|five|six)\s+(?:normal\s+|basic\s+)?attacks?\b/i,
   ],
 
   [SYNERGY_TAGS.ON_HIT_SCALER]: [
     /\b(on hit|each hit|per hit|per attack)\b/i,
+    /\b(each time)\b[\s\S]{0,40}\b(hit|hits)\b/i,
+    /\b(when|upon|after)\b[\s\S]{0,30}\b(?:basic|normal)?\s*attacks?\b[\s\S]{0,20}\bhit\b/i,
   ],
 
   [SYNERGY_TAGS.FAST_STACKING_WITH_HITS]: [
-    /\b(stacks?|stacking)\b[\s\S]{0,120}\b(on hit|each hit|per hit|per attack|normal attacks?|basic attacks?)\b/i,
+    /\b(stacks?|stacking)\b[\s\S]{0,160}\b(on hit|each hit|per hit|each time|per attack|normal attacks?|basic attacks?)\b/i,
+    /\b(gains?|grant(?:s|ed)?)\b[\s\S]{0,40}\b(stacks?)\b[\s\S]{0,80}\b(on hit|each hit|per hit|per attack|basic attacks?|normal attacks?)\b/i,
   ],
 
   [SYNERGY_TAGS.ULT_DEPENDENT]: [
-    /\b(ultimate|ultimates?|ult)\b[\s\S]{0,120}\b(when|after|upon|per)\b/i,
+    // make it explicit (avoid broad "ultimate ... when/per")
+    /\b(upon|when|after)\b[\s\S]{0,40}\b(casting|cast)\b[\s\S]{0,40}\b(their|his|her)?\s*(ultimate|ult)\b/i,
+    /\b(ultimate|ult)\b[\s\S]{0,40}\bis\s+cast\b/i,
   ],
 
   [SYNERGY_TAGS.AOE_DAMAGE_PROFILE]: [
-    /\b(aoe|all enemies|nearby enemies|in a large area)\b[\s\S]{0,120}\b(dmg|damage)\b/i,
+    // area/all enemies + dmg (both orders)
+    /\b(aoe|all enemies|nearby enemies|in a (?:small|large) area|in an area)\b[\s\S]{0,160}\b(dmg|damage)\b/i,
+    /\b(dmg|damage)\b[\s\S]{0,160}\b(to|against)\b[\s\S]{0,40}\b(all enemies|nearby enemies)\b/i,
+    /\b(hits?|strike[sd]?)\b[\s\S]{0,60}\b(all enemies|nearby enemies)\b[\s\S]{0,120}\b(dmg|damage)\b/i,
   ],
 };
 
