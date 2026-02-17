@@ -227,9 +227,7 @@ function bossSkillIcon(bossId, index) {
       {bosses.bosses.map((boss, index) => (
         <article class="boss-slide" data-boss-slide data-index={index}>
           <div class="boss-layout">
-            <div class="boss-image-wrap">
-              <img class="boss-image" src={boss.image} alt={boss.name} />
-            </div>
+            <div class="boss-bg" style={`--boss-image: url(${boss.image})`} aria-hidden="true"></div>
 
             <div class="boss-content">
               <div class="boss-title">
@@ -260,7 +258,7 @@ function bossSkillIcon(bossId, index) {
 
               <div class="boss-skills">
                 <h3>Mechanics</h3>
-                <ul>
+                <ul class="boss-skill-list">
                   {boss.skills.map((sk, skillIndex) => (
                     <li class="boss-skill">
                       {sk.type !== "Passive" ? (
