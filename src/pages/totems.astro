@@ -1,0 +1,193 @@
+---
+import data from "../data/totems.json";
+import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
+
+const totems = data?.totems ?? [];
+
+function ratingColor(rating) {
+  const map = {
+    SSS: "rating-sss",
+    SS: "rating-ss",
+    S: "rating-s",
+    A: "rating-a",
+    B: "rating-b",
+    C: "rating-c"
+  };
+  return map[rating] ?? "";
+}
+---
+
+<Sidebar />
+
+<!-- TOTEM HEADER -->
+<section class="totem-header"></section>
+
+<h1 class="title">Totems</h1>
+
+<div class="content-wrapper">
+  <!-- RESULTS -->
+  <div class="resultcontent">
+    <div class="totem-grid">
+      {totems.map(totem => (
+        <article class="totem-card">
+          <img src={totem.image} alt={totem.name} class="totem-image" />
+
+          <h2>{totem.name}</h2>
+
+          {totem.rating ? (
+            <div class={`rating-badge ${ratingColor(totem.rating)}`}>
+              {totem.rating}
+            </div>
+          ) : null}
+
+          {totem.summary ? <p class="totem-summary">{totem.summary}</p> : null}
+
+          <div class="totem-effects">
+            {(totem.effects ?? []).map(e => (
+              <p>{e.description}</p>
+            ))}
+          </div>
+
+          <div class="totem-tags">
+            {(totem.tags ?? []).map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</div>
+
+<Footer />
+
+<style>
+  /* RESET & BASE */
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Spectral", "Roboto", system-ui, sans-serif;
+    background:
+      radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+      linear-gradient(to bottom, #0d0b10, #07060c);
+    color: #e6e6eb;
+  }
+
+  /* ===============================
+     PAGE LAYOUT WITH SIDEBAR
+     =============================== */
+  body {
+    margin-left: 80px; /* Sidebar width */
+  }
+
+  @media (max-width: 768px) {
+    body {
+      margin-left: 0;
+      margin-bottom: 60px; /* Mobile bottom nav */
+    }
+  }
+
+  /* TOTEM HEADER */
+  .totem-header {
+    height: 360px;
+    background-image: url("/bg.jpg");
+    background-size: cover;
+    background-position: center 150%;
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  .totem-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35)),
+      linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.45));
+  }
+
+  /* TITLE */
+  .title {
+    text-align: center;
+    margin: 32px 0;
+    font-weight: 600;
+  }
+
+  /* CONTENT WRAPPER */
+  .content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .resultcontent {
+    margin-bottom: 24px;
+    margin-top: 16px;
+  }
+
+  .totem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .totem-card {
+    background: #111;
+    padding: 18px;
+    border-radius: 12px;
+    position: relative;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+  }
+
+  .totem-image {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+  }
+
+  .rating-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  .rating-sss { background: #ff3b3b; color: #fff; }
+  .rating-ss { background: #ff7a00; color: #fff; }
+  .rating-s { background: #ffc400; color: #000; }
+  .rating-a { background: #4caf50; color: #fff; }
+  .rating-b { background: #2196f3; color: #fff; }
+  .rating-c { background: #777; color: #fff; }
+
+  .tag {
+    display: inline-block;
+    background: rgba(168, 85, 247, 0.2);
+    padding: 4px 8px;
+    margin: 4px 4px 0 0;
+    border-radius: 6px;
+    font-size: 12px;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+  }
+
+  .totem-summary {
+    font-size: 14px;
+    margin: 8px 0;
+    color: #b0b0b0;
+  }
+
+  .totem-effects {
+    font-size: 13px;
+    margin: 8px 0;
+    line-height: 1.4;
+  }
+
+  .totem-effects p {
+    margin: 4px 0;
+  }
+</style>

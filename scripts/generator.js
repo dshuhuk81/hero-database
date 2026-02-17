@@ -1,6 +1,7 @@
 // scripts/generator.js
 import fs from "node:fs/promises";
 import path from "node:path";
+import { keywordTagsForHero, fullSkillText } from "../src/utils/heroTags.js";
 
 const HERO_DIR = "src/data/heroes";
 const OUT_FILE = "src/data/derived/teamCompsByHeroId.json";
@@ -44,60 +45,6 @@ async function loadHeroes() {
     heroes.push(h);
   }
   return heroes;
-}
-
-function fullSkillText(h) {
-  const parts = [];
-  for (const sk of (h.skills || [])) {
-    if (sk?.description) parts.push(sk.description);
-    if (sk?.upgrades) parts.push(...Object.values(sk.upgrades));
-  }
-  if (h.relic?.description) parts.push(h.relic.description);
-  if (h.relic?.upgrades) parts.push(...Object.values(h.relic.upgrades));
-  return parts.join(" ");
-}
-
-// -----------------------------
-// Tags (UI helper) – fixed heal logic
-// -----------------------------
-function keywordTagsForHero(hero) {
-  const text = fullSkillText(hero).toLowerCase();
-  const tags = [];
-  const add = (label, ok) => { if (ok && !tags.includes(label)) tags.push(label); };
-
-  // Positive ally heal
-  const allyHeal =
-    /\b(heals?|restores?|recovers?)\s+(?:hp|health)?\s*(?:to)?\s*(allies?|ally)\b/.test(text) ||
-    /\b(heals?|restores?|recovers?)\s+(allies?|ally)\b/.test(text);
-
-  // Self heal (e.g. "heals Amun-Ra", "heals self")
-  const heroName = escapeRegExp(hero?.name?.toLowerCase?.() || "");
-  const selfHeal =
-    (heroName && new RegExp(`\\b(heals?|restores?|recovers?)\\s+${heroName}\\b`).test(text)) ||
-    /\bheals?\s+self\b/.test(text);
-
-  // Generic HP restore (can be self-heal; we only label as Self Heal if no Ally Heal)
-  const genericHpRestore = /\b(restores?\s+hp|recovers?\s+hp)\b/.test(text);
-
-  // Anti-heal patterns
-  const antiHeal =
-    /\b(cannot receive (?:shields? or )?healing|cannot be healed|prevents? healing|healing reduction|reduce(s|d)? healing|healing is reduced|stop(s|ped)? healing|ban(s|ned)? healing)\b/.test(text);
-
-  add("Ally Heal", allyHeal);
-  add("Self Heal", !allyHeal && (selfHeal || genericHpRestore));
-  add("Anti-Heal", antiHeal);
-
-  // Other tags
-  add("Shield", /\bshield\b/.test(text));
-  add("Cleanse", /\b(removes? (one|a) debuff|remove debuff|cleanse)\b/.test(text));
-  add("Control", /\b(stun|silence|freeze|root|sleep|charm|taunt|knock)\w*\b/.test(text));
-  add("AoE", /\b(all enemies|nearby enemies|in a large area|aoe)\b/.test(text));
-  add("Energy", /\benergy\b/.test(text));
-  add("Cooldown", /\b(cooldown|cd)\b/.test(text));
-  add("Backline", /\b(farthest enemy|back row|rear row|behind|teleport|blink)\b/.test(text));
-  add("Def Shred", /\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(text));
-
-  return tags.slice(0, 3);
 }
 
 // -----------------------------

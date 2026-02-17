@@ -1,0 +1,187 @@
+{
+  "version": "1.0",
+  "slotType": "TEAM",
+  "description": "One Totem can be equipped per team. Its effects apply to all 5 heroes in battle.",
+  "totems": [
+    {
+      "id": "all_seeing_eyes",
+      "name": "All-Seeing Eyes",
+      "rarity": "SSR",
+      "image": "/icons/totems/allseeingeyes.png",
+      "rating": "A",
+      "summary": "Early kill burst + energy spike for first slayer.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "Within the first 10s of battle, the first ally who kills an enemy restores 100 Energy and deals 15% increased DMG."
+        }
+      ],
+      "tags": ["Energy", "Burst", "Kill_Trigger"]
+    },
+    {
+      "id": "branch_of_serenity",
+      "name": "Branch of Serenity",
+      "rarity": "SSR",
+      "image": "/icons/totems/branchofserenity.png",
+      "rating": "SS",
+      "summary": "Permanent team-wide defensive scaling.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "At combat start, increases all allies' Armor and M-RES by 20% for the entire battle."
+        }
+      ],
+      "tags": ["Armor", "Magic_Resist", "Team_Defense", "Scaling"]
+    },
+    {
+      "id": "defiant_vow",
+      "name": "Defiant Vow",
+      "rarity": "SSR",
+      "image": "/icons/totems/defiantvow.png",
+      "rating": "SS",
+      "summary": "Stacking defensive scaling when focused.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "For each ally targeted by an enemy, gains 20% Armor and M-RES (stacks up to 6)."
+        }
+      ],
+      "tags": ["Armor", "Magic_Resist", "Scaling", "Focus_Reactive"]
+    },
+    {
+      "id": "horn_of_potency",
+      "name": "Horn of Potency",
+      "rarity": "SSR",
+      "image": "/icons/totems/hornofpotency.png",
+      "rating": "S",
+      "summary": "Permanent team ATK increase.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "At combat start, increases all allies' ATK by 6% for the entire battle."
+        }
+      ],
+      "tags": ["ATK", "Team_Buff", "Scaling"]
+    },
+    {
+      "id": "keystone_of_wonders",
+      "name": "Keystone of Wonders",
+      "rarity": "SSR",
+      "image": "/icons/totems/keystoneofwonders.png",
+      "rating": "SSS",
+      "summary": "Suit-based team damage and mitigation scaling.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "For each suit owned, increases allies' DMG dealt by 4% and reduces DMG taken by 4%."
+        }
+      ],
+      "tags": ["Damage_Amplify", "Damage_Reduction", "Scaling"]
+    },
+    {
+      "id": "moonglow_tear",
+      "name": "Moonglow Tear",
+      "rarity": "SSR",
+      "image": "/icons/totems/moonglowtear.png",
+      "rating": "A",
+      "summary": "Opening burst + root control from highest HP ally.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "At combat start, the ally with the highest HP deals 250% of all allies' average ATK as DMG and roots the target for 3s."
+        }
+      ],
+      "tags": ["Burst", "Control", "Root", "Opening"]
+    },
+    {
+      "id": "sanctified_blood",
+      "name": "Sanctified Blood",
+      "rarity": "SSR",
+      "image": "/icons/totems/sanctifiedblood.png",
+      "rating": "S",
+      "summary": "Periodic team healing.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "At 5s after battle start and every 15s thereafter, restores 20% max HP to the ally with the lowest HP."
+        }
+      ],
+      "tags": ["Ally_Heal", "Sustain", "Periodic"]
+    },
+    {
+      "id": "sigil_of_longevity",
+      "name": "Sigil of Longevity",
+      "rarity": "SSR",
+      "image": "/icons/totems/sigiloflongevity.png",
+      "rating": "A",
+      "summary": "Permanent team max HP increase.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "At combat start, increases all allies' max HP by 10% for the entire battle."
+        }
+      ],
+      "tags": ["HP", "Team_Buff", "Scaling"]
+    },
+    {
+      "id": "solar_scorch",
+      "name": "Solar Scorch",
+      "rarity": "SSR",
+      "image": "/icons/totems/solarscorch.png",
+      "rating": "A",
+      "summary": "Periodic long-range burst.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "At 5s after entering battle and every 20s thereafter, deals 200% of the highest ATK among allies to the farthest enemy."
+        }
+      ],
+      "tags": ["Burst", "Periodic", "Backline_Pressure"]
+    },
+    {
+      "id": "undying_staff",
+      "name": "Undying Staff",
+      "rarity": "SSR",
+      "image": "/icons/totems/undyingstaff.png",
+      "rating": "SSS",
+      "summary": "Emergency invulnerability + shield.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "When the first ally is about to fall, becomes invincible for 1.5s (once per battle)."
+        }
+      ],
+      "tags": ["Invincible", "Shield", "Emergency_Save"]
+    },
+    {
+      "id": "unsullied_lotus",
+      "name": "Unsullied Lotus",
+      "rarity": "SSR",
+      "image": "/icons/totems/unsulliedlotus.png",
+      "rating": "B",
+      "summary": "Shield + offensive boost when pushing forward.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "The first time an ally enters the enemy half, they gain a shield equal to 30% of max HP."
+        }
+      ],
+      "tags": ["Shield", "Aggressive_Play", "Frontline_Pressure"]
+    },
+    {
+      "id": "windrunners_grace",
+      "name": "Windrunner's Grace",
+      "rarity": "SSR",
+      "image": "/icons/totems/windrunnersgrace.png",
+      "rating": "SS",
+      "summary": "Opening hypercarry acceleration.",
+      "effects": [
+        {
+          "level": 1,
+          "description": "Upon entering battle, grants the ally with the highest ATK 50% ATK SPD for 10s."
+        }
+      ],
+      "tags": ["ATK_Speed", "Carry_Enable", "Opening"]
+    }
+  ]
+}

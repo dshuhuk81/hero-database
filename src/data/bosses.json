@@ -14,6 +14,7 @@
       "class": "Tank",
       "image": "/bosses/baphomet.webp",
       "summary": "High sustain boss with defensive stance and energy-drain mechanics.",
+      "strategyNotes": "Prioritize Energy Regen on supports to counter pentacle drain. During defensive stance, save ultimates and focus on non-ult damage to drain boss energy faster. Keep supports close to DPS to cleanse silence debuff immediately.",
       "mechanics": [
         "Energy drain zones (pentacle) every 3s",
         "Defensive stance reduces damage heavily",
@@ -89,6 +90,7 @@
       "class": "Tank",
       "image": "/bosses/demonic_horse.webp",
       "summary": "Burst-damage boss with charge + frontal pressure, scaling via Berserk on HP loss.",
+      "strategyNotes": "Position tank to absorb charge attacks. Spread formation to minimize frontal flame damage. Burst DPS early before Berserk scaling ramps up. Control/stun during charge windup to interrupt.",
       "mechanics": [
         "Charge through enemies (high burst)",
         "Frontal flames (pressure on front)",
@@ -168,6 +170,7 @@
       "class": "Tank",
       "image": "/bosses/epica.webp",
       "summary": "Control-heavy boss: repeated random-target damage + long root cage with knockback, scaling via Berserk.",
+      "strategyNotes": "Cleanse support essential to remove root debuffs. Shield/heal random targets during channel windows. Position backline carefully to avoid knockback disruption. Fast burst to prevent Berserk scaling.",
       "mechanics": [
         "Repeated random-target damage over time (8s channel)",
         "Roots a random enemy for 10s + knocks back nearby units",
@@ -248,6 +251,7 @@
       "class": "Tank",
       "image": "/bosses/isthar_vi.webp",
       "summary": "Barrier-based boss that punishes teams outside the umbrella and swings fights with knockback and large battlefield-wide bursts.",
+      "strategyNotes": "Stay inside umbrella barrier for full damage output. Shield heroes critical to block knockback and AoE bursts. Time ultimates during burst windows when umbrella protection is active. Single-target DPS vastly preferred over AoE heroes.",
       "mechanics": [
         "Umbrella barrier: units outside deal 80% less damage",
         "Knockback pulse; shielded units are immune",
