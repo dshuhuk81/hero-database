@@ -1,0 +1,330 @@
+{
+  "version": "1.3",
+  "autoRules": {
+  "goal": "safe",
+  "notes": "Pick a comp that can survive silences..."
+    },
+  "bosses": [
+    {
+      "id": "baphomet",
+      "name": "Baphomet",
+      "mode": "Torment Rift",
+      "battlepower": "4500M",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "/bosses/baphomet.webp",
+      "summary": "High sustain boss with defensive stance and energy-drain mechanics.",
+      "mechanics": [
+        "Energy drain zones (pentacle) every 3s",
+        "Defensive stance reduces damage heavily",
+        "Targets top DPS: grants ATK SPD but silences + self-damage"
+      ],
+      "mechanicTags": [
+        "ENERGY_DRAIN",
+        "DAMAGE_REDUCTION_PHASE",
+        "TARGETS_TOP_DPS",
+        "SILENCE",
+        "DOT_ON_TOP_DPS",
+        "RAMPING_AURA"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "Abyssal Sin Retribution",
+          "description": "Baphomet enters a defensive stance, reducing DMG taken by 66.6% and dealing DMG equal to 66.6% of ATK per sec to all targets. Energy is not deducted right away; instead loses 66.6% Energy when taking non-Ultimate DMG. Ends when Energy is depleted.",
+          "mechanics": ["Huge DR window", "Non-ultimate damage drains boss energy"],
+          "mechanicTags": ["DAMAGE_REDUCTION_PHASE", "ENERGY_INTERACTION_NON_ULT_DAMAGE"]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Abyssal Annihilation Rush",
+          "description": "Upon entering, lays down a pentacle, increasing ATK SPD of all units and dealing % max HP damage + draining Energy every 3s. Boosts the pentacle every 25s (stacks up to 3).",
+          "mechanics": ["Persistent zone", "Energy drain", "Ramps over time"],
+          "mechanicTags": ["ENERGY_DRAIN", "PERCENT_HP_DAMAGE", "RAMPING_AURA", "ATK_SPEED_GLOBAL"]
+        },
+        {
+          "id": "skill_3",
+          "type": "Skill",
+          "name": "Corrupt Gift of Silence",
+          "description": "Infuses demonic power into the unit currently dealing the highest DMG. Target gains ATK SPD, but takes DMG per sec and is silenced for 10s.",
+          "mechanics": ["Targets top DPS", "Silence", "Self-damage tradeoff"],
+          "mechanicTags": ["TARGETS_TOP_DPS", "SILENCE", "DOT_ON_TOP_DPS", "ATK_SPEED_BUFF_TO_TARGET"]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "baphomet_dps_meta",
+          "label": "Max Damage (Meta)",
+          "heroes": ["hladgunnr", "cashien", "yuelao", "dionysus", "isis"],
+          "reason": "High sustained DPS with strong energy/cooldown support to keep rotations running under energy-drain pressure.",
+          "notes": ["Keep main DPS protected during silence windows", "Energy support is key vs pentacle drain"],
+          "source": "manual"
+        },
+        {
+          "id": "baphomet_safe",
+          "label": "Safer / More Stable",
+          "heroes": [],
+          "reason": "More defensive stability if your DPS gets punished by silence/self-damage.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "safe",
+            "preferHeroTags": ["Shield", "Ally Heal", "Cleanse", "Energy", "Cooldown"],
+            "avoidHeroTags": ["AoE"],
+            "minTagCounts": { "Energy": 1, "Cooldown": 1 },
+            "notes": "Pick a comp that can survive silences on top DPS + sustain through ramping aura."
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "demonic_horse",
+      "name": "Demonic Horse",
+      "mode": "Grim Surge",
+      "battlepower": "4500M",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "/bosses/demonic_horse.webp",
+      "summary": "Burst-damage boss with charge + frontal pressure, scaling via Berserk on HP loss.",
+      "mechanics": [
+        "Charge through enemies (high burst)",
+        "Frontal flames (pressure on front)",
+        "Berserk: losing HP increases DEF and ATK"
+      ],
+      "mechanicTags": [
+        "CHARGE_ATTACK",
+        "FRONTAL_DAMAGE",
+        "BERSERK_SCALING"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "Haunting Nightmare",
+          "description": "Summons a spectral horse to charge through all enemies dealing massive DMG.",
+          "mechanics": ["Charge burst", "Teamwide threat"],
+          "mechanicTags": ["CHARGE_ATTACK", "AOE_BURST"]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Soulflame",
+          "description": "Breathes flames, dealing massive DMG to enemies ahead.",
+          "mechanics": ["Frontal damage / cone pressure"],
+          "mechanicTags": ["FRONTAL_DAMAGE"]
+        },
+        {
+          "id": "passive_1",
+          "type": "Passive",
+          "name": "Berserk",
+          "description": "Losing HP increases DEF and ATK.",
+          "mechanics": ["Scaling over fight duration"],
+          "mechanicTags": ["BERSERK_SCALING", "RAMPING_AURA"]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "demonic_horse_dps",
+          "label": "Max Damage (Auto)",
+          "heroes": [],
+          "reason": "Prioritizes high PvE score while keeping enough sustain to survive charge + frontal pressure.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "maxDamage",
+            "preferHeroTags": ["Energy", "Cooldown", "AoE"],
+            "avoidHeroTags": ["AoE"],
+            "minTagCounts": { "Energy": 1 },
+            "notes": "Aim for fast rotations + consistent DPS; keep baseline sustain for charge windows."
+          }
+        },
+        {
+          "id": "demonic_horse_safe",
+          "label": "Safer / Stable (Auto)",
+          "heroes": [],
+          "reason": "More survivability against charge bursts and frontal damage patterns.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "safe",
+            "preferHeroTags": ["Shield", "Ally Heal", "Cleanse", "Energy"],
+            "avoidHeroTags": ["AoE"],
+            "minTagCounts": { "Shield": 1, "Ally Heal": 1 },
+            "notes": "Shield/heal coverage helps stabilize against burst patterns; Energy keeps support loops running."
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "epica",
+      "name": "Epica",
+      "mode": "Grim Surge",
+      "battlepower": "4500M",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "/bosses/epica.webp",
+      "summary": "Control-heavy boss: repeated random-target damage + long root cage with knockback, scaling via Berserk.",
+      "mechanics": [
+        "Repeated random-target damage over time (8s channel)",
+        "Roots a random enemy for 10s + knocks back nearby units",
+        "Berserk: losing HP increases DEF and ATK"
+      ],
+      "mechanicTags": [
+        "RANDOM_TARGET_DOT",
+        "ROOT",
+        "KNOCKBACK",
+        "BERSERK_SCALING"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "Death Blossom",
+          "description": "Epica summons souls, dealing DMG equal to 40% of ATK to 2 random enemies every 0.5s for 8s.",
+          "mechanics": ["Random-target sustained damage"],
+          "mechanicTags": ["RANDOM_TARGET_DOT"]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Resentment Cage",
+          "description": "Roots a random enemy for 10s and knocks back all units around it. Deals DMG equal to 100% of ATK per sec to the rooted unit.",
+          "mechanics": ["Hard CC (root) + displacement", "High single-target DoT on rooted unit"],
+          "mechanicTags": ["ROOT", "KNOCKBACK", "SINGLE_TARGET_DOT", "RANDOM_TARGET"]
+        },
+        {
+          "id": "passive_1",
+          "type": "Passive",
+          "name": "Berserk",
+          "description": "Losing HP increases DEF and ATK.",
+          "mechanics": ["Scaling over fight duration"],
+          "mechanicTags": ["BERSERK_SCALING", "RAMPING_AURA"]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "epica_dps",
+          "label": "Max Damage (Auto)",
+          "heroes": [],
+          "reason": "Optimized for PvE score/rotations while tolerating random-target pressure.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "maxDamage",
+            "preferHeroTags": ["Energy", "Cooldown", "AoE"],
+            "avoidHeroTags": ["AoE"],
+            "minTagCounts": { "Energy": 1, "Cooldown": 1 },
+            "notes": "Energy+Cooldown helps maintain ult cycles; AoE helps keep overall output high during channels."
+          }
+        },
+        {
+          "id": "epica_safe",
+          "label": "Safer / Stable (Auto)",
+          "heroes": [],
+          "reason": "Counters random-target damage + long root windows with sustain/cleanse coverage.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "safe",
+            "preferHeroTags": ["Ally Heal", "Shield", "Cleanse", "Energy"],
+            "avoidHeroTags": ["AoE"],
+            "minTagCounts": { "Ally Heal": 1, "Shield": 1 },
+            "notes": "Random-target pressure + root cages punish squishy DPS; sustain layers reduce wipes and keep damage uptime."
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "isthar_vi",
+      "name": "Isthar VI",
+      "mode": "Torment Rift",
+      "battlepower": "4500M",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "/bosses/isthar_vi.webp",
+      "summary": "Barrier-based boss that punishes teams outside the umbrella and swings fights with knockback and large battlefield-wide bursts.",
+      "mechanics": [
+        "Umbrella barrier: units outside deal 80% less damage",
+        "Knockback pulse; shielded units are immune",
+        "Battlefield-wide bursts; shields can negate damage",
+        "Massive AoE burst with ATK SPD/Move SPD slow; reduced damage inside umbrella"
+      ],
+      "mechanicTags": [
+        "DAMAGE_REDUCTION_PHASE",
+        "KNOCKBACK",
+        "AOE_BURST"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "Divine Canopy",
+          "description": "Opens a giant umbrella barrier at combat start. Units outside the barrier deal 80% less DMG to Isthar.",
+          "mechanics": ["Large barrier zone", "Damage reduction for units outside"],
+          "mechanicTags": ["DAMAGE_REDUCTION_PHASE"]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Divine Banishment",
+          "description": "Knocks back surrounding enemies. Units with a shield are immune to knockback.",
+          "mechanics": ["AoE knockback", "Shielded units resist"],
+          "mechanicTags": ["KNOCKBACK"]
+        },
+        {
+          "id": "skill_3",
+          "type": "Skill",
+          "name": "Goblet of Libation",
+          "description": "Casts Sacred Downpour on all units, dealing burst DMG to all targets. Enemies with a shield can negate the DMG by losing their shield.",
+          "mechanics": ["Battlefield-wide burst", "Shields can negate damage"],
+          "mechanicTags": ["AOE_BURST"]
+        },
+        {
+          "id": "skill_4",
+          "type": "Skill",
+          "name": "Sacred Ablution",
+          "description": "Casts Sacred Ablution on all units, dealing massive DMG and reducing ATK SPD & Move SPD. Units inside the giant umbrella barrier take reduced DMG.",
+          "mechanics": ["Battlefield-wide burst", "ATK SPD/Move SPD slow", "Damage reduction inside barrier"],
+          "mechanicTags": ["AOE_BURST", "DAMAGE_REDUCTION_PHASE"]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "isthar_vi_dps",
+          "label": "Max Damage (Auto)",
+          "heroes": [],
+          "reason": "Prioritizes strong PvE output while valuing shields to counter knockback and burst damage.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "maxDamage",
+            "preferHeroTags": ["Shield", "Energy", "Cooldown"],
+            "avoidHeroTags": ["AoE"],
+            "minTagCounts": { "Shield": 1, "Energy": 1 },
+            "notes": "Shields mitigate knockback and absorb burst windows; Energy/Cooldown keeps rotations online."
+          }
+        },
+        {
+          "id": "isthar_vi_safe",
+          "label": "Safer / Stable (Auto)",
+          "heroes": [],
+          "reason": "Adds extra sustain and shield coverage to survive repeated battlefield-wide bursts.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "safe",
+            "preferHeroTags": ["Shield", "Ally Heal", "Cleanse", "Energy"],
+            "avoidHeroTags": ["AoE"],
+            "minTagCounts": { "Shield": 1, "Ally Heal": 1 },
+            "notes": "Shield/heal coverage reduces wipe risk during umbrella and burst phases."
+          }
+        }
+      ]
+    }
+  ]
+}

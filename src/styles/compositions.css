@@ -1,0 +1,307 @@
+   /* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+}
+
+/* ===============================
+   PAGE LAYOUT WITH SIDEBAR
+   =============================== */
+body {
+  margin-left: 80px; /* Sidebar width */
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px; /* Mobile bottom nav */
+  }
+}
+/* src/styles/compositions.css */
+
+/* ---------------------------
+   Boss Page Layout
+--------------------------- */
+.boss-page{
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin:0;
+  border-radius: 0;
+}
+
+.boss-carousel{
+  position: relative;
+  margin: 0 auto;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+}
+
+.boss-slides{
+  width: 100%;
+}
+
+.boss-slide{
+  display: none;
+  width: 100%;
+}
+
+.boss-slide.is-active{
+  display: block;
+}
+.notes{
+ font-size: 13px;
+ line-height: 1.4;
+}
+.boss-skills {
+  font-size: 14px;
+  line-height: 130%;
+  margin-top: 4px;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+.boss-skill{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 6px 0;
+}
+
+.boss-skill-desc{
+  margin-top: 4px;
+}
+.boss-meta{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;  
+}
+.skill-icon{
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,.12);
+}
+.boss-layout{
+  min-height: calc(100vh - 160px);
+  padding: 28px;
+  border-radius: 0;
+  border: 0px solid rgba(255,255,255,.08);
+  background: linear-gradient(120deg, rgba(16,18,28,0.85), rgba(10,12,18,0.9));
+  box-shadow: 0 28px 80px rgba(0,0,0,0.45);
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.boss-image-wrap{
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 70%);
+  padding: 20px;
+}
+
+.boss-image{
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: scale(1.02);
+}
+
+.boss-content{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.boss-title h2{
+  margin: 0 0 10px 0;
+  font-size: 2.2rem;
+  letter-spacing: 0.02em;
+}
+
+.boss-kicker{
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.boss-summary{
+  margin: 10px 0 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* ---------------------------
+   Boss Comps (2 blocks)
+--------------------------- */
+.boss-comps{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+@media (max-width: 900px){
+  .boss-comps{ grid-template-columns: 1fr; }
+}
+
+.comp-block{
+  padding: 14px 14px 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  background: rgba(255,255,255,.03);
+}
+
+.comp-block h3{
+  margin: 0 0 10px 0;
+  font-size: .95rem;
+  letter-spacing: .02em;
+  opacity: .95;
+}
+
+/* 5 heroes grid/flow */
+.comp-heroes{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 6px 0 10px;
+}
+
+/* ---------------------------
+   Hero Mini Cards (Boss page)
+--------------------------- */
+.hero-mini{
+  width: 92px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: linear-gradient(135deg, rgba(30,41,59,0.45), rgba(15,23,42,0.65));
+  overflow: hidden;
+  text-align: center;
+}
+
+.hero-mini img{
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.hero-mini span{
+  display: block;
+  padding: 6px 6px 8px;
+  font-size: .78rem;
+  opacity: .95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reason{
+  margin: 6px 0 0 0;
+  font-size: .88rem;
+  line-height: 1.4;
+  opacity: .85;
+}
+
+.boss-nav{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  color: #f4f1ff;
+  font-size: 2rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  box-shadow: 0 12px 26px rgba(0,0,0,0.35);
+  z-index: 3;
+}
+
+.boss-nav:hover{
+  background: rgba(255,255,255,0.16);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.boss-nav-left{ left: 24px; }
+.boss-nav-right{ right: 24px; }
+
+@media (max-width: 1100px){
+  .boss-layout{
+    grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  }
+  .boss-nav-left{ left: 0; }
+  .boss-nav-right{ right: 0; }
+}
+
+@media (max-width: 900px){
+  .boss-layout{
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+  .boss-image-wrap{
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .boss-nav{
+    width: 46px;
+    height: 46px;
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 600px){
+  .boss-layout{
+    min-height: auto;
+  }
+  .boss-comps{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------
+   Optional: Shared “pill” utility
+   (falls du sie in Boss-UI nutzen willst)
+--------------------------- */
+.pill{
+  display:inline-block;
+  padding:.35rem .6rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  font-size:.85rem;
+  opacity:.95;
+}
+
+.pill-icon{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-icon{
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
