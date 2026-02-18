@@ -13,9 +13,10 @@
     "delusionsDen": "",
     "torrentRift": "",
     "pvp": "A",
-        "pve": "SSS"
+    "pve": "SSS"
   },
   "stats": {
+    "might": 0,
     "hp": 12840,
     "atk": 842,
     "armor": 620,
@@ -25,8 +26,24 @@
     "critRate": 12,
     "critRes": 10,
     "critDmgBonus": 50,
-    "critDmgReduction": 20,
-    "energy": 100
+    "critDmgRed": 20,
+    "energy": 100,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
   "skills": [
     {

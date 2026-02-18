@@ -13,17 +13,37 @@
     "delusionsDen": "",
     "torrentRift": "",
     "pvp": "A",
-        "pve": "SSS"
+    "pve": "SSS"
   },
   "stats": {
-    "hp": 244134,
-    "atk": 25005,
-    "armor": 5089,
-    "magicRes": 4965,
+    "might": 107000,
+    "hp": 321219,
+    "atk": 35698,
+    "armor": 6835,
+    "magicRes": 7100,
     "dodgeRate": 7,
-    "hitBonus": 0,
+    "hitBonus": 1,
     "critRate": 4,
-    "critRes": 8
+    "critRes": 8,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 9,
+    "pDmgRed": 8,
+    "mDmgBonus": 5,
+    "mDmgRed": 6,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
   "skills": [
     {
@@ -34,8 +54,7 @@
         "level2": "Restores HP equal to 175% of ATK per second.",
         "level3": "Enemies inside the area have their ATK reduced by 30%.",
         "level4": "Restores HP equal to 200% of ATK per second."
-      },
-      "image": "/skills/tefnut_skill_1.webp"
+      }
     },
     {
       "id": "skill_2",

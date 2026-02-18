@@ -16,64 +16,84 @@
     "pve": "A"
   },
   "stats": {
-    "hp": 254656,
-    "atk": 25993,
-    "armor": 5285,
-    "magicRes": 5179,
+    "might": 107000,
+    "hp": 320446,
+    "atk": 35557,
+    "armor": 6823,
+    "magicRes": 7074,
     "dodgeRate": 7,
-    "hitBonus": 0,
+    "hitBonus": 1,
     "critRate": 4,
-    "critRes": 8
+    "critRes": 8,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 9,
+    "pDmgRed": 8,
+    "mDmgBonus": 5,
+    "mDmgRed": 6,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
   "skills": [
-  {
-    "id": "skill_1",
-    "name": "Cancer's Dance",
-    "description": "Heals surrounding allies 3 times, each restoring HP equal to 100% of Cancer's ATK + 70 and removing 1 debuff.",
-    "upgrades": {
-      "level2": "The unit receiving the final heal gains 15% increased ATK for 5s.",
-      "level3": "Restores HP equal to 120% ATK per heal.",
-      "level4": "The ATK buff now lasts 10s."
+    {
+      "id": "skill_1",
+      "name": "Cancer's Dance",
+      "description": "Heals surrounding allies 3 times, each restoring HP equal to 100% of Cancer's ATK + 70 and removing 1 debuff.",
+      "upgrades": {
+        "level2": "The unit receiving the final heal gains 15% increased ATK for 5s.",
+        "level3": "Restores HP equal to 120% ATK per heal.",
+        "level4": "The ATK buff now lasts 10s."
+      }
+    },
+    {
+      "id": "skill_2",
+      "name": "Nourish",
+      "description": "Restores HP equal to 250% ATK to the weakest ally.",
+      "upgrades": {
+        "level2": "Healing increases to 270%.",
+        "level3": "Now heals 2 allies.",
+        "level4": "Healing increases to 300%."
+      }
+    },
+    {
+      "id": "skill_3",
+      "name": "Crab Shell",
+      "description": "When an ally drops below 30% HP, they gain Super Armor for 6s and a shield equal to 300% of ATK. It can trigger only once per battle.",
+      "upgrades": {
+        "level2": "Immediately restores 100 Energy when triggered.",
+        "level3": "Shield Strength increases to 400% ATK.",
+        "level4": "Immediately restores 200 Energy when triggered. (Unlocks at Lv.261)"
+      }
+    },
+    {
+      "id": "skill_4",
+      "name": "Shelter",
+      "description": "Increases DMG RED of the nearest frontline ally by 15% during battle.",
+      "upgrades": {
+        "level2": "Increases DMG RED to 20%.",
+        "level3": "Increases that unit's M-RES by an additional 50%.",
+        "level4": "Gains 30% Effect RES. (Unlocks at Lv.281)"
+      }
     }
-  },
-  {
-    "id": "skill_2",
-    "name": "Nourish",
-    "description": "Restores HP equal to 250% ATK to the weakest ally.",
+  ],
+  "relic": {
+    "name": "Vanguard Crab",
+    "description": "Additionally grants the nearest frontline ally Crab Shell once at combat start.",
     "upgrades": {
-      "level2": "Healing increases to 270%.",
-      "level3": "Now heals 2 allies.",
-      "level4": "Healing increases to 300%."
-    }
-  },
-  {
-    "id": "skill_3",
-    "name": "Crab Shell",
-    "description": "When an ally drops below 30% HP, they gain Super Armor for 6s and a shield equal to 300% of ATK. It can trigger only once per battle.",
-    "upgrades": {
-      "level2": "Immediately restores 100 Energy when triggered.",
-      "level3": "Shield Strength increases to 400% ATK.",
-      "level4": "Immediately restores 200 Energy when triggered. (Unlocks at Lv.261)"
-    }
-  },
-  {
-    "id": "skill_4",
-    "name": "Shelter",
-    "description": "Increases DMG RED of the nearest frontline ally by 15% during battle.",
-    "upgrades": {
-      "level2": "Increases DMG RED to 20%.",
-      "level3": "Increases that unit's M-RES by an additional 50%.",
-      "level4": "Gains 30% Effect RES. (Unlocks at Lv.281)"
+      "level2": "Crab Shell increases the target's Armor and M-RES by 25%. (Unlock at Relic Lv.10)",
+      "level3": "Additionally grants all frontline allies Crab Shell once at combat start. (Unlock at Relic Lv.20)",
+      "level4": "Crab Shell increases the target's Armor and M-RES by 50%. (Unlock at Relic Lv.30)"
     }
   }
-],
-"relic": {
-  "name": "Vanguard Crab",
-  "description": "Additionally grants the nearest frontline ally Crab Shell once at combat start.",
-  "upgrades": {
-    "level2": "Crab Shell increases the target's Armor and M-RES by 25%. (Unlock at Relic Lv.10)",
-    "level3": "Additionally grants all frontline allies Crab Shell once at combat start. (Unlock at Relic Lv.20)",
-    "level4": "Crab Shell increases the target's Armor and M-RES by 50%. (Unlock at Relic Lv.30)"
-  }
-}
 }

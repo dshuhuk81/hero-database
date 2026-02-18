@@ -16,6 +16,7 @@
     "pve": "A"
   },
   "stats": {
+    "might": 0,
     "hp": 12840,
     "atk": 842,
     "armor": 620,
@@ -25,58 +26,74 @@
     "critRate": 12,
     "critRes": 10,
     "critDmgBonus": 50,
-    "critDmgReduction": 20,
-    "energy": 100
+    "critDmgRed": 20,
+    "energy": 100,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
-  "skills": [
+    "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "The Ultimate Snowball",
+      "description": "Ullr instantly freezes the nearest enemy into a giant snowball, charges up, and then delivers a powerful charged attack, dealing DMG equal to 500% of his ATK and launching them 10 meters away.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Increases DMG of Charged Attack to 520% ATK.",
+        "level3": "Targets launched will be stunned for 2s upon landing.",
+        "level4": "Increases DMG of Charged Attack to 550% ATK."
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Shackle of Pain",
+      "description": "Shackles the nearest enemy with chains, then deals DMG equal to 100% of ATK to them 4 times.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG per instance to 110% ATK.",
+        "level3": "Restores 20% of max HP if the target is defeated while the skill is active.",
+        "level4": "Increases DMG per instance to 120% ATK."
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Absolute Zero",
+      "description": "Ullr creates a Frost Chain with the nearest backline ally for the entire battle. 10% of the DMG taken by the linked unit is redirected to Ullr. When the ally's HP falls below 30%, Ullr instantly blinks in front of them, encasing them in a snowball for 3s and restoring HP equal to 250% of his ATK to them per sec. This effect can only trigger once per battle.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Restores HP equal to 300% ATK per sec.",
+        "level3": "Restores 80 Energy per sec.",
+        "level4": "20% of the DMG taken by linked units is redirected to Ullr."
       }
     },
     {
       "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Bloodstained Bond",
+      "description": "Every 15s, Ullr consumes 20% of his current HP to grant himself a shield equal to 25% of his max HP for 10s.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Shield Strength increases to 30% of max HP.",
+        "level3": "Restores 5% of max HP per sec when the shield is active.",
+        "level4": "Shield Strength increases to 35% of max HP."
       }
     }
   ],
   "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+    "name": "Deadly Thrill",
+    "description": "Reduces Shackle of Pain's CD from 15s to 10s.",
     "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
+      "level2": "Shackle of Pain redirects 20% DMG taken to restrained enemies.",
+      "level3": "Reduces Shackle of Pain's CD to 7s.",
+      "level4": "Shackle of Pain redirects 40% DMG taken to restrained enemies."
     }
   }
 }

@@ -13,9 +13,10 @@
     "delusionsDen": "",
     "torrentRift": "",
     "pvp": "A",
-        "pve": "S"
+    "pve": "S"
   },
   "stats": {
+    "might": 0,
     "hp": 252997,
     "atk": 25831,
     "armor": 5256,
@@ -24,57 +25,75 @@
     "hitBonus": 0,
     "critRate": 10,
     "critRes": 8,
-    "critDmgBonus": 5
+    "critDmgBonus": 5,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
   "skills": [
-  {
-    "id": "skill_1",
-    "name": "Great Rising Gale",
-    "description": "Fengyi channels all whirlwinds, dealing DMG equal to 280% of ATK to targets in a large area and consuming all her whirlwinds. Each whirlwind deals 15% of ATK as extra DMG.",
-    "upgrades": {
-      "level2": "Each whirlwind deals 30% of ATK as extra DMG.",
-      "level3": "ATK bonus increases to 320%.",
-      "level4": "Restores 30 Energy for each whirlwind she has when casting a skill."
+    {
+      "id": "skill_1",
+      "name": "Great Rising Gale",
+      "description": "Fengyi channels all whirlwinds, dealing DMG equal to 280% of ATK to targets in a large area and consuming all her whirlwinds. Each whirlwind deals 15% of ATK as extra DMG.",
+      "upgrades": {
+        "level2": "Each whirlwind deals 30% of ATK as extra DMG.",
+        "level3": "ATK bonus increases to 320%.",
+        "level4": "Restores 30 Energy for each whirlwind she has when casting a skill."
+      }
+    },
+    {
+      "id": "skill_2",
+      "name": "Billowing Sleeves",
+      "description": "Fengyi swings her sleeves, firing a tornado at the nearest target and dealing DMG equal to 200% of ATK to all enemies in a straight line.",
+      "upgrades": {
+        "level2": "ATK bonus increases to 220%.",
+        "level3": "Reduces the M-RES of hit units by 20%.",
+        "level4": "ATK bonus increases to 250%. (Unlocks at Lv.281)"
+      }
+    },
+    {
+      "id": "skill_3",
+      "name": "Slumbering Breeze",
+      "description": "Fengyi gains 2 whirlwinds upon entering battle. Each whirlwind grants Fengyi 15% ATK.",
+      "upgrades": {
+        "level2": "Increases every whirlwind's ATK bonus to 20%.",
+        "level3": "Fengyi gains 3 whirlwinds upon entering battle.",
+        "level4": "Increases every whirlwind's ATK bonus to 25%. (Unlocks at Lv.261)"
+      }
+    },
+    {
+      "id": "skill_4",
+      "name": "Drifting Petals",
+      "description": "The first time an enemy Deity's HP drops below 80%, Fengyi deals DMG equal to 150% of ATK to that Deity and gains a whirlwind. Fengyi can have a maximum of 4 whirlwinds at once.",
+      "upgrades": {
+        "level2": "ATK bonus increases to 165%.",
+        "level3": "Maximum whirlwinds +2.",
+        "level4": "ATK bonus increases to 180%."
+      }
     }
-  },
-  {
-    "id": "skill_2",
-    "name": "Billowing Sleeves",
-    "description": "Fengyi swings her sleeves, firing a tornado at the nearest target and dealing DMG equal to 200% of ATK to all enemies in a straight line.",
+  ],
+  "relic": {
+    "name": "Vortex of Grace",
+    "description": "Releases Great Rising Gale to create 1 whirlwind.",
     "upgrades": {
-      "level2": "ATK bonus increases to 220%.",
-      "level3": "Reduces the M-RES of hit units by 20%.",
-      "level4": "ATK bonus increases to 250%. (Unlocks at Lv.281)"
-    }
-  },
-  {
-    "id": "skill_3",
-    "name": "Slumbering Breeze",
-    "description": "Fengyi gains 2 whirlwinds upon entering battle. Each whirlwind grants Fengyi 15% ATK.",
-    "upgrades": {
-      "level2": "Increases every whirlwind's ATK bonus to 20%.",
-      "level3": "Fengyi gains 3 whirlwinds upon entering battle.",
-      "level4": "Increases every whirlwind's ATK bonus to 25%. (Unlocks at Lv.261)"
-    }
-  },
-  {
-    "id": "skill_4",
-    "name": "Drifting Petals",
-    "description": "The first time an enemy Deity's HP drops below 80%, Fengyi deals DMG equal to 150% of ATK to that Deity and gains a whirlwind. Fengyi can have a maximum of 4 whirlwinds at once.",
-    "upgrades": {
-      "level2": "ATK bonus increases to 165%.",
-      "level3": "Maximum whirlwinds +2.",
-      "level4": "ATK bonus increases to 180%."
+      "level2": "Releases Great Rising Gale to create 2 whirlwinds.",
+      "level3": "Restores 50 Energy when Fengyi gains a whirlwind. (Unlock at Relic Lv.20)",
+      "level4": "Releases Great Rising Gale to create 3 whirlwinds. (Unlock at Relic Lv.30)"
     }
   }
-],
-"relic": {
-  "name": "Vortex of Grace",
-  "description": "Releases Great Rising Gale to create 1 whirlwind.",
-  "upgrades": {
-    "level2": "Releases Great Rising Gale to create 2 whirlwinds.",
-    "level3": "Restores 50 Energy when Fengyi gains a whirlwind. (Unlock at Relic Lv.20)",
-    "level4": "Releases Great Rising Gale to create 3 whirlwinds. (Unlock at Relic Lv.30)"
-  }
-}
 }

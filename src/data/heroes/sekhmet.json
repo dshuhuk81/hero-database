@@ -16,6 +16,7 @@
     "pve": "A"
   },
   "stats": {
+    "might": 0,
     "hp": 246437,
     "atk": 24949,
     "armor": 5123,
@@ -25,10 +26,26 @@
     "critRate": 6,
     "critRes": 2,
     "critDmgBonus": 0,
-    "critDmgReduction": 0,
-    "energy": 0
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
-   "skills": [
+  "skills": [
     {
       "id": "skill_1",
       "name": "Taste My Claws!",

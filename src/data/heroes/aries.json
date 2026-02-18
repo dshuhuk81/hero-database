@@ -16,64 +16,63 @@
     "pvp": "A"
   },
   "stats": {
-    "hp": 246417,
-    "atk": 25038,
-    "armor": 5117,
-    "magicRes": 4930,
+    "might": 107000,
+    "hp": 35483,
+    "atk": 320147,
+    "armor": 6841,
+    "magicRes": 7042,
     "dodgeRate": 1,
-    "hitBonus": 12.5,
+    "hitBonus": 13.5,
     "critRate": 6,
-    "critRes": 2
+    "critRes": 2,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 9,
+    "pDmgRed": 8,
+    "mDmgBonus": 5,
+    "mDmgRed": 6,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
   "skills": [
     {
       "id": "skill_1",
-      "name": "Soothing Rain",
-      "description": "Restores HP to allies over time.",
+      "name": "Tenacious Bloodline",
+      "description": "Permanently gains 20% Lifesteal in battle.",
       "upgrades": {
-        "level2": "Healing increased by 20%.",
-        "level3": "Adds shield on heal.",
-        "level4": "Removes one debuff."
+        "level2": "Increases ATK by 10%. (Unlocks at Lv.81)",
+        "level3": "Increases Lifesteal gained to 25%. (Unlocks at Lv.141)"
       }
     },
     {
       "id": "skill_2",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Swipe 'Em",
+      "description": "Deals 270% ATK as DMG to the nearest target and knocks them down.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 300% ATK. (Unlocks at Lv.21)",
+        "level3": "Reduces the Move SPD & ATK SPD of hit enemies by 50% for 5s. (Unlocks at Lv.121)",
+        "level4": "Increases DMG dealt to 330% ATK. (Unlocks at Lv.161)"
       }
     },
     {
       "id": "skill_3",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
+      "name": "Aries Pounce",
+      "description": "Aries leaps up and slams down, dealing 360% ATK as DMG to enemies in a cone and knocking them back.",
       "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
-      }
-    },
-    {
-      "id": "skill_4",
-      "name": "Life Barrier",
-      "description": "Grants a shield when allies fall low.",
-      "upgrades": {
-        "level2": "Shield strength increased.",
-        "level3": "Cooldown reduced.",
-        "level4": "Triggers automatically once per battle."
+        "level2": "Increases DMG dealt to 400% ATK. (Unlocks at Lv.41)",
+        "level3": "Ignores 20% of the targets' Armor. (Unlocks at Lv.101)"
       }
     }
-  ],
-  "relic": {
-    "name": "Hero’s Relic",
-    "description": "Casting Soothing Rain triggers an additional Spirit Therapy.",
-    "upgrades": {
-      "level2": "Shield strength increased.",
-      "level3": "Cooldown reduced.",
-      "level4": "Triggers automatically once per battle."
-    }
-  }
+  ]
 }

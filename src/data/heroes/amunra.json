@@ -16,6 +16,7 @@
     "pve": "SS"
   },
   "stats": {
+    "might": 0,
     "hp": 248000,
     "atk": 25129,
     "armor": 5153,
@@ -25,8 +26,24 @@
     "critRate": 6,
     "critRes": 2,
     "critDmgBonus": 0,
-    "critDmgReduction": 0,
-    "energy": 100
+    "critDmgRed": 0,
+    "energy": 100,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
   "skills": [
     {

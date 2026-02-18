@@ -16,67 +16,84 @@
     "pve": "A"
   },
   "stats": {
-    "hp": 12840,
-    "atk": 842,
-    "armor": 620,
-    "magicRes": 710,
-    "dodgeRate": 5,
-    "hitBonus": 8,
-    "critRate": 12,
-    "critRes": 10,
-    "critDmgBonus": 50,
-    "critDmgReduction": 20,
-    "energy": 100
+    "might": 107000,
+    "hp": 320040,
+    "atk": 35500,
+    "armor": 6825,
+    "magicRes": 7076,
+    "dodgeRate": 7,
+    "hitBonus": 1,
+    "critRate": 4,
+    "critRes": 8,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 2.5,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 9,
+    "pDmgRed": 8,
+    "mDmgBonus": 5,
+    "mDmgRed": 6,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
   },
   "skills": [
-  {
-    "id": "skill_1",
-    "name": "Omniscient Arrow",
-    "description": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
-    "upgrades": {
-      "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
-      "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
-      "level4": "The arrow will deal DMG equal to 200% of ATK."
+    {
+      "id": "skill_1",
+      "name": "Omniscient Arrow",
+      "description": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
+      "upgrades": {
+        "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
+        "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
+        "level4": "The arrow will deal DMG equal to 200% of ATK."
+      }
+    },
+    {
+      "id": "skill_2",
+      "name": "Omnipotence",
+      "description": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
+      "upgrades": {
+        "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
+        "level3": "Increases ATK SPD to 150%.",
+        "level4": "Reduces Energy lost to 40."
+      }
+    },
+    {
+      "id": "skill_3",
+      "name": "The Cunning Goddess",
+      "description": "When no enemies are within 3 meters of Isis, her ATK is increased by 30%. She loses this bonus when an enemy is within 3 meters of her.",
+      "upgrades": {
+        "level2": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
+        "level3": "Increases ATK bonus to 36%.",
+        "level4": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts."
+      }
+    },
+    {
+      "id": "skill_4",
+      "name": "True Name Invocation",
+      "description": "For every 5 Ultimates cast by allies, Isis gains 20% increased ATK SPD, stacking up to 4 times.",
+      "upgrades": {
+        "level2": "Increases each stack of ATK SPD bonus to 25%.",
+        "level3": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
+        "level4": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)"
+      }
     }
-  },
-  {
-    "id": "skill_2",
-    "name": "Omnipotence",
-    "description": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
+  ],
+  "relic": {
+    "name": "Pristine Mantra",
+    "description": "Reduces the trigger count required for True Name Invocation to 3. Its stacks grant Isis additional effects: Each stack increases Isis's Hit Rate by 20%.",
     "upgrades": {
-      "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
-      "level3": "Increases ATK SPD to 150%.",
-      "level4": "Reduces Energy lost to 40."
-    }
-  },
-  {
-    "id": "skill_3",
-    "name": "The Cunning Goddess",
-    "description": "When no enemies are within 3 meters of Isis, her ATK is increased by 30%. She loses this bonus when an enemy is within 3 meters of her.",
-    "upgrades": {
-      "level2": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
-      "level3": "Increases ATK bonus to 36%.",
-      "level4": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts."
-    }
-  },
-  {
-    "id": "skill_4",
-    "name": "True Name Invocation",
-    "description": "For every 5 Ultimates cast by allies, Isis gains 20% increased ATK SPD, stacking up to 4 times.",
-    "upgrades": {
-      "level2": "Increases each stack of ATK SPD bonus to 25%.",
-      "level3": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
-      "level4": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)"
+      "level2": "Increases CRIT Rate by 30% at 3 stacks.",
+      "level3": "Stacks up to 6 times.",
+      "level4": "Each stack increases Hit Rate by 30%. (Unlock at Relic Lv.30)"
     }
   }
-],
-"relic": {
-  "name": "Pristine Mantra",
-  "description": "Reduces the trigger count required for True Name Invocation to 3. Its stacks grant Isis additional effects: Each stack increases Isis's Hit Rate by 20%.",
-  "upgrades": {
-    "level2": "Increases CRIT Rate by 30% at 3 stacks.",
-    "level3": "Stacks up to 6 times.",
-    "level4": "Each stack increases Hit Rate by 30%. (Unlock at Relic Lv.30)"
-  }
-}
 }

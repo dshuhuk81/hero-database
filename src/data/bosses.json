@@ -243,6 +243,90 @@
     },
 
     {
+      "id": "lilith",
+      "name": "Lilith",
+      "mode": "Torment Rift",
+      "battlepower": "4500M",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "/bosses/lilith.webp",
+      "summary": "Summoner boss that delegates damage through spawned children. Main threat is sustained ATK SPD scaling and repeated summons; primary target is untargetable but takes shared damage.",
+      "strategyNotes": "Focus damage on children first—they scale with Lilith's stats but are temporary. Cleanse reduces ATK SPD buff windows. AoE heroes shine here to clear multiple children efficiently. Sustain/healing layers critical because damage transfers to Lilith even when children absorb hits. Consider burst rotations to clear children before exponential scaling.",
+      "mechanics": [
+        "Summoned children inherit % of Lilith's base/current ATK and scale HP as 600% ATK",
+        "Lilith is untargetable but takes all damage children take",
+        "ATK SPD buff on children (200%) increases outgoing damage significantly",
+        "Children respawn when all fall; scaling shifts from base→current ATK"
+      ],
+      "mechanicTags": [
+        "SUMMONS",
+        "MAIN_UNTARGETABLE",
+        "SHARED_DAMAGE",
+        "ATK_SPEED_BUFF",
+        "RAMPING_AURA",
+        "RESOURCE_SCALING"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "End of All",
+          "description": "Lilith enhances her children, increasing their size and ATK SPD by 200%.",
+          "mechanics": ["Global ATK SPD buff on all children", "Increases child outgoing damage"],
+          "mechanicTags": ["ATK_SPEED_BUFF", "GLOBAL_BUFF"]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Garden of Flesh",
+          "description": "When Lilith enters battle, she summons her children around her. They inherit 100% of her base ATK and max HP equal to 600% of her base ATK. Lilith herself is untargetable, but she takes DMG whenever her children take DMG.",
+          "mechanics": ["Initial summons", "Damage redirect mechanic", "Boss untargetable", "Children scale off boss stats"],
+          "mechanicTags": ["SUMMONS", "MAIN_UNTARGETABLE", "SHARED_DAMAGE", "RESOURCE_SCALING"]
+        },
+        {
+          "id": "skill_3",
+          "type": "Skill",
+          "name": "Flesh Growth",
+          "description": "When all of Lilith's children fall, Lilith summons them again. They inherit 60% of her current ATK and max HP equal to 600% of her current ATK.",
+          "mechanics": ["Respawn mechanic", "Scaling shifts to current ATK", "Children get weaker but represent multiple threat axes"],
+          "mechanicTags": ["SUMMONS", "RESOURCE_SCALING", "RAMPING_AURA"]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "lilith_dps",
+          "label": "Max Damage (Auto)",
+          "heroes": [],
+          "reason": "AoE-heavy comps excel at clearing multiple children simultaneously, preventing respawn scaling and damage ramp.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "maxDamage",
+            "preferHeroTags": ["AoE", "Energy", "Cooldown"],
+            "avoidHeroTags": ["Single-Target"],
+            "minTagCounts": { "AoE": 2, "Energy": 1 },
+            "notes": "AoE clears children fast; Energy/Cooldown keeps ult rotations online to maintain burst windows."
+          }
+        },
+        {
+          "id": "lilith_safe",
+          "label": "Safer / Stable (Auto)",
+          "heroes": [],
+          "reason": "Strong sustain layers to handle shared damage + cleanse to reduce ATK SPD scaling window.",
+          "notes": [],
+          "source": "auto",
+          "autoRules": {
+            "goal": "safe",
+            "preferHeroTags": ["Ally Heal", "Cleanse", "AoE", "Energy"],
+            "avoidHeroTags": ["Single-Target"],
+            "minTagCounts": { "Ally Heal": 1, "Cleanse": 1, "AoE": 1 },
+            "notes": "Shared damage requires proactive healing; Cleanse removes ATK SPD buff; AoE prevents exponential child damage."
+          }
+        }
+      ]
+    },
+
+    {
       "id": "isthar_vi",
       "name": "Isthar VI",
       "mode": "Torment Rift",

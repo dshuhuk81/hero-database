@@ -5,8 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "build": "npm run astro build",
+    "build:hpi": "node scripts/generate-hero-power-index.js",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "stats:export": "node scripts/export-stats-to-csv.js",
+    "stats:import": "node scripts/import-stats-from-csv.js",
+    "stats:edit": "code src/data/stats/hero-stats.csv"
   },
   "dependencies": {
     "astro": "^4.16.19"
