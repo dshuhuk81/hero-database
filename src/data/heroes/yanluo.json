@@ -15,16 +15,18 @@
     "pvp": "A",
     "pve": "S"
   },
+  "evolution":"Divine V",
+  "level": 300,
   "stats": {
-    "might": 0,
-    "hp": 247533,
-    "atk": 24919,
-    "armor": 5128,
-    "magicRes": 4946,
-    "dodgeRate": 1,
+    "might": 632000,
+    "hp": 2765385,
+    "atk": 191066,
+    "armor": 45188,
+    "magicRes": 38262,
+    "dodgeRate": 0,
     "hitBonus": 10,
     "critRate": 6,
-    "critRes": 2,
+    "critRes": 0,
     "critDmgBonus": 0,
     "critDmgRed": 0,
     "energy": 0,
@@ -93,11 +95,11 @@
   ],
   "relic": {
     "name": "Underworld Judgment",
-    "description": "Casting Soul Reaver marks the target. Marked enemies restore 150 Energy to other allies when defeated.",
+    "description": "Casting Soul Reaver marks the target. Marked enemies grant 150 Energy to other allies when defeated.",
     "upgrades": {
-      "level2": "When an ally kills a marked enemy, the killer’s ATK is increased by 20%.",
+      "level2": "When an ally kills a marked enemy, the killer's ATK is increased by 20%.",
       "level3": "Marked enemies have their healing received reduced by 50% and Energy Regeneration reduced by 50%.",
-      "level4": "Marked enemies restore 200 Energy to other allies when defeated."
+      "level4": "Marked enemies grant 200 Energy to other allies when defeated."
     },
     "image": "/skills/yanluo_relic.webp"
   }

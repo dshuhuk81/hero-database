@@ -9,8 +9,24 @@ export interface HeroStats {
   critRate: number;
   critRes: number;
   critDmgBonus: number;
-  critDmgReduction: number;
+  critDmgRed: number;
   energy: number;
+  cooldownHaste: number;
+  atkSpdBonus: number;
+  pDmgBonus: number;
+  pDmgRed: number;
+  mDmgBonus: number;
+  mDmgRed: number;
+  healEff: number;
+  rechargeEff: number;
+  lifestealEff: number;
+  reflectEff: number;
+  effectRes: number;
+  effectHit: number;
+  controlRes: number;
+  controlBonus: number;
+  normalSkillPWR: number;
+  ultimatePWR: number;
 }
 
 export interface HeroRatings {
@@ -72,7 +88,9 @@ export interface Hero {
   rarity: string;
   description: string;
   ratings: HeroRatings;
-  recommendedRelicLevel: number;
+  recommendedRelicLevel?: number;
+  level?: number;
+  evolution?: string;
   stats: HeroStats;
   skills: Skill[];
   relic: Relic;

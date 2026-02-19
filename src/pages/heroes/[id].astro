@@ -4,6 +4,23 @@ import SkillCard from "../../components/hero/SkillCard.astro";
 import Footer from "../../components/Footer.astro";  
 import RatingCard from "../../components/hero/RatingCard.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
+import { computeScore } from "../../utils/rankingScore.js";
+import { synergyProfileForHero, synergyPotentialForHero } from "../../utils/synergyTags.js";
+import { rateHeroSkills } from "../../utils/skillAnalyzer.js";
+
+const rankedHeroes = [...heroes]
+  .map((hero) => {
+    const s = hero.stats ?? {};
+    return {
+      hero,
+      score: computeScore(hero),
+      hp: Number(s.hp ?? 0),
+      atk: Number(s.atk ?? 0),
+      armor: Number(s.armor ?? 0),
+      magicRes: Number(s.magicRes ?? 0),
+    };
+  })
+  .sort((a, b) => b.score - a.score);
 
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -14,6 +31,28 @@ export function getStaticPaths() {
 
 const { id } = Astro.params;
 const hero = getHeroById(id);
+
+// Ranking Daten für diesen Hero
+const currentHeroData = rankedHeroes.find(r => r.hero.id === id);
+const currentRank = currentHeroData ? rankedHeroes.indexOf(currentHeroData) + 1 : null;
+
+// Synergy & Skill Analysis
+const synergyProfile = synergyProfileForHero(hero);
+const synergyPotential = synergyPotentialForHero(hero);
+const skillPower = rateHeroSkills(hero);
+
+// Berechne Einzelstat-Rankings für Transparency
+function getStatRanking(statKey) {
+  const sorted = [...rankedHeroes].sort((a, b) => b[statKey] - a[statKey]);
+  return sorted.findIndex(r => r.hero.id === id) + 1;
+}
+
+const statRankings = {
+  hp: currentHeroData ? getStatRanking('hp') : null,
+  atk: currentHeroData ? getStatRanking('atk') : null,
+  armor: currentHeroData ? getStatRanking('armor') : null,
+  magicRes: currentHeroData ? getStatRanking('magicRes') : null,
+};
 
 // ✅ NEU: Mode aus Query ziehen (general|pve|pvp)
 const mode = Astro.url.searchParams.get("mode") ?? "general";
@@ -30,10 +69,27 @@ const PERCENT_STATS = new Set([
   "critRate",
   "critRes",
   "critDmgBonus",
-  "critDmgReduction",
+  "critDmgRed",
+  "cooldownHaste",
+  "atkSpdBonus",
+  "pDmgBonus",
+  "pDmgRed",
+  "mDmgBonus",
+  "mDmgRed",
+  "healEff",
+  "rechargeEff",
+  "lifestealEff",
+  "reflectEff",
+  "effectRes",
+  "effectHit",
+  "controlRes",
+  "controlBonus",
+  "normalSkillPWR",
+  "ultimatePWR"
 ]);
 
 const STAT_LABELS = {
+  might: "Might",
   hp: "HP",
   atk: "ATK",
   armor: "Armor",
@@ -43,8 +99,24 @@ const STAT_LABELS = {
   critRate: "Crit Rate",
   critRes: "Crit RES",
   critDmgBonus: "Crit DMG",
-  critDmgReduction: "Crit Red",
+  critDmgRed: "Crit Red",
   energy: "Energy",
+  cooldownHaste: "Cooldown Haste",
+  atkSpdBonus: "ATK SPD Bonus",
+  pDmgBonus: "Physical DMG Bonus",
+  pDmgRed: "Physical DMG Reduction",
+  mDmgBonus: "Magical DMG Bonus",
+  mDmgRed: "Magical DMG Reduction",
+  healEff: "Heal Efficiency",
+  rechargeEff: "Recharge Efficiency",
+  lifestealEff: "Lifesteal Efficiency",
+  reflectEff: "Reflect Efficiency",
+  effectRes: "Effect Resistance",
+  effectHit: "Effect Hit",
+  controlRes: "Control Resistance",
+  controlBonus: "Control Bonus",
+  normalSkillPWR: "Normal Skill PWR",
+  ultimatePWR: "Ultimate PWR"
 };
 ---
 
@@ -156,7 +228,7 @@ const STAT_LABELS = {
 
       <!-- STATS -->
       <section class="hero-stats">
-        <h2>Base-Stats</h2>
+        <div class="headline-with-info"><h2>Stats</h2><span>(Level {hero.level}, {hero.evolution})</span></div>
 
         <div class="stats-grid">
           {Object.entries(STAT_LABELS).map(([key, label]) => (
@@ -204,10 +276,123 @@ const STAT_LABELS = {
         </div>
       </section>
 
+      <!-- RANKINGS WIDGET -->
+      {currentHeroData && (
+        <section class="hero-rankings-widget">
+          <div class="rankings-widget-title-row">
+            <div  class="margin-btm-16"><h2>Global Ranking</h2>
+            <div class="ranking-info-icon-wrapper" data-tooltip="Score = Base stats (HP/ATK/Armor/M-Res) + percent stats + synergy potential">
+              <svg class="ranking-info-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                <text x="12" y="16" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">?</text>
+              </svg>
+            </div></div>
+          </div>
+          <div class="rankings-widget-inner">
+            <div class="rankings-widget-header">
+              <div class="rankings-widget-rank-prominent">
+                <span class="rankings-widget-rank-number">#{currentRank}</span>
+                <span class="rankings-widget-rank-of">of {heroes.length}</span>
+              </div>
+              <div class="rankings-widget-score">
+                <span class="rankings-widget-score-value">{Math.round(currentHeroData.score)}</span>
+                <span class="rankings-widget-score-label">Score</span>
+              </div>
+            </div>
+            
+            <div class="rankings-widget-stats">
+              <div class="ranking-widget-stat">
+                <div class="stat-header">
+                  <span class="ranking-stat-label">HP</span>
+                  <span class="stat-rank-badge">#{statRankings.hp}</span>
+                </div>
+                <span class="ranking-stat-val">{currentHeroData.hp.toLocaleString("en-US")}</span>
+              </div>
+              <div class="ranking-widget-stat">
+                <div class="stat-header">
+                  <span class="ranking-stat-label">ATK</span>
+                  <span class="stat-rank-badge">#{statRankings.atk}</span>
+                </div>
+                <span class="ranking-stat-val">{currentHeroData.atk.toLocaleString("en-US")}</span>
+              </div>
+              <div class="ranking-widget-stat">
+                <div class="stat-header">
+                  <span class="ranking-stat-label">Armor</span>
+                  <span class="stat-rank-badge">#{statRankings.armor}</span>
+                </div>
+                <span class="ranking-stat-val">{currentHeroData.armor.toLocaleString("en-US")}</span>
+              </div>
+              <div class="ranking-widget-stat">
+                <div class="stat-header">
+                  <span class="ranking-stat-label">M-Res</span>
+                  <span class="stat-rank-badge">#{statRankings.magicRes}</span>
+                </div>
+                <span class="ranking-stat-val">{currentHeroData.magicRes.toLocaleString("en-US")}</span>
+              </div>
+            </div>
+
+            <!-- SYNERGIES & SKILLS SECTION -->
+            <div class="rankings-widget-advanced">
+              <!-- Skill Power -->
+              <div class="ranking-advanced-block">
+                <h4 class="ranking-advanced-title">
+                  <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                  </svg>
+                  Skill Power
+                </h4>
+                <div class="skill-power-meter">
+                  <div class="skill-power-bar">
+                    <div 
+                      class="skill-power-fill" 
+                      style={`width: ${Math.min((skillPower / 3) * 100, 100)}%`}
+                    />
+                  </div>
+                  <div class="skill-power-stats">
+                    <span class="skill-power-value">{skillPower.toFixed(2)}</span>
+                    <span class="skill-power-label">/ 3.0</span>
+                  </div>
+                </div>
+                <p class="skill-power-desc">
+                  Based on damage multipliers, AoE, CC effects, and utility
+                </p>
+              </div>
+
+              <!-- Synergies -->
+              <div class="ranking-advanced-block">
+                <h4 class="ranking-advanced-title">
+                  <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                  Team Synergies
+                  <span class="synergy-potential-badge">{synergyPotential}</span>
+                </h4>
+                {synergyProfile.tags.size === 0 ? (
+                  <p class="no-synergies">No team synergies detected</p>
+                ) : (
+                  <div class="synergy-tags">
+                    {Array.from(synergyProfile.tags).map((tag) => (
+                      <span class="synergy-tag" data-synergy={tag}>
+                        {tag.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       <!-- RATINGS -->
       {hero.ratings && (
         <RatingCard ratings={hero.ratings} />
       )}
+
+      
     </div>
 
     <!-- TAB: SKILLS -->
@@ -276,6 +461,12 @@ const STAT_LABELS = {
 </div>
 
 <style>
+.headline-with-info {
+  display: flex;
+  align-items: first baseline;
+  gap: 12px;
+  margin-bottom: 0.5rem;
+}
 .alpha-chip {
   position: absolute;
   top:-6px;
@@ -347,7 +538,11 @@ const STAT_LABELS = {
     flex-direction: column;
     gap: 6px;
   }
-
+.margin-btm-16 {
+  margin-bottom: 16px!important;
+  display: flex;
+  gap: 12px;
+}
   .stat-right {
     display: flex;
     flex-direction: column;
@@ -819,6 +1014,615 @@ const STAT_LABELS = {
       font-size: 48px;
     }
   }
+
+  /* POWER INDEX SECTION */
+  .power-index-section {
+    margin-top: 32px;
+    padding: 24px;
+    background: rgba(120, 90, 200, 0.08);
+    border: 1px solid rgba(120, 90, 200, 0.2);
+    border-radius: 12px;
+  }
+
+  .power-index-subtitle {
+    margin: 0;
+    opacity: 0.7;
+    font-size: 0.9rem;
+  }
+
+  .normalization-badge {
+    margin: 8px 0 0;
+    padding: 8px 12px;
+    background: rgba(100, 200, 150, 0.15);
+    border-left: 3px solid rgba(100, 200, 150, 0.5);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #66c8a0;
+    font-weight: 500;
+  }
+
+  .power-index-header {
+    margin-bottom: 20px;
+  }
+
+  .power-index-card {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .power-index-score {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(120, 90, 200, 0.2));
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .score-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ffd700;
+  }
+
+  .score-max {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  .tier-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .tier-label {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  .tier-badge {
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #ffd700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .tier-badge[data-tier="SSS"],
+  .tier-badge[data-tier="SS"] {
+    background: rgba(255, 100, 100, 0.15);
+    border-color: rgba(255, 100, 100, 0.3);
+    color: #ff9999;
+  }
+
+  .tier-badge[data-tier="S"] {
+    background: rgba(100, 200, 255, 0.15);
+    border-color: rgba(100, 200, 255, 0.3);
+    color: #66c0ff;
+  }
+
+  .power-index-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .breakdown-box {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(120, 90, 200, 0.15);
+  }
+
+  .breakdown-box h4 {
+    margin: 0 0 12px;
+    font-size: 0.95rem;
+    color: #ffd700;
+    font-weight: 600;
+  }
+
+  .breakdown-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #b4e7ff;
+    margin-bottom: 12px;
+  }
+
+  .breakdown-max {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .stat-item {
+    background: rgba(60, 50, 85, 0.3);
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+  }
+
+  .stat-name {
+    opacity: 0.8;
+  }
+
+  .stat-score {
+    font-weight: 600;
+    color: #ffd700;
+  }
+
+  .signals-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .signal-tag {
+    display: inline-block;
+    background: rgba(120, 90, 200, 0.3);
+    border: 1px solid rgba(120, 90, 200, 0.5);
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    color: #b4e7ff;
+    font-weight: 500;
+  }
+
+  .no-signals {
+    margin: 0;
+    opacity: 0.6;
+    font-size: 0.85rem;
+  }
+
+  /* ─── RANKINGS WIDGET ─── */
+  .hero-rankings-widget {
+    margin-top: 40px;
+  }
+
+  .rankings-widget-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .hero-rankings-widget h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .ranking-info-icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: help;
+  }
+
+  .ranking-info-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.6;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .ranking-info-icon-wrapper:hover .ranking-info-icon {
+    opacity: 1;
+  }
+
+  /* Tooltip */
+  .ranking-info-icon-wrapper::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: #e6e6eb;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .ranking-info-icon-wrapper:hover::after {
+    opacity: 1;
+    visibility: visible;
+    bottom: calc(100% + 8px);
+  }
+
+  /* Tooltip arrow */
+  .ranking-info-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .ranking-info-icon-wrapper:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .rankings-widget-subtitle {
+    margin: 0 0 16px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+
+  .rankings-widget-inner {
+    background: rgba(120, 90, 200, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .rankings-widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .rankings-widget-rank-prominent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .rankings-widget-rank-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    background: linear-gradient(90deg, #a78bfa, #e879f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .rankings-widget-rank-of {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    font-weight: 600;
+  }
+
+  .rankings-widget-score {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .rankings-widget-score-value {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #facc15, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .rankings-widget-score-label {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+  }
+
+  .rankings-widget-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .ranking-widget-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+  }
+
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .stat-rank-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #a78bfa;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .ranking-stat-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-weight: 600;
+  }
+
+  .ranking-stat-val {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #60a5fa;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rankings-widget-advanced {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ranking-advanced-block {
+    padding: 16px;
+    background: rgba(120, 90, 200, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    border-radius: 12px;
+  }
+
+  .ranking-advanced-block h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .section-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+  }
+
+  .skill-power-meter {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .skill-power-bar {
+    height: 24px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .skill-power-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a78bfa, #c084fc);
+    border-radius: 6px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.4);
+  }
+
+  .skill-power-stats {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    margin-top: 4px;
+  }
+
+  .skill-power-value {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #c084fc;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .skill-power-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+  }
+
+  .skill-power-desc {
+    margin: 8px 0 0 0;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+  }
+
+  .no-synergies {
+    margin: 8px 0 0 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+  }
+
+  .synergy-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .synergy-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: all 0.2s ease;
+  }
+
+  .synergy-tag:hover {
+    background: rgba(59, 130, 246, 0.25);
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-1px);
+  }
+
+  .synergy-potential-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fbbf24;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 768px) {
+    .rankings-widget-inner {
+      padding: 16px;
+    }
+
+    .rankings-widget-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .rankings-widget-score {
+      align-items: flex-start;
+    }
+
+    .rankings-widget-score-value {
+      font-size: 1.6rem;
+    }
+
+    .rankings-widget-stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .ranking-widget-stat {
+      padding: 10px;
+    }
+
+    .ranking-stat-val {
+      font-size: 0.95rem;
+    }
+
+    .rankings-widget-advanced {
+      gap: 12px;
+    }
+
+    .ranking-advanced-block {
+      padding: 12px;
+    }
+
+    .ranking-advanced-block h4 {
+      font-size: 0.8rem;
+    }
+
+    .synergy-tags {
+      gap: 6px;
+    }
+
+    .synergy-tag {
+      padding: 5px 10px;
+      font-size: 0.7rem;
+    }
+
+    .synergy-potential-badge {
+      padding: 5px 10px;
+      font-size: 0.7rem;
+    }
+
+    .skill-power-bar {
+      height: 20px;
+    }
+
+    /* Mobile Tooltip Anpassung */
+    .ranking-info-icon-wrapper::after {
+      white-space: normal;
+      max-width: 200px;
+      bottom: auto;
+      top: calc(100% + 12px);
+    }
+
+    .ranking-info-icon-wrapper:hover::after {
+      bottom: auto;
+      top: calc(100% + 8px);
+    }
+
+    .ranking-info-icon-wrapper::before {
+      bottom: auto;
+      top: calc(100% + 2px);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid rgba(0, 0, 0, 0.9);
+    }
+  }
+
 </style>
 
 <script>

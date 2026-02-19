@@ -117,7 +117,7 @@ normalSkillPWR, ultimatePWR
 
 3. **Stats validieren:**
    ```bash
-   node scripts/normalize-hero-stats.js
+   node scripts/validate-hero-stats.js
    ```
 
 4. **Excel-Formeln nutzen:**

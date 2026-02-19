@@ -19,6 +19,7 @@ function heroTags(comp, hid) {
   return Array.isArray(fromSummary) ? fromSummary : [];
 }
 
+
 function badgeClass(label) {
   if (badgeStyle !== "colored") return "badge";
 
@@ -46,16 +47,17 @@ function badgeClass(label) {
     "Energy": "badge energy",
     "Cooldown": "badge cooldown",
     "Backline": "badge backline",
-    "Def Shred": "badge shred",
+    "Def Down": "badge shred",
   };
 
   // 3) Aliases (common drift / typos / variants)
   const alias = {
     "Anti Heal": "Anti-Heal",
     "Antiheal": "Anti-Heal",
-    "DefShred": "Def Shred",
-    "Defense Shred": "Def Shred",
-    "DEF Shred": "Def Shred",
+    "DefShred": "Def Down",
+    "Defense Shred": "Def Down",
+    "DEF Shred": "Def Down",
+    "Def Shred": "Def Down",
     "Aoe": "AoE",
   };
 

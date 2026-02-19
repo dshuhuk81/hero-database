@@ -251,7 +251,7 @@
       "class": "Tank",
       "image": "/bosses/lilith.webp",
       "summary": "Summoner boss that delegates damage through spawned children. Main threat is sustained ATK SPD scaling and repeated summons; primary target is untargetable but takes shared damage.",
-      "strategyNotes": "Focus damage on children first—they scale with Lilith's stats but are temporary. Cleanse reduces ATK SPD buff windows. AoE heroes shine here to clear multiple children efficiently. Sustain/healing layers critical because damage transfers to Lilith even when children absorb hits. Consider burst rotations to clear children before exponential scaling.",
+      "strategyNotes": "Focus damage on children first they scale with Lilith's stats but are temporary. Cleanse reduces ATK SPD buff windows. AoE heroes shine here to clear multiple children efficiently. Sustain/healing layers critical because damage transfers to Lilith even when children absorb hits. Consider burst rotations to clear children before exponential scaling.",
       "mechanics": [
         "Summoned children inherit % of Lilith's base/current ATK and scale HP as 600% ATK",
         "Lilith is untargetable but takes all damage children take",

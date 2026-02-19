@@ -43,7 +43,7 @@ export function keywordTagsForHero(hero) {
   add("Energy", /\benergy\b/.test(text));
   add("Cooldown", /\b(cooldown|cd)\b/.test(text));
   add("Backline", /\b(farthest enemy|back row|rear row|behind|teleport|blink)\b/.test(text));
-  add("Def Shred", /\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(text));
+  add("Def Down", /\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(text));
 
   return tags.slice(0, 3);
 }

@@ -1,11 +1,17 @@
+// src/data/heroes/index.js
+
 // Auto-Import aller Hero-JSON-Dateien
 const heroModules = import.meta.glob("./*.json", { eager: true });
-const rawHeroes = Object.values(heroModules).map(m => m.default);
+const rawHeroes = Object.values(heroModules).map((m) => m.default);
+
+import { synergyProfileForHero, synergyPotentialForHero } from "../../utils/synergyTags.js";
 
 /* ============================
    KONFIG
    ============================ */
+
 const RANKABLE_STATS = [
+  "might",
   "hp",
   "atk",
   "armor",
@@ -15,12 +21,28 @@ const RANKABLE_STATS = [
   "critRate",
   "critRes",
   "critDmgBonus",
-  "critDmgReduction",
+  "critDmgRed",
   "energy",
+  "cooldownHaste",
+  "atkSpdBonus",
+  "pDmgBonus",
+  "pDmgRed",
+  "mDmgBonus",
+  "mDmgRed",
+  "healEff",
+  "rechargeEff",
+  "lifestealEff",
+  "reflectEff",
+  "effectRes",
+  "effectHit",
+  "controlRes",
+  "controlBonus",
+  "normalSkillPWR",
+  "ultimatePWR",
 ];
 
 /* ============================
-   ADAPTER / NORMALIZER
+   ADAPTER
    ============================ */
 function adaptHero(raw) {
   return {
@@ -45,31 +67,35 @@ function adaptHero(raw) {
       pve: raw.ratings?.pve ?? null,
     },
 
-    // Backward-Compat (Grid / Cards)
+    // Backward-Compat
     rating: raw.ratings?.overall ?? null,
 
-    // ✅ Stats kommen NUR aus Hero-JSON
+    // ✅ Stats 1:1 aus Hero-JSON (Divine 5 raw in-game stats, not normalized)
     stats: raw.stats ?? {},
 
     skills: raw.skills ?? [],
     relic: raw.relic ?? null,
+
+    recommendedRelicLevel: raw.recommendedRelicLevel,
+    level: raw.level,
+    evolution: raw.evolution,
   };
 }
 
 /* ============================
-   HEROES (NORMALISIERT)
+   HEROES (BASIS)
    ============================ */
-const heroes = rawHeroes.map(adaptHero);
+const heroesBase = rawHeroes.map(adaptHero);
 
 /* ============================
-   RANKINGS BERECHNEN
+   RANKINGS (100% RAW STATS)
    ============================ */
 function computeStatRankings(heroes) {
   const rankings = {};
 
   for (const stat of RANKABLE_STATS) {
     const sorted = [...heroes]
-      .filter(h => typeof h.stats?.[stat] === "number")
+      .filter((h) => typeof h.stats?.[stat] === "number")
       .sort((a, b) => b.stats[stat] - a.stats[stat]);
 
     sorted.forEach((hero, index) => {
@@ -81,27 +107,23 @@ function computeStatRankings(heroes) {
   return rankings;
 }
 
-const statRankings = computeStatRankings(heroes);
+const statRankings = computeStatRankings(heroesBase);
 
-/* ============================
-   HEROES + RANKINGS
-   ============================ */
-export const heroesWithRankings = heroes.map(hero => ({
+const heroesWithRankings = heroesBase.map((hero) => ({
   ...hero,
   rankings: statRankings[hero.id] ?? {},
 }));
 
-
 /* ============================
-   MAX VALUES PRO STAT
+   MAX VALUES PRO STAT (RAW)
    ============================ */
 function computeStatMaxima(heroes) {
   const maxima = {};
 
   for (const stat of RANKABLE_STATS) {
     const values = heroes
-      .map(h => h.stats?.[stat])
-      .filter(v => typeof v === "number");
+      .map((h) => h.stats?.[stat])
+      .filter((v) => typeof v === "number");
 
     maxima[stat] = values.length > 0 ? Math.max(...values) : null;
   }
@@ -109,15 +131,35 @@ function computeStatMaxima(heroes) {
   return maxima;
 }
 
+export const statMaxima = computeStatMaxima(heroesBase);
 
-export const statMaxima = computeStatMaxima(heroes);
+/* ============================
+   SYNERGY (STRICT, NO SCALING)
+   ============================ */
+function withSynergy(h) {
+  const prof = synergyProfileForHero(h);
 
+  const evidence = {};
+  for (const tag of prof.tags) {
+    evidence[tag] = prof.evidenceByTag[tag];
+  }
+
+  return {
+    ...h,
+    synergyTags: Array.from(prof.tags),
+    synergyEvidence: evidence,
+    synergyPotential: synergyPotentialForHero(h),
+  };
+}
+
+const heroesFinal = heroesWithRankings.map(withSynergy);
 
 /* ============================
    PUBLIC API
    ============================ */
 export function getHeroById(id) {
-  return heroesWithRankings.find(hero => hero.id === id);
+  return heroesFinal.find((hero) => hero.id === id);
 }
 
-export { heroesWithRankings as heroes };
+// Haupt-Export: RAW Stats + Rankings + Synergy
+export { heroesFinal as heroes };
