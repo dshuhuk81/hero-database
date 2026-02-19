@@ -4,6 +4,10 @@ interface NavItem {
   icon: string;
   label: string;
   href: string;
+  badge?: {
+    text: string;
+    color?: string;
+  };
 }
 
 const navItems: NavItem[] = [
@@ -15,7 +19,10 @@ const navItems: NavItem[] = [
    {
     icon: "/icons/sidebar/rankings.webp",
     label: "Rankings",
-    href: "/rankings"
+    href: "/rankings",
+      badge: {
+    text: "Alpha"
+  }
   },
   {
     icon: "/icons/sidebar/tierlist.webp",
@@ -58,7 +65,17 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
         <div class="nav-icon">
           <img src={item.icon} alt={item.label} />
         </div>
-        <span class="nav-label">{item.label}</span>
+        <span class="nav-label">
+          {item.label}
+          {item.badge && (
+            <span 
+              class="alpha-chip" 
+              style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+            >
+              {item.badge.text}
+            </span>
+          )}
+        </span>
       </a>
     ))}
   </nav>
@@ -107,6 +124,8 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
     flex-shrink: 0;
     /* FIX: Stabilisiert Layout */
     contain: layout style;
+        /* FIX: Font-Rendering stabilisieren */
+   
   }
 
   .nav-item:hover:not(.active) {
@@ -167,15 +186,16 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
     transform: translateZ(0);
   }
 
-  .nav-label {
+
+    .nav-label {
     font-size: 0.7rem;
-    font-weight: 500;
+    font-weight: 600;
     text-align: center;
     line-height: 1.2;
     letter-spacing: 0.3px;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 60px;
+    white-space: nowrap;
     transition: none;
 
   font-family: ui-monospace, 'Courier New', monospace;
@@ -198,7 +218,14 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
-      padding: 0 20px;
+      padbadge {
+      top: -6px;
+      right: -8px;
+      font-size: 6px;
+      padding: 1px 3px;
+    }
+
+    .nav-ding: 0 20px;
       height: 100%;
       gap: 0;
     }
@@ -234,4 +261,15 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
       height: 3px;
     }
   }
+  .alpha-chip {
+  position: absolute;
+  top: 8px;
+  right: -4px;
+  font-size: 8px;
+  color: white;
+  background-color: red;
+  border-radius: 4px;
+  padding: 2px 4px;
+  opacity: 0.9;
+}
 </style>
