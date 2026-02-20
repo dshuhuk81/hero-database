@@ -3,7 +3,10 @@ import Footer from "../components/Footer.astro";
 import Sidebar from "../components/Sidebar.astro";
 import shrineSetups from "../data/shrineSetups.json";
 
-const shrineSetupGroups = shrineSetups;
+// Shrine Setups to display - Ändere hier um Setups anzuzeigen/zu verstecken
+// Optionen: ["Setup A"], ["Setup B"], oder ["Setup A", "Setup B"] für beide
+const visibleSetups = ["Setup B"];
+const shrineSetupGroups = shrineSetups.filter(setup => visibleSetups.includes(setup.label));
 ---
 
 <!DOCTYPE html>
