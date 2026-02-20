@@ -79,6 +79,9 @@ function adaptHero(raw) {
     // ✅ Synergies (manual tag assignment)
     synergies: raw.synergies ?? [],
 
+    // ✅ Content Creator Guides
+    "content-creator": raw["content-creator"] ?? [],
+
     recommendedRelicLevel: raw.recommendedRelicLevel,
     level: raw.level,
     evolution: raw.evolution,

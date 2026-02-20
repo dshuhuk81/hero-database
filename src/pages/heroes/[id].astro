@@ -140,6 +140,9 @@ const STAT_LABELS = {
           <button class="tab active" data-tab="attributes">Attributes</button>
           <button class="tab" data-tab="skills">Skills</button>
           <button class="tab" data-tab="synergies">Compositions<span class="alpha-chip">Alpha</span></button>
+          {hero["content-creator"] && hero["content-creator"].length > 0 && (
+            <button class="tab" data-tab="video-guide">Video Guide</button>
+          )}
         </nav>
       </div>
     </div>
@@ -498,6 +501,37 @@ const STAT_LABELS = {
         </div>
       </div>
     </div>
+
+    <!-- TAB: VIDEO GUIDE -->
+    {hero["content-creator"] && hero["content-creator"].length > 0 && (
+      <div class="tab-content" data-content="video-guide">
+        <section class="video-guides">
+          <h2>Video Guides</h2>
+          <div class="video-guides-grid">
+            {hero["content-creator"].map((guide) => (
+              <div class="video-guide-container">
+                <div class="video-wrapper">
+                  <iframe 
+                    width="100%" 
+                    height="315" 
+                    src={`https://www.youtube.com/embed/${guide.videoId}`}
+                    title={guide.titel}
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+                  </iframe>
+                </div>
+                <div class="video-guide-info">
+                  <h3 class="video-guide-titel">{guide.titel}</h3>
+                  <p class="video-guide-autor">by {guide.autor}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    )}
   </main>
 
   <Footer />
@@ -1651,6 +1685,74 @@ const STAT_LABELS = {
     letter-spacing: 0.03em;
   }
 
+  /* ===============================
+     VIDEO GUIDES
+     =============================== */
+  .video-guides {
+    padding: 20px 0;
+  }
+
+  .video-guides h2 {
+    margin-bottom: 24px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .video-guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+    gap: 32px;
+  }
+
+  .video-guide-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+  }
+
+  .video-guide-info {
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .video-guide-titel {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+  }
+
+  .video-guide-autor {
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    opacity: 0.8;
+  }
+
   @media (max-width: 768px) {
     .rankings-widget-inner {
       padding: 16px;
@@ -1732,6 +1834,24 @@ const STAT_LABELS = {
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       border-top: 5px solid rgba(0, 0, 0, 0.9);
+    }
+
+    /* Mobile Video Guides */
+    .video-guides-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .video-guide-info {
+      padding: 8px 0;
+    }
+
+    .video-guide-titel {
+      font-size: 0.95rem;
+    }
+
+    .video-guide-autor {
+      font-size: 0.8rem;
     }
   }
 
