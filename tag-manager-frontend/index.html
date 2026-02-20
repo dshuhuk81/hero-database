@@ -51,6 +51,243 @@
       font-size: 14px;
     }
 
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-header {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-header:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Tag Editor Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 2px solid #e0e6ed;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: #333;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .tag-edit-section {
+      margin-bottom: 25px;
+    }
+
+    .tag-edit-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #667eea;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+
+    .tag-input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tag-input-group input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #d0d8e0;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .tag-input-group button {
+      padding: 10px 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .tag-input-group button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tag-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: #f5f7fa;
+      border-radius: 6px;
+      border: 1px solid #e0e6ed;
+    }
+
+    .tag-item-name {
+      font-weight: 500;
+      color: #333;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .tag-item-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tag-btn {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .tag-btn-edit {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .tag-btn-edit:hover {
+      background: #ffe69c;
+    }
+
+    .tag-btn-delete {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .tag-btn-delete:hover {
+      background: #f5c6cb;
+    }
+
+    .rename-input-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .rename-input-group input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #d0d8e0;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    .rename-input-group button {
+      padding: 8px 12px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .rename-input-group button:hover {
+      background: #218838;
+    }
+
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #e0e6ed;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .modal-badge {
+      display: inline-block;
+      background: #e0e6ed;
+      color: #333;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
     .sidebar {
       background: #f5f7fa;
       border-right: 1px solid #e0e6ed;
@@ -359,6 +596,9 @@
         <div><strong id="totalHeroes">0</strong> Heroes</div>
         <div><strong id="editedCount">0</strong> Tagged</div>
       </div>
+      <div class="header-buttons">
+        <button class="btn-header" id="editTagsBtn">🏷️ Edit Tags</button>
+      </div>
     </div>
 
     <div class="sidebar">
@@ -396,6 +636,35 @@
 
       <div class="placeholder" id="placeholder">
         <div class="loading">Loading heroes...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tag Editor Modal -->
+  <div class="modal" id="tagEditorModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🏷️ Manage Tags</h2>
+        <button class="modal-close" id="modalCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Add New Tag -->
+        <div class="tag-edit-section">
+          <h3>➕ Add New Tag</h3>
+          <div class="tag-input-group">
+            <input type="text" id="newTagInput" placeholder="Enter new tag name (e.g., NEW_TAG)">
+            <button id="addTagBtn">Add Tag</button>
+          </div>
+        </div>
+
+        <!-- Manage Existing Tags -->
+        <div class="tag-edit-section">
+          <h3>📋 Existing Tags <span class="modal-badge" id="tagCount">0 Tags</span></h3>
+          <div class="tag-list" id="tagList"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modalCloseBtn2">Close</button>
       </div>
     </div>
   </div>
@@ -623,6 +892,183 @@
       const placeholder = document.getElementById('placeholder');
       placeholder.innerHTML = '<div class="placeholder"><div style="font-size: 24px; margin-bottom: 10px;">👈</div><div>Select a hero from the left to edit synergies</div></div>';
     }
+
+    // =====================
+    // TAG EDITOR MODAL
+    // =====================
+
+    function openTagEditor() {
+      document.getElementById('tagEditorModal').classList.add('active');
+      renderTagList();
+    }
+
+    function closeTagEditor() {
+      document.getElementById('tagEditorModal').classList.remove('active');
+    }
+
+    function renderTagList() {
+      const tagList = document.getElementById('tagList');
+      tagList.innerHTML = '';
+      
+      if (allTags.length === 0) {
+        tagList.innerHTML = '<div class="placeholder" style="padding: 20px; color: #999;">No tags found</div>';
+        return;
+      }
+
+      allTags.forEach((tag, idx) => {
+        const item = document.createElement('div');
+        item.className = 'tag-item';
+        item.innerHTML = `
+          <div class="tag-item-name">${tag}</div>
+          <div class="tag-item-actions">
+            <button class="tag-btn tag-btn-edit" onclick="startRenameTag('${tag}', this.closest('.tag-item'))">📝 Rename</button>
+            <button class="tag-btn tag-btn-delete" onclick="deleteTag('${tag}')">🗑️ Delete</button>
+          </div>
+        `;
+        tagList.appendChild(item);
+      });
+
+      document.getElementById('tagCount').textContent = `${allTags.length} Tags`;
+    }
+
+    function startRenameTag(oldTag, itemElement) {
+      const actionsDiv = itemElement.querySelector('.tag-item-actions');
+      actionsDiv.innerHTML = `
+        <div class="rename-input-group" style="width: 100%;">
+          <input type="text" placeholder="New tag name" value="${oldTag}">
+          <button onclick="confirmRenameTag('${oldTag}', this.parentElement.querySelector('input').value)">✓</button>
+          <button onclick="renderTagList()" style="background: #6c757d;">✕</button>
+        </div>
+      `;
+    }
+
+    async function confirmRenameTag(oldTag, newTag) {
+      if (!newTag || newTag.trim() === '') {
+        showStatus('❌ Tag name cannot be empty', 'error');
+        return;
+      }
+
+      if (newTag === oldTag) {
+        renderTagList();
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API}/tags/${oldTag}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newTag: newTag.toUpperCase() })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          allTags = data.tags;
+          renderTagList();
+          renderEditor(); // Refresh hero editor if open
+          showStatus('✅ ' + data.message, 'success');
+        } else {
+          showStatus('❌ Error: ' + data.error, 'error');
+          renderTagList();
+        }
+      } catch (err) {
+        showStatus('❌ Error: ' + err.message, 'error');
+        renderTagList();
+      }
+    }
+
+    async function deleteTag(tag) {
+      if (!confirm(`Delete tag "${tag}" from all heroes?`)) return;
+
+      try {
+        const res = await fetch(`${API}/tags/${tag}`, {
+          method: 'DELETE'
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          allTags = data.tags;
+          renderTagList();
+          renderEditor(); // Refresh hero editor if open
+          showStatus('✅ ' + data.message, 'success');
+        } else {
+          showStatus('❌ Error: ' + data.error, 'error');
+        }
+      } catch (err) {
+        showStatus('❌ Error: ' + err.message, 'error');
+      }
+    }
+
+    async function addNewTag() {
+      const input = document.getElementById('newTagInput');
+      const tag = input.value.trim().toUpperCase();
+
+      if (!tag) {
+        showStatus('❌ Tag name cannot be empty', 'error');
+        return;
+      }
+
+      if (!/^[A-Z_]+$/.test(tag)) {
+        showStatus('❌ Tag must contain only uppercase letters and underscores', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API}/tags`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tag })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          input.value = '';
+          allTags = data.tags;
+          renderTagList();
+          
+          // Update tagCategories for editor
+          updateTagCategories();
+          renderEditor(); // Refresh hero editor if open
+          showStatus('✅ ' + data.message, 'success');
+        } else {
+          showStatus('❌ Error: ' + data.error, 'error');
+        }
+      } catch (err) {
+        showStatus('❌ Error: ' + err.message, 'error');
+      }
+    }
+
+    function updateTagCategories() {
+      // Add new tags to a "Custom Tags" category
+      const customTags = allTags.filter(tag => {
+        return !Object.values(tagCategories).flat().includes(tag);
+      });
+
+      if (customTags.length > 0) {
+        tagCategories['Custom Tags'] = customTags;
+      } else if (tagCategories['Custom Tags']) {
+        delete tagCategories['Custom Tags'];
+      }
+    }
+
+    // Modal event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('editTagsBtn').addEventListener('click', openTagEditor);
+      document.getElementById('modalCloseBtn').addEventListener('click', closeTagEditor);
+      document.getElementById('modalCloseBtn2').addEventListener('click', closeTagEditor);
+      document.getElementById('addTagBtn').addEventListener('click', addNewTag);
+      
+      document.getElementById('newTagInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addNewTag();
+      });
+
+      // Close modal when clicking outside
+      document.getElementById('tagEditorModal').addEventListener('click', (e) => {
+        if (e.target.id === 'tagEditorModal') closeTagEditor();
+      });
+    });
 
     init();
   </script>

@@ -139,7 +139,7 @@ export const statMaxima = computeStatMaxima(heroesBase);
 /* ============================
    SYNERGY (STRICT, NO SCALING)
    ============================ */
-function withSynergy(h) {
+async function withSynergy(h) {
   const prof = synergyProfileForHero(h);
 
   const evidence = {};
@@ -151,11 +151,11 @@ function withSynergy(h) {
     ...h,
     synergyTags: Array.from(prof.tags),
     synergyEvidence: evidence,
-    synergyPotential: synergyPotentialForHero(h),
+    synergyPotential: await synergyPotentialForHero(h),
   };
 }
 
-const heroesFinal = heroesWithRankings.map(withSynergy);
+const heroesFinal = await Promise.all(heroesWithRankings.map(withSynergy));
 
 /* ============================
    PUBLIC API

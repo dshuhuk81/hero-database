@@ -1,54 +1,39 @@
 // src/utils/synergyTags.js
 import { fullSkillText } from "./heroTags.js";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-// -----------------------------
-// Synergy tags (STRICT + EVIDENCE)
-// (aus generator.js übernommen) 
-// -----------------------------
-export const SYNERGY_TAGS = {
-  // A) TEAM SUPPORT (9 Tags) - alphabetically sorted
-  ATK_SPD_UP: "ATK_SPD_UP",
-  BUFF_TEAM: "BUFF_TEAM",
-  CC_IMMUNITY_TEAM: "CC_IMMUNITY_TEAM",
-  CDR_TEAM: "CDR_TEAM",
-  DAMAGE_REDUCTION_TEAM: "DAMAGE_REDUCTION_TEAM",
-  DEBUFF_CLEANSE_TEAM: "DEBUFF_CLEANSE_TEAM",
-  ENERGY_RESTORE_TEAM: "ENERGY_RESTORE_TEAM",
-  HEAL_TEAM: "HEAL_TEAM",
-  SHIELD_TEAM: "SHIELD_TEAM",
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-  // B) ENEMY DEBUFF (9 Tags) - alphabetically sorted
-  ATK_DOWN: "ATK_DOWN",
-  ATK_SPD_DOWN: "ATK_SPD_DOWN",
-  BUFF_DISPEL: "BUFF_DISPEL",
-  CROWD_CONTROL: "CROWD_CONTROL",
-  ENEMY_VULNERABILITY: "ENEMY_VULNERABILITY",
-  ENERGY_DRAIN: "ENERGY_DRAIN",
-  REDUCES_ATTRIBUTES: "REDUCES_ATTRIBUTES",
-  REMOVES_ARMOR: "REMOVES_ARMOR",
-  TAUNT: "TAUNT",
+// Load tags dynamically
+let SYNERGY_TAGS_CACHE = null;
+let ALL_SYNERGY_TAG_LIST_CACHE = null;
 
-  // C) PLAYSTYLE (2 Tags) - alphabetically sorted
-  AREA_DAMAGE_DEALER: "AREA_DAMAGE_DEALER",
-  BASIC_ATTACK_SCALER: "BASIC_ATTACK_SCALER",
+async function loadTagsOnce() {
+  if (SYNERGY_TAGS_CACHE !== null) return;
+  
+  const tagsPath = path.join(process.cwd(), 'src/data/tags.json');
+  const data = await fs.readFile(tagsPath, 'utf-8');
+  const tags = JSON.parse(data);
+  
+  // Convert array to object for compatibility
+  SYNERGY_TAGS_CACHE = {};
+  for (const tag of tags) {
+    SYNERGY_TAGS_CACHE[tag] = tag;
+  }
+  ALL_SYNERGY_TAG_LIST_CACHE = tags;
+}
 
-  // D) SELF BUFFS (13 Tags) - alphabetically sorted
-  ATK_SPEED: "ATK_SPEED",
-  ATK_UP: "ATK_UP",
-  CC_RESISTANCE: "CC_RESISTANCE",
-  DMG_RED: "DMG_RED",
-  DODGE_BUFF: "DODGE_BUFF",
-  ENERGY_RESTORE: "ENERGY_RESTORE",
-  GAIN_ARMOR: "GAIN_ARMOR",
-  HEAL: "HEAL",
-  HEAL_EFFECT_UP: "HEAL_EFFECT_UP",
-  HIT_AVOID: "HIT_AVOID",
-  HP_UP: "HP_UP",
-  LIFE_STEAL_UP: "LIFE_STEAL_UP",
-  SHIELD: "SHIELD",
-};
+export async function getSYNERGY_TAGS() {
+  await loadTagsOnce();
+  return SYNERGY_TAGS_CACHE;
+}
 
-const ALL_SYNERGY_TAG_LIST = Object.values(SYNERGY_TAGS);
+export async function getALL_SYNERGY_TAG_LIST() {
+  await loadTagsOnce();
+  return ALL_SYNERGY_TAG_LIST_CACHE;
+}
 
 // --- Snippet helper ---
 function snippetAround(text, matchIndex, maxLen = 180) {
@@ -87,7 +72,9 @@ export function synergyProfileForHero(hero) {
 }
 
 // Ein “Synergy Potential”-Score pro Hero (solo, strict + erklärbar)
-export function synergyPotentialForHero(hero) {
+export async function synergyPotentialForHero(hero) {
+  const SYNERGY_TAGS = await getSYNERGY_TAGS();
+  
   const prof = synergyProfileForHero(hero);
   const has = (t) => prof.tags.has(t);
 

@@ -8,18 +8,18 @@ import { computeScore } from "../../utils/rankingScore.js";
 import { synergyProfileForHero, synergyPotentialForHero } from "../../utils/synergyTags.js";
 import { rateHeroSkills } from "../../utils/skillAnalyzer.js";
 
-const rankedHeroes = [...heroes]
-  .map((hero) => {
+const rankedHeroes = (await Promise.all([...heroes]
+  .map(async (hero) => {
     const s = hero.stats ?? {};
     return {
       hero,
-      score: computeScore(hero),
+      score: await computeScore(hero),
       hp: Number(s.hp ?? 0),
       atk: Number(s.atk ?? 0),
       armor: Number(s.armor ?? 0),
       magicRes: Number(s.magicRes ?? 0),
     };
-  })
+  })))
   .sort((a, b) => b.score - a.score);
 
 /* STATIC PATHS */
@@ -41,7 +41,7 @@ const currentRank = currentHeroData ? rankedHeroes.indexOf(currentHeroData) + 1 
 
 // Synergy & Skill Analysis
 const synergyProfile = synergyProfileForHero(hero);
-const synergyPotential = synergyPotentialForHero(hero);
+const synergyPotential = await synergyPotentialForHero(hero);
 const skillPower = rateHeroSkills(hero);
 
 // Berechne Einzelstat-Rankings für Transparency

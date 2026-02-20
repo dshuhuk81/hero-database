@@ -21,11 +21,11 @@ export const PERCENT_STATS_FOR_SCORE = [
   "mDmgBonus",
 ];
 
-export const PERCENT_STAT_WEIGHT = 3;
-export const SYNERGY_WEIGHT = 5.6;
-export const SKILL_WEIGHT = 48.4;
+export const PERCENT_STAT_WEIGHT = 4;
+export const SYNERGY_WEIGHT = 5;
+export const SKILL_WEIGHT = 35;
 
-export function computeScore(hero) {
+export async function computeScore(hero) {
   const s = hero.stats ?? {};
 
   const hp = Number(s.hp ?? 0);
@@ -54,7 +54,7 @@ export function computeScore(hero) {
   const totalStatScore = baseScore + percentScore;
 
   // Non-stat scores
-  const synergyScore = synergyPotentialForHero(hero) * SYNERGY_WEIGHT;
+  const synergyScore = await synergyPotentialForHero(hero) * SYNERGY_WEIGHT;
   const skillScore = rateHeroSkills(hero) * SKILL_WEIGHT;
 
   return totalStatScore + synergyScore + skillScore;

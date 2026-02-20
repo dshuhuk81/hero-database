@@ -5,12 +5,12 @@ import { heroes } from "../data/heroes";
 import { computeScore } from "../utils/rankingScore.js";
 import { synergyPotentialForHero } from "../utils/synergyTags.js";
 
-const rows = [...heroes]
-  .map((hero) => {
+const rows = await Promise.all(
+  [...heroes].map(async (hero) => {
     const s = hero.stats ?? {};
 
-    const score = computeScore(hero);
-    const synergyPotential = synergyPotentialForHero(hero);
+    const score = await computeScore(hero);
+    const synergyPotential = await synergyPotentialForHero(hero);
 
     return {
       hero,
@@ -22,7 +22,7 @@ const rows = [...heroes]
       magicRes: Number(s.magicRes ?? 0),
     };
   })
-  .sort((a, b) => b.score - a.score);
+).then(results => results.sort((a, b) => b.score - a.score));
 
 ---
 
@@ -81,7 +81,7 @@ const rows = [...heroes]
           </div>
 
           <p class="subtitle" style="margin-top: 0;">
-            Technical scores: 55% Stats + 30% Skills + 15% Synergies
+            Technical scores are based on Stats, Skills and Team Synergies
           </p>
 
           <div class="table-wrapper">

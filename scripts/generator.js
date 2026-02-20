@@ -1,10 +1,76 @@
 // scripts/generator.js
 import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { keywordTagsForHero, fullSkillText } from "../src/utils/heroTags.js";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HERO_DIR = "src/data/heroes";
+const TAGS_FILE = "src/data/tags.json";
 const OUT_FILE = "src/data/derived/teamCompsByHeroId.json";
+
+// Load tags from file
+let SYNERGY_TAGS = {};
+let ALL_SYNERGY_TAG_LIST = [];
+
+async function loadTags() {
+  try {
+    const data = await fs.readFile(TAGS_FILE, 'utf-8');
+    const tags = JSON.parse(data);
+    
+    // Convert array to object for compatibility with existing code
+    SYNERGY_TAGS = {};
+    for (const tag of tags) {
+      SYNERGY_TAGS[tag] = tag;
+    }
+    ALL_SYNERGY_TAG_LIST = tags;
+  } catch {
+    // Fallback to default tags if file doesn't exist
+    SYNERGY_TAGS = {
+      // A) TEAM SUPPORT (9 Tags) - alphabetically sorted
+      ATK_SPD_UP: "ATK_SPD_UP",
+      BUFF_TEAM: "BUFF_TEAM",
+      CC_IMMUNITY_TEAM: "CC_IMMUNITY_TEAM",
+      CDR_TEAM: "CDR_TEAM",
+      DAMAGE_REDUCTION_TEAM: "DAMAGE_REDUCTION_TEAM",
+      DEBUFF_CLEANSE_TEAM: "DEBUFF_CLEANSE_TEAM",
+      ENERGY_RESTORE_TEAM: "ENERGY_RESTORE_TEAM",
+      HEAL_TEAM: "HEAL_TEAM",
+      SHIELD_TEAM: "SHIELD_TEAM",
+
+      // B) ENEMY DEBUFF (9 Tags) - alphabetically sorted
+      ATK_DOWN: "ATK_DOWN",
+      ATK_SPD_DOWN: "ATK_SPD_DOWN",
+      BUFF_DISPEL: "BUFF_DISPEL",
+      CROWD_CONTROL: "CROWD_CONTROL",
+      ENEMY_VULNERABILITY: "ENEMY_VULNERABILITY",
+      ENERGY_DRAIN: "ENERGY_DRAIN",
+      REDUCES_ATTRIBUTES: "REDUCES_ATTRIBUTES",
+      REMOVES_ARMOR: "REMOVES_ARMOR",
+      TAUNT: "TAUNT",
+
+      // C) PLAYSTYLE (2 Tags) - alphabetically sorted
+      AREA_DAMAGE_DEALER: "AREA_DAMAGE_DEALER",
+      BASIC_ATTACK_SCALER: "BASIC_ATTACK_SCALER",
+
+      // D) SELF BUFFS (13 Tags) - alphabetically sorted
+      ATK_SPEED: "ATK_SPEED",
+      ATK_UP: "ATK_UP",
+      CC_RESISTANCE: "CC_RESISTANCE",
+      DMG_RED: "DMG_RED",
+      DODGE_BUFF: "DODGE_BUFF",
+      ENERGY_RESTORE: "ENERGY_RESTORE",
+      GAIN_ARMOR: "GAIN_ARMOR",
+      HEAL: "HEAL",
+      HEAL_EFFECT_UP: "HEAL_EFFECT_UP",
+      HIT_AVOID: "HIT_AVOID",
+      HP_UP: "HP_UP",
+      LIFE_STEAL_UP: "LIFE_STEAL_UP",
+      SHIELD: "SHIELD",
+    };
+    ALL_SYNERGY_TAG_LIST = Object.values(SYNERGY_TAGS);
+  }
+}
 
 const CFG = {
   seed: 1337,
@@ -141,58 +207,14 @@ function buildFormation(team) {
   const back = team.filter(h => !front.includes(h.id)).map(h => h.id);
   return { front, back };
 }
-// -----------------------------
+
+// =====================
 // Synergy tags/score + explanation (STRICT + EVIDENCE + DEBUG EXPORT)
-// -----------------------------
-const SYNERGY_TAGS = {
-  // A) TEAM SUPPORT (9 Tags) - alphabetically sorted
-  ATK_SPD_UP: "ATK_SPD_UP",
-  BUFF_TEAM: "BUFF_TEAM",
-  CC_IMMUNITY_TEAM: "CC_IMMUNITY_TEAM",
-  CDR_TEAM: "CDR_TEAM",
-  DAMAGE_REDUCTION_TEAM: "DAMAGE_REDUCTION_TEAM",
-  DEBUFF_CLEANSE_TEAM: "DEBUFF_CLEANSE_TEAM",
-  ENERGY_RESTORE_TEAM: "ENERGY_RESTORE_TEAM",
-  HEAL_TEAM: "HEAL_TEAM",
-  SHIELD_TEAM: "SHIELD_TEAM",
+// =====================
+// Tags are loaded dynamically from tags.json in loadTags()
+// See loadTags() function at top for initialization
 
-  // B) ENEMY DEBUFF (9 Tags) - alphabetically sorted
-  ATK_DOWN: "ATK_DOWN",
-  ATK_SPD_DOWN: "ATK_SPD_DOWN",
-  BUFF_DISPEL: "BUFF_DISPEL",
-  CROWD_CONTROL: "CROWD_CONTROL",
-  ENEMY_VULNERABILITY: "ENEMY_VULNERABILITY",
-  ENERGY_DRAIN: "ENERGY_DRAIN",
-  REDUCES_ATTRIBUTES: "REDUCES_ATTRIBUTES",
-  REMOVES_ARMOR: "REMOVES_ARMOR",
-  TAUNT: "TAUNT",
-
-  // C) PLAYSTYLE (2 Tags) - alphabetically sorted
-  AREA_DAMAGE_DEALER: "AREA_DAMAGE_DEALER",
-  BASIC_ATTACK_SCALER: "BASIC_ATTACK_SCALER",
-
-  // D) SELF BUFFS (13 Tags) - alphabetically sorted
-  ATK_SPEED: "ATK_SPEED",
-  ATK_UP: "ATK_UP",
-  CC_RESISTANCE: "CC_RESISTANCE",
-  DMG_RED: "DMG_RED",
-  DODGE_BUFF: "DODGE_BUFF",
-  ENERGY_RESTORE: "ENERGY_RESTORE",
-  GAIN_ARMOR: "GAIN_ARMOR",
-  HEAL: "HEAL",
-  HEAL_EFFECT_UP: "HEAL_EFFECT_UP",
-  HIT_AVOID: "HIT_AVOID",
-  HP_UP: "HP_UP",
-  LIFE_STEAL_UP: "LIFE_STEAL_UP",
-  SHIELD: "SHIELD",
-};
-
-const ALL_SYNERGY_TAG_LIST = Object.values(SYNERGY_TAGS);
-
-// STRICT MODE: nur Synergy-Aussagen, wenn BEIDE Seiten Evidence haben
 const SYNERGY_STRICT_MODE = Boolean(CFG.synergyStrict);
-
-// Optional: Debug-Export in JSON (für UI)
 const SYNERGY_DEBUG_EXPORT = Boolean(CFG.synergyDebug);
 
 // --- Snippet helper: kurzer Auszug um das Match herum ---
@@ -537,6 +559,9 @@ function pickCandidatePool(heroes) {
 // Main
 // -----------------------------
 async function main() {
+  // Load tags from file
+  await loadTags();
+  
   const heroes = await loadHeroes();
   const heroById = Object.fromEntries(heroes.map(h => [h.id, h]));
   const rng = makeRng(CFG.seed);
