@@ -1,0 +1,310 @@
+---
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Early Game Strategies - Motto Immortal</title>
+</head>
+<body>
+  <Sidebar />
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <h1 class="hero-headline">Early Game Strategies</h1>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="content-card">
+      <h2>Getting Started</h2>
+      <p>Welcome to Motto Immortal! This guide will help you navigate the early stages of the game and set you up for long-term success.</p>
+    </div>
+
+    <div class="content-card">
+      <h2>1. First Steps (Day 1-3)</h2>
+      <h3>Hero Selection</h3>
+      <ul>
+        <li><strong>Focus on Common and Epic Heroes initially:</strong> They are easier to obtain and upgrade</li>
+        <li><strong>Don't spread resources too thin:</strong> Focus on 5-6 core heroes for your main team</li>
+        <li><strong>Prioritize faction bonuses:</strong> Try to build a team with 3+ heroes from the same faction</li>
+      </ul>
+      
+      <h3>Resource Management</h3>
+      <ul>
+        <li><strong>Save your gems:</strong> Only spend on guaranteed hero summons or limited events</li>
+        <li><strong>Complete daily quests:</strong> They provide essential resources for progression</li>
+        <li><strong>Don't rush hero upgrades:</strong> Wait until you have a clear team strategy</li>
+      </ul>
+    </div>
+
+    <div class="content-card">
+      <h2>2. Building Your First Team (Day 4-7)</h2>
+      <h3>Team Composition</h3>
+      <p>A balanced team should include:</p>
+      <ul>
+        <li><strong>1-2 Tanks:</strong> To absorb damage (e.g., Ares, Athena)</li>
+        <li><strong>2-3 DPS Heroes:</strong> For damage output (e.g., Zeus, Artemis)</li>
+        <li><strong>1-2 Support/Healers:</strong> For sustain (e.g., Isis, Demeter)</li>
+      </ul>
+
+      <h3>Recommended Early Game Teams</h3>
+      <div class="team-example">
+        <h4>Budget Team (Common/Epic Focus)</h4>
+        <p>Ares (Tank) • Artemis (DPS) • Athena (Tank/Support) • Heracles (DPS) • Isis (Healer)</p>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>3. Progression Tips (Week 1-2)</h2>
+      <ul>
+        <li><strong>Push Campaign as far as possible:</strong> This unlocks more game modes and idle rewards</li>
+        <li><strong>Join an active guild:</strong> Guild benefits are crucial for progression</li>
+        <li><strong>Participate in events:</strong> They often provide exclusive rewards</li>
+        <li><strong>Focus on the Shrine:</strong> Upgrading shrine bonuses benefits your entire roster</li>
+        <li><strong>Complete Tower daily:</strong> Great source of hero shards and upgrade materials</li>
+      </ul>
+    </div>
+
+    <div class="content-card">
+      <h2>4. Common Mistakes to Avoid</h2>
+      <div class="warning-box">
+        <ul>
+          <li>Upgrading too many heroes at once</li>
+          <li>Neglecting faction synergies</li>
+          <li>Wasting gems on random summons</li>
+          <li>Ignoring the Shrine upgrades</li>
+          <li>Not joining a guild early</li>
+          <li>Missing daily login rewards</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>5. Mid-Game Transition (Week 3+)</h2>
+      <p>As you progress, start focusing on:</p>
+      <ul>
+        <li><strong>Legendary Heroes:</strong> Begin working toward specific legendary heroes</li>
+        <li><strong>Team Synergies:</strong> Build compositions around specific strategies</li>
+        <li><strong>Relic Upgrades:</strong> Don't neglect hero relics, they provide significant power boosts</li>
+        <li><strong>PvP Arena:</strong> Start competing for better rewards and rankings</li>
+        <li><strong>Event Optimization:</strong> Plan your resources around major events</li>
+      </ul>
+    </div>
+
+    <div class="content-card tips-card">
+      <h2>Pro Tips</h2>
+      <ul>
+        <li>Save event currency for the most valuable rewards</li>
+        <li>Use the hero tier list to guide your investments</li>
+        <li>Watch content creators for advanced strategies</li>
+        <li>Be patient - this is an idle game, progress takes time</li>
+      </ul>
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+/* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+  min-height: 100vh;
+}
+
+/* PAGE LAYOUT WITH SIDEBAR */
+body {
+  margin-left: 80px;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
+}
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 12, 0.95) 0%,
+    rgba(7, 6, 12, 0.7) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.hero-headline {
+  position: relative;
+  z-index: 1;
+  padding: 0 32px 32px;
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 240px;
+  }
+  
+  .hero-headline {
+    font-size: 2rem;
+    padding: 0 24px 24px;
+  }
+}
+
+/* MAIN CONTENT */
+.main-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+.content-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+  transition: border-color 0.3s ease;
+}
+
+.content-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.content-card h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 2rem;
+  color: #fcd34d;
+  border-bottom: 2px solid rgba(250, 204, 21, 0.3);
+  padding-bottom: 12px;
+}
+
+.content-card h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: #fcd34d;
+}
+
+.content-card h4 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: #e6e6eb;
+}
+
+.content-card p {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card ul {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card li {
+  margin-bottom: 12px;
+}
+
+.content-card strong {
+  color: #e6e6eb;
+}
+
+.team-example {
+  background: rgba(168, 85, 247, 0.1);
+  border-left: 4px solid rgba(168, 85, 247, 0.6);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.team-example h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+.team-example p {
+  margin-bottom: 0;
+  font-family: monospace;
+  font-size: 0.95rem;
+  color: #e6e6eb;
+}
+
+.warning-box {
+  background: rgba(220, 38, 38, 0.1);
+  border-left: 4px solid rgba(220, 38, 38, 0.6);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.warning-box ul {
+  margin: 0;
+}
+
+.tips-card {
+  background: rgba(250, 204, 21, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.tips-card h2 {
+  color: #fcd34d;
+  border-bottom-color: rgba(250, 204, 21, 0.4);
+}
+
+@media (max-width: 768px) {
+  .content-card {
+    padding: 24px 20px;
+  }
+
+  .content-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-card h3 {
+    font-size: 1.25rem;
+  }
+}
+</style>

@@ -1,0 +1,528 @@
+---
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symbol Harmony - Motto Immortal</title>
+</head>
+<body>
+  <Sidebar />
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <h1 class="hero-headline">Symbol Harmony</h1>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="content-card intro-card">
+      <h2>What is Symbol Harmony?</h2>
+      <p>Symbol Harmony is an advanced progression system that allows players to equip mystical symbols to their heroes, providing powerful stat bonuses and unique effects. Mastering the Symbol Harmony system is essential for end-game content and competitive play.</p>
+    </div>
+
+    <div class="content-card">
+      <h2>Symbol Basics</h2>
+      
+      <h3>How Symbols Work</h3>
+      <ul>
+        <li><strong>Symbol Slots:</strong> Each hero has 4 symbol slots (unlocked at different levels)</li>
+        <li><strong>Symbol Types:</strong> 6 different symbol types, each providing unique bonuses</li>
+        <li><strong>Symbol Rarity:</strong> Common, Rare, Epic, Legendary (higher rarity = stronger effects)</li>
+        <li><strong>Symbol Level:</strong> Symbols can be leveled up to increase their power</li>
+        <li><strong>Set Bonuses:</strong> Equipping multiple symbols of the same type grants additional bonuses</li>
+      </ul>
+
+      <h3>Unlocking Symbol Slots</h3>
+      <ul>
+        <li><strong>Slot 1:</strong> Unlocked at Hero Level 100</li>
+        <li><strong>Slot 2:</strong> Unlocked at Hero Level 150</li>
+        <li><strong>Slot 3:</strong> Unlocked at Hero Level 200</li>
+        <li><strong>Slot 4:</strong> Unlocked at Hero Level 250</li>
+      </ul>
+    </div>
+
+    <div class="content-card">
+      <h2>Symbol Types & Effects</h2>
+
+      <div class="symbol-type">
+        <h3>Attack Symbol (Red)</h3>
+        <p><strong>Primary Bonus:</strong> +Attack%</p>
+        <p><strong>Set Bonus (2 pieces):</strong> +8% Attack</p>
+        <p><strong>Set Bonus (4 pieces):</strong> +20% Attack, +10% Critical Damage</p>
+        <p class="recommendation"><em>Best for: DPS heroes, burst damage dealers</em></p>
+      </div>
+
+      <div class="symbol-type">
+        <h3>Defense Symbol (Blue)</h3>
+        <p><strong>Primary Bonus:</strong> +Defense%</p>
+        <p><strong>Set Bonus (2 pieces):</strong> +8% Defense</p>
+        <p><strong>Set Bonus (4 pieces):</strong> +20% Defense, +15% HP</p>
+        <p class="recommendation"><em>Best for: Tanks, frontline heroes</em></p>
+      </div>
+
+      <div class="symbol-type">
+        <h3>Vitality Symbol (Green)</h3>
+        <p><strong>Primary Bonus:</strong> +HP%</p>
+        <p><strong>Set Bonus (2 pieces):</strong> +10% HP</p>
+        <p><strong>Set Bonus (4 pieces):</strong> +25% HP, +5% Healing Received</p>
+        <p class="recommendation"><em>Best for: Tanks, sustain-focused teams</em></p>
+      </div>
+
+      <div class="symbol-type">
+        <h3>Speed Symbol (Yellow)</h3>
+        <p><strong>Primary Bonus:</strong> +Speed</p>
+        <p><strong>Set Bonus (2 pieces):</strong> +15 Speed</p>
+        <p><strong>Set Bonus (4 pieces):</strong> +40 Speed, +10% Energy Gain</p>
+        <p class="recommendation"><em>Best for: Support heroes, energy-dependent heroes</em></p>
+      </div>
+
+      <div class="symbol-type">
+        <h3>Magic Symbol (Purple)</h3>
+        <p><strong>Primary Bonus:</strong> +Magic Damage%</p>
+        <p><strong>Set Bonus (2 pieces):</strong> +8% Magic Damage</p>
+        <p><strong>Set Bonus (4 pieces):</strong> +20% Magic Damage, +10% Skill Effectiveness</p>
+        <p class="recommendation"><em>Best for: Mages, skill-based DPS</em></p>
+      </div>
+
+      <div class="symbol-type">
+        <h3>Harmony Symbol (Rainbow)</h3>
+        <p><strong>Primary Bonus:</strong> Balanced stats (+Attack, +Defense, +HP)</p>
+        <p><strong>Set Bonus (2 pieces):</strong> +5% All Stats</p>
+        <p><strong>Set Bonus (4 pieces):</strong> +12% All Stats, +8% Damage Reduction</p>
+        <p class="recommendation"><em>Best for: Balanced heroes, versatile team compositions</em></p>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>Symbol Enhancement</h2>
+      
+      <h3>Leveling Up Symbols</h3>
+      <ul>
+        <li><strong>Method:</strong> Use symbol essence or duplicate symbols as material</li>
+        <li><strong>Max Level:</strong> Level 20 for all symbols</li>
+        <li><strong>Cost:</strong> Increases exponentially with each level</li>
+        <li><strong>Stat Increase:</strong> Each level adds 5% to base stats</li>
+      </ul>
+
+      <h3>Symbol Evolution</h3>
+      <p>Symbols can be evolved to higher rarities:</p>
+      <ul>
+        <li><strong>Common → Rare:</strong> Requires 3 common symbols + gold</li>
+        <li><strong>Rare → Epic:</strong> Requires 3 rare symbols + symbol stones</li>
+        <li><strong>Epic → Legendary:</strong> Requires 3 epic symbols + legendary essence</li>
+      </ul>
+
+      <div class="info-box">
+        <h4>Important Note</h4>
+        <p>Symbol evolution resets the level to 1, but the base stats are significantly higher. Plan your evolution timing carefully!</p>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>Harmony Resonance</h2>
+      
+      <h3>What is Resonance?</h3>
+      <p>When your team achieves specific symbol combinations across all heroes, Harmony Resonance activates, providing team-wide bonuses.</p>
+
+      <h3>Resonance Levels</h3>
+      <div class="resonance-box">
+        <h4>Level 1 Resonance (4+ set bonuses active across team)</h4>
+        <ul>
+          <li>+5% All Stats for entire team</li>
+          <li>+5% Energy Regeneration</li>
+        </ul>
+      </div>
+
+      <div class="resonance-box">
+        <h4>Level 2 Resonance (8+ set bonuses active across team)</h4>
+        <ul>
+          <li>+10% All Stats for entire team</li>
+          <li>+10% Energy Regeneration</li>
+          <li>+5% Damage Dealt</li>
+        </ul>
+      </div>
+
+      <div class="resonance-box">
+        <h4>Level 3 Resonance (12+ set bonuses active across team)</h4>
+        <ul>
+          <li>+15% All Stats for entire team</li>
+          <li>+15% Energy Regeneration</li>
+          <li>+10% Damage Dealt</li>
+          <li>+10% Damage Reduction</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>Symbol Strategy Guide</h2>
+
+      <h3>Team Composition Strategies</h3>
+      
+      <div class="strategy-section">
+        <h4>Offensive Team Build</h4>
+        <ul>
+          <li>3 DPS with Attack Symbols (4-piece sets)</li>
+          <li>1 Tank with Defense Symbols (2-piece set)</li>
+          <li>1 Support with Speed Symbols (4-piece set)</li>
+        </ul>
+        <p><em>Goal: Maximize damage output while maintaining Resonance Level 2</em></p>
+      </div>
+
+      <div class="strategy-section">
+        <h4>Balanced Team Build</h4>
+        <ul>
+          <li>2 DPS with Attack/Magic Symbols (4-piece sets)</li>
+          <li>2 Tanks with Defense/Vitality Symbols (2-piece sets each)</li>
+          <li>1 Healer with Harmony Symbols (4-piece set)</li>
+        </ul>
+        <p><em>Goal: Sustainability with good damage, achieving Resonance Level 2-3</em></p>
+      </div>
+
+      <div class="strategy-section">
+        <h4>Tank/Stall Team Build</h4>
+        <ul>
+          <li>3 Tanks with Vitality Symbols (4-piece sets)</li>
+          <li>1 Healer with Harmony Symbols (4-piece set)</li>
+          <li>1 DPS with Attack Symbols (4-piece set)</li>
+        </ul>
+        <p><em>Goal: Maximum survivability, guaranteed Resonance Level 3</em></p>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>Resource Management</h2>
+      
+      <h3>Where to Get Symbols</h3>
+      <ul>
+        <li><strong>Campaign Stages:</strong> Random drops from elite stages</li>
+        <li><strong>Symbol Mine:</strong> Daily symbol dungeon (3 attempts per day)</li>
+        <li><strong>Events:</strong> Symbol packs during special events</li>
+        <li><strong>Shop:</strong> Purchase with gems or event currency</li>
+        <li><strong>Guild Store:</strong> Exchange guild coins for symbols</li>
+      </ul>
+
+      <h3>Prioritization Tips</h3>
+      <ul>
+        <li>Focus on getting 4-piece sets before leveling individual symbols</li>
+        <li>Prioritize your main DPS and tank heroes first</li>
+        <li>Save legendary essence for evolution of symbols with perfect substats</li>
+        <li>Don't spread resources too thin - fully equip 5 heroes before moving to others</li>
+        <li>Legendary symbols are rare - only use them on your absolute core team</li>
+      </ul>
+    </div>
+
+    <div class="content-card warning-card">
+      <h2>Common Mistakes</h2>
+      <ul>
+        <li>Equipping symbols randomly without considering set bonuses</li>
+        <li>Leveling low-rarity symbols too much (waste of resources)</li>
+        <li>Evolving symbols before reaching max level</li>
+        <li>Ignoring team-wide Harmony Resonance</li>
+        <li>Not farming the Symbol Mine daily</li>
+        <li>Using legendary symbols on temporary team members</li>
+      </ul>
+    </div>
+
+    <div class="content-card tips-card">
+      <h2>Pro Tips</h2>
+      <ul>
+        <li>Always aim for at least 2-piece set bonuses - individual symbols are not worth it</li>
+        <li>Harmony Resonance Level 2 is the sweet spot for most teams</li>
+        <li>Save symbol evolution materials for events with bonus success rates</li>
+        <li>Check hero substats - some heroes benefit more from specific symbols</li>
+        <li>Symbol sets can be mixed strategically (e.g., 2-piece Attack + 2-piece Speed)</li>
+        <li>Late game: Focus on legendary symbols with perfect substats</li>
+        <li>Symbol system has diminishing returns - don't neglect other upgrade paths</li>
+      </ul>
+    </div>
+
+    <div class="content-card">
+      <h2>Symbol Substats</h2>
+      <p>Each symbol has 1-4 random substats in addition to its main stat. Higher rarity symbols have more substats:</p>
+      <ul>
+        <li><strong>Common:</strong> 1 substat</li>
+        <li><strong>Rare:</strong> 2 substats</li>
+        <li><strong>Epic:</strong> 3 substats</li>
+        <li><strong>Legendary:</strong> 4 substats</li>
+      </ul>
+
+      <h3>Valuable Substats</h3>
+      <ul>
+        <li>Critical Chance %</li>
+        <li>Critical Damage %</li>
+        <li>Accuracy</li>
+        <li>Resistance</li>
+        <li>Flat Attack/HP/Defense</li>
+        <li>Damage Increase %</li>
+      </ul>
+
+      <p class="info-text">A legendary symbol with perfect substats is worth more than 3 legendary symbols with poor substats!</p>
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+/* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+  min-height: 100vh;
+}
+
+body {
+  margin-left: 80px;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 12, 0.95) 0%,
+    rgba(7, 6, 12, 0.7) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.hero-headline {
+  position: relative;
+  z-index: 1;
+  padding: 0 32px 32px;
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 240px;
+  }
+  
+  .hero-headline {
+    font-size: 2rem;
+    padding: 0 24px 24px;
+  }
+}
+
+.main-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+.content-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+  transition: border-color 0.3s ease;
+}
+
+.content-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.intro-card {
+  background: rgba(250, 204, 21, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.content-card h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 2rem;
+  color: #fcd34d;
+  border-bottom: 2px solid rgba(250, 204, 21, 0.3);
+  padding-bottom: 12px;
+}
+
+.content-card h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: #fcd34d;
+}
+
+.content-card h4 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: #e6e6eb;
+}
+
+.content-card p {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card ul, .content-card ol {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card li {
+  margin-bottom: 12px;
+}
+
+.content-card strong {
+  color: #e6e6eb;
+}
+
+.symbol-type {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 4px solid rgba(168, 85, 247, 0.6);
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.symbol-type:hover {
+  background: rgba(168, 85, 247, 0.05);
+  border-left-width: 6px;
+}
+
+.symbol-type h3 {
+  margin-top: 0;
+  color: #fcd34d;
+  font-size: 1.4rem;
+}
+
+.recommendation {
+  margin-top: 16px;
+  font-style: italic;
+  color: #e6e6eb;
+  font-weight: 500;
+}
+
+.info-box {
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 4px solid rgba(59, 130, 246, 0.6);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 6px;
+}
+
+.info-box h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+.resonance-box {
+  background: rgba(250, 204, 21, 0.08);
+  border: 2px solid rgba(250, 204, 21, 0.4);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+.resonance-box h4 {
+  margin-top: 0;
+  color: #fcd34d;
+  font-size: 1.3rem;
+}
+
+.strategy-section {
+  background: rgba(74, 222, 128, 0.05);
+  border-left: 4px solid rgba(74, 222, 128, 0.6);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 6px;
+}
+
+.strategy-section h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+.warning-card {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+}
+
+.warning-card h2 {
+  color: #fcd34d;
+  border-bottom-color: rgba(220, 38, 38, 0.4);
+}
+
+.tips-card {
+  background: rgba(250, 204, 21, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.info-text {
+  font-size: 1.1rem;
+  color: #fcd34d;
+  font-weight: 600;
+  text-align: center;
+  padding: 16px;
+  background: rgba(250, 204, 21, 0.1);
+  border-radius: 6px;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .content-card {
+    padding: 24px 20px;
+  }
+
+  .content-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .symbol-type,
+  .info-box,
+  .resonance-box,
+  .strategy-section {
+    padding: 16px;
+  }
+}
+</style>

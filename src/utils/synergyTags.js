@@ -6,31 +6,40 @@ import { fullSkillText } from "./heroTags.js";
 // (aus generator.js übernommen) 
 // -----------------------------
 export const SYNERGY_TAGS = {
-  ATK_SPEED_TEAM_PROVIDER: "ATK_SPEED_TEAM_PROVIDER",
-  ATK_SPEED_SELF_ONLY: "ATK_SPEED_SELF_ONLY",
+  // A) TEAM SUPPORT (8 Tags)
+  SHIELD_TEAM: "SHIELD_TEAM",
+  HEAL_TEAM: "HEAL_TEAM",
+  ENERGY_RESTORE_TEAM: "ENERGY_RESTORE_TEAM",
+  CDR_TEAM: "CDR_TEAM",
+  ATK_SPD_UP: "ATK_SPD_UP",
+  DAMAGE_REDUCTION_TEAM: "DAMAGE_REDUCTION_TEAM",
+  CC_IMMUNITY_TEAM: "CC_IMMUNITY_TEAM",
+  DEBUFF_CLEANSE_TEAM: "DEBUFF_CLEANSE_TEAM",
 
-  ENERGY_TEAM_PROVIDER: "ENERGY_TEAM_PROVIDER",
-  CDR_TEAM_PROVIDER: "CDR_TEAM_PROVIDER",
+  // B) ENEMY DEBUFF (7 Tags)
+  CROWD_CONTROL: "CROWD_CONTROL",
+  TAUNT: "TAUNT",
+  ENEMY_VULNERABILITY: "ENEMY_VULNERABILITY",
+  BUFF_DISPEL: "BUFF_DISPEL",
+  ENERGY_DRAIN: "ENERGY_DRAIN",
+  ATK_DOWN: "ATK_DOWN",
+  ATK_SPD_DOWN: "ATK_SPD_DOWN",
 
-  DEF_DOWN_OR_AMP: "DEF_DOWN_OR_AMP",
-
-  SHIELD_TEAM_PROVIDER: "SHIELD_TEAM_PROVIDER",
-  ALLY_HEAL_PROVIDER: "ALLY_HEAL_PROVIDER",
-  CLEANSE_TEAM_PROVIDER: "CLEANSE_TEAM_PROVIDER",
-  DAMAGE_REDUCTION_TEAM_PROVIDER: "DAMAGE_REDUCTION_TEAM_PROVIDER",
-  CC_IMMUNITY_TEAM_PROVIDER: "CC_IMMUNITY_TEAM_PROVIDER",
-
-  DISPEL_ENEMY_BUFFS: "DISPEL_ENEMY_BUFFS",
-  CONTROL_PROVIDER: "CONTROL_PROVIDER",
-  TAUNT_OR_PROVOKE: "TAUNT_OR_PROVOKE",
-  ENERGY_DRAIN_ENEMY: "ENERGY_DRAIN_ENEMY",
-
+  // C) PLAYSTYLE (2 Tags)
   BASIC_ATTACK_SCALER: "BASIC_ATTACK_SCALER",
-  ON_HIT_SCALER: "ON_HIT_SCALER",
-  FAST_STACKING_WITH_HITS: "FAST_STACKING_WITH_HITS",
+  AREA_DAMAGE_DEALER: "AREA_DAMAGE_DEALER",
 
-  ULT_DEPENDENT: "ULT_DEPENDENT",
-  AOE_DAMAGE_PROFILE: "AOE_DAMAGE_PROFILE",
+  // D) SELF BUFFS (10 Tags)
+  SELF_SHIELD: "SELF_SHIELD",
+  SELF_HEAL: "SELF_HEAL",
+  ENERGY_RESTORE: "ENERGY_RESTORE",
+  DODGE_BUFF: "DODGE_BUFF",
+  CC_RESISTANCE: "CC_RESISTANCE",
+  GAIN_ARMOR: "GAIN_ARMOR",
+  DAMAGE_REDUCTION_SELF: "DAMAGE_REDUCTION_SELF",
+  STAT_STEAL_AMPLIFY: "STAT_STEAL_AMPLIFY",
+  HIT_AVOIDANCE_SELF: "HIT_AVOIDANCE_SELF",
+  ATK_SPEED_SELF_ONLY: "ATK_SPEED_SELF_ONLY",
 };
 
 const ALL_SYNERGY_TAG_LIST = Object.values(SYNERGY_TAGS);
@@ -59,9 +68,9 @@ const TAG_EVIDENCE_PATTERNS = {
   ],
 
   [SYNERGY_TAGS.ENERGY_TEAM_PROVIDER]: [
-    /\b(all allies|allies|ally)\b[\s\S]{0,180}\b(restore[sd]?|gain[sd]?|regenerate[sd]?|regen(?:eration)?)\b[\s\S]{0,60}\benergy\b/i,
-    /\b(restore[sd]?|gain[sd]?|regenerate[sd]?|regen(?:eration)?)\b[\s\S]{0,60}\benergy\b[\s\S]{0,180}\b(all allies|allies|ally)\b/i,
-    /\b(grant(?:s|ed)?|provide[sd]?|share[sd]?)\b[\s\S]{0,60}\benergy\b[\s\S]{0,120}\b(all allies|allies|ally)\b/i,
+    // Very explicit: only match "X to allies" pattern
+    // Avoids false positives like "all allies X, Hero gains energy"
+    /\b(restore[sd]?|grant(?:s|ed)?|provide[sd]?|share[sd]?)\b[\s\S]{0,80}\benergy\b[\s\S]{0,80}\b(to\s+)?(all\s+)?(allies?|team|party|teammates)\b/i,
   ],
 
   [SYNERGY_TAGS.CDR_TEAM_PROVIDER]: [
@@ -168,48 +177,26 @@ function evidenceForTag(hero, tag) {
 }
 
 // STRICT profile (Tags nur wenn Evidence vorhanden)  [oai_citation:1‡generator.js](sediment://file_0000000079f071fdb9711537de0b7170)
+// 🆕 NEW: Read synergies from manual hero.synergies field
 export function synergyProfileForHero(hero) {
   const raw = fullSkillText(hero) || "";
   const forbidsNormals = /\bno longer performs normal attacks\b/i.test(raw);
 
+  // Read manual synergies from hero object
+  const manualTags = Array.isArray(hero.synergies) ? hero.synergies : [];
+  const tags = new Set(manualTags);
+
+  // Evidence for debug
   const evidenceByTag = {};
-  for (const tag of ALL_SYNERGY_TAG_LIST) {
-    evidenceByTag[tag] = evidenceForTag(hero, tag);
+  for (const tag of manualTags) {
+    evidenceByTag[tag] = {
+      heroId: hero.id,
+      heroName: hero.name,
+      tag,
+      snippet: "(manually assigned)",
+      match: "(from synergies field)",
+    };
   }
-
-  const tags = new Set();
-
-  // ATK Speed: team > self-only
-  if (evidenceByTag[SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER]) {
-    tags.add(SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER);
-  } else if (evidenceByTag[SYNERGY_TAGS.ATK_SPEED_SELF_ONLY]) {
-    tags.add(SYNERGY_TAGS.ATK_SPEED_SELF_ONLY);
-  }
-
-  if (evidenceByTag[SYNERGY_TAGS.ENERGY_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.ENERGY_TEAM_PROVIDER);
-  if (evidenceByTag[SYNERGY_TAGS.CDR_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.CDR_TEAM_PROVIDER);
-  if (evidenceByTag[SYNERGY_TAGS.DEF_DOWN_OR_AMP]) tags.add(SYNERGY_TAGS.DEF_DOWN_OR_AMP);
-
-  if (evidenceByTag[SYNERGY_TAGS.SHIELD_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.SHIELD_TEAM_PROVIDER);
-  if (evidenceByTag[SYNERGY_TAGS.ALLY_HEAL_PROVIDER]) tags.add(SYNERGY_TAGS.ALLY_HEAL_PROVIDER);
-  if (evidenceByTag[SYNERGY_TAGS.CLEANSE_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.CLEANSE_TEAM_PROVIDER);
-  if (evidenceByTag[SYNERGY_TAGS.DAMAGE_REDUCTION_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.DAMAGE_REDUCTION_TEAM_PROVIDER);
-  if (evidenceByTag[SYNERGY_TAGS.CC_IMMUNITY_TEAM_PROVIDER]) tags.add(SYNERGY_TAGS.CC_IMMUNITY_TEAM_PROVIDER);
-
-  if (evidenceByTag[SYNERGY_TAGS.DISPEL_ENEMY_BUFFS]) tags.add(SYNERGY_TAGS.DISPEL_ENEMY_BUFFS);
-  if (evidenceByTag[SYNERGY_TAGS.CONTROL_PROVIDER]) tags.add(SYNERGY_TAGS.CONTROL_PROVIDER);
-  if (evidenceByTag[SYNERGY_TAGS.TAUNT_OR_PROVOKE]) tags.add(SYNERGY_TAGS.TAUNT_OR_PROVOKE);
-  if (evidenceByTag[SYNERGY_TAGS.ENERGY_DRAIN_ENEMY]) tags.add(SYNERGY_TAGS.ENERGY_DRAIN_ENEMY);
-
-  // Hit mechanics nur wenn Normal Attacks existieren
-  if (!forbidsNormals) {
-    if (evidenceByTag[SYNERGY_TAGS.BASIC_ATTACK_SCALER]) tags.add(SYNERGY_TAGS.BASIC_ATTACK_SCALER);
-    if (evidenceByTag[SYNERGY_TAGS.ON_HIT_SCALER]) tags.add(SYNERGY_TAGS.ON_HIT_SCALER);
-    if (evidenceByTag[SYNERGY_TAGS.FAST_STACKING_WITH_HITS]) tags.add(SYNERGY_TAGS.FAST_STACKING_WITH_HITS);
-  }
-
-  if (evidenceByTag[SYNERGY_TAGS.ULT_DEPENDENT]) tags.add(SYNERGY_TAGS.ULT_DEPENDENT);
-  if (evidenceByTag[SYNERGY_TAGS.AOE_DAMAGE_PROFILE]) tags.add(SYNERGY_TAGS.AOE_DAMAGE_PROFILE);
 
   return { tags, evidenceByTag, forbidsNormals };
 }
@@ -222,28 +209,27 @@ export function synergyPotentialForHero(hero) {
   let s = 0;
 
   // Providers (Team-Value)
-  if (has(SYNERGY_TAGS.ENERGY_TEAM_PROVIDER)) s += 26;
-  if (has(SYNERGY_TAGS.CDR_TEAM_PROVIDER)) s += 18;
-  if (has(SYNERGY_TAGS.DEF_DOWN_OR_AMP)) s += 16;
-  if (has(SYNERGY_TAGS.ATK_SPEED_TEAM_PROVIDER)) s += 14;
+  if (has(SYNERGY_TAGS.ENERGY_RESTORE_TEAM)) s += 10;
+  if (has(SYNERGY_TAGS.CDR_TEAM)) s += 8;
+  if (has(SYNERGY_TAGS.ENEMY_VULNERABILITY)) s += 6;
+  if (has(SYNERGY_TAGS.ATK_SPD_UP)) s += 4;
 
-  if (has(SYNERGY_TAGS.SHIELD_TEAM_PROVIDER)) s += 1;
-  if (has(SYNERGY_TAGS.ALLY_HEAL_PROVIDER)) s += 1;
-  if (has(SYNERGY_TAGS.CLEANSE_TEAM_PROVIDER)) s += 1;
-  if (has(SYNERGY_TAGS.DAMAGE_REDUCTION_TEAM_PROVIDER)) s += 1;
-  if (has(SYNERGY_TAGS.CC_IMMUNITY_TEAM_PROVIDER)) s += 1;
+  if (has(SYNERGY_TAGS.SHIELD_TEAM)) s += 1;
+  if (has(SYNERGY_TAGS.HEAL_TEAM)) s += 1;
+  if (has(SYNERGY_TAGS.DEBUFF_CLEANSE_TEAM)) s += 1;
+  if (has(SYNERGY_TAGS.DAMAGE_REDUCTION_TEAM)) s += 1;
+  if (has(SYNERGY_TAGS.CC_IMMUNITY_TEAM)) s += 1;
 
-  if (has(SYNERGY_TAGS.DISPEL_ENEMY_BUFFS)) s += 1;
-  if (has(SYNERGY_TAGS.CONTROL_PROVIDER)) s += 1;
-  if (has(SYNERGY_TAGS.TAUNT_OR_PROVOKE)) s += 1;
-  if (has(SYNERGY_TAGS.ENERGY_DRAIN_ENEMY)) s += 1;
+  if (has(SYNERGY_TAGS.BUFF_DISPEL)) s += 1;
+  if (has(SYNERGY_TAGS.CROWD_CONTROL)) s += 1;
+  if (has(SYNERGY_TAGS.TAUNT)) s += 1;
+  if (has(SYNERGY_TAGS.ENERGY_DRAIN)) s += 1;
+  if (has(SYNERGY_TAGS.ATK_DOWN)) s += 2;
+  if (has(SYNERGY_TAGS.ATK_SPD_DOWN)) s += 2;
 
   // Receivers (profitiert von Team)
-  if (has(SYNERGY_TAGS.ULT_DEPENDENT)) s += 10;
-  if (has(SYNERGY_TAGS.AOE_DAMAGE_PROFILE)) s += 8;
+  if (has(SYNERGY_TAGS.AREA_DAMAGE_DEALER)) s += 8;
   if (has(SYNERGY_TAGS.BASIC_ATTACK_SCALER)) s += 6;
-  if (has(SYNERGY_TAGS.ON_HIT_SCALER)) s += 6;
-  if (has(SYNERGY_TAGS.FAST_STACKING_WITH_HITS)) s += 6;
 
   // Self-only ATK speed ist nicht “Team synergy”, aber etwas wert
   if (has(SYNERGY_TAGS.ATK_SPEED_SELF_ONLY)) s += 3;

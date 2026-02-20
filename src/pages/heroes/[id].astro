@@ -54,7 +54,7 @@ const statRankings = {
   magicRes: currentHeroData ? getStatRanking('magicRes') : null,
 };
 
-// ✅ NEU: Mode aus Query ziehen (general|pve|pvp)
+// NEU: Mode aus Query ziehen (general|pve|pvp)
 const mode = Astro.url.searchParams.get("mode") ?? "general";
 
 const currentHero = await import(`../../data/heroes/${id}.json`);
@@ -207,7 +207,7 @@ const STAT_LABELS = {
               </div>
             </div>
 
-            <!-- 🔥 NEU: Relic Priority -->
+            <!-- NEU: Relic Priority -->
             {hero.recommendedRelicLevel !== undefined && (
               <div class="identity-card">
                 <h4>Relic Prio</h4>
@@ -494,7 +494,7 @@ const STAT_LABELS = {
   border:1px solid rgba(255,255,255,.12);
   color: inherit;
 }
-  /* ✅ NEW: Mode bar styling */
+  /* NEW: Mode bar styling */
   .comp-mode-bar{
     display:flex;
     gap:.75rem;
@@ -898,7 +898,7 @@ const STAT_LABELS = {
   }
 
   /* ===============================
-     🔥 RELIC LEVEL STYLING - VERBESSERT
+     RELIC LEVEL STYLING - VERBESSERT
      =============================== */
   .relic-level {
     font-weight: 700;
@@ -1626,7 +1626,7 @@ const STAT_LABELS = {
 </style>
 
 <script>
-  // ✅ Hash-based Tab Switching (survives reloads)
+  // Hash-based Tab Switching (survives reloads)
   const tabs = document.querySelectorAll('.tab');
   const contents = document.querySelectorAll('.tab-content');
 
@@ -1656,7 +1656,7 @@ const STAT_LABELS = {
     });
   });
 
-  // ✅ Mode Select: navigate to ?mode=...#synergies (keeps correct tab)
+  // Mode Select: navigate to ?mode=...#synergies (keeps correct tab)
   const sel = document.getElementById('compMode');
   if (sel) {
     sel.addEventListener('change', () => {

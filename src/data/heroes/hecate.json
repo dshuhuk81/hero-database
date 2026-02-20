@@ -15,7 +15,7 @@
     "pvp": "A",
     "pve": "SS"
   },
-  "evolution":"Divine V",
+  "evolution": "Divine V",
   "level": 300,
   "stats": {
     "might": 631000,
@@ -50,61 +50,67 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Scarab Go",
-      "description": "Khepri rolls forward, knocks back all enemy units along the path, and attacks 4 times, each time dealing DMG equal to 100% of ATK.",
+      "name": "Fall to Shadow!",
+      "description": "Gains 200 Energy upon entering battle.",
       "upgrades": {
-        "level2": "Increases DMG dealt to 110%. (Unlocks at Lv.41)",
-        "level3": "Gains 300 Energy on entry. (Unlocks at Lv.141)",
-        "level4": "Increases DMG dealt to 120%. (Unlocks at Lv.221)"
-      }
+        "level2": "She steals 2% max HP and 2% ATK from all enemies when casting her Ultimate, up to 100% of her ATK and HP. She grows in size with each steal. (Unlock at Relic Lv.10)",
+        "level3": "Plunders 3% of the max HP and ATK. (Unlock at Relic Lv.20)",
+        "level4": "Plunders 4% of the max HP and ATK. (Unlock at Relic Lv.30)"
+      },
+      "image": "/skills/hecate_skill_1.webp"
     },
     {
       "id": "skill_2",
-      "name": "Scarab Charge",
-      "description": "Upon entering battle, Khepri quickly rolls forward and slams into the target, dealing DMG equal to 270% of ATK and knocking them back 3 meters.",
+      "name": "The World's Dark Half",
+      "description": "Hecate summons nether flames to attack all enemies, dealing DMG equal to 100% of ATK every 2s for 10s. She restores HP equal to 50% of the DMG dealt when the skill ends. If the Ultimate is cast again before the previous one ends, it immediately restores HP based on the DMG dealt so far and resets the DMG timer.",
       "upgrades": {
-        "level2": "Increases DMG dealt to 300%. (Unlocks at Lv.21)",
-        "level3": "Targets who are knocked back also launch units along the path. (Unlocks at Lv.161)",
-        "level4": "Gains a shield equal to 200% of ATK. (Unlocks at Lv.241)"
-      }
+        "level2": "Increases DMG per sec to 120% ATK.",
+        "level3": "Restores HP equal to 50% of the DMG immediately upon dealing DMG.",
+        "level4": "Increases DMG per sec to 150% ATK."
+      },
+      "image": "/skills/hecate_skill_2.webp"
     },
     {
       "id": "skill_3",
-      "name": "Sandstorm Crush",
-      "description": "Khepri commands a scarab to slam the ground, dealing DMG equal to 200% of ATK to surrounding units. He gains a shield equal to 60% of ATK × (1 + number of units hit).",
+      "name": "Soul Drain",
+      "description": "Hecate continuously deals DMG equal to 50% of ATK to the nearest enemy every 0.5s and gains 50% Lifesteal for 2.5s.",
       "upgrades": {
-        "level2": "Shield Strength increases to 75% ATK. (Unlocks at Lv.121)",
-        "level3": "Reduces the target's Hit Rate by 20% for 6s. (Unlocks at Lv.201)",
-        "level4": "Each unit hit grants an extra 10% Hit Rate RED, lasting 6s. (Unlocks at Lv.281)"
-      }
+        "level2": "Increases Lifesteal to 100%.",
+        "level3": "Increases DMG dealt to 75% ATK every 0.5s.",
+        "level4": "Increases DMG dealt to 90% ATK every 0.5s."
+      },
+      "image": "/skills/hecate_skill_3.webp"
     },
     {
       "id": "skill_4",
-      "name": "Scarab's Blessing",
-      "description": "Khepri hides himself inside the scarab and cannot act. Casting the skill grants him a shield equal to 300% of ATK and 10% DMG RED for 5s. He gains Super Armor during the skill.",
+      "name": "Trivia's Edge",
+      "description": "Hecate deals DMG equal to 220% of ATK to one enemy and stuns them for 2s, prioritizing the opposite target.",
       "upgrades": {
-        "level2": "Gains 30% DMG RED. (Unlocks at Lv.81)",
-        "level3": "Shield Strength increases to 350% ATK. (Unlocks at Lv.181)",
-        "level4": "Also restores 6% of max HP per sec for the duration. (Unlocks at Lv.261)"
-      }
+        "level2": "Increases DMG dealt to 240% ATK.",
+        "level3": "Increases DMG dealt to 260% ATK.",
+        "level4": "Increases DMG dealt to 280% ATK and stun duration to 3s. (Unlocks at Lv.281)"
+      },
+      "image": "/skills/hecate_skill_4.webp"
     }
   ],
   "passive": {
-    "name": "Scarab Charge",
-    "description": "Upon entering battle, Khepri quickly rolls forward and slams into the target, dealing DMG equal to 270% of ATK and knocking them back 3 meters.",
+    "name": "Irresistible Force",
+    "description": "The ATK she receives grows as her current HP increases. It reaches the maximum bonus ATK of 30% at 80% HP.",
     "upgrades": {
-      "level2": "Increases DMG dealt to 300%. (Unlocks at Lv.21)",
-      "level3": "Targets who are knocked back also launch units along the path. (Unlocks at Lv.161)",
-      "level4": "Gains a shield equal to 200% of ATK. (Unlocks at Lv.241)"
+      "level2": "Upon casting the Ultimate, she gains the max bonus ATK regardless of her HP.",
+      "level3": "Increases CRIT Rate by an additional 15%.",
+      "level4": "Increases the bonus ATK to 50%. (Unlocks at Lv.261)"
     }
   },
   "relic": {
-    "name": "Scarab's Watch",
-    "description": "Increases DMG RED of Scarab's Blessing to 60%.",
+    "name": "Fall to Shadow!",
+    "description": "Enhances Fall to Shadow!, enabling HP and ATK plunder when casting the Ultimate.",
     "upgrades": {
-      "level2": "Before falling, becomes immune to the DMG and triggers Scarab's Blessing. (Unlock at Relic Lv.10)",
-      "level3": "Increases DMG RED of Scarab's Blessing to 100%. (Unlock at Relic Lv.20)",
-      "level4": "Increases the max HP restored during Scarab's Blessing to 10%. (Unlock at Relic Lv.30)"
-    }
-  }
+      "level2": "Unlocks HP & ATK steal at 2%. (Relic Lv.10)",
+      "level3": "Increases plunder to 3%. (Relic Lv.20)",
+      "level4": "Increases plunder to 4%. (Relic Lv.30)"
+    },
+    "image": "/skills/hecate_relic.webp"
+  },
+  "synergies": []
 }

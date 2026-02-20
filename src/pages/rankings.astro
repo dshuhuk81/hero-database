@@ -33,6 +33,30 @@ const rows = [...heroes]
   <body>
     <Sidebar />
 
+    <!-- Maintenance Alert Dialog -->
+    <div id="maintenanceAlert" class="maintenance-alert-overlay">
+      <div class="maintenance-alert">
+        <div class="maintenance-alert-header">
+          <h2>⚠️ Under Maintenance</h2>
+          <button class="close-btn" id="closeMaintenanceAlert" aria-label="Close alert">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="maintenance-alert-content">
+          <p>This site is currently under maintenance. Some features are being improved for a better experience.</p>
+          <ul>
+            <li>Synergy score calculation</li>
+            <li>Additional ranking metrics</li>
+            <li>Performance optimizations</li>
+          </ul>
+          <p style="margin-top: 1.5rem; font-size: 0.95rem; opacity: 0.9;">We appreciate your patience as we work on these improvements!</p>
+        </div>
+      </div>
+    </div>
+
     <div class="page-wrapper">
       <h1 class="title">Hero Rankings</h1>
 
@@ -49,7 +73,7 @@ const rows = [...heroes]
               <strong>This Page:</strong> Automated technical analysis based on hero stats, skill mechanics, and team synergies.
             </p>
             <p style="font-size: 0.9rem; opacity: 0.75;">
-              ⚠️ Remember: Automation captures mechanics, not meta-shifts, matchups, or role-specific utility. Always verify with tier list!
+              Remember: Automation captures mechanics, not meta-shifts, matchups, or role-specific utility. Always verify with tier list!
             </p>
           </div>
 
@@ -511,10 +535,129 @@ const rows = [...heroes]
         .hero-avatar { width: 40px; height: 40px; }
         .score-pill { padding: 4px 10px; font-size: 0.85rem; }
       }
+
+      /* Maintenance Alert Dialog */
+      .maintenance-alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        backdrop-filter: blur(2px);
+      }
+
+      .maintenance-alert {
+        background: linear-gradient(135deg, rgba(30, 25, 50, 0.95) 0%, rgba(40, 30, 60, 0.95) 100%);
+        border: 2px solid rgba(250, 204, 21, 0.4);
+        border-radius: 12px;
+        padding: 32px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .maintenance-alert-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+      }
+
+      .maintenance-alert-header h2 {
+        margin: 0;
+        color: #fcd34d;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        color: #e6e6eb;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .close-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fcd34d;
+      }
+
+      .maintenance-alert-content {
+        color: #e6e6eb;
+        line-height: 1.6;
+      }
+
+      .maintenance-alert-content p {
+        margin: 0 0 12px 0;
+      }
+
+      .maintenance-alert-content ul {
+        margin: 12px 0;
+        padding-left: 24px;
+        list-style: none;
+      }
+
+      .maintenance-alert-content li {
+        margin: 8px 0;
+        position: relative;
+        padding-left: 16px;
+      }
+
+      .maintenance-alert-content li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #4caf50;
+        font-weight: bold;
+      }
+
+      .maintenance-alert-overlay.hidden {
+        display: none;
+      }
     </style>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // Maintenance Alert Handler
+        const maintenanceAlert = document.getElementById("maintenanceAlert");
+        const closeMaintenanceBtn = document.getElementById("closeMaintenanceAlert");
+
+        closeMaintenanceBtn?.addEventListener("click", () => {
+          maintenanceAlert.classList.add("hidden");
+        });
+
+        // Close on overlay click
+        maintenanceAlert?.addEventListener("click", (e) => {
+          if (e.target === maintenanceAlert) {
+            maintenanceAlert.classList.add("hidden");
+          }
+        });
+
         const heroCounter = document.getElementById("heroCounter");
         const tableBody = document.getElementById("rankingsTableBody");
         const headerScroll = document.querySelector(".table-header-sticky");

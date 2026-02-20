@@ -1,0 +1,588 @@
+---
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Guides - Motto Immortal</title>
+</head>
+<body>
+  <Sidebar />
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <h1 class="hero-headline">Event Guides</h1>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- TAB NAVIGATION -->
+    <div class="tab-navigation">
+      <button class="tab-button active" data-tab="infinity-labyrinth">Infinity Labyrinth</button>
+      <button class="tab-button" data-tab="faction-wars">Faction Wars</button>
+      <button class="tab-button" data-tab="tower-of-trials">Tower of Trials</button>
+      <button class="tab-button" data-tab="seasonal-events">Seasonal Events</button>
+      <button class="tab-button" data-tab="guild-boss">Guild Boss</button>
+    </div>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content-wrapper">
+      
+      <!-- INFINITY LABYRINTH TAB -->
+      <div class="tab-content active" id="infinity-labyrinth">
+        <div class="content-card intro-card">
+          <h2>Infinity Labyrinth</h2>
+          <p>The Infinity Labyrinth is a challenging roguelike event where strategic choices and hero composition are key to progressing through multiple floors and earning valuable rewards.</p>
+        </div>
+
+        <div class="content-card">
+          <h2>How It Works</h2>
+          <ul>
+            <li><strong>Entry:</strong> Available once per day, resets daily at server time</li>
+            <li><strong>Duration:</strong> 30 minutes per run</li>
+            <li><strong>Floors:</strong> 12 floors total, each floor increases in difficulty</li>
+            <li><strong>Rewards:</strong> Accumulate based on floors cleared and chests collected</li>
+          </ul>
+
+          <h3>Floor Mechanics</h3>
+          <p>Each floor presents you with 3 random paths to choose from:</p>
+          <ul>
+            <li><strong>Combat Nodes:</strong> Fight enemies to progress</li>
+            <li><strong>Elite Nodes:</strong> Harder fights with better rewards</li>
+            <li><strong>Treasure Nodes:</strong> Guaranteed rewards, no combat</li>
+            <li><strong>Shop Nodes:</strong> Purchase buffs or revival items</li>
+            <li><strong>Blessing Nodes:</strong> Choose temporary power-ups</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Strategy Guide</h2>
+          
+          <h3>Team Composition</h3>
+          <p>Recommended setup:</p>
+          <ul>
+            <li>2 Tanks with high survivability</li>
+            <li>2 DPS heroes (at least one AoE specialist)</li>
+            <li>1 Healer or support hero</li>
+          </ul>
+
+          <h3>Blessing Priority</h3>
+          <ol>
+            <li><strong>Healing Boost:</strong> Increases all healing by 30%</li>
+            <li><strong>Attack Amplification:</strong> +25% attack for all heroes</li>
+            <li><strong>Energy Generation:</strong> Start battles with 50% energy</li>
+            <li><strong>Damage Reduction:</strong> Take 20% less damage</li>
+            <li><strong>Critical Strike:</strong> +15% critical chance</li>
+          </ol>
+
+          <h3>Path Selection Tips</h3>
+          <ul>
+            <li>Early floors (1-4): Take combat and elite nodes for more blessings</li>
+            <li>Mid floors (5-8): Balance risk and reward, prioritize healing/shops</li>
+            <li>Late floors (9-12): Play safe, take treasure nodes when available</li>
+          </ul>
+        </div>
+
+        <div class="content-card tips-card">
+          <h2>Pro Tips</h2>
+          <ul>
+            <li>Save revival items for floors 10+</li>
+            <li>Stack multiple healing blessings for sustain-focused runs</li>
+            <li>Elite nodes on floor 12 give the best rewards</li>
+            <li>Don't fight the boss without full energy on your team</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- FACTION WARS TAB -->
+      <div class="tab-content" id="faction-wars">
+        <div class="content-card intro-card">
+          <h2>Faction Wars</h2>
+          <p>Faction Wars is a competitive event where players use faction-specific teams to battle for supremacy and earn exclusive rewards.</p>
+        </div>
+
+        <div class="content-card">
+          <h2>Event Mechanics</h2>
+          <ul>
+            <li><strong>Schedule:</strong> Weekly event, runs Friday-Sunday</li>
+            <li><strong>Requirements:</strong> Must use heroes from the featured faction only</li>
+            <li><strong>Battles:</strong> 5 attempts per day</li>
+            <li><strong>Ranking:</strong> Compete for leaderboard rewards</li>
+          </ul>
+
+          <h3>Faction Rotation</h3>
+          <p>Each week features two factions:</p>
+          <ul>
+            <li>Week 1: Poseidon vs Zeus</li>
+            <li>Week 2: Nuwa vs Ra</li>
+            <li>Week 3: Odin vs Poseidon</li>
+            <li>Week 4: Zeus vs Nuwa</li>
+            <li><em>Cycle repeats</em></li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Winning Strategies</h2>
+          <ul>
+            <li>Maintain a strong team in at least 3 different factions</li>
+            <li>Save faction-specific resources for featured weeks</li>
+            <li>Study opponent teams before using all attempts</li>
+            <li>Focus on countering meta compositions</li>
+            <li>Upgrade your Shrine for the featured faction beforehand</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Reward Tiers</h2>
+          <table class="reward-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Rewards</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Top 10</td>
+                <td>Exclusive Avatar Frame, 5000 gems, 100 faction shards</td>
+              </tr>
+              <tr>
+                <td>Top 50</td>
+                <td>3000 gems, 75 faction shards, enhancement stones</td>
+              </tr>
+              <tr>
+                <td>Top 100</td>
+                <td>2000 gems, 50 faction shards, skill books</td>
+              </tr>
+              <tr>
+                <td>Top 500</td>
+                <td>1000 gems, 25 faction shards</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TOWER OF TRIALS TAB -->
+      <div class="tab-content" id="tower-of-trials">
+        <div class="content-card intro-card">
+          <h2>Tower of Trials</h2>
+          <p>A permanent PvE progression mode with 100 floors of increasing difficulty. Each floor offers rewards, and milestones provide significant bonuses.</p>
+        </div>
+
+        <div class="content-card">
+          <h2>Tower Structure</h2>
+          <ul>
+            <li><strong>Floors:</strong> 100 total floors</li>
+            <li><strong>Attempts:</strong> Unlimited</li>
+            <li><strong>Difficulty:</strong> Scales exponentially every 10 floors</li>
+            <li><strong>Milestones:</strong> Floors 10, 25, 50, 75, 100 have special rewards</li>
+          </ul>
+
+          <h3>Floor Rewards</h3>
+          <ul>
+            <li>Floors 1-25: Gold, EXP potions, basic materials</li>
+            <li>Floors 26-50: Hero shards, enhancement stones, gems</li>
+            <li>Floors 51-75: Epic hero shards, rare materials, large gem rewards</li>
+            <li>Floors 76-100: Legendary shards, transcendence materials, exclusive items</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Progression Tips</h2>
+          <ul>
+            <li>Boss floors (every 10th) require specific counters - check their skills</li>
+            <li>Switch team composition based on floor requirements</li>
+            <li>Use control-heavy teams for high-damage floors</li>
+            <li>Healers become essential after floor 40</li>
+            <li>Floor 50+ often requires faction-specific strategies</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SEASONAL EVENTS TAB -->
+      <div class="tab-content" id="seasonal-events">
+        <div class="content-card intro-card">
+          <h2>Seasonal Events</h2>
+          <p>Limited-time events that rotate throughout the year, offering unique rewards and exclusive heroes.</p>
+        </div>
+
+        <div class="content-card">
+          <h2>Event Types</h2>
+          
+          <h3>Winter Festival (December-January)</h3>
+          <ul>
+            <li>Special login rewards</li>
+            <li>Discounted gem packages</li>
+            <li>Exclusive winter-themed hero skins</li>
+            <li>Double rewards in Campaign</li>
+          </ul>
+
+          <h3>Spring Carnival (March-April)</h3>
+          <ul>
+            <li>Hero summoning rate increase</li>
+            <li>Special event shop with rare items</li>
+            <li>Daily mini-games for bonus rewards</li>
+            <li>Exclusive legendary hero available</li>
+          </ul>
+
+          <h3>Summer Bash (June-July)</h3>
+          <ul>
+            <li>Beach-themed skins and avatars</li>
+            <li>Double idle rewards event</li>
+            <li>Faction Wars bonus rewards</li>
+            <li>Limited-time hero fusion events</li>
+          </ul>
+
+          <h3>Autumn Harvest (September-October)</h3>
+          <ul>
+            <li>Upgrade cost reductions (50% off)</li>
+            <li>Enhanced drop rates in all modes</li>
+            <li>Guild event with massive rewards</li>
+            <li>Anniversary celebration bonuses</li>
+          </ul>
+        </div>
+
+        <div class="content-card tips-card">
+          <h2>Event Planning</h2>
+          <ul>
+            <li>Save gems and resources for major seasonal events</li>
+            <li>Complete all daily quests during events for bonus currency</li>
+            <li>Prioritize limited-time exclusive heroes</li>
+            <li>Check event shops for the best value items</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- GUILD BOSS TAB -->
+      <div class="tab-content" id="guild-boss">
+        <div class="content-card intro-card">
+          <h2>Guild Boss</h2>
+          <p>Cooperative guild event where all members attack a powerful boss for individual and guild rewards.</p>
+        </div>
+
+        <div class="content-card">
+          <h2>Event Details</h2>
+          <ul>
+            <li><strong>Schedule:</strong> Twice weekly (Wednesday, Saturday)</li>
+            <li><strong>Duration:</strong> 24 hours per boss</li>
+            <li><strong>Attempts:</strong> 3 attacks per member</li>
+            <li><strong>Rewards:</strong> Based on damage dealt and guild ranking</li>
+          </ul>
+
+          <h3>Boss Rotation</h3>
+          <ul>
+            <li><strong>Fire Dragon:</strong> Weak to water-based heroes, high AoE damage</li>
+            <li><strong>Ice Titan:</strong> Weak to fire-based heroes, freezing attacks</li>
+            <li><strong>Shadow Demon:</strong> Weak to light heroes, life-steal mechanics</li>
+            <li><strong>Thunder Beast:</strong> Weak to earth heroes, chain lightning</li>
+          </ul>
+        </div>
+
+        <div class="content-card">
+          <h2>Maximizing Damage</h2>
+          <ul>
+            <li>Use heroes with damage-over-time (DoT) abilities</li>
+            <li>Bring attack buffers and defense debuffers</li>
+            <li>Coordinate with guild to avoid buff overlap</li>
+            <li>Save your strongest team for the final attempt</li>
+            <li>Use consumable attack buffs for maximum damage runs</li>
+          </ul>
+
+          <h3>Best Heroes for Guild Boss</h3>
+          <ul>
+            <li><strong>DPS:</strong> Zeus, Artemis, Ra</li>
+            <li><strong>Support:</strong> Isis (healing), Athena (defense down)</li>
+            <li><strong>Debuffers:</strong> Medusa, Ares</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+/* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+  min-height: 100vh;
+}
+
+body {
+  margin-left: 80px;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 12, 0.95) 0%,
+    rgba(7, 6, 12, 0.7) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.hero-headline {
+  position: relative;
+  z-index: 1;
+  padding: 0 32px 32px;
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 240px;
+  }
+  
+  .hero-headline {
+    font-size: 2rem;
+    padding: 0 24px 24px;
+  }
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+/* TAB NAVIGATION */
+.tab-navigation {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.tab-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #d1d1d6;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.tab-button:hover {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #e6e6eb;
+}
+
+.tab-button.active {
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.3),
+    rgba(250, 204, 21, 0.3)
+  );
+  border-color: rgba(250, 204, 21, 0.6);
+  color: #fcd34d;
+  font-weight: 600;
+}
+
+/* TAB CONTENT */
+.tab-content-wrapper {
+  position: relative;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+  transition: border-color 0.3s ease;
+}
+
+.content-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.intro-card {
+  background: rgba(250, 204, 21, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.content-card h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 2rem;
+  color: #fcd34d;
+  border-bottom: 2px solid rgba(250, 204, 21, 0.3);
+  padding-bottom: 12px;
+}
+
+.content-card h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: #fcd34d;
+}
+
+.content-card p {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card ul, .content-card ol {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card li {
+  margin-bottom: 12px;
+}
+
+.content-card strong {
+  color: #e6e6eb;
+}
+
+.reward-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.reward-table th,
+.reward-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reward-table thead {
+  background: rgba(168, 85, 247, 0.2);
+}
+
+.reward-table th {
+  color: #fcd34d;
+  font-weight: 600;
+}
+
+.reward-table tr:hover {
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.tips-card {
+  background: rgba(250, 204, 21, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+@media (max-width: 768px) {
+  .tab-button {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .content-card {
+    padding: 24px 20px;
+  }
+
+  .content-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-card h3 {
+    font-size: 1.25rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const tabButtons = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const targetTab = (button as HTMLElement).dataset.tab;
+
+      if (!targetTab) return;
+
+      // Remove active class from all buttons and contents
+      tabButtons.forEach(btn => btn.classList.remove("active"));
+      tabContents.forEach(content => content.classList.remove("active"));
+
+      // Add active class to clicked button and corresponding content
+      button.classList.add("active");
+      const targetElement = document.getElementById(targetTab);
+      if (targetElement) {
+        targetElement.classList.add("active");
+      }
+    });
+  });
+});
+</script>

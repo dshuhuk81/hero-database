@@ -1,0 +1,504 @@
+---
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero Upgrades - Motto Immortal</title>
+</head>
+<body>
+  <Sidebar />
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <h1 class="hero-headline">Hero Upgrades</h1>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="content-card intro-card">
+      <h2>Hero Upgrade System</h2>
+      <p>Understanding the hero upgrade system is crucial for maximizing your team's potential. This guide covers all upgrade paths, resource requirements, and strategic priorities for developing your heroes.</p>
+    </div>
+
+    <div class="content-card">
+      <h2>Upgrade Types Overview</h2>
+      <p>Heroes can be upgraded through multiple systems, each providing different benefits:</p>
+      
+      <div class="upgrade-table-wrapper">
+        <table class="upgrade-table">
+          <thead>
+            <tr>
+              <th>Upgrade Type</th>
+              <th>Resources Required</th>
+              <th>Main Benefits</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Level Up</strong></td>
+              <td>Gold, EXP Potions</td>
+              <td>Base stat increases (HP, ATK, DEF)</td>
+              <td class="priority-high">High</td>
+            </tr>
+            <tr>
+              <td><strong>Star Upgrade</strong></td>
+              <td>Hero Shards, Gold</td>
+              <td>Major stat boost, skill unlocks</td>
+              <td class="priority-high">High</td>
+            </tr>
+            <tr>
+              <td><strong>Skill Enhancement</strong></td>
+              <td>Skill Books, Gold</td>
+              <td>Increased skill damage/effects</td>
+              <td class="priority-medium">Medium</td>
+            </tr>
+            <tr>
+              <td><strong>Relic Upgrade</strong></td>
+              <td>Relic Stones, Gold</td>
+              <td>Unique passive bonuses</td>
+              <td class="priority-medium">Medium</td>
+            </tr>
+            <tr>
+              <td><strong>Gear Enhancement</strong></td>
+              <td>Enhancement Stones, Gold</td>
+              <td>Significant stat increases</td>
+              <td class="priority-high">High</td>
+            </tr>
+            <tr>
+              <td><strong>Awakening</strong></td>
+              <td>Awakening Stones, Hero Copies</td>
+              <td>Tier upgrade, massive stat boost</td>
+              <td class="priority-critical">Critical</td>
+            </tr>
+            <tr>
+              <td><strong>Transcendence</strong></td>
+              <td>Transcendence Stones, Legendary Shards</td>
+              <td>End-game power spike</td>
+              <td class="priority-low">Low (Late Game)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>Star Level Requirements</h2>
+      <p>Upgrading hero stars requires specific amounts of hero shards. Plan your resource spending accordingly:</p>
+      
+      <div class="upgrade-table-wrapper">
+        <table class="upgrade-table star-table">
+          <thead>
+            <tr>
+              <th>Star Level</th>
+              <th>Common Heroes</th>
+              <th>Epic Heroes</th>
+              <th>Legendary Heroes</th>
+              <th>Unlocks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>⭐ 1 Star</td>
+              <td>Base</td>
+              <td>Base</td>
+              <td>Base</td>
+              <td>Hero acquired</td>
+            </tr>
+            <tr>
+              <td>⭐⭐ 2 Stars</td>
+              <td>10 shards</td>
+              <td>20 shards</td>
+              <td>30 shards</td>
+              <td>Skill 2 unlocked</td>
+            </tr>
+            <tr>
+              <td>⭐⭐⭐ 3 Stars</td>
+              <td>20 shards</td>
+              <td>40 shards</td>
+              <td>60 shards</td>
+              <td>Skill 3 unlocked</td>
+            </tr>
+            <tr>
+              <td>⭐⭐⭐⭐ 4 Stars</td>
+              <td>40 shards</td>
+              <td>80 shards</td>
+              <td>120 shards</td>
+              <td>Relic unlocked</td>
+            </tr>
+            <tr>
+              <td>⭐⭐⭐⭐⭐ 5 Stars</td>
+              <td>80 shards</td>
+              <td>160 shards</td>
+              <td>240 shards</td>
+              <td>Full skill enhancements</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>6 Stars</td>
+              <td>160 shards</td>
+              <td>320 shards</td>
+              <td>480 shards</td>
+              <td>Awakening available</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>Gear Enhancement Levels</h2>
+      <p>Each piece of gear can be enhanced to increase its stats. Higher enhancement levels provide exponential benefits:</p>
+      
+      <div class="upgrade-table-wrapper">
+        <table class="upgrade-table">
+          <thead>
+            <tr>
+              <th>Enhancement Level</th>
+              <th>Stat Bonus</th>
+              <th>Success Rate</th>
+              <th>Stones Required</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>+0 to +5</td>
+              <td>+5% per level</td>
+              <td>100%</td>
+              <td>Basic Stones</td>
+            </tr>
+            <tr>
+              <td>+5 to +10</td>
+              <td>+8% per level</td>
+              <td>80%</td>
+              <td>Intermediate Stones</td>
+            </tr>
+            <tr>
+              <td>+10 to +15</td>
+              <td>+12% per level</td>
+              <td>60%</td>
+              <td>Advanced Stones</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>+15 to +20</td>
+              <td>+15% per level</td>
+              <td>40%</td>
+              <td>Superior Stones</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>+20 to +25</td>
+              <td>+20% per level</td>
+              <td>20%</td>
+              <td>Legendary Stones</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>Upgrade Priority Guide</h2>
+      
+      <h3>Phase 1: Early Game (First 2 Weeks)</h3>
+      <ol>
+        <li><strong>Level Up:</strong> Keep your main team at max level for your account</li>
+        <li><strong>Star Upgrades:</strong> Focus on getting core heroes to 3-4 stars</li>
+        <li><strong>Basic Gear:</strong> Equip and enhance to +5 for all main heroes</li>
+      </ol>
+
+      <h3>Phase 2: Mid Game (Weeks 3-8)</h3>
+      <ol>
+        <li><strong>Star Upgrades:</strong> Push main DPS and tank to 5-6 stars</li>
+        <li><strong>Gear Enhancement:</strong> Enhance key pieces to +10</li>
+        <li><strong>Skill Enhancement:</strong> Begin upgrading ultimate skills</li>
+        <li><strong>Relic Upgrade:</strong> Unlock and level up relics for main team</li>
+      </ol>
+
+      <h3>Phase 3: Late Game (Week 8+)</h3>
+      <ol>
+        <li><strong>Awakening:</strong> Awaken your core legendary heroes</li>
+        <li><strong>Gear Enhancement:</strong> Push to +15 on main team</li>
+        <li><strong>Full Skill Enhancement:</strong> Max out all skills on main heroes</li>
+        <li><strong>Transcendence:</strong> Begin transcending legendary heroes</li>
+      </ol>
+    </div>
+
+    <div class="content-card warning-card">
+      <h2>Resource Management Tips</h2>
+      <ul>
+        <li><strong>Don't level heroes evenly:</strong> Focus resources on your main 5-6 heroes</li>
+        <li><strong>Save legendary shards:</strong> Only use them on confirmed end-game heroes</li>
+        <li><strong>Gear enhancement can fail:</strong> Use protection scrolls for high-level enhancements (+15 and above)</li>
+        <li><strong>Skill books are limited:</strong> Prioritize ultimate skills and key abilities</li>
+        <li><strong>Awakening is expensive:</strong> Plan carefully before committing resources</li>
+      </ul>
+    </div>
+
+    <div class="content-card tips-card">
+      <h2>Pro Tips</h2>
+      <ul>
+        <li>Events often provide discounted upgrade costs - wait for these to maximize efficiency</li>
+        <li>A fully upgraded Epic hero is often better than an under-upgraded Legendary</li>
+        <li>Don't neglect support heroes - their upgrades can win fights</li>
+        <li>Save enhancement protection items for gear pieces with perfect stats</li>
+        <li>Track your upgrade materials - know what you need before events start</li>
+        <li>Consider faction bonuses when deciding which heroes to fully upgrade</li>
+      </ul>
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+/* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+  min-height: 100vh;
+}
+
+body {
+  margin-left: 80px;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 12, 0.95) 0%,
+    rgba(7, 6, 12, 0.7) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.hero-headline {
+  position: relative;
+  z-index: 1;
+  padding: 0 32px 32px;
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 240px;
+  }
+  
+  .hero-headline {
+    font-size: 2rem;
+    padding: 0 24px 24px;
+  }
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+.content-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+  transition: border-color 0.3s ease;
+}
+
+.content-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.intro-card {
+  background: rgba(250, 204, 21, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.content-card h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 2rem;
+  color: #fcd34d;
+  border-bottom: 2px solid rgba(250, 204, 21, 0.3);
+  padding-bottom: 12px;
+}
+
+.content-card h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: #fcd34d;
+}
+
+.content-card p {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card ul, .content-card ol {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #e6e6eb;
+}
+
+.content-card li {
+  margin-bottom: 12px;
+}
+
+.content-card strong {
+  color: #e6e6eb;
+}
+
+/* TABLE STYLES */
+.upgrade-table-wrapper {
+  overflow-x: auto;
+  margin: 24px 0;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.upgrade-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.upgrade-table thead {
+  background: rgba(250, 204, 21, 0.2);
+}
+
+.upgrade-table th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #fcd34d;
+  border-bottom: 2px solid rgba(250, 204, 21, 0.5);
+}
+
+.upgrade-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e6e6eb;
+}
+
+.upgrade-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.upgrade-table tbody tr:hover {
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.upgrade-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.highlight-row {
+  background: rgba(250, 204, 21, 0.1) !important;
+}
+
+.highlight-row td {
+  font-weight: 600;
+  color: #fcd34d;
+}
+
+.priority-high {
+  color: #fcd34d;
+  font-weight: 600;
+}
+
+.priority-critical {
+  color: #fcd34d;
+  font-weight: 700;
+}
+
+.priority-medium {
+  color: #e6e6eb;
+  font-weight: 600;
+}
+
+.priority-low {
+  color: #e6e6eb;
+  font-weight: 500;
+}
+
+.warning-card {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+}
+
+.warning-card h2 {
+  color: #fcd34d;
+  border-bottom-color: rgba(220, 38, 38, 0.4);
+}
+
+.tips-card {
+  background: rgba(250, 204, 21, 0.05);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+@media (max-width: 768px) {
+  .content-card {
+    padding: 24px 20px;
+  }
+
+  .content-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .upgrade-table {
+    font-size: 0.85rem;
+  }
+
+  .upgrade-table th,
+  .upgrade-table td {
+    padding: 10px 8px;
+  }
+}
+</style>

@@ -1,106 +1,66 @@
 ---
-import HeroCard from "../components/HeroCard.astro";
-import { heroes } from "../data/heroes";
-import Footer from "../components/Footer.astro";  
-import Sidebar from "../components/Sidebar.astro";  // 👈 NEU
-import Filter from "../components/filter.astro";  // 👈 NEU
-
-
-/* 🔤 Alphabetisch nach Name sortieren */
-const sortedHeroes = [...heroes].sort((a, b) =>
-  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
-);
-
-function escapeRegExp(str) {
-  return String(str || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function fullSkillText(h) {
-  const parts = [];
-  for (const sk of (h.skills || [])) {
-    if (sk?.description) parts.push(sk.description);
-    if (sk?.upgrades) parts.push(...Object.values(sk.upgrades));
-  }
-  if (h.relic?.description) parts.push(h.relic.description);
-  if (h.relic?.upgrades) parts.push(...Object.values(h.relic.upgrades));
-  return parts.join(" ");
-}
-
-// exakt wie im Generator (damit UI/Generator konsistent bleiben)
-function keywordTagsForHero(hero) {
-  const text = fullSkillText(hero).toLowerCase();
-  const tags = [];
-  const add = (label, ok) => { if (ok && !tags.includes(label)) tags.push(label); };
-
-  const allyHeal =
-    /\b(heals?|restores?|recovers?)\s+(?:hp|health)?\s*(?:to)?\s*(allies?|ally)\b/.test(text) ||
-    /\b(heals?|restores?|recovers?)\s+(allies?|ally)\b/.test(text);
-
-  const heroName = escapeRegExp(hero?.name?.toLowerCase?.() || "");
-  const selfHeal =
-    (heroName && new RegExp(`\\b(heals?|restores?|recovers?)\\s+${heroName}\\b`).test(text)) ||
-    /\bheals?\s+self\b/.test(text);
-
-  const genericHpRestore = /\b(restores?\s+hp|recovers?\s+hp)\b/.test(text);
-
-  const antiHeal =
-    /\b(cannot receive (?:shields? or )?healing|cannot be healed|prevents? healing|healing reduction|reduce(s|d)? healing|healing is reduced|stop(s|ped)? healing|ban(s|ned)? healing)\b/.test(text);
-
-  add("Ally Heal", allyHeal);
-  add("Self Heal", !allyHeal && (selfHeal || genericHpRestore));
-  add("Anti-Heal", antiHeal);
-
-  add("Shield", /\bshield\b/.test(text));
-  add("Cleanse", /\b(removes? (one|a) debuff|remove debuff|cleanse)\b/.test(text));
-  add("Control", /\b(stun|silence|freeze|root|sleep|charm|taunt|knock)\w*\b/.test(text));
-  add("AoE", /\b(all enemies|nearby enemies|in a large area|aoe)\b/.test(text));
-  add("Energy", /\benergy\b/.test(text));
-  add("Cooldown", /\b(cooldown|cd)\b/.test(text));
-  add("Backline", /\b(farthest enemy|back row|rear row|behind|teleport|blink)\b/.test(text));
-  add("Def Down", /\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(text));
-
-  // hier bewusst NICHT slice(0,3) – für Filter lieber "voll"
-  return tags;
-}
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
 ---
-<Sidebar />  <!-- 👈 NEU -->
-<!-- HERO HEADER -->
-<section class="hero-header"></section>
 
-<h1 class="title">Choose your hero</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motto Immortal</title>
+</head>
+<body>
+  <Sidebar />
 
-<div class="content-wrapper">
-  
-<Filter />
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <h1 class="hero-headline">Motto Immortal</h1>
+  </section>
 
-<!-- RESULTS -->
-<div class="resultcontent">
-  <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <h2 class="section-headline">Explore the Database</h2>
+    <div class="separator"></div>
 
-    <div class="grid" id="heroGrid">
-    {sortedHeroes.map(hero => (
-      <div
-        class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
-          data-name={hero.name.toLowerCase()}
-          data-class={hero.class.toLowerCase()}
-          data-role={hero.role.toLowerCase()}    
-          data-faction={hero.faction.toLowerCase()}
-          data-rarity={hero.rarity.toLowerCase()}
-          data-tags={keywordTagsForHero(hero).join("|").toLowerCase()}
-      >
-        <div class="icon-stack">
-          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
-          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} />
-          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} />
-        </div>
+    <!-- TEASER GRID -->
+    <div class="teaser-grid">
+      <a href="/early-game" class="teaser">
+        <img src="/teaser/hero.webp" alt="Heros" class="teaser-image">
+        <h3 class="teaser-headline">Hero Overview</h3>
+      </a>
 
-        <HeroCard hero={hero} />
-      </div>
-    ))}
-  </div>
-</div>
-</div>
-<Footer />  <!-- 👈 NEU -->
+      <a href="/shrine" class="teaser">
+        <img src="/teaser/shrine.webp" alt="Shrine Guide" class="teaser-image">
+        <h3 class="teaser-headline">Shrine Guide</h3>
+      </a>
+
+      <a href="/rankings" class="teaser">
+        <img src="/teaser/rankings.webp" alt="Rankings" class="teaser-image">
+        <h3 class="teaser-headline">Rankings</h3>
+      </a>
+
+      <a href="/tierlist" class="teaser">
+        <img src="/teaser/tierlist.webp" alt="Tierlist" class="teaser-image">
+        <h3 class="teaser-headline">Tierlist</h3>
+      </a>
+
+      <a href="/bosses" class="teaser">
+        <img src="/teaser/bosses.webp" alt="Boss Guides" class="teaser-image">
+        <h3 class="teaser-headline">Boss Guides</h3>
+      </a>
+
+       <a href="/totems" class="teaser">
+        <img src="/teaser/totems.webp" alt="Totem List" class="teaser-image">
+        <h3 class="teaser-headline">Totem List</h3>
+      </a>
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
 
 <style>
 /* RESET & BASE */
@@ -113,311 +73,181 @@ html, body {
     radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
     linear-gradient(to bottom, #0d0b10, #07060c);
   color: #e6e6eb;
+  min-height: 100vh;
 }
 
-/* ===============================
-   PAGE LAYOUT WITH SIDEBAR
-   =============================== */
+/* PAGE LAYOUT WITH SIDEBAR */
 body {
-  margin-left: 80px; /* Sidebar width */
+  margin-left: 80px;
 }
 
 @media (max-width: 768px) {
   body {
     margin-left: 0;
-    margin-bottom: 60px; /* Mobile bottom nav */
+    margin-bottom: 60px;
   }
 }
 
-/* HERO HEADER */
-.hero-header {
-  height: 360px;
+/* HERO SECTION */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 480px;
   background-image: url("/bg.jpg");
   background-size: cover;
-  background-position: center 150%; /* 👈 höheres Bild */
+  background-position: center;
   background-attachment: fixed;
-  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
 }
 
-.hero-header::after {
-  content: "";
+.hero-overlay {
   position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35)),
-    linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.45));
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 12, 0.95) 0%,
+    rgba(7, 6, 12, 0.7) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
-/* TITLE */
-.title {
-  text-align: center;
-  margin: 32px 0;
-  font-weight: 600;
+.hero-headline {
+  position: relative;
+  z-index: 1;
+  padding: 0 32px 48px;
+  margin: 0;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* FILTERS  */
-.content-wrapper {
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 2.5rem;
+    padding: 0 24px 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-headline {
+    font-size: 2rem;
+    padding: 0 16px 24px;
+  }
+}
+
+/* MAIN CONTENT */
+.main-content {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 64px 32px;
 }
 
-.hero-counter {
-  margin-bottom: 24px;
-  margin-top: 16px;
+.section-headline {
+  font-size: 2.5rem;
+  font-weight: 600;
   text-align: center;
+  margin: 0 0 24px;
+  color: #e6e6eb;
 }
-.grid {
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background: rgba(250, 204, 21, 0.4);
+  margin-bottom: 64px;
+}
+
+/* TEASER GRID */
+.teaser-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); /* 👈 flexibel */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 32px;
+}
+
+@media (min-width: 900px) {
+  .teaser-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.teaser {
+  display: flex;
+  align-items: center;
   gap: 20px;
-  justify-content: center; /* 👈 zentriert das Grid */
-}
-
-/* ================================
-   HERO WRAPPER – GLOW BASIS
-   ================================ */
-
-.hero-wrapper {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
   position: relative;
-  width: 210px;
-  border-radius: 6px;
+  overflow: hidden;
 }
 
-/* Common */
-.hero-wrapper.rarity-common {
-  border: 1px solid rgba(74, 222, 128, 0.55); /* grün */
-}
-
-/* Epic */
-.hero-wrapper.rarity-epic {
-  border: 1px solid rgba(168, 85, 247, 0.6); /* purple */
-}
-
-/* Legendary */
-.hero-wrapper.rarity-legendary {
-  border: 1px solid rgba(250, 204, 21, 0.75); /* gold */
-}
-
-/* Grund-Glow (aus) */
-.hero-wrapper::before {
+.teaser::before {
   content: "";
   position: absolute;
-  inset: -14px;
-    pointer-events: none;
-
-  border-radius: 20px;
-
+  inset: -2px;
+  background: rgba(250, 204, 21, 0.2);
+  border-radius: 12px;
   opacity: 0;
-  filter: blur(18px);
-
-  pointer-events: none;
-  transition: opacity 0.4s ease, filter 0.4s ease;
+  transition: opacity 0.3s ease;
+  z-index: -1;
 }
 
-/* Legendary Grundzustand */
-.hero-wrapper.rarity-legendary::before {
-  background: radial-gradient(
-    circle at 50% 20%,
-    rgba(255, 215, 100, 0.7),
-    rgba(255, 215, 100, 0.25) 45%,
-    transparent 70%
-  );
-  opacity: 0.25;
+.teaser:hover {
+  transform: translateY(-4px);
+  border-color: rgba(250, 204, 21, 0.6);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
 }
 
-/* Epic Grundzustand */
-.hero-wrapper.rarity-epic::before {
-  background: radial-gradient(
-    circle at 50% 20%,
-    rgba(160, 90, 255, 0.6),
-    rgba(160, 90, 255, 0.25) 45%,
-    transparent 70%
-  );
-  opacity: 0.6;
+.teaser:hover::before {
+  opacity: 0.2;
 }
 
-/* ================================
-   HOVER: LEGENDARY BOOST
-   ================================ */
-
-.hero-wrapper.rarity-legendary .hero-card:hover::before {
-  transform: scale(1.18); /* 👈 etwas stärker als normal */
+.teaser-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
 }
 
-/* Glow verstärken bei Hover */
-.hero-wrapper.rarity-legendary:hover::before {
-  opacity: 1;
-  filter: blur(26px);
+.teaser:hover .teaser-image {
+  transform: scale(1.1);
 }
 
-
-/* ICON STACK */
-.icon-stack {
-  position: absolute;
-  top: 10px;
-  left: -14px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 10;
-}
-.icon-stack img {
-  width: 20px;
-  height: 20px;
-  background: #0e0e0e;
-  border-radius: 50%;
-  padding: 3px;
-  border: 1px solid rgba(255,255,255,0.25);
+.teaser-headline {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e6e6eb;
 }
 
+@media (max-width: 480px) {
+  .teaser {
+    gap: 16px;
+    padding: 16px;
+  }
 
+  .teaser-image {
+    width: 60px;
+    height: 60px;
+  }
 
+  .teaser-headline {
+    font-size: 1.25rem;
+  }
+}
 </style>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById("searchInput");
-  const resetButton = document.getElementById("resetFilters");
-  const heroCounter = document.getElementById("heroCounter");
-  const roleChips = document.querySelectorAll(".role-chip");
-  const factionChips = document.querySelectorAll(".faction-chip");
-  const heroCards = document.querySelectorAll(".hero-wrapper");
-  const classChips = document.querySelectorAll(".class-chip");
-  const rarityChips = document.querySelectorAll(".rarity-chip");
-  const tagChips = document.querySelectorAll(".tag-chip");
-
-  let activeTag = null; // single select    
-  
-  let activeRoles = new Set();  
-  let activeClasses = new Set();
-  let activeRarities = new Set();
-  let activeFactions = new Set();
-
-  function applyFilters() {
-  const query = (searchInput.value || "").toLowerCase();
-  let visible = 0;
-
-  heroCards.forEach(card => {
-    const name = card.dataset.name;
-    const cls = card.dataset.class;
-    const role = card.dataset.role;
-    const rarity = card.dataset.rarity;
-    const faction = card.dataset.faction;
-
-    const tags = (card.dataset.tags || "");
-    const matchesTag =
-      !activeTag || tags.includes(activeTag);
-
-    const matchesSearch =
-      !query ||
-      name.includes(query) ||
-      cls.includes(query) ||
-      role.includes(query) ||
-      faction.includes(query) ||
-      rarity.includes(query);
-
-    const matchesClass =
-      activeClasses.size === 0 || activeClasses.has(cls);
-
-    const matchesRole =
-      activeRoles.size === 0 || activeRoles.has(role);
-
-    const matchesRarity =
-      activeRarities.size === 0 || activeRarities.has(rarity);
-
-    const matchesFaction =
-      activeFactions.size === 0 || activeFactions.has(faction);
-
-    const show =
-      matchesSearch && matchesClass && matchesRole && matchesFaction && matchesRarity && matchesTag;
-
-    card.style.display = show ? "block" : "none";
-    if (show) visible++;
-  });
-
-  heroCounter.textContent =
-    visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
-}
-
-
-  searchInput.addEventListener("input", applyFilters);
-
-  roleChips.forEach(chip => {
-    chip.addEventListener("click", () => {
-      const r = chip.dataset.role;
-
-      if (activeRoles.has(r)) {
-        activeRoles.delete(r);
-        chip.classList.remove("active");
-      } else {
-        activeRoles.add(r);
-        chip.classList.add("active");
-      }
-
-      applyFilters();
-    });
-  });
-
-  classChips.forEach(chip => {
-    chip.addEventListener("click", () => {
-      const c = chip.dataset.class;
-      chip.classList.toggle("active");
-      activeClasses.has(c) ? activeClasses.delete(c) : activeClasses.add(c);
-      applyFilters();
-    });
-  });
-
-  factionChips.forEach(chip => {
-    chip.addEventListener("click", () => {
-      const c = chip.dataset.faction;
-      chip.classList.toggle("active");
-      activeFactions.has(c) ? activeFactions.delete(c) : activeFactions.add(c);
-      applyFilters();
-    });
-  });
-
-  rarityChips.forEach(chip => {
-    chip.addEventListener("click", () => {
-      const r = chip.dataset.rarity;
-      chip.classList.toggle("active");
-      activeRarities.has(r) ? activeRarities.delete(r) : activeRarities.add(r);
-      applyFilters();
-    });
-  });
-
-//* Neue Tag Chips 
-  tagChips.forEach(chip => {
-  chip.addEventListener("click", () => {
-    const t = (chip.dataset.tag || "").toLowerCase();
-
-    // toggle (single select)
-    if (activeTag === t) {
-      activeTag = null;
-      chip.classList.remove("active");
-    } else {
-      activeTag = t;
-      tagChips.forEach(x => x.classList.remove("active"));
-      chip.classList.add("active");
-    }
-
-    applyFilters();
-  });
-});
-
-  resetButton.addEventListener("click", () => {
-    searchInput.value = "";
-    activeClasses.clear();
-    activeRarities.clear();
-    activeRoles.clear();
-    activeFactions.clear();
-    document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
-    applyFilters();
-    document.querySelectorAll(".role-chip.active").forEach(c => c.classList.remove("active"));
-    activeTag = null;
-    tagChips.forEach(x => x.classList.remove("active"));
-  });
-
-  applyFilters();
-});
-</script>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 Hero Synergy Tag Manager</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      min-height: calc(100vh - 40px);
+    }
+
+    .header {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 30px;
+      font-size: 14px;
+    }
+
+    .sidebar {
+      background: #f5f7fa;
+      border-right: 1px solid #e0e6ed;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    .hero-search {
+      padding: 15px;
+      border-bottom: 1px solid #e0e6ed;
+      sticky: top;
+      background: white;
+    }
+
+    .hero-search input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d0d8e0;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .hero-list {
+      max-height: calc(100vh - 200px);
+      overflow-y: auto;
+    }
+
+    .hero-item {
+      padding: 12px 15px;
+      border-bottom: 1px solid #f0f3f7;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hero-item:hover {
+      background: #f0f3f7;
+    }
+
+    .hero-item.active {
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-weight: 600;
+    }
+
+    .hero-item .hero-name {
+      font-size: 13px;
+    }
+
+    .hero-item .tag-count {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+
+    .hero-item.active .tag-count {
+      opacity: 0.8;
+    }
+
+    .main {
+      background: white;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-height: 100%;
+    }
+
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e0e6ed;
+      padding-bottom: 15px;
+    }
+
+    .editor-header h2 {
+      font-size: 20px;
+      color: #333;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      gap: 8px;
+    }
+
+    .hero-meta-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .tag-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-height: 0;
+    }
+
+    .tag-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tag-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #667eea;
+      letter-spacing: 1px;
+    }
+
+    .tag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .tag-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid #d0d8e0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+    }
+
+    .tag-checkbox:hover {
+      background: #f5f7fa;
+      border-color: #667eea;
+    }
+
+    .tag-checkbox input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .tag-checkbox input[type="checkbox"]:checked {
+      accent-color: #667eea;
+    }
+
+    .tag-checkbox label {
+      cursor: pointer;
+      margin: 0;
+      font-size: 13px;
+      user-select: none;
+    }
+
+    .tag-checkbox input[type="checkbox"]:checked + label {
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      padding-top: 15px;
+      border-top: 1px solid #e0e6ed;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      flex: 1;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: #f0f3f7;
+      color: #333;
+      border: 1px solid #d0d8e0;
+    }
+
+    .btn-secondary:hover {
+      background: #e0e6ed;
+    }
+
+    .status {
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 13px;
+      min-height: 20px;
+    }
+
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .placeholder {
+      padding: 40px;
+      text-align: center;
+      color: #999;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #667eea;
+      font-size: 14px;
+    }
+
+    .category-team-support {
+      background: #e3f2fd;
+      border-color: #90caf9;
+    }
+
+    .category-enemy-debuff {
+      background: #ffe0b2;
+      border-color: #ffb74d;
+    }
+
+    .category-playstyle {
+      background: #f3e5f5;
+      border-color: #ce93d8;
+    }
+
+    .category-self-buffs {
+      background: #e8f5e9;
+      border-color: #81c784;
+    }
+
+    .category-self-only {
+      background: #fff9c4;
+      border-color: #fdd835;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .hero-search {
+        display: none;
+      }
+
+      .header {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .header-stats {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 Hero Synergy Tag Manager</h1>
+      <div class="header-stats">
+        <div><strong id="totalHeroes">0</strong> Heroes</div>
+        <div><strong id="editedCount">0</strong> Tagged</div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="hero-search">
+        <input type="text" id="heroSearch" placeholder="Search heroes...">
+      </div>
+      <div class="hero-list" id="heroList"></div>
+    </div>
+
+    <div class="main">
+      <div id="editor" class="editor" style="display: none;">
+        <div class="editor-header">
+          <div>
+            <h2 id="editorHeroName">Select a Hero</h2>
+            <div class="hero-meta">
+              <div class="hero-meta-item">
+                <span class="hero-meta-label">Class:</span>
+                <span id="editorHeroClass">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tag-container">
+          <div id="tagsContainer"></div>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div class="buttons">
+          <button class="btn btn-primary" id="saveBtn">💾 Save Tags</button>
+          <button class="btn btn-secondary" id="clearBtn">✖️ Clear All</button>
+        </div>
+      </div>
+
+      <div class="placeholder" id="placeholder">
+        <div class="loading">Loading heroes...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:3000/api';
+    let heroes = [];
+    let allTags = [];
+    let currentHero = null;
+    let tagCategories = {
+      'Team Support': [
+        'SHIELD_TEAM', 'HEAL_TEAM', 'ENERGY_RESTORE_TEAM', 'CDR_TEAM',
+        'ATK_SPD_UP', 'DAMAGE_REDUCTION_TEAM', 'CC_IMMUNITY_TEAM', 'DEBUFF_CLEANSE_TEAM'
+      ],
+      'Enemy Debuff': [
+        'CROWD_CONTROL', 'TAUNT', 'ENEMY_VULNERABILITY', 'BUFF_DISPEL', 'ENERGY_DRAIN',
+        'ATK_DOWN', 'ATK_SPD_DOWN'
+      ],
+      'Playstyle': [
+        'BASIC_ATTACK_SCALER', 'AREA_DAMAGE_DEALER'
+      ],
+      'Self Buffs': [
+        'SELF_SHIELD', 'SELF_HEAL', 'ENERGY_RESTORE', 'DODGE_BUFF',
+        'CC_RESISTANCE', 'GAIN_ARMOR', 'DAMAGE_REDUCTION_SELF', 'STAT_STEAL_AMPLIFY', 'HIT_AVOIDANCE_SELF',
+        'ATK_SPEED_SELF_ONLY'
+      ]
+    };
+
+    // Load initial data
+    async function init() {
+      try {
+        console.log('🚀 Fetching from API:', API);
+        
+        const tagsRes = await fetch(`${API}/tags`);
+        console.log('Tags response status:', tagsRes.status);
+        if (!tagsRes.ok) {
+          throw new Error(`Tags API responded with ${tagsRes.status}`);
+        }
+        allTags = await tagsRes.json();
+        console.log('✅ Loaded tags:', allTags.length);
+
+        const heroesRes = await fetch(`${API}/heroes`);
+        console.log('Heroes response status:', heroesRes.status);
+        if (!heroesRes.ok) {
+          throw new Error(`Heroes API responded with ${heroesRes.status}`);
+        }
+        heroes = await heroesRes.json();
+        console.log('✅ Loaded heroes:', heroes.length);
+
+        document.getElementById('totalHeroes').textContent = heroes.length;
+        renderHeroList();
+        renderPlaceholder();
+      } catch (err) {
+        console.error('❌ Failed to load data:', err);
+        document.getElementById('placeholder').innerHTML = `<div class="loading" style="color: red;">
+          <div>❌ Error:</div>
+          <div style="font-size: 12px; white-space: pre-wrap; text-align: left;">${err.message}</div>
+          <div style="font-size: 11px; margin-top: 10px;">Check browser console (F12)</div>
+        </div>`;
+      }
+    }
+
+    function renderHeroList() {
+      const list = document.getElementById('heroList');
+      list.innerHTML = heroes.map(h => `
+        <div class="hero-item" data-id="${h.id}">
+          <div>
+            <div class="hero-name">${h.name}</div>
+            <div class="tag-count">${h.synergies.length} tags</div>
+          </div>
+        </div>
+      `).join('');
+
+      list.addEventListener('click', (e) => {
+        const item = e.target.closest('.hero-item');
+        if (item) {
+          selectHero(item.dataset.id);
+        }
+      });
+
+      // Search
+      document.getElementById('heroSearch').addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        document.querySelectorAll('.hero-item').forEach(item => {
+          const name = item.querySelector('.hero-name').textContent.toLowerCase();
+          item.style.display = name.includes(query) ? '' : 'none';
+        });
+      });
+    }
+
+    function selectHero(heroId) {
+      currentHero = heroes.find(h => h.id === heroId);
+      if (!currentHero) return;
+
+      // Update sidebar
+      document.querySelectorAll('.hero-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.id === heroId);
+      });
+
+      renderEditor();
+    }
+
+    function renderEditor() {
+      if (!currentHero) return;
+
+      document.getElementById('editorHeroName').textContent = currentHero.name;
+      document.getElementById('editorHeroClass').textContent = currentHero.class;
+      document.getElementById('editor').style.display = 'flex';
+      document.getElementById('placeholder').style.display = 'none';
+
+      const container = document.getElementById('tagsContainer');
+      container.innerHTML = '';
+
+      for (const [category, tags] of Object.entries(tagCategories)) {
+        const section = document.createElement('div');
+        section.className = 'tag-section';
+
+        const title = document.createElement('div');
+        title.className = 'tag-section-title';
+        title.textContent = category;
+        section.appendChild(title);
+
+        const grid = document.createElement('div');
+        grid.className = 'tag-grid';
+
+        for (const tag of tags) {
+          const checkbox = document.createElement('label');
+          checkbox.className = 'tag-checkbox';
+          const categoryClass = category === 'Team Support' ? 'category-team-support' :
+                                category === 'Enemy Debuff' ? 'category-enemy-debuff' :
+                                category === 'Playstyle' ? 'category-playstyle' :
+                                'category-self-buffs';
+          checkbox.classList.add(categoryClass);
+
+          const input = document.createElement('input');
+          input.type = 'checkbox';
+          input.value = tag;
+          input.checked = currentHero.synergies.includes(tag);
+
+          const label = document.createElement('label');
+          label.textContent = tag.replace(/_/g, ' ');
+          label.style.margin = '0';
+
+          checkbox.appendChild(input);
+          checkbox.appendChild(label);
+          grid.appendChild(checkbox);
+        }
+
+        section.appendChild(grid);
+        container.appendChild(section);
+      }
+
+      // Button handlers
+      document.getElementById('saveBtn').onclick = saveSynergies;
+      document.getElementById('clearBtn').onclick = clearSynergies;
+
+      updateEditedCount();
+    }
+
+    function getSelectedTags() {
+      return Array.from(document.querySelectorAll('#tagsContainer input[type="checkbox"]:checked')).map(cb => cb.value);
+    }
+
+    async function saveSynergies() {
+      if (!currentHero) return;
+
+      const synergies = getSelectedTags();
+      const btn = document.getElementById('saveBtn');
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = '⏳ Saving...';
+
+      try {
+        const res = await fetch(`${API}/heroes/${currentHero.id}/synergies`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ synergies })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          // Update local data
+          currentHero.synergies = synergies;
+          const heroData = heroes.find(h => h.id === currentHero.id);
+          if (heroData) heroData.synergies = synergies;
+          renderHeroList();
+          updateEditedCount();
+
+          showStatus('✅ ' + data.message, 'success');
+        } else {
+          showStatus('❌ Error: ' + data.error, 'error');
+        }
+      } catch (err) {
+        showStatus('❌ Error: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    }
+
+    function clearSynergies() {
+      document.querySelectorAll('#tagsContainer input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+      });
+    }
+
+    function showStatus(message, type) {
+      const status = document.getElementById('status');
+      status.textContent = message;
+      status.className = `status ${type}`;
+      status.style.display = 'block';
+
+      setTimeout(() => {
+        status.style.display = 'none';
+      }, 3000);
+    }
+
+    function updateEditedCount() {
+      const count = heroes.filter(h => h.synergies.length > 0).length;
+      document.getElementById('editedCount').textContent = count;
+    }
+
+    function renderPlaceholder() {
+      const placeholder = document.getElementById('placeholder');
+      placeholder.innerHTML = '<div class="placeholder"><div style="font-size: 24px; margin-bottom: 10px;">👈</div><div>Select a hero from the left to edit synergies</div></div>';
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -22,8 +22,8 @@ export const PERCENT_STATS_FOR_SCORE = [
 ];
 
 export const PERCENT_STAT_WEIGHT = 3;
-export const SYNERGY_WEIGHT = 15;
-export const SKILL_WEIGHT = 30;
+export const SYNERGY_WEIGHT = 5.6;
+export const SKILL_WEIGHT = 48.4;
 
 export function computeScore(hero) {
   const s = hero.stats ?? {};
@@ -44,14 +44,18 @@ export function computeScore(hero) {
     0
   );
 
+  // All stat components combined
   const baseScore =
     baseHp * classWeights.hp +
     baseAtk * classWeights.atk +
     baseDef * classWeights.def;
 
   const percentScore = percentSum * PERCENT_STAT_WEIGHT * classWeights.pct;
+  const totalStatScore = baseScore + percentScore;
+
+  // Non-stat scores
   const synergyScore = synergyPotentialForHero(hero) * SYNERGY_WEIGHT;
   const skillScore = rateHeroSkills(hero) * SKILL_WEIGHT;
 
-  return baseScore + percentScore + synergyScore + skillScore;
+  return totalStatScore + synergyScore + skillScore;
 }

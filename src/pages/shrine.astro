@@ -1,0 +1,1182 @@
+---
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+import shrineSetups from "../data/shrineSetups.json";
+
+const shrineSetupGroups = shrineSetups;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shrine Guide - Motto Immortal</title>
+</head>
+<body>
+  <Sidebar />
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <h1 class="hero-headline">Shrine System Guide</h1>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <nav class="shrine-tabs" aria-label="Shrine guide sections">
+      <button class="tab active" data-tab="general">General Pray</button>
+      <button class="tab" data-tab="placement">Slots & Placement</button>
+      <button class="tab" data-tab="artefacts">Artefacts</button>
+      <button class="tab" data-tab="seats">Seats</button>
+      <button class="tab" data-tab="talismans">Talismans</button>
+      <button class="tab" data-tab="setups">Setups</button>
+    </nav>
+    
+    <!-- GENERAL PRAY -->
+    <div class="tab-content active" data-content="general">
+      <p>This content and its information rely on the knowledge of sp0nti and the official discord. Thanks mate!</p>
+      <div style="margin-bottom: 24px" class="content-card intro-card">
+      <h2>General Pray (Manual Pray)</h2>
+      <p>This is the manual finger-tapping pray feature, which later becomes the manual option (leftmost button at the bottom bar).</p>
+      
+      <div class="warning-box">
+        <h3>Important to Know:</h3>
+        <ul>
+          <li><strong>General Pray is NOT linked to the normal shrine prayers</strong></li>
+          <li>It has its own separate system to generate additional points</li>
+          <li>This mechanic becomes more relevant later in the game</li>
+          <li>Don't overfocus on it early - it's a supplementary system</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+
+    <!-- SHRINE SLOTS & GOD PLACEMENT -->
+    <div class="tab-content" data-content="placement">
+      <div class="content-card">
+      <h2>Shrine Slots & God Placement</h2>
+      <p>Each shrine slot provides different bonuses depending on which god you place there. Strategic positioning is crucial for maximizing your shrine's output.</p>
+
+      <h3>Positioning Strategy</h3>
+      <ul>
+        <li><strong>Filler Gods:</strong> Some gods are primarily used for their global buffs (speed, crit, crit damage)</li>
+        <li><strong>Early Game:</strong> It's completely fine to use a god just for one strong global stat</li>
+        <li><strong>Specialization:</strong> As you progress, optimize based on your main faction and team composition</li>
+      </ul>
+
+      <h3>Global Buffs vs. Faction Buffs</h3>
+      <div class="comparison-box">
+        <div class="compare-section">
+          <h4>Global Buffs</h4>
+          <p>Affect all gods in your shrine</p>
+          <ul>
+            <li>More valuable in early/mid game</li>
+            <li>Great for diverse team compositions</li>
+            <li>Speed, crit, and crit damage are preferred</li>
+          </ul>
+        </div>
+        <div class="compare-section">
+          <h4>Faction Buffs</h4>
+          <p>Affect only specific faction heroes</p>
+          <ul>
+            <li>Stronger once your lineup is specialized</li>
+            <li>Best for faction-focused builds</li>
+            <li>Scales better at high shrine levels</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Shrine Levels & Scaling</h3>
+      <p>Shrine bonuses scale heavily with levels. A "weaker" god with a strong global bonus can outperform a "better" god at low shrine levels. The higher your shrine level, the more optimization matters.</p>
+
+      <div class="tip-box">
+        <h4>When to Change Your Setup</h4>
+        <ul>
+          <li>When you unlock new gods with valuable global buffs</li>
+          <li>When your main faction shifts (e.g., transitioning to full Spada setup)</li>
+          <li>When your shrine reaches higher levels where scaling becomes critical</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+
+    <!-- ARTEFACTS -->
+    <div class="tab-content" data-content="artefacts">
+      <div class="content-card">
+      <h2>Artefacts (Equipment System)</h2>
+      <p>Artefacts are the equipment in Motto Immortal that can be equipped on your heroes. <strong>The Shrine is your main source for acquiring artefacts.</strong></p>
+
+      <div class="warning-box">
+        <h3>Why This Matters:</h3>
+        <p>If you neglect the Shrine system:</p>
+        <ul>
+          <li>Your heroes will die much faster in combat</li>
+          <li>They will deal insufficient damage, especially in late game</li>
+        </ul>
+      </div>
+
+      <h3>How to Obtain Artefacts</h3>
+      <p>Each time you complete a Shrine stage, there's a chance to drop Artefacts. The quality and rarity of drops depend on your progression.</p>
+
+      <div class="info-box">
+        <h4>Important Mechanics:</h4>
+        <ul>
+          <li><strong>Campaign Progress:</strong> Artefact rarity is directly tied to how far you've progressed in the campaign</li>
+          <li><strong>Red Flame:</strong> Required to upgrade the Shrine, obtained from campaign progression</li>
+          <li><strong>Shop Alternative:</strong> Depending on your progress, the Shop can also provide Red Flame</li>
+        </ul>
+      </div>
+
+      <h3>Rarity & Drop Mechanics</h3>
+      <ul>
+        <li>Artefacts follow the same color-based rarity system as Talismans and Heroes</li>
+        <li>Drops are <strong>fully random</strong> - you cannot control which specific Artefact drops</li>
+        <li>You can only influence rarity by upgrading your Shrine and progressing in campaign</li>
+      </ul>
+
+      <div class="progression-box">
+        <h4>Progression Formula</h4>
+        <p>The further you progress in the campaign + The higher your Shrine level = Rarer and stronger Artefacts</p>
+        <p class="sub-info">Each Shrine level effectively represents a roll for potential equipment.</p>
+      </div>
+
+      <h3>Shrine Stages & Rewards</h3>
+      <p>Shrine stages are typically structured as:</p>
+      <ul>
+        <li>One long challenge stage</li>
+        <li>Followed by two shorter stages</li>
+      </ul>
+      <p>Every time you log in, the game displays how many points you gained and how many Artefacts dropped.</p>
+
+      <h3>Equipping Artefacts</h3>
+      <p>You can equip Artefacts directly from the Artefact window. The game conveniently shows which faction benefits the most from each Artefact's bonus, making gear management easier.</p>
+      </div>
+    </div>
+
+    <!-- SEATS -->
+    <div class="tab-content" data-content="seats">
+      <div class="content-card">
+      <h2>The Six Shrine Seats</h2>
+      <p>There are six seats in the Shrine, each with unique mechanics and strengths. Strategic god placement in each seat maximizes overall shrine output.</p>
+
+      <!-- Left Side Seats -->
+      <div class="seats-grid">
+        
+        <!-- Seat of Amplification -->
+        <div class="seat-card left-seat">
+          <div class="seat-header">
+            <h3>Seat of Amplification</h3>
+            <span class="seat-position">Left Side - Top</span>
+          </div>
+          <p class="seat-specialty"><strong>Specialty:</strong> Very high critical damage bonus</p>
+          
+          <div class="seat-details">
+            <h4>Best Usage:</h4>
+            <ul>
+              <li>Place a god with high crit rate or a god that shares critical damage percentage with other seats</li>
+            </ul>
+            
+            <div class="level-unlock">
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 10</span>
+                <span class="upgrade-text">CRIT DMG +200%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 20</span>
+                <span class="upgrade-text">Devotion +50%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 50</span>
+                <span class="upgrade-text">CRIT DMG +500%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 100</span>
+                <span class="upgrade-text">Prayer Speed +20</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 200</span>
+                <span class="upgrade-text">CRIT DMG +800%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 500</span>
+                <span class="upgrade-text">Grant 5% of self CRIT DMG to other seats</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1000</span>
+                <span class="upgrade-text">Inherits 2% of the Devotion of all other seats</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1500</span>
+                <span class="upgrade-text">CRIT DMG +1.000%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 2000</span>
+                <span class="upgrade-text">Grant 10% of self CRIT DMG to other seats</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seat of Celerity -->
+        <div class="seat-card left-seat">
+          <div class="seat-header">
+            <h3>Seat of Celerity</h3>
+            <span class="seat-position">Left Side - Middle</span>
+          </div>
+          <p class="seat-specialty"><strong>Specialty:</strong> Highest prayer speed</p>
+          
+          <div class="seat-details">
+            <h4>Best Usage:</h4>
+            <ul>
+              <li>Place a god that benefits heavily from high speed</li>
+            </ul>
+            
+            <div class="level-unlock">
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 10</span>
+                <span class="upgrade-text">Prayer Speed +50</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 20</span>
+                <span class="upgrade-text">CRIT Rate +15%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 50</span>
+                <span class="upgrade-text">Prayer Speed +100</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 100</span>
+                <span class="upgrade-text">Devotion +500%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 200</span>
+                <span class="upgrade-text">Every 2 prayers trigger 1 extra prayer</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 500</span>
+                <span class="upgrade-text">Every 30 prayers trigger an extra prayer to other seats</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1000</span>
+                <span class="upgrade-text">Gains 40% of the CRIT Rate from other Dieties</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1500</span>
+                <span class="upgrade-text">Every prayer triggers 1 extra prayer</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 2000</span>
+                <span class="upgrade-text">Every 25 prayers trigger an extra prayer to other seats</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seat of Devotion -->
+        <div class="seat-card left-seat">
+          <div class="seat-header">
+            <h3>Seat of Devotion</h3>
+            <span class="seat-position">Left Side - Bottom</span>
+          </div>
+          <p class="seat-specialty"><strong>Specialty:</strong> Most balanced seat</p>
+          
+          <div class="seat-details">
+            <h4>Mechanics:</h4>
+            <ul>
+              <li>No special base mechanic</li>
+              <li>Solid all-around performance</li>
+            </ul>
+            
+            <div class="level-unlock">
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 10</span>
+                <span class="upgrade-text">Devotion +100%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 20</span>
+                <span class="upgrade-text">CRIT Rate +15%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 50</span>
+                <span class="upgrade-text">Devotion +100%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 100</span>
+                <span class="upgrade-text">Effective Devotion for all seats +10%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 200</span>
+                <span class="upgrade-text">CRIT DMG +500%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 500</span>
+                <span class="upgrade-text">Effective Devotion for all seats +20%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1000</span>
+                <span class="upgrade-text">Prayer Speed +50</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1500</span>
+                <span class="upgrade-text">Effective Devotion +500%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 2000</span>
+                <span class="upgrade-text">Effective Devotion for all seats +30%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seat of Eminence -->
+        <div class="seat-card right-seat">
+          <div class="seat-header">
+            <h3>Seat of Eminence</h3>
+            <span class="seat-position">Right Side - Top</span>
+          </div>
+          <p class="seat-specialty"><strong>Specialty:</strong> High crit rate, crit damage, and devotion</p>
+          
+          <div class="seat-details">
+            <h4>Best Usage:</h4>
+            <ul>
+              <li>With the right god, generates very strong point output</li>
+              <li>Excellent for gods that scale with multiple stats</li>
+            </ul>
+            
+            <div class="level-unlock">
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 10</span>
+                <span class="upgrade-text">Prayer Speed +15</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 20</span>
+                <span class="upgrade-text">CRIT Rate +10%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 50</span>
+                <span class="upgrade-text">Prayer Bonus +50%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 100</span>
+                <span class="upgrade-text">CRIT DMG +200%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 200</span>
+                <span class="upgrade-text">Effective Devotion +50%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 500</span>
+                <span class="upgrade-text">Devotion +100%, Prayer Speed +20</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1000</span>
+                <span class="upgrade-text">CRIT Rate +10%, CRIT DMG +300%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1500</span>
+                <span class="upgrade-text">Devotion +200%, CRIT DMG +500%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 2000</span>
+                <span class="upgrade-text">Effective Devotion +50%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seat of Criticals -->
+        <div class="seat-card right-seat">
+          <div class="seat-header">
+            <h3>Seat of Criticals</h3>
+            <span class="seat-position">Right Side - Middle</span>
+          </div>
+          <p class="seat-specialty"><strong>Specialty:</strong> Highest critical rate of all seats</p>
+          
+          <div class="seat-details">
+            <h4>Best Usage:</h4>
+            <ul>
+              <li>Gods that scale heavily with crit rate</li>
+              <li>Perfect for crit-focused builds</li>
+            </ul>
+            
+            <div class="level-unlock">
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 10</span>
+                <span class="upgrade-text">+25% Crit Rate</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 20</span>
+                <span class="upgrade-text">Prayer Speed +15</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 50</span>
+                <span class="upgrade-text">CRIT Rate +25%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 100</span>
+                <span class="upgrade-text">Devotion +100%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 200</span>
+                <span class="upgrade-text">When CRITTING, there is a 50% chance to trigger another CRIT</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 500</span>
+                <span class="upgrade-text">Other seats Devotion +10%</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1000</span>
+                <span class="upgrade-text">Inherits 20% of the Prayer Speed from all other seats</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1500</span>
+                <span class="upgrade-text">This seats prayers are guaranted to CRIT</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 2000</span>
+                <span class="upgrade-text">A CRIT has a 2% chance to make other seats pray once</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seat of Might -->
+        <div class="seat-card right-seat">
+          <div class="seat-header">
+            <h3>Seat of Might</h3>
+            <span class="seat-position">Right Side - Bottom</span>
+          </div>
+          <p class="seat-specialty"><strong>Specialty:</strong> Highest devotion value in the entire shrine</p>
+          
+          <div class="seat-details">
+            <h4>Best Usage:</h4>
+            <ul>
+              <li>Perfect for devotion-heavy gods</li>
+              <li>Example: Poseidon in Spada builds</li>
+            </ul>
+            
+            <div class="level-unlock">
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 10</span>
+                <span class="upgrade-text">+50% Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 20</span>
+                <span class="upgrade-text">+75% Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 50</span>
+                <span class="upgrade-text">+125% Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 100</span>
+                <span class="upgrade-text">+250% Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 200</span>
+                <span class="upgrade-text">+300% Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 500</span>
+                <span class="upgrade-text">All seats gain 1% of this slots Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1000</span>
+                <span class="upgrade-text">+500% Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 1500</span>
+                <span class="upgrade-text">+1000% Devotion</span>
+              </div>
+              <div class="upgrade-row">
+                <span class="upgrade-label">Level 2000</span>
+                <span class="upgrade-text">All seats gain 2% of this slots Devotion</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+
+    <!-- TALISMANS -->
+    <div class="tab-content" data-content="talismans">
+      <div class="content-card">
+      <h2>Talismans</h2>
+      <p>Talismans add another powerful layer to the shrine system, providing temporary buffs that can significantly boost your shrine's performance.</p>
+
+      <h3>How to Obtain Talismans</h3>
+      <ol>
+        <li>Choose <strong>Divination</strong> at the Oracle</li>
+        <li>Perform a fortune reading with your favorite god</li>
+        <li>Complete the divination (card reading)</li>
+        <li>Receive a Talisman as a reward</li>
+      </ol>
+
+      <div class="info-box">
+        <p><strong>Note:</strong> After completing divination, the game prompts you to return to the shrine and use the Talisman. This is optional - you can save it for later.</p>
+      </div>
+
+      <h3>Talisman Effects</h3>
+      <p>Talismans provide various temporary enhancements to your shrine:</p>
+      <div class="talisman-effects">
+        <ul>
+          <li>Increased seat click rate (Global Speed)</li>
+          <li>Increased base devotion</li>
+          <li>Increased effective devotion</li>
+          <li>Increased faith per second</li>
+          <li>Increased critical chance</li>
+          <li>Increased critical damage</li>
+        </ul>
+      </div>
+
+      <h3>Duration & Rarity</h3>
+      <p><strong>Talismans are time-limited</strong> - their effects are not permanent. Duration depends on rarity, ranging from several hours to a full day or longer.</p>
+
+      <div class="rarity-box">
+        <h4>Talisman Rarity Tiers (Lowest to Highest):</h4>
+        <div class="rarity-list">
+          <div class="rarity-item rarity-low">White / Grey / Blue (Matte)</div>
+          <div class="rarity-item rarity-mid">Purple</div>
+          <div class="rarity-item rarity-high">Yellow</div>
+          <div class="rarity-item rarity-epic">Red</div>
+          <div class="rarity-item rarity-legendary">Turquoise</div>
+          <div class="rarity-item rarity-mythic">Rainbow Shimmer (Highest)</div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- TOP SHRINE SETUPS -->
+    <div class="tab-content" data-content="setups">
+      <div class="content-card">
+      <h2>Example Shrine Setups</h2>
+      <p>Strategic god placement maximizes shrine output. Here are recommended configurations:</p>
+
+      <div class="shrine-setup-container">
+        {shrineSetupGroups.map((group) => (
+          <div class="shrine-background">
+            <div class="shrine-gods">
+              {group.gods.map((setup) => (
+                <div
+                  class="shrine-god-card"
+                  data-name={setup.name}
+                  aria-label={setup.name}
+                >
+                  <img src={setup.image} alt={setup.name} class="god-image" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const contents = document.querySelectorAll(".tab-content");
+
+    function setActiveTab(target) {
+      if (!target) return;
+
+      tabs.forEach(tab => tab.classList.remove("active"));
+      contents.forEach(panel => panel.classList.remove("active"));
+
+      const button = document.querySelector(`.tab[data-tab="${target}"]`);
+      const panel = document.querySelector(`.tab-content[data-content="${target}"]`);
+
+      if (button) button.classList.add("active");
+      if (panel) panel.classList.add("active");
+    }
+
+    const initial = (location.hash || "").replace("#", "");
+    if (initial) setActiveTab(initial);
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const target = tab.getAttribute("data-tab");
+        if (target) location.hash = target;
+        setActiveTab(target);
+      });
+    });
+  </script>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+/* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+  min-height: 100vh;
+}
+
+body {
+  margin-left: 80px;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 12, 0.95) 0%,
+    rgba(7, 6, 12, 0.7) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.hero-headline {
+  position: relative;
+  z-index: 1;
+  padding: 0 32px 32px;
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 240px;
+  }
+  
+  .hero-headline {
+    font-size: 2rem;
+    padding: 0 24px 24px;
+  }
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+.shrine-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-bottom: 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tab {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 6px 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+  color: #fff;
+  border-bottom-color: #facc15;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.content-card {
+  margin-bottom: 32px;
+}
+
+.content-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.intro-card {
+
+}
+
+.content-card h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 2rem;
+  color: #fcd34d;
+  border-bottom: 2px solid rgba(250, 204, 21, 0.3);
+  padding-bottom: 12px;
+  margin-top: 24px;
+}
+
+.content-card h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: #fcd34d;
+}
+
+.content-card h4 {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+  color: #e6e6eb;
+}
+
+.content-card p {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #d1d1d6;
+}
+
+.content-card ul, .content-card ol {
+  line-height: 1.8;
+  margin-bottom: 16px;
+  color: #d1d1d6;
+}
+
+.content-card li {
+  margin-bottom: 12px;
+}
+
+.content-card strong {
+  color: #e6e6eb;
+}
+
+code {
+  background: rgba(168, 85, 247, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #fcd34d;
+}
+
+/* WARNING BOX */
+.warning-box {
+  background: rgba(251, 146, 60, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 6px;
+}
+
+.warning-box h3 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+/* INFO BOX */
+.info-box {
+  background: rgba(59, 130, 246, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 6px;
+}
+
+.info-box h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+/* TIP BOX */
+.tip-box {
+  background: rgba(74, 222, 128, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 6px;
+}
+
+.tip-box h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+/* PROGRESSION BOX */
+.progression-box {
+  background: rgba(250, 204, 21, 0.08);
+  border: 2px solid rgba(250, 204, 21, 0.4);
+  padding: 24px;
+  margin: 24px 0;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.progression-box h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+.sub-info {
+  font-size: 0.95em;
+  font-style: italic;
+  color: #e6e6eb;
+}
+
+/* COMPARISON BOX */
+.comparison-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.compare-section {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.compare-section h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+@media (max-width: 768px) {
+  .comparison-box {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SEATS GRID */
+.seats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.seat-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid rgba(168, 85, 247, 0.4);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.seat-card:hover {
+  border-color: rgba(250, 204, 21, 0.6);
+  background: rgba(168, 85, 247, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(168, 85, 247, 0.2);
+}
+
+.left-seat {
+  /* Left side seats */
+}
+
+.right-seat {
+  /* Right side seats */
+}
+
+.seat-header {
+  margin-bottom: 16px;
+}
+
+.seat-header h3 {
+  margin: 0 0 8px 0;
+  color: #fcd34d;
+  font-size: 1.4rem;
+}
+
+.seat-position {
+  font-size: 0.9rem;
+  color: #e6e6eb;
+  font-weight: 500;
+}
+
+.seat-specialty {
+  color: #e6e6eb;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.seat-details ul {
+  margin: 12px 0;
+}
+
+.level-unlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 16px;
+}
+
+.upgrade-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.upgrade-label {
+  background: #4caf50;
+  color: #fff;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  min-width: 60px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+  align-self: flex-start;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.upgrade-text {
+  color: #4caf50;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.highlight {
+  color: #fcd34d;
+  font-weight: 600;
+  font-style: italic;
+}
+
+@media (max-width: 968px) {
+  .seats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* TALISMAN EFFECTS */
+.talisman-effects ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .talisman-effects ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* RARITY BOX */
+.rarity-box {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+
+.rarity-box h4 {
+  margin-top: 0;
+  color: #fcd34d;
+  text-align: center;
+}
+
+.rarity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.rarity-item {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.rarity-item:hover {
+  transform: scale(1.02);
+}
+
+.rarity-low {
+  background: rgba(156, 163, 175, 0.15);
+  border: 1px solid rgba(156, 163, 175, 0.5);
+  color: #e6e6eb;
+}
+
+.rarity-mid {
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  color: #e6e6eb;
+}
+
+.rarity-high {
+  background: rgba(250, 204, 21, 0.15);
+  border: 1px solid rgba(250, 204, 21, 0.5);
+  color: #fcd34d;
+}
+
+.rarity-epic {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #e6e6eb;
+}
+
+.rarity-legendary {
+  background: rgba(20, 184, 166, 0.15);
+  border: 1px solid rgba(20, 184, 166, 0.5);
+  color: #e6e6eb;
+}
+
+.rarity-mythic {
+  background: rgba(250, 204, 21, 0.2);
+  border: 2px solid rgba(250, 204, 21, 0.8);
+  color: #fcd34d;
+  font-size: 1.1em;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+}
+
+/* SHRINE SETUP */
+.shrine-setup-container {
+  margin: 32px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+}
+
+.shrine-background {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/shrineBG.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 16px;
+  padding: 0px;
+  width: 100%;
+  height: 800px;
+}
+
+.shrine-gods {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 64px;
+  width: 400px;
+}
+
+.shrine-god-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+}
+
+.shrine-god-card:hover {
+  border-color: rgba(250, 204, 21, 0.6);
+  background: rgba(168, 85, 247, 0.08);
+  transform: scale(1.02);
+}
+
+.shrine-god-card::after {
+  content: attr(data-name);
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fcd34d;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shrine-god-card:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 110%);
+}
+
+.god-image {
+  width: 128px;
+  height: 128px;
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 9999px;
+  object-fit: cover;
+  object-position: center 20%;
+  border: 2px solid rgba(250, 204, 21, 0.4);
+}
+
+
+@media (max-width: 1024px) {
+  .shrine-background {
+    grid-template-columns: 1fr;
+    background-size: cover;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-card {
+    padding: 24px 20px;
+  }
+
+  .content-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .content-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .shrine-background {
+    background-image: none;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .shrine-god-card {
+    transform: none;
+    flex-direction: column;
+    text-align: center;
+  }
+
+
+}
+</style>

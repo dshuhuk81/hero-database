@@ -6,6 +6,21 @@ import Footer from "../components/Footer.astro";
 // Changelog Einträge - hier kannst du neue Änderungen hinzufügen
 const changelogEntries = [
   {
+    date: "2026-02-20",
+    version: "1.3.0",
+    title: "Changed Homepage and added more content",
+    changes: [
+      {
+        type: "feature",
+        text: "New sites are coming soon. Some I already implemented and these are accessible over the homepage. I added a Shrine page with all current shrines and their effects and ratings. More to come."
+      },
+      {
+        type: "fix",
+        text: "Some feature are currently being reworked. That could result in errors, misleading tags or values being 0 or empty. That could effect rankings and hero composition components."
+      }
+    ]
+  },
+  {
     date: "2026-02-18",
     version: "1.2.5",
     title: "Ranking System added",
@@ -26,7 +41,7 @@ const changelogEntries = [
         text: "Added a Bosses and Totems page with all current bosses and totems, their effects and ratings."
       },
       {
-        type: "Totems added to sidebar",
+        type: "feature",
         text: "Added a Totems page with a list of all totems available and their (subjective) ratings."
       }
     ]
@@ -41,7 +56,7 @@ const changelogEntries = [
         text: "The system now reads all hero skill texts and writes a synergy logic stating what the hero does what benefit. Its still in alpha."
       },
       {
-        type: "Tierlist sorting changed",
+        type: "improvement",
         text: "The tierlist now sorts by rating when viewing the page initially."
       }
     ]
@@ -56,7 +71,7 @@ const changelogEntries = [
         text: "I added a Composition Tab on each hero detail page, that suggests comps that could work and describes the selected heroes benefits to that comp."
       },
       {
-        type: "Added more skill texts",
+        type: "improvement",
         text: "I added more skill text for more legendary heroes. Others to come."
       }
     ]
@@ -192,9 +207,9 @@ function formatDate(dateStr: string) {
                 {entry.changes.map(change => (
                   <li class={`change-item change-${change.type}`}>
                     <span class="change-badge">
-                      {change.type === 'feature' ? '✨' : 
-                       change.type === 'improvement' ? '🔧' : 
-                       change.type === 'fix' ? '🐛' : '📝'}
+                      {change.type === 'feature' ? '+' : 
+                       change.type === 'improvement' ? '↑' : 
+                       change.type === 'fix' ? '×' : '•'}
                     </span>
                     <span class="change-text">{change.text}</span>
                   </li>

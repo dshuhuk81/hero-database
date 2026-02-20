@@ -6,9 +6,11 @@
     "dev": "astro dev",
     "build": "npm run astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "tag-manager": "node scripts/tag-manager-server.js"
   },
   "dependencies": {
-    "astro": "^4.16.19"
+    "astro": "^4.16.19",
+    "express": "^4.18.2"
   }
 }

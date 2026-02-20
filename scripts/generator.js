@@ -145,31 +145,40 @@ function buildFormation(team) {
 // Synergy tags/score + explanation (STRICT + EVIDENCE + DEBUG EXPORT)
 // -----------------------------
 const SYNERGY_TAGS = {
-  ATK_SPEED_TEAM_PROVIDER: "ATK_SPEED_TEAM_PROVIDER",
-  ATK_SPEED_SELF_ONLY: "ATK_SPEED_SELF_ONLY",
+  // A) TEAM SUPPORT (8 Tags)
+  SHIELD_TEAM: "SHIELD_TEAM",
+  HEAL_TEAM: "HEAL_TEAM",
+  ENERGY_RESTORE_TEAM: "ENERGY_RESTORE_TEAM",
+  CDR_TEAM: "CDR_TEAM",
+  ATK_SPD_UP: "ATK_SPD_UP",
+  DAMAGE_REDUCTION_TEAM: "DAMAGE_REDUCTION_TEAM",
+  CC_IMMUNITY_TEAM: "CC_IMMUNITY_TEAM",
+  DEBUFF_CLEANSE_TEAM: "DEBUFF_CLEANSE_TEAM",
 
-  ENERGY_TEAM_PROVIDER: "ENERGY_TEAM_PROVIDER",
-  CDR_TEAM_PROVIDER: "CDR_TEAM_PROVIDER",
+  // B) ENEMY DEBUFF (7 Tags)
+  CROWD_CONTROL: "CROWD_CONTROL",
+  TAUNT: "TAUNT",
+  ENEMY_VULNERABILITY: "ENEMY_VULNERABILITY",
+  BUFF_DISPEL: "BUFF_DISPEL",
+  ENERGY_DRAIN: "ENERGY_DRAIN",
+  ATK_DOWN: "ATK_DOWN",
+  ATK_SPD_DOWN: "ATK_SPD_DOWN",
 
-  DEF_DOWN_OR_AMP: "DEF_DOWN_OR_AMP",
-
-  SHIELD_TEAM_PROVIDER: "SHIELD_TEAM_PROVIDER",
-  ALLY_HEAL_PROVIDER: "ALLY_HEAL_PROVIDER",
-  CLEANSE_TEAM_PROVIDER: "CLEANSE_TEAM_PROVIDER",
-  DAMAGE_REDUCTION_TEAM_PROVIDER: "DAMAGE_REDUCTION_TEAM_PROVIDER",
-  CC_IMMUNITY_TEAM_PROVIDER: "CC_IMMUNITY_TEAM_PROVIDER",
-
-  DISPEL_ENEMY_BUFFS: "DISPEL_ENEMY_BUFFS",
-  CONTROL_PROVIDER: "CONTROL_PROVIDER",
-  TAUNT_OR_PROVOKE: "TAUNT_OR_PROVOKE",
-  ENERGY_DRAIN_ENEMY: "ENERGY_DRAIN_ENEMY",
-
+  // C) PLAYSTYLE (2 Tags)
   BASIC_ATTACK_SCALER: "BASIC_ATTACK_SCALER",
-  ON_HIT_SCALER: "ON_HIT_SCALER",
-  FAST_STACKING_WITH_HITS: "FAST_STACKING_WITH_HITS",
+  AREA_DAMAGE_DEALER: "AREA_DAMAGE_DEALER",
 
-  ULT_DEPENDENT: "ULT_DEPENDENT",
-  AOE_DAMAGE_PROFILE: "AOE_DAMAGE_PROFILE",
+  // D) SELF BUFFS (10 Tags)
+  SELF_SHIELD: "SELF_SHIELD",
+  SELF_HEAL: "SELF_HEAL",
+  ENERGY_RESTORE: "ENERGY_RESTORE",
+  DODGE_BUFF: "DODGE_BUFF",
+  CC_RESISTANCE: "CC_RESISTANCE",
+  GAIN_ARMOR: "GAIN_ARMOR",
+  DAMAGE_REDUCTION_SELF: "DAMAGE_REDUCTION_SELF",
+  STAT_STEAL_AMPLIFY: "STAT_STEAL_AMPLIFY",
+  HIT_AVOIDANCE_SELF: "HIT_AVOIDANCE_SELF",
+  ATK_SPEED_SELF_ONLY: "ATK_SPEED_SELF_ONLY",
 };
 
 const ALL_SYNERGY_TAG_LIST = Object.values(SYNERGY_TAGS);
@@ -207,12 +216,9 @@ const TAG_EVIDENCE_PATTERNS = {
   ],
 
   [SYNERGY_TAGS.ENERGY_TEAM_PROVIDER]: [
-    // allies + energy gain/restore/regen (both orders)
-    /\b(all allies|allies|ally)\b[\s\S]{0,180}\b(restore[sd]?|gain[sd]?|regenerate[sd]?|regen(?:eration)?)\b[\s\S]{0,60}\benergy\b/i,
-    /\b(restore[sd]?|gain[sd]?|regenerate[sd]?|regen(?:eration)?)\b[\s\S]{0,60}\benergy\b[\s\S]{0,180}\b(all allies|allies|ally)\b/i,
-
-    // "grants/provides Energy to allies"
-    /\b(grant(?:s|ed)?|provide[sd]?|share[sd]?)\b[\s\S]{0,60}\benergy\b[\s\S]{0,120}\b(all allies|allies|ally)\b/i,
+    // Very explicit: only match "X to allies" pattern
+    // Avoids false positives like "all allies X, Hero gains energy"
+    /\b(restore[sd]?|grant(?:s|ed)?|provide[sd]?|share[sd]?)\b[\s\S]{0,80}\benergy\b[\s\S]{0,80}\b(to\s+)?(all\s+)?(allies?|team|party|teammates)\b/i,
   ],
 
   [SYNERGY_TAGS.CDR_TEAM_PROVIDER]: [
@@ -342,8 +348,34 @@ function evidenceForTag(hero, tag) {
   return null;
 }
 
-// Baut Profil: tags + evidenceByTag (strict: Tag nur wenn Evidence vorhanden)
+// 🆕 NEW: Baut Profil aus MANUELLEN Synergies-Tags (JSON field)
+function synergyProfileFromManual(hero) {
+  const raw = fullSkillText(hero) || "";
+  const forbidsNormals = /\bno longer performs normal attacks\b/i.test(raw);
+
+  // Liest synergies [] aus hero.synergies
+  const manualTags = Array.isArray(hero.synergies) ? hero.synergies : [];
+  const tags = new Set(manualTags);
+
+  // Evidence sammeln (für Debug-Export)
+  const evidenceByTag = {};
+  for (const tag of manualTags) {
+    evidenceByTag[tag] = {
+      heroId: hero.id,
+      heroName: hero.name,
+      tag,
+      snippet: "(manually assigned)",
+      match: "(from synergies field)",
+    };
+  }
+
+  return { tags, evidenceByTag, forbidsNormals };
+}
+
+// ⚠️  LEGACY: RegEx-basierte Erkennung (deprecated, wird nicht mehr verwendet)
 function synergyProfileForHero(hero) {
+  // DEPRECATED: Jetzt wird synergyProfileFromManual() verwendet!
+  // Nur hier zum Debuggen belassen
   const raw = fullSkillText(hero) || "";
   const t = raw.toLowerCase();
   const forbidsNormals = /\bno longer performs normal attacks\b/i.test(raw);
@@ -392,10 +424,10 @@ function synergyProfileForHero(hero) {
   return { tags, evidenceByTag, forbidsNormals };
 }
 
-// TagMap pro Team (einheitlich)
+// TagMap pro Team – using MANUAL synergies now
 function buildSynergyMap(team) {
   const map = new Map();
-  for (const h of team) map.set(h.id, synergyProfileForHero(h));
+  for (const h of team) map.set(h.id, synergyProfileFromManual(h));
   return map;
 }
 
