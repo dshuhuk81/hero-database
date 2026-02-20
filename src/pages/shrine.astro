@@ -38,7 +38,7 @@ const shrineSetupGroups = shrineSetups.filter(setup => visibleSetups.includes(se
     
     <!-- GENERAL PRAY -->
     <div class="tab-content active" data-content="general">
-      <p>This content and its information rely on the knowledge of sp0nti and the official discord. Thanks mate!</p>
+      <p class="text-align-center">This content and its information rely on the knowledge of <b>sp0nti</b> on the official discord.</p>
       <div style="margin-bottom: 24px" class="content-card intro-card">
       <h2>General Pray (Manual Pray)</h2>
       <p>This is the manual finger-tapping pray feature, which later becomes the manual option (leftmost button at the bottom bar).</p>
@@ -556,7 +556,7 @@ const shrineSetupGroups = shrineSetups.filter(setup => visibleSetups.includes(se
     <div class="tab-content" data-content="setups">
       <div class="content-card">
       <h2>Example Shrine Setup</h2>
-      <p>Strategic god placement maximizes shrine output. Here are recommended configurations:</p>
+      <p>Strategic god placement maximizes shrine output. Here is one (of many and dependend on the rarity of your heroes) recommended configurations:</p>
 
       <div class="shrine-setup-container">
         {shrineSetupGroups.map((group, idx) => (
@@ -1271,6 +1271,12 @@ code {
   transform: scale(1.02);
 }
 
+.text-align-center {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 24px 0 32px 0;
+}
 .shrine-god-card::after {
   content: attr(data-name);
   position: absolute;
