@@ -98,5 +98,9 @@
       "level4": "You Challenge Me?: Increases the max HP and ATK by 8% during the duel for every nearby ally."
     }
   },
-  "synergies": []
+  "synergies": [
+    "BUFF_TEAM",
+    "CROWD_CONTROL",
+    "BASIC_ATTACK_SCALER"
+  ]
 }

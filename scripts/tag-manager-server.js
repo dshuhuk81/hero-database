@@ -21,42 +21,48 @@ app.use((req, res, next) => {
   next();
 });
 
-// Alle verfügbaren Synergy Tags (neu definiert - 3 Kategorien)
+// Alle verfügbaren Synergy Tags
 const AVAILABLE_TAGS = [
-  // A) TEAM SUPPORT / BUFF PROVIDER (8 Tags)
-  'SHIELD_TEAM',
-  'HEAL_TEAM',
-  'ENERGY_RESTORE_TEAM',
-  'CDR_TEAM',
+  // A) TEAM SUPPORT / BUFF PROVIDER (9 Tags) - alphabetically sorted
   'ATK_SPD_UP',
-  'DAMAGE_REDUCTION_TEAM',
+  'BUFF_TEAM',
   'CC_IMMUNITY_TEAM',
+  'CDR_TEAM',
+  'DAMAGE_REDUCTION_TEAM',
   'DEBUFF_CLEANSE_TEAM',
+  'ENERGY_RESTORE_TEAM',
+  'HEAL_TEAM',
+  'SHIELD_TEAM',
   
-  // B) ENEMY DEBUFF / CROWD CONTROL (7 Tags)
-  'CROWD_CONTROL',
-  'TAUNT',
-  'ENEMY_VULNERABILITY',
-  'BUFF_DISPEL',
-  'ENERGY_DRAIN',
+  // B) ENEMY DEBUFF / CROWD CONTROL (9 Tags) - alphabetically sorted
   'ATK_DOWN',
   'ATK_SPD_DOWN',
+  'BUFF_DISPEL',
+  'CROWD_CONTROL',
+  'ENEMY_VULNERABILITY',
+  'ENERGY_DRAIN',
+  'REDUCES_ATTRIBUTES',
+  'REMOVES_ARMOR',
+  'TAUNT',
   
-  // C) PLAYSTYLE / GAMEPLAY MECHANICS (2 Tags)
-  'BASIC_ATTACK_SCALER',
+  // C) PLAYSTYLE / GAMEPLAY MECHANICS (2 Tags) - alphabetically sorted
   'AREA_DAMAGE_DEALER',
+  'BASIC_ATTACK_SCALER',
   
-  // D) SELF BUFFS / DEFENSIVES (9 Tags)
-  'SELF_SHIELD',
-  'SELF_HEAL',
-  'ENERGY_RESTORE',
-  'DODGE_BUFF',
+  // D) SELF BUFFS / DEFENSIVES (13 Tags) - alphabetically sorted
+  'ATK_SPEED',
+  'ATK_UP',
   'CC_RESISTANCE',
+  'DMG_RED',
+  'DODGE_BUFF',
+  'ENERGY_RESTORE',
   'GAIN_ARMOR',
-  'DAMAGE_REDUCTION_SELF',
-  'STAT_STEAL_AMPLIFY',
-  'HIT_AVOIDANCE_SELF',
-  'ATK_SPEED_SELF_ONLY',
+  'HEAL',
+  'HEAL_EFFECT_UP',
+  'HIT_AVOID',
+  'HP_UP',
+  'LIFE_STEAL_UP',
+  'SHIELD',
 ];
 
 // GET /api/tags - returns all available tags

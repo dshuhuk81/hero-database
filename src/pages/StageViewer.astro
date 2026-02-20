@@ -1,0 +1,362 @@
+---
+// StageViewer.astro
+// Drop this anywhere in your Astro project.
+// Import stages.ts from wherever you place it.
+import { stages, SYMBOL_META } from './stages';
+---
+
+<section class="sv-wrapper">
+  <header class="sv-header">
+    <h1 class="sv-title">Symbol Harmony</h1>
+    <p class="sv-subtitle">Select a stage to view its solution</p>
+  </header>
+
+  <!-- Stage Selector -->
+  <div class="sv-stage-nav">
+    {stages.map(stage => (
+      <button
+        class="sv-stage-btn"
+        data-id={stage.id}
+        aria-label={`Stage ${stage.id}`}
+      >
+        {stage.id}
+      </button>
+    ))}
+  </div>
+
+  <!-- Solution Panel -->
+  <div class="sv-panel" id="sv-panel">
+    <div class="sv-empty-state">
+      <span>←</span> Pick a stage
+    </div>
+  </div>
+</section>
+
+<!-- Inline stage data for the client script -->
+<script define:vars={{ stages, SYMBOL_META }}>
+
+  const panel   = document.getElementById('sv-panel');
+  const buttons = document.querySelectorAll('.sv-stage-btn');
+
+  // ── Render ────────────────────────────────────────────────
+  function renderStage(stage) {
+    const { rows, cols, solution, lines, grid, playArea } = stage;
+
+    // Build a Set of active cells for quick lookup
+    const active = new Set(
+      playArea
+        ? playArea.map(([r,c]) => `${r},${c}`)
+        : Array.from({ length: rows }, (_, r) =>
+            Array.from({ length: cols }, (_, c) => `${r},${c}`)
+          ).flat()
+    );
+
+    // Build a map: "r,c" → which line indices contain it
+    const cellLines = {};
+    lines.forEach((line, li) => {
+      line.cells.forEach(([r,c]) => {
+        const key = `${r},${c}`;
+        if (!cellLines[key]) cellLines[key] = [];
+        cellLines[key].push(li);
+      });
+    });
+
+    // Build line color palette (cycle through hues)
+    const lineHues = lines.map((_, i) =>
+      Math.round((i / lines.length) * 360)
+    );
+
+    // ── HTML ────────────────────────────────────────────────
+    let html = `
+      <div class="sv-stage-header">
+        <h2 class="sv-stage-title">${stage.title}</h2>
+        <span class="sv-stage-meta">${rows}×${cols} · ${lines.length} lines</span>
+      </div>
+
+      <div class="sv-grid" style="
+        --cols: ${cols};
+        --rows: ${rows};
+      ">
+    `;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const key      = `${r},${c}`;
+        const isActive = active.has(key);
+        const solVal   = solution?.[r]?.[c];
+        const startVal = grid?.[r]?.[c];
+        const meta     = solVal ? SYMBOL_META[solVal] : null;
+        const isGiven  = !!startVal; // pre-filled in the puzzle
+
+        const lineIdx  = cellLines[key]?.[0]; // primary line
+        const lineHue  = lineIdx !== undefined ? lineHues[lineIdx] : null;
+
+        if (!isActive) {
+          html += `<div class="sv-cell sv-cell--dead"></div>`;
+          continue;
+        }
+
+        if (!solVal) {
+          html += `<div class="sv-cell sv-cell--empty" data-r="${r}" data-c="${c}"></div>`;
+          continue;
+        }
+
+        html += `
+          <div
+            class="sv-cell sv-cell--filled ${isGiven ? 'sv-cell--given' : ''}"
+            data-symbol="${solVal}"
+            style="--cell-color: ${meta.color}; ${lineHue !== null ? `--line-hue: ${lineHue}` : ''}"
+            title="${meta.label}"
+            data-r="${r}" data-c="${c}"
+          >
+            <span class="sv-cell-icon">${meta.emoji}</span>
+          </div>
+        `;
+      }
+    }
+
+    html += `</div>`; // .sv-grid
+
+    // Lines legend
+    html += `<div class="sv-lines-legend">`;
+    lines.forEach((line, li) => {
+      const hue = lineHues[li];
+      html += `
+        <div class="sv-line-tag" style="--lhue:${hue}">
+          <span class="sv-line-dot"></span>
+          ${line.label}
+        </div>
+      `;
+    });
+    html += `</div>`;
+
+    return html;
+  }
+
+  // ── Event listeners ───────────────────────────────────────
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.dataset.id, 10);
+      const stage = stages.find(s => s.id === id);
+      if (!stage) return;
+
+      buttons.forEach(b => b.classList.remove('sv-stage-btn--active'));
+      btn.classList.add('sv-stage-btn--active');
+
+      panel.innerHTML = renderStage(stage);
+
+      // Smooth scroll to panel on mobile
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+</script>
+
+<style>
+  /* ── Layout ─────────────────────────────────────────────── */
+  .sv-wrapper {
+    font-family: 'Georgia', serif;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    color: #1a1a2e;
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .sv-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .sv-title {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.25rem;
+    background: linear-gradient(135deg, #e05252, #e8c13a, #52b86e, #4f90d9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sv-subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+
+  /* ── Stage nav ───────────────────────────────────────────── */
+  .sv-stage-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .sv-stage-btn {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.4rem;
+    border: 2px solid #ddd;
+    background: #f9f9f9;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    color: #333;
+  }
+
+  .sv-stage-btn:hover {
+    border-color: #4f90d9;
+    background: #eef5ff;
+    transform: translateY(-1px);
+  }
+
+  .sv-stage-btn--active {
+    background: #1a1a2e;
+    border-color: #1a1a2e;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26,26,46,0.25);
+  }
+
+  /* ── Panel ───────────────────────────────────────────────── */
+  .sv-panel {
+    background: #fff;
+    border: 2px solid #eee;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    min-height: 200px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  }
+
+  .sv-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+    color: #aaa;
+    font-style: italic;
+    font-size: 1rem;
+    gap: 0.5rem;
+  }
+
+  /* ── Stage header ────────────────────────────────────────── */
+  .sv-stage-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+  }
+
+  .sv-stage-title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .sv-stage-meta {
+    font-size: 0.8rem;
+    color: #999;
+    font-style: italic;
+  }
+
+  /* ── Grid ────────────────────────────────────────────────── */
+  .sv-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    gap: 4px;
+    max-width: 400px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .sv-cell {
+    aspect-ratio: 1;
+    border-radius: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1rem, 4vw, 1.6rem);
+    transition: transform 0.15s;
+    position: relative;
+  }
+
+  .sv-cell--dead {
+    background: transparent;
+  }
+
+  .sv-cell--empty {
+    background: #f0f0f0;
+    border: 2px dashed #ddd;
+  }
+
+  .sv-cell--filled {
+    background: color-mix(in srgb, var(--cell-color) 22%, white);
+    border: 2px solid var(--cell-color);
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--cell-color) 30%, transparent);
+  }
+
+  .sv-cell--filled:hover {
+    transform: scale(1.08);
+    z-index: 2;
+  }
+
+  /* Given (pre-filled) cells get a stronger background */
+  .sv-cell--given {
+    background: color-mix(in srgb, var(--cell-color) 45%, white);
+    border-width: 3px;
+  }
+
+  .sv-cell-icon {
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* ── Lines legend ────────────────────────────────────────── */
+  .sv-lines-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    margin-top: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+
+  .sv-line-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: #555;
+  }
+
+  .sv-line-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: hsl(var(--lhue, 200), 60%, 50%);
+    flex-shrink: 0;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 480px) {
+    .sv-stage-btn {
+      width: 2rem;
+      height: 2rem;
+      font-size: 0.65rem;
+    }
+
+    .sv-grid {
+      gap: 3px;
+    }
+
+    .sv-panel {
+      padding: 1rem;
+    }
+  }
+</style>

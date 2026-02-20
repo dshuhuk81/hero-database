@@ -58,25 +58,11 @@
         {
           "id": "baphomet_dps_meta",
           "label": "Max Damage (Meta)",
-          "heroes": ["hladgunnr", "cashien", "yuelao", "dionysus", "isis"],
+          "hero-comp": "hladgunnr, isis, cashien, yuelao, dionysus",
+          "heroes": ["hladgunnr", "isis", "cashien", "yuelao", "dionysus"],
           "reason": "High sustained DPS with strong energy/cooldown support to keep rotations running under energy-drain pressure.",
           "notes": ["Keep main DPS protected during silence windows", "Energy support is key vs pentacle drain"],
-          "source": "manual"
-        },
-        {
-          "id": "baphomet_safe",
-          "label": "Safer / More Stable",
-          "heroes": [],
-          "reason": "More defensive stability if your DPS gets punished by silence/self-damage.",
-          "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "safe",
-            "preferHeroTags": ["Shield", "Ally Heal", "Cleanse", "Energy", "Cooldown"],
-            "avoidHeroTags": ["AoE"],
-            "minTagCounts": { "Energy": 1, "Cooldown": 1 },
-            "notes": "Pick a comp that can survive silences on top DPS + sustain through ramping aura."
-          }
+          "source": "auto"
         }
       ]
     },
@@ -129,34 +115,13 @@
       ],
       "recommendedComps": [
         {
-          "id": "demonic_horse_dps",
-          "label": "Max Damage (Auto)",
-          "heroes": [],
-          "reason": "Prioritizes high PvE score while keeping enough sustain to survive charge + frontal pressure.",
+          "id": "demonic_horse_manual",
+          "label": "Recommended",
+          "hero-comp": "nezha, isis, cashien, yuelao, dionysus",
+          "heroes": ["nezha", "isis", "cashien", "yuelao", "dionysus"],
+          "reason": "",
           "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "maxDamage",
-            "preferHeroTags": ["Energy", "Cooldown", "AoE"],
-            "avoidHeroTags": ["AoE"],
-            "minTagCounts": { "Energy": 1 },
-            "notes": "Aim for fast rotations + consistent DPS; keep baseline sustain for charge windows."
-          }
-        },
-        {
-          "id": "demonic_horse_safe",
-          "label": "Safer / Stable (Auto)",
-          "heroes": [],
-          "reason": "More survivability against charge bursts and frontal damage patterns.",
-          "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "safe",
-            "preferHeroTags": ["Shield", "Ally Heal", "Cleanse", "Energy"],
-            "avoidHeroTags": ["AoE"],
-            "minTagCounts": { "Shield": 1, "Ally Heal": 1 },
-            "notes": "Shield/heal coverage helps stabilize against burst patterns; Energy keeps support loops running."
-          }
+          "source": "auto"
         }
       ]
     },
@@ -210,34 +175,13 @@
       ],
       "recommendedComps": [
         {
-          "id": "epica_dps",
-          "label": "Max Damage (Auto)",
-          "heroes": [],
-          "reason": "Optimized for PvE score/rotations while tolerating random-target pressure.",
+          "id": "epica_manual",
+          "label": "Recommended",
+          "hero-comp": "isis, tefnut, yuelao, cashien, dionysus",
+          "heroes": ["isis", "tefnut", "yuelao", "cashien", "dionysus"],
+          "reason": "",
           "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "maxDamage",
-            "preferHeroTags": ["Energy", "Cooldown", "AoE"],
-            "avoidHeroTags": ["AoE"],
-            "minTagCounts": { "Energy": 1, "Cooldown": 1 },
-            "notes": "Energy+Cooldown helps maintain ult cycles; AoE helps keep overall output high during channels."
-          }
-        },
-        {
-          "id": "epica_safe",
-          "label": "Safer / Stable (Auto)",
-          "heroes": [],
-          "reason": "Counters random-target damage + long root windows with sustain/cleanse coverage.",
-          "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "safe",
-            "preferHeroTags": ["Ally Heal", "Shield", "Cleanse", "Energy"],
-            "avoidHeroTags": ["AoE"],
-            "minTagCounts": { "Ally Heal": 1, "Shield": 1 },
-            "notes": "Random-target pressure + root cages punish squishy DPS; sustain layers reduce wipes and keep damage uptime."
-          }
+          "source": "auto"
         }
       ]
     },
@@ -294,34 +238,13 @@
       ],
       "recommendedComps": [
         {
-          "id": "lilith_dps",
-          "label": "Max Damage (Auto)",
-          "heroes": [],
-          "reason": "AoE-heavy comps excel at clearing multiple children simultaneously, preventing respawn scaling and damage ramp.",
+          "id": "lilith_manual",
+          "label": "Recommended",
+          "hero-comp": "nezha, fengyi, cashien, yuelao, dionysus",
+          "heroes": ["nezha", "fengyi", "cashien", "yuelao", "dionysus"],
+          "reason": "",
           "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "maxDamage",
-            "preferHeroTags": ["AoE", "Energy", "Cooldown"],
-            "avoidHeroTags": ["Single-Target"],
-            "minTagCounts": { "AoE": 2, "Energy": 1 },
-            "notes": "AoE clears children fast; Energy/Cooldown keeps ult rotations online to maintain burst windows."
-          }
-        },
-        {
-          "id": "lilith_safe",
-          "label": "Safer / Stable (Auto)",
-          "heroes": [],
-          "reason": "Strong sustain layers to handle shared damage + cleanse to reduce ATK SPD scaling window.",
-          "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "safe",
-            "preferHeroTags": ["Ally Heal", "Cleanse", "AoE", "Energy"],
-            "avoidHeroTags": ["Single-Target"],
-            "minTagCounts": { "Ally Heal": 1, "Cleanse": 1, "AoE": 1 },
-            "notes": "Shared damage requires proactive healing; Cleanse removes ATK SPD buff; AoE prevents exponential child damage."
-          }
+          "source": "auto"
         }
       ]
     },
@@ -383,34 +306,13 @@
       ],
       "recommendedComps": [
         {
-          "id": "isthar_vi_dps",
-          "label": "Max Damage (Auto)",
-          "heroes": [],
-          "reason": "Prioritizes strong PvE output while valuing shields to counter knockback and burst damage.",
+          "id": "isthar_vi_manual",
+          "label": "Recommended",
+          "hero-comp": "hladgunnr, isis, cashien, yuelao, dionysus",
+          "heroes": ["hladgunnr", "isis", "cashien", "yuelao", "dionysus"],
+          "reason": "",
           "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "maxDamage",
-            "preferHeroTags": ["Shield", "Energy", "Cooldown"],
-            "avoidHeroTags": ["AoE"],
-            "minTagCounts": { "Shield": 1, "Energy": 1 },
-            "notes": "Shields mitigate knockback and absorb burst windows; Energy/Cooldown keeps rotations online."
-          }
-        },
-        {
-          "id": "isthar_vi_safe",
-          "label": "Safer / Stable (Auto)",
-          "heroes": [],
-          "reason": "Adds extra sustain and shield coverage to survive repeated battlefield-wide bursts.",
-          "notes": [],
-          "source": "auto",
-          "autoRules": {
-            "goal": "safe",
-            "preferHeroTags": ["Shield", "Ally Heal", "Cleanse", "Energy"],
-            "avoidHeroTags": ["AoE"],
-            "minTagCounts": { "Shield": 1, "Ally Heal": 1 },
-            "notes": "Shield/heal coverage reduces wipe risk during umbrella and burst phases."
-          }
+          "source": "auto"
         }
       ]
     }

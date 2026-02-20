@@ -76,6 +76,9 @@ function adaptHero(raw) {
     skills: raw.skills ?? [],
     relic: raw.relic ?? null,
 
+    // ✅ Synergies (manual tag assignment)
+    synergies: raw.synergies ?? [],
+
     recommendedRelicLevel: raw.recommendedRelicLevel,
     level: raw.level,
     evolution: raw.evolution,

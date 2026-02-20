@@ -98,5 +98,10 @@
       "level4": "The first time an ally reaches 600 Energy, grants them 400 Energy. (Unlock at Relic Lv.30)"
     }
   },
-  "synergies": []
+  "synergies": [
+    "HEAL_TEAM",
+    "ENERGY_RESTORE_TEAM",
+    "HEAL",
+    "ENERGY_RESTORE"
+  ]
 }

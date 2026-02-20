@@ -107,5 +107,12 @@
       "level4": "While Battlefield Storm is active, Ares gains a shield equal to 240% ATK upon defeating an enemy. (Unlock at Relic Lv.30)"
     }
   },
-  "synergies": []
+  "synergies": [
+    "ENEMY_VULNERABILITY",
+    "BASIC_ATTACK_SCALER",
+    "AREA_DAMAGE_DEALER",
+    "SHIELD",
+    "DMG_RED",
+    "HIT_AVOID"
+  ]
 }

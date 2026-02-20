@@ -98,5 +98,11 @@
       "level4": "Dispels one debuff from allies within range every 2s during Soothing Rain."
     }
   },
-  "synergies": []
+  "synergies": [
+    "BUFF_TEAM",
+    "DEBUFF_CLEANSE_TEAM",
+    "HEAL_TEAM",
+    "SHIELD_TEAM",
+    "CROWD_CONTROL"
+  ]
 }

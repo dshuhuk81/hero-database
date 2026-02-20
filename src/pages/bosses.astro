@@ -1,22 +1,10 @@
 ---
 import bosses from "../data/bosses.json";
-import communityComps from "../data/communityComps.json";
-import { getHeroById, statMaxima, heroes } from "../data/heroes";
+import { getHeroById } from "../data/heroes";
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/compositions.css";
-import teamCompsByHeroId from "../data/derived/teamCompsByHeroId.json";
-import { resolveAutoComp } from "../utils/bossAutoComp";
 import { keywordTagsForHero } from "../utils/heroTags.js";
-
-const RATING_VALUE = { SSS: 10, SS: 9, S: 8, A: 6, B: 4, C: 2, D: 1 };
-const DAMAGE_STATS = ["atk", "critRate", "critDmgBonus"];
-const COMMUNITY_BONUS_WEIGHT = 0.1;
-
-const COMMUNITY_INDEX_CACHE = new Map();
-const HERO_NAME_TO_ID = new Map(
-  (heroes || []).map(hero => [String(hero?.name || "").trim().toLowerCase(), hero.id])
-);
 
 // Mechanic counter mapping: boss mechanicTag → hero capabilities
 const MECHANIC_COUNTERS = {
@@ -37,327 +25,32 @@ const MECHANIC_COUNTERS = {
 function getHeroMechanicCounters(heroId, bossMechanicTags) {
   const hero = getHeroById(heroId);
   if (!hero) return [];
-
-  const heroTags = keywordTagsForHero(hero);
+  const heroTags = keywordTagsForHero(hero, { limit: null });
   const heroClass = String(hero?.class || "").toLowerCase();
   const counters = [];
-
   for (const mechanic of bossMechanicTags) {
     const counter = MECHANIC_COUNTERS[mechanic];
     if (!counter) continue;
-
     const hasTag = counter.heroTags.some(t => heroTags.includes(t));
     const hasClass = counter.classes.some(c => c.toLowerCase() === heroClass);
-
-    if (hasTag || hasClass) {
-      counters.push(counter.description);
-    }
+    if (hasTag || hasClass) counters.push(counter.description);
   }
-
   return [...new Set(counters)];
 }
 
-function ratingValue(raw) {
-  const key = String(raw || "C").toUpperCase();
-  return RATING_VALUE[key] ?? 2;
-}
-
-function teamPveAvg(comp) {
-  const heroes = comp?.summary?.heroes ?? [];
-  if (!heroes.length) return 0;
-  const vals = heroes.map(h => ratingValue(h?.pve ?? h?.overall));
-  return vals.reduce((a, b) => a + b, 0) / vals.length;
-}
-
-function teamDamageScore(comp) {
-  const ids = comp?.team ?? [];
-  const stats = DAMAGE_STATS.filter(
-    key => typeof statMaxima?.[key] === "number" && statMaxima[key] > 0
-  );
-  if (!ids.length || !stats.length) return 0;
-
-  let total = 0;
-  let count = 0;
-  for (const id of ids) {
-    const hero = getHeroById(id);
-    if (!hero) continue;
-    for (const stat of stats) {
-      const max = statMaxima[stat] || 0;
-      const val = Number(hero?.stats?.[stat] ?? 0);
-      if (max > 0) {
-        total += Math.max(0, val) / max;
-        count += 1;
-      }
-    }
-  }
-
-  return count ? total / count : 0;
-}
-
-function hasSupport(comp) {
-  const summaryHeroes = comp?.summary?.heroes ?? [];
-  if (summaryHeroes.length) {
-    return summaryHeroes.some(
-      h => String(h?.class || "").toLowerCase() === "support"
-    );
-  }
-
-  const ids = comp?.team ?? [];
-  return ids.some(
-    id => String(getHeroById(id)?.class || "").toLowerCase() === "support"
-  );
-}
-
-function teamKey(team) {
-  return [...team].sort().join("|");
-}
-
-function normalizeName(name) {
-  return String(name || "").trim().toLowerCase();
-}
-
-function parseVoteValue(votes) {
-  if (typeof votes === "number") return votes;
-  if (typeof votes === "string") {
-    const cleaned = votes.replace(/[^0-9.]/g, "");
-    return cleaned ? Number(cleaned) : 0;
-  }
-  return 0;
-}
-
-function getCommunityIndex(bossId) {
-  if (COMMUNITY_INDEX_CACHE.has(bossId)) return COMMUNITY_INDEX_CACHE.get(bossId);
-
-  const entries = communityComps?.[bossId] ?? [];
-  const parsed = [];
-  let maxVotes = 0;
-
-  for (const entry of entries) {
-    const ids = (entry?.heroes ?? [])
-      .map(name => HERO_NAME_TO_ID.get(normalizeName(name)))
-      .filter(Boolean);
-    if (ids.length !== 5) continue;
-
-    const votes = parseVoteValue(entry?.votes);
-    maxVotes = Math.max(maxVotes, votes);
-    parsed.push({ key: teamKey(ids), votes });
-  }
-
-  const index = new Map();
-  for (const item of parsed) {
-    const normalized = maxVotes ? item.votes / maxVotes : 0;
-    index.set(item.key, normalized);
-  }
-
-  COMMUNITY_INDEX_CACHE.set(bossId, index);
-  return index;
-}
-
-function countTeamTags(comp) {
-  const counts = {};
-  const heroes = comp?.summary?.heroes ?? [];
-  for (const h of heroes) {
-    for (const t of (h?.tags ?? [])) {
-      counts[t] = (counts[t] || 0) + 1;
-    }
-  }
-  return counts;
-}
-
-function buildCandidate(comp, rules, communityIndex) {
-  if (!hasSupport(comp)) return null;
-
-  const tagCounts = countTeamTags(comp);
-  const min = rules?.minTagCounts ?? {};
-
-  for (const [tag, n] of Object.entries(min)) {
-    if ((tagCounts[tag] || 0) < n) return null;
-  }
-
-  const key = teamKey(comp?.team ?? []);
-  const communityScore = communityIndex?.get(key) ?? 0;
-
-  return {
-    comp,
-    tagCounts,
-    rankingScore: Number(comp?.rankingScore ?? 0),
-    pveAvg: teamPveAvg(comp),
-    damageScore: teamDamageScore(comp),
-    synergyCount: Array.isArray(comp?.synergy) ? comp.synergy.length : 0,
-    communityScore,
-  };
-}
-
-function normalize(value, max) {
-  if (!max || max <= 0) return 0;
-  return value / max;
-}
-
-function scoreCandidate(candidate, rules, maxima) {
-  const prefer = rules?.preferHeroTags ?? [];
-  const avoid = rules?.avoidHeroTags ?? [];
-
-  const rankingPart = normalize(
-    candidate.rankingScore + candidate.synergyCount * 5,
-    maxima.rankingScore
-  );
-  const pvePart = normalize(candidate.pveAvg, maxima.pveAvg);
-  const dmgPart = normalize(candidate.damageScore, maxima.damageScore);
-  const synergyPart = normalize(candidate.synergyCount, maxima.synergyCount) * 0.05;
-
-  let tagBonus = 0;
-  for (const t of prefer) tagBonus += (candidate.tagCounts[t] || 0) * 0.02;
-  for (const t of avoid) tagBonus -= (candidate.tagCounts[t] || 0) * 0.03;
-
-  return (
-    rankingPart * 0.4 +
-    pvePart * 0.4 +
-    dmgPart * 0.2 +
-    synergyPart +
-    tagBonus +
-    candidate.communityScore * COMMUNITY_BONUS_WEIGHT
-  );
-}
-
-function pickBestCandidate(candidates, rules) {
-  if (!candidates.length) return null;
-
-  const maxima = candidates.reduce(
-    (acc, c) => {
-      acc.rankingScore = Math.max(acc.rankingScore, c.rankingScore + c.synergyCount * 5);
-      acc.pveAvg = Math.max(acc.pveAvg, c.pveAvg);
-      acc.damageScore = Math.max(acc.damageScore, c.damageScore);
-      acc.synergyCount = Math.max(acc.synergyCount, c.synergyCount);
-      return acc;
-    },
-    { rankingScore: 0, pveAvg: 0, damageScore: 0, synergyCount: 0 }
-  );
-
-  let best = null;
-  let bestScore = -Infinity;
-  for (const candidate of candidates) {
-    const score = scoreCandidate(candidate, rules, maxima);
-    if (score > bestScore) {
-      bestScore = score;
-      best = candidate;
-    }
-  }
-
-  return best;
-}
-
-function resolveAutoHeroes({ mode = "pve", autoRules, bossId }) {
-  // collect all comps for that mode, dedupe by team set
-  const pool = [];
-  for (const heroId of Object.keys(teamCompsByHeroId || {})) {
-    const comps = teamCompsByHeroId?.[heroId]?.[mode] ?? [];
-    for (const c of comps) if (Array.isArray(c?.team) && c.team.length === 5) pool.push(c);
-  }
-
-  const communityIndex = getCommunityIndex(bossId);
-
-  function collectCandidates(rules) {
-    const bestByKey = new Map();
-    for (const c of pool) {
-      const candidate = buildCandidate(c, rules, communityIndex);
-      if (!candidate) continue;
-
-      const k = teamKey(c.team);
-      const prev = bestByKey.get(k);
-      if (!prev || candidate.rankingScore > prev.rankingScore) {
-        bestByKey.set(k, candidate);
-      }
-    }
-    return [...bestByKey.values()];
-  }
-
-  const primaryCandidates = collectCandidates(autoRules);
-  let best = pickBestCandidate(primaryCandidates, autoRules);
-
-  if (!best) {
-    const fallbackCandidates = collectCandidates(null);
-    best = pickBestCandidate(fallbackCandidates, null);
-  }
-
-  // Find substitutes for each hero position
-  const bestTeam = best?.comp?.team ?? [];
-  const substitutes = findSubstitutes(bestTeam, primaryCandidates.length ? primaryCandidates : collectCandidates(null), autoRules);
-
-  return { team: bestTeam, substitutes };
-}
-
-function findSubstitutes(bestTeam, candidates, rules) {
-  const substitutes = {};
-  const bestKey = teamKey(bestTeam);
-
-  // For each position in the best team
-  for (let i = 0; i < bestTeam.length; i++) {
-    const heroId = bestTeam[i];
-    const hero = getHeroById(heroId);
-    if (!hero) continue;
-
-    const sameRole = [];
-    const sameClass = [];
-
-    // Find heroes from other high-scoring comps with same role/class
-    for (const candidate of candidates) {
-      const otherTeam = candidate?.comp?.team ?? [];
-      if (teamKey(otherTeam) === bestKey) continue;
-
-      for (const otherId of otherTeam) {
-        if (bestTeam.includes(otherId)) continue;
-        if (sameRole.find(s => s.id === otherId) || sameClass.find(s => s.id === otherId)) continue;
-
-        const other = getHeroById(otherId);
-        if (!other) continue;
-
-        if (other.role === hero.role && other.class === hero.class) {
-          sameRole.push({ id: otherId, score: candidate.rankingScore });
-        } else if (other.class === hero.class) {
-          sameClass.push({ id: otherId, score: candidate.rankingScore });
-        }
-      }
-    }
-
-    // Pick top 2 substitutes
-    const options = [...sameRole, ...sameClass]
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 2)
-      .map(s => s.id);
-
-    if (options.length) {
-      substitutes[heroId] = options;
-    }
-  }
-
-  return substitutes;
-}
-
-function getBossModeDefault(boss) {
-  // minimal: Torment Rift & Grim Surge sind praktisch PvE
-  return "pve";
-}
-function heroName(id) {
-  return getHeroById(id)?.name ?? id;
-}
-
+function heroName(id) { return getHeroById(id)?.name ?? id; }
 function heroImage(id) {
   const img = getHeroById(id)?.image;
   return img?.startsWith("/") ? img : `/${img}`;
 }
-
 function factionIcon(faction) {
   return `/icons/factions/${String(faction || "").toLowerCase()}.webp`;
 }
-
 function classIcon(heroClass) {
   return `/icons/classes/${String(heroClass || "").toLowerCase()}.webp`;
 }
 
-const BOSS_SKILL_ICON_ALIAS = {
-  isthar_vi: "ishtar",
-};
-
+const BOSS_SKILL_ICON_ALIAS = { isthar_vi: "ishtar" };
 function bossSkillIcon(bossId, index) {
   const key = BOSS_SKILL_ICON_ALIAS[bossId] || bossId;
   return `/bosses/${key}_skill_${index + 1}.png`;
@@ -367,194 +60,166 @@ function bossSkillIcon(bossId, index) {
 <Sidebar />
 
 <section class="boss-page">
-  <div class="navigation-box">
-    <div class="nav-list">
-    <button class="boss-nav boss-nav-left" aria-label="Previous boss" type="button">
-      <span aria-hidden="true">&#x2039;</span>
-    </button>
-    <button class="boss-nav boss-nav-right" aria-label="Next boss" type="button">
-      <span aria-hidden="true">&#x203A;</span>
-    </button></div>
+
+  <!-- Boss tabs bar -->
+  <div class="boss-tabbar" data-boss-slider>
+    {bosses.bosses.map((boss, index) => (
+      <button class="boss-tab" type="button" data-boss-tab data-index={index}>
+        {boss.name}
+      </button>
+    ))}
   </div>
-  <div class="boss-carousel">
-     <div class="boss-slides" data-boss-slides>
-      {bosses.bosses.map((boss, index) => (
-        <article class="boss-slide" data-boss-slide data-index={index}>
-          <div class="boss-layout">
-            <div class="boss-bg" style={`--boss-image: url(${boss.image})`} aria-hidden="true"></div>
 
-            <div class="boss-content">
-              <div class="boss-title">
-                <p class="boss-kicker">Boss Encounter</p>
-                <h2>{boss.name}</h2>
-                <div class="boss-meta">
-                  <span class="pill">{boss.mode}</span>
-                  <span class="pill pill-icon">
+  <!-- Slides -->
+  <div class="boss-slides" data-boss-slides>
+    {bosses.bosses.map((boss, index) => (
+      <article class="boss-slide" data-boss-slide data-index={index}>
+
+        <!-- LEFT: cinematic visual column -->
+        <div class="boss-visual" style={`--boss-image: url(${boss.image})`}>
+          <div class="boss-visual-scrim"></div>
+          <div class="boss-identity">
+            <p class="boss-kicker">Boss Encounter</p>
+            <h2 class="boss-name">{boss.name}</h2>
+            <div class="boss-meta">
+              <span class="pill">{boss.mode}</span>
+              <span class="pill pill-icon">
+                <img class="meta-icon" src={factionIcon(boss.faction)} alt={boss.faction} />
+                {boss.faction}
+              </span>
+              <span class="pill pill-icon">
+                <img class="meta-icon" src={classIcon(boss.class)} alt={boss.class} />
+                {boss.class}
+              </span>
+              <span class="pill">BP {boss.battlepower}</span>
+            </div>
+            {boss.summary && <p class="boss-summary">{boss.summary}</p>}
+          </div>
+
+          <!-- Prev/Next inside the visual column -->
+          <div class="boss-nav-pair">
+            <button class="boss-nav boss-nav-left" aria-label="Previous boss" type="button">&#x2039;</button>
+            <button class="boss-nav boss-nav-right" aria-label="Next boss" type="button">&#x203A;</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: info panel -->
+        <div class="boss-panel">
+
+          <!-- Mechanics -->
+          <div class="panel-section">
+            <h3 class="panel-heading">Mechanics</h3>
+            <div class="mechanic-list">
+              {boss.skills.map((sk, skillIndex) => (
+                <div class="mechanic-item">
+                  {sk.type !== "Passive" && (
                     <img
-                      class="meta-icon"
-                      src={factionIcon(boss.faction)}
-                      alt={boss.faction}
+                      class="skill-icon"
+                      src={bossSkillIcon(boss.id, skillIndex)}
+                      alt={`${boss.name} ${sk.name}`}
+                      loading="lazy"
                     />
-                    {boss.faction}
-                  </span>
-                  <span class="pill pill-icon">
-                    <img
-                      class="meta-icon"
-                      src={classIcon(boss.class)}
-                      alt={boss.class}
-                    />
-                    {boss.class}
-                  </span>
-                  <span class="pill">BP {boss.battlepower}</span>
+                  )}
+                  <div class="mechanic-body">
+                    <span class="mechanic-title">
+                      {sk.name}
+                      <span class="mechanic-type">{sk.type}</span>
+                    </span>
+                    <p class="mechanic-desc">{sk.description}</p>
+                  </div>
                 </div>
-                {boss.summary && <p class="boss-summary">{boss.summary}</p>}
-              </div>
+              ))}
+            </div>
+          </div>
 
-              <div class="boss-skills">
-                <h3>Mechanics</h3>
-                <ul class="boss-skill-list">
-                  {boss.skills.map((sk, skillIndex) => (
-                    <li class="boss-skill">
-                      {sk.type !== "Passive" ? (
-                        <img
-                          class="skill-icon"
-                          src={bossSkillIcon(boss.id, skillIndex)}
-                          alt={`${boss.name} ${sk.name}`}
-                          loading="lazy"
-                        />
-                      ) : null}
-                      <div>
-                        <strong>{sk.name}</strong> <small>({sk.type})</small>
-                        <div class="boss-skill-desc">{sk.description}</div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <!-- Strategy Notes -->
+          {boss.strategyNotes && (
+            <div class="panel-section">
+              <h3 class="panel-heading">Strategy Notes</h3>
+              <p class="strategy-text">{boss.strategyNotes}</p>
+            </div>
+          )}
 
-              {boss.strategyNotes && (
-                <div class="boss-strategy">
-                  <h3>Strategy Notes</h3>
-                  <p class="strategy-text">{boss.strategyNotes}</p>
-                </div>
-              )}
-
-              <div class="boss-comps">
-                {boss.recommendedComps.map(comp => {
-                  const isAuto = comp.source === "auto";
-                  const compResolved = isAuto
-                    ? resolveAutoComp(comp, boss, bosses.autoRules)
-                    : comp;
-
-                  let resolvedHeroes;
-                  let substitutes = {};
-
-                  if (isAuto && (!compResolved.heroes || compResolved.heroes.length === 0)) {
-                    const result = resolveAutoHeroes({
-                      mode: getBossModeDefault(boss),
-                      autoRules: compResolved.autoRules,
-                      bossId: boss.id,
-                    });
-                    resolvedHeroes = result.team || [];
-                    substitutes = result.substitutes || {};
-                  } else {
-                    resolvedHeroes = compResolved.heroes ?? [];
-                  }
-
+          <!-- Recommended Comps -->
+          {(boss.recommendedComps || []).length > 0 && (
+            <div class="panel-section">
+              <h3 class="panel-heading">Recommended Comps</h3>
+              <div class="comp-list">
+                {(boss.recommendedComps || []).map(comp => {
+                  const heroComp = String(comp["hero-comp"] || "")
+                    .split(",")
+                    .map(e => e.trim())
+                    .filter(Boolean);
+                  const resolvedHeroes = heroComp.length ? heroComp : (comp.heroes ?? []);
                   const bossMechanics = boss.mechanicTags || [];
 
                   return (
-                    <div class="comp-block">
-                      <h3>{comp.label}</h3>
-
-                      <div class="boss-meta" style="margin: 6px 0 10px;">
-                        <span class="pill">{isAuto ? "Auto" : "Manual"}</span>
+                    <div class="comp-entry">
+                      <div class="comp-entry-header">
+                        <span class="comp-label">{comp.label}</span>
+                        {comp.reason && <p class="comp-reason">{comp.reason}</p>}
                       </div>
-
-                      <div class="comp-heroes">
+                      <div class="comp-hero-row">
                         {resolvedHeroes.map(id => {
                           const counters = getHeroMechanicCounters(id, bossMechanics);
-                          const subs = substitutes[id] || [];
-                          
                           return (
-                            <div class="hero-mini-wrapper">
-                              <a href={`/heroes/${id}`} class="hero-mini">
-                                <img src={heroImage(id)} alt={heroName(id)} />
-                                <span class="hero-name">{heroName(id)}</span>
-                                {counters.length > 0 && (
-                                  <div class="mechanic-badges">
-                                    {counters.map(c => (
-                                      <span class="badge-counter" title={c}>{c}</span>
-                                    ))}
-                                  </div>
-                                )}
-                              </a>
-                              {subs.length > 0 && (
-                                <details class="substitutes">
-                                  <summary>Alternatives</summary>
-                                  <div class="sub-list">
-                                    {subs.map(subId => (
-                                      <a href={`/heroes/${subId}`} class="sub-hero">
-                                        <img src={heroImage(subId)} alt={heroName(subId)} />
-                                        <span>{heroName(subId)}</span>
-                                      </a>
-                                    ))}
-                                  </div>
-                                </details>
+                            <a href={`/heroes/${id}`} class="hero-chip">
+                              <img src={heroImage(id)} alt={heroName(id)} />
+                              <span class="hero-chip-name">{heroName(id)}</span>
+                              {counters.length > 0 && (
+                                <div class="chip-badges">
+                                  {counters.map(c => (
+                                    <span class="badge-counter" title={c}>{c}</span>
+                                  ))}
+                                </div>
                               )}
-                            </div>
+                            </a>
                           );
                         })}
                       </div>
-
-                      <p class="reason">{comp.reason}</p>
-
-                      {comp.notes?.length ? (
-                        <ul class="notes">
+                      {comp.notes?.length > 0 && (
+                        <ul class="comp-notes">
                           {comp.notes.map(n => <li>{n}</li>)}
                         </ul>
-                      ) : null}
-
-                      {isAuto && compResolved.autoRules?.notes ? (
-                        <p class="reason" style="opacity:.7; margin-top:10px;">
-                          <em>{compResolved.autoRules.notes}</em>
-                        </p>
-                      ) : null}
+                      )}
                     </div>
                   );
                 })}
               </div>
             </div>
-          </div>
-        </article>
-      ))}
-    </div>
+          )}
+
+        </div>
+      </article>
+    ))}
   </div>
 </section>
 
 <script>
   const slides = Array.from(document.querySelectorAll("[data-boss-slide]"));
-  const prevBtn = document.querySelector(".boss-nav-left");
-  const nextBtn = document.querySelector(".boss-nav-right");
+  const tabs = Array.from(document.querySelectorAll("[data-boss-tab]"));
+  const prevBtns = Array.from(document.querySelectorAll(".boss-nav-left"));
+  const nextBtns = Array.from(document.querySelectorAll(".boss-nav-right"));
   let currentIndex = 0;
 
   function updateSlides(index) {
     currentIndex = (index + slides.length) % slides.length;
-    slides.forEach((slide, i) => {
-      slide.classList.toggle("is-active", i === currentIndex);
-    });
+    slides.forEach((s, i) => s.classList.toggle("is-active", i === currentIndex));
+    tabs.forEach((t, i) => t.classList.toggle("is-active", i === currentIndex));
+    const activeTab = tabs[currentIndex];
+    activeTab?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
   }
 
-  if (slides.length) {
-    updateSlides(0);
-  }
+  if (slides.length) updateSlides(0);
 
-  prevBtn?.addEventListener("click", () => updateSlides(currentIndex - 1));
-  nextBtn?.addEventListener("click", () => updateSlides(currentIndex + 1));
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "ArrowLeft") updateSlides(currentIndex - 1);
-    if (event.key === "ArrowRight") updateSlides(currentIndex + 1);
+  prevBtns.forEach(b => b.addEventListener("click", () => updateSlides(currentIndex - 1)));
+  nextBtns.forEach(b => b.addEventListener("click", () => updateSlides(currentIndex + 1)));
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => updateSlides(Number(tab.dataset.index || 0)));
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft") updateSlides(currentIndex - 1);
+    if (e.key === "ArrowRight") updateSlides(currentIndex + 1);
   });
 </script>
 

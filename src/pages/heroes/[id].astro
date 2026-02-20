@@ -31,6 +31,9 @@ export function getStaticPaths() {
 
 const { id } = Astro.params;
 const hero = getHeroById(id);
+const heroIndex = heroes.findIndex((entry) => entry.id === id);
+const prevHero = heroIndex > 0 ? heroes[heroIndex - 1] : null;
+const nextHero = heroIndex >= 0 && heroIndex < heroes.length - 1 ? heroes[heroIndex + 1] : null;
 
 // Ranking Daten für diesen Hero
 const currentHeroData = rankedHeroes.find(r => r.hero.id === id);
@@ -128,7 +131,7 @@ const STAT_LABELS = {
   <!-- STICKY HEADER -->
   <header class="hero-detail-header">
     <div class="header-inner header-with-back">
-      <a href="/" class="back-button">← Back</a>
+      <a href="/heros" class="back-button">← Back</a>
 
       <div class="header-center">
         <h1 class="hero-title">{hero.name}</h1>
@@ -141,6 +144,46 @@ const STAT_LABELS = {
       </div>
     </div>
   </header>
+
+  <nav class="hero-swap-nav" aria-label="Hero navigation">
+    {prevHero ? (
+      <a
+        class="hero-swap-link prev"
+        href={`/heroes/${prevHero.id}`}
+        aria-label={`Previous hero: ${prevHero.name}`}
+        title={`Previous hero: ${prevHero.name}`}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    ) : (
+      <span class="hero-swap-link prev disabled" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+    )}
+
+    {nextHero ? (
+      <a
+        class="hero-swap-link next"
+        href={`/heroes/${nextHero.id}`}
+        aria-label={`Next hero: ${nextHero.name}`}
+        title={`Next hero: ${nextHero.name}`}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    ) : (
+      <span class="hero-swap-link next disabled" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+    )}
+  </nav>
 
   <!-- CONTENT -->
   <main class="hero-detail-content">
@@ -764,6 +807,75 @@ const STAT_LABELS = {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
+  }
+
+  .hero-swap-nav {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    pointer-events: none;
+  }
+
+  .hero-swap-link {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(12, 12, 18, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    pointer-events: auto;
+  }
+
+  .hero-swap-link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-swap-link.prev {
+    left: 18px;
+  }
+
+  .hero-swap-link.next {
+    right: 18px;
+  }
+
+  .hero-swap-link:hover {
+    color: #fff7d1;
+    background: rgba(30, 30, 40, 0.8);
+    border-color: rgba(250, 204, 21, 0.5);
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  .hero-swap-link.disabled {
+    opacity: 0.25;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
+  @media (max-width: 900px) {
+    .hero-swap-link {
+      width: 38px;
+      height: 38px;
+    }
+
+    .hero-swap-link.prev {
+      left: 10px;
+    }
+
+    .hero-swap-link.next {
+      right: 10px;
+    }
   }
 
   /* HEADER CENTER */

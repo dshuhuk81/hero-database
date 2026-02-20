@@ -1,4 +1,4 @@
-   /* RESET & BASE */
+/* RESET & BASE */
 html, body {
   margin: 0;
   padding: 0;
@@ -14,464 +14,476 @@ html, body {
    PAGE LAYOUT WITH SIDEBAR
    =============================== */
 body {
-  margin-left: 80px; /* Sidebar width */
+  margin-left: 80px;
 }
 
 @media (max-width: 768px) {
   body {
     margin-left: 0;
-    margin-bottom: 60px; /* Mobile bottom nav */
+    margin-bottom: 60px;
   }
 }
-/* src/styles/compositions.css */
 
-/* ---------------------------
-   Boss Page Layout
---------------------------- */
-.boss-page{
-  position: relative;
-  width: 100%;
+
+/* ===============================
+   BOSS PAGE
+   =============================== */
+
+.boss-page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  padding: 0;
-  margin:0;
-  border-radius: 0;
 }
 
-.boss-carousel{
-  position: relative;
-  margin: 0 auto;
-  min-height: calc(100vh - 120px);
+/* ---- Tab bar ---- */
+.boss-tabbar {
   display: flex;
-  align-items: center;
-}
-
-.boss-slides{
-  width: 100%;
-}
-
-.boss-slide{
-  display: none;
-  width: 100%;
-}
-
-.boss-slide.is-active{
-  display: block;
-}
-.notes{
- font-size: 0.9rem;
- line-height: 1.5;
-}
-.boss-skills {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-top: 4px;
-  opacity: 0.9;
-  margin-bottom: 12px;
-}
-.boss-skill{
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  padding: 6px 0;
-}
-
-.boss-skill-desc{
-  margin-top: 4px;
-  font-size: 0.90rem;
-  line-height: 1.4;
-}
-.boss-meta{
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 8px;  
-  font-size: 0.9rem;
-}
-.skill-icon{
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  object-fit: cover;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,.12);
-}
-.boss-skill-list {
-  padding:0;
-}
-.boss-layout{
-  position: relative;
-  min-height: calc(100vh - 160px);
-  padding: 28px;
-  border-radius: 0;
-  border: 0px solid rgba(255,255,255,.08);
-  background: linear-gradient(120deg, rgba(16,18,28,0.85), rgba(10,12,18,0.9));
-  box-shadow: 0 28px 80px rgba(0,0,0,0.45);
-  overflow: hidden;
-  display: flex;
-}
-
-.boss-bg{
-  inset: 0 auto 0 0;
-  width: 50%;
-  background-image:
-    linear-gradient(90deg, rgba(8,10,16,0.15) 0%, rgba(8,10,16,0.7) 65%, rgba(8,10,16,0.98) 100%),
-    var(--boss-image);
-  background-size: cover;
-  background-position: center right;
-  filter: saturate(1.05) contrast(1.05);
-  border-radius: 24px;;
-}
-
-.boss-content{
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding-left: 24px;
-  width: 50%;
-}
-
-.boss-title h2{
-  margin: 0 0 10px 0;
-  font-size: 2.4rem;
-  letter-spacing: 0.02em;
-}
-
-.boss-kicker{
-  margin: 0 0 8px;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  opacity: 0.65;
-}
-
-.boss-summary{
-  margin: 10px 0 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  opacity: 0.9;
-}
-
-/* ---------------------------
-   Boss Comps (2 blocks)
---------------------------- */
-.boss-comps{
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 14px;
-}
-
-@media (max-width: 900px){
-  .boss-comps{ grid-template-columns: 1fr; }
-}
-
-.comp-block{
-  padding: 14px 14px 12px;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 12px;
-  background: rgba(255,255,255,.03);
-}
-
-.comp-block h3{
-  margin: 0 0 10px 0;
-  font-size: 1.05rem;
-  letter-spacing: .02em;
-  opacity: .95;
-}
-
-/* 5 heroes grid/flow */
-.comp-heroes{
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: 1fr;
-  gap: 10px;
-  margin: 6px 0 10px;
-  width: 100%;
-}
-
-/* ---------------------------
-   Hero Mini Cards (Boss page)
---------------------------- */
-.hero-mini-wrapper{
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
   gap: 6px;
-  align-self: stretch;
-}
-
-
-.hero-mini{
-  width: 100%;
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: linear-gradient(135deg, rgba(30,41,59,0.45), rgba(15,23,42,0.65));
-  overflow: hidden;
-  text-align: center;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-}
-
-.hero-mini:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  border-color: rgba(255,255,255,.25);
-}
-
-.hero-mini img{
-  display: block;
-  width: 100%;
-  max-height: 164px;
-  height: auto;
-  object-fit: cover;
-  object-position: center 20%;
-}
-
-.hero-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    opacity: 0.95;
-    margin-top: 8px;
-    display: block;
-    margin-bottom: 8px;
-}
-
-.reason{
-  margin: 6px 0 0 0;
-  font-size: 0.95rem;
-  line-height: 1.55;
-  opacity: .85;
-}
-
-.navigation-box{
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  gap: 12px;
-  z-index: 999;
-}
-.nav-list {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  top: 50%;
-  left:0;
-}
-
-.boss-nav{
-  transform: translateY(-50%);
-  border: none;
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.08);
-  color: #f4f1ff;
-  font-size: 2rem;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
-  box-shadow: 0 12px 26px rgba(0,0,0,0.35);
-  z-index: 3;
-}
-
-.boss-nav:hover{
-  background: rgba(255,255,255,0.16);
-}
-
-.boss-nav-left{ left: 0px; }
-.boss-nav-right{ right: 0px; }
-
-@media (max-width: 1100px){
-  .boss-nav-left{ left: 0; }
-  .boss-nav-right{ right: 0; }
-}
-
-@media (max-width: 900px){
-  .boss-layout{
-    padding: 22px;
-  }
-  .boss-bg{
-    position: relative;
-    width: 100%;
-    height: 240px;
-    inset: 0;
-  }
-  .boss-content{
-    margin-left: 0;
-    padding-left: 0;
-    margin-top: 18px;
-  }
-  .boss-nav{
-    width: 46px;
-    height: 46px;
-    font-size: 1.6rem;
-  }
-  .comp-heroes{
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px){
-  .boss-layout{
-    min-height: auto;
-  }
-  .boss-comps{
-    grid-template-columns: 1fr;
-  }
-  .comp-heroes{
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ---------------------------
-   Optional: Shared “pill” utility
-   (falls du sie in Boss-UI nutzen willst)
---------------------------- */
-.pill{
-  display:inline-block;
-  padding:.35rem .6rem;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  font-size: 0.85rem;
-  opacity:.95;
-}
-
-.pill-icon{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.meta-icon{
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-}
-
-/* ---------------------------
-   Boss Strategy Notes
---------------------------- */
-.boss-strategy{
-  padding: 14px;
-  border-radius: 12px;
-  background: rgba(120,90,200,0.12);
-  border: 1px solid rgba(120,90,200,0.25);
-  margin-bottom: 8px;
-}
-
-.boss-strategy h3{
-  margin: 0 0 8px 0;
-  font-size: 1.05rem;
-  color: rgba(200,180,255,0.95);
-}
-
-.strategy-text{
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  opacity: 0.9;
-}
-
-/* ---------------------------
-   Mechanic Counter Badges & Substitutes
---------------------------- */
-.mechanic-badges{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  padding: 8px 8px 12px 8px;
-  margin-top: 8px;
-  justify-content: center;
-}
-
-.badge-counter{
-    padding: .18rem .45rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06);
-    font-size: .75rem;
-    opacity: .95;
-}
-
-.substitutes{
-  width: 100%;
-  font-size: 0.8rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255,215,100,0.2);
-  background: rgba(255,215,100,0.06);
-  overflow: hidden;
-  margin-top: auto;
+  padding: 14px 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(8,10,16,0.7);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
   flex-shrink: 0;
 }
 
-.substitutes summary{
-  padding: 4px 8px;
+.boss-tabbar::-webkit-scrollbar { display: none; }
+
+.boss-tab {
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(230,230,235,0.65);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  letter-spacing: 0.03em;
   cursor: pointer;
-  font-size: 0.75rem;
-  text-align: center;
-  opacity: 0.85;
-  user-select: none;
-  transition: background 140ms ease, opacity 140ms ease;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  white-space: nowrap;
 }
 
-.substitutes summary:hover{
-  background: rgba(255,215,100,0.12);
-  opacity: 1;
+.boss-tab.is-active {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.28);
+  color: #f4f1ff;
 }
 
-.substitutes[open] summary{
-  border-bottom: 1px solid rgba(255,215,100,0.2);
-  background: rgba(255,215,100,0.1);
+.boss-tab:hover {
+  background: rgba(255,255,255,0.09);
+  color: #f4f1ff;
 }
 
-.sub-list{
+/* ---- Slides container ---- */
+.boss-slides {
+  flex: 1;
+}
+
+.boss-slide {
+  display: none;
+}
+
+.boss-slide.is-active {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  min-height: calc(100vh - 53px);
+}
+
+/* ===============================
+   LEFT: VISUAL COLUMN
+   =============================== */
+
+.boss-visual {
+  position: sticky;
+  top: 53px; /* height of tabbar */
+  height: calc(100vh - 53px);
+  overflow: hidden;
+
+  background-image: var(--boss-image);
+  background-size: cover;
+  background-position: center top;
+
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 6px;
+  justify-content: flex-end;
 }
 
-.sub-hero{
+.boss-visual-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(8,10,16,0.15) 0%,
+      rgba(8,10,16,0.4) 45%,
+      rgba(8,10,16,0.92) 100%
+    );
+  pointer-events: none;
+}
+
+.boss-identity {
+  position: relative;
+  z-index: 1;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.boss-kicker {
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(230,230,235,0.55);
+}
+
+.boss-name {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #f4f1ff;
+  line-height: 1.1;
+}
+
+.boss-summary {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(230,230,235,0.78);
+  max-width: 38ch;
+}
+
+.boss-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+
+/* Prev / Next nav — bottom-right corner of visual */
+.boss-nav-pair {
+  position: absolute;
+  bottom: 28px;
+  right: 20px;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.boss-nav {
+  border: 1px solid rgba(255,255,255,0.18);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(10,12,18,0.6);
+  backdrop-filter: blur(8px);
+  color: #f4f1ff;
+  font-size: 1.6rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+  line-height: 1;
+}
+
+.boss-nav:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.35);
+}
+
+
+/* ===============================
+   RIGHT: INFO PANEL
+   =============================== */
+
+.boss-panel {
+  padding: 36px 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+
+.panel-section {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.panel-section:first-child {
+  padding-top: 0;
+}
+
+.panel-section:last-child {
+  border-bottom: none;
+}
+
+.panel-heading {
+  margin: 0 0 16px;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(230,230,235,0.45);
+  font-weight: 500;
+}
+
+
+/* ---- Mechanics ---- */
+
+.mechanic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mechanic-item {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: start;
+}
+
+.skill-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+.mechanic-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mechanic-title {
+  font-size: 0.93rem;
+  color: #f1e9ff;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px;
-  border-radius: 6px;
-  background: rgba(255,255,255,0.04);
-  transition: background 140ms ease;
+  gap: 7px;
+}
+
+.mechanic-type {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: rgba(230,230,235,0.45);
+  letter-spacing: 0.04em;
+}
+
+.mechanic-desc {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(230,230,235,0.72);
+}
+
+
+/* ---- Strategy Notes ---- */
+
+.strategy-text {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: rgba(230,230,235,0.82);
+}
+
+
+/* ---- Recommended Comps ---- */
+
+.comp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.comp-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comp-entry-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.comp-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #f0ecff;
+  letter-spacing: 0.02em;
+}
+
+.comp-reason {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgba(230,230,235,0.65);
+}
+
+/* 5-hero row */
+.comp-hero-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.hero-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
+  transition: border-color 160ms ease, transform 160ms ease;
 }
 
-.sub-hero:hover{
-  background: rgba(255,255,255,0.08);
+.hero-chip:hover {
+  border-color: rgba(255,255,255,0.22);
+  transform: translateY(-2px);
 }
 
-.sub-hero img{
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+.hero-chip img {
+  width: 100%;
+  aspect-ratio: 1 / 1.1;
   object-fit: cover;
   object-position: center 20%;
+  display: block;
 }
 
-.sub-hero span{
-  font-size: 0.75rem;
-  opacity: 0.9;
-  flex: 1;
+.hero-chip-name {
+  padding: 5px 4px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #f1ecff;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.chip-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 0 4px 5px;
+  justify-content: center;
+}
+
+.badge-counter {
+  padding: 2px 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.07);
+  font-size: 0.66rem;
+  color: #f0ecff;
+  white-space: nowrap;
+}
+
+.comp-notes {
+  margin: 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.comp-notes li {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgba(230,230,235,0.7);
+}
+
+
+/* ---- Shared pills ---- */
+
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.07);
+  font-size: 0.78rem;
+  color: #f0ecff;
+}
+
+.pill-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+
+@media (max-width: 1100px) {
+  .boss-slide.is-active {
+    grid-template-columns: 38% 62%;
+  }
+  .boss-name {
+    font-size: 2.1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .boss-slide.is-active {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .boss-visual {
+    position: relative;
+    top: 0;
+    height: 380px;
+  }
+
+  .boss-panel {
+    padding: 24px 20px 40px;
+  }
+
+  .comp-hero-row {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .boss-name {
+    font-size: 1.9rem;
+  }
+
+  .boss-visual {
+    height: 300px;
+  }
+
+  .comp-hero-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .boss-panel {
+    padding: 20px 16px 36px;
+  }
+
+  .boss-tabbar {
+    padding: 10px 16px;
+  }
 }

@@ -8,14 +8,14 @@ interface Feature {
 
 const features: Feature[] = [
   { 
-    icon: "/icons/footer/protip85.jpg", 
-    label: "Prototip85 Youtube",
-    url: "https://www.youtube.com/@prototip85"  // Dein Discord-Link},
-    },
-    { 
     icon: "/icons/footer/channels4_profile.jpg", 
     label: "GPH Youtube",
     url: "https://www.youtube.com/@gameplayhorizon"  // Dein YouTube-Link    
+    },
+  { 
+    icon: "/icons/footer/protip85.jpg", 
+    label: "Prototip85 Youtube",
+    url: "https://www.youtube.com/@prototip85"  // Dein Discord-Link},
     }
 ];
 ---
@@ -27,17 +27,17 @@ const features: Feature[] = [
     <!-- CLAIM -->
     <div class="footer-titles">
         <h2 class="footer-claim">Motto Immortal<br>Hero Database by Frieren</h2>
-        <span>Special thanks to xviilux - Check and the Motto Immortals Community:
+        <span>Special thanks to xviilux, sp0nti and other content creators:
 </span>
     </div>
     <!-- FEATURES -->
     <div class="footer-features">
       {features.map(feature => (
-        <a href={feature.url} target="_blank" rel="noopener noreferrer" class="feature-item">
+        <a href={feature.url} target="_blank" rel="noopener noreferrer" class="footer-link">
           <div class="feature-icon">
             <img style="border-radius: 999px" src={feature.icon} alt={feature.label} />
           </div>
-          <span class="feature-label">{feature.label}</span>
+          <span>{feature.label}</span>
         </a>
       ))}
     </div>
@@ -145,6 +145,10 @@ const features: Feature[] = [
   }
 
   .footer-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
     color: rgba(230, 230, 235, 0.7);
     text-decoration: none;
     font-size: 0.95rem;
@@ -153,6 +157,10 @@ const features: Feature[] = [
 
   .footer-link:hover {
     color: #facc15;
+  }
+
+  .footer-link:visited {
+    text-decoration: none;;
   }
 
   /* COPYRIGHT */

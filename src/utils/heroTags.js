@@ -7,7 +7,8 @@
  * @param {Object} hero - Hero object with skills and relic
  * @returns {string[]} Array of tag labels (max 3)
  */
-export function keywordTagsForHero(hero) {
+export function keywordTagsForHero(hero, options = {}) {
+  const { limit = 3 } = options;
   const text = fullSkillText(hero).toLowerCase();
   const tags = [];
   const add = (label, ok) => { if (ok && !tags.includes(label)) tags.push(label); };
@@ -45,7 +46,11 @@ export function keywordTagsForHero(hero) {
   add("Backline", /\b(farthest enemy|back row|rear row|behind|teleport|blink)\b/.test(text));
   add("Def Down", /\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(text));
 
-  return tags.slice(0, 3);
+  if (typeof limit === "number") {
+    return tags.slice(0, Math.max(0, limit));
+  }
+
+  return tags;
 }
 
 /**

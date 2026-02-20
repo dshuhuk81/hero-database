@@ -98,5 +98,10 @@
       "level4": "The ally with the highest ATK restores HP equal to 30% of the DMG they deal to the ally with the highest HP. (Unlock at Relic Lv.30)"
     }
   },
-  "synergies": []
+  "synergies": [
+    "BUFF_TEAM",
+    "ENERGY_RESTORE_TEAM",
+    "HEAL_TEAM",
+    "HEAL"
+  ]
 }
