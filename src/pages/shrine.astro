@@ -552,23 +552,26 @@ const shrineSetupGroups = shrineSetups;
     <!-- TOP SHRINE SETUPS -->
     <div class="tab-content" data-content="setups">
       <div class="content-card">
-      <h2>Example Shrine Setups</h2>
+      <h2>Example Shrine Setup</h2>
       <p>Strategic god placement maximizes shrine output. Here are recommended configurations:</p>
 
       <div class="shrine-setup-container">
-        {shrineSetupGroups.map((group) => (
-          <div class="shrine-background">
-            <div class="shrine-gods">
-              {group.gods.map((setup) => (
-                <div
-                  class="shrine-god-card"
-                  data-name={setup.name}
-                  aria-label={setup.name}
-                >
-                  <img src={setup.image} alt={setup.name} class="god-image" />
-                </div>
-              ))}
+        {shrineSetupGroups.map((group, idx) => (
+          <div class="shrine-background-wrapper">
+            <div class="shrine-background">
+              <div class="shrine-gods">
+                {group.gods.map((setup) => (
+                  <div
+                    class="shrine-god-card"
+                    data-name={setup.name}
+                    aria-label={setup.name}
+                  >
+                    <img src={setup.image} alt={setup.name} class="god-image" />
+                  </div>
+                ))}
+              </div>
             </div>
+            <canvas class="spark-overlay shrine-spark-canvas" data-shrine-id={idx} aria-hidden="true"></canvas>
           </div>
         ))}
       </div>
@@ -605,6 +608,137 @@ const shrineSetupGroups = shrineSetups;
         setActiveTab(target);
       });
     });
+
+    // Shrine Sparks Animation
+    function initializeSparkles() {
+      const canvases = document.querySelectorAll('.shrine-spark-canvas');
+      
+      canvases.forEach(canvas => {
+        const ctx = canvas.getContext('2d');
+        
+        function resize() {
+          canvas.width = canvas.offsetWidth;
+          canvas.height = canvas.offsetHeight;
+        }
+        resize();
+        
+        function spawnSpark() {
+          const w = canvas.width;
+          const h = canvas.height;
+          const xMin = w * 0.35, xMax = w * 0.65;
+          const yMin = h * 0.55, yMax = h * 0.95;
+
+          return {
+            x: xMin + Math.random() * (xMax - xMin),
+            y: yMin + Math.random() * (yMax - yMin),
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: -(0.6 + Math.random() * 1.4),
+            size: 1.2 + Math.random() * 3.5,
+            alpha: 0,
+            life: 0,
+            lifeSpeed: 0.004 + Math.random() * 0.006,
+            twinkle: Math.random() * Math.PI * 2,
+            color: `hsl(${200 + Math.random() * 40}, 100%, ${75 + Math.random() * 25}%)`,
+          };
+        }
+
+        const sparks = [];
+        for (let i = 0; i < 60; i++) {
+          const s = spawnSpark();
+          s.life = Math.random();
+          sparks.push(s);
+        }
+
+        function drawStar(x, y, size, alpha, color, twinkle, time) {
+          const shimmer = 0.7 + 0.3 * Math.sin(time * 6 + twinkle);
+          const a = alpha * shimmer;
+          if (a <= 0) return;
+
+          ctx.save();
+          ctx.globalAlpha = a;
+          ctx.translate(x, y);
+
+          // Outer glow
+          const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 5);
+          glow.addColorStop(0, 'rgba(120,220,255,0.35)');
+          glow.addColorStop(1, 'rgba(30,100,255,0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(0, 0, size * 5, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Beams
+          const long = size * 4.5;
+          const short = size * 2.5;
+          const thin = size * 0.25;
+
+          function drawBeam(angle, len) {
+            ctx.save();
+            ctx.rotate(angle);
+            const grad = ctx.createLinearGradient(-len, 0, len, 0);
+            grad.addColorStop(0, 'rgba(255,255,255,0)');
+            grad.addColorStop(0.5, color);
+            grad.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, len, thin, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+
+          drawBeam(0, long);
+          drawBeam(Math.PI / 2, long);
+          drawBeam(Math.PI / 4, short);
+          drawBeam(-Math.PI / 4, short);
+
+          // Core
+          const core = ctx.createRadialGradient(0, 0, 0, 0, 0, size);
+          core.addColorStop(0, 'white');
+          core.addColorStop(1, 'rgba(120,220,255,0)');
+          ctx.fillStyle = core;
+          ctx.beginPath();
+          ctx.arc(0, 0, size, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.restore();
+        }
+
+        let t = 0;
+        function tick() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          t += 0.016;
+
+          for (const s of sparks) {
+            s.life += s.lifeSpeed;
+
+            s.alpha = s.life < 0.2
+              ? s.life / 0.2
+              : s.life < 0.75
+                ? 1
+                : 1 - (s.life - 0.75) / 0.25;
+
+            s.alpha = Math.max(0, Math.min(1, s.alpha));
+            s.x += s.vx + Math.sin(t * 1.5 + s.twinkle) * 0.15;
+            s.y += s.vy;
+
+            drawStar(s.x, s.y, s.size, s.alpha, s.color, s.twinkle, t);
+
+            if (s.life >= 1) Object.assign(s, spawnSpark());
+          }
+
+          requestAnimationFrame(tick);
+        }
+
+        tick();
+      });
+    }
+
+    // Initialize sparkles when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeSparkles);
+    } else {
+      initializeSparkles();
+    }
   </script>
 
   <Footer />
@@ -1075,6 +1209,13 @@ code {
   gap: 48px;
 }
 
+.shrine-background-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+}
+
 .shrine-background {
   display:flex;
   align-items: center;
@@ -1087,6 +1228,17 @@ code {
   padding: 0px;
   width: 100%;
   height: 800px;
+}
+
+.spark-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-radius: 16px;
+  top: 0;
+  left: 0;
 }
 
 .shrine-gods {
