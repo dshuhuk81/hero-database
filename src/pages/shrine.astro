@@ -604,10 +604,21 @@ const shrineSetupGroups = shrineSetups;
     tabs.forEach(tab => {
       tab.addEventListener("click", () => {
         const target = tab.getAttribute("data-tab");
-        if (target) location.hash = target;
-        setActiveTab(target);
+        if (target) {
+          location.hash = target;
+          setActiveTab(target);
+          // Initialize sparkles when setups tab is activated
+          if (target === "setups") {
+            setTimeout(initializeSparkles, 50);
+          }
+        }
       });
     });
+
+    // If initial tab is setups, initialize sparkles
+    if (initial === "setups") {
+      setTimeout(initializeSparkles, 100);
+    }
 
     // Shrine Sparks Animation
     function initializeSparkles() {
@@ -733,12 +744,7 @@ const shrineSetupGroups = shrineSetups;
       });
     }
 
-    // Initialize sparkles when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initializeSparkles);
-    } else {
-      initializeSparkles();
-    }
+    // Initialize sparkles only when explicitly called from tab click
   </script>
 
   <Footer />
