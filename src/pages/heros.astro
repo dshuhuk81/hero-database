@@ -11,57 +11,11 @@ const sortedHeroes = [...heroes].sort((a, b) =>
   a.name.localeCompare(b.name, "en", { sensitivity: "base" })
 );
 
-function escapeRegExp(str) {
-  return String(str || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
 
-function fullSkillText(h) {
-  const parts = [];
-  for (const sk of (h.skills || [])) {
-    if (sk?.description) parts.push(sk.description);
-    if (sk?.upgrades) parts.push(...Object.values(sk.upgrades));
-  }
-  if (h.relic?.description) parts.push(h.relic.description);
-  if (h.relic?.upgrades) parts.push(...Object.values(h.relic.upgrades));
-  return parts.join(" ");
-}
+/* No need for escapeRegExp anymore */
 
-// exakt wie im Generator (damit UI/Generator konsistent bleiben)
-function keywordTagsForHero(hero) {
-  const text = fullSkillText(hero).toLowerCase();
-  const tags = [];
-  const add = (label, ok) => { if (ok && !tags.includes(label)) tags.push(label); };
 
-  const allyHeal =
-    /\b(heals?|restores?|recovers?)\s+(?:hp|health)?\s*(?:to)?\s*(allies?|ally)\b/.test(text) ||
-    /\b(heals?|restores?|recovers?)\s+(allies?|ally)\b/.test(text);
 
-  const heroName = escapeRegExp(hero?.name?.toLowerCase?.() || "");
-  const selfHeal =
-    (heroName && new RegExp(`\\b(heals?|restores?|recovers?)\\s+${heroName}\\b`).test(text)) ||
-    /\bheals?\s+self\b/.test(text);
-
-  const genericHpRestore = /\b(restores?\s+hp|recovers?\s+hp)\b/.test(text);
-
-  const antiHeal =
-    /\b(cannot receive (?:shields? or )?healing|cannot be healed|prevents? healing|healing reduction|reduce(s|d)? healing|healing is reduced|stop(s|ped)? healing|ban(s|ned)? healing)\b/.test(text);
-
-  add("Ally Heal", allyHeal);
-  add("Self Heal", !allyHeal && (selfHeal || genericHpRestore));
-  add("Anti-Heal", antiHeal);
-
-  add("Shield", /\bshield\b/.test(text));
-  add("Cleanse", /\b(removes? (one|a) debuff|remove debuff|cleanse)\b/.test(text));
-  add("Control", /\b(stun|silence|freeze|root|sleep|charm|taunt|knock)\w*\b/.test(text));
-  add("AoE", /\b(all enemies|nearby enemies|in a large area|aoe)\b/.test(text));
-  add("Energy", /\benergy\b/.test(text));
-  add("Cooldown", /\b(cooldown|cd)\b/.test(text));
-  add("Backline", /\b(farthest enemy|back row|rear row|behind|teleport|blink)\b/.test(text));
-  add("Def Down", /\b(reduce defense|defense down|armor down|vulnerab)\w*\b/.test(text));
-
-  // hier bewusst NICHT slice(0,3) – für Filter lieber "voll"
-  return tags;
-}
 ---
 <Sidebar />  <!-- NEU -->
 <!-- HERO HEADER -->
@@ -86,7 +40,7 @@ function keywordTagsForHero(hero) {
           data-role={hero.role.toLowerCase()}    
           data-faction={hero.faction.toLowerCase()}
           data-rarity={hero.rarity.toLowerCase()}
-          data-tags={keywordTagsForHero(hero).join("|").toLowerCase()}
+          data-tags={hero.synergies?.join("|").toLowerCase() || ""}
       >
         <div class="icon-stack">
           <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
