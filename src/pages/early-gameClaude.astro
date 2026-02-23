@@ -1,0 +1,784 @@
+---
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beginner Guide - Motto Immortal</title>
+</head>
+<body>
+  <Sidebar />
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-text">
+      <span class="hero-tag">New Player</span>
+      <h1 class="hero-headline">Beginner Guide</h1>
+      <p class="hero-sub">Everything you need to know to start strong in Motto Immortal</p>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="content-card toc-card">
+      <h2>📋 What's in This Guide</h2>
+      <div class="toc-grid">
+        <a href="#early-heroes" class="toc-item">
+          <span class="toc-icon">⚔️</span>
+          <span>Best Early Game Heroes</span>
+        </a>
+        <a href="#relics" class="toc-item">
+          <span class="toc-icon">🔮</span>
+          <span>Relic Priority</span>
+        </a>
+        <a href="#zodiac" class="toc-item">
+          <span class="toc-icon">♈</span>
+          <span>Zodiac Selection</span>
+        </a>
+        <a href="#pvp-normal" class="toc-item">
+          <span class="toc-icon">🏆</span>
+          <span>Normal Arena Teams</span>
+        </a>
+        <a href="#pvp-triple" class="toc-item">
+          <span class="toc-icon">⚡</span>
+          <span>Triple Duel (Advanced)</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- SECTION 1: EARLY HEROES -->
+    <div class="content-card" id="early-heroes">
+      <h2>⚔️ Best Early Game Heroes — and Why</h2>
+      <p>
+        In Motto Immortal, your first investment decisions define your entire progression path. 
+        Spreading resources too thin will stall you. Focus on these heroes first.
+      </p>
+
+      <h3>🥇 Top Priority Heroes</h3>
+
+      <div class="hero-entry">
+        <h4>Fangi <span class="tier-badge sss">Early Meta Pick</span></h4>
+        <p>
+          Fangi is one of the most efficient early investments in the game. A Divine Fangi with a 
+          Level 30 relic can dominate PvP and performs well across nearly all game modes. 
+          Build this hero early and you will maintain a strong position throughout your progression.
+        </p>
+      </div>
+
+      <div class="hero-entry">
+        <h4>Poseidon <span class="tier-badge s">S-Tier Tank</span></h4>
+        <p>
+          Poseidon is a frontliner with one of the best ultimate skill timings in the game — he casts 
+          his AOE crowd control within the first few seconds of battle. This early cast can decide the 
+          outcome of fights before they even develop. He also provides a large HP boost to the team on cast.
+          Best-in-slot front line for most beginner and mid-game teams.
+        </p>
+      </div>
+
+      <div class="hero-entry">
+        <h4>Bastet <span class="tier-badge s">Top DPS / Dodge</span></h4>
+        <p>
+          Bastet targets high-damage enemy units and has a dodge mechanic that makes her incredibly 
+          hard to punish. Every dodge she performs also deals additional damage back. 
+          She is especially strong against carry-heavy enemy teams.
+        </p>
+      </div>
+
+      <div class="hero-entry">
+        <h4>Mumus <span class="tier-badge s">Support / Taunt</span></h4>
+        <p>
+          Mumus brings a Taunt mechanic that forces enemies to target her, protecting your key 
+          damage dealers. She pairs exceptionally well with units like Bastet and Isis. 
+          A great support investment that immediately improves your team's survivability.
+        </p>
+      </div>
+
+      <div class="hero-entry">
+        <h4>Hela <span class="tier-badge a">High Burst Potential</span></h4>
+        <p>
+          Hela is a burst damage dealer with enormous late-fight payoff. When paired with Yuelao 
+          and given a few seconds to survive, she can obliterate entire enemy teams. 
+          She requires some investment to reach her potential but is a worthwhile early pickup.
+        </p>
+      </div>
+
+      <div class="hero-entry">
+        <h4>Nemesis <span class="tier-badge a">Scales with Awakening</span></h4>
+        <p>
+          Nemesis becomes a dominant force at max relic awakening. She is a strong early-game pick 
+          that keeps improving as you invest in her relic — making her a great long-term project 
+          you can start immediately.
+        </p>
+      </div>
+
+      <h3>🌟 Star Heroes — Who is Worth It at 1 Copy?</h3>
+      <div class="team-example">
+        <p>
+          <strong>Good at base copy (Legendary):</strong> Nuwa, Amun Ra, Nyx, Dionysus — these provide 
+          immediate value and don't require heavy investment to contribute.<br/><br/>
+          <strong>Require heavy investment:</strong> Zeus, Nezha — hold off on these until you have the 
+          resources to fully build them. They underperform at low investment.
+        </p>
+      </div>
+
+      <h3>⚠️ Common Mistake</h3>
+      <div class="warning-box">
+        <p>
+          Do not level multiple heroes at once. Pick 5–6 core heroes and max them before touching others. 
+          A fully-built Fangi or Poseidon beats a half-built team of ten heroes every time.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION 2: RELICS -->
+    <div class="content-card" id="relics">
+      <h2>🔮 Relic Priority — What to Upgrade First</h2>
+      <p>
+        Relics are one of the biggest power multipliers in Motto Immortal. Upgrading the wrong 
+        relics early is a costly mistake. Follow this priority order to maximize your efficiency.
+      </p>
+
+      <h3>Priority Tier 1 — Upgrade These First</h3>
+
+      <div class="hero-entry">
+        <h4>Fangi's Relic <span class="tier-badge sss">Highest Priority</span></h4>
+        <p>
+          Fangi's relic, once maxed to Level 30, transforms her into a game-defining force in PvP 
+          and PvE alike. This is your first major relic investment goal. If you commit to Fangi early, 
+          prioritize her relic above everything else.
+        </p>
+      </div>
+
+      <div class="hero-entry">
+        <h4>Nemesis's Relic <span class="tier-badge s">Max Awakening Target</span></h4>
+        <p>
+          Nemesis's power is directly tied to her relic awakening level. At max awakening she is 
+          described as "insane" — meaning this relic has a very high ceiling. Invest here early 
+          for a hero that keeps scaling.
+        </p>
+      </div>
+
+      <h3>Priority Tier 2 — Build After Core Units</h3>
+
+      <div class="hero-entry">
+        <h4>Bastet's Relic</h4>
+        <p>
+          Once your Bastet is your primary DPS, upgrading her relic increases her dodge frequency 
+          and damage burst. Build this after you have her fully ascended.
+        </p>
+      </div>
+
+      <div class="hero-entry">
+        <h4>Poseidon's Relic</h4>
+        <p>
+          Improves his crowd control potency and HP scaling. Good second tank investment.
+        </p>
+      </div>
+
+      <h3>⚠️ What to Avoid</h3>
+      <div class="warning-box">
+        <p>
+          Do not invest in Athena's relic before building your primary damage dealers. 
+          Athena is a powerful support, but only reaches her full potential once you have 
+          protected units worth shielding (like Bastet or Poseidon). 
+          Building Athena first wastes resources that should go into your carry heroes.
+        </p>
+      </div>
+
+      <div class="info-box">
+        <p>
+          <strong>💡 General Rule:</strong> Upgrade the relic of whichever hero you use in 
+          the most game modes. Fangi qualifies in almost every mode — which is why she 
+          consistently tops the relic priority list.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION 3: ZODIAC -->
+    <div class="content-card" id="zodiac">
+      <h2>♈ Zodiac Selection — Which Should Beginners Choose?</h2>
+      <p>
+        At the start of the game, you are asked to choose a Zodiac Sign. This is a permanent decision 
+        that comes with a free Purple (Epic) hero — so choose wisely.
+      </p>
+
+      <h3>✅ Recommended Choice: Capricorn</h3>
+      <div class="team-example">
+        <h4>Why Capricorn?</h4>
+        <p>
+          Distinct Capricorn comes with a unique <strong>Hero Swap</strong> skill — the ability to 
+          switch out a hero mid-combat. This provides enormous tactical flexibility, especially 
+          in PvP where adapting to enemy lineups matters. Among all the Zodiac options, 
+          this mechanic stands out as the most impactful for beginners who are still learning 
+          the game's combat system.
+        </p>
+      </div>
+
+      <h3>What Makes the Zodiac Hero Different from Other Purple Heroes?</h3>
+      <p>
+        Standard Epic (Purple) heroes are either offensive, defensive, or support with fixed kits. 
+        The Zodiac heroes — called "Distinct" heroes — each carry a unique passive or active mechanic 
+        tied to their constellation that normal Epic heroes do not have:
+      </p>
+      <ul>
+        <li><strong>Distinct Cancer:</strong> Improves defensive stats of your full team</li>
+        <li><strong>Distinct Gemini:</strong> Has a reliable Stun ability</li>
+        <li><strong>Distinct Capricorn:</strong> Hero Swap skill — tactical mid-fight flexibility</li>
+        <li><strong>Distinct Aquarius:</strong> Good utility and early-game damage</li>
+        <li><strong>Distinct Virgo:</strong> Decent mid-game support in niche scenarios</li>
+      </ul>
+      <p>
+        These Distinct heroes are viable all the way through mid-game and in case-specific scenarios 
+        beyond that — making your starting Zodiac pick a genuine power spike for your first few weeks.
+      </p>
+
+      <div class="info-box">
+        <p>
+          <strong>💡 Tip:</strong> Beginners up through mid-game can reliably use Distinct heroes 
+          as a consistent team member. Don't dismiss them just because they are Epic rarity — 
+          their unique mechanics punch well above their tier.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION 4: PVP NORMAL ARENA -->
+    <div class="content-card" id="pvp-normal">
+      <h2>🏆 PvP Team — Normal Arena</h2>
+      <p>
+        The Normal Arena rewards consistent team compositions over flashy mechanics. 
+        Your goal is a durable, synergistic lineup that can auto-battle reliably against a wide range of enemies.
+      </p>
+
+      <h3>🎯 Best Reference Setup (Poseidon Core)</h3>
+      <div class="team-example">
+        <h4>Poseidon • Mumus • Bastet • Fangi • Nemesis</h4>
+        <p>
+          This lineup combines early crowd control (Poseidon), aggro management (Mumus), 
+          high burst DPS (Bastet + Fangi), and scaling damage (Nemesis). 
+          It performs reliably in both offensive and defensive arena slots.
+        </p>
+      </div>
+
+      <h3>💡 Why This Lineup Works — Hero Synergy</h3>
+      <ul>
+        <li>
+          <strong>Poseidon</strong> opens the fight with an AOE CC that slows the enemy team — 
+          giving your DPS heroes a safe window to burst.
+        </li>
+        <li>
+          <strong>Mumus</strong> draws enemy attention with Taunt, protecting Bastet and Fangi 
+          from being focused down before they can deal damage.
+        </li>
+        <li>
+          <strong>Bastet</strong> capitalizes on the Mumus taunt by targeting the enemy's strongest 
+          damage dealer. Her dodge keeps her alive even when she's eventually targeted.
+        </li>
+        <li>
+          <strong>Fangi</strong> provides cross-mode reliability. In arena specifically, 
+          a Divine Fangi with Level 30 relic is a consistent carry that wins trades.
+        </li>
+        <li>
+          <strong>Nemesis</strong> ramps up in longer fights where the relic awakening kicks in — 
+          she acts as a threat that enemies must deal with or face growing damage.
+        </li>
+      </ul>
+
+      <h3>📈 Suggested Lineups by Progress Stage</h3>
+
+      <div class="stage-block beginner">
+        <h4>🟢 Beginner</h4>
+        <p><strong>Poseidon • Mumus • Fangi • Distinct Capricorn • Nemesis</strong></p>
+        <p>
+          Use your Zodiac hero (Capricorn) in the flex slot. The Hero Swap skill gives you 
+          adaptability when you don't yet have a fifth strong carry. Poseidon + Mumus hold the front, 
+          Fangi and Nemesis deal damage.
+        </p>
+      </div>
+
+      <div class="stage-block midgame">
+        <h4>🔵 Mid-Game</h4>
+        <p><strong>Poseidon • Mumus • Bastet • Fangi • Hela</strong></p>
+        <p>
+          Introduce Bastet once she is properly invested. Hela joins as a late-fight cleaner — 
+          when paired with Yuelao she obliterates teams. If you have Yuelao: 
+          <strong>Poseidon • Mumus • Bastet • Fangi • Hela + Yuelao support</strong>.
+        </p>
+      </div>
+
+      <div class="stage-block endgame">
+        <h4>🟣 End-Game</h4>
+        <p><strong>Poseidon • Mumus • Bastet • Fangi • Nyx / Dionysus</strong></p>
+        <p>
+          At end-game, a Star Hero (Nyx or Dionysus) replaces the flex carry slot. 
+          Dionysus pairs especially well with Isis if you develop an Isis team — 
+          the combination of their skills with a Caishen support is one of the highest-ceiling 
+          compositions in the game. Nyx is the go-to assassin carry if you pull her early.
+        </p>
+      </div>
+
+      <h3>⚠️ Counter Awareness</h3>
+      <div class="warning-box">
+        <p>
+          <strong>Anubis</strong> hard-counters mage and archer-heavy teams (low HP heroes). 
+          If you face Anubis frequently in Arena, ensure you have at least one high-HP frontliner 
+          absorbing hits before your squishier carries can act.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION 5: TRIPLE DUEL -->
+    <div class="content-card" id="pvp-triple">
+      <h2>⚡ Triple Duel — Advanced Arena Tips</h2>
+      <p>
+        The Triple Duel (also called "Three Kingdoms" or Advanced Arena) requires you to field 
+        <strong>three separate teams</strong>. This is where depth of roster matters — 
+        but there are smart ways to approach it even as a beginner.
+      </p>
+
+      <h3>📌 Core Principle: Specialization per Team</h3>
+      <p>
+        Each team in Triple Duel should serve a distinct role. A mixed team of mediocre heroes 
+        across all three slots loses to a player who has one excellent team and two decent ones. 
+        Build depth strategically.
+      </p>
+
+      <h3>🗂️ Recommended Team Distribution</h3>
+
+      <div class="stage-block beginner">
+        <h4>Team 1 — Your Best Team (Primary Carry)</h4>
+        <p><strong>Poseidon • Mumus • Bastet • Fangi • Nemesis</strong></p>
+        <p>Your main PvP lineup. This should be your most-invested team going into Triple Duel.</p>
+      </div>
+
+      <div class="stage-block midgame">
+        <h4>Team 2 — Anti-Meta / Counter Team</h4>
+        <p><strong>Anubis • [Crowd Control unit] • DPS • Support • Tank</strong></p>
+        <p>
+          Anubis is your secret weapon in Triple Duel. He shuts down mage and archer compositions 
+          completely — when enemies run glass-cannon carries, Anubis deletes them.
+          Pair him with a CC hero like Distinct Gemini (stun) or Horos (airborne immunity) 
+          for maximum disruption.
+        </p>
+      </div>
+
+      <div class="stage-block endgame">
+        <h4>Team 3 — Stall / Sustain Team</h4>
+        <p><strong>Aris • Prometheus • Tank • Healer • Support</strong></p>
+        <p>
+          Aris and Prometheus both have immunity-style stalling mechanics. This team's goal is 
+          not necessarily to win, but to time-out strong enemy teams and prevent full clears. 
+          Prometheus excels in PvE stall and works well in this role. Aris is particularly 
+          effective in Shrine-mode and as a defensive anchor.
+        </p>
+      </div>
+
+      <h3>💡 Triple Duel Tips</h3>
+      <ul>
+        <li>
+          <strong>Scout before assigning:</strong> Look at which enemy team is weakest and send 
+          your counter team against it — don't auto-assign.
+        </li>
+        <li>
+          <strong>Horos counter-pick:</strong> When Horos jumps into the air, he becomes immune 
+          to all damage. Position Horos on Team 2 as a surprise counter to burst-heavy lineups.
+        </li>
+        <li>
+          <strong>Fang is multi-mode:</strong> Fangi performs in Triple Duel just as well as in 
+          Normal Arena. A Divine Fangi is the best cross-format investment you can make.
+        </li>
+        <li>
+          <strong>Avoid Artemis vs. Isis matchups:</strong> Artemis always loses to Isis in direct 
+          confrontation. If you run Artemis, keep her away from Isis-centric enemy teams.
+        </li>
+        <li>
+          <strong>Panic pick: Hela + Yuelao:</strong> If you need a third team quickly and are 
+          mid-game, Hela + Yuelao as a duo carry with some frontline can win fights by sheer 
+          burst potential if Hela survives the opening.
+        </li>
+      </ul>
+
+      <div class="info-box">
+        <p>
+          <strong>🎯 Long-Term Goal:</strong> Build toward having 3 distinct, fully-invested teams. 
+          This is the mid-game transition point at around Week 3+. Until then, focus on your primary 
+          carry team and use filler for slots 2 and 3 — you'll still earn rewards.
+        </p>
+      </div>
+    </div>
+
+    <!-- PRO TIPS -->
+    <div class="content-card tips-card">
+      <h2>🌟 Quick Reference — Beginner Checklist</h2>
+      <ul>
+        <li>✅ Choose <strong>Distinct Capricorn</strong> as your starting Zodiac for the Hero Swap skill</li>
+        <li>✅ Build <strong>Fangi</strong> first — she works in every game mode</li>
+        <li>✅ Max <strong>Fangi's relic to Level 30</strong> as your first major relic goal</li>
+        <li>✅ <strong>Poseidon + Mumus</strong> is your best early front line</li>
+        <li>✅ Don't invest in Athena's relic before your carries are built</li>
+        <li>✅ In Triple Duel, use <strong>Anubis</strong> to counter mage/archer teams</li>
+        <li>✅ Avoid spreading upgrades across too many heroes — focus 5-6 core units first</li>
+        <li>✅ Join a guild early — progression benefits are significant</li>
+      </ul>
+    </div>
+
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+/* RESET & BASE */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spectral", "Roboto", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
+    linear-gradient(to bottom, #0d0b10, #07060c);
+  color: #e6e6eb;
+  min-height: 100vh;
+}
+
+body {
+  margin-left: 80px;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    margin-bottom: 60px;
+  }
+}
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 12, 0.98) 0%,
+    rgba(7, 6, 12, 0.6) 50%,
+    rgba(7, 6, 12, 0.2) 100%
+  );
+  pointer-events: none;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 1;
+  padding: 0 48px 40px;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(168, 85, 247, 0.3);
+  border: 1px solid rgba(168, 85, 247, 0.6);
+  color: #c4b5fd;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.hero-headline {
+  margin: 0 0 8px;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  line-height: 1.1;
+}
+
+.hero-sub {
+  margin: 0;
+  font-size: 1.1rem;
+  color: rgba(230, 230, 235, 0.7);
+}
+
+@media (max-width: 768px) {
+  .hero { height: 280px; }
+  .hero-text { padding: 0 24px 28px; }
+  .hero-headline { font-size: 2.2rem; }
+}
+
+/* MAIN CONTENT */
+.main-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+/* CONTENT CARDS */
+.content-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 12px;
+  padding: 36px;
+  margin-bottom: 32px;
+  transition: border-color 0.3s ease;
+}
+
+.content-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+.content-card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.9rem;
+  color: #fcd34d;
+  border-bottom: 2px solid rgba(250, 204, 21, 0.25);
+  padding-bottom: 14px;
+}
+
+.content-card h3 {
+  margin-top: 28px;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  color: #c4b5fd;
+}
+
+.content-card h4 {
+  margin-top: 14px;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+  color: #e6e6eb;
+}
+
+.content-card p, .content-card li {
+  line-height: 1.85;
+  color: #d1d1db;
+  margin-bottom: 12px;
+}
+
+.content-card ul {
+  margin-bottom: 16px;
+  padding-left: 20px;
+}
+
+.content-card strong {
+  color: #e6e6eb;
+}
+
+/* TABLE OF CONTENTS */
+.toc-card {
+  background: rgba(168, 85, 247, 0.06);
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #c4b5fd;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.toc-item:hover {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #e9d5ff;
+}
+
+.toc-icon {
+  font-size: 1.2rem;
+}
+
+/* HERO ENTRIES */
+.hero-entry {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid rgba(168, 85, 247, 0.5);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+
+.hero-entry h4 {
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tier-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  vertical-align: middle;
+}
+
+.tier-badge.sss {
+  background: rgba(250, 204, 21, 0.2);
+  border: 1px solid rgba(250, 204, 21, 0.5);
+  color: #fcd34d;
+}
+
+.tier-badge.s {
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  color: #c4b5fd;
+}
+
+.tier-badge.a {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #93c5fd;
+}
+
+/* STAGE BLOCKS */
+.stage-block {
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin: 14px 0;
+}
+
+.stage-block h4 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.stage-block p {
+  margin-bottom: 6px;
+}
+
+.stage-block p:first-of-type {
+  font-family: monospace;
+  font-size: 0.95rem;
+  color: #e6e6eb;
+  background: rgba(0,0,0,0.2);
+  padding: 6px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.beginner {
+  background: rgba(34, 197, 94, 0.07);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.beginner h4 { color: #86efac; }
+
+.midgame {
+  background: rgba(59, 130, 246, 0.07);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.midgame h4 { color: #93c5fd; }
+
+.endgame {
+  background: rgba(168, 85, 247, 0.07);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.endgame h4 { color: #c4b5fd; }
+
+/* CALLOUT BOXES */
+.team-example {
+  background: rgba(168, 85, 247, 0.1);
+  border-left: 4px solid rgba(168, 85, 247, 0.6);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.team-example h4 {
+  margin-top: 0;
+  color: #fcd34d;
+}
+
+.team-example p {
+  margin-bottom: 0;
+  line-height: 1.8;
+  color: #d1d1db;
+}
+
+.warning-box {
+  background: rgba(220, 38, 38, 0.08);
+  border-left: 4px solid rgba(220, 38, 38, 0.5);
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.warning-box p {
+  margin: 0;
+}
+
+.info-box {
+  background: rgba(250, 204, 21, 0.07);
+  border-left: 4px solid rgba(250, 204, 21, 0.4);
+  padding: 14px 18px;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+
+.info-box p {
+  margin: 0;
+}
+
+/* TIPS CARD */
+.tips-card {
+  background: rgba(250, 204, 21, 0.04);
+  border: 1px solid rgba(250, 204, 21, 0.35);
+}
+
+.tips-card h2 {
+  color: #fcd34d;
+  border-bottom-color: rgba(250, 204, 21, 0.3);
+}
+
+.tips-card li {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .main-content { padding: 32px 20px 60px; }
+  .content-card { padding: 24px 18px; }
+  .content-card h2 { font-size: 1.5rem; }
+  .toc-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
