@@ -1,0 +1,84 @@
+{
+  "campaigns": [
+    {
+      "id": "heracles-campaign",
+      "name": "Heracles Campaign",
+      "hero": "heracles",
+      "description": "Complete PVE campaign stages using Heracles and allies",
+      "stages": [
+        {
+          "id": 1,
+          "name": "1.My Tales and I - Rise",
+
+          "composition": {
+            "front": ["heracles", ""],
+            "back": ["", "", ""]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2.My Tales and I - Twist",
+
+          "composition": {
+            "front": ["hladgunnr", "cashien"],
+            "back": ["yuelao", "isis", "cancer"]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. The Lion and the Blood - Rise",
+
+          "composition": {
+            "front": ["heracles", "taurus"],
+            "back": ["scorpio", "cancer", "virgo"]
+          }
+        },
+        {
+          "id": 4,
+          "name": "4.The Lion and the Blood - Twist",
+
+          "composition": {
+            "front": ["jormungandr", "heracles"],
+            "back": ["sagittarius", "aries", "leo"]
+          }
+        },
+        {
+          "id": 5,
+          "name": "5. The Tempest - Rise",
+
+          "composition": {
+            "front": ["gemini", "poseidon"],
+            "back": ["cancer", "heracles", "pisces"]
+          }
+        },
+        {
+          "id": 6,
+          "name": "6. The Tempest - Twist",
+
+          "composition": {
+            "front": ["libra", "gemini"],
+            "back": ["heracles", "anubis", "fengyi"]
+          }
+        },
+        {
+          "id": 7,
+          "name": "7. The Tempest - Finale",
+
+          "composition": {
+            "front": ["ares", "athena"],
+            "back": ["phoenix", "set", "heracles"]
+          }
+        },
+        {
+          "id": 8,
+          "name": "8. Let the gods honor his name",
+
+          "composition": {
+            "front": ["heracles", "bastet"],
+            "back": ["fengyi", "poseidon", "yanluo"]
+          }
+        }
+      ]
+    }
+  ]
+}

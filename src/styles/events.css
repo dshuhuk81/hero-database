@@ -1,0 +1,503 @@
+/* ===============================
+   EVENTS PAGE SPECIFIC STYLES
+   =============================== */
+
+/* Hero section styling (from early-game pattern) */
+.hero {
+  position: relative;
+  height: 360px;
+  background-size: cover;
+  background-position: center top;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(8,10,16,0.15) 0%,
+      rgba(8,10,16,0.5) 50%,
+      rgba(8,10,16,0.92) 100%
+    );
+  z-index: 1;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(230,230,235,0.55);
+  margin-bottom: 4px;
+}
+
+.hero-headline {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #f4f1ff;
+  line-height: 1.1;
+}
+
+.hero-sub {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(230,230,235,0.78);
+  max-width: 50ch;
+}
+
+/* Tab bar (matching boss-tabbar) */
+.event-tabbar {
+  display: flex;
+  gap: 6px;
+  padding: 14px 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(8,10,16,0.7);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  flex-shrink: 0;
+}
+
+.event-tabbar::-webkit-scrollbar {
+  display: none;
+}
+
+.event-tab {
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(230,230,235,0.65);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  white-space: nowrap;
+}
+
+.event-tab.is-active {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.28);
+  color: #f4f1ff;
+}
+
+.event-tab:hover {
+  background: rgba(255,255,255,0.09);
+  color: #f4f1ff;
+}
+
+/* Main content area */
+.events-main {
+  flex: 1;
+  padding: 32px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.event-slide {
+  display: none;
+}
+
+.event-slide.is-active {
+  display: block;
+  animation: fadeIn 160ms ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Content cards */
+.content-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.content-card h2 {
+  margin: 0 0 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #f4f1ff;
+}
+
+.content-card p {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(230,230,235,0.82);
+}
+
+.content-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Stages container */
+.stages-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+/* Stage card */
+.stage-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: border-color 160ms ease, background 160ms ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.stage-card:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.14);
+}
+
+.stage-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.stage-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #f4f1ff;
+}
+
+
+/* Formation grid (single row layout) */
+.formation-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.formation-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 6px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.formation-row.full-team {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  width: 100%;
+}
+
+/* Hero card (from HeroCompositions pattern) */
+.hero-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  overflow: visible;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.hero-card:hover {
+  border-color: rgba(255,255,255,0.22);
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.06);
+}
+
+.hero-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hero-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.15;
+  flex-shrink: 0;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.hero-info {
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  height: 56px;
+}
+
+.hero-name {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #f1ecff;
+  text-align: center;
+  line-height: 1.2;
+  max-height: 2.4em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.faction-icon-small {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+/* Position badge */
+.position-badge {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.position-badge.front {
+  background: rgba(74, 144, 226, 0.9);
+  color: #a0d8ff;
+  border: 1px solid rgba(74, 144, 226, 0.5);
+}
+
+.position-badge.back {
+  background: rgba(168, 85, 247, 0.9);
+  color: #d8b4ff;
+  border: 1px solid rgba(168, 85, 247, 0.5);
+}
+
+/* Empty hero slots */
+.hero-card-slot {
+  border-radius: 10px;
+  border: 2px dashed rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.02);
+  height: 100%;
+}
+
+.hero-card-slot.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+
+@media (max-width: 1100px) {
+  .hero-headline {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    height: 300px;
+  }
+
+  .hero-headline {
+    font-size: 1.9rem;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    max-width: 45ch;
+  }
+
+  .events-main {
+    padding: 24px 16px;
+  }
+
+  .stage-card {
+    padding: 16px;
+  }
+
+  .stage-title {
+    font-size: 1.1rem;
+  }
+
+  .stages-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .formation-row.full-team {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    height: 240px;
+  }
+
+  .hero-headline {
+    font-size: 1.6rem;
+  }
+
+  .hero-tag {
+    font-size: 0.62rem;
+  }
+
+  .hero-sub {
+    font-size: 0.82rem;
+    max-width: 40ch;
+  }
+
+  .event-tabbar {
+    padding: 10px 16px;
+    gap: 4px;
+  }
+
+  .event-tab {
+    padding: 5px 12px;
+    font-size: 0.76rem;
+  }
+
+  .events-main {
+    padding: 16px 12px;
+  }
+
+  .content-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .content-card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+
+  .content-card p {
+    font-size: 0.88rem;
+  }
+
+  .stages-container {
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .stage-card {
+    padding: 12px;
+  }
+
+  .stage-title {
+    font-size: 1rem;
+  }
+
+  .stage-difficulty {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+  }
+
+  .formation-grid {
+    gap: 16px;
+  }
+
+  .formation-row.full-team {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .hero-name {
+    font-size: 0.7rem;
+  }
+
+  .hero-card-slot {
+    min-height: 110px;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-headline {
+    font-size: 1.4rem;
+  }
+
+  .stages-container {
+    grid-template-columns: 1fr;
+  }
+
+  .formation-row.full-team {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+
+  .hero-image-wrapper {
+    aspect-ratio: 1 / 1;
+  }
+
+  .hero-card-slot {
+    min-height: 90px;
+  }
+
+  .stage-title {
+    font-size: 0.95rem;
+  }
+}
