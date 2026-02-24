@@ -1,5 +1,18 @@
 ---
- 
+import tags from "../data/tags.json";
+
+const ACRONYMS = new Set(["ATK", "SPD", "HP", "DMG", "CC", "CDR", "AOE"]);
+
+function formatTagLabel(tag) {
+  return String(tag)
+    .split("_")
+    .map((part) => {
+      if (ACRONYMS.has(part)) return part;
+      const lower = part.toLowerCase();
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(" ");
+}
 ---
 
 <!-- ═══════════════════════════════════
@@ -154,49 +167,28 @@
         </div>
     <!-- ROW 3: Tags (Index-only filter) -->
     <!-- TAG FILTER (Index only) -->
-    <div class="filter-group">
+    <div class="filter-group filter-group--tags">
       <span class="filter-label">Tags</span>
 
-      <div class="tag-scroll">
-        <div class="chip-row chip-row--tags">
-          <!-- TEAM SUPPORT TAGS -->
-          <button class="chip tag-chip tag-heal-team" data-tag="HEAL_TEAM" type="button">Heal Team</button>
-          <button class="chip tag-chip tag-shield-team" data-tag="SHIELD_TEAM" type="button">Shield Team</button>
-          <button class="chip tag-chip tag-energy-team" data-tag="ENERGY_RESTORE_TEAM" type="button">Energy Team</button>
-          <button class="chip tag-chip tag-buff-team" data-tag="BUFF_TEAM" type="button">Buff Team</button>
-          <button class="chip tag-chip tag-atk-spd-up" data-tag="ATK_SPD_UP" type="button">ATK SPD Up</button>
-          <button class="chip tag-chip tag-dmg-red-team" data-tag="DAMAGE_REDUCTION_TEAM" type="button">DMG Reduction</button>
-          <button class="chip tag-chip tag-cleanse-team" data-tag="DEBUFF_CLEANSE_TEAM" type="button">Cleanse Team</button>
-          <button class="chip tag-chip tag-cdr-team" data-tag="CDR_TEAM" type="button">CDR Team</button>
-          <button class="chip tag-chip tag-cc-immunity" data-tag="CC_IMMUNITY_TEAM" type="button">CC Immunity</button>
-
-          <!-- ENEMY DEBUFF TAGS -->
-          <button class="chip tag-chip tag-crowd-control" data-tag="CROWD_CONTROL" type="button">Control</button>
-          <button class="chip tag-chip tag-reduces-attr" data-tag="REDUCES_ATTRIBUTES" type="button">Reduces Attr</button>
-          <button class="chip tag-chip tag-removes-armor" data-tag="REMOVES_ARMOR" type="button">Reduces Armor</button>
-          <button class="chip tag-chip tag-atk-down" data-tag="ATK_DOWN" type="button">ATK Down</button>
-          <button class="chip tag-chip tag-atk-spd-down" data-tag="ATK_SPD_DOWN" type="button">ATK SPD Down</button>
-          <button class="chip tag-chip tag-taunt" data-tag="TAUNT" type="button">Taunt</button>
-          <button class="chip tag-chip tag-energy-drain" data-tag="ENERGY_DRAIN" type="button">Energy Drain</button>
-          <button class="chip tag-chip tag-enemy-vuln" data-tag="ENEMY_VULNERABILITY" type="button">Vulnerability</button>
-          <button class="chip tag-chip tag-buff-dispel" data-tag="BUFF_DISPEL" type="button">Buff Dispel</button>
-
-          <!-- SELF-BUFF TAGS -->
-          <button class="chip tag-chip tag-heal" data-tag="HEAL" type="button">Heal</button>
-          <button class="chip tag-chip tag-shield" data-tag="SHIELD" type="button">Shield</button>
-          <button class="chip tag-chip tag-dmg-red" data-tag="DMG_RED" type="button">DMG Reduction</button>
-          <button class="chip tag-chip tag-energy-restore" data-tag="ENERGY_RESTORE" type="button">Energy Restore</button>
-          <button class="chip tag-chip tag-atk-up" data-tag="ATK_UP" type="button">ATK Up</button>
-          <button class="chip tag-chip tag-atk-speed" data-tag="ATK_SPEED" type="button">ATK Speed</button>
-          <button class="chip tag-chip tag-aoe" data-tag="AREA_DAMAGE_DEALER" type="button">AoE Damage</button>
-          <button class="chip tag-chip tag-basic-scaler" data-tag="BASIC_ATTACK_SCALER" type="button">Basic Scaler</button>
-          <button class="chip tag-chip tag-gain-armor" data-tag="GAIN_ARMOR" type="button">Gain Armor</button>
-          <button class="chip tag-chip tag-cc-resistance" data-tag="CC_RESISTANCE" type="button">CC Resist</button>
-          <button class="chip tag-chip tag-dodge" data-tag="DODGE_BUFF" type="button">Dodge</button>
-          <button class="chip tag-chip tag-hit-avoid" data-tag="HIT_AVOID" type="button">Hit Avoid</button>
-          <button class="chip tag-chip tag-hp-up" data-tag="HP_UP" type="button">HP Up</button>
-          <button class="chip tag-chip tag-heal-effect" data-tag="HEAL_EFFECT_UP" type="button">Heal Effect</button>
-          <button class="chip tag-chip tag-lifesteal" data-tag="LIFE_STEAL_UP" type="button">Lifesteal</button>
+      <div class="tag-scroll-wrap">
+        <button class="tag-scroll-btn tag-scroll-btn--left" type="button" aria-label="Scroll tags left" data-tag-scroll-left>
+          <svg viewBox="0 0 20 20" aria-hidden="true" class="tag-scroll-icon">
+            <path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button class="tag-scroll-btn tag-scroll-btn--right" type="button" aria-label="Scroll tags right" data-tag-scroll-right>
+          <svg viewBox="0 0 20 20" aria-hidden="true" class="tag-scroll-icon">
+            <path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="tag-scroll" data-tag-scroll>
+          <div class="chip-row chip-row--tags" data-tag-scroll-row>
+            {tags.map((tag) => (
+              <button class="chip tag-chip" data-tag={tag} type="button">
+                {formatTagLabel(tag)}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -204,16 +196,55 @@
 
 </section>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const scrollWrap = document.querySelector("[data-tag-scroll]");
+  const scrollRow = document.querySelector("[data-tag-scroll-row]");
+  const scrollLeftBtn = document.querySelector("[data-tag-scroll-left]");
+  const scrollRightBtn = document.querySelector("[data-tag-scroll-right]");
+
+  if (!scrollWrap || !scrollRow || !scrollLeftBtn || !scrollRightBtn) return;
+
+  const getScrollStep = () => Math.max(180, Math.floor(scrollWrap.clientWidth * 0.6));
+
+  const updateButtons = () => {
+    const maxScroll = scrollRow.scrollWidth - scrollWrap.clientWidth;
+    const current = scrollWrap.scrollLeft;
+    scrollLeftBtn.disabled = current <= 0;
+    scrollRightBtn.disabled = current >= maxScroll - 1;
+  };
+
+  scrollLeftBtn.addEventListener("click", () => {
+    scrollWrap.scrollBy({ left: -getScrollStep(), behavior: "smooth" });
+  });
+
+  scrollRightBtn.addEventListener("click", () => {
+    scrollWrap.scrollBy({ left: getScrollStep(), behavior: "smooth" });
+  });
+
+  scrollWrap.addEventListener("scroll", updateButtons, { passive: true });
+  window.addEventListener("resize", updateButtons);
+  updateButtons();
+});
+</script>
+
 <style>
 
 /* ── TAG CHIPS (Index-only visuals) ───────────────────── */
 /* Wrapper für den Scroll-Fade */
+.tag-scroll-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
 .tag-scroll {
+  width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
-  padding-bottom: 4px; /* damit scrollbar nicht “klebt” */
+  padding: 0 0 0 0;
   flex-wrap: nowrap;
   scrollbar-width: none; /* Firefox */
 }
@@ -223,61 +254,87 @@
 }
 /* Default: darf auf großen Screens gern wrappen */
 .chip-row--tags {
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
-/* Ab schmalerem Screen: NICHT mehr wrappen, sondern scrollen */
-@media (max-width: 1100px) {
-  .chip-row--tags {
-    flex-wrap: nowrap;
-
-    /* bisschen Luft unten, falls Scrollbar erscheint */
-    padding-bottom: 6px;
-
-    /* optional: kleine “snap”-Hilfe beim Scrollen */
-    scroll-snap-type: x proximity;
-  }
-
-  /* Chips sollen nicht schrumpfen, damit der Scroll Sinn macht */
-  .chip-row--tags .tag-chip {
-    flex: 0 0 auto;
-    white-space: nowrap;
-    scroll-snap-align: start;
-  }
-
-  /* Scrollbar möglichst unauffällig */
-  .chip-row--tags::-webkit-scrollbar { height: 8px; }
-  .chip-row--tags::-webkit-scrollbar-track { background: transparent; }
-  .chip-row--tags::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.12);
-    border-radius: 999px;
-  }
-  .chip-row--tags:hover::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.20);
-  }
-
-  /* Fade links/rechts (damit “abgeschnitten” edel wirkt) */
-  .tag-scroll::before,
-  .tag-scroll::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 6px; /* passt zur padding-bottom der row */
-    width: 28px;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .tag-scroll::before {
-    left: 0;
-    background: linear-gradient(to right, rgba(18,16,26,0.97), rgba(18,16,26,0));
-  }
-
-  .tag-scroll::after {
-    right: 0;
-    background: linear-gradient(to left, rgba(18,16,26,0.97), rgba(18,16,26,0));
-  }
+/* Scrollen auf allen Screen-Größen */
+.chip-row--tags {
+  padding-bottom: 0px;
+  scroll-snap-type: x proximity;
 }
+
+/* Chips sollen nicht schrumpfen, damit der Scroll Sinn macht */
+.chip-row--tags .tag-chip {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  scroll-snap-align: start;
+}
+
+/* Scrollbar möglichst unauffällig */
+.chip-row--tags::-webkit-scrollbar { height: 8px; }
+.chip-row--tags::-webkit-scrollbar-track { background: transparent; }
+.chip-row--tags::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+}
+.chip-row--tags:hover::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.20);
+}
+
+.tag-scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(12,10,18,0.7);
+  color: #e6e6eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s, transform 0.2s, border-color 0.2s, background 0.2s;
+  z-index: 3;
+}
+
+.tag-scroll-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.tag-scroll-btn:hover {
+  opacity: 1;
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(20,18,30,0.85);
+}
+
+.tag-scroll-btn:disabled {
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+.tag-scroll-btn--left { left: 4px; }
+.tag-scroll-btn--right { right: 4px; }
+
+/* Fade links/rechts (damit “abgeschnitten” edel wirkt) */
+.tag-scroll::before,
+.tag-scroll::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 6px; /* passt zur padding-bottom der row */
+  width: 28px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+
+
 /* Basis: bleibt kompatibel zu .chip */
 .tag-chip {
   opacity: 0.85; /* etwas sichtbarer als normale chips */
@@ -290,41 +347,6 @@
   box-shadow: 0 0 0 1px rgba(255,255,255,0.14), 0 4px 12px rgba(0,0,0,0.35);
 }
 
-/* TEAM SUPPORT TAGS (Green) */
-.tag-heal-team, .tag-shield-team, .tag-energy-team, .tag-buff-team, .tag-atk-spd-up,
-.tag-dmg-red-team, .tag-cleanse-team, .tag-cdr-team, .tag-cc-immunity {
-  background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.35);
-}
-.tag-chip.active.tag-heal-team, .tag-chip.active.tag-shield-team, .tag-chip.active.tag-energy-team,
-.tag-chip.active.tag-buff-team, .tag-chip.active.tag-atk-spd-up, .tag-chip.active.tag-dmg-red-team,
-.tag-chip.active.tag-cleanse-team, .tag-chip.active.tag-cdr-team, .tag-chip.active.tag-cc-immunity {
-  background: rgba(16,185,129,.22); border-color: rgba(16,185,129,.45);
-}
-
-/* ENEMY DEBUFF TAGS (Red) */
-.tag-crowd-control, .tag-reduces-attr, .tag-removes-armor, .tag-atk-down, .tag-atk-spd-down,
-.tag-taunt, .tag-energy-drain, .tag-enemy-vuln, .tag-buff-dispel {
-  background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.35);
-}
-.tag-chip.active.tag-crowd-control, .tag-chip.active.tag-reduces-attr, .tag-chip.active.tag-removes-armor,
-.tag-chip.active.tag-atk-down, .tag-chip.active.tag-atk-spd-down, .tag-chip.active.tag-taunt,
-.tag-chip.active.tag-energy-drain, .tag-chip.active.tag-enemy-vuln, .tag-chip.active.tag-buff-dispel {
-  background: rgba(239,68,68,.22); border-color: rgba(239,68,68,.45);
-}
-
-/* SELF-BUFF TAGS (Yellow) */
-.tag-heal, .tag-shield, .tag-dmg-red, .tag-energy-restore, .tag-atk-up, .tag-atk-speed,
-.tag-aoe, .tag-basic-scaler, .tag-gain-armor, .tag-cc-resistance, .tag-dodge, .tag-hit-avoid,
-.tag-hp-up, .tag-heal-effect, .tag-lifesteal {
-  background: rgba(250,204,21,.18); border-color: rgba(250,204,21,.35);
-}
-.tag-chip.active.tag-heal, .tag-chip.active.tag-shield, .tag-chip.active.tag-dmg-red,
-.tag-chip.active.tag-energy-restore, .tag-chip.active.tag-atk-up, .tag-chip.active.tag-atk-speed,
-.tag-chip.active.tag-aoe, .tag-chip.active.tag-basic-scaler, .tag-chip.active.tag-gain-armor,
-.tag-chip.active.tag-cc-resistance, .tag-chip.active.tag-dodge, .tag-chip.active.tag-hit-avoid,
-.tag-chip.active.tag-hp-up, .tag-chip.active.tag-heal-effect, .tag-chip.active.tag-lifesteal {
-  background: rgba(250,204,21,.22); border-color: rgba(250,204,21,.45);
-}
 
 /* (Optional) keep existing wrapper helper if you use it elsewhere */
 .content-wrapper {
@@ -378,6 +400,7 @@
   align-items: flex-start;
   gap: 16px;
   margin-top: 8px;
+  overflow: visible;
 }
 
 .filter-row--faction > .filter-group {
@@ -385,11 +408,20 @@
   min-width: 0;               /* wichtig für overflow children */
 }
 
+.filter-row--faction > .filter-group--tags {
+  flex: 1 1 auto;
+}
+
 /* ── GROUPS ───────────────────────────────────────────── */
 .filter-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.filter-group--tags {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .filter-group--search {
@@ -423,6 +455,10 @@
   flex-wrap: wrap;
 }
 
+.chip-row.chip-row--tags {
+  flex-wrap: nowrap;
+}
+
 .filter-divider {
   width: 1px;
   height: 36px;
@@ -449,7 +485,6 @@
 
 .chip:hover {
   opacity: 0.85;
-  transform: translateY(-1px);
   border-color: rgba(255,255,255,0.2);
 }
 
