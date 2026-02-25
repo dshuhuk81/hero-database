@@ -248,7 +248,6 @@
         }
       ]
     },
-
     {
       "id": "isthar_vi",
       "name": "Isthar VI",
@@ -310,6 +309,75 @@
           "label": "Recommended",
           "hero-comp": "hladgunnr, isis, cashien, yuelao, dionysus",
           "heroes": ["hladgunnr", "nezha", "cashien", "athena", "dionysus"],
+          "reason": "",
+          "notes": [],
+          "source": "auto"
+        }
+      ]
+    },
+    { 
+      "id": "jackfrost",
+      "name": "Jack Frost",
+      "mode": "Olds God's Return",
+      "battlepower": "33932",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "/bosses/jackfrost.webp",
+      "summary": "Zero-damage boss that progressively freezes your team and ends the battle if all units are frozen — survival and freeze immunity are the only win conditions.",
+      "strategyNotes": "Jack Frost deals no damage, so healers are unnecessary. Prioritize heroes with freeze immunity or cleanse effects to prevent the lose condition. Keep at least one unit unfrozen at all times to avoid triggering 'So So Boring'. The freeze cannot be blocked or removed by any means, so prevention is critical over reaction.",
+      "mechanics": [
+          "Jack Frost deals no damage passively at any point",
+          "Targets a disliked unit and permanently freezes them as a snowman — unremovable",
+          "If all units on the field are frozen, Jack Frost leaves and the battle ends (loss)"
+        ],
+      "mechanicTags": [
+        "NO_DAMAGE",
+        "PERMANENT_FREEZE",
+        "WIPE_CONDITION"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "Tag, You're It!",
+          "description": "Passively, Jack Frost is merely playing around with the deities and deals no DMG.",
+          "mechanics": ["Boss deals zero damage throughout the entire fight"],
+          "mechanicTags": ["NO_DAMAGE"]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Freeze!",
+          "description": "Jack Frost turns a unit he dislikes into a snowman. That unit cannot take actions. This effect cannot be blocked or removed by any means.",
+          "mechanics": ["Single target permanent freeze", "Freeze is irremovable and unblockable"],
+          "mechanicTags": ["PERMANENT_FREEZE", "UNDISPELLABLE"]
+        },
+        {
+          "id": "skill_3",
+          "type": "Skill",
+          "name": "So So Boring",
+          "description": "When all deities on the field are frozen, Jack Frost grows bored and dejected, then leaves the battlefield. The battle ends.",
+          "mechanics": ["Instant battle-end loss condition if all units are frozen"],
+          "mechanicTags": ["WIPE_CONDITION"]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "isthar_vi_manual",
+          "label": "Recommended",
+          "hero-comp": "hladgunnr, isis, cashien, yuelao, dionysus",
+          "heroes": ["hladgunnr", "nezha", "cashien", "athena", "dionysus"],
+          "reason": "",
+          "notes": [],
+          "source": "auto"
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "jackfrost_auto",
+          "label": "Recommended",
+          "hero-comp": "nezha, hladgunnr, cashien, isis, dionysus",
+          "heroes": ["nezha", "hladgunnr", "cashien", "isis", "dionysus"],
           "reason": "",
           "notes": [],
           "source": "auto"
