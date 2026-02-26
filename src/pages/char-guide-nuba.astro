@@ -53,6 +53,7 @@ function heroImage(id) {
   <!-- HEADER -->
   <header class="hero-header">
     <div class="epithet">Motto Immortal · Hero Guide</div>
+    <img class="hero-portrait" src="/img_data/nubaFace.webp" alt="Nuba portrait" loading="lazy" />
     <h1 class="hero-name">Nuba</h1>
     <p class="hero-quote">"The world fears, banishes, and curses me. But I just don't understand what I've done wrong."</p>
     <div class="tags">
@@ -427,6 +428,17 @@ function heroImage(id) {
     padding: 60px 0 40px;
     position: relative;
     page-break-after: avoid;
+  }
+
+  .hero-portrait {
+    width: 128px;
+    height: 128px;
+    border-radius: 999px;
+    object-fit: cover;
+    margin: 0 auto 18px;
+    display: block;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    border: 2px solid rgba(255, 255, 255, 0.15);
   }
 
 
