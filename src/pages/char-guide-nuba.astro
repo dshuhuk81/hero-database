@@ -65,12 +65,29 @@ function heroImage(id) {
         <img src="/icons/classes/warrior.webp" alt="Warrior Class" class="tag-icon" />
         Warrior
       </span>
+      <button id="downloadPdfBtn" class="tag tag-download">⇓ Download as PDF</button>
     </div>
-    <button id="downloadPdfBtn" class="download-pdf-btn">⇓ Download as PDF</button>
   </header>
 
+  <!-- JUMP NAVIGATION -->
+  <nav class="jump-nav">
+    <div class="jump-nav-title">Quick Navigation</div>
+    <div class="jump-nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#faction-synergy">Faction Synergy</a>
+      <a href="#doom-mechanic">Doom Mark</a>
+      <a href="#skills">Skills</a>
+      <a href="#ratings">Ratings</a>
+      <a href="#positioning">Positioning</a>
+      <a href="#comps">Comps</a>
+      <a href="#strengths">Strengths</a>
+      <a href="#synergy">Synergy</a>
+      <a href="#playstyle">Playstyle</a>
+    </div>
+  </nav>
+
   <!-- OVERVIEW -->
-  <section class="section">
+  <section class="section" id="overview">
     <div class="section-title">Overview</div>
     <div class="overview-card">
       <p>Nuba, the <em>Goddess of Drought</em>, appears to be a <strong>Warrior</strong> of the <strong>Club</strong> faction whose entire kit revolves around a unique debuff called <doom>Crimson Doom Mark</doom>. She appears to be a sustained-pressure hybrid — part debuffer, part disabler, part self-sustaining frontliner — who could work by marking enemies, draining their resources, and punishing them for carrying her mark.</p>
@@ -80,7 +97,7 @@ function heroImage(id) {
   </section>
 
   <!-- FACTION SYNERGY -->
-  <section class="section">
+  <section class="section" id="faction-synergy">
     <div class="section-title">Club Faction Synergy</div>
     <div class="mechanic-box" style="border-color: rgba(64,106,95,0.35); background: linear-gradient(135deg, rgba(64,106,95,0.07), rgba(64,106,95,0.05));">
       <div class="mechanic-label" style="color: var(--gold-light);">Faction Bonus — Club</div>
@@ -96,7 +113,7 @@ function heroImage(id) {
   </section>
 
   <!-- CRIMSON DOOM MARK -->
-  <section class="section">
+  <section class="section" id="doom-mechanic">
     <div class="section-title">Core Mechanic — Crimson Doom Mark</div>
     <div class="mechanic-box">
       <div class="mechanic-label">The Doom Mark System</div>
@@ -112,7 +129,7 @@ function heroImage(id) {
   </section>
 
   <!-- SKILLS -->
-  <section class="section">
+  <section class="section" id="skills">
     <div class="section-title">Skill Breakdown</div>
     <div class="skills-grid">
 
@@ -191,7 +208,7 @@ function heroImage(id) {
   </section>
 
   <!-- RATINGS -->
-  <section class="section">
+  <section class="section" id="ratings">
     <div class="section-title">Potential Mode Ratings</div>
     <div class="rating-grid">
       <div class="rating-card">
@@ -216,7 +233,7 @@ function heroImage(id) {
   </section>
 
   <!-- POSITIONING -->
-  <section class="section">
+  <section class="section" id="positioning">
     <div class="section-title">Recommended Positioning</div>
     <div class="pos-grid">
       <div class="pos-card">
@@ -231,7 +248,7 @@ function heroImage(id) {
   </section>
 
   <!-- RECOMMENDED COMPS -->
-  <section class="section">
+  <section class="section" id="comps">
     <div class="section-title">Suggested Comps</div>
     <div class="comp-list">
       {RECOMMENDED_COMPS.map(comp => (
@@ -259,7 +276,7 @@ function heroImage(id) {
   </section>
 
   <!-- STRENGTHS / WEAKNESSES -->
-  <section class="section">
+  <section class="section" id="strengths">
     <div class="section-title">Strengths &amp; Weaknesses</div>
     <div class="sw-grid">
       <div class="sw-card strengths">
@@ -288,7 +305,7 @@ function heroImage(id) {
   </section>
 
   <!-- SYNERGY -->
-  <section class="section">
+  <section class="section" id="synergy">
     <div class="section-title">Synergy Considerations</div>
     <div class="synergy-note">
       <p><strong>Club faction stacking</strong> could be Nuba's most concrete synergy path. Running 3–5 Club heroes would give the whole team bonus ATK and HP — both stats could benefit Nuba (more HP could extend her revive window; more ATK could amplify her Stun damage). A full 5-Club composition would give +35% to the entire lineup, potentially making it a viable dedicated archetype around her.</p>
@@ -304,7 +321,7 @@ function heroImage(id) {
   <div class="divider-ornament">✦ ✦ ✦</div>
 
   <!-- PLAYSTYLE SUMMARY -->
-  <section class="section">
+  <section class="section" id="playstyle">
     <div class="section-title">Playstyle Summary</div>
     <div class="overview-card">
       <p>Nuba appears to be a <em>slow-burn oppressor</em> — theoretically, she would not win fights instantly, but rather by making enemies progressively less capable of fighting back. Based on skill mechanics, every Ultimate cast could tax the enemy team's speed and damage, every Skill 1 could be a near-guaranteed Stun, and every expiring Doom Mark could feed her revive pool.</p>
@@ -317,11 +334,32 @@ function heroImage(id) {
     Motto Immortal · Nuba Guide · Based on in-game skill data only · No speculative additions
   </footer>
 
+  <!-- BACK TO TOP BUTTON -->
+  <button id="backToTopBtn" class="back-to-top" title="Back to top">↑</button>
+
 </div>
 
 <Footer />
 
 <script>
+  // Back to top button functionality
+  const backToTopBtn = document.getElementById('backToTopBtn');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 500) {
+      backToTopBtn.classList.add('show');
+    } else {
+      backToTopBtn.classList.remove('show');
+    }
+  });
+
+  backToTopBtn.addEventListener('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // PDF download button functionality
   document.getElementById('downloadPdfBtn').addEventListener('click', function() {
     const element = document.querySelector('.container');
     
@@ -431,14 +469,19 @@ function heroImage(id) {
   }
 
   .hero-portrait {
+    margin-top: px;
     width: 128px;
     height: 128px;
     border-radius: 999px;
     object-fit: cover;
     margin: 0 auto 18px;
     display: block;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(250, 234, 121, 0.45);
+    box-shadow:
+      0 0 0 4px rgb(255, 228, 122),
+      0 0 28px rgba(250, 204, 21, 0.32),
+      0 0 64px rgba(250, 234, 121, 0.2),
+      0 18px 40px rgba(0, 0, 0, 0.45);
   }
 
 
@@ -520,10 +563,74 @@ function heroImage(id) {
     background: rgba(255,255,255,0.95);
   }
 
+  .tag-download {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    background: rgba(255,255,255,0.95);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tag-download:hover {
+    background: rgba(255,255,255,1);
+    box-shadow: 0 0 12px rgba(64,106,95,0.4);
+  }
+
+  .tag-download:active {
+    transform: scale(0.95);
+  }
+
+  /* ── JUMP NAVIGATION ── */
+  .jump-nav {
+    background: rgba(19, 14, 14, 0.85);
+    border: 1px solid rgba(64, 106, 95, 0.4);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 36px 0 48px;
+    page-break-inside: avoid;
+    backdrop-filter: blur(4px);
+  }
+
+  .jump-nav-title {
+    font-family: "Spectral", "Roboto", system-ui, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 14px;
+    opacity: 0.9;
+  }
+
+  .jump-nav-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  .jump-nav-links a {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid rgba(64, 106, 95, 0.5);
+    border-radius: 4px;
+    background: rgba(64, 106, 95, 0.15);
+    transition: all 0.2s ease;
+    display: block;
+    text-align: center;
+  }
+
+  .jump-nav-links a:hover {
+    background: rgba(64, 106, 95, 0.35);
+    border-color: rgba(64, 106, 95, 0.8);
+    color: var(--gold-light);
+  }
+
   /* ── SECTION HEADERS ── */
   .section {
     margin-top: 48px;
     page-break-inside: avoid;
+    scroll-margin-top: 80px;
   }
 
   .section-title {
@@ -1057,30 +1164,49 @@ function heroImage(id) {
   }
 
   /* ── PDF DOWNLOAD BUTTON ── */
-  .download-pdf-btn {
-    margin-top: 20px;
-    padding: 10px 24px;
-    background: var(--accent-teal);
-    color: #fff;
-    border: 1px solid var(--accent-teal);
-    border-radius: 4px;
-    font-family: "Spectral", "Roboto", system-ui, sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  #downloadPdfBtn {
+    padding: 5px 16px;
+  }
+
+  /* ── BACK TO TOP BUTTON ── */
+  .back-to-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(64, 106, 95, 0.85);
+    border: 1px solid rgba(250, 204, 21, 0.6);
+    color: var(--gold);
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    z-index: 999;
   }
 
-  .download-pdf-btn:hover {
-    background: transparent;
-    color: var(--accent-teal);
-    box-shadow: 0 0 20px rgba(64,106,95,0.3);
+  .back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
   }
 
-  .download-pdf-btn:active {
-    transform: scale(0.98);
+  .back-to-top:hover {
+    background: rgba(64, 106, 95, 1);
+    border-color: rgba(250, 234, 121, 0.9);
+    box-shadow: 0 12px 32px rgba(64, 106, 95, 0.4);
+    transform: translateY(-4px);
+  }
+
+  .back-to-top:active {
+    transform: translateY(-2px) scale(0.95);
   }
 </style>
