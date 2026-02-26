@@ -4,6 +4,7 @@ import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
 import { computeScore } from "../utils/rankingScore.js";
 import { synergyPotentialForHero } from "../utils/synergyTags.js";
+import { rateHeroSkills } from "../utils/skillAnalyzer.js";
 
 const rows = await Promise.all(
   [...heroes].map(async (hero) => {
@@ -11,15 +12,13 @@ const rows = await Promise.all(
 
     const score = await computeScore(hero);
     const synergyPotential = await synergyPotentialForHero(hero);
+    const skillPower = rateHeroSkills(hero);
 
     return {
       hero,
       score,
       synergyPotential,
-      hp: Number(s.hp ?? 0),
-      atk: Number(s.atk ?? 0),
-      armor: Number(s.armor ?? 0),
-      magicRes: Number(s.magicRes ?? 0),
+      skillPower,
     };
   })
 ).then(results => results.sort((a, b) => b.score - a.score));
@@ -106,17 +105,8 @@ const rows = await Promise.all(
                     <th class="sortable col-score" data-sort="score">
                       Score <span class="sort-indicator"></span>
                     </th>
-                    <th class="sortable col-stat" data-sort="atk">
-                      ATK <span class="sort-indicator"></span>
-                    </th>
-                    <th class="sortable col-stat" data-sort="hp">
-                      HP <span class="sort-indicator"></span>
-                    </th>
-                    <th class="sortable col-stat" data-sort="armor">
-                      Armor <span class="sort-indicator"></span>
-                    </th>
-                    <th class="sortable col-stat" data-sort="magicres">
-                      M-Res <span class="sort-indicator"></span>
+                    <th class="sortable col-stat" data-sort="skillpower">
+                      Skill Power <span class="sort-indicator"></span>
                     </th>
                   </tr>
                 </thead>
@@ -140,10 +130,7 @@ const rows = await Promise.all(
                       data-tier={(r.hero.ratings?.overall ?? "N/A").toUpperCase()}
                       data-synergy={String(Math.round(r.synergyPotential))}
                       data-score={r.score.toFixed(6)}
-                      data-hp={r.hp}
-                      data-atk={r.atk}
-                      data-armor={r.armor}
-                      data-magicres={r.magicRes}
+                      data-skillpower={r.skillPower.toFixed(2)}
                     >
                       <td class="rank-cell col-rank">{idx + 1}</td>
 
@@ -168,10 +155,7 @@ const rows = await Promise.all(
                         <span class="score-pill">{Math.round(r.score)}</span>
                       </td>
 
-                      <td class="stat-cell col-stat">{r.atk.toLocaleString("en-US")}</td>
-                      <td class="stat-cell col-stat">{r.hp.toLocaleString("en-US")}</td>
-                      <td class="stat-cell col-stat">{r.armor.toLocaleString("en-US")}</td>
-                      <td class="stat-cell col-stat">{r.magicRes.toLocaleString("en-US")}</td>
+                      <td class="stat-cell col-stat">{r.skillPower.toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>

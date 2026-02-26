@@ -47,6 +47,60 @@ function snippetAround(text, matchIndex, maxLen = 180) {
 
 // Evidence patterns - removed (using manual tags instead)
 
+// Tag categories
+const TAG_CATEGORIES = {
+  TEAM_SUPPORT: [
+    "ATK_SPD_UP",
+    "BUFF_TEAM",
+    "CC_IMMUNITY_TEAM",
+    "CDR_TEAM",
+    "DAMAGE_REDUCTION_TEAM",
+    "DEBUFF_CLEANSE_TEAM",
+    "ENERGY_RESTORE_TEAM",
+    "HEAL_TEAM",
+    "SHIELD_TEAM",
+  ],
+  ENEMY_DEBUFF: [
+    "ATK_DOWN",
+    "ATK_SPD_DOWN",
+    "BUFF_DISPEL",
+    "CROWD_CONTROL",
+    "ENEMY_VULNERABILITY",
+    "ENERGY_DRAIN",
+    "REDUCES_ATTRIBUTES",
+    "REMOVES_ARMOR",
+    "TAUNT",
+  ],
+  SELF_BUFF: [
+    "ATK_SPEED",
+    "ATK_UP",
+    "CC_RESISTANCE",
+    "DMG_RED",
+    "DODGE_BUFF",
+    "ENERGY_RESTORE",
+    "GAIN_ARMOR",
+    "HEAL",
+    "HEAL_EFFECT_UP",
+    "HIT_AVOID",
+    "HP_UP",
+    "LIFE_STEAL_UP",
+    "SHIELD",
+  ],
+  PLAYSTYLE: [
+    "AREA_DAMAGE_DEALER",
+    "BASIC_ATTACK_SCALER",
+  ],
+};
+
+function getCategoryForTag(tag) {
+  for (const [category, tags] of Object.entries(TAG_CATEGORIES)) {
+    if (tags.includes(tag)) {
+      return category;
+    }
+  }
+  return "OTHER";
+}
+
 // Synergy profile - reads from hero.synergies array (manual assignment)
 export function synergyProfileForHero(hero) {
   const raw = fullSkillText(hero) || "";
@@ -71,7 +125,31 @@ export function synergyProfileForHero(hero) {
   return { tags, evidenceByTag, forbidsNormals };
 }
 
-// Ein “Synergy Potential”-Score pro Hero (solo, strict + erklärbar)
+// Synergy profile by category (for UI display)
+export function synergyProfileForHeroByCategory(hero) {
+  const prof = synergyProfileForHero(hero);
+  const categorized = {
+    TEAM_SUPPORT: [],
+    ENEMY_DEBUFF: [],
+    SELF_BUFF: [],
+    PLAYSTYLE: [],
+    OTHER: [],
+  };
+
+  for (const tag of prof.tags) {
+    const category = getCategoryForTag(tag);
+    if (categorized[category]) {
+      categorized[category].push(tag);
+    } else {
+      categorized.OTHER.push(tag);
+    }
+  }
+
+  return categorized;
+}
+
+
+// Ein "Synergy Potential"-Score pro Hero - ONLY TEAM SUPPORT TAGS (strict scoring)
 export async function synergyPotentialForHero(hero) {
   const SYNERGY_TAGS = await getSYNERGY_TAGS();
   
@@ -80,37 +158,16 @@ export async function synergyPotentialForHero(hero) {
 
   let s = 0;
 
-  // Providers (Team-Value)
+  // TEAM SUPPORT ONLY - counts toward synergy score
   if (has(SYNERGY_TAGS.ENERGY_RESTORE_TEAM)) s += 10;
   if (has(SYNERGY_TAGS.CDR_TEAM)) s += 8;
-  if (has(SYNERGY_TAGS.ENEMY_VULNERABILITY)) s += 6;
   if (has(SYNERGY_TAGS.ATK_SPD_UP)) s += 4;
   if (has(SYNERGY_TAGS.BUFF_TEAM)) s += 4;
-
   if (has(SYNERGY_TAGS.SHIELD_TEAM)) s += 1;
   if (has(SYNERGY_TAGS.HEAL_TEAM)) s += 1;
   if (has(SYNERGY_TAGS.DEBUFF_CLEANSE_TEAM)) s += 1;
   if (has(SYNERGY_TAGS.DAMAGE_REDUCTION_TEAM)) s += 1;
   if (has(SYNERGY_TAGS.CC_IMMUNITY_TEAM)) s += 1;
-
-  if (has(SYNERGY_TAGS.BUFF_DISPEL)) s += 1;
-  if (has(SYNERGY_TAGS.CROWD_CONTROL)) s += 1;
-  if (has(SYNERGY_TAGS.TAUNT)) s += 1;
-  if (has(SYNERGY_TAGS.ENERGY_DRAIN)) s += 1;
-  if (has(SYNERGY_TAGS.ATK_DOWN)) s += 2;
-  if (has(SYNERGY_TAGS.ATK_SPD_DOWN)) s += 2;
-  if (has(SYNERGY_TAGS.REMOVES_ARMOR)) s += 2;
-  if (has(SYNERGY_TAGS.REDUCES_ATTRIBUTES)) s += 3;
-
-  // Receivers (profitiert von Team)
-  if (has(SYNERGY_TAGS.AREA_DAMAGE_DEALER)) s += 8;
-  if (has(SYNERGY_TAGS.BASIC_ATTACK_SCALER)) s += 6;
-
-  // Self-only/Self-buff bonuses
-  if (has(SYNERGY_TAGS.ATK_UP)) s += 4;
-  if (has(SYNERGY_TAGS.HEAL_EFFECT_UP)) s += 3;
-  if (has(SYNERGY_TAGS.HP_UP)) s += 3;
-  if (has(SYNERGY_TAGS.ATK_SPEED)) s += 3;
 
   return Math.min(s, 100);
 }

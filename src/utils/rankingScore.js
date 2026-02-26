@@ -1,4 +1,4 @@
-import { rateHeroSkills } from "./skillAnalyzer.js";
+import { getHeroLevelMultiplier, rateHeroSkills } from "./skillAnalyzer.js";
 import { synergyPotentialForHero } from "./synergyTags.js";
 
 export const CLASS_WEIGHTS = {
@@ -21,9 +21,14 @@ export const PERCENT_STATS_FOR_SCORE = [
   "mDmgBonus",
 ];
 
-export const PERCENT_STAT_WEIGHT = 4;
-export const SYNERGY_WEIGHT = 5;
-export const SKILL_WEIGHT = 35;
+export const PERCENT_STAT_WEIGHT = 1;
+export const SYNERGY_WEIGHT = 12;
+export const SKILL_WEIGHT = 100;
+const STAT_NORMALIZATION = 300;
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
 
 export async function computeScore(hero) {
   const s = hero.stats ?? {};
@@ -55,7 +60,10 @@ export async function computeScore(hero) {
 
   // Non-stat scores
   const synergyScore = await synergyPotentialForHero(hero) * SYNERGY_WEIGHT;
-  const skillScore = rateHeroSkills(hero) * SKILL_WEIGHT;
+
+  const statAnchor = 0.6 + 0.4 * clamp(totalStatScore / STAT_NORMALIZATION, 0, 1);
+  const rarityAnchor = 0.85 + 0.15 * getHeroLevelMultiplier(hero);
+  const skillScore = rateHeroSkills(hero) * statAnchor * rarityAnchor * SKILL_WEIGHT;
 
   return totalStatScore + synergyScore + skillScore;
 }

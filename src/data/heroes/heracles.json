@@ -52,51 +52,51 @@
     {
       "id": "skill_1",
       "name": "Scarred Fury",
-      "description": "Stores a portion of DMG taken and then releases it, dealing DMG to surrounding units and gaining a shield.",
+      "description": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals DMG equal to 20% of his max HP +100% of the recorded DMG to enemies within 3 meters.",
       "upgrades": {
-        "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
-        "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
-        "level4": "The arrow will deal DMG equal to 200% of ATK."
+        "level2": "Grants a shield equal to 30% of the recorded DMG when cast.",
+        "level3": "Deals 125% of the recorded DMG.",
+        "level4": "Grants a shield equal to 50% of the recorded DMG when cast. (Unlocks at Lv.221)"
       }
     },
     {
       "id": "skill_2",
       "name": "Worldshaker",
-      "description": "Grapples a target, dashes to the most enemy-clustered area, and deals AoE DMG.",
+      "description": "Suppresses an enemy, picks them up, and slams them into an enemy-clustered area, dealing AoE DMG equal to 10% of the suppressed target's max HP (up to 20% of his max HP) to enemies within 3 meters.",
       "upgrades": {
-        "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
-        "level3": "Increases ATK SPD to 150%.",
-        "level4": "Reduces Energy lost to 40."
+        "level2": "Deals DMG equal to 15% of the target's max HP, up to 30% of Heracles's max HP.",
+        "level3": "Also knocks down units hit. (Unlocks at Lv.161)",
+        "level4": "Deals DMG equal to 20% of the target's max HP, up to 40% of Heracles's max HP. (Unlocks at Lv.241)"
       }
     },
     {
       "id": "skill_3",
       "name": "Savage Smash",
-      "description": "Deals DMG and knocks down units in a cone. Gains a shield and restores HP.",
+      "description": "After a brief charge, slams the ground, dealing DMG equal to 200% of ATK to enemies in a cone and knocking them down.",
       "upgrades": {
-        "level2": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
-        "level3": "Increases ATK bonus to 36%.",
-        "level4": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts."
+        "level2": "Gains a shield equal to 10% of the max HP.",
+        "level3": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)",
+        "level4": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)"
       }
     },
     {
       "id": "skill_4",
       "name": "Godhood Ascension",
-      "description": "Heracles increases his max HP and converts his ATK into max HP.",
+      "description": "Upon entering the battlefield, Heracles increases his max HP by 10% and converts 5% of his ATK to 2.5% max HP every second.",
       "upgrades": {
-        "level2": "Increases each stack of ATK SPD bonus to 25%.",
-        "level3": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
-        "level4": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)"
+        "level2": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
+        "level3": "Increases max HP to 15%. (Unlocks at Lv.181)",
+        "level4": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)"
       }
     }
   ],
   "relic": {
     "name": "Defiant Roar",
-    "description": "Heals himself, gains GMD RED, and fully restores Energy when near death.",
+    "description": "Before falling, becomes immune to lethal DMG and instantly restores 50% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
     "upgrades": {
-      "level2": "Increases CRIT Rate by 30% at 3 stacks.",
-      "level3": "Stacks up to 6 times.",
-      "level4": "Each stack increases Hit Rate by 30%. (Unlock at Relic Lv.30)"
+      "level2": "Restores 100% of max HP. (Unlock at Relic Lv.10)",
+      "level3": "Restores Energy to full when triggered. (Unlock at Relic Lv.20)",
+      "level4": "Reduces DMG taken by 100% for 5s. (Unlock at Relic Lv.30)"
     }
   },
   "synergies": [

@@ -5,8 +5,8 @@ import Footer from "../../components/Footer.astro";
 import RatingCard from "../../components/hero/RatingCard.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
 import { computeScore } from "../../utils/rankingScore.js";
-import { synergyProfileForHero, synergyPotentialForHero } from "../../utils/synergyTags.js";
-import { rateHeroSkills } from "../../utils/skillAnalyzer.js";
+import { synergyProfileForHero, synergyPotentialForHero, synergyProfileForHeroByCategory } from "../../utils/synergyTags.js";
+import { rateHeroSkills, getHeroSkillProfile } from "../../utils/skillAnalyzer.js";
 
 const rankedHeroes = (await Promise.all([...heroes]
   .map(async (hero) => {
@@ -42,7 +42,15 @@ const currentRank = currentHeroData ? rankedHeroes.indexOf(currentHeroData) + 1 
 // Synergy & Skill Analysis
 const synergyProfile = synergyProfileForHero(hero);
 const synergyPotential = await synergyPotentialForHero(hero);
+const synergyProfileByCategory = synergyProfileForHeroByCategory(hero);
 const skillPower = rateHeroSkills(hero);
+const skillProfile = getHeroSkillProfile(hero);
+
+// Calculate max skill power across all heroes for dynamic scaling
+const allSkillPowers = await Promise.all(
+  [...heroes].map(h => Promise.resolve(rateHeroSkills(h)))
+);
+const maxSkillPower = Math.max(...allSkillPowers);
 
 // Berechne Einzelstat-Rankings für Transparency
 function getStatRanking(statKey) {
@@ -391,43 +399,83 @@ const STAT_LABELS = {
                   <div class="skill-power-bar">
                     <div 
                       class="skill-power-fill" 
-                      style={`width: ${Math.min((skillPower / 3) * 100, 100)}%`}
+                      style={`width: ${Math.min((skillPower / maxSkillPower) * 100, 100)}%`}
                     />
                   </div>
                   <div class="skill-power-stats">
                     <span class="skill-power-value">{skillPower.toFixed(2)}</span>
-                    <span class="skill-power-label">/ 3.0</span>
+                    <span class="skill-power-label">/ {maxSkillPower.toFixed(2)}</span>
                   </div>
                 </div>
                 <p class="skill-power-desc">
-                  Based on damage multipliers, AoE, CC effects, and utility
+                  {skillProfile.topSkill 
+                    ? `${skillProfile.archetype} ⚡ Top Contributor: "${skillProfile.topSkill.name}" (${skillProfile.topSkill.score.toFixed(1)})`
+                    : "Based on damage multipliers, AoE, CC effects, and utility"
+                  }
                 </p>
               </div>
 
-              <!-- Synergies -->
-              <div class="ranking-advanced-block">
-                <h4 class="ranking-advanced-title">
-                  <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                  </svg>
-                  Team Synergies
-                  <span class="synergy-potential-badge">{synergyPotential}</span>
-                </h4>
-                {synergyProfile.tags.size === 0 ? (
-                  <p class="no-synergies">No team synergies detected</p>
-                ) : (
-                  <div class="synergy-tags">
-                    {Array.from(synergyProfile.tags).map((tag) => (
-                      <span class="synergy-tag" data-synergy={tag}>
+              <!-- Team Synergies Block -->
+              {synergyProfileByCategory.TEAM_SUPPORT.length > 0 && (
+                <div class="ranking-advanced-block">
+                  <h4 class="ranking-advanced-title">
+                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Team Synergies
+                    <span class="synergy-potential-badge">Score: {synergyPotential}</span>
+                  </h4>
+                  <div class="synergy-tags team-support">
+                    {synergyProfileByCategory.TEAM_SUPPORT.map((tag) => (
+                      <span class="synergy-tag team-support-tag" data-synergy={tag}>
                         {tag.replace(/_/g, ' ')}
                       </span>
                     ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+              
+              <!-- Enemy Debuffs Block -->
+              {synergyProfileByCategory.ENEMY_DEBUFF.length > 0 && (
+                <div class="ranking-advanced-block">
+                  <h4 class="ranking-advanced-title">
+                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 8v8m-4-4h8M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/>
+                    </svg>
+                    Enemy Debuffs
+                  </h4>
+                  <div class="synergy-tags enemy-debuff">
+                    {synergyProfileByCategory.ENEMY_DEBUFF.map((tag) => (
+                      <span class="synergy-tag enemy-debuff-tag" data-synergy={tag}>
+                        {tag.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <!-- Self Buffs Block -->
+              {synergyProfileByCategory.SELF_BUFF.length > 0 && (
+                <div class="ranking-advanced-block">
+                  <h4 class="ranking-advanced-title">
+                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 2v20M2 12h20"/>
+                      <circle cx="12" cy="12" r="6"/>
+                    </svg>
+                    Self Buffs
+                  </h4>
+                  <div class="synergy-tags self-buff">
+                    {synergyProfileByCategory.SELF_BUFF.map((tag) => (
+                      <span class="synergy-tag self-buff-tag" data-synergy={tag}>
+                        {tag.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -1683,6 +1731,54 @@ const STAT_LABELS = {
     color: #fbbf24;
     text-transform: uppercase;
     letter-spacing: 0.03em;
+  }
+
+  /* Team Support tags - Green (actual synergies) */
+  .synergy-tags.team-support .team-support-tag {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.4);
+    color: #86efac;
+  }
+
+  .synergy-tags.team-support .team-support-tag:hover {
+    background: rgba(34, 197, 94, 0.25);
+    border-color: rgba(34, 197, 94, 0.6);
+  }
+
+  /* Enemy Debuff tags - Red/Orange */
+  .synergy-tags.enemy-debuff .enemy-debuff-tag {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+  }
+
+  .synergy-tags.enemy-debuff .enemy-debuff-tag:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.6);
+  }
+
+  /* Self Buff tags - Purple */
+  .synergy-tags.self-buff .self-buff-tag {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.4);
+    color: #d8b4fe;
+  }
+
+  .synergy-tags.self-buff .self-buff-tag:hover {
+    background: rgba(168, 85, 247, 0.25);
+    border-color: rgba(168, 85, 247, 0.6);
+  }
+
+  /* Playstyle tags - Gray/Neutral */
+  .synergy-tags.playstyle .playstyle-tag {
+    background: rgba(107, 114, 128, 0.15);
+    border-color: rgba(107, 114, 128, 0.4);
+    color: #d1d5db;
+  }
+
+  .synergy-tags.playstyle .playstyle-tag:hover {
+    background: rgba(107, 114, 128, 0.25);
+    border-color: rgba(107, 114, 128, 0.6);
   }
 
   /* ===============================
