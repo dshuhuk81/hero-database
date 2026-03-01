@@ -2,7 +2,7 @@
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
-import { computeScore } from "../utils/rankingScore.js";
+import { computeScore, computeScoreForScenario } from "../utils/rankingScore.js";
 import { synergyPotentialForHero } from "../utils/synergyTags.js";
 import { rateHeroSkills } from "../utils/skillAnalyzer.js";
 
@@ -11,12 +11,18 @@ const rows = await Promise.all(
     const s = hero.stats ?? {};
 
     const score = await computeScore(hero);
+    const scoreBoss = await computeScoreForScenario(hero, "boss");
+    const scoreCampaign = await computeScoreForScenario(hero, "campaign");
+    const scorePvp = await computeScoreForScenario(hero, "pvp");
     const synergyPotential = await synergyPotentialForHero(hero);
     const skillPower = rateHeroSkills(hero);
 
     return {
       hero,
       score,
+      scoreBoss,
+      scoreCampaign,
+      scorePvp,
       synergyPotential,
       skillPower,
     };
@@ -103,7 +109,16 @@ const rows = await Promise.all(
                     Synergy <span class="sort-indicator"></span>
                   </th>
                     <th class="sortable col-score" data-sort="score">
-                      Score <span class="sort-indicator"></span>
+                      Overall <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable col-scenario" data-sort="scoreBoss" title="Single-target boss fights">
+                      ⚔️ Boss <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable col-scenario" data-sort="scoreCampaign" title="AOE campaign 5v5">
+                      🌍 Campaign <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable col-scenario" data-sort="scorePvp" title="Arena balanced 5v5">
+                      ⚡ PvP <span class="sort-indicator"></span>
                     </th>
                     <th class="sortable col-stat" data-sort="skillpower">
                       Skill Power <span class="sort-indicator"></span>
@@ -130,6 +145,9 @@ const rows = await Promise.all(
                       data-tier={(r.hero.ratings?.overall ?? "N/A").toUpperCase()}
                       data-synergy={String(Math.round(r.synergyPotential))}
                       data-score={r.score.toFixed(6)}
+                      data-scoreBoss={r.scoreBoss.toFixed(6)}
+                      data-scoreCampaign={r.scoreCampaign.toFixed(6)}
+                      data-scorePvp={r.scorePvp.toFixed(6)}
                       data-skillpower={r.skillPower.toFixed(2)}
                     >
                       <td class="rank-cell col-rank">{idx + 1}</td>
@@ -153,6 +171,18 @@ const rows = await Promise.all(
 
                       <td class="score-cell col-score">
                         <span class="score-pill">{Math.round(r.score)}</span>
+                      </td>
+
+                      <td class="score-cell col-scenario">
+                        <span class="score-pill scenario-boss">{Math.round(r.scoreBoss)}</span>
+                      </td>
+
+                      <td class="score-cell col-scenario">
+                        <span class="score-pill scenario-campaign">{Math.round(r.scoreCampaign)}</span>
+                      </td>
+
+                      <td class="score-cell col-scenario">
+                        <span class="score-pill scenario-pvp">{Math.round(r.scorePvp)}</span>
                       </td>
 
                       <td class="stat-cell col-stat">{r.skillPower.toFixed(2)}</td>
@@ -349,6 +379,7 @@ const rows = await Promise.all(
       .col-hero  { width: 240px; }
       .col-rating { width: 100px; text-align: center; }
       .col-score { width: 120px; text-align: center; }
+      .col-scenario { width: 110px; text-align: center; }
       .col-stat  { width: 140px; text-align: right; }
 
       .tier-table--header thead th {
@@ -411,6 +442,16 @@ const rows = await Promise.all(
         padding: 12px;
       }
 
+      .rating-cell {
+        padding: 12px;
+        text-align: center;
+      }
+
+      .score-cell {
+        padding: 12px;
+        text-align: center;
+      }
+
       .hero-link {
         display: flex;
         align-items: center;
@@ -436,7 +477,7 @@ const rows = await Promise.all(
         font-size: 1rem;
       }
 
-      .evo-cell, .score-cell, .stat-cell, .conf-cell {
+      .evo-cell, .stat-cell, .conf-cell {
         padding: 12px;
       }
 
@@ -462,6 +503,25 @@ const rows = await Promise.all(
         background: rgba(250, 204, 21, 0.08);
         border: 1px solid rgba(250, 204, 21, 0.25);
         box-shadow: 0 0 12px rgba(250, 204, 21, 0.08);
+      }
+
+      /* Scenario-specific pill colors */
+      .score-pill.scenario-boss {
+        background: rgba(239, 68, 68, 0.08);
+        border-color: rgba(239, 68, 68, 0.25);
+        box-shadow: 0 0 12px rgba(239, 68, 68, 0.08);
+      }
+
+      .score-pill.scenario-campaign {
+        background: rgba(59, 130, 246, 0.08);
+        border-color: rgba(59, 130, 246, 0.25);
+        box-shadow: 0 0 12px rgba(59, 130, 246, 0.08);
+      }
+
+      .score-pill.scenario-pvp {
+        background: rgba(168, 85, 247, 0.08);
+        border-color: rgba(168, 85, 247, 0.25);
+        box-shadow: 0 0 12px rgba(168, 85, 247, 0.08);
       }
 
       .conf-badge {
