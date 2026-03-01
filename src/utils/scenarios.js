@@ -120,7 +120,7 @@ export const SCENARIOS = {
     icon: '⚡',
     weights: {
       stats: 1.05,
-      synergies: 2.0,    // Synergies very important in teams
+      synergies: 1.3,    // Reduced from 2.0 to balance solo carries vs team players
       skills: 1.3,
     },
     // PvP: balanced offensive/defensive
