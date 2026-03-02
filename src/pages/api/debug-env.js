@@ -1,4 +1,4 @@
-import { supabaseClient, supabaseAdmin } from '../../../lib/supabase.js';
+import { supabaseClient, supabaseAdmin } from '../../lib/supabase.js';
 
 export async function GET() {
   const envVars = {
