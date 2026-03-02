@@ -209,6 +209,48 @@ export function extractHealingValue(description) {
 }
 
 /**
+ * NEW: Extracts % max HP damage - CRITICAL for boss DPS heroes
+ * Detects patterns like "10% of target's max HP", "12% of the target's max HP"
+ * This is EXTREMELY valuable in boss fights (10M HP boss = 1M damage per hit)
+ */
+export function extractMaxHpDamage(skill) {
+  const description = skill.description || '';
+  
+  // Check base description
+  let maxHpMatch = description.match(/(\d+)%\s+of\s+(?:the\s+)?target'?s?\s+max\s+hp/i);
+  let maxHpPercent = maxHpMatch ? parseInt(maxHpMatch[1]) : 0;
+  
+  // Check all upgrades for higher values
+  if (skill.upgrades) {
+    Object.values(skill.upgrades).forEach(upgrade => {
+      if (typeof upgrade === 'string') {
+        const upgradeMatch = upgrade.match(/(\d+)%\s+of\s+(?:the\s+)?target'?s?\s+max\s+hp/i);
+        if (upgradeMatch) {
+          maxHpPercent = Math.max(maxHpPercent, parseInt(upgradeMatch[1]));
+        }
+      }
+    });
+  }
+  
+  return maxHpPercent;
+}
+
+/**
+ * NEW: Rates % max HP damage quality
+ * UPDATED based on boss DPS testing (Isis vs Hladgunnr showed 2.1x performance)
+ * 5% = 2.0 points (good sustained boss DPS)
+ * 10% = 4.5 points (excellent - major DPS advantage)
+ * 15%+ = 8.0 points (exceptional - top-tier boss killer)
+ */
+export function rateMaxHpDamageQuality(maxHpPercent) {
+  if (maxHpPercent === 0) return 0;
+  if (maxHpPercent < 5) return 1.2;
+  if (maxHpPercent < 10) return 2.0;
+  if (maxHpPercent < 15) return 4.5;
+  return 8.0;
+}
+
+/**
  * NEW: Detects team-wide effects and returns multiplier
  * Personal effect: 1.0x
  * Team effect: 3.0x (applies to all allies)
@@ -412,6 +454,11 @@ export function rateSkill(skill, heroClass = "Warrior", isUltimate = false, hero
   const utilityWeight = countUtilityWithWeights(description);
   const utilityComponent = Math.min(utilityWeight * 0.25, 1.5) * classWeights.utility;
 
+  // === % MAX HP DAMAGE (critical for boss DPS) ===
+  const maxHpPercent = extractMaxHpDamage(skill);
+  const maxHpQuality = rateMaxHpDamageQuality(maxHpPercent);
+  const maxHpComponent = maxHpQuality * classWeights.damage; // Use damage weight since it's DPS mechanic
+
   // === TEAM EFFECT MULTIPLIER ===
   const teamMultiplier = getTeamEffectMultiplier(description);
 
@@ -435,7 +482,8 @@ export function rateSkill(skill, heroClass = "Warrior", isUltimate = false, hero
     aoeComponent +
     ccComponent +
     healComponent +
-    utilityComponent
+    utilityComponent +
+    maxHpComponent        // NEW: % max HP damage component
   ) * teamMultiplier * carryMultiplier * stateCarryMultiplier * ultimateBonus * maturityBonus * rarityMult;
 
   return Math.round(score * 100) / 100;

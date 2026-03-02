@@ -6,28 +6,53 @@ import { computeScore, computeScoreForScenario } from "../utils/rankingScore.js"
 import { synergyPotentialForHero } from "../utils/synergyTags.js";
 import { rateHeroSkills } from "../utils/skillAnalyzer.js";
 
+const heroById = new Map(heroes.map((hero) => [hero.id, hero]));
+const heroOptions = [...heroes].sort((a, b) => a.name.localeCompare(b.name));
+
 const rows = await Promise.all(
   [...heroes].map(async (hero) => {
     const s = hero.stats ?? {};
 
     const score = await computeScore(hero);
     const scoreBoss = await computeScoreForScenario(hero, "boss");
+    const scoreBossCtx = scoreBoss;
     const scoreCampaign = await computeScoreForScenario(hero, "campaign");
     const scorePvp = await computeScoreForScenario(hero, "pvp");
     const synergyPotential = await synergyPotentialForHero(hero);
     const skillPower = rateHeroSkills(hero);
 
+    const bestScenarioLabelMap = {
+      boss: "Boss",
+      campaign: "Campaign",
+      pvp: "PvP",
+    } as const;
+    const scenarioEntries = [
+      ["boss", scoreBoss],
+      ["campaign", scoreCampaign],
+      ["pvp", scorePvp],
+    ] as Array<[keyof typeof bestScenarioLabelMap, number]>;
+    const [bestScenarioKey] = scenarioEntries.reduce(
+      (best, current) => (current[1] > best[1] ? current : best),
+      scenarioEntries[0]
+    );
+    const bestScenarioLabel = bestScenarioLabelMap[bestScenarioKey] || "Overall";
+
     return {
       hero,
       score,
       scoreBoss,
+      scoreBossCtx,
       scoreCampaign,
       scorePvp,
+      bestScenarioKey,
+      bestScenarioLabel,
       synergyPotential,
       skillPower,
     };
   })
-).then(results => results.sort((a, b) => b.score - a.score));
+).then((results) =>
+  results.sort((a, b) => b.score - a.score)
+);
 
 ---
 
@@ -38,14 +63,14 @@ const rows = await Promise.all(
     <title>Rankings - Hero Database</title>
   </head>
 
-  <body>
+  <body data-default-sort="score">
     <Sidebar />
 
     <!-- Maintenance Alert Dialog -->
     <div id="maintenanceAlert" class="maintenance-alert-overlay">
       <div class="maintenance-alert">
         <div class="maintenance-alert-header">
-          <h2>⚠️ Under Maintenance</h2>
+          <h2>Under Maintenance</h2>
           <button class="close-btn" id="closeMaintenanceAlert" aria-label="Close alert">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -73,7 +98,7 @@ const rows = await Promise.all(
           <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
           
           <div class="info-box">
-            <h3>ℹ️ About This Analysis</h3>
+            <h3>About This Analysis</h3>
             <p>
               <strong>Primary Reference:</strong> Check the <a href="/tierlist/" style="color: #facc15; text-decoration: none; border-bottom: 1px dashed #facc15;">Tier List</a> for gameplay-based rankings (S, SS, SSS).
             </p>
@@ -88,6 +113,13 @@ const rows = await Promise.all(
           <p class="subtitle" style="margin-top: 0;">
             Technical scores are based on Stats, Skills and Team Synergies
           </p>
+
+          <div class="scenario-tabs" role="tablist" aria-label="Scenario filters">
+            <button type="button" class="scenario-tab is-active" data-scenario-filter="all" role="tab" aria-selected="true">All</button>
+            <button type="button" class="scenario-tab" data-scenario-filter="boss" role="tab" aria-selected="false">Boss</button>
+            <button type="button" class="scenario-tab" data-scenario-filter="campaign" role="tab" aria-selected="false">Campaign</button>
+            <button type="button" class="scenario-tab" data-scenario-filter="pvp" role="tab" aria-selected="false">PvP</button>
+          </div>
 
           <div class="table-wrapper">
 
@@ -112,13 +144,16 @@ const rows = await Promise.all(
                       Overall <span class="sort-indicator"></span>
                     </th>
                     <th class="sortable col-scenario" data-sort="scoreBoss" title="Single-target boss fights">
-                      ⚔️ Boss <span class="sort-indicator"></span>
+                      Boss <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable col-scenario" data-sort="scoreBossCtx" title="Boss rating with your selected core team context">
+                      Boss (Ctx) <span class="sort-indicator"></span>
                     </th>
                     <th class="sortable col-scenario" data-sort="scoreCampaign" title="AOE campaign 5v5">
-                      🌍 Campaign <span class="sort-indicator"></span>
+                      Campaign <span class="sort-indicator"></span>
                     </th>
                     <th class="sortable col-scenario" data-sort="scorePvp" title="Arena balanced 5v5">
-                      ⚡ PvP <span class="sort-indicator"></span>
+                      PvP <span class="sort-indicator"></span>
                     </th>
                     <th class="sortable col-stat" data-sort="skillpower">
                       Skill Power <span class="sort-indicator"></span>
@@ -135,6 +170,7 @@ const rows = await Promise.all(
                   {rows.map((r, idx) => (
                     <tr
                       class="hero-row"
+                      data-id={r.hero.id}
                       data-rank={`${idx + 1}`}
                       data-name={r.hero.name.toLowerCase()}
                       data-class={r.hero.class.toLowerCase()}
@@ -146,15 +182,17 @@ const rows = await Promise.all(
                       data-synergy={String(Math.round(r.synergyPotential))}
                       data-score={r.score.toFixed(6)}
                       data-scoreBoss={r.scoreBoss.toFixed(6)}
+                      data-scoreBossCtx={r.scoreBossCtx.toFixed(6)}
                       data-scoreCampaign={r.scoreCampaign.toFixed(6)}
                       data-scorePvp={r.scorePvp.toFixed(6)}
+                      data-bestscenario={r.bestScenarioKey}
                       data-skillpower={r.skillPower.toFixed(2)}
                     >
                       <td class="rank-cell col-rank">{idx + 1}</td>
 
                       <td class="hero-cell col-hero">
                         <a href={`/heroes/${r.hero.id}`} class="hero-link">
-                          <img src={r.hero.image} alt={r.hero.name} class="hero-avatar" />
+                          <img src={r.hero.image} alt={r.hero.name} class="hero-avatar" width="48" height="48" />
                           <span class="hero-name">{r.hero.name}</span>
                           <img class="factions-icon" src={`/icons/classes/${r.hero.class.toLowerCase()}.webp`} />
                           <img class="factions-icon" src={`/icons/factions/${r.hero.faction.toLowerCase()}.webp`} />
@@ -169,19 +207,23 @@ const rows = await Promise.all(
                       <span class="rating-badge rating-na">{Math.round(r.synergyPotential)}</span>
                     </td>
 
-                      <td class="score-cell col-score">
+                      <td class="score-cell col-score" title={`Overall technical score: ${Math.round(r.score)}`}>
                         <span class="score-pill">{Math.round(r.score)}</span>
                       </td>
 
-                      <td class="score-cell col-scenario">
+                      <td class={`score-cell col-scenario ${r.bestScenarioKey === 'boss' ? 'is-best-scenario' : ''}`} title={`Boss score: ${Math.round(r.scoreBoss)} · Single-target boss fights`}>
                         <span class="score-pill scenario-boss">{Math.round(r.scoreBoss)}</span>
                       </td>
 
-                      <td class="score-cell col-scenario">
+                      <td class="score-cell col-scenario" title={`Boss (Ctx) score: ${Math.round(r.scoreBossCtx)} · Applies selected team context`}>
+                        <span class="score-pill scenario-boss">{Math.round(r.scoreBossCtx)}</span>
+                      </td>
+
+                      <td class={`score-cell col-scenario ${r.bestScenarioKey === 'campaign' ? 'is-best-scenario' : ''}`} title={`Campaign score: ${Math.round(r.scoreCampaign)} · Multi-target campaign fights`}>
                         <span class="score-pill scenario-campaign">{Math.round(r.scoreCampaign)}</span>
                       </td>
 
-                      <td class="score-cell col-scenario">
+                      <td class={`score-cell col-scenario ${r.bestScenarioKey === 'pvp' ? 'is-best-scenario' : ''}`} title={`PvP score: ${Math.round(r.scorePvp)} · Arena-style hero-vs-hero matches`}>
                         <span class="score-pill scenario-pvp">{Math.round(r.scorePvp)}</span>
                       </td>
 
@@ -237,6 +279,32 @@ const rows = await Promise.all(
 
       .info-box a:hover {
         opacity: 0.8;
+      }
+
+
+
+      .scenario-tabs {
+        display: flex;
+        gap: 8px;
+        margin: 0 0 14px;
+        flex-wrap: wrap;
+      }
+
+      .scenario-tab {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(230, 230, 235, 0.9);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .scenario-tab.is-active {
+        border-color: rgba(250, 204, 21, 0.45);
+        background: rgba(250, 204, 21, 0.12);
+        color: rgba(250, 204, 21, 0.95);
       }
 
       .rating-badge {
@@ -512,6 +580,12 @@ const rows = await Promise.all(
         box-shadow: 0 0 12px rgba(239, 68, 68, 0.08);
       }
 
+      .score-pill.scenario-boss-context {
+        background: rgba(59, 130, 246, 0.12);
+        border-color: rgba(59, 130, 246, 0.35);
+        box-shadow: 0 0 12px rgba(59, 130, 246, 0.12);
+      }
+
       .score-pill.scenario-campaign {
         background: rgba(59, 130, 246, 0.08);
         border-color: rgba(59, 130, 246, 0.25);
@@ -522,6 +596,10 @@ const rows = await Promise.all(
         background: rgba(168, 85, 247, 0.08);
         border-color: rgba(168, 85, 247, 0.25);
         box-shadow: 0 0 12px rgba(168, 85, 247, 0.08);
+      }
+
+      .is-best-scenario .score-pill {
+        box-shadow: 0 0 14px rgba(250, 204, 21, 0.16);
       }
 
       .conf-badge {
@@ -690,12 +768,10 @@ const rows = await Promise.all(
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Maintenance Alert Handler
         const maintenanceAlert = document.getElementById("maintenanceAlert");
         const closeMaintenanceBtn = document.getElementById("closeMaintenanceAlert");
         const ALERT_DISMISSED_KEY = "rankings_maintenance_alert_dismissed";
 
-        // Check if alert was previously dismissed
         if (localStorage.getItem(ALERT_DISMISSED_KEY) === "true") {
           maintenanceAlert?.classList.add("hidden");
         }
@@ -706,12 +782,8 @@ const rows = await Promise.all(
         };
 
         closeMaintenanceBtn?.addEventListener("click", dismissAlert);
-
-        // Close on overlay click
         maintenanceAlert?.addEventListener("click", (e) => {
-          if (e.target === maintenanceAlert) {
-            dismissAlert();
-          }
+          if (e.target === maintenanceAlert) dismissAlert();
         });
 
         const heroCounter = document.getElementById("heroCounter");
@@ -719,8 +791,8 @@ const rows = await Promise.all(
         const headerScroll = document.querySelector(".table-header-sticky");
         const bodyScroll = document.querySelector(".table-scroll");
         const sortableHeaders = document.querySelectorAll(".sortable");
+        const scenarioTabs = document.querySelectorAll("[data-scenario-filter]");
 
-        // Horizontales Scroll-Sync: Body scrollt → Header folgt
         bodyScroll?.addEventListener("scroll", () => {
           if (headerScroll) headerScroll.scrollLeft = bodyScroll.scrollLeft;
         });
@@ -729,8 +801,32 @@ const rows = await Promise.all(
 
         function updateCounter() {
           const rows = Array.from(tableBody.querySelectorAll(".hero-row"));
-          const visible = rows.filter(r => r.style.display !== "none").length;
+          const visible = rows.filter((row) => row.style.display !== "none").length;
           heroCounter.textContent = visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
+        }
+
+        function applyScenarioFilter(filter) {
+          const normalized = filter || "all";
+          const rows = Array.from(tableBody.querySelectorAll(".hero-row"));
+          rows.forEach((row) => {
+            const bestScenario = row.dataset.bestscenario || "";
+            row.style.display = normalized === "all" || bestScenario === normalized ? "" : "none";
+          });
+
+          scenarioTabs.forEach((tab) => {
+            const isActive = tab.getAttribute("data-scenario-filter") === normalized;
+            tab.classList.toggle("is-active", isActive);
+            tab.setAttribute("aria-selected", isActive ? "true" : "false");
+          });
+
+          updateCounter();
+        }
+
+        function sortColumnForFilter(filter) {
+          if (filter === "boss") return "scoreBoss";
+          if (filter === "campaign") return "scoreCampaign";
+          if (filter === "pvp") return "scorePvp";
+          return document.body.getAttribute("data-default-sort") || "score";
         }
 
         function sortTable(column, forceDirection = null) {
@@ -739,13 +835,11 @@ const rows = await Promise.all(
           if (forceDirection) {
             currentSort.column = column;
             currentSort.direction = forceDirection;
+          } else if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
           } else {
-            if (currentSort.column === column) {
-              currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
-            } else {
-              currentSort.column = column;
-              currentSort.direction = column === "name" ? "asc" : "desc";
-            }
+            currentSort.column = column;
+            currentSort.direction = column === "name" ? "asc" : "desc";
           }
 
           rows.sort((a, b) => {
@@ -754,21 +848,17 @@ const rows = await Promise.all(
             if (key === "name") {
               const aVal = a.dataset.name || "";
               const bVal = b.dataset.name || "";
-              return currentSort.direction === "asc"
-                ? aVal.localeCompare(bVal)
-                : bVal.localeCompare(aVal);
+              return currentSort.direction === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
             }
 
-            // numeric columns
             const aNum = Number(a.dataset[key] ?? 0);
             const bNum = Number(b.dataset[key] ?? 0);
-
             return currentSort.direction === "asc" ? (aNum - bNum) : (bNum - aNum);
           });
 
-          rows.forEach(row => tableBody.appendChild(row));
+          rows.forEach((row) => tableBody.appendChild(row));
 
-          sortableHeaders.forEach(th => {
+          sortableHeaders.forEach((th) => {
             th.classList.remove("sort-asc", "sort-desc");
             if (th.getAttribute("data-sort") === column) {
               th.classList.add(currentSort.direction === "asc" ? "sort-asc" : "sort-desc");
@@ -778,16 +868,24 @@ const rows = await Promise.all(
           updateCounter();
         }
 
-        sortableHeaders.forEach(th => {
+        sortableHeaders.forEach((th) => {
           th.addEventListener("click", () => {
             const column = th.getAttribute("data-sort");
             if (column) sortTable(column);
           });
         });
 
-        // Default sort
-        sortTable("score", "desc");
-        updateCounter();
+        scenarioTabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const filter = tab.getAttribute("data-scenario-filter") || "all";
+            applyScenarioFilter(filter);
+            sortTable(sortColumnForFilter(filter), "desc");
+          });
+        });
+
+        const defaultSort = document.body.getAttribute("data-default-sort") || "score";
+        sortTable(defaultSort, "desc");
+        applyScenarioFilter("all");
       });
     </script>
 

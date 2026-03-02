@@ -50,7 +50,10 @@ function classIcon(heroClass) {
   return `/icons/classes/${String(heroClass || "").toLowerCase()}.webp`;
 }
 
-const BOSS_SKILL_ICON_ALIAS = { isthar_vi: "ishtar" };
+const BOSS_SKILL_ICON_ALIAS = { 
+  isthar_vi: "ishtar",
+  typhoon: "typhon"
+};
 function bossSkillIcon(bossId, index) {
   const key = BOSS_SKILL_ICON_ALIAS[bossId] || bossId;
   return `/bosses/${key}_skill_${index + 1}.png`;
@@ -112,14 +115,12 @@ function bossSkillIcon(bossId, index) {
             <div class="mechanic-list">
               {boss.skills.map((sk, skillIndex) => (
                 <div class="mechanic-item">
-                  {sk.type !== "Passive" && (
-                    <img
-                      class="skill-icon"
-                      src={bossSkillIcon(boss.id, skillIndex)}
-                      alt={`${boss.name} ${sk.name}`}
-                      loading="lazy"
-                    />
-                  )}
+                  <img
+                    class="skill-icon"
+                    src={bossSkillIcon(boss.id, skillIndex)}
+                    alt={`${boss.name} ${sk.name}`}
+                    loading="lazy"
+                  />
                   <div class="mechanic-body">
                     <span class="mechanic-title">
                       {sk.name}

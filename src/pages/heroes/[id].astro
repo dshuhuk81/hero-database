@@ -4,7 +4,7 @@ import SkillCard from "../../components/hero/SkillCard.astro";
 import Footer from "../../components/Footer.astro";  
 import RatingCard from "../../components/hero/RatingCard.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
-import { computeScore } from "../../utils/rankingScore.js";
+import { computeScore, computeScoreForScenario } from "../../utils/rankingScore.js";
 import { synergyProfileForHero, synergyPotentialForHero, synergyProfileForHeroByCategory } from "../../utils/synergyTags.js";
 import { rateHeroSkills, getHeroSkillProfile } from "../../utils/skillAnalyzer.js";
 
@@ -45,6 +45,43 @@ const synergyPotential = await synergyPotentialForHero(hero);
 const synergyProfileByCategory = synergyProfileForHeroByCategory(hero);
 const skillPower = rateHeroSkills(hero);
 const skillProfile = getHeroSkillProfile(hero);
+
+// Scenario ratings
+const scenarioRatings = {
+  overall: currentHeroData?.score || 0,
+  boss: await computeScoreForScenario(hero, 'boss'),
+  campaign: await computeScoreForScenario(hero, 'campaign'),
+  pvp: await computeScoreForScenario(hero, 'pvp'),
+};
+
+// Calculate scenario rankings
+const allHeroScenarioScores = await Promise.all(
+  [...heroes].map(async (h) => ({
+    hero: h,
+    boss: await computeScoreForScenario(h, 'boss'),
+    campaign: await computeScoreForScenario(h, 'campaign'),
+    pvp: await computeScoreForScenario(h, 'pvp'),
+  }))
+);
+
+function getScenarioRanking(scenarioKey) {
+  const sorted = [...allHeroScenarioScores].sort((a, b) => b[scenarioKey] - a[scenarioKey]);
+  return sorted.findIndex(r => r.hero.id === id) + 1;
+}
+
+const scenarioRankings = {
+  boss: getScenarioRanking('boss'),
+  campaign: getScenarioRanking('campaign'),
+  pvp: getScenarioRanking('pvp'),
+};
+
+// Determine best scenario
+const scenarios = [
+  { key: 'boss', label: 'Boss', icon: '⚔️', score: scenarioRatings.boss, rank: scenarioRankings.boss },
+  { key: 'campaign', label: 'Campaign', icon: '🌍', score: scenarioRatings.campaign, rank: scenarioRankings.campaign },
+  { key: 'pvp', label: 'PvP', icon: '⚡', score: scenarioRatings.pvp, rank: scenarioRankings.pvp },
+];
+const bestScenario = scenarios.reduce((max, s) => s.score > max.score ? s : max);
 
 // Calculate max skill power across all heroes for dynamic scaling
 const allSkillPowers = await Promise.all(
@@ -284,49 +321,65 @@ const STAT_LABELS = {
       <section class="hero-stats">
         <div class="headline-with-info"><h2>Stats</h2><span>(Level {hero.level}, {hero.evolution})</span></div>
 
-        <div class="stats-grid">
-          {Object.entries(STAT_LABELS).map(([key, label]) => (
-            <div class="stat-row">
-              <span class="stat-label">{label}</span>
+        <div class="stats-wrapper">
+          <div class="stats-grid collapsed" id="statsGrid">
+            {Object.entries(STAT_LABELS).map(([key, label]) => {
+              const statValue = Number(hero.stats[key] ?? 0);
+              const hasValue = statValue > 0;
+              
+              return (
+                <div class={`stat-row ${hasValue ? 'has-value' : 'no-value'}`}>
+                  <span class="stat-label">{label}</span>
 
-              <div class="stat-right">
-                <span class="stat-value">
-                  <span class="stat-current">
-                    {hero.stats[key]}
-                    <span class="stat-max"> / {statMaxima[key]}</span>
-                  </span>
+                  <div class="stat-right">
+                    <span class="stat-value">
+                      <span class="stat-current">
+                        {hero.stats[key]}
+                        <span class="stat-max"> / {statMaxima[key]}</span>
+                      </span>
 
-                  {hero.rankings?.[key] && (
-                    <small class="stat-rank">
-                      #{hero.rankings[key]}
-                    </small>
-                  )}
-                </span>
+                      {hero.rankings?.[key] && (
+                        <small class="stat-rank">
+                          #{hero.rankings[key]}
+                        </small>
+                      )}
+                    </span>
 
-                <!-- STAT BAR -->
-                <div class="stat-bar">
-                  <div
-                    class={`stat-bar-fill ${
-                      hero.rankings?.[key] === 1
-                        ? "rank-1"
-                        : hero.rankings?.[key] === 2
-                        ? "rank-2"
-                        : hero.rankings?.[key] === 3
-                        ? "rank-3"
-                        : hero.rankings?.[key] <= 10
-                        ? "rank-top"
-                        : "rank-default"
-                    }`}
-                    style={`width: ${
-                      statMaxima[key]
-                        ? Math.min((hero.stats[key] / statMaxima[key]) * 100, 100)
-                        : 0
-                    }%`}
-                  />
+                    <!-- STAT BAR -->
+                    <div class="stat-bar">
+                      <div
+                        class={`stat-bar-fill ${
+                          hero.rankings?.[key] === 1
+                            ? "rank-1"
+                            : hero.rankings?.[key] === 2
+                            ? "rank-2"
+                            : hero.rankings?.[key] === 3
+                            ? "rank-3"
+                            : hero.rankings?.[key] <= 10
+                            ? "rank-top"
+                            : "rank-default"
+                        }`}
+                        style={`width: ${
+                          statMaxima[key]
+                            ? Math.min((hero.stats[key] / statMaxima[key]) * 100, 100)
+                            : 0
+                        }%`}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              );
+            })}
+          </div>
+          
+          <div class="stats-gradient-overlay" id="statsOverlay">
+            <button class="stats-view-more-btn" id="statsToggleBtn">
+              <span class="btn-text">View All Stats</span>
+              <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16">
+                <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -412,6 +465,43 @@ const STAT_LABELS = {
                     ? `${skillProfile.archetype} ⚡ Top Contributor: "${skillProfile.topSkill.name}" (${skillProfile.topSkill.score.toFixed(1)})`
                     : "Based on damage multipliers, AoE, CC effects, and utility"
                   }
+                </p>
+              </div>
+
+              <!-- Scenario Ratings Block -->
+              <div class="ranking-advanced-block">
+                <h4 class="ranking-advanced-title">
+                  <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"/>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                  </svg>
+                  Best For
+                  <span class="scenario-best-badge">{bestScenario.icon} {bestScenario.label} (#{bestScenario.rank} of {heroes.length})</span>
+                </h4>
+                <div class="scenario-ratings-grid">
+                  {scenarios.map(scenario => {
+                    const isBest = scenario.key === bestScenario.key;
+                    const percentage = Math.min((scenario.score / Math.max(...scenarios.map(s => s.score))) * 100, 100);
+                    return (
+                      <div class={`scenario-rating-item ${isBest ? 'is-best' : ''}`}>
+                        <div class="scenario-header">
+                          <span class="scenario-icon">{scenario.icon}</span>
+                          <span class="scenario-label">{scenario.label}</span>
+                          <span class="scenario-rank">#{scenario.rank}</span>
+                          {isBest && <span class="best-tag">★</span>}
+                        </div>
+                        <div class="scenario-score-row">
+                          <span class="scenario-score">{Math.round(scenario.score)}</span>
+                          <div class="scenario-bar">
+                            <div class="scenario-bar-fill" style={`width: ${percentage}%`}></div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p class="scenario-ratings-hint">
+                  Ratings reflect assumed item builds and synergy priorities per scenario. See <a href="/rankings">Rankings</a> for full comparison.
                 </p>
               </div>
 
@@ -1074,10 +1164,158 @@ const STAT_LABELS = {
     margin-top: 64px;
   }
 
+  .stats-wrapper {
+    position: relative;
+  }
+
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
+    transition: max-height 0.4s ease-out;
+    overflow: hidden;
+  }
+
+  .stats-grid.collapsed {
+    max-height: 280px;
+  }
+
+  .stats-grid.collapsed .stat-row.no-value {
+    display: none;
+  }
+
+  .stats-grid.expanded {
+    max-height: none;
+  }
+
+  .stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+  }
+
+  .stat-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stat-value {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+
+  .stat-current {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .stat-max {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+
+  .stat-rank {
+    color: #facc15;
+    font-weight: 700;
+    font-size: 0.75rem;
+  }
+
+  .stat-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .stat-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .stat-bar-fill.rank-1 {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+  }
+
+  .stat-bar-fill.rank-2 {
+    background: linear-gradient(90deg, #c0c0c0, #a8a8a8);
+    box-shadow: 0 0 6px rgba(192, 192, 192, 0.5);
+  }
+
+  .stat-bar-fill.rank-3 {
+    background: linear-gradient(90deg, #cd7f32, #b87333);
+    box-shadow: 0 0 6px rgba(205, 127, 50, 0.5);
+  }
+
+  .stat-bar-fill.rank-top {
+    background: linear-gradient(90deg, #60a5fa, #3b82f6);
+  }
+
+  .stat-bar-fill.rank-default {
+    background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+  }
+
+  .stats-gradient-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent 0%, rgba(7, 6, 12, 0.95) 70%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 16px;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .stats-gradient-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .stats-view-more-btn {
+    pointer-events: auto;
+    background: rgba(120, 90, 200, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: #e6e6eb;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .stats-view-more-btn:hover {
+    background: rgba(120, 90, 200, 0.35);
+    border-color: rgba(168, 85, 247, 0.6);
+    transform: translateY(-2px);
+  }
+
+  .stats-view-more-btn .btn-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .stats-view-more-btn.expanded .btn-icon {
+    transform: rotate(180deg);
   }
 
   .identity-content {
@@ -1684,6 +1922,154 @@ const STAT_LABELS = {
     font-style: italic;
   }
 
+  /* Scenario Ratings */
+  .scenario-best-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.15));
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fbbf24;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .scenario-ratings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .scenario-rating-item {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+
+  .scenario-rating-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .scenario-rating-item.is-best {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.04));
+    border-color: rgba(251, 191, 36, 0.3);
+  }
+
+  .scenario-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .scenario-icon {
+    font-size: 1.1rem;
+  }
+
+  .scenario-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.7);
+    flex: 1;
+  }
+
+  .scenario-rank {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scenario-rating-item.is-best .scenario-rank {
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.15);
+  }
+
+  .best-tag {
+    color: #fbbf24;
+    font-size: 0.9rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  .scenario-score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .scenario-score {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #e6e6eb;
+    font-variant-numeric: tabular-nums;
+    min-width: 45px;
+  }
+
+  .scenario-rating-item.is-best .scenario-score {
+    background: linear-gradient(90deg, #fbbf24, #facc15);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .scenario-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .scenario-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(168, 85, 247, 0.6), rgba(192, 132, 252, 0.6));
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .scenario-rating-item.is-best .scenario-bar-fill {
+    background: linear-gradient(90deg, #fbbf24, #facc15);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+  }
+
+  .scenario-ratings-hint {
+    margin: 12px 0 0 0;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+  }
+
+  .scenario-ratings-hint a {
+    color: #a78bfa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .scenario-ratings-hint a:hover {
+    color: #c084fc;
+    text-decoration: underline;
+  }
+
   .no-synergies {
     margin: 8px 0 0 0;
     font-size: 0.8rem;
@@ -1949,6 +2335,21 @@ const STAT_LABELS = {
     .video-guide-autor {
       font-size: 0.8rem;
     }
+
+    /* Mobile Stats */
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stats-grid.collapsed {
+      max-height: 320px;
+    }
+
+    .stats-view-more-btn {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+    }
   }
 
 </style>
@@ -2022,6 +2423,40 @@ const STAT_LABELS = {
     modeSelect.addEventListener("change", (e) => {
       const v = e.target.value;
       if (["general","pve","pvp"].includes(v)) setMode(v);
+    });
+  }
+
+  // --- Stats Section Toggle ---
+  const statsGrid = document.getElementById('statsGrid');
+  const statsToggleBtn = document.getElementById('statsToggleBtn');
+  const statsOverlay = document.getElementById('statsOverlay');
+  
+  if (statsToggleBtn && statsGrid && statsOverlay) {
+    statsToggleBtn.addEventListener('click', () => {
+      const isCollapsed = statsGrid.classList.contains('collapsed');
+      const btnText = statsToggleBtn.querySelector('.btn-text');
+      
+      if (isCollapsed) {
+        // Expand
+        statsGrid.classList.remove('collapsed');
+        statsGrid.classList.add('expanded');
+        statsToggleBtn.classList.add('expanded');
+        statsOverlay.classList.add('hidden');
+        if (btnText) btnText.textContent = 'View Less';
+      } else {
+        // Collapse
+        statsGrid.classList.remove('expanded');
+        statsGrid.classList.add('collapsed');
+        statsToggleBtn.classList.remove('expanded');
+        statsOverlay.classList.remove('hidden');
+        if (btnText) btnText.textContent = 'View All Stats';
+        
+        // Scroll back to stats section
+        const statsSection = document.querySelector('.hero-stats');
+        if (statsSection) {
+          statsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     });
   }
 
