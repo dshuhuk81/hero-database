@@ -49,11 +49,22 @@ export async function POST({ request }) {
     console.log('Registering user:', email);
 
     // Benutzer registrieren
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: false,
-    });
+    let authData, authError;
+    try {
+      const result = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: false,
+      });
+      authData = result.data;
+      authError = result.error;
+    } catch (err) {
+      console.error('Caught error during createUser:', err);
+      return new Response(
+        JSON.stringify({ error: 'CreateUser exception: ' + err.message, type: err.constructor.name }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     if (authError) {
       console.error('Auth error:', authError);
