@@ -12,6 +12,7 @@
     "tag-manager": "node scripts/tag-manager-server.js"
   },
   "dependencies": {
+    "@astrojs/vercel": "^9.0.4",
     "@supabase/supabase-js": "^2.98.0",
     "astro": "^4.16.19",
     "dotenv": "^17.3.1",
