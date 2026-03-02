@@ -1,126 +1,42 @@
 import { supabaseAdmin } from '../../../lib/supabase.js';
 
-export async function GET() {
-  return new Response(
-    JSON.stringify({ status: 'register endpoint active', supabaseAdmin: !!supabaseAdmin }),
-    { status: 200, headers: { 'Content-Type': 'application/json' } }
-  );
-}
-
-export async function POST({ request }) {
+export async function POST(context) {
   try {
-    if (!supabaseAdmin) {
-      return new Response(
-        JSON.stringify({ error: 'Supabase admin client is not configured' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Direkt JSON parsen
-    let data;
-    try {
-      data = await request.json();
-    } catch (e) {
-      console.error('JSON Parse error:', e.message);
-      console.log('Request headers:', request.headers);
-      return new Response(
-        JSON.stringify({ error: 'Invalid JSON: ' + e.message }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    const { email, password, confirmPassword } = data;
+    const { request } = context;
+    const { email, password, confirmPassword } = await request.json();
 
     // Validierung
     if (!email || !password || !confirmPassword) {
-      return new Response(
-        JSON.stringify({ error: 'Email und Passwort sind erforderlich' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Email und Passwort benötigt' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
-
+    
     if (password !== confirmPassword) {
-      return new Response(
-        JSON.stringify({ error: 'Passwörter stimmen nicht überein' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Passwörter stimmen nicht überein' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
     if (password.length < 6) {
-      return new Response(
-        JSON.stringify({ error: 'Passwort muss mindestens 6 Zeichen lang sein' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Passwort mind. 6 Zeichen' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    console.log('Registering user:', email);
+    // User erstellen (ohne Profil-Erstellung zunächst)
+    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: false,
+    });
 
-    // Benutzer registrieren
-    let authData, authError;
-    try {
-      const result = await supabaseAdmin.auth.admin.createUser({
-        email,
-        password,
-        email_confirm: false,
-      });
-      authData = result.data;
-      authError = result.error;
-    } catch (err) {
-      console.error('Caught error during createUser:', err);
-      return new Response(
-        JSON.stringify({ error: 'CreateUser exception: ' + err.message, type: err.constructor.name }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+    if (error) {
+      console.log('Supabase error:', error);
+      return new Response(JSON.stringify({ error: error.message }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    if (authError) {
-      console.error('Auth error:', authError);
-      return new Response(
-        JSON.stringify({ error: authError.message }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+    return new Response(JSON.stringify({ 
+      success: true,
+      user: { id: data.user.id, email: data.user.email }
+    }), { status: 201, headers: { 'Content-Type': 'application/json' } });
 
-    // User-Profil erstellen
-    const { error: profileError } = await supabaseAdmin
-      .from('user_profiles')
-      .insert({
-        id: authData.user.id,
-        email: authData.user.email,
-      });
-
-    if (profileError) {
-      console.error('Profile error:', profileError);
-      await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
-      return new Response(
-        JSON.stringify({ error: 'Fehler beim Erstellen des Profils: ' + profileError.message }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    console.log('User created successfully:', authData.user.id);
-
-    return new Response(
-      JSON.stringify({
-        message: 'Registrierung erfolgreich',
-        user: {
-          id: authData.user.id,
-          email: authData.user.email,
-        },
-      }),
-      { status: 201, headers: { 'Content-Type': 'application/json' } }
-    );
-  } catch (error) {
-    console.error('Register error:', error.message);
-    console.error('Full error:', error);
-    console.error('Error stack:', error.stack);
-    return new Response(
-      JSON.stringify({ 
-        error: 'Server error: ' + error.message,
-        stack: error.stack,
-        type: error.constructor.name 
-      }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+  } catch (e) {
+    console.log('Exception:', e.message);
+    return new Response(JSON.stringify({ error: 'Fehler: ' + e.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
