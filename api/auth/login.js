@@ -6,6 +6,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (!supabaseClient) {
+    return res.status(500).json({ error: 'Supabase client is not configured' });
+  }
+
   const { email, password } = req.body;
 
   // Validierung
@@ -41,6 +45,6 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error('Login error:', error);
-    return res.status(500).json({ error: 'Interner Fehler' });
+    return res.status(500).json({ error: 'Interner Fehler: ' + error.message });
   }
 }
