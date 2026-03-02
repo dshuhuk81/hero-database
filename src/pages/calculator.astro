@@ -13,7 +13,6 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
 
 <Sidebar />
 
-
 <main class="main-content">
   <h1 class="title">Skill Value Comparator</h1>
   <p class="subtitle">Select one hero first. Add a second hero only if you want side-by-side comparison.</p>
@@ -39,6 +38,46 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
       </div>
     </section>
 
+    <!-- NEW: Global damage model controls -->
+    <section class="setup-card">
+      <h3 class="panel-title">Damage Model (Global)</h3>
+
+      <div class="model-grid">
+        <div class="field">
+          <label for="mitigation-model">Mitigation Model</label>
+          <select id="mitigation-model">
+            <option value="armor_over_k" selected>Armor / (Armor + K)</option>
+            <option value="atk_over_armor_c">ATK / (ATK + Armor · C)</option>
+          </select>
+        </div>
+
+        <div class="field" id="k-field">
+          <label for="k-preset">K Preset</label>
+          <select id="k-preset">
+            <option value="100000">Low (K=100k)</option>
+            <option value="52000" selected>Balanced (K=52k)</option>
+            <option value="28600">High (K=28.6k)</option>
+            <option value="custom">Custom</option>
+          </select>
+
+          <input id="k-custom" type="number" min="0" step="100" value="52000" class="hidden" />
+          <div class="hint">Estimated model (not official). Use presets for quick comparisons.</div>
+        </div>
+
+        <div class="field hidden" id="c-field">
+          <label for="c-custom">C (Armor scaling)</label>
+          <input id="c-custom" type="number" min="0" step="0.1" value="1" />
+          <div class="hint">Used only for ATK/(ATK+Armor·C).</div>
+        </div>
+
+        <div class="field">
+          <label for="extra-phys-red">Extra Physical DMG Reduction (Items/Buffs)</label>
+          <input id="extra-phys-red" type="range" min="0" max="60" value="0" />
+          <div class="hint"><span id="extra-phys-red-val">0</span>%</div>
+        </div>
+      </div>
+    </section>
+
     <section class="compare-layout" id="compare-layout">
       <div class="hero-slot" id="hero-a-slot"></div>
 
@@ -53,9 +92,88 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
 
 <script define:vars={{ heroes: sortedHeroes }}>
   function formatNumber(value) {
-    return Math.round(value).toLocaleString();
+    const n = Number(value || 0);
+    return Math.round(n).toLocaleString();
   }
 
+  // ---------- NEW: global model helpers ----------
+  function getGlobalModelSettings() {
+    const model = document.getElementById("mitigation-model")?.value || "armor_over_k";
+
+    const extraPhysRed = Number(document.getElementById("extra-phys-red")?.value || 0);
+
+    const kPreset = document.getElementById("k-preset")?.value || "52000";
+    const kCustom = Number(document.getElementById("k-custom")?.value || 52000);
+    const k = (kPreset === "custom") ? kCustom : Number(kPreset);
+
+    const c = Number(document.getElementById("c-custom")?.value || 1);
+
+    return { model, k, c, extraPhysRed };
+  }
+
+  function applyExtraRed(dmg, extraPct) {
+    return dmg * (1 - (extraPct / 100));
+  }
+
+  function finalPhysicalDamage(raw, attackerAtk, targetArmor, settings) {
+    if (!raw) return 0;
+
+    let final = raw;
+
+    if (settings.model === "armor_over_k") {
+      const armor = Number(targetArmor || 0);
+      const k = Number(settings.k || 0);
+      const dr = (armor > 0 && (armor + k) > 0) ? (armor / (armor + k)) : 0;
+      final = raw * (1 - dr);
+    } else {
+      const atk = Number(attackerAtk || 0);
+      const armor = Number(targetArmor || 0);
+      const c = Number(settings.c || 1);
+      const denom = atk + (armor * c);
+      final = denom > 0 ? raw * (atk / denom) : raw;
+    }
+
+    return applyExtraRed(final, settings.extraPhysRed || 0);
+  }
+
+  function extractAtkPercents(text) {
+    const matches = [...(text || "").matchAll(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi)];
+    return matches.map(m => Number(m[1]));
+  }
+
+  function extractCurrentHpTick(text) {
+    const pct = /(\d+(?:\.\d+)?)%\s*of\s+(?:their\s+)?current\s+HP/gi.exec(text || "");
+    const cap = /capped\s+at\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi.exec(text || "");
+    const every = /Every\s+(\d+(?:\.\d+)?)s/gi.exec(text || "");
+    return {
+      hpPct: pct ? Number(pct[1]) : null,
+      capAtkPct: cap ? Number(cap[1]) : null,
+      interval: every ? Number(every[1]) : null
+    };
+  }
+
+  function syncModelUI() {
+    const model = document.getElementById("mitigation-model")?.value;
+    const kField = document.getElementById("k-field");
+    const cField = document.getElementById("c-field");
+
+    if (kField) kField.classList.toggle("hidden", model !== "armor_over_k");
+    if (cField) cField.classList.toggle("hidden", model !== "atk_over_armor_c");
+  }
+
+  function syncKUI() {
+    const preset = document.getElementById("k-preset")?.value;
+    const custom = document.getElementById("k-custom");
+    if (custom) custom.classList.toggle("hidden", preset !== "custom");
+  }
+
+  function syncExtraRedUI() {
+    const v = document.getElementById("extra-phys-red")?.value || "0";
+    const out = document.getElementById("extra-phys-red-val");
+    if (out) out.textContent = v;
+  }
+
+  // ---------- existing: tooltip replacements ----------
   function replaceStatBoundPercents(text, sourceHero, targetHero) {
     if (!text) return "";
 
@@ -106,10 +224,71 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     return output;
   }
 
+  function renderSkillNumbers(skill, sourceHero, targetHero) {
+    const settings = getGlobalModelSettings();
+
+    if (!targetHero) {
+      return `
+        <div class="numbers-row muted">
+          <span>Select a comparison hero to estimate damage vs Armor.</span>
+        </div>
+      `;
+    }
+
+    const rows = [];
+
+    // Active/Burst: highest ATK% found in description+upgrades (best rank proxy)
+    const allTexts = [skill.description, ...(skill.upgrades ? Object.values(skill.upgrades) : [])].join(" ");
+    const percents = extractAtkPercents(allTexts);
+    const bestPct = percents.length ? Math.max(...percents) : null;
+
+    if (bestPct) {
+      const raw = (bestPct / 100) * sourceHero.stats.atk;
+      const est = finalPhysicalDamage(raw, sourceHero.stats.atk, targetHero.stats.armor, settings);
+
+      rows.push(`
+        <div class="numbers-row">
+          <div><span class="num-label">Raw</span><span class="num">${formatNumber(raw)}</span></div>
+          <div><span class="num-label">Est. vs ${targetHero.name}</span><span class="num">${formatNumber(est)}</span></div>
+          <div><span class="num-label">ATK%</span><span class="num">${bestPct}%</span></div>
+        </div>
+      `);
+    }
+
+    // Tick1 (current HP % capped at % ATK)
+    const t = extractCurrentHpTick(skill.description);
+    if (t.hpPct && t.capAtkPct) {
+      const rawHp = (t.hpPct / 100) * targetHero.stats.hp;
+      const cap = (t.capAtkPct / 100) * sourceHero.stats.atk;
+      const tick1Raw = Math.min(rawHp, cap);
+      const tick1Est = finalPhysicalDamage(tick1Raw, sourceHero.stats.atk, targetHero.stats.armor, settings);
+      const interval = t.interval ?? 2.5;
+
+      rows.push(`
+        <div class="numbers-row">
+          <div><span class="num-label">Tick1 Raw</span><span class="num">${formatNumber(tick1Raw)}</span></div>
+          <div><span class="num-label">Tick1 Est.</span><span class="num">${formatNumber(tick1Est)}</span></div>
+          <div><span class="num-label">Interval</span><span class="num">${interval}s</span></div>
+        </div>
+      `);
+    }
+
+    if (!rows.length) {
+      return `
+        <div class="numbers-row muted">
+          <span>No numeric patterns detected for this skill yet.</span>
+        </div>
+      `;
+    }
+
+    return rows.join("");
+  }
+
   function renderSkillBlock(skill, sourceHero, targetHero, skillIndex) {
     const upgraded = skill.upgrades || {};
     // Construct image path: use explicit path if provided, otherwise infer from hero ID and skill index
     const icon = skill.image || `/skills/${sourceHero.id}_skill_${skillIndex}.webp`;
+
     const level2 = upgraded.level2
       ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 2</span><span class="upgrade-text">${replaceStatBoundPercents(upgraded.level2, sourceHero, targetHero)}</span></div>`
       : "";
@@ -124,6 +303,8 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
       ? `<div class="skill-upgrades">${level2}${level3}${level4}</div>`
       : "";
 
+    const numbersHtml = renderSkillNumbers(skill, sourceHero, targetHero);
+
     return `
       <div class="skill-card">
         <div class="skill-header">
@@ -136,6 +317,7 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
           </div>
         </div>
         <p class="skill-description">${replaceStatBoundPercents(skill.description, sourceHero, targetHero)}</p>
+        ${numbersHtml}
         ${upgradeHtml}
       </div>
     `;
@@ -283,6 +465,30 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
   document.getElementById("hero-a-select").addEventListener("change", renderPage);
   document.getElementById("hero-b-select").addEventListener("change", renderPage);
 
+  // NEW: global model events => rerender
+  document.getElementById("mitigation-model")?.addEventListener("change", () => {
+    syncModelUI();
+    renderPage();
+  });
+
+  document.getElementById("k-preset")?.addEventListener("change", () => {
+    syncKUI();
+    renderPage();
+  });
+
+  document.getElementById("k-custom")?.addEventListener("input", renderPage);
+  document.getElementById("c-custom")?.addEventListener("input", renderPage);
+
+  document.getElementById("extra-phys-red")?.addEventListener("input", () => {
+    syncExtraRedUI();
+    renderPage();
+  });
+
+  // init UI
+  syncModelUI();
+  syncKUI();
+  syncExtraRedUI();
+
   renderPage();
 </script>
 
@@ -303,7 +509,6 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
   :global(body) {
     margin-left: 48px;
   }
-
 
   .hero-header {
     height: 300px;
@@ -329,19 +534,7 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     padding: 0 20px 56px;
   }
 
-  .content-wrapper {
-    max-width: 1180px;
-    margin: 0 auto;
-  }
-.hero-name{margin: 0; padding:0}
-  .title {
-    text-align: center;
-    margin: 28px 0 8px;
-    font-size: 2.1rem;
-    color: #fff;
-  }
-
-  .subtitle {
+subtitle {
     text-align: center;
     margin: 0 0 22px;
     color: rgba(255, 255, 255, 0.8);
@@ -357,6 +550,30 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     flex-direction: column;
     gap: 6px;
   }
+
+  /* NEW: model panel styling */
+  .panel-title { margin: 0 0 8px; font-size: 1rem; color: #fff; }
+
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  .field input[type="number"] {
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .field input[type="range"] { width: 100%; }
+
+  .hint { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
 
   .primary-toolbar {
     display: flex;
@@ -476,7 +693,7 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     margin-top: 24px;
   }
 
-  .hero-head {
+ .hero-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -668,6 +885,47 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     font-size: 0.84rem;
   }
 
+  /* NEW: numbers rows under each skill */
+  .numbers-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    padding: 10px 0 0;
+    margin-bottom: 0.625rem;
+  }
+
+  .numbers-row > div {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 8px;
+    min-width: 0;
+  }
+
+  .num-label {
+    display: block;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2px;
+  }
+
+  .num {
+    display: block;
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .numbers-row.muted {
+    grid-template-columns: 1fr;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.82rem;
+    padding-top: 0;
+  }
+
   .skill-upgrades {
     display: flex;
     flex-direction: column;
@@ -707,19 +965,21 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     display: none;
   }
 
-  @media (max-width: 900px) {
+@media (max-width: 900px) {
     .compare-layout {
       flex-direction: column;
     }
 
     .add-slot {
       min-height: 40px;
-
     }
 
     .skills-stack {
       gap: 0.75rem;
     }
+
+    .model-grid { grid-template-columns: 1fr; }
+    .numbers-row { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 768px) {
@@ -819,3 +1079,19 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     }
   }
 </style>
+
+  .content-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  .hero-name { margin: 0; padding: 0; }
+
+  .title {
+    text-align: center;
+    margin: 28px 0 8px;
+    font-size: 2.1rem;
+    color: #fff;
+  }
+
+ 
