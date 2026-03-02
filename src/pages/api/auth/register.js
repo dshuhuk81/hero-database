@@ -1,42 +1,38 @@
 import { supabaseAdmin } from '../../../lib/supabase.js';
 
-export async function POST(context) {
+async function registerUser(email, password) {
+  if (!supabaseAdmin) throw new Error('Supabase not configured');
+  if (!email || !password) throw new Error('Email and password required');
+  
+  const { data, error } = await supabaseAdmin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: false,
+  });
+  
+  if (error) throw new Error(error.message);
+  return data.user;
+}
+
+export async function POST({ request }) {
   try {
-    const { request } = context;
-    const { email, password, confirmPassword } = await request.json();
+    const body = await request.json();
+    const { email, password, confirmPassword } = body;
 
-    // Validierung
-    if (!email || !password || !confirmPassword) {
-      return new Response(JSON.stringify({ error: 'Email und Passwort benötigt' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-    }
-    
     if (password !== confirmPassword) {
-      return new Response(JSON.stringify({ error: 'Passwörter stimmen nicht überein' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      throw new Error('Passwords do not match');
     }
 
-    if (password.length < 6) {
-      return new Response(JSON.stringify({ error: 'Passwort mind. 6 Zeichen' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-    }
+    const user = await registerUser(email, password);
 
-    // User erstellen (ohne Profil-Erstellung zunächst)
-    const { data, error } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: false,
-    });
-
-    if (error) {
-      console.log('Supabase error:', error);
-      return new Response(JSON.stringify({ error: error.message }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-    }
-
-    return new Response(JSON.stringify({ 
-      success: true,
-      user: { id: data.user.id, email: data.user.email }
-    }), { status: 201, headers: { 'Content-Type': 'application/json' } });
-
-  } catch (e) {
-    console.log('Exception:', e.message);
-    return new Response(JSON.stringify({ error: 'Fehler: ' + e.message }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({ success: true, user: { id: user.id, email: user.email } }),
+      { status: 201, headers: { 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: error.message || 'Registration failed' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }
