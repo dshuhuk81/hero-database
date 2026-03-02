@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
-      email_confirm: false, // Email-Bestätigung kann später aktiviert werden
+      email_confirm: true,
     });
 
     if (authError) {
