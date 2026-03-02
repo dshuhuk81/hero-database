@@ -14,12 +14,12 @@
     "tag-manager": "node scripts/tag-manager-server.js"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=18.0.0"
   },
   "dependencies": {
-    "@astrojs/vercel": "^7.6.0",
+    "@astrojs/vercel": "^9.0.4",
     "@supabase/supabase-js": "^2.98.0",
-    "astro": "^4.16.19",
+    "astro": "^5.18.0",
     "dotenv": "^17.3.1",
     "express": "^4.18.2"
   },
