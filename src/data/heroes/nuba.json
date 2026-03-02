@@ -51,16 +51,6 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Curse of Decay",
-      "description": "Enemies infested with Crimson Doom Mark deal 25% less DMG. Each time Nuba casts her Ultimate, all enemies infested with Crimson Doom Mark permanently lose 15% ATK SPD, stacking up to 4 times.",
-      "upgrades": {
-        "level2": "For each Crimson Doom Mark on the battlefield, Nuba gains 15% DMG RED. This effect stacks.",
-        "level3": "Crimson Doom Mark deals DMG and destroys energy once every 1.5 seconds.",
-        "level4": "When reviving by consuming a Source of the Drought Devil, Nuba retains the Energy she had before she fell."
-      }
-    },
-    {
-      "id": "skill_2",
       "name": "Siphon of Souls",
       "description": "Passively, at the start of battle, inflicts Crimson Doom Mark on the 3 farthest enemies. Every 2.5s, Crimson Doom Mark deals DMG equal to 15% of their current HP, capped at 240% of ATK, and destroys 50 Energy. When an enemy with Crimson Doom Mark falls, the mark does not disappear. Instead, it drains the target's essence and transforms into a Source of the Drought Devil at the target's location. Upon activation, inflicts Crimson Doom Mark on the nearest enemy, disabling them for 3 seconds, dealing 400% of ATK DMG, and absorbing 200 Energy.",
       "upgrades": {
@@ -70,7 +60,7 @@
       }
     },
     {
-      "id": "skill_3",
+      "id": "skill_2",
       "name": "Infernal Soulbreaker",
       "description": "Deal 100% of ATK DMG to the nearest enemy and interrupt them. If the target has Crimson Doom Mark, this instead deals 300% of ATK DMG and stuns the target for 2s.",
       "upgrades": {
@@ -80,7 +70,7 @@
       }
     },
     {
-      "id": "skill_4",
+      "id": "skill_3",
       "name": "Rite of Ashes",
       "description": "Passively, heals for 50% of the DMG dealt by Nuba and Crimson Doom Mark. Converts any HP restored beyond Max HP into a shield. This shield cannot exceed 100% of Nuba's Max HP.",
       "upgrades": {
@@ -88,17 +78,27 @@
         "level3": "The shield cap is increased to 200% of Nuba's Max HP.",
         "level4": "HP restored from DMG dealt by Nuba and Crimson Doom Mark is increased to 100%."
       }
+    },
+    {
+      "id": "skill_4",
+      "name": "Rise of the Drought",
+      "description": "When Nuba falls, she consumes one Source of the Drought Devil to revive at her current location, restoring 30% of her Max HP.",
+      "upgrades": {
+        "level2": "Increases HP restored to 40%.",
+        "level3": "For each second the Source of the Drought Devil has existed, Nuba restores an additional 5% of Max HP upon revival.",
+        "level4": "Increases HP restored to 50%."
+      }
     }
   ],
   "relic": {
-    "name": "Rise of the Drought",
-    "description": "When Nuba falls, she consumes one Source of the Drought Devil to revive at her current location, restoring 30% of her Max HP.",
-    "upgrades": {
-      "level2": "Increases HP restored to 40%.",
-      "level3": "For each second the Source of the Drought Devil has existed, Nuba restores an additional 5% of Max HP upon revival.",
-      "level4": "Increases HP restored to 50%."
-    }
-  },
+      "name": "Curse of Decay",
+      "description": "Enemies infested with Crimson Doom Mark deal 25% less DMG. Each time Nuba casts her Ultimate, all enemies infested with Crimson Doom Mark permanently lose 15% ATK SPD, stacking up to 4 times.",
+      "upgrades": {
+        "level2": "For each Crimson Doom Mark on the battlefield, Nuba gains 15% DMG RED. This effect stacks.",
+        "level3": "Crimson Doom Mark deals DMG and destroys energy once every 1.5 seconds.",
+        "level4": "When reviving by consuming a Source of the Drought Devil, Nuba retains the Energy she had before she fell."
+      }
+    },
   "synergies": [
     "BUFF_TEAM",
     "HEAL_TEAM",
