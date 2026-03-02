@@ -14,6 +14,6 @@ export default defineConfig({
   
   // Vercel Adapter für Deployment
   adapter: vercel({
-    runtime: 'nodejs20.x'
+    functionPerRoute: false
   }),
 });
