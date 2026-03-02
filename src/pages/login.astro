@@ -186,7 +186,12 @@
 
                 if (response.ok) {
                     // Token speichern
-                    localStorage.setItem('authToken', data.session.access_token);
+                    const accessToken = data.accessToken || data.session?.access_token;
+                    if (!accessToken) {
+                        throw new Error('Kein Access Token in Login-Antwort erhalten');
+                    }
+
+                    localStorage.setItem('authToken', accessToken);
                     localStorage.setItem('userId', data.user.id);
                     localStorage.setItem('userEmail', data.user.email);
 

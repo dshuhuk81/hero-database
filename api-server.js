@@ -6,17 +6,23 @@ import { createClient } from '@supabase/supabase-js';
 dotenv.config({ path: '.env.local' });
 
 const app = express();
-const PORT = process.env.API_PORT || 3001;
+const PORT = Number(process.env.API_PORT || process.env.PORT || 3001);
 
 // Middleware
 app.use(express.json());
 
 // Supabase Clients
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
   console.error('ERROR: Missing Supabase credentials');
+  process.exit(1);
+}
+
+if (!supabaseAnonKey) {
+  console.error('ERROR: Missing Supabase anon key (SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY)');
   process.exit(1);
 }
 
@@ -35,6 +41,23 @@ app.use((req, res, next) => {
 // Health Check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+
+app.get('/api/health/auth', async (req, res) => {
+  try {
+    const { error } = await supabaseAdmin
+      .from('user_profiles')
+      .select('id')
+      .limit(1);
+
+    if (error) {
+      return res.status(500).json({ ok: false, dbReachable: false, error: error.message });
+    }
+
+    return res.json({ ok: true, dbReachable: true, port: PORT });
+  } catch (error) {
+    return res.status(500).json({ ok: false, dbReachable: false, error: error.message });
+  }
 });
 
 // Debug endpoint to verify API is reachable
@@ -116,7 +139,7 @@ app.post('/api/auth/login', async (req, res) => {
 
     // Mit Service Role client kann man nicht login...
     // Wir müssen das anders machen mit der Anon-Key
-    const supabaseClient = createClient(supabaseUrl, process.env.SUPABASE_ANON_KEY);
+    const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
     const { data, error } = await supabaseClient.auth.signInWithPassword({
       email,
@@ -134,7 +157,8 @@ app.post('/api/auth/login', async (req, res) => {
         id: data.user.id,
         email: data.user.email,
       },
-      session: data.session,
+      accessToken: data.session?.access_token || null,
+      expiresIn: data.session?.expires_in || null,
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -431,7 +455,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Interner Fehler' });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`API Server läuft auf http://localhost:${PORT}`);
-  console.log('Health Check: http://localhost:${PORT}/health');
+  console.log(`Health Check: http://localhost:${PORT}/health`);
+  console.log(`Auth Health: http://localhost:${PORT}/api/health/auth`);
 });
+
+const shutdown = (signal) => {
+  console.log(`\n${signal} empfangen, beende API Server...`);
+  server.close(() => {
+    console.log('API Server sauber beendet.');
+    process.exit(0);
+  });
+};
+
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));

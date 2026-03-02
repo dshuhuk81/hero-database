@@ -41,7 +41,8 @@ export default async function handler(req, res) {
         id: data.user.id,
         email: data.user.email,
       },
-      session: data.session,
+      accessToken: data.session?.access_token || null,
+      expiresIn: data.session?.expires_in || null,
     });
   } catch (error) {
     console.error('Login error:', error);
