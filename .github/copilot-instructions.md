@@ -41,6 +41,36 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 8
   - Role-specific value (DPS prioritizes damage; Support prioritizes utility)
 - **Keyword Dictionaries**: CC_KEYWORDS, UTILITY_KEYWORDS, SCALING_KEYWORDS, AOE_KEYWORDS, CARRY_KEYWORDS
 
+#### User Heroes & Sharing System (`src/pages/myheroes.astro`, `src/pages/shared-heroes/[id].astro`, `api-server.js`)
+- **Authentication**: Logged-in users can select and organize heroes in "My Heroes" page
+- **User Heroes Table** (`user_heroes` in Supabase):
+  - `user_id` (references auth.users)
+  - `hero_id` (hero identifier)
+  - `evolution` (1-15 integer tracking power level)
+  - `is_favorited` (boolean, currently unused)
+- **Shared Setups** (`shared_hero_configs` in Supabase):
+  - `share_id` (8-character unique ID for public sharing)
+  - `user_id` (setup creator)
+  - `heroes_data` (JSON array with hero_id + evolution for each selected hero)
+  - `created_at` (timestamp)
+- **Evolution Levels** (1-15 mapping):
+  - 1: Elite, 2: Elite+, 3: Epic, 4: Epic+, 5: Legendary
+  - 6: Legendary+, 7: Exalted, 8: Exalted+, 9: Mythic
+  - 10: Divine, 11-15: Divine I through Divine V
+- **Frontend Features**:
+  - Hero card grid with background images (portraits)
+  - Per-hero evolution stepper (◀ Level ▶)
+  - Faction grouping with icons
+  - Share button generates public link automatically
+  - Non-selected heroes displayed at 50% opacity
+- **API Endpoints**:
+  - `POST /api/user/heroes/share` (auth required) – Create shareable setup link
+  - `GET /api/shared-heroes/:shareId` (public) – Retrieve shared setup data
+  - `POST /api/user/heroes` (auth required) – Add hero to user collection
+  - `PATCH /api/user/heroes/:heroId` (auth required) – Update hero evolution or favorite status
+  - `DELETE /api/user/heroes/:heroId` (auth required) – Remove hero from collection
+  - `GET /api/user/heroes` (auth required) – Fetch all user's selected heroes
+
 ## File Conventions
 
 ### Hero Data (`src/data/heroes/*.json`)
@@ -129,6 +159,20 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 8
 3. Assign tags to heroes via UI
 4. Tags persist to `src/data/tags.json` and per-hero JSON files
 
+### Use My Heroes Feature
+1. **Setup**: User must be logged in via `/login` or `/register`
+2. **Select Heroes**: Navigate to `/myheroes` → click hero cards to select/deselect
+3. **Manage Evolution**: Use ◀ ▶ buttons next to each selected hero to adjust level (1-15)
+4. **Share Setup**: Click "Share Setup" button → link auto-copied to clipboard
+5. **View Shared**: Anyone can access `/shared-heroes/{shareId}` to see the public setup
+
+### Test Sharing Locally
+1. Create account via `/register`
+2. Add heroes on `/myheroes`
+3. Click "Share Setup" → get link like `http://localhost:4322/shared-heroes/abc12def`
+4. Open link in incognito/different browser → should show public view
+5. Verify RLS policies in Supabase allow public read access to `shared_hero_configs`
+
 ### Validate Data
 - `node validate-bosses.js` – Check boss data consistency
 - `node validate-pvp-ratings.js` – Check PvP rating format
@@ -151,6 +195,9 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 8
 - **Scripts** modify hero JSON files directly (no database)
 - **Tag Manager** is standalone Express app; edits tags.json and hero files
 - **Hero Adapter** resolves per-hero stats against class base-stats (heroAdapter.js)
+- **My Heroes Page** (`myheroes.astro`) – Authenticated feature; interacts with API server for user-specific data
+- **Shared Heroes Page** (`shared-heroes/[id].astro`) – Public-facing; fetches from API endpoint, no auth required
+- **API Server** (`api-server.js`) – Handles all user authentication, hero selection, and share management via Supabase
 
 ## Development Tools
 
@@ -189,3 +236,11 @@ These are one-off debugging tools in root directory (not part of automated build
 - **Script Fails**: 
   - Ensure file paths use `src/data/` relative to workspace root
   - For analysis scripts: hero names must match exactly (case-insensitive match in code)
+
+- **My Heroes Feature Issues**:
+  - **Share button not showing**: User must be logged in (check `authToken` in localStorage)
+  - **"Error: Failed to create share link" on click**: Check API server logs for detailed error
+  - **Shared link returns 404**: Verify `shared_hero_configs` table exists in Supabase with correct schema
+  - **Shared heroes not showing**: Confirm RLS policies are set correctly (SELECT policy should allow `true`)
+  - **Evolution not updating**: Ensure `PATCH /api/user/heroes/:heroId` includes `evolution` field (1-15 range)
+  - **Heroes missing from user's collection**: Check if `user_id` in `user_heroes` table matches `auth.uid()` from token
