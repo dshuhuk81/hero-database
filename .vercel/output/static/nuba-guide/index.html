@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuba – Godess of Drought | Hero Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #8B1A1A;
+    --crimson-bright: #C0392B;
+    --crimson-glow: #FF4444;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --dark: #0D0A0A;
+    --dark-mid: #1A1212;
+    --dark-card: #130E0E;
+    --text: #E8DDD0;
+    --text-muted: #9A8A7A;
+    --doom-purple: #6B3FA0;
+    --doom-purple-light: #9B6BD0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Atmospheric background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(139,26,26,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 80% 50%, rgba(107,63,160,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 20% 80%, rgba(139,26,26,0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HERO HEADER ── */
+  .hero-header {
+    text-align: center;
+    padding: 60px 0 40px;
+    position: relative;
+  }
+
+  .hero-header::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--crimson), var(--gold), transparent);
+    margin-top: 40px;
+    opacity: 0.6;
+  }
+
+  .epithet {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 12px;
+  }
+
+  .hero-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(52px, 10vw, 88px);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    text-shadow:
+      0 0 40px rgba(139,26,26,0.8),
+      0 0 80px rgba(139,26,26,0.4),
+      0 2px 4px rgba(0,0,0,0.8);
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+
+  .hero-name span {
+    color: var(--crimson-bright);
+  }
+
+  .hero-quote {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 420px;
+    margin: 0 auto 20px;
+    opacity: 0.85;
+  }
+
+  .tags {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .tag {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    padding: 5px 16px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .tag-faction {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+
+  .tag-class {
+    border-color: var(--crimson);
+    color: #E07070;
+    background: rgba(139,26,26,0.12);
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section {
+    margin-top: 48px;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .section-title::before, .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4));
+  }
+
+  .section-title::before { background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent); }
+
+  /* ── OVERVIEW CARD ── */
+  .overview-card {
+    background: var(--dark-card);
+    border: 1px solid rgba(139,26,26,0.3);
+    border-top: 2px solid var(--crimson);
+    padding: 28px 32px;
+    position: relative;
+  }
+
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(139,26,26,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .overview-card p {
+    color: var(--text);
+    opacity: 0.9;
+    margin-bottom: 12px;
+  }
+
+  .overview-card p:last-child { margin-bottom: 0; }
+
+  /* ── SKILL CARDS ── */
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .skill-card {
+    background: var(--dark-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 3px solid var(--crimson);
+    padding: 20px 24px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .skill-card:hover {
+    border-left-color: var(--gold);
+  }
+
+  .skill-card.ultimate {
+    border-left-color: var(--gold);
+    background: linear-gradient(90deg, rgba(201,168,76,0.04) 0%, var(--dark-card) 40%);
+  }
+
+  .skill-card.relic {
+    border-left-color: var(--doom-purple-light);
+    background: linear-gradient(90deg, rgba(107,63,160,0.05) 0%, var(--dark-card) 40%);
+  }
+
+  .skill-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .skill-name {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .skill-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    padding: 2px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .badge-ultimate { background: rgba(201,168,76,0.2); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.4); }
+  .badge-relic { background: rgba(107,63,160,0.2); color: var(--doom-purple-light); border: 1px solid rgba(107,63,160,0.4); }
+  .badge-skill { background: rgba(139,26,26,0.25); color: #E07070; border: 1px solid rgba(192,57,43,0.4); }
+
+  .skill-desc {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  .skill-note {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: rgba(201,168,76,0.06);
+    border-left: 2px solid rgba(201,168,76,0.3);
+    font-size: 13px;
+    color: var(--gold-light);
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  /* ── DOOM MARK MECHANIC ── */
+  .mechanic-box {
+    background: linear-gradient(135deg, rgba(107,63,160,0.12), rgba(139,26,26,0.08));
+    border: 1px solid rgba(107,63,160,0.3);
+    padding: 24px 28px;
+    position: relative;
+  }
+
+  .mechanic-box::before {
+    content: '✦';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--doom-purple-light);
+    font-size: 16px;
+    background: var(--dark);
+    padding: 0 8px;
+  }
+
+  .mechanic-label {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--doom-purple-light);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .mechanic-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mechanic-list li {
+    padding-left: 20px;
+    position: relative;
+    font-size: 14.5px;
+    color: var(--text);
+    opacity: 0.88;
+  }
+
+  .mechanic-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--doom-purple-light);
+    font-size: 12px;
+    top: 2px;
+  }
+
+  /* ── RATING BLOCKS ── */
+  .rating-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+  }
+
+  .rating-card {
+    background: var(--dark-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 18px 20px;
+    text-align: center;
+  }
+
+  .rating-mode {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .rating-value {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .rating-s { color: var(--gold); text-shadow: 0 0 20px rgba(201,168,76,0.5); }
+  .rating-a { color: #7EC8E3; text-shadow: 0 0 20px rgba(126,200,227,0.4); }
+  .rating-b { color: #90C97A; text-shadow: 0 0 20px rgba(144,201,122,0.3); }
+
+  .rating-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── STRENGTH / WEAKNESS ── */
+  .sw-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 540px) {
+    .sw-grid { grid-template-columns: 1fr; }
+    .hero-name { font-size: 52px; }
+  }
+
+  .sw-card {
+    background: var(--dark-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 20px 22px;
+  }
+
+  .sw-card.strengths { border-top: 2px solid #5DAA60; }
+  .sw-card.weaknesses { border-top: 2px solid var(--crimson); }
+
+  .sw-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .sw-card.strengths .sw-title { color: #7FC882; }
+  .sw-card.weaknesses .sw-title { color: #E07070; }
+
+  .sw-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sw-list li {
+    font-size: 13.5px;
+    color: var(--text);
+    opacity: 0.85;
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .sw-card.strengths .sw-list li::before { content: '+'; position: absolute; left: 0; color: #7FC882; font-weight: 700; }
+  .sw-card.weaknesses .sw-list li::before { content: '−'; position: absolute; left: 0; color: #E07070; font-weight: 700; }
+
+  /* ── POSITIONING ── */
+  .pos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 540px) { .pos-grid { grid-template-columns: 1fr; } }
+
+  .pos-card {
+    background: var(--dark-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 18px 20px;
+  }
+
+  .pos-mode {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .pos-card p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── SYNERGY ── */
+  .synergy-note {
+    background: var(--dark-card);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 20px 24px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .synergy-note strong {
+    color: var(--gold-light);
+    font-style: normal;
+  }
+
+  /* ── FOOTER ── */
+  .guide-footer {
+    margin-top: 56px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    opacity: 0.5;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+  }
+
+  .divider-ornament {
+    text-align: center;
+    color: var(--crimson);
+    font-size: 18px;
+    margin: 8px 0;
+    opacity: 0.5;
+    letter-spacing: 8px;
+  }
+
+  highlight {
+    color: var(--crimson-bright);
+    font-style: normal;
+  }
+
+  doom {
+    color: var(--doom-purple-light);
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="hero-header">
+    <div class="epithet">Motto Immortal · Hero Guide</div>
+    <h1 class="hero-name">N<span>u</span>ba</h1>
+    <p class="hero-quote">"The world fears, banishes, and curses me. But I just don't understand what I've done wrong."</p>
+    <div class="tags">
+      <span class="tag tag-faction">⚔ Club Faction</span>
+      <span class="tag tag-class">🛡 Warrior Class</span>
+    </div>
+  </header>
+
+  <!-- OVERVIEW -->
+  <section class="section">
+    <div class="section-title">Overview</div>
+    <div class="overview-card">
+      <p>Nuba, the <em>Goddess of Drought</em>, appears to be a <strong>Warrior</strong> of the <strong>Club</strong> faction whose entire kit revolves around a unique debuff called <doom>Crimson Doom Mark</doom>. She could function as a sustained-pressure hybrid — part debuffer, part disabler, part scaling control anchor — who works by marking enemies, draining their resources, and punishing them for carrying her mark.</p>
+      <p>Unlike most Warriors who deal straightforward burst damage, Nuba layers multiple stacking debuffs over time while simultaneously reducing enemy effectiveness and amplifying her own follow-up damage. Her passive resurrection mechanic via <em>Rise of the Drought</em> gives her unexpected survivability in extended fights.</p>
+      <p>As a Club faction hero, Nuba could scale strongly when fielded alongside other Club heroes — the faction bonus grants stacking ATK and HP to the whole team, reinforcing a protected backline scaling role rather than a primary tank role.</p>
+    </div>
+  </section>
+
+  <!-- FACTION SYNERGY -->
+  <section class="section">
+    <div class="section-title">Club Faction Synergy</div>
+    <div class="mechanic-box" style="border-color: rgba(201,168,76,0.35); background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(139,26,26,0.05));">
+      <div class="mechanic-label" style="color: var(--gold-light);">Faction Bonus — Club</div>
+      <p style="font-size:14px; color:var(--text-muted); margin-bottom:14px;">Fielding multiple Club faction heroes grants the <em>entire team</em> bonus ATK and HP. Thresholds:</p>
+      <ul class="mechanic-list">
+        <li><strong style="color:var(--gold-light);">3 Club heroes:</strong> +15% ATK &amp; HP for the team</li>
+        <li><strong style="color:var(--gold-light);">3 + 2 (mixed):</strong> +25% ATK &amp; HP for the team</li>
+        <li><strong style="color:var(--gold-light);">4 Club heroes:</strong> +30% ATK &amp; HP for the team</li>
+        <li><strong style="color:var(--gold-light);">5 Club heroes:</strong> +35% ATK &amp; HP for the team — maximum bonus</li>
+      </ul>
+      <p style="font-size:13px; color:var(--text-muted); margin-top:14px; font-style:italic;">Because Nuba benefits from sustained HP (enabling her revive to matter more) and amplified ATK (making her Stun windows hit harder), maximizing the Club faction count directly strengthens her kit. Even hitting the 3-hero threshold for +15% is a meaningful upgrade — running 4–5 Club heroes is a viable dedicated archetype.</p>
+    </div>
+  </section>
+
+  <!-- CRIMSON DOOM MARK -->
+  <section class="section">
+    <div class="section-title">Core Mechanic — Crimson Doom Mark</div>
+    <div class="mechanic-box">
+      <div class="mechanic-label">The Doom Mark System</div>
+      <ul class="mechanic-list">
+        <li>Applied to enemies at the <strong>start of battle</strong> passively via her Ultimate passive, and re-applied to the nearest enemy whenever the Ultimate activates.</li>
+        <li>Marked enemies <strong>deal reduced damage</strong> — confirmed by both Curse of Decay and Rite of Ashes.</li>
+        <li>When a Doom Mark expires naturally ("falls"), it drains the target's essence and spawns a <strong>Source of the Drought Devil</strong> at the target's location.</li>
+        <li>Every time Nuba casts her Ultimate, all marked enemies <strong>permanently lose ATK SPD</strong> — this effect stacks with each Ultimate cast.</li>
+        <li>Skill 1 (Infernal Soulbreaker) deals bonus damage and <strong>Stuns</strong> targets that carry the mark.</li>
+        <li>The Source of the Drought Devil serves as a <strong>revive token</strong> — consumed by Rise of the Drought to bring Nuba back to life at her current position.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section">
+    <div class="section-title">Skill Breakdown</div>
+    <div class="skills-grid">
+
+      <div class="skill-card ultimate">
+        <div class="skill-header">
+          <span class="skill-name">Siphon of Souls</span>
+          <span class="skill-badge badge-ultimate">Ultimate</span>
+        </div>
+        <p class="skill-desc">
+          <strong>Passive component:</strong> At the start of battle, inflicts <doom>Crimson Doom Mark</doom> on enemies, dealing damage to the host and destroying their Energy. When a Doom Mark expires, it drains the target's essence and transforms into a <em>Source of the Drought Devil</em> at the target's location.<br><br>
+          <strong>Active component:</strong> Upon activation, inflicts <doom>Crimson Doom Mark</doom> on the nearest enemy, <highlight>disabling them</highlight>, dealing damage, and absorbing their Energy.
+        </p>
+        <div class="skill-note">
+          Dual-purpose: passive mark spread at battle start + active single-target mark, disable, and Energy drain. <strong>Energy context:</strong> all heroes fill their Energy bar passively at the start of a fight — when full, the Ultimate fires automatically. Nuba's Ultimate both <em>destroys</em> enemy Energy (resetting or delaying their next cast) and <em>absorbs</em> it (potentially accelerating her own refill). This directly delays how fast enemies can cast their own Ultimates. Other heroes, items, or skills can speed up or slow down Energy fill rate — Nuba's drain compounds any existing slow-fill debuffs on enemies.
+        </div>
+      </div>
+
+      <div class="skill-card relic">
+        <div class="skill-header">
+          <span class="skill-name">Curse of Decay</span>
+          <span class="skill-badge badge-relic">Relic</span>
+        </div>
+        <p class="skill-desc">
+          Enemies infested with <doom>Crimson Doom Mark</doom> deal less DMG. Each time Nuba casts her Ultimate, all enemies infested with Crimson Doom Mark <highlight>permanently lose ATK SPD</highlight>.
+        </p>
+        <div class="skill-note">
+          Relic passive — always active once unlocked. The permanent ATK SPD reduction stacks across every Ultimate cast. Based on available information this reduction does not appear to have diminishing returns, meaning repeated Ultimate casts could theoretically reduce enemy attack speed to near-zero in a long fight. This makes her exponentially more dangerous the more times her Energy fills — which she also accelerates via Energy absorption on her active.
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-name">Infernal Soulbreaker</span>
+          <span class="skill-badge badge-skill">Skill 1</span>
+        </div>
+        <p class="skill-desc">
+          Deal damage to an enemy and <highlight>interrupt</highlight> them. If the target has <doom>Crimson Doom Mark</doom>, the skill deals higher damage and <highlight>Stuns</highlight> the target instead of simply interrupting.
+        </p>
+        <div class="skill-note">
+          Primary CC tool. Needs a marked target to reach full potential — which is guaranteed in virtually every fight thanks to her Ultimate passive. Reliable Stun makes this excellent for both PVE bosses and PVP targets.
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-name">Rise of the Drought</span>
+          <span class="skill-badge badge-skill">Skill 2</span>
+        </div>
+        <p class="skill-desc">
+          <strong>Lv4:</strong> When Nuba falls in battle, she consumes one <em>Source of the Drought Devil</em> to revive at her current location and restore HP.
+        </p>
+        <div class="skill-note">
+          Self-revive gated behind the Drought Devil sources generated by expiring Doom Marks. Requires investment to Lv4 to activate. Encourages early application of marks so sources are available by the time she might die.
+        </div>
+      </div>
+
+      <div class="skill-card relic">
+        <div class="skill-header">
+          <span class="skill-name">Rite of Ashes</span>
+          <span class="skill-badge badge-skill">Skill 3</span>
+        </div>
+        <p class="skill-desc">
+          Enemies infested with <doom>Crimson Doom Mark</doom> deal less DMG. Each time Nuba casts her Ultimate, all enemies infested with Crimson Doom Mark <highlight>permanently lose ATK SPD</highlight>.
+        </p>
+        <div class="skill-note">
+          Shares its description with Curse of Decay — likely compounds the same debuff stack, effectively doubling the ATK SPD reduction and DMG reduction layers per Ultimate cast, or grants an additional independent stack.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RATINGS -->
+  <section class="section">
+    <div class="section-title">Mode Ratings</div>
+    <div class="rating-grid">
+      <div class="rating-card">
+        <div class="rating-mode">PVP</div>
+        <div class="rating-value rating-s">S</div>
+        <div class="rating-desc">CC + ATK SPD drain = oppressive in long control fights</div>
+      </div>
+      <div class="rating-card">
+        <div class="rating-mode">Campaign / PVE</div>
+        <div class="rating-value rating-a">A</div>
+        <div class="rating-desc">Solid debuffer; revive adds longevity</div>
+      </div>
+      <div class="rating-card">
+        <div class="rating-mode">Boss Fights</div>
+        <div class="rating-value rating-b">B+</div>
+        <div class="rating-desc">Energy drain slows boss ults; Stun useful</div>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted); margin-top:12px; font-style:italic; text-align:center;">* Ratings based solely on skill analysis. No external tier list data used.</p>
+  </section>
+
+  <!-- POSITIONING -->
+  <section class="section">
+    <div class="section-title">Recommended Formation (Theorycraft)</div>
+    <div class="pos-grid">
+      <div class="pos-card">
+        <div class="pos-mode">Frontline</div>
+        <p><strong>Dementer</strong><br><strong>Caishen</strong> (optional frontline positioning)</p>
+        <p>Dementer could provide protection and stun layering to stabilize the opening cycle. Caishen in front can be optional depending on matchup pressure and whether faster team Energy acceleration is prioritized over safer backline positioning.</p>
+      </div>
+      <div class="pos-card">
+        <div class="pos-mode">Backline</div>
+        <p><strong>Nuba</strong><br><strong>Pan</strong><br><strong>Yuelao</strong></p>
+        <p>Nuba could be protected in the backline as a scaling anchor rather than exposed early as a tank. Pan complements Nuba's Energy denial loop, while Yuelao can add defensive stat sharing and sustain to keep the control core online longer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRENGTHS / WEAKNESSES -->
+  <section class="section">
+    <div class="section-title">Strengths &amp; Weaknesses</div>
+    <div class="sw-grid">
+      <div class="sw-card strengths">
+        <div class="sw-title">Strengths</div>
+        <ul class="sw-list">
+          <li>Applies <doom>Crimson Doom Mark</doom> at battle start — no ramp-up required for debuffing</li>
+          <li>Permanent stacking ATK SPD reduction on all marked enemies makes her more dangerous the longer a fight lasts</li>
+          <li>Built-in self-revive through Drought Devil sources provides exceptional staying power</li>
+          <li>Energy drain/destruction on Ultimate directly delays and disrupts enemy ultimate rotations</li>
+          <li>Guaranteed Stun on Skill 1 against marked targets — near-100% uptime on CC</li>
+          <li>Interrupt on Skill 1 even without a marked target provides baseline disruption</li>
+          <li>Dual debuff coverage: DMG reduction + ATK SPD reduction simultaneously</li>
+        </ul>
+      </div>
+      <div class="sw-card weaknesses">
+        <div class="sw-title">Weaknesses</div>
+        <ul class="sw-list">
+          <li>Self-revive requires Skill 2 at Lv4 — non-functional at lower investment</li>
+          <li>Revive depends on Drought Devil sources existing — if marks expire before she dies, she may have no revive available</li>
+          <li>Single-target focus on Ultimate active — mark re-application hits only <em>nearest</em> enemy</li>
+          <li>No direct healing outside of the revive HP restore — vulnerable to sustained burst before marks expire</li>
+          <li>Skill 3 (Rite of Ashes) mirrors Skill 2 (Curse of Decay) in text — may indicate a design redundancy or unclear stacking behavior requiring in-game verification</li>
+          <li>Utility-focused — not a standalone damage carry; needs supporting DPS in the backline</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYNERGY -->
+  <section class="section">
+    <div class="section-title">Synergy Considerations</div>
+    <div class="synergy-note">
+      <p><strong>Club faction stacking</strong> appears to be Nuba's most concrete synergy path. Running 3–5 Club heroes gives the whole team bonus ATK and HP — both stats can support a protected scaling setup, where Nuba remains in backline and ramps safely over time.</p>
+      <br>
+      <p>In the proposed structure, <strong>Nuba + Pan</strong> could form the Energy control backbone: Nuba destroys and absorbs Energy while Pan adds additional denial and control timing. If this interaction performs as expected, enemy ultimates could become increasingly delayed in long fights.</p>
+      <br>
+      <p><strong>Dementer</strong> can be framed as the protection and stun-layering frontline, while <strong>Caishen</strong> can accelerate Energy cycles and support tempo. <strong>Yuelao</strong> can round out the core through defensive stat sharing and sustain, increasing consistency of Nuba's scaling pattern.</p>
+      <br>
+      <p><strong>Note:</strong> This remains theorycraft for unreleased content; exact priority targets, positioning offsets, and matchup strength would still need in-game validation.</p>
+    </div>
+  </section>
+
+  <div class="divider-ornament">✦ ✦ ✦</div>
+
+  <!-- PLAYSTYLE SUMMARY -->
+  <section class="section">
+    <div class="section-title">Playstyle Summary</div>
+    <div class="overview-card">
+      <p>Nuba appears to fit a <em>protected attrition control core</em> style. She likely does not win by early collapse pressure, but by making enemies progressively less capable of fighting back as ATK SPD and Energy pressure compound.</p>
+      <p>Backline safety could improve consistency of three key outcomes: <strong>ATK SPD stacking uptime</strong>, <strong>Energy denial frequency</strong>, and <strong>reliable revival trigger timing</strong>. In that model, she is a scaling anchor enabled by frontline protection, not the primary tank absorbing the first burst cycle.</p>
+      <p>If these interactions hold in practice, long fights should increasingly favor this structure: protect Nuba, cycle control and Energy denial, and let inevitability build through layered debuffs.</p>
+    </div>
+  </section>
+
+  <footer class="guide-footer">
+    Motto Immortal · Nuba Guide · Based on in-game skill data only · No speculative additions
+  </footer>
+
+</div>
+</body>
+</html>
