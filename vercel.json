@@ -1,5 +1,5 @@
 {
-  "buildCommand": "astro build",
+  "buildCommand": "astro build && node scripts/fix-vercel-runtime.js",
   "devCommand": "astro dev",
   "installCommand": "npm install",
   "framework": "astro",
