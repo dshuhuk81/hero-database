@@ -1,0 +1,821 @@
+---
+import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
+import { heroes } from "../data/heroes";
+
+const sortedHeroes = [...heroes].sort((a, b) =>
+  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+);
+
+const defaultHeroA = sortedHeroes.find((hero) => hero.id === "nuba") || sortedHeroes[0];
+const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) || sortedHeroes[0];
+---
+
+<Sidebar />
+
+
+<main class="main-content">
+  <h1 class="title">Skill Value Comparator</h1>
+  <p class="subtitle">Select one hero first. Add a second hero only if you want side-by-side comparison.</p>
+
+  <div class="content-wrapper">
+    <section class="setup-card">
+      <label for="hero-a-select">Primary Hero</label>
+      <div class="primary-toolbar">
+        <select id="hero-a-select">
+          {sortedHeroes.map((hero) => (
+            <option value={hero.id} selected={hero.id === defaultHeroA.id}>{hero.name}</option>
+          ))}
+        </select>
+        <div class="hero-b-controls hidden" id="hero-b-controls">
+          <select id="hero-b-select">
+            {sortedHeroes.map((hero) => (
+              <option value={hero.id} selected={hero.id === defaultHeroB.id}>{hero.name}</option>
+            ))}
+          </select>
+          <button id="remove-hero-btn" type="button" class="ghost-btn">Remove</button>
+        </div>
+        <button class="add-slot" id="add-hero-btn" type="button">+ Add Comparison Hero</button>
+      </div>
+    </section>
+
+    <section class="compare-layout" id="compare-layout">
+      <div class="hero-slot" id="hero-a-slot"></div>
+
+      <div class="hero-slot secondary hidden" id="hero-b-container">
+        <div id="hero-b-slot"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<Footer />
+
+<script define:vars={{ heroes: sortedHeroes }}>
+  function formatNumber(value) {
+    return Math.round(value).toLocaleString();
+  }
+
+  function replaceStatBoundPercents(text, sourceHero, targetHero) {
+    if (!text) return "";
+
+    let output = text;
+
+    output = output.replace(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi, (_, percentRaw) => {
+      const percent = parseFloat(percentRaw);
+      const value = (percent / 100) * sourceHero.stats.atk;
+      return `${formatNumber(value)} DMG`;
+    });
+
+    output = output.replace(/(\d+(?:\.\d+)?)%\s*of\s+(?:their\s+)?max\s+HP/gi, (_, percentRaw) => {
+      const percent = parseFloat(percentRaw);
+      if (!targetHero) {
+        return `${percent}% of target Max HP (select comparison hero)`;
+      }
+      const value = (percent / 100) * targetHero.stats.hp;
+      return `${formatNumber(value)} DMG`;
+    });
+
+    output = output.replace(/(\d+(?:\.\d+)?)%\s*of\s+(?:their\s+)?current\s+HP/gi, (_, percentRaw) => {
+      const percent = parseFloat(percentRaw);
+      if (!targetHero) {
+        return `${percent}% of target Current HP (select comparison hero)`;
+      }
+      const value = (percent / 100) * targetHero.stats.hp;
+      return `up to ${formatNumber(value)} DMG (at full HP)`;
+    });
+
+    output = output.replace(/capped\s+at\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi, (_, percentRaw) => {
+      const percent = parseFloat(percentRaw);
+      const value = (percent / 100) * sourceHero.stats.atk;
+      return `capped at ${formatNumber(value)} DMG`;
+    });
+
+    output = output.replace(/(\d+(?:\.\d+)?)%\s*of\s+(?:Nuba's|her|his|its)\s+Max\s+HP/gi, (_, percentRaw) => {
+      const percent = parseFloat(percentRaw);
+      const value = (percent / 100) * sourceHero.stats.hp;
+      return `${formatNumber(value)} HP`;
+    });
+
+    output = output.replace(/(\d+(?:\.\d+)?)%\s*of\s+Max\s+HP/gi, (_, percentRaw) => {
+      const percent = parseFloat(percentRaw);
+      const value = (percent / 100) * sourceHero.stats.hp;
+      return `${formatNumber(value)} HP`;
+    });
+
+    return output;
+  }
+
+  function renderSkillBlock(skill, sourceHero, targetHero, skillIndex) {
+    const upgraded = skill.upgrades || {};
+    // Construct image path: use explicit path if provided, otherwise infer from hero ID and skill index
+    const icon = skill.image || `/skills/${sourceHero.id}_skill_${skillIndex}.webp`;
+    const level2 = upgraded.level2
+      ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 2</span><span class="upgrade-text">${replaceStatBoundPercents(upgraded.level2, sourceHero, targetHero)}</span></div>`
+      : "";
+    const level3 = upgraded.level3
+      ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 3</span><span class="upgrade-text">${replaceStatBoundPercents(upgraded.level3, sourceHero, targetHero)}</span></div>`
+      : "";
+    const level4 = upgraded.level4
+      ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 4</span><span class="upgrade-text">${replaceStatBoundPercents(upgraded.level4, sourceHero, targetHero)}</span></div>`
+      : "";
+
+    const upgradeHtml = (level2 || level3 || level4)
+      ? `<div class="skill-upgrades">${level2}${level3}${level4}</div>`
+      : "";
+
+    return `
+      <div class="skill-card">
+        <div class="skill-header">
+          <div class="skill-left">
+            <img src="${icon}" alt="${skill.name}" class="skill-icon" />
+            <div class="skill-info">
+              <h3 class="skill-name">${skill.name}</h3>
+              <span class="skill-type">Skill</span>
+            </div>
+          </div>
+        </div>
+        <p class="skill-description">${replaceStatBoundPercents(skill.description, sourceHero, targetHero)}</p>
+        ${upgradeHtml}
+      </div>
+    `;
+  }
+
+  function renderHeroPanel(mountId, hero, targetHero, label) {
+    const mount = document.getElementById(mountId);
+    if (!mount || !hero) return;
+
+    const skillsHtml = (hero.skills || [])
+      .slice(0, 4)
+      .map((skill, index) => renderSkillBlock(skill, hero, targetHero, index + 1))
+      .join("");
+
+    const relicHtml = hero.relic
+      ? `
+        <div class="skill-card">
+          <div class="skill-header">
+            <div class="skill-left">
+              <img src="${hero.relic.image || `/skills/${hero.id}_relic.webp`}" alt="${hero.relic.name}" class="skill-icon" />
+              <div class="skill-info">
+                <h3 class="skill-name">${hero.relic.name}</h3>
+                <span class="skill-type">Relic</span>
+              </div>
+            </div>
+          </div>
+          <p class="skill-description">${replaceStatBoundPercents(hero.relic.description, hero, targetHero)}</p>
+          ${(() => {
+            const upgrades = hero.relic.upgrades || {};
+            const level2 = upgrades.level2
+              ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 2</span><span class="upgrade-text">${replaceStatBoundPercents(upgrades.level2, hero, targetHero)}</span></div>`
+              : "";
+            const level3 = upgrades.level3
+              ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 3</span><span class="upgrade-text">${replaceStatBoundPercents(upgrades.level3, hero, targetHero)}</span></div>`
+              : "";
+            const level4 = upgrades.level4
+              ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 4</span><span class="upgrade-text">${replaceStatBoundPercents(upgrades.level4, hero, targetHero)}</span></div>`
+              : "";
+
+            return (level2 || level3 || level4)
+              ? `<div class="skill-upgrades">${level2}${level3}${level4}</div>`
+              : "";
+          })()}
+        </div>
+      `
+      : "";
+
+    const heroImage = hero.image || `/heroes/${hero.id}.webp`;
+
+    mount.innerHTML = `
+      <div class="hero-panel">
+        <div class="hero-meta">
+          <img src="${heroImage}" alt="${hero.name}" class="hero-portrait" />
+          <div class="hero-meta-details"><h2 class="hero-name">${hero.name}</h2>
+            <div class="hero-faction">
+              <h4>ATK</h4><span>${formatNumber(hero.stats.atk)}</span>
+              <h4>HP</h4><span>${formatNumber(hero.stats.hp)}</span>
+            </div>
+            <div class="hero-identity-cards">
+              <div class="identity-card">
+                <h4>Class</h4>
+                <div class="identity-content">
+                  <img
+                    class="identity-icons"
+                    src="/icons/classes/${String(hero.class || "").toLowerCase()}.webp"
+                    alt="${hero.class}"
+                  />
+                  <span>${hero.class}</span>
+                </div>
+              </div>
+              <div class="identity-card">
+                <h4>Role</h4>
+                <div class="identity-content">
+                  <img
+                    class="identity-icons"
+                    src="/icons/roles/${String(hero.role || "").toLowerCase()}.webp"
+                    alt="${hero.role}"
+                  />
+                  <span>${hero.role}</span>
+                </div>
+              </div>
+              <div class="identity-card">
+                <h4>Faction</h4>
+                <div class="identity-content">
+                  <img
+                    class="identity-icons"
+                    src="/icons/factions/${String(hero.faction || "").toLowerCase()}.webp"
+                    alt="${hero.faction}"
+                  />
+                  <span>${hero.faction}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skills-stack">
+          ${skillsHtml}
+          ${relicHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPage() {
+    const heroAId = document.getElementById("hero-a-select")?.value;
+    const heroBContainer = document.getElementById("hero-b-container");
+    const hasComparison = !heroBContainer.classList.contains("hidden");
+    const heroBId = document.getElementById("hero-b-select")?.value;
+
+    const heroA = heroes.find((hero) => hero.id === heroAId);
+    const heroB = hasComparison ? heroes.find((hero) => hero.id === heroBId) : null;
+    const compareLayout = document.getElementById("compare-layout");
+
+    if (compareLayout) {
+      compareLayout.classList.toggle("has-comparison", !!(hasComparison && heroB));
+    }
+
+    renderHeroPanel("hero-a-slot", heroA, heroB, "Primary");
+
+    if (hasComparison && heroB) {
+      renderHeroPanel("hero-b-slot", heroB, heroA, "Comparison");
+    }
+  }
+
+  const addButton = document.getElementById("add-hero-btn");
+  const removeButton = document.getElementById("remove-hero-btn");
+  const heroBContainer = document.getElementById("hero-b-container");
+  const heroBControls = document.getElementById("hero-b-controls");
+
+  addButton.addEventListener("click", () => {
+    heroBContainer.classList.remove("hidden");
+    heroBControls.classList.remove("hidden");
+    addButton.classList.add("hidden");
+    renderPage();
+  });
+
+  removeButton.addEventListener("click", () => {
+    heroBContainer.classList.add("hidden");
+    heroBControls.classList.add("hidden");
+    addButton.classList.remove("hidden");
+    renderPage();
+  });
+
+  document.getElementById("hero-a-select").addEventListener("change", renderPage);
+  document.getElementById("hero-b-select").addEventListener("change", renderPage);
+
+  renderPage();
+</script>
+
+<style is:global>
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Spectral", "Roboto", system-ui, sans-serif;
+    background:
+      radial-gradient(ellipse at 30% -10%, rgba(120, 90, 200, 0.15), transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(255, 215, 100, 0.08), transparent 55%),
+      linear-gradient(to bottom, #0d0b10, #07060c);
+    color: #e6e6eb;
+    min-height: 100vh;
+  }
+
+  :global(body) {
+    margin-left: 48px;
+  }
+
+
+  .hero-header {
+    height: 300px;
+    background-image: url("/bg.jpg");
+    background-size: cover;
+    background-position: center 150%;
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  .hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.35)),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.45));
+  }
+
+  .main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 56px;
+  }
+
+  .content-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+.hero-name{margin: 0; padding:0}
+  .title {
+    text-align: center;
+    margin: 28px 0 8px;
+    font-size: 2.1rem;
+    color: #fff;
+  }
+
+  .subtitle {
+    text-align: center;
+    margin: 0 0 22px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .setup-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .primary-toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .hero-b-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+  }
+
+  .primary-toolbar select {
+    flex: 1;
+    padding-right: 2.25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='rgba(255,255,255,0.85)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 14px 14px;
+  }
+
+  #hero-b-select {
+    flex: 1;
+  }
+
+  label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  select {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .compare-layout {
+    display: flex;
+    gap: 14px;
+    align-items: start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .compare-layout.has-comparison {
+    justify-content: space-between;
+  }
+
+  .hero-slot {
+    flex: 1;
+    min-width: 0;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .hero-slot.secondary {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .slot-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .slot-toolbar-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .add-slot {
+    min-height: 40px;
+    flex: 0 0 auto;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.92rem;
+    padding: 0 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    align-self: center;
+  }
+
+  .ghost-btn {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0 12px;
+    cursor: pointer;
+    height: stretch;
+  }
+
+  .hero-panel {
+    background: rgba(255, 255, 255, 0.0);
+    border: 0px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0px;
+    padding: 0px;
+    margin-top: 24px;
+  }
+
+  .hero-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .hero-head h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.35rem;
+  }
+
+  .label-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+
+  .hero-portrait {
+    width: 50%;
+    min-width: 120px;
+    max-width: 180px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center 30%;
+    background-position: center 30%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .hero-meta-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .hero-faction {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .faction-label {
+    color: #ffffff;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .faction-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hero-identity-cards {
+    display: flex;
+    gap: 8px;
+  }
+
+  .identity-card {
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-sizing: border-box;
+    padding: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .identity-card h4 {
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin: 0 0 4px;
+  }
+
+  .identity-content {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .identity-content span {
+    color: #ffffff;
+    font-size: 0.88rem;
+    line-height: 1.2;
+    text-align: center;
+    text-transform: capitalize;
+    white-space: nowrap;
+  }
+
+  .identity-icons {
+    height: 20px;
+    width: 20px;
+  }
+
+  .skills-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .skill-card {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 0.875rem;
+    margin-bottom: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.625rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .skill-left {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .skill-icon {
+    width: 48px;
+    height: 48px;
+    border: 2px solid #d4af37;
+    border-radius: 6px;
+    object-fit: cover;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+  }
+
+  .skill-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .skill-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .skill-type {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ddd;
+    border-radius: 6px;
+    font-size: 0.67rem;
+    font-weight: 600;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .skill-description {
+    color: rgba(230, 230, 235, 0.85);
+    line-height: 1.4;
+    margin: 0 0 0.625rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.84rem;
+  }
+
+  .skill-upgrades {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .upgrade-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.2rem 0.75rem;
+    border-radius: 6px;
+  }
+
+  .upgrade-label {
+    background: #4caf50;
+    color: #fff;
+    padding: 0.25rem 0.25rem;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 0.75rem;
+    min-width: 48px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+    align-self: flex-start;
+    line-height: 1;
+  }
+
+  .upgrade-text {
+    color: #4caf50;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .compare-layout {
+      flex-direction: column;
+    }
+
+    .add-slot {
+      min-height: 40px;
+
+    }
+
+    .skills-stack {
+      gap: 0.75rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    :global(body) {
+      margin-left: 0;
+      margin-bottom: 56px;
+    }
+
+    .hero-header {
+      height: 220px;
+      background-attachment: scroll;
+    }
+
+    .main-content {
+      padding: 0 14px 38px;
+    }
+
+    .title {
+      font-size: 1.65rem;
+      margin-top: 22px;
+    }
+
+    .hero-meta {
+      flex-direction: column;
+    }
+
+    .hero-portrait {
+      width: 80%;
+      min-width: 0;
+      max-width: 180px;
+      height: auto;
+    }
+
+    .hero-identity-cards {
+      flex-wrap: wrap;
+    }
+
+    .identity-card {
+      min-width: 120px;
+    }
+
+    .slot-toolbar-actions {
+      flex-direction: column;
+    }
+
+    .primary-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero-b-controls {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero-b-controls .ghost-btn {
+      width: 100%;
+      min-height: 40px;
+    }
+
+    .primary-toolbar .add-slot {
+      width: 100%;
+      align-self: stretch;
+    }
+
+    .skills-stack {
+      flex-direction: column;
+    }
+
+    .skill-card {
+      max-width: 100%;
+    }
+
+    .skill-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skill-icon {
+      width: 64px;
+      height: 64px;
+    }
+
+    .skill-name {
+      font-size: 1.25rem;
+    }
+
+    .upgrade-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .upgrade-label {
+      width: 100%;
+    }
+  }
+</style>
