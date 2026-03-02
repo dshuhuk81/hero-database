@@ -95,8 +95,13 @@ export async function POST({ request }) {
   } catch (error) {
     console.error('Register error:', error.message);
     console.error('Full error:', error);
+    console.error('Error stack:', error.stack);
     return new Response(
-      JSON.stringify({ error: 'Server error: ' + error.message }),
+      JSON.stringify({ 
+        error: 'Server error: ' + error.message,
+        stack: error.stack,
+        type: error.constructor.name 
+      }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
