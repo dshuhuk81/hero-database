@@ -14,6 +14,9 @@ export default defineConfig({
   
   // Vercel Adapter für Deployment
   adapter: vercel({
-    functionPerRoute: false
+    functionPerRoute: false,
+    edgeMiddleware: false,
+    includeFiles: [],
+    maxDuration: 10
   }),
 });

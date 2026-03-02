@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "dev:api": "node api-server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:api\"",
-    "build:only": "npm run astro build",
+    "build:only": "astro build && node scripts/fix-vercel-runtime.js",
     "build": "npm run build:only",
     "deploy:prod": "npm run build:only && npx vercel --prod --yes",
     "preview": "astro preview",
