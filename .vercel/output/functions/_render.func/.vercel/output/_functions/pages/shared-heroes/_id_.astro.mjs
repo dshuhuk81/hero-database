@@ -1,5 +1,5 @@
 import { c as createAstro, d as createComponent, f as renderHead, g as renderComponent, F as Fragment, r as renderTemplate, e as addAttribute } from '../../chunks/astro/server_1qB4yu-C.mjs';
-import { $ as $$Sidebar } from '../../chunks/Sidebar_CFZgSh_o.mjs';
+import { $ as $$Sidebar } from '../../chunks/Sidebar_7r2zBZ12.mjs';
 import { $ as $$Footer } from '../../chunks/Footer_D9RJOF2U.mjs';
 import { a as allHeroesData } from '../../chunks/all_heroes_db_CNeIlBgo.mjs';
 /* empty css                                   */

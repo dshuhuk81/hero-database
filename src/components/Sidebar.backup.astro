@@ -1,0 +1,385 @@
+---
+ 
+interface NavItem {
+  icon: string;
+  label: string;
+  href: string;
+  authOnly?: boolean;
+  badge?: {
+    text: string;
+    color?: string;
+  };
+}
+
+const navItems: NavItem[] = [
+   {
+    icon: "/icons/sidebar/home.webp",
+    label: "Home",
+    href: "/"
+  },
+  {
+    icon: "/icons/sidebar/heroes.webp",
+    label: "Heros",
+    href: "/heros"
+  },
+  {
+    icon: "/icons/sidebar/heroes.webp",
+    label: "My Heroes",
+    href: "/myheroes",
+    authOnly: true
+  },
+   {
+    icon: "/icons/sidebar/rankings.webp",
+    label: "Rankings",
+    href: "/rankings",
+      badge: {
+    text: "Alpha"
+  }
+  },
+  {
+    icon: "/icons/sidebar/tierlist.webp",
+    label: "Tier List",
+    href: "/tierlist"
+  },
+  {
+    icon: "/icons/sidebar/boss.png",
+    label: "Bosses",
+    href: "/bosses"
+  },
+  {
+    icon: "/icons/sidebar/boss.png",
+    label: "Events",
+    href: "/events"
+  },
+   {
+    icon: "/icons/sidebar/totems.webp",
+    label: "Totems",
+    href: "/totems"
+  },
+    {
+    icon: "/icons/sidebar/changelog.svg",
+    label: "Changes",
+    href: "/changelog"
+  }
+];
+
+const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
+const currentPath = normalize(Astro.url.pathname);   // ← normalize auch hier
+const isActive = (href: string) => normalize(href) === currentPath;
+
+
+---
+
+<aside class="sidebar">
+  <nav class="sidebar-nav">
+    {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`nav-item ${isActive(item.href) ? "active" : ""}`}
+          title={item.label}
+          data-auth-only={item.authOnly ? "true" : "false"}
+        > 
+        <div class="nav-icon">
+          <img src={item.icon} alt={item.label} />
+        </div>
+        <span class="nav-label">
+          {item.label}
+          {item.badge && (
+            <span 
+              class="alpha-chip" 
+              style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+            >
+              {item.badge.text}
+            </span>
+          )}
+        </span>
+      </a>
+    ))}
+  </nav>
+</aside>
+
+<div class="auth-top-right" id="globalAuthControls">
+  <a href="/register" class="auth-btn auth-register" id="globalRegisterBtn">Register</a>
+  <a href="/login" class="auth-btn auth-login" id="globalLoginBtn">Login</a>
+  <button type="button" class="auth-btn auth-logout" id="globalLogoutBtn" style="display: none;">Logout</button>
+</div>
+
+<script>
+  const registerBtn = document.getElementById('globalRegisterBtn');
+  const loginBtn = document.getElementById('globalLoginBtn');
+  const logoutBtn = document.getElementById('globalLogoutBtn');
+  const authOnlyNavItems = document.querySelectorAll('[data-auth-only="true"]');
+
+  function updateGlobalAuthControls() {
+    const token = localStorage.getItem('authToken');
+    const isLoggedIn = Boolean(token);
+
+    if (registerBtn) registerBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
+    if (loginBtn) loginBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'inline-flex' : 'none';
+
+    authOnlyNavItems.forEach((item) => {
+      if (item instanceof HTMLElement) {
+        item.style.display = isLoggedIn ? 'flex' : 'none';
+      }
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userEmail');
+      window.location.href = '/';
+    });
+  }
+
+  updateGlobalAuthControls();
+</script>
+
+<style>
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: rgba(7, 6, 12, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding-top: 32px;
+    /* FIX: Font-Rendering stabilisieren */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 4px;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 8px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgba(230, 230, 235, 0.5);
+    transition: color 0.2s ease, background-color 0.2s ease;
+    position: relative;
+    width: 60px;
+    flex-shrink: 0;
+    /* FIX: Stabilisiert Layout */
+    contain: layout style;
+        /* FIX: Font-Rendering stabilisieren */
+   
+  }
+
+  .nav-item:hover:not(.active) {
+    color: rgba(230, 230, 235, 0.9);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .nav-item.active {
+    color: #facc15;
+    background: transparent;
+  }
+
+  .nav-item.active::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 24px;
+    background: linear-gradient(180deg, #facc15, #f59e0b);
+    border-radius: 0 3px 3px 0;
+    box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
+    transition: none;
+  }
+
+  .nav-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: none;
+  }
+
+  .nav-item:hover:not(.active) .nav-icon {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+  }
+
+  .nav-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: brightness(0.7) saturate(0);
+    transition: filter 0.15s ease;
+    display: block;
+    transform: translateZ(0);
+  }
+
+  .nav-item:hover:not(.active) .nav-icon img {
+    filter: brightness(1) saturate(0);
+  }
+
+  .nav-item.active .nav-icon img {
+    filter: brightness(1.3) saturate(1) drop-shadow(0 0 8px rgba(250, 204, 21, 0.4));
+    transform: translateZ(0);
+  }
+
+
+    .nav-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: none;
+
+  font-family: ui-monospace, 'Courier New', monospace;
+  /* ODER: Web-Font mit festen Metriken laden */
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: 60px;
+      top: auto;
+      bottom: 0;
+      padding: 0;
+      border-right: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 0;
+    }
+
+    .sidebar-nav {
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 20px;
+      height: 100%;
+      gap: 0;
+    }
+
+    .alpha-chip {
+      top: -6px;
+      right: -8px;
+      font-size: 6px;
+      padding: 1px 3px;
+    }
+
+    .nav-item {
+      padding: 8px 20px;
+      gap: 4px;
+      width: auto;
+      flex: 1;
+    }
+
+    .nav-icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .nav-icon img {
+      width: 22px;
+      height: 22px;
+    }
+
+    .nav-label {
+      font-size: 0.65rem;
+      max-width: none;
+    }
+
+    .nav-item.active::before {
+      left: 50%;
+      top: -1px;
+      bottom: auto;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 3px;
+    }
+  }
+  .alpha-chip {
+  position: absolute;
+  top: 8px;
+  right: -4px;
+  font-size: 8px;
+  color: white;
+  background-color: red;
+  border-radius: 4px;
+  padding: 2px 4px;
+  opacity: 0.9;
+}
+
+.auth-top-right {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 220;
+  display: flex;
+  gap: 8px;
+}
+
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  background: rgba(7, 6, 12, 0.75);
+  color: #facc15;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.auth-btn:hover {
+  border-color: rgba(250, 204, 21, 0.6);
+  background: rgba(7, 6, 12, 0.9);
+}
+
+.auth-logout {
+  color: #ffb4b4;
+  border-color: rgba(220, 53, 69, 0.45);
+}
+
+.auth-logout:hover {
+  border-color: rgba(220, 53, 69, 0.8);
+}
+
+@media (max-width: 768px) {
+  .auth-top-right {
+    top: 12px;
+    right: 12px;
+  }
+
+  .auth-btn {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+}
+</style>

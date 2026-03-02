@@ -1,10 +1,10 @@
 ---
- 
+
 interface NavItem {
-  icon: string;
   label: string;
   href: string;
   authOnly?: boolean;
+  group?: "primary" | "content" | "meta";
   badge?: {
     text: string;
     color?: string;
@@ -12,111 +12,225 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-   {
-    icon: "/icons/sidebar/home.webp",
-    label: "Home",
-    href: "/"
-  },
-  {
-    icon: "/icons/sidebar/heroes.webp",
-    label: "Heros",
-    href: "/heros"
-  },
-  {
-    icon: "/icons/sidebar/heroes.webp",
-    label: "My Heroes",
-    href: "/myheroes",
-    authOnly: true
-  },
-   {
-    icon: "/icons/sidebar/rankings.webp",
-    label: "Rankings",
-    href: "/rankings",
-      badge: {
-    text: "Alpha"
-  }
-  },
-  {
-    icon: "/icons/sidebar/tierlist.webp",
-    label: "Tier List",
-    href: "/tierlist"
-  },
-  {
-    icon: "/icons/sidebar/boss.png",
-    label: "Bosses",
-    href: "/bosses"
-  },
-  {
-    icon: "/icons/sidebar/boss.png",
-    label: "Events",
-    href: "/events"
-  },
-   {
-    icon: "/icons/sidebar/totems.webp",
-    label: "Totems",
-    href: "/totems"
-  },
-    {
-    icon: "/icons/sidebar/changelog.svg",
-    label: "Changes",
-    href: "/changelog"
-  }
+  { label: "Home",      href: "/",          group: "primary" },
+  { label: "Heros",     href: "/heros",     group: "primary" },
+  { label: "My Heroes", href: "/myheroes",  group: "primary", authOnly: true },
+  { label: "Rankings",  href: "/rankings",  group: "primary", badge: { text: "Alpha" } },
+  { label: "Tier List", href: "/tierlist",  group: "primary" },
+  { label: "Bosses",    href: "/bosses",    group: "content" },
+  { label: "Events",    href: "/events",    group: "content" },
+  { label: "Totems",    href: "/totems",    group: "content" },
+  { label: "Changes",   href: "/changelog", group: "meta" },
 ];
 
+// SVG icon paths (24x24 viewBox, stroke-based, Lucide-style)
+const icons: Record<string, string> = {
+  // Home: house outline
+  "Home": `<path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>`,
+  // Heroes: crossed swords
+  "Heros": `<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19.5 6.5L21 3l-3.5 1.5"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6"/><path d="M8 16l-4 4"/><path d="M4.5 6.5L3 3l3.5 1.5"/>`,
+  // My Heroes: shield with star
+  "My Heroes": `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8l1.12 2.27 2.5.36-1.81 1.77.43 2.5L12 13.77l-2.24 1.18.43-2.5-1.81-1.77 2.5-.36z"/>`,
+  // Rankings: trophy
+  "Rankings": `<path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>`,
+  // Tier List: bar chart descending
+  "Tier List": `<rect x="3" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="13" width="4" height="8" rx="1"/>`,
+  // Bosses: skull
+  "Bosses": `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
+  // Events: calendar with star
+  "Events": `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14l1 2h2l-1.5 1.5.5 2.5-2-1.5-2 1.5.5-2.5L9 16h2z"/>`,
+  // Totems: pillar / monument
+  "Totems": `<path d="M12 2L8 6v3l-2 2v4l2 2v3l4 2 4-2v-3l2-2v-4l-2-2V6z"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/>`,
+  // Changelog: document with clock
+  "Changes": `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="12" cy="15" r="3"/><path d="M12 13.5V15l1 1"/>`,
+};
+
+// Mobile bottom bar: first 4 non-auth items + "More"
+const mobileItems = navItems.filter(i => !i.authOnly).slice(0, 4);
+const mobileOverflowItems = navItems.filter(i => !mobileItems.includes(i));
+
 const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
-const currentPath = normalize(Astro.url.pathname);   // ← normalize auch hier
+const currentPath = normalize(Astro.url.pathname);
 const isActive = (href: string) => normalize(href) === currentPath;
 
+const primaryItems = navItems.filter(i => i.group === "primary");
+const contentItems = navItems.filter(i => i.group === "content");
+const metaItems    = navItems.filter(i => i.group === "meta");
 
+function getIcon(label: string) {
+  return icons[label] || icons["Home"];
+}
 ---
 
-<aside class="sidebar">
-  <nav class="sidebar-nav">
-    {navItems.map((item) => (
-        <a
-          href={item.href}
-          class={`nav-item ${isActive(item.href) ? "active" : ""}`}
-          title={item.label}
-          data-auth-only={item.authOnly ? "true" : "false"}
-        > 
-        <div class="nav-icon">
-          <img src={item.icon} alt={item.label} />
+<!-- Desktop Rail -->
+<aside class="rail">
+  <nav class="rail-nav">
+    {primaryItems.map((item) => (
+      <a
+        href={item.href}
+        class={`rail-item ${isActive(item.href) ? "active" : ""}`}
+        data-tooltip={item.label}
+        data-auth-only={item.authOnly ? "true" : "false"}
+      >
+        <div class="rail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+          {isActive(item.href) && <span class="active-pill" />}
         </div>
-        <span class="nav-label">
-          {item.label}
-          {item.badge && (
-            <span 
-              class="alpha-chip" 
-              style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
-            >
-              {item.badge.text}
-            </span>
-          )}
-        </span>
+        {item.badge && (
+          <span
+            class="alpha-chip"
+            style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+          >
+            {item.badge.text}
+          </span>
+        )}
+      </a>
+    ))}
+
+    <div class="rail-divider" />
+
+    {contentItems.map((item) => (
+      <a
+        href={item.href}
+        class={`rail-item ${isActive(item.href) ? "active" : ""}`}
+        data-tooltip={item.label}
+        data-auth-only={item.authOnly ? "true" : "false"}
+      >
+        <div class="rail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+          {isActive(item.href) && <span class="active-pill" />}
+        </div>
+      </a>
+    ))}
+
+    <div class="rail-divider" />
+
+    {metaItems.map((item) => (
+      <a
+        href={item.href}
+        class={`rail-item ${isActive(item.href) ? "active" : ""}`}
+        data-tooltip={item.label}
+        data-auth-only={item.authOnly ? "true" : "false"}
+      >
+        <div class="rail-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+          {isActive(item.href) && <span class="active-pill" />}
+        </div>
       </a>
     ))}
   </nav>
+
+  <!-- Auth avatar at bottom -->
+  <div class="rail-auth" id="railAuthSection">
+    <button class="rail-avatar" id="railAvatarBtn" title="Account">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </button>
+    <div class="auth-dropdown" id="authDropdown">
+      <span class="auth-email" id="authEmailDisplay"></span>
+      <a href="/register" class="auth-dropdown-item" id="globalRegisterBtn">Register</a>
+      <a href="/login" class="auth-dropdown-item" id="globalLoginBtn">Login</a>
+      <button type="button" class="auth-dropdown-item auth-dropdown-logout" id="globalLogoutBtn" style="display: none;">Logout</button>
+    </div>
+  </div>
 </aside>
 
-<div class="auth-top-right" id="globalAuthControls">
-  <a href="/register" class="auth-btn auth-register" id="globalRegisterBtn">Register</a>
-  <a href="/login" class="auth-btn auth-login" id="globalLoginBtn">Login</a>
-  <button type="button" class="auth-btn auth-logout" id="globalLogoutBtn" style="display: none;">Logout</button>
+<!-- Mobile Bottom Bar -->
+<nav class="mobile-bar">
+  {mobileItems.map((item) => (
+    <a
+      href={item.href}
+      class={`mobile-item ${isActive(item.href) ? "active" : ""}`}
+      data-auth-only={item.authOnly ? "true" : "false"}
+    >
+      <div class="mobile-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+      </div>
+      <span class="mobile-label">{item.label}</span>
+    </a>
+  ))}
+  <button class="mobile-item mobile-more-btn" id="mobileMoreBtn" type="button">
+    <div class="mobile-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/>
+      </svg>
+    </div>
+    <span class="mobile-label">More</span>
+  </button>
+</nav>
+
+<!-- Mobile "More" Sheet -->
+<div class="more-sheet-backdrop" id="moreSheetBackdrop">
+  <div class="more-sheet" id="moreSheet">
+    <div class="more-sheet-handle"></div>
+    {mobileOverflowItems.map((item) => (
+      <a
+        href={item.href}
+        class={`more-sheet-item ${isActive(item.href) ? "active" : ""}`}
+        data-auth-only={item.authOnly ? "true" : "false"}
+      >
+        <div class="more-sheet-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+        </div>
+        <span class="more-sheet-label">{item.label}</span>
+        {item.badge && (
+          <span
+            class="alpha-chip-inline"
+            style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+          >
+            {item.badge.text}
+          </span>
+        )}
+      </a>
+    ))}
+    <div class="more-sheet-divider" />
+    <a href="/login" class="more-sheet-item" id="mobileLoginBtn">
+      <div class="more-sheet-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="more-sheet-label">Login</span>
+    </a>
+    <button type="button" class="more-sheet-item" id="mobileLogoutBtn" style="display: none;">
+      <div class="more-sheet-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(220,53,69,0.8)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </div>
+      <span class="more-sheet-label" style="color: #ffb4b4;">Logout</span>
+    </button>
+  </div>
 </div>
 
 <script>
+  // Auth state
   const registerBtn = document.getElementById('globalRegisterBtn');
   const loginBtn = document.getElementById('globalLoginBtn');
   const logoutBtn = document.getElementById('globalLogoutBtn');
+  const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+  const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+  const authEmailDisplay = document.getElementById('authEmailDisplay');
   const authOnlyNavItems = document.querySelectorAll('[data-auth-only="true"]');
 
   function updateGlobalAuthControls() {
     const token = localStorage.getItem('authToken');
+    const email = localStorage.getItem('userEmail');
     const isLoggedIn = Boolean(token);
 
-    if (registerBtn) registerBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
-    if (loginBtn) loginBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
-    if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'inline-flex' : 'none';
+    if (registerBtn) registerBtn.style.display = isLoggedIn ? 'none' : 'flex';
+    if (loginBtn) loginBtn.style.display = isLoggedIn ? 'none' : 'flex';
+    if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'flex' : 'none';
+    if (mobileLoginBtn) mobileLoginBtn.style.display = isLoggedIn ? 'none' : 'flex';
+    if (mobileLogoutBtn) mobileLogoutBtn.style.display = isLoggedIn ? 'flex' : 'none';
+
+    if (authEmailDisplay) {
+      authEmailDisplay.textContent = email || '';
+      authEmailDisplay.style.display = isLoggedIn && email ? 'block' : 'none';
+    }
 
     authOnlyNavItems.forEach((item) => {
       if (item instanceof HTMLElement) {
@@ -125,12 +239,47 @@ const isActive = (href: string) => normalize(href) === currentPath;
     });
   }
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('userEmail');
-      window.location.href = '/';
+  // Logout handlers
+  [logoutBtn, mobileLogoutBtn].forEach(btn => {
+    if (btn) {
+      btn.addEventListener('click', () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userEmail');
+        window.location.href = '/';
+      });
+    }
+  });
+
+  // Desktop auth dropdown toggle
+  const avatarBtn = document.getElementById('railAvatarBtn');
+  const authDropdown = document.getElementById('authDropdown');
+
+  if (avatarBtn && authDropdown) {
+    avatarBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      authDropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => {
+      authDropdown.classList.remove('open');
+    });
+  }
+
+  // Mobile "More" sheet
+  const moreBtn = document.getElementById('mobileMoreBtn');
+  const moreBackdrop = document.getElementById('moreSheetBackdrop');
+  const moreSheet = document.getElementById('moreSheet');
+
+  if (moreBtn && moreBackdrop && moreSheet) {
+    moreBtn.addEventListener('click', () => {
+      moreBackdrop.classList.add('open');
+      requestAnimationFrame(() => moreSheet.classList.add('open'));
+    });
+    moreBackdrop.addEventListener('click', (e) => {
+      if (e.target === moreBackdrop) {
+        moreSheet.classList.remove('open');
+        setTimeout(() => moreBackdrop.classList.remove('open'), 250);
+      }
     });
   }
 
@@ -138,12 +287,13 @@ const isActive = (href: string) => normalize(href) === currentPath;
 </script>
 
 <style>
-  .sidebar {
+  /* ─── Desktop Rail ─── */
+  .rail {
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 80px;
+    width: 48px;
     background: rgba(7, 6, 12, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -151,235 +301,392 @@ const isActive = (href: string) => normalize(href) === currentPath;
     z-index: 100;
     display: flex;
     flex-direction: column;
-    padding-top: 32px;
-    /* FIX: Font-Rendering stabilisieren */
+    justify-content: space-between;
+    padding: 16px 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
   }
 
-  .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 0 4px;
-  }
-
-  .nav-item {
+  .rail-nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    padding: 14px 8px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: rgba(230, 230, 235, 0.5);
-    transition: color 0.2s ease, background-color 0.2s ease;
+    gap: 2px;
+  }
+
+  /* ─── Rail Item ─── */
+  .rail-item {
     position: relative;
-    width: 60px;
-    flex-shrink: 0;
-    /* FIX: Stabilisiert Layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: rgba(230, 230, 235, 0.45);
+    transition: background 0.15s ease, color 0.15s ease;
     contain: layout style;
-        /* FIX: Font-Rendering stabilisieren */
-   
   }
 
-  .nav-item:hover:not(.active) {
-    color: rgba(230, 230, 235, 0.9);
-    background: rgba(255, 255, 255, 0.04);
+  .rail-item:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(230, 230, 235, 0.85);
   }
 
-  .nav-item.active {
+  .rail-item.active {
     color: #facc15;
-    background: transparent;
   }
 
-  .nav-item.active::before {
-    content: "";
+  /* ─── Tooltip on hover ─── */
+  .rail-item::after {
+    content: attr(data-tooltip);
     position: absolute;
-    left: -10px;
+    left: calc(100% + 10px);
     top: 50%;
     transform: translateY(-50%);
-    width: 3px;
-    height: 24px;
-    background: linear-gradient(180deg, #facc15, #f59e0b);
-    border-radius: 0 3px 3px 0;
-    box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
-    transition: none;
+    padding: 6px 10px;
+    background: rgba(18, 16, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #e6e6eb;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 200;
   }
 
-  .nav-icon {
-    width: 32px;
-    height: 32px;
+  .rail-item:hover::after {
+    opacity: 1;
+  }
+
+  /* ─── Icon (SVG) ─── */
+  .rail-icon {
+    position: relative;
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: none;
   }
 
-  .nav-item:hover:not(.active) .nav-icon {
-    transform: translateY(-2px);
-    transition: transform 0.2s ease;
-  }
-
-  .nav-icon img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    filter: brightness(0.7) saturate(0);
+  .rail-icon svg {
+    width: 20px;
+    height: 20px;
     transition: filter 0.15s ease;
-    display: block;
-    transform: translateZ(0);
   }
 
-  .nav-item:hover:not(.active) .nav-icon img {
-    filter: brightness(1) saturate(0);
+  .rail-item.active .rail-icon svg {
+    filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.4));
   }
 
-  .nav-item.active .nav-icon img {
-    filter: brightness(1.3) saturate(1) drop-shadow(0 0 8px rgba(250, 204, 21, 0.4));
-    transform: translateZ(0);
+  /* ─── Active pill indicator ─── */
+  .active-pill {
+    position: absolute;
+    inset: -5px;
+    border-radius: 8px;
+    background: rgba(250, 204, 21, 0.1);
+    z-index: -1;
   }
 
+  /* ─── Section dividers ─── */
+  .rail-divider {
+    width: 20px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 6px auto;
+  }
 
-    .nav-label {
+  /* ─── Badge ─── */
+  .alpha-chip {
+    position: absolute;
+    top: 2px;
+    right: -2px;
+    font-size: 7px;
+    color: white;
+    background-color: red;
+    border-radius: 3px;
+    padding: 1px 3px;
+    opacity: 0.9;
+    line-height: 1;
+  }
+
+  .alpha-chip-inline {
+    font-size: 9px;
+    color: white;
+    background-color: red;
+    border-radius: 3px;
+    padding: 2px 5px;
+    opacity: 0.9;
+    margin-left: auto;
+  }
+
+  /* ─── Auth section (bottom of rail) ─── */
+  .rail-auth {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rail-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(230, 230, 235, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .rail-avatar:hover {
+    border-color: rgba(250, 204, 21, 0.35);
+    color: #facc15;
+  }
+
+  /* ─── Auth dropdown ─── */
+  .auth-dropdown {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: calc(100% + 8px);
+    min-width: 160px;
+    background: rgba(18, 16, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 6px;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 200;
+  }
+
+  .auth-dropdown.open {
+    display: flex;
+  }
+
+  .auth-email {
+    display: none;
+    padding: 6px 10px;
     font-size: 0.7rem;
-    font-weight: 600;
-    text-align: center;
-    line-height: 1.2;
-    letter-spacing: 0.3px;
+    color: rgba(230, 230, 235, 0.45);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    transition: none;
-
-  font-family: ui-monospace, 'Courier New', monospace;
-  /* ODER: Web-Font mit festen Metriken laden */
   }
 
+  .auth-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #e6e6eb;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    transition: background 0.12s ease;
+  }
+
+  .auth-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .auth-dropdown-logout {
+    color: #ffb4b4;
+  }
+
+  .auth-dropdown-logout:hover {
+    background: rgba(220, 53, 69, 0.12);
+  }
+
+  /* ─── Mobile Bottom Bar ─── */
+  .mobile-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(7, 6, 12, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 100;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 8px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mobile-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 12px;
+    text-decoration: none;
+    color: rgba(230, 230, 235, 0.45);
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.15s ease;
+  }
+
+  .mobile-item.active {
+    color: #facc15;
+  }
+
+  .mobile-item.active::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, #facc15, #f59e0b);
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.4);
+  }
+
+  .mobile-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mobile-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+
+  /* ─── More Sheet (mobile overlay) ─── */
+  .more-sheet-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 200;
+  }
+
+  .more-sheet-backdrop.open {
+    display: block;
+  }
+
+  .more-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(18, 16, 26, 0.98);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px 16px 0 0;
+    padding: 12px 16px 32px;
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .more-sheet.open {
+    transform: translateY(0);
+  }
+
+  .more-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  .more-sheet-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: rgba(230, 230, 235, 0.78);
+    border: none;
+    background: none;
+    width: 100%;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.12s ease;
+  }
+
+  .more-sheet-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .more-sheet-item.active {
+    color: #facc15;
+  }
+
+  .more-sheet-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .more-sheet-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .more-sheet-label {
+    flex: 1;
+    text-align: left;
+  }
+
+  .more-sheet-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 4px 0;
+  }
+
+  /* ─── Responsive ─── */
   @media (max-width: 768px) {
-    .sidebar {
-      width: 100%;
-      height: 60px;
-      top: auto;
-      bottom: 0;
-      padding: 0;
-      border-right: none;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 0;
+    .rail {
+      display: none;
     }
 
-    .sidebar-nav {
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0 20px;
-      height: 100%;
-      gap: 0;
-    }
-
-    .alpha-chip {
-      top: -6px;
-      right: -8px;
-      font-size: 6px;
-      padding: 1px 3px;
-    }
-
-    .nav-item {
-      padding: 8px 20px;
-      gap: 4px;
-      width: auto;
-      flex: 1;
-    }
-
-    .nav-icon {
-      width: 28px;
-      height: 28px;
-    }
-
-    .nav-icon img {
-      width: 22px;
-      height: 22px;
-    }
-
-    .nav-label {
-      font-size: 0.65rem;
-      max-width: none;
-    }
-
-    .nav-item.active::before {
-      left: 50%;
-      top: -1px;
-      bottom: auto;
-      transform: translateX(-50%);
-      width: 32px;
-      height: 3px;
+    .mobile-bar {
+      display: flex;
     }
   }
-  .alpha-chip {
-  position: absolute;
-  top: 8px;
-  right: -4px;
-  font-size: 8px;
-  color: white;
-  background-color: red;
-  border-radius: 4px;
-  padding: 2px 4px;
-  opacity: 0.9;
-}
 
-.auth-top-right {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 220;
-  display: flex;
-  gap: 8px;
-}
-
-.auth-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  padding: 0 14px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  border: 1px solid rgba(250, 204, 21, 0.35);
-  background: rgba(7, 6, 12, 0.75);
-  color: #facc15;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  cursor: pointer;
-}
-
-.auth-btn:hover {
-  border-color: rgba(250, 204, 21, 0.6);
-  background: rgba(7, 6, 12, 0.9);
-}
-
-.auth-logout {
-  color: #ffb4b4;
-  border-color: rgba(220, 53, 69, 0.45);
-}
-
-.auth-logout:hover {
-  border-color: rgba(220, 53, 69, 0.8);
-}
-
-@media (max-width: 768px) {
-  .auth-top-right {
-    top: 12px;
-    right: 12px;
+  @media (min-width: 769px) {
+    .mobile-bar,
+    .more-sheet-backdrop {
+      display: none !important;
+    }
   }
-
-  .auth-btn {
-    height: 32px;
-    padding: 0 10px;
-    font-size: 13px;
-  }
-}
 </style>
