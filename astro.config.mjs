@@ -13,9 +13,5 @@ export default defineConfig({
   output: 'hybrid',
   
   // Vercel Adapter für Deployment
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
+  adapter: vercel(),
 });

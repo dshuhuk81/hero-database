@@ -322,7 +322,7 @@ import allHeroesData from '../data/all_heroes_db.json';
     <script define:vars={{ allHeroes: allHeroesData }}>
         let authToken = localStorage.getItem('authToken');
         let userHeroes = [];
-        const API_BASE = 'http://localhost:3001';
+        const API_BASE = '';
         
         // allHeroes ist ein Objekt mit Hero-IDs als Keys, konvertiere zu Array
         const allHeroesList = Object.values(allHeroes);

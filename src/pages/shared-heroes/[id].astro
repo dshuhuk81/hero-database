@@ -22,7 +22,7 @@ Object.values(allHeroesData).forEach((hero: any) => {
 });
 
 try {
-  const response = await fetch(`http://localhost:3001/api/shared-heroes/${id}`);
+  const response = await fetch(new URL(`/api/shared-heroes/${id}`, Astro.url));
   if (!response.ok) {
     error = 'Setup not found';
   } else {
