@@ -4,6 +4,7 @@ interface NavItem {
   icon: string;
   label: string;
   href: string;
+  authOnly?: boolean;
   badge?: {
     text: string;
     color?: string;
@@ -20,6 +21,12 @@ const navItems: NavItem[] = [
     icon: "/icons/sidebar/heroes.webp",
     label: "Heros",
     href: "/heros"
+  },
+  {
+    icon: "/icons/sidebar/heroes.webp",
+    label: "My Heroes",
+    href: "/myheroes",
+    authOnly: true
   },
    {
     icon: "/icons/sidebar/rankings.webp",
@@ -71,6 +78,7 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
           href={item.href}
           class={`nav-item ${isActive(item.href) ? "active" : ""}`}
           title={item.label}
+          data-auth-only={item.authOnly ? "true" : "false"}
         > 
         <div class="nav-icon">
           <img src={item.icon} alt={item.label} />
@@ -90,6 +98,45 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
     ))}
   </nav>
 </aside>
+
+<div class="auth-top-right" id="globalAuthControls">
+  <a href="/register" class="auth-btn auth-register" id="globalRegisterBtn">Register</a>
+  <a href="/login" class="auth-btn auth-login" id="globalLoginBtn">Login</a>
+  <button type="button" class="auth-btn auth-logout" id="globalLogoutBtn" style="display: none;">Logout</button>
+</div>
+
+<script>
+  const registerBtn = document.getElementById('globalRegisterBtn');
+  const loginBtn = document.getElementById('globalLoginBtn');
+  const logoutBtn = document.getElementById('globalLogoutBtn');
+  const authOnlyNavItems = document.querySelectorAll('[data-auth-only="true"]');
+
+  function updateGlobalAuthControls() {
+    const token = localStorage.getItem('authToken');
+    const isLoggedIn = Boolean(token);
+
+    if (registerBtn) registerBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
+    if (loginBtn) loginBtn.style.display = isLoggedIn ? 'none' : 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'inline-flex' : 'none';
+
+    authOnlyNavItems.forEach((item) => {
+      if (item instanceof HTMLElement) {
+        item.style.display = isLoggedIn ? 'flex' : 'none';
+      }
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userEmail');
+      window.location.href = '/';
+    });
+  }
+
+  updateGlobalAuthControls();
+</script>
 
 <style>
   .sidebar {
@@ -281,5 +328,59 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
   border-radius: 4px;
   padding: 2px 4px;
   opacity: 0.9;
+}
+
+.auth-top-right {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 220;
+  display: flex;
+  gap: 8px;
+}
+
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  background: rgba(7, 6, 12, 0.75);
+  color: #facc15;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.auth-btn:hover {
+  border-color: rgba(250, 204, 21, 0.6);
+  background: rgba(7, 6, 12, 0.9);
+}
+
+.auth-logout {
+  color: #ffb4b4;
+  border-color: rgba(220, 53, 69, 0.45);
+}
+
+.auth-logout:hover {
+  border-color: rgba(220, 53, 69, 0.8);
+}
+
+@media (max-width: 768px) {
+  .auth-top-right {
+    top: 12px;
+    right: 12px;
+  }
+
+  .auth-btn {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
 }
 </style>
