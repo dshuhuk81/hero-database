@@ -66,7 +66,6 @@ const navItems: NavItem[] = [
 const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
 const currentPath = normalize(Astro.url.pathname);   // ← normalize auch hier
 const isActive = (href: string) => normalize(href) === currentPath;
-console.log("SIDEBAR currentPath:", currentPath); // ← temporär
 
 
 ---
@@ -275,16 +274,16 @@ console.log("SIDEBAR currentPath:", currentPath); // ← temporär
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
-      padbadge {
+      padding: 0 20px;
+      height: 100%;
+      gap: 0;
+    }
+
+    .alpha-chip {
       top: -6px;
       right: -8px;
       font-size: 6px;
       padding: 1px 3px;
-    }
-
-    .nav-ding: 0 20px;
-      height: 100%;
-      gap: 0;
     }
 
     .nav-item {

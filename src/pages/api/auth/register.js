@@ -1,7 +1,14 @@
-import { supabaseAdmin } from '../supabase.js';
+import { supabaseAdmin } from '../../../lib/supabase.js';
 
 export async function POST({ request }) {
   try {
+    if (!supabaseAdmin) {
+      return new Response(
+        JSON.stringify({ error: 'Supabase admin client is not configured' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Direkt JSON parsen
     let data;
     try {

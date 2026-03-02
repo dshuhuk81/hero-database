@@ -1,7 +1,14 @@
-import { supabaseClient } from '../supabase.js';
+import { supabaseClient } from '../../../lib/supabase.js';
 
 export async function POST({ request }) {
   try {
+    if (!supabaseClient) {
+      return new Response(
+        JSON.stringify({ error: 'Supabase client is not configured' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { email, password } = await request.json();
 
     if (!email || !password) {
