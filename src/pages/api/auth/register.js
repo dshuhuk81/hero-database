@@ -1,5 +1,12 @@
 import { supabaseAdmin } from '../../../lib/supabase.js';
 
+export async function GET() {
+  return new Response(
+    JSON.stringify({ status: 'register endpoint active', supabaseAdmin: !!supabaseAdmin }),
+    { status: 200, headers: { 'Content-Type': 'application/json' } }
+  );
+}
+
 export async function POST({ request }) {
   try {
     if (!supabaseAdmin) {
