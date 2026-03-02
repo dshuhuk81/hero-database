@@ -3,10 +3,5 @@
   "devCommand": "astro dev",
   "installCommand": "npm install",
   "framework": "astro",
-  "outputDirectory": "dist",
-  "build": {
-    "env": {
-      "ASTRO_VERCEL_RUNTIME": "nodejs20.x"
-    }
-  }
+  "outputDirectory": "dist"
 }

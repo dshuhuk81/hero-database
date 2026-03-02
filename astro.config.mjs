@@ -5,9 +5,6 @@ import dotenv from 'dotenv';
 // Explizit .env.local laden
 dotenv.config({ path: '.env.local' });
 
-// Force Node 20 runtime by setting environment variable
-process.env.ASTRO_VERCEL_FORCE_RUNTIME = 'nodejs20.x';
-
 export default defineConfig({
   // Site Configuration
   site: 'https://motto-immortal.vercel.app',
@@ -18,8 +15,6 @@ export default defineConfig({
   // Vercel Adapter für Deployment
   adapter: vercel({
     functionPerRoute: false,
-    edgeMiddleware: false,
-    includeFiles: [],
     maxDuration: 10
   }),
 });
