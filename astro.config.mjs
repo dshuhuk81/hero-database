@@ -13,5 +13,7 @@ export default defineConfig({
   output: 'hybrid',
   
   // Vercel Adapter für Deployment
-  adapter: vercel(),
+  adapter: vercel({
+    runtime: 'nodejs20.x'
+  }),
 });
