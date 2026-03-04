@@ -1,6 +1,84 @@
 ---
 import Footer from "../components/Footer.astro";
 import Sidebar from "../components/Sidebar.astro";
+
+interface Teaser {
+  label: string;
+  href: string;
+  icon: string;
+  description: string;
+  badge?: {
+    text: string;
+    color?: string;
+  };
+}
+
+const teasers: Teaser[] = [
+  {
+    label: "Heros",
+    href: "/heros",
+    icon: `<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19.5 6.5L21 3l-3.5 1.5"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6"/><path d="M8 16l-4 4"/><path d="M4.5 6.5L3 3l3.5 1.5"/>`,
+    description: "Browse all heroes, stats, skills & synergies"
+  },
+  {
+    label: "Rankings",
+    href: "/rankings",
+    icon: `<path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>`,
+    description: "Score-based hero rankings across all scenarios",
+    badge: { text: "Alpha" }
+  },
+  {
+    label: "Tier List",
+    href: "/tierlist",
+    icon: `<rect x="3" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="13" width="4" height="8" rx="1"/>`,
+    description: "SSS to C ratings for PvP, PvE & more"
+  },
+  {
+    label: "Stats",
+    href: "/stats",
+    icon: `<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>`,
+    description: "Full stat breakdown for all heroes with account bonus toggle",
+    badge: { text: "New", color: "#1a5500" }
+  },
+  {
+    label: "Bosses",
+    href: "/bosses",
+    icon: `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
+    description: "Boss guides, comps & recommended heroes"
+  },
+  {
+    label: "Events",
+    href: "/events",
+    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14l1 2h2l-1.5 1.5.5 2.5-2-1.5-2 1.5.5-2.5L9 16h2z"/>`,
+    description: "Current & upcoming event schedules",
+    badge: { text: "Updated", color: "#0ea5e9" }
+  },
+  {
+    label: "Totems",
+    href: "/totems",
+    icon: `<path d="M12 2L8 6v3l-2 2v4l2 2v3l4 2 4-2v-3l2-2v-4l-2-2V6z"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/>`,
+    description: "All totems with effects & ratings"
+  },
+  {
+    label: "Shrine",
+    href: "/shrine",
+    icon: `<path d="M12 2l8 6v2H4V8z"/><rect x="5" y="10" width="3" height="8"/><rect x="10.5" y="10" width="3" height="8"/><rect x="16" y="10" width="3" height="8"/><path d="M3 18h18v2H3z"/><path d="M2 20h20v2H2z"/>`,
+    description: "Shrine setups, effects & recommendations"
+  },
+  {
+    label: "Calculator",
+    href: "/calculator",
+    icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="8" y="6" width="8" height="4" rx="1"/><circle cx="8" cy="14" r=".75"/><circle cx="12" cy="14" r=".75"/><circle cx="16" cy="14" r=".75"/><circle cx="8" cy="18" r=".75"/><circle cx="12" cy="18" r=".75"/><line x1="16" y1="16" x2="16" y2="20"/>`,
+    description: "Skill damage comparator with mitigation models",
+    badge: { text: "Alpha" }
+  },
+  {
+    label: "Beginner Guide",
+    href: "/early-game",
+    icon: `<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,
+    description: "Early game strategies & progression tips"
+  }
+];
 ---
 
 <!DOCTYPE html>
@@ -26,45 +104,25 @@ import Sidebar from "../components/Sidebar.astro";
 
     <!-- TEASER GRID -->
     <div class="teaser-grid">
-      <a href="/heros" class="teaser">
-        <img src="/teaser/hero.webp" alt="Heros" class="teaser-image">
-        <h3 class="teaser-headline">Hero Overview</h3>
-      </a>
-
-       <a href="/early-game" class="teaser">
-        <img src="/teaser/early.webp" alt="Early Game Strategies" class="teaser-image">
-        <h3 class="teaser-headline">Beginner Guide</h3>
-      </a>
-
-       <a href="/events" class="teaser">
-        <img src="/teaser/events.webp" alt="Events" class="teaser-image">
-        <h3 class="teaser-headline">Events</h3>
-      </a>
-
-      <a href="/shrine" class="teaser">
-        <img src="/teaser/shrine.webp" alt="Shrine Guide" class="teaser-image">
-        <h3 class="teaser-headline">Shrine Guide</h3>
-      </a>
-
-      <a href="/rankings" class="teaser">
-        <img src="/teaser/rankings.webp" alt="Rankings" class="teaser-image">
-        <h3 class="teaser-headline">Rankings</h3>
-      </a>
-
-      <a href="/tierlist" class="teaser">
-        <img src="/teaser/tierlist.webp" alt="Tierlist" class="teaser-image">
-        <h3 class="teaser-headline">Tierlist</h3>
-      </a>
-
-      <a href="/bosses" class="teaser">
-        <img src="/teaser/bosses.webp" alt="Boss Guides" class="teaser-image">
-        <h3 class="teaser-headline">Boss Fights</h3>
-      </a>
-
-       <a href="/totems" class="teaser">
-        <img src="/teaser/totems.webp" alt="Totems" class="teaser-image">
-        <h3 class="teaser-headline">Totems</h3>
-      </a>
+      {teasers.map((teaser) => (
+        <a href={teaser.href} class="teaser">
+          <div class="teaser-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={teaser.icon} />
+          </div>
+          <div class="teaser-text">
+            <h3 class="teaser-headline">{teaser.label}</h3>
+            <p class="teaser-desc">{teaser.description}</p>
+          </div>
+          {teaser.badge && (
+            <span
+              class="teaser-badge"
+              style={teaser.badge.color ? `background-color: ${teaser.badge.color};` : ''}
+            >
+              {teaser.badge.text}
+            </span>
+          )}
+        </a>
+      ))}
     </div>
   </main>
 
@@ -225,24 +283,50 @@ body {
   opacity: 0.2;
 }
 
-.teaser-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: transform 0.3s ease;
+.teaser-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(168, 85, 247, 0.1));
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  border-radius: 12px;
+  color: rgba(250, 204, 21, 0.85);
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
 
-.teaser:hover .teaser-image {
+.teaser-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.teaser:hover .teaser-icon {
   transform: scale(1.1);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.22), rgba(168, 85, 247, 0.18));
+  color: rgba(250, 204, 21, 1);
+}
+
+.teaser-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }
 
 .teaser-headline {
   margin: 0;
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: #e6e6eb;
+}
+
+.teaser-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(230, 230, 235, 0.55);
+  line-height: 1.4;
 }
 
 @media (max-width: 480px) {
@@ -251,13 +335,44 @@ body {
     padding: 16px;
   }
 
-  .teaser-image {
-    width: 60px;
-    height: 60px;
+  .teaser-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .teaser-icon svg {
+    width: 24px;
+    height: 24px;
   }
 
   .teaser-headline {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 }
-</style>
+
+/* TEASER BADGE */
+.teaser-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
+  background-color: #dc2626;
+  border-radius: 4px;
+  padding: 3px 6px;
+  opacity: 0.95;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 480px) {
+  .teaser-badge {
+    font-size: 9px;
+    padding: 2px 5px;
+    top: 6px;
+    right: 6px;
+  }
+}

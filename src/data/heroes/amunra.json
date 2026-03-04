@@ -57,7 +57,8 @@
         "level2": "Solar blades heal Amun-Ra for 100% of the DMG dealt.",
         "level3": "Increases the DMG of solar blades to 140% ATK.",
         "level4": "Reduces the attack interval of solar blades to 0.7s."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Enemies inside Solar Aura have their ATK reduced by 30%.",
         "level3": "Increases DMG per instance to 125% ATK.",
         "level4": "Extends the duration of Solar Aura to 8s."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Re-enters this state each time he casts the Ultimate.",
         "level3": "Dodging an attack restores 50 Energy to Amun-Ra for the duration. This can only trigger once per sec.",
         "level4": "Additionally gains 50% Effect RES for the duration. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "When the Energy Regen boost expires, all allies instantly restore 200 Energy.",
         "level3": "Increases his M-RES & Armor to 75%.",
         "level4": "Increases his Energy Regen to 80%. (Unlocks at Lv.281)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

@@ -2,6 +2,7 @@
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
+import accountBonusesConfig from "../data/accountBonuses.json";
 
 const sortedHeroes = [...heroes].sort((a, b) =>
   a.name.localeCompare(b.name, "en", { sensitivity: "base" })
@@ -9,74 +10,103 @@ const sortedHeroes = [...heroes].sort((a, b) =>
 
 const defaultHeroA = sortedHeroes.find((hero) => hero.id === "nuba") || sortedHeroes[0];
 const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) || sortedHeroes[0];
+
+const bonusPresets = accountBonusesConfig.presets;
 ---
 
-<Sidebar />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Value Comparator</title>
+</head>
+<body>
+  <Sidebar />
+
 
 <main class="main-content">
   <h1 class="title">Skill Value Comparator</h1>
   <p class="subtitle">Select one hero first. Add a second hero only if you want side-by-side comparison.</p>
 
   <div class="content-wrapper">
-    <section class="setup-card">
-      <label for="hero-a-select">Primary Hero</label>
-      <div class="primary-toolbar">
-        <select id="hero-a-select">
-          {sortedHeroes.map((hero) => (
-            <option value={hero.id} selected={hero.id === defaultHeroA.id}>{hero.name}</option>
-          ))}
-        </select>
-        <div class="hero-b-controls hidden" id="hero-b-controls">
-          <select id="hero-b-select">
+    <div class="toolbar">
+      <div class="toolbar-main">
+        <div class="toolbar-field">
+          <label for="hero-a-select">Primary Hero</label>
+          <select id="hero-a-select">
             {sortedHeroes.map((hero) => (
-              <option value={hero.id} selected={hero.id === defaultHeroB.id}>{hero.name}</option>
+              <option value={hero.id} selected={hero.id === defaultHeroA.id}>{hero.name}</option>
             ))}
           </select>
-          <button id="remove-hero-btn" type="button" class="ghost-btn">Remove</button>
         </div>
-        <button class="add-slot" id="add-hero-btn" type="button">+ Add Comparison Hero</button>
+        <div class="toolbar-field hidden" id="hero-b-controls">
+          <label for="hero-b-select">Comparison</label>
+          <div class="toolbar-field-row">
+            <select id="hero-b-select">
+              {sortedHeroes.map((hero) => (
+                <option value={hero.id} selected={hero.id === defaultHeroB.id}>{hero.name}</option>
+              ))}
+            </select>
+            <button id="remove-hero-btn" type="button" class="ghost-btn" title="Remove comparison">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="add-slot" id="add-hero-btn" type="button">+ Compare</button>
       </div>
-    </section>
-
-    <!-- NEW: Global damage model controls -->
-    <section class="setup-card">
-      <h3 class="panel-title">Damage Model (Global)</h3>
-
-      <div class="model-grid">
-        <div class="field">
-          <label for="mitigation-model">Mitigation Model</label>
-          <select id="mitigation-model">
-            <option value="armor_over_k" selected>Armor / (Armor + K)</option>
-            <option value="atk_over_armor_c">ATK / (ATK + Armor · C)</option>
+      <div class="toolbar-options">
+        <div class="toolbar-field compact">
+          <label for="bonus-preset">Account Bonuses</label>
+          <select id="bonus-preset">
+            {Object.entries(bonusPresets).map(([key, preset]) => (
+              <option value={key} selected={key === "none"}>{preset.label}</option>
+            ))}
           </select>
         </div>
+        <button type="button" class="advanced-toggle" id="advanced-toggle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Advanced
+        </button>
+      </div>
+    </div>
 
-        <div class="field" id="k-field">
+    <div class="advanced-panel hidden" id="advanced-panel">
+      <p class="advanced-hint">Estimated = Raw damage after armor mitigation and optional extra physical reduction (items/buffs).</p>
+      <div class="control-row">
+        <div class="control-group">
+          <label for="model-select">Mitigation Model</label>
+          <select id="model-select">
+            <option value="A" selected>Model A (Armor/(Armor+K))</option>
+            <option value="B">Model B (ATK/(ATK+Armor*C))</option>
+          </select>
+        </div>
+        <div class="control-group">
           <label for="k-preset">K Preset</label>
           <select id="k-preset">
-            <option value="100000">Low (K=100k)</option>
-            <option value="52000" selected>Balanced (K=52k)</option>
-            <option value="28600">High (K=28.6k)</option>
+            <option value="balanced" selected>Balanced (52000)</option>
+            <option value="low">Low (100000)</option>
+            <option value="high">High (28600)</option>
             <option value="custom">Custom</option>
           </select>
-
-          <input id="k-custom" type="number" min="0" step="100" value="52000" class="hidden" />
-          <div class="hint">Estimated model (not official). Use presets for quick comparisons.</div>
         </div>
-
-        <div class="field hidden" id="c-field">
-          <label for="c-custom">C (Armor scaling)</label>
-          <input id="c-custom" type="number" min="0" step="0.1" value="1" />
-          <div class="hint">Used only for ATK/(ATK+Armor·C).</div>
+        <div class="control-group hidden" id="k-custom-group">
+          <label for="k-custom">K Custom</label>
+          <input id="k-custom" type="number" min="0" step="1000" value="52000" />
         </div>
-
-        <div class="field">
-          <label for="extra-phys-red">Extra Physical DMG Reduction (Items/Buffs)</label>
-          <input id="extra-phys-red" type="range" min="0" max="60" value="0" />
-          <div class="hint"><span id="extra-phys-red-val">0</span>%</div>
+        <div class="control-group hidden" id="c-input-group">
+          <label for="c-input">Model B -- C Factor</label>
+          <input id="c-input" type="number" min="0" step="0.1" value="1" />
+        </div>
+        <div class="control-group">
+          <label for="extra-phys-red">Extra Physical Reduction</label>
+          <div class="slider-row">
+            <input id="extra-phys-red" type="range" min="0" max="60" step="1" value="0" />
+            <span id="extra-phys-red-value">0%</span>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <section class="compare-layout" id="compare-layout">
       <div class="hero-slot" id="hero-a-slot"></div>
@@ -90,99 +120,71 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
 
 <Footer />
 
-<script define:vars={{ heroes: sortedHeroes }}>
+<script define:vars={{ heroes: sortedHeroes, bonusPresets: bonusPresets }}>
   function formatNumber(value) {
-    const n = Number(value || 0);
-    return Math.round(n).toLocaleString();
+    return Math.round(value).toLocaleString();
   }
 
-  // ---------- NEW: global model helpers ----------
-  function getGlobalModelSettings() {
-    const model = document.getElementById("mitigation-model")?.value || "armor_over_k";
-
-    const extraPhysRed = Number(document.getElementById("extra-phys-red")?.value || 0);
-
-    const kPreset = document.getElementById("k-preset")?.value || "52000";
-    const kCustom = Number(document.getElementById("k-custom")?.value || 52000);
-    const k = (kPreset === "custom") ? kCustom : Number(kPreset);
-
-    const c = Number(document.getElementById("c-custom")?.value || 1);
-
-    return { model, k, c, extraPhysRed };
-  }
-
-  function applyExtraRed(dmg, extraPct) {
-    return dmg * (1 - (extraPct / 100));
-  }
-
-  function finalPhysicalDamage(raw, attackerAtk, targetArmor, settings) {
-    if (!raw) return 0;
-
-    let final = raw;
-
-    if (settings.model === "armor_over_k") {
-      const armor = Number(targetArmor || 0);
-      const k = Number(settings.k || 0);
-      const dr = (armor > 0 && (armor + k) > 0) ? (armor / (armor + k)) : 0;
-      final = raw * (1 - dr);
-    } else {
-      const atk = Number(attackerAtk || 0);
-      const armor = Number(targetArmor || 0);
-      const c = Number(settings.c || 1);
-      const denom = atk + (armor * c);
-      final = denom > 0 ? raw * (atk / denom) : raw;
+  function applyBonusesToHero(hero, presetKey) {
+    if (!presetKey || presetKey === 'none') return hero;
+    const preset = bonusPresets[presetKey];
+    if (!preset || !preset.stats) return hero;
+    const updated = { ...hero, stats: { ...hero.stats } };
+    for (const [stat, value] of Object.entries(preset.stats)) {
+      if (stat in updated.stats) {
+        updated.stats[stat] = Number(value || 0);
+      }
     }
-
-    return applyExtraRed(final, settings.extraPhysRed || 0);
+    return updated;
   }
 
-  function extractAtkPercents(text) {
-    const matches = [...(text || "").matchAll(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi)];
-    return matches.map(m => Number(m[1]));
+  const BASE_CRIT_MULTIPLIER = 1.5;
+
+  function getCritMultiplier(hero) {
+    return BASE_CRIT_MULTIPLIER + Number(hero.stats?.critDmgBonus || 0) / 100;
   }
 
-  function extractCurrentHpTick(text) {
-    const pct = /(\d+(?:\.\d+)?)%\s*of\s+(?:their\s+)?current\s+HP/gi.exec(text || "");
-    const cap = /capped\s+at\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi.exec(text || "");
-    const every = /Every\s+(\d+(?:\.\d+)?)s/gi.exec(text || "");
-    return {
-      hpPct: pct ? Number(pct[1]) : null,
-      capAtkPct: cap ? Number(cap[1]) : null,
-      interval: every ? Number(every[1]) : null
-    };
+  function getImpactLabel(hpPercent) {
+    if (hpPercent >= 50) return { label: 'LETHAL', cls: 'impact-lethal' };
+    if (hpPercent >= 30) return { label: 'DEVASTATING', cls: 'impact-devastating' };
+    if (hpPercent >= 15) return { label: 'HEAVY', cls: 'impact-heavy' };
+    if (hpPercent >= 5) return { label: 'SOLID', cls: 'impact-solid' };
+    return { label: 'LIGHT', cls: 'impact-light' };
   }
 
-  function syncModelUI() {
-    const model = document.getElementById("mitigation-model")?.value;
-    const kField = document.getElementById("k-field");
-    const cField = document.getElementById("c-field");
-
-    if (kField) kField.classList.toggle("hidden", model !== "armor_over_k");
-    if (cField) cField.classList.toggle("hidden", model !== "atk_over_armor_c");
+  function computeEHP(hero, config) {
+    const hp = Number(hero.stats?.hp || 0);
+    const armor = Number(hero.stats?.armor || 0);
+    const magicRes = Number(hero.stats?.magicRes || 0);
+    const physDR = armor / (armor + config.kValue);
+    const physEHP = physDR < 1 ? hp / (1 - physDR) : hp;
+    const magicDR = magicRes / (magicRes + config.kValue);
+    const magicEHP = magicDR < 1 ? hp / (1 - magicDR) : hp;
+    return { physEHP, magicEHP, physDR: physDR * 100, magicDR: magicDR * 100 };
   }
 
-  function syncKUI() {
-    const preset = document.getElementById("k-preset")?.value;
-    const custom = document.getElementById("k-custom");
-    if (custom) custom.classList.toggle("hidden", preset !== "custom");
+  function extractHitCount(text) {
+    if (!text) return 1;
+    const patterns = [
+      /(\d+)\s*times?,?\s*each\s+dealing/i,
+      /(?:strikes?|hits?|striking)\s+(?:all\s+)?(?:units?\s+|enemies?\s+)?(\d+)\s*times?/i,
+    ];
+    for (const pattern of patterns) {
+      const match = text.match(pattern);
+      if (match) return parseInt(match[1] || match[2]);
+    }
+    return 1;
   }
 
-  function syncExtraRedUI() {
-    const v = document.getElementById("extra-phys-red")?.value || "0";
-    const out = document.getElementById("extra-phys-red-val");
-    if (out) out.textContent = v;
-  }
-
-  // ---------- existing: tooltip replacements ----------
   function replaceStatBoundPercents(text, sourceHero, targetHero) {
     if (!text) return "";
 
     let output = text;
 
-    output = output.replace(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi, (_, percentRaw) => {
+    output = output.replace(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/gi, (_, percentRaw) => {
       const percent = parseFloat(percentRaw);
       const value = (percent / 100) * sourceHero.stats.atk;
-      return `${formatNumber(value)} DMG`;
+      return `${percentRaw}% ATK (${formatNumber(value)} raw)`;
     });
 
     output = output.replace(/(\d+(?:\.\d+)?)%\s*of\s+(?:their\s+)?max\s+HP/gi, (_, percentRaw) => {
@@ -191,7 +193,7 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
         return `${percent}% of target Max HP (select comparison hero)`;
       }
       const value = (percent / 100) * targetHero.stats.hp;
-      return `${formatNumber(value)} DMG`;
+      return `${percentRaw}% Max HP (${formatNumber(value)} raw)`;
     });
 
     output = output.replace(/(\d+(?:\.\d+)?)%\s*of\s+(?:their\s+)?current\s+HP/gi, (_, percentRaw) => {
@@ -200,13 +202,13 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
         return `${percent}% of target Current HP (select comparison hero)`;
       }
       const value = (percent / 100) * targetHero.stats.hp;
-      return `up to ${formatNumber(value)} DMG (at full HP)`;
+      return `${percentRaw}% Current HP (up to ${formatNumber(value)} raw at full HP)`;
     });
 
-    output = output.replace(/capped\s+at\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?ATK/gi, (_, percentRaw) => {
+    output = output.replace(/capped\s+at\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/gi, (_, percentRaw) => {
       const percent = parseFloat(percentRaw);
       const value = (percent / 100) * sourceHero.stats.atk;
-      return `capped at ${formatNumber(value)} DMG`;
+      return `capped at ${percentRaw}% ATK (${formatNumber(value)} raw)`;
     });
 
     output = output.replace(/(\d+(?:\.\d+)?)%\s*of\s+(?:Nuba's|her|his|its)\s+Max\s+HP/gi, (_, percentRaw) => {
@@ -224,71 +226,263 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     return output;
   }
 
-  function renderSkillNumbers(skill, sourceHero, targetHero) {
-    const settings = getGlobalModelSettings();
+  const K_PRESETS = {
+    low: 100000,
+    balanced: 52000,
+    high: 28600,
+  };
 
-    if (!targetHero) {
-      return `
-        <div class="numbers-row muted">
-          <span>Select a comparison hero to estimate damage vs Armor.</span>
-        </div>
-      `;
+  function getMitigationConfig() {
+    const model = document.getElementById("model-select")?.value || "A";
+    const kPreset = document.getElementById("k-preset")?.value || "balanced";
+    const kCustomInput = document.getElementById("k-custom");
+    const cInput = document.getElementById("c-input");
+    const extraRedInput = document.getElementById("extra-phys-red");
+    const extraRedValue = document.getElementById("extra-phys-red-value");
+
+    const presetValue = K_PRESETS[kPreset] ?? K_PRESETS.balanced;
+    const kCustom = parseFloat(kCustomInput?.value || presetValue);
+    const kValue = kPreset === "custom" ? kCustom : presetValue;
+    const cValue = parseFloat(cInput?.value || "1");
+    const extraPhysRed = parseFloat(extraRedInput?.value || "0");
+
+    if (kCustomInput) kCustomInput.disabled = kPreset !== "custom";
+    if (cInput) cInput.disabled = model !== "B";
+    if (extraRedValue) extraRedValue.textContent = `${extraPhysRed}%`;
+
+    // Show/hide advanced control groups based on selections
+    const kCustomGroup = document.getElementById("k-custom-group");
+    const cInputGroup = document.getElementById("c-input-group");
+    if (kCustomGroup) kCustomGroup.classList.toggle("hidden", kPreset !== "custom");
+    if (cInputGroup) cInputGroup.classList.toggle("hidden", model !== "B");
+
+    return { model, kValue, cValue, extraPhysRed, durationSeconds: 10 };
+  }
+
+  function applyMitigation(raw, attacker, target, config, damageType) {
+    if (!target) return null;
+    // True damage bypasses all mitigation
+    const dt = (damageType || '').toLowerCase();
+    if (dt === 'true') return raw;
+    // Pick defense stat: Magical -> magicRes, Physical/default -> armor
+    const defStat = dt === 'magical'
+      ? Number(target.stats?.magicRes || 0)
+      : Number(target.stats?.armor || 0);
+    let mitigated;
+    if (config.model === 'B') {
+      const atk = Number(attacker.stats?.atk || 0);
+      const denom = atk + defStat * config.cValue;
+      mitigated = denom > 0 ? raw * (atk / denom) : raw;
+    } else {
+      const denom = defStat + config.kValue;
+      const dr = denom > 0 ? defStat / denom : 0;
+      mitigated = raw * (1 - dr);
     }
+    // Extra physical reduction only applies to physical damage
+    if (dt !== 'magical') {
+      mitigated = mitigated * (1 - config.extraPhysRed / 100);
+    }
+    return mitigated;
+  }
+
+  function extractConditionalLabel(text) {
+    const match = text?.match(/If\s+([^.,;]+?),?\s*this instead deals/i);
+    return match ? match[1].trim() : "Conditional";
+  }
+
+  function extractCapPercent(text) {
+    const match = text?.match(/capped\s+at\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/i);
+    return match ? parseFloat(match[1]) : null;
+  }
+
+  function extractCurrentHpPercent(text) {
+    const match = text?.match(/(\d+(?:\.\d+)?)%\s*of\s+(?:their\s+)?current\s+HP/i);
+    return match ? parseFloat(match[1]) : null;
+  }
+
+  function extractIntervalSeconds(text) {
+    const match = text?.match(/Every\s*(\d+(?:\.\d+)?)\s*s/i);
+    return match ? parseFloat(match[1]) : null;
+  }
+
+  function extractAtkPercents(skill) {
+    const description = skill.description || "";
+    const upgrades = skill.upgrades || {};
+    const upgradeText = Object.values(upgrades).join(" ");
+
+    const conditionalMatch = description.match(/instead deals\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/i);
+    const descriptionAtkMatch = description.match(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/i);
+    let normalPct = descriptionAtkMatch ? parseFloat(descriptionAtkMatch[1]) : null;
+    let conditionalPct = conditionalMatch ? parseFloat(conditionalMatch[1]) : null;
+
+    const upgradeDualMatch = upgradeText.match(/Increases\s+DMG\s+dealt\s+to\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK\s+and\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/i);
+    if (upgradeDualMatch) {
+      normalPct = parseFloat(upgradeDualMatch[1]);
+      conditionalPct = parseFloat(upgradeDualMatch[2]);
+    }
+
+    const upgradeSingleMatch = upgradeText.match(/(Active\s+DMG\s+increases\s+to|Increases\s+DMG\s+dealt\s+to|DMG\s+increases\s+to)\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/i);
+    if (upgradeSingleMatch) {
+      normalPct = parseFloat(upgradeSingleMatch[2]);
+    }
+
+    return { normalPct, conditionalPct };
+  }
+
+  function renderSkillNumbers(skill, sourceHero, targetHero, config) {
+    const description = skill.description || "";
+    const damageType = skill.damageType || '';
+    const capPct = extractCapPercent(description);
+    const currentHpPct = extractCurrentHpPercent(description);
+    const intervalSeconds = extractIntervalSeconds(description);
+    const conditionLabel = extractConditionalLabel(description);
+    const { normalPct, conditionalPct } = extractAtkPercents(skill);
+    const hitCount = extractHitCount(description);
 
     const rows = [];
 
-    // Active/Burst: highest ATK% found in description+upgrades (best rank proxy)
-    const allTexts = [skill.description, ...(skill.upgrades ? Object.values(skill.upgrades) : [])].join(" ");
-    const percents = extractAtkPercents(allTexts);
-    const bestPct = percents.length ? Math.max(...percents) : null;
-
-    if (bestPct) {
-      const raw = (bestPct / 100) * sourceHero.stats.atk;
-      const est = finalPhysicalDamage(raw, sourceHero.stats.atk, targetHero.stats.armor, settings);
-
-      rows.push(`
-        <div class="numbers-row">
-          <div><span class="num-label">Raw</span><span class="num">${formatNumber(raw)}</span></div>
-          <div><span class="num-label">Est. vs ${targetHero.name}</span><span class="num">${formatNumber(est)}</span></div>
-          <div><span class="num-label">ATK%</span><span class="num">${bestPct}%</span></div>
-        </div>
-      `);
+    if (normalPct) {
+      const raw = (normalPct / 100) * sourceHero.stats.atk;
+      const cappedRaw = capPct ? Math.min(raw, (capPct / 100) * sourceHero.stats.atk) : raw;
+      const estimated = applyMitigation(cappedRaw, sourceHero, targetHero, config, damageType);
+      rows.push({
+        label: hitCount > 1
+          ? `Per Hit (${normalPct}% ATK${capPct ? `, cap ${capPct}%` : ""})`
+          : `Normal (${normalPct}% ATK${capPct ? `, cap ${capPct}%` : ""})`,
+        raw: cappedRaw,
+        estimated,
+      });
+      if (hitCount > 1) {
+        rows.push({
+          label: `Total (x${hitCount} hits)`,
+          raw: cappedRaw * hitCount,
+          estimated: estimated !== null ? estimated * hitCount : null,
+          isMultiHitTotal: true,
+        });
+      }
     }
 
-    // Tick1 (current HP % capped at % ATK)
-    const t = extractCurrentHpTick(skill.description);
-    if (t.hpPct && t.capAtkPct) {
-      const rawHp = (t.hpPct / 100) * targetHero.stats.hp;
-      const cap = (t.capAtkPct / 100) * sourceHero.stats.atk;
-      const tick1Raw = Math.min(rawHp, cap);
-      const tick1Est = finalPhysicalDamage(tick1Raw, sourceHero.stats.atk, targetHero.stats.armor, settings);
-      const interval = t.interval ?? 2.5;
-
-      rows.push(`
-        <div class="numbers-row">
-          <div><span class="num-label">Tick1 Raw</span><span class="num">${formatNumber(tick1Raw)}</span></div>
-          <div><span class="num-label">Tick1 Est.</span><span class="num">${formatNumber(tick1Est)}</span></div>
-          <div><span class="num-label">Interval</span><span class="num">${interval}s</span></div>
-        </div>
-      `);
+    if (conditionalPct) {
+      const raw = (conditionalPct / 100) * sourceHero.stats.atk;
+      const cappedRaw = capPct ? Math.min(raw, (capPct / 100) * sourceHero.stats.atk) : raw;
+      const estimated = applyMitigation(cappedRaw, sourceHero, targetHero, config, damageType);
+      rows.push({
+        label: hitCount > 1
+          ? `${conditionLabel} Per Hit (${conditionalPct}% ATK${capPct ? `, cap ${capPct}%` : ""})`
+          : `${conditionLabel} (${conditionalPct}% ATK${capPct ? `, cap ${capPct}%` : ""})`,
+        raw: cappedRaw,
+        estimated,
+      });
+      if (hitCount > 1) {
+        rows.push({
+          label: `${conditionLabel} Total (x${hitCount})`,
+          raw: cappedRaw * hitCount,
+          estimated: estimated !== null ? estimated * hitCount : null,
+          isMultiHitTotal: true,
+        });
+      }
     }
 
-    if (!rows.length) {
-      return `
-        <div class="numbers-row muted">
-          <span>No numeric patterns detected for this skill yet.</span>
-        </div>
-      `;
+    if (currentHpPct && targetHero) {
+      const firstTickRaw = Math.min(
+        (currentHpPct / 100) * targetHero.stats.hp,
+        capPct ? (capPct / 100) * sourceHero.stats.atk : Infinity
+      );
+      const ticks = intervalSeconds ? Math.floor(config.durationSeconds / intervalSeconds) : 1;
+      const firstTickEst = applyMitigation(firstTickRaw, sourceHero, targetHero, config, damageType);
+
+      // Geometric simulation: HP decreases after each mitigated tick
+      let currentHp = targetHero.stats.hp;
+      let totalRaw = 0;
+      let totalEstimated = 0;
+      for (let i = 0; i < ticks; i++) {
+        const tickRaw = Math.min(
+          (currentHpPct / 100) * currentHp,
+          capPct ? (capPct / 100) * sourceHero.stats.atk : Infinity
+        );
+        const tickEst = applyMitigation(tickRaw, sourceHero, targetHero, config, damageType);
+        totalRaw += tickRaw;
+        if (tickEst !== null) totalEstimated += tickEst;
+        currentHp = Math.max(0, currentHp - (tickEst !== null ? tickEst : tickRaw));
+      }
+
+      rows.push({
+        label: `First tick (${currentHpPct}% Current HP${intervalSeconds ? ` every ${intervalSeconds}s` : ""})`,
+        raw: firstTickRaw,
+        estimated: firstTickEst,
+      });
+      rows.push({
+        label: `${config.durationSeconds}s total (${ticks} ticks, HP decays)`,
+        raw: totalRaw,
+        estimated: totalEstimated > 0 ? totalEstimated : null,
+      });
+    } else if (currentHpPct && !targetHero) {
+      rows.push({
+        label: `Current HP tick (${currentHpPct}%)`,
+        raw: null,
+        estimated: null,
+        note: "Select comparison hero to estimate",
+      });
     }
 
-    return rows.join("");
+    if (!rows.length) return "";
+
+    const targetHp = targetHero ? Number(targetHero.stats?.hp || 0) : 0;
+
+    const rowsHtml = rows
+      .map((row) => {
+        const rawText = row.raw !== null ? `Raw ${formatNumber(row.raw)}` : "";
+        const estimatedText = row.estimated !== null
+          ? `Estimated ${formatNumber(row.estimated)}`
+          : row.note || (targetHero ? "" : "Select comparison hero to estimate");
+        const joiner = rawText && estimatedText ? ' <span class="sep-dot"></span> ' : "";
+
+        // HP% impact bar
+        let hpImpactHtml = '';
+        if (row.estimated !== null && targetHero && targetHp > 0) {
+          const hpPercent = (row.estimated / targetHp) * 100;
+          const impact = getImpactLabel(hpPercent);
+          hpImpactHtml = `
+            <div class="hp-impact-row">
+              <div class="hp-impact-bar-track">
+                <div class="hp-impact-bar-fill ${impact.cls}" style="width: ${Math.min(hpPercent, 100)}%"></div>
+              </div>
+              <span class="hp-impact-text">${hpPercent.toFixed(1)}% of HP</span>
+              <span class="impact-label ${impact.cls}">${impact.label}</span>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="numbers-row${row.isMultiHitTotal ? ' multi-hit-total' : ''}">
+            <span class="numbers-label">${row.label}</span>
+            <span class="numbers-values">${rawText}${joiner}${estimatedText}</span>
+          </div>
+          ${hpImpactHtml}
+        `;
+      })
+      .join("");
+
+    const infoPill = !targetHero
+      ? `<div class="numbers-info-pill">+ Add Comparison Hero to see HP% impact and estimated damage</div>`
+      : "";
+
+    return `<div class="skill-numbers">${rowsHtml}${infoPill}</div>`;
   }
 
-  function renderSkillBlock(skill, sourceHero, targetHero, skillIndex) {
+  function getDamageTypeBadge(damageType) {
+    if (!damageType) return '';
+    const dt = damageType.toLowerCase();
+    if (dt === 'physical') return '<span class="dmg-badge dmg-physical">Physical</span>';
+    if (dt === 'magical') return '<span class="dmg-badge dmg-magical">Magical</span>';
+    if (dt === 'true') return '<span class="dmg-badge dmg-true">True</span>';
+    return '';
+  }
+
+  function renderSkillBlock(skill, sourceHero, targetHero, skillIndex, config) {
     const upgraded = skill.upgrades || {};
     // Construct image path: use explicit path if provided, otherwise infer from hero ID and skill index
     const icon = skill.image || `/skills/${sourceHero.id}_skill_${skillIndex}.webp`;
-
     const level2 = upgraded.level2
       ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 2</span><span class="upgrade-text">${replaceStatBoundPercents(upgraded.level2, sourceHero, targetHero)}</span></div>`
       : "";
@@ -303,8 +497,6 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
       ? `<div class="skill-upgrades">${level2}${level3}${level4}</div>`
       : "";
 
-    const numbersHtml = renderSkillNumbers(skill, sourceHero, targetHero);
-
     return `
       <div class="skill-card">
         <div class="skill-header">
@@ -312,24 +504,176 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
             <img src="${icon}" alt="${skill.name}" class="skill-icon" />
             <div class="skill-info">
               <h3 class="skill-name">${skill.name}</h3>
-              <span class="skill-type">Skill</span>
+              <div class="skill-tags">
+                <span class="skill-type">Skill</span>
+                ${getDamageTypeBadge(skill.damageType)}
+              </div>
             </div>
           </div>
         </div>
         <p class="skill-description">${replaceStatBoundPercents(skill.description, sourceHero, targetHero)}</p>
-        ${numbersHtml}
+        ${renderSkillNumbers(skill, sourceHero, targetHero, config)}
         ${upgradeHtml}
       </div>
     `;
   }
 
-  function renderHeroPanel(mountId, hero, targetHero, label) {
+  function computeSkillBurstData(skills, sourceHero, targetHero, config) {
+    const skillData = [];
+    (skills || []).slice(0, 4).forEach((skill) => {
+      const description = skill.description || "";
+      const damageType = skill.damageType || '';
+      const { normalPct, conditionalPct } = extractAtkPercents(skill);
+      const capPct = extractCapPercent(description);
+      const hitCount = extractHitCount(description);
+
+      // Use best variant (higher damage) per skill
+      let bestPct = normalPct;
+      if (conditionalPct && (!normalPct || conditionalPct > normalPct)) {
+        bestPct = conditionalPct;
+      }
+
+      if (bestPct) {
+        const perHitRaw = (bestPct / 100) * sourceHero.stats.atk;
+        const cappedPerHit = capPct ? Math.min(perHitRaw, (capPct / 100) * sourceHero.stats.atk) : perHitRaw;
+        const totalRaw = cappedPerHit * hitCount;
+        const totalEstimated = targetHero ? applyMitigation(totalRaw, sourceHero, targetHero, config, damageType) : null;
+
+        skillData.push({
+          skillName: skill.name,
+          totalRaw,
+          totalEstimated,
+          hitCount,
+          pct: bestPct,
+        });
+      }
+    });
+    return skillData;
+  }
+
+  function renderBurstSummary(skills, sourceHero, targetHero, config) {
+    const burstData = computeSkillBurstData(skills, sourceHero, targetHero, config);
+    if (!burstData.length) return '';
+
+    const critMult = getCritMultiplier(sourceHero);
+    const critRate = Number(sourceHero.stats?.critRate || 0);
+    const targetHp = targetHero ? Number(targetHero.stats?.hp || 0) : 0;
+
+    const totalRaw = burstData.reduce((sum, d) => sum + d.totalRaw, 0);
+    const totalEstimated = targetHero ? burstData.reduce((sum, d) => sum + (d.totalEstimated || 0), 0) : null;
+    const totalCritRaw = totalRaw * critMult;
+    const totalCritEstimated = totalEstimated !== null ? totalEstimated * critMult : null;
+
+    const hpPercentNormal = (targetHp > 0 && totalEstimated) ? (totalEstimated / targetHp * 100) : null;
+    const hpPercentCrit = (targetHp > 0 && totalCritEstimated) ? (totalCritEstimated / targetHp * 100) : null;
+
+    // Average damage factoring crit rate
+    const avgEstimated = (totalEstimated && critRate > 0)
+      ? totalEstimated * (1 - critRate / 100) + totalCritEstimated * (critRate / 100)
+      : totalEstimated;
+    const rotationsToKill = (targetHp > 0 && totalEstimated > 0) ? Math.ceil(targetHp / totalEstimated) : null;
+    const rotationsToKillAvg = (targetHp > 0 && avgEstimated > 0) ? Math.ceil(targetHp / avgEstimated) : null;
+
+    // EHP
+    const ehp = computeEHP(sourceHero, config);
+
+    // Build per-skill breakdown
+    const breakdownHtml = burstData.map(d => {
+      const estText = d.totalEstimated !== null ? formatNumber(d.totalEstimated) : '-';
+      const hpPct = (targetHp > 0 && d.totalEstimated) ? (d.totalEstimated / targetHp * 100).toFixed(1) + '%' : '';
+      return `<div class="burst-breakdown-row">
+        <span class="burst-skill-name">${d.skillName}${d.hitCount > 1 ? ` (x${d.hitCount})` : ''}</span>
+        <span class="burst-skill-dmg">${estText}${hpPct ? ` <span class="burst-skill-hp">${hpPct}</span>` : ''}</span>
+      </div>`;
+    }).join('');
+
+    let html = `<div class="burst-summary">`;
+    html += `<div class="burst-header">`;
+    html += `<h3 class="burst-title">Full Rotation Burst</h3>`;
+    html += `<span class="burst-subtitle">Best-variant damage from all skills combined</span>`;
+    html += `</div>`;
+
+    // Per-skill breakdown
+    html += `<div class="burst-breakdown">${breakdownHtml}</div>`;
+
+    // Normal burst total
+    html += `<div class="burst-totals">`;
+    html += `<div class="burst-row">`;
+    html += `<span class="burst-label">Normal</span>`;
+    html += `<span class="burst-values">Raw ${formatNumber(totalRaw)}${totalEstimated !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(totalEstimated)}` : ''}</span>`;
+    html += `</div>`;
+
+    // Crit burst total
+    html += `<div class="burst-row crit-accent">`;
+    html += `<span class="burst-label">All-Crit (${(critMult * 100).toFixed(0)}%)</span>`;
+    html += `<span class="burst-values burst-crit-val">Raw ${formatNumber(totalCritRaw)}${totalCritEstimated !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(totalCritEstimated)}` : ''}</span>`;
+    html += `</div>`;
+    html += `</div>`;
+
+    // HP% Impact bars
+    if (hpPercentNormal !== null) {
+      const impactNormal = getImpactLabel(hpPercentNormal);
+      html += `<div class="burst-hp-section">`;
+      html += `<div class="hp-impact-row">`;
+      html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impactNormal.cls}" style="width: ${Math.min(hpPercentNormal, 100)}%"></div></div>`;
+      html += `<span class="hp-impact-text">${hpPercentNormal.toFixed(1)}% of HP</span>`;
+      html += `<span class="impact-label ${impactNormal.cls}">${impactNormal.label}</span>`;
+      html += `</div>`;
+      if (hpPercentCrit !== null) {
+        const impactCrit = getImpactLabel(hpPercentCrit);
+        html += `<div class="hp-impact-row crit-accent">`;
+        html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impactCrit.cls}" style="width: ${Math.min(hpPercentCrit, 100)}%"></div></div>`;
+        html += `<span class="hp-impact-text">${hpPercentCrit.toFixed(1)}% if all crit</span>`;
+        html += `<span class="impact-label ${impactCrit.cls}">${impactCrit.label}</span>`;
+        html += `</div>`;
+      }
+      html += `</div>`;
+    }
+
+    // Rotations to Kill
+    if (rotationsToKill !== null) {
+      const killText = rotationsToKill === 1 ? '1 rotation -- One-Shot Combo!' : `${rotationsToKill} rotations`;
+      const avgText = (rotationsToKillAvg && rotationsToKillAvg !== rotationsToKill)
+        ? ` <span class="sep-dot"></span> Avg w/ ${critRate}% crit: ${rotationsToKillAvg}`
+        : '';
+      html += `<div class="burst-kills">`;
+      const killSvg = rotationsToKill === 1
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/><path d="M9 10h.01M15 10h.01"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M9.5 6.5L21 18v3h-3L6.5 9.5"/><path d="M11 5L5 11"/><path d="M8 8L4 4"/><path d="M5 3L3 5"/></svg>';
+      html += `<span class="kills-icon">${killSvg}</span>`;
+      html += `<span class="kills-text">${killText}${avgText}</span>`;
+      html += `</div>`;
+    }
+
+    html += `</div>`; // .burst-summary
+
+    // EHP Card
+    html += `<div class="ehp-card">`;
+    html += `<h3 class="burst-title">Effective HP</h3>`;
+    html += `<div class="ehp-grid">`;
+    html += `<div class="ehp-item">`;
+    html += `<span class="ehp-label">vs Physical</span>`;
+    html += `<span class="ehp-value">${formatNumber(ehp.physEHP)}</span>`;
+    html += `<span class="ehp-dr">${ehp.physDR.toFixed(1)}% damage reduction</span>`;
+    html += `</div>`;
+    html += `<div class="ehp-item">`;
+    html += `<span class="ehp-label">vs Magical</span>`;
+    html += `<span class="ehp-value">${formatNumber(ehp.magicEHP)}</span>`;
+    html += `<span class="ehp-dr">${ehp.magicDR.toFixed(1)}% damage reduction</span>`;
+    html += `</div>`;
+    html += `</div>`;
+    html += `</div>`; // .ehp-card
+
+    return html;
+  }
+
+  function renderHeroPanel(mountId, hero, targetHero, label, config) {
     const mount = document.getElementById(mountId);
     if (!mount || !hero) return;
 
     const skillsHtml = (hero.skills || [])
       .slice(0, 4)
-      .map((skill, index) => renderSkillBlock(skill, hero, targetHero, index + 1))
+      .map((skill, index) => renderSkillBlock(skill, hero, targetHero, index + 1, config))
       .join("");
 
     const relicHtml = hero.relic
@@ -366,15 +710,20 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
       : "";
 
     const heroImage = hero.image || `/heroes/${hero.id}.webp`;
+    const burstSummaryHtml = renderBurstSummary(hero.skills, hero, targetHero, config);
 
     mount.innerHTML = `
       <div class="hero-panel">
         <div class="hero-meta">
           <img src="${heroImage}" alt="${hero.name}" class="hero-portrait" />
           <div class="hero-meta-details"><h2 class="hero-name">${hero.name}</h2>
-            <div class="hero-faction">
-              <h4>ATK</h4><span>${formatNumber(hero.stats.atk)}</span>
-              <h4>HP</h4><span>${formatNumber(hero.stats.hp)}</span>
+            <div class="hero-stats-grid">
+              <div class="hero-stat"><h4>ATK</h4><span>${formatNumber(hero.stats.atk)}</span></div>
+              <div class="hero-stat"><h4>HP</h4><span>${formatNumber(hero.stats.hp)}</span></div>
+              <div class="hero-stat"><h4>Armor</h4><span>${formatNumber(hero.stats.armor)}</span></div>
+              <div class="hero-stat"><h4>M-Res</h4><span>${formatNumber(hero.stats.magicRes)}</span></div>
+              <div class="hero-stat"><h4>Crit Rate</h4><span>${Number(hero.stats.critRate || 0)}%</span></div>
+              <div class="hero-stat"><h4>Crit DMG</h4><span>${(getCritMultiplier(hero) * 100).toFixed(0)}%</span></div>
             </div>
             <div class="hero-identity-cards">
               <div class="identity-card">
@@ -418,28 +767,34 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
           ${skillsHtml}
           ${relicHtml}
         </div>
+
+        ${burstSummaryHtml}
       </div>
     `;
   }
 
   function renderPage() {
+    const config = getMitigationConfig();
     const heroAId = document.getElementById("hero-a-select")?.value;
     const heroBContainer = document.getElementById("hero-b-container");
     const hasComparison = !heroBContainer.classList.contains("hidden");
     const heroBId = document.getElementById("hero-b-select")?.value;
 
-    const heroA = heroes.find((hero) => hero.id === heroAId);
-    const heroB = hasComparison ? heroes.find((hero) => hero.id === heroBId) : null;
+    const presetKey = document.getElementById("bonus-preset")?.value || 'none';
+    const rawHeroA = heroes.find((hero) => hero.id === heroAId);
+    const rawHeroB = hasComparison ? heroes.find((hero) => hero.id === heroBId) : null;
+    const heroA = applyBonusesToHero(rawHeroA, presetKey);
+    const heroB = rawHeroB ? applyBonusesToHero(rawHeroB, presetKey) : null;
     const compareLayout = document.getElementById("compare-layout");
 
     if (compareLayout) {
       compareLayout.classList.toggle("has-comparison", !!(hasComparison && heroB));
     }
 
-    renderHeroPanel("hero-a-slot", heroA, heroB, "Primary");
+    renderHeroPanel("hero-a-slot", heroA, heroB, "Primary", config);
 
     if (hasComparison && heroB) {
-      renderHeroPanel("hero-b-slot", heroB, heroA, "Comparison");
+      renderHeroPanel("hero-b-slot", heroB, heroA, "Comparison", config);
     }
   }
 
@@ -447,6 +802,29 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
   const removeButton = document.getElementById("remove-hero-btn");
   const heroBContainer = document.getElementById("hero-b-container");
   const heroBControls = document.getElementById("hero-b-controls");
+  const modelSelect = document.getElementById("model-select");
+  const kPresetSelect = document.getElementById("k-preset");
+  const kCustomInput = document.getElementById("k-custom");
+  const cInput = document.getElementById("c-input");
+  const extraRedInput = document.getElementById("extra-phys-red");
+  const bonusPresetSelect = document.getElementById("bonus-preset");
+  const bonusDescEl = document.getElementById("bonus-desc");
+  const advancedToggle = document.getElementById("advanced-toggle");
+  const advancedPanel = document.getElementById("advanced-panel");
+
+  advancedToggle.addEventListener("click", () => {
+    const isOpen = !advancedPanel.classList.contains("hidden");
+    advancedPanel.classList.toggle("hidden", isOpen);
+    advancedToggle.classList.toggle("is-active", !isOpen);
+  });
+
+  bonusPresetSelect.addEventListener("change", () => {
+    const key = bonusPresetSelect.value;
+    if (bonusDescEl && bonusPresets[key]) {
+      bonusDescEl.textContent = bonusPresets[key].description;
+    }
+    renderPage();
+  });
 
   addButton.addEventListener("click", () => {
     heroBContainer.classList.remove("hidden");
@@ -464,30 +842,11 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
 
   document.getElementById("hero-a-select").addEventListener("change", renderPage);
   document.getElementById("hero-b-select").addEventListener("change", renderPage);
-
-  // NEW: global model events => rerender
-  document.getElementById("mitigation-model")?.addEventListener("change", () => {
-    syncModelUI();
-    renderPage();
-  });
-
-  document.getElementById("k-preset")?.addEventListener("change", () => {
-    syncKUI();
-    renderPage();
-  });
-
-  document.getElementById("k-custom")?.addEventListener("input", renderPage);
-  document.getElementById("c-custom")?.addEventListener("input", renderPage);
-
-  document.getElementById("extra-phys-red")?.addEventListener("input", () => {
-    syncExtraRedUI();
-    renderPage();
-  });
-
-  // init UI
-  syncModelUI();
-  syncKUI();
-  syncExtraRedUI();
+  modelSelect.addEventListener("change", renderPage);
+  kPresetSelect.addEventListener("change", renderPage);
+  kCustomInput.addEventListener("input", renderPage);
+  cInput.addEventListener("input", renderPage);
+  extraRedInput.addEventListener("input", renderPage);
 
   renderPage();
 </script>
@@ -510,6 +869,7 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
     margin-left: 48px;
   }
 
+
   .hero-header {
     height: 300px;
     background-image: url("/bg.jpg");
@@ -529,102 +889,237 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
   }
 
   .main-content {
-    max-width: 1400px;
+    padding: 0 24px 48px;
+    max-width: 1140px;
     margin: 0 auto;
-    padding: 0 20px 56px;
   }
 
-subtitle {
-    text-align: center;
-    margin: 0 0 22px;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .setup-card {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 16px;
+  .content-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 16px;
   }
 
-  /* NEW: model panel styling */
-  .panel-title { margin: 0 0 8px; font-size: 1rem; color: #fff; }
+  .hero-name { margin: 0; padding: 0; }
 
-  .model-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .field { display: flex; flex-direction: column; gap: 6px; }
-
-  .field input[type="number"] {
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 8px;
-    background: rgba(0,0,0,0.35);
+  .title {
+    margin: 32px 0 4px;
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     color: #fff;
-    padding: 10px;
-    font-size: 0.95rem;
   }
 
-  .field input[type="range"] { width: 100%; }
+  .subtitle {
+    margin: 0 0 20px;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.4;
+  }
 
-  .hint { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
-
-  .primary-toolbar {
+  /* ========== TOOLBAR ========== */
+  .toolbar {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: 10px;
+    margin: 16px 0 24px 0;
+  }
+
+  .toolbar-main {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    flex:1;
+  }
+
+  .toolbar-field:first-child {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .toolbar-field-row {
+    display: flex;
+    gap: 6px;
     align-items: center;
   }
 
-  .hero-b-controls {
+  .toolbar-field-row select {
+    flex: 1;
+  }
+
+  .toolbar-field label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .toolbar-options {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-field.compact {
+    flex: 0 0 auto;
+  }
+
+  .toolbar-field.compact select {
+    width: auto;
+    min-width: 180px;
+  }
+
+  /* ========== ADVANCED TOGGLE + PANEL ========== */
+  .advanced-toggle {
+    display: flex;
     align-items: center;
-    flex: 1;
+    gap: 5px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: color 0.15s, background-color 0.15s;
+    white-space: nowrap;
+    height: 34px;
   }
 
-  .primary-toolbar select {
-    flex: 1;
-    padding-right: 2.25rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='rgba(255,255,255,0.85)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 14px 14px;
+  .advanced-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
   }
 
-  #hero-b-select {
-    flex: 1;
+  .advanced-toggle.is-active {
+    background: rgba(212, 175, 55, 0.1);
+    color: rgba(212, 175, 55, 0.85);
+  }
+
+  .advanced-panel {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    padding: 14px;
+    animation: slideDown 0.2s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .advanced-hint {
+    margin: 0 0 10px;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+
+  .control-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .control-group label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  input[type="number"] {
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+    padding: 9px 12px;
+    font-size: 0.92rem;
+  }
+
+  input[type="number"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35);
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: #d4af37;
+  }
+
+  .slider-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .slider-row span {
+    min-width: 36px;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.82rem;
+    font-weight: 500;
   }
 
   label {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 600;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
 
   select {
     width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: none;
     border-radius: 8px;
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(255, 255, 255, 0.07);
     color: #fff;
-    padding: 10px;
-    font-size: 0.95rem;
+    padding: 9px 2.25rem 9px 12px;
+    font-size: 0.92rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 14px 14px;
+    transition: background-color 0.15s ease;
+  }
+
+  select:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35);
   }
 
   .compare-layout {
     display: flex;
-    gap: 14px;
+    gap: 16px;
     align-items: start;
-    justify-content: space-between;
     width: 100%;
   }
 
@@ -635,180 +1130,123 @@ subtitle {
   .hero-slot {
     flex: 1;
     min-width: 0;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px dashed rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    padding: 10px;
   }
 
   .hero-slot.secondary {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px dashed rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    padding: 10px;
-  }
-
-  .slot-toolbar {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  .slot-toolbar-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: space-between;
+    flex: 1;
+    min-width: 0;
   }
 
   .add-slot {
-    min-height: 40px;
+    height: 38px;
     flex: 0 0 auto;
-    border: 1px dashed rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    color: rgba(255, 255, 255, 0.92);
-    font-size: 0.92rem;
-    padding: 0 12px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    padding: 0 14px;
     white-space: nowrap;
     cursor: pointer;
-    align-self: center;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .add-slot:hover {
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.4);
   }
 
   .ghost-btn {
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 8px;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.9);
-    padding: 0 12px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.0);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    padding: 6px 8px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.15s, color 0.15s;
     height: stretch;
   }
 
+  .ghost-btn:hover {
+    background: rgba(255, 80, 80, 0.15);
+    color: #ff6b6b;
+  }
+
   .hero-panel {
-    background: rgba(255, 255, 255, 0.0);
-    border: 0px solid rgba(255, 255, 255, 0.12);
-    border-radius: 0px;
-    padding: 0px;
-    margin-top: 24px;
-  }
-
- .hero-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    gap: 10px;
-  }
-
-  .hero-head h2 {
-    margin: 0;
-    color: #fff;
-    font-size: 1.35rem;
-  }
-
-  .label-pill {
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: rgba(255, 255, 255, 0.92);
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    padding: 0;
+    margin-top: 0;
   }
 
   .hero-meta {
     display: flex;
     flex-direction: row;
-    gap: 12px;
-    margin-bottom: 14px;
+    gap: 14px;
+    margin-bottom: 20px;
     align-items: flex-start;
   }
 
   .hero-portrait {
     width: 50%;
-    min-width: 120px;
-    max-width: 180px;
+    min-width: 110px;
+    max-width: 170px;
     aspect-ratio: 1 / 1;
     height: auto;
-    border-radius: 10px;
+    border-radius: 12px;
     object-fit: cover;
     object-position: center 30%;
-    background-position: center 30%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.3);
   }
 
   .hero-meta-details {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-  }
-
-  .hero-faction {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .faction-label {
-    color: #ffffff;
-    font-size: 1rem;
-    line-height: 1.2;
-  }
-
-  .faction-icon {
-    width: 28px;
-    height: 28px;
   }
 
   .hero-identity-cards {
     display: flex;
-    gap: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
   }
 
   .identity-card {
-    background-color: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    box-sizing: border-box;
-    padding: 8px;
-    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px 4px 6px;
     min-width: 0;
   }
 
   .identity-card h4 {
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1.1;
-    text-align: center;
-    text-transform: uppercase;
-    white-space: nowrap;
-    margin: 0 0 4px;
+    display: none;
   }
 
   .identity-content {
     align-items: center;
     display: flex;
     gap: 4px;
-    justify-content: center;
-    padding: 8px;
+    padding: 0;
   }
 
   .identity-content span {
-    color: #ffffff;
-    font-size: 0.88rem;
-    line-height: 1.2;
-    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.78rem;
+    line-height: 1;
     text-transform: capitalize;
     white-space: nowrap;
   }
 
   .identity-icons {
-    height: 20px;
-    width: 20px;
+    height: 16px;
+    width: 16px;
+    opacity: 0.7;
   }
 
   .skills-stack {
@@ -818,21 +1256,21 @@ subtitle {
   }
 
   .skill-card {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.03);
+    border: none;
     border-radius: 12px;
-    padding: 0.875rem;
+    padding: 14px;
     margin-bottom: 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   }
 
   .skill-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.625rem;
-    padding-bottom: 0.625rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .skill-left {
@@ -842,12 +1280,12 @@ subtitle {
   }
 
   .skill-icon {
-    width: 48px;
-    height: 48px;
-    border: 2px solid #d4af37;
-    border-radius: 6px;
+    width: 44px;
+    height: 44px;
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    border-radius: 8px;
     object-fit: cover;
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
   }
 
   .skill-info {
@@ -864,133 +1302,484 @@ subtitle {
     line-height: 1.2;
   }
 
+  .skill-tags {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
   .skill-type {
     display: inline-block;
-    padding: 0.3rem 0.75rem;
-    background: rgba(255, 255, 255, 0.15);
-    color: #ddd;
-    border-radius: 6px;
-    font-size: 0.67rem;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    font-size: 0.65rem;
     font-weight: 600;
     width: fit-content;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .dmg-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .dmg-physical {
+    background: rgba(231, 137, 56, 0.15);
+    color: rgba(231, 167, 96, 0.9);
+  }
+
+  .dmg-magical {
+    background: rgba(120, 100, 255, 0.15);
+    color: rgba(160, 145, 255, 0.9);
+  }
+
+  .dmg-true {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .skill-description {
-    color: rgba(230, 230, 235, 0.85);
-    line-height: 1.4;
-    margin: 0 0 0.625rem;
-    padding-bottom: 0.625rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 0.84rem;
-  }
-
-  /* NEW: numbers rows under each skill */
-  .numbers-row {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    padding: 10px 0 0;
-    margin-bottom: 0.625rem;
-  }
-
-  .numbers-row > div {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 8px;
-    min-width: 0;
-  }
-
-  .num-label {
-    display: block;
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 2px;
-  }
-
-  .num {
-    display: block;
-    font-weight: 700;
-    color: #fff;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .numbers-row.muted {
-    grid-template-columns: 1fr;
-    color: rgba(255,255,255,0.7);
+    color: rgba(230, 230, 235, 0.75);
+    line-height: 1.5;
+    margin: 0 0 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 0.82rem;
-    padding-top: 0;
   }
 
   .skill-upgrades {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 4px;
+  }
+
+  .skill-numbers {
+    background: rgba(255, 255, 255, 0.02);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin: 0 0 10px;
+  }
+
+  .numbers-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .numbers-row + .numbers-row {
+    margin-top: 6px;
+  }
+
+  .numbers-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.78rem;
+    flex: 1;
+  }
+
+  .numbers-values {
+    color: #fff;
+    font-size: 0.8rem;
+    text-align: right;
+    flex: 1;
+  }
+
+  .numbers-info-pill {
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: rgba(100, 180, 255, 0.06);
+    border: 1px dashed rgba(100, 180, 255, 0.15);
+    border-radius: 6px;
+    color: rgba(100, 180, 255, 0.65);
+    font-size: 0.74rem;
+    text-align: center;
+  }
+
+  /* --- Stats Grid: flat, no boxes --- */
+  .hero-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 12px;
+  }
+
+  .hero-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 3px 0;
+  }
+
+  .hero-stat h4 {
+    margin: 0;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    min-width: 42px;
+  }
+
+  .hero-stat span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- Multi-hit total row --- */
+  .numbers-row.multi-hit-total {
+    background: rgba(212, 175, 55, 0.08);
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin-top: 4px;
+  }
+
+  .numbers-row.multi-hit-total .numbers-label {
+    color: #d4af37;
+    font-weight: 600;
+  }
+
+  .numbers-row.multi-hit-total .numbers-values {
+    color: #d4af37;
+  }
+
+  /* --- HP Impact bars --- */
+  .hp-impact-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    margin-bottom: 2px;
+  }
+
+  .hp-impact-bar-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    min-width: 60px;
+  }
+
+  .hp-impact-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hp-impact-bar-fill.impact-lethal {
+    background: linear-gradient(90deg, #ff4444, #ff1744);
+    box-shadow: 0 0 8px rgba(255, 23, 68, 0.5);
+  }
+
+  .hp-impact-bar-fill.impact-devastating {
+    background: linear-gradient(90deg, #ff6d00, #ff3d00);
+    box-shadow: 0 0 6px rgba(255, 61, 0, 0.4);
+  }
+
+  .hp-impact-bar-fill.impact-heavy {
+    background: linear-gradient(90deg, #ffa726, #ff9100);
+    box-shadow: 0 0 4px rgba(255, 145, 0, 0.3);
+  }
+
+  .hp-impact-bar-fill.impact-solid {
+    background: linear-gradient(90deg, #fdd835, #f9a825);
+  }
+
+  .hp-impact-bar-fill.impact-light {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .hp-impact-text {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    min-width: 70px;
+    text-align: right;
+  }
+
+  .impact-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .impact-label.impact-lethal {
+    color: #ff1744;
+    background: rgba(255, 23, 68, 0.12);
+  }
+
+  .impact-label.impact-devastating {
+    color: #ff6d00;
+    background: rgba(255, 109, 0, 0.1);
+  }
+
+  .impact-label.impact-heavy {
+    color: #ffa726;
+    background: rgba(255, 167, 38, 0.08);
+  }
+
+  .impact-label.impact-solid {
+    color: #fdd835;
+    background: rgba(253, 216, 53, 0.06);
+  }
+
+  .impact-label.impact-light {
+    color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  /* --- Burst Summary --- */
+  .burst-summary {
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    border-left: 3px solid rgba(212, 175, 55, 0.4);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 16px;
+    margin-top: 14px;
+  }
+
+  .burst-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  }
+
+  .burst-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #d4af37;
+    letter-spacing: -0.01em;
+  }
+
+  .burst-subtitle {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2px;
+  }
+
+  .burst-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .burst-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .burst-skill-name {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .burst-skill-dmg {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .burst-skill-hp {
+    color: rgba(212, 175, 55, 0.8);
+    font-weight: 600;
+  }
+
+  .burst-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 0.75rem;
+  }
+
+  .burst-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .burst-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .burst-values {
+    font-size: 0.8rem;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .burst-row.crit-accent .burst-label {
+    color: rgba(255, 215, 100, 0.85);
+  }
+
+  .burst-crit-val {
+    color: rgba(255, 215, 100, 0.9);
+  }
+
+  .burst-hp-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .burst-hp-section .hp-impact-row.crit-accent .hp-impact-text {
+    color: rgba(255, 215, 100, 0.7);
+  }
+
+  .burst-kills {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+  }
+
+  .kills-icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .kills-icon svg {
+    display: block;
+  }
+
+  .kills-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* --- EHP Card --- */
+  .ehp-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 10px;
+  }
+
+  .ehp-card .burst-title {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.88rem;
+    margin-bottom: 10px;
+  }
+
+  .ehp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .ehp-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+  }
+
+  .ehp-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .ehp-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .ehp-dr {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .sep-dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    vertical-align: middle;
+    margin: 0 2px;
   }
 
   .upgrade-row {
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 0.2rem 0.75rem;
+    gap: 10px;
+    padding: 4px 8px;
     border-radius: 6px;
   }
 
   .upgrade-label {
-    background: #4caf50;
-    color: #fff;
-    padding: 0.25rem 0.25rem;
+    background: rgba(76, 175, 80, 0.2);
+    color: #66bb6a;
+    padding: 2px 6px;
     border-radius: 4px;
-    font-weight: 400;
-    font-size: 0.75rem;
-    min-width: 48px;
+    font-weight: 600;
+    font-size: 0.68rem;
+    min-width: 42px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
     align-self: flex-start;
-    line-height: 1;
+    line-height: 1.3;
   }
 
   .upgrade-text {
-    color: #4caf50;
+    color: rgba(76, 175, 80, 0.75);
     font-size: 0.75rem;
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   .hidden {
     display: none;
   }
 
-@media (max-width: 900px) {
+  @media (max-width: 900px) {
     .compare-layout {
       flex-direction: column;
     }
 
-    .add-slot {
-      min-height: 40px;
+    .control-row {
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
     }
-
-    .skills-stack {
-      gap: 0.75rem;
-    }
-
-    .model-grid { grid-template-columns: 1fr; }
-    .numbers-row { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 768px) {
     :global(body) {
       margin-left: 0;
       margin-bottom: 56px;
-    }
-
-    .hero-header {
-      height: 220px;
-      background-attachment: scroll;
     }
 
     .main-content {
@@ -1000,6 +1789,24 @@ subtitle {
     .title {
       font-size: 1.65rem;
       margin-top: 22px;
+    }
+
+    .toolbar-main {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .toolbar-options {
+      flex-direction: row;
+    }
+
+    .toolbar-field.compact {
+      flex: 1;
+    }
+
+    .toolbar-field.compact select {
+      min-width: 0;
+      width: 100%;
     }
 
     .hero-meta {
@@ -1013,85 +1820,59 @@ subtitle {
       height: auto;
     }
 
+    .hero-stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .hero-identity-cards {
       flex-wrap: wrap;
     }
 
-    .identity-card {
-      min-width: 120px;
-    }
-
-    .slot-toolbar-actions {
-      flex-direction: column;
-    }
-
-    .primary-toolbar {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .hero-b-controls {
-      width: 100%;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .hero-b-controls .ghost-btn {
-      width: 100%;
-      min-height: 40px;
-    }
-
-    .primary-toolbar .add-slot {
-      width: 100%;
-      align-self: stretch;
-    }
-
-    .skills-stack {
-      flex-direction: column;
-    }
-
-    .skill-card {
-      max-width: 100%;
+    .control-row {
+      grid-template-columns: 1fr;
     }
 
     .skill-header {
       flex-direction: column;
-      gap: 1rem;
+      gap: 8px;
     }
 
     .skill-icon {
-      width: 64px;
-      height: 64px;
+      width: 56px;
+      height: 56px;
     }
 
     .skill-name {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
     }
 
     .upgrade-row {
       flex-direction: column;
       align-items: flex-start;
-      gap: 0.5rem;
+      gap: 4px;
     }
 
     .upgrade-label {
       width: 100%;
     }
+
+    .ehp-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hp-impact-row {
+      flex-wrap: wrap;
+    }
+
+    .burst-breakdown-row {
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .burst-row {
+      flex-direction: column;
+      gap: 2px;
+    }
   }
-</style>
-
-  .content-wrapper {
-    max-width: 1180px;
-    margin: 0 auto;
-  }
-
-  .hero-name { margin: 0; padding: 0; }
-
-  .title {
-    text-align: center;
-    margin: 28px 0 8px;
-    font-size: 2.1rem;
-    color: #fff;
-  }
-
- 
+</style></body>
+</html>

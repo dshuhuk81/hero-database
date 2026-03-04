@@ -15,7 +15,7 @@
     "pvp": "A",
     "pve": "A"
   },
-"recommendedRelicLevel": 1,
+  "recommendedRelicLevel": 1,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -57,7 +57,8 @@
         "level2": "Gains a shield equal to 40% of max HP.",
         "level3": "Increases Armor and M-RES by 30% for the duration.",
         "level4": "Gains a shield equal to 50% of max HP."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -68,7 +69,8 @@
         "level3": "Increases DMG taken by the target by 10% until the battle ends.",
         "level4": "Absorbs 25% of current HP (up to 500% of ATK)."
       },
-      "image": "/skills/prometheus_skill_2.webp"
+      "image": "/skills/prometheus_skill_2.webp",
+      "damageType": "Magical"
     },
     {
       "id": "skill_3",
@@ -78,7 +80,8 @@
         "level2": "Increases DMG dealt to 200%.",
         "level3": "Hit enemies have their Armor and M-RES reduced by 15% for 6s.",
         "level4": "Increases DMG dealt to 250%."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_4",
@@ -88,7 +91,8 @@
         "level2": "Increases DMG RED to 12.5%, and to 25% when in the [Bound] state.",
         "level3": "Additionally gains 15% Effect RES. Gains 30% Effect RES when in the [Bound] state.",
         "level4": "Increases DMG RED to 15%, and to 30% when in the [Bound] state."
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

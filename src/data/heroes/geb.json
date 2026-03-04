@@ -56,7 +56,8 @@
         "level2": "Increases DMG per hit to 115% of ATK.",
         "level3": "Increases shield strength to 40% of max HP.",
         "level4": "Increases DMG per hit to 130% of ATK."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "Shield strength increases to 20% of max HP.",
         "level3": "Takes 10% less DMG while shielded.",
         "level4": "Shield strength increases to 25% of max HP."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Reduces up to 37.5% DMG.",
         "level3": "Reduces up to 45% DMG.",
         "level4": "Reduces the ATK SPD of nearby enemies by 25%."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -86,7 +89,8 @@
         "level2": "Increases DMG dealt to 110% of ATK.",
         "level3": "Reduces the Hit Rate of hit enemies by 30% for 5s.",
         "level4": "Increases DMG dealt to 120% of ATK."
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

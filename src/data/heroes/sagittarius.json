@@ -56,7 +56,8 @@
         "level2": "Grants 10% Lifesteal for the duration. (Unlocks at Lv.21)",
         "level3": "Increases ATK by 20%. (Unlocks at Lv.121)",
         "level4": "Duration extends to 10s. (Unlocks at Lv.161)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -65,7 +66,8 @@
       "upgrades": {
         "level2": "Total DMG increases to 25%. (Unlocks at Lv.81)",
         "level3": "Total DMG increases to 30%. (Unlocks at Lv.141)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -74,7 +76,8 @@
       "upgrades": {
         "level2": "Reduces hit targets' Armor by 20% for 5s. (Unlocks at Lv.41)",
         "level3": "Increases DMG dealt to 250%. (Unlocks at Lv.101)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "synergies": [

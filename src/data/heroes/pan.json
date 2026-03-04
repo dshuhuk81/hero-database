@@ -56,7 +56,8 @@
         "level2": "When cast, it deals 5% more DMG for every 100 Energy the target has.",
         "level3": "Increases DMG per hit to 60% ATK.",
         "level4": "When cast, it deals 10% more DMG for every 100 Energy the target has."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "Increases the duration of Daze to 7s.",
         "level3": "Enemies cannot regen Energy when dazed.",
         "level4": "If a dazed enemy Deity is awakened by an attack, the attack deals 1.5 times the DMG."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Increases the silence duration to 5s.",
         "level3": "This effect can only trigger once every 10s.",
         "level4": "When the effect is triggered, Pan restores 100 Energy."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -86,12 +89,14 @@
         "level2": "DMG increases to 220% of ATK.",
         "level3": "Duration extends to 7s.",
         "level4": "TThe enemy's ATK SPD is reduced by 40% within 4s after Terror ends."
-      }
+      },
+      "damageType": "Magical"
     }
   ],
   "relic": {
     "name": "The Goat's Bond",
     "description": "Any debuff applied by Pan deals 60% of his ATK as DMG per sec to its bearer.",
+   "damageType": "Magical",
     "upgrades": {
       "level2": "Any debuff applied by Pan deals 80% of his ATK as DMG per sec to the bearer.",
       "level3": "For each debuff on the target, DMG dealt to that target is increased by 50% stacking up to 4 times.",

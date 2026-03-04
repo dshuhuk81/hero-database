@@ -56,7 +56,8 @@
         "level2": "Increases DMG dealt to 330%.",
         "level3": "Deals 35% increased DMG to enemies with HP above 50%.",
         "level4": "Increases DMG dealt to 360%."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "Deals 110% ATK as DMG per sec.",
         "level3": "Rooted enemies take 15% increased M-DMG.",
         "level4": "Deals 120% ATK as DMG per sec. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Surtr gains a shield equal to 270% ATK for every 3 skills cast.",
         "level3": "Surtr's ATK is increased by 20% when he is shielded.",
         "level4": "Surtr gains a shield equal to 300% ATK for every 3 skills cast. (Unlocks at Lv.281)"
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_4",
@@ -86,7 +89,8 @@
         "level2": "Deals 320% ATK as DMG.",
         "level3": "Reduces healing received by hit enemies by 50% for 6s.",
         "level4": "Deals 350% ATK as DMG."
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

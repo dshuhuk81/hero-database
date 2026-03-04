@@ -15,7 +15,7 @@
     "pvp": "S",
     "pve": "S"
   },
- "recommendedRelicLevel": 1,
+  "recommendedRelicLevel": 1,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -57,7 +57,8 @@
         "level2": "Leaves a poison pool when falling. The poison pool lasts 10s and deals damage every second equal to twice the poison mist damage. (Unlock at Relic Lv.10)",
         "level3": "Damage per second increased to 85% of ATK. (Unlock at Relic Lv.20)",
         "level4": "Damage per second increased to 100% of ATK. (Unlock at Relic Lv.30)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Becomes invincible for the skill’s duration.",
         "level3": "Damage per hit increased to 110% of ATK.",
         "level4": "Damage per hit increased to 120% of ATK."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Gains a shield equal to 250% of ATK for 6s.",
         "level3": "Damage increased to 220% of ATK.",
         "level4": "Gains a shield equal to 300% of ATK for 6s."
-      }
+      },
+      "damageType": "True"
     },
     {
       "id": "skill_4",
@@ -87,12 +90,14 @@
         "level2": "Reflects 70% of damage taken.",
         "level3": "Reflects 80% of damage taken.",
         "level4": "Reflects 100% of damage taken. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": "Physical"
     }
   ],
   "relic": {
     "name": "Serpent’s Lure",
     "description": "Jormungandr releases a swarm of snakes, dealing damage equal to 200% of ATK to nearby enemies and pulling them within a 1-meter range.",
+    "damageType": "Physical",
     "upgrades": {
       "level2": "Enemies hit are taunted for 3s.",
       "level3": "Damage increased to 220% of ATK.",

@@ -57,7 +57,8 @@
         "level2": "Lotus Embodied reduces the Armor of nearby enemies by 10% for 2s. This effect can stack.",
         "level3": "Increases Lifesteal gained to 30%.",
         "level4": "The duration of Lotus Embodied extends to 15s."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Soul Fire now grants 20% ATK and 40% Armor & M-RES.",
         "level3": "Gains a shield equal to 200% of ATK when retrieving Soul Fire.",
         "level4": "Soul Fire now grants 30% ATK and 50% Armor & M-RES."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Increases DMG dealt to 100% ATK. DMG is increased to 140% ATK in the [Lotus Embodied] state.",
         "level3": "Increases ATK by 25% while in Lotus Embodied.",
         "level4": "Increases ATK SPD by 25% for 10s when the skill ends."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Increases DMG dealt to 120% ATK. DMG is increased to 180% ATK in the [Lotus Embodied] state.",
         "level3": "Enemies hit by Nezha in the [Lotus Embodied] state take 20% more DMG from him for 8s.",
         "level4": "He can now pull up to 3 enemies."
-      }
+      },
+      "damageType": "Physical"
     }
   ],
   "relic": {

@@ -6,6 +6,7 @@
 .hero {
   position: relative;
   height: 360px;
+  background-image: var(--hero-image);
   background-size: cover;
   background-position: center top;
   display: flex;

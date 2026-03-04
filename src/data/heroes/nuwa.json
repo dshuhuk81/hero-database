@@ -57,7 +57,8 @@
         "level2": "The shield absorbs DMG equal to 2200% of ATK.",
         "level3": "The shield absorbs DMG equal to 3000% of ATK.",
         "level4": "While the barrier is active, the Bulwark Figurine takes 20% reduced DMG."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Shield strength increases to 270% of ATK.",
         "level3": "Nuwa gains a shield when casting the skill.",
         "level4": "Takes 50% less DMG while shielded."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Increases Greataxe Figurine stun duration to 1.5s.",
         "level3": "Leaps high and lands, taunting enemies within range for 5s and gaining 100% Armor for the duration.",
         "level4": "Increases smash DMG and clustered area DMG to 330% of ATK."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Grants buffs based on ally position: frontline allies gain 10% Dodge Rate, backline allies gain 10% DMG bonus for 10s.",
         "level3": "Support Figurine now heals for 110% ATK with each Normal Attack.",
         "level4": "When a Bulwark Figurine is on the battlefield, she heals it every 2.5s."
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

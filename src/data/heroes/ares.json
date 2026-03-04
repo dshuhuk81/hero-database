@@ -56,7 +56,8 @@
         "level2": "Increases DMG per sec to 110% ATK.",
         "level3": "Gains a shield equal to 200% of ATK when the Ultimate ends.",
         "level4": "Increases DMG per sec to 120%."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "Reduces Armor by 20%.",
         "level3": "Reduces Armor for 8s.",
         "level4": "Reduces Armor by 25%."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Permanently increases Lifesteal by 20% upon triggering.",
         "level3": "Increases the duration to 7s.",
         "level4": "Permanently increases Lifesteal by 30% upon triggering."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -86,7 +89,8 @@
         "level2": "Increases ATK by up to 105%.",
         "level3": "Also gains up to 30% CRIT Rate.",
         "level4": "Increases ATK by up to 120%."
-      }
+      },
+      "damageType": ""
     }
   ],
   "passive": {

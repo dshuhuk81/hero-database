@@ -55,7 +55,8 @@
       "upgrades": {
         "level2": "Reduces nearby enemies' ATK by 20% for 6s when the shield breaks. (Unlocks at Lv.81)",
         "level3": "Shield Strength increases to 330% ATK. (Unlocks at Lv.141)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -64,7 +65,8 @@
       "upgrades": {
         "level2": "Increases the thrust DMG to 250% ATK. (Unlocks at Lv.41)",
         "level3": "Increases the thrust DMG to 300% ATK. (Unlocks at Lv.101)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -74,7 +76,8 @@
         "level2": "Increases DMG dealt to 250% ATK. (Unlocks at Lv.21)",
         "level3": "Stuns last for 3s. (Unlocks at Lv.121)",
         "level4": "Increases DMG dealt to 280% ATK. (Unlocks at Lv.161)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "synergies": [

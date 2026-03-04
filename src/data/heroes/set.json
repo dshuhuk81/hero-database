@@ -15,7 +15,7 @@
     "pvp": "A",
     "pve": "A"
   },
- "recommendedRelicLevel": 10,
+  "recommendedRelicLevel": 10,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -57,7 +57,8 @@
         "level2": "Increases the third attack's bonus to 350% of ATK.",
         "level3": "The third attack is guaranteed to hit.",
         "level4": "Increases the third attack's bonus to 380% of ATK."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -68,7 +69,8 @@
         "level3": "Increases the DMG bonus to 270% of ATK.",
         "level4": "Reduces hit targets’ Armor by 30% for 5s."
       },
-      "image": "/skills/set_skill_2.webp"
+      "image": "/skills/set_skill_2.webp",
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -78,7 +80,8 @@
         "level2": "Increases all allies’ ATK by 15%.",
         "level3": "Increases Lifesteal to 25%.",
         "level4": "Allies around Set gain an additional 15% Lifesteal."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -88,7 +91,8 @@
         "level2": "Increases the shield bonus to 270% of ATK.",
         "level3": "Set and that ally gain 30% ATK SPD for 8s.",
         "level4": "Increases the shield bonus to 300% of ATK."
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

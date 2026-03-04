@@ -56,7 +56,8 @@
         "level2": "Shield Strength increases to 220%.",
         "level3": "Increases the DMG dealt per sec by 75% when the shield is active.",
         "level4": ""
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "DMG increases to 500% ATK.",
         "level3": "DMG increases to 550% ATK.",
         "level4": ""
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "DMG increases to 230% ATK.",
         "level3": "Reduces healing received by hit enemies by 50% for 5s.",
         "level4": "DMG increases to 260% ATK."
-      }
+      },
+      "damageType": "Physical"
     }
   ],
   "synergies": [

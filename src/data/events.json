@@ -1,6 +1,51 @@
 {
   "campaigns": [
     {
+      "id": "nuba-campaign",
+      "name": "Nuba Campaign",
+      "hero": "nuba",
+      "description": "Complete PVE campaign stages using Nuba and allies",
+      "stages": [
+        {
+          "id": 1,
+          "name": "1. A lonely figure drifts from lands discret, scorched earth beneath her foot.",
+
+          "composition": {
+            "front": ["gemini", "taurus"],
+            "back": ["freya", "scorpio", "capricorn"]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2. Red plains stretch far, the rivers dry.",
+
+          "composition": {
+            "front": ["leo", "aries"],
+            "back": ["sagittarius", "scorpio", "cancer"]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. Bones lie beneath a cold, barren sky.",
+
+          "composition": {
+            "front": ["leo", "aries"],
+            "back": ["sagittarius", "scorpio", "cancer"]
+          }
+        },
+        {
+          "id": 4,
+          "name": "4. Slandered, the innocent flees away: all eyes clouded, lost in gray.",
+
+          "composition": {
+            "front": ["leo", "aries"],
+            "back": ["sagittarius", "virgo", "anubis"]
+          }
+        }
+        
+      ]
+    },
+    {
       "id": "heracles-campaign",
       "name": "Heracles Campaign",
       "hero": "heracles",

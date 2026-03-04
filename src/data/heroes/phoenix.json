@@ -57,7 +57,8 @@
         "level2": "Keeps her Energy upon revival. (Unlocks at Relic Lv.10)",
         "level3": "Rise From Ashes can now trigger unlimited times. If she is the only remaining unit and under Rise From Ashes, the battle is lost. (Unlocks at Relic Lv.20)",
         "level4": "When Phoenix casts Rise From Ashes for the first time, she gains 50% max HP. (Unlocks at Relic Lv.30)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Increases ATK bonus to 270%.",
         "level3": "Increases the conversion ratio of sacrificed HP to 120%.",
         "level4": "Increases ATK bonus to 300%."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Increases the ATK bonus of Soul Burn to 85%.",
         "level3": "Units with Soul Burn explode when falling, dealing DMG equal to 50% Phoenix's ATK × Soul Burn stacks to nearby enemies.",
         "level4": "Increases the ATK bonus of Soul Burn to 100%."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Gains 7.5% ATK SPD.",
         "level3": "Gains an additional 50 Energy.",
         "level4": "Gains 10% ATK SPD. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

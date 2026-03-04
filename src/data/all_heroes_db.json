@@ -58,7 +58,8 @@
           "level2": "Solar blades heal Amun-Ra for 100% of the DMG dealt.",
           "level3": "Increases the DMG of solar blades to 140% ATK.",
           "level4": "Reduces the attack interval of solar blades to 0.7s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -68,7 +69,8 @@
           "level2": "Enemies inside Solar Aura have their ATK reduced by 30%.",
           "level3": "Increases DMG per instance to 125% ATK.",
           "level4": "Extends the duration of Solar Aura to 8s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -78,7 +80,8 @@
           "level2": "Re-enters this state each time he casts the Ultimate.",
           "level3": "Dodging an attack restores 50 Energy to Amun-Ra for the duration. This can only trigger once per sec.",
           "level4": "Additionally gains 50% Effect RES for the duration. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -88,7 +91,8 @@
           "level2": "When the Energy Regen boost expires, all allies instantly restore 200 Energy.",
           "level3": "Increases his M-RES & Armor to 75%.",
           "level4": "Increases his Energy Regen to 80%. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -170,7 +174,8 @@
           "level2": "Increases DMG dealt to 500% ATK.",
           "level3": "Increases Anubis's ATK by 20% upon defeating a target. This boost lasts until the battle ends.",
           "level4": "After defeating a target, Anubis restores 25% of his max HP."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -180,7 +185,8 @@
           "level2": "When dealing DMG, steals 150 Energy from the target.",
           "level3": "Stun now lasts for 3s.",
           "level4": "Increases DMG dealt to 300% ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -190,7 +196,8 @@
           "level2": "Increases Anubis's ATK by 20% until the battle ends when triggered.",
           "level3": "Increases Lifesteal by 20% until the battle ends when triggered.",
           "level4": "Increases ATK by 30% and grants 30% Lifesteal when triggered. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -200,7 +207,8 @@
           "level2": "Increases DMG dealt to 235% ATK.",
           "level3": "Increases healing reduction to 80%.",
           "level4": "DMG dealt increases to 260% ATK. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -281,7 +289,8 @@
         "upgrades": {
           "level2": "Shield Strength increases to 270% ATK.",
           "level3": "Shield Strength increases to 300% ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -291,7 +300,8 @@
           "level2": "DMG increases to 290% ATK.",
           "level3": "Increases Aquarius's M-RES by 100% for 10s after casting the skill.",
           "level4": "DMG increases to 320% ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -300,7 +310,8 @@
         "upgrades": {
           "level2": "Shield Strength increases to 220% ATK.",
           "level3": "The shielded unit takes 20% less DMG for the next 5s."
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -368,7 +379,8 @@
           "level2": "Increases DMG per sec to 110% ATK.",
           "level3": "Gains a shield equal to 200% of ATK when the Ultimate ends.",
           "level4": "Increases DMG per sec to 120%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -378,7 +390,8 @@
           "level2": "Reduces Armor by 20%.",
           "level3": "Reduces Armor for 8s.",
           "level4": "Reduces Armor by 25%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -388,7 +401,8 @@
           "level2": "Permanently increases Lifesteal by 20% upon triggering.",
           "level3": "Increases the duration to 7s.",
           "level4": "Permanently increases Lifesteal by 30% upon triggering."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -398,7 +412,8 @@
           "level2": "Increases ATK by up to 105%.",
           "level3": "Also gains up to 30% CRIT Rate.",
           "level4": "Increases ATK by up to 120%."
-        }
+        },
+        "damageType": ""
       }
     ],
     "passive": {
@@ -488,7 +503,8 @@
         "upgrades": {
           "level2": "Increases ATK by 10%. (Unlocks at Lv.81)",
           "level3": "Increases Lifesteal gained to 25%. (Unlocks at Lv.141)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -498,7 +514,8 @@
           "level2": "Increases DMG dealt to 300% ATK. (Unlocks at Lv.21)",
           "level3": "Reduces the Move SPD & ATK SPD of hit enemies by 50% for 5s. (Unlocks at Lv.121)",
           "level4": "Increases DMG dealt to 330% ATK. (Unlocks at Lv.161)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -507,7 +524,8 @@
         "upgrades": {
           "level2": "Increases DMG dealt to 400% ATK. (Unlocks at Lv.41)",
           "level3": "Ignores 20% of the targets' Armor. (Unlocks at Lv.101)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -576,7 +594,8 @@
           "level2": "Increases DMG per shot to 200% of ATK.",
           "level3": "Extends the duration to 10s.",
           "level4": "Increases DMG per shot to 220% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -586,7 +605,8 @@
           "level2": "Increases DMG dealt to 300% of ATK.",
           "level3": "Ensnared enemies have their Dodge Rate reduced by 50% for 8s.",
           "level4": "Increases DMG dealt to 330% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -596,7 +616,8 @@
           "level2": "Gains an additional 70% Dodge Rate.",
           "level3": "Increases the Dodge Rate duration to 5s.",
           "level4": "Gains an additional 100% Dodge Rate."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -606,7 +627,8 @@
           "level2": "Increases DMG dealt to 220% of ATK.",
           "level3": "Piercing arrows also deal bonus DMG equal to 15% of the target’s current HP.",
           "level4": "Increases DMG dealt to 250% of ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -683,7 +705,8 @@
           "level2": "On the first cast, she gains 7.5% DMG RED & ATK for each ally within the aura.",
           "level3": "Increases the shield strength to 240%.",
           "level4": "On the second cast, all allies within the aura gain 60% ATK SPD."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -693,7 +716,8 @@
           "level2": "She also gains a shield equal to 150% of ATK.",
           "level3": "Increases DMG dealt to 270%.",
           "level4": "Shield Strength increases to 200% ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -703,7 +727,8 @@
           "level2": "Increases ATK SPD to 35%.",
           "level3": "Increases CRIT Rate by an additional 10%.",
           "level4": "Increases ATK SPD to 45%. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -713,7 +738,8 @@
           "level2": "Restores HP equal to 220% ATK.",
           "level3": "Increases the duration of M-RES boost by 12s.",
           "level4": "Restores HP equal to 240% ATK. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -796,7 +822,8 @@
           "level2": "Increases DMG per hit to 180% of ATK.",
           "level3": "Increases DMG per instance to 200% of ATK.",
           "level4": "Removes the cooldown of Feline Agility during the skill."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -806,7 +833,8 @@
           "level2": "Increases DMG per hit to 110% of ATK.",
           "level3": "Reduces the Hit Rate of hit enemies by 20%.",
           "level4": "Increases DMG per hit to 120% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -816,7 +844,8 @@
           "level2": "Increases DMG dealt to 50% of ATK.",
           "level3": "Duration extends to 30s.",
           "level4": "Increases DMG dealt to 60% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -826,7 +855,8 @@
           "level2": "Dodge bonus lasts for 8s.",
           "level3": "Gains a 50% Dodge Rate.",
           "level4": "Dodge bonus lasts for 10s."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -906,7 +936,8 @@
           "level2": "The unit receiving the final heal gains 15% increased ATK for 5s.",
           "level3": "Restores HP equal to 120% ATK per heal.",
           "level4": "The ATK buff now lasts 10s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -916,7 +947,8 @@
           "level2": "Healing increases to 270%.",
           "level3": "Now heals 2 allies.",
           "level4": "Healing increases to 300%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -926,7 +958,8 @@
           "level2": "Immediately restores 100 Energy when triggered.",
           "level3": "Shield Strength increases to 400% ATK.",
           "level4": "Immediately restores 200 Energy when triggered. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -936,7 +969,8 @@
           "level2": "Increases DMG RED to 20%.",
           "level3": "Increases that unit's M-RES by an additional 50%.",
           "level4": "Gains 30% Effect RES. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1015,7 +1049,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -1080,7 +1115,8 @@
           "level2": "The target takes 10% increased DMG during the effect.",
           "level3": "The lost HP is slowly restored over 8s.",
           "level4": "The target takes 20% increased DMG during the effect."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1090,7 +1126,8 @@
           "level2": "DMG dealt per hit increases to 115% ATK.",
           "level3": "DMG dealt per hit increases to 130% ATK.",
           "level4": ""
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1100,7 +1137,8 @@
           "level2": "DMG dealt per sec increases to 60% ATK.",
           "level3": "When cast, it increases her ATK SPD by 20% for the next 5s.",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1129,7 +1167,7 @@
     "rarity": "Legendary",
     "description": "Caishen, guardian of wealth, rules over the flow of riches, success, and opportunity. Able to grant fortune or strip possessions, Caishen rewards diligence and punishes greed.",
     "ratings": {
-      "overall": "S",
+      "overall": "SS",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
@@ -1178,7 +1216,8 @@
           "level2": "Increases ATK bonus to 300%.",
           "level3": "Restores 300 Energy to himself.",
           "level4": "Increases ATK bonus to 330%. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1188,7 +1227,8 @@
           "level2": "Increases Energy Regen to 30.",
           "level3": "Also increases ATK of allies within range by 15% for 5s.",
           "level4": "Increases Energy Regen to 35."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1198,7 +1238,8 @@
           "level2": "Additionally restores HP equal to 200% ATK.",
           "level3": "Additionally restores HP equal to 300% ATK.",
           "level4": "The effect now trigger twice. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -1208,7 +1249,8 @@
           "level2": "Increases healing effect to 27%.",
           "level3": "Golden Ingots +1 at combat start.",
           "level4": "Increases healing effect to 30%."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1287,7 +1329,8 @@
           "level2": "Increases DMG per second to 110% of ATK.",
           "level3": "Each enemy restores HP equal to 100% of her ATK per second.",
           "level4": "Increases DMG per second to 120% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1297,7 +1340,8 @@
           "level2": "Increases DMG dealt to 300% of ATK.",
           "level3": "Energy drained increases to 150.",
           "level4": "Increases DMG dealt to 330% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1307,7 +1351,8 @@
           "level2": "Restores 3% HP every 0.2s.",
           "level3": "Duration extends to 4s.",
           "level4": "Can trigger twice per battle and once every 6s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -1317,7 +1362,8 @@
           "level2": "Shield strength increases to 220% of ATK.",
           "level3": "Increases M-RES by 50% while the shield is active.",
           "level4": "Shield strength increases to 250% of ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1398,7 +1444,8 @@
           "level2": "Reduces the Armor of hit enemies by 20% for 5s.",
           "level3": "Increases DMG dealt to 285% of ATK.",
           "level4": "Reduces the Armor of hit enemies by 20% for 10s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1408,7 +1455,8 @@
           "level2": "Increases ATK SPD to 50%.",
           "level3": "Increases Energy gained per second to 20.",
           "level4": "Extends the duration to 10s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1418,7 +1466,8 @@
           "level2": "Can now mark 2 enemies.",
           "level3": "Marked enemies also have their CRIT RES reduced by 10%.",
           "level4": "Marked enemies now have their Armor reduced by 25%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -1428,7 +1477,8 @@
           "level2": "Increases the last hit’s DMG to 170% of ATK.",
           "level3": "The final hit is guaranteed to be a CRIT Hit.",
           "level4": "Increases the last hit’s DMG to 200% of ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1507,7 +1557,8 @@
           "level2": "While in the [Frenzy] state, increases ATK SPD to 60% and Energy Regen to 35%.",
           "level3": "Duration extends to 7s.",
           "level4": "Using this skill also removes all debuffs from an ally and makes them immune to Crowd Control for 2s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1517,7 +1568,8 @@
           "level2": "Restores HP equal to 160% of ATK.",
           "level3": "The healed unit also gains 30% DMG RED.",
           "level4": "Restores HP equal to 200% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1527,7 +1579,8 @@
           "level2": "Increases all allies' P&M-RES by 20%.",
           "level3": "For each unique ally class on the battlefield, grants all allies a shield equal to 50% of her ATK.",
           "level4": "Duration extends to 20s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -1537,7 +1590,8 @@
           "level2": "Reduces 70% of the next DMG taken.",
           "level3": "This effect can only trigger once every 6s.",
           "level4": "Becomes immune to the next DMG taken."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1621,7 +1675,8 @@
           "level2": "Each whirlwind deals 30% of ATK as extra DMG.",
           "level3": "ATK bonus increases to 320%.",
           "level4": "Restores 30 Energy for each whirlwind she has when casting a skill."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1631,7 +1686,8 @@
           "level2": "ATK bonus increases to 220%.",
           "level3": "Reduces the M-RES of hit units by 20%.",
           "level4": "ATK bonus increases to 250%. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1641,7 +1697,8 @@
           "level2": "Increases every whirlwind's ATK bonus to 20%.",
           "level3": "Fengyi gains 3 whirlwinds upon entering battle.",
           "level4": "Increases every whirlwind's ATK bonus to 25%. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -1651,7 +1708,8 @@
           "level2": "ATK bonus increases to 165%.",
           "level3": "Maximum whirlwinds +2.",
           "level4": "ATK bonus increases to 180%."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1728,7 +1786,8 @@
           "level2": "Restores HP equal to 110% of ATK per second.",
           "level3": "Freya gains Super Armor during her Ultimate.",
           "level4": "Restores HP equal to 120% of ATK per second."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1738,7 +1797,8 @@
           "level2": "Restores an additional 75 Energy to the target.",
           "level3": "Increases initial and over-time Energy restoration to 120%.",
           "level4": "Increases Energy restoration to 150."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1748,7 +1808,8 @@
           "level2": "Increases healing effect by 20%.",
           "level3": "Increases healing effect on allies with less than 50% HP by 20%.",
           "level4": "Increases healing effect by 30%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -1758,7 +1819,8 @@
           "level2": "Increases DMG per second to 120% of ATK.",
           "level3": "Stun duration increases to 4s.",
           "level4": "Stunned enemies take 20% increased DMG."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1837,7 +1899,8 @@
           "level2": "Increases DMG per hit to 115% of ATK.",
           "level3": "Increases shield strength to 40% of max HP.",
           "level4": "Increases DMG per hit to 130% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1847,7 +1910,8 @@
           "level2": "Shield strength increases to 20% of max HP.",
           "level3": "Takes 10% less DMG while shielded.",
           "level4": "Shield strength increases to 25% of max HP."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1857,7 +1921,8 @@
           "level2": "Reduces up to 37.5% DMG.",
           "level3": "Reduces up to 45% DMG.",
           "level4": "Reduces the ATK SPD of nearby enemies by 25%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -1867,7 +1932,8 @@
           "level2": "Increases DMG dealt to 110% of ATK.",
           "level3": "Reduces the Hit Rate of hit enemies by 30% for 5s.",
           "level4": "Increases DMG dealt to 120% of ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -1946,7 +2012,8 @@
           "level2": "Heals HP equal to 270% ATK. (Unlocks at Lv.21)",
           "level3": "Increases Castor's Armor by an additional 30% for the next 8s. (Unlocks at Lv.121)",
           "level4": "Heals HP equal to 300% ATK. (Unlocks at Lv.161)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -1956,7 +2023,8 @@
           "level2": "Castor's HP increases by 20% in battle.",
           "level3": "Increases DMG dealt to 260% of ATK and 330% of ATK.",
           "level4": ""
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -1966,7 +2034,8 @@
           "level2": "Increases DMG dealt to 270% ATK. (Unlocks at Lv.81)",
           "level3": "Blind now lasts for 4s. (Unlocks at Lv.141)",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -2036,7 +2105,8 @@
           "level3": "Plunders 3% of the max HP and ATK. (Unlock at Relic Lv.20)",
           "level4": "Plunders 4% of the max HP and ATK. (Unlock at Relic Lv.30)"
         },
-        "image": "/skills/hecate_skill_1.webp"
+        "image": "/skills/hecate_skill_1.webp",
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2047,7 +2117,8 @@
           "level3": "Restores HP equal to 50% of the DMG immediately upon dealing DMG.",
           "level4": "Increases DMG per sec to 150% ATK."
         },
-        "image": "/skills/hecate_skill_2.webp"
+        "image": "/skills/hecate_skill_2.webp",
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2058,7 +2129,8 @@
           "level3": "Increases DMG dealt to 75% ATK every 0.5s.",
           "level4": "Increases DMG dealt to 90% ATK every 0.5s."
         },
-        "image": "/skills/hecate_skill_3.webp"
+        "image": "/skills/hecate_skill_3.webp",
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2069,7 +2141,8 @@
           "level3": "Increases DMG dealt to 260% ATK.",
           "level4": "Increases DMG dealt to 280% ATK and stun duration to 3s. (Unlocks at Lv.281)"
         },
-        "image": "/skills/hecate_skill_4.webp"
+        "image": "/skills/hecate_skill_4.webp",
+        "damageType": ""
       }
     ],
     "passive": {
@@ -2157,7 +2230,8 @@
           "level2": "Increases the DMG of each Nether Fireball to 280% of ATK.",
           "level3": "Increases the explosion DMG of each Nether Fireball to 200% of ATK.",
           "level4": "Hela shoots an extra Nether Fireball."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2167,7 +2241,8 @@
           "level2": "Steals HP equal to 50% of ATK from the target every 0.5s.",
           "level3": "Reduces DMG taken by 50% during the skill.",
           "level4": "Steals 50 Energy from the target every 0.5s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2177,7 +2252,8 @@
           "level2": "Absorbs 10% of the fallen unit's ATK.",
           "level3": "Energy Regen increases to 150.",
           "level4": "Increases ATK absorbed to 20%. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2187,7 +2263,8 @@
           "level2": "Increases DMG dealt to 260% of ATK.",
           "level3": "Gains 10% bonus DMG per cast (stacking).",
           "level4": "Gains 20% bonus DMG per cast (stacking). (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -2266,7 +2343,8 @@
           "level2": "Grants a shield equal to 30% of the recorded DMG when cast.",
           "level3": "Deals 125% of the recorded DMG.",
           "level4": "Grants a shield equal to 50% of the recorded DMG when cast. (Unlocks at Lv.221)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2276,7 +2354,8 @@
           "level2": "Deals DMG equal to 15% of the target's max HP, up to 30% of Heracles's max HP.",
           "level3": "Also knocks down units hit. (Unlocks at Lv.161)",
           "level4": "Deals DMG equal to 20% of the target's max HP, up to 40% of Heracles's max HP. (Unlocks at Lv.241)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2286,7 +2365,8 @@
           "level2": "Gains a shield equal to 10% of the max HP.",
           "level3": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)",
           "level4": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2296,7 +2376,8 @@
           "level2": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
           "level3": "Increases max HP to 15%. (Unlocks at Lv.181)",
           "level4": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -2385,7 +2466,7 @@
           "level3": "Also grants herself a shield equal to 300% of her ATK.",
           "level4": "Increases DMG dealt to 330%. (Unlocks at Lv.281)"
         },
-        "image": "/skills/hladgunnr_skill_1.png"
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2395,7 +2476,8 @@
           "level2": "Gains 40% DMG RED while in the [Slumber] state.",
           "level3": "This effect triggers one extra time when Hladgunnr is about to fall.",
           "level4": "Gains 60% DMG RED while in the [Slumber] state."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2405,7 +2487,8 @@
           "level2": "Hladgunnr gains 20% DMG RED for the first release.",
           "level3": "Gains 25% DMG RED for the first release.",
           "level4": "Gains 30% DMG RED for the first release."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2415,7 +2498,8 @@
           "level2": "Increases DMG dealt to 440%.",
           "level3": "When her Ultimate cancels Sacred Meditation, she inherits the remaining buffs from it.",
           "level4": "Increases DMG dealt to 480%."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -2495,7 +2579,8 @@
           "level2": "Restores HP equal to 25% of the DMG dealt by Frenzied Blade. (Unlock at Relic Lv.10)",
           "level3": "When attacked in the [Revenge] state, Horus has a 30% chance to cast Frenzied Blade. This effect triggers once every 8s. (Unlock at Relic Lv.20)",
           "level4": "When attacked in the [Revenge] state, Horus has a 30% chance to cast Frenzied Blade. This effect triggers once every 4s. (Unlock at Relic Lv.30)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2505,7 +2590,8 @@
           "level2": "Increases ATK by 20% while in the [Revenge] state.",
           "level3": "Reduces DMG taken during the [Revenge] state by 30%.",
           "level4": "Increases ATK by 40% while in the [Revenge] state."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2515,7 +2601,8 @@
           "level2": "Increases DMG dealt to 220%.",
           "level3": "Reduces Armor by 30% when he is in the [Revenge] state.",
           "level4": "Increases DMG dealt to 250%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2525,7 +2612,8 @@
           "level2": "Increases ATK SPD to 20% and CRIT DMG by 20%.",
           "level3": "ATK SPD is increased by 55% when he is in the [Revenge] state.",
           "level4": "ATK SPD is increased to 25% and CRIT DMG is increased to 40%. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -2605,7 +2693,8 @@
           "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
           "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
           "level4": "The arrow will deal DMG equal to 200% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2615,7 +2704,8 @@
           "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
           "level3": "Increases ATK SPD to 150%.",
           "level4": "Reduces Energy lost to 40."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2625,7 +2715,8 @@
           "level2": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
           "level3": "Increases ATK bonus to 36%.",
           "level4": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2635,7 +2726,8 @@
           "level2": "Increases each stack of ATK SPD bonus to 25%.",
           "level3": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
           "level4": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -2710,7 +2802,8 @@
           "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
           "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
           "level4": "The arrow will deal DMG equal to 200% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2720,7 +2813,8 @@
           "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
           "level3": "Increases ATK SPD to 150%.",
           "level4": "Reduces Energy lost to 40."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2730,7 +2824,8 @@
           "level2": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
           "level3": "Increases ATK bonus to 36%.",
           "level4": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2740,7 +2835,8 @@
           "level2": "Increases each stack of ATK SPD bonus to 25%.",
           "level3": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
           "level4": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -2815,7 +2911,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -2882,7 +2979,8 @@
           "level2": "Increases DMG dealt by each whirlwind to 175% of ATK.",
           "level3": "Increases DMG dealt by each whirlwind to 200% of ATK.",
           "level4": "Increases DMG dealt to enemies with less than 50% HP by 20%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2892,7 +2990,8 @@
           "level2": "Increases DMG dealt to 220% of ATK.",
           "level3": "Increases DMG taken by hit enemies by 30%.",
           "level4": "Increases DMG dealt to 250% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -2902,7 +3001,8 @@
           "level2": "Each stack increases ATK by 12.5%.",
           "level3": "Each stack increases ATK by 15%.",
           "level4": "At maximum stacks, increases CRIT Rate to 40%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -2912,7 +3012,8 @@
           "level2": "Deals up to 24% bonus DMG.",
           "level3": "Deals up to 28% bonus DMG.",
           "level4": "Reduces the maximum trigger distance to 9 meters."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -2989,7 +3090,8 @@
           "level2": "Leaves a poison pool when falling. The poison pool lasts 10s and deals damage every second equal to twice the poison mist damage. (Unlock at Relic Lv.10)",
           "level3": "Damage per second increased to 85% of ATK. (Unlock at Relic Lv.20)",
           "level4": "Damage per second increased to 100% of ATK. (Unlock at Relic Lv.30)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -2999,7 +3101,8 @@
           "level2": "Becomes invincible for the skill’s duration.",
           "level3": "Damage per hit increased to 110% of ATK.",
           "level4": "Damage per hit increased to 120% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3009,7 +3112,8 @@
           "level2": "Gains a shield equal to 250% of ATK for 6s.",
           "level3": "Damage increased to 220% of ATK.",
           "level4": "Gains a shield equal to 300% of ATK for 6s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3019,7 +3123,8 @@
           "level2": "Reflects 70% of damage taken.",
           "level3": "Reflects 80% of damage taken.",
           "level4": "Reflects 100% of damage taken. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -3099,7 +3204,8 @@
           "level2": "Increases DMG dealt to 110%. (Unlocks at Lv.41)",
           "level3": "Gains 300 Energy on entry. (Unlocks at Lv.141)",
           "level4": "Increases DMG dealt to 120%. (Unlocks at Lv.221)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3109,7 +3215,8 @@
           "level2": "Increases DMG dealt to 300%. (Unlocks at Lv.21)",
           "level3": "Targets who are knocked back also launch units along the path. (Unlocks at Lv.161)",
           "level4": "Gains a shield equal to 200% of ATK. (Unlocks at Lv.241)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3119,7 +3226,8 @@
           "level2": "Shield Strength increases to 75% ATK. (Unlocks at Lv.121)",
           "level3": "Reduces the target's Hit Rate by 20% for 6s. (Unlocks at Lv.201)",
           "level4": "Each unit hit grants an extra 10% Hit Rate RED, lasting 6s. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3129,7 +3237,8 @@
           "level2": "Gains 30% DMG RED. (Unlocks at Lv.81)",
           "level3": "Shield Strength increases to 350% ATK. (Unlocks at Lv.181)",
           "level4": "Also restores 6% of max HP per sec for the duration. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "passive": {
@@ -3217,7 +3326,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -3281,7 +3391,8 @@
         "upgrades": {
           "level2": "Increases DMG of the first 2 hits to 100% ATK. (Unlocks at Lv.81)",
           "level3": "Increases the last hit's DMG to 180% ATK. (Unlocks at Lv.141)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3290,7 +3401,8 @@
         "upgrades": {
           "level2": "ATK increases by 60%. (Unlocks at Lv.41)",
           "level3": "The [Lionheart] state lasts for 15s. (Unlocks at Lv.101)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3300,7 +3412,8 @@
           "level2": "Increases DMG dealt to 270% ATK. (Unlocks at Lv.21)",
           "level3": "Reduces Armor by 40%. (Unlocks at Lv.121)",
           "level4": "Increases DMG dealt to 300% ATK. (Unlocks at Lv.161)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -3369,7 +3482,8 @@
         "upgrades": {
           "level2": "DMG bonus increases to 370% ATK. (Unlocks at Lv.41)",
           "level3": "Reduces the ATK SPD of hit enemies by 20% for 10s. (Unlocks at Lv.101)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3379,7 +3493,8 @@
           "level2": "DMG bonus increases to 270% ATK. (Unlocks at Lv.21)",
           "level3": "Increases stun duration by 3s. (Unlocks at Lv.121)",
           "level4": "DMG bonus increases to 300% ATK. (Unlocks at Lv.161)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3388,7 +3503,8 @@
         "upgrades": {
           "level2": "Shield Strength increases to 300%. (Unlocks at Lv.81)",
           "level3": "Increases ATK by 25% while the shield is active. (Unlocks at Lv.141)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -3456,7 +3572,8 @@
           "level2": "Increases DMG dealt to 340% of ATK.",
           "level3": "If the target has Serpent Kiss, it deals an additional 10% DMG.",
           "level4": "Increases DMG dealt to 360% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3466,7 +3583,8 @@
           "level2": "Increases DMG dealt to 220% of ATK.",
           "level3": "Increases DMG per bounce by 5%.",
           "level4": "Increases DMG dealt to 250% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3476,7 +3594,8 @@
           "level2": "Each Serpent Kiss on the field increases Medusa’s ATK SPD by 10%.",
           "level3": "She marks the enemy in the opposite position when the battle starts.",
           "level4": "Each Serpent Kiss on the field increases Medusa’s ATK SPD by 20%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3486,7 +3605,8 @@
           "level2": "Increases DMG dealt to 220% of ATK.",
           "level3": "Increases DMG dealt to 250% of ATK.",
           "level4": "Increases DMG dealt to 280% of ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -3564,7 +3684,8 @@
           "level2": "When gaining a shield, grants a shield with equal strength to the nearest ally. (Unlock at Relic Lv.10)",
           "level3": "Shield strength increases to 75% ATK. (Unlock at Relic Lv.20)",
           "level4": "Shield strength increases to 100% ATK. (Unlock at Relic Lv.30)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3574,7 +3695,8 @@
           "level2": "Gains 25% DMG RED during the Ultimate.",
           "level3": "Gains Super Armor during the Ultimate.",
           "level4": "Gains 50% DMG RED during the Ultimate."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3584,7 +3706,8 @@
           "level2": "Increases DMG dealt to 230%.",
           "level3": "For each enemy unit hit, restores HP equal to 50% of ATK (up to 250% of ATK).",
           "level4": "Reduces the DMG taken required to trigger the effect to 15% of max HP."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3594,7 +3717,8 @@
           "level2": "Increases DMG dealt to 230%.",
           "level3": "Hit units also have their CRIT Rate reduced by 25% for 6s.",
           "level4": "Increases DMG dealt to 260%. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -3677,7 +3801,8 @@
           "level2": "ATK bonus increases to 220%.",
           "level3": "Defeating an enemy resets the skill's CD.",
           "level4": "Increases the shield bonus to 250%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3687,7 +3812,8 @@
           "level2": "Hit enemies have their M-RER reduced by 10% for 5s, stacking up to 5 times.",
           "level3": "ATK bonus increases to 170%.",
           "level4": "ATK bonus increases to 180%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3697,7 +3823,8 @@
           "level2": "Increases Dodge Rate by 50% for the duration.",
           "level3": "Increases the ATK bonus to 50%.",
           "level4": "Duration extends to 8s. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3707,7 +3834,8 @@
           "level2": "ATK bonus increases to 90%.",
           "level3": "Reduces healing received by hit enemies by 50%.",
           "level4": "ATK bonus increases to 100%. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -3786,7 +3914,8 @@
           "level2": "Lotus Embodied reduces the Armor of nearby enemies by 10% for 2s. This effect can stack.",
           "level3": "Increases Lifesteal gained to 30%.",
           "level4": "The duration of Lotus Embodied extends to 15s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3796,7 +3925,8 @@
           "level2": "Soul Fire now grants 20% ATK and 40% Armor & M-RES.",
           "level3": "Gains a shield equal to 200% of ATK when retrieving Soul Fire.",
           "level4": "Soul Fire now grants 30% ATK and 50% Armor & M-RES."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3806,7 +3936,8 @@
           "level2": "Increases DMG dealt to 100% ATK. DMG is increased to 140% ATK in the [Lotus Embodied] state.",
           "level3": "Increases ATK by 25% while in Lotus Embodied.",
           "level4": "Increases ATK SPD by 25% for 10s when the skill ends."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3816,7 +3947,8 @@
           "level2": "Increases DMG dealt to 120% ATK. DMG is increased to 180% ATK in the [Lotus Embodied] state.",
           "level3": "Enemies hit by Nezha in the [Lotus Embodied] state take 20% more DMG from him for 8s.",
           "level4": "He can now pull up to 3 enemies."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -3846,6 +3978,121 @@
         "autor": "GPH",
         "videoId": "A67MaxE9qFE"
       }
+    ]
+  },
+  "nuba": {
+    "id": "nuba",
+    "name": "Nuba",
+    "image": "/heroes/nuba.webp",
+    "faction": "Clubs",
+    "role": "Nimble",
+    "class": "Warrior",
+    "rarity": "Legendary",
+    "description": "",
+    "ratings": {
+      "overall": "",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "pvp": "",
+      "pve": ""
+    },
+    "recommendedRelicLevel": 0,
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 632000,
+      "hp": 2322923,
+      "atk": 217075,
+      "armor": 34627,
+      "magicRes": 27701,
+      "dodgeRate": 0,
+      "hitBonus": 10,
+      "critRate": 6,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Siphon of Souls",
+        "description": "Passively, at the start of battle, inflicts Crimson Doom Mark on the 3 farthest enemies. Every 2.5s, Crimson Doom Mark deals DMG equal to 15% of their current HP, capped at 240% of ATK, and destroys 50 Energy. When an enemy with Crimson Doom Mark falls, the mark does not disappear. Instead, it drains the target's essence and transforms into a Source of the Drought Devil at the target's location. Upon activation, inflicts Crimson Doom Mark on the nearest enemy, disabling them for 3 seconds, dealing 400% of ATK DMG, and absorbing 200 Energy.",
+        "upgrades": {
+          "level2": "Active DMG increases to 440% ATK.",
+          "level3": "Energy absorbed by the Active is increased to 300.",
+          "level4": "Active DMG increases to 480% ATK."
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_2",
+        "name": "Infernal Soulbreaker",
+        "description": "Deal 100% of ATK DMG to the nearest enemy and interrupt them. If the target has Crimson Doom Mark, this instead deals 300% of ATK DMG and stuns the target for 2s.",
+        "upgrades": {
+          "level2": "Increases DMG dealt to 120% of ATK and 320% of ATK.",
+          "level3": "If the target has Crimson Doom Mark, the Stun duration is increased to 3 seconds.",
+          "level4": "Increases DMG dealt to 150% of ATK and 350% of ATK."
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "Rite of Ashes",
+        "description": "Passively, heals for 50% of the DMG dealt by Nuba and Crimson Doom Mark. Converts any HP restored beyond Max HP into a shield. This shield cannot exceed 100% of Nuba's Max HP.",
+        "upgrades": {
+          "level2": "HP restored from DMG dealt by Nuba and Crimson Doom Mark is increased to 70%.",
+          "level3": "The shield cap is increased to 200% of Nuba's Max HP.",
+          "level4": "HP restored from DMG dealt by Nuba and Crimson Doom Mark is increased to 100%."
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "Rise of the Drought",
+        "description": "When Nuba falls, she consumes one Source of the Drought Devil to revive at her current location, restoring 30% of her Max HP.",
+        "upgrades": {
+          "level2": "Increases HP restored to 40%.",
+          "level3": "For each second the Source of the Drought Devil has existed, Nuba restores an additional 5% of Max HP upon revival.",
+          "level4": "Increases HP restored to 50%."
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Curse of Decay",
+      "description": "Enemies infested with Crimson Doom Mark deal 25% less DMG. Each time Nuba casts her Ultimate, all enemies infested with Crimson Doom Mark permanently lose 15% ATK SPD, stacking up to 4 times.",
+      "upgrades": {
+        "level2": "For each Crimson Doom Mark on the battlefield, Nuba gains 15% DMG RED. This effect stacks.",
+        "level3": "Crimson Doom Mark deals DMG and destroys energy once every 1.5 seconds.",
+        "level4": "When reviving by consuming a Source of the Drought Devil, Nuba retains the Energy she had before she fell."
+      }
+    },
+    "synergies": [
+      "BUFF_TEAM",
+      "HEAL_TEAM",
+      "SHIELD_TEAM",
+      "CROWD_CONTROL",
+      "TAUNT",
+      "AREA_DAMAGE_DEALER",
+      "ENERGY_RESTORE"
     ]
   },
   "nuwa": {
@@ -3907,7 +4154,8 @@
           "level2": "The shield absorbs DMG equal to 2200% of ATK.",
           "level3": "The shield absorbs DMG equal to 3000% of ATK.",
           "level4": "While the barrier is active, the Bulwark Figurine takes 20% reduced DMG."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -3917,7 +4165,8 @@
           "level2": "Shield strength increases to 270% of ATK.",
           "level3": "Nuwa gains a shield when casting the skill.",
           "level4": "Takes 50% less DMG while shielded."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3927,7 +4176,8 @@
           "level2": "Increases Greataxe Figurine stun duration to 1.5s.",
           "level3": "Leaps high and lands, taunting enemies within range for 5s and gaining 100% Armor for the duration.",
           "level4": "Increases smash DMG and clustered area DMG to 330% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3937,7 +4187,8 @@
           "level2": "Grants buffs based on ally position: frontline allies gain 10% Dodge Rate, backline allies gain 10% DMG bonus for 10s.",
           "level3": "Support Figurine now heals for 110% ATK with each Normal Attack.",
           "level4": "When a Bulwark Figurine is on the battlefield, she heals it every 2.5s."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -4017,7 +4268,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -4083,7 +4335,8 @@
           "level2": "Increases DMG dealt to 220%.",
           "level3": "Stuns last for 4s.",
           "level4": "Increases DMG dealt to 250%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4093,7 +4346,8 @@
           "level2": "The last hit deals bonus DMG equal to 10% of the target's lost HP (up to 200% of Nyx's ATK).",
           "level3": "Increases DMG per hit to 200% ATK.",
           "level4": "The last hit deals bonus DMG equal to 15% of the target's lost HP (up to 300% of Nyx's ATK). (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4103,7 +4357,8 @@
           "level2": "Strikes enemies in Dark Domain 3 times, each dealing DMG equal to 180% of ATK.",
           "level3": "Increases the final hit's DMG to 280%.",
           "level4": "The final hit is guaranteed to be a CRIT hit."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -4113,7 +4368,8 @@
           "level2": "For each surviving ally on the field (excluding summons), Nyx gains 10% Dodge Rate and a 5% ATK boost.",
           "level3": "During the first 10s of the battle, this skill's bonus is doubled.",
           "level4": "For each surviving ally on the field (excluding summons), Nyx gains 20% Dodge Rate and a 6% ATK boost. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -4198,7 +4454,8 @@
           "level2": "When cast, it deals 5% more DMG for every 100 Energy the target has.",
           "level3": "Increases DMG per hit to 60% ATK.",
           "level4": "When cast, it deals 10% more DMG for every 100 Energy the target has."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4208,7 +4465,8 @@
           "level2": "Increases the duration of Daze to 7s.",
           "level3": "Enemies cannot regen Energy when dazed.",
           "level4": "If a dazed enemy Deity is awakened by an attack, the attack deals 1.5 times the DMG."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4218,7 +4476,8 @@
           "level2": "Increases the silence duration to 5s.",
           "level3": "This effect can only trigger once every 10s.",
           "level4": "When the effect is triggered, Pan restores 100 Energy."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -4228,7 +4487,8 @@
           "level2": "DMG increases to 220% of ATK.",
           "level3": "Duration extends to 7s.",
           "level4": "TThe enemy's ATK SPD is reduced by 40% within 4s after Terror ends."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -4306,7 +4566,8 @@
           "level2": "Keeps her Energy upon revival. (Unlocks at Relic Lv.10)",
           "level3": "Rise From Ashes can now trigger unlimited times. If she is the only remaining unit and under Rise From Ashes, the battle is lost. (Unlocks at Relic Lv.20)",
           "level4": "When Phoenix casts Rise From Ashes for the first time, she gains 50% max HP. (Unlocks at Relic Lv.30)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4316,7 +4577,8 @@
           "level2": "Increases ATK bonus to 270%.",
           "level3": "Increases the conversion ratio of sacrificed HP to 120%.",
           "level4": "Increases ATK bonus to 300%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4326,7 +4588,8 @@
           "level2": "Increases the ATK bonus of Soul Burn to 85%.",
           "level3": "Units with Soul Burn explode when falling, dealing DMG equal to 50% Phoenix's ATK × Soul Burn stacks to nearby enemies.",
           "level4": "Increases the ATK bonus of Soul Burn to 100%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -4336,7 +4599,8 @@
           "level2": "Gains 7.5% ATK SPD.",
           "level3": "Gains an additional 50 Energy.",
           "level4": "Gains 10% ATK SPD. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -4412,7 +4676,8 @@
         "upgrades": {
           "level2": "Shield Strength increases to 300% ATK. (Unlocks at Lv.81)",
           "level3": "Additionally heals the ally for HP equal to 200% ATK. (Unlocks at Lv.141)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4421,7 +4686,8 @@
         "upgrades": {
           "level2": "DMG increases to 390% ATK. (Unlocks at Lv.41)",
           "level3": "Reduces the target's M-RES by 20% for 6s while dealing DMG. (Unlocks at Lv.101)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4431,7 +4697,8 @@
           "level2": "Increases DMG dealt to 200% ATK. (Unlocks at Lv.21)",
           "level3": "Increases the number of Flicker Minnows to 3. (Unlocks at Lv.121)",
           "level4": "Increases DMG dealt to 220% ATK. (Unlocks at Lv.161)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -4500,7 +4767,8 @@
           "level2": "Poseidon casts Rogue Wave upon entering battle, but it deals 50% reduced DMG. (Unlock at Relic Lv.10)",
           "level3": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
           "level4": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4510,7 +4778,8 @@
           "level2": "When the two tidal waves meet in the middle, they create a violent swell, knocking down enemies at the center and dealing additional DMG equal to 100% of ATK.",
           "level3": "Increases DMG dealt to 220%.",
           "level4": "Increases DMG dealt to 250%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4520,7 +4789,8 @@
           "level2": "Increases DMG dealt to 220%.",
           "level3": "Also reduces the target's M-RES by 20%.",
           "level4": "Increases DMG dealt to 240%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -4530,7 +4800,8 @@
           "level2": "Increases DMG dealt to 230%.",
           "level3": "Increases Energy restored to 150.",
           "level4": "Grants him a shield equal to 200% of ATK. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -4609,7 +4880,8 @@
           "level2": "Gains a shield equal to 40% of max HP.",
           "level3": "Increases Armor and M-RES by 30% for the duration.",
           "level4": "Gains a shield equal to 50% of max HP."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4620,7 +4892,8 @@
           "level3": "Increases DMG taken by the target by 10% until the battle ends.",
           "level4": "Absorbs 25% of current HP (up to 500% of ATK)."
         },
-        "image": "/skills/prometheus_skill_2.webp"
+        "image": "/skills/prometheus_skill_2.webp",
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4630,7 +4903,8 @@
           "level2": "Increases DMG dealt to 200%.",
           "level3": "Hit enemies have their Armor and M-RES reduced by 15% for 6s.",
           "level4": "Increases DMG dealt to 250%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -4640,7 +4914,8 @@
           "level2": "Increases DMG RED to 12.5%, and to 25% when in the [Bound] state.",
           "level3": "Additionally gains 15% Effect RES. Gains 30% Effect RES when in the [Bound] state.",
           "level4": "Increases DMG RED to 15%, and to 30% when in the [Bound] state."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -4720,7 +4995,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -4785,7 +5061,8 @@
           "level2": "Grants 10% Lifesteal for the duration. (Unlocks at Lv.21)",
           "level3": "Increases ATK by 20%. (Unlocks at Lv.121)",
           "level4": "Duration extends to 10s. (Unlocks at Lv.161)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4794,7 +5071,8 @@
         "upgrades": {
           "level2": "Total DMG increases to 25%. (Unlocks at Lv.81)",
           "level3": "Total DMG increases to 30%. (Unlocks at Lv.141)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4803,7 +5081,8 @@
         "upgrades": {
           "level2": "Reduces hit targets' Armor by 20% for 5s. (Unlocks at Lv.41)",
           "level3": "Increases DMG dealt to 250%. (Unlocks at Lv.101)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -4869,7 +5148,8 @@
         "upgrades": {
           "level2": "Reduces nearby enemies' ATK by 20% for 6s when the shield breaks. (Unlocks at Lv.81)",
           "level3": "Shield Strength increases to 330% ATK. (Unlocks at Lv.141)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4878,7 +5158,8 @@
         "upgrades": {
           "level2": "Increases the thrust DMG to 250% ATK. (Unlocks at Lv.41)",
           "level3": "Increases the thrust DMG to 300% ATK. (Unlocks at Lv.101)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4888,7 +5169,8 @@
           "level2": "Increases DMG dealt to 250% ATK. (Unlocks at Lv.21)",
           "level3": "Stuns last for 3s. (Unlocks at Lv.121)",
           "level4": "Increases DMG dealt to 280% ATK. (Unlocks at Lv.161)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -4956,7 +5238,8 @@
           "level2": "Increases the last hit's DMG to 150% of ATK.",
           "level3": "Increases DMG of the first 2 hits to 90% of ATK.",
           "level4": "Increases the last hit's DMG to 180% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -4966,7 +5249,8 @@
           "level2": "Increases the last hit's DMG to 500% of ATK.",
           "level3": "Takes 50% reduced DMG during the skill.",
           "level4": "The last hit deals extra DMG equal to 10% of the target's lost HP (up to 250% of her ATK)."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -4976,7 +5260,8 @@
           "level2": "Every 5 stacks grant an extra 10% ATK SPD.",
           "level3": "Each stack increases her ATK by 7.5%.",
           "level4": "At maximum stacks, Normal Attacks also stun the target for 0.5s."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -4986,7 +5271,8 @@
           "level2": "Increases DMG dealt to the duel target by 10% during the duel.",
           "level3": "Increases her Lifesteal by 20% during the duel.",
           "level4": "Duration extends to 10s."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -5066,7 +5352,8 @@
           "level2": "Increases the third attack's bonus to 350% of ATK.",
           "level3": "The third attack is guaranteed to hit.",
           "level4": "Increases the third attack's bonus to 380% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -5077,7 +5364,8 @@
           "level3": "Increases the DMG bonus to 270% of ATK.",
           "level4": "Reduces hit targets’ Armor by 30% for 5s."
         },
-        "image": "/skills/set_skill_2.webp"
+        "image": "/skills/set_skill_2.webp",
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -5087,7 +5375,8 @@
           "level2": "Increases all allies’ ATK by 15%.",
           "level3": "Increases Lifesteal to 25%.",
           "level4": "Allies around Set gain an additional 15% Lifesteal."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -5097,7 +5386,8 @@
           "level2": "Increases the shield bonus to 270% of ATK.",
           "level3": "Set and that ally gain 30% ATK SPD for 8s.",
           "level4": "Increases the shield bonus to 300% of ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -5176,7 +5466,8 @@
           "level2": "Increases DMG dealt to 330%.",
           "level3": "Deals 35% increased DMG to enemies with HP above 50%.",
           "level4": "Increases DMG dealt to 360%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -5186,7 +5477,8 @@
           "level2": "Deals 110% ATK as DMG per sec.",
           "level3": "Rooted enemies take 15% increased M-DMG.",
           "level4": "Deals 120% ATK as DMG per sec. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -5196,7 +5488,8 @@
           "level2": "Surtr gains a shield equal to 270% ATK for every 3 skills cast.",
           "level3": "Surtr's ATK is increased by 20% when he is shielded.",
           "level4": "Surtr gains a shield equal to 300% ATK for every 3 skills cast. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -5206,7 +5499,8 @@
           "level2": "Deals 320% ATK as DMG.",
           "level3": "Reduces healing received by hit enemies by 50% for 6s.",
           "level4": "Deals 350% ATK as DMG."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -5283,7 +5577,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -5348,7 +5643,8 @@
           "level2": "DMG dealt increases to 230% ATK.",
           "level3": "Reduces enemy ATK by 30%.",
           "level4": "DMG dealt increases to 260% ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -5358,7 +5654,8 @@
           "level2": "Restores HP equal to 300% ATK.",
           "level3": "Increases Armor and M-RES by 50% for 3s.",
           "level4": ""
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -5368,7 +5665,8 @@
           "level2": "Grants a shield equal to 25% of max HP upon casting.",
           "level3": "DMG increases to 400% ATK.",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -5438,7 +5736,8 @@
           "level2": "Restores HP equal to 175% of ATK per second.",
           "level3": "Enemies inside the area have their ATK reduced by 30%.",
           "level4": "Restores HP equal to 200% of ATK per second."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -5448,7 +5747,8 @@
           "level2": "Restores HP equal to 220% of ATK.",
           "level3": "Restores HP equal to 75% of ATK when attacked.",
           "level4": "Restores HP equal to 250% of ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -5458,7 +5758,8 @@
           "level2": "When the shield expires, deals DMG equal to 150% of ATK to enemies within 3 meters.",
           "level3": "Shield strength increases to 300% of ATK.",
           "level4": "When the shield expires, deals DMG equal to 180% of ATK to enemies within 3 meters."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -5468,7 +5769,8 @@
           "level2": "Tefnut gains 50 Energy for each enemy hit by the splashes (can trigger up to 5 times per cast).",
           "level3": "Hit enemies have their M-RES reduced by 20% for 6s.",
           "level4": "Increases DMG dealt to 220% of ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -5555,7 +5857,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -5621,7 +5924,8 @@
           "level2": "Increases DMG of Charged Attack to 520% ATK.",
           "level3": "Targets launched will be stunned for 2s upon landing.",
           "level4": "Increases DMG of Charged Attack to 550% ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -5631,7 +5935,8 @@
           "level2": "Increases DMG per instance to 110% ATK.",
           "level3": "Restores 20% of max HP if the target is defeated while the skill is active.",
           "level4": "Increases DMG per instance to 120% ATK."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -5641,7 +5946,8 @@
           "level2": "Restores HP equal to 300% ATK per sec.",
           "level3": "Restores 80 Energy per sec.",
           "level4": "20% of the DMG taken by linked units is redirected to Ullr."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -5651,7 +5957,8 @@
           "level2": "Shield Strength increases to 30% of max HP.",
           "level3": "Restores 5% of max HP per sec when the shield is active.",
           "level4": "Shield Strength increases to 35% of max HP."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -5729,7 +6036,8 @@
           "level2": "",
           "level3": "",
           "level4": ""
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -5794,7 +6102,8 @@
           "level2": "Shield Strength increases to 220%.",
           "level3": "Increases the DMG dealt per sec by 75% when the shield is active.",
           "level4": ""
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -5804,7 +6113,8 @@
           "level2": "DMG increases to 500% ATK.",
           "level3": "DMG increases to 550% ATK.",
           "level4": ""
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -5814,7 +6124,8 @@
           "level2": "DMG increases to 230% ATK.",
           "level3": "Reduces healing received by hit enemies by 50% for 5s.",
           "level4": "DMG increases to 260% ATK."
-        }
+        },
+        "damageType": ""
       }
     ],
     "synergies": [
@@ -5881,7 +6192,8 @@
           "level2": "Increases the duration.",
           "level3": "Increases the damage dealt per second.",
           "level4": "Duration increases again."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -5891,7 +6203,8 @@
           "level2": "Enemies within the aura also have reduced defense.",
           "level3": "Increases the damage dealt when actively triggered.",
           "level4": "If she dies in battle, the Misfortune aura remains at her original position for a period of time."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -5901,7 +6214,8 @@
           "level2": "During the curse duration, the target’s healing received is reduced.",
           "level3": "Increases the curse duration.",
           "level4": "Increases the debuff effects caused by the curse."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -5911,7 +6225,8 @@
           "level2": "Enemies in Misfortune take damage every second equal to a percentage of her attack.",
           "level3": "Enemies in Misfortune deal reduced damage.",
           "level4": "The trigger chance of all negative effects under Misfortune increases."
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -5989,7 +6304,8 @@
           "level3": "Gains 400 Energy upon defeating a target.",
           "level4": "Deals DMG equal to 260% of Yanluo’s ATK and 260% of the target’s ATK."
         },
-        "image": "/skills/yanluo_skill_1.webp"
+        "image": "/skills/yanluo_skill_1.webp",
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -6000,7 +6316,8 @@
           "level3": "Pulled enemies take 10% increased DMG for the next 10s.",
           "level4": "Increases DMG dealt to 140% of ATK."
         },
-        "image": "/skills/yanluo_skill_2.webp"
+        "image": "/skills/yanluo_skill_2.webp",
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -6011,7 +6328,8 @@
           "level3": "DMG dealt per second increases to 65% of ATK.",
           "level4": "Yanluo takes 30% reduced DMG for the duration."
         },
-        "image": "/skills/yanluo_skill_3.webp"
+        "image": "/skills/yanluo_skill_3.webp",
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -6022,7 +6340,8 @@
           "level3": "Increases the Energy drained to 60.",
           "level4": "Increases the Energy drained to 70."
         },
-        "image": "/skills/yanluo_skill_4.webp"
+        "image": "/skills/yanluo_skill_4.webp",
+        "damageType": ""
       }
     ],
     "relic": {
@@ -6104,7 +6423,8 @@
           "level2": "Each heal restores HP equal to 160% of ATK.",
           "level3": "Allies healed gain 20% increased CRIT Rate for 5s. This effect cannot stack on the same target.",
           "level4": "It now heals 8 times."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -6114,7 +6434,8 @@
           "level2": "Increases the shared attributes to 12.5%.",
           "level3": "If one linked ally falls, they transfer 50% of their remaining Energy to the other.",
           "level4": "Increases the shared attributes to 15%."
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -6124,7 +6445,8 @@
           "level2": "Increases ATK bonus to 20%.",
           "level3": "Energy Regen increases to 180.",
           "level4": "Increases ATK bonus to 25%. (Unlocks at Lv.261)"
-        }
+        },
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -6134,7 +6456,8 @@
           "level2": "Restores HP equal to 220% ATK.",
           "level3": "Increases the allies' CRIT RES by 30% for 6s.",
           "level4": "Restores HP equal to 250% ATK. (Unlocks at Lv.281)"
-        }
+        },
+        "damageType": ""
       }
     ],
     "relic": {
@@ -6215,7 +6538,8 @@
           "level3": "Gains 500 Energy on entry.",
           "level4": "Increases DMG dealt to 200%."
         },
-        "image": "/skills/zeus_skill_1.webp"
+        "image": "/skills/zeus_skill_1.webp",
+        "damageType": ""
       },
       {
         "id": "skill_2",
@@ -6226,7 +6550,8 @@
           "level3": "This skill ignores Dodge Rate.",
           "level4": "Deals DMG equal to 12% of the target’s current HP (up to 150% of Zeus’s current ATK)."
         },
-        "image": "/skills/zeus_skill_2.webp"
+        "image": "/skills/zeus_skill_2.webp",
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -6237,7 +6562,8 @@
           "level3": "Echoes inherit the Overload Unleash effect.",
           "level4": "Echoes inherit 100% of Zeus’s ATK."
         },
-        "image": "/skills/zeus_skill_3.webp"
+        "image": "/skills/zeus_skill_3.webp",
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -6248,7 +6574,8 @@
           "level3": "Triggers Thundercrack upon reaching 8 stacks.",
           "level4": "Increases DMG dealt by 50%."
         },
-        "image": "/skills/zeus_skill_4.webp"
+        "image": "/skills/zeus_skill_4.webp",
+        "damageType": ""
       }
     ],
     "relic": {

@@ -57,7 +57,8 @@
         "level2": "Grants a shield equal to 30% of the recorded DMG when cast.",
         "level3": "Deals 125% of the recorded DMG.",
         "level4": "Grants a shield equal to 50% of the recorded DMG when cast. (Unlocks at Lv.221)"
-      }
+      },
+      "damageType": "True"
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Deals DMG equal to 15% of the target's max HP, up to 30% of Heracles's max HP.",
         "level3": "Also knocks down units hit. (Unlocks at Lv.161)",
         "level4": "Deals DMG equal to 20% of the target's max HP, up to 40% of Heracles's max HP. (Unlocks at Lv.241)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Gains a shield equal to 10% of the max HP.",
         "level3": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)",
         "level4": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
         "level3": "Increases max HP to 15%. (Unlocks at Lv.181)",
         "level4": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": "Physical"
     }
   ],
   "relic": {

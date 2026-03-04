@@ -3,6 +3,35 @@
 ## Project Overview
 Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 89 heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (static site generator) and **Node.js** scripts for data processing.
 
+## General To-Dos
+Before writing any code, describe your approach and wait for approval.
+
+If the requirements I give you are ambigous ask clarifying questinos before writing any code.
+
+After you finish writing any code, list the edge cases and suggest test cases to cover them.
+
+If a task requires changes to more than 3 files, stop and break it into smaller tasks first.
+
+When there is a bug, start by writing a test that reproduces itm then fix it until the test passes.
+
+Every time I correct you, reflect on what you did wrong and come up with a plan to never make the same mistake again.
+
+Dont invent stuff or create new info that is not in the project. Use only data that is included in the project files, the json or md files. If youre missing data, ask.
+
+## Boss DMG Data
+I have a Google Sheet with boss damage data that I want to integrate into the project. This data should be used to identify good boss dmg dps heroes and support heroes that are worth using for this kind of content.
+URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe6EMqSLMw/edit?usp=sharing
+
+### Images of Heroes
+- All hero images must be in `src/assets/heroes/` directory, named `{hero_id}.webp`
+- All skill images must be in `src/assets/skills/` directory, named `{hero_id}_skill_{skill_number}.webp`
+- All relic images must be in `src/assets/skills/` directory, named `{hero_id}_relic.webp`
+- Image format must be WebP, 512x512 pixels, with transparent background
+- Hero Images are really large. Therefore dont just use an <img> tag with src. Try to use CSS background-image on a div with fixed dimensions and `background-size: cover` to optimize loading and display.
+
+### Emojis and Non-ASCII Characters
+- Do not use emojis or any non-ASCII characters in code, comments, or documentation.
+
 ## Core Architecture
 
 ### Data Flow
@@ -40,6 +69,40 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 8
   - Team keywords (all allies, entire team) = multiply by 3-5x
   - Role-specific value (DPS prioritizes damage; Support prioritizes utility)
 - **Keyword Dictionaries**: CC_KEYWORDS, UTILITY_KEYWORDS, SCALING_KEYWORDS, AOE_KEYWORDS, CARRY_KEYWORDS
+
+#### Skill Value Comparator (`src/pages/calculator.astro`)
+- **Purpose**: Interactive damage calculator letting players compare hero skills head-to-head
+- **Hero Selection**: Primary hero always shown; optional comparison hero for side-by-side and damage mitigation estimates
+- **Damage Calculation Features**:
+  - **Stat-Bound Parsing**: Regex-replaces `X% ATK`, `X% of Max HP`, `X% of Current HP` in skill descriptions with calculated absolute values
+  - **Multi-Hit Detection**: Extracts hit counts from skill text (e.g. "striking 3 times") and shows per-hit + total rows
+  - **ATK% Extraction**: Parses normal and conditional damage variants from skill descriptions and upgrade text
+  - **Current HP Tick Simulation**: Geometric decay simulation for %CurrentHP DoT skills over configurable duration
+- **Mitigation Models**:
+  - **Model A** (default): `DR = Armor / (Armor + K)` with K presets (Balanced=52000, Low=100000, High=28600, Custom)
+  - **Model B**: `Mitigated = Raw * (ATK / (ATK + Armor * C))` with configurable C factor
+  - **Extra Physical Reduction**: 0-60% slider for item/buff DR stacking
+- **HP% Impact System**: Each damage row shows a colored progress bar indicating % of target HP consumed
+  - Impact tiers: LETHAL (>=50%), DEVASTATING (>=30%), HEAVY (>=15%), SOLID (>=5%), LIGHT (<5%)
+  - Only shown when comparison hero is selected (needs target HP)
+- **Full Rotation Burst Summary** (below skill cards):
+  - Per-skill breakdown: best-variant damage per skill with HP% shown
+  - Normal burst total (Raw + Estimated across all skills)
+  - All-Crit burst total (factoring hero's critDmgBonus into crit multiplier)
+  - HP% impact bars for both normal and crit scenarios
+  - Rotations to Kill: how many full rotations needed, with crit-weighted average
+- **Effective HP Card**: Shows hero's EHP vs Physical and vs Magical, with damage reduction %
+- **Hero Stats Grid**: Displays ATK, HP, Armor, M-Res, Crit Rate, Crit DMG alongside class/role/faction identity cards
+- **Encoding Rule**: All text in calculator.astro must use ASCII-only characters (no Unicode emojis, no em dashes, no multiplication signs). Use SVG icons, `--`, and `x` instead.
+- **Key Functions**:
+  - `replaceStatBoundPercents()` – Inline damage value annotation
+  - `extractAtkPercents()` – Parses normal/conditional ATK% from skill + upgrades
+  - `extractHitCount()` – Multi-hit detection from description text
+  - `renderSkillNumbers()` – Per-skill damage rows with HP% impact bars
+  - `renderBurstSummary()` – Full rotation burst + EHP card
+  - `applyMitigation()` – Armor-based damage reduction (Model A or B)
+  - `computeEHP()` – Effective HP calculation for physical and magical
+  - `getCritMultiplier()` – Base 1.5x + hero's critDmgBonus
 
 #### User Heroes & Sharing System (`src/pages/myheroes.astro`, `src/pages/shared-heroes/[id].astro`, `api-server.js`)
 - **Authentication**: Logged-in users can select and organize heroes in "My Heroes" page
@@ -102,7 +165,8 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 8
       "name": "Skill Name",
       "description": "Base skill description with % values",
       "upgrades": { "level2": "...", "level3": "...", "level4": "..." },
-      "image": "/skills/hero_id_skill_1.webp"
+      "image": "/skills/hero_id_skill_1.webp",
+      "damageType": "physical|magical|true (optional, overrides hero-level damageType for this skill)"
     }
   ],
   "relic": {
@@ -119,7 +183,7 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 8
 }
 ```
 
-**Required Fields**: id, name, class, role, faction, rarity, evolution, level, stats (all 26 fields), ratings (all 5 fields), skills (4 skills), synergies array
+**Required Fields**: id, name, class, role, faction, rarity, evolution, level, stats (all 26 fields), ratings (all 5 fields), skills (4 skills with damageType each), synergies array
 **Optional**: description, recommendedRelicLevel, relic, teamComps, content-creator, image
 **Rating Strings**: SSS, SS, S, A, B, C (not numbers)
 **Formation Positions**: back-left, back-right, front-left, front-center, front-right
@@ -195,6 +259,7 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 8
 - **Scripts** modify hero JSON files directly (no database)
 - **Tag Manager** is standalone Express app; edits tags.json and hero files
 - **Hero Adapter** resolves per-hero stats against class base-stats (heroAdapter.js)
+- **Skill Value Comparator** (`calculator.astro`) – Client-side skill damage calculator; parses skill descriptions at runtime, no server dependency
 - **My Heroes Page** (`myheroes.astro`) – Authenticated feature; interacts with API server for user-specific data
 - **Shared Heroes Page** (`shared-heroes/[id].astro`) – Public-facing; fetches from API endpoint, no auth required
 - **API Server** (`api-server.js`) – Handles all user authentication, hero selection, and share management via Supabase
@@ -236,6 +301,13 @@ These are one-off debugging tools in root directory (not part of automated build
 - **Script Fails**: 
   - Ensure file paths use `src/data/` relative to workspace root
   - For analysis scripts: hero names must match exactly (case-insensitive match in code)
+
+- **Calculator Issues**:
+  - **Garbled characters (e.g. `Â·`, `â€"`)**: Non-ASCII characters in calculator.astro. All text must be ASCII-only. Use `LC_ALL=C grep -n '[^ -~]' src/pages/calculator.astro` to find offenders.
+  - **Damage shows 0 or NaN**: Skill description doesn't match regex patterns in `extractAtkPercents()`. Check for unusual phrasing.
+  - **HP% bars not showing**: Comparison hero not selected, or target HP is 0.
+  - **Multi-hit not detected**: Skill description doesn't match `extractHitCount()` patterns. Add new regex pattern if needed.
+  - **Burst summary empty**: No skills have parseable ATK% values.
 
 - **My Heroes Feature Issues**:
   - **Share button not showing**: User must be logged in (check `authToken` in localStorage)
