@@ -1,0 +1,194 @@
+[
+  {
+    "date": "2026-03-03",
+    "version": "1.3.3",
+    "title": "Added a stats Page for all heroes",
+    "changes": [
+      {
+        "type": "improvement",
+        "text": "In order to see and compare all stats from all heroes another page was added. Also you can turn on a bonus toggle, to see heroes with sample bonus data which is more accurate."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-03",
+    "version": "1.3.2",
+    "title": "New Calculator (Skill DMG) and Login/Register (Alpha)",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Calculator Page added - now all hero skills display the raw dmg numbers of a base (Level 300/No Items/Div 5 Hero."
+      },
+      {
+        "type": "feature",
+        "text": "Register and Login added (alpha). You can now register free and get a new page -> my heroes. There you can select and save heroes that you have."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-02",
+    "version": "1.3.1",
+    "title": "Changed Homepage and added more content",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "New bosses added for the Old Gods Event."
+      },
+      {
+        "type": "fix",
+        "text": "Adjusted some rankings and logics within the calculcation scripts"
+      }
+    ]
+  },
+  {
+    "date": "2026-02-20",
+    "version": "1.3.0",
+    "title": "Changed Homepage and added more content",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "New sites are coming soon. Some I already implemented and these are accessible over the homepage. I added a Shrine page with all current shrines and their effects and ratings. More to come."
+      },
+      {
+        "type": "fix",
+        "text": "Some feature are currently being reworked. That could result in errors, misleading tags or values being 0 or empty. That could effect rankings and hero composition components."
+      }
+    ]
+  },
+  {
+    "date": "2026-02-18",
+    "version": "1.2.5",
+    "title": "Ranking System added",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Added a Ranking System page with all current rankings and their details."
+      }
+    ]
+  },
+  {
+    "date": "2026-02-17",
+    "version": "1.2.4",
+    "title": "Bosses and Totems added",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Added a Bosses and Totems page with all current bosses and totems, their effects and ratings."
+      },
+      {
+        "type": "feature",
+        "text": "Added a Totems page with a list of all totems available and their (subjective) ratings."
+      }
+    ]
+  },
+  {
+    "date": "2026-02-16",
+    "version": "1.2.3",
+    "title": "Alpha Synergy logic added",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "The system now reads all hero skill texts and writes a synergy logic stating what the hero does what benefit. Its still in alpha."
+      },
+      {
+        "type": "improvement",
+        "text": "The tierlist now sorts by rating when viewing the page initially."
+      }
+    ]
+  },
+  {
+    "date": "2026-02-12",
+    "version": "1.2.2",
+    "title": "Added Hero Compositions",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "I added a Composition Tab on each hero detail page, that suggests comps that could work and describes the selected heroes benefits to that comp."
+      },
+      {
+        "type": "improvement",
+        "text": "I added more skill text for more legendary heroes. Others to come."
+      }
+    ]
+  },
+  {
+    "date": "2026-02-10",
+    "version": "1.2.1",
+    "title": "New Filter and updated Hero Stats",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Added an updated Filter that also includes factions as well as minor changes"
+      },
+      {
+        "type": "improvement",
+        "text": "Some Hero rankings were adjusted"
+      }
+    ]
+  },
+  {
+    "date": "2026-02-09",
+    "version": "1.2.0",
+    "title": "Relic Priority & Skill Images",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Added Relic Priority levels to all heroes"
+      },
+      {
+        "type": "feature",
+        "text": "Hero-specific skill and relic images implemented"
+      },
+      {
+        "type": "improvement",
+        "text": "Improved accessibility with better color contrast"
+      },
+      {
+        "type": "improvement",
+        "text": "Enhanced mobile responsiveness for hero detail pages"
+      }
+    ]
+  },
+  {
+    "date": "2026-02-08",
+    "version": "1.1.0",
+    "title": "Hero Stats & Rankings",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Added stat rankings for all heroes"
+      },
+      {
+        "type": "feature",
+        "text": "Visual stat bars with color-coded rankings"
+      },
+      {
+        "type": "improvement",
+        "text": "Improved hero card hover effects"
+      }
+    ]
+  },
+  {
+    "date": "2026-02-05",
+    "version": "1.0.0",
+    "title": "Initial Release",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Hero database with 60+ heroes"
+      },
+      {
+        "type": "feature",
+        "text": "Filter by class, role, and rarity"
+      },
+      {
+        "type": "feature",
+        "text": "Detailed hero pages with stats and skills"
+      },
+      {
+        "type": "feature",
+        "text": "Tier list view"
+      }
+    ]
+  }
+]

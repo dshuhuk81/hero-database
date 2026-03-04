@@ -9,12 +9,14 @@ export default defineConfig({
   // Site Configuration
   site: 'https://motto-immortal.vercel.app',
   
-  // Static site mit serverless functions für API routes
+  // Server mode (needed for API) with per-page opt-out via prerender
   output: 'server',
   
   // Vercel Adapter für Deployment
   adapter: vercel({
-    functionPerRoute: false,
+    isr: {
+      expiration: 60,
+    },
     maxDuration: 10
   }),
 });
