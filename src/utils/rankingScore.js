@@ -23,8 +23,8 @@ export const PERCENT_STATS_FOR_SCORE = [
 ];
 
 export const PERCENT_STAT_WEIGHT = 1;
-export const SYNERGY_WEIGHT = 12;
-export const SKILL_WEIGHT = 100;
+export const SYNERGY_WEIGHT = 11;
+export const SKILL_WEIGHT = 92;
 const STAT_NORMALIZATION = 300;
 
 function clamp(value, min, max) {
