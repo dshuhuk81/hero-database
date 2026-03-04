@@ -56,7 +56,8 @@
         "level2": "Increases DMG dealt to 340% of ATK.",
         "level3": "If the target has Serpent Kiss, it deals an additional 10% DMG.",
         "level4": "Increases DMG dealt to 360% of ATK."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "Increases DMG dealt to 220% of ATK.",
         "level3": "Increases DMG per bounce by 5%.",
         "level4": "Increases DMG dealt to 250% of ATK."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Each Serpent Kiss on the field increases Medusa’s ATK SPD by 10%.",
         "level3": "She marks the enemy in the opposite position when the battle starts.",
         "level4": "Each Serpent Kiss on the field increases Medusa’s ATK SPD by 20%."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_4",
@@ -86,12 +89,14 @@
         "level2": "Increases DMG dealt to 220% of ATK.",
         "level3": "Increases DMG dealt to 250% of ATK.",
         "level4": "Increases DMG dealt to 280% of ATK."
-      }
+      },
+      "damageType": "Magical"
     }
   ],
   "relic": {
     "name": "To the Marrow",
     "description": "When Medusa deals DMG to an enemy with Serpent Kiss, she triggers an explosion centered on the target, dealing DMG equal to 80% of her ATK in a small area. This effect has a 5s cooldown for each unit.",
+    "damageType": "Magical",
     "upgrades": {
       "level2": "Deals 100% ATK as AoE DMG.",
       "level3": "When an enemy with Serpent Kiss falls, a small snake flies to the nearest enemy, dealing DMG equal to 150% of ATK and inflicting Serpent Kiss.",

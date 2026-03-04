@@ -55,7 +55,8 @@
       "upgrades": {
         "level2": "Increases DMG of the first 2 hits to 100% ATK. (Unlocks at Lv.81)",
         "level3": "Increases the last hit's DMG to 180% ATK. (Unlocks at Lv.141)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_2",
@@ -64,7 +65,8 @@
       "upgrades": {
         "level2": "ATK increases by 60%. (Unlocks at Lv.41)",
         "level3": "The [Lionheart] state lasts for 15s. (Unlocks at Lv.101)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -74,7 +76,8 @@
         "level2": "Increases DMG dealt to 270% ATK. (Unlocks at Lv.21)",
         "level3": "Reduces Armor by 40%. (Unlocks at Lv.121)",
         "level4": "Increases DMG dealt to 300% ATK. (Unlocks at Lv.161)"
-      }
+      },
+      "damageType": "Physical"
     }
   ],
   "synergies": [

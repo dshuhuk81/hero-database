@@ -56,7 +56,8 @@
         "level2": "DMG dealt increases to 230% ATK.",
         "level3": "Reduces enemy ATK by 30%.",
         "level4": "DMG dealt increases to 260% ATK."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "Restores HP equal to 300% ATK.",
         "level3": "Increases Armor and M-RES by 50% for 3s.",
         "level4": ""
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Grants a shield equal to 25% of max HP upon casting.",
         "level3": "DMG increases to 400% ATK.",
         "level4": ""
-      }
+      },
+      "damageType": ""
     }
   ],
   "synergies": [

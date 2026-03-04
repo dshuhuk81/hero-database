@@ -55,7 +55,8 @@
       "upgrades": {
         "level2": "Increases ATK by 10%. (Unlocks at Lv.81)",
         "level3": "Increases Lifesteal gained to 25%. (Unlocks at Lv.141)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -65,7 +66,8 @@
         "level2": "Increases DMG dealt to 300% ATK. (Unlocks at Lv.21)",
         "level3": "Reduces the Move SPD & ATK SPD of hit enemies by 50% for 5s. (Unlocks at Lv.121)",
         "level4": "Increases DMG dealt to 330% ATK. (Unlocks at Lv.161)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -74,7 +76,8 @@
       "upgrades": {
         "level2": "Increases DMG dealt to 400% ATK. (Unlocks at Lv.41)",
         "level3": "Ignores 20% of the targets' Armor. (Unlocks at Lv.101)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "synergies": [

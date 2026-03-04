@@ -56,7 +56,8 @@
         "level2": "Increases DMG of Charged Attack to 520% ATK.",
         "level3": "Targets launched will be stunned for 2s upon landing.",
         "level4": "Increases DMG of Charged Attack to 550% ATK."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "Increases DMG per instance to 110% ATK.",
         "level3": "Restores 20% of max HP if the target is defeated while the skill is active.",
         "level4": "Increases DMG per instance to 120% ATK."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Restores HP equal to 300% ATK per sec.",
         "level3": "Restores 80 Energy per sec.",
         "level4": "20% of the DMG taken by linked units is redirected to Ullr."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_4",
@@ -86,7 +89,8 @@
         "level2": "Shield Strength increases to 30% of max HP.",
         "level3": "Restores 5% of max HP per sec when the shield is active.",
         "level4": "Shield Strength increases to 35% of max HP."
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

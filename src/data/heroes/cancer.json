@@ -15,7 +15,7 @@
     "pvp": "B",
     "pve": "A"
   },
-"recommendedRelicLevel": 1,
+  "recommendedRelicLevel": 1,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -57,7 +57,8 @@
         "level2": "The unit receiving the final heal gains 15% increased ATK for 5s.",
         "level3": "Restores HP equal to 120% ATK per heal.",
         "level4": "The ATK buff now lasts 10s."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Healing increases to 270%.",
         "level3": "Now heals 2 allies.",
         "level4": "Healing increases to 300%."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Immediately restores 100 Energy when triggered.",
         "level3": "Shield Strength increases to 400% ATK.",
         "level4": "Immediately restores 200 Energy when triggered. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Increases DMG RED to 20%.",
         "level3": "Increases that unit's M-RES by an additional 50%.",
         "level4": "Gains 30% Effect RES. (Unlocks at Lv.281)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

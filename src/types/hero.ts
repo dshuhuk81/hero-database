@@ -43,12 +43,15 @@ export interface SkillUpgrades {
   level4: string;
 }
 
+export type DamageType = '' | 'Physical' | 'Magical' | 'True';
+
 export interface Skill {
   id: string;
   name: string;
   description: string;
   upgrades: SkillUpgrades;
   image: string;
+  damageType: DamageType;
 }
 
 export interface Relic {
@@ -60,6 +63,7 @@ export interface Relic {
     level4: string;
   };
   image: string;
+  damageType?: DamageType;
 }
 
 export interface FormationHero {

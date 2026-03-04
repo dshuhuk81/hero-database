@@ -56,7 +56,8 @@
         "level2": "The target takes 10% increased DMG during the effect.",
         "level3": "The lost HP is slowly restored over 8s.",
         "level4": "The target takes 20% increased DMG during the effect."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "DMG dealt per hit increases to 115% ATK.",
         "level3": "DMG dealt per hit increases to 130% ATK.",
         "level4": ""
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "DMG dealt per sec increases to 60% ATK.",
         "level3": "When cast, it increases her ATK SPD by 20% for the next 5s.",
         "level4": ""
-      }
+      },
+      "damageType": "Magical"
     }
   ],
   "relic": {

@@ -58,7 +58,8 @@
         "level3": "Gains 500 Energy on entry.",
         "level4": "Increases DMG dealt to 200%."
       },
-      "image": "/skills/zeus_skill_1.webp"
+      "image": "/skills/zeus_skill_1.webp",
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -69,7 +70,8 @@
         "level3": "This skill ignores Dodge Rate.",
         "level4": "Deals DMG equal to 12% of the target’s current HP (up to 150% of Zeus’s current ATK)."
       },
-      "image": "/skills/zeus_skill_2.webp"
+      "image": "/skills/zeus_skill_2.webp",
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -80,7 +82,8 @@
         "level3": "Echoes inherit the Overload Unleash effect.",
         "level4": "Echoes inherit 100% of Zeus’s ATK."
       },
-      "image": "/skills/zeus_skill_3.webp"
+      "image": "/skills/zeus_skill_3.webp",
+      "damageType": "Magical"
     },
     {
       "id": "skill_4",
@@ -91,7 +94,8 @@
         "level3": "Triggers Thundercrack upon reaching 8 stacks.",
         "level4": "Increases DMG dealt by 50%."
       },
-      "image": "/skills/zeus_skill_4.webp"
+      "image": "/skills/zeus_skill_4.webp",
+      "damageType": ""
     }
   ],
   "relic": {

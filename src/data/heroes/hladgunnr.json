@@ -58,7 +58,7 @@
         "level3": "Also grants herself a shield equal to 300% of her ATK.",
         "level4": "Increases DMG dealt to 330%. (Unlocks at Lv.281)"
       },
-      "image": "/skills/hladgunnr_skill_1.png"
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -68,7 +68,8 @@
         "level2": "Gains 40% DMG RED while in the [Slumber] state.",
         "level3": "This effect triggers one extra time when Hladgunnr is about to fall.",
         "level4": "Gains 60% DMG RED while in the [Slumber] state."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -78,7 +79,8 @@
         "level2": "Hladgunnr gains 20% DMG RED for the first release.",
         "level3": "Gains 25% DMG RED for the first release.",
         "level4": "Gains 30% DMG RED for the first release."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -88,13 +90,15 @@
         "level2": "Increases DMG dealt to 440%.",
         "level3": "When her Ultimate cancels Sacred Meditation, she inherits the remaining buffs from it.",
         "level4": "Increases DMG dealt to 480%."
-      }
+      },
+      "damageType": "Physical"
     }
   ],
   "relic": {
     "name": "Luminous Verdict",
     "description": "Luminous Aegis gains an additional upgrade effect: After Hladgunnr casts her Ultimate 3 times, 10% of the DMG dealt by Hladgunnr is converted to True DMG.",
-    "upgrades": {
+    "damageType": "True",
+    "uogrades": {
       "level2": "Reduces the number of casts required to upgrade Luminous Aegis by one.",
       "level3": "30% of the DMG dealt by Hladgunnr is converted to True DMG.",
       "level4": "Hladgunnr gains Super Armor for 6s after each cast of her Ultimate. (Unlock at Relic Lv.30)"

@@ -55,7 +55,8 @@
       "upgrades": {
         "level2": "Shield Strength increases to 300% ATK. (Unlocks at Lv.81)",
         "level3": "Additionally heals the ally for HP equal to 200% ATK. (Unlocks at Lv.141)"
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_2",
@@ -64,7 +65,8 @@
       "upgrades": {
         "level2": "DMG increases to 390% ATK. (Unlocks at Lv.41)",
         "level3": "Reduces the target's M-RES by 20% for 6s while dealing DMG. (Unlocks at Lv.101)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -74,7 +76,8 @@
         "level2": "Increases DMG dealt to 200% ATK. (Unlocks at Lv.21)",
         "level3": "Increases the number of Flicker Minnows to 3. (Unlocks at Lv.121)",
         "level4": "Increases DMG dealt to 220% ATK. (Unlocks at Lv.161)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "synergies": [

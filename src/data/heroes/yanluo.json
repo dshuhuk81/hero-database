@@ -57,7 +57,8 @@
         "level3": "Gains 400 Energy upon defeating a target.",
         "level4": "Deals DMG equal to 260% of Yanluo’s ATK and 260% of the target’s ATK."
       },
-      "image": "/skills/yanluo_skill_1.webp"
+      "image": "/skills/yanluo_skill_1.webp",
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -68,7 +69,8 @@
         "level3": "Pulled enemies take 10% increased DMG for the next 10s.",
         "level4": "Increases DMG dealt to 140% of ATK."
       },
-      "image": "/skills/yanluo_skill_2.webp"
+      "image": "/skills/yanluo_skill_2.webp",
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -79,7 +81,8 @@
         "level3": "DMG dealt per second increases to 65% of ATK.",
         "level4": "Yanluo takes 30% reduced DMG for the duration."
       },
-      "image": "/skills/yanluo_skill_3.webp"
+      "image": "/skills/yanluo_skill_3.webp",
+      "damageType": "Physical"
     },
     {
       "id": "skill_4",
@@ -90,7 +93,8 @@
         "level3": "Increases the Energy drained to 60.",
         "level4": "Increases the Energy drained to 70."
       },
-      "image": "/skills/yanluo_skill_4.webp"
+      "image": "/skills/yanluo_skill_4.webp",
+      "damageType": ""
     }
   ],
   "relic": {

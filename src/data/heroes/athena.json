@@ -56,7 +56,8 @@
         "level2": "On the first cast, she gains 7.5% DMG RED & ATK for each ally within the aura.",
         "level3": "Increases the shield strength to 240%.",
         "level4": "On the second cast, all allies within the aura gain 60% ATK SPD."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_2",
@@ -66,7 +67,8 @@
         "level2": "She also gains a shield equal to 150% of ATK.",
         "level3": "Increases DMG dealt to 270%.",
         "level4": "Shield Strength increases to 200% ATK."
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -76,7 +78,8 @@
         "level2": "Increases ATK SPD to 35%.",
         "level3": "Increases CRIT Rate by an additional 10%.",
         "level4": "Increases ATK SPD to 45%. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -86,12 +89,14 @@
         "level2": "Restores HP equal to 220% ATK.",
         "level3": "Increases the duration of M-RES boost by 12s.",
         "level4": "Restores HP equal to 240% ATK. (Unlocks at Lv.281)"
-      }
+      },
+      "damageType": "Physical"
     }
   ],
   "relic": {
     "name": "Haloed Ablution",
     "description": "Upon casting Aegis of Halo 3 times in a battle, deals 5% max HP (up to 200% ATK) as True DMG per sec to enemies within range for 8s.",
+    "damageType": "Physical",
     "upgrades": {
       "level2": "For each surviving ally (excluding minions) within the aura, Athena gains 25% Armor, 25% M-RES, and 10% Energy Regen. (Unlock at Relic Lv.10)",
       "level3": "Athena gains the enhanced first-cast effect of Aegis of Halo at combat start. (Unlock at Relic Lv.20)",

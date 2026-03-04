@@ -15,7 +15,7 @@
     "pvp": "SS",
     "pve": "SSS"
   },
- "recommendedRelicLevel": 10,
+  "recommendedRelicLevel": 10,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -57,7 +57,8 @@
         "level2": "Restores HP equal to 175% of ATK per second.",
         "level3": "Enemies inside the area have their ATK reduced by 30%.",
         "level4": "Restores HP equal to 200% of ATK per second."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Restores HP equal to 220% of ATK.",
         "level3": "Restores HP equal to 75% of ATK when attacked.",
         "level4": "Restores HP equal to 250% of ATK."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "When the shield expires, deals DMG equal to 150% of ATK to enemies within 3 meters.",
         "level3": "Shield strength increases to 300% of ATK.",
         "level4": "When the shield expires, deals DMG equal to 180% of ATK to enemies within 3 meters."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Tefnut gains 50 Energy for each enemy hit by the splashes (can trigger up to 5 times per cast).",
         "level3": "Hit enemies have their M-RES reduced by 20% for 6s.",
         "level4": "Increases DMG dealt to 220% of ATK."
-      }
+      },
+      "damageType": "Magical"
     }
   ],
   "relic": {

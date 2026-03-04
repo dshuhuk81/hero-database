@@ -10,7 +10,8 @@
     "deploy:prod": "npm run build && npx vercel --prod --yes",
     "preview": "astro preview",
     "astro": "astro",
-    "tag-manager": "node scripts/tag-manager-server.js"
+    "tag-manager": "node scripts/tag-manager-server.js",
+    "changelog:add": "node scripts/add-changelog.js"
   },
   "engines": {
     "node": "20.x"

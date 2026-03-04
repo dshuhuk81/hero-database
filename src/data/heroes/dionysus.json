@@ -57,7 +57,8 @@
         "level2": "While in the [Frenzy] state, increases ATK SPD to 60% and Energy Regen to 35%.",
         "level3": "Duration extends to 7s.",
         "level4": "Using this skill also removes all debuffs from an ally and makes them immune to Crowd Control for 2s."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Restores HP equal to 160% of ATK.",
         "level3": "The healed unit also gains 30% DMG RED.",
         "level4": "Restores HP equal to 200% of ATK."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Increases all allies' P&M-RES by 20%.",
         "level3": "For each unique ally class on the battlefield, grants all allies a shield equal to 50% of her ATK.",
         "level4": "Duration extends to 20s."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Reduces 70% of the next DMG taken.",
         "level3": "This effect can only trigger once every 6s.",
         "level4": "Becomes immune to the next DMG taken."
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

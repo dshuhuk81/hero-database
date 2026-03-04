@@ -55,7 +55,8 @@
       "upgrades": {
         "level2": "DMG bonus increases to 370% ATK. (Unlocks at Lv.41)",
         "level3": "Reduces the ATK SPD of hit enemies by 20% for 10s. (Unlocks at Lv.101)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_2",
@@ -65,7 +66,8 @@
         "level2": "DMG bonus increases to 270% ATK. (Unlocks at Lv.21)",
         "level3": "Increases stun duration by 3s. (Unlocks at Lv.121)",
         "level4": "DMG bonus increases to 300% ATK. (Unlocks at Lv.161)"
-      }
+      },
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
@@ -74,7 +76,8 @@
       "upgrades": {
         "level2": "Shield Strength increases to 300%. (Unlocks at Lv.81)",
         "level3": "Increases ATK by 25% while the shield is active. (Unlocks at Lv.141)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "synergies": [

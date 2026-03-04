@@ -15,7 +15,7 @@
     "pvp": "S",
     "pve": "SSS"
   },
- "recommendedRelicLevel": 10,
+  "recommendedRelicLevel": 10,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -57,7 +57,8 @@
         "level2": "Each heal restores HP equal to 160% of ATK.",
         "level3": "Allies healed gain 20% increased CRIT Rate for 5s. This effect cannot stack on the same target.",
         "level4": "It now heals 8 times."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_2",
@@ -67,7 +68,8 @@
         "level2": "Increases the shared attributes to 12.5%.",
         "level3": "If one linked ally falls, they transfer 50% of their remaining Energy to the other.",
         "level4": "Increases the shared attributes to 15%."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_3",
@@ -77,7 +79,8 @@
         "level2": "Increases ATK bonus to 20%.",
         "level3": "Energy Regen increases to 180.",
         "level4": "Increases ATK bonus to 25%. (Unlocks at Lv.261)"
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_4",
@@ -87,7 +90,8 @@
         "level2": "Restores HP equal to 220% ATK.",
         "level3": "Increases the allies' CRIT RES by 30% for 6s.",
         "level4": "Restores HP equal to 250% ATK. (Unlocks at Lv.281)"
-      }
+      },
+      "damageType": ""
     }
   ],
   "relic": {

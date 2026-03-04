@@ -55,7 +55,8 @@
       "upgrades": {
         "level2": "Shield Strength increases to 270% ATK.",
         "level3": "Shield Strength increases to 300% ATK."
-      }
+      },
+      "damageType": ""
     },
     {
       "id": "skill_2",
@@ -65,7 +66,8 @@
         "level2": "DMG increases to 290% ATK.",
         "level3": "Increases Aquarius's M-RES by 100% for 10s after casting the skill.",
         "level4": "DMG increases to 320% ATK."
-      }
+      },
+      "damageType": "Magical"
     },
     {
       "id": "skill_3",
@@ -74,7 +76,8 @@
       "upgrades": {
         "level2": "Shield Strength increases to 220% ATK.",
         "level3": "The shielded unit takes 20% less DMG for the next 5s."
-      }
+      },
+      "damageType": ""
     }
   ],
   "synergies": [

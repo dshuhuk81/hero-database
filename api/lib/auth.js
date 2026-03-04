@@ -9,6 +9,11 @@ export function readBearerToken(req) {
 }
 
 export async function requireUser(req, res) {
+  if (!res || typeof res.status !== 'function') {
+    console.error('requireUser: res parameter is invalid');
+    return null;
+  }
+
   if (!supabaseAdmin) {
     res.status(500).json({ error: 'Supabase admin client is not configured' });
     return null;
