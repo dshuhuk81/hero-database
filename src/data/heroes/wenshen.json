@@ -2,11 +2,12 @@
   "id": "wenshen",
   "name": "Wen-Shen",
   "image": "/heroes/wenshen.webp",
+  "release": false,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Support",
   "rarity": "Legendary",
-  "description": "yet to come",
+  "description": "Make the most of her dueling power and her harrassing potential.",
   "ratings": {
     "overall": "",
     "grimSurge": "",
@@ -50,62 +51,58 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Calamity Star Illumination",
-      "description": "Curses the nearest enemy, preventing them from moving or attacking for a period of time, and deals damage every second equal to a percentage of her attack power.",
+      "name": "Star of Ill Omen",
+      "description": "Jinxes the nearest enemy, disabling them for 4s while dealing DMG equal to 80% of ATK per sec.",
       "upgrades": {
-        "level2": "Increases the duration.",
-        "level3": "Increases the damage dealt per second.",
-        "level4": "Duration increases again."
+        "level2": "Duration extends to 5s.",
+        "level3": "Increases DMG per sec to 100% ATK.",
+        "level4": "Duration extends to 6s."
       },
-      "damageType": ""
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
-      "name": "Domain of Misfortune",
-      "description": "Creates a Misfortune aura around her, reducing the attack power of enemies within range. When actively triggered, she flies toward the enemy with the highest attack power and deals damage equal to a percentage of her attack.",
-      "upgrades": {
-        "level2": "Enemies within the aura also have reduced defense.",
-        "level3": "Increases the damage dealt when actively triggered.",
-        "level4": "If she dies in battle, the Misfortune aura remains at her original position for a period of time."
-      },
-      "damageType": ""
+    "name": "Duality Inversion",
+    "description": "Curses the symmetrically opposite enemy, dealing DMG equal to 50% of their max HP (up to 1000% of Wenshen’s ATK). The curse is slowly lifted over 5s, restoring the lost HP.",
+    "upgrades": {
+      "level2": "While cursed, the target receives 30% reduced healing.",
+      "level3": "The curse is slowly lifted over 8s, restoring the lost HP.",
+      "level4": "While cursed, the target receives 60% reduced healing."
     },
-    {
+    "damageType": "Magical"
+  },
+  {
       "id": "skill_3",
-      "name": "Yin-Yang Curse",
-      "description": "Curses the mirrored-position enemy, dealing damage equal to a percentage of their max HP. The curse gradually dissipates over time and restores the HP previously lost.",
+      "name": "Calamity-Ridden",
+      "description": "The enemy defeating Wenshen becomes permanently Jinxed (Passive). Jinxed: Has a 50% chance to be stunned, terrified, or petrified for 2.5s when attacking; has a 50% chance to be knocked down when moving. Jinxed can only trigger once every 4s.",
       "upgrades": {
-        "level2": "During the curse duration, the target’s healing received is reduced.",
-        "level3": "Increases the curse duration.",
-        "level4": "Increases the debuff effects caused by the curse."
-      },
-      "damageType": ""
+        "level2": "Enemies also take DMG equal to 50% of her ATK per sec.",
+        "level3": "Jinxed enemies deal 20% reduced DMG.",
+        "level4": "Increases the chance of triggering a Jinxed effect to 60%."
+        }
     },
     {
       "id": "skill_4",
-      "name": "Eternal Calamity Bind ",
-      "description": "When she defeats an enemy, the killer permanently enters the “Misfortune” state. Enemies under Misfortune have a chance when attacking to suffer control effects (such as stun, fear, petrify, or movement speed reduction). The Misfortune effect can only trigger once every 4 seconds.",
+      "name": "Cursed Ground",
+      "description": "Wenshen creates an Aura of Misfortune within a 3-meter radius around her, reducing the ATK of enemies inside by 20% (Passive). She flies toward the enemy with the highest ATK, dealing DMG equal to 180% of ATK (Active).",
       "upgrades": {
-        "level2": "Enemies in Misfortune take damage every second equal to a percentage of her attack.",
-        "level3": "Enemies in Misfortune deal reduced damage.",
-        "level4": "The trigger chance of all negative effects under Misfortune increases."
+        "level2": "Enemies inside the Aura of Misfortune have their DEF reduced by 20%.",
+        "level3": "Increases DMG dealt to 200% ATK.",
+        "level4": "Wenshen’s Aura of Misfortune lingers on the spot when she is defeated."
       },
-      "damageType": ""
+      "damageType": "Magical"
     }
   ],
   "relic": {
-    "name": "Source of Misfortune",
-    "description": "When an enemy afflicted with Misfortune dies, the Misfortune spreads to the nearest enemy and deals damage to the newly infected target.",
-    "upgrades": {
-      "level2": "Increases the damage dealt when spreading.",
-      "level3": "Enemies cursed by “Yin-Yang Curse” will also permanently enter the Misfortune state.",
-      "level4": "During the Misfortune duration, the target takes increased damage."
-    }
-  },
+      "name": "Origin of Pestilence",
+      "description": "When a Jinxed enemy is defeated, it spreads to 1 nearest enemy, dealing DMG equal to 200% of ATK to the new target.",
+      "upgrades": {
+        "level2": "Upon spreading, increases DMG to 260% ATK.",
+        "level3": "Enemies cursed by Duality Inversion are permanently Jinxed.",
+        "level4": "The target takes 20% increased DMG while Jinxed."
+  }
+},
   "synergies": [
-    "ATK_DOWN",
-    "CROWD_CONTROL",
-    "ENEMY_VULNERABILITY",
-    "REDUCES_ATTRIBUTES"
   ]
 }

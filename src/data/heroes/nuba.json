@@ -2,18 +2,19 @@
   "id": "nuba",
   "name": "Nuba",
   "image": "/heroes/nuba.webp",
+    "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "",
   "ratings": {
-    "overall": "",
+    "overall": "A",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "",
-    "pve": ""
+    "pvp": "S",
+    "pve": "A"
   },
   "recommendedRelicLevel": 0,
   "evolution": "Divine V",
@@ -58,7 +59,8 @@
         "level3": "Energy absorbed by the Active is increased to 300.",
         "level4": "Active DMG increases to 480% ATK."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -111,5 +113,7 @@
     "TAUNT",
     "AREA_DAMAGE_DEALER",
     "ENERGY_RESTORE"
-  ]
+  ],
+  "baseAttackRate": 1.908,
+  "bossUltimatesPer90s": 6
 }

@@ -2,6 +2,7 @@
   "id": "leo",
   "name": "Leo",
   "image": "/heroes/leo.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Hefty",
   "class": "Warrior",
@@ -56,7 +57,8 @@
         "level2": "Increases DMG of the first 2 hits to 100% ATK. (Unlocks at Lv.81)",
         "level3": "Increases the last hit's DMG to 180% ATK. (Unlocks at Lv.141)"
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -87,5 +89,7 @@
     "ATK_SPEED",
     "ATK_UP",
     "GAIN_ARMOR"
-  ]
+  ],
+  "baseAttackRate": 0.919,
+  "bossUltimatesPer90s": 3
 }

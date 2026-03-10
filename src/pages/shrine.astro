@@ -1,7 +1,11 @@
 ---
+export const prerender = true;
 import Footer from "../components/Footer.astro";
 import Sidebar from "../components/Sidebar.astro";
 import shrineSetups from "../data/shrineSetups.json";
+import { getPageUpdate } from "../utils/getPageUpdate";
+
+const pageUpdate = getPageUpdate("shrine");
 
 // Shrine Setups to display - Ändere hier um Setups anzuzeigen/zu verstecken
 // Optionen: ["Setup A"], ["Setup B"], oder ["Setup A", "Setup B"] für beide
@@ -23,10 +27,22 @@ const shrineSetupGroups = shrineSetups.filter(setup => visibleSetups.includes(se
   <section class="hero">
     <div class="hero-overlay"></div>
     <h1 class="hero-headline">Shrine System Guide</h1>
+    {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
   </section>
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
+    <div class="tldr-box">
+      <h3 class="tldr-title">TL;DR — Quick Takeaways</h3>
+      <ul class="tldr-list">
+        <li><strong>General Pray</strong> is a separate system from normal shrine prayers — don't overfocus on it early.</li>
+        <li><strong>Place gods strategically</strong> — some are filler for global buffs (speed, crit), others boost your main faction.</li>
+        <li><strong>Seats matter:</strong> each seat provides unique bonuses. Match gods to seats that amplify their strengths.</li>
+        <li><strong>Artefacts</strong> give additional stat boosts to placed gods. Upgrade them when resources allow.</li>
+        <li><strong>Talismans</strong> provide powerful passive effects. Prioritize ones that benefit your core team.</li>
+      </ul>
+    </div>
+
     <nav class="shrine-tabs" aria-label="Shrine guide sections">
       <button class="tab active" data-tab="general">General Pray</button>
       <button class="tab" data-tab="placement">Slots & Placement</button>

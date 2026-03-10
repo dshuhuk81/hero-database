@@ -6,6 +6,42 @@ import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/compositions.css";
 import { keywordTagsForHero } from "../utils/heroTags.js";
+import { getPageUpdate } from "../utils/getPageUpdate";
+
+const pageUpdate = getPageUpdate("bosses");
+
+// Player-friendly mechanic tag labels
+const MECHANIC_LABELS = {
+  "ENERGY_DRAIN": { label: "Energy Drain", tip: "Drains your heroes' energy over time" },
+  "SILENCE": { label: "Silence", tip: "Prevents heroes from using skills" },
+  "DAMAGE_REDUCTION_PHASE": { label: "Damage Reduction", tip: "Boss takes heavily reduced damage during certain phases" },
+  "TARGETS_TOP_DPS": { label: "Targets Top DPS", tip: "Boss focuses attacks on your highest damage dealer" },
+  "DOT_ON_TOP_DPS": { label: "DoT on DPS", tip: "Applies damage over time to your top damage dealer" },
+  "PERCENT_HP_DAMAGE": { label: "% HP Damage", tip: "Deals damage based on max HP — shields help" },
+  "RAMPING_AURA": { label: "Ramps Over Time", tip: "Boss gets stronger the longer the fight lasts" },
+  "ATK_SPEED_GLOBAL": { label: "ATK Speed Buff", tip: "Increases attack speed for all units on the field" },
+  "CHARGE_ATTACK": { label: "Charge Attack", tip: "Boss charges through your team for burst damage" },
+  "AOE_BURST": { label: "AoE Burst", tip: "Large area damage hitting your entire team" },
+  "STUN": { label: "Stun", tip: "Stuns your heroes, interrupting their actions" },
+  "BUFFS_OVER_TIME": { label: "Buffs Over Time", tip: "Boss or minions gain increasing buffs" },
+  "KNOCKBACK": { label: "Knockback", tip: "Pushes your heroes out of position" },
+  "FRONTAL_DAMAGE": { label: "Frontal Damage", tip: "Heavy damage in a cone to your frontline" },
+  "BERSERK_SCALING": { label: "Berserk", tip: "Boss gains ATK and DEF as it loses HP" },
+  "SUMMONS": { label: "Summons Minions", tip: "Boss spawns additional units to fight" },
+  "MAIN_UNTARGETABLE": { label: "Untargetable Boss", tip: "Boss cannot be targeted directly" },
+  "SHARED_DAMAGE": { label: "Shared Damage", tip: "Damage to minions also hurts the boss" },
+  "ATK_SPEED_BUFF": { label: "ATK Speed Buff", tip: "Buffs minion attack speed significantly" },
+  "RESOURCE_SCALING": { label: "Stat Scaling", tip: "Minions inherit and scale from boss stats" },
+  "NO_DAMAGE": { label: "No Damage", tip: "Boss deals zero damage — pure mechanic fight" },
+  "PERMANENT_FREEZE": { label: "Permanent Freeze", tip: "Freezes heroes permanently — cannot be removed" },
+  "WIPE_CONDITION": { label: "Wipe Condition", tip: "All heroes frozen = instant loss" },
+  "RANDOM_TARGET_DOT": { label: "Random Target DoT", tip: "Damages random heroes over time" },
+  "ROOT": { label: "Root", tip: "Roots a hero in place, preventing movement" },
+  "FIXED_TARGET_BACKLINE": { label: "Targets Backline", tip: "Always attacks the center backline hero" },
+  "PETRIFY": { label: "Petrify", tip: "Petrifies a hero after repeated hits" },
+  "MULTI_PART_BOSS": { label: "Multi-Part Boss", tip: "Multiple body parts with independent HP pools" },
+  "HEAL_REDUCTION": { label: "Heal Reduction", tip: "Reduces healing received by your heroes" },
+};
 
 // Mechanic counter mapping: boss mechanicTag → hero capabilities
 const MECHANIC_COUNTERS = {
@@ -64,6 +100,7 @@ function bossSkillIcon(bossId, index) {
 <Sidebar />
 
 <section class="boss-page">
+  {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
 
   <!-- Boss tabs bar -->
   <div class="boss-tabbar" data-boss-slider>
@@ -110,9 +147,24 @@ function bossSkillIcon(bossId, index) {
         <!-- RIGHT: info panel -->
         <div class="boss-panel">
 
-          <!-- Mechanics -->
+          <!-- Key Mechanics (player-friendly tags) -->
+          {(boss.mechanicTags || []).length > 0 && (
+            <div class="panel-section">
+              <h3 class="panel-heading">Key Mechanics</h3>
+              <div class="mechanic-tags">
+                {(boss.mechanicTags || []).map(tag => {
+                  const info = MECHANIC_LABELS[tag];
+                  return info ? (
+                    <span class="mechanic-pill" title={info.tip}>{info.label}</span>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          )}
+
+          <!-- Skills -->
           <div class="panel-section">
-            <h3 class="panel-heading">Mechanics</h3>
+            <h3 class="panel-heading">Skills</h3>
             <div class="mechanic-list">
               {boss.skills.map((sk, skillIndex) => (
                 <div class="mechanic-item">

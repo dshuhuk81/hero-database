@@ -2,6 +2,7 @@
   "id": "nyx",
   "name": "Nyx",
   "image": "/heroes/nyx.webp",
+    "release": true,
   "faction": "Starglint",
   "role": "Nimble",
   "class": "Assassin",
@@ -58,7 +59,8 @@
         "level3": "Stuns last for 4s.",
         "level4": "Increases DMG dealt to 250%."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -117,5 +119,7 @@
       "autor": "GPH",
       "videoId": "xn8nRaQpae8"
     }
-  ]
+  ],
+  "baseAttackRate": 2.129,
+  "bossUltimatesPer90s": 6
 }

@@ -1,6 +1,10 @@
 ---
+export const prerender = true;
 import Footer from "../components/Footer.astro";
 import Sidebar from "../components/Sidebar.astro";
+import { getPageUpdate } from "../utils/getPageUpdate";
+
+const pageUpdate = getPageUpdate("early-game");
 ---
 
 <!DOCTYPE html>
@@ -20,6 +24,7 @@ import Sidebar from "../components/Sidebar.astro";
       <span class="hero-tag">New Player</span>
       <h1 class="hero-headline">Beginner Guide</h1>
       <p class="hero-sub">Everything you need to know to start strong in Motto Immortal</p>
+      {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
     </div>
   </section>
 

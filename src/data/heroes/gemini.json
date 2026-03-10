@@ -2,6 +2,7 @@
   "id": "gemini",
   "name": "Gemini",
   "image": "/heroes/gemini.webp",
+    "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Tank",
@@ -57,7 +58,8 @@
         "level3": "Increases Castor's Armor by an additional 30% for the next 8s. (Unlocks at Lv.121)",
         "level4": "Heals HP equal to 300% ATK. (Unlocks at Lv.161)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -87,5 +89,7 @@
     "REDUCES_ATTRIBUTES",
     "GAIN_ARMOR",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 0.591,
+  "bossUltimatesPer90s": 5
 }

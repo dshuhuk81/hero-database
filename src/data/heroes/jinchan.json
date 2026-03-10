@@ -2,6 +2,7 @@
   "id": "jinchan",
   "name": "Jinchan",
   "image": "/heroes/jinchan.webp",
+  "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Support",
@@ -57,9 +58,10 @@
         "level3": "",
         "level4": ""
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     }
-  ],
+      ],
   "synergies": [
     "HEAL_TEAM",
     "GAIN_ARMOR"

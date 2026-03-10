@@ -2,6 +2,7 @@
   "id": "poseidon",
   "name": "Poseidon",
   "image": "/heroes/poseidon.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level3": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
         "level4": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)"
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -110,5 +112,7 @@
     "ATK_UP",
     "ENERGY_RESTORE",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.793,
+  "bossUltimatesPer90s": 8
 }

@@ -2,6 +2,7 @@
   "id": "prometheus",
   "name": "Prometheus",
   "image": "/heroes/prometheus.webp",
+    "release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Tank",
@@ -58,7 +59,8 @@
         "level3": "Increases Armor and M-RES by 30% for the duration.",
         "level4": "Gains a shield equal to 50% of max HP."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -112,5 +114,7 @@
     "DMG_RED",
     "GAIN_ARMOR",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.738,
+  "bossUltimatesPer90s": 2
 }

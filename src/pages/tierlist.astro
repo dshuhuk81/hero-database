@@ -1,24 +1,29 @@
 ---
+export const prerender = true;
 // src/pages/tierlist.astro
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
 import Filter from "../components/filter.astro";
+import { getPageUpdate } from "../utils/getPageUpdate";
 
+const pageUpdate = getPageUpdate("tierlist");
 const TIER_ORDER = { SSS: 7, SS: 6, S: 5, A: 4, B: 3, C: 2, "N/A": 1 };
 
-const sortedHeroes = [...heroes].sort((a, b) => {
-  const aTier = (a.ratings?.overall || "N/A").toUpperCase();
-  const bTier = (b.ratings?.overall || "N/A").toUpperCase();
-  const aVal = TIER_ORDER[aTier] ?? 0;
-  const bVal = TIER_ORDER[bTier] ?? 0;
+const sortedHeroes = [...heroes]
+  .filter(hero => hero.release !== false)
+  .sort((a, b) => {
+    const aTier = (a.ratings?.overall || "N/A").toUpperCase();
+    const bTier = (b.ratings?.overall || "N/A").toUpperCase();
+    const aVal = TIER_ORDER[aTier] ?? 0;
+    const bVal = TIER_ORDER[bTier] ?? 0;
 
-  // DESC: best first
-  if (bVal !== aVal) return bVal - aVal;
+    // DESC: best first
+    if (bVal !== aVal) return bVal - aVal;
 
-  // Tie-breaker: Name A–Z
-  return a.name.localeCompare(b.name, "en", { sensitivity: "base" });
-});
+    // Tie-breaker: Name A–Z
+    return a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+  });
 ---
 
 <html lang="en">
@@ -33,6 +38,7 @@ const sortedHeroes = [...heroes].sort((a, b) => {
     
     <div class="page-wrapper">
       <h1 class="title">Hero Tier List</h1>
+      {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
 
       <div class="content-wrapper">
         <!--<Filter /> -->
@@ -443,36 +449,36 @@ const sortedHeroes = [...heroes].sort((a, b) => {
       }
 
       .rating-sss {
-        background: linear-gradient(135deg, #ff6b6b, #ff8787);
-        color: #fff;
-        box-shadow: 0 0 12px rgba(255, 107, 107, 0.4);
+        background: linear-gradient(135deg, var(--tier-sss-from), var(--tier-sss-to));
+        color: var(--tier-sss-text);
+        box-shadow: 0 0 12px var(--tier-sss-glow);
       }
 
       .rating-ss {
-        background: linear-gradient(135deg, #ffd93d, #ffe66d);
-        color: #1a1a1a;
-        box-shadow: 0 0 12px rgba(255, 217, 61, 0.4);
+        background: linear-gradient(135deg, var(--tier-ss-from), var(--tier-ss-to));
+        color: var(--tier-ss-text);
+        box-shadow: 0 0 12px var(--tier-ss-glow);
       }
 
       .rating-s {
-        background: linear-gradient(135deg, #a8e6cf, #c4f0d9);
-        color: #1a1a1a;
-        box-shadow: 0 0 12px rgba(168, 230, 207, 0.4);
+        background: linear-gradient(135deg, var(--tier-s-from), var(--tier-s-to));
+        color: var(--tier-s-text);
+        box-shadow: 0 0 12px var(--tier-s-glow);
       }
 
       .rating-a {
-        background: linear-gradient(135deg, #74b9ff, #a29bfe);
-        color: #fff;
+        background: linear-gradient(135deg, var(--tier-a-from), var(--tier-a-to));
+        color: var(--tier-a-text);
       }
 
       .rating-b {
-        background: linear-gradient(135deg, #dfe6e9, #b2bec3);
-        color: #2d3436;
+        background: linear-gradient(135deg, var(--tier-b-from), var(--tier-b-to));
+        color: var(--tier-b-text);
       }
 
       .rating-c {
-        background: linear-gradient(135deg, #636e72, #7f8c8d);
-        color: #fff;
+        background: linear-gradient(135deg, var(--tier-c-from), var(--tier-c-to));
+        color: var(--tier-c-text);
       }
 
       .rating-na {

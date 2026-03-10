@@ -2,6 +2,7 @@
   "id": "ares",
   "name": "Ares",
   "image": "/heroes/ares.webp",
+  "release": true,
   "faction": "Diamonds",
   "role": "Hefty",
   "class": "Tank",
@@ -57,7 +58,8 @@
         "level3": "Gains a shield equal to 200% of ATK when the Ultimate ends.",
         "level4": "Increases DMG per sec to 120%."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -93,15 +95,6 @@
       "damageType": ""
     }
   ],
-  "passive": {
-    "name": "Flesh Grinder",
-    "description": "Ares deals DMG equal to 200% of ATK to nearby enemies and reduces their Armor by 15% for 6s.",
-    "upgrades": {
-      "level2": "Reduces Armor by 20%.",
-      "level3": "Reduces Armor for 8s.",
-      "level4": "Reduces Armor by 25%."
-    }
-  },
   "relic": {
     "name": "Celestial Dusk",
     "description": "During Battlefield Storm, Ares takes 80% reduced DMG.",
@@ -121,5 +114,7 @@
     "HIT_AVOID",
     "LIFE_STEAL_UP",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.59,
+  "bossUltimatesPer90s": 3
 }

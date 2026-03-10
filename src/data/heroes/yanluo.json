@@ -2,6 +2,7 @@
   "id": "yanluo",
   "name": "Yanluo",
   "image": "/heroes/yanluo.webp",
+  "release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level4": "Deals DMG equal to 260% of Yanluo’s ATK and 260% of the target’s ATK."
       },
       "image": "/skills/yanluo_skill_1.webp",
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",

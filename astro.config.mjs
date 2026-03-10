@@ -14,9 +14,6 @@ export default defineConfig({
   
   // Vercel Adapter für Deployment
   adapter: vercel({
-    isr: {
-      expiration: 60,
-    },
     maxDuration: 10
   }),
 });

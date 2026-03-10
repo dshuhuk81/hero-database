@@ -2,6 +2,7 @@
   "id": "sekhmet",
   "name": "Sekhmet",
   "image": "/heroes/sekhmet.webp",
+  "release": true,
   "faction": "Diamonds",
   "role": "Hefty",
   "class": "Warrior",
@@ -57,7 +58,8 @@
         "level3": "Increases DMG of the first 2 hits to 90% of ATK.",
         "level4": "Increases the last hit's DMG to 180% of ATK."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -110,5 +112,7 @@
     "ATK_UP",
     "DMG_RED",
     "LIFE_STEAL_UP"
-  ]
+  ],
+  "baseAttackRate": 1.782,
+  "bossUltimatesPer90s": 5
 }

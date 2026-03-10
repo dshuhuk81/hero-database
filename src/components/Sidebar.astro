@@ -311,6 +311,50 @@ function getIcon(label: string) {
   updateGlobalAuthControls();
 </script>
 
+<style is:global>
+  @import '../styles/tokens.css';
+
+  .page-updated {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: var(--space-xs) 0 var(--space-md);
+    font-style: italic;
+    text-align: center;
+  }
+
+  .tldr-box {
+    background: rgba(250, 204, 21, 0.06);
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    border-radius: 12px;
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .tldr-title {
+    color: var(--accent-gold);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-sm);
+  }
+
+  .tldr-list {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .tldr-list li {
+    font-size: 0.85rem;
+    color: rgba(230, 230, 235, 0.8);
+    line-height: 1.5;
+  }
+</style>
+
 <style>
   /* ─── Desktop Rail ─── */
   .rail {

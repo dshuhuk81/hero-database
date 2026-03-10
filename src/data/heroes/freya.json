@@ -2,6 +2,7 @@
   "id": "freya",
   "name": "Freya",
   "image": "/heroes/freya.webp",
+    "release": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Support",
@@ -57,7 +58,8 @@
         "level3": "Freya gains Super Armor during her Ultimate.",
         "level4": "Restores HP equal to 120% of ATK per second."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -109,5 +111,7 @@
     "CROWD_CONTROL",
     "HEAL",
     "HEAL_EFFECT_UP"
-  ]
+  ],
+  "baseAttackRate": 0.364,
+  "bossUltimatesPer90s": 3
 }

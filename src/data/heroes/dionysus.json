@@ -2,6 +2,7 @@
   "id": "dionysus",
   "name": "Dionysus",
   "image": "/heroes/dionysus.webp",
+    "release": true,
   "faction": "Starglint",
   "role": "Arcane",
   "class": "Support",
@@ -58,7 +59,8 @@
         "level3": "Duration extends to 7s.",
         "level4": "Using this skill also removes all debuffs from an ally and makes them immune to Crowd Control for 2s."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",

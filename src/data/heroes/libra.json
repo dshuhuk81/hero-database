@@ -2,6 +2,7 @@
   "id": "libra",
   "name": "Libra",
   "image": "/heroes/libra.webp",
+    "release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Warrior",
@@ -56,7 +57,8 @@
         "level2": "DMG bonus increases to 370% ATK. (Unlocks at Lv.41)",
         "level3": "Reduces the ATK SPD of hit enemies by 20% for 10s. (Unlocks at Lv.101)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -85,5 +87,7 @@
     "CROWD_CONTROL",
     "ATK_UP",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.874,
+  "bossUltimatesPer90s": 4
 }

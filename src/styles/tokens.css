@@ -1,0 +1,68 @@
+/* Make stats tables horizontally scrollable */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+.table-scroll table {
+  min-width: 1200px;
+}
+:root {
+  /* === RATING TIER COLORS (canonical: HeroCard) === */
+  --tier-sss-from: #ff4d4d;
+  --tier-sss-to: #b91c1c;
+  --tier-sss-text: #fff5f5;
+  --tier-sss-glow: rgba(255, 60, 60, 0.6);
+
+  --tier-ss-from: #ffe066;
+  --tier-ss-to: #facc15;
+  --tier-ss-text: #3a2a00;
+  --tier-ss-glow: rgba(255, 224, 102, 0.4);
+
+  --tier-s-from: #fde68a;
+  --tier-s-to: #fbbf24;
+  --tier-s-text: #3a2a00;
+  --tier-s-glow: rgba(251, 191, 36, 0.4);
+
+  --tier-a-from: #fdba74;
+  --tier-a-to: #fb923c;
+  --tier-a-text: #3b1d00;
+
+  --tier-b-from: #c4b5fd;
+  --tier-b-to: #8b5cf6;
+  --tier-b-text: #1e103a;
+
+  --tier-c-from: #93c5fd;
+  --tier-c-to: #3b82f6;
+  --tier-c-text: #001a33;
+
+  --tier-d-from: #5eead4;
+  --tier-d-to: #14b8a6;
+  --tier-d-text: #002c26;
+
+  /* === CORE PALETTE === */
+  --bg-primary: #07060c;
+  --bg-secondary: #0d0b10;
+  --text-primary: #e6e6eb;
+  --text-bright: #f4f1ff;
+  --text-muted: rgba(230, 230, 235, 0.55);
+  --accent-gold: #facc15;
+  --accent-purple: rgba(168, 85, 247, 1);
+  --gold: #d4af37;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.15);
+
+  /* === SPACING SCALE === */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* === BREAKPOINTS (reference only — CSS cannot use vars in media queries) === */
+  /* Mobile:  480px  */
+  /* Tablet:  768px  */
+  /* Desktop: 1024px */
+  /* Wide:    1200px */
+}

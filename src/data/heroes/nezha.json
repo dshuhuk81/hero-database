@@ -2,6 +2,7 @@
   "id": "nezha",
   "name": "Nezha",
   "image": "/heroes/nezha.webp",
+    "release": true,
   "faction": "Starglint",
   "role": "Nimble",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level3": "Increases Lifesteal gained to 30%.",
         "level4": "The duration of Lotus Embodied extends to 15s."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",

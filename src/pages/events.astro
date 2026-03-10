@@ -1,10 +1,14 @@
 ---
+export const prerender = true;
 import Footer from "../components/Footer.astro";
 import Sidebar from "../components/Sidebar.astro";
 import allHeroes from "../data/all_heroes_db.json";
 import eventsData from "../data/events.json";
 import "../styles/compositions.css";
 import "../styles/events.css";
+import { getPageUpdate } from "../utils/getPageUpdate";
+
+const pageUpdate = getPageUpdate("events");
 
 // Helper function to get hero data
 function getHero(heroId: string) {
@@ -51,6 +55,7 @@ const activeCampaign = campaigns[0];
       <span class="hero-tag">Campaign</span>
       <h1 class="hero-headline" id="hero-headline">{activeCampaign.name}</h1>
       <p class="hero-sub" id="hero-sub">{activeCampaign.description}</p>
+      {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
     </div>
   </section>
 

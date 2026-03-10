@@ -2,6 +2,7 @@
   "id": "taurus",
   "name": "Taurus",
   "image": "/heroes/taurus.webp",
+  "release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Tank",
@@ -57,7 +58,8 @@
         "level3": "Reduces enemy ATK by 30%.",
         "level4": "DMG dealt increases to 260% ATK."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -88,5 +90,7 @@
     "GAIN_ARMOR",
     "HEAL",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.86,
+  "bossUltimatesPer90s": 4
 }

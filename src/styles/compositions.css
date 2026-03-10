@@ -288,6 +288,32 @@ body {
 }
 
 
+/* ---- Key Mechanic Tags ---- */
+
+.mechanic-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mechanic-pill {
+  display: inline-block;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(230, 230, 235, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  cursor: default;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.mechanic-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
 /* ---- Strategy Notes ---- */
 
 .strategy-text {

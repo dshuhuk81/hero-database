@@ -2,6 +2,7 @@
   "id": "diana",
   "name": "Diana",
   "image": "/heroes/diana.webp",
+  "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Archer",
@@ -57,7 +58,8 @@
         "level3": "Increases DMG dealt to 285% of ATK.",
         "level4": "Reduces the Armor of hit enemies by 20% for 10s."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -109,5 +111,7 @@
     "ENERGY_RESTORE_TEAM",
     "REDUCES_ATTRIBUTES",
     "REMOVES_ARMOR"
-  ]
+  ],
+  "baseAttackRate": 0.901,
+  "bossUltimatesPer90s": 5
 }

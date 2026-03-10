@@ -106,97 +106,53 @@ function badgeClass(label) {
           </div>
 
           <div class="formation-grid">
-            <div class="formation-row front-row">
-              {c.formation.front.map((hid) => {
-                const h = hero(hid);
-                if (!h) return <div class="hero-card-slot empty"></div>;
-                const isCurrentHero = h.id === heroId;
-                const tags = heroTags(c, hid).slice(0, 3);
+            {(['front', 'back'] as const).map((position) => (
+              <div class={`formation-row ${position}-row`}>
+                {c.formation[position].map((hid) => {
+                  const h = hero(hid);
+                  if (!h) return <div class="hero-card-slot empty"></div>;
+                  const isCurrentHero = h.id === heroId;
+                  const tags = heroTags(c, hid).slice(0, 3);
 
-                return (
-                  <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
-                    <div class="hero-card-inner">
-                      <div class="hero-image-wrapper">
-                        <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
-                        {isCurrentHero && (
-                          <div class="current-hero-badge" title="Current hero">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                              <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-
-                      <div class="hero-info">
-                        <h4 class="hero-name">{heroName(hid)}</h4>
-                        <div class="hero-meta">
-                          <img
-                            src={`/icons/factions/${String(h.faction ?? "").toLowerCase()}.webp`}
-                            alt={h.faction}
-                            class="faction-icon-small"
-                            title={h.faction}
-                            loading="lazy"
-                            decoding="async"
-                          />
+                  return (
+                    <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
+                      <div class="hero-card-inner">
+                        <div class="hero-image-wrapper">
+                          <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
+                          {isCurrentHero && (
+                            <div class="current-hero-badge" title="Current hero">
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                              </svg>
+                            </div>
+                          )}
                         </div>
 
-                        {tags.length > 0 && (
-                          <div class="tag-row">
-                            {tags.map((t) => <span class={badgeClass(t)}>{t}</span>)}
+                        <div class="hero-info">
+                          <h4 class="hero-name">{heroName(hid)}</h4>
+                          <div class="hero-meta">
+                            <img
+                              src={`/icons/factions/${String(h.faction ?? "").toLowerCase()}.webp`}
+                              alt={h.faction}
+                              class="faction-icon-small"
+                              title={h.faction}
+                              loading="lazy"
+                              decoding="async"
+                            />
                           </div>
-                        )}
-                      </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
 
-            <div class="formation-row back-row">
-              {c.formation.back.map((hid) => {
-                const h = hero(hid);
-                if (!h) return <div class="hero-card-slot empty"></div>;
-                const isCurrentHero = h.id === heroId;
-                const tags = heroTags(c, hid).slice(0, 3);
-
-                return (
-                  <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
-                    <div class="hero-card-inner">
-                      <div class="hero-image-wrapper">
-                        <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
-                        {isCurrentHero && (
-                          <div class="current-hero-badge" title="Current hero">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                              <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-
-                      <div class="hero-info">
-                        <h4 class="hero-name">{heroName(hid)}</h4>
-                        <div class="hero-meta">
-                          <img
-                            src={`/icons/factions/${String(h.faction ?? "").toLowerCase()}.webp`}
-                            alt={h.faction}
-                            class="faction-icon-small"
-                            title={h.faction}
-                            loading="lazy"
-                            decoding="async"
-                          />
+                          {tags.length > 0 && (
+                            <div class="tag-row">
+                              {tags.map((t) => <span class={badgeClass(t)}>{t}</span>)}
+                            </div>
+                          )}
                         </div>
-
-                        {tags.length > 0 && (
-                          <div class="tag-row">
-                            {tags.map((t) => <span class={badgeClass(t)}>{t}</span>)}
-                          </div>
-                        )}
                       </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
+                    </a>
+                  );
+                })}
+              </div>
+            ))}
           </div>
 
           {c.synergy?.length > 0 && (

@@ -2,6 +2,7 @@
   "id": "tefnut",
   "name": "Tefnut",
   "image": "/heroes/tefnut.webp",
+  "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Support",
@@ -58,7 +59,8 @@
         "level3": "Enemies inside the area have their ATK reduced by 30%.",
         "level4": "Restores HP equal to 200% of ATK per second."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -118,5 +120,7 @@
       "autor": "GPH",
       "videoId": "skOUmD4Eyik"
     }
-  ]
+  ],
+  "baseAttackRate": 0.64,
+  "bossUltimatesPer90s": 5
 }

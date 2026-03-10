@@ -2,6 +2,7 @@
   "id": "isis",
   "name": "Isis",
   "image": "/heroes/isis.webp",
+    "release": true,
   "faction": "Hearts",
   "role": "Nimble",
   "class": "Archer",
@@ -58,7 +59,8 @@
         "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
         "level4": "The arrow will deal DMG equal to 200% of ATK."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -106,5 +108,7 @@
   "synergies": [
     "ATK_SPEED",
     "ATK_UP"
-  ]
+  ],
+  "baseAttackRate": 2.91,
+  "bossUltimatesPer90s": 3
 }

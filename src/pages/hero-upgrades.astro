@@ -1,6 +1,10 @@
 ---
+export const prerender = true;
 import Footer from "../components/Footer.astro";
 import Sidebar from "../components/Sidebar.astro";
+import { getPageUpdate } from "../utils/getPageUpdate";
+
+const pageUpdate = getPageUpdate("hero-upgrades");
 ---
 
 <!DOCTYPE html>
@@ -17,6 +21,7 @@ import Sidebar from "../components/Sidebar.astro";
   <section class="hero">
     <div class="hero-overlay"></div>
     <h1 class="hero-headline">Hero Upgrades</h1>
+    {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
   </section>
 
   <!-- MAIN CONTENT -->

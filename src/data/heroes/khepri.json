@@ -2,6 +2,7 @@
   "id": "khepri",
   "name": "Khepri",
   "image": "/heroes/khepri.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Support",
@@ -58,7 +59,8 @@
         "level3": "Gains 300 Energy on entry. (Unlocks at Lv.141)",
         "level4": "Increases DMG dealt to 120%. (Unlocks at Lv.221)"
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -119,5 +121,7 @@
     "ENERGY_RESTORE",
     "HEAL",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.376,
+  "bossUltimatesPer90s": 4
 }

@@ -2,6 +2,7 @@
   "id": "hela",
   "name": "Hela",
   "image": "/heroes/hela.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Support",
@@ -57,7 +58,8 @@
         "level3": "Increases the explosion DMG of each Nether Fireball to 200% of ATK.",
         "level4": "Hela shoots an extra Nether Fireball."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -109,5 +111,7 @@
     "ATK_UP",
     "ENERGY_RESTORE",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 0.714,
+  "bossUltimatesPer90s": 4
 }

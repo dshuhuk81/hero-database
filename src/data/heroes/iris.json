@@ -2,6 +2,7 @@
   "id": "iris",
   "name": "Iris",
   "image": "/heroes/iris.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Support",
@@ -57,7 +58,8 @@
         "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
         "level4": "The arrow will deal DMG equal to 200% of ATK."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -105,5 +107,7 @@
   },
   "synergies": [
     "ATK_SPEED"
-  ]
+  ],
+  "baseAttackRate": 0.708,
+  "bossUltimatesPer90s": 4
 }

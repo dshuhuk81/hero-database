@@ -1,8 +1,12 @@
 ---
+export const prerender = true;
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
 import accountBonusesData from "../data/accountBonuses.json";
+import { getPageUpdate } from "../utils/getPageUpdate";
+
+const pageUpdate = getPageUpdate("stats");
 
 /* ── Reference hero: Hladgunnr ────────────────────── */
 const hladgunnr = heroes.find((h) => h.id === "hladgunnr");
@@ -105,6 +109,7 @@ function fmtVal(val: number, key: string): string {
 
     <div class="page-wrapper">
       <h1 class="title">Hero Stats</h1>
+      {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
       <p class="subtitle">All heroes with their full stat breakdown. Toggle account bonuses to see adjusted values.</p>
 
       <div class="content-wrapper">
@@ -133,8 +138,9 @@ function fmtVal(val: number, key: string): string {
         <div class="table-wrapper">
 
           <!-- STICKY HEADER -->
-          <div class="table-header-sticky" id="tableHeaderSticky">
-            <table class="stats-table stats-table--header" id="headerTable">
+          <div class="table-scroll">
+            <div class="table-header-sticky" id="tableHeaderSticky">
+              <table class="stats-table stats-table--header" id="headerTable">
               <thead>
                 <tr>
                   <th class="sortable col-rank sticky-col" data-sort="rank">

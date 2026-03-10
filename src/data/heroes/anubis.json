@@ -2,6 +2,7 @@
   "id": "anubis",
   "name": "Anubis",
   "image": "/heroes/anubis.webp",
+  "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Assassin",
@@ -58,7 +59,8 @@
         "level3": "Increases Anubis's ATK by 20% upon defeating a target. This boost lasts until the battle ends.",
         "level4": "After defeating a target, Anubis restores 25% of his max HP."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -113,5 +115,7 @@
     "HEAL",
     "HIT_AVOID",
     "LIFE_STEAL_UP"
-  ]
+  ],
+  "baseAttackRate": 0.73,
+  "bossUltimatesPer90s": 6
 }

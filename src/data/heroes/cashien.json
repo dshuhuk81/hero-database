@@ -2,6 +2,7 @@
   "id": "cashien",
   "name": "Cashien",
   "image": "/heroes/cashien.webp",
+    "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Support",
@@ -58,7 +59,8 @@
         "level3": "Restores 300 Energy to himself.",
         "level4": "Increases ATK bonus to 330%. (Unlocks at Lv.281)"
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -110,5 +112,7 @@
     "DMG_RED",
     "ENERGY_RESTORE",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 0.935,
+  "bossUltimatesPer90s": 10
 }

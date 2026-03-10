@@ -2,6 +2,7 @@
   "id": "set",
   "name": "Set",
   "image": "/heroes/set.webp",
+  "release": true,
   "faction": "Diamonds",
   "role": "Nimble",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level3": "The third attack is guaranteed to hit.",
         "level4": "Increases the third attack's bonus to 380% of ATK."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -94,7 +96,7 @@
       },
       "damageType": ""
     }
-  ],
+   ],
   "relic": {
     "name": "Dance of the Sands",
     "description": "Each Sand Burial cast increases the DMG of the next Sand Burial by 10%, stacking up to 5 times.",
@@ -111,5 +113,7 @@
     "REMOVES_ARMOR",
     "ATK_UP",
     "LIFE_STEAL_UP"
-  ]
+  ],
+  "baseAttackRate": 0.875,
+  "bossUltimatesPer90s": 4
 }

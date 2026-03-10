@@ -2,6 +2,7 @@
   "id": "ullr",
   "name": "Ullr",
   "image": "/heroes/ullr.webp",
+"release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Tank",
@@ -10,7 +11,6 @@
   "ratings": {
     "overall": "B",
     "grimSurge": "",
-    "delusionsDen": "",
     "torrentRift": "",
     "pvp": "S",
     "pve": "A"
@@ -57,7 +57,8 @@
         "level3": "Targets launched will be stunned for 2s upon landing.",
         "level4": "Increases DMG of Charged Attack to 550% ATK."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",

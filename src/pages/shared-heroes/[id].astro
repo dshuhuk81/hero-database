@@ -37,7 +37,7 @@ const factionMap: Record<string, any[]> = {};
 if (shareData?.heroesData) {
   shareData.heroesData.forEach((item: any) => {
     const hero = heroesMap[item.hero_id];
-    if (hero) {
+    if (hero && hero.release !== false) {
       if (!factionMap[hero.faction]) {
         factionMap[hero.faction] = [];
       }

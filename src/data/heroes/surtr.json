@@ -2,6 +2,7 @@
   "id": "surtr",
   "name": "Surtr",
   "image": "/heroes/surtr.webp",
+  "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Mage",
@@ -57,7 +58,8 @@
         "level3": "Deals 35% increased DMG to enemies with HP above 50%.",
         "level4": "Increases DMG dealt to 360%."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -107,5 +109,7 @@
     "REDUCES_ATTRIBUTES",
     "ATK_UP",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.828,
+  "bossUltimatesPer90s": 3
 }

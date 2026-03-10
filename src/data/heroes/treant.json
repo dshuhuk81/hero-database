@@ -2,6 +2,7 @@
   "id": "treant",
   "name": "Treant",
   "image": "/heroes/treant.webp",
+  "release": true,
   "faction": "Clubs",
   "role": "Hefty",
   "class": "Warrior",
@@ -57,7 +58,8 @@
         "level3": "",
         "level4": ""
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     }
   ],
   "synergies": [

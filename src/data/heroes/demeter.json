@@ -2,6 +2,7 @@
   "id": "demeter",
   "name": "Demeter",
   "image": "/heroes/demeter.webp",
+  "release": true,
   "faction": "Clubs",
   "role": "Hefty",
   "class": "Tank",
@@ -57,7 +58,8 @@
         "level3": "Each enemy restores HP equal to 100% of her ATK per second.",
         "level4": "Increases DMG per second to 120% of ATK."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -111,5 +113,7 @@
     "CC_RESISTANCE",
     "GAIN_ARMOR",
     "DMG_RED"
-  ]
+  ],
+  "baseAttackRate": 0.559,
+  "bossUltimatesPer90s": 5
 }
