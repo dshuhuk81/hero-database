@@ -1,5 +1,6 @@
 ---
 import Sidebar from "../components/Sidebar.astro";
+import Analytics from '@vercel/analytics/astro';
 
 const title = "Battle Analysis";
 ---
@@ -10,6 +11,7 @@ const title = "Battle Analysis";
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  <Analytics />
   <style is:global>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

@@ -2,6 +2,7 @@
 export const prerender = true;
 import Footer from "../components/Footer.astro";
 import Sidebar from "../components/Sidebar.astro";
+import Analytics from '@vercel/analytics/astro';
 
 interface Teaser {
   label: string;
@@ -88,6 +89,7 @@ const teasers: Teaser[] = [
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Motto Immortal</title>
+  <Analytics />
 </head>
 <body>
   <Sidebar />
