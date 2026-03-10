@@ -1,0 +1,24 @@
+---
+import Analytics from '@vercel/analytics/astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "Motto Immortal Database", description = "Hero database and tools for Motto Immortal" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <Analytics />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

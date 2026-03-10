@@ -5,6 +5,7 @@ import { heroes } from "../data/heroes";
 import { computeScore, computeScoreForScenario } from "../utils/rankingScore.js";
 import { synergyPotentialForHero } from "../utils/synergyTags.js";
 import { rateHeroSkills } from "../utils/skillAnalyzer.js";
+import Analytics from '@vercel/analytics/astro';
 
 const heroById = new Map(heroes.map((hero) => [hero.id, hero]));
 const heroOptions = [...heroes].sort((a, b) => a.name.localeCompare(b.name));
@@ -61,6 +62,7 @@ const rows = await Promise.all(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Rankings - Hero Database</title>
+    <Analytics />
   </head>
 
   <body data-default-sort="score">
