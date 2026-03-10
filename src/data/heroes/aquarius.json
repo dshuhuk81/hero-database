@@ -2,6 +2,7 @@
   "id": "aquarius",
   "name": "Aquarius",
   "image": "/heroes/aquarius.webp",
+  "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Tank",
@@ -56,7 +57,8 @@
         "level2": "Shield Strength increases to 270% ATK.",
         "level3": "Shield Strength increases to 300% ATK."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -85,5 +87,7 @@
     "SHIELD_TEAM",
     "CROWD_CONTROL",
     "GAIN_ARMOR"
-  ]
+  ],
+  "baseAttackRate": 0.546,
+  "bossUltimatesPer90s": 4
 }

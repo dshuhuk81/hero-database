@@ -2,6 +2,7 @@
   "id": "capricorn",
   "name": "Capricorn",
   "image": "/heroes/capricorn.webp",
+    "release": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Assassin",
@@ -57,7 +58,8 @@
         "level3": "The lost HP is slowly restored over 8s.",
         "level4": "The target takes 20% increased DMG during the effect."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -96,5 +98,7 @@
     "ENEMY_VULNERABILITY",
     "ATK_SPEED",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 0.768,
+  "bossUltimatesPer90s": 6
 }

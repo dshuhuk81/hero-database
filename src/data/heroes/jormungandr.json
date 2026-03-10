@@ -2,6 +2,7 @@
   "id": "jormungandr",
   "name": "Jormungandr",
   "image": "/heroes/jormungandr.webp",
+    "release": true,
   "faction": "Clubs",
   "role": "Hefty",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level3": "Damage per second increased to 85% of ATK. (Unlock at Relic Lv.20)",
         "level4": "Damage per second increased to 100% of ATK. (Unlock at Relic Lv.30)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -111,5 +113,7 @@
     "AREA_DAMAGE_DEALER",
     "DMG_RED",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 1.592,
+  "bossUltimatesPer90s": 4
 }

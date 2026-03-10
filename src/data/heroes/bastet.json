@@ -2,6 +2,7 @@
   "id": "bastet",
   "name": "Bastet",
   "image": "/heroes/bastet.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Nimble",
   "class": "Assassin",
@@ -58,7 +59,8 @@
         "level3": "Increases DMG per instance to 200% of ATK.",
         "level4": "Removes the cooldown of Feline Agility during the skill."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -110,5 +112,7 @@
     "DMG_RED",
     "DODGE_BUFF",
     "HIT_AVOID"
-  ]
+  ],
+  "baseAttackRate": 1.64,
+  "bossUltimatesPer90s": 6
 }

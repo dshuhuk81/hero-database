@@ -2,6 +2,7 @@
   "id": "phoenix",
   "name": "Phoenix",
   "image": "/heroes/phoenix.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Arcane",
   "class": "Mage",
@@ -58,7 +59,8 @@
         "level3": "Rise From Ashes can now trigger unlimited times. If she is the only remaining unit and under Rise From Ashes, the battle is lost. (Unlocks at Relic Lv.20)",
         "level4": "When Phoenix casts Rise From Ashes for the first time, she gains 50% max HP. (Unlocks at Relic Lv.30)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -108,5 +110,7 @@
     "ATK_UP",
     "ENERGY_RESTORE",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 4.956,
+  "bossUltimatesPer90s": 6
 }

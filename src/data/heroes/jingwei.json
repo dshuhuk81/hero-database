@@ -2,6 +2,7 @@
   "id": "jingwei",
   "name": "Jingwei",
   "image": "/heroes/jingwei.webp",
+  "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Assassin",
@@ -58,7 +59,8 @@
         "level3": "Increases DMG dealt by each whirlwind to 200% of ATK.",
         "level4": "Increases DMG dealt to enemies with less than 50% HP by 20%."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -108,5 +110,7 @@
     "ENEMY_VULNERABILITY",
     "BASIC_ATTACK_SCALER",
     "ATK_UP"
-  ]
+  ],
+  "baseAttackRate": 1.012,
+  "bossUltimatesPer90s": 4
 }

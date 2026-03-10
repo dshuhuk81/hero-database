@@ -1,0 +1,112 @@
+{
+  "id": "skadi",
+  "name": "Skadi",
+  "image": "/heroes/skadi.webp",
+  "release": false,
+  "faction": "Spades",
+  "role": "Arcane",
+  "class": "Mage",
+  "rarity": "Legendary",
+  "description": "Core of Control",
+  "ratings": {
+    "overall": "",
+    "grimSurge": "",
+    "delusionsDen": "",
+    "torrentRift": "",
+    "pvp": "",
+    "pve": ""
+  },
+  "recommendedRelicLevel": 0,
+  "evolution": "Divine V",
+  "level": 300,
+  "stats": {
+    "might": 0,
+    "hp": 0,
+    "atk": 0,
+    "armor": 0,
+    "magicRes": 0,
+    "dodgeRate": 0,
+    "hitBonus": 0,
+    "critRate": 0,
+    "critRes": 0,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
+  },
+  "skills": [
+  {
+    "id": "skill_1",
+    "name": "Drifting Vortex",
+    "description": "Create an Ice Vortex that continuously moves around the battlefield while targeting enemy Deity units (excluding minions) for 8 seconds. While active, the Ice Vortex deals 36% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 60% ATK as DMG.",
+    "upgrades": {
+      "level2": "While active, the Ice Vortex deals 48% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 80% ATK as DMG.",
+      "level3": "Ice Vortex's each consecutive hit on the same target increases the DMG that target takes from Ice Storm by 12%, stacking up to 15 times.",
+      "level4": "While active, the Ice Vortex deals 60% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 100% ATK as DMG."
+    },
+    "damageType": "Magical",
+    "isUltimate": true
+  },
+  {
+    "id": "skill_2",
+    "name": "Ring of Blizzard",
+    "description": "Summon a Blizzard with 3-meter radius in a densely packed area. The blizzard deals 40% ATK as DMG every 0.5 seconds for 3 seconds, then deals 100% ATK as DMG to enemies that remain within the area after 3 seconds.",
+    "upgrades": {
+      "level2": "Deals 60% ATK as DMG every 0.5 seconds.",
+      "level3": "Deals 80% ATK as DMG every 0.5 seconds.",
+      "level4": "Enemies that remain within the area after 3 seconds are Frozen for 3 seconds."
+    },
+    "damageType": "Magical"
+  },
+  {
+    "id": "skill_3",
+    "name": "Ice Prison",
+    "description": "Freeze the current target for 2 seconds and deal 240% ATK as DMG.",
+    "upgrades": {
+      "level2": "Also deals 80% ATK as DMG per second to units around the target.",
+      "level3": "Deals 270% ATK as DMG.",
+      "level4": "Duration extends to 3s."
+    },
+    "damageType": "Magical"
+  },
+  {
+    "id": "skill_4",
+    "name": "Realm of Frost",
+    "description": "When an enemy unit is affected by a Crowd Control effect, Skadi summons an Ice Spike to deal 60% ATK as DMG to the target.",
+    "upgrades": {
+      "level2": "Increases DMG dealt to 80%.",
+      "level3": "And restores 30 Energy.",
+      "level4": "Increases DMG dealt to 100%."
+    },
+    "damageType": "Magical"
+  }
+],
+  "relic": {
+  "name": "Iceforged Veins",
+  "description": "Triggering Realm of Frost grants 8% ATK for 3s. Stacks up to 10 times.",
+  "upgrades": {
+    "level2": "When Skadi is about to fall, she freezes herself for 3s, becoming invincible and restoring 20% of her max HP per sec. This can be triggered once per battle.",
+    "level3": "Triggering Realm of Frost grants 12% ATK for 3s. Stacks up to 10 times.",
+    "level4": "Triggering Realm of Frost grants 12% ATK for 8s. Stacks up to 10 times."
+  }
+},
+  "synergies": [
+  ],
+  "baseAttackRate": 0,
+  "bossUltimatesPer90s": 0
+}

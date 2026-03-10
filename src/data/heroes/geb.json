@@ -2,6 +2,7 @@
   "id": "geb",
   "name": "Geb",
   "image": "/heroes/geb.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Hefty",
   "class": "Tank",
@@ -57,7 +58,8 @@
         "level3": "Increases shield strength to 40% of max HP.",
         "level4": "Increases DMG per hit to 130% of ATK."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -109,5 +111,7 @@
     "DMG_RED",
     "ENERGY_RESTORE",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.571,
+  "bossUltimatesPer90s": 4
 }

@@ -2,6 +2,7 @@
   "id": "cancer",
   "name": "Cancer",
   "image": "/heroes/cancer.webp",
+    "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Support",
@@ -58,7 +59,8 @@
         "level3": "Restores HP equal to 120% ATK per heal.",
         "level4": "The ATK buff now lasts 10s."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -110,5 +112,7 @@
     "HEAL_TEAM",
     "SHIELD_TEAM",
     "ATK_UP"
-  ]
+  ],
+  "baseAttackRate": 0.503,
+  "bossUltimatesPer90s": 4
 }

@@ -2,6 +2,7 @@
   "id": "nemesis",
   "name": "Nemesis",
   "image": "/heroes/nemesis.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Assassin",
@@ -58,7 +59,8 @@
         "level3": "Defeating an enemy resets the skill's CD.",
         "level4": "Increases the shield bonus to 250%."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -109,5 +111,7 @@
     "DODGE_BUFF",
     "HIT_AVOID",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 1.164,
+  "bossUltimatesPer90s": 6
 }

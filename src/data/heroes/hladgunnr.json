@@ -2,6 +2,7 @@
   "id": "hladgunnr",
   "name": "Hladgunnr",
   "image": "/heroes/hladgunnr.webp",
+    "release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level3": "Also grants herself a shield equal to 300% of her ATK.",
         "level4": "Increases DMG dealt to 330%. (Unlocks at Lv.281)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -98,7 +100,7 @@
     "name": "Luminous Verdict",
     "description": "Luminous Aegis gains an additional upgrade effect: After Hladgunnr casts her Ultimate 3 times, 10% of the DMG dealt by Hladgunnr is converted to True DMG.",
     "damageType": "True",
-    "uogrades": {
+    "upgrades": {
       "level2": "Reduces the number of casts required to upgrade Luminous Aegis by one.",
       "level3": "30% of the DMG dealt by Hladgunnr is converted to True DMG.",
       "level4": "Hladgunnr gains Super Armor for 6s after each cast of her Ultimate. (Unlock at Relic Lv.30)"
@@ -112,5 +114,7 @@
     "HEAL",
     "LIFE_STEAL_UP",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 1.296,
+  "bossUltimatesPer90s": 4
 }

@@ -2,6 +2,7 @@
   "id": "scorpio",
   "name": "Scorpio",
   "image": "/heroes/scorpio.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Nimble",
   "class": "Assassin",
@@ -56,7 +57,8 @@
         "level2": "Reduces nearby enemies' ATK by 20% for 6s when the shield breaks. (Unlocks at Lv.81)",
         "level3": "Shield Strength increases to 330% ATK. (Unlocks at Lv.141)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -85,5 +87,7 @@
     "CROWD_CONTROL",
     "REDUCES_ATTRIBUTES",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.479,
+  "bossUltimatesPer90s": 6
 }

@@ -5,14 +5,17 @@ import Footer from "../components/Footer.astro";
 import { heroes } from "../data/heroes";
 import accountBonusesConfig from "../data/accountBonuses.json";
 
-const sortedHeroes = [...heroes].sort((a, b) =>
-  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
-);
+const sortedHeroes = [...heroes]
+  .filter(hero => hero.release !== false)
+  .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
 
 const defaultHeroA = sortedHeroes.find((hero) => hero.id === "nuba") || sortedHeroes[0];
 const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) || sortedHeroes[0];
 
 const bonusPresets = accountBonusesConfig.presets;
+
+import { getPageUpdate } from "../utils/getPageUpdate";
+const pageUpdate = getPageUpdate("calculator");
 ---
 
 <!DOCTYPE html>
@@ -28,7 +31,18 @@ const bonusPresets = accountBonusesConfig.presets;
 
 <main class="main-content">
   <h1 class="title">Skill Value Comparator</h1>
+  {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
   <p class="subtitle">Select one hero first. Add a second hero only if you want side-by-side comparison.</p>
+
+  <div class="tldr-box">
+    <h3 class="tldr-title">How This Works</h3>
+    <ul class="tldr-list">
+      <li><strong>Base values only:</strong> All numbers assume Level 300, Divine V, no items — raw hero power.</li>
+      <li><strong>Model A vs B:</strong> Two different damage mitigation formulas. Model A is simpler (flat reduction), Model B uses diminishing returns. Neither is confirmed as the exact in-game formula.</li>
+      <li><strong>K/C factors</strong> in Advanced Settings control mitigation strength — higher K = more damage reduced. Leave defaults unless you're theory-crafting.</li>
+      <li><strong>Account Bonuses</strong> lets you simulate having extra stats from account progression (VIP, research, etc.).</li>
+    </ul>
+  </div>
 
   <div class="content-wrapper">
     <div class="toolbar">
@@ -57,6 +71,13 @@ const bonusPresets = accountBonusesConfig.presets;
         <button class="add-slot" id="add-hero-btn" type="button">+ Compare</button>
       </div>
       <div class="toolbar-options">
+        <div class="toolbar-field compact">
+          <label for="match-type">Match Type</label>
+          <select id="match-type">
+            <option value="pvp" selected>PvP / Quick Match (30s)</option>
+            <option value="boss">Boss / Sustained (90s)</option>
+          </select>
+        </div>
         <div class="toolbar-field compact">
           <label for="bonus-preset">Account Bonuses</label>
           <select id="bonus-preset">
@@ -254,10 +275,11 @@ const bonusPresets = accountBonusesConfig.presets;
     // Show/hide advanced control groups based on selections
     const kCustomGroup = document.getElementById("k-custom-group");
     const cInputGroup = document.getElementById("c-input-group");
+    const matchType = document.getElementById("match-type")?.value || "pvp";
     if (kCustomGroup) kCustomGroup.classList.toggle("hidden", kPreset !== "custom");
     if (cInputGroup) cInputGroup.classList.toggle("hidden", model !== "B");
 
-    return { model, kValue, cValue, extraPhysRed, durationSeconds: 10 };
+    return { model, kValue, cValue, extraPhysRed, durationSeconds: 10, matchType };
   }
 
   function applyMitigation(raw, attacker, target, config, damageType) {
@@ -541,6 +563,7 @@ const bonusPresets = accountBonusesConfig.presets;
         const totalEstimated = targetHero ? applyMitigation(totalRaw, sourceHero, targetHero, config, damageType) : null;
 
         skillData.push({
+          skillId: skill.id,
           skillName: skill.name,
           totalRaw,
           totalEstimated,
@@ -568,6 +591,42 @@ const bonusPresets = accountBonusesConfig.presets;
     const hpPercentNormal = (targetHp > 0 && totalEstimated) ? (totalEstimated / targetHp * 100) : null;
     const hpPercentCrit = (targetHp > 0 && totalCritEstimated) ? (totalCritEstimated / targetHp * 100) : null;
 
+    const attacksNormally = !sourceHero.description?.match(/slumber|no longer performs normal attacks/i);
+    // Based on boss tests, base attack rate is closer to 1.3 - 1.4 hits per second. 
+    // We now use the scraped baseAttackRate property per hero, falling back to 1.35 if not tested yet.
+    const BASE_ATTACKS_PER_SEC = sourceHero.baseAttackRate || 1.35;
+    const atkSpd = attacksNormally ? (BASE_ATTACKS_PER_SEC * (1 + (Number(sourceHero.stats?.atkSpdBonus || 0) / 100))) : 0;
+    const normalAttackDamageRaw = attacksNormally ? Number(sourceHero.stats?.atk || 0) : 0;
+    
+    // In PvP, active skills interrupt basic attacks. We assume 15s of pure setup time
+    // before the first major burst rotation, minus roughly 2 seconds for early cast animations.
+    let setupDurationSec = 13; 
+
+    // Adjust setup duration for heroes disabled at the start of battle (e.g., Hladgunnr's 10s Slumber)
+    const disablesAtStartRegex = /upon entering battle[\s\S]*?disabled[\s\S]*?for (\d+)s/i;
+    (sourceHero.skills || []).forEach(s => {
+      const desc = s.description || "";
+      const match = desc.match(disablesAtStartRegex);
+      if (match) {
+        setupDurationSec = Math.max(0, setupDurationSec - Number(match[1]));
+      }
+    });
+    
+    let phase1Estimated = null;
+    const phase1Attacks = setupDurationSec * atkSpd;
+    const phase1Raw = normalAttackDamageRaw * phase1Attacks;
+    if (targetHero && attacksNormally) {
+      const perHitEst = applyMitigation(normalAttackDamageRaw, sourceHero, targetHero, config, 'physical');
+      phase1Estimated = perHitEst * phase1Attacks;
+    } else if (targetHero && !attacksNormally) {
+      phase1Estimated = 0;
+    }
+    let combinedRaw = phase1Raw + totalRaw;
+    let combinedEstimated = phase1Estimated !== null && totalEstimated !== null ? phase1Estimated + totalEstimated : null;
+    let combinedPct = targetHp > 0 && combinedEstimated !== null ? (combinedEstimated / targetHp * 100) : null;
+    const isPvp = config.matchType === 'pvp';
+    const isBoss = config.matchType === 'boss';
+
     // Average damage factoring crit rate
     const avgEstimated = (totalEstimated && critRate > 0)
       ? totalEstimated * (1 - critRate / 100) + totalCritEstimated * (critRate / 100)
@@ -578,49 +637,157 @@ const bonusPresets = accountBonusesConfig.presets;
     // EHP
     const ehp = computeEHP(sourceHero, config);
 
-    // Build per-skill breakdown
-    const breakdownHtml = burstData.map(d => {
+    // Build per-skill breakdown based on whether it's Ultimate vs Auto Skills
+    const autoSkillsData = burstData.filter(d => !d.skillId?.includes('skill_1') && !d.skillName?.toLowerCase().includes('ultimate'));
+    const ultimateSkillData = burstData.filter(d => d.skillId?.includes('skill_1') || d.skillName?.toLowerCase().includes('ultimate'));
+    
+    // Recalculate phases
+    let finalPhase1Raw = phase1Raw;
+    let finalPhase1Est = phase1Estimated;
+    let finalPhase2Raw = 0;
+    let finalPhase2Est = targetHero ? 0 : null;
+    let bossUltCount = 3; // default
+
+    if (isPvp) {
+      // Add auto-skills to phase 1
+      autoSkillsData.forEach(d => {
+        finalPhase1Raw += d.totalRaw;
+        if (finalPhase1Est !== null && d.totalEstimated !== null) finalPhase1Est += d.totalEstimated;
+      });
+      // Ultimate strictly goes to phase 2
+      ultimateSkillData.forEach(d => {
+        finalPhase2Raw += d.totalRaw;
+        if (finalPhase2Est !== null && d.totalEstimated !== null) finalPhase2Est += d.totalEstimated;
+      });
+    } else if (isBoss) {
+      // For Boss Mode, Phase 1 is a raw 90s multiplier of the baseAttackRate (which intrinsically includes auto-skills based on our spreadsheet)
+      const bossDurationSec = 90;
+      const bossAutoAttacks = bossDurationSec * atkSpd;
+      finalPhase1Raw = normalAttackDamageRaw * bossAutoAttacks;
+      if (targetHero && attacksNormally) {
+        const perHitEst = applyMitigation(normalAttackDamageRaw, sourceHero, targetHero, config, 'physical');
+        finalPhase1Est = perHitEst * bossAutoAttacks;
+      } else {
+        finalPhase1Est = 0;
+      }
+      
+      // Phase 2 is the Ultimates cast X times over 90s
+      bossUltCount = sourceHero.bossUltimatesPer90s || Math.floor(bossDurationSec / 20);
+      ultimateSkillData.forEach(d => {
+        finalPhase2Raw += (d.totalRaw * bossUltCount);
+        if (finalPhase2Est !== null && d.totalEstimated !== null) finalPhase2Est += (d.totalEstimated * bossUltCount);
+      });
+    }
+
+    if (isPvp || isBoss) {
+      combinedRaw = finalPhase1Raw + finalPhase2Raw;
+      combinedEstimated = finalPhase1Est !== null && finalPhase2Est !== null ? (finalPhase1Est + finalPhase2Est) : totalEstimated;
+      combinedPct = targetHp > 0 && combinedEstimated !== null ? (combinedEstimated / targetHp * 100) : null;
+    }
+
+    // Helper for rendering breakdown rows
+    const createBreakdownRow = (d) => {
       const estText = d.totalEstimated !== null ? formatNumber(d.totalEstimated) : '-';
       const hpPct = (targetHp > 0 && d.totalEstimated) ? (d.totalEstimated / targetHp * 100).toFixed(1) + '%' : '';
       return `<div class="burst-breakdown-row">
         <span class="burst-skill-name">${d.skillName}${d.hitCount > 1 ? ` (x${d.hitCount})` : ''}</span>
         <span class="burst-skill-dmg">${estText}${hpPct ? ` <span class="burst-skill-hp">${hpPct}</span>` : ''}</span>
       </div>`;
-    }).join('');
+    };
+
+    const allSkillsHtml = burstData.map(createBreakdownRow).join('');
+    const autoSkillsHtml = autoSkillsData.map(createBreakdownRow).join('');
+    const ultimateSkillsHtml = ultimateSkillData.map(createBreakdownRow).join('');
 
     let html = `<div class="burst-summary">`;
     html += `<div class="burst-header">`;
-    html += `<h3 class="burst-title">Full Rotation Burst</h3>`;
-    html += `<span class="burst-subtitle">Best-variant damage from all skills combined</span>`;
+    html += `<h3 class="burst-title">${isPvp ? 'PvP Match Estimate' : 'Boss Mode (90s) Estimate'}</h3>`;
+    html += `<span class="burst-subtitle">${isPvp ? '15s Setup Output vs Ultimate Payoff' : 'Tracked Passive DPS vs Ultimate Payoff'}</span>`;
     html += `</div>`;
 
-    // Per-skill breakdown
-    html += `<div class="burst-breakdown">${breakdownHtml}</div>`;
+    if (isPvp) {
+      html += `<div class="burst-subtitle" style="margin: 8px 0 4px 0;">Phase 1: The Setup (0-15s)</div>`;
+      html += `<div class="burst-breakdown">`;
+      // Start with Basic Attacks in Phase 1
+      const p1AttacksHpPct = targetHp > 0 && phase1Estimated !== null ? ` <span class="burst-skill-hp">${(phase1Estimated / targetHp * 100).toFixed(1)}%</span>` : '';
+      const p1AttacksEstText = phase1Estimated !== null ? formatNumber(phase1Estimated) : '-';
+      html += `<div class="burst-breakdown-row" style="opacity: 0.8; font-style: italic;">
+        <span class="burst-skill-name">Normal Attacks (~${setupDurationSec}s window)</span>
+        <span class="burst-skill-dmg">${p1AttacksEstText}${p1AttacksHpPct}</span>
+      </div>`;
+      html += autoSkillsHtml; // then the auto skills
+      
+      // Phase 1 Subtotal
+      const phase1TotalPct = targetHp > 0 && finalPhase1Est !== null ? ` <span class="burst-skill-hp" style="color: var(--text-primary); font-weight: bold;">${(finalPhase1Est / targetHp * 100).toFixed(1)}%</span>` : '';
+      const phase1TotalStr = finalPhase1Est !== null ? formatNumber(finalPhase1Est) : '-';
+      html += `<div class="burst-breakdown-row" style="margin-top: 8px; border-top: 1px solid var(--border-color); padding-top: 6px;">
+        <span class="burst-skill-name" style="font-weight: 600;">Phase 1 Pre-Ultimate Total</span>
+        <span class="burst-skill-dmg" style="font-weight: 600;">${phase1TotalStr}${phase1TotalPct}</span>
+      </div>`;
+      
+      html += `</div>`; // end phase 1 breakdown
+      
+      html += `<div class="burst-subtitle" style="margin: 16px 0 4px 0; color: #ffaa00;">Phase 2: The Ultimate Payoff (15s+)</div>`;
+      html += `<div class="burst-breakdown">${ultimateSkillsHtml}</div>`;
+    } else if (isBoss) {
+      // Boss Mode Breakdown
+      html += `<div class="burst-subtitle" style="margin: 8px 0 4px 0;">Auto-Combat (90s Passive DPS)</div>`;
+      html += `<div class="burst-breakdown">`;
+      const bossAutoEstText = finalPhase1Est !== null ? formatNumber(finalPhase1Est) : '-';
+      html += `<div class="burst-breakdown-row" style="opacity: 0.9;">
+        <span class="burst-skill-name">Basic Attacks + Auto-Skills combined</span>
+        <span class="burst-skill-dmg">${bossAutoEstText}</span>
+      </div>`;
+      html += `</div>`; // end phase 1 breakdown
+      html += `<div class="burst-subtitle" style="margin: 16px 0 4px 0; color: #ffaa00;">Active Usage (Ultimates executed: ${bossUltCount})</div>`;
+      html += `<div class="burst-breakdown">`;
+      const ultimateMultipliedHtml = ultimateSkillData.map(d => {
+        const mEst = d.totalEstimated !== null ? d.totalEstimated * bossUltCount : null;
+        const estText = mEst !== null ? formatNumber(mEst) : '-';
+        return `<div class="burst-breakdown-row">
+          <span class="burst-skill-name">${d.skillName} (x${bossUltCount} casts)</span>
+          <span class="burst-skill-dmg">${estText}</span>
+        </div>`;
+      }).join('');
+      html += ultimateMultipliedHtml;
+      html += `</div>`;
+    }
 
     // Normal burst total
     html += `<div class="burst-totals">`;
     html += `<div class="burst-row">`;
-    html += `<span class="burst-label">Normal</span>`;
-    html += `<span class="burst-values">Raw ${formatNumber(totalRaw)}${totalEstimated !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(totalEstimated)}` : ''}</span>`;
+    html += `<span class="burst-label">Combined (Phase 1 + 2)</span>`;
+    const finalRaw = combinedRaw;
+    const finalEst = combinedEstimated;
+    html += `<span class="burst-values">Raw ${formatNumber(finalRaw)}${finalEst !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(finalEst)}` : ''}</span>`;
     html += `</div>`;
 
     // Crit burst total
-    html += `<div class="burst-row crit-accent">`;
-    html += `<span class="burst-label">All-Crit (${(critMult * 100).toFixed(0)}%)</span>`;
-    html += `<span class="burst-values burst-crit-val">Raw ${formatNumber(totalCritRaw)}${totalCritEstimated !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(totalCritEstimated)}` : ''}</span>`;
-    html += `</div>`;
+    if (isBoss) {
+      const finalCritRaw = combinedRaw * critMult;
+      const finalCritEst = combinedEstimated !== null ? combinedEstimated * critMult : null;
+      html += `<div class="burst-row crit-accent">`;
+      html += `<span class="burst-label">All-Crit (${(critMult * 100).toFixed(0)}%)</span>`;
+      html += `<span class="burst-values burst-crit-val">Raw ${formatNumber(finalCritRaw)}${finalCritEst !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(finalCritEst)}` : ''}</span>`;
+      html += `</div>`;
+    }
     html += `</div>`;
 
     // HP% Impact bars
-    if (hpPercentNormal !== null) {
-      const impactNormal = getImpactLabel(hpPercentNormal);
+    const currentHpPercent = combinedPct;
+    if (isPvp && currentHpPercent !== null) {
+      const impactNormal = getImpactLabel(currentHpPercent);
       html += `<div class="burst-hp-section">`;
       html += `<div class="hp-impact-row">`;
-      html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impactNormal.cls}" style="width: ${Math.min(hpPercentNormal, 100)}%"></div></div>`;
-      html += `<span class="hp-impact-text">${hpPercentNormal.toFixed(1)}% of HP</span>`;
-      html += `<span class="impact-label ${impactNormal.cls}">${impactNormal.label}</span>`;
+      html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impactNormal.cls}" style="width: ${Math.min(currentHpPercent, 100)}%"></div></div>`;
+      html += `<span class="hp-impact-text">${currentHpPercent.toFixed(1)}% of HP</span>`;
+      html += `<span class="impact-label ${impactNormal.cls}">${isPvp && currentHpPercent >= 100 ? 'TURN 1 ELIMINATION' : impactNormal.label}</span>`;
       html += `</div>`;
-      if (hpPercentCrit !== null) {
+      
+      const finalCritEst = combinedEstimated !== null ? combinedEstimated * critMult : null;
+      const hpPercentCrit = (targetHp > 0 && finalCritEst !== null) ? (finalCritEst / targetHp * 100) : null;
+      
+      if (hpPercentCrit !== null && isPvp) {
         const impactCrit = getImpactLabel(hpPercentCrit);
         html += `<div class="hp-impact-row crit-accent">`;
         html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impactCrit.cls}" style="width: ${Math.min(hpPercentCrit, 100)}%"></div></div>`;
@@ -632,17 +799,16 @@ const bonusPresets = accountBonusesConfig.presets;
     }
 
     // Rotations to Kill
-    if (rotationsToKill !== null) {
-      const killText = rotationsToKill === 1 ? '1 rotation -- One-Shot Combo!' : `${rotationsToKill} rotations`;
-      const avgText = (rotationsToKillAvg && rotationsToKillAvg !== rotationsToKill)
-        ? ` <span class="sep-dot"></span> Avg w/ ${critRate}% crit: ${rotationsToKillAvg}`
-        : '';
-      html += `<div class="burst-kills">`;
-      const killSvg = rotationsToKill === 1
+    if (isPvp && combinedPct !== null) {
+      const canSoloKill = combinedPct >= 100;
+      const killSvg = canSoloKill
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/><path d="M9 10h.01M15 10h.01"/></svg>'
-        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M9.5 6.5L21 18v3h-3L6.5 9.5"/><path d="M11 5L5 11"/><path d="M8 8L4 4"/><path d="M5 3L3 5"/></svg>';
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+      const killText = canSoloKill ? 'Solo Kill Achievable' : 'Requires Team Follow-up';
+      
+      html += `<div class="burst-kills">`;
       html += `<span class="kills-icon">${killSvg}</span>`;
-      html += `<span class="kills-text">${killText}${avgText}</span>`;
+      html += `<span class="kills-text ${canSoloKill ? 'impact-lethal' : 'impact-light'}" style="margin-left: 6px;">${killText}</span>`;
       html += `</div>`;
     }
 
@@ -721,6 +887,8 @@ const bonusPresets = accountBonusesConfig.presets;
             <div class="hero-stats-grid">
               <div class="hero-stat"><h4>ATK</h4><span>${formatNumber(hero.stats.atk)}</span></div>
               <div class="hero-stat"><h4>HP</h4><span>${formatNumber(hero.stats.hp)}</span></div>
+              <div class="hero-stat"><h4>Base Attack Rate</h4><span>${hero.baseAttackRate !== undefined ? hero.baseAttackRate.toFixed(1) : ''}</span></div>
+              <div class="hero-stat"><h4>Boss Ultimates Per 90s</h4><span>${hero.bossUltimatesPer90s}</span></div>
               <div class="hero-stat"><h4>Armor</h4><span>${formatNumber(hero.stats.armor)}</span></div>
               <div class="hero-stat"><h4>M-Res</h4><span>${formatNumber(hero.stats.magicRes)}</span></div>
               <div class="hero-stat"><h4>Crit Rate</h4><span>${Number(hero.stats.critRate || 0)}%</span></div>
@@ -764,12 +932,12 @@ const bonusPresets = accountBonusesConfig.presets;
           </div>
         </div>
 
+        ${burstSummaryHtml}
+
         <div class="skills-stack">
           ${skillsHtml}
           ${relicHtml}
         </div>
-
-        ${burstSummaryHtml}
       </div>
     `;
   }
@@ -843,6 +1011,7 @@ const bonusPresets = accountBonusesConfig.presets;
 
   document.getElementById("hero-a-select").addEventListener("change", renderPage);
   document.getElementById("hero-b-select").addEventListener("change", renderPage);
+  document.getElementById("match-type")?.addEventListener("change", renderPage);
   modelSelect.addEventListener("change", renderPage);
   kPresetSelect.addEventListener("change", renderPage);
   kCustomInput.addEventListener("input", renderPage);

@@ -2,8 +2,9 @@
   "id": "fengyi",
   "name": "Fengyi",
   "image": "/heroes/fengyi.webp",
-  "faction": "Hearts",
-  "role": "Hefty",
+    "release": true,
+  "faction": "Clubs",
+  "role": "Arcane",
   "class": "Mage",
   "rarity": "Legendary",
   "description": "Fengyi, goddess of winds, rules ober their flow, speed, and direction, especially the gentle and lively ones.",
@@ -57,7 +58,8 @@
         "level3": "ATK bonus increases to 320%.",
         "level4": "Restores 30 Energy for each whirlwind she has when casting a skill."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -107,5 +109,7 @@
     "AREA_DAMAGE_DEALER",
     "ATK_UP",
     "ENERGY_RESTORE"
-  ]
+  ],
+  "baseAttackRate": 0.932,
+  "bossUltimatesPer90s": 5
 }

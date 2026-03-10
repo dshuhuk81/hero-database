@@ -13,6 +13,7 @@ interface Props {
   type?: string; // z.B. "Basic ATK", "Ultimate", "Passive", "Relic"
   stars?: number; // 0-5
   showGrid?: boolean; // Grid anzeigen?
+  isUltimate?: boolean; // Flag for ultimate skill
 }
 
 const { 
@@ -22,7 +23,8 @@ const {
   upgrades, 
   type = "Skill", 
   stars = 0,
-  showGrid = false 
+  showGrid = false,
+  isUltimate = false
 } = Astro.props;
 ---
 
@@ -37,7 +39,10 @@ const {
       <div class="skill-info">
         <h3 class="skill-name">{name}</h3>
         
-        {type && <span class="skill-type">{type}</span>}
+        <div class="skill-badges">
+          {type && <span class="skill-type">{type}</span>}
+          {isUltimate && <span class="skill-ultimate-badge">Ultimate</span>}
+        </div>
         
       </div>
     </div>
@@ -133,6 +138,13 @@ const {
     line-height: 1.2;
   }
 
+  .skill-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .skill-type {
     display: inline-block;
     padding: 0.3rem 0.75rem;
@@ -145,50 +157,22 @@ const {
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  /* STARS */
-  .skill-stars {
-    display: flex;
-    gap: 0.25rem;
-    align-items: center;
-  }
-
-  .star-icon {
-    width: 18px;
-    height: 18px;
-    fill: #d4af37;
-    filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.6));
-  }
-
-  /* ===============================
-     GRID (rechts oben)
-     =============================== */
-  .skill-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    padding: 4px;
-    background: rgba(0, 0, 0, 0.3);
+  .skill-ultimate-badge {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #1a1a1a;
     border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .grid-row {
-    display: flex;
-    gap: 3px;
-  }
-
-  .grid-row span {
-    width: 16px;
-    height: 16px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 2px;
-  }
-
-  .grid-row span.active {
-    background: #4a9eff;
-    box-shadow: 0 0 6px rgba(74, 158, 255, 0.6);
-    border-color: #4a9eff;
+    font-size: 0.67rem;
+    font-weight: 700;
+    width: fit-content;
+    border: 1px solid rgba(245, 158, 11, 0.8);
+    box-shadow: 
+      0 0 12px rgba(251, 191, 36, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   /* ===============================

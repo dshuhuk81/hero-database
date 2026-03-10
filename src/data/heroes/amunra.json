@@ -2,6 +2,7 @@
   "id": "amunra",
   "name": "Amunra",
   "image": "/heroes/amunra.webp",
+  "release": true,
   "faction": "Starglint",
   "role": "Arcane",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level3": "Increases the DMG of solar blades to 140% ATK.",
         "level4": "Reduces the attack interval of solar blades to 0.7s."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -112,5 +114,7 @@
     "DODGE_BUFF",
     "ENERGY_RESTORE",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 1.401,
+  "bossUltimatesPer90s": 5
 }

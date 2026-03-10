@@ -2,6 +2,7 @@
   "id": "sagittarius",
   "name": "Sagitarius",
   "image": "/heroes/sagittarius.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Nimble",
   "class": "Archer",
@@ -57,7 +58,8 @@
         "level3": "Increases ATK by 20%. (Unlocks at Lv.121)",
         "level4": "Duration extends to 10s. (Unlocks at Lv.161)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -84,5 +86,7 @@
     "REMOVES_ARMOR",
     "ATK_UP",
     "LIFE_STEAL_UP"
-  ]
+  ],
+  "baseAttackRate": 0.788,
+  "bossUltimatesPer90s": 5
 }

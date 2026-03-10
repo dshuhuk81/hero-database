@@ -2,6 +2,7 @@
   "id": "kraken",
   "name": "Kraken",
   "image": "/heroes/kraken.webp",
+  "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Warrior",
@@ -57,7 +58,8 @@
         "level3": "",
         "level4": ""
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     }
   ],
   "synergies": [

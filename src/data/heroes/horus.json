@@ -2,6 +2,7 @@
   "id": "horus",
   "name": "Horus",
   "image": "/heroes/horus.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Arcane",
   "class": "Assassin",
@@ -57,7 +58,8 @@
         "level3": "When attacked in the [Revenge] state, Horus has a 30% chance to cast Frenzied Blade. This effect triggers once every 8s. (Unlock at Relic Lv.20)",
         "level4": "When attacked in the [Revenge] state, Horus has a 30% chance to cast Frenzied Blade. This effect triggers once every 4s. (Unlock at Relic Lv.30)"
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -110,5 +112,7 @@
     "DMG_RED",
     "ENERGY_RESTORE",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 0.937,
+  "bossUltimatesPer90s": 6
 }

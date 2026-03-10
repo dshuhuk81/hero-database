@@ -2,6 +2,7 @@
   "id": "medusa",
   "name": "Medusa",
   "image": "/heroes/medusa.webp",
+  "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Archer",
@@ -57,7 +58,8 @@
         "level3": "If the target has Serpent Kiss, it deals an additional 10% DMG.",
         "level4": "Increases DMG dealt to 360% of ATK."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -108,5 +110,7 @@
     "REDUCES_ATTRIBUTES",
     "AREA_DAMAGE_DEALER",
     "ATK_SPEED"
-  ]
+  ],
+  "baseAttackRate": 1.163,
+  "bossUltimatesPer90s": 5
 }

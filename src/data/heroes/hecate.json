@@ -2,6 +2,7 @@
   "id": "hecate",
   "name": "Hecate",
   "image": "/heroes/hecate.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Mage",
@@ -59,7 +60,8 @@
         "level4": "Plunders 4% of the max HP and ATK. (Unlock at Relic Lv.30)"
       },
       "image": "/skills/hecate_skill_1.webp",
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -124,5 +126,7 @@
     "AREA_DAMAGE_DEALER",
     "ENERGY_RESTORE",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 1.749,
+  "bossUltimatesPer90s": 4
 }

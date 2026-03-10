@@ -2,6 +2,7 @@
   "id": "yuelao",
   "name": "Yuelao",
   "image": "/heroes/yuelao.webp",
+  "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Support",
@@ -58,7 +59,8 @@
         "level3": "Allies healed gain 20% increased CRIT Rate for 5s. This effect cannot stack on the same target.",
         "level4": "It now heals 8 times."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -110,5 +112,7 @@
     "SHIELD_TEAM",
     "ATK_UP",
     "HEAL"
-  ]
+  ],
+  "baseAttackRate": 0.504,
+  "bossUltimatesPer90s": 4
 }

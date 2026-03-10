@@ -8,9 +8,11 @@ import Filter from "../components/filter.astro";  // NEU
 
 
 /* Alphabetisch nach Name sortieren */
-const sortedHeroes = [...heroes].sort((a, b) =>
-  a.name.localeCompare(b.name, "en", { sensitivity: "base" })
-);
+
+// Only show released heroes
+const sortedHeroes = [...heroes]
+  .filter(hero => hero.release !== false)
+  .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
 
 
 /* No need for escapeRegExp anymore */
@@ -30,7 +32,20 @@ const sortedHeroes = [...heroes].sort((a, b) =>
 
 <!-- RESULTS -->
 <div class="resultcontent">
-  <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
+  <div class="sort-bar">
+    <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
+    <div class="sort-controls">
+      <label for="sortSelect" class="sort-label">Sort by</label>
+      <select id="sortSelect" class="sort-select">
+        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-desc">Name (Z-A)</option>
+        <option value="rating-desc">Rating (best first)</option>
+        <option value="rating-asc">Rating (worst first)</option>
+        <option value="class">Class</option>
+        <option value="rarity-desc">Rarity (highest first)</option>
+      </select>
+    </div>
+  </div>
 
     <div class="grid" id="heroGrid">
     {sortedHeroes.map(hero => (
@@ -42,6 +57,7 @@ const sortedHeroes = [...heroes].sort((a, b) =>
           data-faction={hero.faction.toLowerCase()}
           data-rarity={hero.rarity.toLowerCase()}
           data-tags={hero.synergies?.join("|").toLowerCase() || ""}
+          data-rating={hero.rating?.toLowerCase() || "n/a"}
       >
         <div class="icon-stack">
           <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
@@ -117,10 +133,51 @@ body {
   padding: 0 16px;
 }
 
+.sort-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .hero-counter {
-  margin-bottom: 24px;
-  margin-top: 16px;
+  margin: 0;
   text-align: center;
+}
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-label {
+  font-size: 0.8rem;
+  color: rgba(230, 230, 235, 0.55);
+  white-space: nowrap;
+}
+
+.sort-select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e6e6eb;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.sort-select:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #facc15;
 }
 .grid {
   display: grid;
@@ -235,6 +292,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
   const resetButton = document.getElementById("resetFilters");
   const heroCounter = document.getElementById("heroCounter");
+  const heroGrid = document.getElementById("heroGrid") as HTMLElement;
+  const sortSelect = document.getElementById("sortSelect") as HTMLSelectElement;
   const roleChips = document.querySelectorAll(".role-chip");
   const factionChips = document.querySelectorAll(".faction-chip");
   const heroCards = document.querySelectorAll(".hero-wrapper");
@@ -242,9 +301,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const rarityChips = document.querySelectorAll(".rarity-chip");
   const tagChips = document.querySelectorAll(".tag-chip");
 
-  let activeTag = null; // single select    
-  
-  let activeRoles = new Set();  
+  const RATING_ORDER = { sss: 7, ss: 6, s: 5, a: 4, b: 3, c: 2, d: 1, "n/a": 0 };
+  const RARITY_ORDER = { legendary: 3, epic: 2, common: 1 };
+
+  let activeTag = null; // single select
+
+  let activeRoles = new Set();
   let activeClasses = new Set();
   let activeRarities = new Set();
   let activeFactions = new Set();
@@ -360,6 +422,47 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+  function sortHeroes() {
+    const value = sortSelect.value;
+    const cards = Array.from(heroGrid.querySelectorAll(".hero-wrapper")) as HTMLElement[];
+
+    const ratingVal = (el: HTMLElement) => RATING_ORDER[el.dataset.rating as keyof typeof RATING_ORDER] ?? 0;
+    const rarityVal = (el: HTMLElement) => RARITY_ORDER[el.dataset.rarity as keyof typeof RARITY_ORDER] ?? 0;
+    const nameVal = (el: HTMLElement) => el.dataset.name || "";
+
+    cards.sort((a, b) => {
+      switch (value) {
+        case "name-asc":
+          return nameVal(a).localeCompare(nameVal(b));
+        case "name-desc":
+          return nameVal(b).localeCompare(nameVal(a));
+        case "rating-desc": {
+          const diff = ratingVal(b) - ratingVal(a);
+          return diff !== 0 ? diff : nameVal(a).localeCompare(nameVal(b));
+        }
+        case "rating-asc": {
+          const diff = ratingVal(a) - ratingVal(b);
+          return diff !== 0 ? diff : nameVal(a).localeCompare(nameVal(b));
+        }
+        case "class":
+          return (a.dataset.class || "").localeCompare(b.dataset.class || "");
+        case "rarity-desc": {
+          const diff = rarityVal(b) - rarityVal(a);
+          return diff !== 0 ? diff : nameVal(a).localeCompare(nameVal(b));
+        }
+        default:
+          return 0;
+      }
+    });
+
+    cards.forEach(card => heroGrid.appendChild(card));
+  }
+
+  sortSelect.addEventListener("change", () => {
+    sortHeroes();
+    applyFilters();
+  });
+
   resetButton.addEventListener("click", () => {
     searchInput.value = "";
     activeClasses.clear();
@@ -367,10 +470,12 @@ document.addEventListener("DOMContentLoaded", () => {
     activeRoles.clear();
     activeFactions.clear();
     document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
-    applyFilters();
     document.querySelectorAll(".role-chip.active").forEach(c => c.classList.remove("active"));
     activeTag = null;
     tagChips.forEach(x => x.classList.remove("active"));
+    sortSelect.value = "name-asc";
+    sortHeroes();
+    applyFilters();
   });
 
   applyFilters();

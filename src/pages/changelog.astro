@@ -1,18 +1,10 @@
 ---
+export const prerender = true;
 // src/pages/changelog.astro
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import changelogEntries from "../data/changelog.json";
-
-// Helper für Datums-Formatierung
-function formatDate(dateStr: string) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('de-DE', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
-}
+import { formatDate } from "../utils/formatDate";
 ---
 
 <html lang="de">

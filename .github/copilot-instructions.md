@@ -1,7 +1,7 @@
 # Hero Database – Copilot Instructions
 
 ## Project Overview
-Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 89 heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (static site generator) and **Node.js** scripts for data processing.
+Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 89 heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
 
 ## General To-Dos
 Before writing any code, describe your approach and wait for approval.
@@ -78,6 +78,9 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - **Multi-Hit Detection**: Extracts hit counts from skill text (e.g. "striking 3 times") and shows per-hit + total rows
   - **ATK% Extraction**: Parses normal and conditional damage variants from skill descriptions and upgrade text
   - **Current HP Tick Simulation**: Geometric decay simulation for %CurrentHP DoT skills over configurable duration
+- **Match Types & Timelines**:
+  - **PvP / Quick Match (30s)**: Splits math into Phase 1 (~15s setup of normal attacks + auto-skills) and Phase 2 (Ultimate execution).
+  - **Boss / Sustained (90s)**: Leverages real-world imported tracking data. Phase 1 scales `baseAttackRate` over 90s (which intrinsically includes auto-skills, preventing double-dipping). Phase 2 multiplies the Ultimate payload by `bossUltimatesPer90s`.
 - **Mitigation Models**:
   - **Model A** (default): `DR = Armor / (Armor + K)` with K presets (Balanced=52000, Low=100000, High=28600, Custom)
   - **Model B**: `Mitigated = Raw * (ATK / (ATK + Armor * C))` with configurable C factor
@@ -104,7 +107,7 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - `computeEHP()` – Effective HP calculation for physical and magical
   - `getCritMultiplier()` – Base 1.5x + hero's critDmgBonus
 
-#### User Heroes & Sharing System (`src/pages/myheroes.astro`, `src/pages/shared-heroes/[id].astro`, `api-server.js`)
+#### User Heroes & Sharing System (`src/pages/myheroes.astro`, `src/pages/shared-heroes/[id].astro`)
 - **Authentication**: Logged-in users can select and organize heroes in "My Heroes" page
 - **User Heroes Table** (`user_heroes` in Supabase):
   - `user_id` (references auth.users)
@@ -116,6 +119,9 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - `user_id` (setup creator)
   - `heroes_data` (JSON array with hero_id + evolution for each selected hero)
   - `created_at` (timestamp)
+- **Fight Outcomes** (`fight_outcomes` in Supabase):
+  - `user_id`, `team_player`, `team_enemy`, `bp_player`, `bp_enemy`
+  - `winner` ("player" or "enemy"), `predicted_win_rate`, `mode`, `notes`
 - **Evolution Levels** (1-15 mapping):
   - 1: Elite, 2: Elite+, 3: Epic, 4: Epic+, 5: Legendary
   - 6: Legendary+, 7: Exalted, 8: Exalted+, 9: Mythic
@@ -126,13 +132,19 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - Faction grouping with icons
   - Share button generates public link automatically
   - Non-selected heroes displayed at 50% opacity
-- **API Endpoints**:
+- **API Endpoints** (Astro SSR routes in `src/pages/api/`):
+  - `POST /api/auth/login` – Login with email/password, sets HTTP-only cookie
+  - `POST /api/auth/register` – Create account with email/password
+  - `POST /api/auth/logout` – Clear auth cookie
+  - `GET /api/health/auth` – Health check for Supabase connectivity
   - `POST /api/user/heroes/share` (auth required) – Create shareable setup link
   - `GET /api/shared-heroes/:shareId` (public) – Retrieve shared setup data
   - `POST /api/user/heroes` (auth required) – Add hero to user collection
   - `PATCH /api/user/heroes/:heroId` (auth required) – Update hero evolution or favorite status
   - `DELETE /api/user/heroes/:heroId` (auth required) – Remove hero from collection
   - `GET /api/user/heroes` (auth required) – Fetch all user's selected heroes
+  - `GET /api/user/battles` (auth required) – Fetch fight history with pagination
+  - `POST /api/user/battles` (auth required) – Submit fight outcome
 
 ## File Conventions
 
@@ -158,6 +170,8 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
   "level": 300,
+  "baseAttackRate": 1.401,
+  "bossUltimatesPer90s": 5,
   "stats": { /* 26 stat fields: hp, atk, armor, magicRes, dodgeRate, critRate, cooldownHaste, atkSpdBonus, etc. */ },
   "skills": [
     {
@@ -223,6 +237,12 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 3. Assign tags to heroes via UI
 4. Tags persist to `src/data/tags.json` and per-hero JSON files
 
+### Import Boss Damage Tracking Data
+1. Export Google Sheet to CSV (Publish to web)
+2. Run `node scripts/import-attack-rates.cjs`
+3. Automatically maps `baseAttackRate` and `bossUltimatesPer90s` directly into hero JSON files
+4. Powers the Phase 1 & Phase 2 scaling in the Calculator's Boss mode
+
 ### Use My Heroes Feature
 1. **Setup**: User must be logged in via `/login` or `/register`
 2. **Select Heroes**: Navigate to `/myheroes` → click hero cards to select/deselect
@@ -250,19 +270,22 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 
 - **Class-Based Weighting**: Different hero classes (Tank, DPS, Support) score differently using `CLASS_WEIGHTS` multipliers (not separate tiers)
 - **Manual vs Auto Tagging**: Synergies are manually assigned in JSON; skill quality is auto-detected
-- **Static Generation**: Astro builds at deploy time; runtime score changes require rebuild
+- **Hybrid Rendering**: Most pages are prerendered (`export const prerender = true`); API routes and dynamic pages use SSR via a single Vercel serverless function
 - **Divine V Only**: All stats represent max-level hero (no scaling by player level)
 
 ## Integration Points
 
 - **Astro Pages** consume `all_heroes_db.json` and ratings at build time
+- **Astro API Routes** (`src/pages/api/`) handle auth, user data, and battles via Supabase (SSR, not prerendered)
+- **Auth Helper** (`src/lib/auth.ts`) provides `requireUser(request)` and `jsonResponse()` for all protected API routes
+- **Supabase Client** (`src/lib/supabase.js`) exports `supabaseClient` (anon) and `supabaseAdmin` (service role)
 - **Scripts** modify hero JSON files directly (no database)
 - **Tag Manager** is standalone Express app; edits tags.json and hero files
 - **Hero Adapter** resolves per-hero stats against class base-stats (heroAdapter.js)
 - **Skill Value Comparator** (`calculator.astro`) – Client-side skill damage calculator; parses skill descriptions at runtime, no server dependency
-- **My Heroes Page** (`myheroes.astro`) – Authenticated feature; interacts with API server for user-specific data
+- **My Heroes Page** (`myheroes.astro`) – Authenticated feature; interacts with API routes for user-specific data
 - **Shared Heroes Page** (`shared-heroes/[id].astro`) – Public-facing; fetches from API endpoint, no auth required
-- **API Server** (`api-server.js`) – Handles all user authentication, hero selection, and share management via Supabase
+- **Battle Sim Page** (`battle-sim.astro`) – PvP battle simulator with fight outcome submission to `/api/user/battles`
 
 ## Development Tools
 
@@ -293,10 +316,18 @@ These are one-off debugging tools in root directory (not part of automated build
   - Verify tag is defined in `TAG_CATEGORIES` object in synergyTags.js
   - Check hero's `.synergies` array contains the tag name
 
-- **Build Fails**: 
+- **Build Fails**:
   - Check all_heroes_db.json JSON syntax with online validator
   - Run validator scripts first: `node validate-bosses.js`
   - Ensure all hero files are valid JSON
+  - Check that all hero JSON `relic.upgrades` keys are correctly spelled (not `uogrades`, etc.)
+
+- **Deployment**:
+  - Deploy command: `npm run build && npx vercel deploy --prebuilt --prod --yes`
+  - Vercel Hobby plan limits to 12 serverless functions; all API routes use Astro SSR (single function)
+  - New pages must include `export const prerender = true` unless they need SSR
+  - API routes in `src/pages/api/` must NOT have `prerender = true`
+  - Do NOT use global ISR config in astro.config.mjs (breaks POST requests and auth)
 
 - **Script Fails**: 
   - Ensure file paths use `src/data/` relative to workspace root
@@ -311,8 +342,14 @@ These are one-off debugging tools in root directory (not part of automated build
 
 - **My Heroes Feature Issues**:
   - **Share button not showing**: User must be logged in (check `authToken` in localStorage)
-  - **"Error: Failed to create share link" on click**: Check API server logs for detailed error
+  - **"Error: Failed to create share link" on click**: Check Vercel function logs (`vercel logs`)
   - **Shared link returns 404**: Verify `shared_hero_configs` table exists in Supabase with correct schema
   - **Shared heroes not showing**: Confirm RLS policies are set correctly (SELECT policy should allow `true`)
   - **Evolution not updating**: Ensure `PATCH /api/user/heroes/:heroId` includes `evolution` field (1-15 range)
   - **Heroes missing from user's collection**: Check if `user_id` in `user_heroes` table matches `auth.uid()` from token
+
+- **API Route Issues**:
+  - **401 with non-JSON response**: Supabase `getUser()` may throw `AuthApiError` instead of returning error object; `src/lib/auth.ts` has try/catch for this
+  - **FUNCTION_INVOCATION_FAILED**: Check Vercel function logs; usually an unhandled exception in the route handler
+  - **API returns 404**: Ensure the route file exists in `src/pages/api/` and does NOT have `export const prerender = true`
+  - **API returns HTML instead of JSON**: Route may be falling through to Astro's page renderer; ensure correct HTTP method exports (GET, POST, etc.)

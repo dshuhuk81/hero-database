@@ -2,6 +2,7 @@
   "id": "artemis",
   "name": "Artemis",
   "image": "/heroes/artemis.webp",
+    "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Archer",
@@ -57,7 +58,8 @@
         "level3": "Extends the duration to 10s.",
         "level4": "Increases DMG per shot to 220% of ATK."
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -108,5 +110,7 @@
     "REDUCES_ATTRIBUTES",
     "DODGE_BUFF",
     "HIT_AVOID"
-  ]
+  ],
+  "baseAttackRate": 1.574,
+  "bossUltimatesPer90s": 5
 }

@@ -2,6 +2,7 @@
   "id": "momus",
   "name": "Momus",
   "image": "/heroes/momus.webp",
+    "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Tank",
@@ -58,7 +59,8 @@
         "level3": "Shield strength increases to 75% ATK. (Unlock at Relic Lv.20)",
         "level4": "Shield strength increases to 100% ATK. (Unlock at Relic Lv.30)"
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -113,5 +115,7 @@
     "HEAL",
     "HIT_AVOID",
     "SHIELD"
-  ]
+  ],
+  "baseAttackRate": 0.519,
+  "bossUltimatesPer90s": 4
 }

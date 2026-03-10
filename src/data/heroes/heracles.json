@@ -2,6 +2,7 @@
   "id": "heracles",
   "name": "Heracles",
   "image": "/heroes/heracles.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Nimble",
   "class": "Warrior",
@@ -58,7 +59,8 @@
         "level3": "Deals 125% of the recorded DMG.",
         "level4": "Grants a shield equal to 50% of the recorded DMG when cast. (Unlocks at Lv.221)"
       },
-      "damageType": "True"
+      "damageType": "True",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -118,5 +120,7 @@
       "autor": "GPH",
       "videoId": "HYoEDucygRY"
     }
-  ]
+  ],
+  "baseAttackRate": 0.364,
+  "bossUltimatesPer90s": 3
 }

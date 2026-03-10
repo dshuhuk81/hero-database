@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
 import allHeroesData from '../data/all_heroes_db.json';
@@ -324,8 +325,8 @@ import allHeroesData from '../data/all_heroes_db.json';
         let userHeroes = [];
         const API_BASE = '';
         
-        // allHeroes ist ein Objekt mit Hero-IDs als Keys, konvertiere zu Array
-        const allHeroesList = Object.values(allHeroes);
+        // allHeroes ist ein Objekt mit Hero-IDs als Keys, konvertiere zu Array und filtere unreleased
+        const allHeroesList = Object.values(allHeroes).filter(hero => hero.release !== false);
 
         // Evolution Levels Mapping (1-15)
         const EVOLUTION_LEVELS = {

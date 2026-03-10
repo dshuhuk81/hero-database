@@ -2,6 +2,7 @@
   "id": "virgo",
   "name": "Virgo",
   "image": "/heroes/virgo.webp",
+  "release": true,
   "faction": "Spades",
   "role": "Nimble",
   "class": "Archer",
@@ -57,7 +58,8 @@
         "level3": "Increases the DMG dealt per sec by 75% when the shield is active.",
         "level4": ""
       },
-      "damageType": "Physical"
+      "damageType": "Physical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",

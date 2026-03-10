@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
 import SkillCard from "../../components/hero/SkillCard.astro";
 import Footer from "../../components/Footer.astro";  
@@ -595,6 +596,7 @@ const STAT_LABELS = {
               type={`Skill ${index + 1}`}
               stars={3}
               showGrid={true}
+              isUltimate={skill.isUltimate || false}
             />
           ))}
 

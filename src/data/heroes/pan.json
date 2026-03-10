@@ -2,6 +2,7 @@
   "id": "pan",
   "name": "Pan",
   "image": "/heroes/pan.webp",
+    "release": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Support",
@@ -57,7 +58,8 @@
         "level3": "Increases DMG per hit to 60% ATK.",
         "level4": "When cast, it deals 10% more DMG for every 100 Energy the target has."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -96,7 +98,7 @@
   "relic": {
     "name": "The Goat's Bond",
     "description": "Any debuff applied by Pan deals 60% of his ATK as DMG per sec to its bearer.",
-   "damageType": "Magical",
+    "damageType": "Magical",
     "upgrades": {
       "level2": "Any debuff applied by Pan deals 80% of his ATK as DMG per sec to the bearer.",
       "level3": "For each debuff on the target, DMG dealt to that target is increased by 50% stacking up to 4 times.",
@@ -108,5 +110,7 @@
     "CROWD_CONTROL",
     "ENERGY_DRAIN",
     "ENERGY_RESTORE"
-  ]
+  ],
+  "baseAttackRate": 0.543,
+  "bossUltimatesPer90s": 5
 }

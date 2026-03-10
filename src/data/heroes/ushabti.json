@@ -2,6 +2,7 @@
   "id": "ushabti",
   "name": "Ushabti",
   "image": "/heroes/ushabti.webp",
+  "release": true,
   "faction": "Diamonds",
   "role": "Arcane",
   "class": "Mage",
@@ -57,7 +58,8 @@
         "level3": "",
         "level4": ""
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     }
   ],
   "synergies": [

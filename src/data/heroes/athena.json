@@ -2,6 +2,7 @@
   "id": "athena",
   "name": "Athena",
   "image": "/heroes/athena.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Hefty",
   "class": "Support",
@@ -57,7 +58,8 @@
         "level3": "Increases the shield strength to 240%.",
         "level4": "On the second cast, all allies within the aura gain 60% ATK SPD."
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     },
     {
       "id": "skill_2",
@@ -113,5 +115,7 @@
     "DMG_RED",
     "ENERGY_RESTORE",
     "GAIN_ARMOR"
-  ]
+  ],
+  "baseAttackRate": 0.787,
+  "bossUltimatesPer90s": 5
 }

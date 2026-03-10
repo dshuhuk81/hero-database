@@ -2,6 +2,7 @@
   "id": "canopicjar",
   "name": "Canopic Jar",
   "image": "/heroes/canopicjar.webp",
+    "release": true,
   "faction": "Diamonds",
   "role": "Nimble",
   "class": "Warrior",
@@ -57,7 +58,8 @@
         "level3": "",
         "level4": ""
       },
-      "damageType": ""
+      "damageType": "",
+      "isUltimate": true
     }
   ],
   "synergies": [

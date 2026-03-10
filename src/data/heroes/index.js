@@ -39,6 +39,8 @@ const RANKABLE_STATS = [
   "controlBonus",
   "normalSkillPWR",
   "ultimatePWR",
+  "baseAttackRate",
+  "bossUltimatesPer90s",
 ];
 
 /* ============================
@@ -48,16 +50,13 @@ function adaptHero(raw) {
   return {
     id: raw.id,
     name: raw.name,
-
     image: raw.image ?? `/heroes/${raw.id}.webp`,
-
+    release: raw.release ?? true,
     faction: raw.faction,
     role: raw.role,
     class: raw.class,
     rarity: raw.rarity,
-
     description: raw.description ?? "",
-
     ratings: {
       overall: raw.ratings?.overall ?? null,
       grimSurge: raw.ratings?.grimSurge ?? null,
@@ -66,22 +65,19 @@ function adaptHero(raw) {
       pvp: raw.ratings?.pvp ?? null,
       pve: raw.ratings?.pve ?? null,
     },
-
     // Backward-Compat
     rating: raw.ratings?.overall ?? null,
-
     // ✅ Stats 1:1 aus Hero-JSON (Divine 5 raw in-game stats, not normalized)
     stats: raw.stats ?? {},
-
+    // Add baseAttackRate and bossUltimatesPer90s for frontend use
+    baseAttackRate: raw.baseAttackRate,
+    bossUltimatesPer90s: raw.bossUltimatesPer90s,
     skills: raw.skills ?? [],
     relic: raw.relic ?? null,
-
     // ✅ Synergies (manual tag assignment)
     synergies: raw.synergies ?? [],
-
     // ✅ Content Creator Guides
     "content-creator": raw["content-creator"] ?? [],
-
     recommendedRelicLevel: raw.recommendedRelicLevel,
     level: raw.level,
     evolution: raw.evolution,
