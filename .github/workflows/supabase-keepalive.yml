@@ -12,10 +12,10 @@ jobs:
       - name: Ping Supabase
         run: |
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/heroes?select=count" \
+            "${{ secrets.SUPABASE_URL }}/auth/v1/health" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}")
           echo "Supabase ping status: $STATUS"
-          if [ "$STATUS" != "200" ] && [ "$STATUS" != "406" ]; then
+          if [ "$STATUS" != "200" ]; then
             echo "Unexpected status code: $STATUS"
             exit 1
           fi
