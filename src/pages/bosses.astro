@@ -7,7 +7,7 @@ import Footer from "../components/Footer.astro";
 import "../styles/compositions.css";
 import { keywordTagsForHero } from "../utils/heroTags.js";
 import { getPageUpdate } from "../utils/getPageUpdate";
-
+import Analytics from '@vercel/analytics/astro';
 const pageUpdate = getPageUpdate("bosses");
 
 // Player-friendly mechanic tag labels
@@ -42,6 +42,8 @@ const MECHANIC_LABELS = {
   "MULTI_PART_BOSS": { label: "Multi-Part Boss", tip: "Multiple body parts with independent HP pools" },
   "HEAL_REDUCTION": { label: "Heal Reduction", tip: "Reduces healing received by your heroes" },
 };
+
+
 
 // Mechanic counter mapping: boss mechanicTag → hero capabilities
 const MECHANIC_COUNTERS = {
