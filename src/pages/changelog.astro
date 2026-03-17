@@ -4,7 +4,20 @@ export const prerender = true;
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
 import changelogEntries from "../data/changelog.json";
+
 import { formatDate } from "../utils/formatDate";
+import Analytics from '@vercel/analytics/astro';
+
+// Helper für Datums-Formatierung
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('de-DE', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+
 ---
 
 <html lang="de">
@@ -12,6 +25,7 @@ import { formatDate } from "../utils/formatDate";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Changelog - Motto Immortal Database</title>
+    <Analytics />
   </head>
   <body>
     <Sidebar />

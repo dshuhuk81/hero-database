@@ -7,6 +7,7 @@ import { computeScore, computeScoreForScenario } from "../utils/rankingScore.js"
 import { synergyPotentialForHero } from "../utils/synergyTags.js";
 import { rateHeroSkills } from "../utils/skillAnalyzer.js";
 import { getPageUpdate } from "../utils/getPageUpdate";
+import Analytics from '@vercel/analytics/astro';
 
 const pageUpdate = getPageUpdate("rankings");
 // Only show released heroes
@@ -66,6 +67,7 @@ const rows = await Promise.all(
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Rankings - Hero Database</title>
+    <Analytics />
   </head>
 
   <body data-default-sort="score">
