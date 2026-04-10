@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "B",
-    "pve": "A"
+    "pve": "C"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -115,5 +116,17 @@
     "DMG_RED"
   ],
   "baseAttackRate": 0.559,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "Times you out as enemy; useless as ally. No investment value.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

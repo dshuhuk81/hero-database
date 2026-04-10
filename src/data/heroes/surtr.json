@@ -9,12 +9,13 @@
   "rarity": "Legendary",
   "description": "Surtr, godess of desctruction and renewal, is the greatest Fiery Jotunn and the executor of Ragnarok.",
   "ratings": {
-    "overall": "B",
+    "overall": "D",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "S",
-    "pve": "A"
+    "forgottenLabyrinth": "",
+    "pvp": "D",
+    "pve": "D"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -111,5 +112,17 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.828,
-  "bossUltimatesPer90s": 3
+  "bossUltimatesPer90s": 3,
+  "coreMechanic": {
+    "summary": "Garbage multipliers and kit. Both CN and Excel agree completely: do not invest.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

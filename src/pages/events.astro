@@ -1,21 +1,21 @@
 ---
 export const prerender = true;
-import Footer from "../components/Footer.astro";
-import Sidebar from "../components/Sidebar.astro";
-import allHeroes from "../data/all_heroes_db.json";
-import eventsData from "../data/events.json";
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
 import "../styles/compositions.css";
 import "../styles/events.css";
+import "../styles/components.css";
 import { getPageUpdate } from "../utils/getPageUpdate";
+import allHeroes from "../data/all_heroes_db.json";
+import eventsData from "../data/events.json";
 
 const pageUpdate = getPageUpdate("events");
 
-// Helper function to get hero data
 function getHero(heroId: string) {
   return allHeroes[heroId as keyof typeof allHeroes];
 }
 
-function factionIcon(faction: string) {
+function campaignFactionIcon(faction: string) {
   return `/icons/factions/${String(faction || "").toLowerCase()}.webp`;
 }
 
@@ -32,185 +32,150 @@ const campaigns = eventsData.campaigns.map((campaign) => {
     })),
   };
 });
-
-const activeCampaign = campaigns[0];
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events - Motto Immortal</title>
-  <link rel="stylesheet" href="../styles/compositions.css">
-  <link rel="stylesheet" href="../styles/events.css">
-</head>
-<body>
-  <Sidebar />
+<Base title="Event Guides | Motto Immortal">
+<PageHero
+  tag="PvE"
+  headline="Event Guides"
+  subtitle="Campaign stages & event team compositions"
+  pageUpdate={pageUpdate}
+/>
 
-  <!-- HERO SECTION -->
-  <section class="hero" id="hero-section" style={`--hero-image: url(/heroes/${activeCampaign.heroId}.webp);`}>
-    <div class="hero-overlay"></div>
-    <div class="hero-text">
-      <span class="hero-tag">Campaign</span>
-      <h1 class="hero-headline" id="hero-headline">{activeCampaign.name}</h1>
-      <p class="hero-sub" id="hero-sub">{activeCampaign.description}</p>
-      {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
+<div class="page-wrapper">
+  <div class="content-wrapper">
+
+    <!-- Campaign sub-tabs -->
+    <div class="main-tabs">
+      {campaigns.map((campaign, index) => (
+        <button
+          class={`main-tab ${index === 0 ? "is-active" : ""}`}
+          data-campaign-tab={campaign.id}
+          data-hero-id={campaign.heroId}
+          data-campaign-name={campaign.name}
+          data-campaign-description={campaign.description}
+        >
+          {campaign.name}
+        </button>
+      ))}
     </div>
-  </section>
 
-  <!-- TAB NAVIGATION -->
-  <div class="event-tabbar">
-    {campaigns.map((campaign, index) => (
-      <button
-        class={`event-tab ${index === 0 ? "is-active" : ""}`}
-        data-tab={campaign.id}
-        data-hero-id={campaign.heroId}
-        data-campaign-name={campaign.name}
-        data-campaign-description={campaign.description}
-      >
-        {campaign.name}
-      </button>
-    ))}
-    <!-- Additional tabs can be added here for scalability -->
-  </div>
+    <!-- Campaign slides -->
+    <main class="events-main">
+      {campaigns.map((campaign, index) => (
+        <div class={`event-slide ${index === 0 ? "is-active" : ""}`} id={campaign.id}>
+          <!-- STAGES LIST -->
+          <div class="stages-container">
+            {campaign.stages.map((stage) => (
+              <div class="stage-card">
+                <div class="stage-header">
+                  <h3 class="stage-title">{stage.name}</h3>
+                </div>
 
-  <!-- MAIN CONTENT -->
-  <main class="events-main">
-    {campaigns.map((campaign, index) => (
-      <div class={`event-slide ${index === 0 ? "is-active" : ""}`} id={campaign.id}>
-        <!-- STAGES LIST -->
-        <div class="stages-container">
-          {campaign.stages.map((stage) => (
-            <div class="stage-card">
-              <div class="stage-header">
-                <h3 class="stage-title">{stage.name}</h3>
-              </div>
-
-              <!-- TEAM COMPOSITION -->
-              <div class="formation-grid">
-                <!-- SINGLE ROW: 2 FRONT + 3 BACK -->
-                <div class="formation-row full-team">
-                  {/* Front heroes */}
-                  {stage.frontHeroes.map((hero) => (
-                    <a class="hero-card" href={`/heroes/${hero.id}`}>
-                      <div class="position-badge front">Front</div>
-                      <div class="hero-card-inner">
-                        <div class="hero-image-wrapper">
-                          <img 
-                            src={hero.image} 
-                            alt={hero.name}
-                            class="hero-image"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </div>
-                        <div class="hero-info">
-                          <h4 class="hero-name">{hero.name}</h4>
-                          <div class="hero-meta">
+                <!-- TEAM COMPOSITION -->
+                <div class="formation-grid">
+                  <!-- SINGLE ROW: 2 FRONT + 3 BACK -->
+                  <div class="formation-row full-team">
+                    {/* Front heroes */}
+                    {stage.frontHeroes.map((hero) => (
+                      <a class="hero-card" href={`/heroes/${hero.id}`}>
+                        <div class="position-badge front">Front</div>
+                        <div class="hero-card-inner">
+                          <div class="hero-image-wrapper">
                             <img
-                              src={factionIcon(hero.faction)}
-                              alt={hero.faction}
-                              class="faction-icon-small"
-                              title={hero.faction}
+                              src={hero.image}
+                              alt={hero.name}
+                              class="hero-image"
                               loading="lazy"
                               decoding="async"
                             />
                           </div>
+                          <div class="hero-info">
+                            <h4 class="hero-name">{hero.name}</h4>
+                            <div class="hero-meta">
+                              <img
+                                src={campaignFactionIcon(hero.faction)}
+                                alt={hero.faction}
+                                class="faction-icon-small"
+                                title={hero.faction}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </a>
-                  ))}
-                  {/* Fill empty front slots if less than 2 */}
-                  {Array.from({ length: 2 - stage.frontHeroes.length }).map(() => (
-                    <div class="hero-card-slot empty"></div>
-                  ))}
-                  
-                  {/* Back heroes */}
-                  {stage.backHeroes.map((hero) => (
-                    <a class="hero-card" href={`/heroes/${hero.id}`}>
-                      <div class="position-badge back">Back</div>
-                      <div class="hero-card-inner">
-                        <div class="hero-image-wrapper">
-                          <img 
-                            src={hero.image} 
-                            alt={hero.name}
-                            class="hero-image"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        </div>
-                        <div class="hero-info">
-                          <h4 class="hero-name">{hero.name}</h4>
-                          <div class="hero-meta">
+                      </a>
+                    ))}
+                    {/* Fill empty front slots if less than 2 */}
+                    {Array.from({ length: 2 - stage.frontHeroes.length }).map(() => (
+                      <div class="hero-card-slot empty"></div>
+                    ))}
+
+                    {/* Back heroes */}
+                    {stage.backHeroes.map((hero) => (
+                      <a class="hero-card" href={`/heroes/${hero.id}`}>
+                        <div class="position-badge back">Back</div>
+                        <div class="hero-card-inner">
+                          <div class="hero-image-wrapper">
                             <img
-                              src={factionIcon(hero.faction)}
-                              alt={hero.faction}
-                              class="faction-icon-small"
-                              title={hero.faction}
+                              src={hero.image}
+                              alt={hero.name}
+                              class="hero-image"
                               loading="lazy"
                               decoding="async"
                             />
                           </div>
+                          <div class="hero-info">
+                            <h4 class="hero-name">{hero.name}</h4>
+                            <div class="hero-meta">
+                              <img
+                                src={campaignFactionIcon(hero.faction)}
+                                alt={hero.faction}
+                                class="faction-icon-small"
+                                title={hero.faction}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </a>
-                  ))}
-                  {/* Fill empty back slots if less than 3 */}
-                  {Array.from({ length: 3 - stage.backHeroes.length }).map(() => (
-                    <div class="hero-card-slot empty"></div>
-                  ))}
+                      </a>
+                    ))}
+                    {/* Fill empty back slots if less than 3 */}
+                    {Array.from({ length: 3 - stage.backHeroes.length }).map(() => (
+                      <div class="hero-card-slot empty"></div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
-  </main>
+      ))}
+    </main>
 
-  <Footer />
+  </div>
+</div>
 
-  <script>
-    // Tab navigation
-    const tabs = document.querySelectorAll('.event-tab');
-    const slides = document.querySelectorAll('.event-slide');
-    const heroSection = document.getElementById('hero-section');
-    const heroHeadline = document.getElementById('hero-headline');
-    const heroSub = document.getElementById('hero-sub');
+</Base>
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const tabId = tab.getAttribute('data-tab');
-        const heroId = tab.getAttribute('data-hero-id');
-        const campaignName = tab.getAttribute('data-campaign-name');
-        const campaignDescription = tab.getAttribute('data-campaign-description');
+<script>
+  const campaignTabs = document.querySelectorAll('[data-campaign-tab]');
+  const campaignSlides = document.querySelectorAll('.event-slide');
 
-        if (!tabId) return;
-        
-        // Remove active class from all tabs and slides
-        tabs.forEach(t => t.classList.remove('is-active'));
-        slides.forEach(s => s.classList.remove('is-active'));
-        
-        // Add active class to clicked tab and corresponding slide
-        tab.classList.add('is-active');
-        const slide = document.getElementById(tabId);
-        if (slide) {
-          slide.classList.add('is-active');
-        }
+  campaignTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabId = tab.getAttribute('data-campaign-tab');
+      if (!tabId) return;
 
-        // Update hero section to match active campaign
-        if (heroId && heroSection) {
-          heroSection.style.setProperty('--hero-image', `url(/heroes/${heroId}.webp)`);
-        }
-        if (campaignName && heroHeadline) {
-          heroHeadline.textContent = campaignName;
-        }
-        if (campaignDescription && heroSub) {
-          heroSub.textContent = campaignDescription;
-        }
-      });
+      campaignTabs.forEach(t => t.classList.remove('is-active'));
+      campaignSlides.forEach(s => s.classList.remove('is-active'));
+
+      tab.classList.add('is-active');
+      const slide = document.getElementById(tabId);
+      if (slide) {
+        slide.classList.add('is-active');
+      }
     });
-  </script>
-</body>
-</html>
+  });
+</script>

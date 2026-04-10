@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "A",
-    "pve": "A"
+    "pve": "C"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -114,5 +115,17 @@
     "LIFE_STEAL_UP"
   ],
   "baseAttackRate": 1.782,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "Push for enemy grouping only. Single use case: group enemies for AoE follow-up. No other investment value.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

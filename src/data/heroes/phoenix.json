@@ -2,7 +2,7 @@
   "id": "phoenix",
   "name": "Phoenix",
   "image": "/heroes/phoenix.webp",
-    "release": true,
+  "release": true,
   "faction": "Diamonds",
   "role": "Arcane",
   "class": "Mage",
@@ -13,6 +13,7 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "A",
     "pve": "A"
   },
@@ -112,5 +113,30 @@
     "HEAL"
   ],
   "baseAttackRate": 4.956,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Infinite lives mechanic -- revives on death for sustained presence through long fights. Early primary DPS; later sub-DPS alongside Hercules.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 20,
+      "type": "recommended",
+      "effect": "DPS baseline. Revive mechanic active and meaningful."
+    }
+  ],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 3,
+    "notes": null
+  }
 }

@@ -2,7 +2,7 @@
   "id": "geb",
   "name": "Geb",
   "image": "/heroes/geb.webp",
-    "release": true,
+  "release": true,
   "faction": "Diamonds",
   "role": "Hefty",
   "class": "Tank",
@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "B",
-    "pve": "A"
+    "pve": "C"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -113,5 +114,17 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.571,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "Huge rock times you out as enemy. No value as ally. Do not invest.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

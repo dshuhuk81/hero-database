@@ -2,19 +2,20 @@
   "id": "nuba",
   "name": "Nuba",
   "image": "/heroes/nuba.webp",
-    "release": true,
+  "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "",
   "ratings": {
-    "overall": "A",
+    "overall": "SS",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "S",
-    "pve": "A"
+    "forgottenLabyrinth": "",
+    "pvp": "SS",
+    "pve": "S"
   },
   "recommendedRelicLevel": 0,
   "evolution": "Divine V",
@@ -115,5 +116,17 @@
     "ENERGY_RESTORE"
   ],
   "baseAttackRate": 1.908,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Off-tank sub-DPS with layered utility. Without dupe and relic investment she feeds enemy energy. Multiple non-obvious tricks in kit.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": true
+  },
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "S+",
+    "consensus": "partial",
+    "lastVerified": "2025-04"
+  }
 }

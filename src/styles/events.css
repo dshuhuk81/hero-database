@@ -61,57 +61,12 @@
   max-width: 50ch;
 }
 
-/* Tab bar (matching boss-tabbar) */
-.event-tabbar {
-  display: flex;
-  gap: 6px;
-  padding: 14px 24px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  background: rgba(8,10,16,0.7);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  flex-shrink: 0;
-}
-
-.event-tabbar::-webkit-scrollbar {
-  display: none;
-}
-
-.event-tab {
-  flex: 0 0 auto;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
-  color: rgba(230,230,235,0.65);
-  padding: 6px 16px;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-family: inherit;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
-  white-space: nowrap;
-}
-
-.event-tab.is-active {
-  background: rgba(255,255,255,0.14);
-  border-color: rgba(255,255,255,0.28);
-  color: #f4f1ff;
-}
-
-.event-tab:hover {
-  background: rgba(255,255,255,0.09);
-  color: #f4f1ff;
-}
+/* Pill tab bar styles live in components.css (.event-tabbar, .event-tab) */
 
 /* Main content area */
 .events-main {
   flex: 1;
-  padding: 32px 24px;
-  max-width: 1200px;
+  padding: 40px 0 0 0;
   margin: 0 auto;
   width: 100%;
 }
@@ -412,15 +367,6 @@
     max-width: 40ch;
   }
 
-  .event-tabbar {
-    padding: 10px 16px;
-    gap: 4px;
-  }
-
-  .event-tab {
-    padding: 5px 12px;
-    font-size: 0.76rem;
-  }
 
   .events-main {
     padding: 16px 12px;

@@ -1,7 +1,13 @@
 # Hero Database – Copilot Instructions
 
+## New Heroes
+When a hero is added, we need to run this script to merge all individual hero JSON files into a single `all_heroes_db.json` that the frontend consumes. This also regenerates the ranking scores based on the new hero's stats and synergies.
+
+```bash
+node scripts/merge-heroes-db.js
+
 ## Project Overview
-Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks 89 heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
+Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
 
 ## General To-Dos
 Before writing any code, describe your approach and wait for approval.
@@ -21,6 +27,12 @@ Dont invent stuff or create new info that is not in the project. Use only data t
 ## Boss DMG Data
 I have a Google Sheet with boss damage data that I want to integrate into the project. This data should be used to identify good boss dmg dps heroes and support heroes that are worth using for this kind of content.
 URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe6EMqSLMw/edit?usp=sharing
+
+## Infos about new unreleased heroes
+You can have skill descriptions in german and englisch in this file: `newHeroes.md. Use this file to get the skill descriptions for the new unreleased heroes. For stats and ratings of these heroes, ask me directly.
+
+## Ratings explanation
+There is a rating explanation for all grades either for overall tier ratings or specific content ratings. Its stored in `how-ratings-work.md` file. You can use this information to understand the meaning of each rating and the criteria for assigning them. This is important for maintaining consistency and accuracy when updating hero ratings or adding new heroes to the database.
 
 ### Images of Heroes
 - All hero images must be in `src/assets/heroes/` directory, named `{hero_id}.webp`

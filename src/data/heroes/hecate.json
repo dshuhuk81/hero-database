@@ -2,7 +2,7 @@
   "id": "hecate",
   "name": "Hecate",
   "image": "/heroes/hecate.webp",
-    "release": true,
+  "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Mage",
@@ -13,6 +13,7 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "A",
     "pvp": "SS",
     "pve": "SS"
   },
@@ -128,5 +129,131 @@
     "HEAL"
   ],
   "baseAttackRate": 1.749,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "teamComps": {
+    "pve": [
+      {
+        "label": "Basic",
+        "stars": 1,
+        "description": "Entry-level Hecate team against Diamond-faction enemies. Tefnut and Cancer add support depth.",
+        "targets": "Diamonds",
+        "totems": [
+          "undying_staff",
+          "horn_of_potency"
+        ],
+        "front": [
+          "hecate"
+        ],
+        "back": [
+          "momus",
+          "yuelao",
+          "tefnut",
+          "cancer"
+        ]
+      },
+      {
+        "label": "Standard",
+        "stars": 2,
+        "description": "Meret replaces Tefnut for stronger sustain and buff coverage. Still specifically targets Diamonds.",
+        "targets": "Diamonds",
+        "totems": [
+          "undying_staff",
+          "horn_of_potency"
+        ],
+        "front": [
+          "hecate"
+        ],
+        "back": [
+          "momus",
+          "yuelao",
+          "meret",
+          "cancer"
+        ]
+      },
+      {
+        "label": "Advanced",
+        "stars": 3,
+        "description": "Cashien replaces Cancer for better energy cycling. Now works against Diamonds and Hearts.",
+        "targets": "Diamonds, Hearts",
+        "totems": [
+          "undying_staff",
+          "horn_of_potency"
+        ],
+        "front": [
+          "hecate"
+        ],
+        "back": [
+          "momus",
+          "yuelao",
+          "meret",
+          "cashien"
+        ]
+      },
+      {
+        "label": "Ultimate",
+        "stars": 5,
+        "description": "Cronus adds time manipulation and doubles key skill casts. Strongest Hecate variant -- works against all factions.",
+        "targets": "All",
+        "totems": [
+          "undying_staff",
+          "horn_of_potency"
+        ],
+        "front": [
+          "hecate"
+        ],
+        "back": [
+          "momus",
+          "yuelao",
+          "meret",
+          "cronus"
+        ]
+      }
+    ]
+  },
+  "coreMechanic": {
+    "summary": "10-second sustained damage channel with highest total damage multiplier in game. Slow output loses early but wins late. Core trio: Yuelao (ATK link) + Momus (shields) + Hecate.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 20,
+      "type": "recommended",
+      "effect": "Carry baseline. Highest total DPS in late-game content."
+    },
+    {
+      "level": 30,
+      "type": "high_spender",
+      "effect": "Full damage ceiling. Endgame investment."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "yuelao",
+      "type": "core",
+      "description": "Yuelao links Hecate (highest ATK) and Momus, sharing stats and sustained ATK buffs."
+    },
+    {
+      "heroId": "momus",
+      "type": "core",
+      "description": "Momus shields keep Hecate alive during 10-second channel."
+    },
+    {
+      "heroId": "skadi",
+      "type": "core",
+      "description": "Full Spade meta trio -- Yuelao buffs both Hecate and Skadi."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T0.5",
+    "cnTier": "T0.5",
+    "egTier": "T0.5",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine -> D5",
+    "priority": 2,
+    "notes": "PvP A-tier only -- channel timing is exploitable in short fights."
+  }
 }

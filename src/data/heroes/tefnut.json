@@ -9,12 +9,13 @@
   "rarity": "Legendary",
   "description": "Tefnut, the living Heaven's Teardrop, rules over moisture, rain and purification, summoning life giving and cleansing drops.",
   "ratings": {
-    "overall": "SS",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "SS",
-    "pve": "SSS"
+    "pve": "A"
   },
   "recommendedRelicLevel": 10,
   "evolution": "Divine V",
@@ -122,5 +123,17 @@
     }
   ],
   "baseAttackRate": 0.64,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "Only pure cleanser in game. 50% AoE damage reduction plus cleanse. r30 very strong in specific fights but not mandatory.",
+    "depthRating": "high",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "S",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

@@ -103,14 +103,6 @@
           "description": "Breathes flames, dealing massive DMG to enemies ahead.",
           "mechanics": ["Frontal damage / cone pressure"],
           "mechanicTags": ["FRONTAL_DAMAGE"]
-        },
-        {
-          "id": "passive_1",
-          "type": "Passive",
-          "name": "Berserk",
-          "description": "Losing HP increases DEF and ATK.",
-          "mechanics": ["Scaling over fight duration"],
-          "mechanicTags": ["BERSERK_SCALING", "RAMPING_AURA"]
         }
       ],
       "recommendedComps": [
@@ -163,14 +155,6 @@
             "description": "Roots a random enemy for 10s and knocks back all units around it. Deals DMG equal to 100% of ATK per sec to the rooted unit.",
             "mechanics": ["Hard CC (root) + displacement", "High single-target DoT on rooted unit"],
             "mechanicTags": ["ROOT", "KNOCKBACK", "SINGLE_TARGET_DOT", "RANDOM_TARGET"]
-          },
-          {
-            "id": "passive_1",
-            "type": "Passive",
-            "name": "Berserk",
-            "description": "Losing HP increases DEF and ATK.",
-            "mechanics": ["Scaling over fight duration"],
-            "mechanicTags": ["BERSERK_SCALING", "RAMPING_AURA"]
           }
         ],
         "recommendedComps": [
@@ -238,12 +222,21 @@
       ],
       "recommendedComps": [
         {
-          "id": "lilith_manual",
+          "id": "lilith_whale",
           "label": "Recommended",
-          "hero-comp": "nezha, fengyi, cashien, yuelao, dionysus",
-          "heroes": ["nezha", "fengyi", "cashien", "yuelao", "dionysus"],
+          "hero-comp": "zeus, cronus, cashien, nuwa, dionysus",
+          "heroes": ["zeus", "cronus", "cashien", "nuwa", "dionysus"],
           "reason": "",
-          "notes": [],
+          "notes": ["Zeus needs to be divine or higher to clear children efficiently", "Cronus can help with burst windows to prevent scaling", "Sustain and cleanse to mitigate damage transfer and ATK SPD buff"],
+          "source": "auto"
+        },
+        {
+          "id": "lilith_budget",
+          "label": "Budget",
+          "hero-comp": "fengyi, isis, cashien, nuwa, dionysus",
+          "heroes": ["fengyi", "isis", "cashien", "nuwa", "dionysus"],
+          "reason": "",
+          "notes": ["Fengyi can clear children with his ultimate, but requires precise timing to prevent scaling", "Isis provides consistent damage and energy support", "Sustain and cleanse remain critical to manage damage transfer and buffs"],
           "source": "auto"
         }
       ]

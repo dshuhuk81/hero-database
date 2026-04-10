@@ -1,10 +1,9 @@
 ---
 export const prerender = true;
-import Sidebar from "../components/Sidebar.astro";
-import Footer from "../components/Footer.astro";
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
 import { heroes } from "../data/heroes";
 import accountBonusesConfig from "../data/accountBonuses.json";
-import Analytics from '@vercel/analytics/astro';
 
 const sortedHeroes = [...heroes]
   .filter(hero => hero.release !== false)
@@ -15,26 +14,21 @@ const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) ||
 
 const bonusPresets = accountBonusesConfig.presets;
 
+
 import { getPageUpdate } from "../utils/getPageUpdate";
 const pageUpdate = getPageUpdate("calculator");
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Skill Value Comparator</title>
-  <Analytics />
-</head>
-<body>
-  <Sidebar />
-
+<Base title="Tools | Motto Immortal">
+  <PageHero
+    tag="Tools"
+    headline="Tools"
+    subtitle="Skill Value Comparator"
+    pageUpdate={pageUpdate}
+  />
+<div class="page-wrapper">
 
 <main class="main-content">
-  <h1 class="title">Skill Value Comparator</h1>
-  {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
-  <p class="subtitle">Select one hero first. Add a second hero only if you want side-by-side comparison.</p>
 
   <div class="tldr-box">
     <h3 class="tldr-title">How This Works</h3>
@@ -141,8 +135,7 @@ const pageUpdate = getPageUpdate("calculator");
     </section>
   </div>
 </main>
-
-<Footer />
+</div>
 
 <script define:vars={{ heroes: sortedHeroes, bonusPresets: bonusPresets }}>
   function formatNumber(value) {
@@ -312,7 +305,10 @@ const pageUpdate = getPageUpdate("calculator");
 
   function extractConditionalLabel(text) {
     const match = text?.match(/If\s+([^.,;]+?),?\s*this instead deals/i);
-    return match ? match[1].trim() : "Conditional";
+    if (match) return match[1].trim();
+    const stateMatch = text?.match(/(?:while|when)\s+in\s+the\s+\[([^\]]+)\]\s+state/i);
+    if (stateMatch) return stateMatch[1].trim();
+    return "Conditional";
   }
 
   function extractCapPercent(text) {
@@ -328,6 +324,44 @@ const pageUpdate = getPageUpdate("calculator");
   function extractIntervalSeconds(text) {
     const match = text?.match(/Every\s*(\d+(?:\.\d+)?)\s*s/i);
     return match ? parseFloat(match[1]) : null;
+  }
+
+  function extractDotPerSec(skill) {
+    const description = skill.description || "";
+    const upgrades = skill.upgrades || {};
+    const upgradeText = Object.values(upgrades).join(" ");
+
+    // Match "X% ATK as DMG per sec" or "X% of ATK per sec" patterns
+    const dotMatch = description.match(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK\s*(?:as\s+DMG\s+)?per\s+sec(?:ond)?/i);
+    if (!dotMatch) return null;
+
+    let dotPct = parseFloat(dotMatch[1]);
+
+    // If the first ATK% in the description IS the per-sec rate,
+    // the entire skill is a pure DoT (e.g. Ares) -- don't double-count
+    const firstAtkMatch = description.match(/(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/i);
+    if (firstAtkMatch && parseFloat(firstAtkMatch[1]) === dotPct) {
+      return null;
+    }
+
+    // Check upgrades for increased DoT values (e.g. "DMG per sec increased to 110%")
+    const dotUpgradeMatch = upgradeText.match(/(?:DMG|damage)\s+per\s+sec(?:ond)?\s+(?:increased?\s+to|increases?\s+to)\s+(\d+(?:\.\d+)?)%/i);
+    if (dotUpgradeMatch) {
+      dotPct = parseFloat(dotUpgradeMatch[1]);
+    }
+
+    // Extract duration: upgrades first (max level), then description, then fallback
+    let duration = 10;
+    const upgradeDurationMatch = upgradeText.match(/duration\s+(?:of\s+\w+\s+)?(?:extends?|increased?)\s+to\s+(\d+(?:\.\d+)?)s/i);
+    const descDurationMatch = description.match(/for\s+(\d+(?:\.\d+)?)s/i);
+
+    if (upgradeDurationMatch) {
+      duration = parseFloat(upgradeDurationMatch[1]);
+    } else if (descDurationMatch) {
+      duration = parseFloat(descDurationMatch[1]);
+    }
+
+    return { dotPct, duration };
   }
 
   function extractAtkPercents(skill) {
@@ -349,6 +383,15 @@ const pageUpdate = getPageUpdate("calculator");
     const upgradeSingleMatch = upgradeText.match(/(Active\s+DMG\s+increases\s+to|Increases\s+DMG\s+dealt\s+to|DMG\s+increases\s+to)\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK/i);
     if (upgradeSingleMatch) {
       normalPct = parseFloat(upgradeSingleMatch[2]);
+    }
+
+    // Handle period-separated conditional:
+    // "Increases DMG dealt to X% ATK. DMG is increased to Y% ATK in the [state]"
+    if (!conditionalPct && !upgradeDualMatch) {
+      const stateConditionalMatch = upgradeText.match(/DMG\s+is\s+increased\s+to\s+(\d+(?:\.\d+)?)%\s*(?:of\s+)?(?:(?:her|his|its|their)\s+|\w+'s\s+)?ATK\s+in\s+the\s+\[/i);
+      if (stateConditionalMatch) {
+        conditionalPct = parseFloat(stateConditionalMatch[1]);
+      }
     }
 
     return { normalPct, conditionalPct };
@@ -406,6 +449,19 @@ const pageUpdate = getPageUpdate("calculator");
           isMultiHitTotal: true,
         });
       }
+    }
+
+    // DoT per-second aura damage (e.g. Nezha Lotus Embodied 90% ATK/s for 15s)
+    const dotData = extractDotPerSec(skill);
+    if (dotData) {
+      const totalDotPct = dotData.dotPct * dotData.duration;
+      const dotTotalRaw = (totalDotPct / 100) * sourceHero.stats.atk;
+      const dotTotalEst = applyMitigation(dotTotalRaw, sourceHero, targetHero, config, damageType);
+      rows.push({
+        label: `Aura DoT (${dotData.dotPct}% ATK/s x ${dotData.duration}s = ${totalDotPct}% ATK)`,
+        raw: dotTotalRaw,
+        estimated: dotTotalEst,
+      });
     }
 
     if (currentHpPct && targetHero) {
@@ -561,8 +617,19 @@ const pageUpdate = getPageUpdate("calculator");
       if (bestPct) {
         const perHitRaw = (bestPct / 100) * sourceHero.stats.atk;
         const cappedPerHit = capPct ? Math.min(perHitRaw, (capPct / 100) * sourceHero.stats.atk) : perHitRaw;
-        const totalRaw = cappedPerHit * hitCount;
-        const totalEstimated = targetHero ? applyMitigation(totalRaw, sourceHero, targetHero, config, damageType) : null;
+        let totalRaw = cappedPerHit * hitCount;
+        let totalEstimated = targetHero ? applyMitigation(totalRaw, sourceHero, targetHero, config, damageType) : null;
+
+        // Add DoT aura damage if present (e.g. Nezha Lotus Embodied)
+        const dotData = extractDotPerSec(skill);
+        if (dotData) {
+          const dotRaw = (dotData.dotPct * dotData.duration / 100) * sourceHero.stats.atk;
+          totalRaw += dotRaw;
+          if (totalEstimated !== null) {
+            const dotEst = applyMitigation(dotRaw, sourceHero, targetHero, config, damageType);
+            totalEstimated += (dotEst !== null ? dotEst : dotRaw);
+          }
+        }
 
         skillData.push({
           skillId: skill.id,
@@ -587,11 +654,6 @@ const pageUpdate = getPageUpdate("calculator");
 
     const totalRaw = burstData.reduce((sum, d) => sum + d.totalRaw, 0);
     const totalEstimated = targetHero ? burstData.reduce((sum, d) => sum + (d.totalEstimated || 0), 0) : null;
-    const totalCritRaw = totalRaw * critMult;
-    const totalCritEstimated = totalEstimated !== null ? totalEstimated * critMult : null;
-
-    const hpPercentNormal = (targetHp > 0 && totalEstimated) ? (totalEstimated / targetHp * 100) : null;
-    const hpPercentCrit = (targetHp > 0 && totalCritEstimated) ? (totalCritEstimated / targetHp * 100) : null;
 
     const attacksNormally = !sourceHero.description?.match(/slumber|no longer performs normal attacks/i);
     // Based on boss tests, base attack rate is closer to 1.3 - 1.4 hits per second. 
@@ -628,13 +690,6 @@ const pageUpdate = getPageUpdate("calculator");
     let combinedPct = targetHp > 0 && combinedEstimated !== null ? (combinedEstimated / targetHp * 100) : null;
     const isPvp = config.matchType === 'pvp';
     const isBoss = config.matchType === 'boss';
-
-    // Average damage factoring crit rate
-    const avgEstimated = (totalEstimated && critRate > 0)
-      ? totalEstimated * (1 - critRate / 100) + totalCritEstimated * (critRate / 100)
-      : totalEstimated;
-    const rotationsToKill = (targetHp > 0 && totalEstimated > 0) ? Math.ceil(targetHp / totalEstimated) : null;
-    const rotationsToKillAvg = (targetHp > 0 && avgEstimated > 0) ? Math.ceil(targetHp / avgEstimated) : null;
 
     // EHP
     const ehp = computeEHP(sourceHero, config);
@@ -697,7 +752,6 @@ const pageUpdate = getPageUpdate("calculator");
       </div>`;
     };
 
-    const allSkillsHtml = burstData.map(createBreakdownRow).join('');
     const autoSkillsHtml = autoSkillsData.map(createBreakdownRow).join('');
     const ultimateSkillsHtml = ultimateSkillData.map(createBreakdownRow).join('');
 
@@ -735,74 +789,58 @@ const pageUpdate = getPageUpdate("calculator");
       // Boss Mode Breakdown
       html += `<div class="burst-subtitle" style="margin: 8px 0 4px 0;">Auto-Combat (90s Passive DPS)</div>`;
       html += `<div class="burst-breakdown">`;
-      const bossAutoEstText = finalPhase1Est !== null ? formatNumber(finalPhase1Est) : '-';
+      const bossAutoVal = (finalPhase1Est !== null && finalPhase1Est > 0) ? finalPhase1Est : finalPhase1Raw;
+      const bossAutoLabel = (finalPhase1Est !== null && finalPhase1Est > 0) ? '' : 'Raw ';
       html += `<div class="burst-breakdown-row" style="opacity: 0.9;">
         <span class="burst-skill-name">Basic Attacks + Auto-Skills combined</span>
-        <span class="burst-skill-dmg">${bossAutoEstText}</span>
+        <span class="burst-skill-dmg">${bossAutoLabel}${formatNumber(bossAutoVal)}</span>
       </div>`;
       html += `</div>`; // end phase 1 breakdown
       html += `<div class="burst-subtitle" style="margin: 16px 0 4px 0; color: #ffaa00;">Active Usage (Ultimates executed: ${bossUltCount})</div>`;
       html += `<div class="burst-breakdown">`;
       const ultimateMultipliedHtml = ultimateSkillData.map(d => {
         const mEst = d.totalEstimated !== null ? d.totalEstimated * bossUltCount : null;
-        const estText = mEst !== null ? formatNumber(mEst) : '-';
+        const mRaw = d.totalRaw * bossUltCount;
+        const val = mEst !== null ? mEst : mRaw;
+        const label = mEst !== null ? '' : 'Raw ';
         return `<div class="burst-breakdown-row">
           <span class="burst-skill-name">${d.skillName} (x${bossUltCount} casts)</span>
-          <span class="burst-skill-dmg">${estText}</span>
+          <span class="burst-skill-dmg">${label}${formatNumber(val)}</span>
         </div>`;
       }).join('');
       html += ultimateMultipliedHtml;
       html += `</div>`;
     }
 
-    // Normal burst total
+    // Combined total with crit rate factored in
+    const critWeight = critRate > 0 ? (1 - critRate / 100) + critMult * (critRate / 100) : 1;
+    const finalRaw = combinedRaw * critWeight;
+    const finalEst = combinedEstimated !== null ? combinedEstimated * critWeight : null;
+    const critNote = critRate > 0 ? ` (incl. ${critRate}% crit)` : '';
     html += `<div class="burst-totals">`;
     html += `<div class="burst-row">`;
-    html += `<span class="burst-label">Combined (Phase 1 + 2)</span>`;
-    const finalRaw = combinedRaw;
-    const finalEst = combinedEstimated;
+    html += `<span class="burst-label">Combined (Phase 1 + 2)${critNote}</span>`;
     html += `<span class="burst-values">Raw ${formatNumber(finalRaw)}${finalEst !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(finalEst)}` : ''}</span>`;
     html += `</div>`;
-
-    // Crit burst total
-    if (isBoss) {
-      const finalCritRaw = combinedRaw * critMult;
-      const finalCritEst = combinedEstimated !== null ? combinedEstimated * critMult : null;
-      html += `<div class="burst-row crit-accent">`;
-      html += `<span class="burst-label">All-Crit (${(critMult * 100).toFixed(0)}%)</span>`;
-      html += `<span class="burst-values burst-crit-val">Raw ${formatNumber(finalCritRaw)}${finalCritEst !== null ? ` <span class="sep-dot"></span> Est. ${formatNumber(finalCritEst)}` : ''}</span>`;
-      html += `</div>`;
-    }
     html += `</div>`;
 
-    // HP% Impact bars
-    const currentHpPercent = combinedPct;
-    if (isPvp && currentHpPercent !== null) {
-      const impactNormal = getImpactLabel(currentHpPercent);
+    // HP% Impact bars (using crit-weighted combined values)
+    const weightedEstimated = finalEst;
+    const weightedPct = (targetHp > 0 && weightedEstimated !== null) ? (weightedEstimated / targetHp * 100) : null;
+    if (isPvp && weightedPct !== null) {
+      const impact = getImpactLabel(weightedPct);
       html += `<div class="burst-hp-section">`;
       html += `<div class="hp-impact-row">`;
-      html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impactNormal.cls}" style="width: ${Math.min(currentHpPercent, 100)}%"></div></div>`;
-      html += `<span class="hp-impact-text">${currentHpPercent.toFixed(1)}% of HP</span>`;
-      html += `<span class="impact-label ${impactNormal.cls}">${isPvp && currentHpPercent >= 100 ? 'TURN 1 ELIMINATION' : impactNormal.label}</span>`;
+      html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impact.cls}" style="width: ${Math.min(weightedPct, 100)}%"></div></div>`;
+      html += `<span class="hp-impact-text">${weightedPct.toFixed(1)}% of HP</span>`;
+      html += `<span class="impact-label ${impact.cls}">${weightedPct >= 100 ? 'TURN 1 ELIMINATION' : impact.label}</span>`;
       html += `</div>`;
-      
-      const finalCritEst = combinedEstimated !== null ? combinedEstimated * critMult : null;
-      const hpPercentCrit = (targetHp > 0 && finalCritEst !== null) ? (finalCritEst / targetHp * 100) : null;
-      
-      if (hpPercentCrit !== null && isPvp) {
-        const impactCrit = getImpactLabel(hpPercentCrit);
-        html += `<div class="hp-impact-row crit-accent">`;
-        html += `<div class="hp-impact-bar-track"><div class="hp-impact-bar-fill ${impactCrit.cls}" style="width: ${Math.min(hpPercentCrit, 100)}%"></div></div>`;
-        html += `<span class="hp-impact-text">${hpPercentCrit.toFixed(1)}% if all crit</span>`;
-        html += `<span class="impact-label ${impactCrit.cls}">${impactCrit.label}</span>`;
-        html += `</div>`;
-      }
       html += `</div>`;
     }
 
     // Rotations to Kill
-    if (isPvp && combinedPct !== null) {
-      const canSoloKill = combinedPct >= 100;
+    if (isPvp && weightedPct !== null) {
+      const canSoloKill = weightedPct >= 100;
       const killSvg = canSoloKill
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/><path d="M9 10h.01M15 10h.01"/></svg>'
         : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
@@ -946,26 +984,46 @@ const pageUpdate = getPageUpdate("calculator");
 
   function renderPage() {
     const config = getMitigationConfig();
+    const matchType = config.matchType;
     const heroAId = document.getElementById("hero-a-select")?.value;
     const heroBContainer = document.getElementById("hero-b-container");
-    const hasComparison = !heroBContainer.classList.contains("hidden");
+    const heroBControls = document.getElementById("hero-b-controls");
+    const addButton = document.getElementById("add-hero-btn");
     const heroBId = document.getElementById("hero-b-select")?.value;
-
     const presetKey = document.getElementById("bonus-preset")?.value || 'none';
     const rawHeroA = heroes.find((hero) => hero.id === heroAId);
-    const rawHeroB = hasComparison ? heroes.find((hero) => hero.id === heroBId) : null;
+    const rawHeroB = heroBContainer && !heroBContainer.classList.contains("hidden") ? heroes.find((hero) => hero.id === heroBId) : null;
     const heroA = applyBonusesToHero(rawHeroA, presetKey);
     const heroB = rawHeroB ? applyBonusesToHero(rawHeroB, presetKey) : null;
     const compareLayout = document.getElementById("compare-layout");
 
-    if (compareLayout) {
-      compareLayout.classList.toggle("has-comparison", !!(hasComparison && heroB));
+    // Fix initial state: if Boss mode, always hide comparison
+    if (matchType === 'boss') {
+      if (addButton) { addButton.disabled = true; addButton.classList.add("hidden"); }
+      if (heroBControls) heroBControls.classList.add("hidden");
+      if (heroBContainer) heroBContainer.classList.add("hidden");
+      if (compareLayout) compareLayout.classList.remove("has-comparison");
+      renderHeroPanel("hero-a-slot", heroA, null, "Primary", config);
+      const heroBSlot = document.getElementById("hero-b-slot");
+      if (heroBSlot) heroBSlot.innerHTML = '';
+      return;
     }
 
-    renderHeroPanel("hero-a-slot", heroA, heroB, "Primary", config);
-
-    if (hasComparison && heroB) {
+    // PvP: enable comparison button, show it only if comparison panel is not open
+    const hasComparison = heroBContainer && !heroBContainer.classList.contains("hidden") && heroB;
+    if (addButton) {
+      addButton.disabled = false;
+      addButton.classList.toggle("hidden", !!hasComparison);
+    }
+    if (compareLayout) compareLayout.classList.toggle("has-comparison", !!hasComparison);
+    if (hasComparison) {
+      renderHeroPanel("hero-a-slot", heroA, heroB, "Primary", config);
       renderHeroPanel("hero-b-slot", heroB, heroA, "Comparison", config);
+    } else {
+      // No comparison hero: still show hero A with raw numbers (estimated needs a target)
+      renderHeroPanel("hero-a-slot", heroA, null, "Primary", config);
+      const heroBSlot = document.getElementById("hero-b-slot");
+      if (heroBSlot) heroBSlot.innerHTML = '';
     }
   }
 
@@ -1024,22 +1082,6 @@ const pageUpdate = getPageUpdate("calculator");
 </script>
 
 <style is:global>
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: "Spectral", "Roboto", system-ui, sans-serif;
-    background:
-      radial-gradient(ellipse at 30% -10%, rgba(120, 90, 200, 0.15), transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(255, 215, 100, 0.08), transparent 55%),
-      linear-gradient(to bottom, #0d0b10, #07060c);
-    color: #e6e6eb;
-    min-height: 100vh;
-  }
-
-  :global(body) {
-    margin-left: 48px;
-  }
 
 
   .hero-header {
@@ -1060,12 +1102,6 @@ const pageUpdate = getPageUpdate("calculator");
       linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.45));
   }
 
-  .main-content {
-    padding: 0 24px 48px;
-    max-width: 1140px;
-    margin: 0 auto;
-  }
-
   .content-wrapper {
     display: flex;
     flex-direction: column;
@@ -1079,7 +1115,7 @@ const pageUpdate = getPageUpdate("calculator");
     font-size: 1.85rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: #fff;
+    color: var(--text-bright);
   }
 
   .subtitle {
@@ -1157,7 +1193,7 @@ const pageUpdate = getPageUpdate("calculator");
     align-items: center;
     gap: 5px;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.05);
     color: rgba(255, 255, 255, 0.45);
     font-size: 0.8rem;
@@ -1223,9 +1259,9 @@ const pageUpdate = getPageUpdate("calculator");
 
   input[type="number"] {
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.07);
-    color: #fff;
+    color: var(--text-bright);
     padding: 9px 12px;
     font-size: 0.92rem;
   }
@@ -1264,9 +1300,9 @@ const pageUpdate = getPageUpdate("calculator");
   select {
     width: 100%;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: rgba(255, 255, 255, 0.07);
-    color: #fff;
+    color: var(--text-bright);
     padding: 9px 2.25rem 9px 12px;
     font-size: 0.92rem;
     -webkit-appearance: none;
@@ -1313,7 +1349,7 @@ const pageUpdate = getPageUpdate("calculator");
     height: 38px;
     flex: 0 0 auto;
     border: 1px dashed rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: transparent;
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.85rem;
@@ -1366,7 +1402,7 @@ const pageUpdate = getPageUpdate("calculator");
     max-width: 170px;
     aspect-ratio: 1 / 1;
     height: auto;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     object-fit: cover;
     object-position: center 30%;
     background: rgba(0, 0, 0, 0.3);
@@ -1430,7 +1466,7 @@ const pageUpdate = getPageUpdate("calculator");
   .skill-card {
     background: rgba(255, 255, 255, 0.03);
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     padding: 14px;
     margin-bottom: 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
@@ -1455,7 +1491,7 @@ const pageUpdate = getPageUpdate("calculator");
     width: 44px;
     height: 44px;
     border: 2px solid rgba(212, 175, 55, 0.5);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     object-fit: cover;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
   }
@@ -1469,7 +1505,7 @@ const pageUpdate = getPageUpdate("calculator");
   .skill-name {
     font-size: 1rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-bright);
     margin: 0;
     line-height: 1.2;
   }
@@ -1486,7 +1522,7 @@ const pageUpdate = getPageUpdate("calculator");
     padding: 2px 8px;
     background: rgba(255, 255, 255, 0.06);
     color: rgba(255, 255, 255, 0.4);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     font-size: 0.65rem;
     font-weight: 600;
     width: fit-content;
@@ -1497,7 +1533,7 @@ const pageUpdate = getPageUpdate("calculator");
   .dmg-badge {
     display: inline-block;
     padding: 2px 8px;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -1537,7 +1573,7 @@ const pageUpdate = getPageUpdate("calculator");
   .skill-numbers {
     background: rgba(255, 255, 255, 0.02);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: 8px 10px;
     margin: 0 0 10px;
   }
@@ -1560,7 +1596,7 @@ const pageUpdate = getPageUpdate("calculator");
   }
 
   .numbers-values {
-    color: #fff;
+    color: var(--text-bright);
     font-size: 0.8rem;
     text-align: right;
     flex: 1;
@@ -1687,7 +1723,7 @@ const pageUpdate = getPageUpdate("calculator");
     letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     white-space: nowrap;
   }
 
@@ -1797,7 +1833,7 @@ const pageUpdate = getPageUpdate("calculator");
 
   .burst-values {
     font-size: 0.8rem;
-    color: #fff;
+    color: var(--text-bright);
     font-weight: 600;
   }
 
@@ -1828,7 +1864,7 @@ const pageUpdate = getPageUpdate("calculator");
     gap: 8px;
     padding: 8px 10px;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
   }
 
   .kills-icon {
@@ -1844,14 +1880,14 @@ const pageUpdate = getPageUpdate("calculator");
   .kills-text {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--text-bright);
   }
 
   /* --- EHP Card --- */
   .ehp-card {
     background: rgba(255, 255, 255, 0.02);
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     padding: 14px 16px;
     margin-top: 10px;
   }
@@ -1874,7 +1910,7 @@ const pageUpdate = getPageUpdate("calculator");
     gap: 1px;
     padding: 8px 10px;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
   }
 
   .ehp-label {
@@ -1888,7 +1924,7 @@ const pageUpdate = getPageUpdate("calculator");
   .ehp-value {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-bright);
     letter-spacing: -0.02em;
   }
 
@@ -1919,7 +1955,7 @@ const pageUpdate = getPageUpdate("calculator");
     background: rgba(76, 175, 80, 0.2);
     color: #66bb6a;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     font-weight: 600;
     font-size: 0.68rem;
     min-width: 42px;
@@ -1949,7 +1985,7 @@ const pageUpdate = getPageUpdate("calculator");
   }
 
   @media (max-width: 768px) {
-    :global(body) {
+    body {
       margin-left: 0;
       margin-bottom: 56px;
     }
@@ -2046,5 +2082,6 @@ const pageUpdate = getPageUpdate("calculator");
       gap: 2px;
     }
   }
-</style></body>
-</html>
+
+</style>
+</Base>

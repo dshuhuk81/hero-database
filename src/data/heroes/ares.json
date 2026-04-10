@@ -9,12 +9,13 @@
   "rarity": "Legendary",
   "description": "Ares, god of war, mutiny, slaughter and riot, is fierce beyond measure. Clad in feathered armor and leather bracers, he wields a terrifying circular saw, embodying unstoppable might.",
   "ratings": {
-    "overall": "A",
+    "overall": "C",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "A",
-    "pve": "A"
+    "forgottenLabyrinth": "",
+    "pvp": "C",
+    "pve": "C"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -116,5 +117,17 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.59,
-  "bossUltimatesPer90s": 3
+  "bossUltimatesPer90s": 3,
+  "coreMechanic": {
+    "summary": "5-second invincibility window is his only value. Easily countered. CN: 5-second lifespan. Do not invest.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

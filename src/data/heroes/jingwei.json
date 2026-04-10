@@ -9,12 +9,13 @@
   "rarity": "Legendary",
   "description": "Jingwei, the indomitable bird born from a drowned soul, embodies resolve and perseverance. Her life is devoted to filling the sea.",
   "ratings": {
-    "overall": "A",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "A",
     "pvp": "A",
-    "pve": "A"
+    "pve": "S"
   },
   "recommendedRelicLevel": 20,
   "evolution": "Divine V",
@@ -112,5 +113,51 @@
     "ATK_UP"
   ],
   "baseAttackRate": 1.012,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "Ranged carry who jumps to back row, marks farthest enemy for +20% incoming damage, fires wind blades in flight every 1.5s. Targets enemy back row specifically.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 10,
+      "type": "mandatory",
+      "effect": "On Zeus route: borrow Zeus gear slots 1/3/4, r10-r20 sufficient."
+    },
+    {
+      "level": 20,
+      "type": "recommended",
+      "effect": "Standalone carry investment if no Divine Zeus yet."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "cashien",
+      "type": "core",
+      "description": "Energy cycling feeds flight phase; longer airborne means more damage output."
+    },
+    {
+      "heroId": "mengpo",
+      "type": "core",
+      "description": "Revives give Jingwei a second life if focused while airborne."
+    },
+    {
+      "heroId": "yanluo",
+      "type": "conditional",
+      "description": "Yanluo r10 timing syncs with Jingwei jump kick for +20% ATK burst window."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T0.5",
+    "cnTier": "T0.5",
+    "egTier": "T0.5",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine -> D5",
+    "priority": 2,
+    "notes": "Shares Zeus awakened gear slots 1/3/4 -- free if building Zeus anyway."
+  }
 }

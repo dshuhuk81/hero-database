@@ -1,0 +1,363 @@
+/* ============================================================
+   COMPONENTS
+   Shared UI patterns used across multiple pages.
+   Imported globally via Base.astro after tokens.css.
+   ============================================================ */
+
+
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
+
+.page-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+}   
+
+/* Standard page content container */
+.content-wrapper {
+  max-width: 1400px;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main scrollable content area */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px 16px 60px;
+  }
+}
+
+/* Page header + title pattern */
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.page-subtitle {
+  color: rgba(230, 230, 235, 0.5);
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+/* Gold separator line */
+.separator {
+  width: 100%;
+  height: 2px;
+  background: rgba(250, 204, 21, 0.4);
+  margin: 10px 0 20px;
+}
+
+
+/* ============================================================
+   PILL TAB BAR
+   Used by boss page (.boss-tabbar) and events page (.event-tabbar).
+   Pill-shaped scrollable tabs, distinct from the underline .tab-bar.
+   ============================================================ */
+
+/* ── OUTER TAB BAR ── */
+  .main-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid #facc1566;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .main-tab {
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-secondary);
+    border-radius: var(--radius-full);
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+  .main-tab.is-active {
+    border-color: rgba(250,204,21,0.45);
+    background: rgba(250,204,21,0.12);
+    color: rgba(250,204,21,0.95);
+  }
+  .main-tab:hover:not(.is-active) {
+    background: rgba(255,255,255,0.08);
+    color: rgba(230,230,235,0.9);
+  }
+  .main-tab-panel { display: block; }
+
+
+
+
+.boss-tabbar,
+.event-tabbar {
+  display: flex;
+  gap: 6px;
+  padding: 0 0 0 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  backdrop-filter: blur(10px);
+  top: 0;
+  z-index: 50;
+  flex-shrink: 0;
+  margin-bottom: 24px;
+}
+
+.boss-tabbar::-webkit-scrollbar,
+.event-tabbar::-webkit-scrollbar {
+  display: none;
+}
+
+.boss-tab,
+.event-tab {
+  flex: 0 0 auto;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-family: inherit;
+  letter-spacing: var(--tracking-wide);
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  white-space: nowrap;
+}
+
+.boss-tab.is-active,
+.event-tab.is-active {
+  border-color: rgba(250, 204, 21, 0.45);
+  background: rgba(250, 204, 21, 0.12);
+  color: rgba(250, 204, 21, 0.95);
+}
+
+.boss-tab:hover:not(.is-active),
+.event-tab:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--text-bright);
+}
+
+@media (max-width: 600px) {
+  .boss-tabbar,
+  .event-tabbar {
+    padding: 10px 16px;
+    gap: 4px;
+  }
+
+  .event-tab {
+    padding: 5px 12px;
+    font-size: 0.76rem;
+  }
+}
+
+
+/* ============================================================
+   UNDERLINE TAB BAR
+   Standard page-level navigation tabs with a gold indicator.
+   Use .tab-bar > .tab pattern.
+   ============================================================ */
+
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: var(--tab-indicator-h) solid var(--border-subtle);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: 0 0 auto;
+  height: var(--tab-height);
+  padding: var(--chip-padding);
+  background: var(--tab-bg);
+  border: none;
+  border-bottom: var(--tab-indicator-h) solid transparent;
+  margin-bottom: calc(-1 * var(--tab-indicator-h));
+  color: var(--tab-text);
+  font-size: var(--tab-font-size);
+  font-weight: var(--tab-font-weight);
+  font-family: inherit;
+  letter-spacing: var(--tab-tracking);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition-colors);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+}
+
+.tab.is-active {
+  color: var(--tab-text-active);
+  border-bottom-color: var(--tab-indicator);
+}
+
+/* SUPPORT SECTION */
+.support-section {
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.support-card {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+}
+
+.support-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.support-headline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin: 0 0 16px;
+}
+
+.support-heart {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--accent-gold);
+}
+
+.support-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0 0 20px;
+}
+
+.support-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.support-list li {
+  font-size: 0.9rem;
+  color: rgba(230, 230, 235, 0.6);
+  padding-left: 18px;
+  position: relative;
+}
+
+.support-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(250, 204, 21, 0.6);
+}
+
+.support-cta {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-width: 200px;
+}
+
+.donate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: transparent;
+  border: 1.5px solid rgba(250, 204, 21, 0.6);
+  border-radius: 10px;
+  color: var(--accent-gold);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.donate-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.donate-btn:hover {
+  background: rgba(250, 204, 21, 0.12);
+  border-color: rgba(250, 204, 21, 0.9);
+  box-shadow: 0 4px 16px rgba(250, 204, 21, 0.2);
+  color: var(--text-bright);
+}
+
+.support-alt {
+  font-size: 0.8rem;
+  color: rgba(230, 230, 235, 0.4);
+  text-align: center;
+  margin: 0;
+  max-width: 200px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .support-card {
+    flex-direction: column;
+    gap: 32px;
+    padding: 28px;
+  }
+
+  .support-cta {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .support-alt {
+    max-width: none;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .support-card {
+    padding: 20px;
+  }
+
+  .support-headline {
+    font-size: 1.4rem;
+  }
+}

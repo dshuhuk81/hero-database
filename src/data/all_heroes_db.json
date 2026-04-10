@@ -3,18 +3,20 @@
     "id": "amunra",
     "name": "Amunra",
     "image": "/heroes/amunra.webp",
+    "release": true,
     "faction": "Starglint",
     "role": "Arcane",
     "class": "Warrior",
     "rarity": "Legendary",
     "description": "Amun-Ra is mostly situational. He performs well in Delusions Den and PVP, as well as in Odysseus, but his performance in other areas is average.",
     "ratings": {
-      "overall": "SSS",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SSS",
-      "pve": "SS"
+      "forgottenLabyrinth": "",
+      "pvp": "S",
+      "pve": "A"
     },
     "recommendedRelicLevel": 30,
     "evolution": "Divine V",
@@ -116,12 +118,38 @@
       "HEAL"
     ],
     "baseAttackRate": 1.401,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "Deluxe edition Poseidon for PvE -- better grouping at higher investment cost. Dodge-stacking mechanic requires high investment to shine. Second-worst Celestial to invest in.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 30,
+        "type": "recommended",
+        "effect": "Full grouping and dodge-stacking potential. Required to shine."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Free unit",
+      "priority": 3,
+      "notes": "Divine achievable without targeted pulls since he is a free unit."
+    }
   },
   "anubis": {
     "id": "anubis",
     "name": "Anubis",
     "image": "/heroes/anubis.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Assassin",
@@ -132,6 +160,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "S",
       "pve": "S"
     },
@@ -236,12 +265,38 @@
       "LIFE_STEAL_UP"
     ],
     "baseAttackRate": 0.73,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Vampiric healing, untargetable window after losing 40% cumulative HP, and execute (r20: kills enemies below 5% HP through invincible skills). Kill one by one in sequence.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Execute unlocked: kills enemies below 5% HP even through invincibility mechanics."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine -> D5",
+      "priority": 3,
+      "notes": null
+    }
   },
   "aquarius": {
     "id": "aquarius",
     "name": "Aquarius",
     "image": "/heroes/aquarius.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Hefty",
     "class": "Tank",
@@ -252,6 +307,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": "A"
     },
@@ -334,18 +390,20 @@
     "id": "ares",
     "name": "Ares",
     "image": "/heroes/ares.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Hefty",
     "class": "Tank",
     "rarity": "Legendary",
     "description": "Ares, god of war, mutiny, slaughter and riot, is fierce beyond measure. Clad in feathered armor and leather bracers, he wields a terrifying circular saw, embodying unstoppable might.",
     "ratings": {
-      "overall": "A",
+      "overall": "C",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -426,15 +484,6 @@
         "damageType": ""
       }
     ],
-    "passive": {
-      "name": "Flesh Grinder",
-      "description": "Ares deals DMG equal to 200% of ATK to nearby enemies and reduces their Armor by 15% for 6s.",
-      "upgrades": {
-        "level2": "Reduces Armor by 20%.",
-        "level3": "Reduces Armor for 8s.",
-        "level4": "Reduces Armor by 25%."
-      }
-    },
     "relic": {
       "name": "Celestial Dusk",
       "description": "During Battlefield Storm, Ares takes 80% reduced DMG.",
@@ -456,12 +505,25 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.59,
-    "bossUltimatesPer90s": 3
+    "bossUltimatesPer90s": 3,
+    "coreMechanic": {
+      "summary": "5-second invincibility window is his only value. Easily countered. CN: 5-second lifespan. Do not invest.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "aries": {
     "id": "aries",
     "name": "Aries",
     "image": "/heroes/aries.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Hefty",
     "class": "Warrior",
@@ -472,6 +534,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pve": "A",
       "pvp": "A"
     },
@@ -555,18 +618,20 @@
     "id": "artemis",
     "name": "Artemis",
     "image": "/heroes/artemis.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Archer",
     "rarity": "Legendary",
     "description": "Artemis, mistress of beasts and sovereign of the wild, rules hunting, wildlife, the moon and the protection of maidens.",
     "ratings": {
-      "overall": "B",
+      "overall": "C",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -664,12 +729,25 @@
       "HIT_AVOID"
     ],
     "baseAttackRate": 1.574,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "As enemy instakills your team; as ally does nothing. No investment value.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "athena": {
     "id": "athena",
     "name": "Athena",
     "image": "/heroes/athena.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Hefty",
     "class": "Support",
@@ -680,8 +758,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "S",
-      "pve": "SS"
+      "forgottenLabyrinth": "",
+      "pvp": "B",
+      "pve": "B"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -784,12 +863,49 @@
       "GAIN_ARMOR"
     ],
     "baseAttackRate": 0.787,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "High attack speed buff enabling Zeus judgment window. Hidden depth -- kit does many things but primary identity is Zeus enabler. Only invest to r20 with Divine Zeus.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": true
+    },
+    "relicBreakpoints": [
+      {
+        "level": 20,
+        "type": "high_spender",
+        "effect": "Full ATK speed buff potential unlocked. Only invest if Divine Zeus is active."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "zeus",
+        "type": "core",
+        "description": "ATK speed buff directly amplifies Zeus Judgment window output."
+      },
+      {
+        "heroId": "heracles",
+        "type": "core",
+        "description": "ATK speed buff amplifies Hercules judgment window on same principle as Zeus."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T2",
+      "cnTier": "T2",
+      "egTier": "T2",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 4,
+      "notes": "CN: only invest relic 20 if you have Divine Zeus."
+    }
   },
   "bastet": {
     "id": "bastet",
     "name": "Bastet",
     "image": "/heroes/bastet.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Nimble",
     "class": "Assassin",
@@ -800,8 +916,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "SS",
-      "pve": "SS"
+      "pve": "B"
     },
     "recommendedRelicLevel": 20,
     "evolution": "Divine V",
@@ -901,24 +1018,56 @@
       "HIT_AVOID"
     ],
     "baseAttackRate": 1.64,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Frontline tank that solo-carries until the 5-team threshold. Requires dodge% on gear slots 2/3 to function. Transitions to dedicated frontline alongside Hercules at higher investment.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Frontline tank baseline. Solo carry until 5 teams."
+      },
+      {
+        "level": 30,
+        "type": "high_spender",
+        "effect": "DPS role unlocked. Pair with Hercules or Athena as primary carry."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 3,
+      "notes": "Needs dodge% on gear slots 2/3. Without it, survivability drops significantly."
+    }
   },
   "cancer": {
     "id": "cancer",
     "name": "Cancer",
     "image": "/heroes/cancer.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Support",
     "rarity": "Epic",
     "description": "Thethys, known as Cancer is the godess of familial warmth and protection, guardian of the oceans.",
     "ratings": {
-      "overall": "C",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "B",
-      "pve": "A"
+      "pve": "S"
     },
     "recommendedRelicLevel": 1,
     "evolution": "Divine V",
@@ -1018,12 +1167,54 @@
       "ATK_UP"
     ],
     "baseAttackRate": 0.503,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Energy battery for frontline with super armor (CC immunity). Only useful Zodiac unit. PvP tier higher than PvE because super armor in 5v5 prevents CC-lock at initiation.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 1,
+        "type": "mandatory",
+        "effect": "Energy battery and super armor both active. Fully functional from r1."
+      },
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Range and frequency improvements on both mechanics."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "yanluo",
+        "type": "core",
+        "description": "Both provide energy and CC to frontline; together prevent complete CC-lock."
+      },
+      {
+        "heroId": "mengpo",
+        "type": "conditional",
+        "description": "Super armor helps Meng Po frontline survive long enough for revive proc."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0.5",
+      "cnTier": "T0.5",
+      "egTier": "T0.5",
+      "consensus": "partial",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 2,
+      "notes": "EG rates PvP A-tier vs CN S-tier; practical difference is narrow."
+    }
   },
   "canopicjar": {
     "id": "canopicjar",
     "name": "Canopic Jar",
     "image": "/heroes/canopicjar.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Nimble",
     "class": "Warrior",
@@ -1034,6 +1225,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -1091,6 +1283,7 @@
     "id": "capricorn",
     "name": "Capricorn",
     "image": "/heroes/capricorn.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Arcane",
     "class": "Assassin",
@@ -1101,6 +1294,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "B",
       "pve": "B"
     },
@@ -1188,12 +1382,32 @@
       "HEAL"
     ],
     "baseAttackRate": 0.768,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Pure positioning tech unit. Groups enemies into specific positions before AoE skills land. Requires advanced understanding of unit movement at fight start.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T2",
+      "cnTier": "T2",
+      "egTier": "T2",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Keep 1 copy in altar",
+      "priority": 4,
+      "notes": null
+    }
   },
   "cashien": {
     "id": "cashien",
     "name": "Cashien",
     "image": "/heroes/cashien.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Support",
@@ -1204,8 +1418,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "S",
       "pvp": "SS",
-      "pve": "SSS"
+      "pve": "SS"
     },
     "recommendedRelicLevel": 20,
     "evolution": "Divine V",
@@ -1305,12 +1520,214 @@
       "HEAL"
     ],
     "baseAttackRate": 0.935,
-    "bossUltimatesPer90s": 10
+    "bossUltimatesPer90s": 10,
+    "coreMechanic": {
+      "summary": "Best energy battery. Instant 100 energy to all nearby allies plus 25/s for 8s. CN calls him the eternal support regardless of meta shifts.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 1,
+        "type": "mandatory",
+        "effect": "Core energy restore unlocked. Fully functional support from r1."
+      },
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Improved heal radius and ingot regeneration speed. Better sustained healing."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "jingwei",
+        "type": "core",
+        "description": "Foundational Hearts team -- energy cycling sustains Jingwei flight phase."
+      },
+      {
+        "heroId": "isis",
+        "type": "core",
+        "description": "Foundational Hearts team -- both carries depend on Caishen energy cycling."
+      },
+      {
+        "heroId": "mengpo",
+        "type": "core",
+        "description": "Standard Hearts trio core -- all three benefit each other in a closed loop."
+      },
+      {
+        "heroId": "zeus",
+        "type": "core",
+        "description": "Guaranteed energy cycling maximizes Zeus Judgment window uptime."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 1,
+      "notes": null
+    }
+  },
+  "cronus": {
+    "id": "cronus",
+    "name": "Cronus",
+    "image": "/heroes/cronus.webp",
+    "release": true,
+    "newHero": true,
+    "faction": "Starglint",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "A Tempo/Cooldown/Control Support who manipulates fight tempo by debuffing enemy skill rotations, doubling allied active casts, saving near-death allies via time rewind, and projecting temporary copies of allied heroes into battle.",
+    "ratings": {
+      "overall": "S",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "",
+      "pvp": "S",
+      "pve": "SS"
+    },
+    "recommendedRelicLevel": 30,
+    "evolution": "Divine V",
+    "level": 300,
+    "baseAttackRate": 0.451,
+    "bossUltimatesPer90s": 4,
+    "stats": {
+      "might": 824000,
+      "hp": 2649960,
+      "atk": 268651,
+      "armor": 51940,
+      "magicRes": 59635,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 4,
+      "critRes": 6,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Temporal Vortex",
+        "description": "Summons a Temporal Vortex that deals 280% ATK DMG to all enemy units, reducing their ATK SPD and Move SPD by 100% for 5s.",
+        "upgrades": {
+          "level2": "Also increases enemy active skill CD by 5 seconds for enemies within the area.",
+          "level3": "Increases DMG dealt to 360% ATK.",
+          "level4": "Affected enemies cannot regenerate Energy naturally during the effect duration."
+        },
+        "image": "/skills/cronus_skill_1.png",
+        "damageType": "magical",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Temporal Rift",
+        "description": "Cronus teleports the nearest enemy to the position of the farthest enemy, dealing 180% ATK DMG to both targets and Stunning them for 2 seconds.",
+        "upgrades": {
+          "level2": "Increases DMG dealt to 200% ATK.",
+          "level3": "Each time an allied unit casts an Active Skill, the CD of this skill is reduced by 0.5 seconds.",
+          "level4": "Stun duration is increased to 3s."
+        },
+        "image": "/skills/cronus_skill_2.png",
+        "damageType": "magical"
+      },
+      {
+        "id": "skill_3",
+        "name": "Rewinding Remains",
+        "description": "When an allied unit is about to fall, Cronus rewinds that unit to its optimal state from the past 5 seconds. After the rewind, the target's ATK and ATK SPD are reduced by 90% for 2s. This skill has 18s CD.",
+        "upgrades": {
+          "level2": "Reduces the CD to 15s.",
+          "level3": "When Cronus is about to fall, this effect triggers once for free on himself.",
+          "level4": "Reduces the CD to 12s."
+        },
+        "image": "/skills/cronus_skill_3.png",
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "Echo of Causality",
+        "description": "At the start of battle, mark the allied unit with the highest CD Reduction as [Time Traveler]. When the Time Traveler casts an Active Skill (excluding Ultimate and Entry Skill), that skill is cast again immediately. This effect has 20s CD.",
+        "upgrades": {
+          "level2": "Reduces the skill CD to 18s.",
+          "level3": "At the start of battle, reduce the initial CD of all allied units by 5s.",
+          "level4": "Reduces the skill CD to 15s."
+        },
+        "image": "/skills/cronus_skill_4.png",
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Doctrine of Time",
+      "description": "Every 15 seconds, Cronus cyclically projects a Translucent Echo of a teammate into the battle for 6 seconds. Projection priority: Time Traveler first, then allied units from highest to lowest ATK. The Projection inherits 50% of Cronus's ATK and Max HP, and all skills of the projected unit. The projected unit's character and skill levels scale with Cronus's level.",
+      "upgrades": {
+        "level2": "Upon entering the battlefield, the Translucent Echo refreshes all skill CDs. [Relic Lv.10]",
+        "level3": "Translucent Echo duration is increased to 10s. [Relic Lv.20]",
+        "level4": "Translucent Echo gains 1000 Energy upon entering battle."
+      },
+      "image": "/skills/cronus_relic.png"
+    },
+    "synergies": [
+      "CDR_TEAM",
+      "ATK_SPD_DOWN",
+      "CROWD_CONTROL",
+      "BUFF_TEAM",
+      "ENERGY_DRAIN",
+      "REVIVE"
+    ],
+    "coreMechanic": {
+      "summary": "Best support in game -- complete CC, complete support, full-map coverage. Full kit unlocked at base dupe. Delayed ultimate release requires precise timing control.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 30,
+        "type": "recommended",
+        "effect": "Standard endgame investment for full support coverage."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Base dupe -> work on dupes after Zeus/Nezha",
+      "priority": 1,
+      "notes": "Extremely F2P-friendly -- full kit at base dupe."
+    }
   },
   "demeter": {
     "id": "demeter",
     "name": "Demeter",
     "image": "/heroes/demeter.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Hefty",
     "class": "Tank",
@@ -1321,8 +1738,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "B",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -1423,12 +1841,25 @@
       "DMG_RED"
     ],
     "baseAttackRate": 0.559,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "Times you out as enemy; useless as ally. No investment value.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "diana": {
     "id": "diana",
     "name": "Diana",
     "image": "/heroes/diana.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Archer",
@@ -1439,6 +1870,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "B",
       "pve": "A"
     },
@@ -1539,24 +1971,50 @@
       "REMOVES_ARMOR"
     ],
     "baseAttackRate": 0.901,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "Energy battery with high ATK speed buff. Crescent Mark is the second strongest controllable armor debuff in game. Due to armor scaling, this debuff is disproportionately powerful.",
+      "depthRating": "high",
+      "commonlyMisunderstood": true
+    },
+    "relicBreakpoints": [
+      {
+        "level": 0,
+        "type": "recommended",
+        "effect": "Works as energy battery at 1 dupe without relic investment."
+      },
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "r10 is what makes her OP; r20 is very strong for Zeus/Nezha compositions."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T2",
+      "cnTier": "T2",
+      "egTier": "A",
+      "consensus": "partial",
+      "lastVerified": "2025-04"
+    }
   },
   "dionysus": {
     "id": "dionysus",
     "name": "Dionysus",
     "image": "/heroes/dionysus.webp",
+    "release": true,
     "faction": "Starglint",
     "role": "Arcane",
     "class": "Support",
     "rarity": "Legendary",
     "description": "Dionysus, goddes of wine and revels, embodies life's passion and unbridled joy. Handsome and radiant, she wears a cloak woven from grapevines, holding a wine cup and her Thyrsus.",
     "ratings": {
-      "overall": "SSS",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SSS",
-      "pve": "SSS"
+      "forgottenLabyrinth": "S",
+      "pvp": "S",
+      "pve": "A"
     },
     "recommendedRelicLevel": 30,
     "evolution": "Divine V",
@@ -1659,24 +2117,62 @@
       "ATK_UP",
       "DMG_RED",
       "HIT_AVOID"
-    ]
+    ],
+    "coreMechanic": {
+      "summary": "Energy battery with insane damage-boosting buffs. Highest DPS-increasing support at full uptime. Weakness: dies early and the buff window disappears.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 1,
+        "type": "mandatory",
+        "effect": "Energy battery function active. Sufficient for F2P with good positioning."
+      },
+      {
+        "level": 30,
+        "type": "recommended",
+        "effect": "Full damage-boost buff potential unlocked."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "zeus",
+        "type": "core",
+        "description": "Damage boost plus energy cycling is the endgame meta support stack for Zeus."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Base dupe -> wait for random drop",
+      "priority": 3,
+      "notes": null
+    }
   },
   "fengyi": {
     "id": "fengyi",
     "name": "Fengyi",
     "image": "/heroes/fengyi.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Arcane",
     "class": "Mage",
     "rarity": "Legendary",
     "description": "Fengyi, goddess of winds, rules ober their flow, speed, and direction, especially the gentle and lively ones.",
     "ratings": {
-      "overall": "S",
+      "overall": "A",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "S",
-      "pve": "S"
+      "forgottenLabyrinth": "S",
+      "pvp": "B",
+      "pve": "D"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -1773,12 +2269,25 @@
       "ENERGY_RESTORE"
     ],
     "baseAttackRate": 0.932,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "Early-game race carry only. No late-game use. If lucky, use for early PvP placement then swap out.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "freya": {
     "id": "freya",
     "name": "Freya",
     "image": "/heroes/freya.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Arcane",
     "class": "Support",
@@ -1789,8 +2298,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -1889,12 +2399,25 @@
       "HEAL_EFFECT_UP"
     ],
     "baseAttackRate": 0.364,
-    "bossUltimatesPer90s": 3
+    "bossUltimatesPer90s": 3,
+    "coreMechanic": {
+      "summary": "Pure healing, zero utility. If you win with Freya you could have won with an empty slot. Skip.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "geb": {
     "id": "geb",
     "name": "Geb",
     "image": "/heroes/geb.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Hefty",
     "class": "Tank",
@@ -1905,8 +2428,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "B",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -2005,12 +2529,25 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.571,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Huge rock times you out as enemy. No value as ally. Do not invest.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "gemini": {
     "id": "gemini",
     "name": "Gemini",
     "image": "/heroes/gemini.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Tank",
@@ -2021,6 +2558,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -2105,6 +2643,7 @@
     "id": "hecate",
     "name": "Hecate",
     "image": "/heroes/hecate.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Mage",
@@ -2115,6 +2654,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "A",
       "pvp": "SS",
       "pve": "SS"
     },
@@ -2230,24 +2770,152 @@
       "HEAL"
     ],
     "baseAttackRate": 1.749,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "teamComps": {
+      "pve": [
+        {
+          "label": "Basic",
+          "stars": 1,
+          "description": "Entry-level Hecate team against Diamond-faction enemies. Tefnut and Cancer add support depth.",
+          "targets": "Diamonds",
+          "totems": [
+            "undying_staff",
+            "horn_of_potency"
+          ],
+          "front": [
+            "hecate"
+          ],
+          "back": [
+            "momus",
+            "yuelao",
+            "tefnut",
+            "cancer"
+          ]
+        },
+        {
+          "label": "Standard",
+          "stars": 2,
+          "description": "Meret replaces Tefnut for stronger sustain and buff coverage. Still specifically targets Diamonds.",
+          "targets": "Diamonds",
+          "totems": [
+            "undying_staff",
+            "horn_of_potency"
+          ],
+          "front": [
+            "hecate"
+          ],
+          "back": [
+            "momus",
+            "yuelao",
+            "meret",
+            "cancer"
+          ]
+        },
+        {
+          "label": "Advanced",
+          "stars": 3,
+          "description": "Cashien replaces Cancer for better energy cycling. Now works against Diamonds and Hearts.",
+          "targets": "Diamonds, Hearts",
+          "totems": [
+            "undying_staff",
+            "horn_of_potency"
+          ],
+          "front": [
+            "hecate"
+          ],
+          "back": [
+            "momus",
+            "yuelao",
+            "meret",
+            "cashien"
+          ]
+        },
+        {
+          "label": "Ultimate",
+          "stars": 5,
+          "description": "Cronus adds time manipulation and doubles key skill casts. Strongest Hecate variant -- works against all factions.",
+          "targets": "All",
+          "totems": [
+            "undying_staff",
+            "horn_of_potency"
+          ],
+          "front": [
+            "hecate"
+          ],
+          "back": [
+            "momus",
+            "yuelao",
+            "meret",
+            "cronus"
+          ]
+        }
+      ]
+    },
+    "coreMechanic": {
+      "summary": "10-second sustained damage channel with highest total damage multiplier in game. Slow output loses early but wins late. Core trio: Yuelao (ATK link) + Momus (shields) + Hecate.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Carry baseline. Highest total DPS in late-game content."
+      },
+      {
+        "level": 30,
+        "type": "high_spender",
+        "effect": "Full damage ceiling. Endgame investment."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "yuelao",
+        "type": "core",
+        "description": "Yuelao links Hecate (highest ATK) and Momus, sharing stats and sustained ATK buffs."
+      },
+      {
+        "heroId": "momus",
+        "type": "core",
+        "description": "Momus shields keep Hecate alive during 10-second channel."
+      },
+      {
+        "heroId": "skadi",
+        "type": "core",
+        "description": "Full Spade meta trio -- Yuelao buffs both Hecate and Skadi."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0.5",
+      "cnTier": "T0.5",
+      "egTier": "T0.5",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine -> D5",
+      "priority": 2,
+      "notes": "PvP A-tier only -- channel timing is exploitable in short fights."
+    }
   },
   "hela": {
     "id": "hela",
     "name": "Hela",
     "image": "/heroes/hela.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Support",
     "rarity": "Legendary",
     "description": "Hela, goddess of death and queen of the netherworld, rules the souls of the dead and the order of the realm below.",
     "ratings": {
-      "overall": "S",
+      "overall": "A",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SS",
-      "pve": "SS"
+      "forgottenLabyrinth": "A",
+      "pvp": "A",
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -2346,14 +3014,150 @@
       "HEAL"
     ],
     "baseAttackRate": 0.714,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Carry potential requires high investment alongside Poseidon, Khepri, Iris. Skadi performs the same role with less investment.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "contested",
+      "consensus": "contested",
+      "lastVerified": "2025-04"
+    }
+  },
+  "hephaestus": {
+    "id": "hephaestus",
+    "name": "Hephaestus",
+    "image": "/heroes/hephaestus.webp",
+    "release": false,
+    "faction": "Hearts",
+    "role": "Support",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "A zone-control support who deploys 3 mechanical devices at battle start, activating them one per Ultimate cast to build toward a field-wide Fusion effect. Anchored to his Forge, he gains unlimited range and damage reduction in exchange for total immobility.",
+    "ratings": {
+      "overall": "S",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "",
+      "pvp": "A",
+      "pve": "S"
+    },
+    "recommendedRelicLevel": 30,
+    "evolution": "Divine V",
+    "level": 300,
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Ultimate Domain",
+        "description": "Passive: At the start of battle, summons 3 inactive mechanical devices onto the field. Active: Activates the farthest device, expanding its area of effect. Allies inside recover HP and Energy per second; enemies inside have ATK Power and ATK Speed reduced. When all 3 devices are active, they merge into a single field-wide device -- immediately reducing all enemies' damage rate and boosting friendly damage rate and ATK Speed. Subsequent casts also trigger this Fusion effect.",
+        "upgrades": {
+          "level2": "HP and Energy recovered per second by allies inside activated devices increased.",
+          "level3": "ATK Power and ATK Speed reduction on enemies inside devices increased.",
+          "level4": "Fusion effect amplified: greater enemy damage rate reduction and higher friendly damage rate and ATK Speed boost."
+        },
+        "image": "/skills/hephaestus_skill_1.png",
+        "damageType": "magical",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Weak Point Analysis",
+        "description": "Fires a laser at the enemy currently dealing the most damage, binding them for a duration. Each active device on the field extends the Bind duration by a set amount. Also reduces the target's Physical and Magical resistance.",
+        "upgrades": {
+          "level2": "Physical and Magical resistance reduction increased.",
+          "level3": "Bind duration extension per active field device increased.",
+          "level4": "Physical and Magical resistance reduction increased again."
+        },
+        "image": "/skills/hephaestus_skill_2.png",
+        "damageType": "magical"
+      },
+      {
+        "id": "skill_3",
+        "name": "Force Field Shield",
+        "description": "Heals the most wounded allied unit and reduces the damage they receive for a duration. For each active device on the field, the damage reduction effect is additionally increased by a percentage.",
+        "upgrades": {
+          "level2": "Healing effect increased.",
+          "level3": "Damage reduction from active field devices increased.",
+          "level4": "Healing effect increased again."
+        },
+        "image": "/skills/hephaestus_skill_3.png",
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "Source Resonance",
+        "description": "Hephaestus's Energy recovery speed is increased by a percentage.",
+        "upgrades": {
+          "level2": "Energy recovery rate increase is higher.",
+          "level3": "Energy recovery rate increase is higher again.",
+          "level4": "Gains initial Energy at the start of battle."
+        },
+        "image": "/skills/hephaestus_skill_4.png",
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Undying Forge",
+      "description": "At the start of battle, places a Forge in front of Hephaestus. If he moves away, he is teleported back and put in an intercepted state. While at the Forge, Hephaestus enters Focus state: unlimited attack range and reduced damage taken.",
+      "upgrades": {
+        "level2": "In Focus state: cooldowns of Weak Point Analysis and Force Field Shield reduced.",
+        "level3": "In Focus state: Energy cost to cast Ultimate Domain reduced.",
+        "level4": "In Focus state: damage taken further reduced."
+      },
+      "image": "/skills/hephaestus_relic.png"
+    },
+    "synergies": [
+      "HEAL_TEAM",
+      "ATK_SPD_DOWN",
+      "CROWD_CONTROL",
+      "BUFF_TEAM",
+      "VULNERABLE"
+    ]
   },
   "heracles": {
     "id": "heracles",
     "name": "Heracles",
     "image": "/heroes/heracles.webp",
+    "release": true,
     "faction": "Diamonds",
-    "role": "Nimble",
+    "role": "Hefty",
     "class": "Warrior",
     "rarity": "Legendary",
     "description": "",
@@ -2362,8 +3166,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "S",
       "pvp": "SS",
-      "pve": "S"
+      "pve": "SS"
     },
     "recommendedRelicLevel": 20,
     "evolution": "Divine V",
@@ -2471,24 +3276,170 @@
       }
     ],
     "baseAttackRate": 0.364,
-    "bossUltimatesPer90s": 3
+    "bossUltimatesPer90s": 3,
+    "teamComps": {
+      "pve": [
+        {
+          "label": "Basic",
+          "stars": 3,
+          "description": "Formation not fixed. Heracles can run with any 4 supports. Budget entry point due to wide availability outside rate-up banners.",
+          "targets": "Clubs, Diamonds",
+          "totems": [
+            "sanctified_blood"
+          ],
+          "front": [
+            "heracles"
+          ],
+          "back": [
+            "bastet",
+            "meret",
+            "set",
+            "phoenix"
+          ]
+        },
+        {
+          "label": "Finisher",
+          "stars": 4,
+          "description": "Eris's execute ability perfectly covers Heracles's weakness after two hammers, eliminating low-HP targets he cannot finish.",
+          "targets": "Clubs, Diamonds",
+          "totems": [
+            "sanctified_blood",
+            "keystone_of_wonders"
+          ],
+          "front": [
+            "heracles"
+          ],
+          "back": [
+            "eris",
+            "serket",
+            "nuba",
+            "dionysus"
+          ]
+        },
+        {
+          "label": "Dual Core",
+          "stars": 5,
+          "description": "Heracles provides crowd control and acts as meat shield. Zeus, Nuba, Cashien and Mengpo stack buffs and energy to maximize Heracles's output.",
+          "targets": "All",
+          "totems": [
+            "sanctified_blood",
+            "keystone_of_wonders"
+          ],
+          "front": [
+            "heracles"
+          ],
+          "back": [
+            "zeus",
+            "nuba",
+            "cashien",
+            "mengpo"
+          ]
+        },
+        {
+          "label": "Corpse Explosion",
+          "stars": 4,
+          "description": "Mainly targets Treant. Requires Heracles double hammer simultaneously with Jormungandr explosion for maximum burst.",
+          "targets": "All",
+          "totems": [
+            "sanctified_blood",
+            "horn_of_potency"
+          ],
+          "front": [
+            "heracles",
+            "jormungandr"
+          ],
+          "back": [
+            "phoenix",
+            "anubis",
+            "nyx"
+          ]
+        },
+        {
+          "label": "Corpse Explosion Advanced",
+          "stars": 5,
+          "description": "Heracles double hammer + Jormungandr explosion + Nut's energy bullet = total annihilation. Destroys Treant and beyond.",
+          "targets": "All",
+          "totems": [
+            "sanctified_blood",
+            "horn_of_potency"
+          ],
+          "front": [
+            "heracles",
+            "jormungandr"
+          ],
+          "back": [
+            "nut",
+            "anubis",
+            "nyx"
+          ]
+        }
+      ]
+    },
+    "coreMechanic": {
+      "summary": "Hard carry: pull-group then two-burst damage pattern. Second burst arrives before enemy can recover. CN and Excel fully aligned T0. Avoid vs Pan (energy drain counters both bursts).",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 20,
+        "type": "mandatory",
+        "effect": "Early DPS baseline established. First and second burst both functional."
+      },
+      {
+        "level": 30,
+        "type": "mandatory",
+        "effect": "Second burst timing tightens; grouping range increases. Main stopping point."
+      },
+      {
+        "level": 50,
+        "type": "high_spender",
+        "effect": "Maximum damage ceiling. High-spender only."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "athena",
+        "type": "core",
+        "description": "Athena attack speed buff amplifies Hercules judgment window output."
+      },
+      {
+        "heroId": "poseidon",
+        "type": "core",
+        "description": "Poseidon groups; Hercules bursts the cluster. Cross-faction but highly effective."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine -> D5",
+      "priority": 1,
+      "notes": "Awakened gear slots 2/4 per Excel."
+    }
   },
   "hladgunnr": {
     "id": "hladgunnr",
     "name": "Hladgunnr",
     "image": "/heroes/hladgunnr.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Hefty",
     "class": "Warrior",
     "rarity": "Legendary",
     "description": "Hladgunnr, the elegant and dignified Valkyrie of the Swan, always appears to mortals in a robe of white feathers. Her kiss can bring eternal rest or rouse the final courage of the dying.",
     "ratings": {
-      "overall": "SS",
+      "overall": "A",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SS",
-      "pve": "SSS"
+      "forgottenLabyrinth": "A",
+      "pvp": "A",
+      "pve": "B"
     },
     "recommendedRelicLevel": 30,
     "evolution": "Divine V",
@@ -2590,12 +3541,108 @@
       "SHIELD"
     ],
     "baseAttackRate": 1.296,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "teamComps": {
+      "pve": [
+        {
+          "label": "Basic",
+          "stars": 1,
+          "description": "Very strong early-game but falls off hard late. Cannot beat any team in later campaign stages.",
+          "targets": "Spades",
+          "totems": [
+            "horn_of_potency",
+            "unsullied_lotus",
+            "defiant_vow"
+          ],
+          "front": [
+            "hladgunnr"
+          ],
+          "back": [
+            "wenshen",
+            "yanluo",
+            "prometheus",
+            "nyx"
+          ]
+        },
+        {
+          "label": "Charm",
+          "stars": 5,
+          "description": "The strongest Hladgunnr variant. Hera's charm synergizes directly with Hladgunnr's execute mechanic. Nuba and Cashien provide buff and energy support.",
+          "targets": "Spades, Diamonds, Hearts",
+          "totems": [
+            "horn_of_potency",
+            "unsullied_lotus",
+            "defiant_vow"
+          ],
+          "front": [
+            "hladgunnr"
+          ],
+          "back": [
+            "hera",
+            "nuba",
+            "wenshen",
+            "cashien"
+          ]
+        },
+        {
+          "label": "Snake",
+          "stars": 2,
+          "description": "Requires 3 or more Jormungandr explosions before Hladgunnr finishes. Dependent on snake explosion count -- unreliable without setup.",
+          "targets": "Spades",
+          "totems": [
+            "horn_of_potency",
+            "unsullied_lotus",
+            "defiant_vow"
+          ],
+          "front": [
+            "hladgunnr",
+            "jormungandr"
+          ],
+          "back": [
+            "wenshen",
+            "capricorn",
+            "nyx"
+          ]
+        },
+        {
+          "label": "Ultimate",
+          "stars": 5,
+          "description": "Jormungandr explosions + Nut's energy bullet basically clears the screen. Even if 1-2 enemies survive with low HP, Hladgunnr finishes them.",
+          "targets": "Hearts, Diamonds, Spades",
+          "totems": [
+            "horn_of_potency",
+            "windrunners_grace"
+          ],
+          "front": [
+            "hladgunnr",
+            "jormungandr"
+          ],
+          "back": [
+            "nut",
+            "wenshen",
+            "nyx"
+          ]
+        }
+      ]
+    },
+    "coreMechanic": {
+      "summary": "Meatshield tank that exploits line-hold mechanics. With high-investment allies her unbreakable line enables damage exploitation on specific stages. Stat dampening limits PvE ceiling.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": true
+    },
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T10086",
+      "egTier": "B+",
+      "consensus": "contested",
+      "lastVerified": "2025-04"
+    }
   },
   "horus": {
     "id": "horus",
     "name": "Horus",
     "image": "/heroes/horus.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Arcane",
     "class": "Assassin",
@@ -2606,8 +3653,9 @@
       "grimSurge": "S",
       "delusionsDen": "A",
       "torrentRift": "B",
-      "pvp": "S",
-      "pve": "A"
+      "forgottenLabyrinth": "",
+      "pvp": "A",
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -2707,12 +3755,144 @@
       "HEAL"
     ],
     "baseAttackRate": 0.937,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Enemy Horus executes your team; your Horus jumps and dies. Do not invest.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
+  },
+  "idun": {
+    "id": "idun",
+    "name": "Idun",
+    "image": "/heroes/idun.webp",
+    "release": false,
+    "faction": "Hearts",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "Idun.",
+    "ratings": {
+      "overall": "",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "",
+      "pvp": "",
+      "pve": ""
+    },
+    "recommendedRelicLevel": 0,
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Eternal Oath",
+        "type": "Ultimate",
+        "description": "Grants the frontmost ally a shield based on a percentage of Idun's ATK and reduces damage taken for a duration. Prioritizes allies with Golden Apple.",
+        "upgrades": {
+          "level2": "Increases duration of shield and damage reduction.",
+          "level3": "Increases damage reduction effect.",
+          "level4": "Further increases shield scaling based on ATK."
+        }
+      },
+      {
+        "id": "skill_2",
+        "name": "Fruit of Eternity",
+        "type": "Relic Passive",
+        "description": "If the Ultimate targets an ally with Golden Apple, grants additional ATK based on Idun's stats for a duration.",
+        "upgrades": {
+          "level2": "Also grants Crit Chance during the duration.",
+          "level3": "Also grants Overpower effect.",
+          "level4": "Also grants additional Lifesteal."
+        }
+      },
+      {
+        "id": "skill_3",
+        "name": "Life Awakening",
+        "type": "Active",
+        "description": "Heals the weakest ally based on Idun's ATK and the target’s lost HP. Can additionally trigger once on allies with Golden Apple.",
+        "upgrades": {
+          "level2": "Increases healing based on ATK.",
+          "level3": "Increases healing based on missing HP.",
+          "level4": "Further increases overall healing scaling."
+        }
+      },
+      {
+        "id": "skill_4",
+        "name": "Divine Protection",
+        "type": "Passive",
+        "description": "Upon near death, Idun summons a massive Golden Apple shield that converts max HP into sustain over time. Triggers once per battle.",
+        "upgrades": {
+          "level2": "Increases shield strength.",
+          "level3": "Reduces damage taken during the effect.",
+          "level4": "Further increases shield strength."
+        }
+      }
+    ],
+    "relic": {
+      "name": "Divine Sharing (神性共享)",
+      "description": "At battle start, grants the nearest frontline ally Golden Apple, providing a percentage of Idun’s base stats (ATK, HP, Armor, M-RES). While the target is alive, Idun takes reduced damage.",
+      "upgrades": {
+        "level2": "Increases stat transfer ratio.",
+        "level3": "Further reduces damage taken while Golden Apple target is alive.",
+        "level4": "Further increases stat transfer ratio."
+      }
+    },
+    "synergies": [
+      "BUFF_TEAM",
+      "DAMAGE_REDUCTION_TEAM",
+      "HEAL_TEAM",
+      "SHIELD_TEAM",
+      "DMG_RED",
+      "HEAL",
+      "SHIELD"
+    ],
+    "baseAttackRate": 0.935,
+    "bossUltimatesPer90s": 10
   },
   "iris": {
     "id": "iris",
     "name": "Iris",
     "image": "/heroes/iris.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Support",
@@ -2723,8 +3903,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "B",
-      "pve": "A"
+      "pve": "B"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -2819,26 +4000,59 @@
       "ATK_SPEED"
     ],
     "baseAttackRate": 0.708,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "CC and AoE ATK buffs. Pairs with Poseidon to amplify AoE DPS. CN: small butterfly, unremarkable support with a consistent use case.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 1,
+        "type": "mandatory",
+        "effect": "CC and AoE ATK buff unlocked. Core function active."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "poseidon",
+        "type": "core",
+        "description": "Pairs with Poseidon to amplify grouped AoE DPS output."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine (after rest done)",
+      "priority": 3,
+      "notes": null
+    }
   },
   "isis": {
     "id": "isis",
     "name": "Isis",
     "image": "/heroes/isis.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Nimble",
     "class": "Archer",
     "rarity": "Legendary",
     "description": "",
     "ratings": {
-      "overall": "S",
+      "overall": "A",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "S",
-      "pve": "SSS"
+      "forgottenLabyrinth": "",
+      "pvp": "C",
+      "pve": "C"
     },
-    "recommendedRelicLevel": 10,
+    "recommendedRelicLevel": 0,
     "evolution": "Divine V",
     "level": 300,
     "stats": {
@@ -2932,12 +4146,25 @@
       "ATK_UP"
     ],
     "baseAttackRate": 2.91,
-    "bossUltimatesPer90s": 3
+    "bossUltimatesPer90s": 3,
+    "coreMechanic": {
+      "summary": "Max HP% damage plus armor penetration and crit buffs during ultimate. Second-best single-target bossing unit after Zeus. Free 7-day login unit, easily replaced.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "jinchan": {
     "id": "jinchan",
     "name": "Jinchan",
     "image": "/heroes/jinchan.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Support",
@@ -2948,6 +4175,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -3006,18 +4234,20 @@
     "id": "jingwei",
     "name": "Jingwei",
     "image": "/heroes/jingwei.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Assassin",
     "rarity": "Legendary",
     "description": "Jingwei, the indomitable bird born from a drowned soul, embodies resolve and perseverance. Her life is devoted to filling the sea.",
     "ratings": {
-      "overall": "A",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "A",
       "pvp": "A",
-      "pve": "A"
+      "pve": "S"
     },
     "recommendedRelicLevel": 20,
     "evolution": "Divine V",
@@ -3115,24 +4345,194 @@
       "ATK_UP"
     ],
     "baseAttackRate": 1.012,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Ranged carry who jumps to back row, marks farthest enemy for +20% incoming damage, fires wind blades in flight every 1.5s. Targets enemy back row specifically.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 10,
+        "type": "mandatory",
+        "effect": "On Zeus route: borrow Zeus gear slots 1/3/4, r10-r20 sufficient."
+      },
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Standalone carry investment if no Divine Zeus yet."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "cashien",
+        "type": "core",
+        "description": "Energy cycling feeds flight phase; longer airborne means more damage output."
+      },
+      {
+        "heroId": "mengpo",
+        "type": "core",
+        "description": "Revives give Jingwei a second life if focused while airborne."
+      },
+      {
+        "heroId": "yanluo",
+        "type": "conditional",
+        "description": "Yanluo r10 timing syncs with Jingwei jump kick for +20% ATK burst window."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0.5",
+      "cnTier": "T0.5",
+      "egTier": "T0.5",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine -> D5",
+      "priority": 2,
+      "notes": "Shares Zeus awakened gear slots 1/3/4 -- free if building Zeus anyway."
+    }
+  },
+  "jiutian-xuannv": {
+    "id": "jiutian-xuannv",
+    "name": "Jiutian Xuannv",
+    "image": "/heroes/jiutian-xuannv.webp",
+    "release": false,
+    "faction": "Clubs",
+    "role": "Physical",
+    "class": "Archer",
+    "rarity": "Legendary",
+    "description": "A board-control archer who switches between Execute and Yield stances based on battlefield state, drains enemy energy, and converts incoming damage into counter-strikes via the Taiji Formation.",
+    "ratings": {
+      "overall": "S",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "",
+      "pvp": "A",
+      "pve": "S"
+    },
+    "recommendedRelicLevel": 30,
+    "evolution": "Divine V",
+    "level": 300,
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "image": "/skills/jiutian_xuannv_skill_1.png",
+        "name": "Win Half Against Heaven",
+        "description": "Reads the battlefield and switches stance based on unit count. If friendly unit count >= enemy unit count: switches to Execute stance and grants an ATK Speed boost for a duration. If friendly unit count < enemy unit count: switches to Yield stance and grants an ATK Speed boost for a duration.",
+        "upgrades": {
+          "level2": "Deals damage to all enemy units equal to a percentage of their highest ATK.",
+          "level3": "Execute stance grants a greater ATK increase amplitude on attacks.",
+          "level4": "Yield stance additionally grants a basic attack damage boost for a duration."
+        },
+        "damageType": "Physical",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "image": "/skills/jiutian_xuannv_skill_2.png",
+        "name": "Swift Control, Slow Response",
+        "description": "At battle start, designates the frontmost ally as the White piece (damage received reduced) and the rearmost ally as the Black piece (damage dealt increased). When White advances into enemy territory it converts to Black; when Black is approached by an enemy it converts to White. Each swap triggers once per field.",
+        "upgrades": {
+          "level2": "Black piece damage bonus percentage increased.",
+          "level3": "When a unit swaps designation, it gains a shield based on a percentage of Jiutian's ATK.",
+          "level4": "White piece damage reduction effect increased."
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "image": "/skills/jiutian_xuannv_skill_3.png",
+        "name": "Tactical Interception",
+        "description": "Fires at multiple targets nearest to her, dealing a percentage of ATK as damage (hits the same target multiple times if fewer targets than projectiles). If target's current energy is below Jiutian's: recovers own energy. If target's current energy is equal to or above Jiutian's: drains target's energy.",
+        "upgrades": {
+          "level2": "Energy recovered when target energy is below Jiutian's is further increased.",
+          "level3": "Energy drained when target energy is equal to or above Jiutian's is further increased.",
+          "level4": "Energy drain when target energy is equal to or above Jiutian's becomes significantly larger."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_4",
+        "image": "/skills/jiutian_xuannv_skill_4.png",
+        "name": "Enter the Game",
+        "description": "When Jiutian Xuannv receives an attack, she summons the Taiji Formation for a duration. During the formation, all incoming damage is 100% nullified and accumulated. After the formation ends, she fires at the nearest enemy dealing the accumulated damage. This skill has a cooldown.",
+        "upgrades": {
+          "level2": "Skill cooldown slightly reduced.",
+          "level3": "Skill cooldown greatly reduced.",
+          "level4": "Continuously gains higher damage nullification during the formation."
+        },
+        "damageType": "Physical"
+      }
+    ],
+    "relic": {
+      "image": "/skills/jiutian_xuannv_relic.png",
+      "name": "Strike the Void, Hit the Real",
+      "description": "Strengthens Execute and Yield stances. Execute: each attack additionally deals bonus damage based on own ATK and target's max HP (capped). Yield: the first attacks after entering Yield stance deal bonus damage based on own ATK and target's lost HP (capped).",
+      "upgrades": {
+        "level2": "When Enter the Game activates and hits are received, gains energy and resets the formation cooldown (proc chance).",
+        "level3": "The Enter the Game cooldown reset becomes guaranteed instead of chance-based.",
+        "level4": "Execute and Yield stance damage ratios and upper limits are further increased."
+      }
+    },
+    "synergies": [
+      "ATK_SPD_UP",
+      "ENERGY_DRAIN",
+      "AREA_DAMAGE_DEALER",
+      "CROWD_CONTROL"
+    ]
   },
   "jormungandr": {
     "id": "jormungandr",
     "name": "Jormungandr",
     "image": "/heroes/jormungandr.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Hefty",
     "class": "Warrior",
     "rarity": "Legendary",
     "description": "Jormungandr, the Midgart Serpent, encircling the world and upholding the earth, rules ober seas and storms, shrouded in mystery with a wide-brimmed hat concealing the face.",
     "ratings": {
-      "overall": "S",
+      "overall": "B",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "S",
-      "pve": "S"
+      "forgottenLabyrinth": "",
+      "pvp": "B",
+      "pve": "B"
     },
     "recommendedRelicLevel": 1,
     "evolution": "Divine V",
@@ -3233,12 +4633,22 @@
       "SHIELD"
     ],
     "baseAttackRate": 1.592,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "activeBug": "true_damage_bug",
+    "activeBugNotes": "True damage mechanic non-functional. Currently used as grouping tool only.",
+    "metaSources": {
+      "excelTier": "T2",
+      "cnTier": "T2",
+      "egTier": "B",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "khepri": {
     "id": "khepri",
     "name": "Khepri",
     "image": "/heroes/khepri.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Hefty",
     "class": "Support",
@@ -3249,8 +4659,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "S",
-      "pve": "S"
+      "pve": "A"
     },
     "recommendedRelicLevel": 1,
     "evolution": "Divine V",
@@ -3359,12 +4770,49 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.376,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Push-and-group tech unit alongside Poseidon. Core mechanic unlocked at r1. EG notes kit has more depth than tier listing suggests with many undocumented mechanics.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 1,
+        "type": "mandatory",
+        "effect": "Core push-and-group mechanic unlocked. Functional from here."
+      },
+      {
+        "level": 10,
+        "type": "recommended",
+        "effect": "Tankiness scaling begins with relic investment."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "poseidon",
+        "type": "core",
+        "description": "Push-and-group unit; pairs with Poseidon for positioning setups."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 3,
+      "notes": null
+    }
   },
   "kraken": {
     "id": "kraken",
     "name": "Kraken",
     "image": "/heroes/kraken.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Hefty",
     "class": "Warrior",
@@ -3375,6 +4823,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -3432,6 +4881,7 @@
     "id": "leo",
     "name": "Leo",
     "image": "/heroes/leo.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Hefty",
     "class": "Warrior",
@@ -3442,6 +4892,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -3526,6 +4977,7 @@
     "id": "libra",
     "name": "Libra",
     "image": "/heroes/libra.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Hefty",
     "class": "Warrior",
@@ -3536,6 +4988,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -3618,6 +5071,7 @@
     "id": "medusa",
     "name": "Medusa",
     "image": "/heroes/medusa.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Archer",
@@ -3628,8 +5082,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -3727,24 +5182,165 @@
       "ATK_SPEED"
     ],
     "baseAttackRate": 1.163,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "No real use. Both CN and Excel agree: skip.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
+  },
+  "mengpo": {
+    "id": "mengpo",
+    "name": "Mengpo",
+    "image": "/heroes/mengpo.webp",
+    "release": true,
+    "faction": "Hearts",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "Mengpo, Legendary Support of the Hearts faction, governs the battlefield through Samsara—the power of return. While others fight to survive, Mengpo ensures that death itself is only a pause. Her Ultimate gathers Samsara stacks that revive fallen allies at full strength, turning defeat into renewal. As long as her companions stand, her Relic renders her untouchable. Stone of Three Fates shatters control effects and restores the afflicted, while Lycoris Bloom channels power to the ally closest to unleashing their Ultimate. With Mengpo present, the flow of battle bends around a single truth: for her allies, the end is never the end.",
+    "ratings": {
+      "overall": "SS",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "A",
+      "pvp": "S",
+      "pve": "S"
+    },
+    "recommendedRelicLevel": 30,
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 631000,
+      "hp": 2284448,
+      "atk": 191893,
+      "armor": 52132,
+      "magicRes": 44438,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 4,
+      "critRes": 6,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Samsara's Shore",
+        "description": "While having Samsara stacks, consumes one stack to revive a fallen ally and restore 50% of their max HP (Passive). Grants herself one stack of Samsara (Active).",
+        "upgrades": {
+          "level2": "Revived units restore 80% of their max HP.",
+          "level3": "Increases the maximum stacks of Samsara to 2.",
+          "level4": "Revived units restore 100% of their max HP."
+        },
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Stone of Three Fates",
+        "description": "Passive: When an ally is controlled, immediately restores HP equal to 200% of her ATK to them and removes their debuffs. CD: 20s.",
+        "upgrades": {
+          "level2": "Restores HP equal to 220% ATK.",
+          "level3": "Reduces the CD to 15s.",
+          "level4": "Restores HP equal to 250% ATK."
+        }
+      },
+      {
+        "id": "skill_3",
+        "name": "Waters of Oblivion",
+        "description": "Deals DMG equal to 270% of ATK to the enemy closest to backline allies and inflicts River of Oblivion, moving toward the initial position for 3s.",
+        "upgrades": {
+          "level2": "River of Oblivion also reduces the target's CRIT Rate by 30%.",
+          "level3": "Duration extends to 5s.",
+          "level4": "Deals 300% ATK as DMG."
+        },
+        "damageType": "Magical"
+      },
+      {
+        "id": "skill_4",
+        "name": "Lycoris Bloom",
+        "description": "Buffs the ally with the highest Energy, increasing their ATK by 15% and restoring 50 Energy per sec to them for 5s.",
+        "upgrades": {
+          "level2": "Grants 20% DMG RED.",
+          "level3": "Increases ATK by 30%.",
+          "level4": "Restores 80 Energy per sec."
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "No Return",
+      "description": "When there are 5 or more surviving allies (excluding minions) on the battlefield, Mengpo traverses the boundary between life and death, making herself untargetable.",
+      "upgrades": {
+        "level2": "A unit revived by Samsara gains 200 Energy.",
+        "level3": "Restores 200 Energy whenever an ally falls.",
+        "level4": "When there are 4 or more surviving allies (excluding minions) on the battlefield, Mengpo becomes untargetable."
+      }
+    },
+    "synergies": [
+      "BUFF_TEAM",
+      "DEBUFF_CLEANSE_TEAM",
+      "HEAL_TEAM",
+      "REDUCES_ATTRIBUTES",
+      "ENERGY_RESTORE",
+      "HIT_AVOID",
+      "REVIVE"
+    ],
+    "baseAttackRate": 0.706,
+    "bossUltimatesPer90s": 4,
+    "activeBug": "ha_revive",
+    "activeBugNotes": "Revives do not persist between Hero Arena battles.",
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "momus": {
     "id": "momus",
     "name": "Momus",
     "image": "/heroes/momus.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Hefty",
     "class": "Tank",
     "rarity": "Legendary",
     "description": "Momus is the god of mockery, sencure, sarcasm, and reproach, as well as the guardian of writers and poets. He delights in exposing the flaws of gods and mortals, reveling in just critique.",
     "ratings": {
-      "overall": "SS",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SS",
-      "pve": "SS"
+      "forgottenLabyrinth": "",
+      "pvp": "A",
+      "pve": "S"
     },
     "recommendedRelicLevel": 10,
     "evolution": "Divine V",
@@ -3847,26 +5443,40 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.519,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Shields without global cooldown -- at 25% gain rate, continuous shielding is supermassive in both PvP and PvE. Stats directly amplify Hecate.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "S",
+      "consensus": "partial",
+      "lastVerified": "2025-04"
+    }
   },
   "nemesis": {
     "id": "nemesis",
     "name": "Nemesis",
     "image": "/heroes/nemesis.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Assassin",
     "rarity": "Legendary",
     "description": "Nemesis, goddess of vengeance and justice, rules over the balance of cause and effect, punishing arrogance and injustice.",
     "ratings": {
-      "overall": "S",
+      "overall": "B",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SS",
-      "pve": "S"
+      "forgottenLabyrinth": "S",
+      "pvp": "A",
+      "pve": "C"
     },
-    "recommendedRelicLevel": 10,
+    "recommendedRelicLevel": 0,
     "evolution": "Divine V",
     "level": 300,
     "stats": {
@@ -3963,24 +5573,38 @@
       "SHIELD"
     ],
     "baseAttackRate": 1.164,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Early carry PvP burst window; falls off hard as DPS in late game. Damage too random and slow for consistent performance. CN: Nyx's inferior.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "nezha": {
     "id": "nezha",
     "name": "Nezha",
     "image": "/heroes/nezha.webp",
+    "release": true,
     "faction": "Starglint",
     "role": "Nimble",
     "class": "Warrior",
     "rarity": "Legendary",
     "description": "",
     "ratings": {
-      "overall": "SSS",
+      "overall": "SS",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SSS",
-      "pve": "SSS"
+      "forgottenLabyrinth": "S",
+      "pvp": "S",
+      "pve": "SS"
     },
     "recommendedRelicLevel": 30,
     "evolution": "Divine V",
@@ -4089,24 +5713,140 @@
         "autor": "GPH",
         "videoId": "A67MaxE9qFE"
       }
-    ]
+    ],
+    "baseAttackRate": 0.732,
+    "bossUltimatesPer90s": 5,
+    "teamComps": {
+      "pve": [
+        {
+          "label": "Rush",
+          "stars": 1,
+          "description": "Nezha with 4 cheap/expendable units. Suitable for early-game farming where speed matters more than survival.",
+          "targets": "All",
+          "totems": [
+            "unsullied_lotus",
+            "defiant_vow"
+          ],
+          "front": [
+            "nezha"
+          ],
+          "back": []
+        },
+        {
+          "label": "Standard",
+          "stars": 4,
+          "description": "Nezha with 4 buff supports. Can beat almost all teams. Wenshen, Hephaestus, Diana and Amunra stack offensive and defensive buffs.",
+          "targets": "All",
+          "totems": [
+            "unsullied_lotus",
+            "defiant_vow"
+          ],
+          "front": [
+            "nezha"
+          ],
+          "back": [
+            "wenshen",
+            "hephaestus",
+            "diana",
+            "amunra"
+          ]
+        },
+        {
+          "label": "Three Phase Variant",
+          "stars": 5,
+          "description": "Momus, Yuelao, Meret and Tefnut provide the full support shell. Nezha acts as the sweep core -- violent and efficient.",
+          "targets": "All",
+          "totems": [
+            "defiant_vow",
+            "horn_of_potency",
+            "undying_staff"
+          ],
+          "front": [
+            "nezha"
+          ],
+          "back": [
+            "momus",
+            "yuelao",
+            "meret",
+            "tefnut"
+          ]
+        },
+        {
+          "label": "Heracles Variant",
+          "stars": 5,
+          "description": "Heracles gathers and controls enemies while Hephaestus and Diana buff Nezha's burst. Set covers the backline.",
+          "targets": "All",
+          "totems": [
+            "defiant_vow",
+            "sanctified_blood"
+          ],
+          "front": [
+            "nezha",
+            "heracles"
+          ],
+          "back": [
+            "hephaestus",
+            "diana",
+            "set"
+          ]
+        }
+      ]
+    },
+    "coreMechanic": {
+      "summary": "Strongest PvE DPS carry. Clears most Odyssey teams at Divine with 4 level-1 supports. PvE-optimized boss-agnostic kit. Awakened gear slots 1/3/4 shared with Zeus.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 30,
+        "type": "mandatory",
+        "effect": "Primary PvE damage ceiling. Core endgame investment."
+      },
+      {
+        "level": 50,
+        "type": "high_spender",
+        "effect": "Maximum PvE ceiling. With Totem, 4 supports become redundant."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "yanluo",
+        "type": "conditional",
+        "description": "Yanluo r10 timing syncs with Nezha jump kick for +20% ATK on contact."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 1,
+      "notes": "Secondary Celestial after Zeus. Shares Zeus gear slots -- overlap minimizes cost."
+    }
   },
   "nuba": {
     "id": "nuba",
     "name": "Nuba",
     "image": "/heroes/nuba.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Warrior",
     "rarity": "Legendary",
     "description": "",
     "ratings": {
-      "overall": "A",
+      "overall": "SS",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "S",
-      "pve": "A"
+      "forgottenLabyrinth": "",
+      "pvp": "SS",
+      "pve": "S"
     },
     "recommendedRelicLevel": 0,
     "evolution": "Divine V",
@@ -4207,24 +5947,38 @@
       "ENERGY_RESTORE"
     ],
     "baseAttackRate": 1.908,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Off-tank sub-DPS with layered utility. Without dupe and relic investment she feeds enemy energy. Multiple non-obvious tricks in kit.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": true
+    },
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "S+",
+      "consensus": "partial",
+      "lastVerified": "2025-04"
+    }
   },
   "nuwa": {
     "id": "nuwa",
     "name": "Nuwa",
     "image": "/heroes/nuwa.webp",
+    "release": true,
     "faction": "Starglint",
     "role": "Hefty",
     "class": "Tank",
     "rarity": "Legendary",
     "description": "Nuwa is the goddess of creation who breathed life into clay, shaping it into humans with warmth and soul. SHe is also the one who gathered the five-colored stones to mend heaven and earth when they shattered.",
     "ratings": {
-      "overall": "SSS",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SSS",
-      "pve": "SS"
+      "forgottenLabyrinth": "",
+      "pvp": "SS",
+      "pve": "S"
     },
     "recommendedRelicLevel": 30,
     "evolution": "Divine V",
@@ -4325,12 +6079,38 @@
       "ENERGY_RESTORE"
     ],
     "baseAttackRate": 1.715,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Best tank in game. Perma-CC enemies and shares damage between allied units at base dupe. All functions active from one copy -- among the best base-dupe value units in game.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 30,
+        "type": "recommended",
+        "effect": "Full tank performance ceiling. Base dupe already fully functional."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Base dupe -> wait, or grab from Mindsea",
+      "priority": 3,
+      "notes": "Only Celestial worth grabbing as base copy from Mindsea if unlucky with pulls."
+    }
   },
   "nymphia": {
     "id": "nymphia",
     "name": "Nymphia",
     "image": "/heroes/nymphia.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Mage",
@@ -4341,6 +6121,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -4398,18 +6179,20 @@
     "id": "nyx",
     "name": "Nyx",
     "image": "/heroes/nyx.webp",
+    "release": true,
     "faction": "Starglint",
     "role": "Nimble",
     "class": "Assassin",
     "rarity": "Legendary",
     "description": "Nyx. ancient goddess of night, reigns over darkness and dreams. Her star-woven gown drifts as she walks, leaving silence beyond measure and dreams without end.",
     "ratings": {
-      "overall": "SSS",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SSS",
-      "pve": "SSS"
+      "forgottenLabyrinth": "",
+      "pvp": "SS",
+      "pve": "S"
     },
     "recommendedRelicLevel": 30,
     "evolution": "Divine V",
@@ -4516,24 +6299,56 @@
       }
     ],
     "baseAttackRate": 2.129,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Most broken PvP unit. Hard carries early PvE then transitions to sub-DPS. Diagonal untargetable traversal cuts through frontlines to reach back-row targets. CN: tier above the rest.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 30,
+        "type": "recommended",
+        "effect": "General investment baseline. Strong in both PvE and PvP."
+      },
+      {
+        "level": 50,
+        "type": "high_spender",
+        "effect": "PvP ceiling. CN: one star is enough to use immediately."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Base dupe -> wait for random drop",
+      "priority": 3,
+      "notes": null
+    }
   },
   "pan": {
     "id": "pan",
     "name": "Pan",
     "image": "/heroes/pan.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Arcane",
     "class": "Support",
     "rarity": "Legendary",
     "description": "Pan, god of forests, wildlife and shepherds, bears the head and torso of a human, with the legs, horns, and ears of a goat.",
     "ratings": {
-      "overall": "SS",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "SS",
-      "pve": "S"
+      "pve": "A"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -4631,12 +6446,32 @@
       "ENERGY_RESTORE"
     ],
     "baseAttackRate": 0.543,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "relicBreakpoints": [
+      {
+        "level": 0,
+        "type": "recommended",
+        "effect": "Fully functional at r0 -- CC and energy removal require no relic investment."
+      },
+      {
+        "level": 20,
+        "type": "high_spender",
+        "effect": "Significant power jump for perma-CC setups; enables advanced counter-tech vs energy-cycling enemies."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T0.5",
+      "egTier": "A+",
+      "consensus": "partial",
+      "lastVerified": "2025-04"
+    }
   },
   "phoenix": {
     "id": "phoenix",
     "name": "Phoenix",
     "image": "/heroes/phoenix.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Arcane",
     "class": "Mage",
@@ -4647,6 +6482,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": "A"
     },
@@ -4746,12 +6582,38 @@
       "HEAL"
     ],
     "baseAttackRate": 4.956,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "coreMechanic": {
+      "summary": "Infinite lives mechanic -- revives on death for sustained presence through long fights. Early primary DPS; later sub-DPS alongside Hercules.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "DPS baseline. Revive mechanic active and meaningful."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "T1",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 3,
+      "notes": null
+    }
   },
   "pisces": {
     "id": "pisces",
     "name": "Pisces",
     "image": "/heroes/pisces.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Mage",
@@ -4762,6 +6624,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -4844,6 +6707,7 @@
     "id": "poseidon",
     "name": "Poseidon",
     "image": "/heroes/poseidon.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Hefty",
     "class": "Warrior",
@@ -4854,6 +6718,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "SS",
       "pve": "SS"
     },
@@ -4955,24 +6820,72 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.793,
-    "bossUltimatesPer90s": 8
+    "bossUltimatesPer90s": 8,
+    "coreMechanic": {
+      "summary": "Best grouping tool in game. r10 mandatory -- chain waterspouts scale dramatically with relic. Mastery of Poseidon and Set defines high-level PvE pushing.",
+      "depthRating": "high",
+      "commonlyMisunderstood": true
+    },
+    "relicBreakpoints": [
+      {
+        "level": 10,
+        "type": "mandatory",
+        "effect": "Mandatory first investment -- biggest single performance jump of any unit at r10."
+      },
+      {
+        "level": 30,
+        "type": "high_spender",
+        "effect": "Chain waterspouts reach full power; significant frontline stat boost for high-spend accounts."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "skadi",
+        "type": "core",
+        "description": "Grouped targets maximize Skadi AoE burst value."
+      },
+      {
+        "heroId": "set",
+        "type": "core",
+        "description": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing."
+      },
+      {
+        "heroId": "khepri",
+        "type": "conditional",
+        "description": "Push and group alongside Poseidon for positioning control."
+      },
+      {
+        "heroId": "hela",
+        "type": "conditional",
+        "description": "Hela carry enabled by Poseidon grouping alongside Khepri and Iris."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "prometheus": {
     "id": "prometheus",
     "name": "Prometheus",
     "image": "/heroes/prometheus.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Hefty",
     "class": "Tank",
     "rarity": "Legendary",
     "description": "Prometheus, thief of fire for humanity, embodies wisdom and rebellion. His name means forethought, and he wields the fire of creation and enlightment.",
     "ratings": {
-      "overall": "A",
+      "overall": "B",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "A",
-      "pve": "A"
+      "forgottenLabyrinth": "",
+      "pvp": "B",
+      "pve": "B"
     },
     "recommendedRelicLevel": 1,
     "evolution": "Divine V",
@@ -5074,12 +6987,38 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.738,
-    "bossUltimatesPer90s": 2
+    "bossUltimatesPer90s": 2,
+    "coreMechanic": {
+      "summary": "Frontline tank whose cage-drop passive traps enemies in place. Tech unit for specific stages. CN: first properly useful helper at his investment level.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 1,
+        "type": "mandatory",
+        "effect": "Cage-drop passive unlocked. Stopping point for most accounts."
+      }
+    ],
+    "synergyLinks": [],
+    "metaSources": {
+      "excelTier": "T2",
+      "cnTier": "T1",
+      "egTier": "T2",
+      "consensus": "partial",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 4,
+      "notes": "r1 unlock only. Tech use for Heart Spire pushback."
+    }
   },
   "ratatoskr": {
     "id": "ratatoskr",
     "name": "Ratatoskr",
     "image": "/heroes/ratatoskr.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Archer",
@@ -5090,6 +7029,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -5147,6 +7087,7 @@
     "id": "sagittarius",
     "name": "Sagitarius",
     "image": "/heroes/sagittarius.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Nimble",
     "class": "Archer",
@@ -5157,6 +7098,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -5238,6 +7180,7 @@
     "id": "scorpio",
     "name": "Scorpio",
     "image": "/heroes/scorpio.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Nimble",
     "class": "Assassin",
@@ -5248,6 +7191,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -5324,12 +7268,20 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.479,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T2",
+      "egTier": null,
+      "consensus": "contested",
+      "lastVerified": "2025-04"
+    }
   },
   "sekhmet": {
     "id": "sekhmet",
     "name": "Sekhmet",
     "image": "/heroes/sekhmet.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Hefty",
     "class": "Warrior",
@@ -5340,8 +7292,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -5441,12 +7394,25 @@
       "LIFE_STEAL_UP"
     ],
     "baseAttackRate": 1.782,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "Push for enemy grouping only. Single use case: group enemies for AoE follow-up. No other investment value.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "set": {
     "id": "set",
     "name": "Set",
     "image": "/heroes/set.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Nimble",
     "class": "Warrior",
@@ -5457,8 +7423,9 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
-      "pve": "A"
+      "pve": "B"
     },
     "recommendedRelicLevel": 10,
     "evolution": "Divine V",
@@ -5559,24 +7526,266 @@
       "LIFE_STEAL_UP"
     ],
     "baseAttackRate": 0.875,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "coreMechanic": {
+      "summary": "Lifesteal and ATK% buffer with armor shred for Diamond team. Mastery of Set alongside Poseidon defines high-level PvE pushing -- understanding how Set works separates mediocre from elite pushers.",
+      "depthRating": "high",
+      "commonlyMisunderstood": true
+    },
+    "synergyLinks": [
+      {
+        "heroId": "poseidon",
+        "type": "core",
+        "description": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing."
+      },
+      {
+        "heroId": "heracles",
+        "type": "core",
+        "description": "ATK% buff and lifesteal amplify Heracles burst windows."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "A",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
+  },
+  "skadi": {
+    "id": "skadi",
+    "name": "Skadi",
+    "image": "/heroes/skadi.webp",
+    "release": true,
+    "faction": "Spades",
+    "role": "Arcane",
+    "class": "Mage",
+    "rarity": "Legendary",
+    "description": "Core of Control",
+    "ratings": {
+      "overall": "SS",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "",
+      "pvp": "S",
+      "pve": "SS"
+    },
+    "recommendedRelicLevel": 0,
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 631000,
+      "hp": 1654421,
+      "atk": 229883,
+      "armor": 26316,
+      "magicRes": 38628,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 10,
+      "critRes": 6,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Drifting Vortex",
+        "description": "Create an Ice Vortex that continuously moves around the battlefield while targeting enemy Deity units (excluding minions) for 8 seconds. While active, the Ice Vortex deals 36% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 60% ATK as DMG.",
+        "upgrades": {
+          "level2": "While active, the Ice Vortex deals 48% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 80% ATK as DMG.",
+          "level3": "Ice Vortex's each consecutive hit on the same target increases the DMG that target takes from Ice Storm by 12%, stacking up to 15 times.",
+          "level4": "While active, the Ice Vortex deals 60% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 100% ATK as DMG."
+        },
+        "damageType": "Magical",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Ring of Blizzard",
+        "description": "Summon a Blizzard with 3-meter radius in a densely packed area. The blizzard deals 40% ATK as DMG every 0.5 seconds for 3 seconds, then deals 100% ATK as DMG to enemies that remain within the area after 3 seconds.",
+        "upgrades": {
+          "level2": "Deals 60% ATK as DMG every 0.5 seconds.",
+          "level3": "Deals 80% ATK as DMG every 0.5 seconds.",
+          "level4": "Enemies that remain within the area after 3 seconds are Frozen for 3 seconds."
+        },
+        "damageType": "Magical"
+      },
+      {
+        "id": "skill_3",
+        "name": "Ice Prison",
+        "description": "Freeze the current target for 2 seconds and deal 240% ATK as DMG.",
+        "upgrades": {
+          "level2": "Also deals 80% ATK as DMG per second to units around the target.",
+          "level3": "Deals 270% ATK as DMG.",
+          "level4": "Duration extends to 3s."
+        },
+        "damageType": "Magical"
+      },
+      {
+        "id": "skill_4",
+        "name": "Realm of Frost",
+        "description": "When an enemy unit is affected by a Crowd Control effect, Skadi summons an Ice Spike to deal 60% ATK as DMG to the target.",
+        "upgrades": {
+          "level2": "Increases DMG dealt to 80%.",
+          "level3": "And restores 30 Energy.",
+          "level4": "Increases DMG dealt to 100%."
+        },
+        "damageType": "Magical"
+      }
+    ],
+    "relic": {
+      "name": "Iceforged Veins",
+      "description": "Triggering Realm of Frost grants 8% ATK for 3s. Stacks up to 10 times.",
+      "upgrades": {
+        "level2": "When Skadi is about to fall, she freezes herself for 3s, becoming invincible and restoring 20% of her max HP per sec. This can be triggered once per battle.",
+        "level3": "Triggering Realm of Frost grants 12% ATK for 3s. Stacks up to 10 times.",
+        "level4": "Triggering Realm of Frost grants 12% ATK for 8s. Stacks up to 10 times."
+      }
+    },
+    "synergies": [
+      "CROWD_CONTROL",
+      "ENEMY_VULNERABILITY",
+      "AREA_DAMAGE_DEALER",
+      "ATK_UP",
+      "ENERGY_RESTORE"
+    ],
+    "baseAttackRate": 1.351,
+    "bossUltimatesPer90s": 3,
+    "teamComps": {
+      "pve": [
+        {
+          "label": "Standard",
+          "stars": 4,
+          "description": "High strength, can beat all teams. Skadi provides CC while Poseidon and Khepri anchor the front, Pan buffs, and Nuwa sustains the team.",
+          "targets": "All",
+          "totems": [
+            "keystone_of_wonders",
+            "undying_staff"
+          ],
+          "front": [
+            "skadi",
+            "poseidon"
+          ],
+          "back": [
+            "khepri",
+            "pan",
+            "nuwa"
+          ]
+        },
+        {
+          "label": "Ultimate",
+          "stars": 5,
+          "description": "Mainly targets Dog-head enemies and immortal Treant. Cronus replaces Nuwa for CDR and formation disruption.",
+          "targets": "All",
+          "totems": [
+            "keystone_of_wonders",
+            "undying_staff"
+          ],
+          "front": [
+            "skadi",
+            "poseidon"
+          ],
+          "back": [
+            "khepri",
+            "pan",
+            "cronus"
+          ]
+        }
+      ]
+    },
+    "coreMechanic": {
+      "summary": "AoE carry with damage scaling by enemy density and built-in lifesteal. Non-overlapping synergies -- slots into any comp. CN: closest non-Celestial DPS to a Celestial.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 10,
+        "type": "mandatory",
+        "effect": "AoE range and lifesteal meaningful from here."
+      },
+      {
+        "level": 20,
+        "type": "mandatory",
+        "effect": "Carry performance solidified. Core investment target."
+      },
+      {
+        "level": 30,
+        "type": "recommended",
+        "effect": "Endgame ceiling. Dupes matter at this level."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "poseidon",
+        "type": "core",
+        "description": "Foundational pairing -- Poseidon groups; Skadi AoE hits entire cluster at max efficiency."
+      },
+      {
+        "heroId": "momus",
+        "type": "core",
+        "description": "Momus taunts into Skadi AoE -- enemies pulled, taunted in place, then deleted."
+      },
+      {
+        "heroId": "yuelao",
+        "type": "core",
+        "description": "Full Spade meta trio with Yuelao buffing both Skadi and Hecate simultaneously."
+      },
+      {
+        "heroId": "hecate",
+        "type": "core",
+        "description": "Full Spade meta trio -- Skadi secondary carry alongside Hecate primary."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine -> D5",
+      "priority": 1,
+      "notes": null
+    }
   },
   "surtr": {
     "id": "surtr",
     "name": "Surtr",
     "image": "/heroes/surtr.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Mage",
     "rarity": "Legendary",
     "description": "Surtr, godess of desctruction and renewal, is the greatest Fiery Jotunn and the executor of Ragnarok.",
     "ratings": {
-      "overall": "B",
+      "overall": "D",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "S",
-      "pve": "A"
+      "forgottenLabyrinth": "",
+      "pvp": "D",
+      "pve": "D"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -5673,7 +7882,19 @@
       "SHIELD"
     ],
     "baseAttackRate": 0.828,
-    "bossUltimatesPer90s": 3
+    "bossUltimatesPer90s": 3,
+    "coreMechanic": {
+      "summary": "Garbage multipliers and kit. Both CN and Excel agree completely: do not invest.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "tailao": {
     "id": "tailao",
@@ -5689,6 +7910,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -5746,6 +7968,7 @@
     "id": "taurus",
     "name": "Taurus",
     "image": "/heroes/taurus.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Hefty",
     "class": "Tank",
@@ -5756,6 +7979,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -5841,18 +8065,20 @@
     "id": "tefnut",
     "name": "Tefnut",
     "image": "/heroes/tefnut.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Support",
     "rarity": "Legendary",
     "description": "Tefnut, the living Heaven's Teardrop, rules over moisture, rain and purification, summoning life giving and cleansing drops.",
     "ratings": {
-      "overall": "SS",
+      "overall": "S",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "SS",
-      "pve": "SSS"
+      "pve": "A"
     },
     "recommendedRelicLevel": 10,
     "evolution": "Divine V",
@@ -5960,12 +8186,25 @@
       }
     ],
     "baseAttackRate": 0.64,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "Only pure cleanser in game. 50% AoE damage reduction plus cleanse. r30 very strong in specific fights but not mandatory.",
+      "depthRating": "high",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T1",
+      "egTier": "S",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "treant": {
     "id": "treant",
     "name": "Treant",
     "image": "/heroes/treant.webp",
+    "release": true,
     "faction": "Clubs",
     "role": "Hefty",
     "class": "Warrior",
@@ -5976,6 +8215,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -6034,18 +8274,19 @@
     "id": "ullr",
     "name": "Ullr",
     "image": "/heroes/ullr.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Hefty",
     "class": "Tank",
     "rarity": "Legendary",
     "description": "",
     "ratings": {
-      "overall": "B",
+      "overall": "C",
       "grimSurge": "",
-      "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "S",
-      "pve": "A"
+      "pve": "C"
     },
     "evolution": "Divine V",
     "level": 300,
@@ -6141,12 +8382,25 @@
       "CROWD_CONTROL",
       "HEAL",
       "SHIELD"
-    ]
+    ],
+    "coreMechanic": {
+      "summary": "Late-game back row protection with shields, knockback, and stun. CN: unique ally protection mechanic. Tech use only becomes relevant months into the future.",
+      "depthRating": "low",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T10",
+      "cnTier": "T10",
+      "egTier": "T10",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "ushabti": {
     "id": "ushabti",
     "name": "Ushabti",
     "image": "/heroes/ushabti.webp",
+    "release": true,
     "faction": "Diamonds",
     "role": "Arcane",
     "class": "Mage",
@@ -6157,6 +8411,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -6214,6 +8469,7 @@
     "id": "virgo",
     "name": "Virgo",
     "image": "/heroes/virgo.webp",
+    "release": true,
     "faction": "Spades",
     "role": "Nimble",
     "class": "Archer",
@@ -6224,6 +8480,7 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
       "pve": ""
     },
@@ -6305,31 +8562,34 @@
     "id": "wenshen",
     "name": "Wen-Shen",
     "image": "/heroes/wenshen.webp",
+    "release": true,
+    "newHero": true,
     "faction": "Clubs",
     "role": "Arcane",
     "class": "Support",
     "rarity": "Legendary",
-    "description": "yet to come",
+    "description": "Make the most of her dueling power and her harrassing potential.",
     "ratings": {
-      "overall": "",
+      "overall": "A",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "",
-      "pve": ""
+      "forgottenLabyrinth": "",
+      "pvp": "SS",
+      "pve": "S"
     },
     "evolution": "Divine V",
     "level": 300,
     "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
-      "dodgeRate": 0,
+      "might": 631000,
+      "hp": 2010315,
+      "atk": 201031,
+      "armor": 46361,
+      "magicRes": 46361,
+      "dodgeRate": 6,
       "hitBonus": 0,
-      "critRate": 0,
-      "critRes": 0,
+      "critRate": 4,
+      "critRes": 6,
       "critDmgBonus": 0,
       "critDmgRed": 0,
       "energy": 0,
@@ -6353,70 +8613,72 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Calamity Star Illumination",
-        "description": "Curses the nearest enemy, preventing them from moving or attacking for a period of time, and deals damage every second equal to a percentage of her attack power.",
+        "name": "Star of Ill Omen",
+        "description": "Jinxes the nearest enemy, disabling them for 4s while dealing DMG equal to 80% of ATK per sec.",
         "upgrades": {
-          "level2": "Increases the duration.",
-          "level3": "Increases the damage dealt per second.",
-          "level4": "Duration increases again."
+          "level2": "Duration extends to 5s.",
+          "level3": "Increases DMG per sec to 100% ATK.",
+          "level4": "Duration extends to 6s."
         },
-        "damageType": "",
+        "damageType": "Magical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Domain of Misfortune",
-        "description": "Creates a Misfortune aura around her, reducing the attack power of enemies within range. When actively triggered, she flies toward the enemy with the highest attack power and deals damage equal to a percentage of her attack.",
+        "name": "Duality Inversion",
+        "description": "Curses the symmetrically opposite enemy, dealing DMG equal to 50% of their max HP (up to 1000% of Wenshen’s ATK). The curse is slowly lifted over 5s, restoring the lost HP.",
         "upgrades": {
-          "level2": "Enemies within the aura also have reduced defense.",
-          "level3": "Increases the damage dealt when actively triggered.",
-          "level4": "If she dies in battle, the Misfortune aura remains at her original position for a period of time."
+          "level2": "While cursed, the target receives 30% reduced healing.",
+          "level3": "The curse is slowly lifted over 8s, restoring the lost HP.",
+          "level4": "While cursed, the target receives 60% reduced healing."
         },
-        "damageType": ""
+        "damageType": "Magical"
       },
       {
         "id": "skill_3",
-        "name": "Yin-Yang Curse",
-        "description": "Curses the mirrored-position enemy, dealing damage equal to a percentage of their max HP. The curse gradually dissipates over time and restores the HP previously lost.",
+        "name": "Calamity-Ridden",
+        "description": "The enemy defeating Wenshen becomes permanently Jinxed (Passive). Jinxed: Has a 50% chance to be stunned, terrified, or petrified for 2.5s when attacking; has a 50% chance to be knocked down when moving. Jinxed can only trigger once every 4s.",
         "upgrades": {
-          "level2": "During the curse duration, the target’s healing received is reduced.",
-          "level3": "Increases the curse duration.",
-          "level4": "Increases the debuff effects caused by the curse."
-        },
-        "damageType": ""
+          "level2": "Enemies also take DMG equal to 50% of her ATK per sec.",
+          "level3": "Jinxed enemies deal 20% reduced DMG.",
+          "level4": "Increases the chance of triggering a Jinxed effect to 60%."
+        }
       },
       {
         "id": "skill_4",
-        "name": "Eternal Calamity Bind ",
-        "description": "When she defeats an enemy, the killer permanently enters the “Misfortune” state. Enemies under Misfortune have a chance when attacking to suffer control effects (such as stun, fear, petrify, or movement speed reduction). The Misfortune effect can only trigger once every 4 seconds.",
+        "name": "Cursed Ground",
+        "description": "Wenshen creates an Aura of Misfortune within a 3-meter radius around her, reducing the ATK of enemies inside by 20% (Passive). She flies toward the enemy with the highest ATK, dealing DMG equal to 180% of ATK (Active).",
         "upgrades": {
-          "level2": "Enemies in Misfortune take damage every second equal to a percentage of her attack.",
-          "level3": "Enemies in Misfortune deal reduced damage.",
-          "level4": "The trigger chance of all negative effects under Misfortune increases."
+          "level2": "Enemies inside the Aura of Misfortune have their DEF reduced by 20%.",
+          "level3": "Increases DMG dealt to 200% ATK.",
+          "level4": "Wenshen’s Aura of Misfortune lingers on the spot when she is defeated."
         },
-        "damageType": ""
+        "damageType": "Magical"
       }
     ],
     "relic": {
-      "name": "Source of Misfortune",
-      "description": "When an enemy afflicted with Misfortune dies, the Misfortune spreads to the nearest enemy and deals damage to the newly infected target.",
+      "name": "Origin of Pestilence",
+      "description": "When a Jinxed enemy is defeated, it spreads to 1 nearest enemy, dealing DMG equal to 200% of ATK to the new target.",
       "upgrades": {
-        "level2": "Increases the damage dealt when spreading.",
-        "level3": "Enemies cursed by “Yin-Yang Curse” will also permanently enter the Misfortune state.",
-        "level4": "During the Misfortune duration, the target takes increased damage."
+        "level2": "Upon spreading, increases DMG to 260% ATK.",
+        "level3": "Enemies cursed by Duality Inversion are permanently Jinxed.",
+        "level4": "The target takes 20% increased DMG while Jinxed."
       }
     },
     "synergies": [
-      "ATK_DOWN",
       "CROWD_CONTROL",
-      "ENEMY_VULNERABILITY",
-      "REDUCES_ATTRIBUTES"
-    ]
+      "ATK_DOWN",
+      "REDUCES_ATTRIBUTES",
+      "ENEMY_VULNERABILITY"
+    ],
+    "baseAttackRate": 0.626,
+    "bossUltimatesPer90s": 4
   },
   "yanluo": {
     "id": "yanluo",
     "name": "Yanluo",
     "image": "/heroes/yanluo.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Hefty",
     "class": "Warrior",
@@ -6427,9 +8689,11 @@
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "A",
-      "pve": "S"
+      "pve": "B"
     },
+    "recommendedRelicLevel": 0,
     "evolution": "Divine V",
     "level": 300,
     "stats": {
@@ -6531,26 +8795,52 @@
       "DMG_RED",
       "ENERGY_RESTORE",
       "HEAL"
-    ]
+    ],
+    "relicBreakpoints": [
+      {
+        "level": 10,
+        "type": "recommended",
+        "effect": "Syncs with Nezha jump kick; 20% ATK buff adds significant burst damage."
+      },
+      {
+        "level": 20,
+        "type": "high_spender",
+        "effect": "Strong tech to counter energy-cycling enemies like Ra; enables advanced grouping combos."
+      }
+    ],
+    "coreMechanic": {
+      "summary": "Pull and group tool with energy removal. r10 syncs with Nezha for burst windows. r20 counters energy-cycling enemies.",
+      "depthRating": "high",
+      "commonlyMisunderstood": false
+    },
+    "metaSources": {
+      "excelTier": "T1",
+      "cnTier": "T10",
+      "egTier": "A",
+      "consensus": "contested",
+      "lastVerified": "2025-04"
+    }
   },
   "yuelao": {
     "id": "yuelao",
     "name": "Yuelao",
     "image": "/heroes/yuelao.webp",
+    "release": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Support",
     "rarity": "Legendary",
     "description": "Yuelao, god of romance and marriage, uses his red threads to unite destined couples.",
     "ratings": {
-      "overall": "S",
+      "overall": "SS",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
+      "forgottenLabyrinth": "",
       "pvp": "S",
-      "pve": "SSS"
+      "pve": "S"
     },
-    "recommendedRelicLevel": 10,
+    "recommendedRelicLevel": 20,
     "evolution": "Divine V",
     "level": 300,
     "stats": {
@@ -6648,24 +8938,50 @@
       "HEAL"
     ],
     "baseAttackRate": 0.504,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "relicBreakpoints": [
+      {
+        "level": 10,
+        "type": "recommended",
+        "effect": "Core breakpoint for standard use."
+      },
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Late-game default; enables advanced Hecate tech and sustained boss survival."
+      },
+      {
+        "level": 30,
+        "type": "high_spender",
+        "effect": "Permanent survival tech in specific boss scenarios; pairs with Hecate r30 setup."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    }
   },
   "zeus": {
     "id": "zeus",
     "name": "Zeus",
     "image": "/heroes/zeus.webp",
+    "release": true,
     "faction": "Starglint",
     "role": "Arcane",
     "class": "Mage",
     "rarity": "Legendary",
     "description": "Zeus, king of gods and mortals, rules over the sky, thunder, and justice. High among the clouds with Lightning Bolt in hand, he casts his gaze across the world, and all beings bow beneath his might.",
     "ratings": {
-      "overall": "SSS",
+      "overall": "SS",
       "grimSurge": "",
       "delusionsDen": "",
       "torrentRift": "",
-      "pvp": "SSS",
-      "pve": "SSS"
+      "forgottenLabyrinth": "S",
+      "pvp": "SS",
+      "pve": "SS"
     },
     "recommendedRelicLevel": 30,
     "evolution": "Divine V",
@@ -6775,6 +9091,62 @@
       }
     ],
     "baseAttackRate": 1.164,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "coreMechanic": {
+      "summary": "Most versatile unit -- functions in every mode, team, and progression stage. Judgment burst buffed by Athena ATK speed, Yuelao ATK buff, and Dionysus damage boost.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 30,
+        "type": "mandatory",
+        "effect": "Primary damage ceiling. Standard endgame investment target."
+      },
+      {
+        "level": 50,
+        "type": "high_spender",
+        "effect": "Maximum performance ceiling across all modes."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "athena",
+        "type": "core",
+        "description": "ATK speed buff directly amplifies Judgment window output."
+      },
+      {
+        "heroId": "yuelao",
+        "type": "core",
+        "description": "ATK buff and link chain -- Zeus hits harder and survives longer."
+      },
+      {
+        "heroId": "cashien",
+        "type": "core",
+        "description": "Maximum energy cycling for guaranteed Judgment uptime."
+      },
+      {
+        "heroId": "dionysus",
+        "type": "core",
+        "description": "Damage-boost support completes the endgame meta support stack."
+      },
+      {
+        "heroId": "diana",
+        "type": "conditional",
+        "description": "Diana armor debuff plus Zeus Judgment creates disproportionate burst."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 1,
+      "notes": "Primary F2P Celestial target. Awakened gear slots 1/3/4. 5-6 copies in 61 days via Mindsea."
+    }
   }
 }

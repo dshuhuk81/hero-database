@@ -62,6 +62,7 @@ function adaptHero(raw) {
       grimSurge: raw.ratings?.grimSurge ?? null,
       delusionsDen: raw.ratings?.delusionsDen ?? null,
       torrentRift: raw.ratings?.torrentRift ?? null,
+      forgottenLabyrinth: raw.ratings?.forgottenLabyrinth ?? null,
       pvp: raw.ratings?.pvp ?? null,
       pve: raw.ratings?.pve ?? null,
     },
@@ -81,6 +82,15 @@ function adaptHero(raw) {
     recommendedRelicLevel: raw.recommendedRelicLevel,
     level: raw.level,
     evolution: raw.evolution,
+    newHero: raw.newHero ?? false,
+    // Meta-System V2 (optional fields -- undefined if not set)
+    coreMechanic: raw.coreMechanic ?? null,
+    metaSources: raw.metaSources ?? null,
+    relicBreakpoints: raw.relicBreakpoints ?? null,
+    synergyLinks: raw.synergyLinks ?? null,
+    activeBug: raw.activeBug ?? null,
+    activeBugNotes: raw.activeBugNotes ?? null,
+    f2pInvestment: raw.f2pInvestment ?? null,
   };
 }
 

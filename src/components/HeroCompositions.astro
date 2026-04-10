@@ -1,77 +1,26 @@
 ---
-import teamCompsByHeroId from "../data/derived/teamCompsByHeroId.json";
 import { getHeroById } from "../data/heroes";
+import totemData from "../data/totems.json";
 
-const { heroId, badgeStyle = "neutral" } = Astro.props; // "neutral" | "colored"
+const { heroId } = Astro.props;
 const mode = Astro.props.mode ?? "general";
-const comps = teamCompsByHeroId?.[heroId]?.[mode] ?? [];
 
-function hero(hid) { return getHeroById(hid); }
-function heroName(hid) { return hero(hid)?.name ?? hid; }
-function heroImg(hid) {
+const heroData = getHeroById(heroId);
+const comps = (heroData?.teamComps as Record<string, any[]>)?.[mode] ?? [];
+
+const totemById: Record<string, any> = Object.fromEntries(
+  (totemData?.totems ?? []).map((t: any) => [t.id, t])
+);
+
+function totemName(id: string): string { return totemById[id]?.name ?? id; }
+function totemImg(id: string): string { return totemById[id]?.image ?? ""; }
+
+function hero(hid: string) { return getHeroById(hid); }
+function heroName(hid: string): string { return hero(hid)?.name ?? hid; }
+function heroImg(hid: string): string {
   const img = hero(hid)?.image;
   if (typeof img !== "string" || img.length === 0) return "";
   return img.startsWith("/") ? img : `/${img}`;
-}
-
-function heroTags(comp, hid) {
-  const fromSummary = comp?.summary?.heroes?.find(x => x.id === hid)?.tags;
-  return Array.isArray(fromSummary) ? fromSummary : [];
-}
-
-
-function badgeClass(label) {
-  if (badgeStyle !== "colored") return "badge";
-
-  // 1) Normalize input (trim, collapse spaces, unify hyphens)
-  const raw = String(label ?? "");
-  const key = raw
-    .trim()
-    .replace(/\s+/g, " ")
-    .replace(/[‐-–—]/g, "-"); // normalize different dash chars
-
-  // 2) Canonical mapping (exact labels)
-  const map = {
-    // Heal split
-    "Ally Heal": "badge heal",
-    "Self Heal": "badge heal",
-    "Anti-Heal": "badge antiheal",
-
-    // Backward compatible
-    "Heal": "badge heal",
-
-    "Shield": "badge shield",
-    "Cleanse": "badge cleanse",
-    "Control": "badge control",
-    "AoE": "badge aoe",
-    "Energy": "badge energy",
-    "Cooldown": "badge cooldown",
-    "Backline": "badge backline",
-    "Def Down": "badge shred",
-  };
-
-  // 3) Aliases (common drift / typos / variants)
-  const alias = {
-    "Anti Heal": "Anti-Heal",
-    "Antiheal": "Anti-Heal",
-    "DefShred": "Def Down",
-    "Defense Shred": "Def Down",
-    "DEF Shred": "Def Down",
-    "Def Shred": "Def Down",
-    "Aoe": "AoE",
-  };
-
-  const canonical = map[key] ? key : (alias[key] ?? key);
-
-  // 4) Fallback: case-insensitive match (last resort)
-  if (!map[canonical]) {
-    const lower = canonical.toLowerCase();
-    const ci = Object.keys(map).find(k => k.toLowerCase() === lower);
-    if (ci) return map[ci];
-    return "badge unknown"; // visually highlight unknowns
-  }
-
-  return map[canonical];
 }
 ---
 
@@ -81,174 +30,94 @@ function badgeClass(label) {
   </div>
 
   {comps.length === 0 ? (
-    <p>No compositions generated yet. Run <code>node scripts/generator.js</code>.</p>
+    <p>No compositions available for this mode.</p>
   ) : (
     <div class="comp-list">
       {comps.map((c, idx) => (
         <article class="comp">
           <div class="header">
             <strong>
-              {c.label === "meta" && "Meta"}
-              {c.label === "bonus35" && "35% Faction"}
-              {c.label === "mixed" && "Mixed"}
-              {c.label === "bestBonus" && "Best Bonus"}
-              {!c.label && `Team #${idx + 1}`}
+              {c.label || `Team #${idx + 1}`}
             </strong>
-            <small>Score: {Math.round(c.rankingScore)}</small>
-          </div>
-
-          <div class="bonus">
-            {c.summary?.factionBonusPct != null ? (
-              <span class="pill">Faction Bonus: {c.summary.factionBonusPct}% ATK & HP</span>
-            ) : (
-              <span class="pill">Faction Bonus: (see sources)</span>
+            {c.stars != null && (
+              <span class="curated-stars" title={`CN community rating: ${c.stars}/5`}>
+                {Array.from({ length: c.stars }).map(() => "*").join("")}/5
+              </span>
             )}
           </div>
 
-          <div class="formation-grid">
-            {(['front', 'back'] as const).map((position) => (
-              <div class={`formation-row ${position}-row`}>
-                {c.formation[position].map((hid) => {
-                  const h = hero(hid);
-                  if (!h) return <div class="hero-card-slot empty"></div>;
-                  const isCurrentHero = h.id === heroId;
-                  const tags = heroTags(c, hid).slice(0, 3);
-
-                  return (
-                    <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
-                      <div class="hero-card-inner">
-                        <div class="hero-image-wrapper">
-                          <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
-                          {isCurrentHero && (
-                            <div class="current-hero-badge" title="Current hero">
-                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-
-                        <div class="hero-info">
-                          <h4 class="hero-name">{heroName(hid)}</h4>
-                          <div class="hero-meta">
-                            <img
-                              src={`/icons/factions/${String(h.faction ?? "").toLowerCase()}.webp`}
-                              alt={h.faction}
-                              class="faction-icon-small"
-                              title={h.faction}
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          </div>
-
-                          {tags.length > 0 && (
-                            <div class="tag-row">
-                              {tags.map((t) => <span class={badgeClass(t)}>{t}</span>)}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-
-          {c.synergy?.length > 0 && (
-            <div class="synergy-box">
-            <h4>Synergy</h4>
-              <ul>
-              {c.synergy.map(s => (
-              <li>
-              <div>{s.text}</div>
-
-              {Array.isArray(s.evidence) && s.evidence.length > 0 && (
-                <details class="synergy-evidence">
-                  <summary>Show proof</summary>
-                  <ul>
-                    {s.evidence.map(ev => (
-                      <li><strong>{ev.heroName}</strong> ({ev.tag}): <em>{ev.snippet}</em></li>
-                    ))}
-                  </ul>
-                </details>
-              )}
-              </li>
-              ))}
-              </ul>
+          {c.targets && (
+            <div class="bonus">
+              <span class="pill curated-pill">vs: {c.targets}</span>
             </div>
           )}
-          {c.synergyDebug && (
-            <details class="synergy-debug">
-              <summary>
-                Synergy Debug (Strict: {c.synergyDebug.strictMode ? "ON" : "OFF"})
-              </summary>
 
-              <div class="synergy-debug-inner">
-                {c.synergyDebug.heroes?.map(hd => (
-                  <details class="synergy-debug-hero">
-                    <summary>
-                      <strong>{hd.heroName}</strong>
-                      <span class="sd-meta">
-                        {hd.forbidsNormals && <span class="sd-pill warn">No Normal Attacks</span>}
-                        {Array.isArray(hd.detectedTags) && hd.detectedTags.length > 0 ? (
-                          <span class="sd-pill ok">{hd.detectedTags.length} detected</span>
-                        ) : (
-                          <span class="sd-pill">0 detected</span>
-                        )}
-                      </span>
-                    </summary>
+          <div class="formation-grid">
+            {(['front', 'back'] as const).map((position) => {
+              const slots: string[] = Array.isArray(c[position]) ? c[position] : [];
+              if (slots.length === 0) return null;
+              return (
+                <div class={`formation-row ${position}-row`}>
+                  {slots.map((hid) => {
+                    const h = hero(hid);
+                    if (!h) return <div class="hero-card-slot empty"></div>;
+                    const isCurrentHero = h.id === heroId;
 
-                    {/* Detected tags quick row */}
-                    {Array.isArray(hd.detectedTags) && hd.detectedTags.length > 0 && (
-                      <div class="sd-detected">
-                        {hd.detectedTags.map(t => (
-                          <span class="sd-chip">{t}</span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Full tag table: Evidence / No evidence */}
-                    <div class="sd-table">
-                      {hd.tags?.map(row => (
-                        <div class={`sd-row ${row.hasEvidence ? "has" : "missing"}`}>
-                          <div class="sd-tag">
-                            <code>{row.tag}</code>
-                          </div>
-
-                          <div class="sd-status">
-                            {row.hasEvidence ? (
-                              <span class="sd-pill ok">EVIDENCE</span>
-                            ) : (
-                              <span class="sd-pill danger">NO EVIDENCE</span>
+                    return (
+                      <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
+                        <div class="hero-card-inner">
+                          <div class="hero-image-wrapper">
+                            <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
+                            {isCurrentHero && (
+                              <div class="current-hero-badge" title="Current hero">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                  <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
+                                </svg>
+                              </div>
                             )}
                           </div>
 
-                          <div class="sd-snippet">
-                            {row.hasEvidence && row.snippet ? (
-                              <em>{row.snippet}</em>
-                            ) : (
-                              <span class="sd-muted">
-                                No matching regex document found (or tag not applicable).
-                              </span>
-                            )}
+                          <div class="hero-info">
+                            <h4 class="hero-name">{heroName(hid)}</h4>
+                            <div class="hero-meta">
+                              <img
+                                src={`/icons/factions/${String(h.faction ?? "").toLowerCase()}.webp`}
+                                alt={h.faction}
+                                class="faction-icon-small"
+                                title={h.faction}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </details>
-                ))}
-              </div>
-            </details>
+                      </a>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+
+          {c.description && (
+            <div class="curated-description">
+              <p>{c.description}</p>
+            </div>
           )}
-          {/* <details class="sources">
-            <summary>Show sources (facts)</summary>
-            <ul class="facts">
-              {c.facts.map((f) => (
-                <li><strong>{f.title}:</strong> {f.value}</li>
+
+          {Array.isArray(c.totems) && c.totems.length > 0 && (
+            <div class="curated-totems">
+              <span class="totem-label">Totem:</span>
+              {c.totems.map((tid) => (
+                <span class="totem-chip" title={totemName(tid)}>
+                  {totemImg(tid) && (
+                    <img src={totemImg(tid)} alt={totemName(tid)} class="totem-icon" loading="lazy" decoding="async" />
+                  )}
+                  {totemName(tid)}
+                </span>
               ))}
-            </ul>
-          </details>  */}
+            </div>
+          )}
         </article>
       ))}
     </div>
@@ -262,164 +131,19 @@ function badgeClass(label) {
   border-color: rgba(148,163,184,.28);
   opacity: .9;
 }
-.synergy-debug {
-  margin-top: 1rem;
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 12px;
-  background: rgba(0,0,0,.18);
-  padding: .75rem 1rem;
-}
-.synergy-debug summary { cursor: pointer; opacity: .9; }
-
-.synergy-debug-inner { margin-top: .75rem; display: grid; gap: .75rem; }
-
-.synergy-debug-hero {
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 10px;
-  padding: .6rem .75rem;
-  background: rgba(255,255,255,.03);
-}
-.synergy-debug-hero summary { cursor: pointer; display:flex; justify-content: space-between; align-items:center; gap: .75rem; }
-
-.sd-meta { display:flex; gap: .4rem; align-items:center; }
-
-.sd-pill {
-  display:inline-block;
-  padding:.18rem .45rem;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
-  font-size:.72rem;
-  opacity:.95;
-}
-.sd-pill.ok { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.35); }
-.sd-pill.danger { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.35); }
-.sd-pill.warn { background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.35); }
-
-.sd-detected { margin-top: .5rem; display:flex; flex-wrap:wrap; gap:.35rem; }
-.sd-chip {
-  font-size: .72rem;
-  padding: .15rem .4rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  opacity: .95;
-}
-
-.sd-table { margin-top: .6rem; display: grid; gap: .45rem; }
-.sd-row {
-  display: grid;
-  grid-template-columns: 260px 120px 1fr;
-  gap: .6rem;
-  align-items: start;
-  padding: .5rem .55rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(0,0,0,.20);
-}
-.sd-row.has { border-color: rgba(16,185,129,.22); }
-.sd-row.missing { border-color: rgba(239,68,68,.18); opacity: .95; }
-
-.sd-tag code { font-size: .75rem; }
-.sd-snippet em { font-size: .78rem; opacity: .92; }
-.sd-muted { font-size: .78rem; opacity: .65; }
-
-@media (max-width: 900px) {
-  .sd-row { grid-template-columns: 1fr; }
-}
-  .synergy-item {
-  margin-bottom: 1rem;
-  padding: 0.6rem;
-  background: rgba(255,255,255,0.03);
-  border-radius: 8px;
-}
-
-.synergy-text {
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-}
-
-.synergy-evidence summary {
-  cursor: pointer;
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
-
-.evidence-block {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: rgba(0,0,0,0.25);
-  border-radius: 6px;
-  font-size: 0.8rem;
-}
-
-.evidence-tag {
-  font-size: 0.7rem;
-  opacity: 0.7;
-  margin-bottom: 0.2rem;
-}
-
-.evidence-snippet {
-  font-style: italic;
-  opacity: 0.9;
-}
-.synergy-box{
-  margin-top: 1rem;
-  padding: 1rem 1.25rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.22);
-}
-.synergy-box h4{
-  margin: 0 0 .5rem 0;
-  font-size: .95rem;
-  opacity: .95;
-}
-.synergy-box ul{
-  margin: 0;
-  padding-left: 1.1rem;
-  opacity: .9;
-}
-.synergy-box li{
-  margin: .25rem 0;
-}
-  .badge.antiheal { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.35); }
-  .comp-type {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 4px 10px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: .5px;
-  border-radius: 999px;
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,.2);
-}
-
-.comp-meta {
-  background: linear-gradient(135deg, #facc15, #f59e0b);
-  color: #1a1a1a;
-}
-
-.comp-bonus35 {
-  background: linear-gradient(135deg, #818cf8, #6366f1);
-  color: white;
-}
-.comp {
-  position: relative;
-}
-
-.comp-mixed {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-}
-
   .comp-card { padding: 1rem;}
   .top { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; }
   .comp-list { display: grid; gap: 1rem; margin-top: .75rem; }
-  .comp { padding: 1rem; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(0,0,0,.18); }
+  .comp { padding: 1rem; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: rgba(0,0,0,.18); position: relative; }
   .header { display:flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+
+  .curated-stars { font-size: .85rem; color: #f4c542; opacity: .9; }
+  .curated-pill { border-color: rgba(244,197,66,.3); background: rgba(244,197,66,.07); color: #f4c542; }
+  .curated-description { margin: .5rem 0 .75rem; font-size: .88rem; color: rgba(255,255,255,.65); font-style: italic; padding: .5rem .75rem; border-left: 2px solid rgba(244,197,66,.4); }
+  .curated-totems { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin: .5rem 0 .25rem; }
+  .totem-label { font-size: .78rem; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .05em; margin-right: .2rem; }
+  .totem-chip { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .55rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); font-size: .8rem; color: rgba(255,255,255,.8); }
+  .totem-icon { width: 18px; height: 18px; object-fit: contain; }
 
   .bonus { margin-top: .5rem; }
   .pill {
@@ -432,7 +156,7 @@ function badgeClass(label) {
     opacity:.95;
   }
 
-  /* === Formation Grid (aus TeamComps abgeleitet) === */
+  /* === Formation Grid === */
   .formation-grid {
     display: flex;
     flex-direction: column;
@@ -440,9 +164,7 @@ function badgeClass(label) {
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 2rem;
- 
     border-radius: 1rem;
-
   }
 
   .formation-row {
@@ -459,7 +181,7 @@ function badgeClass(label) {
     grid-template-columns: repeat(2, minmax(140px, 200px));
   }
 
-  /* Hero Card (aus TeamComps abgeleitet) */
+  /* Hero Card */
   .hero-card,
   .hero-card-slot {
     position: relative;
@@ -584,15 +306,6 @@ function badgeClass(label) {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   }
 
-  /* Tags / Badges Row (nutzt vorhandene badgeClass) */
-  .tag-row {
-    display:flex;
-    flex-wrap:wrap;
-    gap:.4rem;
-    justify-content:center;
-    margin-top: .35rem;
-  }
-
   /* Neutral badges */
   .badge {
     padding: .18rem .45rem;
@@ -605,6 +318,7 @@ function badgeClass(label) {
 
   /* Colored badges */
   .badge.heal { background: rgba(16,185,129,.18); border-color: rgba(16,185,129,.35); }
+  .badge.antiheal { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.35); }
   .badge.shield { background: rgba(59,130,246,.18); border-color: rgba(59,130,246,.35); }
   .badge.cleanse { background: rgba(34,197,94,.16); border-color: rgba(34,197,94,.32); }
   .badge.control { background: rgba(168,85,247,.18); border-color: rgba(168,85,247,.35); }
@@ -613,9 +327,6 @@ function badgeClass(label) {
   .badge.cooldown { background: rgba(99,102,241,.18); border-color: rgba(99,102,241,.35); }
   .badge.backline { background: rgba(244,63,94,.18); border-color: rgba(244,63,94,.35); }
   .badge.shred { background: rgba(148,163,184,.18); border-color: rgba(148,163,184,.35); }
-
-  .sources { margin-top: .85rem; }
-  .facts { margin-top: .5rem; padding-left: 1.25rem; }
 
   /* Responsive */
   @media (max-width: 1024px) {

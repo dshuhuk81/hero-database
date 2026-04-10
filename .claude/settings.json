@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(ls /Users/daschultheiss/hero-database/public/skills/hephaestus*)",
+      "Bash(ls /Users/daschultheiss/hero-database/public/heroes/hephaestus*)",
+      "Bash(ls /Users/daschultheiss/hero-database/src/data/heroes/hephaestus*)",
+      "Bash(chmod +x /Users/daschultheiss/hero-database/.githooks/pre-commit)",
+      "Bash(grep -l '\"pve\": \"SSS\"' *.json)",
+      "Bash(grep -l '\"pve\": \"SS\"' *.json)",
+      "Bash(grep -l '\"pve\": \"S\"' *.json)",
+      "Bash(grep -l '\"pve\": \"A\"' *.json)",
+      "Bash(grep -l '\"pve\": \"B\"' *.json)",
+      "Bash(node scripts/merge-heroes-db.js)",
+      "Bash(sed -i '' 's/\"overall\": \"SSS\"/\"overall\": \"S\"/' amunra.json dionysus.json nuwa.json nyx.json)",
+      "Bash(sed -i '' 's/\"overall\": \"SSS\"/\"overall\": \"SS\"/' zeus.json)",
+      "Bash(sed -i '' 's/\"overall\": \"SS\"/\"overall\": \"S\"/' bastet.json tefnut.json pan.json)",
+      "Bash(sed -i '' 's/\"overall\": \"S\"/\"overall\": \"A\"/' hela.json)",
+      "Bash(sed -i '' 's/\"overall\": \"SSS\"/\"overall\": \"SS\"/' nezha.json)",
+      "Bash(sed -i '' 's/\"pve\": \"SSS\"/\"pve\": \"SS\"/' nezha.json)",
+      "Bash(sed -i '' 's/\"pvp\": \"SSS\"/\"pvp\": \"S\"/' nezha.json)",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('nezha.json'\\)\\); r=d['ratings']; print\\(f'overall: {r[\\\\\"overall\\\\\"]} | pvp: {r[\\\\\"pvp\\\\\"]} | pve: {r[\\\\\"pve\\\\\"]}'\\)\")",
+      "Bash(ls /Users/daschultheiss/hero-database/*.xlsx /Users/daschultheiss/hero-database/*.md)",
+      "Read(//Users/daschultheiss/**)",
+      "Bash(python3 -c ':*)",
+      "Bash(python3 -m pip install openpyxl --quiet)",
+      "Bash(node -e ':*)",
+      "Bash(node validate-pvp-ratings.js)",
+      "Bash(grep -n \"synergies\\\\|recommendedRelic\\\\|TAG_CATEGORIES\\\\|ENGINE\" src/pages/heroes/[id].astro)",
+      "Bash(node validate-bosses.js)",
+      "Bash(ls validate*.js scripts/validate*.js)",
+      "Bash(node scripts/validate-bosses.js)",
+      "Bash(node scripts/test-hero-tags.js)",
+      "Bash(wc -l /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k: d[k] for k in ['metaSources','relicBreakpoints','recommendedRelicLevel','ratings'] if k in d}, indent=2\\)\\)\")",
+      "Bash(python3 -c 'import json; d=json.load\\(open\\('\\\\''src/data/heroes/__TRACKED_VAR__.json'\\\\''\\)\\); r=d.get\\('\\\\''ratings'\\\\'',{}\\); print\\(f'\\\\''overall={r.get\\(\"overall\",\"\"\\)} pve={r.get\\(\"pve\",\"\"\\)} pvp={r.get\\(\"pvp\",\"\"\\)}'\\\\''\\)')",
+      "Bash(node -e \"const h = require\\('./src/data/all_heroes_db.json'\\); const z = h['zeus']; console.log\\(JSON.stringify\\({rating: z.rating, ratings: z.ratings, metaSources: z.metaSources}, null, 2\\)\\);\")",
+      "Bash(node -e \"const h = require\\('./src/data/all_heroes_db.json'\\); const z = h['zeus']; console.log\\('rating top-level:', z.rating\\);\")",
+      "Bash(node -e \"const {heroes} = require\\('./src/data/heroes'\\); const z = heroes.find\\(h => h.id==='zeus'\\); console.log\\('rating:', z.rating, 'ratings.overall:', z.ratings?.overall\\);\")",
+      "WebFetch(domain:www.taptap.cn)"
+    ],
+    "additionalDirectories": [
+      "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
+    ]
+  }
+}

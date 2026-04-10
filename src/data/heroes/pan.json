@@ -2,19 +2,20 @@
   "id": "pan",
   "name": "Pan",
   "image": "/heroes/pan.webp",
-    "release": true,
+  "release": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Support",
   "rarity": "Legendary",
   "description": "Pan, god of forests, wildlife and shepherds, bears the head and torso of a human, with the legs, horns, and ears of a goat.",
   "ratings": {
-    "overall": "SS",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "SS",
-    "pve": "S"
+    "pve": "A"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -112,5 +113,16 @@
     "ENERGY_RESTORE"
   ],
   "baseAttackRate": 0.543,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "relicBreakpoints": [
+    { "level": 0, "type": "recommended", "effect": "Fully functional at r0 -- CC and energy removal require no relic investment." },
+    { "level": 20, "type": "high_spender", "effect": "Significant power jump for perma-CC setups; enables advanced counter-tech vs energy-cycling enemies." }
+  ],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T0.5",
+    "egTier": "A+",
+    "consensus": "partial",
+    "lastVerified": "2025-04"
+  }
 }

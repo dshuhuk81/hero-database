@@ -2,27 +2,9 @@
 export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
 import SkillCard from "../../components/hero/SkillCard.astro";
-import Footer from "../../components/Footer.astro";  
+import Base from "../../layouts/Base.astro";
 import RatingCard from "../../components/hero/RatingCard.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
-import { computeScore, computeScoreForScenario } from "../../utils/rankingScore.js";
-import { synergyProfileForHero, synergyPotentialForHero, synergyProfileForHeroByCategory } from "../../utils/synergyTags.js";
-import { rateHeroSkills, getHeroSkillProfile } from "../../utils/skillAnalyzer.js";
-
-const rankedHeroes = (await Promise.all([...heroes]
-  .map(async (hero) => {
-    const s = hero.stats ?? {};
-    return {
-      hero,
-      score: await computeScore(hero),
-      hp: Number(s.hp ?? 0),
-      atk: Number(s.atk ?? 0),
-      armor: Number(s.armor ?? 0),
-      magicRes: Number(s.magicRes ?? 0),
-    };
-  })))
-  .sort((a, b) => b.score - a.score);
-
 /* STATIC PATHS */
 export function getStaticPaths() {
   return heroes.map((hero) => ({
@@ -33,77 +15,12 @@ export function getStaticPaths() {
 const { id } = Astro.params;
 const hero = getHeroById(id);
 const heroIndex = heroes.findIndex((entry) => entry.id === id);
+const heroTeamComps = (hero as any)?.teamComps;
+const hasComps = heroTeamComps && Object.values(heroTeamComps).some((arr) => Array.isArray(arr) && arr.length > 0);
 const prevHero = heroIndex > 0 ? heroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < heroes.length - 1 ? heroes[heroIndex + 1] : null;
 
-// Ranking Daten für diesen Hero
-const currentHeroData = rankedHeroes.find(r => r.hero.id === id);
-const currentRank = currentHeroData ? rankedHeroes.indexOf(currentHeroData) + 1 : null;
-
-// Synergy & Skill Analysis
-const synergyProfile = synergyProfileForHero(hero);
-const synergyPotential = await synergyPotentialForHero(hero);
-const synergyProfileByCategory = synergyProfileForHeroByCategory(hero);
-const skillPower = rateHeroSkills(hero);
-const skillProfile = getHeroSkillProfile(hero);
-
-// Scenario ratings
-const scenarioRatings = {
-  overall: currentHeroData?.score || 0,
-  boss: await computeScoreForScenario(hero, 'boss'),
-  campaign: await computeScoreForScenario(hero, 'campaign'),
-  pvp: await computeScoreForScenario(hero, 'pvp'),
-};
-
-// Calculate scenario rankings
-const allHeroScenarioScores = await Promise.all(
-  [...heroes].map(async (h) => ({
-    hero: h,
-    boss: await computeScoreForScenario(h, 'boss'),
-    campaign: await computeScoreForScenario(h, 'campaign'),
-    pvp: await computeScoreForScenario(h, 'pvp'),
-  }))
-);
-
-function getScenarioRanking(scenarioKey) {
-  const sorted = [...allHeroScenarioScores].sort((a, b) => b[scenarioKey] - a[scenarioKey]);
-  return sorted.findIndex(r => r.hero.id === id) + 1;
-}
-
-const scenarioRankings = {
-  boss: getScenarioRanking('boss'),
-  campaign: getScenarioRanking('campaign'),
-  pvp: getScenarioRanking('pvp'),
-};
-
-// Determine best scenario
-const scenarios = [
-  { key: 'boss', label: 'Boss', icon: '⚔️', score: scenarioRatings.boss, rank: scenarioRankings.boss },
-  { key: 'campaign', label: 'Campaign', icon: '🌍', score: scenarioRatings.campaign, rank: scenarioRankings.campaign },
-  { key: 'pvp', label: 'PvP', icon: '⚡', score: scenarioRatings.pvp, rank: scenarioRankings.pvp },
-];
-const bestScenario = scenarios.reduce((max, s) => s.score > max.score ? s : max);
-
-// Calculate max skill power across all heroes for dynamic scaling
-const allSkillPowers = await Promise.all(
-  [...heroes].map(h => Promise.resolve(rateHeroSkills(h)))
-);
-const maxSkillPower = Math.max(...allSkillPowers);
-
-// Berechne Einzelstat-Rankings für Transparency
-function getStatRanking(statKey) {
-  const sorted = [...rankedHeroes].sort((a, b) => b[statKey] - a[statKey]);
-  return sorted.findIndex(r => r.hero.id === id) + 1;
-}
-
-const statRankings = {
-  hp: currentHeroData ? getStatRanking('hp') : null,
-  atk: currentHeroData ? getStatRanking('atk') : null,
-  armor: currentHeroData ? getStatRanking('armor') : null,
-  magicRes: currentHeroData ? getStatRanking('magicRes') : null,
-};
-
-// NEU: Mode aus Query ziehen (general|pve|pvp)
+// Mode aus Query ziehen (general|pve|pvp)
 const mode = Astro.url.searchParams.get("mode") ?? "general";
 
 const currentHero = await import(`../../data/heroes/${id}.json`);
@@ -169,10 +86,10 @@ const STAT_LABELS = {
 };
 ---
 
-<head>
-  <meta charset="utf-8" />
-</head>
-
+<Base
+  title={hero ? `${hero.name} - Stats, Skills & Tier List | Motto Immortal` : "Hero | Motto Immortal"}
+  description={hero ? `${hero.name} is a ${hero.class} (${hero.role}) hero in Motto Immortal. View stats, skills, ratings (${hero.ratings?.overall ?? ""}), team comps and synergies.` : undefined}
+>
 <div class="hero-detail-page">
   <!-- STICKY HEADER -->
   <header class="hero-detail-header">
@@ -185,7 +102,7 @@ const STAT_LABELS = {
         <nav class="hero-tabs">
           <button class="tab active" data-tab="attributes">Attributes</button>
           <button class="tab" data-tab="skills">Skills</button>
-          <button class="tab" data-tab="synergies">Compositions<span class="alpha-chip">Alpha</span></button>
+          {hasComps && <button class="tab" data-tab="synergies">Compositions</button>}
           {hero["content-creator"] && hero["content-creator"].length > 0 && (
             <button class="tab" data-tab="video-guide">Video Guide</button>
           )}
@@ -238,9 +155,24 @@ const STAT_LABELS = {
   <main class="hero-detail-content">
     <!-- TAB: ATTRIBUTES -->
     <div class="tab-content active" data-content="attributes">
+      {hero.activeBug && (
+        <div class="bug-banner">
+          <svg class="bug-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+          <div class="bug-text">
+            <strong>Known Bug</strong>
+            <span>{hero.activeBugNotes}</span>
+          </div>
+        </div>
+      )}
       <section class="hero-overview">
-        <!-- LEFT -->
-        <div>
+        <!-- LEFT: Hero Image -->
+        <div class="hero-visual" style={`background-image: url(${hero.image});`}>
+        </div>
+
+        <!-- RIGHT: Info -->
+        <div class="hero-info-col">
           <!-- LARGE HERO NAME -->
           <h2 class="hero-name-large">{hero.name}</h2>
 
@@ -250,334 +182,167 @@ const STAT_LABELS = {
               {hero.description}
             </p>
           )}
-          
-          <!-- FACTION -->
-          <div class="hero-faction">
-            <img
-              src={`/icons/factions/${hero.faction.toLowerCase()}.webp`}
-              alt={hero.faction}
-              class="faction-icon"
-            />
-            <span class="faction-label">{hero.faction}</span>
-          </div>
 
-          <!-- IDENTITY CARDS -->
-          <div class="hero-identity-cards">
-            <div class="identity-card">
-              <h4>Class</h4>
-              <div class="identity-content">
-                <img
-                  class="identity-icons"
-                  src={`/icons/classes/${hero.class.toLowerCase()}.webp`}
-                  alt={hero.class}
-                />
-                <span>{hero.class}</span>
-              </div>
-            </div>
+          <!-- META BADGES (Faction / Class / Role / Rarity / Relic Prio) -->
+          <div class="meta-badge-list">
+            <span class="meta-badge-label">Faction</span>
+            <span class="meta-badge-content">
+              <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} alt={hero.faction} class="meta-badge-icon" />
+              <span class="meta-badge-value">{hero.faction}</span>
+            </span>
 
-            <div class="identity-card">
-              <h4>Role</h4>
-              <div class="identity-content">
-                <img
-                  class="identity-icons"
-                  src={`/icons/roles/${hero.role.toLowerCase()}.webp`}
-                  alt={hero.role}
-                />
-                <span>{hero.role}</span>
-              </div>
-            </div>
+            <span class="meta-badge-label">Class</span>
+            <span class="meta-badge-content">
+              <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} alt={hero.class} class="meta-badge-icon" />
+              <span class="meta-badge-value">{hero.class}</span>
+            </span>
 
-            <div class="identity-card">
-              <h4>Rarity</h4>
-              <div class="identity-content rarity-content">
-                <svg class="rarity-star" viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"
-                  ></path>
-                </svg>
-                <span>{hero.rarity}</span>
-              </div>
-            </div>
+            <span class="meta-badge-label">Role</span>
+            <span class="meta-badge-content">
+              <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} alt={hero.role} class="meta-badge-icon" />
+              <span class="meta-badge-value">{hero.role}</span>
+            </span>
 
-            <!-- NEU: Relic Priority -->
-            {hero.recommendedRelicLevel !== undefined && (
-              <div class="identity-card">
-                <h4>Relic Prio</h4>
-                <div class="identity-content">
+            <span class="meta-badge-label">Rarity</span>
+            <span class="meta-badge-content">
+              <svg class="meta-rarity-star" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"></path>
+              </svg>
+              <span class="meta-badge-value">{hero.rarity}</span>
+            </span>
+
+            {hero.recommendedRelicLevel !== undefined && !(hero.relicBreakpoints?.length) && (
+              <>
+                <span class="meta-badge-label">Relic Prio</span>
+                <span class="meta-badge-content">
                   <span class={`relic-level relic-level-${hero.recommendedRelicLevel}`}>
-                    Level {hero.recommendedRelicLevel}
+                    Lv. {hero.recommendedRelicLevel}
                   </span>
-                </div>
-              </div>
+                </span>
+              </>
             )}
           </div>
-        </div>
 
-        <!-- RIGHT -->
-        <div class="hero-visual" style={`background-image: url(${hero.image});`}>
-        </div>
-      </section>
+          <!-- STATS -->
+          <section class="hero-stats">
+            <div class="headline-with-info"><h3>Stats</h3><span>(Level {hero.level}, {hero.evolution})</span></div>
 
-      <!-- STATS -->
-      <section class="hero-stats">
-        <div class="headline-with-info"><h2>Stats</h2><span>(Level {hero.level}, {hero.evolution})</span></div>
+            <div class="stats-wrapper">
+              <div class="stats-grid collapsed" id="statsGrid">
+                {Object.entries(STAT_LABELS).map(([key, label]) => {
+                  const statValue = Number(hero.stats[key] ?? 0);
+                  const hasValue = statValue > 0;
 
-        <div class="stats-wrapper">
-          <div class="stats-grid collapsed" id="statsGrid">
-            {Object.entries(STAT_LABELS).map(([key, label]) => {
-              const statValue = Number(hero.stats[key] ?? 0);
-              const hasValue = statValue > 0;
-              
-              return (
-                <div class={`stat-row ${hasValue ? 'has-value' : 'no-value'}`}>
-                  <span class="stat-label">{label}</span>
+                  return (
+                    <div class={`stat-row ${hasValue ? 'has-value' : 'no-value'}`}>
+                      <span class="stat-label">{label}</span>
 
-                  <div class="stat-right">
-                    <span class="stat-value">
-                      <span class="stat-current">
-                        {hero.stats[key]}
-                        <span class="stat-max"> / {statMaxima[key]}</span>
-                      </span>
+                      <div class="stat-right">
+                        <span class="stat-value">
+                          <span class="stat-current">
+                            {hero.stats[key]}
+                            <span class="stat-max"> / {statMaxima[key]}</span>
+                          </span>
+                        </span>
 
-                      {hero.rankings?.[key] && (
-                        <small class="stat-rank">
-                          #{hero.rankings[key]}
-                        </small>
-                      )}
-                    </span>
-
-                    <!-- STAT BAR -->
-                    <div class="stat-bar">
-                      <div
-                        class={`stat-bar-fill ${
-                          hero.rankings?.[key] === 1
-                            ? "rank-1"
-                            : hero.rankings?.[key] === 2
-                            ? "rank-2"
-                            : hero.rankings?.[key] === 3
-                            ? "rank-3"
-                            : hero.rankings?.[key] <= 10
-                            ? "rank-top"
-                            : "rank-default"
-                        }`}
-                        style={`width: ${
-                          statMaxima[key]
-                            ? Math.min((hero.stats[key] / statMaxima[key]) * 100, 100)
-                            : 0
-                        }%`}
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          
-          <div class="stats-gradient-overlay" id="statsOverlay">
-            <button class="stats-view-more-btn" id="statsToggleBtn">
-              <span class="btn-text">View All Stats</span>
-              <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16">
-                <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- RANKINGS WIDGET -->
-      {currentHeroData && (
-        <section class="hero-rankings-widget">
-          <div class="rankings-widget-title-row">
-            <div  class="margin-btm-16"><h2>Global Ranking</h2>
-            <div class="ranking-info-icon-wrapper" data-tooltip="Score = Base stats (HP/ATK/Armor/M-Res) + percent stats + synergy potential">
-              <svg class="ranking-info-icon" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                <text x="12" y="16" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">?</text>
-              </svg>
-            </div></div>
-          </div>
-          <div class="rankings-widget-inner">
-            <div class="rankings-widget-header">
-              <div class="rankings-widget-rank-prominent">
-                <span class="rankings-widget-rank-number">#{currentRank}</span>
-                <span class="rankings-widget-rank-of">of {heroes.length}</span>
-              </div>
-              <div class="rankings-widget-score">
-                <span class="rankings-widget-score-value">{Math.round(currentHeroData.score)}</span>
-                <span class="rankings-widget-score-label">Score</span>
-              </div>
-            </div>
-            
-            <div class="rankings-widget-stats">
-              <div class="ranking-widget-stat">
-                <div class="stat-header">
-                  <span class="ranking-stat-label">HP</span>
-                  <span class="stat-rank-badge">#{statRankings.hp}</span>
-                </div>
-                <span class="ranking-stat-val">{currentHeroData.hp.toLocaleString("en-US")}</span>
-              </div>
-              <div class="ranking-widget-stat">
-                <div class="stat-header">
-                  <span class="ranking-stat-label">ATK</span>
-                  <span class="stat-rank-badge">#{statRankings.atk}</span>
-                </div>
-                <span class="ranking-stat-val">{currentHeroData.atk.toLocaleString("en-US")}</span>
-              </div>
-              <div class="ranking-widget-stat">
-                <div class="stat-header">
-                  <span class="ranking-stat-label">Armor</span>
-                  <span class="stat-rank-badge">#{statRankings.armor}</span>
-                </div>
-                <span class="ranking-stat-val">{currentHeroData.armor.toLocaleString("en-US")}</span>
-              </div>
-              <div class="ranking-widget-stat">
-                <div class="stat-header">
-                  <span class="ranking-stat-label">M-Res</span>
-                  <span class="stat-rank-badge">#{statRankings.magicRes}</span>
-                </div>
-                <span class="ranking-stat-val">{currentHeroData.magicRes.toLocaleString("en-US")}</span>
-              </div>
-            </div>
-
-            <!-- SYNERGIES & SKILLS SECTION -->
-            <div class="rankings-widget-advanced">
-              <!-- Skill Power -->
-              <div class="ranking-advanced-block">
-                <h4 class="ranking-advanced-title">
-                  <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                  </svg>
-                  Skill Power
-                </h4>
-                <div class="skill-power-meter">
-                  <div class="skill-power-bar">
-                    <div 
-                      class="skill-power-fill" 
-                      style={`width: ${Math.min((skillPower / maxSkillPower) * 100, 100)}%`}
-                    />
-                  </div>
-                  <div class="skill-power-stats">
-                    <span class="skill-power-value">{skillPower.toFixed(2)}</span>
-                    <span class="skill-power-label">/ {maxSkillPower.toFixed(2)}</span>
-                  </div>
-                </div>
-                <p class="skill-power-desc">
-                  {skillProfile.topSkill 
-                    ? `${skillProfile.archetype} ⚡ Top Contributor: "${skillProfile.topSkill.name}" (${skillProfile.topSkill.score.toFixed(1)})`
-                    : "Based on damage multipliers, AoE, CC effects, and utility"
-                  }
-                </p>
-              </div>
-
-              <!-- Scenario Ratings Block -->
-              <div class="ranking-advanced-block">
-                <h4 class="ranking-advanced-title">
-                  <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 11l3 3L22 4"/>
-                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-                  </svg>
-                  Best For
-                  <span class="scenario-best-badge">{bestScenario.icon} {bestScenario.label} (#{bestScenario.rank} of {heroes.length})</span>
-                </h4>
-                <div class="scenario-ratings-grid">
-                  {scenarios.map(scenario => {
-                    const isBest = scenario.key === bestScenario.key;
-                    const percentage = Math.min((scenario.score / Math.max(...scenarios.map(s => s.score))) * 100, 100);
-                    return (
-                      <div class={`scenario-rating-item ${isBest ? 'is-best' : ''}`}>
-                        <div class="scenario-header">
-                          <span class="scenario-icon">{scenario.icon}</span>
-                          <span class="scenario-label">{scenario.label}</span>
-                          <span class="scenario-rank">#{scenario.rank}</span>
-                          {isBest && <span class="best-tag">★</span>}
-                        </div>
-                        <div class="scenario-score-row">
-                          <span class="scenario-score">{Math.round(scenario.score)}</span>
-                          <div class="scenario-bar">
-                            <div class="scenario-bar-fill" style={`width: ${percentage}%`}></div>
-                          </div>
+                        <!-- STAT BAR -->
+                        <div class="stat-bar">
+                          <div
+                            class="stat-bar-fill rank-default"
+                            style={`width: ${
+                              statMaxima[key]
+                                ? Math.min((hero.stats[key] / statMaxima[key]) * 100, 100)
+                                : 0
+                            }%`}
+                          />
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-                <p class="scenario-ratings-hint">
-                  Ratings reflect assumed item builds and synergy priorities per scenario. See <a href="/rankings">Rankings</a> for full comparison.
-                </p>
+                    </div>
+                  );
+                })}
               </div>
 
-              <!-- Team Synergies Block -->
-              {synergyProfileByCategory.TEAM_SUPPORT.length > 0 && (
-                <div class="ranking-advanced-block">
-                  <h4 class="ranking-advanced-title">
-                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                    Team Synergies
-                    <span class="synergy-potential-badge">Score: {synergyPotential}</span>
-                  </h4>
-                  <div class="synergy-tags team-support">
-                    {synergyProfileByCategory.TEAM_SUPPORT.map((tag) => (
-                      <span class="synergy-tag team-support-tag" data-synergy={tag}>
-                        {tag.replace(/_/g, ' ')}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              <!-- Enemy Debuffs Block -->
-              {synergyProfileByCategory.ENEMY_DEBUFF.length > 0 && (
-                <div class="ranking-advanced-block">
-                  <h4 class="ranking-advanced-title">
-                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 8v8m-4-4h8M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"/>
-                    </svg>
-                    Enemy Debuffs
-                  </h4>
-                  <div class="synergy-tags enemy-debuff">
-                    {synergyProfileByCategory.ENEMY_DEBUFF.map((tag) => (
-                      <span class="synergy-tag enemy-debuff-tag" data-synergy={tag}>
-                        {tag.replace(/_/g, ' ')}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              <!-- Self Buffs Block -->
-              {synergyProfileByCategory.SELF_BUFF.length > 0 && (
-                <div class="ranking-advanced-block">
-                  <h4 class="ranking-advanced-title">
-                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 2v20M2 12h20"/>
-                      <circle cx="12" cy="12" r="6"/>
-                    </svg>
-                    Self Buffs
-                  </h4>
-                  <div class="synergy-tags self-buff">
-                    {synergyProfileByCategory.SELF_BUFF.map((tag) => (
-                      <span class="synergy-tag self-buff-tag" data-synergy={tag}>
-                        {tag.replace(/_/g, ' ')}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              <div class="stats-gradient-overlay" id="statsOverlay">
+                <button class="stats-view-more-btn" id="statsToggleBtn">
+                  <span class="btn-text">View All Stats</span>
+                  <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- RATINGS -->
+      {hero.ratings && (
+        <RatingCard ratings={hero.ratings} metaSources={hero.metaSources} />
+      )}
+
+      <!-- CORE MECHANIC PANEL -->
+      {hero.coreMechanic && (
+        <section class="mechanic-panel">
+          <h2>Core Mechanic</h2>
+          <div class="mechanic-body">
+            <p class="mechanic-summary">{hero.coreMechanic.summary}</p>
+            <div class="mechanic-meta">
+              <span class={`depth-badge depth-${hero.coreMechanic.depthRating}`}>
+                Depth: {hero.coreMechanic.depthRating}
+              </span>
+              {hero.coreMechanic.commonlyMisunderstood && (
+                <span class="misunderstood-badge">Commonly Misunderstood</span>
               )}
             </div>
           </div>
         </section>
       )}
 
-      <!-- RATINGS -->
-      {hero.ratings && (
-        <RatingCard ratings={hero.ratings} />
+
+      <!-- INVESTMENT ROADMAP -->
+      {hero.relicBreakpoints && hero.relicBreakpoints.length > 0 && (
+        <section class="investment-roadmap">
+          <h2>Investment Roadmap</h2>
+          <div class="relic-breakpoints-list">
+            {hero.relicBreakpoints.map((bp: { level: number; type: string; effect: string }) => (
+              <div class={`relic-bp relic-bp-${bp.type}`}>
+                <div class="relic-bp-header">
+                  <span class="relic-bp-level">Relic {bp.level}</span>
+                  <span class={`relic-bp-type-badge bp-type-${bp.type}`}>
+                    {bp.type === 'recommended' ? 'Recommended' : 'High Spender'}
+                  </span>
+                </div>
+                <p class="relic-bp-effect">{bp.effect}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
-      
+      <!-- KEY SYNERGY LINKS -->
+      {hero.synergyLinks && hero.synergyLinks.length > 0 && (
+        <section class="synergy-links-panel">
+          <h2>Key Synergies</h2>
+          <div class="synergy-links-grid">
+            {hero.synergyLinks.map((link: { heroId: string; type: string; description: string }) => (
+              <a href={`/heroes/${link.heroId}`} class={`synergy-link-card synergy-link-${link.type}`}>
+                <div class="synergy-link-hero">
+                  <div
+                    class="synergy-link-portrait"
+                    style={`background-image: url(/heroes/${link.heroId}.webp);`}
+                  ></div>
+                  <div class="synergy-link-info">
+                    <span class="synergy-link-name">{link.heroId}</span>
+                    <span class={`synergy-link-type-badge type-${link.type}`}>{link.type}</span>
+                  </div>
+                </div>
+                <p class="synergy-link-desc">{link.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
     </div>
 
     <!-- TAB: SKILLS -->
@@ -674,8 +439,9 @@ const STAT_LABELS = {
     )}
   </main>
 
-  <Footer />
+
 </div>
+</Base>
 
 <style>
 .headline-with-info {
@@ -689,7 +455,7 @@ const STAT_LABELS = {
   top:-6px;
   right: -10px;
   font-size: 8px;
-  color: white;
+  color: var(--text-bright);
   background-color: red;
   border-radius: 4px;
   padding: 2px 4px;
@@ -719,7 +485,7 @@ const STAT_LABELS = {
     margin: 0 0 1rem 0;
     padding: .75rem 1rem;
     border: 1px solid rgba(255,255,255,.08);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     background: rgba(0,0,0,.18);
   }
   .comp-mode-bar label{
@@ -729,7 +495,7 @@ const STAT_LABELS = {
   .comp-mode-bar select{
     background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.12);
-    color: #e6e6eb;
+    color: var(--text-primary);
     padding: .4rem .6rem;
     border-radius: 10px;
     outline: none;
@@ -771,7 +537,7 @@ const STAT_LABELS = {
     height: 6px;
     width: 100%;
     background: rgba(255, 255, 255, 0.08);
-    border-radius: 999px;
+    border-radius: var(--radius-full);
     overflow: hidden;
   }
 
@@ -814,7 +580,7 @@ const STAT_LABELS = {
     padding: 0;
     font-size: 0.95rem;
     line-height: 1.55;
-    color: rgba(230, 230, 235, 0.75);
+    color: var(--text-secondary);
     text-wrap: pretty;
   }
   
@@ -846,7 +612,7 @@ const STAT_LABELS = {
 
   /* Top 1 */
   .stat-rank.rank-1 {
-    color: #facc15;
+    color: var(--accent-gold);
     text-shadow: 0 0 6px rgba(250, 204, 21, 0.8);
     font-weight: 700;
   }
@@ -873,26 +639,7 @@ const STAT_LABELS = {
     width: 24px;
   }
   
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-    background: radial-gradient(
-        ellipse at 30% -10%,
-        rgba(120, 90, 200, 0.15),
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse at 80% 20%,
-        rgba(255, 215, 100, 0.08),
-        transparent 55%
-      ),
-      linear-gradient(to bottom, #0d0b10, #07060c);
-    color: #e6e6eb;
-    font-family: Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  }
+  /* html/body reset is handled by Base.astro */
 
   /* PAGE */
   .hero-detail-page {
@@ -908,7 +655,7 @@ const STAT_LABELS = {
   .rarity-star {
     width: 24px;
     height: 24px;
-    fill: #facc15;
+    fill: var(--accent-gold);
     filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.6));
   }
 
@@ -941,7 +688,7 @@ const STAT_LABELS = {
   .identity-card h4 {
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
-    color: #ffffff;
+    color: var(--text-bright);
     columns: auto;
     font-family: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif,
       "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
@@ -960,7 +707,7 @@ const STAT_LABELS = {
   .identity-content span {
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
-    color: #ffffff;
+    color: var(--text-bright);
     columns: auto;
     font-family: Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -998,7 +745,7 @@ const STAT_LABELS = {
     transform: translateY(-50%);
     width: 44px;
     height: 44px;
-    border-radius: 999px;
+    border-radius: var(--radius-full);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1083,8 +830,8 @@ const STAT_LABELS = {
   }
 
   .tab.active {
-    color: #fff;
-    border-bottom: 2px solid #facc15;
+    color: var(--text-bright);
+    border-bottom: 2px solid var(--accent-gold);
   }
 
   /* CONTENT */
@@ -1097,73 +844,101 @@ const STAT_LABELS = {
   /* OVERVIEW */
   .hero-overview {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
     gap: 48px;
+    align-items: stretch;
+  }
+
+  .hero-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   /* LARGE NAME */
   .hero-name-large {
-    font-size: 72px;
+    font-size: 48px;
     line-height: 1.05;
     font-weight: 600;
-    padding: 48px 0 24px 0;
+    padding: 12px 0 12px 0;
     margin: 0;
   }
 
-  /* FACTION */
-  .hero-faction {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-
-  /* IDENTITY CARDS */
-  .hero-identity-cards {
+  /* META BADGES */
+  .meta-badge-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+    grid-template-columns: max-content 1fr;
+    column-gap: 12px;
+    row-gap: 6px;
+    align-items: center;
+    width: 100%;
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--text-muted, #aaa);
   }
 
-  .identity-card {
-    background-color: #00000040;
-    border: 1px solid #ffffff33;
-    border-radius: 12px;
-    box-sizing: border-box;
-    columns: auto;
-    padding: 8px;
+  .meta-badge-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted, #888);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  .meta-badge-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .meta-badge-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    object-fit: contain;
+  }
+
+  .meta-rarity-star {
+    width: 18px;
+    height: 18px;
+    fill: #e8c840;
+    flex-shrink: 0;
+  }
+
+  .meta-badge-value {
+    color: white;
+    font-weight: 600;
   }
 
   /* IMAGE HERO VISUAL */
   .hero-visual {
-    height: 420px;
-    border-radius: 18px;
+    border-radius: 8px;
     background-size: cover;
-    background-position: center 30%;
+    background-position: center 20%;
     background-repeat: no-repeat;
     overflow: hidden;
-  }
-
-  /* Faction Label */
-  .faction-label {
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-    color: #ffffff;
-    columns: auto;
-    font-family: Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 24px;
-    line-height: 32px;
-  }
-  
-  .faction-icon {
-    width: 48px;
-    height: 48px;
+    align-self: stretch;
+    min-height: 420px;
   }
 
   /* STATS */
   .hero-stats {
-    margin-top: 64px;
+    margin-top: 28px;
+  }
+
+  .hero-stats h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+  }
+
+  .hero-stats .headline-with-info {
+    margin-bottom: 12px;
   }
 
   .stats-wrapper {
@@ -1172,14 +947,14 @@ const STAT_LABELS = {
 
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
     transition: max-height 0.4s ease-out;
     overflow: hidden;
   }
 
   .stats-grid.collapsed {
-    max-height: 280px;
+    max-height: 260px;
   }
 
   .stats-grid.collapsed .stat-row.no-value {
@@ -1216,7 +991,7 @@ const STAT_LABELS = {
   }
 
   .stat-current {
-    color: #fff;
+    color: var(--text-bright);
     font-weight: 600;
   }
 
@@ -1227,7 +1002,7 @@ const STAT_LABELS = {
   }
 
   .stat-rank {
-    color: #facc15;
+    color: var(--accent-gold);
     font-weight: 700;
     font-size: 0.75rem;
   }
@@ -1294,9 +1069,9 @@ const STAT_LABELS = {
     pointer-events: auto;
     background: rgba(120, 90, 200, 0.2);
     border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     padding: 10px 20px;
-    color: #e6e6eb;
+    color: var(--text-primary);
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -1322,7 +1097,7 @@ const STAT_LABELS = {
 
   .identity-content {
     align-items: center;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     box-sizing: border-box;
     columns: auto;
     display: flex;
@@ -1337,7 +1112,7 @@ const STAT_LABELS = {
   .relic-level {
     font-weight: 700;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.8rem;
     text-transform: none;
     letter-spacing: 0.3px;
@@ -1360,7 +1135,7 @@ const STAT_LABELS = {
 
   .relic-level-20 {
     background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
-    color: #ffffff;
+    color: var(--text-bright);
     box-shadow: 
       0 0 10px rgba(129, 140, 248, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1369,7 +1144,7 @@ const STAT_LABELS = {
 
   .relic-level-10 {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: #ffffff;
+    color: var(--text-bright);
     box-shadow: 
       0 0 8px rgba(16, 185, 129, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.3);
@@ -1429,9 +1204,15 @@ const STAT_LABELS = {
     .skills-container {
       gap: 0.75rem;
     }
-    
-    .hero-identity-cards {
-      grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    .hero-overview {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-visual {
+      height: 360px;
     }
   }
 
@@ -1439,13 +1220,9 @@ const STAT_LABELS = {
     .skills-container {
       flex-direction: column;
     }
-    
-    .hero-overview {
-      grid-template-columns: 1fr;
-    }
-    
+
     .hero-name-large {
-      font-size: 48px;
+      font-size: 36px;
     }
   }
 
@@ -1455,7 +1232,7 @@ const STAT_LABELS = {
     padding: 24px;
     background: rgba(120, 90, 200, 0.08);
     border: 1px solid rgba(120, 90, 200, 0.2);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 
   .power-index-subtitle {
@@ -1560,7 +1337,7 @@ const STAT_LABELS = {
   .breakdown-box {
     background: rgba(0, 0, 0, 0.2);
     padding: 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     border: 1px solid rgba(120, 90, 200, 0.15);
   }
 
@@ -1677,9 +1454,9 @@ const STAT_LABELS = {
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
-    color: #e6e6eb;
+    color: var(--text-primary);
     padding: 10px 14px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.8rem;
     font-weight: 500;
     line-height: 1.4;
@@ -1732,7 +1509,7 @@ const STAT_LABELS = {
   .rankings-widget-inner {
     background: rgba(120, 90, 200, 0.08);
     border: 1px solid rgba(168, 85, 247, 0.2);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     padding: 20px;
   }
 
@@ -1805,7 +1582,7 @@ const STAT_LABELS = {
     padding: 12px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
   }
 
   .stat-header {
@@ -1852,8 +1629,8 @@ const STAT_LABELS = {
   .ranking-advanced-block {
     padding: 16px;
     background: rgba(120, 90, 200, 0.08);
-    border: 1px solid rgba(168, 85, 247, 0.15);
-    border-radius: 12px;
+    border: 1px solid var(--accent-purple-dim);
+    border-radius: var(--radius-lg);
   }
 
   .ranking-advanced-block h4 {
@@ -1932,7 +1709,7 @@ const STAT_LABELS = {
     padding: 4px 10px;
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.15));
     border: 1px solid rgba(251, 191, 36, 0.3);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.7rem;
     font-weight: 700;
     color: #fbbf24;
@@ -2021,7 +1798,7 @@ const STAT_LABELS = {
   .scenario-score {
     font-size: 1.1rem;
     font-weight: 800;
-    color: #e6e6eb;
+    color: var(--text-primary);
     font-variant-numeric: tabular-nums;
     min-width: 45px;
   }
@@ -2092,7 +1869,7 @@ const STAT_LABELS = {
     padding: 6px 12px;
     background: rgba(59, 130, 246, 0.15);
     border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.75rem;
     font-weight: 700;
     color: #60a5fa;
@@ -2113,7 +1890,7 @@ const STAT_LABELS = {
     padding: 6px 12px;
     background: rgba(251, 191, 36, 0.15);
     border: 1px solid rgba(251, 191, 36, 0.3);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.75rem;
     font-weight: 700;
     color: #fbbf24;
@@ -2147,7 +1924,7 @@ const STAT_LABELS = {
 
   /* Self Buff tags - Purple */
   .synergy-tags.self-buff .self-buff-tag {
-    background: rgba(168, 85, 247, 0.15);
+    background: var(--accent-purple-dim);
     border-color: rgba(168, 85, 247, 0.4);
     color: #d8b4fe;
   }
@@ -2180,7 +1957,7 @@ const STAT_LABELS = {
     margin-bottom: 24px;
     font-size: 2rem;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text-bright);
   }
 
   .video-guides-grid {
@@ -2200,7 +1977,7 @@ const STAT_LABELS = {
     width: 100%;
     padding-bottom: 56.25%;
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid rgba(168, 85, 247, 0.2);
   }
@@ -2212,7 +1989,7 @@ const STAT_LABELS = {
     width: 100%;
     height: 100%;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
   }
 
   .video-guide-info {
@@ -2226,7 +2003,7 @@ const STAT_LABELS = {
     margin: 0;
     font-size: 1rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--text-bright);
     line-height: 1.3;
   }
 
@@ -2235,6 +2012,250 @@ const STAT_LABELS = {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.6);
     opacity: 0.8;
+  }
+
+  /* ===============================
+     BUG BANNER
+     =============================== */
+  .bug-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: var(--radius-lg);
+    color: #fca5a5;
+  }
+  .bug-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #ef4444;
+  }
+  .bug-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85rem;
+  }
+  .bug-text strong {
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ef4444;
+  }
+
+  /* ===============================
+     CORE MECHANIC PANEL
+     =============================== */
+  .mechanic-panel {
+    margin: 24px 0;
+  }
+  .mechanic-panel h2 {
+    margin-bottom: 12px;
+  }
+  .mechanic-body {
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-lg);
+  }
+  .mechanic-summary {
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .mechanic-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .depth-badge {
+    padding: 4px 10px;
+    border-radius: var(--radius-md);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .depth-high {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    color: #d8b4fe;
+  }
+  .depth-mid {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+  }
+  .depth-low {
+    background: rgba(107, 114, 128, 0.15);
+    border: 1px solid rgba(107, 114, 128, 0.35);
+    color: #d1d5db;
+  }
+  .misunderstood-badge {
+    padding: 4px 10px;
+    border-radius: var(--radius-md);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(234, 179, 8, 0.12);
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    color: #fde68a;
+  }
+
+
+  /* ===============================
+     INVESTMENT ROADMAP
+     =============================== */
+  .investment-roadmap {
+    margin: 24px 0;
+  }
+  .investment-roadmap h2 {
+    margin-bottom: 12px;
+  }
+  .relic-breakpoints-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-lg);
+  }
+  .relic-bp {
+    padding: 14px 16px;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .relic-bp-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .relic-bp-level {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-bright);
+  }
+  .relic-bp-type-badge {
+    padding: 2px 8px;
+    border-radius: var(--radius-md);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .bp-type-recommended {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    color: #86efac;
+  }
+  .bp-type-high_spender {
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    color: #fde68a;
+  }
+  .relic-bp-effect {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ===============================
+     SYNERGY LINKS
+     =============================== */
+  .synergy-links-panel {
+    margin: 24px 0;
+  }
+  .synergy-links-panel h2 {
+    margin-bottom: 12px;
+  }
+  .synergy-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .synergy-link-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .synergy-link-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+  .synergy-link-card.synergy-link-core {
+    border-color: rgba(168, 85, 247, 0.25);
+  }
+  .synergy-link-card.synergy-link-core:hover {
+    border-color: rgba(168, 85, 247, 0.45);
+    background: rgba(168, 85, 247, 0.06);
+  }
+  .synergy-link-hero {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .synergy-link-portrait {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: top center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    flex-shrink: 0;
+  }
+  .synergy-link-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .synergy-link-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    text-transform: capitalize;
+  }
+  .synergy-link-type-badge {
+    padding: 1px 6px;
+    border-radius: var(--radius-md);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .type-core {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    color: #d8b4fe;
+  }
+  .type-conditional {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+  }
+  .synergy-link-desc {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.65);
   }
 
   @media (max-width: 768px) {

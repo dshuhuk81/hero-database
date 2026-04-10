@@ -2,19 +2,20 @@
   "id": "dionysus",
   "name": "Dionysus",
   "image": "/heroes/dionysus.webp",
-    "release": true,
+  "release": true,
   "faction": "Starglint",
   "role": "Arcane",
   "class": "Support",
   "rarity": "Legendary",
   "description": "Dionysus, goddes of wine and revels, embodies life's passion and unbridled joy. Handsome and radiant, she wears a cloak woven from grapevines, holding a wine cup and her Thyrsus.",
   "ratings": {
-    "overall": "SSS",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SSS",
-    "pve": "SSS"
+    "forgottenLabyrinth": "S",
+    "pvp": "S",
+    "pve": "A"
   },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
@@ -117,5 +118,41 @@
     "ATK_UP",
     "DMG_RED",
     "HIT_AVOID"
-  ]
+  ],
+  "coreMechanic": {
+    "summary": "Energy battery with insane damage-boosting buffs. Highest DPS-increasing support at full uptime. Weakness: dies early and the buff window disappears.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 1,
+      "type": "mandatory",
+      "effect": "Energy battery function active. Sufficient for F2P with good positioning."
+    },
+    {
+      "level": 30,
+      "type": "recommended",
+      "effect": "Full damage-boost buff potential unlocked."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "zeus",
+      "type": "core",
+      "description": "Damage boost plus energy cycling is the endgame meta support stack for Zeus."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Base dupe -> wait for random drop",
+    "priority": 3,
+    "notes": null
+  }
 }

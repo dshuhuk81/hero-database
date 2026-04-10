@@ -2,7 +2,7 @@
   "id": "khepri",
   "name": "Khepri",
   "image": "/heroes/khepri.webp",
-    "release": true,
+  "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Support",
@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "S",
-    "pve": "S"
+    "pve": "A"
   },
   "recommendedRelicLevel": 1,
   "evolution": "Divine V",
@@ -123,5 +124,41 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.376,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "Push-and-group tech unit alongside Poseidon. Core mechanic unlocked at r1. EG notes kit has more depth than tier listing suggests with many undocumented mechanics.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 1,
+      "type": "mandatory",
+      "effect": "Core push-and-group mechanic unlocked. Functional from here."
+    },
+    {
+      "level": 10,
+      "type": "recommended",
+      "effect": "Tankiness scaling begins with relic investment."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "poseidon",
+      "type": "core",
+      "description": "Push-and-group unit; pairs with Poseidon for positioning setups."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 3,
+    "notes": null
+  }
 }

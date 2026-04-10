@@ -2,7 +2,7 @@
   "id": "scorpio",
   "name": "Scorpio",
   "image": "/heroes/scorpio.webp",
-    "release": true,
+  "release": true,
   "faction": "Spades",
   "role": "Nimble",
   "class": "Assassin",
@@ -13,6 +13,7 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "A",
     "pve": ""
   },
@@ -89,5 +90,12 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.479,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T2",
+    "egTier": null,
+    "consensus": "contested",
+    "lastVerified": "2025-04"
+  }
 }

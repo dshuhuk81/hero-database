@@ -1,0 +1,118 @@
+---
+interface Props {
+  tag?: string;
+  headline: string;
+  subtitle?: string;
+  bgImage?: string;
+  id?: string;
+  pageUpdate?: { formatted: string; version: string } | null;
+}
+
+const { tag, headline, subtitle, bgImage, id, pageUpdate } = Astro.props;
+const bgStyle = bgImage
+  ? `background-image: url(${bgImage}); background-size: cover; background-position: center top;`
+  : `background: linear-gradient(135deg, rgba(120,90,200,0.18), rgba(7,6,12,0.95));`;
+---
+<head>
+  <meta name="description" content={subtitle || headline} />
+  <meta charset="utf-8" />
+</head>
+
+<section class="page-hero" id={id} style={bgStyle}>
+      <img src="/bg_neutral.webp" class="page-hero-bg">
+
+  <div class="page-hero-overlay">
+  </div>
+  <div class="page-hero-text">
+    {tag && <span class="page-hero-tag">{tag}</span>}
+    <h1 class="page-hero-headline" id={id ? `${id}-headline` : undefined}>{headline}</h1>
+    {subtitle && <p class="page-hero-sub" id={id ? `${id}-sub` : undefined}>{subtitle}</p>}
+    {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
+  </div>
+</section>
+
+<style is:global>
+  .page-hero {
+    position: relative;
+    height: 280px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+      rgba(8,10,16,0.15) 0%,
+      rgba(8,10,16,0.5) 50%,
+      rgba(8,10,16,0.92) 100%
+    );
+    z-index: 1;
+  }
+
+  .page-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 0%;
+}
+
+  .page-hero-text {
+    position: relative;
+    z-index: 2;
+    padding: 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .page-hero-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: rgba(230,230,235,0.55);
+    margin-bottom: 4px;
+  }
+
+  .page-hero-headline {
+    margin: 0;
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--text-bright);
+    line-height: 1.1;
+  }
+
+  .page-hero-sub {
+    margin: 4px 0 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(230,230,235,0.78);
+    max-width: 50ch;
+  }
+
+  .page-hero .page-updated {
+    font-size: 0.8rem;
+    color: rgba(230,230,235,0.4);
+    margin: 4px 0 0;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .page-hero { height: 240px; }
+    .page-hero-headline { font-size: 2.2rem; }
+    .page-hero-sub { font-size: 0.88rem; max-width: 45ch; }
+  }
+
+  @media (max-width: 600px) {
+    .page-hero { height: 200px; }
+    .page-hero-headline { font-size: 1.6rem; }
+    .page-hero-tag { font-size: 0.62rem; }
+    .page-hero-sub { font-size: 0.82rem; max-width: 40ch; }
+    .page-hero-text { padding: 24px 20px; }
+  }
+</style>

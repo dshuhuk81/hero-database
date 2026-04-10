@@ -2,10 +2,10 @@
 export const prerender = true;
 import bosses from "../data/bosses.json";
 import { getHeroById } from "../data/heroes";
-import Sidebar from "../components/Sidebar.astro";
-import Footer from "../components/Footer.astro";
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
 import "../styles/compositions.css";
-import { keywordTagsForHero } from "../utils/heroTags.js";
+import "../styles/events.css";
 import { getPageUpdate } from "../utils/getPageUpdate";
 import Analytics from '@vercel/analytics/astro';
 const pageUpdate = getPageUpdate("bosses");
@@ -17,7 +17,7 @@ const MECHANIC_LABELS = {
   "DAMAGE_REDUCTION_PHASE": { label: "Damage Reduction", tip: "Boss takes heavily reduced damage during certain phases" },
   "TARGETS_TOP_DPS": { label: "Targets Top DPS", tip: "Boss focuses attacks on your highest damage dealer" },
   "DOT_ON_TOP_DPS": { label: "DoT on DPS", tip: "Applies damage over time to your top damage dealer" },
-  "PERCENT_HP_DAMAGE": { label: "% HP Damage", tip: "Deals damage based on max HP — shields help" },
+  "PERCENT_HP_DAMAGE": { label: "% HP Damage", tip: "Deals damage based on max HP -- shields help" },
   "RAMPING_AURA": { label: "Ramps Over Time", tip: "Boss gets stronger the longer the fight lasts" },
   "ATK_SPEED_GLOBAL": { label: "ATK Speed Buff", tip: "Increases attack speed for all units on the field" },
   "CHARGE_ATTACK": { label: "Charge Attack", tip: "Boss charges through your team for burst damage" },
@@ -32,8 +32,8 @@ const MECHANIC_LABELS = {
   "SHARED_DAMAGE": { label: "Shared Damage", tip: "Damage to minions also hurts the boss" },
   "ATK_SPEED_BUFF": { label: "ATK Speed Buff", tip: "Buffs minion attack speed significantly" },
   "RESOURCE_SCALING": { label: "Stat Scaling", tip: "Minions inherit and scale from boss stats" },
-  "NO_DAMAGE": { label: "No Damage", tip: "Boss deals zero damage — pure mechanic fight" },
-  "PERMANENT_FREEZE": { label: "Permanent Freeze", tip: "Freezes heroes permanently — cannot be removed" },
+  "NO_DAMAGE": { label: "No Damage", tip: "Boss deals zero damage -- pure mechanic fight" },
+  "PERMANENT_FREEZE": { label: "Permanent Freeze", tip: "Freezes heroes permanently -- cannot be removed" },
   "WIPE_CONDITION": { label: "Wipe Condition", tip: "All heroes frozen = instant loss" },
   "RANDOM_TARGET_DOT": { label: "Random Target DoT", tip: "Damages random heroes over time" },
   "ROOT": { label: "Root", tip: "Roots a hero in place, preventing movement" },
@@ -42,40 +42,6 @@ const MECHANIC_LABELS = {
   "MULTI_PART_BOSS": { label: "Multi-Part Boss", tip: "Multiple body parts with independent HP pools" },
   "HEAL_REDUCTION": { label: "Heal Reduction", tip: "Reduces healing received by your heroes" },
 };
-
-
-
-// Mechanic counter mapping: boss mechanicTag → hero capabilities
-const MECHANIC_COUNTERS = {
-  "ENERGY_DRAIN": { heroTags: ["Energy"], classes: ["Support"], description: "Energy sustain" },
-  "SILENCE": { heroTags: ["Cleanse"], classes: [], description: "Removes silence" },
-  "DAMAGE_REDUCTION_PHASE": { heroTags: [], classes: [], description: "Burst timing" },
-  "TARGETS_TOP_DPS": { heroTags: ["Shield", "Ally Heal"], classes: ["Support"], description: "Protects allies" },
-  "DOT_ON_TOP_DPS": { heroTags: ["Ally Heal", "Shield"], classes: ["Support"], description: "Sustained healing" },
-  "PERCENT_HP_DAMAGE": { heroTags: ["Shield"], classes: ["Tank", "Support"], description: "Damage mitigation" },
-  "RAMPING_AURA": { heroTags: [], classes: [], description: "Fast clear" },
-  "ATK_SPEED_GLOBAL": { heroTags: [], classes: [], description: "Speed synergy" },
-  "CHARGE_ATTACK": { heroTags: ["Control"], classes: [], description: "Interrupts/stuns" },
-  "AOE_BURST": { heroTags: [], classes: ["Tank"], description: "Absorbs damage" },
-  "STUN": { heroTags: ["Cleanse"], classes: [], description: "Removes stun" },
-  "BUFFS_OVER_TIME": { heroTags: ["Anti-Heal"], classes: [], description: "Healing reduction" },
-};
-
-function getHeroMechanicCounters(heroId, bossMechanicTags) {
-  const hero = getHeroById(heroId);
-  if (!hero) return [];
-  const heroTags = keywordTagsForHero(hero, { limit: null });
-  const heroClass = String(hero?.class || "").toLowerCase();
-  const counters = [];
-  for (const mechanic of bossMechanicTags) {
-    const counter = MECHANIC_COUNTERS[mechanic];
-    if (!counter) continue;
-    const hasTag = counter.heroTags.some(t => heroTags.includes(t));
-    const hasClass = counter.classes.some(c => c.toLowerCase() === heroClass);
-    if (hasTag || hasClass) counters.push(counter.description);
-  }
-  return [...new Set(counters)];
-}
 
 function heroName(id) { return getHeroById(id)?.name ?? id; }
 function heroImage(id) {
@@ -89,7 +55,7 @@ function classIcon(heroClass) {
   return `/icons/classes/${String(heroClass || "").toLowerCase()}.webp`;
 }
 
-const BOSS_SKILL_ICON_ALIAS = { 
+const BOSS_SKILL_ICON_ALIAS = {
   isthar_vi: "ishtar",
   typhoon: "typhon"
 };
@@ -97,163 +63,353 @@ function bossSkillIcon(bossId, index) {
   const key = BOSS_SKILL_ICON_ALIAS[bossId] || bossId;
   return `/bosses/${key}_skill_${index + 1}.png`;
 }
+
 ---
 
-<Sidebar />
+<Base title="PvE Content | Motto Immortal">
+<PageHero
+  tag="PvE"
+  headline="PvE Content"
+  subtitle="Boss counters & recommended team comps"
+  pageUpdate={pageUpdate}
+/>
 
-<section class="boss-page">
-  {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
-
-  <!-- Boss tabs bar -->
-  <div class="boss-tabbar" data-boss-slider>
+<!-- Boss accordion navigation -->
+<div class="boss-accordion-nav">
+  <div style="width:40%; display:flex;">
     {bosses.bosses.map((boss, index) => (
-      <button class="boss-tab" type="button" data-boss-tab data-index={index}>
-        {boss.name}
+      <button
+        class={`accordion-panel ${index === 0 ? "is-active" : ""}`}
+        type="button"
+        data-boss-tab
+        data-index={index}
+      >
+        <img
+          src={boss.image}
+          alt={boss.name}
+          class="accordion-img"
+          loading={index === 0 ? "eager" : "lazy"}
+        />
+        <div class="accordion-content">
+          <span class="accordion-label-row">
+            <span class="accordion-label">{boss.name}</span>
+          </span>
+        </div>
       </button>
     ))}
   </div>
+</div>
 
-  <!-- Slides -->
-  <div class="boss-slides" data-boss-slides>
-    {bosses.bosses.map((boss, index) => (
-      <article class="boss-slide" data-boss-slide data-index={index}>
+<div class="page-wrapper">
+  <div class="content-wrapper">
 
-        <!-- LEFT: cinematic visual column -->
-        <div class="boss-visual" style={`--boss-image: url(${boss.image})`}>
-          <div class="boss-visual-scrim"></div>
-          <div class="boss-identity">
-            <p class="boss-kicker">Boss Encounter</p>
-            <h2 class="boss-name">{boss.name}</h2>
-            <div class="boss-meta">
-              <span class="pill">{boss.mode}</span>
-              <span class="pill pill-icon">
-                <img class="meta-icon" src={factionIcon(boss.faction)} alt={boss.faction} />
-                {boss.faction}
-              </span>
-              <span class="pill pill-icon">
-                <img class="meta-icon" src={classIcon(boss.class)} alt={boss.class} />
-                {boss.class}
-              </span>
-              <span class="pill">BP {boss.battlepower}</span>
-            </div>
-            {boss.summary && <p class="boss-summary">{boss.summary}</p>}
-          </div>
+    <section class="boss-page">
 
-          <!-- Prev/Next inside the visual column -->
-          <div class="boss-nav-pair">
-            <button class="boss-nav boss-nav-left" aria-label="Previous boss" type="button">&#x2039;</button>
-            <button class="boss-nav boss-nav-right" aria-label="Next boss" type="button">&#x203A;</button>
-          </div>
-        </div>
+        <!-- Slides -->
+        <div class="boss-slides" data-boss-slides>
+          {bosses.bosses.map((boss, index) => (
+            <article class="boss-slide" data-boss-slide data-index={index}>
 
-        <!-- RIGHT: info panel -->
-        <div class="boss-panel">
-
-          <!-- Key Mechanics (player-friendly tags) -->
-          {(boss.mechanicTags || []).length > 0 && (
-            <div class="panel-section">
-              <h3 class="panel-heading">Key Mechanics</h3>
-              <div class="mechanic-tags">
-                {(boss.mechanicTags || []).map(tag => {
-                  const info = MECHANIC_LABELS[tag];
-                  return info ? (
-                    <span class="mechanic-pill" title={info.tip}>{info.label}</span>
-                  ) : null;
-                })}
-              </div>
-            </div>
-          )}
-
-          <!-- Skills -->
-          <div class="panel-section">
-            <h3 class="panel-heading">Skills</h3>
-            <div class="mechanic-list">
-              {boss.skills.map((sk, skillIndex) => (
-                <div class="mechanic-item">
-                  <img
-                    class="skill-icon"
-                    src={bossSkillIcon(boss.id, skillIndex)}
-                    alt={`${boss.name} ${sk.name}`}
-                    loading="lazy"
-                  />
-                  <div class="mechanic-body">
-                    <span class="mechanic-title">
-                      {sk.name}
-                      <span class="mechanic-type">{sk.type}</span>
+              <!-- LEFT: cinematic visual column -->
+              <div class="boss-visual" style={`--boss-image: url(${boss.image})`}>
+                <div class="boss-visual-scrim"></div>
+                <div class="boss-identity">
+                  <p class="boss-kicker">Boss Encounter</p>
+                  <h2 class="boss-name">{boss.name}</h2>
+                  <div class="boss-meta">
+                    <span class="pill">{boss.mode}</span>
+                    <span class="pill pill-icon">
+                      <img class="meta-icon" src={factionIcon(boss.faction)} alt={boss.faction} />
+                      {boss.faction}
                     </span>
-                    <p class="mechanic-desc">{sk.description}</p>
+                    <span class="pill pill-icon">
+                      <img class="meta-icon" src={classIcon(boss.class)} alt={boss.class} />
+                      {boss.class}
+                    </span>
+                    <span class="pill">BP {boss.battlepower}</span>
+                  </div>
+                  {boss.summary && <p class="boss-summary">{boss.summary}</p>}
+                </div>
+
+                <!-- Prev/Next inside the visual column -->
+                <div class="boss-nav-pair">
+                  <button class="boss-nav boss-nav-left" aria-label="Previous boss" type="button">&#x2039;</button>
+                  <button class="boss-nav boss-nav-right" aria-label="Next boss" type="button">&#x203A;</button>
+                </div>
+              </div>
+
+              <!-- RIGHT: info panel -->
+              <div class="boss-panel">
+
+                <!-- Key Mechanics (player-friendly tags) -->
+                {(boss.mechanicTags || []).length > 0 && (
+                  <div class="panel-section">
+                    <h3 class="panel-heading">Key Mechanics</h3>
+                    <div class="mechanic-tags">
+                      {(boss.mechanicTags || []).map(tag => {
+                        const info = MECHANIC_LABELS[tag as keyof typeof MECHANIC_LABELS];
+                        return info ? (
+                          <span class="mechanic-pill" title={info.tip}>{info.label}</span>
+                        ) : null;
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <!-- Skills -->
+                <div class="panel-section">
+                  <h3 class="panel-heading">Skills</h3>
+                  <div class="mechanic-list">
+                    {boss.skills.map((sk, skillIndex) => (
+                      <div class="mechanic-item">
+                        <img
+                          class="skill-icon"
+                          src={bossSkillIcon(boss.id, skillIndex)}
+                          alt={`${boss.name} ${sk.name}`}
+                          loading="lazy"
+                        />
+                        <div class="mechanic-body">
+                          <span class="mechanic-title">
+                            {sk.name}
+                            <span class="mechanic-type">{sk.type}</span>
+                          </span>
+                          <p class="mechanic-desc">{sk.description}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <!-- Strategy Notes -->
-          {boss.strategyNotes && (
-            <div class="panel-section">
-              <h3 class="panel-heading">Strategy Notes</h3>
-              <p class="strategy-text">{boss.strategyNotes}</p>
-            </div>
-          )}
+                <!-- Strategy Notes -->
+                {boss.strategyNotes && (
+                  <div class="panel-section">
+                    <h3 class="panel-heading">Strategy Notes</h3>
+                    <p class="strategy-text">{boss.strategyNotes}</p>
+                  </div>
+                )}
 
-          <!-- Recommended Comps -->
-          {(boss.recommendedComps || []).length > 0 && (
-            <div class="panel-section">
-              <h3 class="panel-heading">Recommended Comps</h3>
-              <div class="comp-list">
-                {(boss.recommendedComps || []).map(comp => {
-                  const heroComp = String(comp["hero-comp"] || "")
-                    .split(",")
-                    .map(e => e.trim())
-                    .filter(Boolean);
-                  const resolvedHeroes = heroComp.length ? heroComp : (comp.heroes ?? []);
-                  const bossMechanics = boss.mechanicTags || [];
-
-                  return (
-                    <div class="comp-entry">
-                      <div class="comp-entry-header">
-                        <span class="comp-label">{comp.label}</span>
-                        {comp.reason && <p class="comp-reason">{comp.reason}</p>}
-                      </div>
-                      <div class="comp-hero-row">
-                        {resolvedHeroes.map(id => {
-                          const counters = getHeroMechanicCounters(id, bossMechanics);
-                          return (
-                            <a href={`/heroes/${id}`} class="hero-chip">
-                              <img src={heroImage(id)} alt={heroName(id)} />
-                              <span class="hero-chip-name">{heroName(id)}</span>
-                              {counters.length > 0 && (
-                                <div class="chip-badges">
-                                  {counters.map(c => (
-                                    <span class="badge-counter" title={c}>{c}</span>
-                                  ))}
-                                </div>
-                              )}
-                            </a>
-                          );
-                        })}
-                      </div>
-                      {comp.notes?.length > 0 && (
-                        <ul class="comp-notes">
-                          {comp.notes.map(n => <li>{n}</li>)}
-                        </ul>
-                      )}
+                <!-- Recommended Comps -->
+                {(boss.recommendedComps || []).length > 0 && (
+                  <div class="panel-section">
+                    <h3 class="panel-heading">Recommended Comps</h3>
+                    <div class="comp-list">
+                      {(boss.recommendedComps || []).map(comp => {
+                        const heroComp = String(comp["hero-comp"] || "")
+                          .split(",")
+                          .map(e => e.trim())
+                          .filter(Boolean);
+                        const resolvedHeroes = heroComp.length ? heroComp : (comp.heroes ?? []);
+                        return (
+                          <div class="comp-entry">
+                            <div class="comp-entry-header">
+                              <span class="comp-label">{comp.label}</span>
+                              {comp.reason && <p class="comp-reason">{comp.reason}</p>}
+                            </div>
+                            <div class="comp-hero-row">
+                              {resolvedHeroes.map(id => (
+                                <a href={`/heroes/${id}`} class="hero-chip">
+                                  <img src={heroImage(id)} alt={heroName(id)} />
+                                  <span class="hero-chip-name">{heroName(id)}</span>
+                                </a>
+                              ))}
+                            </div>
+                            {comp.notes?.length > 0 && (
+                              <ul class="comp-notes">
+                                {comp.notes.map(n => <li>{n}</li>)}
+                              </ul>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                  );
-                })}
+                  </div>
+                )}
+
               </div>
-            </div>
-          )}
-
+            </article>
+          ))}
         </div>
-      </article>
-    ))}
-  </div>
-</section>
+      </section>
 
+  </div>
+</div>
+
+</Base>
+
+<style is:global>
+  /* Page wrapper for content below PageHero */
+  .page-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0px 16px 0;
+  }
+</style>
+
+<style>
+  /* ── BOSS ACCORDION NAVIGATION ── */
+  .boss-accordion-nav {
+    display: flex;
+    height: 200px;
+    overflow: hidden;
+    background: #0d0a0a;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .accordion-panel {
+    position: relative;
+    flex: 0 0 95px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    font-family: inherit;
+    transition: flex 420ms cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    border-radius: 0;
+    background: transparent;
+    border-left: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .accordion-panel:first-child {
+    border-left: none;
+  }
+
+  .accordion-panel.is-active {
+    flex: 1 1 0;
+    cursor: default;
+  }
+
+  /* Boss image layer */
+  .accordion-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transform: scale(1.05);
+    filter: brightness(0.3) saturate(0.4);
+    transition: transform 420ms cubic-bezier(0.4, 0, 0.2, 1),
+                filter 420ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .accordion-panel.is-active .accordion-img {
+    transform: scale(1);
+    filter: brightness(0.85) saturate(1.1);
+  }
+
+  .accordion-panel:not(.is-active):hover .accordion-img {
+    filter: brightness(0.45) saturate(0.6);
+  }
+
+  /* Gradient overlay for text readability */
+  .accordion-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.15) 30%,
+      transparent 50%
+    );
+    transition: background 420ms ease;
+  }
+
+  .accordion-panel.is-active::before {
+    background:
+      linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.1) 25%,
+        transparent 45%
+      );
+  }
+
+  /* Accent border for active panel */
+  .accordion-panel.is-active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #facc15, #5eead4);
+    z-index: 3;
+  }
+
+  /* Content layout */
+  .accordion-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    height: 100%;
+    padding: 14px;
+    color: #fff;
+    text-align: left;
+  }
+
+  /* Boss name label */
+  .accordion-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);
+    white-space: normal;
+    word-break: break-word;
+    transition: font-size 320ms ease;
+
+  }
+
+  .accordion-label-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .accordion-panel.is-active .accordion-label {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .boss-accordion-nav {
+      height: 160px;
+    }
+    .accordion-panel {
+      flex: 0 0 52px;
+    }
+    .accordion-panel.is-active .accordion-label {
+      font-size: 1.1rem;
+    }
+    .accordion-content {
+      padding: 10px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .boss-accordion-nav {
+      height: 120px;
+    }
+    .accordion-panel {
+      flex: 0 0 40px;
+    }
+    .accordion-panel.is-active .accordion-label {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+
+<!-- Boss tab switching script -->
 <script>
   const slides = Array.from(document.querySelectorAll("[data-boss-slide]"));
-  const tabs = Array.from(document.querySelectorAll("[data-boss-tab]"));
+  const bossTabs = Array.from(document.querySelectorAll("[data-boss-tab]"));
   const prevBtns = Array.from(document.querySelectorAll(".boss-nav-left"));
   const nextBtns = Array.from(document.querySelectorAll(".boss-nav-right"));
   let currentIndex = 0;
@@ -261,16 +417,14 @@ function bossSkillIcon(bossId, index) {
   function updateSlides(index) {
     currentIndex = (index + slides.length) % slides.length;
     slides.forEach((s, i) => s.classList.toggle("is-active", i === currentIndex));
-    tabs.forEach((t, i) => t.classList.toggle("is-active", i === currentIndex));
-    const activeTab = tabs[currentIndex];
-    activeTab?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    bossTabs.forEach((t, i) => t.classList.toggle("is-active", i === currentIndex));
   }
 
   if (slides.length) updateSlides(0);
 
   prevBtns.forEach(b => b.addEventListener("click", () => updateSlides(currentIndex - 1)));
   nextBtns.forEach(b => b.addEventListener("click", () => updateSlides(currentIndex + 1)));
-  tabs.forEach(tab => {
+  bossTabs.forEach(tab => {
     tab.addEventListener("click", () => updateSlides(Number(tab.dataset.index || 0)));
   });
   document.addEventListener("keydown", e => {
@@ -279,4 +433,3 @@ function bossSkillIcon(bossId, index) {
   });
 </script>
 
-<Footer />

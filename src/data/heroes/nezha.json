@@ -2,19 +2,20 @@
   "id": "nezha",
   "name": "Nezha",
   "image": "/heroes/nezha.webp",
-    "release": true,
+  "release": true,
   "faction": "Starglint",
   "role": "Nimble",
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "",
   "ratings": {
-    "overall": "SSS",
+    "overall": "SS",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SSS",
-    "pve": "SSS"
+    "forgottenLabyrinth": "S",
+    "pvp": "S",
+    "pve": "SS"
   },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
@@ -123,5 +124,119 @@
       "autor": "GPH",
       "videoId": "A67MaxE9qFE"
     }
-  ]
+  ],
+  "baseAttackRate": 0.732,
+  "bossUltimatesPer90s": 5,
+  "teamComps": {
+    "pve": [
+      {
+        "label": "Rush",
+        "stars": 1,
+        "description": "Nezha with 4 cheap/expendable units. Suitable for early-game farming where speed matters more than survival.",
+        "targets": "All",
+        "totems": [
+          "unsullied_lotus",
+          "defiant_vow"
+        ],
+        "front": [
+          "nezha"
+        ],
+        "back": []
+      },
+      {
+        "label": "Standard",
+        "stars": 4,
+        "description": "Nezha with 4 buff supports. Can beat almost all teams. Wenshen, Hephaestus, Diana and Amunra stack offensive and defensive buffs.",
+        "targets": "All",
+        "totems": [
+          "unsullied_lotus",
+          "defiant_vow"
+        ],
+        "front": [
+          "nezha"
+        ],
+        "back": [
+          "wenshen",
+          "hephaestus",
+          "diana",
+          "amunra"
+        ]
+      },
+      {
+        "label": "Three Phase Variant",
+        "stars": 5,
+        "description": "Momus, Yuelao, Meret and Tefnut provide the full support shell. Nezha acts as the sweep core -- violent and efficient.",
+        "targets": "All",
+        "totems": [
+          "defiant_vow",
+          "horn_of_potency",
+          "undying_staff"
+        ],
+        "front": [
+          "nezha"
+        ],
+        "back": [
+          "momus",
+          "yuelao",
+          "meret",
+          "tefnut"
+        ]
+      },
+      {
+        "label": "Heracles Variant",
+        "stars": 5,
+        "description": "Heracles gathers and controls enemies while Hephaestus and Diana buff Nezha's burst. Set covers the backline.",
+        "targets": "All",
+        "totems": [
+          "defiant_vow",
+          "sanctified_blood"
+        ],
+        "front": [
+          "nezha",
+          "heracles"
+        ],
+        "back": [
+          "hephaestus",
+          "diana",
+          "set"
+        ]
+      }
+    ]
+  },
+  "coreMechanic": {
+    "summary": "Strongest PvE DPS carry. Clears most Odyssey teams at Divine with 4 level-1 supports. PvE-optimized boss-agnostic kit. Awakened gear slots 1/3/4 shared with Zeus.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 30,
+      "type": "mandatory",
+      "effect": "Primary PvE damage ceiling. Core endgame investment."
+    },
+    {
+      "level": 50,
+      "type": "high_spender",
+      "effect": "Maximum PvE ceiling. With Totem, 4 supports become redundant."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "yanluo",
+      "type": "conditional",
+      "description": "Yanluo r10 timing syncs with Nezha jump kick for +20% ATK on contact."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T0",
+    "cnTier": "T0",
+    "egTier": "T0",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 1,
+    "notes": "Secondary Celestial after Zeus. Shares Zeus gear slots -- overlap minimizes cost."
+  }
 }

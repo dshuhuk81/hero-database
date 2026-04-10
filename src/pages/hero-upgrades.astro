@@ -1,21 +1,12 @@
 ---
 export const prerender = true;
-import Footer from "../components/Footer.astro";
-import Sidebar from "../components/Sidebar.astro";
+import Base from "../layouts/Base.astro";
 import { getPageUpdate } from "../utils/getPageUpdate";
 
 const pageUpdate = getPageUpdate("hero-upgrades");
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hero Upgrades - Motto Immortal</title>
-</head>
-<body>
-  <Sidebar />
+<Base title="Hero Upgrades | Motto Immortal">
 
   <!-- HERO SECTION -->
   <section class="hero">
@@ -257,34 +248,9 @@ const pageUpdate = getPageUpdate("hero-upgrades");
     </div>
   </main>
 
-  <Footer />
-</body>
-</html>
+</Base>
 
 <style>
-/* RESET & BASE */
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: "Spectral", "Roboto", system-ui, sans-serif;
-  background:
-    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
-    linear-gradient(to bottom, #0d0b10, #07060c);
-  color: #e6e6eb;
-  min-height: 100vh;
-}
-
-body {
-  margin-left: 48px;
-}
-
-@media (max-width: 768px) {
-  body {
-    margin-left: 0;
-    margin-bottom: 56px;
-  }
-}
 
 .hero {
   position: relative;
@@ -321,7 +287,7 @@ body {
   margin: 0;
   font-size: 3rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-bright);
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
@@ -336,16 +302,10 @@ body {
   }
 }
 
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 48px 32px 80px;
-}
-
 .content-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 32px;
   margin-bottom: 32px;
   transition: border-color 0.3s ease;
@@ -379,13 +339,13 @@ body {
 .content-card p {
   line-height: 1.8;
   margin-bottom: 16px;
-  color: #e6e6eb;
+  color: var(--text-primary);
 }
 
 .content-card ul, .content-card ol {
   line-height: 1.8;
   margin-bottom: 16px;
-  color: #e6e6eb;
+  color: var(--text-primary);
 }
 
 .content-card li {
@@ -393,14 +353,14 @@ body {
 }
 
 .content-card strong {
-  color: #e6e6eb;
+  color: var(--text-primary);
 }
 
 /* TABLE STYLES */
 .upgrade-table-wrapper {
   overflow-x: auto;
   margin: 24px 0;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -425,7 +385,7 @@ body {
 .upgrade-table td {
   padding: 14px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e6e6eb;
+  color: var(--text-primary);
 }
 
 .upgrade-table tbody tr {
@@ -460,12 +420,12 @@ body {
 }
 
 .priority-medium {
-  color: #e6e6eb;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .priority-low {
-  color: #e6e6eb;
+  color: var(--text-primary);
   font-weight: 500;
 }
 

@@ -2,18 +2,19 @@
   "id": "cancer",
   "name": "Cancer",
   "image": "/heroes/cancer.webp",
-    "release": true,
+  "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Support",
   "rarity": "Epic",
   "description": "Thethys, known as Cancer is the godess of familial warmth and protection, guardian of the oceans.",
   "ratings": {
-    "overall": "C",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "B",
+    "forgottenLabyrinth": "",
+    "pvp": "S",
     "pve": "A"
   },
   "recommendedRelicLevel": 1,
@@ -114,5 +115,46 @@
     "ATK_UP"
   ],
   "baseAttackRate": 0.503,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "Energy battery for frontline with super armor (CC immunity). Only useful Zodiac unit. PvP tier higher than PvE because super armor in 5v5 prevents CC-lock at initiation.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 1,
+      "type": "mandatory",
+      "effect": "Energy battery and super armor both active. Fully functional from r1."
+    },
+    {
+      "level": 20,
+      "type": "recommended",
+      "effect": "Range and frequency improvements on both mechanics."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "yanluo",
+      "type": "core",
+      "description": "Both provide energy and CC to frontline; together prevent complete CC-lock."
+    },
+    {
+      "heroId": "mengpo",
+      "type": "conditional",
+      "description": "Super armor helps Meng Po frontline survive long enough for revive proc."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T0.5",
+    "cnTier": "T0.5",
+    "egTier": "T0.5",
+    "consensus": "partial",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 2,
+    "notes": "EG rates PvP A-tier vs CN S-tier; practical difference is narrow."
+  }
 }

@@ -2,7 +2,7 @@
   "id": "bastet",
   "name": "Bastet",
   "image": "/heroes/bastet.webp",
-    "release": true,
+  "release": true,
   "faction": "Diamonds",
   "role": "Nimble",
   "class": "Assassin",
@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SS",
-    "pve": "SS"
+    "forgottenLabyrinth": "",
+    "pvp": "S",
+    "pve": "A"
   },
   "recommendedRelicLevel": 20,
   "evolution": "Divine V",
@@ -114,5 +115,35 @@
     "HIT_AVOID"
   ],
   "baseAttackRate": 1.64,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Frontline tank that solo-carries until the 5-team threshold. Requires dodge% on gear slots 2/3 to function. Transitions to dedicated frontline alongside Hercules at higher investment.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 20,
+      "type": "recommended",
+      "effect": "Frontline tank baseline. Solo carry until 5 teams."
+    },
+    {
+      "level": 30,
+      "type": "high_spender",
+      "effect": "DPS role unlocked. Pair with Hercules or Athena as primary carry."
+    }
+  ],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 3,
+    "notes": "Needs dodge% on gear slots 2/3. Without it, survivability drops significantly."
+  }
 }

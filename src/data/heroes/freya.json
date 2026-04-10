@@ -2,7 +2,7 @@
   "id": "freya",
   "name": "Freya",
   "image": "/heroes/freya.webp",
-    "release": true,
+  "release": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Support",
@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "A",
-    "pve": "A"
+    "forgottenLabyrinth": "",
+    "pvp": "C",
+    "pve": "C"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -113,5 +114,17 @@
     "HEAL_EFFECT_UP"
   ],
   "baseAttackRate": 0.364,
-  "bossUltimatesPer90s": 3
+  "bossUltimatesPer90s": 3,
+  "coreMechanic": {
+    "summary": "Pure healing, zero utility. If you win with Freya you could have won with an empty slot. Skip.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

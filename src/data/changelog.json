@@ -1,5 +1,91 @@
 [
   {
+    "date": "2026-04-09",
+    "version": "1.3.9",
+    "title": "Huge changes incoming",
+    "changes": [
+      {
+        "type": "fix",
+        "text": "Removed automated scripts and content"
+      },
+      {
+        "type": "feature",
+        "text": "Added Tierlist to the Hero-List as a list-view"
+      },
+      {
+        "type": "fix",
+        "text": "New content for heroes that are coming from the community. Check them for details."
+      }
+    ]
+  },
+  {
+    "date": "2026-04-08",
+    "version": "1.3.8",
+    "title": "New Heroes, Guides and Events (updated)",
+    "changes": [
+      {
+        "type": "improvement",
+        "text": "New Heroes arrived. All have been integrated. Skadi, Wen-Shen and Cronus are new Heroes in the database."
+      },
+      {
+        "type": "improvement",
+        "text": "Events have been updated to fit to the new heroes."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-27",
+    "version": "1.3.7",
+    "title": "Restructured Content & Mengpo added",
+    "changes": [
+      {
+        "type": "improvement",
+        "text": "I moved the Hero Guides for better readability into their own segment. Also new Heroes will be flagged with a badge in the roster list. Also the guide section was redone."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-13",
+    "version": "1.3.6",
+    "title": "New Hero Guide added (Mengpo)",
+    "changes": [
+      {
+        "type": "feature",
+        "text": "Mengpo Charakter Guide added."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-13",
+    "version": "1.3.5",
+    "title": "Added About Page & Changes",
+    "changes": [
+      {
+        "type": "improvement",
+        "text": "I added another page for some information about myself and the project."
+      },
+      {
+        "type": "improvement",
+        "text": "For the main layouts, astro files and css definitions I made them more globally accessible - also I standardized the header for all subpages."
+      }
+    ]
+  },
+  {
+    "date": "2026-03-11",
+    "version": "1.3.4",
+    "title": "New Structure and Fixes",
+    "changes": [
+      {
+        "type": "improvement",
+        "text": "Summed up pages into categories to get rid of too many sites. Grouped them together."
+      },
+      {
+        "type": "fix",
+        "text": "Changed calculation missing DOT dmg for certain heroes."
+      }
+    ]
+  },
+  {
     "date": "2026-03-03",
     "version": "1.3.3",
     "title": "Added a stats Page for all heroes",
