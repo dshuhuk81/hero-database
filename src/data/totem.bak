@@ -2,60 +2,41 @@
   "version": "1.0",
   "slotType": "TEAM",
   "description": "One Totem can be equipped per team. Its effects apply to all 5 heroes in battle.",
-  "totem_archetypes": {
-    "primordial_everbloom": ["burst", "opening"],
-    "all_seeing_eyes": ["burst", "opening"],
-    "branch_of_serenity": ["sustain", "progression"],
-    "defiant_vow": ["sustain", "progression"],
-    "eternal_eclipse": ["burst", "scaling"],
-    "horn_of_potency": ["carry", "mixed"],
-    "keystone_of_wonders": ["scaling", "mixed"],
-    "moonglow_tear": ["opening", "burst"],
-    "sanctified_blood": ["sustain", "progression"],
-    "sigil_of_longevity": ["sustain", "progression"],
-    "solar_scorch": ["burst", "carry"],
-    "undying_staff": ["progression", "sustain"],
-    "unsullied_lotus": ["carry", "opening"],
-    "windrunners_grace": ["carry", "burst"]
-  },
   "totems": [
-    {
+     {
       "id": "primordial_everbloom",
       "name": "Primordial Everbloom",
       "rarity": "SSR",
       "image": "/icons/totems/primordialeverbloom.png",
       "rating": "SSS",
-      "meta": true,
-      "summary": "Energy-cycle totem with teamwide tempo buffs, healing, and energy refund.",
-      "archetypes": ["burst", "opening"],
+      "summary": "Early kill burst + energy spike for first slayer.",
       "effects": [
         {
           "level": 1,
           "description": "For every 3500 Energy consumed, allies enter an 8s active state, boosting their ATK, ATK SPD, and Energy Regen by 10% and reducing skill CD by 10%."
         },
-        {
+         {
           "level": 3,
           "description": "For every 1200 Energy consumed by allies, the most vulnerable ally receives healing equal to 10% of max HP."
         },
-        {
+         {
           "level": 6,
           "description": "For every 3500 Energy consumed, allies enter an 8s active state, boosting their ATK, ATK SPD, and Energy Regen by 20% and reducing skill CD by 20%."
         },
-        {
+         {
           "level": 10,
           "description": "For every 1200 Energy consumed by allies, all allies restore 40 Energy."
         }
-      ]
+      ],
+      "tags": ["Energy", "Burst", "Kill_Trigger"]
     },
     {
       "id": "all_seeing_eyes",
       "name": "All-Seeing Eyes",
       "rarity": "SSR",
       "image": "/icons/totems/allseeingeyes.png",
-      "rating": "A",
-      "meta": false,
-      "summary": "Snowball totem that rewards the first early kill with burst damage and energy.",
-      "archetypes": ["burst", "opening"],
+      "rating": "S",
+      "summary": "Kill trigger burst: energy restore + damage amplification.",
       "effects": [
         {
           "level": 1,
@@ -73,17 +54,16 @@
           "level": 10,
           "description": "Effect can trigger again after killing a target and is stackable."
         }
-      ]
+      ],
+      "tags": ["Energy", "On_Kill", "Burst_Window", "Damage_Amplifier"]
     },
     {
       "id": "branch_of_serenity",
       "name": "Branch of Serenity",
       "rarity": "SR",
       "image": "/icons/totems/branchofserenity.png",
-      "rating": "B",
-      "meta": false,
-      "summary": "Simple full-team Armor and M-RES boost for safer, steadier fights.",
-      "archetypes": ["sustain", "progression"],
+      "rating": "A",
+      "summary": "Flat defensive scaling for entire team.",
       "effects": [
         {
           "level": 1,
@@ -101,17 +81,16 @@
           "level": 10,
           "description": "Armor and M-RES +35%."
         }
-      ]
+      ],
+      "tags": ["Defense", "Team_Buff", "Scaling"]
     },
     {
       "id": "defiant_vow",
       "name": "Defiant Vow",
       "rarity": "SR",
       "image": "/icons/totems/defiantvow.png",
-      "rating": "B",
-      "meta": false,
-      "summary": "Defensive anti-focus totem that scales when allies are pressured by enemy targeting.",
-      "archetypes": ["sustain", "progression"],
+      "rating": "A",
+      "summary": "Target-based stacking defense scaling.",
       "effects": [
         {
           "level": 1,
@@ -129,7 +108,8 @@
           "level": 10,
           "description": "Gains 15% Lifesteal when targeted by 3 or more units."
         }
-      ]
+      ],
+      "tags": ["Defense", "Scaling", "Anti_Focus", "Sustain"]
     },
     {
       "id": "eternal_eclipse",
@@ -137,9 +117,7 @@
       "rarity": "SSR",
       "image": "/icons/totems/eternaleclipse.png",
       "rating": "S",
-      "meta": false,
-      "summary": "Periodic AoE strike that scales from your highest ATK ally and amplifies follow-up damage.",
-      "archetypes": ["burst", "scaling"],
+      "summary": "Periodic AoE burst based on highest ATK.",
       "effects": [
         {
           "level": 1,
@@ -157,17 +135,16 @@
           "level": 10,
           "description": "Increases the range to 5 meters and knocks down units hit."
         }
-      ]
+      ],
+      "tags": ["AoE", "Burst", "Damage_Amplifier", "Scaling"]
     },
     {
       "id": "horn_of_potency",
       "name": "Horn of Potency",
       "rarity": "SR",
       "image": "/icons/totems/hornofpotency.png",
-      "rating": "A",
-      "meta": false,
-      "summary": "Straightforward teamwide ATK boost with no setup required.",
-      "archetypes": ["carry", "mixed"],
+      "rating": "S",
+      "summary": "Simple global ATK buff.",
       "effects": [
         {
           "level": 1,
@@ -185,17 +162,16 @@
           "level": 10,
           "description": "ATK +12%."
         }
-      ]
+      ],
+      "tags": ["ATK_Buff", "Team_Buff"]
     },
     {
       "id": "keystone_of_wonders",
       "name": "Keystone of Wonders",
       "rarity": "SSR",
       "image": "/icons/totems/keystoneofwonders.png",
-      "rating": "SS",
-      "meta": true,
-      "summary": "Multi-suit scaling totem that boosts damage, durability, and later max HP.",
-      "archetypes": ["scaling", "mixed"],
+      "rating": "S",
+      "summary": "Suit-based scaling (multi-faction synergy).",
       "effects": [
         {
           "level": 1,
@@ -213,17 +189,16 @@
           "level": 10,
           "description": "Each suit owned increases allies' DMG dealt by 8% and reduces DMG taken by 8%."
         }
-      ]
+      ],
+      "tags": ["Multi_Faction", "Damage_Amplifier", "Damage_Reduction"]
     },
     {
       "id": "moonglow_tear",
       "name": "Moonglow Tear",
       "rarity": "SSR",
       "image": "/icons/totems/moonglowtear.png",
-      "rating": "SS",
-      "meta": true,
-      "summary": "Opening control totem that adds immediate burst and crowd control at battle start.",
-      "archetypes": ["opening", "burst"],
+      "rating": "S",
+      "summary": "Opening CC + burst based on team ATK.",
       "effects": [
         {
           "level": 1,
@@ -241,17 +216,16 @@
           "level": 10,
           "description": "Deals 450% ATK as DMG."
         }
-      ]
+      ],
+      "tags": ["CC", "Burst", "Opening"]
     },
     {
       "id": "sanctified_blood",
       "name": "Sanctified Blood",
       "rarity": "SR",
       "image": "/icons/totems/sanctifiedblood.png",
-      "rating": "SS",
-      "meta": true,
-      "summary": "Periodic sustain totem that heals weakened allies throughout longer fights.",
-      "archetypes": ["sustain", "progression"],
+      "rating": "A",
+      "summary": "Periodic healing for lowest HP ally.",
       "effects": [
         {
           "level": 1,
@@ -269,17 +243,16 @@
           "level": 10,
           "description": "Restores 30% of max HP to the lowest HP ally."
         }
-      ]
+      ],
+      "tags": ["Heal", "Sustain"]
     },
     {
       "id": "sigil_of_longevity",
       "name": "Sigil of Longevity",
       "rarity": "SR",
       "image": "/icons/totems/sigiloflongevity.png",
-      "rating": "B",
-      "meta": false,
-      "summary": "Basic max HP booster for extra frontline and team durability.",
-      "archetypes": ["sustain", "progression"],
+      "rating": "A",
+      "summary": "Flat HP scaling.",
       "effects": [
         {
           "level": 1,
@@ -297,7 +270,8 @@
           "level": 10,
           "description": "Max HP +17.5%."
         }
-      ]
+      ],
+      "tags": ["HP", "Scaling"]
     },
     {
       "id": "solar_scorch",
@@ -305,9 +279,7 @@
       "rarity": "SSR",
       "image": "/icons/totems/solarscorch.png",
       "rating": "S",
-      "meta": false,
-      "summary": "Periodic long-range burst totem that strikes the farthest enemy with knockdown pressure.",
-      "archetypes": ["burst", "carry"],
+      "summary": "Periodic single-target burst (highest ATK scaling).",
       "effects": [
         {
           "level": 1,
@@ -325,7 +297,8 @@
           "level": 10,
           "description": "Affects one more unit."
         }
-      ]
+      ],
+      "tags": ["Burst", "Single_Target", "CC"]
     },
     {
       "id": "undying_staff",
@@ -333,9 +306,7 @@
       "rarity": "SSR",
       "image": "/icons/totems/undyingstaff.png",
       "rating": "SS",
-      "meta": true,
-      "summary": "Emergency survival totem that prevents an early collapse with invincibility and shielding.",
-      "archetypes": ["progression", "sustain"],
+      "summary": "Emergency invulnerability + shield.",
       "effects": [
         {
           "level": 1,
@@ -353,17 +324,16 @@
           "level": 10,
           "description": "Triggers one extra time."
         }
-      ]
+      ],
+      "tags": ["Invincible", "Shield", "Emergency_Save"]
     },
     {
       "id": "unsullied_lotus",
       "name": "Unsullied Lotus",
       "rarity": "SR",
       "image": "/icons/totems/unsulliedlotus.png",
-      "rating": "B",
-      "meta": false,
-      "summary": "Aggressive positioning totem that rewards pushing into the enemy half with buffs and sustain.",
-      "archetypes": ["carry", "opening"],
+      "rating": "A",
+      "summary": "Forward push reward (enemy side bonus).",
       "effects": [
         {
           "level": 1,
@@ -381,17 +351,16 @@
           "level": 10,
           "description": "After allies stay in the enemy half for 15s (counted individually per unit), enters the (Ascension) state, increasing max HP by 40% and DMG dealt by 20%."
         }
-      ]
+      ],
+      "tags": ["Positioning", "ATK_Buff", "Shield", "Sustain"]
     },
     {
       "id": "windrunners_grace",
       "name": "Windrunner's Grace",
       "rarity": "SSR",
       "image": "/icons/totems/windrunnersgrace.png",
-      "rating": "A",
-      "meta": false,
-      "summary": "Carry-support totem that empowers your highest ATK ally with speed, ATK, and energy.",
-      "archetypes": ["carry", "burst"],
+      "rating": "S",
+      "summary": "Attack speed burst for main DPS.",
       "effects": [
         {
           "level": 1,
@@ -409,7 +378,8 @@
           "level": 10,
           "description": "Gains Super Armor for the duration."
         }
-      ]
+      ],
+      "tags": ["Attack_Speed", "Energy", "Carry_Buff"]
     }
   ]
 }
