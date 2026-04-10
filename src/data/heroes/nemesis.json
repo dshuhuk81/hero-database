@@ -2,21 +2,22 @@
   "id": "nemesis",
   "name": "Nemesis",
   "image": "/heroes/nemesis.webp",
-    "release": true,
+  "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Assassin",
   "rarity": "Legendary",
   "description": "Nemesis, goddess of vengeance and justice, rules over the balance of cause and effect, punishing arrogance and injustice.",
   "ratings": {
-    "overall": "S",
+    "overall": "B",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SS",
-    "pve": "S"
+    "forgottenLabyrinth": "S",
+    "pvp": "A",
+    "pve": "C"
   },
-  "recommendedRelicLevel": 10,
+  "recommendedRelicLevel": 0,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -113,5 +114,17 @@
     "SHIELD"
   ],
   "baseAttackRate": 1.164,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Early carry PvP burst window; falls off hard as DPS in late game. Damage too random and slow for consistent performance. CN: Nyx's inferior.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

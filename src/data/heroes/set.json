@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "A",
-    "pve": "A"
+    "pve": "B"
   },
   "recommendedRelicLevel": 10,
   "evolution": "Divine V",
@@ -96,7 +97,7 @@
       },
       "damageType": ""
     }
-   ],
+  ],
   "relic": {
     "name": "Dance of the Sands",
     "description": "Each Sand Burial cast increases the DMG of the next Sand Burial by 10%, stacking up to 5 times.",
@@ -115,5 +116,21 @@
     "LIFE_STEAL_UP"
   ],
   "baseAttackRate": 0.875,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "Lifesteal and ATK% buffer with armor shred for Diamond team. Mastery of Set alongside Poseidon defines high-level PvE pushing -- understanding how Set works separates mediocre from elite pushers.",
+    "depthRating": "high",
+    "commonlyMisunderstood": true
+  },
+  "synergyLinks": [
+    { "heroId": "poseidon", "type": "core", "description": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing." },
+    { "heroId": "heracles", "type": "core", "description": "ATK% buff and lifesteal amplify Heracles burst windows." }
+  ],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "A",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

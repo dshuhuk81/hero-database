@@ -2,7 +2,7 @@
   "id": "capricorn",
   "name": "Capricorn",
   "image": "/heroes/capricorn.webp",
-    "release": true,
+  "release": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Assassin",
@@ -13,6 +13,7 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "B",
     "pve": "B"
   },
@@ -100,5 +101,24 @@
     "HEAL"
   ],
   "baseAttackRate": 0.768,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Pure positioning tech unit. Groups enemies into specific positions before AoE skills land. Requires advanced understanding of unit movement at fight start.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T2",
+    "cnTier": "T2",
+    "egTier": "T2",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Keep 1 copy in altar",
+    "priority": 4,
+    "notes": null
+  }
 }

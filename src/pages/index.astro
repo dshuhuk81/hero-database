@@ -1,8 +1,6 @@
 ---
 export const prerender = true;
-import Footer from "../components/Footer.astro";
-import Sidebar from "../components/Sidebar.astro";
-import Analytics from '@vercel/analytics/astro';
+import Base from "../layouts/Base.astro";
 
 interface Teaser {
   label: string;
@@ -17,83 +15,70 @@ interface Teaser {
 
 const teasers: Teaser[] = [
   {
-    label: "Heros",
+    label: "Hero List",
     href: "/heros",
     icon: `<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19.5 6.5L21 3l-3.5 1.5"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6"/><path d="M8 16l-4 4"/><path d="M4.5 6.5L3 3l3.5 1.5"/>`,
-    description: "Browse all heroes, stats, skills & synergies"
+    description: "Browse all heroes with stats & ratings",
+    badge: {
+      text: "New",
+      color: "var(--accent-new)"
+    }
   },
   {
-    label: "Rankings",
-    href: "/rankings",
-    icon: `<path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>`,
-    description: "Score-based hero rankings across all scenarios",
-    badge: { text: "Alpha" }
+    label: "Hero Guides",
+    href: "/guides",
+    icon: `<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,
+    description: "In-depth hero guides with skills, comps & strategy",
+    badge: {
+      text: "New",
+      color: "var(--accent-new)"
+    }
   },
   {
-    label: "Tier List",
-    href: "/tierlist",
-    icon: `<rect x="3" y="3" width="4" height="18" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="13" width="4" height="8" rx="1"/>`,
-    description: "SSS to C ratings for PvP, PvE & more"
+    label: "Tips",
+    href: "/tips",
+    icon: `<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
+    description: "Beginner tips & shrine system breakdowns"
   },
   {
-    label: "Stats",
-    href: "/stats",
-    icon: `<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>`,
-    description: "Full stat breakdown for all heroes with account bonus toggle",
-    badge: { text: "New", color: "#1a5500" }
-  },
-  {
-    label: "Bosses",
+    label: "Boss Encounters",
     href: "/bosses",
     icon: `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
-    description: "Boss guides, comps & recommended heroes"
+    description: "Boss counters & recommended team comps"
   },
   {
     label: "Events",
     href: "/events",
-    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 14l1 2h2l-1.5 1.5.5 2.5-2-1.5-2 1.5.5-2.5L9 16h2z"/>`,
-    description: "Current & upcoming event schedules",
-    badge: { text: "Updated", color: "#0ea5e9" }
+    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+    description: "Campaign stages & event team guides",
+    badge: {
+      text: "Updated",
+      color: "var(--accent-purple)"
+    }
   },
   {
     label: "Totems",
     href: "/totems",
     icon: `<path d="M12 2L8 6v3l-2 2v4l2 2v3l4 2 4-2v-3l2-2v-4l-2-2V6z"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/>`,
-    description: "All totems with effects & ratings"
-  },
-  {
-    label: "Shrine",
-    href: "/shrine",
-    icon: `<path d="M12 2l8 6v2H4V8z"/><rect x="5" y="10" width="3" height="8"/><rect x="10.5" y="10" width="3" height="8"/><rect x="16" y="10" width="3" height="8"/><path d="M3 18h18v2H3z"/><path d="M2 20h20v2H2z"/>`,
-    description: "Shrine setups, effects & recommendations"
+    description: "All totems with effects, tags & ratings"
   },
   {
     label: "Calculator",
     href: "/calculator",
     icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="8" y="6" width="8" height="4" rx="1"/><circle cx="8" cy="14" r=".75"/><circle cx="12" cy="14" r=".75"/><circle cx="16" cy="14" r=".75"/><circle cx="8" cy="18" r=".75"/><circle cx="12" cy="18" r=".75"/><line x1="16" y1="16" x2="16" y2="20"/>`,
-    description: "Skill damage comparator with mitigation models",
-    badge: { text: "Alpha" }
+    description: "Skill damage calculator & PvP battle sim",
+    badge: {
+      text: "Alpha",
+      color: "var(--accent-gold-dim)"
+    }
   },
-  {
-    label: "Beginner Guide",
-    href: "/early-game",
-    icon: `<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,
-    description: "Early game strategies & progression tips"
-  }
 ];
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Motto Immortal</title>
-  <Analytics />
-</head>
-<body>
-  <Sidebar />
-
+<Base
+  title="Motto Immortal Database - Hero Stats, Tier Lists & Guides"
+  description="The complete database for Motto Immortal. Hero stats, skills, tier lists, team comps, boss guides and more. All 89 heroes covered."
+>
   <!-- HERO SECTION -->
   <section class="hero">
     <div class="hero-overlay"></div>
@@ -102,23 +87,6 @@ const teasers: Teaser[] = [
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
-    <div id="donate-button-container" style="text-align:center">
-      <span style="margin-bottom: 16px; display: block;">If this helped you, a coffee keeps the code flowing!</span>
-      <div style="margin-bottom: 24px;" id="donate-button"></div>
-      <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
-      <script>
-      PayPal.Donation.Button({
-      env:'production',
-      hosted_button_id:'EEMDMAMUL8P8A',
-      image: {
-      src:'https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif',
-      alt:'Donate with PayPal button',
-      title:'PayPal - The safer, easier way to pay online!',
-      }
-      }).render('#donate-button');
-      </script>
-      </div>
-    
     <h2 class="section-headline">Explore the Database</h2>
     <div class="separator"></div>
 
@@ -144,38 +112,51 @@ const teasers: Teaser[] = [
         </a>
       ))}
     </div>
+
+    <!-- SUPPORT SECTION -->
+    <section id="support" class="support-section">
+      <div class="support-card">
+        <div class="support-text">
+          <h2 class="support-headline">
+            <svg class="support-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            Keep this free
+          </h2>
+          <p class="support-desc">
+            Motto Immortal DB is built and maintained solo -- no paywalls, no sponsorships.
+            Hosting and infrastructure cost real money every month. If this tool has saved you time
+            or helped you build a better team, a small contribution goes a long way.
+          </p>
+          <ul class="support-list">
+            <li>Vercel hosting &amp; serverless functions</li>
+            <li>Domain &amp; CDN costs</li>
+            <li>Time spent on data, updates &amp; new features</li>
+          </ul>
+        </div>
+        <div class="support-cta">
+          <a
+            href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="donate-btn"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            Donate via PayPal
+          </a>
+          <p class="support-alt">
+            No budget? Sharing this site with your guild or alliance helps just as much.
+          </p>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <Footer />
-</body>
-</html>
+</Base>
 
 <style>
-/* RESET & BASE */
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: "Spectral", "Roboto", system-ui, sans-serif;
-  background:
-    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
-    linear-gradient(to bottom, #0d0b10, #07060c);
-  color: #e6e6eb;
-  min-height: 100vh;
-}
-
-/* PAGE LAYOUT WITH SIDEBAR */
-body {
-  margin-left: 48px;
-}
-
-@media (max-width: 768px) {
-  body {
-    margin-left: 0;
-    margin-bottom: 56px;
-  }
-}
-
 /* HERO SECTION */
 .hero {
   position: relative;
@@ -212,7 +193,7 @@ body {
   margin: 0;
   font-size: 3.5rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-bright);
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
@@ -231,25 +212,12 @@ body {
 }
 
 /* MAIN CONTENT */
-.main-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 64px 32px;
-}
-
 .section-headline {
   font-size: 2.5rem;
   font-weight: 600;
   text-align: center;
   margin: 0 0 24px;
-  color: #e6e6eb;
-}
-
-.separator {
-  width: 100%;
-  height: 2px;
-  background: rgba(250, 204, 21, 0.4);
-  margin-bottom: 56px;
+  color: var(--text-primary);
 }
 
 /* TEASER GRID */
@@ -259,9 +227,16 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   gap: 32px;
+  padding-top: 40px;
 }
 
 @media (min-width: 900px) {
+  .teaser-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
   .teaser-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -274,7 +249,7 @@ body {
   padding: 20px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   text-decoration: none;
   color: inherit;
   transition: all 0.3s ease;
@@ -287,7 +262,7 @@ body {
   position: absolute;
   inset: -2px;
   background: rgba(250, 204, 21, 0.2);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
@@ -312,7 +287,7 @@ body {
   justify-content: center;
   background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(168, 85, 247, 0.1));
   border: 1px solid rgba(250, 204, 21, 0.2);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   color: rgba(250, 204, 21, 0.85);
   transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
@@ -339,7 +314,7 @@ body {
   margin: 0;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #e6e6eb;
+  color: var(--text-primary);
 }
 
 .teaser-desc {
@@ -377,9 +352,9 @@ body {
   right: 8px;
   font-size: 10px;
   font-weight: 600;
-  color: white;
+  color: var(--text-bright);
   background-color: #dc2626;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   padding: 3px 6px;
   opacity: 0.95;
   line-height: 1;
@@ -396,3 +371,5 @@ body {
     right: 6px;
   }
 }
+
+</style>

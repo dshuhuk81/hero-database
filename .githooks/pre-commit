@@ -1,0 +1,51 @@
+#!/bin/sh
+# .githooks/pre-commit
+# Checks that derived data files are up to date when hero source files change.
+# Activated automatically via: npm run prepare (sets core.hooksPath to .githooks)
+# To bypass in an emergency: git commit --no-verify
+
+STAGED=$(git diff --cached --name-only)
+
+HERO_CHANGED=$(echo "$STAGED" | grep -E '^src/data/heroes/[^/]+\.json$')
+TAGS_CHANGED=$(echo "$STAGED" | grep -E '^src/data/tags\.json$')
+
+MISSING=""
+
+# If hero JSON files changed, derived files must also be staged
+if [ -n "$HERO_CHANGED" ]; then
+  DB_STAGED=$(echo "$STAGED" | grep -E '^src/data/all_heroes_db\.json$')
+  TEAMCOMPS_STAGED=$(echo "$STAGED" | grep -E '^src/data/derived/teamCompsByHeroId\.json$')
+
+  if [ -z "$DB_STAGED" ]; then
+    MISSING="${MISSING}\n  - src/data/all_heroes_db.json missing"
+  fi
+  if [ -z "$TEAMCOMPS_STAGED" ]; then
+    MISSING="${MISSING}\n  - src/data/derived/teamCompsByHeroId.json missing"
+  fi
+fi
+
+# If tags.json changed, the hero DB must also be re-generated
+if [ -n "$TAGS_CHANGED" ]; then
+  DB_STAGED=$(echo "$STAGED" | grep -E '^src/data/all_heroes_db\.json$')
+  if [ -z "$DB_STAGED" ]; then
+    MISSING="${MISSING}\n  - src/data/all_heroes_db.json missing (tags changed)"
+  fi
+fi
+
+if [ -n "$MISSING" ]; then
+  echo ""
+  echo "-----------------------------------------------------------"
+  echo "pre-commit: derived files not staged after source changes:"
+  printf "$MISSING"
+  echo ""
+  echo ""
+  echo "Fix: run 'npm run after:hero-edit' or 'npm run after:tags',"
+  echo "     then re-stage the generated files (git add src/data/...)."
+  echo ""
+  echo "Skip check: git commit --no-verify"
+  echo "-----------------------------------------------------------"
+  echo ""
+  exit 1
+fi
+
+exit 0

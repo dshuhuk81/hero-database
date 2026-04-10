@@ -11,20 +11,28 @@
     "preview": "astro preview",
     "astro": "astro",
     "tag-manager": "node scripts/tag-manager-server.js",
-    "changelog:add": "node scripts/add-changelog.js"
+    "mergeHeroes": "node scripts/merge-heroes-db.js",
+    "changelog:add": "node scripts/add-changelog.js",
+    "import-attack-rates": "node scripts/import-attack-rates.cjs",
+    "prepare": "git config core.hooksPath .githooks",
+    "db:merge": "node scripts/merge-heroes-db.js",
+    "validate:tags": "node scripts/test-hero-tags.js",
+    "validate:all": "node validate-pvp-ratings.js && node scripts/test-hero-tags.js",
+    "after:hero-edit": "node scripts/merge-heroes-db.js && node scripts/test-hero-tags.js",
+    "after:tags": "node scripts/test-hero-tags.js && node scripts/merge-heroes-db.js",
+    "after:boss-import": "node scripts/merge-heroes-db.js",
+    "rebuild": "node scripts/merge-heroes-db.js && astro build"
   },
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
-    "@astrojs/vercel": "^9.0.4",
-    "@supabase/supabase-js": "^2.98.0",
     "@vercel/analytics": "^1.6.1",
     "astro": "^5.18.0",
-    "dotenv": "^17.3.1",
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "vercel": "^50.28.0"
+    "@astrojs/sitemap": "^3.7.1",
+    "vercel": "^50.38.2"
   }
 }

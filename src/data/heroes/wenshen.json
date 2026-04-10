@@ -2,32 +2,34 @@
   "id": "wenshen",
   "name": "Wen-Shen",
   "image": "/heroes/wenshen.webp",
-  "release": false,
+  "release": true,
+  "newHero": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Support",
   "rarity": "Legendary",
   "description": "Make the most of her dueling power and her harrassing potential.",
   "ratings": {
-    "overall": "",
+    "overall": "A",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "",
-    "pve": ""
+    "forgottenLabyrinth": "",
+    "pvp": "SS",
+    "pve": "S"
   },
   "evolution": "Divine V",
   "level": 300,
   "stats": {
-    "might": 0,
-    "hp": 0,
-    "atk": 0,
-    "armor": 0,
-    "magicRes": 0,
-    "dodgeRate": 0,
+    "might": 631000,
+    "hp": 2010315,
+    "atk": 201031,
+    "armor": 46361,
+    "magicRes": 46361,
+    "dodgeRate": 6,
     "hitBonus": 0,
-    "critRate": 0,
-    "critRes": 0,
+    "critRate": 4,
+    "critRes": 6,
     "critDmgBonus": 0,
     "critDmgRed": 0,
     "energy": 0,
@@ -63,16 +65,16 @@
     },
     {
       "id": "skill_2",
-    "name": "Duality Inversion",
-    "description": "Curses the symmetrically opposite enemy, dealing DMG equal to 50% of their max HP (up to 1000% of Wenshen’s ATK). The curse is slowly lifted over 5s, restoring the lost HP.",
-    "upgrades": {
-      "level2": "While cursed, the target receives 30% reduced healing.",
-      "level3": "The curse is slowly lifted over 8s, restoring the lost HP.",
-      "level4": "While cursed, the target receives 60% reduced healing."
+      "name": "Duality Inversion",
+      "description": "Curses the symmetrically opposite enemy, dealing DMG equal to 50% of their max HP (up to 1000% of Wenshen’s ATK). The curse is slowly lifted over 5s, restoring the lost HP.",
+      "upgrades": {
+        "level2": "While cursed, the target receives 30% reduced healing.",
+        "level3": "The curse is slowly lifted over 8s, restoring the lost HP.",
+        "level4": "While cursed, the target receives 60% reduced healing."
+      },
+      "damageType": "Magical"
     },
-    "damageType": "Magical"
-  },
-  {
+    {
       "id": "skill_3",
       "name": "Calamity-Ridden",
       "description": "The enemy defeating Wenshen becomes permanently Jinxed (Passive). Jinxed: Has a 50% chance to be stunned, terrified, or petrified for 2.5s when attacking; has a 50% chance to be knocked down when moving. Jinxed can only trigger once every 4s.",
@@ -80,7 +82,7 @@
         "level2": "Enemies also take DMG equal to 50% of her ATK per sec.",
         "level3": "Jinxed enemies deal 20% reduced DMG.",
         "level4": "Increases the chance of triggering a Jinxed effect to 60%."
-        }
+      }
     },
     {
       "id": "skill_4",
@@ -95,14 +97,20 @@
     }
   ],
   "relic": {
-      "name": "Origin of Pestilence",
-      "description": "When a Jinxed enemy is defeated, it spreads to 1 nearest enemy, dealing DMG equal to 200% of ATK to the new target.",
-      "upgrades": {
-        "level2": "Upon spreading, increases DMG to 260% ATK.",
-        "level3": "Enemies cursed by Duality Inversion are permanently Jinxed.",
-        "level4": "The target takes 20% increased DMG while Jinxed."
-  }
-},
+    "name": "Origin of Pestilence",
+    "description": "When a Jinxed enemy is defeated, it spreads to 1 nearest enemy, dealing DMG equal to 200% of ATK to the new target.",
+    "upgrades": {
+      "level2": "Upon spreading, increases DMG to 260% ATK.",
+      "level3": "Enemies cursed by Duality Inversion are permanently Jinxed.",
+      "level4": "The target takes 20% increased DMG while Jinxed."
+    }
+  },
   "synergies": [
-  ]
+    "CROWD_CONTROL",
+    "ATK_DOWN",
+    "REDUCES_ATTRIBUTES",
+    "ENEMY_VULNERABILITY"
+  ],
+  "baseAttackRate": 0.626,
+  "bossUltimatesPer90s": 4
 }

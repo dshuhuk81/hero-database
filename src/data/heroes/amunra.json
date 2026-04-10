@@ -9,12 +9,13 @@
   "rarity": "Legendary",
   "description": "Amun-Ra is mostly situational. He performs well in Delusions Den and PVP, as well as in Odysseus, but his performance in other areas is average.",
   "ratings": {
-    "overall": "SSS",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SSS",
-    "pve": "SS"
+    "forgottenLabyrinth": "",
+    "pvp": "A",
+    "pve": "A"
   },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
@@ -116,5 +117,30 @@
     "HEAL"
   ],
   "baseAttackRate": 1.401,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "Deluxe edition Poseidon for PvE -- better grouping at higher investment cost. Dodge-stacking mechanic requires high investment to shine. Second-worst Celestial to invest in.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 30,
+      "type": "recommended",
+      "effect": "Full grouping and dodge-stacking potential. Required to shine."
+    }
+  ],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Free unit",
+    "priority": 3,
+    "notes": "Divine achievable without targeted pulls since he is a free unit."
+  }
 }

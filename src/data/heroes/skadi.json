@@ -2,33 +2,34 @@
   "id": "skadi",
   "name": "Skadi",
   "image": "/heroes/skadi.webp",
-  "release": false,
+  "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Mage",
   "rarity": "Legendary",
   "description": "Core of Control",
   "ratings": {
-    "overall": "",
+    "overall": "SS",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "",
-    "pve": ""
+    "forgottenLabyrinth": "",
+    "pvp": "S",
+    "pve": "SS"
   },
   "recommendedRelicLevel": 0,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
-    "might": 0,
-    "hp": 0,
-    "atk": 0,
-    "armor": 0,
-    "magicRes": 0,
+    "might": 631000,
+    "hp": 1654421,
+    "atk": 229883,
+    "armor": 26316,
+    "magicRes": 38628,
     "dodgeRate": 0,
     "hitBonus": 0,
-    "critRate": 0,
-    "critRes": 0,
+    "critRate": 10,
+    "critRes": 6,
     "critDmgBonus": 0,
     "critDmgRed": 0,
     "energy": 0,
@@ -50,63 +51,166 @@
     "ultimatePWR": 0
   },
   "skills": [
-  {
-    "id": "skill_1",
-    "name": "Drifting Vortex",
-    "description": "Create an Ice Vortex that continuously moves around the battlefield while targeting enemy Deity units (excluding minions) for 8 seconds. While active, the Ice Vortex deals 36% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 60% ATK as DMG.",
-    "upgrades": {
-      "level2": "While active, the Ice Vortex deals 48% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 80% ATK as DMG.",
-      "level3": "Ice Vortex's each consecutive hit on the same target increases the DMG that target takes from Ice Storm by 12%, stacking up to 15 times.",
-      "level4": "While active, the Ice Vortex deals 60% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 100% ATK as DMG."
+    {
+      "id": "skill_1",
+      "name": "Drifting Vortex",
+      "description": "Create an Ice Vortex that continuously moves around the battlefield while targeting enemy Deity units (excluding minions) for 8 seconds. While active, the Ice Vortex deals 36% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 60% ATK as DMG.",
+      "upgrades": {
+        "level2": "While active, the Ice Vortex deals 48% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 80% ATK as DMG.",
+        "level3": "Ice Vortex's each consecutive hit on the same target increases the DMG that target takes from Ice Storm by 12%, stacking up to 15 times.",
+        "level4": "While active, the Ice Vortex deals 60% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 100% ATK as DMG."
+      },
+      "damageType": "Magical",
+      "isUltimate": true
     },
-    "damageType": "Magical",
-    "isUltimate": true
-  },
-  {
-    "id": "skill_2",
-    "name": "Ring of Blizzard",
-    "description": "Summon a Blizzard with 3-meter radius in a densely packed area. The blizzard deals 40% ATK as DMG every 0.5 seconds for 3 seconds, then deals 100% ATK as DMG to enemies that remain within the area after 3 seconds.",
-    "upgrades": {
-      "level2": "Deals 60% ATK as DMG every 0.5 seconds.",
-      "level3": "Deals 80% ATK as DMG every 0.5 seconds.",
-      "level4": "Enemies that remain within the area after 3 seconds are Frozen for 3 seconds."
+    {
+      "id": "skill_2",
+      "name": "Ring of Blizzard",
+      "description": "Summon a Blizzard with 3-meter radius in a densely packed area. The blizzard deals 40% ATK as DMG every 0.5 seconds for 3 seconds, then deals 100% ATK as DMG to enemies that remain within the area after 3 seconds.",
+      "upgrades": {
+        "level2": "Deals 60% ATK as DMG every 0.5 seconds.",
+        "level3": "Deals 80% ATK as DMG every 0.5 seconds.",
+        "level4": "Enemies that remain within the area after 3 seconds are Frozen for 3 seconds."
+      },
+      "damageType": "Magical"
     },
-    "damageType": "Magical"
-  },
-  {
-    "id": "skill_3",
-    "name": "Ice Prison",
-    "description": "Freeze the current target for 2 seconds and deal 240% ATK as DMG.",
-    "upgrades": {
-      "level2": "Also deals 80% ATK as DMG per second to units around the target.",
-      "level3": "Deals 270% ATK as DMG.",
-      "level4": "Duration extends to 3s."
+    {
+      "id": "skill_3",
+      "name": "Ice Prison",
+      "description": "Freeze the current target for 2 seconds and deal 240% ATK as DMG.",
+      "upgrades": {
+        "level2": "Also deals 80% ATK as DMG per second to units around the target.",
+        "level3": "Deals 270% ATK as DMG.",
+        "level4": "Duration extends to 3s."
+      },
+      "damageType": "Magical"
     },
-    "damageType": "Magical"
-  },
-  {
-    "id": "skill_4",
-    "name": "Realm of Frost",
-    "description": "When an enemy unit is affected by a Crowd Control effect, Skadi summons an Ice Spike to deal 60% ATK as DMG to the target.",
-    "upgrades": {
-      "level2": "Increases DMG dealt to 80%.",
-      "level3": "And restores 30 Energy.",
-      "level4": "Increases DMG dealt to 100%."
-    },
-    "damageType": "Magical"
-  }
-],
-  "relic": {
-  "name": "Iceforged Veins",
-  "description": "Triggering Realm of Frost grants 8% ATK for 3s. Stacks up to 10 times.",
-  "upgrades": {
-    "level2": "When Skadi is about to fall, she freezes herself for 3s, becoming invincible and restoring 20% of her max HP per sec. This can be triggered once per battle.",
-    "level3": "Triggering Realm of Frost grants 12% ATK for 3s. Stacks up to 10 times.",
-    "level4": "Triggering Realm of Frost grants 12% ATK for 8s. Stacks up to 10 times."
-  }
-},
-  "synergies": [
+    {
+      "id": "skill_4",
+      "name": "Realm of Frost",
+      "description": "When an enemy unit is affected by a Crowd Control effect, Skadi summons an Ice Spike to deal 60% ATK as DMG to the target.",
+      "upgrades": {
+        "level2": "Increases DMG dealt to 80%.",
+        "level3": "And restores 30 Energy.",
+        "level4": "Increases DMG dealt to 100%."
+      },
+      "damageType": "Magical"
+    }
   ],
-  "baseAttackRate": 0,
-  "bossUltimatesPer90s": 0
+  "relic": {
+    "name": "Iceforged Veins",
+    "description": "Triggering Realm of Frost grants 8% ATK for 3s. Stacks up to 10 times.",
+    "upgrades": {
+      "level2": "When Skadi is about to fall, she freezes herself for 3s, becoming invincible and restoring 20% of her max HP per sec. This can be triggered once per battle.",
+      "level3": "Triggering Realm of Frost grants 12% ATK for 3s. Stacks up to 10 times.",
+      "level4": "Triggering Realm of Frost grants 12% ATK for 8s. Stacks up to 10 times."
+    }
+  },
+  "synergies": [
+    "CROWD_CONTROL",
+    "ENEMY_VULNERABILITY",
+    "AREA_DAMAGE_DEALER",
+    "ATK_UP",
+    "ENERGY_RESTORE"
+  ],
+  "baseAttackRate": 1.351,
+  "bossUltimatesPer90s": 3,
+  "teamComps": {
+    "pve": [
+      {
+        "label": "Standard",
+        "stars": 4,
+        "description": "High strength, can beat all teams. Skadi provides CC while Poseidon and Khepri anchor the front, Pan buffs, and Nuwa sustains the team.",
+        "targets": "All",
+        "totems": [
+          "keystone_of_wonders",
+          "undying_staff"
+        ],
+        "front": [
+          "skadi",
+          "poseidon"
+        ],
+        "back": [
+          "khepri",
+          "pan",
+          "nuwa"
+        ]
+      },
+      {
+        "label": "Ultimate",
+        "stars": 5,
+        "description": "Mainly targets Dog-head enemies and immortal Treant. Cronus replaces Nuwa for CDR and formation disruption.",
+        "targets": "All",
+        "totems": [
+          "keystone_of_wonders",
+          "undying_staff"
+        ],
+        "front": [
+          "skadi",
+          "poseidon"
+        ],
+        "back": [
+          "khepri",
+          "pan",
+          "cronus"
+        ]
+      }
+    ]
+  },
+  "coreMechanic": {
+    "summary": "AoE carry with damage scaling by enemy density and built-in lifesteal. Non-overlapping synergies -- slots into any comp. CN: closest non-Celestial DPS to a Celestial.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 10,
+      "type": "mandatory",
+      "effect": "AoE range and lifesteal meaningful from here."
+    },
+    {
+      "level": 20,
+      "type": "mandatory",
+      "effect": "Carry performance solidified. Core investment target."
+    },
+    {
+      "level": 30,
+      "type": "recommended",
+      "effect": "Endgame ceiling. Dupes matter at this level."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "poseidon",
+      "type": "core",
+      "description": "Foundational pairing -- Poseidon groups; Skadi AoE hits entire cluster at max efficiency."
+    },
+    {
+      "heroId": "momus",
+      "type": "core",
+      "description": "Momus taunts into Skadi AoE -- enemies pulled, taunted in place, then deleted."
+    },
+    {
+      "heroId": "yuelao",
+      "type": "core",
+      "description": "Full Spade meta trio with Yuelao buffing both Skadi and Hecate simultaneously."
+    },
+    {
+      "heroId": "hecate",
+      "type": "core",
+      "description": "Full Spade meta trio -- Skadi secondary carry alongside Hecate primary."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T0",
+    "cnTier": "T0",
+    "egTier": "T0",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine -> D5",
+    "priority": 1,
+    "notes": null
+  }
 }

@@ -2,7 +2,7 @@
   "id": "cashien",
   "name": "Cashien",
   "image": "/heroes/cashien.webp",
-    "release": true,
+  "release": true,
   "faction": "Hearts",
   "role": "Arcane",
   "class": "Support",
@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "S",
     "pvp": "SS",
-    "pve": "SSS"
+    "pve": "SS"
   },
   "recommendedRelicLevel": 20,
   "evolution": "Divine V",
@@ -114,5 +115,56 @@
     "HEAL"
   ],
   "baseAttackRate": 0.935,
-  "bossUltimatesPer90s": 10
+  "bossUltimatesPer90s": 10,
+  "coreMechanic": {
+    "summary": "Best energy battery. Instant 100 energy to all nearby allies plus 25/s for 8s. CN calls him the eternal support regardless of meta shifts.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 1,
+      "type": "mandatory",
+      "effect": "Core energy restore unlocked. Fully functional support from r1."
+    },
+    {
+      "level": 20,
+      "type": "recommended",
+      "effect": "Improved heal radius and ingot regeneration speed. Better sustained healing."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "jingwei",
+      "type": "core",
+      "description": "Foundational Hearts team -- energy cycling sustains Jingwei flight phase."
+    },
+    {
+      "heroId": "isis",
+      "type": "core",
+      "description": "Foundational Hearts team -- both carries depend on Caishen energy cycling."
+    },
+    {
+      "heroId": "mengpo",
+      "type": "core",
+      "description": "Standard Hearts trio core -- all three benefit each other in a closed loop."
+    },
+    {
+      "heroId": "zeus",
+      "type": "core",
+      "description": "Guaranteed energy cycling maximizes Zeus Judgment window uptime."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T0",
+    "cnTier": "T0",
+    "egTier": "T0",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 1,
+    "notes": null
+  }
 }

@@ -90,6 +90,14 @@ const TAG_CATEGORIES = {
     "AREA_DAMAGE_DEALER",
     "BASIC_ATTACK_SCALER",
   ],
+  ENGINE_TAGS: [
+    "SUSTAIN_ENGINE",
+    "CONTROL_ENGINE",
+    "BURST_ENGINE",
+    "ENERGY_ENGINE",
+    "ON_HIT_ENGINE",
+    "PULL_ENGINE",
+  ],
 };
 
 function getCategoryForTag(tag) {

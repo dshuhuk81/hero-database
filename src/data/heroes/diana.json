@@ -13,6 +13,7 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "B",
     "pve": "A"
   },
@@ -113,5 +114,21 @@
     "REMOVES_ARMOR"
   ],
   "baseAttackRate": 0.901,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "Energy battery with high ATK speed buff. Crescent Mark is the second strongest controllable armor debuff in game. Due to armor scaling, this debuff is disproportionately powerful.",
+    "depthRating": "high",
+    "commonlyMisunderstood": true
+  },
+  "relicBreakpoints": [
+    { "level": 0, "type": "recommended", "effect": "Works as energy battery at 1 dupe without relic investment." },
+    { "level": 20, "type": "recommended", "effect": "r10 is what makes her OP; r20 is very strong for Zeus/Nezha compositions." }
+  ],
+  "metaSources": {
+    "excelTier": "T2",
+    "cnTier": "T2",
+    "egTier": "A",
+    "consensus": "partial",
+    "lastVerified": "2025-04"
+  }
 }

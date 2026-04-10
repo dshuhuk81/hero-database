@@ -2,10 +2,9 @@
 export const prerender = true;
 import HeroCard from "../components/HeroCard.astro";
 import { heroes } from "../data/heroes";
-import Footer from "../components/Footer.astro";  
-import Sidebar from "../components/Sidebar.astro";  // NEU
-import Filter from "../components/filter.astro";  // NEU
-import Analytics from '@vercel/analytics/astro';
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Filter from "../components/filter.astro";
 
 
 /* Alphabetisch nach Name sortieren */
@@ -21,17 +20,22 @@ const sortedHeroes = [...heroes]
 
 
 ---
-<Sidebar />  <!-- NEU -->
-<!-- HERO HEADER -->
-<section class="hero-header"></section>
 
-<h1 class="title">Choose your hero</h1>
+<Base
+  title="Heroes | Motto Immortal Database"
+  description="Browse all heroes in Motto Immortal. Filter by class, faction, role and ratings. View stats, skills and tier rankings for every hero."
+>
+<PageHero
+  tag="Hero Database"
+  headline="Choose your hero"
+  subtitle="Browse all heroes, stats, skills & synergies"
+/>
 
-<div class="content-wrapper">
-  
+ <div class="page-wrapper"> 
 <Filter />
 
 <!-- RESULTS -->
+
 <div class="resultcontent">
   <div class="sort-bar">
     <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
@@ -45,16 +49,28 @@ const sortedHeroes = [...heroes]
         <option value="class">Class</option>
         <option value="rarity-desc">Rarity (highest first)</option>
       </select>
+      <div class="view-toggle" role="group" aria-label="View mode">
+        <button id="viewGrid" class="view-btn active" title="Gallery view" aria-label="Gallery view">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+          </svg>
+        </button>
+        <button id="viewList" class="view-btn" title="List view" aria-label="List view">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
-    <div class="grid" id="heroGrid">
+  <div class="grid" id="heroGrid">
     {sortedHeroes.map(hero => (
       <div
         class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
           data-name={hero.name.toLowerCase()}
           data-class={hero.class.toLowerCase()}
-          data-role={hero.role.toLowerCase()}    
+          data-role={hero.role.toLowerCase()}
           data-faction={hero.faction.toLowerCase()}
           data-rarity={hero.rarity.toLowerCase()}
           data-tags={hero.synergies?.join("|").toLowerCase() || ""}
@@ -65,42 +81,94 @@ const sortedHeroes = [...heroes]
           <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} />
           <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} />
         </div>
-
         <HeroCard hero={hero} />
       </div>
     ))}
   </div>
+
+  <div id="heroList" style="display:none">
+    <table class="hero-table">
+      <thead>
+        <tr>
+          <th class="col-portrait"></th>
+          <th class="col-name col-sortable" data-col="name">Hero <span class="sort-indicator"></span></th>
+          <th class="col-rating col-sortable" data-col="overall">Overall <span class="sort-indicator"></span></th>
+          <th class="col-rating col-sortable" data-col="pvp">PvP <span class="sort-indicator"></span></th>
+          <th class="col-rating col-sortable" data-col="pve">PvE <span class="sort-indicator"></span></th>
+          <th class="col-tier col-sortable" data-col="tier">Tier <span class="sort-indicator"></span></th>
+          <th class="col-class">Class</th>
+          <th class="col-faction">Faction</th>
+        </tr>
+      </thead>
+      <tbody id="heroListBody">
+        {sortedHeroes.map(hero => (
+          <tr
+            class="hero-row"
+            data-name={hero.name.toLowerCase()}
+            data-class={hero.class.toLowerCase()}
+            data-role={hero.role.toLowerCase()}
+            data-faction={hero.faction.toLowerCase()}
+            data-rarity={hero.rarity.toLowerCase()}
+            data-tags={hero.synergies?.join("|").toLowerCase() || ""}
+            data-rating={hero.rating?.toLowerCase() || "n/a"}
+            data-pvp={hero.ratings?.pvp?.toLowerCase() || "n/a"}
+            data-pve={hero.ratings?.pve?.toLowerCase() || "n/a"}
+            data-excel-tier={hero.metaSources?.excelTier || ""}
+          >
+            <td class="col-portrait">
+              <a href={`/heroes/${hero.id}`} class="list-portrait-link">
+                <div
+                  class="list-portrait"
+                  style={`background-image: url(/heroes/${hero.id}.webp)`}
+                  aria-hidden="true"
+                ></div>
+              </a>
+            </td>
+            <td class="col-name">
+              <a href={`/heroes/${hero.id}`} class="list-hero-name">
+                {hero.name}
+              </a>
+            </td>
+            <td class="col-rating">
+              {hero.ratings?.overall
+                ? <span class={`list-badge rating-${hero.ratings.overall.toLowerCase()}`}>{hero.ratings.overall}</span>
+                : <span class="list-badge-empty">-</span>
+              }
+            </td>
+            <td class="col-rating">
+              {hero.ratings?.pvp
+                ? <span class={`list-badge rating-${hero.ratings.pvp.toLowerCase()}`}>{hero.ratings.pvp}</span>
+                : <span class="list-badge-empty">-</span>
+              }
+            </td>
+            <td class="col-rating">
+              {hero.ratings?.pve
+                ? <span class={`list-badge rating-${hero.ratings.pve.toLowerCase()}`}>{hero.ratings.pve}</span>
+                : <span class="list-badge-empty">-</span>
+              }
+            </td>
+            <td class="col-tier">
+              {hero.metaSources?.excelTier
+                ? <span class="list-tier">{hero.metaSources.excelTier}</span>
+                : <span class="list-badge-empty">-</span>
+              }
+            </td>
+            <td class="col-class">
+              <span class="list-meta">{hero.class}</span>
+            </td>
+            <td class="col-faction">
+              <span class="list-meta">{hero.faction}</span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 </div>
 </div>
-<Footer />  <!-- NEU -->
+</Base>
 
 <style>
-/* RESET & BASE */
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: "Spectral", "Roboto", system-ui, sans-serif;
-  background:
-    radial-gradient(ellipse at 30% -10%, rgba(120,90,200,0.15), transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(255,215,100,0.08), transparent 55%),
-    linear-gradient(to bottom, #0d0b10, #07060c);
-  color: #e6e6eb;
-}
-
-/* ===============================
-   PAGE LAYOUT WITH SIDEBAR
-   =============================== */
-body {
-  margin-left: 48px; /* Sidebar width */
-}
-
-@media (max-width: 768px) {
-  body {
-    margin-left: 0;
-    margin-bottom: 56px; /* Mobile bottom nav */
-  }
-}
-
 /* HERO HEADER */
 .hero-header {
   height: 360px;
@@ -127,18 +195,12 @@ body {
   font-weight: 600;
 }
 
-/* FILTERS  */
-.content-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
 
 .sort-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 16px 0 24px;
+  margin: 32px 0 24px;
   flex-wrap: wrap;
   gap: 12px;
 }
@@ -160,16 +222,58 @@ body {
   white-space: nowrap;
 }
 
-.sort-select {
-  padding: 6px 12px;
-  border-radius: 8px;
+/* ================================
+   VIEW TOGGLE BUTTONS
+   ================================ */
+
+.view-toggle {
+  display: flex;
+  gap: 2px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #e6e6eb;
-  font-size: 0.85rem;
-  font-family: inherit;
+  border-radius: var(--radius-md);
+  padding: 3px;
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: calc(var(--radius-md) - 2px);
+  background: transparent;
+  color: rgba(230, 230, 235, 0.45);
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.view-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(230, 230, 235, 0.8);
+}
+
+.view-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-bright);
+}
+
+.sort-select {
+ width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-bright);
+  padding: 9px 2.25rem 9px 12px;
+  font-size: 0.92rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  background-size: 14px 14px;
+  transition: background-color 0.15s ease;
 }
 
 .sort-select:hover {
@@ -178,7 +282,7 @@ body {
 
 .sort-select:focus {
   outline: none;
-  border-color: #facc15;
+  border-color: var(--accent-gold);
 }
 .grid {
   display: grid;
@@ -284,102 +388,426 @@ body {
   border: 1px solid rgba(255,255,255,0.25);
 }
 
+/* ================================
+   LIST VIEW TABLE
+   ================================ */
 
+.hero-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  table-layout: fixed;
+}
+
+.hero-table thead tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-table th {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: rgba(230, 230, 235, 0.4);
+  white-space: nowrap;
+}
+
+.col-sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.col-sortable:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sort-indicator {
+  display: inline-block;
+  margin-left: 6px;
+  opacity: 0.3;
+}
+
+.sort-indicator::after {
+  content: "\21C5";
+}
+
+.col-sortable.sort-asc .sort-indicator::after {
+  content: "\2191";
+  opacity: 1;
+  color: var(--accent-gold, #facc15);
+}
+
+.col-sortable.sort-desc .sort-indicator::after {
+  content: "\2193";
+  opacity: 1;
+  color: var(--accent-gold, #facc15);
+}
+
+.col-sortable.sort-asc .sort-indicator,
+.col-sortable.sort-desc .sort-indicator {
+  opacity: 1;
+}
+
+.hero-table td {
+  padding: 6px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+}
+
+.hero-row {
+  transition: background 0.12s ease;
+}
+
+.hero-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.col-portrait {
+  width: 52px;
+  padding-left: 0 !important;
+}
+
+.col-name,
+.col-class,
+.col-faction,
+.col-rating,
+.col-tier {
+  width: calc((100% - 52px) / 7);
+}
+
+.col-rating,
+.col-tier {
+  text-align: center !important;
+}
+
+.hero-table .col-rating,
+.hero-table .col-tier {
+  text-align: center;
+}
+
+.list-portrait-link {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.list-portrait {
+  width: 44px;
+  height: 44px;
+  background-size: cover;
+  background-position: center top 30%;
+  border-radius: 8px;
+  transition: transform 0.25s ease;
+}
+
+.list-portrait-link:hover .list-portrait {
+  transform: scale(1.08);
+}
+
+.list-hero-name {
+  color: var(--text-bright);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: color 0.12s ease;
+}
+
+.list-hero-name:hover {
+  color: var(--accent-gold);
+}
+
+.list-meta {
+  color: rgba(230, 230, 235, 0.55);
+  font-size: 0.82rem;
+}
+
+.list-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 30px;
+  padding: 0 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+/* reuse existing rating-* colour vars */
+.list-badge.rating-sss {
+  background: linear-gradient(135deg, var(--tier-sss-from), var(--tier-sss-to));
+  color: var(--tier-sss-text);
+}
+.list-badge.rating-ss {
+  background: linear-gradient(135deg, var(--tier-ss-from), var(--tier-ss-to));
+  color: var(--tier-ss-text);
+}
+.list-badge.rating-s {
+  background: linear-gradient(135deg, var(--tier-s-from), var(--tier-s-to));
+  color: var(--tier-s-text);
+}
+.list-badge.rating-a {
+  background: linear-gradient(135deg, var(--tier-a-from), var(--tier-a-to));
+  color: var(--tier-a-text);
+}
+.list-badge.rating-b {
+  background: linear-gradient(135deg, var(--tier-b-from), var(--tier-b-to));
+  color: var(--tier-b-text);
+}
+.list-badge.rating-c {
+  background: linear-gradient(135deg, var(--tier-c-from), var(--tier-c-to));
+  color: var(--tier-c-text);
+}
+.list-badge.rating-d {
+  background: linear-gradient(135deg, var(--tier-d-from), var(--tier-d-to));
+  color: var(--tier-d-text);
+}
+
+.list-badge-empty {
+  color: rgba(230, 230, 235, 0.2);
+  font-size: 0.82rem;
+}
+
+.list-tier {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(230, 230, 235, 0.65);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .col-class,
+  .col-faction {
+    display: none;
+  }
+  .hero-table th.col-class,
+  .hero-table th.col-faction {
+    display: none;
+  }
+}
 
 </style>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById("searchInput");
+  const searchInput = document.getElementById("searchInput") as HTMLInputElement;
   const resetButton = document.getElementById("resetFilters");
   const heroCounter = document.getElementById("heroCounter");
   const heroGrid = document.getElementById("heroGrid") as HTMLElement;
+  const heroList = document.getElementById("heroList") as HTMLElement;
+  const heroListBody = document.getElementById("heroListBody") as HTMLElement;
   const sortSelect = document.getElementById("sortSelect") as HTMLSelectElement;
+  const viewGridBtn = document.getElementById("viewGrid") as HTMLButtonElement;
+  const viewListBtn = document.getElementById("viewList") as HTMLButtonElement;
+
   const roleChips = document.querySelectorAll(".role-chip");
   const factionChips = document.querySelectorAll(".faction-chip");
-  const heroCards = document.querySelectorAll(".hero-wrapper");
+  const heroCards = document.querySelectorAll<HTMLElement>(".hero-wrapper");
+  const listRows = document.querySelectorAll<HTMLElement>(".hero-row");
   const classChips = document.querySelectorAll(".class-chip");
   const rarityChips = document.querySelectorAll(".rarity-chip");
   const tagChips = document.querySelectorAll(".tag-chip");
 
-  const RATING_ORDER = { sss: 7, ss: 6, s: 5, a: 4, b: 3, c: 2, d: 1, "n/a": 0 };
-  const RARITY_ORDER = { legendary: 3, epic: 2, common: 1 };
+  const RATING_ORDER: Record<string, number> = { sss: 7, ss: 6, s: 5, a: 4, b: 3, c: 2, d: 1, "n/a": 0 };
+  const RARITY_ORDER: Record<string, number> = { legendary: 3, epic: 2, common: 1 };
 
-  let activeTag = null; // single select
+  let activeTag: string | null = null;
+  let activeRoles = new Set<string>();
+  let activeClasses = new Set<string>();
+  let activeRarities = new Set<string>();
+  let activeFactions = new Set<string>();
 
-  let activeRoles = new Set();
-  let activeClasses = new Set();
-  let activeRarities = new Set();
-  let activeFactions = new Set();
+  // ---- View toggle ----
+
+  let currentView: "grid" | "list" = (localStorage.getItem("heroView") as "grid" | "list") || "grid";
+
+  function setView(v: "grid" | "list") {
+    currentView = v;
+    localStorage.setItem("heroView", v);
+    if (v === "grid") {
+      heroGrid.style.display = "";
+      heroList.style.display = "none";
+      viewGridBtn.classList.add("active");
+      viewListBtn.classList.remove("active");
+    } else {
+      heroGrid.style.display = "none";
+      heroList.style.display = "";
+      viewGridBtn.classList.remove("active");
+      viewListBtn.classList.add("active");
+    }
+  }
+
+  viewGridBtn.addEventListener("click", () => setView("grid"));
+  viewListBtn.addEventListener("click", () => setView("list"));
+
+  // apply persisted view on load
+  setView(currentView);
+
+  // ---- Filtering ----
+
+  function matchesFilters(el: HTMLElement): boolean {
+    const query = (searchInput.value || "").toLowerCase();
+    const name = el.dataset.name || "";
+    const cls = el.dataset.class || "";
+    const role = el.dataset.role || "";
+    const rarity = el.dataset.rarity || "";
+    const faction = el.dataset.faction || "";
+    const tags = el.dataset.tags || "";
+
+    return (
+      (!activeTag || tags.includes(activeTag)) &&
+      (!query || name.includes(query) || cls.includes(query) || role.includes(query) || faction.includes(query) || rarity.includes(query)) &&
+      (activeClasses.size === 0 || activeClasses.has(cls)) &&
+      (activeRoles.size === 0 || activeRoles.has(role)) &&
+      (activeRarities.size === 0 || activeRarities.has(rarity)) &&
+      (activeFactions.size === 0 || activeFactions.has(faction))
+    );
+  }
 
   function applyFilters() {
-  const query = (searchInput.value || "").toLowerCase();
-  let visible = 0;
+    let visible = 0;
+    heroCards.forEach(card => {
+      const show = matchesFilters(card);
+      card.style.display = show ? "block" : "none";
+      if (show) visible++;
+    });
+    listRows.forEach(row => {
+      row.style.display = matchesFilters(row) ? "" : "none";
+    });
+    heroCounter!.textContent = visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
+  }
 
-  heroCards.forEach(card => {
-    const name = card.dataset.name;
-    const cls = card.dataset.class;
-    const role = card.dataset.role;
-    const rarity = card.dataset.rarity;
-    const faction = card.dataset.faction;
+  // ---- Sorting ----
 
-    const tags = (card.dataset.tags || "");
-    const matchesTag =
-      !activeTag || tags.includes(activeTag);
+  const TIER_ORDER: Record<string, number> = { "T0": 1, "T0.5": 2, "T1": 3, "T2": 4, "T10": 5, "": 9 };
 
-    const matchesSearch =
-      !query ||
-      name.includes(query) ||
-      cls.includes(query) ||
-      role.includes(query) ||
-      faction.includes(query) ||
-      rarity.includes(query);
+  const ratingVal  = (el: HTMLElement) => RATING_ORDER[el.dataset.rating || ""] ?? 0;
+  const rarityVal  = (el: HTMLElement) => RARITY_ORDER[el.dataset.rarity || ""] ?? 0;
+  const nameVal    = (el: HTMLElement) => el.dataset.name || "";
 
-    const matchesClass =
-      activeClasses.size === 0 || activeClasses.has(cls);
+  function dropdownCompareFn(a: HTMLElement, b: HTMLElement): number {
+    const value = sortSelect.value;
+    switch (value) {
+      case "name-asc":    return nameVal(a).localeCompare(nameVal(b));
+      case "name-desc":   return nameVal(b).localeCompare(nameVal(a));
+      case "rating-desc": { const d = ratingVal(b) - ratingVal(a); return d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)); }
+      case "rating-asc":  { const d = ratingVal(a) - ratingVal(b); return d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)); }
+      case "class":       return (a.dataset.class || "").localeCompare(b.dataset.class || "");
+      case "rarity-desc": { const d = rarityVal(b) - rarityVal(a); return d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)); }
+      default: return 0;
+    }
+  }
 
-    const matchesRole =
-      activeRoles.size === 0 || activeRoles.has(role);
+  function sortHeroes() {
+    // sort grid cards by dropdown
+    Array.from(heroGrid.querySelectorAll<HTMLElement>(".hero-wrapper"))
+      .sort(dropdownCompareFn)
+      .forEach(el => heroGrid.appendChild(el));
+    // sort list rows by dropdown (resets column sort)
+    Array.from(heroListBody.querySelectorAll<HTMLElement>(".hero-row"))
+      .sort(dropdownCompareFn)
+      .forEach(el => heroListBody.appendChild(el));
+    // clear column sort state
+    listSortCol = null;
+    listSortDir = "asc";
+    updateColHeaders();
+  }
 
-    const matchesRarity =
-      activeRarities.size === 0 || activeRarities.has(rarity);
+  sortSelect.addEventListener("change", () => { sortHeroes(); applyFilters(); });
 
-    const matchesFaction =
-      activeFactions.size === 0 || activeFactions.has(faction);
+  // ---- Column header sorting (list view only) ----
 
-    const show =
-      matchesSearch && matchesClass && matchesRole && matchesFaction && matchesRarity && matchesTag;
+  let listSortCol: string | null = null;
+  let listSortDir: "asc" | "desc" = "asc";
 
-    card.style.display = show ? "block" : "none";
-    if (show) visible++;
+  function updateColHeaders() {
+    document.querySelectorAll<HTMLElement>(".col-sortable").forEach(th => {
+      th.classList.remove("sort-asc", "sort-desc");
+      if (th.dataset.col === listSortCol) {
+        th.classList.add(listSortDir === "asc" ? "sort-asc" : "sort-desc");
+      }
+    });
+  }
+
+  function sortListByCol(col: string) {
+    if (listSortCol === col) {
+      listSortDir = listSortDir === "asc" ? "desc" : "asc";
+    } else {
+      listSortCol = col;
+      listSortDir = col === "overall" || col === "pvp" || col === "pve" ? "desc" : "asc";
+    }
+
+    const dir = listSortDir === "asc" ? 1 : -1;
+
+    Array.from(heroListBody.querySelectorAll<HTMLElement>(".hero-row"))
+      .sort((a, b) => {
+        switch (col) {
+          case "name":
+            return dir * nameVal(a).localeCompare(nameVal(b));
+          case "overall": {
+            const d = (RATING_ORDER[a.dataset.rating || ""] ?? 0) - (RATING_ORDER[b.dataset.rating || ""] ?? 0);
+            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
+          }
+          case "pvp": {
+            const d = (RATING_ORDER[a.dataset.pvp || ""] ?? 0) - (RATING_ORDER[b.dataset.pvp || ""] ?? 0);
+            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
+          }
+          case "pve": {
+            const d = (RATING_ORDER[a.dataset.pve || ""] ?? 0) - (RATING_ORDER[b.dataset.pve || ""] ?? 0);
+            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
+          }
+          case "tier": {
+            const ta = TIER_ORDER[a.dataset.excelTier || ""] ?? 9;
+            const tb = TIER_ORDER[b.dataset.excelTier || ""] ?? 9;
+            const d = ta - tb;
+            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
+          }
+          default: return 0;
+        }
+      })
+      .forEach(el => heroListBody.appendChild(el));
+
+    updateColHeaders();
+    applyFilters();
+  }
+
+  document.querySelectorAll<HTMLElement>(".col-sortable").forEach(th => {
+    th.addEventListener("click", () => sortListByCol(th.dataset.col || ""));
   });
 
-  heroCounter.textContent =
-    visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
-}
-
+  // ---- Chip filters ----
 
   searchInput.addEventListener("input", applyFilters);
 
   roleChips.forEach(chip => {
     chip.addEventListener("click", () => {
-      const r = chip.dataset.role;
-
-      if (activeRoles.has(r)) {
-        activeRoles.delete(r);
-        chip.classList.remove("active");
-      } else {
-        activeRoles.add(r);
-        chip.classList.add("active");
-      }
-
+      const r = (chip as HTMLElement).dataset.role || "";
+      activeRoles.has(r) ? activeRoles.delete(r) : activeRoles.add(r);
+      chip.classList.toggle("active");
       applyFilters();
     });
   });
 
   classChips.forEach(chip => {
     chip.addEventListener("click", () => {
-      const c = chip.dataset.class;
+      const c = (chip as HTMLElement).dataset.class || "";
       chip.classList.toggle("active");
       activeClasses.has(c) ? activeClasses.delete(c) : activeClasses.add(c);
       applyFilters();
@@ -388,7 +816,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   factionChips.forEach(chip => {
     chip.addEventListener("click", () => {
-      const c = chip.dataset.faction;
+      const c = (chip as HTMLElement).dataset.faction || "";
       chip.classList.toggle("active");
       activeFactions.has(c) ? activeFactions.delete(c) : activeFactions.add(c);
       applyFilters();
@@ -397,82 +825,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   rarityChips.forEach(chip => {
     chip.addEventListener("click", () => {
-      const r = chip.dataset.rarity;
+      const r = (chip as HTMLElement).dataset.rarity || "";
       chip.classList.toggle("active");
       activeRarities.has(r) ? activeRarities.delete(r) : activeRarities.add(r);
       applyFilters();
     });
   });
 
-//* Neue Tag Chips 
   tagChips.forEach(chip => {
-  chip.addEventListener("click", () => {
-    const t = (chip.dataset.tag || "").toLowerCase();
-
-    // toggle (single select)
-    if (activeTag === t) {
-      activeTag = null;
-      chip.classList.remove("active");
-    } else {
-      activeTag = t;
-      tagChips.forEach(x => x.classList.remove("active"));
-      chip.classList.add("active");
-    }
-
-    applyFilters();
-  });
-});
-
-  function sortHeroes() {
-    const value = sortSelect.value;
-    const cards = Array.from(heroGrid.querySelectorAll(".hero-wrapper")) as HTMLElement[];
-
-    const ratingVal = (el: HTMLElement) => RATING_ORDER[el.dataset.rating as keyof typeof RATING_ORDER] ?? 0;
-    const rarityVal = (el: HTMLElement) => RARITY_ORDER[el.dataset.rarity as keyof typeof RARITY_ORDER] ?? 0;
-    const nameVal = (el: HTMLElement) => el.dataset.name || "";
-
-    cards.sort((a, b) => {
-      switch (value) {
-        case "name-asc":
-          return nameVal(a).localeCompare(nameVal(b));
-        case "name-desc":
-          return nameVal(b).localeCompare(nameVal(a));
-        case "rating-desc": {
-          const diff = ratingVal(b) - ratingVal(a);
-          return diff !== 0 ? diff : nameVal(a).localeCompare(nameVal(b));
-        }
-        case "rating-asc": {
-          const diff = ratingVal(a) - ratingVal(b);
-          return diff !== 0 ? diff : nameVal(a).localeCompare(nameVal(b));
-        }
-        case "class":
-          return (a.dataset.class || "").localeCompare(b.dataset.class || "");
-        case "rarity-desc": {
-          const diff = rarityVal(b) - rarityVal(a);
-          return diff !== 0 ? diff : nameVal(a).localeCompare(nameVal(b));
-        }
-        default:
-          return 0;
+    chip.addEventListener("click", () => {
+      const t = ((chip as HTMLElement).dataset.tag || "").toLowerCase();
+      if (activeTag === t) {
+        activeTag = null;
+        chip.classList.remove("active");
+      } else {
+        activeTag = t;
+        tagChips.forEach(x => x.classList.remove("active"));
+        chip.classList.add("active");
       }
+      applyFilters();
     });
-
-    cards.forEach(card => heroGrid.appendChild(card));
-  }
-
-  sortSelect.addEventListener("change", () => {
-    sortHeroes();
-    applyFilters();
   });
 
-  resetButton.addEventListener("click", () => {
+  resetButton!.addEventListener("click", () => {
     searchInput.value = "";
     activeClasses.clear();
     activeRarities.clear();
     activeRoles.clear();
     activeFactions.clear();
-    document.querySelectorAll(".chip.active").forEach(c => c.classList.remove("active"));
-    document.querySelectorAll(".role-chip.active").forEach(c => c.classList.remove("active"));
     activeTag = null;
+    document.querySelectorAll(".chip.active, .role-chip.active").forEach(c => c.classList.remove("active"));
     tagChips.forEach(x => x.classList.remove("active"));
     sortSelect.value = "name-asc";
     sortHeroes();

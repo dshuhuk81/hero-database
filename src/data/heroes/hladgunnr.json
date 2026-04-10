@@ -2,19 +2,20 @@
   "id": "hladgunnr",
   "name": "Hladgunnr",
   "image": "/heroes/hladgunnr.webp",
-    "release": true,
+  "release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "Hladgunnr, the elegant and dignified Valkyrie of the Swan, always appears to mortals in a robe of white feathers. Her kiss can bring eternal rest or rouse the final courage of the dying.",
   "ratings": {
-    "overall": "SS",
+    "overall": "A",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SS",
-    "pve": "SSS"
+    "forgottenLabyrinth": "A",
+    "pvp": "A",
+    "pve": "B"
   },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
@@ -116,5 +117,57 @@
     "SHIELD"
   ],
   "baseAttackRate": 1.296,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "teamComps": {
+    "pve": [
+      {
+        "label": "Basic",
+        "stars": 1,
+        "description": "Very strong early-game but falls off hard late. Cannot beat any team in later campaign stages.",
+        "targets": "Spades",
+        "totems": ["horn_of_potency", "unsullied_lotus", "defiant_vow"],
+        "front": ["hladgunnr"],
+        "back": ["wenshen", "yanluo", "prometheus", "nyx"]
+      },
+      {
+        "label": "Charm",
+        "stars": 5,
+        "description": "The strongest Hladgunnr variant. Hera's charm synergizes directly with Hladgunnr's execute mechanic. Nuba and Cashien provide buff and energy support.",
+        "targets": "Spades, Diamonds, Hearts",
+        "totems": ["horn_of_potency", "unsullied_lotus", "defiant_vow"],
+        "front": ["hladgunnr"],
+        "back": ["hera", "nuba", "wenshen", "cashien"]
+      },
+      {
+        "label": "Snake",
+        "stars": 2,
+        "description": "Requires 3 or more Jormungandr explosions before Hladgunnr finishes. Dependent on snake explosion count -- unreliable without setup.",
+        "targets": "Spades",
+        "totems": ["horn_of_potency", "unsullied_lotus", "defiant_vow"],
+        "front": ["hladgunnr", "jormungandr"],
+        "back": ["wenshen", "capricorn", "nyx"]
+      },
+      {
+        "label": "Ultimate",
+        "stars": 5,
+        "description": "Jormungandr explosions + Nut's energy bullet basically clears the screen. Even if 1-2 enemies survive with low HP, Hladgunnr finishes them.",
+        "targets": "Hearts, Diamonds, Spades",
+        "totems": ["horn_of_potency", "windrunners_grace"],
+        "front": ["hladgunnr", "jormungandr"],
+        "back": ["nut", "wenshen", "nyx"]
+      }
+    ]
+  },
+  "coreMechanic": {
+    "summary": "Meatshield tank that exploits line-hold mechanics. With high-investment allies her unbreakable line enables damage exploitation on specific stages. Stat dampening limits PvE ceiling.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": true
+  },
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T10086",
+    "egTier": "B+",
+    "consensus": "contested",
+    "lastVerified": "2025-04"
+  }
 }

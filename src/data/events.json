@@ -1,5 +1,219 @@
 {
   "campaigns": [
+
+    {
+      "id": "wenshen-campaign",
+      "name": "Wen Shen Campaign",
+      "hero": "Wen Shen",
+      "description": "Complete PVE campaign stages using Wen Shen and allies",
+      "stages": [
+        {
+          "id": 1,
+          "name": "1. Timid Soul.",
+
+          "composition": {
+            "front": ["taurus", "aries"],
+            "back": ["libra", "cancer", "isis"]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2. Lasting Storms.",
+
+          "composition": {
+            "front": ["taurus", "anubis"],
+            "back": ["wenshen", "aquarius", ""]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. Fate's Decree.",
+
+          "composition": {
+            "front": ["demeter", "anubis"],
+            "back": ["wenshen", "fengyi", "aries"]
+          }       
+        },
+        {
+          "id": 4,
+          "name": "4. Worse Even.",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        },
+        {
+          "id": 5,
+          "name": "5. Ceaseless Doom.",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        },
+        {
+          "id": 6,
+          "name": "6. Sound of Sorrow",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        },
+        {
+          "id": 7,
+          "name": "7. Pale Blossom.",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        }
+      ]
+    },
+    {
+      "id": "skadi-campaign",
+      "name": "Skadi Campaign",
+      "hero": "skadi",
+      "description": "Complete PVE campaign stages using Skadi and allies",
+      "stages": [
+        {
+          "id": 1,
+          "name": "1. By your Side.",
+
+          "composition": {
+            "front": ["aquarius", "skadi"],
+            "back": ["", "", ""]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2. Pale Realm.",
+
+          "composition": {
+            "front": ["poseidon", "khepri"],
+            "back": ["skadi", "tefnut", "pan"]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. Frigrid Blade.",
+
+          "composition": {
+            "front": ["momus", "poseidon"],
+            "back": ["skadi", "pan", "tefnut"]
+          }       
+        },
+        {
+          "id": 4,
+          "name": "4. Exquisite Heart of Frost.",
+
+          "composition": {
+            "front": ["khepri", "poseidon"],
+            "back": ["skadi", "momus", "tefnut"]
+          }       
+        },
+        {
+          "id": 5,
+          "name": "5. Solidify and Ascend.",
+
+          "composition": {
+            "front": ["khepri", "poseidon"],
+            "back": ["skadi", "tefnut", "pan"]
+          }       
+        },
+        {
+          "id": 6,
+          "name": "6. The Last Winter.",
+
+          "composition": {
+            "front": ["poseidon", "momus"],
+            "back": ["pan", "skadi", "tefnut"]
+          }       
+        },
+        {
+          "id": 7,
+          "name": "7. Burning Snow.",
+
+          "composition": {
+            "front": ["ullr", "heracles"],
+            "back": ["hladgunnr", "cashien", "phoenix"]
+          }       
+        }
+      ]
+    },
+    {
+      "id": "mengpo-campaign",
+      "name": "Mengpo Campaign",
+      "hero": "mengpo",
+      "description": "Complete PVE campaign stages using Mengpo and allies",
+      "stages": [
+        {
+          "id": 1,
+          "name": "1. Lament for the dead.",
+
+          "composition": {
+            "front": ["aquarius", "taurus"],
+            "back": ["isis", "mengpo", "aries"]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2. Beauty in Decay.",
+
+          "composition": {
+            "front": ["taurus", "aries"],
+            "back": ["cancer", "libra", "mengpo"]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. A journey against the tide.",
+
+          "composition": {
+            "front": ["demeter", "anubis"],
+            "back": ["fengyi", "diana", "pan"]
+          }       
+        },
+        {
+          "id": 4,
+          "name": "4. The Vanishing Dream.",
+
+          "composition": {
+            "front": ["ullr", "taurus"],
+            "back": ["mengpo", "cashien", "isis"]
+          }       
+        },
+        {
+          "id": 5,
+          "name": "5. Petals and Leaves Entwined.",
+
+          "composition": {
+            "front": ["demeter", "anubis"],
+            "back": ["fengyi", "wenshen", "mengpo"]
+          }       
+        },
+        {
+          "id": 6,
+          "name": "6. Withering of the Fallen Petals.",
+
+          "composition": {
+            "front": ["bastet", "geb"],
+            "back": ["phoenix", "mengpo", "set"]
+          }       
+        },
+        {
+          "id": 7,
+          "name": "7. Cold Moons Glow.",
+
+          "composition": {
+            "front": ["nyx", "prometheus"],
+            "back": ["anubis", "cashien", "mengpo"]
+          }       
+        }
+      ]
+    },
     {
       "id": "nuba-campaign",
       "name": "Nuba Campaign",

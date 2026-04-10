@@ -2,7 +2,7 @@
   "id": "horus",
   "name": "Horus",
   "image": "/heroes/horus.webp",
-    "release": true,
+  "release": true,
   "faction": "Diamonds",
   "role": "Arcane",
   "class": "Assassin",
@@ -13,8 +13,9 @@
     "grimSurge": "S",
     "delusionsDen": "A",
     "torrentRift": "B",
-    "pvp": "S",
-    "pve": "A"
+    "forgottenLabyrinth": "",
+    "pvp": "A",
+    "pve": "C"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -114,5 +115,17 @@
     "HEAL"
   ],
   "baseAttackRate": 0.937,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Enemy Horus executes your team; your Horus jumps and dies. Do not invest.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

@@ -2,19 +2,20 @@
   "id": "jormungandr",
   "name": "Jormungandr",
   "image": "/heroes/jormungandr.webp",
-    "release": true,
+  "release": true,
   "faction": "Clubs",
   "role": "Hefty",
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "Jormungandr, the Midgart Serpent, encircling the world and upholding the earth, rules ober seas and storms, shrouded in mystery with a wide-brimmed hat concealing the face.",
   "ratings": {
-    "overall": "S",
+    "overall": "B",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "S",
-    "pve": "S"
+    "forgottenLabyrinth": "",
+    "pvp": "B",
+    "pve": "B"
   },
   "recommendedRelicLevel": 1,
   "evolution": "Divine V",
@@ -115,5 +116,14 @@
     "SHIELD"
   ],
   "baseAttackRate": 1.592,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "activeBug": "true_damage_bug",
+  "activeBugNotes": "True damage mechanic non-functional. Currently used as grouping tool only.",
+  "metaSources": {
+    "excelTier": "T2",
+    "cnTier": "T2",
+    "egTier": "B",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

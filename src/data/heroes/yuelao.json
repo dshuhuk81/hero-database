@@ -9,14 +9,15 @@
   "rarity": "Legendary",
   "description": "Yuelao, god of romance and marriage, uses his red threads to unite destined couples.",
   "ratings": {
-    "overall": "S",
+    "overall": "SS",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "S",
-    "pve": "SSS"
+    "pve": "S"
   },
-  "recommendedRelicLevel": 10,
+  "recommendedRelicLevel": 20,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -114,5 +115,17 @@
     "HEAL"
   ],
   "baseAttackRate": 0.504,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "relicBreakpoints": [
+    { "level": 10, "type": "recommended", "effect": "Core breakpoint for standard use." },
+    { "level": 20, "type": "recommended", "effect": "Late-game default; enables advanced Hecate tech and sustained boss survival." },
+    { "level": 30, "type": "high_spender", "effect": "Permanent survival tech in specific boss scenarios; pairs with Hecate r30 setup." }
+  ],
+  "metaSources": {
+    "excelTier": "T0",
+    "cnTier": "T0",
+    "egTier": "T0",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

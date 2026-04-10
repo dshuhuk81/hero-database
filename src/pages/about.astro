@@ -1,0 +1,366 @@
+---
+export const prerender = true;
+// src/pages/about.astro
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+
+// Helper für Datums-Formatierung
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('de-DE', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+
+---
+
+<Base title="About | Motto Immortal">
+    <PageHero
+      tag="Information"
+      headline="About"
+      subtitle="Who is behind this project and what is the vision?"
+    />
+ 
+    <main class="about-page">
+      <div class="about-me">
+        <img src="/frieren.jpg" alt="Profile Picture" class="profile-picture" />
+        <div class="about-me-text">
+          <h2>Hi, I'm Frieren!</h2>
+        <p class="about-text">
+          This is a hobby part time project with no real team behind it. I am the founder, content creator, and 
+          developer of Motto Immortal Database. I m a father of two, a gamer with a deep love of all things related to gaming.
+          I dedicated to this project because I believe in the power of gaming to bring people together and to create meaningful experiences 
+          although not having any support from official channels. Since this is a personal project with no ads I d really love to get some support - even its just a dime. Feel free
+          to donate if you like the project and want to support it. Every little bit helps and is greatly appreciated!
+        </p>
+        </div>
+      </div>
+      <!-- SUPPORT SECTION -->
+    <section id="support" class="support-section">
+      <div class="support-card">
+        <div class="support-text">
+          <h2 class="support-headline">
+            <svg class="support-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            Keep this free
+          </h2>
+          <p class="support-desc">
+            Motto Immortal DB is built and maintained solo -- no paywalls, no sponsorships.
+            Hosting and infrastructure cost real money every month. If this tool has saved you time
+            or helped you build a better team, a small contribution goes a long way.
+          </p>
+        </div>
+        <div class="support-cta">
+          <a
+            href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="donate-btn"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            Donate via PayPal
+          </a>
+        </div>
+      </div>
+    </section>
+      <section class="about-section">
+        <h2>My Story</h2>
+        <p class="about-text">
+          Motto Immortal Database was born out of a passion for gaming and a desire to create a vibrant community 
+          hub for gamers worldwide. This is a personal, one man project and I decided to share my love for games 
+          and gaming culture with others. As there are great other cc's out there who provide a similar experience,
+           I wanted to create something that brings joy, meaning for this game and also bring this game to more players.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>My Mission</h2>
+        <p class="about-text">
+          At Motto Immortal, my mission is to celebrate the timeless joy of gaming and to create a welcoming space 
+          for gamers of all backgrounds. I strive to provide high-quality content that informs, entertains, and 
+          inspires our community. I dont want to be disrepectful to official sources but add another layer of content
+          and information to the gaming community.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2>Join me</h2>
+        <p class="about-text">
+          I invite you to join us on this exciting journey as we continue to grow and evolve. Whether you're a 
+          casual gamer looking for recommendations or a hardcore enthusiast seeking in-depth analysis, 
+          there's something for everyone at Motto Immortal. If you have ideas for new content, features, or ways to improve the 
+          site, please don't hesitate to reach out. Together, we can create a vibrant and inclusive gaming community 
+          that celebrates the joy of gaming in all its forms. Contact me on discord (ds_frieren) or via email.
+  
+        </p>
+      </section>
+</main>
+ 
+</Base>
+
+<style>
+  /* ===============================
+     PAGE LAYOUT
+     =============================== */
+  .about-page {
+    padding: 80px 24px 120px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .about-me {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    margin-bottom: 48px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(
+      to bottom,
+      rgba(35, 32, 48, 0.6),
+      rgba(18, 16, 26, 0.8)
+    );
+    backdrop-filter: blur(12px);
+     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+.about-text {
+    line-height: 1.6;
+    color: rgba(230, 230, 235, 0.9);
+  }
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .about-me-text {
+    flex: 1;
+  }
+
+  /* ===============================
+     HEADER
+     =============================== */
+  .page-header h1 {
+    font-size: 3.5rem;
+    font-weight: 600;
+    margin: 0 0 16px;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ===============================
+     TIMELINE
+     =============================== */
+  .timeline-container {
+    position: relative;
+  }
+
+  .timeline-entry {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 56px;
+    position: relative;
+  }
+
+  .timeline-entry:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ===============================
+     TIMELINE MARKER
+     =============================== */
+  .timeline-marker {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .timeline-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
+    position: relative;
+    z-index: 2;
+  }
+
+  .timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: calc(100% + 44px);
+    background: linear-gradient(
+      to bottom,
+      rgba(250, 204, 21, 0.5),
+      rgba(250, 204, 21, 0.1)
+    );
+  }
+
+  /* ===============================
+     ENTRY CONTENT
+     =============================== */
+  .entry-content {
+    flex: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(35, 32, 48, 0.6),
+      rgba(18, 16, 26, 0.8)
+    );
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .entry-content:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  }
+
+  /* ===============================
+     ENTRY HEADER
+     =============================== */
+  .entry-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .version-badge {
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
+    flex-shrink: 0;
+  }
+
+  .entry-meta {
+    flex: 1;
+  }
+
+  .entry-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--text-bright);
+  }
+
+  .entry-date {
+    font-size: 0.9rem;
+    color: rgba(230, 230, 235, 0.6);
+  }
+
+  /* ===============================
+     CHANGES LIST
+     =============================== */
+  .changes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .change-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-md);
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .change-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Change Type Colors */
+  .change-feature {
+    border-left-color: #10b981;
+  }
+
+  .change-improvement {
+    border-left-color: #818cf8;
+  }
+
+  .change-fix {
+    border-left-color: #f59e0b;
+  }
+
+  .change-badge {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .change-text {
+    line-height: 1.6;
+    color: rgba(230, 230, 235, 0.9);
+  }
+
+  /* ===============================
+     RESPONSIVE
+     =============================== */
+  @media (max-width: 768px) {
+    .changelog-page {
+      padding: 40px 16px 100px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+    }
+
+    .timeline-entry {
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+    }
+
+    .entry-content {
+      padding: 20px;
+    }
+
+    .entry-header {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .entry-title {
+      font-size: 1.25rem;
+    }
+
+    .change-item {
+      padding: 10px 12px;
+    }
+  }
+</style>

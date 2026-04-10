@@ -1,16 +1,9 @@
 ---
 export const prerender = true;
-import Footer from "../components/Footer.astro";  // NEU
+import Base from "../layouts/Base.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Privacy Policy - Hero Database</title>
-  </head>
-
-  <body>
+<Base title="Privacy Policy | Motto Immortal">
     <div class="privacy-page">
       <header class="privacy-header">
         <a href="/" class="back-link">← Back to Heroes</a>
@@ -36,22 +29,13 @@ import Footer from "../components/Footer.astro";  // NEU
           <p>
             The primary purpose of this website is to display publicly available game data from Motto Immortal, including but not limited to hero statistics, skill descriptions, rankings, tier lists, and boss information. This data is sourced from the game itself and does not contain any personal information.
           </p>
-          <h3>2.2 Account Registration</h3>
-          <p>
-            If you choose to create an account on Hero Database, we collect and store your <strong>email address</strong>. This is the only personally identifiable information we require for registration. Your email address is used solely for authentication purposes (logging in to your account). We do not collect your name, phone number, physical address, or any other personal details.
-          </p>
-          <h3>2.3 User-Generated Data</h3>
-          <p>
-            When you use account features such as "My Heroes", we store your hero selections, evolution levels, and shared setup configurations. This data is tied to your account and is not personally identifiable on its own.
-          </p>
         </section>
 
         <section>
           <h2>3. How We Use Your Information</h2>
           <p>We use the information we collect for the following purposes:</p>
           <ul>
-            <li>To provide and maintain our Service, including account authentication</li>
-            <li>To enable personalized features such as hero collection tracking and setup sharing</li>
+            <li>To provide and maintain our Service</li>
             <li>To improve and optimize our website</li>
           </ul>
           <p>
@@ -69,10 +53,7 @@ import Footer from "../components/Footer.astro";  // NEU
         <section>
           <h2>5. Cookies</h2>
           <p>
-            Our website may use cookies and similar technologies to maintain your session and authentication state. These cookies are essential for the functioning of account-related features. We do not use cookies for advertising or tracking purposes.
-          </p>
-          <p>
-            You may configure your browser to refuse cookies, but doing so may prevent you from using certain features of our Service that require authentication.
+            Our website does not use cookies for authentication, advertising, or tracking purposes.
           </p>
         </section>
 
@@ -80,7 +61,6 @@ import Footer from "../components/Footer.astro";  // NEU
           <h2>6. Third-Party Service Providers</h2>
           <p>We use the following third-party services to operate our website:</p>
           <ul>
-            <li><strong>Supabase</strong> -- for user authentication and database storage. Your email address and user-generated data are stored on Supabase servers. Supabase's privacy policy applies to data stored on their infrastructure.</li>
             <li><strong>Vercel</strong> -- for website hosting and deployment. Vercel may collect Log Data as described above. Vercel's privacy policy applies to data processed through their platform.</li>
           </ul>
           <p>
@@ -142,31 +122,10 @@ import Footer from "../components/Footer.astro";  // NEU
         </section>
       </main>
 
-      <Footer />
     </div>
 
     <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        min-height: 100%;
-        background: radial-gradient(
-            ellipse at 30% -10%,
-            rgba(120, 90, 200, 0.15),
-            transparent 60%
-          ),
-          radial-gradient(
-            ellipse at 80% 20%,
-            rgba(255, 215, 100, 0.08),
-            transparent 55%
-          ),
-          linear-gradient(to bottom, #0d0b10, #07060c);
-        color: #e6e6eb;
-        font-family: Spectral, ui-sans-serif, system-ui, sans-serif;
-      }
-
-      .privacy-page {
+.privacy-page {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -293,5 +252,4 @@ import Footer from "../components/Footer.astro";  // NEU
         }
       })();
     </script>
-  </body>
-</html>
+</Base>

@@ -2,7 +2,7 @@
   "id": "iris",
   "name": "Iris",
   "image": "/heroes/iris.webp",
-    "release": true,
+  "release": true,
   "faction": "Spades",
   "role": "Arcane",
   "class": "Support",
@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "B",
-    "pve": "A"
+    "pve": "B"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -109,5 +110,36 @@
     "ATK_SPEED"
   ],
   "baseAttackRate": 0.708,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "CC and AoE ATK buffs. Pairs with Poseidon to amplify AoE DPS. CN: small butterfly, unremarkable support with a consistent use case.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 1,
+      "type": "mandatory",
+      "effect": "CC and AoE ATK buff unlocked. Core function active."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "poseidon",
+      "type": "core",
+      "description": "Pairs with Poseidon to amplify grouped AoE DPS output."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine (after rest done)",
+    "priority": 3,
+    "notes": null
+  }
 }

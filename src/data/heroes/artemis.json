@@ -2,19 +2,20 @@
   "id": "artemis",
   "name": "Artemis",
   "image": "/heroes/artemis.webp",
-    "release": true,
+  "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Archer",
   "rarity": "Legendary",
   "description": "Artemis, mistress of beasts and sovereign of the wild, rules hunting, wildlife, the moon and the protection of maidens.",
   "ratings": {
-    "overall": "B",
+    "overall": "C",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "A",
-    "pve": "A"
+    "forgottenLabyrinth": "",
+    "pvp": "C",
+    "pve": "D"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -112,5 +113,17 @@
     "HIT_AVOID"
   ],
   "baseAttackRate": 1.574,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "As enemy instakills your team; as ally does nothing. No investment value.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

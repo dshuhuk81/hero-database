@@ -2,7 +2,7 @@
   "id": "athena",
   "name": "Athena",
   "image": "/heroes/athena.webp",
-    "release": true,
+  "release": true,
   "faction": "Diamonds",
   "role": "Hefty",
   "class": "Support",
@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "S",
-    "pve": "SS"
+    "forgottenLabyrinth": "",
+    "pvp": "B",
+    "pve": "B"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -117,5 +118,41 @@
     "GAIN_ARMOR"
   ],
   "baseAttackRate": 0.787,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "High attack speed buff enabling Zeus judgment window. Hidden depth -- kit does many things but primary identity is Zeus enabler. Only invest to r20 with Divine Zeus.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": true
+  },
+  "relicBreakpoints": [
+    {
+      "level": 20,
+      "type": "high_spender",
+      "effect": "Full ATK speed buff potential unlocked. Only invest if Divine Zeus is active."
+    }
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "zeus",
+      "type": "core",
+      "description": "ATK speed buff directly amplifies Zeus Judgment window output."
+    },
+    {
+      "heroId": "heracles",
+      "type": "core",
+      "description": "ATK speed buff amplifies Hercules judgment window on same principle as Zeus."
+    }
+  ],
+  "metaSources": {
+    "excelTier": "T2",
+    "cnTier": "T2",
+    "egTier": "T2",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 4,
+    "notes": "CN: only invest relic 20 if you have Divine Zeus."
+  }
 }

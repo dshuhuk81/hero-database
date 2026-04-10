@@ -2,7 +2,7 @@
   "id": "poseidon",
   "name": "Poseidon",
   "image": "/heroes/poseidon.webp",
-    "release": true,
+  "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Warrior",
@@ -13,6 +13,7 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "SS",
     "pve": "SS"
   },
@@ -114,5 +115,27 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.793,
-  "bossUltimatesPer90s": 8
+  "bossUltimatesPer90s": 8,
+  "coreMechanic": {
+    "summary": "Best grouping tool in game. r10 mandatory -- chain waterspouts scale dramatically with relic. Mastery of Poseidon and Set defines high-level PvE pushing.",
+    "depthRating": "high",
+    "commonlyMisunderstood": true
+  },
+  "relicBreakpoints": [
+    { "level": 10, "type": "mandatory", "effect": "Mandatory first investment -- biggest single performance jump of any unit at r10." },
+    { "level": 30, "type": "high_spender", "effect": "Chain waterspouts reach full power; significant frontline stat boost for high-spend accounts." }
+  ],
+  "synergyLinks": [
+    { "heroId": "skadi", "type": "core", "description": "Grouped targets maximize Skadi AoE burst value." },
+    { "heroId": "set", "type": "core", "description": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing." },
+    { "heroId": "khepri", "type": "conditional", "description": "Push and group alongside Poseidon for positioning control." },
+    { "heroId": "hela", "type": "conditional", "description": "Hela carry enabled by Poseidon grouping alongside Khepri and Iris." }
+  ],
+  "metaSources": {
+    "excelTier": "T0",
+    "cnTier": "T0",
+    "egTier": "T0",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

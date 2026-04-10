@@ -88,10 +88,10 @@ const {
     margin-bottom: 0; /* entfernen, da Flex-Gap das übernimmt */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     
-    /* FIXE BREITE */
-    width: 100%;
-    max-width: 320px; /* Alle Cards gleich breit */
-    flex-shrink: 0;   /* Verhindert Schrumpfen */
+    /* FLEXIBLE BREITE */
+    flex: 1 1 280px;
+    min-width: 280px;
+    max-width: 560px;
   }
 
 
@@ -230,7 +230,8 @@ const {
      =============================== */
   @media (max-width: 768px) {
     .skill-card {
-      max-width: 100%; /* Mobile: volle Breite */
+      max-width: 100%;
+      flex: 1 1 100%;
     }
     .skill-header {
       flex-direction: column;

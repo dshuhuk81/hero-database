@@ -7,9 +7,43 @@ const { hero } = Astro.props;
   href={`/heroes/${hero.id}`}
   style={`--hero-image: url(/heroes/${hero.id}.webp);`}
 >
+  {hero.newHero && (
+    <div class="hero-flag-badge hero-flag-badge-new">NEW</div>
+  )}
+
   {hero.rating && (
     <div class={`rating-badge rating-${hero.rating.toLowerCase()}`}>
       {hero.rating}
+    </div>
+  )}
+
+  <!-- Consensus dot: top-left, below NEW badge -->
+  {hero.metaSources?.consensus && (
+    <div class={`consensus-dot consensus-dot-${hero.metaSources.consensus}`} aria-label={`Consensus: ${hero.metaSources.consensus}`}></div>
+  )}
+
+  <!-- Info badges: bottom strip above name overlay -->
+  {(hero.activeBug || hero.coreMechanic?.commonlyMisunderstood) && (
+    <div class="card-info-badges">
+      {hero.activeBug && (
+        <span class="card-badge card-badge-bug" title={hero.activeBugNotes || 'Known bug'}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </span>
+      )}
+      {hero.coreMechanic?.commonlyMisunderstood && (
+        <span class="card-badge card-badge-misunderstood" title="Commonly misunderstood">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="11" y1="8" x2="11" y2="11"/>
+            <line x1="11" y1="14" x2="11.01" y2="14"/>
+          </svg>
+        </span>
+      )}
     </div>
   )}
 
@@ -66,6 +100,44 @@ const { hero } = Astro.props;
 .hero-card > * {
   position: absolute;
   z-index: 2;
+}
+
+.hero-flag-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 22px;
+  padding: 0 8px;
+  font-size: var(--badge-font-size, 0.7rem);
+  font-weight: var(--badge-font-weight, 700);
+  letter-spacing: var(--badge-tracking, 0.5px);
+  text-transform: uppercase;
+  border-radius: 999px;
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+  z-index: 4;
+}
+
+.hero-flag-badge-new {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-bright);
+  background-color: var(--accent-new);
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+  opacity: 0.95;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* ================================
@@ -175,6 +247,77 @@ const { hero } = Astro.props;
 .rating-d {
   background: linear-gradient(135deg, var(--tier-d-from), var(--tier-d-to));
   color: var(--tier-d-text);
+}
+
+/* ================================
+   CONSENSUS DOT
+   ================================ */
+
+.consensus-dot {
+  position: absolute;
+  top: 38px;
+  left: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  z-index: 4;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+.consensus-dot-full {
+  background: #22c55e;
+}
+
+.consensus-dot-partial {
+  background: #eab308;
+}
+
+.consensus-dot-contested {
+  background: #ef4444;
+}
+
+/* ================================
+   CARD INFO BADGES (bottom strip)
+   ================================ */
+
+.card-info-badges {
+  position: absolute;
+  bottom: 42px;
+  left: 8px;
+  display: flex;
+  gap: 5px;
+  z-index: 4;
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.card-badge svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.card-badge-bug {
+  background: rgba(239, 68, 68, 0.75);
+  border: 1px solid rgba(239, 68, 68, 0.9);
+  color: #fff;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+}
+
+.card-badge-misunderstood {
+  background: rgba(234, 179, 8, 0.7);
+  border: 1px solid rgba(234, 179, 8, 0.9);
+  color: #fff;
+  box-shadow: 0 0 6px rgba(234, 179, 8, 0.4);
 }
 
 </style>

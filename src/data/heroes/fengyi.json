@@ -2,19 +2,20 @@
   "id": "fengyi",
   "name": "Fengyi",
   "image": "/heroes/fengyi.webp",
-    "release": true,
+  "release": true,
   "faction": "Clubs",
   "role": "Arcane",
   "class": "Mage",
   "rarity": "Legendary",
   "description": "Fengyi, goddess of winds, rules ober their flow, speed, and direction, especially the gentle and lively ones.",
   "ratings": {
-    "overall": "S",
+    "overall": "B",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "S",
-    "pve": "S"
+    "forgottenLabyrinth": "S",
+    "pvp": "B",
+    "pve": "D"
   },
   "evolution": "Divine V",
   "level": 300,
@@ -111,5 +112,17 @@
     "ENERGY_RESTORE"
   ],
   "baseAttackRate": 0.932,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "coreMechanic": {
+    "summary": "Early-game race carry only. No late-game use. If lucky, use for early PvP placement then swap out.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

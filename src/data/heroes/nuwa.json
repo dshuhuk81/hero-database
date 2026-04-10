@@ -2,19 +2,20 @@
   "id": "nuwa",
   "name": "Nuwa",
   "image": "/heroes/nuwa.webp",
-    "release": true,
+  "release": true,
   "faction": "Starglint",
   "role": "Hefty",
   "class": "Tank",
   "rarity": "Legendary",
   "description": "Nuwa is the goddess of creation who breathed life into clay, shaping it into humans with warmth and soul. SHe is also the one who gathered the five-colored stones to mend heaven and earth when they shattered.",
   "ratings": {
-    "overall": "SSS",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SSS",
-    "pve": "SS"
+    "forgottenLabyrinth": "",
+    "pvp": "SS",
+    "pve": "S"
   },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
@@ -115,5 +116,30 @@
     "ENERGY_RESTORE"
   ],
   "baseAttackRate": 1.715,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "Best tank in game. Perma-CC enemies and shares damage between allied units at base dupe. All functions active from one copy -- among the best base-dupe value units in game.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 30,
+      "type": "recommended",
+      "effect": "Full tank performance ceiling. Base dupe already fully functional."
+    }
+  ],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Base dupe -> wait, or grab from Mindsea",
+    "priority": 3,
+    "notes": "Only Celestial worth grabbing as base copy from Mindsea if unlucky with pulls."
+  }
 }

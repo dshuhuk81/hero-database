@@ -2,21 +2,22 @@
   "id": "isis",
   "name": "Isis",
   "image": "/heroes/isis.webp",
-    "release": true,
+  "release": true,
   "faction": "Hearts",
   "role": "Nimble",
   "class": "Archer",
   "rarity": "Legendary",
   "description": "",
   "ratings": {
-    "overall": "S",
+    "overall": "A",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "S",
-    "pve": "SSS"
+    "forgottenLabyrinth": "",
+    "pvp": "C",
+    "pve": "C"
   },
-  "recommendedRelicLevel": 10,
+  "recommendedRelicLevel": 0,
   "evolution": "Divine V",
   "level": 300,
   "stats": {
@@ -110,5 +111,17 @@
     "ATK_UP"
   ],
   "baseAttackRate": 2.91,
-  "bossUltimatesPer90s": 3
+  "bossUltimatesPer90s": 3,
+  "coreMechanic": {
+    "summary": "Max HP% damage plus armor penetration and crit buffs during ultimate. Second-best single-target bossing unit after Zeus. Free 7-day login unit, easily replaced.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T10",
+    "cnTier": "T10",
+    "egTier": "T10",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  }
 }

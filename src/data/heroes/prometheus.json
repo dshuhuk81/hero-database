@@ -2,19 +2,20 @@
   "id": "prometheus",
   "name": "Prometheus",
   "image": "/heroes/prometheus.webp",
-    "release": true,
+  "release": true,
   "faction": "Hearts",
   "role": "Hefty",
   "class": "Tank",
   "rarity": "Legendary",
   "description": "Prometheus, thief of fire for humanity, embodies wisdom and rebellion. His name means forethought, and he wields the fire of creation and enlightment.",
   "ratings": {
-    "overall": "A",
+    "overall": "B",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "A",
-    "pve": "A"
+    "forgottenLabyrinth": "",
+    "pvp": "B",
+    "pve": "B"
   },
   "recommendedRelicLevel": 1,
   "evolution": "Divine V",
@@ -116,5 +117,30 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.738,
-  "bossUltimatesPer90s": 2
+  "bossUltimatesPer90s": 2,
+  "coreMechanic": {
+    "summary": "Frontline tank whose cage-drop passive traps enemies in place. Tech unit for specific stages. CN: first properly useful helper at his investment level.",
+    "depthRating": "low",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 1,
+      "type": "mandatory",
+      "effect": "Cage-drop passive unlocked. Stopping point for most accounts."
+    }
+  ],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T2",
+    "cnTier": "T1",
+    "egTier": "T2",
+    "consensus": "partial",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine",
+    "priority": 4,
+    "notes": "r1 unlock only. Tech use for Heart Spire pushback."
+  }
 }

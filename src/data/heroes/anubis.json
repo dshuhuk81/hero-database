@@ -13,8 +13,9 @@
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
+    "forgottenLabyrinth": "",
     "pvp": "S",
-    "pve": "S"
+    "pve": "A"
   },
   "recommendedRelicLevel": 20,
   "evolution": "Divine V",
@@ -117,5 +118,30 @@
     "LIFE_STEAL_UP"
   ],
   "baseAttackRate": 0.73,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Vampiric healing, untargetable window after losing 40% cumulative HP, and execute (r20: kills enemies below 5% HP through invincible skills). Kill one by one in sequence.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 20,
+      "type": "recommended",
+      "effect": "Execute unlocked: kills enemies below 5% HP even through invincibility mechanics."
+    }
+  ],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Divine -> D5",
+    "priority": 3,
+    "notes": null
+  }
 }

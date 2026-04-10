@@ -2,19 +2,20 @@
   "id": "nyx",
   "name": "Nyx",
   "image": "/heroes/nyx.webp",
-    "release": true,
+  "release": true,
   "faction": "Starglint",
   "role": "Nimble",
   "class": "Assassin",
   "rarity": "Legendary",
   "description": "Nyx. ancient goddess of night, reigns over darkness and dreams. Her star-woven gown drifts as she walks, leaving silence beyond measure and dreams without end.",
   "ratings": {
-    "overall": "SSS",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SSS",
-    "pve": "SSS"
+    "forgottenLabyrinth": "",
+    "pvp": "SS",
+    "pve": "S"
   },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
@@ -121,5 +122,35 @@
     }
   ],
   "baseAttackRate": 2.129,
-  "bossUltimatesPer90s": 6
+  "bossUltimatesPer90s": 6,
+  "coreMechanic": {
+    "summary": "Most broken PvP unit. Hard carries early PvE then transitions to sub-DPS. Diagonal untargetable traversal cuts through frontlines to reach back-row targets. CN: tier above the rest.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "relicBreakpoints": [
+    {
+      "level": 30,
+      "type": "recommended",
+      "effect": "General investment baseline. Strong in both PvE and PvP."
+    },
+    {
+      "level": 50,
+      "type": "high_spender",
+      "effect": "PvP ceiling. CN: one star is enough to use immediately."
+    }
+  ],
+  "synergyLinks": [],
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "T1",
+    "consensus": "full",
+    "lastVerified": "2025-04"
+  },
+  "f2pInvestment": {
+    "recommendation": "Base dupe -> wait for random drop",
+    "priority": 3,
+    "notes": null
+  }
 }

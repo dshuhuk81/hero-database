@@ -90,6 +90,7 @@ export interface Hero {
   role: string;
   class: string;
   rarity: string;
+  newHero?: boolean;
   description: string;
   ratings: HeroRatings;
   recommendedRelicLevel?: number;

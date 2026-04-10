@@ -2,19 +2,20 @@
   "id": "momus",
   "name": "Momus",
   "image": "/heroes/momus.webp",
-    "release": true,
+  "release": true,
   "faction": "Spades",
   "role": "Hefty",
   "class": "Tank",
   "rarity": "Legendary",
   "description": "Momus is the god of mockery, sencure, sarcasm, and reproach, as well as the guardian of writers and poets. He delights in exposing the flaws of gods and mortals, reveling in just critique.",
   "ratings": {
-    "overall": "SS",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
-    "pvp": "SS",
-    "pve": "SS"
+    "forgottenLabyrinth": "",
+    "pvp": "A",
+    "pve": "S"
   },
   "recommendedRelicLevel": 10,
   "evolution": "Divine V",
@@ -117,5 +118,17 @@
     "SHIELD"
   ],
   "baseAttackRate": 0.519,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "coreMechanic": {
+    "summary": "Shields without global cooldown -- at 25% gain rate, continuous shielding is supermassive in both PvP and PvE. Stats directly amplify Hecate.",
+    "depthRating": "mid",
+    "commonlyMisunderstood": false
+  },
+  "metaSources": {
+    "excelTier": "T1",
+    "cnTier": "T1",
+    "egTier": "S",
+    "consensus": "partial",
+    "lastVerified": "2025-04"
+  }
 }
