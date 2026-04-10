@@ -309,7 +309,7 @@ const STAT_LABELS = {
                 <div class="relic-bp-header">
                   <span class="relic-bp-level">Relic {bp.level}</span>
                   <span class={`relic-bp-type-badge bp-type-${bp.type}`}>
-                    {bp.type === 'recommended' ? 'Recommended' : 'High Spender'}
+                    {bp.type === 'recommended' ? 'Recommended' : bp.type === 'mandatory' ? 'Mandatory' : 'High Spender'}
                   </span>
                 </div>
                 <p class="relic-bp-effect">{bp.effect}</p>
@@ -2158,6 +2158,11 @@ const STAT_LABELS = {
     background: rgba(34, 197, 94, 0.15);
     border: 1px solid rgba(34, 197, 94, 0.35);
     color: #86efac;
+  }
+  .bp-type-mandatory {
+    background: rgba(99, 179, 237, 0.12);
+    border: 1px solid rgba(99, 179, 237, 0.35);
+    color: #90cdf4;
   }
   .bp-type-high_spender {
     background: rgba(251, 191, 36, 0.12);
