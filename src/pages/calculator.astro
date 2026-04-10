@@ -1078,6 +1078,15 @@ const pageUpdate = getPageUpdate("calculator");
   cInput.addEventListener("input", renderPage);
   extraRedInput.addEventListener("input", renderPage);
 
+  // Preselect hero from ?hero= URL param
+  const urlHero = new URLSearchParams(window.location.search).get('hero');
+  if (urlHero) {
+    const sel = document.getElementById('hero-a-select');
+    if (sel && sel.querySelector(`option[value="${urlHero}"]`)) {
+      sel.value = urlHero;
+    }
+  }
+
   renderPage();
 </script>
 

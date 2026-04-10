@@ -37,7 +37,12 @@
       "Bash(node -e \"const h = require\\('./src/data/all_heroes_db.json'\\); const z = h['zeus']; console.log\\(JSON.stringify\\({rating: z.rating, ratings: z.ratings, metaSources: z.metaSources}, null, 2\\)\\);\")",
       "Bash(node -e \"const h = require\\('./src/data/all_heroes_db.json'\\); const z = h['zeus']; console.log\\('rating top-level:', z.rating\\);\")",
       "Bash(node -e \"const {heroes} = require\\('./src/data/heroes'\\); const z = heroes.find\\(h => h.id==='zeus'\\); console.log\\('rating:', z.rating, 'ratings.overall:', z.ratings?.overall\\);\")",
-      "WebFetch(domain:www.taptap.cn)"
+      "WebFetch(domain:www.taptap.cn)",
+      "Bash(grep -n \"script\\\\|Astro\\\\.slots\" /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
+      "Bash(tail -200 /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
+      "Bash(cat /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
+      "Bash(grep -E \"\\\\.core-mechanic|\\\\.investment|\\\\.synergy|\\\\.bug-banner|\\\\.mechanic-panel\" /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
+      "Bash(grep -n \"mechanic-panel\\\\|synergy-links-panel\\\\|investment-roadmap\\\\|relic-bp\\\\|bug-banner\" /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
