@@ -38,7 +38,11 @@ const teasers: Teaser[] = [
     label: "Tips",
     href: "/tips",
     icon: `<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
-    description: "Beginner tips & shrine system breakdowns"
+    description: "Beginner tips & shrine system breakdowns",
+    badge: {
+      text: "Updated",
+      color: "var(--accent-purple)"
+    }
   },
   {
     label: "Boss Encounters",
@@ -67,10 +71,7 @@ const teasers: Teaser[] = [
     href: "/calculator",
     icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="8" y="6" width="8" height="4" rx="1"/><circle cx="8" cy="14" r=".75"/><circle cx="12" cy="14" r=".75"/><circle cx="16" cy="14" r=".75"/><circle cx="8" cy="18" r=".75"/><circle cx="12" cy="18" r=".75"/><line x1="16" y1="16" x2="16" y2="20"/>`,
     description: "Skill damage calculator & PvP battle sim",
-    badge: {
-      text: "Alpha",
-      color: "var(--accent-gold-dim)"
-    }
+
   },
 ];
 ---
