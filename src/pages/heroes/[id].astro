@@ -306,7 +306,6 @@ const dotSections = [
                   <h3 class="skill-panel-name">{skill.name}</h3>
                   <div class="skill-panel-badges">
                     <span class="skill-panel-type">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
-                    {skill.isUltimate && <span class="ultimate-glow-badge">ULTIMATE</span>}
                     {skill.damageType && (
                       <span class={`dmg-badge dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
                     )}
