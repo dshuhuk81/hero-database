@@ -5431,20 +5431,53 @@
         "level4": "While Notes exist on the field, Meret gains increased damage reduction."
       }
     },
-    "synergies": [],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
+    "synergies": [
+      {
+        "heroId": "hercules",
+        "type": "core",
+        "description": "Meret shields Hercules during ramp phase. Watch for energy timing conflict -- test whether output rhythm is disrupted."
+      },
+      {
+        "heroId": "bastet",
+        "type": "core",
+        "description": "Bastet as dodge frontliner, Meret as protective buffer behind. Stable combination for mid-length fights."
+      },
+      {
+        "heroId": "set",
+        "type": "conditional",
+        "description": "Set lifesteal aura combined with Meret protection for team sustain. Relevant in longer PvE encounters."
+      }
+    ],
     "coreMechanic": {
-      "summary": "",
-      "depthRating": "",
-      "commonlyMisunderstood": false
+      "summary": "Diamond Support with protective life-sharing mechanics. Shields Hercules during ramp-up phase but can slow his energy recovery -- known tradeoff. Insufficient against high enemy burst. r1-10 enough for baseline utility; r30 for full protective output.",
+      "depthRating": "medium",
+      "commonlyMisunderstood": true
     },
+    "relicBreakpoints": [
+      {
+        "level": 10,
+        "type": "mandatory",
+        "effect": "Baseline protection unlocked. Usable in Diamond team without further investment pressure."
+      },
+      {
+        "level": 30,
+        "type": "high_spender",
+        "effect": "Full protective capability. Only relevant once Hercules and Bastet are already at Divine."
+      }
+    ],
     "metaSources": {
-      "excelTier": "null",
-      "cnTier": "null",
-      "egTier": "null",
-      "consensus": "null",
-      "lastVerified": "null"
+      "excelTier": "n/a",
+      "cnTier": "T1",
+      "egTier": "n/a",
+      "consensus": "partial",
+      "lastVerified": "2025-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 3,
+      "notes": "Baseline utility at r1-10. Full potential only realized at r30, and only if paired with high-investment Hercules and Bastet. Not a priority for F2P players until those conditions are met."
     }
   },
   "momus": {

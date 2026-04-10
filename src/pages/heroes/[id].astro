@@ -1,9 +1,7 @@
 ---
 export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
-import SkillCard from "../../components/hero/SkillCard.astro";
 import Base from "../../layouts/Base.astro";
-import RatingCard from "../../components/hero/RatingCard.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -20,2472 +18,1824 @@ const hasComps = heroTeamComps && Object.values(heroTeamComps).some((arr) => Arr
 const prevHero = heroIndex > 0 ? heroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < heroes.length - 1 ? heroes[heroIndex + 1] : null;
 
-// Mode aus Query ziehen (general|pve|pvp)
-const mode = Astro.url.searchParams.get("mode") ?? "general";
-
-const currentHero = await import(`../../data/heroes/${id}.json`);
-
 if (!hero) {
   throw new Error(`Hero with id "${id}" not found`);
 }
 
 const PERCENT_STATS = new Set([
-  "dodgeRate",
-  "hitBonus",
-  "critRate",
-  "critRes",
-  "critDmgBonus",
-  "critDmgRed",
-  "cooldownHaste",
-  "atkSpdBonus",
-  "pDmgBonus",
-  "pDmgRed",
-  "mDmgBonus",
-  "mDmgRed",
-  "healEff",
-  "rechargeEff",
-  "lifestealEff",
-  "reflectEff",
-  "effectRes",
-  "effectHit",
-  "controlRes",
-  "controlBonus",
-  "normalSkillPWR",
-  "ultimatePWR"
+  "dodgeRate", "hitBonus", "critRate", "critRes", "critDmgBonus", "critDmgRed",
+  "cooldownHaste", "atkSpdBonus", "pDmgBonus", "pDmgRed", "mDmgBonus", "mDmgRed",
+  "healEff", "rechargeEff", "lifestealEff", "reflectEff", "effectRes", "effectHit",
+  "controlRes", "controlBonus", "normalSkillPWR", "ultimatePWR"
 ]);
 
-const STAT_LABELS = {
-  might: "Might",
-  hp: "HP",
-  atk: "ATK",
-  armor: "Armor",
-  magicRes: "M-Res",
-  dodgeRate: "Dodge",
-  hitBonus: "Hit",
-  critRate: "Crit Rate",
-  critRes: "Crit RES",
-  critDmgBonus: "Crit DMG",
-  critDmgRed: "Crit Red",
-  energy: "Energy",
-  cooldownHaste: "Cooldown Haste",
-  atkSpdBonus: "ATK SPD Bonus",
-  pDmgBonus: "Physical DMG Bonus",
-  pDmgRed: "Physical DMG Reduction",
-  mDmgBonus: "Magical DMG Bonus",
-  mDmgRed: "Magical DMG Reduction",
-  healEff: "Heal Efficiency",
-  rechargeEff: "Recharge Efficiency",
-  lifestealEff: "Lifesteal Efficiency",
-  reflectEff: "Reflect Efficiency",
-  effectRes: "Effect Resistance",
-  effectHit: "Effect Hit",
-  controlRes: "Control Resistance",
-  controlBonus: "Control Bonus",
-  normalSkillPWR: "Normal Skill PWR",
-  ultimatePWR: "Ultimate PWR"
+const STAT_LABELS: Record<string, string> = {
+  might: "Might", hp: "HP", atk: "ATK", armor: "Armor", magicRes: "M-Res",
+  dodgeRate: "Dodge", hitBonus: "Hit", critRate: "Crit Rate", critRes: "Crit RES",
+  critDmgBonus: "Crit DMG", critDmgRed: "Crit Red", energy: "Energy",
+  cooldownHaste: "Cooldown Haste", atkSpdBonus: "ATK SPD Bonus",
+  pDmgBonus: "Physical DMG Bonus", pDmgRed: "Physical DMG Reduction",
+  mDmgBonus: "Magical DMG Bonus", mDmgRed: "Magical DMG Reduction",
+  healEff: "Heal Efficiency", rechargeEff: "Recharge Efficiency",
+  lifestealEff: "Lifesteal Efficiency", reflectEff: "Reflect Efficiency",
+  effectRes: "Effect Resistance", effectHit: "Effect Hit",
+  controlRes: "Control Resistance", controlBonus: "Control Bonus",
+  normalSkillPWR: "Normal Skill PWR", ultimatePWR: "Ultimate PWR"
 };
+
+// Stat grouping
+const OFFENSIVE_STATS = ["atk", "critRate", "critDmgBonus", "atkSpdBonus", "pDmgBonus", "mDmgBonus", "normalSkillPWR", "ultimatePWR"];
+const DEFENSIVE_STATS = ["hp", "armor", "magicRes", "dodgeRate", "critRes", "critDmgRed", "pDmgRed", "mDmgRed", "controlRes"];
+const UTILITY_STATS = ["hitBonus", "energy", "cooldownHaste", "healEff", "rechargeEff", "lifestealEff", "reflectEff", "effectRes", "effectHit", "controlBonus"];
+
+// Key stats for the at-a-glance strip
+const KEY_STATS = ["might", "atk", "hp", "armor", "magicRes", "critRate"];
+
+// Faction color mapping
+const FACTION_COLORS: Record<string, { a: string; b: string; glow: string }> = {
+  "Starglint": { a: "#5b9cf6", b: "#facc15", glow: "rgba(91,156,246,0.18)" },
+  "Wildfire":  { a: "#f97316", b: "#dc2626", glow: "rgba(249,115,22,0.18)" },
+  "Deepwater": { a: "#22d3ee", b: "#0ea5e9", glow: "rgba(34,211,238,0.18)" },
+  "Spades":    { a: "#a78bfa", b: "#7c3aed", glow: "rgba(167,139,250,0.18)" },
+};
+const factionColor = FACTION_COLORS[hero.faction] ?? { a: "#a8844a", b: "#7c6e4a", glow: "rgba(168,132,74,0.18)" };
+
+function formatStatVal(key: string, val: number): string {
+  if (val === 0) return "0";
+  if (PERCENT_STATS.has(key)) return val + "%";
+  if (val >= 1_000_000) return (val / 1_000_000).toFixed(2) + "M";
+  if (val >= 1_000) return (val / 1_000).toFixed(1) + "K";
+  return String(val);
+}
+
+function statBarWidth(key: string, val: number): number {
+  const max = (statMaxima as Record<string, number>)[key];
+  if (!max || val === 0) return 0;
+  return Math.min((val / max) * 100, 100);
+}
+
+// Tag label display: SNAKE_CASE -> Title Case
+function tagLabel(tag: unknown): string {
+  const s = String(tag ?? "");
+  return s.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+
+const ratingCategories = [
+  { key: "overall", label: "Overall" },
+  { key: "pvp",     label: "PvP" },
+  { key: "pve",     label: "PvE" },
+];
+const scenarioCategories = [
+  { key: "grimSurge",         label: "Grim Surge" },
+  { key: "delusionsDen",      label: "Delusions Den" },
+  { key: "torrentRift",       label: "Torrent Rift" },
+  { key: "forgottenLabyrinth",label: "Forgotten Labyrinth" },
+];
+
+const ratingsMap: Record<string, string> = hero.ratings as any ?? {};
+
+// Dot nav sections
+const dotSections = [
+  { id: "section-profile",    label: "Profile" },
+  { id: "section-skills",     label: "Skills" },
+  { id: "section-ratings",    label: "Ratings" },
+  { id: "section-stats",      label: "Stats" },
+  { id: "section-synergies",  label: "Synergies" },
+  ...(hasComps ? [{ id: "section-comps", label: "Compositions" }] : []),
+  ...((hero as any).relicBreakpoints?.length ? [{ id: "section-investment", label: "Investment" }] : []),
+  ...((hero as any)["content-creator"]?.length ? [{ id: "section-videos", label: "Videos" }] : []),
+];
 ---
 
 <Base
   title={hero ? `${hero.name} - Stats, Skills & Tier List | Motto Immortal` : "Hero | Motto Immortal"}
   description={hero ? `${hero.name} is a ${hero.class} (${hero.role}) hero in Motto Immortal. View stats, skills, ratings (${hero.ratings?.overall ?? ""}), team comps and synergies.` : undefined}
 >
-<div class="hero-detail-page">
-  <!-- STICKY HEADER -->
-  <header class="hero-detail-header">
-    <div class="header-inner header-with-back">
-      <a href="/heros" class="back-button">← Back</a>
+<div
+  class="hero-page"
+  data-faction={hero.faction}
+  style={`--faction-a:${factionColor.a};--faction-b:${factionColor.b};--faction-glow:${factionColor.glow};`}
+>
 
-      <div class="header-center">
-        <h1 class="hero-title">{hero.name}</h1>
-
-        <nav class="hero-tabs">
-          <button class="tab active" data-tab="attributes">Attributes</button>
-          <button class="tab" data-tab="skills">Skills</button>
-          {hasComps && <button class="tab" data-tab="synergies">Compositions</button>}
-          {hero["content-creator"] && hero["content-creator"].length > 0 && (
-            <button class="tab" data-tab="video-guide">Video Guide</button>
-          )}
-        </nav>
-      </div>
+  <!-- ===================== STICKY THIN HEADER ===================== -->
+  <header class="hero-page-header">
+    <a href="/heros" class="page-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Heroes
+    </a>
+    <span class="page-hero-name">{hero.name}</span>
+    <div class="hero-page-header-right">
+      {hero.ratings?.overall && hero.ratings.overall !== "" && (
+        <span class={`hdr-rating rating-${(hero.ratings.overall ?? "").toLowerCase()}`}>{hero.ratings.overall}</span>
+      )}
+      <a href={`/calculator?hero=${hero.id}`} class="hdr-calc-link">Calculator</a>
     </div>
   </header>
 
-  <nav class="hero-swap-nav" aria-label="Hero navigation">
+  <!-- ===================== CINEMATIC SHOWCASE ===================== -->
+  <section class="showcase" aria-label="Hero showcase">
+    <div
+      class="showcase-art"
+      style={`background-image:url(${hero.image});`}
+      role="img"
+      aria-label={hero.name}
+    ></div>
+    <div class="showcase-overlay"></div>
+
+    <!-- Prev / Next arrows on image -->
     {prevHero ? (
-      <a
-        class="hero-swap-link prev"
-        href={`/heroes/${prevHero.id}`}
-        aria-label={`Previous hero: ${prevHero.name}`}
-        title={`Previous hero: ${prevHero.name}`}
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+      <a class="showcase-nav prev" href={`/heroes/${prevHero.id}`} aria-label={`Previous: ${prevHero.name}`} title={prevHero.name}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </a>
     ) : (
-      <span class="hero-swap-link prev disabled" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+      <span class="showcase-nav prev disabled" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </span>
+    )}
+    {nextHero ? (
+      <a class="showcase-nav next" href={`/heroes/${nextHero.id}`} aria-label={`Next: ${nextHero.name}`} title={nextHero.name}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </a>
+    ) : (
+      <span class="showcase-nav next disabled" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
       </span>
     )}
 
-    {nextHero ? (
-      <a
-        class="hero-swap-link next"
-        href={`/heroes/${nextHero.id}`}
-        aria-label={`Next hero: ${nextHero.name}`}
-        title={`Next hero: ${nextHero.name}`}
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+    <!-- Bottom identity block -->
+    <div class="showcase-identity">
+      <h1 class="showcase-name">{hero.name}</h1>
+      <div class="showcase-badges">
+        <span class="id-badge">
+          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} alt={hero.faction} class="id-badge-icon" />
+          {hero.faction}
+        </span>
+        <span class="id-badge">
+          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} alt={hero.class} class="id-badge-icon" />
+          {hero.class}
+        </span>
+        <span class="id-badge">
+          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} alt={hero.role} class="id-badge-icon" />
+          {hero.role}
+        </span>
+        <span class="id-badge rarity-badge">{hero.rarity}</span>
+      </div>
+      {hero.synergies && hero.synergies.length > 0 && (
+        <div class="showcase-tags">
+          {hero.synergies.map((tag: string) => (
+            <span class="showcase-tag">{tagLabel(tag)}</span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div class="showcase-scroll-hint" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- ===================== FLOATING DOT NAV (desktop) ===================== -->
+  <nav class="dot-nav" aria-label="Page sections">
+    {dotSections.map((s) => (
+      <a class="dot-nav-item" href={`#${s.id}`} data-section={s.id} title={s.label} aria-label={s.label}>
+        <span class="dot"></span>
+        <span class="dot-label">{s.label}</span>
       </a>
-    ) : (
-      <span class="hero-swap-link next disabled" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </span>
-    )}
+    ))}
   </nav>
 
-  <!-- CONTENT -->
-  <main class="hero-detail-content">
-    <!-- TAB: ATTRIBUTES -->
-    <div class="tab-content active" data-content="attributes">
-      {hero.activeBug && (
-        <div class="bug-banner">
-          <svg class="bug-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-          </svg>
-          <div class="bug-text">
-            <strong>Known Bug</strong>
-            <span>{hero.activeBugNotes}</span>
-          </div>
-        </div>
-      )}
-      <section class="hero-overview">
-        <!-- LEFT: Hero Image -->
-        <div class="hero-visual" style={`background-image: url(${hero.image});`}>
-        </div>
+  <!-- ===================== MAIN SCROLL CONTENT ===================== -->
+  <main class="scroll-content">
 
-        <!-- RIGHT: Info -->
-        <div class="hero-info-col">
-          <!-- LARGE HERO NAME -->
-          <h2 class="hero-name-large">{hero.name}</h2>
+    <!-- BUG BANNER (if active) -->
+    {hero.activeBug && (
+      <div class="bug-banner">
+        <svg class="bug-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        </svg>
+        <div class="bug-text">
+          <strong>Known Bug</strong>
+          <span>{hero.activeBugNotes}</span>
+        </div>
+      </div>
+    )}
 
-          <!-- Description  -->
+    <!-- ── SECTION 1: PROFILE ── -->
+    <section class="content-section" id="section-profile">
+      <div class="section-label">Profile</div>
+
+      <div class="profile-grid">
+        <!-- Description + Core Mechanic -->
+        <div class="profile-left">
           {hero.description && (
-            <p class="hero-description">
-              {hero.description}
-            </p>
+            <p class="hero-description">{hero.description}</p>
           )}
-
-          <!-- META BADGES (Faction / Class / Role / Rarity / Relic Prio) -->
-          <div class="meta-badge-list">
-            <span class="meta-badge-label">Faction</span>
-            <span class="meta-badge-content">
-              <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} alt={hero.faction} class="meta-badge-icon" />
-              <span class="meta-badge-value">{hero.faction}</span>
-            </span>
-
-            <span class="meta-badge-label">Class</span>
-            <span class="meta-badge-content">
-              <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} alt={hero.class} class="meta-badge-icon" />
-              <span class="meta-badge-value">{hero.class}</span>
-            </span>
-
-            <span class="meta-badge-label">Role</span>
-            <span class="meta-badge-content">
-              <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} alt={hero.role} class="meta-badge-icon" />
-              <span class="meta-badge-value">{hero.role}</span>
-            </span>
-
-            <span class="meta-badge-label">Rarity</span>
-            <span class="meta-badge-content">
-              <svg class="meta-rarity-star" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"></path>
-              </svg>
-              <span class="meta-badge-value">{hero.rarity}</span>
-            </span>
-
-            {hero.recommendedRelicLevel !== undefined && !(hero.relicBreakpoints?.length) && (
-              <>
-                <span class="meta-badge-label">Relic Prio</span>
-                <span class="meta-badge-content">
-                  <span class={`relic-level relic-level-${hero.recommendedRelicLevel}`}>
-                    Lv. {hero.recommendedRelicLevel}
-                  </span>
+          {(hero as any).coreMechanic && (
+            <div class="mechanic-card">
+              <div class="mechanic-header">
+                <span class="mechanic-title">Core Mechanic</span>
+                <span class={`depth-badge depth-${(hero as any).coreMechanic.depthRating}`}>
+                  {(hero as any).coreMechanic.depthRating} depth
                 </span>
-              </>
-            )}
-          </div>
-
-          <!-- STATS -->
-          <section class="hero-stats">
-            <div class="headline-with-info"><h3>Stats</h3><span>(Level {hero.level}, {hero.evolution})</span></div>
-
-            <div class="stats-wrapper">
-              <div class="stats-grid collapsed" id="statsGrid">
-                {Object.entries(STAT_LABELS).map(([key, label]) => {
-                  const statValue = Number(hero.stats[key] ?? 0);
-                  const hasValue = statValue > 0;
-
-                  return (
-                    <div class={`stat-row ${hasValue ? 'has-value' : 'no-value'}`}>
-                      <span class="stat-label">{label}</span>
-
-                      <div class="stat-right">
-                        <span class="stat-value">
-                          <span class="stat-current">
-                            {hero.stats[key]}
-                            <span class="stat-max"> / {statMaxima[key]}</span>
-                          </span>
-                        </span>
-
-                        <!-- STAT BAR -->
-                        <div class="stat-bar">
-                          <div
-                            class="stat-bar-fill rank-default"
-                            style={`width: ${
-                              statMaxima[key]
-                                ? Math.min((hero.stats[key] / statMaxima[key]) * 100, 100)
-                                : 0
-                            }%`}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {(hero as any).coreMechanic.commonlyMisunderstood && (
+                  <span class="misunderstood-badge">Commonly Misunderstood</span>
+                )}
               </div>
-
-              <div class="stats-gradient-overlay" id="statsOverlay">
-                <button class="stats-view-more-btn" id="statsToggleBtn">
-                  <span class="btn-text">View All Stats</span>
-                  <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16">
-                    <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </div>
+              <p class="mechanic-summary">{(hero as any).coreMechanic.summary}</p>
             </div>
-          </section>
+          )}
         </div>
-      </section>
 
-      <!-- RATINGS -->
-      {hero.ratings && (
-        <RatingCard ratings={hero.ratings} metaSources={hero.metaSources} />
-      )}
+        <!-- Key stats at a glance -->
+        <div class="profile-right">
+          <div class="key-stats-label">At a Glance  <span class="key-stats-sub">(Lv. {hero.level}, {hero.evolution})</span></div>
+          <div class="key-stats-grid">
+            {KEY_STATS.map(key => {
+              const val = Number((hero.stats as any)[key] ?? 0);
+              return (
+                <div class="key-stat-block">
+                  <span class="key-stat-value">{formatStatVal(key, val)}</span>
+                  <span class="key-stat-label">{STAT_LABELS[key]}</span>
+                  <div class="key-stat-bar">
+                    <div class="key-stat-bar-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <!-- CORE MECHANIC PANEL -->
-      {hero.coreMechanic && (
-        <section class="mechanic-panel">
-          <h2>Core Mechanic</h2>
-          <div class="mechanic-body">
-            <p class="mechanic-summary">{hero.coreMechanic.summary}</p>
-            <div class="mechanic-meta">
-              <span class={`depth-badge depth-${hero.coreMechanic.depthRating}`}>
-                Depth: {hero.coreMechanic.depthRating}
-              </span>
-              {hero.coreMechanic.commonlyMisunderstood && (
-                <span class="misunderstood-badge">Commonly Misunderstood</span>
+    <!-- ── SECTION 2: SKILLS ── -->
+    <section class="content-section" id="section-skills">
+      <div class="section-label">Skills &amp; Abilities</div>
+
+      <!-- Skill tab strip -->
+      <div class="skill-tabs" role="tablist">
+        {hero.skills && hero.skills.map((skill: any, i: number) => (
+          <button
+            class={`skill-tab${i === 0 ? " active" : ""}${skill.isUltimate ? " is-ultimate" : ""}`}
+            data-skill-tab={i}
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+          >
+            <div class="skill-tab-icon" style={`background-image:url(${skill.image || `/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
+            <span class="skill-tab-label">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
+            {skill.damageType && (
+              <span class={`dmg-type-chip dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
+            )}
+          </button>
+        ))}
+        {hero.relic && (
+          <button class="skill-tab is-relic" data-skill-tab="relic" role="tab" aria-selected="false">
+            <div class="skill-tab-icon" style={`background-image:url(${hero.relic.image || `/skills/${hero.id}_relic.webp`})`}></div>
+            <span class="skill-tab-label">Relic</span>
+          </button>
+        )}
+      </div>
+
+      <!-- Skill panels -->
+      <div class="skill-panels">
+        {hero.skills && hero.skills.map((skill: any, i: number) => (
+          <div class={`skill-panel${i === 0 ? " active" : ""}`} data-skill-panel={i} role="tabpanel">
+            <div class="skill-panel-inner">
+              <div class="skill-panel-header">
+                <div class="skill-panel-icon" style={`background-image:url(${skill.image || `/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
+                <div class="skill-panel-meta">
+                  <h3 class="skill-panel-name">{skill.name}</h3>
+                  <div class="skill-panel-badges">
+                    <span class="skill-panel-type">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
+                    {skill.isUltimate && <span class="ultimate-glow-badge">ULTIMATE</span>}
+                    {skill.damageType && (
+                      <span class={`dmg-badge dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <p class="skill-panel-desc">{skill.description}</p>
+              {(skill.upgrades?.level2 || skill.upgrades?.level3 || skill.upgrades?.level4) && (
+                <div class="skill-upgrades">
+                  {skill.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{skill.upgrades.level2}</span></div>}
+                  {skill.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{skill.upgrades.level3}</span></div>}
+                  {skill.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{skill.upgrades.level4}</span></div>}
+                </div>
               )}
             </div>
           </div>
-        </section>
+        ))}
+        {hero.relic && (
+          <div class="skill-panel is-relic-panel" data-skill-panel="relic" role="tabpanel">
+            <div class="skill-panel-inner">
+              <div class="skill-panel-header">
+                <div class="skill-panel-icon is-relic-icon" style={`background-image:url(${hero.relic.image || `/skills/${hero.id}_relic.webp`})`}></div>
+                <div class="skill-panel-meta">
+                  <h3 class="skill-panel-name">{hero.relic.name}</h3>
+                  <div class="skill-panel-badges">
+                    <span class="skill-panel-type">Relic</span>
+                    {(hero as any).recommendedRelicLevel !== undefined && (
+                      <span class={`relic-lv-badge rlv-${(hero as any).recommendedRelicLevel}`}>Lv. {(hero as any).recommendedRelicLevel}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <p class="skill-panel-desc">{hero.relic.description}</p>
+              {(hero.relic.upgrades?.level2 || hero.relic.upgrades?.level3 || hero.relic.upgrades?.level4) && (
+                <div class="skill-upgrades">
+                  {hero.relic.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{hero.relic.upgrades.level2}</span></div>}
+                  {hero.relic.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{hero.relic.upgrades.level3}</span></div>}
+                  {hero.relic.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{hero.relic.upgrades.level4}</span></div>}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: RATINGS ── -->
+    <section class="content-section" id="section-ratings">
+      <div class="section-label">Meta Ratings</div>
+
+      <!-- Big 3 rating tiles -->
+      <div class="big-rating-tiles">
+        {ratingCategories.map(cat => {
+          const val = ratingsMap[cat.key] || "";
+          return (
+            <div class={`big-rating-tile rating-tile-${(val || "na").toLowerCase()}`}>
+              <span class="big-rating-val">{val || "N/A"}</span>
+              <span class="big-rating-label">{cat.label}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Scenario ratings -->
+      {scenarioCategories.some(c => ratingsMap[c.key] && ratingsMap[c.key] !== "") && (
+        <div class="scenario-block">
+          <div class="scenario-block-label">Game Modes</div>
+          <div class="scenario-grid">
+            {scenarioCategories.map(cat => {
+              const val = ratingsMap[cat.key];
+              if (!val) return null;
+              return (
+                <div class={`scenario-tile rating-tile-${(val || "na").toLowerCase()}`}>
+                  <span class="scenario-val">{val}</span>
+                  <span class="scenario-name">{cat.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
 
+      <!-- Community sources -->
+      {(hero as any).metaSources && (
+        <div class="community-block">
+          <div class="community-block-label">
+            Community Sources
+            {(hero as any).metaSources.lastVerified && (
+              <span class="verified-tag">Verified {(hero as any).metaSources.lastVerified}</span>
+            )}
+          </div>
+          <div class="community-grid">
+            {(hero as any).metaSources.excelTier && (
+              <div class="community-tile">
+                <span class="community-source">Excel Tier List</span>
+                <span class="community-val">{(hero as any).metaSources.excelTier}</span>
+              </div>
+            )}
+            {(hero as any).metaSources.cnTier && (
+              <div class="community-tile">
+                <span class="community-source">CN Community</span>
+                <span class="community-val">{(hero as any).metaSources.cnTier}</span>
+              </div>
+            )}
+            {(hero as any).metaSources.egTier && (
+              <div class="community-tile">
+                <span class="community-source">EG Community</span>
+                <span class="community-val">{(hero as any).metaSources.egTier}</span>
+              </div>
+            )}
+            {(hero as any).metaSources.consensus && (
+              <div class="community-tile">
+                <span class="community-source">Consensus</span>
+                <span class={`consensus-badge consensus-${(hero as any).metaSources.consensus}`}>{(hero as any).metaSources.consensus}</span>
+              </div>
+            )}
+          </div>
+          <p class="community-note">Community tiers use T0/T1/T2 notation -- independent of site ratings above.</p>
+        </div>
+      )}
+    </section>
 
-      <!-- INVESTMENT ROADMAP -->
-      {hero.relicBreakpoints && hero.relicBreakpoints.length > 0 && (
-        <section class="investment-roadmap">
-          <h2>Investment Roadmap</h2>
-          <div class="relic-breakpoints-list">
-            {hero.relicBreakpoints.map((bp: { level: number; type: string; effect: string }) => (
-              <div class={`relic-bp relic-bp-${bp.type}`}>
-                <div class="relic-bp-header">
-                  <span class="relic-bp-level">Relic {bp.level}</span>
-                  <span class={`relic-bp-type-badge bp-type-${bp.type}`}>
-                    {bp.type === 'recommended' ? 'Recommended' : bp.type === 'mandatory' ? 'Mandatory' : 'High Spender'}
-                  </span>
+    <!-- ── SECTION 4: STATS ── -->
+    <section class="content-section" id="section-stats">
+      <div class="section-label">Combat Statistics <span class="section-sub">Lv. {hero.level} &middot; {hero.evolution}</span></div>
+
+      <div class="stat-columns">
+        <!-- Offensive -->
+        <div class="stat-column">
+          <div class="stat-col-header offensive-hdr">Offensive</div>
+          {OFFENSIVE_STATS.map(key => {
+            const val = Number((hero.stats as any)[key] ?? 0);
+            return (
+              <div class="stat-entry">
+                <span class="stat-entry-label">{STAT_LABELS[key]}</span>
+                <div class="stat-entry-right">
+                  <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                  <div class="stat-entry-bar">
+                    <div class="stat-entry-fill offensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
                 </div>
-                <p class="relic-bp-effect">{bp.effect}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- Defensive -->
+        <div class="stat-column">
+          <div class="stat-col-header defensive-hdr">Defensive</div>
+          {DEFENSIVE_STATS.map(key => {
+            const val = Number((hero.stats as any)[key] ?? 0);
+            return (
+              <div class="stat-entry">
+                <span class="stat-entry-label">{STAT_LABELS[key]}</span>
+                <div class="stat-entry-right">
+                  <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                  <div class="stat-entry-bar">
+                    <div class="stat-entry-fill defensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- Utility -->
+        <div class="stat-column">
+          <div class="stat-col-header utility-hdr">Utility</div>
+          {UTILITY_STATS.map(key => {
+            const val = Number((hero.stats as any)[key] ?? 0);
+            return (
+              <div class="stat-entry">
+                <span class="stat-entry-label">{STAT_LABELS[key]}</span>
+                <div class="stat-entry-right">
+                  <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                  <div class="stat-entry-bar">
+                    <div class="stat-entry-fill utility-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 5: SYNERGIES ── -->
+    <section class="content-section" id="section-synergies">
+      <div class="section-label">Synergy Network</div>
+
+      <!-- Hero synergy links -->
+      {(hero as any).synergyLinks && (hero as any).synergyLinks.length > 0 && (
+        <div class="syn-links-grid">
+          {(hero as any).synergyLinks.map((link: { heroId: string; type: string; description: string }) => (
+            <a href={`/heroes/${link.heroId}`} class={`syn-link-card syn-${link.type}`}>
+              <div class="syn-link-portrait" style={`background-image:url(/heroes/${link.heroId}.webp)`} role="img" aria-label={link.heroId}></div>
+              <div class="syn-link-body">
+                <div class="syn-link-row">
+                  <span class="syn-link-name">{link.heroId}</span>
+                  <span class={`syn-link-badge syn-badge-${link.type}`}>{link.type}</span>
+                </div>
+                <p class="syn-link-desc">{link.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+
+      <!-- Tag chips -->
+      {hero.synergies && hero.synergies.length > 0 && (
+        <div class="tag-cloud">
+          <div class="tag-cloud-label">Ability Tags</div>
+          <div class="tag-chips">
+            {hero.synergies.map((tag: string) => (
+              <span class="tag-chip">{tagLabel(tag)}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+
+    <!-- ── SECTION 6: COMPOSITIONS ── -->
+    {hasComps && (
+      <section class="content-section" id="section-comps">
+        <div class="section-label">Team Compositions</div>
+
+        <div class="comp-mode-tabs" role="tablist">
+          <button class="comp-mode-tab active" data-comp-mode="general" role="tab">General</button>
+          <button class="comp-mode-tab" data-comp-mode="pve" role="tab">PvE</button>
+          <button class="comp-mode-tab" data-comp-mode="pvp" role="tab">PvP</button>
+        </div>
+
+        <div class="comp-panels">
+          <div class="comp-panel active" data-comp-panel="general">
+            <HeroCompositions heroId={id} mode="general" />
+          </div>
+          <div class="comp-panel" data-comp-panel="pve" style="display:none">
+            <HeroCompositions heroId={id} mode="pve" />
+          </div>
+          <div class="comp-panel" data-comp-panel="pvp" style="display:none">
+            <HeroCompositions heroId={id} mode="pvp" />
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- ── SECTION 7: INVESTMENT GUIDE ── -->
+    {(hero as any).relicBreakpoints && (hero as any).relicBreakpoints.length > 0 && (
+      <section class="content-section" id="section-investment">
+        <div class="section-label">Investment Guide</div>
+
+        <div class="investment-grid">
+          <div class="relic-timeline">
+            {(hero as any).relicBreakpoints.map((bp: { level: number; type: string; effect: string }, i: number) => (
+              <div class="relic-bp-row">
+                <div class="relic-bp-left">
+                  <div class="relic-bp-dot"></div>
+                  {i < (hero as any).relicBreakpoints.length - 1 && <div class="relic-bp-line"></div>}
+                </div>
+                <div class="relic-bp-content">
+                  <div class="relic-bp-header">
+                    <span class="relic-bp-lv">Relic {bp.level}</span>
+                    <span class={`relic-bp-badge bp-${bp.type}`}>
+                      {bp.type === "mandatory" ? "Mandatory" : bp.type === "recommended" ? "Recommended" : "High Spender"}
+                    </span>
+                  </div>
+                  <p class="relic-bp-effect">{bp.effect}</p>
+                </div>
               </div>
             ))}
           </div>
-        </section>
-      )}
 
-      <!-- KEY SYNERGY LINKS -->
-      {hero.synergyLinks && hero.synergyLinks.length > 0 && (
-        <section class="synergy-links-panel">
-          <h2>Key Synergies</h2>
-          <div class="synergy-links-grid">
-            {hero.synergyLinks.map((link: { heroId: string; type: string; description: string }) => (
-              <a href={`/heroes/${link.heroId}`} class={`synergy-link-card synergy-link-${link.type}`}>
-                <div class="synergy-link-hero">
-                  <div
-                    class="synergy-link-portrait"
-                    style={`background-image: url(/heroes/${link.heroId}.webp);`}
-                  ></div>
-                  <div class="synergy-link-info">
-                    <span class="synergy-link-name">{link.heroId}</span>
-                    <span class={`synergy-link-type-badge type-${link.type}`}>{link.type}</span>
-                  </div>
-                </div>
-                <p class="synergy-link-desc">{link.description}</p>
-              </a>
-            ))}
-          </div>
-        </section>
-      )}
-
-    </div>
-
-    <!-- TAB: SKILLS -->
-    <div class="tab-content" data-content="skills">
-      <section class="hero-skills">
-        <h2>Skills</h2>
-        
-        <!-- Skills -->
-        <div class="skills-container">
-          {hero.skills && hero.skills.map((skill, index) => (
-            <SkillCard
-              name={skill.name}
-              icon={skill.image || `/skills/${hero.id}_skill_${index + 1}.webp`}
-              description={skill.description}
-              upgrades={skill.upgrades}
-              type={`Skill ${index + 1}`}
-              stars={3}
-              showGrid={true}
-              isUltimate={skill.isUltimate || false}
-            />
-          ))}
-
-          <!-- Relic -->
-          {hero.relic && (
-            <SkillCard
-              name={hero.relic.name}
-              icon={hero.relic.image || `/skills/${hero.id}_relic.webp`}
-              description={hero.relic.description}
-              upgrades={hero.relic.upgrades}
-              type="Relic"
-              stars={0}
-              showGrid={false}
-            />
+          {(hero as any).f2pInvestment && (
+            <div class="f2p-card">
+              <div class="f2p-header">F2P Recommendation</div>
+              <div class="f2p-body">
+                <span class="f2p-rec">{(hero as any).f2pInvestment.recommendation}</span>
+                {(hero as any).f2pInvestment.notes && (
+                  <p class="f2p-notes">{(hero as any).f2pInvestment.notes}</p>
+                )}
+              </div>
+            </div>
           )}
         </div>
       </section>
-    </div>
-
-    <!-- TAB: COMPOSITIONS -->
-    <div class="tab-content" data-content="synergies">
-      <div class="comp-toolbar">
-        <label for="compMode" class="comp-toolbar-label">Mode</label>
-        <select id="compMode" class="comp-toolbar-select">
-          <option value="general">General</option>
-          <option value="pve">PvE</option>
-          <option value="pvp">PvP</option>
-        </select>
-      </div>
-
-      <div class="comp-modes">
-        <div class="comp-mode" data-mode="general">
-          <HeroCompositions heroId={id} mode="general" />
-        </div>
-
-        <div class="comp-mode" data-mode="pve" style="display:none">
-          <HeroCompositions heroId={id} mode="pve" />
-        </div>
-
-        <div class="comp-mode" data-mode="pvp" style="display:none">
-          <HeroCompositions heroId={id} mode="pvp" />
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB: VIDEO GUIDE -->
-    {hero["content-creator"] && hero["content-creator"].length > 0 && (
-      <div class="tab-content" data-content="video-guide">
-        <section class="video-guides">
-          <h2>Video Guides</h2>
-          <div class="video-guides-grid">
-            {hero["content-creator"].map((guide) => (
-              <div class="video-guide-container">
-                <div class="video-wrapper">
-                  <iframe 
-                    width="100%" 
-                    height="315" 
-                    src={`https://www.youtube.com/embed/${guide.videoId}`}
-                    title={guide.titel}
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin" 
-                    allowfullscreen>
-                  </iframe>
-                </div>
-                <div class="video-guide-info">
-                  <h3 class="video-guide-titel">{guide.titel}</h3>
-                  <p class="video-guide-autor">by {guide.autor}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
     )}
+
+    <!-- ── SECTION 8: VIDEO GUIDES ── -->
+    {(hero as any)["content-creator"] && (hero as any)["content-creator"].length > 0 && (
+      <section class="content-section" id="section-videos">
+        <div class="section-label">Video Guides</div>
+        <div class="video-grid">
+          {(hero as any)["content-creator"].map((guide: { titel: string; autor: string; videoId: string }) => (
+            <div class="video-card">
+              <div class="video-wrapper">
+                <iframe
+                  src={`https://www.youtube.com/embed/${guide.videoId}`}
+                  title={guide.titel}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  style="border:none;"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+              <div class="video-info">
+                <h3 class="video-title">{guide.titel}</h3>
+                <p class="video-author">by {guide.autor}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
   </main>
-
-
 </div>
 </Base>
 
 <style>
-.headline-with-info {
-  display: flex;
-  align-items: first baseline;
-  gap: 12px;
-  margin-bottom: 0.5rem;
+/* =============================================
+   CSS CUSTOM PROPERTIES & RESET
+   ============================================= */
+.hero-page {
+  --faction-a: #a8844a;
+  --faction-b: #7c6e4a;
+  --faction-glow: rgba(168,132,74,0.15);
+  min-height: 100vh;
+  background: var(--bg-base, #07060c);
+  color: var(--text-primary, #e0dff0);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 }
-.alpha-chip {
+
+/* =============================================
+   HERO PAGE HEADER (sticky, 52px)
+   ============================================= */
+.hero-page-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(7, 6, 12, 0.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.page-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.page-back svg { width: 16px; height: 16px; }
+.page-back:hover { color: rgba(255,255,255,0.9); }
+
+.page-hero-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-bright, #fff);
+  text-align: center;
+  flex: 1;
+  padding: 0 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-page-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.hdr-rating {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+/* tier colors reuse token approach */
+.hdr-rating.rating-sss { background: linear-gradient(135deg, var(--tier-sss-from,#ff4d4d), var(--tier-sss-to,#b91c1c)); color: #fff; }
+.hdr-rating.rating-ss  { background: linear-gradient(135deg, var(--tier-ss-from,#ffe066), var(--tier-ss-to,#facc15)); color: #1a1a1a; }
+.hdr-rating.rating-s   { background: linear-gradient(135deg, var(--tier-s-from,#fde68a), var(--tier-s-to,#fbbf24)); color: #1a1a1a; }
+.hdr-rating.rating-a   { background: linear-gradient(135deg, #fdba74, #fb923c); color: #1a1a1a; }
+.hdr-rating.rating-b   { background: linear-gradient(135deg, #c4b5fd, #8b5cf6); color: #fff; }
+.hdr-rating.rating-c   { background: linear-gradient(135deg, #93c5fd, #3b82f6); color: #fff; }
+
+.hdr-calc-link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--faction-a);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--faction-a);
+  border-radius: 6px;
+  opacity: 0.85;
+  transition: opacity 0.2s, background 0.2s;
+}
+.hdr-calc-link:hover { opacity: 1; background: rgba(255,255,255,0.05); }
+
+/* =============================================
+   CINEMATIC SHOWCASE
+   ============================================= */
+.showcase {
+  position: relative;
+  width: 100%;
+  height: 88vh;
+  min-height: 520px;
+  max-height: 900px;
+  overflow: hidden;
+}
+
+.showcase-art {
   position: absolute;
-  top:-6px;
-  right: -10px;
-  font-size: 8px;
-  color: var(--text-bright);
-  background-color: red;
-  border-radius: 4px;
-  padding: 2px 4px;
+  inset: 0;
+  background-size: cover;
+  background-position: center var(--hero-img-y, 30%);
+  background-repeat: no-repeat;
+  transform: scale(1.04);
+  transition: transform 8s ease-out;
 }
-  .comp-toolbar{
-  display:flex;
-  align-items:center;
-  gap:.75rem;
-  margin: 0 0 1rem 0;
+.showcase:hover .showcase-art { transform: scale(1); }
+
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(7,6,12,0.25) 0%, transparent 30%, transparent 50%, rgba(7,6,12,0.92) 85%, rgba(7,6,12,1) 100%),
+    linear-gradient(to right, rgba(7,6,12,0.35) 0%, transparent 40%);
 }
-.comp-toolbar-label{
-  opacity:.85;
-  font-size:.9rem;
-}
-.comp-toolbar-select{
-  padding:.4rem .6rem;
-  border-radius:10px;
-  background: rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);
-  color: inherit;
-}
-  /* NEW: Mode bar styling */
-  .comp-mode-bar{
-    display:flex;
-    gap:.75rem;
-    align-items:center;
-    margin: 0 0 1rem 0;
-    padding: .75rem 1rem;
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: var(--radius-lg);
-    background: rgba(0,0,0,.18);
-  }
-  .comp-mode-bar label{
-    font-weight: 700;
-    opacity: .9;
-  }
-  .comp-mode-bar select{
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.12);
-    color: var(--text-primary);
-    padding: .4rem .6rem;
-    border-radius: 10px;
-    outline: none;
-  }
 
-  /* ===============================
-     TAB CONTENT
-     =============================== */
-  .tab-content {
-    display: none;
-  }
-
-  .tab-content.active {
-    display: block;
-  }
-
-  /* ===============================
-     STAT BARS
-     =============================== */
-
-  .stat-row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-.margin-btm-16 {
-  margin-bottom: 16px!important;
+/* Prev / Next arrows */
+.showcase-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7,6,12,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+.showcase-nav svg { width: 20px; height: 20px; }
+.showcase-nav.prev { left: 20px; }
+.showcase-nav.next { right: 20px; }
+.showcase-nav:hover { background: rgba(30,30,40,0.85); border-color: var(--faction-a); color: var(--faction-a); transform: translateY(-50%) scale(1.08); }
+.showcase-nav.disabled { opacity: 0.2; pointer-events: none; }
+
+/* Identity block at bottom of showcase */
+.showcase-identity {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 0 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.showcase-name {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.0;
+  color: #fff;
+  margin: 0 0 14px;
+  text-shadow: 0 4px 32px rgba(0,0,0,0.6);
+  letter-spacing: -0.02em;
+}
+
+.showcase-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+.id-badge-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+.rarity-badge {
+  border-color: var(--faction-a);
+  color: var(--faction-a);
+}
+
+.showcase-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.showcase-tag {
+  padding: 3px 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  backdrop-filter: blur(6px);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.showcase-scroll-hint {
+  position: absolute;
+  bottom: 16px;
+  right: 40px;
+  z-index: 10;
+  animation: bounce 2s ease-in-out infinite;
+  color: rgba(255,255,255,0.35);
+}
+.showcase-scroll-hint svg { width: 20px; height: 20px; }
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* =============================================
+   FLOATING DOT NAV
+   ============================================= */
+.dot-nav {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dot-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-direction: row-reverse;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.dot-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  background: rgba(0,0,0,0.7);
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+
+.dot-nav-item:hover .dot-label,
+.dot-nav-item.active .dot-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.dot-nav-item:hover .dot,
+.dot-nav-item.active .dot {
+  background: var(--faction-a);
+  border-color: var(--faction-a);
+  box-shadow: 0 0 8px var(--faction-a);
+}
+
+@media (max-width: 1100px) {
+  .dot-nav { display: none; }
+}
+
+/* =============================================
+   SCROLL CONTENT
+   ============================================= */
+.scroll-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 100px;
+}
+
+/* =============================================
+   CONTENT SECTIONS
+   ============================================= */
+.content-section {
+  padding: 64px 0 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.content-section:last-child { border-bottom: none; }
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--faction-a);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--faction-a), transparent);
+  opacity: 0.35;
+}
+.section-sub {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* =============================================
+   BUG BANNER
+   ============================================= */
+.bug-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  margin: 24px 0 0;
+  background: rgba(239, 68, 68, 0.10);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 12px;
+  color: #fca5a5;
+}
+.bug-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; color: #ef4444; }
+.bug-text { display: flex; flex-direction: column; gap: 3px; font-size: 0.82rem; }
+.bug-text strong { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #ef4444; }
+
+/* =============================================
+   SECTION 1: PROFILE
+   ============================================= */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.hero-description {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.72);
+  margin: 0 0 24px;
+}
+
+.mechanic-card {
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-left: 3px solid var(--faction-a);
+  border-radius: 10px;
+  padding: 16px;
+}
+.mechanic-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.mechanic-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faction-a);
+}
+.mechanic-summary {
+  margin: 0;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.78);
+}
+.depth-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.depth-high { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #d8b4fe; }
+.depth-mid  { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
+.depth-low  { background: rgba(107,114,128,0.15); border: 1px solid rgba(107,114,128,0.35); color: #d1d5db; }
+.misunderstood-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(234,179,8,0.12);
+  border: 1px solid rgba(234,179,8,0.35);
+  color: #fde68a;
+}
+
+/* Key Stats Grid */
+.key-stats-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 16px;
+}
+.key-stats-sub { font-size: 0.65rem; font-weight: 500; text-transform: none; letter-spacing: 0; color: rgba(255,255,255,0.3); }
+
+.key-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
-  .stat-right {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  /* Hintergrund */
-  .stat-bar {
-    height: 6px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-full);
-    overflow: hidden;
-  }
-
-  /* Füllung */
-  .stat-bar-fill {
-    height: 100%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, #facc15, #f59e0b);
-    box-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
-    transition: width 0.4s ease;
-  }
-  
-  /* Rank 1 – Gold */
-  .stat-bar-fill.rank-1 {
-    background: linear-gradient(90deg, #facc15, #fde68a);
-    box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
-  }
-
-  /* Rank 2 – Silber */
-  .stat-bar-fill.rank-2 {
-    background: linear-gradient(90deg, #e5e7eb, #f9fafb);
-  }
-
-  /* Rank 3 – Bronze */
-  .stat-bar-fill.rank-3 {
-    background: linear-gradient(90deg, #f59e0b, #fcd34d);
-  }
-
-  /* Top 10 – Blau/Violett */
-  .stat-bar-fill.rank-top {
-    background: linear-gradient(90deg, #818cf8, #a5b4fc);
-  }
-
-  /* ===============================
-     HERO DESCRIPTION
-     =============================== */
-  .hero-description {
-    max-width: 560px;
-    margin: 0px 0 24px;
-    padding: 0;
-    font-size: 0.95rem;
-    line-height: 1.55;
-    color: var(--text-secondary);
-    text-wrap: pretty;
-  }
-  
-  /* ===============================
-     STAT HIGHLIGHTING
-     =============================== */
-  .stat-max {
-    margin-left: 6px;
-    font-size: 0.7rem;
-    opacity: 0.6;
-  }
-
-  .stat-value {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 6px;
-  }
-
-  .stat-current {
-    white-space: nowrap;
-  }
-
-  .stat-rank {
-    margin-left: auto;
-    font-size: 0.7rem;
-    opacity: 0.75;
-  }
-
-  /* Top 1 */
-  .stat-rank.rank-1 {
-    color: var(--accent-gold);
-    text-shadow: 0 0 6px rgba(250, 204, 21, 0.8);
-    font-weight: 700;
-  }
-
-  /* Top 2 */
-  .stat-rank.rank-2 {
-    color: #e5e7eb;
-    text-shadow: 0 0 6px rgba(229, 231, 235, 0.7);
-  }
-
-  /* Top 3 */
-  .stat-rank.rank-3 {
-    color: #f59e0b;
-    text-shadow: 0 0 6px rgba(245, 158, 11, 0.7);
-  }
-
-  /* Optional: Top 10 */
-  .stat-rank.rank-top {
-    color: #a5b4fc;
-  }
-
-  .identity-icons {
-    height: 24px;
-    width: 24px;
-  }
-  
-  /* html/body reset is handled by Base.astro */
-
-  /* PAGE */
-  .hero-detail-page {
-    min-height: 100vh;
-  }
-
-  .rarity-stars {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .rarity-star {
-    width: 24px;
-    height: 24px;
-    fill: var(--accent-gold);
-    filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.6));
-  }
-
-  .rarity-label {
-    margin-left: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
-  }
-
-  /* HEADER */
-  .hero-detail-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10, 10, 16, 0.7);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 18px 24px 14px;
-  }
-
-  .header-with-back {
-    position: relative;
-  }
-  
-  .identity-card h4 {
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-    color: var(--text-bright);
-    columns: auto;
-    font-family: "Source Sans Pro", ui-sans-serif, system-ui, sans-serif,
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-      "Noto Color Emoji";
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    text-wrap: nowrap;
-    white-space: nowrap;
-    margin: 0;
-    padding: 0;
-  }
-
-  .identity-content span {
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-    color: var(--text-bright);
-    columns: auto;
-    font-family: Spectral, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 14px;
-    line-height: 20px;
-    padding: 0px 0px 0px;
-    text-align: center;
-    text-transform: capitalize;
-    text-wrap: nowrap;
-    white-space: nowrap;
-  }
-
-  .back-button {
-    position: absolute;
-    left: 24px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-  }
-
-  .hero-swap-nav {
-    position: fixed;
-    top: 50%;
-    left: 0;
-    right: 0;
-    z-index: 90;
-    pointer-events: none;
-  }
-
-  .hero-swap-link {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-full);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.75);
-    background: rgba(12, 12, 18, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(8px);
-    transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-    pointer-events: auto;
-  }
-
-  .hero-swap-link svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .hero-swap-link.prev {
-    left: 18px;
-  }
-
-  .hero-swap-link.next {
-    right: 18px;
-  }
-
-  .hero-swap-link:hover {
-    color: #fff7d1;
-    background: rgba(30, 30, 40, 0.8);
-    border-color: rgba(250, 204, 21, 0.5);
-    transform: translateY(-50%) scale(1.06);
-  }
-
-  .hero-swap-link.disabled {
-    opacity: 0.25;
-    border-color: rgba(255, 255, 255, 0.05);
-  }
-
-  @media (max-width: 900px) {
-    .hero-swap-link {
-      width: 38px;
-      height: 38px;
-    }
-
-    .hero-swap-link.prev {
-      left: 10px;
-    }
-
-    .hero-swap-link.next {
-      right: 10px;
-    }
-  }
-
-  /* HEADER CENTER */
-  .header-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .hero-title {
-    margin: 0;
-    font-size: 1.9rem;
-  }
-
-  /* TABS */
-  .hero-tabs {
-    display: flex;
-    gap: 26px;
-  }
-
-  .tab {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    padding: 8px 12px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    position: relative;
-  }
-
-  .tab.active {
-    color: var(--text-bright);
-    border-bottom: 2px solid var(--accent-gold);
-  }
-
-  /* CONTENT */
-  .hero-detail-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 56px 24px 80px;
-  }
-
-  /* OVERVIEW */
-  .hero-overview {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 48px;
-    align-items: stretch;
-  }
-
-  .hero-info-col {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  /* LARGE NAME */
-  .hero-name-large {
-    font-size: 48px;
-    line-height: 1.05;
-    font-weight: 600;
-    padding: 12px 0 12px 0;
-    margin: 0;
-  }
-
-  /* META BADGES */
-  .meta-badge-list {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    column-gap: 12px;
-    row-gap: 6px;
-    align-items: center;
-    width: 100%;
-    margin-top: 18px;
-    font-size: 13px;
-    color: var(--text-muted, #aaa);
-  }
-
-  .meta-badge-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-muted, #888);
-    opacity: 0.7;
-    white-space: nowrap;
-  }
-
-  .meta-badge-content {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 0;
-  }
-
-  .meta-badge-icon {
-    width: 18px;
-    height: 18px;
-    flex: 0 0 18px;
-    object-fit: contain;
-  }
-
-  .meta-rarity-star {
-    width: 18px;
-    height: 18px;
-    fill: #e8c840;
-    flex-shrink: 0;
-  }
-
-  .meta-badge-value {
-    color: white;
-    font-weight: 600;
-  }
-
-  /* IMAGE HERO VISUAL */
-  .hero-visual {
-    border-radius: 8px;
-    background-size: cover;
-    background-position: center 20%;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    align-self: stretch;
-    min-height: 420px;
-  }
-
-  /* STATS */
-  .hero-stats {
-    margin-top: 28px;
-  }
-
-  .hero-stats h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.7;
-  }
-
-  .hero-stats .headline-with-info {
-    margin-bottom: 12px;
-  }
-
-  .stats-wrapper {
-    position: relative;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    transition: max-height 0.4s ease-out;
-    overflow: hidden;
-  }
-
-  .stats-grid.collapsed {
-    max-height: 260px;
-  }
-
-  .stats-grid.collapsed .stat-row.no-value {
-    display: none;
-  }
-
-  .stats-grid.expanded {
-    max-height: none;
-  }
-
-  .stat-row {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .stat-label {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 600;
-  }
-
-  .stat-right {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .stat-value {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.95rem;
-  }
-
-  .stat-current {
-    color: var(--text-bright);
-    font-weight: 600;
-  }
-
-  .stat-max {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.8rem;
-    font-weight: 400;
-  }
-
-  .stat-rank {
-    color: var(--accent-gold);
-    font-weight: 700;
-    font-size: 0.75rem;
-  }
-
-  .stat-bar {
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .stat-bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.3s ease;
-  }
-
-  .stat-bar-fill.rank-1 {
-    background: linear-gradient(90deg, #fbbf24, #f59e0b);
-    box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
-  }
-
-  .stat-bar-fill.rank-2 {
-    background: linear-gradient(90deg, #c0c0c0, #a8a8a8);
-    box-shadow: 0 0 6px rgba(192, 192, 192, 0.5);
-  }
-
-  .stat-bar-fill.rank-3 {
-    background: linear-gradient(90deg, #cd7f32, #b87333);
-    box-shadow: 0 0 6px rgba(205, 127, 50, 0.5);
-  }
-
-  .stat-bar-fill.rank-top {
-    background: linear-gradient(90deg, #60a5fa, #3b82f6);
-  }
-
-  .stat-bar-fill.rank-default {
-    background: linear-gradient(90deg, #8b5cf6, #7c3aed);
-  }
-
-  .stats-gradient-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 120px;
-    background: linear-gradient(to bottom, transparent 0%, rgba(7, 6, 12, 0.95) 70%);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 16px;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-  }
-
-  .stats-gradient-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .stats-view-more-btn {
-    pointer-events: auto;
-    background: rgba(120, 90, 200, 0.2);
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: var(--radius-md);
-    padding: 10px 20px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-  }
-
-  .stats-view-more-btn:hover {
-    background: rgba(120, 90, 200, 0.35);
-    border-color: rgba(168, 85, 247, 0.6);
-    transform: translateY(-2px);
-  }
-
-  .stats-view-more-btn .btn-icon {
-    transition: transform 0.3s ease;
-  }
-
-  .stats-view-more-btn.expanded .btn-icon {
-    transform: rotate(180deg);
-  }
-
-  .identity-content {
-    align-items: center;
-    border-radius: var(--radius-lg);
-    box-sizing: border-box;
-    columns: auto;
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-    padding: 8px;
-  }
-
-  /* ===============================
-     RELIC LEVEL STYLING - VERBESSERT
-     =============================== */
-  .relic-level {
-    font-weight: 700;
-    padding: 8px 16px;
-    border-radius: var(--radius-md);
-    font-size: 0.8rem;
-    text-transform: none;
-    letter-spacing: 0.3px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    display: inline-block;
-    min-width: 80px;
-    text-align: center;
-  }
-
-  .relic-level-30 {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: #1a1a1a;
-    font-weight: 800;
-    box-shadow: 
-      0 0 12px rgba(251, 191, 36, 0.6), 
-      0 2px 8px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(245, 158, 11, 0.8);
-  }
-
-  .relic-level-20 {
-    background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
-    color: var(--text-bright);
-    box-shadow: 
-      0 0 10px rgba(129, 140, 248, 0.5),
-      0 2px 8px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(99, 102, 241, 0.6);
-  }
-
-  .relic-level-10 {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: var(--text-bright);
-    box-shadow: 
-      0 0 8px rgba(16, 185, 129, 0.5),
-      0 2px 8px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(5, 150, 105, 0.6);
-  }
-
-  .relic-level-1 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%);
-    color: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  .relic-level-0 {
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  .identity-card:has(.relic-level) {
-    transition: transform 0.2s ease;
-  }
-
-  .identity-card:has(.relic-level):hover {
-    transform: translateY(-2px);
-  }
-
-  .identity-card:has(.relic-level-30):hover {
-    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
-  }
-
-  .identity-card:has(.relic-level-20):hover {
-    box-shadow: 0 4px 16px rgba(129, 140, 248, 0.3);
-  }
-
-  .identity-card:has(.relic-level-10):hover {
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
-  }
-
-  /* SKILLS SECTION */
-  .hero-skills {
-    margin-top: 24px;
-  }
-
-  .hero-skills h2 {
-    margin-bottom: 1.5rem;
-  }
-
-  .skills-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  @media (max-width: 1200px) {
-    .skills-container {
-      gap: 0.75rem;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .hero-overview {
-      grid-template-columns: 1fr;
-    }
-
-    .hero-visual {
-      height: 360px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .skills-container {
-      flex-direction: column;
-    }
-
-    .hero-name-large {
-      font-size: 36px;
-    }
-  }
-
-  /* POWER INDEX SECTION */
-  .power-index-section {
-    margin-top: 32px;
-    padding: 24px;
-    background: rgba(120, 90, 200, 0.08);
-    border: 1px solid rgba(120, 90, 200, 0.2);
-    border-radius: var(--radius-lg);
-  }
-
-  .power-index-subtitle {
-    margin: 0;
-    opacity: 0.7;
-    font-size: 0.9rem;
-  }
-
-  .normalization-badge {
-    margin: 8px 0 0;
-    padding: 8px 12px;
-    background: rgba(100, 200, 150, 0.15);
-    border-left: 3px solid rgba(100, 200, 150, 0.5);
-    border-radius: 4px;
-    font-size: 0.85rem;
-    color: #66c8a0;
-    font-weight: 500;
-  }
-
-  .power-index-header {
-    margin-bottom: 20px;
-  }
-
-  .power-index-card {
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 20px;
-    align-items: center;
-  }
-
-  .power-index-score {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .score-circle {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(120, 90, 200, 0.2));
-    border: 2px solid rgba(255, 215, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-  }
-
-  .score-value {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #ffd700;
-  }
-
-  .score-max {
-    font-size: 0.85rem;
-    opacity: 0.8;
-  }
-
-  .tier-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: center;
-  }
-
-  .tier-label {
-    font-size: 0.9rem;
-    opacity: 0.7;
-  }
-
-  .tier-badge {
-    background: rgba(255, 215, 0, 0.2);
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    color: #ffd700;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-
-  .tier-badge[data-tier="SSS"],
-  .tier-badge[data-tier="SS"] {
-    background: rgba(255, 100, 100, 0.15);
-    border-color: rgba(255, 100, 100, 0.3);
-    color: #ff9999;
-  }
-
-  .tier-badge[data-tier="S"] {
-    background: rgba(100, 200, 255, 0.15);
-    border-color: rgba(100, 200, 255, 0.3);
-    color: #66c0ff;
-  }
-
-  .power-index-breakdown {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .breakdown-box {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 16px;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(120, 90, 200, 0.15);
-  }
-
-  .breakdown-box h4 {
-    margin: 0 0 12px;
-    font-size: 0.95rem;
-    color: #ffd700;
-    font-weight: 600;
-  }
-
-  .breakdown-value {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #b4e7ff;
-    margin-bottom: 12px;
-  }
-
-  .breakdown-max {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    margin-left: 4px;
-    font-weight: 500;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
-  .stat-item {
-    background: rgba(60, 50, 85, 0.3);
-    padding: 8px;
-    border-radius: 6px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-  }
-
-  .stat-name {
-    opacity: 0.8;
-  }
-
-  .stat-score {
-    font-weight: 600;
-    color: #ffd700;
-  }
-
-  .signals-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .signal-tag {
-    display: inline-block;
-    background: rgba(120, 90, 200, 0.3);
-    border: 1px solid rgba(120, 90, 200, 0.5);
-    padding: 4px 10px;
-    border-radius: 14px;
-    font-size: 0.8rem;
-    color: #b4e7ff;
-    font-weight: 500;
-  }
-
-  .no-signals {
-    margin: 0;
-    opacity: 0.6;
-    font-size: 0.85rem;
-  }
-
-  /* ─── RANKINGS WIDGET ─── */
-  .hero-rankings-widget {
-    margin-top: 40px;
-  }
-
-  .rankings-widget-title-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-
-  .hero-rankings-widget h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-
-  .ranking-info-icon-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    cursor: help;
-  }
-
-  .ranking-info-icon {
-    width: 20px;
-    height: 20px;
-    opacity: 0.6;
-    flex-shrink: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .ranking-info-icon-wrapper:hover .ranking-info-icon {
-    opacity: 1;
-  }
-
-  /* Tooltip */
-  .ranking-info-icon-wrapper::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: calc(100% + 12px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: var(--text-primary);
-    padding: 10px 14px;
-    border-radius: var(--radius-md);
-    font-size: 0.8rem;
-    font-weight: 500;
-    line-height: 1.4;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .ranking-info-icon-wrapper:hover::after {
-    opacity: 1;
-    visibility: visible;
-    bottom: calc(100% + 8px);
-  }
-
-  /* Tooltip arrow */
-  .ranking-info-icon-wrapper::before {
-    content: '';
-    position: absolute;
-    bottom: calc(100% + 2px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid rgba(0, 0, 0, 0.9);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    pointer-events: none;
-    z-index: 1000;
-  }
-
-  .ranking-info-icon-wrapper:hover::before {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .rankings-widget-subtitle {
-    margin: 0 0 16px;
-    font-size: 0.85rem;
-    opacity: 0.7;
-    line-height: 1.4;
-  }
-
-  .rankings-widget-inner {
-    background: rgba(120, 90, 200, 0.08);
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-  }
-
-  .rankings-widget-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .rankings-widget-rank-prominent {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-  }
-
-  .rankings-widget-rank-number {
-    font-size: 2.8rem;
-    font-weight: 800;
-    line-height: 1.2;
-    background: linear-gradient(90deg, #a78bfa, #e879f9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .rankings-widget-rank-of {
-    font-size: 0.8rem;
-    opacity: 0.6;
-    font-weight: 600;
-  }
-
-  .rankings-widget-score {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-  }
-
-  .rankings-widget-score-value {
-    font-size: 2rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, #facc15, #fbbf24);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .rankings-widget-score-label {
-    font-size: 0.75rem;
-    opacity: 0.6;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    font-weight: 600;
-  }
-
-  .rankings-widget-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-
-  .ranking-widget-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-md);
-  }
-
-  .stat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .stat-rank-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    background: rgba(168, 85, 247, 0.2);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 6px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #a78bfa;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
-
-  .ranking-stat-label {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.6);
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-weight: 600;
-  }
-
-  .ranking-stat-val {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #60a5fa;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .rankings-widget-advanced {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .ranking-advanced-block {
-    padding: 16px;
-    background: rgba(120, 90, 200, 0.08);
-    border: 1px solid var(--accent-purple-dim);
-    border-radius: var(--radius-lg);
-  }
-
-  .ranking-advanced-block h4 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 12px 0;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.8);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .section-icon {
-    width: 16px;
-    height: 16px;
-    opacity: 0.7;
-  }
-
-  .skill-power-meter {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .skill-power-bar {
-    height: 24px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .skill-power-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #a78bfa, #c084fc);
-    border-radius: 6px;
-    transition: width 0.3s ease;
-    box-shadow: 0 0 10px rgba(167, 139, 250, 0.4);
-  }
-
-  .skill-power-stats {
-    display: flex;
-    gap: 6px;
-    align-items: baseline;
-    margin-top: 4px;
-  }
-
-  .skill-power-value {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #c084fc;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .skill-power-label {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 600;
-  }
-
-  .skill-power-desc {
-    margin: 8px 0 0 0;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
-    font-style: italic;
-  }
-
-  /* Scenario Ratings */
-  .scenario-best-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.15));
-    border: 1px solid rgba(251, 191, 36, 0.3);
-    border-radius: var(--radius-md);
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #fbbf24;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-
-  .scenario-ratings-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 12px;
-  }
-
-  .scenario-rating-item {
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    transition: all 0.2s ease;
-  }
-
-  .scenario-rating-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateY(-2px);
-  }
-
-  .scenario-rating-item.is-best {
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.04));
-    border-color: rgba(251, 191, 36, 0.3);
-  }
-
-  .scenario-header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 8px;
-  }
-
-  .scenario-icon {
-    font-size: 1.1rem;
-  }
-
-  .scenario-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: rgba(255, 255, 255, 0.7);
-    flex: 1;
-  }
-
-  .scenario-rank {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.5);
-    padding: 2px 6px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 4px;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .scenario-rating-item.is-best .scenario-rank {
-    color: #fbbf24;
-    background: rgba(251, 191, 36, 0.15);
-  }
-
-  .best-tag {
-    color: #fbbf24;
-    font-size: 0.9rem;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.1); }
-  }
-
-  .scenario-score-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .scenario-score {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    font-variant-numeric: tabular-nums;
-    min-width: 45px;
-  }
-
-  .scenario-rating-item.is-best .scenario-score {
-    background: linear-gradient(90deg, #fbbf24, #facc15);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .scenario-bar {
-    flex: 1;
-    height: 8px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .scenario-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, rgba(168, 85, 247, 0.6), rgba(192, 132, 252, 0.6));
-    border-radius: 4px;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .scenario-rating-item.is-best .scenario-bar-fill {
-    background: linear-gradient(90deg, #fbbf24, #facc15);
-    box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
-  }
-
-  .scenario-ratings-hint {
-    margin: 12px 0 0 0;
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.4);
-    font-style: italic;
-  }
-
-  .scenario-ratings-hint a {
-    color: #a78bfa;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .scenario-ratings-hint a:hover {
-    color: #c084fc;
-    text-decoration: underline;
-  }
-
-  .no-synergies {
-    margin: 8px 0 0 0;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.4);
-    font-style: italic;
-  }
-
-  .synergy-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .synergy-tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 12px;
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: var(--radius-md);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #60a5fa;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    transition: all 0.2s ease;
-  }
-
-  .synergy-tag:hover {
-    background: rgba(59, 130, 246, 0.25);
-    border-color: rgba(59, 130, 246, 0.5);
-    transform: translateY(-1px);
-  }
-
-  .synergy-potential-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 12px;
-    background: rgba(251, 191, 36, 0.15);
-    border: 1px solid rgba(251, 191, 36, 0.3);
-    border-radius: var(--radius-md);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #fbbf24;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-
-  /* Team Support tags - Green (actual synergies) */
-  .synergy-tags.team-support .team-support-tag {
-    background: rgba(34, 197, 94, 0.15);
-    border-color: rgba(34, 197, 94, 0.4);
-    color: #86efac;
-  }
-
-  .synergy-tags.team-support .team-support-tag:hover {
-    background: rgba(34, 197, 94, 0.25);
-    border-color: rgba(34, 197, 94, 0.6);
-  }
-
-  /* Enemy Debuff tags - Red/Orange */
-  .synergy-tags.enemy-debuff .enemy-debuff-tag {
-    background: rgba(239, 68, 68, 0.15);
-    border-color: rgba(239, 68, 68, 0.4);
-    color: #fca5a5;
-  }
-
-  .synergy-tags.enemy-debuff .enemy-debuff-tag:hover {
-    background: rgba(239, 68, 68, 0.25);
-    border-color: rgba(239, 68, 68, 0.6);
-  }
-
-  /* Self Buff tags - Purple */
-  .synergy-tags.self-buff .self-buff-tag {
-    background: var(--accent-purple-dim);
-    border-color: rgba(168, 85, 247, 0.4);
-    color: #d8b4fe;
-  }
-
-  .synergy-tags.self-buff .self-buff-tag:hover {
-    background: rgba(168, 85, 247, 0.25);
-    border-color: rgba(168, 85, 247, 0.6);
-  }
-
-  /* Playstyle tags - Gray/Neutral */
-  .synergy-tags.playstyle .playstyle-tag {
-    background: rgba(107, 114, 128, 0.15);
-    border-color: rgba(107, 114, 128, 0.4);
-    color: #d1d5db;
-  }
-
-  .synergy-tags.playstyle .playstyle-tag:hover {
-    background: rgba(107, 114, 128, 0.25);
-    border-color: rgba(107, 114, 128, 0.6);
-  }
-
-  /* ===============================
-     VIDEO GUIDES
-     =============================== */
-  .video-guides {
-    padding: 20px 0;
-  }
-
-  .video-guides h2 {
-    margin-bottom: 24px;
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--text-bright);
-  }
-
-  .video-guides-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-    gap: 32px;
-  }
-
-  .video-guide-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .video-wrapper {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgba(168, 85, 247, 0.2);
-  }
-
-  .video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: var(--radius-lg);
-  }
-
-  .video-guide-info {
-    padding: 8px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .video-guide-titel {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-bright);
-    line-height: 1.3;
-  }
-
-  .video-guide-autor {
-    margin: 0;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
-    opacity: 0.8;
-  }
-
-  /* ===============================
-     BUG BANNER
-     =============================== */
-  .bug-banner {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    border-radius: var(--radius-lg);
-    color: #fca5a5;
-  }
-  .bug-icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    color: #ef4444;
-  }
-  .bug-text {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 0.85rem;
-  }
-  .bug-text strong {
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #ef4444;
-  }
-
-  /* ===============================
-     CORE MECHANIC PANEL
-     =============================== */
-  .mechanic-panel {
-    margin: 24px 0;
-  }
-  .mechanic-panel h2 {
-    margin-bottom: 12px;
-  }
-  .mechanic-body {
-    padding: 16px;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius-lg);
-  }
-  .mechanic-summary {
-    margin: 0 0 12px 0;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.85);
-  }
-  .mechanic-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .depth-badge {
-    padding: 4px 10px;
-    border-radius: var(--radius-md);
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .depth-high {
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.35);
-    color: #d8b4fe;
-  }
-  .depth-mid {
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid rgba(59, 130, 246, 0.35);
-    color: #93c5fd;
-  }
-  .depth-low {
-    background: rgba(107, 114, 128, 0.15);
-    border: 1px solid rgba(107, 114, 128, 0.35);
-    color: #d1d5db;
-  }
-  .misunderstood-badge {
-    padding: 4px 10px;
-    border-radius: var(--radius-md);
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    background: rgba(234, 179, 8, 0.12);
-    border: 1px solid rgba(234, 179, 8, 0.35);
-    color: #fde68a;
-  }
-
-
-  /* ===============================
-     INVESTMENT ROADMAP
-     =============================== */
-  .investment-roadmap {
-    margin: 24px 0;
-  }
-  .investment-roadmap h2 {
-    margin-bottom: 12px;
-  }
-  .relic-breakpoints-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 16px;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius-lg);
-  }
-  .relic-bp {
-    padding: 14px 16px;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
-  }
-  .relic-bp-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-  .relic-bp-level {
-    font-size: 0.9rem;
-    font-weight: 800;
-    color: var(--text-bright);
-  }
-  .relic-bp-type-badge {
-    padding: 2px 8px;
-    border-radius: var(--radius-md);
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .bp-type-recommended {
-    background: rgba(34, 197, 94, 0.15);
-    border: 1px solid rgba(34, 197, 94, 0.35);
-    color: #86efac;
-  }
-  .bp-type-mandatory {
-    background: rgba(99, 179, 237, 0.12);
-    border: 1px solid rgba(99, 179, 237, 0.35);
-    color: #90cdf4;
-  }
-  .bp-type-high_spender {
-    background: rgba(251, 191, 36, 0.12);
-    border: 1px solid rgba(251, 191, 36, 0.35);
-    color: #fde68a;
-  }
-  .relic-bp-effect {
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  /* ===============================
-     SYNERGY LINKS
-     =============================== */
-  .synergy-links-panel {
-    margin: 24px 0;
-  }
-  .synergy-links-panel h2 {
-    margin-bottom: 12px;
-  }
-  .synergy-links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 12px;
-  }
-  .synergy-link-card {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 14px;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(0, 0, 0, 0.25);
-    text-decoration: none;
-    color: inherit;
-    transition: background 0.2s ease, border-color 0.2s ease;
-  }
-  .synergy-link-card:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.16);
-  }
-  .synergy-link-card.synergy-link-core {
-    border-color: rgba(168, 85, 247, 0.25);
-  }
-  .synergy-link-card.synergy-link-core:hover {
-    border-color: rgba(168, 85, 247, 0.45);
-    background: rgba(168, 85, 247, 0.06);
-  }
-  .synergy-link-hero {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .synergy-link-portrait {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: top center;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    flex-shrink: 0;
-  }
-  .synergy-link-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .synergy-link-name {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--text-bright);
-    text-transform: capitalize;
-  }
-  .synergy-link-type-badge {
-    padding: 1px 6px;
-    border-radius: var(--radius-md);
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .type-core {
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.35);
-    color: #d8b4fe;
-  }
-  .type-conditional {
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid rgba(59, 130, 246, 0.35);
-    color: #93c5fd;
-  }
-  .synergy-link-desc {
-    margin: 0;
-    font-size: 0.8rem;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.65);
-  }
-
-  @media (max-width: 768px) {
-    .rankings-widget-inner {
-      padding: 16px;
-    }
-
-    .rankings-widget-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .rankings-widget-score {
-      align-items: flex-start;
-    }
-
-    .rankings-widget-score-value {
-      font-size: 1.6rem;
-    }
-
-    .rankings-widget-stats {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .ranking-widget-stat {
-      padding: 10px;
-    }
-
-    .ranking-stat-val {
-      font-size: 0.95rem;
-    }
-
-    .rankings-widget-advanced {
-      gap: 12px;
-    }
-
-    .ranking-advanced-block {
-      padding: 12px;
-    }
-
-    .ranking-advanced-block h4 {
-      font-size: 0.8rem;
-    }
-
-    .synergy-tags {
-      gap: 6px;
-    }
-
-    .synergy-tag {
-      padding: 5px 10px;
-      font-size: 0.7rem;
-    }
-
-    .synergy-potential-badge {
-      padding: 5px 10px;
-      font-size: 0.7rem;
-    }
-
-    .skill-power-bar {
-      height: 20px;
-    }
-
-    /* Mobile Tooltip Anpassung */
-    .ranking-info-icon-wrapper::after {
-      white-space: normal;
-      max-width: 200px;
-      bottom: auto;
-      top: calc(100% + 12px);
-    }
-
-    .ranking-info-icon-wrapper:hover::after {
-      bottom: auto;
-      top: calc(100% + 8px);
-    }
-
-    .ranking-info-icon-wrapper::before {
-      bottom: auto;
-      top: calc(100% + 2px);
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 5px solid rgba(0, 0, 0, 0.9);
-    }
-
-    /* Mobile Video Guides */
-    .video-guides-grid {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-
-    .video-guide-info {
-      padding: 8px 0;
-    }
-
-    .video-guide-titel {
-      font-size: 0.95rem;
-    }
-
-    .video-guide-autor {
-      font-size: 0.8rem;
-    }
-
-    /* Mobile Stats */
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .stats-grid.collapsed {
-      max-height: 320px;
-    }
-
-    .stats-view-more-btn {
-      padding: 8px 16px;
-      font-size: 0.85rem;
-    }
-  }
 
+.key-stat-block {
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 14px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.2s;
+}
+.key-stat-block:hover { border-color: rgba(255,255,255,0.14); }
+
+.key-stat-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-bright, #fff);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.key-stat-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.45);
+}
+.key-stat-bar {
+  margin-top: 6px;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.key-stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--faction-a), var(--faction-b));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* =============================================
+   SECTION 2: SKILLS
+   ============================================= */
+.skill-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 0;
+  overflow-x: auto;
+  padding-bottom: 0;
+  scrollbar-width: none;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.skill-tabs::-webkit-scrollbar { display: none; }
+
+.skill-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px 14px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 80px;
+  position: relative;
+  bottom: -1px;
+}
+.skill-tab:hover { color: rgba(255,255,255,0.8); }
+.skill-tab.active {
+  color: #fff;
+  border-bottom-color: var(--faction-a);
+}
+.skill-tab.is-ultimate.active { border-bottom-color: #fbbf24; }
+.skill-tab.is-relic.active { border-bottom-color: #a78bfa; }
+
+.skill-tab-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255,255,255,0.12);
+  transition: border-color 0.2s;
+}
+.skill-tab.active .skill-tab-icon { border-color: var(--faction-a); box-shadow: 0 0 12px var(--faction-glow); }
+.skill-tab.is-ultimate.active .skill-tab-icon { border-color: #fbbf24; box-shadow: 0 0 14px rgba(251,191,36,0.4); }
+.skill-tab.is-relic.active .skill-tab-icon { border-color: #a78bfa; box-shadow: 0 0 12px rgba(167,139,250,0.4); }
+
+.skill-tab-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dmg-type-chip {
+  font-size: 0.58rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.dmg-type-chip.dmg-magical  { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+.dmg-type-chip.dmg-physical { background: rgba(249,115,22,0.2); color: #fdba74; border: 1px solid rgba(249,115,22,0.3); }
+.dmg-type-chip.dmg-true     { background: rgba(255,255,255,0.1); color: #e5e7eb; border: 1px solid rgba(255,255,255,0.2); }
+
+/* Skill Panels */
+.skill-panels { margin-top: 0; }
+
+.skill-panel { display: none; }
+.skill-panel.active { display: block; }
+
+.skill-panel-inner {
+  padding: 28px;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+}
+.is-relic-panel .skill-panel-inner { border-color: rgba(167,139,250,0.15); }
+
+.skill-panel-header {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.skill-panel-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(255,255,255,0.15);
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.is-relic-icon { border-color: rgba(167,139,250,0.35); box-shadow: 0 0 16px rgba(167,139,250,0.2); }
+
+.skill-panel-meta { display: flex; flex-direction: column; gap: 8px; }
+.skill-panel-name { font-size: 1.4rem; font-weight: 700; color: #fff; margin: 0; }
+.skill-panel-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+.skill-panel-type {
+  padding: 3px 10px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.7);
+}
+
+.ultimate-glow-badge {
+  padding: 3px 10px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #1a1a1a;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 14px rgba(251,191,36,0.5);
+}
+
+.dmg-badge {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.dmg-badge.dmg-magical  { background: rgba(59,130,246,0.18); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
+.dmg-badge.dmg-physical { background: rgba(249,115,22,0.18); border: 1px solid rgba(249,115,22,0.35); color: #fdba74; }
+.dmg-badge.dmg-true     { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #e5e7eb; }
+
+.relic-lv-badge {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.rlv-30 { background: linear-gradient(135deg,#fbbf24,#f59e0b); color: #1a1a1a; }
+.rlv-20 { background: linear-gradient(135deg,#818cf8,#6366f1); color: #fff; }
+.rlv-10 { background: linear-gradient(135deg,#10b981,#059669); color: #fff; }
+
+.skill-panel-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.8);
+  margin: 0 0 18px;
+}
+
+.skill-upgrades { display: flex; flex-direction: column; gap: 6px; }
+.upgrade-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.upgrade-lv {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: rgba(76,175,80,0.2);
+  border: 1px solid rgba(76,175,80,0.35);
+  color: #86efac;
+  border-radius: 5px;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+.upgrade-text {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(134,239,172,0.9);
+}
+
+/* =============================================
+   SECTION 3: RATINGS
+   ============================================= */
+.big-rating-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.big-rating-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 28px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.big-rating-tile:hover { transform: translateY(-3px); }
+
+.big-rating-val {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.big-rating-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.55);
+}
+
+/* Tile color variants */
+.rating-tile-sss { background: linear-gradient(135deg, rgba(185,28,28,0.2), rgba(127,0,0,0.1)); border-color: rgba(185,28,28,0.4); }
+.rating-tile-sss .big-rating-val { background: linear-gradient(135deg,#ff6b6b,#dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.rating-tile-ss { background: linear-gradient(135deg, rgba(250,204,21,0.15), rgba(245,158,11,0.08)); border-color: rgba(250,204,21,0.35); }
+.rating-tile-ss .big-rating-val { background: linear-gradient(135deg,#ffe066,#facc15); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.rating-tile-s { background: linear-gradient(135deg, rgba(253,230,138,0.12), rgba(251,191,36,0.06)); border-color: rgba(253,230,138,0.3); }
+.rating-tile-s .big-rating-val { background: linear-gradient(135deg,#fde68a,#fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.rating-tile-a .big-rating-val { color: #fdba74; }
+.rating-tile-b .big-rating-val { color: #c4b5fd; }
+.rating-tile-c .big-rating-val { color: #93c5fd; }
+.rating-tile-na .big-rating-val { color: rgba(255,255,255,0.3); font-size: 1.8rem; }
+
+/* Scenario grid */
+.scenario-block { margin-bottom: 24px; }
+.scenario-block-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 12px;
+}
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+.scenario-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 14px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.18);
+  transition: transform 0.2s;
+}
+.scenario-tile:hover { transform: translateY(-2px); }
+.scenario-val { font-size: 1.5rem; font-weight: 800; color: #fff; }
+.scenario-name { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.45); text-align: center; }
+
+/* Community */
+.community-block {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.community-block-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 12px;
+}
+.verified-tag {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.25);
+  font-style: italic;
+}
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.community-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+.community-source {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.38);
+}
+.community-val {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+}
+.consensus-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  width: fit-content;
+}
+.consensus-full     { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35); color: #86efac; }
+.consensus-partial  { background: rgba(234,179,8,0.12); border: 1px solid rgba(234,179,8,0.35); color: #fde68a; }
+.consensus-contested{ background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; }
+.community-note { font-size: 0.65rem; color: rgba(255,255,255,0.25); font-style: italic; margin: 6px 0 0; }
+
+/* =============================================
+   SECTION 4: STATS
+   ============================================= */
+.stat-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.stat-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.stat-col-header {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 8px 0 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.offensive-hdr { color: #fdba74; border-bottom-color: rgba(249,115,22,0.3); }
+.defensive-hdr  { color: #86efac; border-bottom-color: rgba(34,197,94,0.3); }
+.utility-hdr    { color: #93c5fd; border-bottom-color: rgba(59,130,246,0.3); }
+
+.stat-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.stat-entry:last-child { border-bottom: none; }
+
+.stat-entry-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+}
+.stat-entry-right { display: flex; flex-direction: column; gap: 4px; }
+.stat-entry-val {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.stat-entry-bar {
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.stat-entry-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.offensive-fill { background: linear-gradient(90deg,#f97316,#fb923c); }
+.defensive-fill  { background: linear-gradient(90deg,#22c55e,#4ade80); }
+.utility-fill    { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
+
+/* =============================================
+   SECTION 5: SYNERGIES
+   ============================================= */
+.syn-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.syn-link-card {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.22);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  align-items: flex-start;
+}
+.syn-link-card:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
+.syn-link-card.syn-core { border-color: rgba(168,85,247,0.25); }
+.syn-link-card.syn-core:hover { border-color: rgba(168,85,247,0.45); background: rgba(168,85,247,0.06); }
+.syn-link-card.syn-conditional { border-color: rgba(59,130,246,0.2); }
+.syn-link-card.syn-conditional:hover { border-color: rgba(59,130,246,0.4); }
+
+.syn-link-portrait {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: top center;
+  border: 2px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
+.syn-core .syn-link-portrait { border-color: rgba(168,85,247,0.4); }
+
+.syn-link-body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.syn-link-row { display: flex; align-items: center; gap: 7px; }
+.syn-link-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: capitalize;
+}
+.syn-link-badge {
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.syn-badge-core        { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #d8b4fe; }
+.syn-badge-conditional { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
+.syn-link-desc { font-size: 0.78rem; line-height: 1.5; color: rgba(255,255,255,0.6); margin: 0; }
+
+/* Tag cloud */
+.tag-cloud { padding-top: 8px; }
+.tag-cloud-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 12px;
+}
+.tag-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag-chip {
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  transition: all 0.2s;
+}
+.tag-chip:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff; }
+
+/* =============================================
+   SECTION 6: COMPOSITIONS
+   ============================================= */
+.comp-mode-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.comp-mode-tab {
+  padding: 7px 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.comp-mode-tab:hover { background: rgba(255,255,255,0.09); color: #fff; }
+.comp-mode-tab.active {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--faction-a);
+  color: var(--faction-a);
+}
+
+.comp-panel { display: none; }
+.comp-panel.active { display: block; }
+
+/* =============================================
+   SECTION 7: INVESTMENT GUIDE
+   ============================================= */
+.investment-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 32px;
+  align-items: start;
+}
+
+.relic-timeline { display: flex; flex-direction: column; }
+.relic-bp-row { display: flex; gap: 16px; }
+.relic-bp-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+.relic-bp-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--faction-a);
+  border: 2px solid rgba(0,0,0,0.5);
+  box-shadow: 0 0 8px var(--faction-glow);
+  flex-shrink: 0;
+}
+.relic-bp-line {
+  width: 2px;
+  flex: 1;
+  min-height: 20px;
+  background: linear-gradient(to bottom, var(--faction-a), rgba(255,255,255,0.08));
+  margin: 4px 0;
+}
+.relic-bp-content { padding-bottom: 24px; flex: 1; }
+.relic-bp-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.relic-bp-lv { font-size: 0.9rem; font-weight: 800; color: #fff; }
+.relic-bp-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.bp-mandatory    { background: rgba(99,179,237,0.15); border: 1px solid rgba(99,179,237,0.35); color: #90cdf4; }
+.bp-recommended  { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35); color: #86efac; }
+.bp-high_spender { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.35); color: #fde68a; }
+.relic-bp-effect { margin: 0; font-size: 0.85rem; line-height: 1.55; color: rgba(255,255,255,0.7); }
+
+.f2p-card {
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.f2p-header {
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.4);
+}
+.f2p-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.f2p-rec { font-size: 1.1rem; font-weight: 800; color: var(--faction-a); }
+.f2p-notes { margin: 0; font-size: 0.82rem; line-height: 1.55; color: rgba(255,255,255,0.65); }
+
+/* =============================================
+   SECTION 8: VIDEOS
+   ============================================= */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 28px;
+}
+.video-card { display: flex; flex-direction: column; gap: 10px; }
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: rgba(0,0,0,0.3);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.video-info { padding: 4px 0; }
+.video-title { font-size: 0.9rem; font-weight: 700; color: #fff; margin: 0 0 3px; line-height: 1.35; }
+.video-author { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin: 0; }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) {
+  .stat-columns { grid-template-columns: 1fr 1fr; }
+  .investment-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; gap: 24px; }
+  .big-rating-tiles { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .page-hero-name { display: none; }
+  .showcase { height: 65vh; min-height: 380px; }
+  .showcase-name { font-size: clamp(2rem, 8vw, 3rem); }
+  .showcase-identity { padding: 0 20px 28px; }
+  .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .big-rating-tiles { grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .big-rating-val { font-size: 2rem; }
+  .stat-columns { grid-template-columns: 1fr; gap: 16px; }
+  .scroll-content { padding: 0 16px 80px; }
+  .syn-links-grid { grid-template-columns: 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
+  .skill-panel-inner { padding: 16px; }
+  .showcase-nav { width: 38px; height: 38px; }
+  .showcase-nav.prev { left: 12px; }
+  .showcase-nav.next { right: 12px; }
+}
+
+@media (max-width: 480px) {
+  .big-rating-tiles { grid-template-columns: 1fr; max-width: 300px; margin-left: auto; margin-right: auto; }
+  .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .skill-tab { min-width: 70px; padding: 8px 10px 12px; }
+  .skill-tab-icon { width: 36px; height: 36px; }
+}
 </style>
 
 <script>
-  // Hash-based Tab Switching (survives reloads)
-  const tabs = document.querySelectorAll('.tab');
-  const contents = document.querySelectorAll('.tab-content');
+  // ── Skill tab switching ──
+  const skillTabs = document.querySelectorAll('.skill-tab');
+  const skillPanels = document.querySelectorAll('.skill-panel');
 
-  function setActiveTab(target) {
-    if (!target) return;
-
-    tabs.forEach(t => t.classList.remove('active'));
-    contents.forEach(c => c.classList.remove('active'));
-
-    const btn = document.querySelector(`.tab[data-tab="${target}"]`);
-    const panel = document.querySelector(`.tab-content[data-content="${target}"]`);
-
-    if (btn) btn.classList.add('active');
-    if (panel) panel.classList.add('active');
-  }
-
-  // On load: use hash if present
-  const initial = (location.hash || '').replace('#', '');
-  if (initial) setActiveTab(initial);
-
-  tabs.forEach(tab => {
+  skillTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-tab');
-      // persist in URL
-      if (target) location.hash = target;
-      setActiveTab(target);
+      const idx = tab.getAttribute('data-skill-tab');
+      skillTabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      skillPanels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      const panel = document.querySelector(`.skill-panel[data-skill-panel="${idx}"]`);
+      if (panel) panel.classList.add('active');
     });
   });
 
-  // Mode Select: navigate to ?mode=...#synergies (keeps correct tab)
-  const sel = document.getElementById('compMode');
-  if (sel) {
-    sel.addEventListener('change', () => {
-      const url = new URL(window.location.href);
-      url.searchParams.set('mode', sel.value);
-      url.hash = 'synergies';
-      window.location.href = url.toString();
+  // Arrow key cycling through skill tabs
+  document.addEventListener('keydown', (e) => {
+    const active = document.querySelector('.skill-tab.active');
+    if (!active) return;
+    const tabs = Array.from(skillTabs) as HTMLElement[];
+    const i = tabs.indexOf(active as HTMLElement);
+    if (e.key === 'ArrowRight' && i < tabs.length - 1) tabs[i+1].click();
+    if (e.key === 'ArrowLeft'  && i > 0)               tabs[i-1].click();
+  });
+
+  // ── Composition mode tabs ──
+  const compTabs = document.querySelectorAll('.comp-mode-tab');
+  const compPanels = document.querySelectorAll('.comp-panel');
+
+  function setCompMode(mode: string) {
+    compTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-comp-mode') === mode));
+    compPanels.forEach(p => {
+      const isMatch = p.getAttribute('data-comp-panel') === mode;
+      (p as HTMLElement).style.display = isMatch ? 'block' : 'none';
+      p.classList.toggle('active', isMatch);
     });
-  }
-  
-  // --- Composition Mode Switching (no reload) ---
-  const modeSelect = document.getElementById("compMode");
-  const modePanels = document.querySelectorAll(".comp-mode[data-mode]");
-
-  function setMode(mode) {
-    modePanels.forEach(p => {
-      p.style.display = (p.getAttribute("data-mode") === mode) ? "block" : "none";
-    });
-    if (modeSelect) modeSelect.value = mode;
-
-    // persist without reload
-    try { localStorage.setItem("heroCompMode", mode); } catch {}
+    try { localStorage.setItem('heroCompMode', mode); } catch {}
   }
 
-  // initial mode (localStorage -> fallback general)
-  let initialMode = "general";
+  // Restore from localStorage
+  let initMode = 'general';
   try {
-    const saved = localStorage.getItem("heroCompMode");
-    if (saved && ["general","pve","pvp"].includes(saved)) initialMode = saved;
+    const saved = localStorage.getItem('heroCompMode');
+    if (saved && ['general','pve','pvp'].includes(saved)) initMode = saved;
   } catch {}
+  setCompMode(initMode);
 
-  setMode(initialMode);
+  compTabs.forEach(tab => {
+    tab.addEventListener('click', () => setCompMode(tab.getAttribute('data-comp-mode') ?? 'general'));
+  });
 
-  if (modeSelect) {
-    modeSelect.addEventListener("change", (e) => {
-      const v = e.target.value;
-      if (["general","pve","pvp"].includes(v)) setMode(v);
-    });
-  }
+  // ── Dot nav: IntersectionObserver ──
+  const dotItems = document.querySelectorAll('.dot-nav-item');
+  const sections = document.querySelectorAll('.content-section[id]');
 
-  // --- Stats Section Toggle ---
-  const statsGrid = document.getElementById('statsGrid');
-  const statsToggleBtn = document.getElementById('statsToggleBtn');
-  const statsOverlay = document.getElementById('statsOverlay');
-  
-  if (statsToggleBtn && statsGrid && statsOverlay) {
-    statsToggleBtn.addEventListener('click', () => {
-      const isCollapsed = statsGrid.classList.contains('collapsed');
-      const btnText = statsToggleBtn.querySelector('.btn-text');
-      
-      if (isCollapsed) {
-        // Expand
-        statsGrid.classList.remove('collapsed');
-        statsGrid.classList.add('expanded');
-        statsToggleBtn.classList.add('expanded');
-        statsOverlay.classList.add('hidden');
-        if (btnText) btnText.textContent = 'View Less';
-      } else {
-        // Collapse
-        statsGrid.classList.remove('expanded');
-        statsGrid.classList.add('collapsed');
-        statsToggleBtn.classList.remove('expanded');
-        statsOverlay.classList.remove('hidden');
-        if (btnText) btnText.textContent = 'View All Stats';
-        
-        // Scroll back to stats section
-        const statsSection = document.querySelector('.hero-stats');
-        if (statsSection) {
-          statsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (dotItems.length > 0 && sections.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          dotItems.forEach(d => d.classList.toggle('active', d.getAttribute('data-section') === id));
         }
-      }
-    });
+      });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
   }
 
+  // Smooth scroll for dot nav
+  dotItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.getAttribute('data-section') ?? '';
+      const target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 </script>
