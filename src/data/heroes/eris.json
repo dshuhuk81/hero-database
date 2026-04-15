@@ -1,0 +1,119 @@
+{
+  "id": "eris",
+  "name": "Eris",
+  "image": "/heroes/eris.webp",
+  "release": false,
+  "faction": "Clubs",
+  "role": "Nimble",
+  "class": "Archer",
+  "rarity": "Legendary",
+  "description": "",
+  "ratings": {
+    "overall": "",
+    "grimSurge": "",
+    "delusionsDen": "",
+    "torrentRift": "",
+    "forgottenLabyrinth": "",
+    "pvp": "",
+    "pve": ""
+  },
+  "recommendedRelicLevel": 30,
+  "evolution": "Divine V",
+  "level": 300,
+  "baseAttackRate": 0,
+  "bossUltimatesPer90s": 0,
+  "stats": {
+    "might": 0,
+    "hp": 0,
+    "atk": 0,
+    "armor": 0,
+    "magicRes": 0,
+    "dodgeRate": 0,
+    "hitBonus": 0,
+    "critRate": 0,
+    "critRes": 0,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "image": "/skills/eris_skill_1.png",
+      "name": "Win Half Against Heaven",
+      "description": "Reads the battlefield and switches stance based on unit count. If friendly unit count >= enemy unit count: switches to Execute stance and grants an ATK Speed boost for a duration. If friendly unit count < enemy unit count: switches to Yield stance and grants an ATK Speed boost for a duration.",
+      "upgrades": {
+        "level2": "Deals damage to all enemy units equal to a percentage of their highest ATK.",
+        "level3": "Execute stance grants a greater ATK increase amplitude on attacks.",
+        "level4": "Yield stance additionally grants a basic attack damage boost for a duration."
+      },
+      "damageType": "Physical",
+      "isUltimate": true
+    },
+    {
+      "id": "skill_2",
+      "image": "/skills/eris_skill_2.png",
+      "name": "Swift Control, Slow Response",
+      "description": "At battle start, designates the frontmost ally as the White piece (damage received reduced) and the rearmost ally as the Black piece (damage dealt increased). When White advances into enemy territory it converts to Black; when Black is approached by an enemy it converts to White. Each swap triggers once per field.",
+      "upgrades": {
+        "level2": "Black piece damage bonus percentage increased.",
+        "level3": "When a unit swaps designation, it gains a shield based on a percentage of Jiutian's ATK.",
+        "level4": "White piece damage reduction effect increased."
+      },
+      "damageType": ""
+    },
+    {
+      "id": "skill_3",
+      "image": "/skills/eris_skill_3.png",
+      "name": "Tactical Interception",
+      "description": "Fires at multiple targets nearest to her, dealing a percentage of ATK as damage (hits the same target multiple times if fewer targets than projectiles). If target's current energy is below Jiutian's: recovers own energy. If target's current energy is equal to or above Jiutian's: drains target's energy.",
+      "upgrades": {
+        "level2": "Energy recovered when target energy is below Jiutian's is further increased.",
+        "level3": "Energy drained when target energy is equal to or above Jiutian's is further increased.",
+        "level4": "Energy drain when target energy is equal to or above Jiutian's becomes significantly larger."
+      },
+      "damageType": "Physical"
+    },
+    {
+      "id": "skill_4",
+      "image": "/skills/eris_skill_4.png",
+      "name": "Enter the Game",
+      "description": "When Jiutian Xuannv receives an attack, she summons the Taiji Formation for a duration. During the formation, all incoming damage is 100% nullified and accumulated. After the formation ends, she fires at the nearest enemy dealing the accumulated damage. This skill has a cooldown.",
+      "upgrades": {
+        "level2": "Skill cooldown slightly reduced.",
+        "level3": "Skill cooldown greatly reduced.",
+        "level4": "Continuously gains higher damage nullification during the formation."
+      },
+      "damageType": "Physical"
+    }
+  ],
+  "relic": {
+    "image": "/skills/eris_relic.png",
+    "name": "Strike the Void, Hit the Real",
+    "description": "Strengthens Execute and Yield stances. Execute: each attack additionally deals bonus damage based on own ATK and target's max HP (capped). Yield: the first attacks after entering Yield stance deal bonus damage based on own ATK and target's lost HP (capped).",
+    "upgrades": {
+      "level2": "When Enter the Game activates and hits are received, gains energy and resets the formation cooldown (proc chance).",
+      "level3": "The Enter the Game cooldown reset becomes guaranteed instead of chance-based.",
+      "level4": "Execute and Yield stance damage ratios and upper limits are further increased."
+    }
+  },
+  "synergies": [
+
+  ]
+}

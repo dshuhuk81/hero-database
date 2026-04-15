@@ -115,6 +115,20 @@
     "DMG_RED",
     "SHIELD"
   ],
+    "relicBreakpoints": [
+    {
+      "level": 10,
+      "type": "Early game"
+    },
+    {
+      "level": 20,
+      "type": "Mid Game"
+    },
+    {
+      "level": 30,
+      "type": "Late game"
+      }
+  ],
   "baseAttackRate": 1.592,
   "bossUltimatesPer90s": 4,
   "activeBug": "true_damage_bug",

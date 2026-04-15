@@ -8,48 +8,56 @@
 - **Relikt**: Sofort auf 50, am besten voll (50 fertig)
 - **Einsatz**: Mainline, Hauptturm, Boss (Autoritaet), Arena (Autoritaet)
 - **CN-Tier**: T0
+- **Rating**: SSS
 - **CN-Bewertung**: Ohne Relikt quasi unbrauchbar. Prozentualer DMG, bringt eigene Lebensrettung mit, ignoriert Ausweichen. Beim Pushen vor Apotheose an Caishen binden. Nach Apotheose an Yachi und Mondfrau binden. Wenn man genug Chars hat, schaut was ihr binden koennt. Hauptturm -- kein Problem, braucht auch nicht viel. Boss -- einer der Besten. Muss aber Equip-Attribute sauber washen. Boss-Konfiguration beachten.
 
 ### Nata / Nezha (哪吒)
 - **Relikt**: Sofort auf 50, fertig
 - **Einsatz**: Mainline, Hauptturm, Boss, Arena
 - **CN-Tier**: T0
+- **Rating**: SSS
 - **CN-Bewertung**: Egal ob Low-Invest oder High-Invest, ueberall Boss-tauglich. In Apotheose-Aufstellung als einer von vier Haupt-Supports. Apotheose-Aufstellung kann vier T10086 aufstellen. Mainline-Komps sind stabil, aber ab Turm 700 kann man nicht mehr vier Waste-Slots mitschleppen. Equip-Waesche neben Schaden braucht auch Blitz-Ausweichen. Sonst ab 1040 werden die Tuerme jaehrlich schwerer.
 
 ### Chronos / Shijian Shen (时间神)
 - **Relikt**: Sofort auf 30
 - **Einsatz**: Mainline, Hauptturm, Boss, Arena
 - **CN-Tier**: T0
+- **Rating**: SSS
 - **CN-Bewertung**: Eine Karte und man hat ein aussergewoehnliches Erlebnis. Perfekte Mechanik, perfekte Kontrolle, perfekte Unterstuetzung fuer alle Szenarien. Manchmal ist die grosse Ulti zu voll geladen und Release muss verzoegert werden -- Handarbeit noetig.
 
 ### Hera / Hela (赫拉)
 - **Relikt**: Sofort auf 30
 - **Einsatz**: Mainline, Hauptturm, Arena
 - **CN-Tier**: T1
+- **Rating**: S
 - **CN-Bewertung**: Eine Karte reicht. Ins Zeus-Team als Werkzeug-Char, Leute finden sie ziemlich gut. Kann man auch als High-Invest-Potential bezeichnen.
 
 ### Dionysus / Jiushen (酒神)
 - **Relikt**: Sofort auf 30
 - **Einsatz**: Mainline, Hauptturm (Idol), Boss
 - **CN-Tier**: T1
+- **Rating**: S
 - **CN-Bewertung**: Kann Heilung und gleichzeitig Schaden reduzieren. Anstaendiger Support. Low-Invest leicht einsetzbar. Egal ob Low oder High -- bei Boss immer brauchbar.
 
 ### Nyx / Nike Si (尼克斯)
 - **Relikt**: Sofort auf 30-40, Ressourcen-Spieler moegen auch 50, aber nicht zwingend
 - **Einsatz**: Mainline, Hauptturm (Gegenstrategie), Arena
 - **CN-Tier**: T1
+- **Rating**: S
 - **CN-Bewertung**: Pushing -- Low-Invest und Scorpio haben keinen grossen Unterschied. Werkzeug-Char fuer Kontrolle, kann auch sterben. Apotheose braucht vier grosse Supports. Ist nur ein bisschen guenstiger als Low-Invest-Supports. Aber High-Invest PvP ist noch relativ stark.
 
 ### Nuwa / Nvwa (女娲)
 - **Relikt**: Sofort auf 30
 - **Einsatz**: Mainline, Arena, Boss
 - **CN-Tier**: T1
+- **Rating**: S
 - **CN-Bewertung**: Pushing -- eine Karte reicht. Ziemlich platt mit Paris und Herkules gebunden. Apotheose -- geht auch nicht als Carry-Team. Standfestigkeit liegt hauptsaechlich im Dreck, Koerper ist eher fragil.
 
 ### Helios / Taiyang Shen / Xing Gui (大阳神/星鬼)
 - **Relikt**: Sofort auf 30
 - **Einsatz**: Mainline, Arena, Goettlich
 - **CN-Tier**: T1
+- **Rating**: S
 - **CN-Bewertung**: Pushing -- eine Karte reicht, Ausweich-Mechanik. Isis ist quasi ohne nennenswertes Apotheose-Upgrade. Hauptsaechlich gibt es kein nuetzliches Apotheose-Schwarzkarte. Erfahrene Spieler koennen mal Relikt 30 ausprobieren und die Erfahrung geniessen.
 
 ---

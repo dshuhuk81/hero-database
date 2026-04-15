@@ -569,7 +569,7 @@ const dotSections = [
                   <div class="relic-bp-header">
                     <span class="relic-bp-lv">Relic {bp.level}</span>
                     <span class={`relic-bp-badge bp-${bp.type}`}>
-                      {bp.type === "mandatory" ? "Mandatory" : bp.type === "recommended" ? "Recommended" : "High Spender"}
+                      {bp.type === "Mid Game" ? "Mid Game" : bp.type === "mandatory" ? "Mandatory" : bp.type === "recommended" ? "Recommended" : bp.type === "Early game" ? "Early game" : bp.type === "Late game" ? "Late game" : "High Spender"}
                     </span>
                   </div>
                   <p class="relic-bp-effect">{bp.effect}</p>
