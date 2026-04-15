@@ -42,7 +42,8 @@
       "Bash(tail -200 /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
       "Bash(cat /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
       "Bash(grep -E \"\\\\.core-mechanic|\\\\.investment|\\\\.synergy|\\\\.bug-banner|\\\\.mechanic-panel\" /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
-      "Bash(grep -n \"mechanic-panel\\\\|synergy-links-panel\\\\|investment-roadmap\\\\|relic-bp\\\\|bug-banner\" /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)"
+      "Bash(grep -n \"mechanic-panel\\\\|synergy-links-panel\\\\|investment-roadmap\\\\|relic-bp\\\\|bug-banner\" /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('name'\\), d.get\\('id'\\)\\)\")"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
