@@ -5,7 +5,7 @@ const { hero } = Astro.props;
 <a
   class="hero-card"
   href={`/heroes/${hero.id}`}
-  style={`--hero-image: url(/heroes/${hero.id}.webp);`}
+  style={`--hero-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp);`}
 >
   {hero.newHero && (
     <div class="hero-flag-badge hero-flag-badge-new">NEW</div>

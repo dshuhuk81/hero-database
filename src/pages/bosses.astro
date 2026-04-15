@@ -49,10 +49,10 @@ function heroImage(id) {
   return img?.startsWith("/") ? img : `/${img}`;
 }
 function factionIcon(faction) {
-  return `/icons/factions/${String(faction || "").toLowerCase()}.webp`;
+  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${String(faction || "").toLowerCase()}.webp`;
 }
 function classIcon(heroClass) {
-  return `/icons/classes/${String(heroClass || "").toLowerCase()}.webp`;
+  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${String(heroClass || "").toLowerCase()}.webp`;
 }
 
 const BOSS_SKILL_ICON_ALIAS = {
@@ -61,7 +61,7 @@ const BOSS_SKILL_ICON_ALIAS = {
 };
 function bossSkillIcon(bossId, index) {
   const key = BOSS_SKILL_ICON_ALIAS[bossId] || bossId;
-  return `/bosses/${key}_skill_${index + 1}.png`;
+  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/${key}_skill_${index + 1}.png`;
 }
 
 ---

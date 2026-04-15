@@ -16,7 +16,7 @@ function getHero(heroId: string) {
 }
 
 function campaignFactionIcon(faction: string) {
-  return `/icons/factions/${String(faction || "").toLowerCase()}.webp`;
+  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${String(faction || "").toLowerCase()}.webp`;
 }
 
 const campaigns = eventsData.campaigns.map((campaign) => {

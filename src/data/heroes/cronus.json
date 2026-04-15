@@ -1,7 +1,7 @@
 {
   "id": "cronus",
   "name": "Cronus",
-  "image": "/heroes/cronus.webp",
+  "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp",
   "release": true,
   "newHero": true,
   "faction": "Starglint",
@@ -63,7 +63,7 @@
         "level3": "Increases DMG dealt to 360% ATK.",
         "level4": "Affected enemies cannot regenerate Energy naturally during the effect duration."
       },
-      "image": "/skills/cronus_skill_1.png",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_1.png",
       "damageType": "magical",
       "isUltimate": true
     },
@@ -76,7 +76,7 @@
         "level3": "Each time an allied unit casts an Active Skill, the CD of this skill is reduced by 0.5 seconds.",
         "level4": "Stun duration is increased to 3s."
       },
-      "image": "/skills/cronus_skill_2.png",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_2.png",
       "damageType": "magical"
     },
     {
@@ -88,7 +88,7 @@
         "level3": "When Cronus is about to fall, this effect triggers once for free on himself.",
         "level4": "Reduces the CD to 12s."
       },
-      "image": "/skills/cronus_skill_3.png",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_3.png",
       "damageType": ""
     },
     {
@@ -100,7 +100,7 @@
         "level3": "At the start of battle, reduce the initial CD of all allied units by 5s.",
         "level4": "Reduces the skill CD to 15s."
       },
-      "image": "/skills/cronus_skill_4.png",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_4.png",
       "damageType": ""
     }
   ],
@@ -112,7 +112,7 @@
       "level3": "Translucent Echo duration is increased to 10s. [Relic Lv.20]",
       "level4": "Translucent Echo gains 1000 Energy upon entering battle."
     },
-    "image": "/skills/cronus_relic.png"
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_relic.png"
   },
   "synergies": [
     "CDR_TEAM",

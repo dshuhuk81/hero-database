@@ -3,8 +3,8 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 
-function hp(id: string) { return `/heroes/${id}.webp`; }
-function fi(faction: string) { return `/icons/factions/${faction}.webp`; }
+function hp(id: string) { return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${id}.webp`; }
+function fi(faction: string) { return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${faction}.webp`; }
 
 const SPADES_CORE = [
   { id: "skadi",    name: "Skadi",    note: "Core" },
@@ -59,7 +59,7 @@ const CLUBS_FALLBACK = [
     tag="Tower - Western Client"
     headline="Western Tower Guide"
     subtitle="Current best teams for the Western client - missing heroes, known bugs, and honest investment advice"
-    bgImage="/towerBG.webp"
+    bgImage="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/towerBG.webp"
   />
 
   <div class="page-wrapper">

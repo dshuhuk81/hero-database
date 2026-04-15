@@ -1,7 +1,7 @@
 {
   "id": "hecate",
   "name": "Hecate",
-  "image": "/heroes/hecate.webp",
+  "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp",
   "release": true,
   "faction": "Spades",
   "role": "Arcane",
@@ -60,7 +60,7 @@
         "level3": "Plunders 3% of the max HP and ATK. (Unlock at Relic Lv.20)",
         "level4": "Plunders 4% of the max HP and ATK. (Unlock at Relic Lv.30)"
       },
-      "image": "/skills/hecate_skill_1.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_1.webp",
       "damageType": "Magical",
       "isUltimate": true
     },
@@ -73,7 +73,7 @@
         "level3": "Restores HP equal to 50% of the DMG immediately upon dealing DMG.",
         "level4": "Increases DMG per sec to 150% ATK."
       },
-      "image": "/skills/hecate_skill_2.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_2.webp",
       "damageType": "Magical"
     },
     {
@@ -85,7 +85,7 @@
         "level3": "Increases DMG dealt to 75% ATK every 0.5s.",
         "level4": "Increases DMG dealt to 90% ATK every 0.5s."
       },
-      "image": "/skills/hecate_skill_3.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_3.webp",
       "damageType": ""
     },
     {
@@ -97,7 +97,7 @@
         "level3": "Increases DMG dealt to 260% ATK.",
         "level4": "Increases DMG dealt to 280% ATK and stun duration to 3s. (Unlocks at Lv.281)"
       },
-      "image": "/skills/hecate_skill_4.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_4.webp",
       "damageType": "Magical"
     }
   ],
@@ -119,7 +119,7 @@
       "level3": "Increases plunder to 3%. (Relic Lv.20)",
       "level4": "Increases plunder to 4%. (Relic Lv.30)"
     },
-    "image": "/skills/hecate_relic.webp"
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_relic.webp"
   },
   "synergies": [
     "CROWD_CONTROL",

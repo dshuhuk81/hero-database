@@ -7,51 +7,51 @@ import { getHeroById } from "../data/heroes";
 // To add a new guide: add an entry to this array and a matching <div id="..."> in the HTML below.
 const guides = [
   {
-    id: "wenshen", label: "Wen-Shen", heroImage: "/heroes/wenshen.webp",
+    id: "wenshen", label: "Wen-Shen", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp",
     imgPos: "center 20%", imgPosActive: "center 35%",
     quote: "When humanity had no cure, I willingly drew all pestilence upon myself.",
     tags: ["Clubs Faction", "Support", "Legendary", "Unreleased"],
     badge: "New",
   },
   {
-    id: "cronus", label: "Cronus", heroImage: "/heroes/cronus.webp",
+    id: "cronus", label: "Cronus", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp",
     imgPos: "center 20%", imgPosActive: "center 30%",
     quote: "Tempo Architect -- Master of Rewind, Projection, and Cooldown",
     tags: ["Starglint Faction", "Support", "Legendary"],
     badge: "New",
   },
   {
-    id: "mengpo", label: "Mengpo", heroImage: "/heroes/mengpo.webp",
+    id: "mengpo", label: "Mengpo", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp",
     imgPos: "center 10%", imgPosActive: "center 35%",
     quote: "Goddess of Forgetting -- Keeper of the Bridge Between Worlds",
     tags: ["Hearts Faction", "Support", "Legendary", "Unreleased"],
   },
   {
-    id: "nuba", label: "Nuba", heroImage: "/heroes/nuba.webp",
+    id: "nuba", label: "Nuba", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp",
     imgPos: "center 30%", imgPosActive: "center 20%",
     quote: "The world fears, banishes, and curses me. But I just don't understand what I've done wrong.",
     tags: ["Clubs Faction", "Warrior"],
   },
   {
-    id: "skadi", label: "Skadi", heroImage: "/heroes/skadi.webp",
+    id: "skadi", label: "Skadi", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp",
     imgPos: "center 15%", imgPosActive: "center 30%",
     quote: "Core of Control -- Goddess of Winter and the Hunt",
     tags: ["Spades Faction", "Mage", "Legendary", "Unreleased"],
   },
   {
-    id: "hera", label: "Hera", heroImage: "/heroes/hera.webp",
+    id: "hera", label: "Hera", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp",
     imgPos: "center 15%", imgPosActive: "center 30%",
     quote: "Queen of the Gods -- Sovereign of Power and Obsession",
     tags: ["Starglint Faction", "Support", "Legendary"],
   },
   {
-    id: "jiutian-xuannv", label: "Jiutian Xuannv", heroImage: "/heroes/jiutian-xuannv.webp",
+    id: "jiutian-xuannv", label: "Jiutian Xuannv", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutian-xuannv.webp",
     imgPos: "center 15%", imgPosActive: "center 25%",
     quote: "Master of the Board -- Goddess of Tactical Stances",
     tags: ["Clubs Faction", "Archer", "Legendary"],
   },
   {
-    id: "hephaestus", label: "Hephaestus", heroImage: "/heroes/hephaestus.webp",
+    id: "hephaestus", label: "Hephaestus", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp",
     imgPos: "center 15%", imgPosActive: "center 25%",
     quote: "Using volcanoes as his forge, smelting weapons -- a single man becoming an army of thousands.",
     tags: ["Hearts Faction", "Support", "Legendary"],
@@ -339,7 +339,7 @@ function heroName(id: string) {
 
 function heroImage(id: string) {
   const hero = getHeroById(id);
-  const img = hero?.image || `/heroes/${id}.webp`;
+  const img = hero?.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${id}.webp`;
   return img.startsWith("/") ? img : `/${img}`;
 }
 
@@ -392,16 +392,16 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/img_data/nubaFace.webp" alt="Nuba portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/img_data/nubaFace.webp" alt="Nuba portrait" loading="lazy" />
           <h1 class="char-name">Nuba</h1>
           <p class="hero-quote">"The world fears, banishes, and curses me. But I just don't understand what I've done wrong."</p>
           <div class="tags">
             <span class="tag tag-faction">
-              <img src="/icons/factions/clubs.webp" alt="Club Faction" class="tag-icon" />
+              <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/clubs.webp" alt="Club Faction" class="tag-icon" />
               Clubs Faction
             </span>
             <span class="tag tag-class">
-              <img src="/icons/classes/warrior.webp" alt="Warrior Class" class="tag-icon" />
+              <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/warrior.webp" alt="Warrior Class" class="tag-icon" />
               Warrior
             </span>
           </div>
@@ -477,7 +477,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/nuba_ultimate.png" alt="Siphon of Souls" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_ultimate.png" alt="Siphon of Souls" />
                 <span class="skill-name">Siphon of Souls</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -492,7 +492,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/nuba_relic.png" alt="Curse of Decay" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_relic.png" alt="Curse of Decay" />
                 <span class="skill-name">Curse of Decay</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -506,7 +506,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/nuba_skill_1.png" alt="Infernal Soulbreaker" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_skill_1.png" alt="Infernal Soulbreaker" />
                 <span class="skill-name">Infernal Soulbreaker</span>
                 <span class="skill-badge badge-skill">Skill 1</span>
               </div>
@@ -520,7 +520,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/nuba_skill_2.png" alt="Rise of the Drought" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_skill_2.png" alt="Rise of the Drought" />
                 <span class="skill-name">Rise of the Drought</span>
                 <span class="skill-badge badge-skill">Skill 2</span>
               </div>
@@ -534,7 +534,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/nuba_skill_3.png" alt="Rite of Ashes" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_skill_3.png" alt="Rite of Ashes" />
                 <span class="skill-name">Rite of Ashes</span>
                 <span class="skill-badge badge-skill">Skill 3</span>
               </div>
@@ -679,7 +679,7 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/heroes/mengpo.webp" alt="Mengpo portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp" alt="Mengpo portrait" loading="lazy" />
           <h1 class="char-name">Mengpo</h1>
           <p class="hero-quote">Goddess of Forgetting -- Keeper of the Bridge Between Worlds</p>
           <div class="tags">
@@ -761,7 +761,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/mengpo_skill_1.webp" alt="Samsara's Shore" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/mengpo_skill_1.webp" alt="Samsara's Shore" />
                 <span class="skill-name">Samsara's Shore</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -781,7 +781,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/mengpo_relic.webp" alt="No Return" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/mengpo_relic.webp" alt="No Return" />
                 <span class="skill-name">No Return</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -800,7 +800,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/mengpo_skill_2.webp" alt="Stone of Three Fates" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/mengpo_skill_2.webp" alt="Stone of Three Fates" />
                 <span class="skill-name">Stone of Three Fates</span>
                 <span class="skill-badge badge-skill">Skill 2</span>
               </div>
@@ -819,7 +819,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/mengpo_skill_3.webp" alt="Waters of Oblivion" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/mengpo_skill_3.webp" alt="Waters of Oblivion" />
                 <span class="skill-name">Waters of Oblivion</span>
                 <span class="skill-badge badge-skill">Skill 3</span>
               </div>
@@ -838,7 +838,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/mengpo_skill_4.webp" alt="Lycoris Bloom" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/mengpo_skill_4.webp" alt="Lycoris Bloom" />
                 <span class="skill-name">Lycoris Bloom</span>
                 <span class="skill-badge badge-skill">Skill 4</span>
               </div>
@@ -1034,7 +1034,7 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/heroes/skadi.webp" alt="Skadi portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp" alt="Skadi portrait" loading="lazy" />
           <h1 class="char-name">Skadi</h1>
           <p class="hero-quote">Core of Control -- Goddess of Winter and the Hunt</p>
           <div class="tags">
@@ -1115,7 +1115,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/skadi_skill_1.webp" alt="Drifting Vortex" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/skadi_skill_1.webp" alt="Drifting Vortex" />
                 <span class="skill-name">Drifting Vortex</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -1134,7 +1134,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/skadi_relic.webp" alt="Iceforged Veins" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/skadi_relic.webp" alt="Iceforged Veins" />
                 <span class="skill-name">Iceforged Veins</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -1153,7 +1153,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/skadi_skill_2.webp" alt="Ring of Blizzard" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/skadi_skill_2.webp" alt="Ring of Blizzard" />
                 <span class="skill-name">Ring of Blizzard</span>
                 <span class="skill-badge badge-skill">Skill 2</span>
               </div>
@@ -1172,7 +1172,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/skadi_skill_3.webp" alt="Ice Prison" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/skadi_skill_3.webp" alt="Ice Prison" />
                 <span class="skill-name">Ice Prison</span>
                 <span class="skill-badge badge-skill">Skill 3</span>
               </div>
@@ -1191,7 +1191,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/skadi_skill_4.webp" alt="Realm of Frost" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/skadi_skill_4.webp" alt="Realm of Frost" />
                 <span class="skill-name">Realm of Frost</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
@@ -1387,12 +1387,12 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/heroes/wenshen.webp" alt="Wen-Shen portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp" alt="Wen-Shen portrait" loading="lazy" />
           <h1 class="char-name">Wen-Shen</h1>
           <p class="hero-quote">When humanity had no cure, I willingly drew all pestilence upon myself.</p>
           <div class="tags">
             <span class="tag tag-faction">
-              <img src="/icons/factions/clubs.webp" alt="Clubs Faction" class="tag-icon" />
+              <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/clubs.webp" alt="Clubs Faction" class="tag-icon" />
               Clubs Faction
             </span>
             <span class="tag tag-class">Support</span>
@@ -1485,7 +1485,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/wenshen_skill_1.webp" alt="Star of Ill Omen" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/wenshen_skill_1.webp" alt="Star of Ill Omen" />
                 <span class="skill-name">Star of Ill Omen</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -1504,7 +1504,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/wenshen_relic.webp" alt="Origin of Pestilence" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/wenshen_relic.webp" alt="Origin of Pestilence" />
                 <span class="skill-name">Origin of Pestilence</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -1523,7 +1523,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/wenshen_skill_2.webp" alt="Duality Inversion" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/wenshen_skill_2.webp" alt="Duality Inversion" />
                 <span class="skill-name">Duality Inversion</span>
                 <span class="skill-badge badge-skill">Skill 2</span>
               </div>
@@ -1542,7 +1542,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/wenshen_skill_3.webp" alt="Calamity-Ridden" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/wenshen_skill_3.webp" alt="Calamity-Ridden" />
                 <span class="skill-name">Calamity-Ridden</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
@@ -1561,7 +1561,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/wenshen_skill_4.webp" alt="Cursed Ground" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/wenshen_skill_4.webp" alt="Cursed Ground" />
                 <span class="skill-name">Cursed Ground</span>
                 <span class="skill-badge badge-skill">Skill 4</span>
               </div>
@@ -1767,12 +1767,12 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/heroes/hera.webp" alt="Hera portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp" alt="Hera portrait" loading="lazy" />
           <h1 class="char-name">Hera</h1>
           <p class="hero-quote">Queen of the Gods -- Sovereign of Power and Obsession</p>
           <div class="tags">
             <span class="tag tag-faction">
-              <img src="/icons/factions/starglint.webp" alt="Starglint Faction" class="tag-icon" />
+              <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/starglint.webp" alt="Starglint Faction" class="tag-icon" />
               Starglint Faction
             </span>
             <span class="tag tag-class">Support</span>
@@ -1861,7 +1861,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hera_skill_1.webp" alt="Tide of Obsession" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hera_skill_1.webp" alt="Tide of Obsession" />
                 <span class="skill-name">Tide of Obsession</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -1880,7 +1880,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hera_relic.webp" alt="Charm Seal" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hera_relic.webp" alt="Charm Seal" />
                 <span class="skill-name">Charm Seal</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -1899,7 +1899,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hera_skill_2.webp" alt="Crown's Bestowal" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hera_skill_2.webp" alt="Crown's Bestowal" />
                 <span class="skill-name">Crown's Bestowal</span>
                 <span class="skill-badge badge-skill">Skill 1</span>
               </div>
@@ -1918,7 +1918,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hera_skill_3.webp" alt="Fatal Infatuation" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hera_skill_3.webp" alt="Fatal Infatuation" />
                 <span class="skill-name">Fatal Infatuation</span>
                 <span class="skill-badge badge-skill">Skill 2</span>
               </div>
@@ -1937,7 +1937,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hera_skill_4.webp" alt="Royal Domain" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hera_skill_4.webp" alt="Royal Domain" />
                 <span class="skill-name">Royal Domain</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
@@ -2132,16 +2132,16 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/heroes/jiutian-xuannv.webp" alt="Jiutian Xuannv portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutian-xuannv.webp" alt="Jiutian Xuannv portrait" loading="lazy" />
           <h1 class="char-name">Jiutian Xuannv</h1>
           <p class="hero-quote">Master of the Board -- Goddess of Tactical Stances</p>
           <div class="tags">
             <span class="tag tag-faction">
-              <img src="/icons/factions/clubs.webp" alt="Clubs Faction" class="tag-icon" />
+              <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/clubs.webp" alt="Clubs Faction" class="tag-icon" />
               Clubs Faction
             </span>
             <span class="tag tag-class">
-              <img src="/icons/classes/archer.webp" alt="Archer Class" class="tag-icon" />
+              <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/archer.webp" alt="Archer Class" class="tag-icon" />
               Archer
             </span>
             <span class="tag tag-rarity">Legendary</span>
@@ -2227,7 +2227,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/jiutian_xuannv_skill_1.png" alt="Win Half Against Heaven" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_1.png" alt="Win Half Against Heaven" />
                 <span class="skill-name">Win Half Against Heaven</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -2246,7 +2246,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/jiutian_xuannv_relic.png" alt="Strike the Void, Hit the Real" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_relic.png" alt="Strike the Void, Hit the Real" />
                 <span class="skill-name">Strike the Void, Hit the Real</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -2265,7 +2265,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/jiutian_xuannv_skill_2.png" alt="Swift Control, Slow Response" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_2.png" alt="Swift Control, Slow Response" />
                 <span class="skill-name">Swift Control, Slow Response</span>
                 <span class="skill-badge badge-skill">Skill 2</span>
               </div>
@@ -2284,7 +2284,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/jiutian_xuannv_skill_3.png" alt="Tactical Interception" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_3.png" alt="Tactical Interception" />
                 <span class="skill-name">Tactical Interception</span>
                 <span class="skill-badge badge-skill">Skill 3</span>
               </div>
@@ -2303,7 +2303,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/jiutian_xuannv_skill_4.png" alt="Enter the Game" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_4.png" alt="Enter the Game" />
                 <span class="skill-name">Enter the Game</span>
                 <span class="skill-badge badge-skill">Skill 4</span>
               </div>
@@ -2499,7 +2499,7 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/heroes/hephaestus.webp" alt="Hephaestus portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp" alt="Hephaestus portrait" loading="lazy" />
           <h1 class="char-name">Hephaestus</h1>
           <p class="hero-quote">Using volcanoes as his forge, smelting weapons -- a single man becoming an army of thousands.</p>
           <div class="tags">
@@ -2589,7 +2589,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hephaestus_skill_1.png" alt="Ultimate Domain" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_1.png" alt="Ultimate Domain" />
                 <span class="skill-name">Ultimate Domain</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -2609,7 +2609,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hephaestus_relic.png" alt="Undying Forge" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_relic.png" alt="Undying Forge" />
                 <span class="skill-name">Undying Forge</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -2628,7 +2628,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hephaestus_skill_2.png" alt="Weak Point Analysis" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_2.png" alt="Weak Point Analysis" />
                 <span class="skill-name">Weak Point Analysis</span>
                 <span class="skill-badge badge-skill">Active</span>
               </div>
@@ -2647,7 +2647,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hephaestus_skill_3.png" alt="Force Field Shield" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_3.png" alt="Force Field Shield" />
                 <span class="skill-name">Force Field Shield</span>
                 <span class="skill-badge badge-skill">Active</span>
               </div>
@@ -2666,7 +2666,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/hephaestus_skill_4.png" alt="Source Resonance" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_4.png" alt="Source Resonance" />
                 <span class="skill-name">Source Resonance</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
@@ -2860,7 +2860,7 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal -- Hero Guide</div>
-          <img class="hero-portrait" src="/heroes/cronus.webp" alt="Cronus portrait" loading="lazy" />
+          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp" alt="Cronus portrait" loading="lazy" />
           <h1 class="char-name">Cronus</h1>
           <p class="hero-quote">Tempo Architect -- Master of Rewind, Projection, and Cooldown</p>
           <div class="tags">
@@ -2953,7 +2953,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/cronus_skill_1.png" alt="Temporal Vortex" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_1.png" alt="Temporal Vortex" />
                 <span class="skill-name">Temporal Vortex</span>
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
@@ -2973,7 +2973,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/cronus_relic.png" alt="Ferry of Time" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_relic.png" alt="Ferry of Time" />
                 <span class="skill-name">Ferry of Time</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
@@ -2993,7 +2993,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/cronus_skill_2.png" alt="Temporal Rift" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_2.png" alt="Temporal Rift" />
                 <span class="skill-name">Temporal Rift</span>
                 <span class="skill-badge badge-skill">Active</span>
               </div>
@@ -3013,7 +3013,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/cronus_skill_3.png" alt="Rewinding Remains" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_3.png" alt="Rewinding Remains" />
                 <span class="skill-name">Rewinding Remains</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
@@ -3033,7 +3033,7 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="/skills/cronus_skill_4.png" alt="Echo of Causality" />
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_skill_4.png" alt="Echo of Causality" />
                 <span class="skill-name">Echo of Causality</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
@@ -3299,7 +3299,7 @@ const activeGuide = releasedGuides[0];
     padding: 32px;
     background:
       linear-gradient(135deg, rgba(120,90,200,0.18), rgba(7,6,12,0.95)),
-      url("/bg_neutral.webp") center top / cover no-repeat;
+      url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg_neutral.webp") center top / cover no-repeat;
     position: relative;
   }
 
@@ -3349,7 +3349,7 @@ const activeGuide = releasedGuides[0];
     justify-content: center;
     background:
       radial-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.85)),
-      url("/bg_halle.webp");
+      url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg_halle.webp");
     background-size: cover;
     background-position: top;
   }

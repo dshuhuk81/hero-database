@@ -1,7 +1,7 @@
 {
   "id": "yanluo",
   "name": "Yanluo",
-  "image": "/heroes/yanluo.webp",
+  "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yanluo.webp",
   "release": true,
   "faction": "Hearts",
   "role": "Hefty",
@@ -60,7 +60,7 @@
         "level3": "Gains 400 Energy upon defeating a target.",
         "level4": "Deals DMG equal to 260% of Yanluo’s ATK and 260% of the target’s ATK."
       },
-      "image": "/skills/yanluo_skill_1.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/yanluo_skill_1.webp",
       "damageType": "Physical",
       "isUltimate": true
     },
@@ -73,7 +73,7 @@
         "level3": "Pulled enemies take 10% increased DMG for the next 10s.",
         "level4": "Increases DMG dealt to 140% of ATK."
       },
-      "image": "/skills/yanluo_skill_2.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/yanluo_skill_2.webp",
       "damageType": "Physical"
     },
     {
@@ -85,7 +85,7 @@
         "level3": "DMG dealt per second increases to 65% of ATK.",
         "level4": "Yanluo takes 30% reduced DMG for the duration."
       },
-      "image": "/skills/yanluo_skill_3.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/yanluo_skill_3.webp",
       "damageType": "Physical"
     },
     {
@@ -97,7 +97,7 @@
         "level3": "Increases the Energy drained to 60.",
         "level4": "Increases the Energy drained to 70."
       },
-      "image": "/skills/yanluo_skill_4.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/yanluo_skill_4.webp",
       "damageType": ""
     }
   ],
@@ -109,7 +109,7 @@
       "level3": "Marked enemies have their healing received reduced by 50% and Energy Regeneration reduced by 50%.",
       "level4": "Marked enemies grant 200 Energy to other allies when defeated."
     },
-    "image": "/skills/yanluo_relic.webp"
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/yanluo_relic.webp"
   },
   "synergies": [
     "ENERGY_RESTORE_TEAM",

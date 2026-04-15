@@ -563,7 +563,7 @@ const pageUpdate = getPageUpdate("calculator");
   function renderSkillBlock(skill, sourceHero, targetHero, skillIndex, config) {
     const upgraded = skill.upgrades || {};
     // Construct image path: use explicit path if provided, otherwise infer from hero ID and skill index
-    const icon = skill.image || `/skills/${sourceHero.id}_skill_${skillIndex}.webp`;
+    const icon = skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${sourceHero.id}_skill_${skillIndex}.webp`;
     const level2 = upgraded.level2
       ? `<div class="upgrade-row"><span class="upgrade-label">LvL. 2</span><span class="upgrade-text">${replaceStatBoundPercents(upgraded.level2, sourceHero, targetHero)}</span></div>`
       : "";
@@ -888,7 +888,7 @@ const pageUpdate = getPageUpdate("calculator");
         <div class="skill-card">
           <div class="skill-header">
             <div class="skill-left">
-              <img src="${hero.relic.image || `/skills/${hero.id}_relic.webp`}" alt="${hero.relic.name}" class="skill-icon" />
+              <img src="${hero.relic.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_relic.webp`}" alt="${hero.relic.name}" class="skill-icon" />
               <div class="skill-info">
                 <h3 class="skill-name">${hero.relic.name}</h3>
                 <span class="skill-type">Relic</span>
@@ -916,7 +916,7 @@ const pageUpdate = getPageUpdate("calculator");
       `
       : "";
 
-    const heroImage = hero.image || `/heroes/${hero.id}.webp`;
+    const heroImage = hero.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp`;
     const burstSummaryHtml = renderBurstSummary(hero.skills, hero, targetHero, config);
 
     mount.innerHTML = `
@@ -940,7 +940,7 @@ const pageUpdate = getPageUpdate("calculator");
                 <div class="identity-content">
                   <img
                     class="identity-icons"
-                    src="/icons/classes/${String(hero.class || "").toLowerCase()}.webp"
+                    src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${String(hero.class || "").toLowerCase()}.webp"
                     alt="${hero.class}"
                   />
                   <span>${hero.class}</span>
@@ -951,7 +951,7 @@ const pageUpdate = getPageUpdate("calculator");
                 <div class="identity-content">
                   <img
                     class="identity-icons"
-                    src="/icons/roles/${String(hero.role || "").toLowerCase()}.webp"
+                    src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${String(hero.role || "").toLowerCase()}.webp"
                     alt="${hero.role}"
                   />
                   <span>${hero.role}</span>
@@ -962,7 +962,7 @@ const pageUpdate = getPageUpdate("calculator");
                 <div class="identity-content">
                   <img
                     class="identity-icons"
-                    src="/icons/factions/${String(hero.faction || "").toLowerCase()}.webp"
+                    src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${String(hero.faction || "").toLowerCase()}.webp"
                     alt="${hero.faction}"
                   />
                   <span>${hero.faction}</span>
@@ -1095,7 +1095,7 @@ const pageUpdate = getPageUpdate("calculator");
 
   .hero-header {
     height: 300px;
-    background-image: url("/bg.jpg");
+    background-image: url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg.jpg");
     background-size: cover;
     background-position: center 150%;
     background-attachment: fixed;
