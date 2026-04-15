@@ -4,9 +4,9 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 
 // Hero portrait helper - returns public path for hero portrait
-function hp(id: string) { return `/heroes/${id}.webp`; }
+function hp(id: string) { return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${id}.webp`; }
 // Faction icon helper
-function fi(faction: string) { return `/icons/factions/${faction}.webp`; }
+function fi(faction: string) { return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${faction}.webp`; }
 
 // Team definitions - heroes with id (null = unreleased, use placeholder) and display name
 const SPADES_CORE = [
@@ -46,7 +46,7 @@ const DIAMONDS_CORE = [
     tag="Tower"
     headline="Faction Tower Guide"
     subtitle="Best teams, relic requirements, floor breakpoints, and investment priorities for 400+ and 500+ endgame floors"
-    bgImage="/towerBG.webp"
+    bgImage="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/towerBG.webp"
   />
 
   <div class="page-wrapper">

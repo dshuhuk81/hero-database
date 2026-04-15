@@ -1,4 +1,4 @@
-// src/data/heroes/index.js
+// src/datahttps://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/index.js
 
 // Auto-Import aller Hero-JSON-Dateien
 const heroModules = import.meta.glob("./*.json", { eager: true });
@@ -50,7 +50,7 @@ function adaptHero(raw) {
   return {
     id: raw.id,
     name: raw.name,
-    image: raw.image ?? `/heroes/${raw.id}.webp`,
+    image: raw.image ?? `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${raw.id}.webp`,
     release: raw.release ?? true,
     faction: raw.faction,
     role: raw.role,

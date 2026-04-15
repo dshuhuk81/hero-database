@@ -77,9 +77,9 @@ const sortedHeroes = [...heroes]
           data-rating={hero.rating?.toLowerCase() || "n/a"}
       >
         <div class="icon-stack">
-          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} />
-          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} />
-          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} />
+          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${hero.faction.toLowerCase()}.webp`} />
+          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${hero.role.toLowerCase()}.webp`} />
+          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${hero.class.toLowerCase()}.webp`} />
         </div>
         <HeroCard hero={hero} />
       </div>
@@ -119,7 +119,7 @@ const sortedHeroes = [...heroes]
               <a href={`/heroes/${hero.id}`} class="list-portrait-link">
                 <div
                   class="list-portrait"
-                  style={`background-image: url(/heroes/${hero.id}.webp)`}
+                  style={`background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp)`}
                   aria-hidden="true"
                 ></div>
               </a>
@@ -172,7 +172,7 @@ const sortedHeroes = [...heroes]
 /* HERO HEADER */
 .hero-header {
   height: 360px;
-  background-image: url("/bg.jpg");
+  background-image: url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg.jpg");
   background-size: cover;
   background-position: center 150%; /* höheres Bild */
   background-attachment: fixed;

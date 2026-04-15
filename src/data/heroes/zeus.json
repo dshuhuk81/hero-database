@@ -1,7 +1,7 @@
 {
   "id": "zeus",
   "name": "Zeus",
-  "image": "/heroes/zeus.webp",
+  "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/zeus.webp",
   "release": true,
   "faction": "Starglint",
   "role": "Arcane",
@@ -60,7 +60,7 @@
         "level3": "Gains 500 Energy on entry.",
         "level4": "Increases DMG dealt to 200%."
       },
-      "image": "/skills/zeus_skill_1.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/zeus_skill_1.webp",
       "damageType": "Magical",
       "isUltimate": true
     },
@@ -73,7 +73,7 @@
         "level3": "This skill ignores Dodge Rate.",
         "level4": "Deals DMG equal to 12% of the target’s current HP (up to 150% of Zeus’s current ATK)."
       },
-      "image": "/skills/zeus_skill_2.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/zeus_skill_2.webp",
       "damageType": ""
     },
     {
@@ -85,7 +85,7 @@
         "level3": "Echoes inherit the Overload Unleash effect.",
         "level4": "Echoes inherit 100% of Zeus’s ATK."
       },
-      "image": "/skills/zeus_skill_3.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/zeus_skill_3.webp",
       "damageType": "Magical"
     },
     {
@@ -97,7 +97,7 @@
         "level3": "Triggers Thundercrack upon reaching 8 stacks.",
         "level4": "Increases DMG dealt by 50%."
       },
-      "image": "/skills/zeus_skill_4.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/zeus_skill_4.webp",
       "damageType": ""
     }
   ],
@@ -109,7 +109,7 @@
       "level3": "When Zeus casts Almighty Thunderstrike, all Echoes also cast it, dealing 100% of the original DMG.",
       "level4": "Echoes can also trigger Divine Pulse and Supreme Judgment."
     },
-    "image": "/skills/zeus_relic.webp"
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/zeus_relic.webp"
   },
   "synergies": [
     "AREA_DAMAGE_DEALER",

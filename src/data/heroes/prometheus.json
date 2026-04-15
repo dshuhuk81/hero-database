@@ -1,7 +1,7 @@
 {
   "id": "prometheus",
   "name": "Prometheus",
-  "image": "/heroes/prometheus.webp",
+  "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/prometheus.webp",
   "release": true,
   "faction": "Hearts",
   "role": "Hefty",
@@ -72,7 +72,7 @@
         "level3": "Increases DMG taken by the target by 10% until the battle ends.",
         "level4": "Absorbs 25% of current HP (up to 500% of ATK)."
       },
-      "image": "/skills/prometheus_skill_2.webp",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/prometheus_skill_2.webp",
       "damageType": "Magical"
     },
     {

@@ -167,15 +167,15 @@ const dotSections = [
       <h1 class="showcase-name">{hero.name}</h1>
       <div class="showcase-badges">
         <span class="id-badge">
-          <img src={`/icons/factions/${hero.faction.toLowerCase()}.webp`} alt={hero.faction} class="id-badge-icon" />
+          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${hero.faction.toLowerCase()}.webp`} alt={hero.faction} class="id-badge-icon" />
           {hero.faction}
         </span>
         <span class="id-badge">
-          <img src={`/icons/classes/${hero.class.toLowerCase()}.webp`} alt={hero.class} class="id-badge-icon" />
+          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${hero.class.toLowerCase()}.webp`} alt={hero.class} class="id-badge-icon" />
           {hero.class}
         </span>
         <span class="id-badge">
-          <img src={`/icons/roles/${hero.role.toLowerCase()}.webp`} alt={hero.role} class="id-badge-icon" />
+          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${hero.role.toLowerCase()}.webp`} alt={hero.role} class="id-badge-icon" />
           {hero.role}
         </span>
         <span class="id-badge rarity-badge">{hero.rarity}</span>
@@ -280,7 +280,7 @@ const dotSections = [
             role="tab"
             aria-selected={i === 0 ? "true" : "false"}
           >
-            <div class="skill-tab-icon" style={`background-image:url(${skill.image || `/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
+            <div class="skill-tab-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
             <span class="skill-tab-label">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
             {skill.damageType && (
               <span class={`dmg-type-chip dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
@@ -289,7 +289,7 @@ const dotSections = [
         ))}
         {hero.relic && (
           <button class="skill-tab is-relic" data-skill-tab="relic" role="tab" aria-selected="false">
-            <div class="skill-tab-icon" style={`background-image:url(${hero.relic.image || `/skills/${hero.id}_relic.webp`})`}></div>
+            <div class="skill-tab-icon" style={`background-image:url(${hero.relic.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_relic.webp`})`}></div>
             <span class="skill-tab-label">Relic</span>
           </button>
         )}
@@ -301,7 +301,7 @@ const dotSections = [
           <div class={`skill-panel${i === 0 ? " active" : ""}`} data-skill-panel={i} role="tabpanel">
             <div class="skill-panel-inner">
               <div class="skill-panel-header">
-                <div class="skill-panel-icon" style={`background-image:url(${skill.image || `/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
+                <div class="skill-panel-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
                 <div class="skill-panel-meta">
                   <h3 class="skill-panel-name">{skill.name}</h3>
                   <div class="skill-panel-badges">
@@ -327,7 +327,7 @@ const dotSections = [
           <div class="skill-panel is-relic-panel" data-skill-panel="relic" role="tabpanel">
             <div class="skill-panel-inner">
               <div class="skill-panel-header">
-                <div class="skill-panel-icon is-relic-icon" style={`background-image:url(${hero.relic.image || `/skills/${hero.id}_relic.webp`})`}></div>
+                <div class="skill-panel-icon is-relic-icon" style={`background-image:url(${hero.relic.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_relic.webp`})`}></div>
                 <div class="skill-panel-meta">
                   <h3 class="skill-panel-name">{hero.relic.name}</h3>
                   <div class="skill-panel-badges">
@@ -501,7 +501,7 @@ const dotSections = [
         <div class="syn-links-grid">
           {(hero as any).synergyLinks.map((link: { heroId: string; type: string; description: string }) => (
             <a href={`/heroes/${link.heroId}`} class={`syn-link-card syn-${link.type}`}>
-              <div class="syn-link-portrait" style={`background-image:url(/heroes/${link.heroId}.webp)`} role="img" aria-label={link.heroId}></div>
+              <div class="syn-link-portrait" style={`background-image:url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${link.heroId}.webp)`} role="img" aria-label={link.heroId}></div>
               <div class="syn-link-body">
                 <div class="syn-link-row">
                   <span class="syn-link-name">{link.heroId}</span>
