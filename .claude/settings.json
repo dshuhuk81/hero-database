@@ -45,7 +45,8 @@
       "Bash(grep -n \"mechanic-panel\\\\|synergy-links-panel\\\\|investment-roadmap\\\\|relic-bp\\\\|bug-banner\" /Users/daschultheiss/hero-database/src/pages/heroes/[id].astro)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('name'\\), d.get\\('id'\\)\\)\")",
       "Bash(ls /Users/daschultheiss/hero-database/src/data/heroes/*.json)",
-      "Bash(xargs -I{} basename {} .json)"
+      "Bash(xargs -I{} basename {} .json)",
+      "Bash(ls /Users/daschultheiss/hero-database/public/skills/*.png)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
