@@ -20,6 +20,7 @@ function heroName(hid: string): string { return hero(hid)?.name ?? hid; }
 function heroImg(hid: string): string {
   const img = hero(hid)?.image;
   if (typeof img !== "string" || img.length === 0) return "";
+  if (img.startsWith("http://") || img.startsWith("https://")) return img;
   return img.startsWith("/") ? img : `/${img}`;
 }
 ---

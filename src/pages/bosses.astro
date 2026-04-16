@@ -46,7 +46,9 @@ const MECHANIC_LABELS = {
 function heroName(id) { return getHeroById(id)?.name ?? id; }
 function heroImage(id) {
   const img = getHeroById(id)?.image;
-  return img?.startsWith("/") ? img : `/${img}`;
+  if (!img) return "";
+  if (img.startsWith("http://") || img.startsWith("https://")) return img;
+  return img.startsWith("/") ? img : `/${img}`;
 }
 function factionIcon(faction) {
   return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${String(faction || "").toLowerCase()}.webp`;
