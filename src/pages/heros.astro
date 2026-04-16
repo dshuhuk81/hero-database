@@ -286,9 +286,9 @@ const sortedHeroes = [...heroes]
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); /* flexibel */
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 20px;
-  justify-content: center; /* zentriert das Grid */
+  justify-content: center;
 }
 
 /* ================================
@@ -299,6 +299,16 @@ const sortedHeroes = [...heroes]
   position: relative;
   width: 210px;
   border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .hero-wrapper {
+    width: 100%;
+  }
 }
 
 /* Common */
