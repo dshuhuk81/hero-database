@@ -28,21 +28,21 @@ const DIAMONDS_CORE = [
   { id: "athena",   name: "Athena",   note: "Core" },
 ];
 const CLUBS_MAIN = [
-  { id: "jormungandr", name: "Jormungandr", note: "Carry (Bugged)" },
+  { id: "jormungandr", name: "Jormungandr", note: "Carry" },
   { id: "wenshen",     name: "Wenshen",     note: "Chain Dmg" },
   { id: "anubis",      name: "Anubis",      note: "Pick/Threat" },
   { id: "pan",         name: "Pan",         note: "Control" },
   { id: "nuba",        name: "Nuba",        note: "Frontline" },
 ];
 const CLUBS_ALT = [
-  { id: "jormungandr", name: "Jormungandr", note: "Carry (Bugged)" },
+  { id: "jormungandr", name: "Jormungandr", note: "Carry" },
   { id: "wenshen",     name: "Wenshen",     note: "Chain Dmg" },
   { id: "anubis",      name: "Anubis",      note: "Pick/Threat" },
   { id: "pan",         name: "Pan",         note: "Control" },
   { id: "diana",       name: "Diana",       note: "Support" },
 ];
 const CLUBS_FALLBACK = [
-  { id: "jormungandr", name: "Jormungandr", note: "Carry (Bugged)" },
+  { id: "jormungandr", name: "Jormungandr", note: "Carry" },
   { id: "pan",         name: "Pan",         note: "Control" },
   { id: "anubis",      name: "Anubis",      note: "Pick/Threat" },
   { id: "nuba",        name: "Nuba",        note: "Frontline" },
@@ -51,14 +51,14 @@ const CLUBS_FALLBACK = [
 ---
 
 <Base
-  title="Western Tower Guide | Motto Immortal"
-  description="Western client Faction Tower guide for Motto Immortal. Best available teams, missing heroes explained, Jormungandr bug warning, and floor breakpoints for 400+ and 500+."
+  title="Celestial Spire Guide | Motto Immortal"
+  description="Celestial Spire guide for Motto Immortal. Best faction teams, Level Suppression explained, and floor breakpoints for 400+ and 500+."
 >
 
   <PageHero
-    tag="Tower - Western Client"
-    headline="Western Tower Guide"
-    subtitle="Current best teams for the Western client - missing heroes, known bugs, and honest investment advice"
+    tag="Celestial Spire"
+    headline="Celestial Spire Guide"
+    subtitle="Best faction teams, Level Suppression explained, and investment advice for 400+ and 500+"
     bgImage="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/towerBG.webp"
   />
 
@@ -66,29 +66,13 @@ const CLUBS_FALLBACK = [
     <main class="tower-main">
 
       <!-- ================================================================
-           WESTERN CLIENT NOTICE
-           ================================================================ -->
-      <div class="tw-west-notice">
-        <div class="tw-west-notice-title">Western Client Edition</div>
-        <p>
-          This guide reflects the current state of the <strong>Western client</strong> specifically.
-          Several top CN Tower heroes are not yet available here, and one major hero has a confirmed
-          gameplay issue. If you copy teams directly from CN sources or the standard Tower guide,
-          you will be building around heroes you cannot use or mechanics that do not work correctly.
-        </p>
-        <p style="margin-bottom:0">
-          Use this page if you want guidance that reflects what Western players can actually build today.
-        </p>
-      </div>
-
-      <!-- ================================================================
            SECTION 1: INTRO
            ================================================================ -->
       <div class="tw-card tw-intro-card">
-        <h2>What Is the Faction Tower?</h2>
+        <h2>What Is the Celestial Spire?</h2>
         <p>
-          The Faction Tower is a vertical progression mode where you fight through floors using a
-          locked faction team. Each faction has its own separate tower. Progress is decided by
+          The Celestial Spire is a vertical progression mode where you fight through floors using a
+          locked faction team. Each faction has its own separate Spire. Progress is decided by
           how well your roster is built for that specific faction - not just raw hero power.
         </p>
 
@@ -111,15 +95,14 @@ const CLUBS_FALLBACK = [
             <div class="floor-label">Floor 500+</div>
             <div class="floor-desc">
               Endgame territory. Relic gates, roster depth, and synergy quality decide everything.
-              In the Western client, missing heroes make this significantly harder than CN.
+              Some factions are significantly harder to push here than others.
             </div>
           </div>
         </div>
 
         <div class="tw-callout">
-          <strong>Tower is not primarily a skill mode.</strong> It is a relic check, a synergy check,
-          an investment check, and a roster depth check. In the Western client, it is also a
-          availability check - some of the best Tower heroes are simply not here yet.
+          <strong>Celestial Spire is not primarily a skill mode.</strong> It is a relic check, a synergy check,
+          an investment check, and a roster depth check.
         </div>
       </div>
 
@@ -127,72 +110,78 @@ const CLUBS_FALLBACK = [
            SECTION 2: TOWER PHILOSOPHY
            ================================================================ -->
       <div class="tw-card">
-        <h2>Tower Philosophy</h2>
+        <h2>Celestial Spire Philosophy</h2>
         <p>
-          Tower rewards specialized faction synergy above raw hero power. A T0 hero in the wrong
-          shell underperforms a weaker hero in the correct shell. This is especially important
-          in the Western client, where the correct shell for some factions is missing pieces.
+          Celestial Spire rewards specialized faction synergy above raw hero power. A T0 hero in the wrong
+          squad underperforms a weaker hero in the correct squad.
         </p>
-
-        <h3>Why the Western Meta Differs</h3>
         <ul>
-          <li>Several heroes that anchor CN endgame Tower teams are not yet released in the West.</li>
-          <li>One significant hero (Jormungandr) has a confirmed bug that materially reduces his value.</li>
-          <li>Blindly following CN Tower recommendations will lead to investing in unavailable or underperforming pieces.</li>
-          <li>Some factions are meaningfully weaker in the West, not just slightly weaker.</li>
+          <li>Level Suppression is a one-sided damage penalty that affects all deities, including True Damage. Understanding this mechanic is essential for high floors.</li>
+          <li>Several deities are not yet available - some factions are missing key pieces and play differently as a result.</li>
+          <li>Some factions are meaningfully harder to push than others at the same investment level.</li>
         </ul>
 
         <div class="tw-keybox">
           <div class="tw-keybox-title">Key Takeaways</div>
           <ul>
-            <li>Spades is currently the best Western Tower faction. Invest here first.</li>
-            <li>Hearts is still excellent but remains heavily core-dependent.</li>
-            <li>Diamonds is playable but incomplete without Meret and Serket.</li>
-            <li>Clubs is currently the weakest Western Tower faction. It is still viable for pushing floors - build it, but keep shell investment at functional levels.</li>
-            <li>Do not copy CN Tower teams directly. This guide exists for a reason.</li>
+            <li>Spades is currently the strongest Celestial Spire faction. Invest here first.</li>
+            <li>Hearts is excellent but heavily core-dependent.</li>
+            <li>Diamonds is the most volatile faction. Higher variance, burst-dependent.</li>
+            <li>Clubs is the weakest faction currently. Viable for pushing floors but keep squad investment at functional levels.</li>
           </ul>
         </div>
       </div>
 
       <!-- ================================================================
-           SECTION 3: JORMUNGANDR BUG WARNING
+           SECTION 3: LEVEL SUPPRESSION
            ================================================================ -->
-      <div class="tw-card tw-bug-card" id="jormungandr-bug">
+      <div class="tw-card tw-mechanic-card" id="level-suppression">
         <div class="tw-bug-header">
-          <span class="tw-bug-badge">Known Issue</span>
-          <h2 style="margin:0; border:none; padding:0; color: #fca5a5;">Jormungandr - True Damage Bug</h2>
+          <span class="tw-mechanic-badge">Game Mechanic</span>
+          <h2 style="margin:0; border:none; padding:0;">Level Suppression - What It Is and Why It Matters</h2>
         </div>
         <p>
-          Jormungandr currently has a confirmed problem in the Western client. His True Damage
-          is not functioning correctly - it is either not being applied at all or not calculating
-          as intended. True Damage is a core part of his damage output and the reason he anchors
-          Clubs Tower teams in CN.
+          Level Suppression is a damage reduction system that applies exclusively in the
+          Celestial Spire (and Odyssey). It is not present in PvP or other modes.
         </p>
         <p>
-          <strong>This materially lowers his Tower value in the Western client.</strong> He still
-          functions as a hero, but not at the level CN guides assume. Clubs Tower teams built around
-          him will underperform expectations set by CN content.
+          <strong>How it works:</strong> If your deity's level is lower than the enemy's level,
+          your damage is reduced. The system is one-sided - there is no bonus for being higher
+          level, only a penalty for being lower. The penalty works as follows:
+        </p>
+        <ul>
+          <li><strong>15 levels or less behind:</strong> No reduction. Damage is unaffected.</li>
+          <li><strong>More than 15 levels behind:</strong> Damage begins decreasing.</li>
+          <li><strong>Large gap:</strong> Reduction can reach up to 90% at extreme differences.</li>
+        </ul>
+        <p>
+          <strong>True Damage is also affected.</strong> True Damage bypasses armor - but it does
+          not bypass Level Suppression. If your level is far below the floor's enemies, even True Damage can be reduced significantly.
         </p>
         <div class="tw-bug-impact">
-          <div class="tw-bug-impact-title">Impact on This Guide</div>
+          <div class="tw-bug-impact-title">What This Means for Your Progression</div>
           <ul>
-            <li>The Clubs section of this guide reflects the current Western state honestly.</li>
-            <li>Clubs can still be pushed and invested in - the ceiling is just lower than CN.</li>
-            <li>Jormungandr is still the only viable Clubs carry despite the bug.</li>
-            <li>This section will be updated when the bug is resolved or CN heroes arrive.</li>
+            <li>Relic investment only matters after you are within 15 levels of the floor's enemies. If the level gap is too large, even relic 50 deities deal nearly nothing.</li>
+            <li>Level up before pushing. When runs suddenly start failing for no clear reason, check the level gap first.</li>
+            <li>Sustained-damage carries like Hladgunnr are hit harder than burst carries. Every skill rotation is suppressed, compounding the loss over a long fight.</li>
+            <li>Burst carries like Jormungandr and Heracles also suffer - but a burst failure at least ends the fight quickly rather than dragging out a losing attrition match.</li>
           </ul>
+        </div>
+        <div class="tw-bug-impact" style="margin-top:12px">
+          <div class="tw-bug-impact-title">Jormungandr and True Damage</div>
+          <p style="margin:0">
+            True Damage bypasses armor but is still subject to Level Suppression like all other
+            damage. If your level is far below the floor's enemies, his True Damage is reduced
+            significantly. Closing the level gap restores his output.
+          </p>
         </div>
       </div>
 
       <!-- ================================================================
-           SECTION 4: FACTION DIFFICULTY OVERVIEW (WESTERN)
+           SECTION 4: FACTION DIFFICULTY OVERVIEW
            ================================================================ -->
       <div class="tw-card">
-        <h2>Western Faction Difficulty Overview</h2>
-        <p>
-          This overview reflects the current Western client, not the CN meta. The faction rankings
-          and assessments here will differ from CN-based resources.
-        </p>
+        <h2>Faction Overview</h2>
 
         <div class="faction-overview-grid">
 
@@ -200,18 +189,16 @@ const CLUBS_FALLBACK = [
             <div class="faction-tile-header">
               <img src={fi("spades")} alt="Spades" class="faction-tile-icon" />
               <span class="faction-tile-name">Spades</span>
-              <span class="faction-tile-difficulty diff-stable">Best in West</span>
+              <span class="faction-tile-difficulty diff-stable">Top Faction</span>
             </div>
             <ul class="faction-tile-stats">
               <li><span class="stat-label">Consistency</span><span class="stat-val">Very High</span></li>
-              <li><span class="stat-label">CN Impact</span><span class="stat-val">Low - loses Nut only</span></li>
               <li><span class="stat-label">Availability</span><span class="stat-val">Core intact</span></li>
               <li><span class="stat-label">Recommended</span><span class="stat-val">Yes - priority investment</span></li>
             </ul>
             <p class="faction-tile-summary">
-              The most stable Western Tower faction. Missing Nut lowers the ceiling slightly but
-              does not break the team. Iris fills the flex slot well. This faction loses the least
-              from the Western content gap.
+              The most stable Celestial Spire faction. Strong control engine built around Skadi.
+              Consistent, forgiving, and reliable across all floor ranges.
             </p>
           </div>
 
@@ -223,14 +210,12 @@ const CLUBS_FALLBACK = [
             </div>
             <ul class="faction-tile-stats">
               <li><span class="stat-label">Consistency</span><span class="stat-val">High with core</span></li>
-              <li><span class="stat-label">CN Impact</span><span class="stat-val">Low - Eden missing only</span></li>
               <li><span class="stat-label">Availability</span><span class="stat-val">Core intact</span></li>
               <li><span class="stat-label">Recommended</span><span class="stat-val">Yes - strong second pick</span></li>
             </ul>
             <p class="faction-tile-summary">
-              Hearts core team is almost identical to CN. Eden is missing but does not break the
-              faction. Mengpo and Caishen remain mandatory. This faction is still top-tier in the
-              Western client.
+              Top-tier sustain faction. Mengpo and Caishen are mandatory. Strong triple-sustain
+              architecture that outlasts opponents at high floors.
             </p>
           </div>
 
@@ -242,14 +227,12 @@ const CLUBS_FALLBACK = [
             </div>
             <ul class="faction-tile-stats">
               <li><span class="stat-label">Consistency</span><span class="stat-val">Variable</span></li>
-              <li><span class="stat-label">CN Impact</span><span class="stat-val">Medium - Meret and Serket missing</span></li>
-              <li><span class="stat-label">Availability</span><span class="stat-val">Core intact, shell weaker</span></li>
+              <li><span class="stat-label">Availability</span><span class="stat-val">Core intact</span></li>
               <li><span class="stat-label">Recommended</span><span class="stat-val">With caution</span></li>
             </ul>
             <p class="faction-tile-summary">
-              Heracles is available and still the core carry. But without Meret the team loses
-              significant tempo and safety. Athena fills in but is a clear downgrade.
-              More volatile than CN Diamonds.
+              Heracles-anchored burst faction. Higher variance than other factions. Runs succeed
+              or fail based heavily on burst execution. Investment in Heracles directly reduces variance.
             </p>
           </div>
 
@@ -257,18 +240,17 @@ const CLUBS_FALLBACK = [
             <div class="faction-tile-header">
               <img src={fi("clubs")} alt="Clubs" class="faction-tile-icon" />
               <span class="faction-tile-name">Clubs</span>
-              <span class="faction-tile-difficulty diff-compromised">Compromised</span>
+              <span class="faction-tile-difficulty diff-compromised">Incomplete</span>
             </div>
             <ul class="faction-tile-stats">
               <li><span class="stat-label">Consistency</span><span class="stat-val">Low to moderate</span></li>
-              <li><span class="stat-label">CN Impact</span><span class="stat-val">High - Xuannv, Eris missing + Jorm bug</span></li>
-              <li><span class="stat-label">Availability</span><span class="stat-val">Core hero bugged</span></li>
-              <li><span class="stat-label">Recommended</span><span class="stat-val">Build for push, but 3rd priority</span></li>
+              <li><span class="stat-label">Availability</span><span class="stat-val">Core intact</span></li>
+              <li><span class="stat-label">Recommended</span><span class="stat-val">Build for push, 3rd priority</span></li>
             </ul>
             <p class="faction-tile-summary">
-              Currently the weakest Western Tower faction. Jormungandr's True Damage bug plus
-              the absence of Xuannv and Eris lowers the ceiling noticeably. Still viable for
-              pushing Clubs floors - just not at the level CN teams achieve.
+              Currently the weakest Celestial Spire faction. Jormungandr anchors the team but
+              Level Suppression hits hard at high floors. Still viable for pushing - set realistic
+              expectations on the ceiling.
             </p>
           </div>
 
@@ -284,13 +266,11 @@ const CLUBS_FALLBACK = [
           <img src={fi("spades")} alt="Spades" class="faction-section-icon" />
           <div>
             <h2 class="faction-section-name">Spades</h2>
-            <p class="faction-section-tagline">The most stable Western Tower faction</p>
+            <p class="faction-section-tagline">The most stable Celestial Spire faction</p>
           </div>
         </div>
 
-        <div class="tw-west-tag tw-west-tag-good">Western Status: Recommended - priority investment</div>
-
-        <h3 class="subsection-title">Best Western Team (500+)</h3>
+        <h3 class="subsection-title">Best Team (500+)</h3>
         <div class="core-team-display">
           {SPADES_CORE.map(hero => (
             <a href={`/heroes/${hero.id}`} class="core-hero-card">
@@ -300,39 +280,29 @@ const CLUBS_FALLBACK = [
             </a>
           ))}
         </div>
-        <div class="tw-missing-note">
-          <span class="missing-label">Missing vs CN:</span>
-          Nut is not yet available in the Western client. Iris fills the fifth slot as the best
-          available substitute. The ceiling is slightly lower than CN but the team is still fully
-          functional.
-        </div>
-
         <h3 class="subsection-title">Why This Team Works</h3>
         <div class="synergy-grid">
           <div class="synergy-block">
             <div class="synergy-block-title">The Control Engine</div>
             <p>
-              Skadi remains the structural backbone. Every CC applied to an enemy triggers her passive,
+              Skadi is the structural backbone. Every CC applied to an enemy triggers her passive,
               generating bonus damage and energy. Poseidon opens with broad AoE control, Momus extends
-              the disruption window, and Khepri applies frontline pressure. The loop fires with or
-              without Nut.
+              the disruption window, and Khepri applies frontline pressure.
             </p>
           </div>
           <div class="synergy-block">
-            <div class="synergy-block-title">Iris as the Western Fifth</div>
+            <div class="synergy-block-title">Iris in the Fifth Slot</div>
             <p>
-              Iris fills the Nut slot with support utility and additional sustain. She does not
-              replicate Nut's scaling ceiling but she keeps the team functional at high floors.
-              For pure Khepri-vs-Iris decisions, use Khepri when frontline setup matters more
-              and Iris when sustained utility is the priority.
+              Iris provides support utility and additional sustain. She keeps the team functional
+              at high floors. For Khepri-vs-Iris decisions, use Khepri when frontline setup matters
+              more and Iris when sustained utility is the priority.
             </p>
           </div>
           <div class="synergy-block">
-            <div class="synergy-block-title">Why Spades Survives the Content Gap</div>
+            <div class="synergy-block-title">Why Spades Is the Top Investment</div>
             <p>
-              Spades loses only Nut from its CN roster. The core engine - Skadi, Poseidon, Momus -
-              is fully intact. This is why Spades is the best Western Tower investment: it loses
-              less than every other faction from the current hero availability gap.
+              The core engine - Skadi, Poseidon, Momus - is fully intact and highly consistent.
+              This faction has the strongest and most forgiving identity in the current Celestial Spire.
             </p>
           </div>
         </div>
@@ -373,15 +343,15 @@ const CLUBS_FALLBACK = [
             <div class="replacement-sub">
               <span class="replacement-badge badge-none">No replacement</span>
               Skadi has no viable replacement. Without her the control loop does not exist and
-              Spades Tower at 450+ is not viable regardless of what else you run.
+              Spades Celestial Spire at 450+ is not viable regardless of what else you run.
             </div>
           </div>
           <div class="replacement-entry replacement-flex">
             <div class="replacement-hero">Khepri / Iris</div>
             <div class="replacement-sub">
               <span class="replacement-badge badge-flex">Interchangeable</span>
-              These two flex based on the floor. Neither is strictly mandatory. In Western play
-              Iris often sits in the fifth slot by default since Nut is unavailable.
+              These two flex based on the floor. Neither is strictly mandatory. Use Khepri
+              when frontline pressure matters more and Iris for sustained utility.
             </div>
           </div>
           <div class="replacement-entry replacement-weak">
@@ -399,19 +369,17 @@ const CLUBS_FALLBACK = [
         <div class="floor-progression">
           <div class="floor-prog-block floor-prog-400">
             <div class="floor-prog-label">400+</div>
-            <p>The Skadi loop starts making sense here. Western Spades is already competitive
-               at this range. Relic investment on Skadi is the main variable separating runs.</p>
+            <p>The Skadi loop starts making sense here. Relic investment on Skadi is the main variable separating runs.</p>
           </div>
           <div class="floor-prog-block floor-prog-450">
             <div class="floor-prog-label">450+</div>
             <p>Setup quality matters. Skadi relic 20-30 becomes the threshold for reliable
-               clearing. The missing Nut slot becomes more noticeable here but is manageable
-               with correct positioning.</p>
+               clearing. Correct positioning becomes increasingly important.</p>
           </div>
           <div class="floor-prog-block floor-prog-500">
             <div class="floor-prog-label">500+</div>
-            <p>Skadi relic 30 is the minimum expectation. The team remains among the most stable
-               at this range even without Nut. Proper formation and setup discipline is critical.</p>
+            <p>Skadi relic 30 is the minimum expectation. The team is among the most stable
+               at this range. Correct positioning and squad discipline is critical.</p>
           </div>
         </div>
 
@@ -492,16 +460,16 @@ const CLUBS_FALLBACK = [
                 <span class="hero-pic-name">Iris</span>
               </a>
             </div>
-            <p class="variant-note">Western endgame shell. Skadi relic 30+ mandatory, 40 preferred. Iris holds the Nut slot until she releases.</p>
+            <p class="variant-note">Endgame squad. Skadi relic 30+ mandatory, 40 preferred.</p>
           </div>
         </div>
 
         <div class="tw-warning-box">
           <div class="tw-warning-title">Warnings</div>
           <ul>
-            <li><strong>Skadi has no replacement.</strong> This is true in both CN and the Western client. Without her, Spades is not viable past floor 450.</li>
-            <li><strong>Western Spades is strong precisely because it loses so little.</strong> Do not underestimate this faction just because it lacks Nut.</li>
-            <li><strong>Wrong positioning still breaks this team.</strong> The CC loop must fire. Misconfigured formations look like hero failure but are setup failure.</li>
+            <li><strong>Skadi has no replacement.</strong> Without her, Spades is not viable past floor 450 in the Celestial Spire.</li>
+            <li><strong>Do not underestimate Spades.</strong> The core engine is strong and the faction is the most forgiving to play.</li>
+            <li><strong>Wrong positioning still breaks this team.</strong> The CC loop must fire. Wrong squad setup looks like hero failure but is setup failure.</li>
           </ul>
         </div>
 
@@ -516,13 +484,11 @@ const CLUBS_FALLBACK = [
           <img src={fi("hearts")} alt="Hearts" class="faction-section-icon" />
           <div>
             <h2 class="faction-section-name">Hearts</h2>
-            <p class="faction-section-tagline">Strong and nearly complete in the Western client</p>
+            <p class="faction-section-tagline">Strong, sustain-focused faction</p>
           </div>
         </div>
 
-        <div class="tw-west-tag tw-west-tag-good">Western Status: Recommended - strong second faction</div>
-
-        <h3 class="subsection-title">Best Western Team (500+)</h3>
+        <h3 class="subsection-title">Best Team (500+)</h3>
         <div class="core-team-display">
           {HEARTS_CORE.map(hero => (
             <a href={`/heroes/${hero.id}`} class="core-hero-card">
@@ -532,13 +498,6 @@ const CLUBS_FALLBACK = [
             </a>
           ))}
         </div>
-        <div class="tw-missing-note">
-          <span class="missing-label">Missing vs CN:</span>
-          Eden is not yet available in the Western client. This is the only meaningful absence from
-          the Hearts core team. The faction remains nearly identical to its CN version in practical
-          terms.
-        </div>
-
         <h3 class="subsection-title">Why This Team Works</h3>
         <div class="synergy-grid">
           <div class="synergy-block">
@@ -546,7 +505,7 @@ const CLUBS_FALLBACK = [
             <p>
               Mengpo is the structural core. Her revive mechanism gives the team a second life on
               critical heroes, changing how attrition fights play out at 500+. This mechanic is
-              fully intact in the Western client - Mengpo is available and her kit works correctly.
+              fully intact - Mengpo is available and her kit works correctly.
             </p>
           </div>
           <div class="synergy-block">
@@ -555,7 +514,7 @@ const CLUBS_FALLBACK = [
               Caishen adds energy acceleration and a second sustain layer on top of Mengpo. Yuelao
               contributes healing and damage amplification. Cancer provides major protective utility.
               This triple-sustain architecture is what makes the team viable at high floors and it
-              is fully available to Western players.
+              is fully available.
             </p>
           </div>
           <div class="synergy-block">
@@ -563,8 +522,13 @@ const CLUBS_FALLBACK = [
             <p>
               Hladgunnr delivers frontline pressure while the support structure keeps her alive.
               The team wins by outlasting and outscaling - not by bursting. This identity is
-              unchanged from CN and remains one of the most effective Tower strategies available
-              in the Western client right now.
+              This identity remains one of the most effective Celestial Spire strategies available.
+            </p>
+            <p>
+              Note: Hladgunnr's sustained damage model is particularly sensitive to Level
+              Suppression. Every skill rotation is reduced when the level gap exceeds 15.
+              If she feels underpowered, check your level against the floor enemies before
+              adjusting relic investment.
             </p>
           </div>
         </div>
@@ -616,9 +580,8 @@ const CLUBS_FALLBACK = [
           <div class="replacement-entry replacement-none">
             <div class="replacement-hero">Caishen</div>
             <div class="replacement-sub">
-              <span class="replacement-badge badge-none">No current replacement</span>
-              Eden (not yet available in the West) is the only true substitute. Until she releases,
-              there is no hero that replicates Caishen's energy and sustain contribution to this team.
+              <span class="replacement-badge badge-none">No replacement</span>
+              No hero replicates Caishen's energy acceleration and sustain contribution to this team.
             </div>
           </div>
           <div class="replacement-entry replacement-weak">
@@ -644,8 +607,7 @@ const CLUBS_FALLBACK = [
           <div class="floor-prog-block floor-prog-400">
             <div class="floor-prog-label">400+</div>
             <p>Strong from the start when the support core exists. Hladgunnr carries with Mengpo
-               and Caishen keeping the team alive. The team is nearly identical to CN at this
-               range.</p>
+               and Caishen keeping the team alive.</p>
           </div>
           <div class="floor-prog-block floor-prog-450">
             <div class="floor-prog-label">450+</div>
@@ -736,7 +698,7 @@ const CLUBS_FALLBACK = [
                 <span class="hero-pic-name">Cancer</span>
               </a>
             </div>
-            <p class="variant-note">Full Western endgame shell. Mengpo 30 and Hladgunnr 30-40 are the investment gates.</p>
+            <p class="variant-note">Full endgame squad. Mengpo 30 and Hladgunnr 30-40 are the investment gates.</p>
           </div>
         </div>
 
@@ -745,7 +707,6 @@ const CLUBS_FALLBACK = [
           <ul>
             <li><strong>This faction collapses without Mengpo.</strong> No other available hero provides comparable revive value. Mengpo relic is your top Hearts investment.</li>
             <li><strong>Dying too fast means investment is too low</strong> - not that the team is bad. If the team does not outlast opponents, relic levels are the issue.</li>
-            <li><strong>Eden is missing but Hearts is still fully viable.</strong> Do not delay building this faction waiting for Eden.</li>
           </ul>
         </div>
 
@@ -760,13 +721,11 @@ const CLUBS_FALLBACK = [
           <img src={fi("diamonds")} alt="Diamonds" class="faction-section-icon" />
           <div>
             <h2 class="faction-section-name">Diamonds</h2>
-            <p class="faction-section-tagline">Playable burst faction - incomplete without Meret and Serket</p>
+            <p class="faction-section-tagline">High-variance burst faction</p>
           </div>
         </div>
 
-        <div class="tw-west-tag tw-west-tag-caution">Western Status: Playable with caution - weaker than CN version</div>
-
-        <h3 class="subsection-title">Best Western Team (500+)</h3>
+        <h3 class="subsection-title">Best Team (500+)</h3>
         <div class="core-team-display">
           {DIAMONDS_CORE.map(hero => (
             <a href={`/heroes/${hero.id}`} class="core-hero-card">
@@ -776,39 +735,30 @@ const CLUBS_FALLBACK = [
             </a>
           ))}
         </div>
-        <div class="tw-missing-note tw-missing-warn">
-          <span class="missing-label">Missing vs CN:</span>
-          Meret and Serket are not available in the Western client. Meret was a key tempo and
-          support piece. Athena fills in here but is a clear downgrade. The team is functional
-          but noticeably less complete than CN Diamonds.
-        </div>
-
         <h3 class="subsection-title">Why This Team Works</h3>
         <div class="synergy-grid">
           <div class="synergy-block">
             <div class="synergy-block-title">Heracles as Burst Anchor</div>
             <p>
               Heracles remains the core carry and the reason this faction functions. His burst
-              output is unchanged. Every other hero in the Western lineup exists to extend his
+              output is unchanged. Every other deity in the lineup exists to extend his
               survival window, protect his burst, or clean up what he does not finish.
             </p>
           </div>
           <div class="synergy-block">
-            <div class="synergy-block-title">The Western Shell</div>
+            <div class="synergy-block-title">Athena as Stabilizer</div>
             <p>
-              Without Meret, Athena becomes the primary stabilizer. She trades Meret's tempo
-              contribution for a more defensive and protective presence. This makes the team
-              safer but slower. Bastet and Set continue their roles. Phoenix provides the
+              Athena provides defensive and protective presence that keeps the team alive through
+              burst setup. Bastet and Set continue their supporting roles. Phoenix provides the
               critical safety net that prevents burst failures from ending runs.
             </p>
           </div>
           <div class="synergy-block">
-            <div class="synergy-block-title">Increased Volatility</div>
+            <div class="synergy-block-title">Volatility</div>
             <p>
-              Meret's absence makes the team more volatile. Burst windows are less controlled.
-              Runs succeed or fail based more on initial conditions than in the CN version.
+              This is the most volatile faction. Burst windows are not always controlled.
               Higher investment in Heracles directly reduces this variance - under-invested
-              Heracles is the primary failure mode in Western Diamonds.
+              Heracles is the primary failure mode.
             </p>
           </div>
         </div>
@@ -832,7 +782,7 @@ const CLUBS_FALLBACK = [
           </div>
           <div class="relic-row relic-high">
             <span class="relic-hero">Athena</span>
-            <span class="relic-level">More valuable in West than in CN - 10-20 useful</span>
+            <span class="relic-level">10-20 useful - important defensive anchor</span>
             <span class="relic-priority">Priority 2</span>
           </div>
           <div class="relic-row relic-low">
@@ -848,31 +798,23 @@ const CLUBS_FALLBACK = [
             <div class="replacement-hero">Heracles</div>
             <div class="replacement-sub">
               <span class="replacement-badge badge-none">No replacement</span>
-              Heracles is the burst framework. Without him Western Diamonds has no carry identity.
+              Heracles is the burst framework. Without him Diamonds has no carry identity.
             </div>
           </div>
           <div class="replacement-entry replacement-none">
             <div class="replacement-hero">Phoenix</div>
             <div class="replacement-sub">
               <span class="replacement-badge badge-none">No true replacement</span>
-              Phoenix's safety net is especially important in Western Diamonds because the team
-              is more volatile without Meret. Removing her makes failed burst attempts unrecoverable.
-            </div>
-          </div>
-          <div class="replacement-entry replacement-weak">
-            <div class="replacement-hero">Meret (unavailable)</div>
-            <div class="replacement-sub">
-              <span class="replacement-badge badge-none">Not available in West</span>
-              Athena is the realistic substitute currently. She is a meaningful downgrade in tempo
-              and damage support but improves survivability. This is a net loss, not a neutral swap.
+              Phoenix's safety net is especially important in this volatile burst faction.
+              Removing her makes failed burst attempts unrecoverable.
             </div>
           </div>
           <div class="replacement-entry replacement-flex">
             <div class="replacement-hero">Bastet / Set / Athena</div>
             <div class="replacement-sub">
-              <span class="replacement-badge badge-flex">Western shell - flexible</span>
-              These three slots are the practical Western configuration. Adjust based on floor
-              needs. Athena is generally the safest default given the missing Meret and Serket.
+              <span class="replacement-badge badge-flex">Flexible</span>
+              These three slots flex based on floor needs. Athena is generally the safest default
+              as a defensive anchor.
             </div>
           </div>
         </div>
@@ -881,21 +823,18 @@ const CLUBS_FALLBACK = [
         <div class="floor-progression">
           <div class="floor-prog-block floor-prog-400">
             <div class="floor-prog-label">400+</div>
-            <p>Functional. Heracles carries through this range with the Western shell.
-               The missing Meret is not yet critical at this bracket. Phoenix keeps
-               burst failures recoverable.</p>
+            <p>Functional. Heracles carries through this range with the current squad.
+               Phoenix keeps burst failures recoverable.</p>
           </div>
           <div class="floor-prog-block floor-prog-450">
             <div class="floor-prog-label">450+</div>
             <p>Carry investment becomes clearly visible. Heracles relic 20-30 is the threshold.
-               The missing Meret problem becomes more noticeable as enemy health pools and
-               damage output increase.</p>
+               Burst consistency starts to matter more as enemy health pools increase.</p>
           </div>
           <div class="floor-prog-block floor-prog-500">
             <div class="floor-prog-label">500+</div>
-            <p>Heracles relic gate is very real. Relic 30 minimum. The incomplete Western shell
-               is most visible at this bracket. Expect more variance than CN Diamonds at
-               equivalent investment levels.</p>
+            <p>Heracles relic gate is very real. Relic 30 minimum. This is the most volatile
+               bracket for Diamonds. Expect higher variance - burst execution is everything here.</p>
           </div>
         </div>
 
@@ -924,7 +863,7 @@ const CLUBS_FALLBACK = [
                 <span class="hero-pic-name">Athena</span>
               </a>
             </div>
-            <p class="variant-note">Same as endgame shell early on. Heracles carries through 420-440 on raw burst.</p>
+            <p class="variant-note">Same as endgame squad early on. Heracles carries through 420-440 on raw burst.</p>
           </div>
           <div class="variant-card">
             <div class="variant-label variant-mid">Midgame</div>
@@ -976,7 +915,7 @@ const CLUBS_FALLBACK = [
                 <span class="hero-pic-name">Athena</span>
               </a>
             </div>
-            <p class="variant-note">Western endgame shell. Heracles relic 30 mandatory. Athena carries more weight here than in CN.</p>
+            <p class="variant-note">Endgame squad. Heracles relic 30 mandatory. Athena is the primary defensive anchor.</p>
           </div>
         </div>
 
@@ -984,8 +923,7 @@ const CLUBS_FALLBACK = [
           <div class="tw-warning-title">Warnings</div>
           <ul>
             <li><strong>Heracles under relic 30 at 500+ is a trap.</strong> The burst does not land cleanly below this threshold. Do not push 500+ floors until Heracles relic is adequate.</li>
-            <li><strong>Western Diamonds is incomplete.</strong> This is not a player mistake - Meret and Serket are simply not in the client yet. Set honest expectations accordingly.</li>
-            <li><strong>Higher variance than CN.</strong> Do not assess team strength from a single run. Diamonds swings more in the West because the safety layer is thinner.</li>
+            <li><strong>Do not assess team strength from a single run.</strong> Diamonds is the most volatile faction. Variance is high, especially at 500+.</li>
           </ul>
         </div>
 
@@ -1000,68 +938,53 @@ const CLUBS_FALLBACK = [
           <img src={fi("clubs")} alt="Clubs" class="faction-section-icon" />
           <div>
             <h2 class="faction-section-name">Clubs</h2>
-            <p class="faction-section-tagline">Viable push faction - incomplete without Jiutian Xuannv and Eris</p>
+            <p class="faction-section-tagline">Chain damage faction - most investment-sensitive</p>
           </div>
           <span class="faction-compromised-badge">Compromised</span>
         </div>
 
-        <div class="tw-west-tag tw-west-tag-danger">Western Status: Weakest faction - viable for push, but noticeably below CN ceiling</div>
-
         <div class="tw-bug-inline">
-          <strong>Jormungandr True Damage Bug:</strong> Jormungandr's True Damage is not functioning
-          correctly in the Western client. This is the primary damage mechanic that makes him the
-          Clubs carry. Despite this, he remains the structural centerpiece of any Western Clubs push -
-          there is no replacement. Build him, invest in him, and accept that the ceiling is lower than CN.
-          <a href="#jormungandr-bug" class="tw-bug-link">Full bug details above.</a>
+          <strong>Level Suppression note:</strong> Jormungandr's output in the Celestial Spire is
+          affected by Level Suppression. His True Damage works correctly but is reduced when your
+          level is more than 15 below the floor's enemies. Close the level gap and his output normalizes.
+          <a href="#level-suppression" class="tw-bug-link">Full mechanic explanation above.</a>
         </div>
 
-        <h3 class="subsection-title">Best Available Western Team</h3>
-        <p class="clubs-stopgap-disclaimer">
-          This is the best currently available Western Clubs setup - not the full CN version.
-          Missing Jiutian Xuannv and Eris lowers the ceiling, but this team can still push meaningful floors.
-        </p>
+        <h3 class="subsection-title">Best Team</h3>
         <div class="core-team-display core-team-display-compromised">
           {CLUBS_MAIN.map(hero => (
             <a href={`/heroes/${hero.id}`} class="core-hero-card core-hero-card-dim">
               <div class="core-hero-portrait" style={`background-image:url('${hp(hero.id)}')`}></div>
-              <span class={`core-hero-role ${hero.id === "jormungandr" ? "hero-role-bugged" : ""}`}>{hero.note}</span>
+              <span class="core-hero-role">{hero.note}</span>
               <span class="core-hero-name">{hero.name}</span>
             </a>
           ))}
         </div>
-        <div class="tw-missing-note tw-missing-critical">
-          <span class="missing-label">Missing vs CN:</span>
-          Jiutian Xuannv (the scaling anchor) and Eris (damage support) are not available in the
-          Western client. Jormungandr's True Damage bug further reduces the faction's ceiling.
-          This is still a functional push team - just not the full CN version.
-        </div>
-
         <h3 class="subsection-title">Why This Team Works</h3>
         <div class="synergy-grid">
           <div class="synergy-block">
             <div class="synergy-block-title">Jormungandr as Structural Center</div>
             <p>
-              Even in a bugged state, Jormungandr is still the reason Western Clubs functions.
-              His presence forces threat-handling from opponents and creates the structural
-              framework the rest of the team builds around. Do not attempt Clubs without him.
+              Jormungandr is the reason Clubs functions. His presence forces threat-handling
+              from opponents and creates the structural framework the rest of the team builds around.
+              Close the level gap and his output is fully online. Do not attempt Clubs without him.
             </p>
           </div>
           <div class="synergy-block">
-            <div class="synergy-block-title">The Western Shell</div>
+            <div class="synergy-block-title">The Support Squad</div>
             <p>
               Wenshen adds chain damage and helps convert early pressure into momentum.
               Anubis provides pick potential and threat control. Pan stabilizes through CC
               and gives the team breathing room on difficult floors. Nuba fills the frontline
-              utility role that premium CN pieces would otherwise cover.
+              utility role.
             </p>
           </div>
-          <div class="synergy-block synergy-block-warn">
-            <div class="synergy-block-title">What Is Missing</div>
+          <div class="synergy-block">
+            <div class="synergy-block-title">How the Team Wins</div>
             <p>
-              CN Clubs wins through Jormungandr and Jiutian Xuannv driving a scaling damage chain.
-              Without Xuannv that chain does not reach the same ceiling. Missing Eris removes
-              cleanup and pressure quality. The Western team plays as a more generic pressure
-              team rather than a true scaling snowball faction.
+              The team relies on front-loading damage and creating early pressure. If enemies
+              survive the initial burst window, the run becomes harder. Correct positioning and
+              squad order are not optional.
             </p>
           </div>
         </div>
@@ -1106,8 +1029,8 @@ const CLUBS_FALLBACK = [
             <div class="replacement-hero">Jormungandr</div>
             <div class="replacement-sub">
               <span class="replacement-badge badge-none">No replacement</span>
-              Jormungandr is the structural carry. Without him Western Clubs has no identity.
-              Build him even in his current bugged state - he still contributes more than any alternative.
+              Jormungandr is the structural carry. Without him Clubs has no identity.
+              Ensure your level is within 15 of floor enemies to get his full output.
             </div>
           </div>
           <div class="replacement-entry replacement-weak">
@@ -1123,7 +1046,7 @@ const CLUBS_FALLBACK = [
             <div class="replacement-sub">
               <span class="replacement-badge badge-flex">Flexible</span>
               These two swap depending on whether you need pick potential or pure CC on a given floor.
-              Pan is an important fallback glue unit in Western Clubs because the ideal CN shell is unavailable.
+              Pan is an important fallback glue unit until the full Clubs roster becomes available.
             </div>
           </div>
           <div class="replacement-entry replacement-flex">
@@ -1134,39 +1057,24 @@ const CLUBS_FALLBACK = [
               Swap based on what the floor demands. Neither is a locked slot.
             </div>
           </div>
-          <div class="replacement-entry replacement-none">
-            <div class="replacement-hero">Jiutian Xuannv (unavailable)</div>
-            <div class="replacement-sub">
-              <span class="replacement-badge badge-none">Not available in West</span>
-              No real substitute. Nuba fills the roster slot but does not replicate the scaling function.
-              This is the single biggest gap in Western Clubs - it cannot be patched around.
-            </div>
-          </div>
-          <div class="replacement-entry replacement-none">
-            <div class="replacement-hero">Eris (unavailable)</div>
-            <div class="replacement-sub">
-              <span class="replacement-badge badge-none">Not available in West</span>
-              No comparable cleanup and pressure substitute currently available in the Western client.
-            </div>
-          </div>
         </div>
 
         <h3 class="subsection-title">Floor Progression</h3>
         <div class="floor-progression">
           <div class="floor-prog-block floor-prog-400">
             <div class="floor-prog-label">400+</div>
-            <p>Fully playable with a functional Jormungandr shell. Generic hero power carries
-               this range even without the premium CN pieces. A reasonable Clubs investment target.</p>
+            <p>Fully playable. Jormungandr carries through this range even without the full roster.
+               A reasonable Clubs investment target.</p>
           </div>
           <div class="floor-prog-block floor-prog-450">
             <div class="floor-prog-label">450+</div>
-            <p>The missing premium CN pieces become very noticeable here. Runs become less
-               consistent. Jormungandr relic investment is the primary lever for pushing past this bracket.</p>
+            <p>Runs become less consistent. Level Suppression starts to show here if you fall
+               too far behind enemy levels. Jormungandr relic investment is the primary lever.</p>
           </div>
           <div class="floor-prog-block floor-prog-500">
             <div class="floor-prog-label">500+</div>
             <p>Much less forgiving than Spades or Hearts at equivalent investment. Progress is
-               possible but Clubs will feel incomplete compared to the other Western factions.
+               possible but Clubs will feel incomplete compared to Spades or Hearts.
                Expect higher variance and fewer clean runs.</p>
           </div>
         </div>
@@ -1196,7 +1104,7 @@ const CLUBS_FALLBACK = [
                 <span class="hero-pic-name">Diana</span>
               </a>
             </div>
-            <p class="variant-note">Transitional setup before a stronger shell is assembled. Jormungandr carries with control support.</p>
+            <p class="variant-note">Transitional setup before a stronger squad is assembled. Jormungandr carries with control support.</p>
           </div>
           <div class="variant-card">
             <div class="variant-label variant-mid">Utility Variant</div>
@@ -1248,83 +1156,18 @@ const CLUBS_FALLBACK = [
                 <span class="hero-pic-name">Nuba</span>
               </a>
             </div>
-            <p class="variant-note">Best available Western Clubs setup. Jormungandr relic 20-30 is the investment gate. This is a practical push team, not the full CN version.</p>
+            <p class="variant-note">Best available Clubs setup. Jormungandr relic 20-30 is the investment gate.</p>
           </div>
         </div>
 
         <div class="tw-warning-box tw-warning-clubs-critical">
           <div class="tw-warning-title">Warnings</div>
           <ul>
-            <li><strong>This is the best currently available Western Clubs setup, not the full CN version.</strong> Missing Xuannv and Eris makes the faction much less consistent at high floors.</li>
-            <li><strong>Jormungandr is currently bug-affected, which lowers the faction ceiling.</strong> He is still the only viable Clubs carry - invest in him, but set realistic expectations.</li>
-            <li><strong>Use this faction as a practical push setup, not as a fully online endgame shell.</strong> Spades and Hearts will outperform Clubs in the current Western client state.</li>
-            <li><strong>Shell heroes (Wenshen, Anubis, Pan, Nuba) may shift when Xuannv and Eris release.</strong> Keep investment at functional levels until the full CN shell becomes available.</li>
+            <li><strong>Level Suppression is the main enemy for Clubs at high floors.</strong> Jormungandr's True Damage works correctly - close the level gap before adjusting relic investment.</li>
+            <li><strong>Spades and Hearts will outperform Clubs at the same investment level.</strong> Prioritize those first if resources are limited.</li>
           </ul>
         </div>
 
-      </div>
-
-      <!-- ================================================================
-           SECTION 9: WESTERN VS CN DIFFERENCES
-           ================================================================ -->
-      <div class="tw-card">
-        <h2>Western Client vs CN - What Is Different</h2>
-        <p>
-          This section explains why this guide exists separately from the standard Tower guide
-          and why Western players should not blindly copy CN Tower team recommendations.
-        </p>
-
-        <div class="west-vs-cn-grid">
-          <div class="west-vs-cn-block">
-            <div class="west-vs-cn-title">Heroes Missing in the Western Client</div>
-            <div class="missing-hero-list">
-              <div class="missing-hero-row">
-                <span class="missing-hero-name">Nut</span>
-                <span class="missing-hero-faction">Spades - scaling utility</span>
-                <span class="missing-hero-impact">Reduces Spades ceiling slightly</span>
-              </div>
-              <div class="missing-hero-row">
-                <span class="missing-hero-name">Meret</span>
-                <span class="missing-hero-faction">Diamonds - tempo and support</span>
-                <span class="missing-hero-impact">Makes Diamonds noticeably weaker</span>
-              </div>
-              <div class="missing-hero-row">
-                <span class="missing-hero-name">Serket</span>
-                <span class="missing-hero-faction">Diamonds - niche pressure</span>
-                <span class="missing-hero-impact">Minor impact - niche role</span>
-              </div>
-              <div class="missing-hero-row">
-                <span class="missing-hero-name">Eden</span>
-                <span class="missing-hero-faction">Hearts - future Caishen substitute</span>
-                <span class="missing-hero-impact">Low impact - Caishen available</span>
-              </div>
-              <div class="missing-hero-row missing-hero-row-critical">
-                <span class="missing-hero-name">Jiutian Xuannv</span>
-                <span class="missing-hero-faction">Clubs - primary scaling anchor</span>
-                <span class="missing-hero-impact">Severely impacts Clubs viability</span>
-              </div>
-              <div class="missing-hero-row missing-hero-row-critical">
-                <span class="missing-hero-name">Eris</span>
-                <span class="missing-hero-faction">Clubs - damage support</span>
-                <span class="missing-hero-impact">Severely impacts Clubs viability</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="west-vs-cn-block">
-            <div class="west-vs-cn-title">Why Copying CN Teams Fails</div>
-            <ul>
-              <li>CN Spades teams include Nut - Western players will slot in Iris or Khepri and see different results.</li>
-              <li>CN Diamonds teams include Meret - the tempo pattern the CN team relies on is not replicable in the West.</li>
-              <li>CN Clubs teams are built entirely around heroes that are unavailable or bugged in the West.</li>
-              <li>CN content creators playing on CN servers are not factoring in the True Damage bug affecting Western Jormungandr.</li>
-            </ul>
-            <div class="tw-callout" style="margin-top:14px">
-              <strong>Bottom line:</strong> CN guides show where the meta is heading. This guide shows
-              what you can actually build today in the Western client.
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- ================================================================
@@ -1333,37 +1176,22 @@ const CLUBS_FALLBACK = [
       <div class="tw-card">
         <h2>Replacement Philosophy</h2>
         <p>
-          In the Western client, some replacements are not choices - they are forced substitutions
-          because the correct hero does not exist yet. It is important to understand the difference
-          between a genuine flex slot and a forced placeholder.
+          Not every slot is interchangeable. Understanding which slots are locked prerequisites and
+          which are genuine flex positions is what separates correct building from wasted resources.
         </p>
 
         <div class="replacement-philosophy-grid">
           <div class="replacement-tier-card tier-none">
             <div class="tier-card-label">No Replacement Exists</div>
             <p>
-              Some heroes are so structurally central that removing them produces a different team,
-              not a weaker version. These are prerequisites, not optional upgrades. Currently
-              unavailable in the West and also irreplaceable:
+              Some deities are so structurally central that removing them produces a different team,
+              not a weaker version. These are prerequisites, not optional upgrades:
             </p>
             <ul>
               <li>Skadi (Spades)</li>
               <li>Mengpo (Hearts)</li>
               <li>Heracles (Diamonds)</li>
-              <li>Jormungandr (Clubs - available but bugged)</li>
-            </ul>
-          </div>
-          <div class="replacement-tier-card tier-weak">
-            <div class="tier-card-label">Forced Substitutes (Availability Gap)</div>
-            <p>
-              These heroes are unavailable in the West. The listed substitutes are the best
-              currently available option - not a true replacement. Treat them as temporary.
-            </p>
-            <ul>
-              <li>Nut - Iris fills the slot</li>
-              <li>Meret - Athena fills the slot</li>
-              <li>Jiutian Xuannv - Nuba fills the slot (significant downgrade)</li>
-              <li>Eris - no good substitute currently</li>
+              <li>Jormungandr (Clubs)</li>
             </ul>
           </div>
           <div class="replacement-tier-card tier-flex">
@@ -1385,17 +1213,16 @@ const CLUBS_FALLBACK = [
            SECTION 11: INVESTMENT PRIORITY
            ================================================================ -->
       <div class="tw-card">
-        <h2>Western Investment Priority Summary</h2>
+        <h2>Investment Priority</h2>
         <p>
-          Given the Western client limitations, investment priority differs slightly from what
-          CN guides recommend. Follow this ordering to avoid misplaced resources.
+          Follow this ordering to avoid misplaced resources.
         </p>
 
         <h3>Priority Tier 1 - Non-Negotiable Gates</h3>
         <div class="invest-list">
           <div class="invest-row invest-critical">
             <span class="invest-hero">Skadi relic</span>
-            <span class="invest-target">30+ for 500+, 40 for endgame - top Western priority</span>
+            <span class="invest-target">30+ for 500+, 40 for endgame - top priority</span>
             <span class="invest-faction faction-tag-spades">Spades</span>
           </div>
           <div class="invest-row invest-critical">
@@ -1438,9 +1265,8 @@ const CLUBS_FALLBACK = [
         <div class="tw-warning-box tw-warning-invest">
           <div class="tw-warning-title">Hold Investment Here</div>
           <ul>
-            <li><strong>Jormungandr beyond relic 30 before the bug is fixed:</strong> The True Damage issue means extremely high relic levels give diminishing returns in the current state. Relic 20-30 is the sensible ceiling for now.</li>
-            <li><strong>Clubs shell heroes (Wenshen, Anubis, Pan, Nuba) beyond functional relic levels:</strong> The team will shift when Xuannv and Eris release. Keep these at working investment levels - do not race them to 40-50.</li>
-            <li><strong>Clubs as your primary faction if you also need to build Spades or Hearts:</strong> Spades and Hearts have higher ceilings in the current Western client. Prioritize those first if your resources are limited.</li>
+            <li><strong>Jormungandr beyond relic 30 without closing the level gap first:</strong> Relic investment only matters when you are within 15 levels of floor enemies. Close the gap before pushing relic further.</li>
+            <li><strong>Clubs as your primary faction if you also need to build Spades or Hearts:</strong> Spades and Hearts have higher ceilings currently. Prioritize those first if resources are limited.</li>
           </ul>
         </div>
       </div>
@@ -1449,7 +1275,7 @@ const CLUBS_FALLBACK = [
            SECTION 12: FINAL TAKEAWAYS
            ================================================================ -->
       <div class="tw-card tw-takeaways-card">
-        <h2>Final Takeaways - Western Client</h2>
+        <h2>Final Takeaways</h2>
 
         <div class="takeaway-grid">
           <div class="takeaway-block takeaway-spades">
@@ -1457,11 +1283,11 @@ const CLUBS_FALLBACK = [
               <img src={fi("spades")} alt="Spades" class="takeaway-icon" />
               <span>Spades</span>
             </div>
-            <p class="takeaway-verdict">Best and safest Western Tower investment. Build here first.</p>
+            <p class="takeaway-verdict">Best and safest Celestial Spire investment. Build here first.</p>
             <ul>
-              <li>Loses only Nut from the CN roster - still highly functional</li>
               <li>Skadi is the irreplaceable prerequisite</li>
-              <li>Most forgiving execution of all Western factions</li>
+              <li>Iris is a solid fifth slot with natural synergy</li>
+              <li>Most forgiving execution of all factions</li>
             </ul>
           </div>
           <div class="takeaway-block takeaway-hearts">
@@ -1469,10 +1295,10 @@ const CLUBS_FALLBACK = [
               <img src={fi("hearts")} alt="Hearts" class="takeaway-icon" />
               <span>Hearts</span>
             </div>
-            <p class="takeaway-verdict">Nearly identical to CN version. Top-tier second faction.</p>
+            <p class="takeaway-verdict">Top-tier second faction. Core is fully intact.</p>
             <ul>
-              <li>Eden missing but not a breaking absence</li>
               <li>Mengpo relic is the single most important support investment</li>
+              <li>Hladgunnr is the carry - protect and enable her</li>
               <li>Cannot be substituted around at high floors</li>
             </ul>
           </div>
@@ -1481,9 +1307,9 @@ const CLUBS_FALLBACK = [
               <img src={fi("diamonds")} alt="Diamonds" class="takeaway-icon" />
               <span>Diamonds</span>
             </div>
-            <p class="takeaway-verdict">Playable but clearly incomplete. Higher variance than CN.</p>
+            <p class="takeaway-verdict">Playable. Higher variance than Spades or Hearts.</p>
             <ul>
-              <li>Meret and Serket missing - Athena fills in as best available</li>
+              <li>Athena is the best available fifth slot - reliable and safe</li>
               <li>Heracles relic gate is real and non-negotiable</li>
               <li>Approach with realistic expectations about ceiling</li>
             </ul>
@@ -1493,21 +1319,20 @@ const CLUBS_FALLBACK = [
               <img src={fi("clubs")} alt="Clubs" class="takeaway-icon" />
               <span>Clubs</span>
             </div>
-            <p class="takeaway-verdict">Weakest Western faction currently. Viable push, but below CN ceiling.</p>
+            <p class="takeaway-verdict">Weakest faction currently. Viable push, but requires the most level management.</p>
             <ul>
-              <li>Best team: Jormungandr, Wenshen, Anubis, Pan, Nuba</li>
-              <li>Jormungandr is still the centerpiece despite the True Damage bug</li>
-              <li>Xuannv and Eris missing - ceiling is lower, team plays as pressure rather than snowball</li>
-              <li>Build and push, but keep shell investment at functional levels until CN heroes arrive</li>
+              <li>Best squad: Jormungandr, Wenshen, Anubis, Pan, Nuba</li>
+              <li>Jormungandr is the centerpiece - True Damage works, Level Suppression is the factor to manage</li>
+              <li>Close the level gap before investing further in relics</li>
+              <li>Prioritize Spades and Hearts first if resources are limited</li>
             </ul>
           </div>
         </div>
 
         <div class="tw-callout tw-callout-final">
-          <strong>500+ remains endgame territory.</strong> In the Western client, this applies
-          even more strictly because the available roster is thinner. Focus on assembling the
-          correct core team structure before pushing floors. Relic investment on the right
-          heroes matters more than overall roster star level.
+          <strong>500+ is endgame territory.</strong> Focus on assembling the correct core team
+          structure before pushing floors. Relic investment on the right deities matters more
+          than overall roster star level.
         </div>
       </div>
 
@@ -1975,11 +1800,7 @@ const CLUBS_FALLBACK = [
     white-space: nowrap;
   }
 
-  .hero-role-bugged {
-    color: rgba(239, 68, 68, 0.9);
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-  }
+
 
   .core-hero-name {
     font-size: 0.75rem;
