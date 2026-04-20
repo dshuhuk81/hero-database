@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../layouts/Base.astro";
+import supporters from "../data/supporters.json";
 
 interface Teaser {
   label: string;
@@ -127,6 +128,7 @@ const teasers: Teaser[] = [
     <!-- SUPPORT SECTION -->
     <section id="support" class="support-section">
       <div class="support-card">
+        <div class="support-body">
         <div class="support-text">
           <h2 class="support-headline">
             <svg class="support-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -162,6 +164,16 @@ const teasers: Teaser[] = [
           </p>
         </div>
       </div>
+      {supporters.length > 0 && (
+        <div class="supporters-row">
+          <span class="supporters-label">Thank you for your donation!</span>
+          <ul class="supporters-pills">
+            {supporters.map((s) => (
+              <li class="supporter-pill" title={s.note || undefined}>{s.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   </main>
 
@@ -380,6 +392,107 @@ const teasers: Teaser[] = [
     padding: 2px 5px;
     top: 6px;
     right: 6px;
+  }
+}
+
+/* SUPPORT CARD LAYOUT OVERRIDE FOR SUPPORTERS ROW */
+.support-card {
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+
+.support-body {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 40px;
+  width: 100%;
+}
+
+.support-body .support-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.support-body .support-cta {
+  flex-shrink: 0;
+  min-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .support-body {
+    flex-direction: column;
+    gap: 32px;
+    padding: 28px;
+  }
+
+  .support-body .support-cta {
+    width: 100%;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .support-body {
+    padding: 20px;
+  }
+}
+
+/* SUPPORT CARD LAYOUT OVERRIDE */
+.support-card {
+  flex-wrap: wrap;
+}
+
+/* SUPPORTERS ROW */
+.supporters-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  flex: 0 0 100%;
+  padding: 14px 40px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.supporters-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.supporters-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.supporter-pill {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent-gold);
+  background: rgba(250, 204, 21, 0.08);
+  border: 1px solid rgba(250, 204, 21, 0.2);
+  border-radius: 999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .supporters-row {
+    padding: 12px 28px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .supporters-row {
+    padding: 10px 20px 14px;
   }
 }
 

@@ -7,31 +7,29 @@ import { getHeroById } from "../data/heroes";
 // To add a new guide: add an entry to this array and a matching <div id="..."> in the HTML below.
 const guides = [
   {
-    id: "wenshen", label: "Wen-Shen", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp",
-    imgPos: "center 20%", imgPosActive: "center 35%",
-    quote: "When humanity had no cure, I willingly drew all pestilence upon myself.",
-    tags: ["Clubs Faction", "Support", "Legendary", "Unreleased"],
-    badge: "New",
-  },
-  {
     id: "meret", label: "Meret", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp",
     imgPos: "center 20%", imgPosActive: "center 35%",
     quote: "Goddess of Dance - Note-based Support and Anti-Burst Enabler",
     tags: ["Diamonds Faction", "Support", "Legendary", "Unreleased"],
-
+    badge: "New",
+  },
+  {
+    id: "wenshen", label: "Wen-Shen", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp",
+    imgPos: "center 20%", imgPosActive: "center 35%",
+    quote: "When humanity had no cure, I willingly drew all pestilence upon myself.",
+    tags: ["Clubs Faction", "Support", "Legendary"],
   },
   {
     id: "cronus", label: "Cronus", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp",
     imgPos: "center 20%", imgPosActive: "center 30%",
     quote: "Tempo Architect - Master of Rewind, Projection, and Cooldown",
     tags: ["Starglint Faction", "Support", "Legendary"],
-    badge: "New",
   },
   {
     id: "mengpo", label: "Mengpo", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp",
     imgPos: "center 10%", imgPosActive: "center 35%",
     quote: "Goddess of Forgetting - Keeper of the Bridge Between Worlds",
-    tags: ["Hearts Faction", "Support", "Legendary", "Unreleased"],
+    tags: ["Hearts Faction", "Support", "Legendary"],
   },
   {
     id: "nuba", label: "Nuba", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp",
@@ -43,7 +41,7 @@ const guides = [
     id: "skadi", label: "Skadi", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp",
     imgPos: "center 15%", imgPosActive: "center 30%",
     quote: "Core of Control - Goddess of Winter and the Hunt",
-    tags: ["Spades Faction", "Mage", "Legendary", "Unreleased"],
+    tags: ["Spades Faction", "Mage", "Legendary"],
   },
   {
     id: "hera", label: "Hera", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp",
@@ -354,7 +352,7 @@ const MERET_COMPS = [
     heroes: ["heracles", "athena", "bastet", "phoenix", "set"],
     reason: "A transitional Diamonds lineup for players who do not yet have Meret. Athena provides direct shielding and protective utility in the support slot. This version is more conservative - it trades Meret's Note system and tempo contribution for Athena's straightforward frontline protection. Functional in early and mid progression but does not replicate Meret's carry buff or damage-sharing anti-burst at higher floors.",
     notes: [
-      "Athena is explicitly a weaker substitute. She does not provide Moon Note ATK and Crit on Heracles or the passive damage sharing from Resonant Harmony.",
+      "Athena is explicitly a weaker substitute. She does not provide Moon Note ATK and Crit on Heracles or the passive damage sharing from Universal Resonance.",
       "This lineup works reliably through earlier tower content. The gap between Athena and Meret becomes more visible as enemy difficulty increases.",
       "Switch to the full core lineup with Meret once she is available at Relic Lv1 minimum."
     ]
@@ -365,7 +363,7 @@ const MERET_COMPS = [
     reason: "A PvP shell built around Meret's anti-burst tools and Note damage sharing. Poseidon provides AoE crowd control that creates burst windows for Heracles while Meret's Note system distributes incoming damage and provides a death-save through the Relic. Athena adds a second protective layer for the carry. Strong against single-carry burst teams that rely on fast elimination of the priority target.",
     notes: [
       "Meret's Relic makes Note-bearing allies immune to death once. In a PvP burst scenario this directly counters opening burst attempts targeting Heracles.",
-      "Resonant Harmony spreads focused burst across all three Note-bearers - a single-target burst sequence that would normally eliminate a carry is significantly softened.",
+      "Universal Resonance spreads focused burst across all three Note-bearers - a single-target burst sequence that would normally eliminate a carry is significantly softened.",
       "Poseidon's AoE CC pairs with Heracles's burst window. Meret ensures Heracles survives long enough to reach his Ultimate rotation."
     ]
   }
@@ -399,7 +397,7 @@ const activeGuide = releasedGuides[0];
       <p class="guide-header-sub">In-depth hero guides with skills, team comps and strategy</p>
     </div>
     <div class="hero-accordion">
-      <div style="width:40%; display:flex;">
+      <div style="width:50%; display:flex;">
       {releasedGuides.map((guide, index) => (
         <button
           class={`accordion-panel ${index === 0 ? "is-active" : ""}`}
@@ -1422,7 +1420,7 @@ const activeGuide = releasedGuides[0];
          WENSHEN GUIDE
          ═══════════════════════════════════════ -->
     {releasedGuides.some(g => g.id === "wenshen") && (
-    <div class="guide-slide is-active" id="wenshen">
+    <div class="guide-slide" id="wenshen">
       <div class="guide-container">
 
         <!-- HEADER -->
@@ -3277,7 +3275,7 @@ const activeGuide = releasedGuides[0];
          MERET GUIDE
          ═══════════════════════════════════════ -->
     {releasedGuides.some(g => g.id === "meret") && (
-    <div class="guide-slide" id="meret">
+    <div class="guide-slide is-active" id="meret">
       <div class="guide-container">
 
         <!-- HEADER -->
@@ -3301,6 +3299,7 @@ const activeGuide = releasedGuides[0];
             <a href="#meret-overview">Overview</a>
             <a href="#meret-notes">Note System</a>
             <a href="#meret-skills">Skills</a>
+            <a href="#meret-relics">Relics &amp; Awakening</a>
             <a href="#meret-ratings">Ratings</a>
             <a href="#meret-positioning">Positioning</a>
             <a href="#meret-comps">Comps</a>
@@ -3333,14 +3332,14 @@ const activeGuide = releasedGuides[0];
             <ul class="mechanic-list">
               <li><strong>Sun Note</strong> is assigned at battle start to the ally with the <strong>highest HP</strong>. This is almost always the frontline tank. The Sun Note grants a shield and increases Max HP, providing immediate frontline protection.</li>
               <li><strong>Moon Note</strong> is assigned at battle start to the ally with the <strong>highest ATK</strong>. This should be your main carry. The Moon Note increases ATK and, at Skill Lv3, also grants a Crit Rate bonus.</li>
-              <li><strong>Star Note</strong> is assigned to <strong>Meret herself</strong>. It increases her Energy recovery speed, enabling faster Ultimate cycling.</li>
+              <li><strong>Star Note</strong> is assigned to <strong>Meret herself</strong>. It provides two Energy benefits: a passive <strong>+10% Energy regeneration</strong> from Universal Resonance, and a burst of <strong>200 Energy</strong> when the Ultimate activates. Together these significantly accelerate her Ultimate cycle.</li>
               <li>All three Notes are distributed <strong>passively at battle entry</strong> before any action is taken. Activating the Ultimate triggers all Notes to deliver their buffs simultaneously.</li>
             </ul>
-            <div class="mechanic-label" style="margin-top: 16px;">Resonant Harmony - Damage Sharing</div>
+            <div class="mechanic-label" style="margin-top: 16px;">Universal Resonance - Damage Sharing</div>
             <ul class="mechanic-list">
-              <li>While Notes are active, all three Note-bearing units <strong>share damage taken</strong> with each other. A focused burst on your carry is split across all three Note-bearers instead of landing fully on one target.</li>
+              <li>While Notes are active, incoming damage to any Note-bearer is split: the target takes <strong>60%</strong>, the remaining <strong>40% is divided among the other Note holders</strong>. A focused burst on your carry is reduced from 100% to 60% - significant, but not fully redistributed.</li>
               <li>This is Meret's primary anti-burst tool. Single-target elimination attempts against the main carry are significantly softened.</li>
-              <li>The sharing is symmetric - burst aimed at the frontline is also shared with the carry and Meret. Team HP health matters across all Note-bearers.</li>
+              <li>The sharing applies regardless of who is attacked - burst aimed at the frontline is also split with the carry and Meret. All three Note-bearers contribute to absorbing damage, so their combined HP pool matters.</li>
             </ul>
             <div class="mechanic-label" style="margin-top: 16px;">The Critical Requirement - Stat Hierarchy</div>
             <p style="font-size:13px; color:var(--text-muted); line-height:1.7;">
@@ -3348,9 +3347,9 @@ const activeGuide = releasedGuides[0];
             </p>
           </div>
           <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
-            <div class="mechanic-label" style="color: var(--gold-light);">Relic Breakpoints - Endless Melody</div>
+            <div class="mechanic-label" style="color: var(--gold-light);">Relic Breakpoints - Endless Echo</div>
             <ul class="mechanic-list">
-              <li><strong>Relic Lv1:</strong> When a Note-bearer takes fatal damage, they become immune to death and receive a shield. This is the single largest power spike in Meret's investment path - it converts a good support into a genuine anti-collapse tool.</li>
+              <li><strong>Relic Lv1:</strong> When a Note-bearer would die, prevents their death and grants a shield equal to <strong>300% of ATK</strong> with a 15-second cooldown. This is the single largest power spike in Meret's investment path - it converts a good support into a genuine anti-collapse tool.</li>
               <li><strong>Relic Lv2 [Relic Lv.10]:</strong> For each Note on the field, Meret gains a percentage of damage reduction. This makes Meret herself harder to eliminate through focused burst.</li>
               <li><strong>Relic Lv3 [Relic Lv.20]:</strong> The shield granted to a Note-bearer about to die is increased. Combined with Lv1, this raises the survival threshold further.</li>
               <li><strong>Relic Lv4:</strong> Meret's damage reduction while Notes are on the field is further increased. Full defensive output for extended fights.</li>
@@ -3366,12 +3365,12 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card ultimate">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_1.webp" alt="Celestial Symphony" />
-                <span class="skill-name">Celestial Symphony</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_1.webp" alt="All Heavens in Praise" />
+                <span class="skill-name">All Heavens in Praise</span>
                 <span class="skill-badge badge-ultimate">Ultimate / Entry</span>
               </div>
               <p class="skill-desc">
-                At battle start, Meret distributes a <span class="highlight">Sun Note</span> to the ally with the highest HP, a <span class="highlight">Moon Note</span> to the ally with the highest ATK, and a <span class="highlight">Star Note</span> to herself. Upon activation: Sun grants a shield, Moon increases ATK, Star restores Energy.
+                At battle start, Meret distributes a <span class="highlight">Sun Note</span> to the ally with the highest Max HP, a <span class="highlight">Moon Note</span> to the ally with the highest ATK, and a <span class="highlight">Star Note</span> to herself. Upon activation: Sun grants a shield equal to <span class="highlight">30% of Max HP</span>, Moon grants <span class="highlight">+30% ATK for 8 seconds</span>, Star restores <span class="highlight">200 Energy</span>.
               </p>
               <div class="skill-upgrade-block">
                 <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Sun Note grants a stronger shield.</span></div>
@@ -3385,12 +3384,12 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card relic">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_relic.webp" alt="Endless Melody" />
-                <span class="skill-name">Endless Melody</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_relic.webp" alt="Endless Echo" />
+                <span class="skill-name">Endless Echo</span>
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
               <p class="skill-desc">
-                When an allied unit with a Note takes <span class="highlight">fatal damage</span>, they become immune to death and receive a shield.
+                When a Note-bearing ally would die, prevents their death and grants a shield equal to <span class="highlight">300% of ATK</span>. <span class="highlight">15-second cooldown</span>.
               </p>
               <div class="skill-upgrade-block">
                 <div class="upgrade-row"><span class="skill-upgrade-level">Lv2 [Relic Lv.10]</span><span class="upgrade-text">For each Note on the field, Meret gains a percentage of damage reduction.</span></div>
@@ -3404,12 +3403,12 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_2.webp" alt="Golden Step" />
-                <span class="skill-name">Golden Step</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_2.webp" alt="Sands in Stride" />
+                <span class="skill-name">Sands in Stride</span>
                 <span class="skill-badge badge-skill">Active</span>
               </div>
               <p class="skill-desc">
-                Heals the <span class="highlight">weakest ally</span> every second for a duration, based on a percentage of their max HP.
+                Heals the <span class="highlight">most vulnerable ally</span>, restoring HP equal to <span class="highlight">60% of ATK per second</span> for 5 seconds.
               </p>
               <div class="skill-upgrade-block">
                 <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Increases healing per second.</span></div>
@@ -3423,12 +3422,12 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_3.webp" alt="Curtain Call" />
-                <span class="skill-name">Curtain Call</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_3.webp" alt="The Curtain Never Falls" />
+                <span class="skill-name">The Curtain Never Falls</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
               <p class="skill-desc">
-                When any ally's HP falls below a threshold, Meret <span class="highlight">heals them</span> based on a percentage of her own max HP. Each unit can trigger this effect once.
+                When an ally drops below <span class="highlight">50% HP</span>, Meret heals them for <span class="highlight">25% of their Max HP</span>. Can trigger once per unit.
               </p>
               <div class="skill-upgrade-block">
                 <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Increases healing effect.</span></div>
@@ -3442,12 +3441,12 @@ const activeGuide = releasedGuides[0];
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_4.webp" alt="Resonant Harmony" />
-                <span class="skill-name">Resonant Harmony</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/meret_skill_4.webp" alt="Universal Resonance" />
+                <span class="skill-name">Universal Resonance</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
               <p class="skill-desc">
-                All allies with Notes <span class="highlight">share damage taken</span> with each other. Additionally: Sun Note increases Max HP, Moon Note increases damage dealt, Star Note increases Energy regeneration speed.
+                Marked allies share damage taken. The main target takes <span class="highlight">60% of incoming damage</span>; the remaining <span class="highlight">40% is split</span> among the other Note holders. Additionally: Sun grants <span class="highlight">+10% Max HP</span>, Moon grants <span class="highlight">+20% damage dealt</span>, Star grants <span class="highlight">+10% Energy regeneration</span>.
               </p>
               <div class="skill-upgrade-block">
                 <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Sun Note further increases Max HP.</span></div>
@@ -3455,7 +3454,7 @@ const activeGuide = releasedGuides[0];
                 <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Star Note further increases Energy regeneration speed.</span></div>
               </div>
               <div class="skill-note">
-                This is the backbone of Meret's anti-burst value. Damage targeting any single Note-bearer is distributed across all three. The secondary stat bonuses - Max HP on the tank, damage dealt on the carry, Energy regen on Meret - compound with the Note buffs from Celestial Symphony. Lv3 specifically increases the Moon Note carry's damage dealt, making this a passive damage amplifier on top of the protective sharing mechanic.
+                This is the backbone of Meret's anti-burst value. Damage targeting any Note-bearer is reduced to 60% on the target, with the remaining 40% split across the other two Note-holders. The secondary stat bonuses - +10% Max HP on the tank, +20% damage dealt on the carry, +10% Energy regen on Meret - compound with the activation buffs from All Heavens in Praise. Lv3 specifically increases the Moon Note carry's damage dealt, making this a passive damage amplifier on top of the protective sharing mechanic.
               </div>
             </div>
 
@@ -3464,12 +3463,110 @@ const activeGuide = releasedGuides[0];
           <div class="mechanic-box" style="margin-top: 20px;">
             <div class="mechanic-label">Skill Upgrade Priority</div>
             <ul class="mechanic-list">
-              <li><strong>1. Celestial Symphony (Ultimate)</strong> - Lv3 adds Crit Rate to Moon Note, directly amplifying the carry. First upgrade priority for any Crit-dependent main DPS in the lineup.</li>
-              <li><strong>2. Resonant Harmony (Passive)</strong> - Lv3 increases the Moon Note carry's damage dealt. Lv4 boosts Energy regen on Meret for faster cycle. Core passive that defines her support value.</li>
-              <li><strong>3. Endless Melody (Relic)</strong> - Relic Lv1 death immunity is the single biggest power spike. Push to Lv.10 for the Lv2 damage reduction effect. Relic investment before skill investment at high levels.</li>
-              <li><strong>4. Curtain Call (Passive)</strong> - Lv4 removes the trigger limit, enabling repeated emergency heals. Important for prolonged tower and boss fights.</li>
-              <li><strong>5. Golden Step (Active)</strong> - Lv3 bonus heal for Note-bearers adds sustained value. Comfort upgrade once higher-priority skills are established.</li>
+              <li><strong>1. All Heavens in Praise (Ultimate)</strong> - Lv3 adds Crit Rate to Moon Note, directly amplifying the carry. First upgrade priority for any Crit-dependent main DPS in the lineup.</li>
+              <li><strong>2. Universal Resonance (Passive)</strong> - Lv3 increases the Moon Note carry's damage dealt. Lv4 boosts Energy regen on Meret for faster cycle. Core passive that defines her support value.</li>
+              <li><strong>3. Endless Echo (Relic)</strong> - Relic Lv1 death immunity is the single biggest power spike. Push to Lv.10 for the Lv2 damage reduction effect. Relic investment before skill investment at high levels.</li>
+              <li><strong>4. The Curtain Never Falls (Passive)</strong> - Lv4 removes the trigger limit, enabling repeated emergency heals. Important for prolonged tower and boss fights.</li>
+              <li><strong>5. Sands in Stride (Active)</strong> - Lv3 bonus heal for Note-bearers adds sustained value. Comfort upgrade once higher-priority skills are established.</li>
             </ul>
+          </div>
+        </section>
+
+        <!-- RELICS & AWAKENING -->
+        <section class="section" id="meret-relics">
+          <div class="section-title">Relic Stats &amp; Awakening Plan</div>
+
+          <div class="mechanic-box">
+            <div class="mechanic-label">Why ATK matters on a Support</div>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.7;">
+              Meret looks like a pure utility hero, so rolling ATK on her seems wrong at first glance. It is not. Two of her core values scale directly with her own ATK stat:
+            </p>
+            <ul class="mechanic-list">
+              <li><strong>Sands in Stride</strong> heals for <strong>60% of Meret's ATK per second</strong> for 5 seconds. Higher ATK = bigger heals on the most vulnerable ally each tick.</li>
+              <li><strong>Endless Echo (Relic)</strong> grants a shield equal to <strong>300% of Meret's ATK</strong> when a Note-bearer would die. Higher ATK = bigger emergency shield, which directly determines whether the saved ally survives the follow-up.</li>
+            </ul>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.7; margin-top:8px;">
+              Note: the Sun shield (30% of target Max HP) and Moon ATK buff (+30%) from her Ultimate scale with the <em>target's</em> stats, not Meret's - so those are not affected by her ATK rolls.
+            </p>
+          </div>
+
+          <div class="mechanic-box" style="margin-top:16px;">
+            <div class="mechanic-label">Stats to Avoid Completely</div>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.7;">
+              Meret deals no damage. Any offensive stat is wasted on her: <strong>Crit Rate, Crit DMG Bonus, P-DMG Bonus, M-DMG Bonus, ATK SPD Bonus, Hit Bonus, Lifesteal, Effect Hit, Control Bonus, Ultimate Power</strong>. Her Ultimate has no damage component, so Ultimate Power has nothing to amplify.
+            </p>
+          </div>
+
+          <div class="mechanic-box" style="margin-top:16px;">
+            <div class="mechanic-label">Per-Slot Main Stat Priorities</div>
+            <ul class="mechanic-list">
+              <li><strong>Slot 1</strong> [ATK / Armor / M-Res / Crit Rate %] -> <strong>ATK</strong> (scales healing + Relic shield). Fallback: M-Res or Armor if survivability is the bottleneck. Skip Crit Rate.</li>
+              <li><strong>Slot 2</strong> [HP / P-DMG-Red % / M-DMG-Red %] -> <strong>P-DMG-Red %</strong> or <strong>M-DMG-Red %</strong> (pick whichever your meta enemies use more). Skip flat HP - she is a focused kill target in PvP and flat HP scales poorly against high-end damage.</li>
+              <li><strong>Slot 3</strong> [ATK / M-Res / Hit-Bonus] -> <strong>ATK</strong> (same scaling reason as Slot 1). Fallback: M-Res. Skip Hit-Bonus - she has no offensive abilities to land.</li>
+              <li><strong>Slot 4</strong> [HP / Armor / Crit-Res % / P-DMG-Red %] -> <strong>Crit-Res %</strong> (counters carry burst-kill attempts on her - a Crit-burst that one-shots her ends the entire Note system). Fallback: P-DMG-Red % or Armor. Skip flat HP.</li>
+            </ul>
+          </div>
+
+          <div class="mechanic-box" style="margin-top:16px;">
+            <div class="mechanic-label">On the "Skip Slot 2" CN Advice</div>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.7;">
+              The common Chinese-server advice to focus Slots 1, 3, and 4 and skip Slot 2 is written for <strong>damage carries</strong> who lose ATK access in Slot 2. For a pure support like Meret, Slot 2's % damage reduction options are genuinely strong and worth investing in - she takes priority targeting in PvP and benefits more from flat damage reduction than a carry would. Do not blindly apply the carry rule to her.
+            </p>
+          </div>
+
+          <div class="mechanic-box" style="margin-top:16px;">
+            <div class="mechanic-label">Awakening Stone Priorities (with reasoning)</div>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.7;">
+              Awakening rolls are RNG. These are the bonus effects to <em>keep</em> when they appear. Reroll anything not listed.
+            </p>
+
+            <div class="mechanic-label" style="margin-top:14px; color: var(--gold-light);">Slot 1</div>
+            <ul class="mechanic-list">
+              <li><strong>ATK</strong> - stacks with the main-stat ATK roll for compound heal/shield scaling.</li>
+              <li><strong>Cooldown Haste</strong> - shortens Sands in Stride cooldown and accelerates Ultimate cycle (more frequent Note refreshes).</li>
+            </ul>
+
+            <div class="mechanic-label" style="margin-top:14px; color: var(--gold-light);">Slot 2 (most flexible - many useful options)</div>
+            <ul class="mechanic-list">
+              <li><strong>Recharge Effectiveness</strong> - top tier. Stacks with her Star Note (+10% Energy regen) and the 200 Energy Ultimate refund. Faster Ultimates = more Note-buff uptime on the carry, which is her single biggest team contribution.</li>
+              <li><strong>Healing Effectiveness</strong> - direct multiplier on Sands in Stride and The Curtain Never Falls. Both are her core sustain tools.</li>
+              <li><strong>Control Resistance</strong> - critical. If Meret is CC'd during the opening, she cannot cast her Ultimate, Notes never activate, and the entire kit is shut down for that fight.</li>
+              <li><strong>Effect Resistance</strong> - similar reasoning to Control Res; prevents debuffs that would weaken her healing or survivability.</li>
+              <li><strong>P-DMG Red % / M-DMG Red %</strong> - second defensive layer.</li>
+              <li><strong>M-Res / Crit-Res / Armor / Dodge Rate</strong> - acceptable defensive fillers.</li>
+              <li>Skip: HP (flat), Crit DMG Red (situational, low priority).</li>
+            </ul>
+
+            <div class="mechanic-label" style="margin-top:14px; color: var(--gold-light);">Slot 3</div>
+            <ul class="mechanic-list">
+              <li><strong>ATK</strong> - same reasoning as Slot 1.</li>
+              <li><strong>Cooldown Haste</strong> - same reasoning as Slot 1.</li>
+              <li><strong>M-Res / Crit-Res / P-DMG Red % / M-DMG Red %</strong> - solid defensive picks.</li>
+              <li><strong>Dodge Rate</strong> - acceptable; backline survivability layer.</li>
+              <li>Skip: Lifesteal (no damage to leech), Control Bonus, Effect Hit, Crit DMG Red, Ultimate Power.</li>
+            </ul>
+
+            <div class="mechanic-label" style="margin-top:14px; color: var(--gold-light);">Slot 4</div>
+            <ul class="mechanic-list">
+              <li><strong>Recharge Effectiveness</strong> - top tier (same reasoning as Slot 2).</li>
+              <li><strong>Healing Effectiveness</strong> - top tier.</li>
+              <li><strong>Control-Res / Effect Res</strong> - top tier defensive utility.</li>
+              <li><strong>Armor</strong> - acceptable defensive filler.</li>
+              <li>Skip: every damage stat (P-DMG Bonus, M-DMG Bonus, Crit DMG Bonus, Crit Rate, ATK SPD Bonus), Hit Bonus, flat HP.</li>
+            </ul>
+          </div>
+
+          <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
+            <div class="mechanic-label" style="color: var(--gold-light);">Suggested Investment Order</div>
+            <ul class="mechanic-list">
+              <li><strong>1.</strong> Lock <strong>ATK as main stat in Slot 1 and Slot 3</strong> first - biggest single leverage on her healing output and Relic shield size.</li>
+              <li><strong>2.</strong> Slot 4 main: <strong>Crit-Res %</strong> - directly counters the burst-kill scenario that ends a Meret-anchored team.</li>
+              <li><strong>3.</strong> Slot 2 main: <strong>P-DMG-Red %</strong> or <strong>M-DMG-Red %</strong> based on the enemy mix you fight most.</li>
+              <li><strong>4.</strong> Awakening priority: <strong>Recharge Effectiveness > Healing Effectiveness > Control Resistance > ATK > Cooldown Haste</strong>.</li>
+            </ul>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.7; margin-top:8px;">
+              The single highest-impact awakening for Meret is <strong>Recharge Effectiveness</strong> in Slot 2 or Slot 4. It compounds with the Star Note's +10% Energy regen and the 200 Energy Ultimate refund, accelerating the entire team's buff uptime cycle.
+            </p>
           </div>
         </section>
 
@@ -3554,7 +3651,7 @@ const activeGuide = releasedGuides[0];
                 <li>Note damage-sharing is a passive anti-burst layer with no cast timing requirement and no positioning dependency</li>
                 <li>Relic Lv1 converts a potential carry kill into a survival event - the most impactful early relic breakpoint in the Diamonds faction support slot</li>
                 <li>Moon Note Lv3 adds Crit Rate on top of ATK to the main carry - a direct multiplicative damage contribution from a support hero</li>
-                <li>Emergency reactive healing via Curtain Call fires automatically without input</li>
+                <li>Emergency reactive healing via The Curtain Never Falls fires automatically without input</li>
                 <li>Excellent blind-pick quality in standard teams with a clear frontline tank and a clear main carry</li>
                 <li>Star Note self-buff reduces her own downtime between Ultimate cycles</li>
               </ul>
@@ -3590,7 +3687,7 @@ const activeGuide = releasedGuides[0];
             </div>
             <div class="synergy-entry">
               <div class="synergy-hero-name">Set</div>
-              <p class="synergy-body">Set's lifesteal aura and sustained utility extend fight duration, which compounds with Meret's time-dependent value. More fight time means more Note-buff uptime, more Golden Step heal ticks, and more Curtain Call emergency heals. Relevant in longer PvE encounters and sustained tower content.</p>
+              <p class="synergy-body">Set's lifesteal aura and sustained utility extend fight duration, which compounds with Meret's time-dependent value. More fight time means more Note-buff uptime, more Sands in Stride heal ticks, and more The Curtain Never Falls emergency heals. Relevant in longer PvE encounters and sustained tower content.</p>
             </div>
             <div class="synergy-entry">
               <div class="synergy-hero-name">Athena</div>

@@ -36,6 +36,25 @@ const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.incl
         </p>
       </div>
 
+      <!-- CORE RULE -->
+      <div class="eg-content-card eg-core-rule-card">
+        <h2>The Core Rule of the Game</h2>
+        <p>You are <strong>not</strong> building 5 equal heroes.</p>
+        <div class="core-rule-split">
+          <div class="core-rule-carry">
+            <div class="core-rule-label">1-2 Carries</div>
+            <p>Deal the damage. Get the gear, the relics, the investment.</p>
+          </div>
+          <div class="core-rule-support">
+            <div class="core-rule-label">3-4 Supports</div>
+            <p>Give the carry energy, buffs, and uptime. They exist to enable the carry.</p>
+          </div>
+        </div>
+        <div class="eg-team-example">
+          <p>Example: if Hecate is your carry, your four supports give her energy, healing, and buffs. The team exists to make her ultimate hit harder, more often.</p>
+        </div>
+      </div>
+
       <!-- GAME PHASES -->
       <div class="eg-content-card">
         <h2>What Phase Are You In?</h2>
@@ -67,7 +86,14 @@ const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.incl
         <h3>2 - Compete in Torment Rift for Calamity Tier</h3>
         <p><strong>Calamity Tier</strong> rewards upgrade your <strong>Beacon Tree</strong>, granting account-wide stat bonuses to all heroes. Beacon bonuses apply in every game mode and never become wasted investment.</p>
         <h3>3 - Focus Gear on Your Top Two DPS</h3>
-        <p>Put your best gear on your two primary damage dealers first. Spreading gear evenly across six heroes is one of the most common early mistakes.</p>
+        <p>Gear priority order:</p>
+        <ol class="gear-priority-list">
+          <li><strong>Main DPS</strong> - gets everything first</li>
+          <li><strong>Secondary DPS</strong> - gets the rest</li>
+          <li><strong>Tank</strong> - benefits from gear but is not the first priority</li>
+          <li><strong>Supports</strong> - rely less on stats, gear last</li>
+        </ol>
+        <p>Spreading gear evenly across six heroes is one of the most common early mistakes.</p>
       </div>
 
       <!-- STAR HEROES -->
@@ -136,6 +162,10 @@ const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.incl
             <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
             <span class="hero-pic-name">Momus</span>
           </a>
+        </div>
+        <div class="eg-team-example">
+          <p><strong>Note on Poseidon:</strong> He needs Relic Level 10 to justify a frontline slot. Below that threshold he underperforms - see the Relic Priority section below.</p>
+          <p><strong>Note on Heracles:</strong> He functions as a bruiser carry, not a pure tank. His damage output is a core part of his value, so gear and invest him accordingly.</p>
         </div>
         <h3>Strong Frontliners</h3>
         <div class="hero-pic-grid">
@@ -291,12 +321,96 @@ const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.incl
             </div>
           </div>
         </div>
+        <div class="diana-dionysus-box">
+          <h3>Diana vs Dionysus - Which to Build First?</h3>
+          <div class="dd-split">
+            <div class="dd-card dd-beginner">
+              <div class="dd-label">Diana - Beginner Friendly</div>
+              <p>Restores energy to allies, which means your carry uses their ultimate more often. Simple, consistent, and effective in any team.</p>
+              <p class="dd-tag">Good as your first energy support pick.</p>
+            </div>
+            <div class="dd-card dd-advanced">
+              <div class="dd-label">Dionysus - Advanced</div>
+              <p>Increases attack speed, boosting damage indirectly. More powerful in optimized teams where the carry already has energy covered.</p>
+              <p class="dd-tag">Better once your team has a strong rotation established.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WISH LIST -->
+      <div class="eg-content-card" id="wish-list">
+        <h2>Wish List - Your Free Early Picks</h2>
+        <p>The Wish List lets you influence which hero you pull in each faction. Pick wrong and your gold pinions feed the wrong hero. These are the recommended F2P picks per faction:</p>
+        <div class="wishlist-grid">
+
+          <div class="wishlist-faction">
+            <div class="wishlist-faction-label">Hearts</div>
+            <div class="hero-pic-grid">
+              <a class="hero-pic pic-highlight" href="/heroes/cashien">
+                <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cashien.webp')"></div>
+                <span class="hero-pic-name">Caishen</span>
+              </a>
+              <span class="pic-divider">or</span>
+              <a class="hero-pic" href="/heroes/yuelao">
+                <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
+                <span class="hero-pic-name">Yuelao</span>
+              </a>
+            </div>
+            <p class="wishlist-note">Caishen first - energy support that slots into any team. Yuelao if you already have Caishen - best all-in-one support in the game.</p>
+          </div>
+
+          <div class="wishlist-faction">
+            <div class="wishlist-faction-label">Spades</div>
+            <div class="hero-pic-grid">
+              <a class="hero-pic pic-highlight" href="/heroes/hecate">
+                <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
+                <span class="hero-pic-name">Hecate</span>
+              </a>
+            </div>
+            <p class="wishlist-note">The Spades main carry. Scales from weak to strong at Relic 10. Essential for Delusion's Den long-term.</p>
+          </div>
+
+          <div class="wishlist-faction">
+            <div class="wishlist-faction-label">Diamonds</div>
+            <div class="hero-pic-grid">
+              <a class="hero-pic pic-highlight" href="/heroes/phoenix">
+                <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
+                <span class="hero-pic-name">Phoenix</span>
+              </a>
+              <span class="pic-divider">or</span>
+              <a class="hero-pic" href="/heroes/sekhmet">
+                <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/sekhmet.webp')"></div>
+                <span class="hero-pic-name">Sekhmet</span>
+              </a>
+            </div>
+            <p class="wishlist-note">Phoenix for Torment Rift (infinite revive at higher relic levels) and sustained carry use. Sekhmet if you want a single-target melee carry instead.</p>
+          </div>
+
+          <div class="wishlist-faction">
+            <div class="wishlist-faction-label">Clubs</div>
+            <div class="hero-pic-grid">
+              <a class="hero-pic pic-highlight" href="/heroes/fengyi">
+                <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/fengyi.webp')"></div>
+                <span class="hero-pic-name">Fengyi</span>
+              </a>
+              <span class="pic-divider">or</span>
+              <a class="hero-pic" href="/heroes/demeter">
+                <div class="hero-pic-img" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/demeter.webp')"></div>
+                <span class="hero-pic-name">Demeter</span>
+              </a>
+            </div>
+            <p class="wishlist-note">Fengyi as the Clubs AoE carry. Demeter if you need a tank for your comp.</p>
+          </div>
+
+        </div>
       </div>
 
       <!-- TEAM COMPOSITIONS -->
       <div class="eg-content-card" id="team-comps">
         <h2>Team Compositions</h2>
         <p>These are solid starting compositions to build toward. Mix and match based on which heroes you have available.</p>
+        <p><strong>Note on Meret:</strong> She can function as a control-focused carry, not only as a support piece. In the comps below she appears in protective shells, but she is also viable as your primary damage dealer when properly invested.</p>
         <div class="comp-list">
 
           <div class="comp-card">
@@ -658,7 +772,9 @@ const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.incl
         <h3>Suggested Early Targets</h3>
         <ul>
           <li><strong>Isis:</strong> aim for Relic Level 20 early.</li>
-          <li><strong>Poseidon:</strong> strong impact at Relic Level 10.</li>
+          <li><strong>Hecate:</strong> Relic Level 10 unlocks her full kit. Below this she underperforms - hold off using her as a main carry until you hit this breakpoint.</li>
+          <li><strong>Poseidon:</strong> strong impact at Relic Level 10. Not worth a frontline slot before this.</li>
+          <li><strong>Phoenix:</strong> higher relic levels unlock her infinite revive mechanic - the main reason to use her in Torment Rift.</li>
           <li><strong>Tefnut:</strong> fully usable around Relic Level 20.</li>
           <li><strong>High-end celestial units:</strong> often scale best at Relic Level 30 - save these for later.</li>
         </ul>
@@ -701,6 +817,112 @@ const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.incl
         <ul>
           <li><strong>Keystone of Wonders:</strong> only when your team has many different suits.</li>
           <li><strong>Horn of Potency:</strong> the safe early default when you have 1 to 2 suits - simple and consistent team-wide ATK boost.</li>
+        </ul>
+      </div>
+
+      <!-- ODYSSEY MILESTONES -->
+      <div class="eg-content-card" id="odyssey-milestones">
+        <h2>Odyssey (Campaign) Milestones</h2>
+        <p>Odyssey is the main driver of early progression. Each chapter cleared provides <strong>Undying Flame</strong> to upgrade your Shrine. Push toward these chapters in order:</p>
+        <div class="milestone-table">
+          <div class="milestone-row milestone-header">
+            <div class="milestone-chapter">Chapter</div>
+            <div class="milestone-unlock">What It Unlocks</div>
+            <div class="milestone-why">Why It Matters</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">~10</div>
+            <div class="milestone-unlock">Most core game modes</div>
+            <div class="milestone-why">You go from one mode to a full game</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">~20</div>
+            <div class="milestone-unlock">First awakening reward tier</div>
+            <div class="milestone-why">Awakening is a major power spike per hero</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">39</div>
+            <div class="milestone-unlock">Mid-game reward tier</div>
+            <div class="milestone-why">Opens account-wide buffs</div>
+          </div>
+          <div class="milestone-row milestone-highlight">
+            <div class="milestone-chapter">57</div>
+            <div class="milestone-unlock">4th Awakening unlock</div>
+            <div class="milestone-why">Current highest reward milestone - cost-to-reward drops sharply after this</div>
+          </div>
+        </div>
+        <div class="eg-team-example">
+          <p>After Chapter 57, further pushing yields diminishing returns until new content is added. Shift focus to Shrine, Beacon Tree, and PvE mode rewards.</p>
+        </div>
+      </div>
+
+      <!-- PULL AND PINION STRATEGY -->
+      <div class="eg-content-card" id="pull-strategy">
+        <h2>Pull and Pinion Strategy</h2>
+        <p>There are three types of pinions. Using the wrong one at the wrong time is one of the most common F2P mistakes.</p>
+        <div class="pinion-table">
+          <div class="pinion-row pinion-header">
+            <div class="pinion-type">Type</div>
+            <div class="pinion-pool">Pulls From</div>
+            <div class="pinion-when">When To Use</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Normal Pinions</div>
+            <div class="pinion-pool">All non-Starglint heroes</div>
+            <div class="pinion-when">Anytime - the base pool</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Gold Pinions (faction)</div>
+            <div class="pinion-pool">One specific faction</div>
+            <div class="pinion-when">Only usable on faction rate-ups - the game does not allow them on the standard banner.</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Rings (Starglint)</div>
+            <div class="pinion-pool">Starglint heroes only</div>
+            <div class="pinion-when">Rate-ups for Starglint heroes you already planned to build</div>
+          </div>
+        </div>
+        <div class="eg-team-example">
+          <h4>The Golden Rule</h4>
+          <p><strong>Day 1-2:</strong> Spend freely to get a workable roster of 5 heroes.</p>
+          <p><strong>Day 3 onward:</strong> Default to saving. Only pull on a rate-up when you can name the featured hero from memory. If you are pulling just because pulls are available, stop.</p>
+        </div>
+      </div>
+
+      <!-- DEITY SWAP EVENT -->
+      <div class="eg-content-card" id="deity-swap">
+        <h2>Deity Swap Event</h2>
+        <p>The Deity Swap Event lets you transfer all investment from one hero - stats, awakening, everything - onto a different hero. It is one of the biggest safety nets for early mistakes.</p>
+        <div class="eg-warning-box">
+          <h3>Do Not Rush It</h3>
+          <p>Wait until you have enough game knowledge to know which hero you want to swap into. Swapping into another bad pick wastes the event entirely.</p>
+        </div>
+        <h3>Good Swap Targets</h3>
+        <ul>
+          <li><strong>Swap out:</strong> heroes you built before reading a guide, old-meta carries that fell off, or duplicate roles you already have covered.</li>
+          <li><strong>Swap into:</strong> your F2P core picks - Caishen, Yuelao, Hecate, Phoenix, or whichever carry is your team's current bottleneck.</li>
+        </ul>
+        <h3>Common Patterns</h3>
+        <ul>
+          <li>Off a starter carry into a meta carry (e.g. early leveled hero into Hecate or Fengyi)</li>
+          <li>Off an over-invested duplicate support into a tank</li>
+          <li>Off a Starglint hero you no longer want to play</li>
+        </ul>
+      </div>
+
+      <!-- BEGINNER MISTAKES -->
+      <div class="eg-content-card" id="mistakes">
+        <h2>Common Beginner Mistakes</h2>
+        <ul class="mistakes-list">
+          <li><strong>Hoarding from Day 1.</strong> You need bodies on the field. Spend on Day 1-2, then switch to saving mode.</li>
+          <li><strong>Spreading gear across six heroes.</strong> Your top two damage dealers get everything first. Supports do not need gear to fulfill their role.</li>
+          <li><strong>Pulling on every banner.</strong> If you cannot name the featured hero, you are wasting pinions.</li>
+          <li><strong>Chasing Zeus without the investment.</strong> Without Peerless rarity and Relic 30, he is an expensive average unit.</li>
+          <li><strong>Using Poseidon below Relic 10.</strong> He underperforms at low relic levels. Build toward that breakpoint before relying on him.</li>
+          <li><strong>Rushing Hecate before Relic 10.</strong> Her kit is incomplete below that level. She is a mid-to-late carry, not an early one.</li>
+          <li><strong>Ignoring Shrine and Beacon Tree.</strong> These are the only investments that apply to every mode and every hero forever.</li>
+          <li><strong>Burning the Deity Swap Event on impulse.</strong> Wait, think, then swap.</li>
+          <li><strong>Building a second team before the first is finished.</strong> One team to Chapter 30, then diversify.</li>
         </ul>
       </div>
 
@@ -1357,6 +1579,151 @@ const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.incl
     color: rgba(209,209,219,0.7);
     line-height: 1.65;
     margin: 10px 0 0;
+  }
+
+  /* - ODYSSEY MILESTONE TABLE - */
+  .milestone-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    display: table;
+  }
+  .milestone-row {
+    display: table-row;
+  }
+  .milestone-chapter, .milestone-unlock, .milestone-why {
+    display: table-cell;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    font-size: 0.9rem;
+    vertical-align: top;
+  }
+  .milestone-header .milestone-chapter,
+  .milestone-header .milestone-unlock,
+  .milestone-header .milestone-why {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(209,209,219,0.55);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .milestone-chapter { width: 80px; font-weight: 700; color: #a78bfa; }
+  .milestone-highlight .milestone-chapter { color: #f59e0b; }
+  .milestone-highlight .milestone-unlock,
+  .milestone-highlight .milestone-why { color: #fde68a; }
+
+  /* - PINION TABLE - */
+  .pinion-table {
+    width: 100%;
+    display: table;
+    margin: 16px 0;
+  }
+  .pinion-row { display: table-row; }
+  .pinion-type, .pinion-pool, .pinion-when {
+    display: table-cell;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    font-size: 0.9rem;
+    vertical-align: top;
+  }
+  .pinion-header .pinion-type,
+  .pinion-header .pinion-pool,
+  .pinion-header .pinion-when {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(209,209,219,0.55);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .pinion-type { width: 160px; font-weight: 600; color: #60a5fa; }
+
+  /* - MISTAKES LIST - */
+  .mistakes-list {
+    margin: 12px 0 0;
+    padding-left: 20px;
+    line-height: 1.75;
+  }
+  .mistakes-list li { margin-bottom: 8px; }
+
+  /* - CORE RULE CARD - */
+  .eg-core-rule-card { border-left: 3px solid #a78bfa; }
+  .core-rule-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .core-rule-carry, .core-rule-support {
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .core-rule-carry { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); }
+  .core-rule-support { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); }
+  .core-rule-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .core-rule-carry .core-rule-label { color: #fca5a5; }
+  .core-rule-support .core-rule-label { color: #93c5fd; }
+  .core-rule-carry p, .core-rule-support p { margin: 0; font-size: 0.9rem; }
+
+  /* - GEAR PRIORITY LIST - */
+  .gear-priority-list { margin: 10px 0 12px; padding-left: 20px; line-height: 1.9; }
+
+  /* - DIANA / DIONYSUS BOX - */
+  .diana-dionysus-box {
+    margin-top: 20px;
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .diana-dionysus-box h3 { margin-top: 0; font-size: 1rem; }
+  .dd-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+  .dd-card {
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+  .dd-beginner { background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.25); }
+  .dd-advanced { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.25); }
+  .dd-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .dd-beginner .dd-label { color: #86efac; }
+  .dd-advanced .dd-label { color: #fde68a; }
+  .dd-card p { font-size: 0.88rem; margin: 0 0 6px; }
+  .dd-tag { color: rgba(209,209,219,0.6) !important; font-size: 0.8rem !important; }
+
+  /* - WISH LIST - */
+  .wishlist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 16px; }
+  .wishlist-faction {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .wishlist-faction-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(209,209,219,0.55);
+    margin-bottom: 10px;
+  }
+  .wishlist-note {
+    font-size: 0.82rem;
+    color: rgba(209,209,219,0.65);
+    margin: 10px 0 0;
+    line-height: 1.55;
   }
 
   /* - SHRINE TAB STYLES - */
