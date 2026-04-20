@@ -2,7 +2,8 @@
   "id": "meret",
   "name": "Meret",
   "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp",
-  "release": false,
+  "release": true,
+  "newHero": true,
   "faction": "Diamonds",
   "role": "Arcane",
   "class": "Support",
@@ -52,8 +53,8 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Celestial Symphony",
-      "description": "At battle start, Meret distributes Sun, Moon, and Star Notes to the ally with the highest HP, the ally with the highest ATK, and herself. Upon activation, she triggers all Notes: Sun grants a shield, Moon increases ATK, and Star restores Energy.",
+      "name": "All Heavens in Praise",
+      "description": "Passive: Upon entering battle, Meret distributes three Notes - Sun Note to the ally with the highest Max HP, Moon Note to the ally with the highest ATK, and Star Note to herself. Active: Activates all Notes. Sun grants a shield equal to 30% of Max HP. Moon grants +30% ATK for 8 seconds. Star restores 200 Energy.",
       "upgrades": {
         "level2": "Sun Note grants a stronger shield.",
         "level3": "Moon Note additionally increases Crit Rate.",
@@ -64,8 +65,19 @@
     },
     {
       "id": "skill_2",
-      "name": "Golden Step",
-      "description": "Heals the weakest ally every second for a duration based on a percentage of their max HP.",
+      "name": "Universal Resonance",
+      "description": "Marked allies share damage taken. The main target takes 60% of incoming damage, and the remaining 40% is split among other Note holders. Additional effects: Sun grants +10% Max HP, Moon grants +20% damage dealt, Star grants +10% Energy regeneration.",
+      "upgrades": {
+        "level2": "Sun Note further increases max HP.",
+        "level3": "Moon Note further increases damage dealt.",
+        "level4": "Star Note further increases Energy regeneration."
+      },
+      "damageType": "Support"
+    },
+    {
+      "id": "skill_3",
+      "name": "Sands in Stride",
+      "description": "Heals the most vulnerable ally, restoring HP equal to 60% of ATK per second for 5 seconds.",
       "upgrades": {
         "level2": "Increases healing per second.",
         "level3": "If the target has a Note, additionally restores a percentage of their max HP each second.",
@@ -74,31 +86,20 @@
       "damageType": "Support"
     },
     {
-      "id": "skill_3",
-      "name": "Curtain Call",
-      "description": "When any ally’s HP falls below a threshold, Meret heals them based on a percentage of their max HP. Each unit can trigger this effect once.",
+      "id": "skill_4",
+      "name": "The Curtain Never Falls",
+      "description": "When an ally drops below 50% HP, Meret heals them for 25% of their Max HP. Can trigger once per unit.",
       "upgrades": {
         "level2": "Increases healing effect.",
         "level3": "Further increases healing effect.",
         "level4": "Removes the trigger limit."
       },
       "damageType": "Support"
-    },
-    {
-      "id": "skill_4",
-      "name": "Resonant Harmony",
-      "description": "All allies with Sun, Moon, or Star Notes share damage taken and gain additional effects: Sun increases max HP, Moon increases damage dealt, and Star increases Energy regeneration speed.",
-      "upgrades": {
-        "level2": "Sun Note further increases max HP.",
-        "level3": "Moon Note further increases damage dealt.",
-        "level4": "Star Note further increases Energy regeneration."
-      },
-      "damageType": "Support"
     }
   ],
   "relic": {
-    "name": "Endless Melody",
-    "description": "When an allied unit with a Note takes fatal damage, they avoid death and gain a shield.",
+    "name": "Endless Echo",
+    "description": "When a Note-bearing ally would die, prevents their death and grants them a shield equal to 300% of ATK. 15-second cooldown.",
     "damageType": "Support",
     "upgrades": {
       "level2": "For each Note on the field, Meret gains damage reduction.",
