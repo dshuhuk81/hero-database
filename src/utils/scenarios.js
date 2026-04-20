@@ -78,8 +78,8 @@ export const SCENARIOS = {
       'ATK_SPD_UP': 32,           // 50-60% ATK SPD = ~2x DPS (Dionysus test confirmed critical)
       'ENERGY_RESTORE_TEAM': 30,  // More ultimates = critical (Yuelao loss = -28% DPS)
       'CDR_TEAM': 28,             // More skill rotations = more burst
-      'ATK_UP': 25,               // 20-25% ATK = direct damage boost (Cashien confirmed)
-      'REMOVES_ARMOR': 26,        // Armor shred = amplifies all physical DPS (Cashien confirmed)
+      'ATK_UP': 25,               // 20-25% ATK = direct damage boost (Caishen confirmed)
+      'REMOVES_ARMOR': 26,        // Armor shred = amplifies all physical DPS (Caishen confirmed)
       'ENEMY_VULNERABILITY': 28,  // Increases damage taken (universal amplifier)
       'CRIT_RATE_UP': 20,         // Increased crit = burst damage
       'CRIT_DMG_UP': 20,          // Increased crit damage

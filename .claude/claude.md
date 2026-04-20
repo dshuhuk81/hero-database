@@ -359,7 +359,7 @@ These are one-off debugging tools in root directory (not part of automated build
 Overall Ratings:
 
 SS Tier
-Zeus, Nezha, Skadi, Cronus, Dionysus, Cashien, Nuwa, Mengpo, Poseidon
+Zeus, Nezha, Skadi, Cronus, Dionysus, Caishen, Nuwa, Mengpo, Poseidon
 
 S Tier
 Nyx, Jingwei, Heracles, Amunra, Nuba, Bastet, Hecate, Khepri, Diana, Momus, Tefnut, Pan, Set, Yuelao, Cancer
@@ -371,7 +371,7 @@ B Tier
 Artemis, Ullr, Aquarius, Ares, Virgo, Nemesis, Prometheus, Sekhmet, Scorpio, Freya, Capricorn
 
 C Tier
-Gep, Medusa, Horus, Leo, Demeter
+Geb, Medusa, Horus, Leo, Demeter
 
 D Tier
 Aries, Gemini, Libra, Jormungandr, Surtr, Taurus, Pisces

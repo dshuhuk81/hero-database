@@ -5,7 +5,7 @@ Teams
                                                 Good against        Totem                                    Rating         Notes
 Heracles+Bastet+Meret+Set+Phoenix               Clubs,Diamonds      Sanctified Blood                            3
 Heracles+Eris+Serket+Nuba+Dionysus              Clubs,Diamonds      Sanctified Blood, Keystone of Wonders       4
-Heracles+Zeus+Nuba+Cashien+Mengpo               All                 Sanctified Blood, Keystone of Wonders       5
+Heracles+Zeus+Nuba+Caishen+Mengpo               All                 Sanctified Blood, Keystone of Wonders       5
 Heracles+Jormungandr+Phoenix+Anubis+Nyx         All                 Sanctified Blood, Horn of Potency           4
 Heracles+Jormungandr+Nut+Anubis+Nyx             All                 Sanctified Blood, Horn of Potency           5
 
@@ -13,7 +13,7 @@ Heracles+Jormungandr+Nut+Anubis+Nyx             All                 Sanctified B
 
                                                 Good against            Totem                                           Rating    
 Hladgunnr,Wenshen,Yanluo,Promoetheus,Nyx        Spades                  Horn of Potency, Unsullied Lotus,Defiant Vow.      1
-Hladgunnr,Hera,Nuba,Wenshen,Cashien             Spades,Diamonds,Hearts   Horn of Potency, Unsullied Lotus,Defiant Vow.      5
+Hladgunnr,Hera,Nuba,Wenshen,Caishen             Spades,Diamonds,Hearts   Horn of Potency, Unsullied Lotus,Defiant Vow.      5
 Hladgunnr,Jormungandr,Wenshen,Capricorn,Nyx     Spades                  Horn of Potency, Unsullied Lotus,Defiant Vow.      2
 HLadgunnr,Jormungandr,Nut,Wenshen,Nyx           Hearts,Diamonds,Spades   Horn of Potency,Windrunner's Grace                 5
 
@@ -21,9 +21,9 @@ HLadgunnr,Jormungandr,Nut,Wenshen,Nyx           Hearts,Diamonds,Spades   Horn of
 
 Hecate,Momus,Yuelao,Tefnut,Cancer               Diamonds                Undying Staff,Horn of Potency                       1
 Hecate,Momus,Yuelao,Meret,Cancer                Diamonds                Undying Staff,Horn of Potency                       2
-Hecate,Momus,Yuelao,Meret,Cashien               Diamonds,Hearts         Undying Staff,Horn of Potency                       3
+Hecate,Momus,Yuelao,Meret,Caishen               Diamonds,Hearts         Undying Staff,Horn of Potency                       3
 Hecate,Momus,Yuelao,Meret,Cronus                All                     Undying Staff,Horn of Potency                       5
-Cronus,Cashien,Mengpo,Nuba,X                    All                     Totem is not identified yet                         5
+Cronus,Caishen,Mengpo,Nuba,X                    All                     Totem is not identified yet                         5
 X = Zeus,Jengwei,Eris,Nut,Hladgunnr,Heracles,Nezha,Skadi,Hecate
 
 
@@ -41,7 +41,7 @@ Skadi,Poseidon,Khepri,Pan,Cronus                All                     Keystone
 6) More Campaign Teams
 Bastet, Heralces, Phoenix, Set, Athena (or Diana)
 Hladgunnr, Hecate, Heracles, Jingwei, Skadi
-Nuba, Cashien, MEngpo, Cronus, Jingwei
+Nuba, Caishen, MEngpo, Cronus, Jingwei
 Hecate, Momus, Cancer, Yuelao, Meret 
 Khepri, Poseidon, Pan, Skadi, Nuwa
 Capricorn, Wenshen, Jormungandr, Hladgunnr, Anubis

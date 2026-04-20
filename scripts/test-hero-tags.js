@@ -59,7 +59,7 @@ function fullSkillText(h) {
 }
 
 // Test specific heroes
-const heroIds = ["cashien", "dionysus", "yuelao"];
+const heroIds = ["caishen", "dionysus", "yuelao"];
 
 for (const id of heroIds) {
   const hero = getHeroById(id);
