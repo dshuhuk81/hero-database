@@ -58,8 +58,8 @@
         {
           "id": "baphomet_dps_meta",
           "label": "Max Damage (Meta)",
-          "hero-comp": "hladgunnr, isis, cashien, yuelao, dionysus",
-          "heroes": ["hladgunnr", "isis", "cashien", "yuelao", "dionysus"],
+          "hero-comp": "hladgunnr, isis, caishen, yuelao, dionysus",
+          "heroes": ["hladgunnr", "isis", "caishen", "yuelao", "dionysus"],
           "reason": "High sustained DPS with strong energy/cooldown support to keep rotations running under energy-drain pressure.",
           "notes": ["Keep main DPS protected during silence windows", "Energy support is key vs pentacle drain"],
           "source": "auto"
@@ -109,8 +109,8 @@
         {
           "id": "demonic_horse_manual",
           "label": "Recommended",
-          "hero-comp": "tefnut, isis, cashien, yuelao, dionysus",
-          "heroes": ["tefnut", "isis", "cashien", "yuelao", "dionysus"],
+          "hero-comp": "tefnut, isis, caishen, yuelao, dionysus",
+          "heroes": ["tefnut", "isis", "caishen", "yuelao", "dionysus"],
           "reason": "",
           "notes": [],
           "source": "auto"
@@ -161,8 +161,8 @@
           {
             "id": "epica_manual",
             "label": "Recommended",
-            "hero-comp": "isis, tefnut, yuelao, cashien, dionysus",
-            "heroes": ["isis", "tefnut", "yuelao", "cashien", "dionysus"],
+            "hero-comp": "isis, tefnut, yuelao, caishen, dionysus",
+            "heroes": ["isis", "tefnut", "yuelao", "caishen", "dionysus"],
             "reason": "",
             "notes": [],
             "source": "auto"
@@ -224,8 +224,8 @@
         {
           "id": "lilith_whale",
           "label": "Recommended",
-          "hero-comp": "zeus, cronus, cashien, nuwa, dionysus",
-          "heroes": ["zeus", "cronus", "cashien", "nuwa", "dionysus"],
+          "hero-comp": "zeus, cronus, caishen, nuwa, dionysus",
+          "heroes": ["zeus", "cronus", "caishen", "nuwa", "dionysus"],
           "reason": "",
           "notes": ["Zeus needs to be divine or higher to clear children efficiently", "Cronus can help with burst windows to prevent scaling", "Sustain and cleanse to mitigate damage transfer and ATK SPD buff"],
           "source": "auto"
@@ -233,8 +233,8 @@
         {
           "id": "lilith_budget",
           "label": "Budget",
-          "hero-comp": "fengyi, isis, cashien, nuwa, dionysus",
-          "heroes": ["fengyi", "isis", "cashien", "nuwa", "dionysus"],
+          "hero-comp": "fengyi, isis, caishen, nuwa, dionysus",
+          "heroes": ["fengyi", "isis", "caishen", "nuwa", "dionysus"],
           "reason": "",
           "notes": ["Fengyi can clear children with his ultimate, but requires precise timing to prevent scaling", "Isis provides consistent damage and energy support", "Sustain and cleanse remain critical to manage damage transfer and buffs"],
           "source": "auto"
@@ -300,8 +300,8 @@
         {
           "id": "isthar_vi_manual",
           "label": "Recommended",
-          "hero-comp": "hladgunnr, isis, cashien, yuelao, dionysus",
-          "heroes": ["hladgunnr", "nezha", "cashien", "athena", "dionysus"],
+          "hero-comp": "hladgunnr, isis, caishen, yuelao, dionysus",
+          "heroes": ["hladgunnr", "nezha", "caishen", "athena", "dionysus"],
           "reason": "",
           "notes": [],
           "source": "auto"
@@ -358,8 +358,8 @@
         {
           "id": "jackfrost_auto",
           "label": "Recommended",
-          "hero-comp": "nezha, hladgunnr, cashien, zeus, dionysus",
-          "heroes": ["nezha", "hladgunnr", "cashien", "zeus", "dionysus"],
+          "hero-comp": "nezha, hladgunnr, caishen, zeus, dionysus",
+          "heroes": ["nezha", "hladgunnr", "caishen", "zeus", "dionysus"],
           "reason": "",
           "notes": [],
           "source": "auto"
@@ -432,9 +432,9 @@
         {
           "id": "typhoon_balanced",
           "label": "Balanced Mixed Damage",
-          "hero-comp": "ares, hladgunnr, isis, cashien, dionysus",
-          "heroes": ["ares", "hladgunnr", "isis", "cashien", "dionysus"],
-          "reason": "Balanced composition exploiting both head vulnerabilities. Ares (melee) targets right head for +25% damage, while Hladgunnr and Isis (ranged) exploit left head weakness. Dionysus provides shields to mitigate heal reduction, and Cashien sustains energy for consistent rotations.",
+          "hero-comp": "ares, hladgunnr, isis, caishen, dionysus",
+          "heroes": ["ares", "hladgunnr", "isis", "caishen", "dionysus"],
+          "reason": "Balanced composition exploiting both head vulnerabilities. Ares (melee) targets right head for +25% damage, while Hladgunnr and Isis (ranged) exploit left head weakness. Dionysus provides shields to mitigate heal reduction, and Caishen sustains energy for consistent rotations.",
           "notes": [
             "Position Ares or tank in center backline to absorb petrification",
             "Focus left head first with ranged DPS (easier vulnerability)",
@@ -460,9 +460,9 @@
         {
           "id": "typhoon_sustain",
           "label": "Sustained Pressure",
-          "hero-comp": "tefnut, hladgunnr, cashien, yuelao, dionysus",
-          "heroes": ["tefnut", "hladgunnr", "cashien", "yuelao", "dionysus"],
-          "reason": "Hybrid warrior-tank in Tefnut provides melee damage against right head while surviving center backline focus. Hladgunnr exploits left head. Double support (Cashien + Yuelao) ensures energy sustain and linking buffs for prolonged multi-part fight.",
+          "hero-comp": "tefnut, hladgunnr, caishen, yuelao, dionysus",
+          "heroes": ["tefnut", "hladgunnr", "caishen", "yuelao", "dionysus"],
+          "reason": "Hybrid warrior-tank in Tefnut provides melee damage against right head while surviving center backline focus. Hladgunnr exploits left head. Double support (Caishen + Yuelao) ensures energy sustain and linking buffs for prolonged multi-part fight.",
           "notes": [
             "Tefnut can survive center backline petrification + normal attacks",
             "Yuelao links Tefnut and Hladgunnr for shared stats",

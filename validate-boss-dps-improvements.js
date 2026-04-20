@@ -20,7 +20,7 @@ async function validateBossDpsImprovements() {
   const heroes = Object.values(allHeroesDb);
 
   // Test key heroes from the boss DPS test
-  const testHeroes = ['isis', 'hladgunnr', 'yuelao', 'dionysus', 'cashien', 'tefnut', 'athena'];
+  const testHeroes = ['isis', 'hladgunnr', 'yuelao', 'dionysus', 'caishen', 'tefnut', 'athena'];
 
   const results = [];
 
@@ -58,7 +58,7 @@ async function validateBossDpsImprovements() {
   console.log('\n\n=== Team Context Test: Isis as Carry ===\n');
 
   const isisHero = allHeroesDb['isis'];
-  const supports = ['yuelao', 'dionysus', 'cashien', 'tefnut', 'athena'];
+  const supports = ['yuelao', 'dionysus', 'caishen', 'tefnut', 'athena'];
 
   const contextResults = [];
 

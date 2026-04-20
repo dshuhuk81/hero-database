@@ -10,7 +10,7 @@ mkdir -p "$OUT/skills"
 
 HEROES=(
   amunra anubis aquarius ares aries artemis athena bastet cancer canopicjar
-  capricorn cashien cronus demeter diana dionysus eris fengyi freya geb gemini
+  capricorn caishen cronus demeter diana dionysus eris fengyi freya geb gemini
   hecate hela hephaestus heracles hladgunnr horus idun iris isis jinchan
   jingwei jiutian-xuannv jormungandr khepri kraken leo libra medusa mengpo
   meret momus nemesis nezha nuba nut nuwa nymphia nyx pan phoenix pisces

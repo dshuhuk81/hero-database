@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 
 const allHeroesDb = JSON.parse(readFileSync(join(__dirname, '../src/data/all_heroes_db.json'), 'utf-8'));
 
-const targetHeroes = ['dionysus', 'yuelao', 'cashien'];
+const targetHeroes = ['dionysus', 'yuelao', 'caishen'];
 
 async function analyze() {
   console.log('='.repeat(70));

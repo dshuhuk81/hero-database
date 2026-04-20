@@ -13,7 +13,7 @@ async function analyzeTeamComposition() {
   console.log('BOSS TEAM COMPOSITION ANALYSIS - Real Data vs Ratings');
   console.log('='.repeat(90));
   
-  const coreTeam = ['isis', 'cashien', 'dionysus', 'tefnut'];
+  const coreTeam = ['isis', 'caishen', 'dionysus', 'tefnut'];
   const flexOptions = ['athena', 'yuelao', 'diana'];
   
   // Real damage results
@@ -24,7 +24,7 @@ async function analyzeTeamComposition() {
   };
   
   console.log('\n📊 REAL BOSS FIGHT RESULTS:\n');
-  console.log('Core Team: Isis + Cashien + Dionysus + Tefnut + X\n');
+  console.log('Core Team: Isis + Caishen + Dionysus + Tefnut + X\n');
   console.log('Hero (X)     | Damage Output | vs Athena');
   console.log('-------------|---------------|----------');
   console.log(`Yuelao       | 1,250M        | +67% 🔥🔥🔥`);
@@ -151,7 +151,7 @@ async function analyzeTeamComposition() {
 3. ENERGY ECONOMICS:
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    • Yuelao: 180 energy restore to highest ATK (Isis)
-   • Cashien: Area energy sustain (35/sec)
+   • Caishen: Area energy sustain (35/sec)
    • Dionysus: 30% Energy Regen buff
    • Result: Isis constantly in Omniscient state (2.5x DPS mode)
    • Athena provides survival but NOT energy = less ultimate uptime

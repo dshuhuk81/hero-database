@@ -1163,6 +1163,176 @@
       "notes": "Needs dodge% on gear slots 2/3. Without it, survivability drops significantly."
     }
   },
+  "caishen": {
+    "id": "caishen",
+    "name": "Caishen",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp",
+    "release": true,
+    "faction": "Hearts",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "Caishen, guardian of wealth, rules over the flow of riches, success, and opportunity. Able to grant fortune or strip possessions, Caishen rewards diligence and punishes greed.",
+    "ratings": {
+      "overall": "SS",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "S",
+      "pvp": "SS",
+      "pve": "SS"
+    },
+    "recommendedRelicLevel": 20,
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 631000,
+      "hp": 2193071,
+      "atk": 185496,
+      "armor": 50016,
+      "magicRes": 57711,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 4,
+      "critRes": 6,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Golden Rejuvenation",
+        "description": "Deals DMG equal to 270% of ATK to a target and restores 200 Energy to himself.",
+        "upgrades": {
+          "level2": "Increases ATK bonus to 300%.",
+          "level3": "Restores 300 Energy to himself.",
+          "level4": "Increases ATK bonus to 330%. (Unlocks at Lv.281)"
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Rollin' in Riches",
+        "description": "Caishen restores 100 Energy to allies in a large area around him and then restores 25 Energy per sec to them for the next 10s.",
+        "upgrades": {
+          "level2": "Increases Energy Regen to 30.",
+          "level3": "Also increases ATK of allies within range by 15% for 5s.",
+          "level4": "Increases Energy Regen to 35."
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "Lucky Star Alight",
+        "description": "Before falling, becomes immune to the DMG and invincible for 2s. It can only trigger once.",
+        "upgrades": {
+          "level2": "Additionally restores HP equal to 200% ATK.",
+          "level3": "Additionally restores HP equal to 300% ATK.",
+          "level4": "The effect now trigger twice. (Unlocks at Lv.261)"
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "Endless Fortune",
+        "description": "Caishen is surrounded by 2 Golden Ingots upon entering battle. When a nearby ally's HP drops below 50%, an Ingot is consumed to restore 25% max HP to that ally. Using a Golden Ingot has an 8s CD for each Deity. Caishen can have a maximum of 3 Golden Ingots. Once all Golden Ingots are used, they are automatically replenished to full. This effect has a 20s CD.",
+        "upgrades": {
+          "level2": "Increases healing effect to 27%.",
+          "level3": "Golden Ingots +1 at combat start.",
+          "level4": "Increases healing effect to 30%."
+        },
+        "damageType": "Magical"
+      }
+    ],
+    "relic": {
+      "name": "Fortune Leverage",
+      "description": "The first time an ally reaches 700 Energy, grants them 300 Energy.",
+      "upgrades": {
+        "level2": "The first time an ally reaches 650 Energy, grants them 350 Energy.",
+        "level3": "This effect can trigger repeatedly with a 15s CD. (Unlock at Relic Lv.20)",
+        "level4": "The first time an ally reaches 600 Energy, grants them 400 Energy. (Unlock at Relic Lv.30)"
+      }
+    },
+    "synergies": [
+      "ENERGY_RESTORE_TEAM",
+      "HEAL_TEAM",
+      "ATK_UP",
+      "DMG_RED",
+      "ENERGY_RESTORE",
+      "HEAL"
+    ],
+    "baseAttackRate": 0.935,
+    "bossUltimatesPer90s": 10,
+    "coreMechanic": {
+      "summary": "Best energy battery. Instant 100 energy to all nearby allies plus 25/s for 8s. CN calls him the eternal support regardless of meta shifts.",
+      "depthRating": "mid",
+      "commonlyMisunderstood": false
+    },
+    "relicBreakpoints": [
+      {
+        "level": 1,
+        "type": "mandatory",
+        "effect": "Core energy restore unlocked. Fully functional support from r1."
+      },
+      {
+        "level": 20,
+        "type": "recommended",
+        "effect": "Improved heal radius and ingot regeneration speed. Better sustained healing."
+      }
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "jingwei",
+        "type": "core",
+        "description": "Foundational Hearts team -- energy cycling sustains Jingwei flight phase."
+      },
+      {
+        "heroId": "isis",
+        "type": "core",
+        "description": "Foundational Hearts team -- both carries depend on Caishen energy cycling."
+      },
+      {
+        "heroId": "mengpo",
+        "type": "core",
+        "description": "Standard Hearts trio core -- all three benefit each other in a closed loop."
+      },
+      {
+        "heroId": "zeus",
+        "type": "core",
+        "description": "Guaranteed energy cycling maximizes Zeus Judgment window uptime."
+      }
+    ],
+    "metaSources": {
+      "excelTier": "T0",
+      "cnTier": "T0",
+      "egTier": "T0",
+      "consensus": "full",
+      "lastVerified": "2026-04"
+    },
+    "f2pInvestment": {
+      "recommendation": "Divine",
+      "priority": 1,
+      "notes": null
+    }
+  },
   "cancer": {
     "id": "cancer",
     "name": "Cancer",
@@ -1513,176 +1683,6 @@
     "f2pInvestment": {
       "recommendation": "Keep 1 copy in altar",
       "priority": 4,
-      "notes": null
-    }
-  },
-  "cashien": {
-    "id": "cashien",
-    "name": "Cashien",
-    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cashien.webp",
-    "release": true,
-    "faction": "Hearts",
-    "role": "Arcane",
-    "class": "Support",
-    "rarity": "Legendary",
-    "description": "Caishen, guardian of wealth, rules over the flow of riches, success, and opportunity. Able to grant fortune or strip possessions, Caishen rewards diligence and punishes greed.",
-    "ratings": {
-      "overall": "SS",
-      "grimSurge": "",
-      "delusionsDen": "",
-      "torrentRift": "",
-      "forgottenLabyrinth": "S",
-      "pvp": "SS",
-      "pve": "SS"
-    },
-    "recommendedRelicLevel": 20,
-    "evolution": "Divine V",
-    "level": 300,
-    "stats": {
-      "might": 631000,
-      "hp": 2193071,
-      "atk": 185496,
-      "armor": 50016,
-      "magicRes": 57711,
-      "dodgeRate": 6,
-      "hitBonus": 0,
-      "critRate": 4,
-      "critRes": 6,
-      "critDmgBonus": 0,
-      "critDmgRed": 0,
-      "energy": 0,
-      "cooldownHaste": 0,
-      "atkSpdBonus": 0,
-      "pDmgBonus": 0,
-      "pDmgRed": 0,
-      "mDmgBonus": 0,
-      "mDmgRed": 0,
-      "healEff": 0,
-      "rechargeEff": 0,
-      "lifestealEff": 0,
-      "reflectEff": 0,
-      "effectRes": 0,
-      "effectHit": 0,
-      "controlRes": 0,
-      "controlBonus": 0,
-      "normalSkillPWR": 0,
-      "ultimatePWR": 0
-    },
-    "skills": [
-      {
-        "id": "skill_1",
-        "name": "Golden Rejuvenation",
-        "description": "Deals DMG equal to 270% of ATK to a target and restores 200 Energy to himself.",
-        "upgrades": {
-          "level2": "Increases ATK bonus to 300%.",
-          "level3": "Restores 300 Energy to himself.",
-          "level4": "Increases ATK bonus to 330%. (Unlocks at Lv.281)"
-        },
-        "damageType": "",
-        "isUltimate": true
-      },
-      {
-        "id": "skill_2",
-        "name": "Rollin' in Riches",
-        "description": "Caishen restores 100 Energy to allies in a large area around him and then restores 25 Energy per sec to them for the next 10s.",
-        "upgrades": {
-          "level2": "Increases Energy Regen to 30.",
-          "level3": "Also increases ATK of allies within range by 15% for 5s.",
-          "level4": "Increases Energy Regen to 35."
-        },
-        "damageType": ""
-      },
-      {
-        "id": "skill_3",
-        "name": "Lucky Star Alight",
-        "description": "Before falling, becomes immune to the DMG and invincible for 2s. It can only trigger once.",
-        "upgrades": {
-          "level2": "Additionally restores HP equal to 200% ATK.",
-          "level3": "Additionally restores HP equal to 300% ATK.",
-          "level4": "The effect now trigger twice. (Unlocks at Lv.261)"
-        },
-        "damageType": ""
-      },
-      {
-        "id": "skill_4",
-        "name": "Endless Fortune",
-        "description": "Caishen is surrounded by 2 Golden Ingots upon entering battle. When a nearby ally's HP drops below 50%, an Ingot is consumed to restore 25% max HP to that ally. Using a Golden Ingot has an 8s CD for each Deity. Caishen can have a maximum of 3 Golden Ingots. Once all Golden Ingots are used, they are automatically replenished to full. This effect has a 20s CD.",
-        "upgrades": {
-          "level2": "Increases healing effect to 27%.",
-          "level3": "Golden Ingots +1 at combat start.",
-          "level4": "Increases healing effect to 30%."
-        },
-        "damageType": "Magical"
-      }
-    ],
-    "relic": {
-      "name": "Fortune Leverage",
-      "description": "The first time an ally reaches 700 Energy, grants them 300 Energy.",
-      "upgrades": {
-        "level2": "The first time an ally reaches 650 Energy, grants them 350 Energy.",
-        "level3": "This effect can trigger repeatedly with a 15s CD. (Unlock at Relic Lv.20)",
-        "level4": "The first time an ally reaches 600 Energy, grants them 400 Energy. (Unlock at Relic Lv.30)"
-      }
-    },
-    "synergies": [
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "ATK_UP",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "HEAL"
-    ],
-    "baseAttackRate": 0.935,
-    "bossUltimatesPer90s": 10,
-    "coreMechanic": {
-      "summary": "Best energy battery. Instant 100 energy to all nearby allies plus 25/s for 8s. CN calls him the eternal support regardless of meta shifts.",
-      "depthRating": "mid",
-      "commonlyMisunderstood": false
-    },
-    "relicBreakpoints": [
-      {
-        "level": 1,
-        "type": "mandatory",
-        "effect": "Core energy restore unlocked. Fully functional support from r1."
-      },
-      {
-        "level": 20,
-        "type": "recommended",
-        "effect": "Improved heal radius and ingot regeneration speed. Better sustained healing."
-      }
-    ],
-    "synergyLinks": [
-      {
-        "heroId": "jingwei",
-        "type": "core",
-        "description": "Foundational Hearts team -- energy cycling sustains Jingwei flight phase."
-      },
-      {
-        "heroId": "isis",
-        "type": "core",
-        "description": "Foundational Hearts team -- both carries depend on Caishen energy cycling."
-      },
-      {
-        "heroId": "mengpo",
-        "type": "core",
-        "description": "Standard Hearts trio core -- all three benefit each other in a closed loop."
-      },
-      {
-        "heroId": "zeus",
-        "type": "core",
-        "description": "Guaranteed energy cycling maximizes Zeus Judgment window uptime."
-      }
-    ],
-    "metaSources": {
-      "excelTier": "T0",
-      "cnTier": "T0",
-      "egTier": "T0",
-      "consensus": "full",
-      "lastVerified": "2026-04"
-    },
-    "f2pInvestment": {
-      "recommendation": "Divine",
-      "priority": 1,
       "notes": null
     }
   },
@@ -3043,7 +3043,7 @@
         {
           "label": "Advanced",
           "stars": 3,
-          "description": "Cashien replaces Cancer for better energy cycling. Now works against Diamonds and Hearts.",
+          "description": "Caishen replaces Cancer for better energy cycling. Now works against Diamonds and Hearts.",
           "targets": "Diamonds, Hearts",
           "totems": [
             "undying_staff",
@@ -3056,7 +3056,7 @@
             "momus",
             "yuelao",
             "meret",
-            "cashien"
+            "caishen"
           ]
         },
         {
@@ -3548,7 +3548,7 @@
         {
           "label": "Dual Core",
           "stars": 5,
-          "description": "Heracles provides crowd control and acts as meat shield. Zeus, Nuba, Cashien and Mengpo stack buffs and energy to maximize Heracles's output.",
+          "description": "Heracles provides crowd control and acts as meat shield. Zeus, Nuba, Caishen and Mengpo stack buffs and energy to maximize Heracles's output.",
           "targets": "All",
           "totems": [
             "sanctified_blood",
@@ -3560,7 +3560,7 @@
           "back": [
             "zeus",
             "nuba",
-            "cashien",
+            "caishen",
             "mengpo"
           ]
         },
@@ -3796,7 +3796,7 @@
         {
           "label": "Charm",
           "stars": 5,
-          "description": "The strongest Hladgunnr variant. Hera's charm synergizes directly with Hladgunnr's execute mechanic. Nuba and Cashien provide buff and energy support.",
+          "description": "The strongest Hladgunnr variant. Hera's charm synergizes directly with Hladgunnr's execute mechanic. Nuba and Caishen provide buff and energy support.",
           "targets": "Spades, Diamonds, Hearts",
           "totems": [
             "horn_of_potency",
@@ -3810,7 +3810,7 @@
             "hera",
             "nuba",
             "wenshen",
-            "cashien"
+            "caishen"
           ]
         },
         {
@@ -4594,7 +4594,7 @@
     ],
     "synergyLinks": [
       {
-        "heroId": "cashien",
+        "heroId": "caishen",
         "type": "core",
         "description": "Energy cycling feeds flight phase; longer airborne means more damage output."
       },
@@ -5677,9 +5677,9 @@
     "bossUltimatesPer90s": 0,
     "synergies": [
       {
-        "heroId": "hercules",
+        "heroId": "heracles",
         "type": "core",
-        "description": "Meret shields Hercules during ramp phase. Watch for energy timing conflict -- test whether output rhythm is disrupted."
+        "description": "Meret shields Heracles during ramp phase. Watch for energy timing conflict -- test whether output rhythm is disrupted."
       },
       {
         "heroId": "bastet",
@@ -5693,7 +5693,7 @@
       }
     ],
     "coreMechanic": {
-      "summary": "Diamond Support with protective life-sharing mechanics. Shields Hercules during ramp-up phase but can slow his energy recovery -- known tradeoff. Insufficient against high enemy burst. r1-10 enough for baseline utility; r30 for full protective output.",
+      "summary": "Diamond Support with protective life-sharing mechanics. Shields Heracles during ramp-up phase but can slow his energy recovery -- known tradeoff. Insufficient against high enemy burst. r1-10 enough for baseline utility; r30 for full protective output.",
       "depthRating": "medium",
       "commonlyMisunderstood": true
     },
@@ -7611,7 +7611,7 @@
   },
   "sagittarius": {
     "id": "sagittarius",
-    "name": "Sagitarius",
+    "name": "Sagittarius",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/sagittarius.webp",
     "release": true,
     "faction": "Diamonds",
@@ -9654,7 +9654,7 @@
         "description": "ATK buff and link chain -- Zeus hits harder and survives longer."
       },
       {
-        "heroId": "cashien",
+        "heroId": "caishen",
         "type": "core",
         "description": "Maximum energy cycling for guaranteed Judgment uptime."
       },

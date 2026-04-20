@@ -1,0 +1,1174 @@
+---
+export const prerender = true;
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import ddData from "../data/delusions-den.json";
+
+const { blessings, buffs } = ddData;
+
+const PRIORITY_TIERS = ["1", "2", "3", "skip"] as const;
+type PriorityKey = typeof PRIORITY_TIERS[number];
+
+const PRIORITY_LABELS: Record<PriorityKey, string> = {
+  "1": "Priority 1",
+  "2": "Priority 2",
+  "3": "Priority 3 (Situational)",
+  "skip": "Skip",
+};
+
+function hp(id: string) {
+  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${id}.webp`;
+}
+
+// ─── COMP DEFINITIONS ───────────────────────────────────────────────────────
+// To add a new comp: copy one entry below and fill in the fields.
+// id must be unique and URL-safe (lowercase, hyphens only).
+// blessing: "Mask of Sorrow" | "Divine Nectar"
+// heroes: array of { id, name, note } -- id must match the hero JSON id
+//   The middle backline hero (position 2 in back row) is invalidated by Mask of Sorrow.
+//   Use the `note` field to mark that slot clearly.
+// waveSwaps: optional array of { wave, action } for mid-run hero swaps.
+
+const DD_COMPS = [
+  {
+    id: "mask-basic-attack",
+    label: "Mask of Sorrow - Basic Attack Core",
+    source: "Video guide (GBH)",
+    blessing: "Mask of Sorrow",
+    heroes: [
+      { id: "phoenix",  name: "Phoenix",  note: "DPS" },
+      { id: "isis",     name: "Isis",     note: "DPS" },
+      { id: "nuba",  name: "Nuba",  note: "DPS/Tank" },
+      { id: "dionysus", name: "Dionysus", note: "Middle Back (passive only)" },
+      { id: "yuelao",   name: "Yuelao",   note: "Support" },
+    ],
+    reason:
+      "Built around the Mask of Sorrow blessing which grants 100% attack speed and reduces skill cooldowns to all heroes except the middle backline slot. Dionysus fills the invalidated middle-back position so his passive buffs the team while his normal attacks are suppressed. Phoenix, Isis, and Artemis deliver the damage payload through accelerated basic attacks. Yuelao provides healing and stat support to keep the attackers alive through later waves. The Keystones of Wonders bonus activates with all 5 suits, adding 30% damage dealt and 30% damage reduction.",
+    notes: [
+      "Dionysus must occupy the middle backline slot. His passive buffs still apply even though his normal attacks are invalidated.",
+      "The entire buff selection strategy is built around normal attacks. Ignore ultimate damage buffs unless no alternative is offered.",
+      "Against Ares in wave 2, temporarily replace Yuelao with Heracles. Swap back before wave 3 begins.",
+      "Phoenix at Exalted and Isis at Divine 2+ are the damage backbone. Lower investment reduces the comp's ceiling significantly.",
+      "Activate all 5 faction suits for the Keystones of Wonders bonus: 30% damage and 30% damage reduction.",
+    ],
+    waveSwaps: [
+      { wave: 2, action: "Swap Yuelao out for Heracles to survive the Ares encounter. Restore Yuelao before wave 3." },
+    ],
+    buffPriority: [
+      "Normal attack speed",
+      "Normal attack damage",
+      "Crit rate (normal attack)",
+      "Crit damage",
+      "Crit execution (execute enemies below 25% HP)",
+      "Energy on kill",
+      "Defense drain on normal attack",
+      "Normal attack knockback",
+      "Shield on normal attack",
+    ],
+    buffAvoid: [
+      "Ultimate damage",
+      "HP regeneration on ultimate",
+      "Energy regeneration on ultimate",
+    ],
+  },
+
+  // ─── ADD MORE COMPS HERE ─────────────────────────────────────────────────
+  // Example structure (remove the comment markers to activate):
+  //
+  // {
+  //   id: "my-comp-id",
+  //   label: "My Comp Name",
+  //   source: "Source description",
+  //   blessing: "Mask of Sorrow",
+  //   heroes: [
+  //     { id: "hero_id", name: "Hero Name", note: "Role" },
+  //     { id: "hero_id", name: "Hero Name", note: "Role" },
+  //     { id: "hero_id", name: "Hero Name", note: "Middle Back (passive only)" },
+  //     { id: "hero_id", name: "Hero Name", note: "Role" },
+  //     { id: "hero_id", name: "Hero Name", note: "Role" },
+  //   ],
+  //   reason: "Why this comp works...",
+  //   notes: ["Note 1", "Note 2"],
+  //   waveSwaps: [],
+  //   buffPriority: ["Buff 1", "Buff 2"],
+  //   buffAvoid: ["Buff to skip"],
+  // },
+
+  {
+    id: "placeholder",
+    label: "Community Comp (Placeholder)",
+    source: "CN community reports - to be verified",
+    blessing: "Mask of Sorrow",
+    heroes: [
+      { id: "poseidon", name: "Poseidon", note: "CC / Tank" },
+      { id: "skadi",    name: "Skadi",    note: "DPS / CC" },
+      { id: "caishen",  name: "Caishen",  note: "Middle Back (passive only)" },
+      { id: "dionysus", name: "Dionysus", note: "Support" },
+      { id: "iris",     name: "Iris",     note: "Utility (unconfirmed)" },
+    ],
+    reason:
+      "Reported by CN community as a high-score variation using CC-based heroes. Poseidon's AoE crowd control groups enemies and enables Skadi's Realm of Frost passive to generate bonus damage and energy. Caishen fills the invalidated middle-back slot so his passive energy acceleration still applies. Dionysus provides attack speed and energy support. The fifth slot is unconfirmed - Iris is listed as a placeholder. This comp prioritizes control uptime over raw basic-attack output. Details are not fully verified - treat as a starting point rather than a confirmed guide.",
+    notes: [
+      "This is a community-reported comp. Hero identities for the 5th slot are unconfirmed.",
+      "Replace Iris with a verified pick once the comp is tested. Strong candidates: Heracles, Yuelao, Hecate.",
+      "Caishen in the middle-back slot keeps his energy passive active despite Mask of Sorrow's attack invalidation.",
+      "Skadi's Realm of Frost triggers on every CC applied - Poseidon's AoE makes this highly consistent.",
+      "This comp has not been independently verified by this site. Use the Mask of Sorrow basic-attack comp as the primary reference.",
+    ],
+    waveSwaps: [],
+    buffPriority: [
+      "Normal attack speed",
+      "Crit rate",
+      "Energy on kill / Energy regeneration on crit",
+      "Normal attack damage",
+      "Crit damage",
+    ],
+    buffAvoid: [
+      "Ultimate damage (unconfirmed for this comp)",
+    ],
+  },
+
+  {
+    id: "megafungus-skadi",
+    label: "Megafungus - Skadi Carry",
+    source: "Video guide (GB Streams) - 232-233 score",
+    blessing: "Megafungus",
+    heroes: [
+      { id: "skadi",    name: "Skadi",    note: "Main Carry (grows in size)" },
+      { id: "poseidon", name: "Poseidon", note: "CC / DPS" },
+      { id: "dionysus", name: "Dionysus", note: "ATK Speed / Support" },
+      { id: "caishen",  name: "Caishen",  note: "Energy Support" },
+      { id: "yuelao",   name: "Yuelao",   note: "Healer / Support" },
+    ],
+    reason:
+      "Skadi naturally has the highest ATK and becomes the Megafungus carrier - growing in size, gaining CC immunity, and inheriting 50% of every ally's ATK and HP at blessing level 5. This means buffing supports' ATK directly scales Skadi's damage. Caishen and Dionysus feed energy and ATK buffs to the whole team which Skadi absorbs. Poseidon's crowd control creates consistent windows for Skadi's ultimate and enables her Realm of Frost passive. Yuelao sustains the team through extended waves. Focus buff selection entirely on ultimate damage, energy generation, and crit.",
+    notes: [
+      "Buff all heroes' ATK - Skadi inherits 50% of every ally's ATK stat at max blessing level.",
+      "Starting Energy (+1000) is the highest-priority pickup whenever it appears.",
+      "Shield on Ultimate + Energy Regen on Shield form a strong energy loop - take both if offered.",
+      "Against Ares in wave 2, consider swapping in a tank temporarily.",
+      "The guide reached 232-233 with this comp at high investment. RNG on buff draws affects the final score.",
+    ],
+    waveSwaps: [
+      { wave: 2, action: "Consider swapping in Heracles or another tank vs Ares if team investment is lower." },
+    ],
+    buffPriority: [
+      "Ultimate Damage",
+      "Energy on Kill",
+      "Energy Regen upon Crit",
+      "Ultimate Attack Speed",
+      "Starting Energy (+1000 at battle start)",
+      "Crit Rate on Normal Attack",
+      "Attack (buffs Skadi via 50% inheritance)",
+      "Shield on Ultimate + Energy Regen on Shield (take both if available)",
+      "Defense Ignore on Crit",
+      "Crit Damage",
+    ],
+    buffAvoid: [
+      "Normal attack speed (less relevant - damage comes from ultimates)",
+      "Normal attack defense drain",
+      "Normal attack knockback",
+    ],
+  },
+];
+---
+
+<Base
+  title="Delusions Den Guide | Motto Immortal"
+  description="Complete guide for Delusions Den (Mang Nian Chao Xue) in Motto Immortal. Mechanics, best hero compositions, blessing choices, and buff priority for top scores."
+>
+
+  <PageHero
+    tag="Game Mode Guide"
+    headline="Delusions Den"
+    subtitle="Wave-based roguelite challenge mode. Pick a blessing, draft buffs between waves, and push for top score."
+    bgImage="/delusiondenbg.webp"
+  />
+
+  <div class="page-wrapper">
+    <main class="dd-main">
+
+      <!-- ================================================================
+           SECTION 1: WHAT IS DELUSIONS DEN
+           ================================================================ -->
+      <div class="dd-card dd-intro-card">
+        <h2>What is Delusions Den?</h2>
+        <p>
+          Delusions Den is a repeating wave-based challenge mode where you run a 5-hero team
+          through 7 progressive waves, selecting buffs between each wave to build toward a final scoring stage.
+          Top players on a server reach 230-236 points in the scoring stage. The mode resets periodically
+          and tracks server leaderboards.
+        </p>
+
+        <div class="dd-callout">
+          <strong>Core Loop:</strong> Select a starting blessing, fight through 7 waves, pick one buff after
+          each wave, and maximize enemy kills in the final scoring stage.
+        </div>
+
+        <h3>Rewards</h3>
+        <div class="dd-reward-grid">
+          <div class="dd-reward-card">
+            <div class="dd-reward-title">Avatar Frame</div>
+            <div class="dd-reward-name">Witness to Greed</div>
+            <div class="dd-reward-desc">Cosmetic frame awarded to top-ranking players on your server.</div>
+          </div>
+          <div class="dd-reward-card">
+            <div class="dd-reward-title">Oculus Tokens</div>
+            <div class="dd-reward-name">Shop Currency</div>
+            <div class="dd-reward-desc">Spent in the Oculus shop to purchase Zodiac Deity heroes (father heroes).</div>
+          </div>
+        </div>
+
+        <h3>Wave Structure</h3>
+        <div class="dd-wave-table">
+          <div class="dd-wave-row dd-wave-header">
+            <span>Wave</span>
+            <span>Type</span>
+            <span>Notes</span>
+          </div>
+          <div class="dd-wave-row">
+            <span class="dd-wave-num">1</span>
+            <span class="dd-wave-type">Combat</span>
+            <span>First buff selection after. Aim for 3-4 crit symbols early.</span>
+          </div>
+          <div class="dd-wave-row">
+            <span class="dd-wave-num">2</span>
+            <span class="dd-wave-type">Combat</span>
+            <span>Notable enemy: Ares. Consider swapping in a tank (Heracles) for this wave.</span>
+          </div>
+          <div class="dd-wave-row dd-wave-break">
+            <span class="dd-wave-num">3</span>
+            <span class="dd-wave-type">Fixed Break</span>
+            <span>Cannot control buff rewards at this checkpoint. Secure "crit ignores 100% defense" before this.</span>
+          </div>
+          <div class="dd-wave-row">
+            <span class="dd-wave-num">4</span>
+            <span class="dd-wave-type">Combat</span>
+            <span>Stack additional crit symbols. Target 10 total for execution threshold.</span>
+          </div>
+          <div class="dd-wave-row">
+            <span class="dd-wave-num">5</span>
+            <span class="dd-wave-type">Combat</span>
+            <span>Notable enemy: Ares. Dangerous burst - apply shields or knockback buffs.</span>
+          </div>
+          <div class="dd-wave-row dd-wave-break">
+            <span class="dd-wave-num">6</span>
+            <span class="dd-wave-type">Fixed Break</span>
+            <span>Second fixed checkpoint. No buff manipulation possible.</span>
+          </div>
+          <div class="dd-wave-row dd-wave-final">
+            <span class="dd-wave-num">7</span>
+            <span class="dd-wave-type">Scoring Stage (積分關)</span>
+            <span>Timed kill-count stage. More enemies killed = higher score. Top players reach 230+ points.</span>
+          </div>
+        </div>
+
+        <div class="dd-keybox">
+          <div class="dd-keybox-title">Notable Enemies to Watch For</div>
+          <ul>
+            <li><strong>Ares</strong> - High durability; bring Heracles or another tank for wave 2.</li>
+            <li><strong>Nuwa</strong> - Final-wave boss; her minions deal coordinated burst. Energy recovery and shielding help here.</li>
+            <li><strong>Pan</strong> - AoE silence disrupts your team's skill rotations in later waves.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ================================================================
+           SECTION 2: BLESSINGS
+           ================================================================ -->
+      <div class="dd-card">
+        <h2>Choosing Your Blessing</h2>
+        <p>
+          You select one blessing before combat begins. Your choice determines the entire team-building
+          and buff-selection strategy for the run. The two primary options are:
+        </p>
+
+        <div class="dd-blessing-grid">
+          {blessings.map(b => (
+            <div class={`dd-blessing-card ${b.recommended ? "dd-blessing-recommended" : "dd-blessing-alt"}`}>
+              <div class="dd-blessing-header">
+                <span class="dd-blessing-name">{b.name}</span>
+                <span class={`dd-blessing-badge ${b.recommended ? "" : "dd-badge-neutral"}`}>
+                  {b.recommended ? "Recommended" : "Alternative"}
+                </span>
+              </div>
+              <div class="dd-blessing-effect">
+                <strong>Effect:</strong> {b.effect}
+              </div>
+              <div class="dd-blessing-why">
+                <strong>{b.recommended ? "Why it works:" : "When to consider:"}</strong> {b.why}
+              </div>
+              <ul class="dd-blessing-tips">
+                {b.tips.map(tip => <li>{tip}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- ================================================================
+           SECTION 3: HERO COMPOSITIONS
+           ================================================================ -->
+      <div class="dd-card">
+        <h2>Hero Compositions</h2>
+        <p>
+          Select a composition below to see the heroes, strategy, and wave-specific adjustments.
+          Multiple approaches are viable - the right comp depends on your roster depth and investment level.
+        </p>
+
+        <!-- COMP TAB BUTTONS -->
+        <div class="dd-comp-tabs" role="tablist">
+          {DD_COMPS.map((comp, i) => (
+            <button
+              class={`dd-tab-btn ${i === 0 ? "is-active" : ""}`}
+              data-comp={comp.id}
+              role="tab"
+              aria-selected={i === 0 ? "true" : "false"}
+              type="button"
+            >
+              {comp.label}
+            </button>
+          ))}
+        </div>
+
+        <!-- COMP PANELS -->
+        {DD_COMPS.map((comp, i) => (
+          <div class={`dd-comp-panel ${i === 0 ? "is-active" : ""}`} data-comp={comp.id} role="tabpanel">
+
+            <div class="dd-comp-meta">
+              <span class="dd-comp-blessing-tag">
+                Blessing: <strong>{comp.blessing}</strong>
+              </span>
+            </div>
+
+            <!-- HERO GRID -->
+            <div class="dd-hero-grid">
+              {comp.heroes.map(hero => (
+                <a href={`/heroes/${hero.id}`} class="dd-hero-card">
+                  <div class="dd-hero-portrait" style={`background-image:url('${hp(hero.id)}')`}></div>
+                  <span class="dd-hero-role">{hero.note}</span>
+                  <span class="dd-hero-name">{hero.name}</span>
+                </a>
+              ))}
+            </div>
+
+            <!-- STRATEGY -->
+            <div class="dd-comp-strategy">
+              <h3>Why This Works</h3>
+              <p>{comp.reason}</p>
+            </div>
+
+            <!-- WAVE SWAPS -->
+            {comp.waveSwaps && comp.waveSwaps.length > 0 && (
+              <div class="dd-comp-swaps">
+                <h3>Wave Adjustments</h3>
+                <div class="dd-swap-list">
+                  {comp.waveSwaps.map(swap => (
+                    <div class="dd-swap-entry">
+                      <span class="dd-swap-wave">Wave {swap.wave}</span>
+                      <span class="dd-swap-action">{swap.action}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <!-- NOTES -->
+            <div class="dd-comp-notes">
+              <h3>Key Notes</h3>
+              <ul>
+                {comp.notes.map(note => <li>{note}</li>)}
+              </ul>
+            </div>
+
+            <!-- BUFF PRIORITY (per comp) -->
+            {comp.buffPriority && comp.buffPriority.length > 0 && (
+              <div class="dd-comp-buffs">
+                <h3>Buff Priority for This Comp</h3>
+                <div class="dd-buff-columns">
+                  <div class="dd-buff-col dd-buff-want">
+                    <div class="dd-buff-col-title">Take</div>
+                    <ol class="dd-buff-list">
+                      {comp.buffPriority.map(b => <li>{b}</li>)}
+                    </ol>
+                  </div>
+                  {comp.buffAvoid && comp.buffAvoid.length > 0 && (
+                    <div class="dd-buff-col dd-buff-avoid">
+                      <div class="dd-buff-col-title">Skip</div>
+                      <ul class="dd-buff-list">
+                        {comp.buffAvoid.map(b => <li>{b}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+          </div>
+        ))}
+      </div>
+
+      <!-- ================================================================
+           SECTION 4: GENERAL BUFF GUIDE
+           ================================================================ -->
+      <div class="dd-card">
+        <h2>General Buff Selection Guide</h2>
+        <p>
+          Buffs are offered after every wave. The right choice depends on your blessing and comp,
+          but the following principles apply broadly to the Mask of Sorrow approach.
+          Unconfirmed buff names are marked with an asterisk (*).
+        </p>
+
+        <h3>Universal Priorities (Mask of Sorrow)</h3>
+        <div class="dd-buff-guide-grid">
+          {(["1", "2", "3", "skip"] as const).map(tier => {
+            const tierBuffs = buffs.filter(b => String(b.priority.mask_of_sorrow) === tier);
+            if (tierBuffs.length === 0) return null;
+            const tierClass = tier === "1" ? "dd-tier-s" : tier === "2" ? "dd-tier-a" : tier === "3" ? "dd-tier-b" : "dd-tier-skip";
+            const tierLabel = tier === "1" ? "Priority 1" : tier === "2" ? "Priority 2" : tier === "3" ? "Priority 3 (Situational)" : "Skip (Mask of Sorrow runs)";
+            return (
+              <div class={`dd-buff-tier ${tierClass}`}>
+                <div class="dd-tier-label">{tierLabel}</div>
+                <ul>
+                  {tierBuffs.map(b => (
+                    <li>
+                      <strong>{b.name}{!b.confirmed ? " *" : ""}</strong>
+                      {b.effect ? ` - ${b.effect}` : ""}
+                      {b.note ? ` ${b.note}` : ""}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+
+        <div class="dd-callout dd-callout-rule">
+          <strong>Rule of thumb:</strong> If the keyword "ultimate" appears in a buff and no attack-speed,
+          crit, or damage alternative is available - only then consider taking it.
+          One exception: "Ultimate attack speed" can be taken as it helps cast faster overall.
+        </div>
+      </div>
+
+      <!-- ================================================================
+           SECTION 5: SCORING AND TOP RANKING TIPS
+           ================================================================ -->
+      <div class="dd-card">
+        <h2>Reaching Top Score</h2>
+        <p>
+          The final wave (scoring stage) is a timed kill-count challenge. Your team's accumulated
+          buffs and hero investment determine how many enemies you can clear before time expires.
+          Top server scores sit at 230-236 points. Here is how to maximize:
+        </p>
+
+        <div class="dd-tip-list">
+          <div class="dd-tip">
+            <div class="dd-tip-num">1</div>
+            <div class="dd-tip-body">
+              <strong>Stack crit execution early.</strong> Crit execution at 25% HP threshold dramatically
+              speeds up kill time in the scoring stage. Aim to have this unlocked by wave 4 at the latest.
+              Target 10 crit symbols total before the scoring stage begins.
+            </div>
+          </div>
+          <div class="dd-tip">
+            <div class="dd-tip-num">2</div>
+            <div class="dd-tip-body">
+              <strong>Maintain normal attack momentum.</strong> Do not invest in ultimate-dependent buffs
+              during the run. Your damage in the scoring stage comes from sustained basic attacks, not
+              occasional ultimates.
+            </div>
+          </div>
+          <div class="dd-tip">
+            <div class="dd-tip-num">3</div>
+            <div class="dd-tip-body">
+              <strong>Survive waves 5-6 to keep buffs.</strong> If your team collapses in wave 5 or 6,
+              you lose the scoring run. Prioritize at least one survivability buff (shield on normal attack,
+              armor/magic resistance) before the fixed wave 6 break.
+            </div>
+          </div>
+          <div class="dd-tip">
+            <div class="dd-tip-num">4</div>
+            <div class="dd-tip-body">
+              <strong>Investment matters.</strong> Higher evolution on your carry heroes directly translates
+              to faster clears in the scoring stage. Phoenix and Isis at lower evolution hit a ceiling faster
+              than at Divine+.
+            </div>
+          </div>
+          <div class="dd-tip">
+            <div class="dd-tip-num">5</div>
+            <div class="dd-tip-body">
+              <strong>Use the Keystones of Wonders bonus.</strong> Activating all 5 faction suits grants
+              30% bonus damage dealt and 30% damage reduction. Build your team with this in mind even if
+              it means a slightly weaker individual hero.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</Base>
+
+<script>
+  // Comp tab switcher
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".dd-tab-btn");
+  const compPanels = document.querySelectorAll<HTMLElement>(".dd-comp-panel");
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.comp;
+
+      tabBtns.forEach(b => {
+        b.classList.remove("is-active");
+        b.setAttribute("aria-selected", "false");
+      });
+      compPanels.forEach(p => p.classList.remove("is-active"));
+
+      btn.classList.add("is-active");
+      btn.setAttribute("aria-selected", "true");
+      const panel = document.querySelector<HTMLElement>(`.dd-comp-panel[data-comp="${target}"]`);
+      if (panel) panel.classList.add("is-active");
+    });
+  });
+</script>
+
+<style>
+  /* ─── Layout ─── */
+  .page-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .dd-main {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ─── Section Card ─── */
+  .dd-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 36px 32px;
+  }
+
+  .dd-intro-card {
+    border-color: rgba(250, 204, 21, 0.12);
+    background: rgba(250, 204, 21, 0.03);
+  }
+
+  .dd-card h2 {
+    margin: 0 0 16px;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-bright, #f0f0f5);
+    letter-spacing: 0.01em;
+  }
+
+  .dd-card h3 {
+    margin: 28px 0 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(230, 230, 235, 0.85);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+  }
+
+  .dd-card p {
+    margin: 0 0 12px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(230, 230, 235, 0.78);
+  }
+
+  /* ─── Callout ─── */
+  .dd-callout {
+    background: rgba(250, 204, 21, 0.07);
+    border: 1px solid rgba(250, 204, 21, 0.18);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(230, 230, 235, 0.85);
+    margin: 16px 0;
+  }
+
+  .dd-callout-rule {
+    margin-top: 20px;
+  }
+
+  /* ─── Key Box ─── */
+  .dd-keybox {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 20px;
+  }
+
+  .dd-keybox-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(250, 204, 21, 0.8);
+    margin-bottom: 10px;
+  }
+
+  .dd-keybox ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .dd-keybox li {
+    font-size: 0.875rem;
+    color: rgba(230, 230, 235, 0.78);
+    line-height: 1.5;
+  }
+
+  /* ─── Reward Grid ─── */
+  .dd-reward-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 12px 0 24px;
+  }
+
+  .dd-reward-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .dd-reward-title {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(250, 204, 21, 0.7);
+    margin-bottom: 4px;
+  }
+
+  .dd-reward-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-bright, #f0f0f5);
+    margin-bottom: 6px;
+  }
+
+  .dd-reward-desc {
+    font-size: 0.82rem;
+    color: rgba(230, 230, 235, 0.6);
+    line-height: 1.5;
+  }
+
+  /* ─── Wave Table ─── */
+  .dd-wave-table {
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 12px 0;
+  }
+
+  .dd-wave-row {
+    display: grid;
+    grid-template-columns: 80px 160px 1fr;
+    gap: 0;
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.85rem;
+    color: rgba(230, 230, 235, 0.75);
+    align-items: center;
+  }
+
+  .dd-wave-row:last-child {
+    border-bottom: none;
+  }
+
+  .dd-wave-header {
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(230, 230, 235, 0.45);
+    font-weight: 600;
+  }
+
+  .dd-wave-break {
+    background: rgba(120, 90, 200, 0.06);
+    border-left: 3px solid rgba(120, 90, 200, 0.4);
+  }
+
+  .dd-wave-final {
+    background: rgba(250, 204, 21, 0.05);
+    border-left: 3px solid rgba(250, 204, 21, 0.4);
+    color: rgba(230, 230, 235, 0.88);
+  }
+
+  .dd-wave-num {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-bright, #f0f0f5);
+  }
+
+  .dd-wave-type {
+    font-weight: 600;
+    color: rgba(230, 230, 235, 0.85);
+  }
+
+  /* ─── Blessing Grid ─── */
+  .dd-blessing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .dd-blessing-card {
+    border-radius: 12px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .dd-blessing-recommended {
+    background: rgba(250, 204, 21, 0.05);
+    border: 1px solid rgba(250, 204, 21, 0.2);
+  }
+
+  .dd-blessing-alt {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .dd-blessing-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .dd-blessing-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-bright, #f0f0f5);
+  }
+
+  .dd-blessing-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: rgba(250, 204, 21, 0.15);
+    color: rgba(250, 204, 21, 0.9);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    border-radius: 4px;
+    padding: 2px 7px;
+  }
+
+  .dd-badge-neutral {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(230, 230, 235, 0.55);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dd-blessing-effect,
+  .dd-blessing-why {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(230, 230, 235, 0.75);
+  }
+
+  .dd-blessing-tips {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .dd-blessing-tips li {
+    font-size: 0.82rem;
+    color: rgba(230, 230, 235, 0.65);
+    line-height: 1.5;
+  }
+
+  /* ─── Comp Tabs ─── */
+  .dd-comp-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .dd-tab-btn {
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(230, 230, 235, 0.55);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .dd-tab-btn:hover:not(.is-active) {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(230, 230, 235, 0.8);
+  }
+
+  .dd-tab-btn.is-active {
+    background: rgba(250, 204, 21, 0.1);
+    border-color: rgba(250, 204, 21, 0.35);
+    color: rgba(250, 204, 21, 0.95);
+  }
+
+  /* ─── Comp Panel ─── */
+  .dd-comp-panel {
+    display: none;
+  }
+
+  .dd-comp-panel.is-active {
+    display: block;
+  }
+
+  .dd-comp-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .dd-comp-blessing-tag,
+  .dd-comp-source-tag {
+    font-size: 0.78rem;
+    color: rgba(230, 230, 235, 0.5);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 4px 10px;
+  }
+
+  .dd-comp-blessing-tag strong {
+    color: rgba(230, 230, 235, 0.85);
+  }
+
+  /* ─── Hero Grid ─── */
+  .dd-hero-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .dd-hero-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    width: 100px;
+    transition: opacity 0.15s;
+  }
+
+  .dd-hero-card:hover {
+    opacity: 0.85;
+  }
+
+  .dd-hero-portrait {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center top;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .dd-hero-role {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(250, 204, 21, 0.7);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .dd-hero-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(230, 230, 235, 0.85);
+    text-align: center;
+  }
+
+  /* ─── Strategy / Notes / Swaps ─── */
+  .dd-comp-strategy,
+  .dd-comp-notes,
+  .dd-comp-swaps,
+  .dd-comp-buffs {
+    margin-bottom: 24px;
+  }
+
+  .dd-comp-strategy h3,
+  .dd-comp-notes h3,
+  .dd-comp-swaps h3,
+  .dd-comp-buffs h3 {
+    margin: 0 0 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(230, 230, 235, 0.45);
+  }
+
+  .dd-comp-strategy p {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: rgba(230, 230, 235, 0.75);
+    margin: 0;
+  }
+
+  .dd-comp-notes ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .dd-comp-notes li {
+    font-size: 0.875rem;
+    color: rgba(230, 230, 235, 0.72);
+    line-height: 1.5;
+  }
+
+  /* ─── Wave Swaps ─── */
+  .dd-swap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dd-swap-entry {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(120, 90, 200, 0.06);
+    border: 1px solid rgba(120, 90, 200, 0.15);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.875rem;
+  }
+
+  .dd-swap-wave {
+    font-weight: 700;
+    color: rgba(200, 170, 255, 0.85);
+    white-space: nowrap;
+    min-width: 60px;
+  }
+
+  .dd-swap-action {
+    color: rgba(230, 230, 235, 0.75);
+    line-height: 1.5;
+  }
+
+  /* ─── Buff Columns ─── */
+  .dd-buff-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .dd-buff-col {
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .dd-buff-want {
+    background: rgba(74, 222, 128, 0.05);
+    border: 1px solid rgba(74, 222, 128, 0.15);
+  }
+
+  .dd-buff-avoid {
+    background: rgba(248, 113, 113, 0.05);
+    border: 1px solid rgba(248, 113, 113, 0.15);
+  }
+
+  .dd-buff-col-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .dd-buff-want .dd-buff-col-title {
+    color: rgba(74, 222, 128, 0.8);
+  }
+
+  .dd-buff-avoid .dd-buff-col-title {
+    color: rgba(248, 113, 113, 0.8);
+  }
+
+  .dd-buff-list {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .dd-buff-list li {
+    font-size: 0.82rem;
+    color: rgba(230, 230, 235, 0.7);
+    line-height: 1.5;
+  }
+
+  /* ─── General Buff Guide ─── */
+  .dd-buff-guide-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .dd-buff-tier {
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+
+  .dd-tier-s {
+    background: rgba(250, 204, 21, 0.05);
+    border: 1px solid rgba(250, 204, 21, 0.18);
+  }
+
+  .dd-tier-a {
+    background: rgba(74, 222, 128, 0.04);
+    border: 1px solid rgba(74, 222, 128, 0.14);
+  }
+
+  .dd-tier-b {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .dd-tier-skip {
+    background: rgba(248, 113, 113, 0.04);
+    border: 1px solid rgba(248, 113, 113, 0.14);
+  }
+
+  .dd-tier-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .dd-tier-s .dd-tier-label { color: rgba(250, 204, 21, 0.8); }
+  .dd-tier-a .dd-tier-label { color: rgba(74, 222, 128, 0.8); }
+  .dd-tier-b .dd-tier-label { color: rgba(230, 230, 235, 0.5); }
+  .dd-tier-skip .dd-tier-label { color: rgba(248, 113, 113, 0.8); }
+
+  .dd-buff-tier ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .dd-buff-tier li {
+    font-size: 0.875rem;
+    color: rgba(230, 230, 235, 0.72);
+    line-height: 1.55;
+  }
+
+  /* ─── Tips ─── */
+  .dd-tip-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .dd-tip {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .dd-tip-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(250, 204, 21, 0.12);
+    border: 1px solid rgba(250, 204, 21, 0.25);
+    color: rgba(250, 204, 21, 0.85);
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .dd-tip-body {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: rgba(230, 230, 235, 0.75);
+  }
+
+  .dd-tip-body strong {
+    color: rgba(230, 230, 235, 0.92);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 700px) {
+    .dd-card {
+      padding: 24px 18px;
+    }
+
+    .dd-blessing-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dd-wave-row {
+      grid-template-columns: 50px 110px 1fr;
+      font-size: 0.78rem;
+      padding: 10px 12px;
+    }
+
+    .dd-reward-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dd-hero-grid {
+      justify-content: center;
+    }
+
+    .dd-buff-columns {
+      grid-template-columns: 1fr;
+    }
+
+    .dd-comp-tabs {
+      flex-direction: column;
+    }
+
+    .dd-tab-btn {
+      width: 100%;
+      text-align: left;
+    }
+  }
+</style>
