@@ -122,14 +122,38 @@
     "commonlyMisunderstood": true
   },
   "relicBreakpoints": [
-    { "level": 10, "type": "mandatory", "effect": "Mandatory first investment -- biggest single performance jump of any unit at r10." },
-    { "level": 30, "type": "high_spender", "effect": "Chain waterspouts reach full power; significant frontline stat boost for high-spend accounts." }
+    {
+      "level": 10,
+      "type": "mandatory",
+      "effect": "Mandatory first investment -- biggest single performance jump of any unit at r10."
+    },
+    {
+      "level": 30,
+      "type": "high_spender",
+      "effect": "Chain waterspouts reach full power; significant frontline stat boost for high-spend accounts."
+    }
   ],
   "synergyLinks": [
-    { "heroId": "skadi", "type": "core", "description": "Grouped targets maximize Skadi AoE burst value." },
-    { "heroId": "set", "type": "core", "description": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing." },
-    { "heroId": "khepri", "type": "conditional", "description": "Push and group alongside Poseidon for positioning control." },
-    { "heroId": "hela", "type": "conditional", "description": "Hela carry enabled by Poseidon grouping alongside Khepri and Iris." }
+    {
+      "heroId": "skadi",
+      "type": "core",
+      "description": "Grouped targets maximize Skadi AoE burst value."
+    },
+    {
+      "heroId": "set",
+      "type": "core",
+      "description": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing."
+    },
+    {
+      "heroId": "khepri",
+      "type": "conditional",
+      "description": "Push and group alongside Poseidon for positioning control."
+    },
+    {
+      "heroId": "hela",
+      "type": "conditional",
+      "description": "Hela carry enabled by Poseidon grouping alongside Khepri and Iris."
+    }
   ],
   "metaSources": {
     "excelTier": "T0",

@@ -10,26 +10,26 @@
   "rarity": "Legendary",
   "description": "Meret is a Stars-faction Note-based support who distributes Sun, Moon, and Star Notes to key allies at battle start. Notes provide shields, attack buffs, and energy — and with Harmony of All Things, Note-bearers share damage with each other, creating a distributed damage pool. Her Artifact makes Note-bearers unkillable once, and her heals prioritize the weakest ally. Exceptional at keeping high-value units alive and amplifying their output simultaneously.",
   "ratings": {
-    "overall": "",
+    "overall": "S",
     "grimSurge": "",
     "delusionsDen": "",
     "torrentRift": "",
     "forgottenLabyrinth": "",
-    "pvp": "",
-    "pve": ""
+    "pvp": "A",
+    "pve": "S"
   },
   "evolution": "Divine V",
   "level": 300,
   "stats": {
-    "might": 0,
-    "hp": 0,
-    "atk": 0,
-    "armor": 0,
-    "magicRes": 0,
-    "dodgeRate": 0,
+    "might": 631000,
+    "hp": 2558582,
+    "atk": 164480,
+    "armor": 58673,
+    "magicRes": 66368,
+    "dodgeRate": 6,
     "hitBonus": 0,
-    "critRate": 0,
-    "critRes": 0,
+    "critRate": 4,
+    "critRes": 6,
     "critDmgBonus": 0,
     "critDmgRed": 0,
     "energy": 0,
@@ -56,9 +56,9 @@
       "name": "All Heavens in Praise",
       "description": "Passive: Upon entering battle, Meret distributes three Notes - Sun Note to the ally with the highest Max HP, Moon Note to the ally with the highest ATK, and Star Note to herself. Active: Activates all Notes. Sun grants a shield equal to 30% of Max HP. Moon grants +30% ATK for 8 seconds. Star restores 200 Energy.",
       "upgrades": {
-        "level2": "Sun Note grants a stronger shield.",
-        "level3": "Moon Note additionally increases Crit Rate.",
-        "level4": "Star Note restores more Energy."
+        "level2": "Sun Note shield is increased to 50% of Max HP.",
+        "level3": "Moon Note also grants +30% ATK and +30% CRIT Rate for 8 seconds.",
+        "level4": "Star Note restores 300 Energy."
       },
       "damageType": "Support",
       "isUltimate": true
@@ -68,9 +68,9 @@
       "name": "Universal Resonance",
       "description": "Marked allies share damage taken. The main target takes 60% of incoming damage, and the remaining 40% is split among other Note holders. Additional effects: Sun grants +10% Max HP, Moon grants +20% damage dealt, Star grants +10% Energy regeneration.",
       "upgrades": {
-        "level2": "Sun Note further increases max HP.",
-        "level3": "Moon Note further increases damage dealt.",
-        "level4": "Star Note further increases Energy regeneration."
+        "level2": "Sun Note increases Max HP by 15%.",
+        "level3": "Moon Note increases damage dealt by 30%.",
+        "level4": "Star Note increases Energy regeneration by 15%."
       },
       "damageType": "Support"
     },
@@ -79,20 +79,20 @@
       "name": "Sands in Stride",
       "description": "Heals the most vulnerable ally, restoring HP equal to 60% of ATK per second for 5 seconds.",
       "upgrades": {
-        "level2": "Increases healing per second.",
-        "level3": "If the target has a Note, additionally restores a percentage of their max HP each second.",
-        "level4": "Increases duration of the healing effect."
+        "level2": "Restores HP equal to 70% of ATK per second.",
+        "level3": "If the target has a Note, it also heals for an additional 3% of their Max HP each second.",
+        "level4": "Duration extends to 7 seconds."
       },
       "damageType": "Support"
     },
     {
       "id": "skill_4",
       "name": "The Curtain Never Falls",
-      "description": "When an ally drops below 50% HP, Meret heals them for 25% of their Max HP. Can trigger once per unit.",
+      "description": "Passively, when an ally drops below 50% HP, Meret heals them for 25% of their Max HP. Can trigger once per unit.",
       "upgrades": {
-        "level2": "Increases healing effect.",
-        "level3": "Further increases healing effect.",
-        "level4": "Removes the trigger limit."
+        "level2": "Passively, when any allied unit's HP falls below 50%, Meret heals them for 30% of their Max HP. Can trigger once per unit.",
+        "level3": "Passively, when any allied unit's HP falls below 50%, Meret heals them for 35% of their Max HP. Can trigger once per unit.",
+        "level4": "Each unit has an independend Cooldown of 20 seconds."
       },
       "damageType": "Support"
     }
@@ -102,13 +102,13 @@
     "description": "When a Note-bearing ally would die, prevents their death and grants them a shield equal to 300% of ATK. 15-second cooldown.",
     "damageType": "Support",
     "upgrades": {
-      "level2": "For each Note on the field, Meret gains damage reduction.",
-      "level3": "When a Note unit is about to die, the shield granted is increased.",
-      "level4": "While Notes exist on the field, Meret gains increased damage reduction."
+      "level2": "For each Note on the field, gains 15% DMG Reduction.",
+      "level3": "When a Note unit is about to die, they become immunie to death and gain a shield equal to 400% of ATK. 15s Cooldown.",
+      "level4": "For each Note on the battlefield, gains 27% DMG Reduction."
     }
   },
-  "baseAttackRate": 0,
-  "bossUltimatesPer90s": 0,
+  "baseAttackRate": 0.492,
+  "bossUltimatesPer90s": 6,
   "synergies": [
     {
       "heroId": "heracles",
@@ -132,8 +132,16 @@
     "commonlyMisunderstood": true
   },
   "relicBreakpoints": [
-    { "level": 10, "type": "mandatory", "effect": "Baseline protection unlocked. Usable in Diamond team without further investment pressure." },
-    { "level": 30, "type": "high_spender", "effect": "Full protective capability. Only relevant once Hercules and Bastet are already at Divine." }
+    {
+      "level": 10,
+      "type": "mandatory",
+      "effect": "Baseline protection unlocked. Usable in Diamond team without further investment pressure."
+    },
+    {
+      "level": 30,
+      "type": "high_spender",
+      "effect": "Full protective capability. Only relevant once Hercules and Bastet are already at Divine."
+    }
   ],
   "metaSources": {
     "excelTier": "n/a",
@@ -143,8 +151,8 @@
     "lastVerified": "2026-04"
   },
   "f2pInvestment": {
-  "recommendation": "Divine",
-  "priority": 3,
-  "notes": "Baseline utility at r1-10. Full potential only realized at r30, and only if paired with high-investment Hercules and Bastet. Not a priority for F2P players until those conditions are met."
+    "recommendation": "Divine",
+    "priority": 3,
+    "notes": "Baseline utility at r1-10. Full potential only realized at r30, and only if paired with high-investment Hercules and Bastet. Not a priority for F2P players until those conditions are met."
   }
 }
