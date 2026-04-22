@@ -6,28 +6,47 @@ import ddData from "../data/delusions-den.json";
 
 const { blessings, buffs } = ddData;
 
-const PRIORITY_TIERS = ["1", "2", "3", "skip"] as const;
-type PriorityKey = typeof PRIORITY_TIERS[number];
-
-const PRIORITY_LABELS: Record<PriorityKey, string> = {
-  "1": "Priority 1",
-  "2": "Priority 2",
-  "3": "Priority 3 (Situational)",
-  "skip": "Skip",
-};
-
 function hp(id: string) {
   return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${id}.webp`;
 }
 
-// ─── COMP DEFINITIONS ───────────────────────────────────────────────────────
-// To add a new comp: copy one entry below and fill in the fields.
-// id must be unique and URL-safe (lowercase, hyphens only).
-// blessing: "Mask of Sorrow" | "Divine Nectar"
-// heroes: array of { id, name, note } -- id must match the hero JSON id
-//   The middle backline hero (position 2 in back row) is invalidated by Mask of Sorrow.
-//   Use the `note` field to mark that slot clearly.
-// waveSwaps: optional array of { wave, action } for mid-run hero swaps.
+function parseUpgrade(s: string) {
+  const m = s.match(/Level\s+(\d+)[^:]*:\s*(.+)/s);
+  return m ? { level: m[1], text: m[2].trim() } : { level: "?", text: s };
+}
+
+const TAG_META: Record<string, { short: string; cls: string }> = {
+  normal_attack: { short: "ATK",  cls: "tag-blue"   },
+  crit:          { short: "CRIT", cls: "tag-gold"   },
+  ultimate:      { short: "ULT",  cls: "tag-purple" },
+  energy:        { short: "NRG",  cls: "tag-orange" },
+  survival:      { short: "DEF",  cls: "tag-green"  },
+  damage:        { short: "DMG",  cls: "tag-red"    },
+  defense_pen:   { short: "PEN",  cls: "tag-cyan"   },
+  healing:       { short: "HEAL", cls: "tag-pink"   },
+  speed:         { short: "SPD",  cls: "tag-sky"    },
+  cc:            { short: "CC",   cls: "tag-violet" },
+};
+
+const BLESSING_KEYS = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper"] as const;
+const BLESSING_SHORT: Record<string, string> = {
+  mask_of_sorrow: "MoS",
+  divine_nectar:  "DN",
+  megafungus:     "MF",
+  ripper:         "RP",
+};
+const PRIO_CLS: Record<string, string> = {
+  "1":    "prio-1",
+  "2":    "prio-2",
+  "3":    "prio-3",
+  "skip": "prio-skip",
+};
+
+type AnyRecord = { [k: string]: number | string };
+function getBuffPrio(buff: (typeof buffs)[number], key: string): string {
+  const p = buff.priority as unknown as AnyRecord;
+  return String(p[key] ?? "?");
+}
 
 const DD_COMPS = [
   {
@@ -38,7 +57,7 @@ const DD_COMPS = [
     heroes: [
       { id: "phoenix",  name: "Phoenix",  note: "DPS" },
       { id: "isis",     name: "Isis",     note: "DPS" },
-      { id: "nuba",  name: "Nuba",  note: "DPS/Tank" },
+      { id: "nuba",     name: "Nuba",     note: "DPS/Tank" },
       { id: "dionysus", name: "Dionysus", note: "Middle Back (passive only)" },
       { id: "yuelao",   name: "Yuelao",   note: "Support" },
     ],
@@ -71,28 +90,6 @@ const DD_COMPS = [
       "Energy regeneration on ultimate",
     ],
   },
-
-  // ─── ADD MORE COMPS HERE ─────────────────────────────────────────────────
-  // Example structure (remove the comment markers to activate):
-  //
-  // {
-  //   id: "my-comp-id",
-  //   label: "My Comp Name",
-  //   source: "Source description",
-  //   blessing: "Mask of Sorrow",
-  //   heroes: [
-  //     { id: "hero_id", name: "Hero Name", note: "Role" },
-  //     { id: "hero_id", name: "Hero Name", note: "Role" },
-  //     { id: "hero_id", name: "Hero Name", note: "Middle Back (passive only)" },
-  //     { id: "hero_id", name: "Hero Name", note: "Role" },
-  //     { id: "hero_id", name: "Hero Name", note: "Role" },
-  //   ],
-  //   reason: "Why this comp works...",
-  //   notes: ["Note 1", "Note 2"],
-  //   waveSwaps: [],
-  //   buffPriority: ["Buff 1", "Buff 2"],
-  //   buffAvoid: ["Buff to skip"],
-  // },
 
   {
     id: "placeholder",
@@ -205,17 +202,23 @@ const DD_COMPS = [
           each wave, and maximize enemy kills in the final scoring stage.
         </div>
 
-        <h3>Rewards</h3>
+        <h3>Rewards for ranks</h3>
         <div class="dd-reward-grid">
           <div class="dd-reward-card">
+            <div class="dd-reward-img-wrap">
+              <img src="/delusionden/frame.webp" alt="Avatar Frame" class="dd-reward-img" />
+            </div>
             <div class="dd-reward-title">Avatar Frame</div>
-            <div class="dd-reward-name">Witness to Greed</div>
+            <div class="dd-reward-name">Profane Gaze</div>
             <div class="dd-reward-desc">Cosmetic frame awarded to top-ranking players on your server.</div>
           </div>
           <div class="dd-reward-card">
+            <div class="dd-reward-img-wrap">
+              <img src="/delusionden/token.webp" alt="Oculus Token" class="dd-reward-img" />
+            </div>
             <div class="dd-reward-title">Oculus Tokens</div>
             <div class="dd-reward-name">Shop Currency</div>
-            <div class="dd-reward-desc">Spent in the Oculus shop to purchase Zodiac Deity heroes (father heroes).</div>
+            <div class="dd-reward-desc">Spent in the Den Shop to purchase items.</div>
           </div>
         </div>
 
@@ -277,181 +280,131 @@ const DD_COMPS = [
            SECTION 2: BLESSINGS
            ================================================================ -->
       <div class="dd-card">
-        <h2>Choosing Your Blessing</h2>
+        <h2>Blessings</h2>
         <p>
-          You select one blessing before combat begins. Your choice determines the entire team-building
-          and buff-selection strategy for the run.
+          Choose one blessing before combat begins. Your choice determines the entire team-building
+          and buff-selection strategy for the run. Blessings scale as your Total Genre Level increases.
         </p>
 
-        <div class="dd-blessing-grid">
+        <div class="bl-grid">
           {blessings.map(b => (
-            <div class={`dd-blessing-card ${b.recommended ? "dd-blessing-recommended" : "dd-blessing-alt"}`}>
-              <div class="dd-blessing-header">
-                <span class="dd-blessing-name">{b.name}</span>
-                <span class={`dd-blessing-badge ${b.recommended ? "" : "dd-badge-neutral"}`}>
+            <div class={`bl-card ${b.recommended ? "bl-card-rec" : ""}`}>
+              <div class="bl-header">
+                <span class="bl-name">{b.name}</span>
+                <span class={`bl-badge ${b.recommended ? "bl-badge-rec" : "bl-badge-alt"}`}>
                   {b.recommended ? "Recommended" : "Alternative"}
                 </span>
               </div>
-              <div class="dd-blessing-effect">
-                <strong>Effect:</strong> {b.effect}
-              </div>
-              <div class="dd-blessing-why">
-                <strong>{b.recommended ? "Why it works:" : "When to consider:"}</strong> {b.why}
-              </div>
-              <ul class="dd-blessing-tips">
-                {b.tips.map(tip => <li>{tip}</li>)}
-              </ul>
+
+              <p class="bl-effect">{b.effect}</p>
+
+              {b.upgrades.length > 0 && (
+                <div class="bl-upgrades">
+                  {b.upgrades.map(u => {
+                    const p = parseUpgrade(u);
+                    return (
+                      <div class="upgrade-row">
+                        <span class="upgrade-lv">Lv {p.level}</span>
+                        <span class="upgrade-text">{p.text}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           ))}
         </div>
       </div>
 
       <!-- ================================================================
-           SECTION 3: HERO COMPOSITIONS
+           SECTION 3: BUFFS
+           ================================================================ -->
+      <div class="dd-card">
+        <h2>Buffs</h2>
+        <p>
+          One buff is offered after each combat wave. The priority badges at the bottom of each card
+          show how valuable that buff is for each blessing:
+          <span class="prio-inline prio-1">1</span> = top priority,
+          <span class="prio-inline prio-2">2</span> = strong pick,
+          <span class="prio-inline prio-3">3</span> = situational,
+          <span class="prio-inline prio-skip">skip</span> = avoid.
+          Unconfirmed buff names are marked with an asterisk (*).
+        </p>
+
+        <div class="buff-grid">
+          {buffs.map(b => (
+            <div class="buff-card">
+              <div class="buff-hexes">
+                {b.tags.slice(0, 2).map(tag => {
+                  const meta = TAG_META[tag];
+                  return meta ? (
+                    <div class={`buff-hex ${meta.cls}`}>{meta.short}</div>
+                  ) : null;
+                })}
+              </div>
+
+              <div class="buff-name">{b.name}{!b.confirmed ? " *" : ""}</div>
+              <div class="buff-effect">{b.effect}</div>
+
+              {b.note && (
+                <div class="buff-note">{b.note}</div>
+              )}
+
+              <div class="buff-prio-row">
+                {BLESSING_KEYS.map(key => {
+                  const val = getBuffPrio(b, key);
+                  return (
+                    <div class={`buff-prio ${PRIO_CLS[val] ?? ""}`}>
+                      <span class="prio-blessing">{BLESSING_SHORT[key]}</span>
+                      <span class="prio-val">{val}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- ================================================================
+           SECTION 4: HERO COMPOSITIONS
            ================================================================ -->
       <div class="dd-card">
         <h2>Hero Compositions</h2>
         <p>
-          Select a composition below to see the heroes, strategy, and wave-specific adjustments.
-          Multiple approaches are viable - the right comp depends on your roster depth and investment level.
+          Comps that work well in Delusions Den. The right choice depends on your roster depth and hero investment.
         </p>
 
-        <!-- COMP TAB BUTTONS -->
-        <div class="dd-comp-tabs" role="tablist">
-          {DD_COMPS.map((comp, i) => (
-            <button
-              class={`dd-tab-btn ${i === 0 ? "is-active" : ""}`}
-              data-comp={comp.id}
-              role="tab"
-              aria-selected={i === 0 ? "true" : "false"}
-              type="button"
-            >
-              {comp.label}
-            </button>
+        <div class="dd-comp-list">
+          {DD_COMPS.map(comp => (
+            <div class="dd-comp-card">
+              <div class="dd-comp-card-header">
+                <span class="dd-comp-card-title">{comp.label}</span>
+                <span class="dd-comp-blessing-tag">Blessing: <strong>{comp.blessing}</strong></span>
+              </div>
+
+              <div class="dd-hero-grid">
+                {comp.heroes.map(hero => (
+                  <a href={`/heroes/${hero.id}`} class="dd-hero-card">
+                    <div class="dd-hero-portrait" style={`background-image:url('${hp(hero.id)}')`}></div>
+                    <span class="dd-hero-role">{hero.note}</span>
+                    <span class="dd-hero-name">{hero.name}</span>
+                  </a>
+                ))}
+              </div>
+
+              {comp.notes.length > 0 && (
+                <ul class="dd-comp-notes-list">
+                  {comp.notes.map(note => <li>{note}</li>)}
+                </ul>
+              )}
+            </div>
           ))}
         </div>
-
-        <!-- COMP PANELS -->
-        {DD_COMPS.map((comp, i) => (
-          <div class={`dd-comp-panel ${i === 0 ? "is-active" : ""}`} data-comp={comp.id} role="tabpanel">
-
-            <div class="dd-comp-meta">
-              <span class="dd-comp-blessing-tag">
-                Blessing: <strong>{comp.blessing}</strong>
-              </span>
-            </div>
-
-            <!-- HERO GRID -->
-            <div class="dd-hero-grid">
-              {comp.heroes.map(hero => (
-                <a href={`/heroes/${hero.id}`} class="dd-hero-card">
-                  <div class="dd-hero-portrait" style={`background-image:url('${hp(hero.id)}')`}></div>
-                  <span class="dd-hero-role">{hero.note}</span>
-                  <span class="dd-hero-name">{hero.name}</span>
-                </a>
-              ))}
-            </div>
-
-            <!-- STRATEGY -->
-            <div class="dd-comp-strategy">
-              <h3>Why This Works</h3>
-              <p>{comp.reason}</p>
-            </div>
-
-            <!-- WAVE SWAPS -->
-            {comp.waveSwaps && comp.waveSwaps.length > 0 && (
-              <div class="dd-comp-swaps">
-                <h3>Wave Adjustments</h3>
-                <div class="dd-swap-list">
-                  {comp.waveSwaps.map(swap => (
-                    <div class="dd-swap-entry">
-                      <span class="dd-swap-wave">Wave {swap.wave}</span>
-                      <span class="dd-swap-action">{swap.action}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <!-- NOTES -->
-            <div class="dd-comp-notes">
-              <h3>Key Notes</h3>
-              <ul>
-                {comp.notes.map(note => <li>{note}</li>)}
-              </ul>
-            </div>
-
-            <!-- BUFF PRIORITY (per comp) -->
-            {comp.buffPriority && comp.buffPriority.length > 0 && (
-              <div class="dd-comp-buffs">
-                <h3>Buff Priority for This Comp</h3>
-                <div class="dd-buff-columns">
-                  <div class="dd-buff-col dd-buff-want">
-                    <div class="dd-buff-col-title">Take</div>
-                    <ol class="dd-buff-list">
-                      {comp.buffPriority.map(b => <li>{b}</li>)}
-                    </ol>
-                  </div>
-                  {comp.buffAvoid && comp.buffAvoid.length > 0 && (
-                    <div class="dd-buff-col dd-buff-avoid">
-                      <div class="dd-buff-col-title">Skip</div>
-                      <ul class="dd-buff-list">
-                        {comp.buffAvoid.map(b => <li>{b}</li>)}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-          </div>
-        ))}
       </div>
 
       <!-- ================================================================
-           SECTION 4: GENERAL BUFF GUIDE
-           ================================================================ -->
-      <div class="dd-card">
-        <h2>General Buff Selection Guide</h2>
-        <p>
-          Buffs are offered after every wave. The right choice depends on your blessing and comp,
-          but the following principles apply broadly to the Mask of Sorrow approach.
-          Unconfirmed buff names are marked with an asterisk (*).
-        </p>
-
-        <h3>Universal Priorities (Mask of Sorrow)</h3>
-        <div class="dd-buff-guide-grid">
-          {(["1", "2", "3", "skip"] as const).map(tier => {
-            const tierBuffs = buffs.filter(b => String(b.priority.mask_of_sorrow) === tier);
-            if (tierBuffs.length === 0) return null;
-            const tierClass = tier === "1" ? "dd-tier-s" : tier === "2" ? "dd-tier-a" : tier === "3" ? "dd-tier-b" : "dd-tier-skip";
-            const tierLabel = tier === "1" ? "Priority 1" : tier === "2" ? "Priority 2" : tier === "3" ? "Priority 3 (Situational)" : "Skip (Mask of Sorrow runs)";
-            return (
-              <div class={`dd-buff-tier ${tierClass}`}>
-                <div class="dd-tier-label">{tierLabel}</div>
-                <ul>
-                  {tierBuffs.map(b => (
-                    <li>
-                      <strong>{b.name}{!b.confirmed ? " *" : ""}</strong>
-                      {b.effect ? ` - ${b.effect}` : ""}
-                      {b.note ? ` ${b.note}` : ""}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-
-        <div class="dd-callout dd-callout-rule">
-          <strong>Rule of thumb:</strong> If the keyword "ultimate" appears in a buff and no attack-speed,
-          crit, or damage alternative is available - only then consider taking it.
-          One exception: "Ultimate attack speed" can be taken as it helps cast faster overall.
-        </div>
-      </div>
-
-      <!-- ================================================================
-           SECTION 5: SCORING AND TOP RANKING TIPS
+           SECTION 5: TIPS
            ================================================================ -->
       <div class="dd-card">
         <h2>Reaching Top Score</h2>
@@ -510,33 +463,11 @@ const DD_COMPS = [
 
 </Base>
 
-<script>
-  // Comp tab switcher
-  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".dd-tab-btn");
-  const compPanels = document.querySelectorAll<HTMLElement>(".dd-comp-panel");
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const target = btn.dataset.comp;
-
-      tabBtns.forEach(b => {
-        b.classList.remove("is-active");
-        b.setAttribute("aria-selected", "false");
-      });
-      compPanels.forEach(p => p.classList.remove("is-active"));
-
-      btn.classList.add("is-active");
-      btn.setAttribute("aria-selected", "true");
-      const panel = document.querySelector<HTMLElement>(`.dd-comp-panel[data-comp="${target}"]`);
-      if (panel) panel.classList.add("is-active");
-    });
-  });
-</script>
 
 <style>
-  /* ─── Layout ─── */
+  /* Layout */
   .page-wrapper {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     padding: 40px 24px 80px;
   }
@@ -547,7 +478,7 @@ const DD_COMPS = [
     gap: 28px;
   }
 
-  /* ─── Section Card ─── */
+  /* Section card */
   .dd-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.07);
@@ -570,12 +501,11 @@ const DD_COMPS = [
 
   .dd-card h3 {
     margin: 28px 0 12px;
-    font-size: 1rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: rgba(230, 230, 235, 0.85);
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    font-size: 0.78rem;
   }
 
   .dd-card p {
@@ -585,7 +515,7 @@ const DD_COMPS = [
     color: rgba(230, 230, 235, 0.78);
   }
 
-  /* ─── Callout ─── */
+  /* Callout */
   .dd-callout {
     background: rgba(250, 204, 21, 0.07);
     border: 1px solid rgba(250, 204, 21, 0.18);
@@ -597,11 +527,7 @@ const DD_COMPS = [
     margin: 16px 0;
   }
 
-  .dd-callout-rule {
-    margin-top: 20px;
-  }
-
-  /* ─── Key Box ─── */
+  /* Key box */
   .dd-keybox {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -633,7 +559,7 @@ const DD_COMPS = [
     line-height: 1.5;
   }
 
-  /* ─── Reward Grid ─── */
+  /* Reward grid */
   .dd-reward-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -646,6 +572,19 @@ const DD_COMPS = [
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     padding: 16px;
+  }
+
+  .dd-reward-img-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .dd-reward-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 8px;
   }
 
   .dd-reward-title {
@@ -669,7 +608,7 @@ const DD_COMPS = [
     line-height: 1.5;
   }
 
-  /* ─── Wave Table ─── */
+  /* Wave table */
   .dd-wave-table {
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 10px;
@@ -688,9 +627,7 @@ const DD_COMPS = [
     align-items: center;
   }
 
-  .dd-wave-row:last-child {
-    border-bottom: none;
-  }
+  .dd-wave-row:last-child { border-bottom: none; }
 
   .dd-wave-header {
     background: rgba(255, 255, 255, 0.04);
@@ -723,134 +660,275 @@ const DD_COMPS = [
     color: rgba(230, 230, 235, 0.85);
   }
 
-  /* ─── Blessing Grid ─── */
-  .dd-blessing-grid {
+  /* ================================================================
+     BLESSINGS
+     ================================================================ */
+  .bl-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
     margin-top: 16px;
   }
 
-  .dd-blessing-card {
+  .bl-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
-    padding: 22px 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
   }
 
-  .dd-blessing-recommended {
-    background: rgba(250, 204, 21, 0.05);
-    border: 1px solid rgba(250, 204, 21, 0.2);
+  .bl-card-rec {
+    background: rgba(168, 85, 247, 0.05);
+    border-color: rgba(168, 85, 247, 0.25);
   }
 
-  .dd-blessing-alt {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-  }
-
-  .dd-blessing-header {
+  .bl-header {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
   }
 
-  .dd-blessing-name {
-    font-size: 1.05rem;
+  .bl-name {
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-bright, #f0f0f5);
   }
 
-  .dd-blessing-badge {
-    font-size: 0.65rem;
+  .bl-badge {
+    font-size: 0.63rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    background: rgba(250, 204, 21, 0.15);
-    color: rgba(250, 204, 21, 0.9);
-    border: 1px solid rgba(250, 204, 21, 0.3);
     border-radius: 4px;
-    padding: 2px 7px;
+    padding: 2px 8px;
   }
 
-  .dd-badge-neutral {
+  .bl-badge-rec {
+    background: rgba(168, 85, 247, 0.18);
+    color: rgba(216, 180, 254, 0.95);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+  }
+
+  .bl-badge-alt {
     background: rgba(255, 255, 255, 0.06);
-    color: rgba(230, 230, 235, 0.55);
-    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(230, 230, 235, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .dd-blessing-effect,
-  .dd-blessing-why {
+  .bl-effect {
     font-size: 0.875rem;
     line-height: 1.6;
-    color: rgba(230, 230, 235, 0.75);
+    color: rgba(230, 230, 235, 0.8);
+    margin: 0;
   }
 
-  .dd-blessing-tips {
-    margin: 0;
-    padding-left: 1.2rem;
+  .bl-upgrades {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
   }
 
-  .dd-blessing-tips li {
+  .upgrade-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .upgrade-lv {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: rgba(216, 180, 254, 0.9);
+    border-radius: 5px;
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+
+  .upgrade-text {
     font-size: 0.82rem;
-    color: rgba(230, 230, 235, 0.65);
     line-height: 1.5;
+    color: rgba(230, 230, 235, 0.72);
   }
 
-  /* ─── Comp Tabs ─── */
-  .dd-comp-tabs {
+  /* ================================================================
+     BUFFS
+     ================================================================ */
+  .buff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .buff-card {
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Hexagon tag icons */
+  .buff-hexes {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
   }
 
-  .dd-tab-btn {
-    padding: 9px 16px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.04);
-    color: rgba(230, 230, 235, 0.55);
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-  }
-
-  .dd-tab-btn:hover:not(.is-active) {
-    background: rgba(255, 255, 255, 0.07);
-    color: rgba(230, 230, 235, 0.8);
-  }
-
-  .dd-tab-btn.is-active {
-    background: rgba(250, 204, 21, 0.1);
-    border-color: rgba(250, 204, 21, 0.35);
-    color: rgba(250, 204, 21, 0.95);
-  }
-
-  /* ─── Comp Panel ─── */
-  .dd-comp-panel {
-    display: none;
-  }
-
-  .dd-comp-panel.is-active {
-    display: block;
-  }
-
-  .dd-comp-meta {
+  .buff-hex {
+    width: 44px;
+    height: 38px;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.52rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: center;
+    line-height: 1.1;
   }
 
-  .dd-comp-blessing-tag,
-  .dd-comp-source-tag {
+  .tag-blue   { background: rgba(56, 189, 248, 0.25);  color: rgba(186, 230, 253, 0.95); }
+  .tag-gold   { background: rgba(250, 204, 21, 0.25);  color: rgba(253, 230, 138, 0.95); }
+  .tag-purple { background: rgba(168, 85, 247, 0.25);  color: rgba(216, 180, 254, 0.95); }
+  .tag-orange { background: rgba(251, 146, 60, 0.25);  color: rgba(253, 186, 116, 0.95); }
+  .tag-green  { background: rgba(74, 222, 128, 0.25);  color: rgba(134, 239, 172, 0.95); }
+  .tag-red    { background: rgba(248, 113, 113, 0.25); color: rgba(252, 165, 165, 0.95); }
+  .tag-cyan   { background: rgba(34, 211, 238, 0.25);  color: rgba(103, 232, 249, 0.95); }
+  .tag-pink   { background: rgba(244, 114, 182, 0.25); color: rgba(249, 168, 212, 0.95); }
+  .tag-sky    { background: rgba(125, 211, 252, 0.25); color: rgba(186, 230, 253, 0.95); }
+  .tag-violet { background: rgba(167, 139, 250, 0.25); color: rgba(196, 181, 253, 0.95); }
+
+  .buff-name {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-bright, #f0f0f5);
+    line-height: 1.3;
+  }
+
+  .buff-effect {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(134, 239, 172, 0.85);
+    flex: 1;
+  }
+
+  .buff-note {
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: rgba(230, 230, 235, 0.5);
+    font-style: italic;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 8px;
+  }
+
+  /* Priority row */
+  .buff-prio-row {
+    display: flex;
+    gap: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 10px;
+  }
+
+  .buff-prio {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    border-radius: 6px;
+    padding: 5px 2px;
+  }
+
+  .prio-blessing {
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.55;
+  }
+
+  .prio-val {
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .prio-1 { background: rgba(250, 204, 21, 0.12); }
+  .prio-1 .prio-val { color: rgba(250, 204, 21, 0.95); }
+  .prio-1 .prio-blessing { color: rgba(250, 204, 21, 0.7); }
+
+  .prio-2 { background: rgba(74, 222, 128, 0.1); }
+  .prio-2 .prio-val { color: rgba(74, 222, 128, 0.9); }
+  .prio-2 .prio-blessing { color: rgba(74, 222, 128, 0.6); }
+
+  .prio-3 { background: rgba(255, 255, 255, 0.04); }
+  .prio-3 .prio-val { color: rgba(230, 230, 235, 0.5); }
+  .prio-3 .prio-blessing { color: rgba(230, 230, 235, 0.35); }
+
+  .prio-skip { background: rgba(248, 113, 113, 0.08); }
+  .prio-skip .prio-val { color: rgba(248, 113, 113, 0.8); font-size: 0.62rem; }
+  .prio-skip .prio-blessing { color: rgba(248, 113, 113, 0.55); }
+
+  /* Inline prio badges in intro text */
+  .prio-inline {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
     font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .prio-inline.prio-1 { background: rgba(250, 204, 21, 0.15); color: rgba(250, 204, 21, 0.95); }
+  .prio-inline.prio-2 { background: rgba(74, 222, 128, 0.12); color: rgba(74, 222, 128, 0.9); }
+  .prio-inline.prio-3 { background: rgba(255, 255, 255, 0.06); color: rgba(230, 230, 235, 0.55); }
+  .prio-inline.prio-skip { background: rgba(248, 113, 113, 0.1); color: rgba(248, 113, 113, 0.85); }
+
+  /* ================================================================
+     COMPS
+     ================================================================ */
+  .dd-comp-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .dd-comp-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 22px 20px;
+  }
+
+  .dd-comp-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .dd-comp-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-bright, #f0f0f5);
+  }
+
+  .dd-comp-blessing-tag {
+    font-size: 0.75rem;
     color: rgba(230, 230, 235, 0.5);
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -858,16 +936,14 @@ const DD_COMPS = [
     padding: 4px 10px;
   }
 
-  .dd-comp-blessing-tag strong {
-    color: rgba(230, 230, 235, 0.85);
-  }
+  .dd-comp-blessing-tag strong { color: rgba(250, 204, 21, 0.9); }
 
-  /* ─── Hero Grid ─── */
+  /* Hero grid */
   .dd-hero-grid {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
 
   .dd-hero-card {
@@ -880,16 +956,14 @@ const DD_COMPS = [
     transition: opacity 0.15s;
   }
 
-  .dd-hero-card:hover {
-    opacity: 0.85;
-  }
+  .dd-hero-card:hover { opacity: 0.85; }
 
   .dd-hero-portrait {
     width: 100px;
     height: 100px;
     border-radius: 10px;
     background-size: cover;
-    background-position: center top;
+    background-position: center 30%;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background-color: rgba(255, 255, 255, 0.04);
   }
@@ -911,190 +985,23 @@ const DD_COMPS = [
     text-align: center;
   }
 
-  /* ─── Strategy / Notes / Swaps ─── */
-  .dd-comp-strategy,
-  .dd-comp-notes,
-  .dd-comp-swaps,
-  .dd-comp-buffs {
-    margin-bottom: 24px;
-  }
-
-  .dd-comp-strategy h3,
-  .dd-comp-notes h3,
-  .dd-comp-swaps h3,
-  .dd-comp-buffs h3 {
-    margin: 0 0 10px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: rgba(230, 230, 235, 0.45);
-  }
-
-  .dd-comp-strategy p {
-    font-size: 0.875rem;
-    line-height: 1.7;
-    color: rgba(230, 230, 235, 0.75);
-    margin: 0;
-  }
-
-  .dd-comp-notes ul {
+  .dd-comp-notes-list {
     margin: 0;
     padding-left: 1.2rem;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 6px;
   }
 
-  .dd-comp-notes li {
-    font-size: 0.875rem;
-    color: rgba(230, 230, 235, 0.72);
+  .dd-comp-notes-list li {
+    font-size: 0.85rem;
+    color: rgba(230, 230, 235, 0.68);
     line-height: 1.5;
   }
 
-  /* ─── Wave Swaps ─── */
-  .dd-swap-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .dd-swap-entry {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    background: rgba(120, 90, 200, 0.06);
-    border: 1px solid rgba(120, 90, 200, 0.15);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 0.875rem;
-  }
-
-  .dd-swap-wave {
-    font-weight: 700;
-    color: rgba(200, 170, 255, 0.85);
-    white-space: nowrap;
-    min-width: 60px;
-  }
-
-  .dd-swap-action {
-    color: rgba(230, 230, 235, 0.75);
-    line-height: 1.5;
-  }
-
-  /* ─── Buff Columns ─── */
-  .dd-buff-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-
-  .dd-buff-col {
-    border-radius: 10px;
-    padding: 14px 16px;
-  }
-
-  .dd-buff-want {
-    background: rgba(74, 222, 128, 0.05);
-    border: 1px solid rgba(74, 222, 128, 0.15);
-  }
-
-  .dd-buff-avoid {
-    background: rgba(248, 113, 113, 0.05);
-    border: 1px solid rgba(248, 113, 113, 0.15);
-  }
-
-  .dd-buff-col-title {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
-  }
-
-  .dd-buff-want .dd-buff-col-title {
-    color: rgba(74, 222, 128, 0.8);
-  }
-
-  .dd-buff-avoid .dd-buff-col-title {
-    color: rgba(248, 113, 113, 0.8);
-  }
-
-  .dd-buff-list {
-    margin: 0;
-    padding-left: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .dd-buff-list li {
-    font-size: 0.82rem;
-    color: rgba(230, 230, 235, 0.7);
-    line-height: 1.5;
-  }
-
-  /* ─── General Buff Guide ─── */
-  .dd-buff-guide-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 12px;
-  }
-
-  .dd-buff-tier {
-    border-radius: 10px;
-    padding: 16px 20px;
-  }
-
-  .dd-tier-s {
-    background: rgba(250, 204, 21, 0.05);
-    border: 1px solid rgba(250, 204, 21, 0.18);
-  }
-
-  .dd-tier-a {
-    background: rgba(74, 222, 128, 0.04);
-    border: 1px solid rgba(74, 222, 128, 0.14);
-  }
-
-  .dd-tier-b {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-  }
-
-  .dd-tier-skip {
-    background: rgba(248, 113, 113, 0.04);
-    border: 1px solid rgba(248, 113, 113, 0.14);
-  }
-
-  .dd-tier-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 10px;
-  }
-
-  .dd-tier-s .dd-tier-label { color: rgba(250, 204, 21, 0.8); }
-  .dd-tier-a .dd-tier-label { color: rgba(74, 222, 128, 0.8); }
-  .dd-tier-b .dd-tier-label { color: rgba(230, 230, 235, 0.5); }
-  .dd-tier-skip .dd-tier-label { color: rgba(248, 113, 113, 0.8); }
-
-  .dd-buff-tier ul {
-    margin: 0;
-    padding-left: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-  }
-
-  .dd-buff-tier li {
-    font-size: 0.875rem;
-    color: rgba(230, 230, 235, 0.72);
-    line-height: 1.55;
-  }
-
-  /* ─── Tips ─── */
+  /* ================================================================
+     TIPS
+     ================================================================ */
   .dd-tip-list {
     display: flex;
     flex-direction: column;
@@ -1130,19 +1037,13 @@ const DD_COMPS = [
     color: rgba(230, 230, 235, 0.75);
   }
 
-  .dd-tip-body strong {
-    color: rgba(230, 230, 235, 0.92);
-  }
+  .dd-tip-body strong { color: rgba(230, 230, 235, 0.92); }
 
-  /* ─── Responsive ─── */
+  /* ================================================================
+     RESPONSIVE
+     ================================================================ */
   @media (max-width: 700px) {
-    .dd-card {
-      padding: 24px 18px;
-    }
-
-    .dd-blessing-grid {
-      grid-template-columns: 1fr;
-    }
+    .dd-card { padding: 24px 18px; }
 
     .dd-wave-row {
       grid-template-columns: 50px 110px 1fr;
@@ -1150,25 +1051,12 @@ const DD_COMPS = [
       padding: 10px 12px;
     }
 
-    .dd-reward-grid {
-      grid-template-columns: 1fr;
-    }
+    .dd-reward-grid { grid-template-columns: 1fr; }
 
-    .dd-hero-grid {
-      justify-content: center;
-    }
+    .bl-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 
-    .dd-buff-columns {
-      grid-template-columns: 1fr;
-    }
+    .buff-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 
-    .dd-comp-tabs {
-      flex-direction: column;
-    }
-
-    .dd-tab-btn {
-      width: 100%;
-      text-align: left;
-    }
+    .dd-hero-grid { justify-content: center; }
   }
 </style>
