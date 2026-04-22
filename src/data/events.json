@@ -1,6 +1,86 @@
 {
   "campaigns": [
 
+      {
+        "id": "meret-campaign",
+        "name": "Meret Campaign",
+        "hero": "Meret",
+        "description": "Complete PVE campaign stages using Meret and allies",
+        "stages": [
+          {
+          "id": 1,
+          "name": "1. Sandstorm Resonance.",
+
+          "composition": {
+            "front": ["taurus", ""],
+            "back": ["isis", "meret", ""]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2. Crimson Gold Whirl.",
+
+          "composition": {
+            "front": ["prometheus", "taurus"],
+            "back": ["isis", "meret", "cancer"]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. Curtain Call.",
+
+          "composition": {
+            "front": ["prometheus", "yuelao"],
+            "back": ["isis", "meret", "caishen"]
+          }       
+        },
+        {
+          "id": 4,
+          "name": "4. Dance and Undercurrent.",
+
+          "composition": {
+            "front": ["demeter", "anubis"],
+            "back": ["fengyi", "aries", "wenshen"]
+          }       
+        },
+        {
+          "id": 5,
+          "name": "5. Steps of Requiem.",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        },
+        {
+          "id": 6,
+          "name": "6. Leap beyond Illusions.",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        },
+        {
+          "id": 7,
+          "name": "7. Spiral of Fusion.",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        },
+        {
+          "id": 8,
+          "name": "8. Hearts Call.",
+
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", ""]
+          }       
+        }
+      ]
+    },
     {
       "id": "wenshen-campaign",
       "name": "Wen Shen Campaign",
