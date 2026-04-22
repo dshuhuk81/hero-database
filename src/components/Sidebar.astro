@@ -12,7 +12,8 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home",      href: "/",          group: "primary" },
-  { label: "Heros",     href: "/heros",     group: "primary"},
+  { label: "Heros",     href: "/heros",     group: "primary", badge: { text: "Updated", color: "var(--accent-purple)" } },
+  { label: "Compare",   href: "/compare",   group: "primary" },
   { label: "Hero Guides", href: "/guides",   group: "content", badge: { text: "New", color: "var(--accent-new)" } },
   { label: "Tips",      href: "/tips",      group: "content" },
   { label: "Boss Encounters", href: "/bosses", group: "content" },
