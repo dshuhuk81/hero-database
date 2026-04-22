@@ -115,8 +115,16 @@
   "baseAttackRate": 0.543,
   "bossUltimatesPer90s": 5,
   "relicBreakpoints": [
-    { "level": 0, "type": "recommended", "effect": "Fully functional at r0 -- CC and energy removal require no relic investment." },
-    { "level": 20, "type": "high_spender", "effect": "Significant power jump for perma-CC setups; enables advanced counter-tech vs energy-cycling enemies." }
+    {
+      "level": 0,
+      "type": "recommended",
+      "effect": "Fully functional at r0 -- CC and energy removal require no relic investment."
+    },
+    {
+      "level": 20,
+      "type": "high_spender",
+      "effect": "Significant power jump for perma-CC setups; enables advanced counter-tech vs energy-cycling enemies."
+    }
   ],
   "metaSources": {
     "excelTier": "T1",
