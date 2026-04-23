@@ -4,7 +4,8 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import ddData from "../data/delusions-den.json";
 
-const { blessings, buffs } = ddData;
+const { blessings } = ddData;
+const buffs = [...ddData.buffs].sort((a, b) => a.name.localeCompare(b.name));
 
 function hp(id: string) {
   return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${id}.webp`;
@@ -26,6 +27,13 @@ const TAG_META: Record<string, { short: string; cls: string }> = {
   healing:       { short: "HEAL", cls: "tag-pink"   },
   speed:         { short: "SPD",  cls: "tag-sky"    },
   cc:            { short: "CC",   cls: "tag-violet" },
+};
+
+const BLESSING_IMG: Record<string, string> = {
+  "mask-of-sorrow": "/delusionden/mask.webp",
+  "divine-nectar":  "/delusionden/nectar.webp",
+  "horn-of-doom":   "/delusionden/horn.webp",
+  "megafungus":     "/delusionden/fungus.webp",
 };
 
 const BLESSING_KEYS = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper"] as const;
@@ -167,6 +175,88 @@ const DD_COMPS = [
       "Normal attack knockback",
     ],
   },
+
+  {
+    id: "divine-nectar-poseidon",
+    label: "Divine Nectar - Poseidon Control",
+    source: "Community composition",
+    blessing: "Divine Nectar",
+    heroes: [
+      { id: "poseidon", name: "Poseidon", note: "CC / Primary DPS" },
+      { id: "skadi",    name: "Skadi",    note: "Control / Secondary DPS" },
+      { id: "zeus",     name: "Zeus",     note: "Damage dealer" },
+      { id: "hecate",   name: "Hecate",   note: "Support / Crowd Control" },
+      { id: "caishen",  name: "Caishen",  note: "Energy/ATK Support" },
+    ],
+    reason:
+      "Built around Divine Nectar's ultimate-focused mechanics with energy generation bonuses. Poseidon and Skadi leverage crowd control to set up windows for coordinated ultimate casts. Zeus provides burst damage that scales with the ultimate damage buffs available. Hecate adds debuffs and crowd control while supporting the ultimate rotation. Caishen accelerates energy generation for the entire team, enabling more frequent ultimate cycles. The reduced non-ultimate skill damage forces focus on ultimate-based offense.",
+    notes: [
+      "Energy generation is critical - prioritize all energy buffs whenever they appear.",
+      "Poseidon's crowd control enables consistent ultimate setup windows.",
+      "Focus entirely on ultimate damage, energy regeneration, and cooldown reduction.",
+      "Starting Energy is a high-value pickup to frontload the first wave.",
+      "Shield on Ultimate + Energy Regen on Shield synergizes well with the energy-focused strategy.",
+    ],
+    waveSwaps: [],
+    buffPriority: [
+      "Ultimate Damage",
+      "Energy Regen on Ultimate",
+      "Ultimate Attack Speed",
+      "Starting Energy (+1000 at battle start)",
+      "Ultimate Damage AOE",
+      "Shield on Ultimate",
+      "Energy Regen on Shield",
+      "Attack",
+      "Crit Damage",
+      "HP",
+    ],
+    buffAvoid: [
+      "Normal attack speed (damage comes from ultimates, not basic attacks)",
+      "Normal attack damage",
+      "Normal attack energy drain",
+    ],
+  },
+
+  {
+    id: "divine-nectar-hladgunnr",
+    label: "Divine Nectar - Hladgunnr Rotation",
+    source: "Community composition",
+    blessing: "Divine Nectar",
+    heroes: [
+      { id: "hladgunnr", name: "Hladgunnr", note: "Primary Carry" },
+      { id: "dionysus",  name: "Dionysus",  note: "ATK Speed / Energy Support" },
+      { id: "hecate",    name: "Hecate",    note: "Control / Debuffs" },
+      { id: "caishen",   name: "Caishen",   note: "Energy/ATK Support" },
+      { id: "fengyi",    name: "Fengyi",    note: "Damage/Support Hybrid" },
+    ],
+    reason:
+      "Hladgunnr-focused ultimate carry composition that leverages Divine Nectar's energy advantages. Dionysus provides multiplicative attack speed and energy acceleration for rapid ultimate rotations. Hecate applies crowd control and debuffs to enable Hladgunnr's damage windows. Caishen feeds additional energy and attack buffs to the entire team. Fengyi bridges damage and support, contributing to both the burst phases and team sustain. The 50% reduction to non-ultimate skills forces the team to rely on coordinated ultimate casting.",
+    notes: [
+      "Hladgunnr becomes the primary damage source - build ultimates frequently.",
+      "Dionysus in middle backline can be considered for the attack speed passive.",
+      "Energy generation buffs are essential - pick them every opportunity.",
+      "Crowd control from Hecate creates consistent damage windows for Hladgunnr.",
+      "Fengyi's hybrid nature allows flexibility in buff selections when both damage and support are needed.",
+    ],
+    waveSwaps: [],
+    buffPriority: [
+      "Ultimate Damage",
+      "Energy Regen on Ultimate",
+      "Starting Energy (+1000 at battle start)",
+      "Ultimate Attack Speed",
+      "Energy on Kill",
+      "Ultimate Damage AOE",
+      "Shield on Ultimate",
+      "Attack",
+      "Normal Attack Speed (Dionysus support buff)",
+      "Crit Damage",
+    ],
+    buffAvoid: [
+      "Normal attack defense drain",
+      "Normal attack knockback",
+      "Skills that reduce ultimate focus",
+    ],
+  },
 ];
 ---
 
@@ -202,6 +292,11 @@ const DD_COMPS = [
           each wave, and maximize enemy kills in the final scoring stage.
         </div>
 
+        <div class="dd-callout dd-callout-req">
+          <strong>Requirements:</strong> Delusions Den unlocks after completing Chapter 31.
+          Maximum difficulty is Level 6. The mode resets periodically and tracks server leaderboards.
+        </div>
+
         <h3>Rewards for ranks</h3>
         <div class="dd-reward-grid">
           <div class="dd-reward-card">
@@ -221,60 +316,7 @@ const DD_COMPS = [
             <div class="dd-reward-desc">Spent in the Den Shop to purchase items.</div>
           </div>
         </div>
-
-        <h3>Wave Structure</h3>
-        <div class="dd-wave-table">
-          <div class="dd-wave-row dd-wave-header">
-            <span>Wave</span>
-            <span>Type</span>
-            <span>Notes</span>
-          </div>
-          <div class="dd-wave-row">
-            <span class="dd-wave-num">1</span>
-            <span class="dd-wave-type">Combat</span>
-            <span>First buff selection after. Aim for 3-4 crit symbols early.</span>
-          </div>
-          <div class="dd-wave-row">
-            <span class="dd-wave-num">2</span>
-            <span class="dd-wave-type">Combat</span>
-            <span>Notable enemy: Ares. Consider swapping in a tank (Heracles) for this wave.</span>
-          </div>
-          <div class="dd-wave-row dd-wave-break">
-            <span class="dd-wave-num">3</span>
-            <span class="dd-wave-type">Fixed Break</span>
-            <span>Cannot control buff rewards at this checkpoint. Secure "crit ignores 100% defense" before this.</span>
-          </div>
-          <div class="dd-wave-row">
-            <span class="dd-wave-num">4</span>
-            <span class="dd-wave-type">Combat</span>
-            <span>Stack additional crit symbols. Target 10 total for execution threshold.</span>
-          </div>
-          <div class="dd-wave-row">
-            <span class="dd-wave-num">5</span>
-            <span class="dd-wave-type">Combat</span>
-            <span>Notable enemy: Ares. Dangerous burst - apply shields or knockback buffs.</span>
-          </div>
-          <div class="dd-wave-row dd-wave-break">
-            <span class="dd-wave-num">6</span>
-            <span class="dd-wave-type">Fixed Break</span>
-            <span>Second fixed checkpoint. No buff manipulation possible.</span>
-          </div>
-          <div class="dd-wave-row dd-wave-final">
-            <span class="dd-wave-num">7</span>
-            <span class="dd-wave-type">Scoring Stage</span>
-            <span>Timed kill-count stage. More enemies killed = higher score. Top players reach 230+ points.</span>
-          </div>
-        </div>
-
-        <div class="dd-keybox">
-          <div class="dd-keybox-title">Notable Enemies to Watch For</div>
-          <ul>
-            <li><strong>Ares</strong> - High durability; bring Heracles or another tank for wave 2.</li>
-            <li><strong>Nuwa</strong> - Final-wave boss; her minions deal coordinated burst. Energy recovery and shielding help here.</li>
-            <li><strong>Pan</strong> - AoE silence disrupts your team's skill rotations in later waves.</li>
-          </ul>
-        </div>
-      </div>
+       
 
       <!-- ================================================================
            SECTION 2: BLESSINGS
@@ -289,6 +331,12 @@ const DD_COMPS = [
         <div class="bl-grid">
           {blessings.map(b => (
             <div class={`bl-card ${b.recommended ? "bl-card-rec" : ""}`}>
+              {BLESSING_IMG[b.id] && (
+                <div class="bl-img-wrap">
+                  <img src={BLESSING_IMG[b.id]} alt={b.name} class="bl-img" />
+                </div>
+              )}
+
               <div class="bl-header">
                 <span class="bl-name">{b.name}</span>
                 <span class={`bl-badge ${b.recommended ? "bl-badge-rec" : "bl-badge-alt"}`}>
@@ -320,7 +368,16 @@ const DD_COMPS = [
            SECTION 3: BUFFS
            ================================================================ -->
       <div class="dd-card">
-        <h2>Buffs</h2>
+        <div class="buff-header-row">
+          <h2>Buffs</h2>
+          <span class="buff-count">{buffs.length} buffs</span>
+        </div>
+        <div class="dd-callout">
+          <strong>Buff Levels:</strong> Each buff card has its own level that increases each time you pick it.
+          A buff evolves once at level 5, then again every 10 levels, and is fully evolved at level 15.
+          The five genre icons at the top of the screen track progress across your buff categories.
+        </div>
+
         <p>
           One buff is offered after each combat wave. The priority badges at the bottom of each card
           show how valuable that buff is for each blessing:
@@ -331,38 +388,61 @@ const DD_COMPS = [
           Unconfirmed buff names are marked with an asterisk (*).
         </p>
 
-        <div class="buff-grid">
-          {buffs.map(b => (
-            <div class="buff-card">
-              <div class="buff-hexes">
-                {b.tags.slice(0, 2).map(tag => {
-                  const meta = TAG_META[tag];
-                  return meta ? (
-                    <div class={`buff-hex ${meta.cls}`}>{meta.short}</div>
-                  ) : null;
-                })}
-              </div>
-
-              <div class="buff-name">{b.name}{!b.confirmed ? " *" : ""}</div>
-              <div class="buff-effect">{b.effect}</div>
-
-              {b.note && (
-                <div class="buff-note">{b.note}</div>
-              )}
-
-              <div class="buff-prio-row">
-                {BLESSING_KEYS.map(key => {
-                  const val = getBuffPrio(b, key);
-                  return (
-                    <div class={`buff-prio ${PRIO_CLS[val] ?? ""}`}>
-                      <span class="prio-blessing">{BLESSING_SHORT[key]}</span>
-                      <span class="prio-val">{val}</span>
-                    </div>
-                  );
-                })}
-              </div>
+        <div class="buff-list">
+          <div class="buff-list-header">
+            <span class="buff-col-name sortable-header" data-sort-key="name">
+              Buff
+              <span class="sort-arrow"></span>
+            </span>
+            <span class="buff-col-effect">Effect</span>
+            <div class="buff-col-prios" id="buff-sort-container">
+              {BLESSING_KEYS.map(key => (
+                <span class="prio-col-label sortable-header" data-sort-key={key}>
+                  {BLESSING_SHORT[key]}
+                  <span class="sort-arrow"></span>
+                </span>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {buffs.map(b => {
+            const prioData = BLESSING_KEYS.map(key => {
+              const p = b.priority as unknown as AnyRecord;
+              const val = p[key] ?? "?";
+              return val === "skip" ? 99 : (typeof val === "number" ? val : 99);
+            }).join(",");
+            return (
+              <div class="buff-row" data-prios={prioData}>
+                <div class="buff-col-name">
+                  <div class="buff-hexes">
+                    {b.tags.slice(0, 1).map(tag => {
+                      const meta = TAG_META[tag];
+                      return meta ? (
+                        <div class={`buff-hex ${meta.cls}`}>{meta.short}</div>
+                      ) : null;
+                    })}
+                  </div>
+                  <span class="buff-name">{b.name}{!b.confirmed ? " *" : ""}</span>
+                </div>
+
+                <div class="buff-col-effect">
+                  <span class="buff-effect">{b.effect}</span>
+                  {b.note && <span class="buff-note">{b.note}</span>}
+                </div>
+
+                <div class="buff-col-prios">
+                  {BLESSING_KEYS.map(key => {
+                    const val = getBuffPrio(b, key);
+                    return (
+                      <div class={`buff-prio ${PRIO_CLS[val] ?? ""}`}>
+                        <span class="prio-val">{val}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -463,6 +543,64 @@ const DD_COMPS = [
 
 </Base>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buffList = document.querySelector(".buff-list") as HTMLElement | null;
+    const headers = document.querySelectorAll(".sortable-header");
+    let currentSort: { key: string | null; direction: "asc" | "desc" } = { key: null, direction: "asc" };
+
+    if (!buffList) return;
+
+    headers.forEach((header) => {
+      const headerEl = header as HTMLElement;
+      headerEl.style.cursor = "pointer";
+      const sortKey = headerEl.dataset.sortKey;
+
+      headerEl.addEventListener("click", () => {
+        const isCurrentSort = currentSort.key === sortKey;
+        currentSort.direction = isCurrentSort && currentSort.direction === "asc" ? "desc" : "asc";
+        currentSort.key = sortKey || null;
+
+        const rows = Array.from(buffList.querySelectorAll(".buff-row")) as HTMLElement[];
+
+        if (sortKey === "name") {
+          rows.sort((a, b) => {
+            const nameA = a.querySelector(".buff-name")?.textContent?.trim() || "";
+            const nameB = b.querySelector(".buff-name")?.textContent?.trim() || "";
+            const comparison = nameA.localeCompare(nameB);
+            return currentSort.direction === "asc" ? comparison : -comparison;
+          });
+        } else {
+          const blessing_keys = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper"];
+          const columnIndex = blessing_keys.indexOf(sortKey as string);
+
+          rows.sort((a, b) => {
+            const prioStr = (a as HTMLElement & { dataset: { prios: string } }).dataset.prios;
+            const priosA = prioStr ? prioStr.split(",").map(Number) : [];
+            const prioStrB = (b as HTMLElement & { dataset: { prios: string } }).dataset.prios;
+            const priosB = prioStrB ? prioStrB.split(",").map(Number) : [];
+            const valA = priosA[columnIndex] || 99;
+            const valB = priosB[columnIndex] || 99;
+            return currentSort.direction === "asc" ? valA - valB : valB - valA;
+          });
+        }
+
+        headers.forEach(h => {
+          const arrow = h.querySelector(".sort-arrow");
+          if (arrow) arrow.textContent = "";
+          h.classList.remove("sort-active");
+        });
+
+        headerEl.classList.add("sort-active");
+        const arrow = headerEl.querySelector(".sort-arrow");
+        if (arrow) arrow.textContent = currentSort.direction === "asc" ? " ▲" : " ▼";
+
+        buffList.querySelectorAll(".buff-row").forEach(row => row.remove());
+        rows.forEach(row => buffList.appendChild(row));
+      });
+    });
+  });
+</script>
 
 <style>
   /* Layout */
@@ -525,6 +663,12 @@ const DD_COMPS = [
     line-height: 1.6;
     color: rgba(230, 230, 235, 0.85);
     margin: 16px 0;
+  }
+
+  .dd-callout-req {
+    background: rgba(56, 189, 248, 0.06);
+    border-color: rgba(56, 189, 248, 0.18);
+    margin-top: 0;
   }
 
   /* Key box */
@@ -685,6 +829,21 @@ const DD_COMPS = [
     border-color: rgba(168, 85, 247, 0.25);
   }
 
+  .bl-img-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 4px;
+  }
+
+  .bl-img {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: radial-gradient(circle at center, rgba(168, 85, 247, 0.22) 0%, rgba(168, 85, 247, 0.06) 60%, transparent 100%);
+    box-shadow: 0 0 24px rgba(168, 85, 247, 0.18), 0 0 8px rgba(168, 85, 247, 0.12);
+  }
+
   .bl-header {
     display: flex;
     align-items: center;
@@ -763,42 +922,106 @@ const DD_COMPS = [
   /* ================================================================
      BUFFS
      ================================================================ */
-  .buff-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-    margin-top: 20px;
+  .buff-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
   }
 
-  .buff-card {
-    background: #111;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+  .buff-header-row h2 {
+    margin: 0;
+  }
+
+  .buff-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(250, 204, 21, 0.12);
+    border: 1px solid rgba(250, 204, 21, 0.25);
+    color: rgba(250, 204, 21, 0.85);
+    border-radius: 20px;
+    padding: 4px 12px;
+    white-space: nowrap;
+  }
+
+  .buff-list {
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 12px;
-    padding: 16px 16px 14px;
+    overflow: hidden;
+  }
+
+  .buff-list-header,
+  .buff-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 120px;
+    gap: 0;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .buff-list-header {
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(230, 230, 235, 0.4);
+  }
+
+  .buff-row:last-child { border-bottom: none; }
+
+  .buff-row:nth-child(even) { background: rgba(255, 255, 255, 0.015); }
+
+  .buff-col-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 16px;
+  }
+
+  .buff-col-name.sortable-header {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .buff-col-name.sortable-header:hover {
+    color: rgba(250, 204, 21, 0.9);
+  }
+
+  .buff-col-effect {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 4px;
+    padding-right: 16px;
+  }
+
+  .buff-col-prios {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
   }
 
   /* Hexagon tag icons */
   .buff-hexes {
-    display: flex;
-    gap: 8px;
+    flex-shrink: 0;
   }
 
   .buff-hex {
-    width: 44px;
-    height: 38px;
+    width: 34px;
+    height: 30px;
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.52rem;
+    font-size: 0.46rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    text-align: center;
-    line-height: 1.1;
   }
 
   .tag-blue   { background: rgba(56, 189, 248, 0.25);  color: rgba(186, 230, 253, 0.95); }
@@ -813,74 +1036,77 @@ const DD_COMPS = [
   .tag-violet { background: rgba(167, 139, 250, 0.25); color: rgba(196, 181, 253, 0.95); }
 
   .buff-name {
-    font-size: 0.92rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--text-bright, #f0f0f5);
     line-height: 1.3;
   }
 
   .buff-effect {
-    font-size: 0.82rem;
-    line-height: 1.5;
+    font-size: 0.8rem;
+    line-height: 1.45;
     color: rgba(134, 239, 172, 0.85);
-    flex: 1;
   }
 
   .buff-note {
-    font-size: 0.75rem;
-    line-height: 1.45;
-    color: rgba(230, 230, 235, 0.5);
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: rgba(230, 230, 235, 0.45);
     font-style: italic;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding-top: 8px;
   }
 
-  /* Priority row */
-  .buff-prio-row {
-    display: flex;
-    gap: 4px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding-top: 10px;
+  /* Priority badges */
+  .prio-col-label {
+    width: 26px;
+    text-align: center;
+    position: relative;
+    user-select: none;
+  }
+
+  .prio-col-label.sortable-header {
+    cursor: pointer;
+  }
+
+  .prio-col-label.sortable-header:hover {
+    color: rgba(250, 204, 21, 0.9);
+  }
+
+  .sort-arrow {
+    font-size: 0.6rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    margin-left: 2px;
+  }
+
+  .prio-col-label.sort-active .sort-arrow {
+    opacity: 1;
   }
 
   .buff-prio {
-    flex: 1;
+    width: 26px;
+    height: 26px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 2px;
-    border-radius: 6px;
-    padding: 5px 2px;
-  }
-
-  .prio-blessing {
-    font-size: 0.58rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    opacity: 0.55;
+    justify-content: center;
+    border-radius: 5px;
   }
 
   .prio-val {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 700;
   }
 
-  .prio-1 { background: rgba(250, 204, 21, 0.12); }
+  .prio-1 { background: rgba(250, 204, 21, 0.14); }
   .prio-1 .prio-val { color: rgba(250, 204, 21, 0.95); }
-  .prio-1 .prio-blessing { color: rgba(250, 204, 21, 0.7); }
 
-  .prio-2 { background: rgba(74, 222, 128, 0.1); }
+  .prio-2 { background: rgba(74, 222, 128, 0.12); }
   .prio-2 .prio-val { color: rgba(74, 222, 128, 0.9); }
-  .prio-2 .prio-blessing { color: rgba(74, 222, 128, 0.6); }
 
   .prio-3 { background: rgba(255, 255, 255, 0.04); }
-  .prio-3 .prio-val { color: rgba(230, 230, 235, 0.5); }
-  .prio-3 .prio-blessing { color: rgba(230, 230, 235, 0.35); }
+  .prio-3 .prio-val { color: rgba(230, 230, 235, 0.4); }
 
-  .prio-skip { background: rgba(248, 113, 113, 0.08); }
-  .prio-skip .prio-val { color: rgba(248, 113, 113, 0.8); font-size: 0.62rem; }
-  .prio-skip .prio-blessing { color: rgba(248, 113, 113, 0.55); }
+  .prio-skip { background: rgba(248, 113, 113, 0.1); }
+  .prio-skip .prio-val { color: rgba(248, 113, 113, 0.8); font-size: 0.58rem; }
 
   /* Inline prio badges in intro text */
   .prio-inline {
@@ -1055,7 +1281,9 @@ const DD_COMPS = [
 
     .bl-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 
-    .buff-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    .buff-list-header,
+    .buff-row { grid-template-columns: 160px 1fr 100px; font-size: 0.78rem; }
+    .buff-name { font-size: 0.8rem; }
 
     .dd-hero-grid { justify-content: center; }
   }
