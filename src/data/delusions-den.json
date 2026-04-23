@@ -87,10 +87,25 @@
       "effect": "Normal Attack Speed +60%.",
       "tags": ["normal_attack", "speed"],
       "confirmed": true,
+      "note": "A conditional variant exists: +50% after not moving for 3s (seen in Base Genre Lv 0-1).",
       "priority": {
         "mask_of_sorrow": 1,
         "divine_nectar": "skip",
         "megafungus": 3,
+        "ripper": 1
+      }
+    },
+    {
+      "id": "normal-atk-speed-conditional",
+      "name": "Normal Attack SPD (on Wait)",
+      "effect": "Normal Attack Speed +50% for 5s after not moving.",
+      "tags": ["normal_attack", "speed"],
+      "confirmed": true,
+      "note": "Conditional variant that triggers after holding position.",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": "skip",
+        "megafungus": 2,
         "ripper": 1
       }
     },
@@ -356,7 +371,35 @@
         "megafungus": 1,
         "ripper": "skip"
       },
-      "note": "One variant reads: For every 4 ultimates cast by allies, deal DMG equal to 10% of the target's max HP."
+      "note": "Base variant. Upgrades to +40% at higher levels."
+    },
+    {
+      "id": "ultimate-damage-aoe",
+      "name": "Ultimate DMG (AOE)",
+      "effect": "For every 4 ultimates cast by allies, deal DMG equal to 10% of the target's max HP.",
+      "tags": ["ultimate", "damage"],
+      "confirmed": true,
+      "priority": {
+        "mask_of_sorrow": "skip",
+        "divine_nectar": 1,
+        "megafungus": 1,
+        "ripper": "skip"
+      },
+      "note": "Variant A: AOE damage scaling with ally ultimate casts."
+    },
+    {
+      "id": "ultimate-damage-aoe-stun",
+      "name": "Ultimate DMG (AOE+Stun)",
+      "effect": "For every 4 ultimates cast by allies, deal DMG equal to 10% of the target's max HP and stun for 2s.",
+      "tags": ["ultimate", "damage", "cc"],
+      "confirmed": true,
+      "priority": {
+        "mask_of_sorrow": "skip",
+        "divine_nectar": 1,
+        "megafungus": 1,
+        "ripper": "skip"
+      },
+      "note": "Variant B: AOE damage with stun effect."
     },
     {
       "id": "hp-regen-on-ultimate",
@@ -424,7 +467,7 @@
         "megafungus": 2,
         "ripper": 3
       },
-      "note": "Pairs well with Energy Regen on Shield for a strong energy loop."
+      "note": "Pairs well with Energy Regen on Shield for a strong energy loop. Upgrades to 300% of ATK at higher levels."
     },
     {
       "id": "starting-shield",
@@ -464,12 +507,12 @@
         "megafungus": 2,
         "ripper": 3
       },
-      "note": "Strong synergy with Shield on Ultimate - casting ultimate grants a shield which then generates energy."
+      "note": "Strong synergy with Shield on Ultimate - casting ultimate grants a shield which then generates energy. Higher level upgrade (Energy Genre Lv 2-3): effect changes to Energy Regen SPD +20% while a shield is active."
     },
     {
       "id": "hp-conversion-to-shield",
       "name": "HP Conversion to Shield",
-      "effect": "Converts a portion of HP into a shield.",
+      "effect": "50% of overhealing is converted into shield for 5s.",
       "tags": ["survival"],
       "confirmed": true,
       "priority": {
@@ -570,6 +613,73 @@
         "divine_nectar": 3,
         "megafungus": 3,
         "ripper": 3
+      }
+    },
+    {
+      "id": "crit-dmg-hp-bonus",
+      "name": "CRIT DMG (HP Bonus)",
+      "effect": "CRIT hits deal bonus DMG equal to 5% of the target's max HP.",
+      "tags": ["crit", "damage"],
+      "confirmed": true,
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 3,
+        "megafungus": 2,
+        "ripper": 1
+      }
+    },
+    {
+      "id": "opening-stun",
+      "name": "Opening Stun",
+      "effect": "Deals DMG equal to 30% of the target's max HP and stuns them at the start of battle.",
+      "tags": ["damage", "cc"],
+      "confirmed": false,
+      "note": "Exact stun duration not visible in screenshot - needs verification.",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 2
+      }
+    },
+    {
+      "id": "periodic-hp-regen",
+      "name": "Periodic HP Regen",
+      "effect": "Restores HP equal to 50% of lost HP every 10s.",
+      "tags": ["survival", "healing"],
+      "confirmed": true,
+      "priority": {
+        "mask_of_sorrow": 3,
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 3
+      }
+    },
+    {
+      "id": "ultimate-dmg-bonus",
+      "name": "Ultimate DMG Bonus",
+      "effect": "Each Ultimate cast during battle increases the DMG of the next Ultimate by 5%.",
+      "tags": ["ultimate", "damage"],
+      "confirmed": true,
+      "note": "Stacks over the course of a battle - more ultimates cast means a higher bonus on the following one.",
+      "priority": {
+        "mask_of_sorrow": "skip",
+        "divine_nectar": 1,
+        "megafungus": 1,
+        "ripper": "skip"
+      }
+    },
+    {
+      "id": "normal-atk-spd-healing",
+      "name": "Normal Attack SPD (on Heal)",
+      "effect": "Normal Attack SPD +50% for 5s after receiving healing.",
+      "tags": ["normal_attack", "speed", "healing"],
+      "confirmed": true,
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 3,
+        "megafungus": 3,
+        "ripper": 2
       }
     }
   ]

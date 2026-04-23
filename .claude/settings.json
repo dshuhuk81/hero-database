@@ -46,7 +46,9 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('name'\\), d.get\\('id'\\)\\)\")",
       "Bash(ls /Users/daschultheiss/hero-database/src/data/heroes/*.json)",
       "Bash(xargs -I{} basename {} .json)",
-      "Bash(ls /Users/daschultheiss/hero-database/public/skills/*.png)"
+      "Bash(ls /Users/daschultheiss/hero-database/public/skills/*.png)",
+      "Bash(npm run *)",
+      "Read(//tmp/**)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
