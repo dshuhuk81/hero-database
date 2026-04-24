@@ -230,3 +230,11 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 ### Generate Derived Data
 - `node scripts/generator.js` – Regenerates teamCompsByHeroId.json from all hero files
 - `node scripts/merge-heroes-db.js` – Merges individual hero JSON files into all_heroes_db.json
+
+### Add Skill Preview Video
+See memory file for full details: `memory/project_skill_videos.md`
+1. Record gameplay clip, note skill start time and crop coordinates
+2. Convert with ffmpeg (static binary at `/tmp/ffmpeg-bin/ffmpeg`):
+   `ffmpeg -y -i source.mp4 -ss [START] -t [DURATION] -vf "crop=W:H:X:Y,scale=480:-1" -c:v libvpx-vp9 -b:v 0 -crf 35 -an public/skills/{hero_id}_skill_{n}.webm`
+3. Set `"video": "{hero_id}_skill_{n}.webm"` in hero JSON skill entry
+4. Upload `.webm` to R2 bucket under `skills/` for production
