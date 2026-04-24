@@ -300,26 +300,42 @@ const dotSections = [
         {hero.skills && hero.skills.map((skill: any, i: number) => (
           <div class={`skill-panel${i === 0 ? " active" : ""}`} data-skill-panel={i} role="tabpanel">
             <div class="skill-panel-inner">
-              <div class="skill-panel-header">
-                <div class="skill-panel-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
-                <div class="skill-panel-meta">
-                  <h3 class="skill-panel-name">{skill.name}</h3>
-                  <div class="skill-panel-badges">
-                    <span class="skill-panel-type">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
-                    {skill.damageType && (
-                      <span class={`dmg-badge dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
-                    )}
+              <div class={skill.video ? "skill-body skill-body--has-video" : "skill-body"}>
+                <div class="skill-text">
+                  <div class="skill-panel-header">
+                    <div class="skill-panel-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
+                    <div class="skill-panel-meta">
+                      <h3 class="skill-panel-name">{skill.name}</h3>
+                      <div class="skill-panel-badges">
+                        <span class="skill-panel-type">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
+                        {skill.damageType && (
+                          <span class={`dmg-badge dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
+                  <p class="skill-panel-desc">{skill.description}</p>
+                  {(skill.upgrades?.level2 || skill.upgrades?.level3 || skill.upgrades?.level4) && (
+                    <div class="skill-upgrades">
+                      {skill.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{skill.upgrades.level2}</span></div>}
+                      {skill.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{skill.upgrades.level3}</span></div>}
+                      {skill.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{skill.upgrades.level4}</span></div>}
+                    </div>
+                  )}
                 </div>
+                {skill.video && (
+                  <div class="skill-video-wrap">
+                    <video
+                      class="skill-video"
+                      data-video-src={`/skills/${skill.video}`}
+                      autoplay
+                      loop
+                      muted
+                      playsinline
+                    ></video>
+                  </div>
+                )}
               </div>
-              <p class="skill-panel-desc">{skill.description}</p>
-              {(skill.upgrades?.level2 || skill.upgrades?.level3 || skill.upgrades?.level4) && (
-                <div class="skill-upgrades">
-                  {skill.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{skill.upgrades.level2}</span></div>}
-                  {skill.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{skill.upgrades.level3}</span></div>}
-                  {skill.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{skill.upgrades.level4}</span></div>}
-                </div>
-              )}
             </div>
           </div>
         ))}
@@ -1198,8 +1214,6 @@ const dotSections = [
   gap: 18px;
   align-items: flex-start;
   margin-bottom: 18px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .skill-panel-icon {
@@ -1262,6 +1276,35 @@ const dotSections = [
 .rlv-30 { background: linear-gradient(135deg,#fbbf24,#f59e0b); color: #1a1a1a; }
 .rlv-20 { background: linear-gradient(135deg,#818cf8,#6366f1); color: #fff; }
 .rlv-10 { background: linear-gradient(135deg,#10b981,#059669); color: #fff; }
+
+.skill-body {
+  display: block;
+}
+.skill-body--has-video {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.skill-video-wrap {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  width: 100%;
+}
+.skill-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.skill-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
 
 .skill-panel-desc {
   font-size: 0.9rem;
@@ -1745,6 +1788,7 @@ const dotSections = [
   .syn-links-grid { grid-template-columns: 1fr; }
   .video-grid { grid-template-columns: 1fr; }
   .skill-panel-inner { padding: 16px; }
+  .skill-body--has-video { grid-template-columns: 1fr; }
   .showcase-nav { width: 38px; height: 38px; }
   .showcase-nav.prev { left: 12px; }
   .showcase-nav.next { right: 12px; }
@@ -1763,6 +1807,20 @@ const dotSections = [
   const skillTabs = document.querySelectorAll('.skill-tab');
   const skillPanels = document.querySelectorAll('.skill-panel');
 
+  function loadPanelVideo(panel: Element | null) {
+    if (!panel) return;
+    const video = panel.querySelector<HTMLVideoElement>('.skill-video');
+    if (!video) return;
+    const src = video.getAttribute('data-video-src');
+    if (src && !video.src) {
+      video.src = src;
+      video.load();
+      video.play().catch(() => {});
+    } else if (video.src && video.paused) {
+      video.play().catch(() => {});
+    }
+  }
+
   skillTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const idx = tab.getAttribute('data-skill-tab');
@@ -1772,8 +1830,12 @@ const dotSections = [
       tab.setAttribute('aria-selected','true');
       const panel = document.querySelector(`.skill-panel[data-skill-panel="${idx}"]`);
       if (panel) panel.classList.add('active');
+      loadPanelVideo(panel);
     });
   });
+
+  // Load video for initially active panel (skill 1)
+  loadPanelVideo(document.querySelector('.skill-panel.active'));
 
   // Arrow key cycling through skill tabs
   document.addEventListener('keydown', (e) => {

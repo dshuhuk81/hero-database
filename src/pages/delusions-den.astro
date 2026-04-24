@@ -37,12 +37,13 @@ const BLESSING_IMG: Record<string, string> = {
   "ripper":         "/delusionden/ripper.webp",
 };
 
-const BLESSING_KEYS = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper"] as const;
+const BLESSING_KEYS = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper", "horn_of_doom"] as const;
 const BLESSING_SHORT: Record<string, string> = {
   mask_of_sorrow: "MoS",
   divine_nectar:  "DN",
   megafungus:     "MF",
   ripper:         "RP",
+  horn_of_doom:   "HoD",
 };
 const PRIO_CLS: Record<string, string> = {
   "1":    "prio-1",
@@ -59,203 +60,118 @@ function getBuffPrio(buff: (typeof buffs)[number], key: string): string {
 
 const DD_COMPS = [
   {
-    id: "mask-basic-attack",
-    label: "Mask of Sorrow - Basic Attack Core",
-    source: "Video guide (GBH)",
-    blessing: "Mask of Sorrow",
+    id: "megafungus-phoenix",
+    label: "Megafungus - Phoenix Carry",
+    blessing: "Megafungus",
     heroes: [
-      { id: "phoenix",  name: "Phoenix",  note: "DPS" },
+      { id: "yuelao",   name: "Yuelao",   note: "Healer / Support" },
+      { id: "nuba",     name: "Nuba",     note: "Tank / Support" },
       { id: "isis",     name: "Isis",     note: "DPS" },
-      { id: "nuba",     name: "Nuba",     note: "DPS/Tank" },
-      { id: "dionysus", name: "Dionysus", note: "Middle Back (passive only)" },
-      { id: "yuelao",   name: "Yuelao",   note: "Support" },
+      { id: "phoenix",  name: "Phoenix",  note: "Main Carry" },
+      { id: "dionysus", name: "Dionysus", note: "ATK Speed / Support" },
     ],
-    reason:
-      "Built around the Mask of Sorrow blessing which grants 100% attack speed and reduces skill cooldowns to all heroes except the middle backline slot. Dionysus fills the invalidated middle-back position so his passive buffs the team while his normal attacks are suppressed. Phoenix, Isis, and Artemis deliver the damage payload through accelerated basic attacks. Yuelao provides healing and stat support to keep the attackers alive through later waves. The Keystones of Wonders bonus activates with all 5 suits, adding 30% damage dealt and 30% damage reduction.",
     notes: [
-      "Dionysus must occupy the middle backline slot. His passive buffs still apply even though his normal attacks are invalidated.",
-      "The entire buff selection strategy is built around normal attacks. Ignore ultimate damage buffs unless no alternative is offered.",
-      "Against Ares in wave 2, temporarily replace Yuelao with Heracles. Swap back before wave 3 begins.",
-      "Phoenix at Exalted and Isis at Divine 2+ are the damage backbone. Lower investment reduces the comp's ceiling significantly.",
-      "Activate all 5 faction suits for the Keystones of Wonders bonus: 30% damage and 30% damage reduction.",
-    ],
-    waveSwaps: [
-      { wave: 2, action: "Swap Yuelao out for Heracles to survive the Ares encounter. Restore Yuelao before wave 3." },
-    ],
-    buffPriority: [
-      "Normal attack speed",
-      "Normal attack damage",
-      "Crit rate (normal attack)",
-      "Crit damage",
-      "Crit execution (execute enemies below 25% HP)",
-      "Energy on kill",
-      "Defense drain on normal attack",
-      "Normal attack knockback",
-      "Shield on normal attack",
-    ],
-    buffAvoid: [
-      "Ultimate damage",
-      "HP regeneration on ultimate",
-      "Energy regeneration on ultimate",
+      "Focus on ATK buffs for all heroes - the carrier inherits 50% of every ally's ATK at max level.",
+      "Also go for all Crit buffs you can get - DEF Ignore on Crit is especially valuable.",
+      "If Starting Energy +1000 appears, take it.",
+      "Ares Boss: Can replace Yuelao with Momus if needed.",
+      "Shield on Ultimate + Energy Regen on Shield form a strong energy loop - take both if offered.",
     ],
   },
 
   {
-    id: "placeholder",
-    label: "Community Comp (Placeholder)",
-    source: "CN community reports - to be verified",
+    id: "mask-basic-attack",
+    label: "Mask of Sorrow - Basic Attack Core",
     blessing: "Mask of Sorrow",
     heroes: [
-      { id: "poseidon", name: "Poseidon", note: "CC / Tank" },
-      { id: "skadi",    name: "Skadi",    note: "DPS / CC" },
+      { id: "yuelao",   name: "Yuelao",   note: "Healer / Support" },
       { id: "caishen",  name: "Caishen",  note: "Middle Back (passive only)" },
-      { id: "dionysus", name: "Dionysus", note: "Support" },
-      { id: "iris",     name: "Iris",     note: "Utility (unconfirmed)" },
+      { id: "skadi",    name: "Skadi",    note: "DPS / CC" },
+      { id: "dionysus", name: "Dionysus", note: "ATK Speed / Support" },
+      { id: "poseidon", name: "Poseidon", note: "CC / DPS" },
     ],
-    reason:
-      "Reported by CN community as a high-score variation using CC-based heroes. Poseidon's AoE crowd control groups enemies and enables Skadi's Realm of Frost passive to generate bonus damage and energy. Caishen fills the invalidated middle-back slot so his passive energy acceleration still applies. Dionysus provides attack speed and energy support. The fifth slot is unconfirmed - Iris is listed as a placeholder. This comp prioritizes control uptime over raw basic-attack output. Details are not fully verified - treat as a starting point rather than a confirmed guide.",
     notes: [
-      "This is a community-reported comp. Hero identities for the 5th slot are unconfirmed.",
-      "Replace Iris with a verified pick once the comp is tested. Strong candidates: Heracles, Yuelao, Hecate.",
-      "Caishen in the middle-back slot keeps his energy passive active despite Mask of Sorrow's attack invalidation.",
-      "Skadi's Realm of Frost triggers on every CC applied - Poseidon's AoE makes this highly consistent.",
-      "This comp has not been independently verified by this site. Use the Mask of Sorrow basic-attack comp as the primary reference.",
+      "Dionysus must occupy the middle backline slot. Focus only on normal attack buffs.",
+      "Ares Boss: Can replace Yuelao with Heracles and swap back again after the stage.",
+      "Use Keystone of Wonders as totem.",
     ],
-    waveSwaps: [],
-    buffPriority: [
-      "Normal attack speed",
-      "Crit rate",
-      "Energy on kill / Energy regeneration on crit",
-      "Normal attack damage",
-      "Crit damage",
+  },
+
+  {
+    id: "divine-nectar-skadi",
+    label: "Divine Nectar - Skadi Control",
+    blessing: "Divine Nectar",
+    heroes: [
+      { id: "zeus",     name: "Zeus",     note: "Damage Dealer" },
+      { id: "caishen",  name: "Caishen",  note: "Energy / ATK Support" },
+      { id: "skadi",    name: "Skadi",    note: "Control / DPS" },
+      { id: "hecate",   name: "Hecate",   note: "Support / Crowd Control" },
+      { id: "poseidon", name: "Poseidon", note: "CC / Primary DPS" },
     ],
-    buffAvoid: [
-      "Ultimate damage (unconfirmed for this comp)",
+    notes: [
+      "Energy generation is critical - prioritize all energy buffs whenever they appear.",
+      "Focus entirely on ultimate damage, energy regeneration, and cooldown reduction.",
+      "Ares Boss: Can replace Yuelao with Momus if needed.",
+      "Shield on Ultimate + Energy Regen on Shield form a strong energy loop - take both if offered.",
+    ],
+  },
+
+  {
+    id: "divine-nectar-hladgunnr",
+    label: "Divine Nectar - Hladgunnr Carry",
+    blessing: "Divine Nectar",
+    heroes: [
+      { id: "hladgunnr", name: "Hladgunnr", note: "Primary Carry" },
+      { id: "caishen",   name: "Caishen",   note: "Energy / ATK Support" },
+      { id: "fengyi",    name: "Fengyi",    note: "Damage / Support Hybrid" },
+      { id: "hecate",    name: "Hecate",    note: "Control / Debuffs" },
+      { id: "dionysus",  name: "Dionysus",  note: "ATK Speed / Energy Support" },
+    ],
+    notes: [
+      "Energy generation is critical - prioritize all energy buffs whenever they appear.",
+      "Focus entirely on ultimate damage, energy regeneration, and cooldown reduction.",
+      "Ares Boss: Can replace Yuelao with Momus if needed.",
+      "Shield on Ultimate + Energy Regen on Shield form a strong energy loop - take both if offered.",
+    ],
+  },
+
+  {
+    id: "horn-of-doom-hladgunnr",
+    label: "Horn of Doom - Beginner Setup",
+    blessing: "Horn of Doom",
+    heroes: [
+      { id: "yuelao",    name: "Yuelao",    note: "Healer / Support" },
+      { id: "hladgunnr", name: "Hladgunnr", note: "Main Carry" },
+      { id: "isis",      name: "Isis",      note: "DPS" },
+      { id: "freya",     name: "Freya",     note: "Support" },
+      { id: "dionysus",  name: "Dionysus",  note: "ATK Speed / Support" },
+    ],
+    notes: [
+      "If you struggle as a beginner to even pass this stage, try using Horn of Doom with a Tank / DPS / Healer setup. You may not reach high scores at the end but that should not be the focus at this point.",
+      "Dionysus at base copy is fine here.",
+      "Swap out Hladgunnr for a tank if you don't have her (Momus, Geb, Ares, Khepri) - or any other melee fighter.",
+      "Focus on ATK buffs, or go for all Crit buffs you can get - DEF Ignore on Crit is very valuable.",
+      "If Starting Energy +1000 pops up, take it.",
     ],
   },
 
   {
     id: "megafungus-skadi",
     label: "Megafungus - Skadi Carry",
-    source: "Video guide (GB Streams) - 232-233 score",
     blessing: "Megafungus",
     heroes: [
-      { id: "skadi",    name: "Skadi",    note: "Main Carry (grows in size)" },
-      { id: "poseidon", name: "Poseidon", note: "CC / DPS" },
-      { id: "dionysus", name: "Dionysus", note: "ATK Speed / Support" },
-      { id: "caishen",  name: "Caishen",  note: "Energy Support" },
       { id: "yuelao",   name: "Yuelao",   note: "Healer / Support" },
+      { id: "caishen",  name: "Caishen",  note: "Energy Support" },
+      { id: "skadi",    name: "Skadi",    note: "Main Carry (grows in size)" },
+      { id: "dionysus", name: "Dionysus", note: "ATK Speed / Support" },
+      { id: "poseidon", name: "Poseidon", note: "CC / DPS" },
     ],
-    reason:
-      "Skadi naturally has the highest ATK and becomes the Megafungus carrier - growing in size, gaining CC immunity, and inheriting 50% of every ally's ATK and HP at blessing level 5. This means buffing supports' ATK directly scales Skadi's damage. Caishen and Dionysus feed energy and ATK buffs to the whole team which Skadi absorbs. Poseidon's crowd control creates consistent windows for Skadi's ultimate and enables her Realm of Frost passive. Yuelao sustains the team through extended waves. Focus buff selection entirely on ultimate damage, energy generation, and crit.",
     notes: [
-      "Buff all heroes' ATK - Skadi inherits 50% of every ally's ATK stat at max blessing level.",
-      "Starting Energy (+1000) is the highest-priority pickup whenever it appears.",
+      "Focus on ATK buffs for all heroes - Skadi inherits 50% of every ally's ATK at max blessing level.",
+      "Also go for all Crit buffs you can get - DEF Ignore on Crit is especially valuable.",
+      "If Starting Energy +1000 appears, take it.",
+      "Ares Boss: Can replace Yuelao with Momus if needed.",
       "Shield on Ultimate + Energy Regen on Shield form a strong energy loop - take both if offered.",
-      "Against Ares in wave 2, consider swapping in a tank temporarily.",
-      "The guide reached 232-233 with this comp at high investment. RNG on buff draws affects the final score.",
-    ],
-    waveSwaps: [
-      { wave: 2, action: "Consider swapping in Heracles or another tank vs Ares if team investment is lower." },
-    ],
-    buffPriority: [
-      "Ultimate Damage",
-      "Energy on Kill",
-      "Energy Regen upon Crit",
-      "Ultimate Attack Speed",
-      "Starting Energy (+1000 at battle start)",
-      "Crit Rate on Normal Attack",
-      "Attack (buffs Skadi via 50% inheritance)",
-      "Shield on Ultimate + Energy Regen on Shield (take both if available)",
-      "Defense Ignore on Crit",
-      "Crit Damage",
-    ],
-    buffAvoid: [
-      "Normal attack speed (less relevant - damage comes from ultimates)",
-      "Normal attack defense drain",
-      "Normal attack knockback",
-    ],
-  },
-
-  {
-    id: "divine-nectar-poseidon",
-    label: "Divine Nectar - Poseidon Control",
-    source: "Community composition",
-    blessing: "Divine Nectar",
-    heroes: [
-      { id: "poseidon", name: "Poseidon", note: "CC / Primary DPS" },
-      { id: "skadi",    name: "Skadi",    note: "Control / Secondary DPS" },
-      { id: "zeus",     name: "Zeus",     note: "Damage dealer" },
-      { id: "hecate",   name: "Hecate",   note: "Support / Crowd Control" },
-      { id: "caishen",  name: "Caishen",  note: "Energy/ATK Support" },
-    ],
-    reason:
-      "Built around Divine Nectar's ultimate-focused mechanics with energy generation bonuses. Poseidon and Skadi leverage crowd control to set up windows for coordinated ultimate casts. Zeus provides burst damage that scales with the ultimate damage buffs available. Hecate adds debuffs and crowd control while supporting the ultimate rotation. Caishen accelerates energy generation for the entire team, enabling more frequent ultimate cycles. The reduced non-ultimate skill damage forces focus on ultimate-based offense.",
-    notes: [
-      "Energy generation is critical - prioritize all energy buffs whenever they appear.",
-      "Poseidon's crowd control enables consistent ultimate setup windows.",
-      "Focus entirely on ultimate damage, energy regeneration, and cooldown reduction.",
-      "Starting Energy is a high-value pickup to frontload the first wave.",
-      "Shield on Ultimate + Energy Regen on Shield synergizes well with the energy-focused strategy.",
-    ],
-    waveSwaps: [],
-    buffPriority: [
-      "Ultimate Damage",
-      "Energy Regen on Ultimate",
-      "Ultimate Attack Speed",
-      "Starting Energy (+1000 at battle start)",
-      "Ultimate Damage AOE",
-      "Shield on Ultimate",
-      "Energy Regen on Shield",
-      "Attack",
-      "Crit Damage",
-      "HP",
-    ],
-    buffAvoid: [
-      "Normal attack speed (damage comes from ultimates, not basic attacks)",
-      "Normal attack damage",
-      "Normal attack energy drain",
-    ],
-  },
-
-  {
-    id: "divine-nectar-hladgunnr",
-    label: "Divine Nectar - Hladgunnr Rotation",
-    source: "Community composition",
-    blessing: "Divine Nectar",
-    heroes: [
-      { id: "hladgunnr", name: "Hladgunnr", note: "Primary Carry" },
-      { id: "dionysus",  name: "Dionysus",  note: "ATK Speed / Energy Support" },
-      { id: "hecate",    name: "Hecate",    note: "Control / Debuffs" },
-      { id: "caishen",   name: "Caishen",   note: "Energy/ATK Support" },
-      { id: "fengyi",    name: "Fengyi",    note: "Damage/Support Hybrid" },
-    ],
-    reason:
-      "Hladgunnr-focused ultimate carry composition that leverages Divine Nectar's energy advantages. Dionysus provides multiplicative attack speed and energy acceleration for rapid ultimate rotations. Hecate applies crowd control and debuffs to enable Hladgunnr's damage windows. Caishen feeds additional energy and attack buffs to the entire team. Fengyi bridges damage and support, contributing to both the burst phases and team sustain. The 50% reduction to non-ultimate skills forces the team to rely on coordinated ultimate casting.",
-    notes: [
-      "Hladgunnr becomes the primary damage source - build ultimates frequently.",
-      "Dionysus in middle backline can be considered for the attack speed passive.",
-      "Energy generation buffs are essential - pick them every opportunity.",
-      "Crowd control from Hecate creates consistent damage windows for Hladgunnr.",
-      "Fengyi's hybrid nature allows flexibility in buff selections when both damage and support are needed.",
-    ],
-    waveSwaps: [],
-    buffPriority: [
-      "Ultimate Damage",
-      "Energy Regen on Ultimate",
-      "Starting Energy (+1000 at battle start)",
-      "Ultimate Attack Speed",
-      "Energy on Kill",
-      "Ultimate Damage AOE",
-      "Shield on Ultimate",
-      "Attack",
-      "Normal Attack Speed (Dionysus support buff)",
-      "Crit Damage",
-    ],
-    buffAvoid: [
-      "Normal attack defense drain",
-      "Normal attack knockback",
-      "Skills that reduce ultimate focus",
     ],
   },
 ];
@@ -344,9 +260,9 @@ const DD_COMPS = [
             [
               { stage: 1, levels: "1-6",   waves: 6 },
               { stage: 2, levels: "7",     waves: 1 },
-              { stage: 3, levels: "8-11",  waves: 4 },
-              { stage: 4, levels: "12-14", waves: 3 },
-              { stage: 5, levels: "15-17", waves: 3 },
+              { stage: 3, levels: "8-11",  waves: 3 },
+              { stage: 4, levels: "12-14", waves: 2 },
+              { stage: 5, levels: "15-17", waves: 2 },
               { stage: 6, levels: "18",    waves: 1 },
             ] as { stage: number; levels: string; waves: number }[]
           ).map(({ stage, levels, waves }, i, arr) => (
@@ -576,41 +492,44 @@ const DD_COMPS = [
           <div class="dd-tip">
             <div class="dd-tip-num">1</div>
             <div class="dd-tip-body">
-              <strong>Stack crit execution early.</strong> Crit execution at 25% HP threshold dramatically
-              speeds up kill time in the scoring stage. Aim to have this unlocked by wave 4 at the latest.
-              Target 10 crit symbols total before the scoring stage begins.
+              <strong>Pick a blessing before you start.</strong> Your choice will guide how you build
+              your team and choose buffs during the run. The effects of blessings get stronger as your
+              Total Genre Level goes up.
             </div>
           </div>
           <div class="dd-tip">
             <div class="dd-tip-num">2</div>
             <div class="dd-tip-body">
-              <strong>Maintain normal attack momentum.</strong> Do not invest in ultimate-dependent buffs
-              during the run. Your damage in the scoring stage comes from sustained basic attacks, not
-              occasional ultimates.
+              <strong>Stack the right buffs for your blessing.</strong> Only pick buffs that match your
+              strategy. If you clear all the waves in a stage, you get a chest of random buffs. In Stage 7
+              you have 45 seconds to complete a timed kill challenge - so be prepared with good buffs and
+              a strategy.
             </div>
           </div>
           <div class="dd-tip">
             <div class="dd-tip-num">3</div>
             <div class="dd-tip-body">
-              <strong>Survive waves 5-6 to keep buffs.</strong> If your team collapses in wave 5 or 6,
-              you lose the scoring run. Prioritize at least one survivability buff (shield on normal attack,
-              armor/magic resistance) before the fixed wave 6 break.
+              <strong>Buff levels matter.</strong> Each buff card has its own level that increases each
+              time you pick it. A buff evolves once at level 5, then again every 10 levels, and is fully
+              evolved at level 15. The five genre icons at the top of the screen track progress across
+              your buff categories.
             </div>
           </div>
           <div class="dd-tip">
             <div class="dd-tip-num">4</div>
             <div class="dd-tip-body">
-              <strong>Investment matters.</strong> Higher evolution on your carry heroes directly translates
-              to faster clears in the scoring stage. Phoenix and Isis at lower evolution hit a ceiling faster
-              than at Divine+.
+              <strong>Prioritize healing or shield buffs for Horn of Doom.</strong> This ability deals
+              damage to all enemies over time based on a percentage of their health - helpful for new
+              players. Keep in mind your team will take a bit of damage each turn, so bring some healing
+              or ways to keep your heroes alive.
             </div>
           </div>
           <div class="dd-tip">
             <div class="dd-tip-num">5</div>
             <div class="dd-tip-body">
-              <strong>Use the Keystones of Wonders bonus.</strong> Activating all 5 faction suits grants
-              30% bonus damage dealt and 30% damage reduction. Build your team with this in mind even if
-              it means a slightly weaker individual hero.
+              <strong>Use the Keystone of Wonders totem.</strong> Activating all 5 faction suits grants
+              bonus damage dealt and damage reduction. Build your team with this in mind even if it means
+              a slightly weaker individual hero.
             </div>
           </div>
         </div>
@@ -649,7 +568,7 @@ const DD_COMPS = [
             return currentSort.direction === "asc" ? comparison : -comparison;
           });
         } else {
-          const blessing_keys = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper"];
+          const blessing_keys = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper", "horn_of_doom"];
           const columnIndex = blessing_keys.indexOf(sortKey as string);
 
           rows.sort((a, b) => {
@@ -1235,7 +1154,7 @@ const DD_COMPS = [
   .buff-list-header,
   .buff-row {
     display: grid;
-    grid-template-columns: 220px 1fr 120px;
+    grid-template-columns: 220px 1fr 150px;
     gap: 0;
     align-items: center;
     padding: 10px 14px;
