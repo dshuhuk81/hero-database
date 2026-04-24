@@ -58,7 +58,7 @@
         {
           "id": "baphomet_dps",
           "label": "Nuba & Isis Comp",
-          "hero-comp": "Nuba, yuelao, caishen, isis, dionysus",
+          "hero-comp": "nuba, yuelao, caishen, isis, dionysus",
           "heroes": ["nuba", "yuelao", "caishen", "isis", "dionysus"],
           "reason": "",
           "notes": ["Nuba relic level 20, Isis relic level 20"],
@@ -224,28 +224,10 @@
         {
           "id": "lilith_whale",
           "label": "Recommended",
-          "hero-comp": "zeus, cronus, caishen, nuwa, dionysus",
-          "heroes": ["zeus", "cronus", "caishen", "nuwa", "dionysus"],
+          "hero-comp": "zeus, cronus, caishen, nuba, dionysus",
+          "heroes": ["zeus", "cronus", "caishen", "nuba", "dionysus"],
           "reason": "",
           "notes": ["Zeus needs to be divine or higher to clear children efficiently", "Cronus can help with burst windows to prevent scaling", "Sustain and cleanse to mitigate damage transfer and ATK SPD buff"],
-          "source": "auto"
-        },
-        {
-          "id": "lilith_budget",
-          "label": "Budget",
-          "hero-comp": "fengyi, isis, caishen, nuwa, dionysus",
-          "heroes": ["fengyi", "isis", "caishen", "nuwa", "dionysus"],
-          "reason": "",
-          "notes": ["Fengyi can clear children with his ultimate, but requires precise timing to prevent scaling", "Isis provides consistent damage and energy support", "Sustain and cleanse remain critical to manage damage transfer and buffs"],
-          "source": "auto"
-        },
-        {
-          "id": "lilith_other",
-          "label": "Other",
-          "hero-comp": "zeus, heracles, caishen, meret, dionysus",
-          "heroes": ["zeus", "heracles", "caishen", "meret", "dionysus"],
-          "reason": "",
-          "notes": ["Zeus needs to be exalted+ or higher."],
           "source": "auto"
         }
       ]
@@ -307,10 +289,10 @@
       ],
       "recommendedComps": [
         {
-          "id": "isthar_vi_manual",
-          "label": "Recommended",
-          "hero-comp": "hladgunnr, isis, caishen, yuelao, dionysus",
-          "heroes": ["hladgunnr", "nezha", "caishen", "athena", "dionysus"],
+          "id": "isthar_vi_1",
+          "label": "",
+          "hero-comp": "nuba, nezha, caishen, isis, dionysus",
+          "heroes": ["nuba", "nezha", "caishen", "isis", "dionysus"],
           "reason": "",
           "notes": [],
           "source": "auto"

@@ -34,6 +34,7 @@ const BLESSING_IMG: Record<string, string> = {
   "divine-nectar":  "/delusionden/nectar.webp",
   "horn-of-doom":   "/delusionden/horn.webp",
   "megafungus":     "/delusionden/fungus.webp",
+  "ripper":         "/delusionden/ripper.webp",
 };
 
 const BLESSING_KEYS = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper"] as const;
@@ -318,47 +319,124 @@ const DD_COMPS = [
         </div>
        
 
+      </div><!-- /dd-intro-card -->
+
       <!-- ================================================================
-           SECTION 2: BLESSINGS
+           SECTION 2: RUN FLOW
            ================================================================ -->
-      <div class="dd-card">
+      <div class="dd-card dd-flow-card">
+        <h2>How a Run Works</h2>
+
+        <div class="flow-row">
+
+          <!-- Blessing -->
+          <div class="fr-node fr-node-blessing">
+            <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1 L10.8 6.5 L16.5 6.5 L11.9 9.9 L13.7 15.4 L9 12 L4.3 15.4 L6.1 9.9 L1.5 6.5 L7.2 6.5 Z" fill="rgba(216,180,254,0.9)"/>
+            </svg>
+            <span class="fr-label">Blessing</span>
+          </div>
+
+          <div class="fr-arrow"></div>
+
+          <!-- Stages 1-6 -->
+          {(
+            [
+              { stage: 1, levels: "1-6",   waves: 6 },
+              { stage: 2, levels: "7",     waves: 1 },
+              { stage: 3, levels: "8-11",  waves: 4 },
+              { stage: 4, levels: "12-14", waves: 3 },
+              { stage: 5, levels: "15-17", waves: 3 },
+              { stage: 6, levels: "18",    waves: 1 },
+            ] as { stage: number; levels: string; waves: number }[]
+          ).map(({ stage, levels, waves }, i, arr) => (
+            <>
+              <div class="fr-node fr-node-stage">
+                <span class="fr-stage-num">Stage {stage}</span>
+                <span class="fr-label">Lvl {levels}</span>
+                <span class="fr-waves">{waves === 1 ? "1 wave" : `${waves} waves`}</span>
+              </div>
+              {i < arr.length - 1 && <div class="fr-arrow"></div>}
+            </>
+          ))}
+
+          <div class="fr-arrow fr-arrow-gold"></div>
+
+          <!-- Stage 7 -->
+          <div class="fr-node fr-node-final">
+            <span class="fr-timer">45s</span>
+            <span class="fr-label">S7 Scoring</span>
+            <span class="fr-waves" style="color:rgba(250,204,21,0.35)">Lvl 18-20</span>
+          </div>
+
+        </div><!-- /flow-row -->
+
+        <div class="flow-hint">Pick one blessing before the run. Clear all waves in a stage to earn a buff pick. Stage 7 is a 45s timed kill challenge.</div>
+
+      </div><!-- /dd-flow-card -->
+
+      <!-- ================================================================
+           SECTION 3: BLESSINGS
+           ================================================================ -->
+      <div class="dd-card dd-blessings-card">
         <h2>Blessings</h2>
         <p>
           Choose one blessing before combat begins. Your choice determines the entire team-building
           and buff-selection strategy for the run. Blessings scale as your Total Genre Level increases.
         </p>
 
-        <div class="bl-grid">
+        <div class="bl-strip">
           {blessings.map(b => (
-            <div class={`bl-card ${b.recommended ? "bl-card-rec" : ""}`}>
-              {BLESSING_IMG[b.id] && (
-                <div class="bl-img-wrap">
-                  <img src={BLESSING_IMG[b.id]} alt={b.name} class="bl-img" />
-                </div>
-              )}
+            <div class={`bl-row ${b.recommended ? "bl-row-rec" : ""}`}>
 
-              <div class="bl-header">
-                <span class="bl-name">{b.name}</span>
-                <span class={`bl-badge ${b.recommended ? "bl-badge-rec" : "bl-badge-alt"}`}>
-                  {b.recommended ? "Recommended" : "Alternative"}
-                </span>
+              <div class="bl-row-left">
+                {BLESSING_IMG[b.id] ? (
+                  <div class="bl-row-img-wrap">
+                    <img src={BLESSING_IMG[b.id]} alt={b.name} class="bl-row-img" />
+                  </div>
+                ) : (
+                  <div class="bl-row-img-wrap bl-row-img-placeholder"></div>
+                )}
+                <div class="bl-row-identity">
+                  <div class="bl-row-name-line">
+                    <span class="bl-row-name">{b.name}</span>
+                    <span class={`bl-badge ${b.recommended ? "bl-badge-rec" : "bl-badge-alt"}`}>
+                      {b.recommended ? "Recommended" : "Alternative"}
+                    </span>
+                  </div>
+                  <p class="bl-row-effect">{b.effect}</p>
+                </div>
               </div>
 
-              <p class="bl-effect">{b.effect}</p>
+              <div class="bl-row-right">
+                {b.why && (
+                  <div class="bl-why-block">
+                    <span class="bl-why-label">Why this works</span>
+                    <p class="bl-why-text">{b.why}</p>
+                  </div>
+                )}
 
-              {b.upgrades.length > 0 && (
-                <div class="bl-upgrades">
-                  {b.upgrades.map(u => {
-                    const p = parseUpgrade(u);
-                    return (
-                      <div class="upgrade-row">
-                        <span class="upgrade-lv">Lv {p.level}</span>
-                        <span class="upgrade-text">{p.text}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                {b.tips && b.tips.length > 0 && (
+                  <ul class="bl-tips-list">
+                    {b.tips.map(tip => <li>{tip}</li>)}
+                  </ul>
+                )}
+
+                {b.upgrades.length > 0 && (
+                  <div class="bl-upgrades-inline">
+                    {b.upgrades.map(u => {
+                      const p = parseUpgrade(u);
+                      return (
+                        <div class="upgrade-row">
+                          <span class="upgrade-lv">Lv {p.level}</span>
+                          <span class="upgrade-text">{p.text}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
             </div>
           ))}
         </div>
@@ -805,65 +883,220 @@ const DD_COMPS = [
   }
 
   /* ================================================================
-     BLESSINGS
+     RUN FLOW
      ================================================================ */
-  .bl-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
-    margin-top: 16px;
+  .dd-flow-card {
+    border-color: rgba(255, 255, 255, 0.07);
   }
 
-  .bl-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 16px;
+  .dd-flow-card h2 {
+    margin-bottom: 20px;
+  }
+
+  /* Horizontal row of nodes + arrows */
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  /* Arrow connector */
+  .fr-arrow {
+    flex-shrink: 0;
+    align-self: center;
+    width: 20px;
+    height: 2px;
+    background: rgba(56, 189, 248, 0.2);
+    position: relative;
+  }
+
+  .fr-arrow::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: -3px;
+    border-left: 5px solid rgba(56, 189, 248, 0.3);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+  }
+
+  .fr-arrow-gold {
+    background: linear-gradient(to right, rgba(56, 189, 248, 0.18), rgba(250, 204, 21, 0.35));
+  }
+
+  .fr-arrow-gold::after {
+    border-left-color: rgba(250, 204, 21, 0.5);
+  }
+
+  /* Node base */
+  .fr-node {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
-
-  .bl-card-rec {
-    background: rgba(168, 85, 247, 0.05);
-    border-color: rgba(168, 85, 247, 0.25);
-  }
-
-  .bl-img-wrap {
-    display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 12px 0 4px;
+    gap: 4px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    height: 72px;
+    box-sizing: border-box;
   }
 
-  .bl-img {
-    width: 88px;
-    height: 88px;
-    object-fit: contain;
+  .fr-node-blessing {
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+
+  .fr-node-stage {
+    background: rgba(56, 189, 248, 0.07);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    min-width: 58px;
+  }
+
+  .fr-node-final {
+    background: rgba(250, 204, 21, 0.08);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+  }
+
+  .fr-stage-num {
+    font-size: 1rem;
+    font-weight: 800;
+    color: rgba(186, 230, 253, 0.9);
+    line-height: 1;
+  }
+
+  .fr-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: rgba(230, 230, 235, 0.4);
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+
+  .fr-node-blessing .fr-label {
+    color: rgba(216, 180, 254, 0.7);
+  }
+
+  .fr-node-final .fr-label {
+    color: rgba(253, 230, 138, 0.6);
+  }
+
+  .fr-waves {
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: rgba(56, 189, 248, 0.38);
+    letter-spacing: 0.02em;
+  }
+
+  .fr-timer {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: rgba(250, 204, 21, 0.9);
+    line-height: 1;
+  }
+
+  .flow-hint {
+    margin-top: 16px;
+    font-size: 0.78rem;
+    color: rgba(230, 230, 235, 0.4);
+    line-height: 1.5;
+  }
+
+  /* ================================================================
+     BLESSINGS - horizontal strip layout
+     ================================================================ */
+  .dd-blessings-card {
+    border-color: rgba(168, 85, 247, 0.1);
+  }
+
+  .bl-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 12px;
-    background: radial-gradient(circle at center, rgba(168, 85, 247, 0.22) 0%, rgba(168, 85, 247, 0.06) 60%, transparent 100%);
-    box-shadow: 0 0 24px rgba(168, 85, 247, 0.18), 0 0 8px rgba(168, 85, 247, 0.12);
+    overflow: hidden;
   }
 
-  .bl-header {
+  .bl-row {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .bl-row:last-child {
+    border-bottom: none;
+  }
+
+  .bl-row-rec {
+    background: rgba(168, 85, 247, 0.04);
+  }
+
+  .bl-row-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 20px 20px 20px;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .bl-row-rec .bl-row-left {
+    border-right-color: rgba(168, 85, 247, 0.15);
+  }
+
+  .bl-row-img-wrap {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    background: radial-gradient(circle at center, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 70%, transparent 100%);
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+  }
+
+  .bl-row-img-placeholder {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+
+  .bl-row-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    border-radius: 10px;
+  }
+
+  .bl-row-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bl-row-name-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
-  .bl-name {
-    font-size: 1.1rem;
+  .bl-row-name {
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text-bright, #f0f0f5);
   }
 
   .bl-badge {
-    font-size: 0.63rem;
+    font-size: 0.6rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     border-radius: 4px;
-    padding: 2px 8px;
+    padding: 2px 7px;
   }
 
   .bl-badge-rec {
@@ -873,50 +1106,95 @@ const DD_COMPS = [
   }
 
   .bl-badge-alt {
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(230, 230, 235, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(230, 230, 235, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.09);
   }
 
-  .bl-effect {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: rgba(230, 230, 235, 0.8);
+  .bl-row-effect {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: rgba(230, 230, 235, 0.65);
     margin: 0;
   }
 
-  .bl-upgrades {
+  .bl-row-right {
+    padding: 20px 24px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 12px;
+  }
+
+  .bl-why-block {
+    background: rgba(168, 85, 247, 0.06);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .bl-why-label {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(216, 180, 254, 0.7);
+    margin-bottom: 6px;
+  }
+
+  .bl-why-text {
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: rgba(230, 230, 235, 0.82);
+    margin: 0;
+  }
+
+  .bl-tips-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .bl-tips-list li {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(230, 230, 235, 0.6);
+  }
+
+  .bl-upgrades-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
 
   .upgrade-row {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: flex-start;
-    padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    padding: 7px 10px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 7px;
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .upgrade-lv {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 700;
-    padding: 2px 8px;
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    color: rgba(216, 180, 254, 0.9);
-    border-radius: 5px;
+    padding: 2px 7px;
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    color: rgba(216, 180, 254, 0.85);
+    border-radius: 4px;
     white-space: nowrap;
     align-self: flex-start;
   }
 
   .upgrade-text {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     line-height: 1.5;
-    color: rgba(230, 230, 235, 0.72);
+    color: rgba(230, 230, 235, 0.65);
   }
 
   /* ================================================================
@@ -1279,7 +1557,9 @@ const DD_COMPS = [
 
     .dd-reward-grid { grid-template-columns: 1fr; }
 
-    .bl-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    .bl-row { grid-template-columns: 1fr; }
+    .bl-row-left { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    .bl-row-right { padding: 16px 18px; }
 
     .buff-list-header,
     .buff-row { grid-template-columns: 160px 1fr 100px; font-size: 0.78rem; }

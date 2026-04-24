@@ -3,19 +3,17 @@
 ## Project Overview
 Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
 
+## Plan
+Do not make any changes until you have 95% confidence in what you need to build. Ask me follow up questions until you reach that confidence.
+
 ## General To-Dos
 Before writing any code, describe your approach and wait for approval.
 
 If the requirements I give you are ambigous ask clarifying questinos before writing any code.
-
 After you finish writing any code, list the edge cases and suggest test cases to cover them.
-
 If a task requires changes to more than 10 files, stop and break it into smaller tasks first.
-
 When there is a bug, start by writing a test that reproduces itm then fix it until the test passes.
-
 Every time I correct you, reflect on what you did wrong and come up with a plan to never make the same mistake again.
-
 Dont invent stuff or create new info that is not in the project. Use only data that is included in the project files, the json or md files. If youre missing data, ask.
 
 ## Boss DMG Data
@@ -108,17 +106,11 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - `getCritMultiplier()` – Base 1.5x + hero's critDmgBonus
 
 #### User Heroes & Sharing System (`src/pages/myheroes.astro`, `src/pages/shared-heroes/[id].astro`)
-- **Authentication**: Logged-in users can select and organize heroes in "My Heroes" page
 - **User Heroes Table** (`user_heroes` in Supabase):
   - `user_id` (references auth.users)
   - `hero_id` (hero identifier)
   - `evolution` (1-15 integer tracking power level)
   - `is_favorited` (boolean, currently unused)
-- **Shared Setups** (`shared_hero_configs` in Supabase):
-  - `share_id` (8-character unique ID for public sharing)
-  - `user_id` (setup creator)
-  - `heroes_data` (JSON array with hero_id + evolution for each selected hero)
-  - `created_at` (timestamp)
 - **Fight Outcomes** (`fight_outcomes` in Supabase):
   - `user_id`, `team_player`, `team_enemy`, `bp_player`, `bp_enemy`
   - `winner` ("player" or "enemy"), `predicted_win_rate`, `mode`, `notes`
@@ -132,19 +124,6 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - Faction grouping with icons
   - Share button generates public link automatically
   - Non-selected heroes displayed at 50% opacity
-- **API Endpoints** (Astro SSR routes in `src/pages/api/`):
-  - `POST /api/auth/login` – Login with email/password, sets HTTP-only cookie
-  - `POST /api/auth/register` – Create account with email/password
-  - `POST /api/auth/logout` – Clear auth cookie
-  - `GET /api/health/auth` – Health check for Supabase connectivity
-  - `POST /api/user/heroes/share` (auth required) – Create shareable setup link
-  - `GET /api/shared-heroes/:shareId` (public) – Retrieve shared setup data
-  - `POST /api/user/heroes` (auth required) – Add hero to user collection
-  - `PATCH /api/user/heroes/:heroId` (auth required) – Update hero evolution or favorite status
-  - `DELETE /api/user/heroes/:heroId` (auth required) – Remove hero from collection
-  - `GET /api/user/heroes` (auth required) – Fetch all user's selected heroes
-  - `GET /api/user/battles` (auth required) – Fetch fight history with pagination
-  - `POST /api/user/battles` (auth required) – Submit fight outcome
 
 ## File Conventions
 
@@ -243,20 +222,6 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 3. Automatically maps `baseAttackRate` and `bossUltimatesPer90s` directly into hero JSON files
 4. Powers the Phase 1 & Phase 2 scaling in the Calculator's Boss mode
 
-### Use My Heroes Feature
-1. **Setup**: User must be logged in via `/login` or `/register`
-2. **Select Heroes**: Navigate to `/myheroes` → click hero cards to select/deselect
-3. **Manage Evolution**: Use ◀ ▶ buttons next to each selected hero to adjust level (1-15)
-4. **Share Setup**: Click "Share Setup" button → link auto-copied to clipboard
-5. **View Shared**: Anyone can access `/shared-heroes/{shareId}` to see the public setup
-
-### Test Sharing Locally
-1. Create account via `/register`
-2. Add heroes on `/myheroes`
-3. Click "Share Setup" → get link like `http://localhost:4322/shared-heroes/abc12def`
-4. Open link in incognito/different browser → should show public view
-5. Verify RLS policies in Supabase allow public read access to `shared_hero_configs`
-
 ### Validate Data
 - `node validate-bosses.js` – Check boss data consistency
 - `node validate-pvp-ratings.js` – Check PvP rating format
@@ -265,113 +230,3 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 ### Generate Derived Data
 - `node scripts/generator.js` – Regenerates teamCompsByHeroId.json from all hero files
 - `node scripts/merge-heroes-db.js` – Merges individual hero JSON files into all_heroes_db.json
-
-## Key Decision Points
-
-- **Class-Based Weighting**: Different hero classes (Tank, DPS, Support) score differently using `CLASS_WEIGHTS` multipliers (not separate tiers)
-- **Manual vs Auto Tagging**: Synergies are manually assigned in JSON; skill quality is auto-detected
-- **Hybrid Rendering**: Most pages are prerendered (`export const prerender = true`); API routes and dynamic pages use SSR via a single Vercel serverless function
-- **Divine V Only**: All stats represent max-level hero (no scaling by player level)
-
-## Integration Points
-
-- **Astro Pages** consume `all_heroes_db.json` and ratings at build time
-- **Astro API Routes** (`src/pages/api/`) handle auth, user data, and battles via Supabase (SSR, not prerendered)
-- **Auth Helper** (`src/lib/auth.ts`) provides `requireUser(request)` and `jsonResponse()` for all protected API routes
-- **Supabase Client** (`src/lib/supabase.js`) exports `supabaseClient` (anon) and `supabaseAdmin` (service role)
-- **Scripts** modify hero JSON files directly (no database)
-- **Tag Manager** is standalone Express app; edits tags.json and hero files
-- **Hero Adapter** resolves per-hero stats against class base-stats (heroAdapter.js)
-- **Skill Value Comparator** (`calculator.astro`) – Client-side skill damage calculator; parses skill descriptions at runtime, no server dependency
-- **My Heroes Page** (`myheroes.astro`) – Authenticated feature; interacts with API routes for user-specific data
-- **Shared Heroes Page** (`shared-heroes/[id].astro`) – Public-facing; fetches from API endpoint, no auth required
-- **Battle Sim Page** (`battle-sim.astro`) – PvP battle simulator with fight outcome submission to `/api/user/battles`
-
-## Development Tools
-
-### Analysis Scripts
-These are one-off debugging tools in root directory (not part of automated build):
-
-- **`analyze-outliers.js`**: Deep-dive into individual hero scores
-  - Shows base stats, skill power, synergy potential, and scenario-specific scores
-  - Usage: `node analyze-outliers.js` (searches by name)
-  - Useful for: Understanding why a hero scores unexpectedly high/low
-
-- **`debug-ranking.js`**: Compare hero stats and component scores side-by-side
-  - Shows HP, ATK, DEF, skill power, synergy, total score
-  - Useful for: Quick comparative analysis and debugging class weight tuning
-
-- **`analyze-boss-dps-heroes.js`**: Identifies DPS heroes effective in boss scenarios
-  - Useful for: Validating boss rating assignments
-
-## Debugging Tips
-
-- **Scores Look Wrong**: 
-  - Use `node analyze-outliers.js` with hero name to see component breakdown
-  - Check `CLASS_WEIGHTS` and constant multipliers in rankingScore.js
-  - Check if hero has proper `synergies` array assigned
-
-- **Tags Not Appearing**: 
-  - Verify tag exists in `tags.json` array (must be exact SNAKE_CASE)
-  - Verify tag is defined in `TAG_CATEGORIES` object in synergyTags.js
-  - Check hero's `.synergies` array contains the tag name
-
-- **Build Fails**:
-  - Check all_heroes_db.json JSON syntax with online validator
-  - Run validator scripts first: `node validate-bosses.js`
-  - Ensure all hero files are valid JSON
-  - Check that all hero JSON `relic.upgrades` keys are correctly spelled (not `uogrades`, etc.)
-
-- **Deployment**:
-  - Deploy command: `npm run build && npx vercel deploy --prebuilt --prod --yes`
-  - Vercel Hobby plan limits to 12 serverless functions; all API routes use Astro SSR (single function)
-  - New pages must include `export const prerender = true` unless they need SSR
-  - API routes in `src/pages/api/` must NOT have `prerender = true`
-  - Do NOT use global ISR config in astro.config.mjs (breaks POST requests and auth)
-
-- **Script Fails**: 
-  - Ensure file paths use `src/data/` relative to workspace root
-  - For analysis scripts: hero names must match exactly (case-insensitive match in code)
-
-- **Calculator Issues**:
-  - **Garbled characters (e.g. `Â·`, `â€"`)**: Non-ASCII characters in calculator.astro. All text must be ASCII-only. Use `LC_ALL=C grep -n '[^ -~]' src/pages/calculator.astro` to find offenders.
-  - **Damage shows 0 or NaN**: Skill description doesn't match regex patterns in `extractAtkPercents()`. Check for unusual phrasing.
-  - **HP% bars not showing**: Comparison hero not selected, or target HP is 0.
-  - **Multi-hit not detected**: Skill description doesn't match `extractHitCount()` patterns. Add new regex pattern if needed.
-  - **Burst summary empty**: No skills have parseable ATK% values.
-
-- **My Heroes Feature Issues**:
-  - **Share button not showing**: User must be logged in (check `authToken` in localStorage)
-  - **"Error: Failed to create share link" on click**: Check Vercel function logs (`vercel logs`)
-  - **Shared link returns 404**: Verify `shared_hero_configs` table exists in Supabase with correct schema
-  - **Shared heroes not showing**: Confirm RLS policies are set correctly (SELECT policy should allow `true`)
-  - **Evolution not updating**: Ensure `PATCH /api/user/heroes/:heroId` includes `evolution` field (1-15 range)
-  - **Heroes missing from user's collection**: Check if `user_id` in `user_heroes` table matches `auth.uid()` from token
-
-- **API Route Issues**:
-  - **401 with non-JSON response**: Supabase `getUser()` may throw `AuthApiError` instead of returning error object; `src/lib/auth.ts` has try/catch for this
-  - **FUNCTION_INVOCATION_FAILED**: Check Vercel function logs; usually an unhandled exception in the route handler
-  - **API returns 404**: Ensure the route file exists in `src/pages/api/` and does NOT have `export const prerender = true`
-  - **API returns HTML instead of JSON**: Route may be falling through to Astro's page renderer; ensure correct HTTP method exports (GET, POST, etc.)
-
-
-### Tierlist for Heroes
-Overall Ratings:
-
-SS Tier
-Zeus, Nezha, Skadi, Cronus, Dionysus, Caishen, Nuwa, Mengpo, Poseidon
-
-S Tier
-Nyx, Jingwei, Heracles, Amunra, Nuba, Bastet, Hecate, Khepri, Diana, Momus, Tefnut, Pan, Set, Yuelao, Cancer
-
-A Tier
-Anubis, Phoenix, Fengyi, Hela, Isis, Athena, Hladgunnr, Iris, Yanluo
-
-B Tier
-Artemis, Ullr, Aquarius, Ares, Virgo, Nemesis, Prometheus, Sekhmet, Scorpio, Freya, Capricorn
-
-C Tier
-Geb, Medusa, Horus, Leo, Demeter
-
-D Tier
-Aries, Gemini, Libra, Jormungandr, Surtr, Taurus, Pisces
