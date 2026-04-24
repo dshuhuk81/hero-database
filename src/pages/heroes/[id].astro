@@ -80,6 +80,14 @@ function tagLabel(tag: unknown): string {
   return s.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 }
 
+function resolveSkillVideoSrc(video: unknown): string {
+  const value = String(video ?? "").trim();
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) return value;
+  if (value.startsWith("/")) return value;
+  return `/skills/${value}`;
+}
+
 const ratingCategories = [
   { key: "overall", label: "Overall" },
   { key: "pvp",     label: "PvP" },
@@ -327,7 +335,7 @@ const dotSections = [
                   <div class="skill-video-wrap">
                     <video
                       class="skill-video"
-                      data-video-src={`/skills/${skill.video}`}
+                      data-video-src={resolveSkillVideoSrc(skill.video)}
                       autoplay
                       loop
                       muted
