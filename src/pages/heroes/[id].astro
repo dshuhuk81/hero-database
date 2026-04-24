@@ -1900,3 +1900,27 @@ const dotSections = [
     });
   });
 </script>
+<script>
+  function initVideos(container: Element | Document = document) {
+    container.querySelectorAll<HTMLVideoElement>('video[data-video-src]').forEach(video => {
+      if (!video.src) {
+        video.src = video.dataset.videoSrc!;
+        video.load();
+      }
+    });
+  }
+
+  // Init videos in the initially active panel
+  initVideos();
+
+  // When switching tabs, init + play video in the newly active panel
+  document.querySelectorAll('[data-skill-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const panel = document.querySelector('.skill-panel.active');
+      if (panel) {
+        initVideos(panel);
+        panel.querySelectorAll<HTMLVideoElement>('video').forEach(v => v.play());
+      }
+    });
+  });
+</script>
