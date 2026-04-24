@@ -48,7 +48,8 @@
       "Bash(xargs -I{} basename {} .json)",
       "Bash(ls /Users/daschultheiss/hero-database/public/skills/*.png)",
       "Bash(npm run *)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('/Users/daschultheiss/hero-database/src/data/delusions-den.json','utf8'\\)\\); console.log\\('JSON valid'\\)\")"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes"

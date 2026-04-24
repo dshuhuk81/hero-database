@@ -5,12 +5,11 @@
       "name": "Ripper",
       "recommended": false,
       "effect": "When damaging enemies on their half, gains 20% crit rate and 20% crit damage.",
-      "why": "A crit-oriented blessing that rewards aggressive, frontline-pushing heroes. The bonus only activates when your heroes are on the enemy's half of the field, so it is unreliable for pure backline carries. At max level it grants 40% crit rate and 60% crit dmg, which compounds strongly with crit-specific buffs. Weaker than Mask of Sorrow overall because it provides no attack cadence boost, but it is the best option for players when running a melee-heavy frontline roster.",
+      "why": "Only works when your heroes are fighting on the enemy's side of the field, so melee fighters get full value while ranged backline heroes barely benefit. Good if your roster is built around close-range fighters but weaker than Mask of Sorrow for most teams.",
       "tips": [
-        "Prioritize melee or frontline heroes who naturally push into the enemy half - Heracles, Dionysus, Nezha.",
-        "Stack crit rate and crit dmg buffs between waves. The blessing's bonus is multiplicative with all of them.",
-        "DEF Ignore on CRIT is extremely high value here - your crit rate will often be above 80%, making every hit a full-penetration strike.",
-        "Avoid pure backline archers or mages as your primary carries. They spend most of the fight on your own half."
+        "Use melee heroes like Heracles or any other melee fighter/assassin who naturally rush forward into the enemy side.",
+        "Pick crit rate and crit damage buffs every wave - the blessing multiplies on top of them.",
+        "DEF Ignore on CRIT is especially powerful here since your crit rate will be very high."
       ],
       "upgrades": [
         "Unlocked at Total Genre Level 2: When damaging enemies on their half, gains 30% crit rate and 40% crit damage. ",
@@ -22,11 +21,10 @@
       "name": "Mask of Sorrow",
       "recommended": true,
       "effect": "Invalidates the middle backline ally's attacks, but empowers other allies with 100% normal attack speed.",
-      "why": "The attack speed bonus is multiplicative with all the normal-attack buffs available between waves. The invalidated slot becomes a passive-only support position - heroes like Dionysus or Caishen still apply all their passive effects while their normal attacks are suppressed.",
+      "why": "Doubles your heroes' normal attack speed, which stacks on top of every attack-speed buff you pick between waves. The one downside - the middle backline hero stops attacking - is turned into an advantage: place a support like Dionysus or Caishen there and they still give the team their passive bonuses without needing to attack.",
       "tips": [
-        "Always place a passive-utility hero in the middle backline slot.",
-        "Build every buff selection around normal attack speed and crit.",
-        "Skill cooldown reduction compounds with the speed bonus to allow more rotations per fight."
+        "Always fill the middle backline slot with a passive support (Dionysus, Caishen).",
+        "Focus all buff picks on attack speed and crit - that is the entire strategy."
       ],
       "upgrades": [
         "Unlocked at Total Genre Level 2: Invalidates the middle backline allys's attacks, but empowers other allies with 100% attack speed and reduced skill cooldowns.",
@@ -38,11 +36,10 @@
       "name": "Divine Nectar",
       "recommended": false,
       "effect": "All Allies gain additional 30 energy each second and Damage dealt by non-ultimate skills is reduced by 50%.",
-      "why": "If your roster relies heavily on ultimate skills for damage and you have heroes who benefit from sustained energy generation. The energy-per-second gain enables more frequent ultimates, but the non-ultimate skill damage reduction hurts teams that use skill-based carries.",
+      "why": "Generates energy constantly, letting your team cast ultimates far more often than usual. The trade-off is that regular skills deal half damage, so this only works if your team's main damage comes from ultimates, not normal skills.",
       "tips": [
-        "Pair with ultimate-focused heroes and energy-acceleration supports.",
-        "Avoid if your primary damage sources are non-ultimate skills.",
-        "Select ultimate damage buffs and energy buffs between waves instead of attack speed."
+        "Skip attack speed buffs entirely - pick ultimate damage and energy buffs every wave.",
+        "Avoid this blessing if your carries deal most damage through regular skills."
       ],
       "upgrades": [
         "Unlocked at Total Genre Level 2: All Allies gain additional 50 energy each second and Damage dealt by non-ultimate skills is reduced by 50%.",
@@ -54,8 +51,11 @@
       "name": "Horn of Doom",
       "recommended": false,
       "effect": "Enemies take DMG equal to 10% of their max HP every 5s. Allies take DMG equal to 1% of their max HP every 5s.",
-      "why": "",
-      "tips": [],
+      "why": "Deals percentage-based damage to all enemies over time, regardless of your heroes' attack stats. Good for newer players who lack invested heroes, since the damage scales with enemy HP rather than your own strength. Your allies take a small self-damage tick in return, so bring healing or survival support.",
+      "tips": [
+        "Prioritize healing or shield buffs to offset the self-damage your team receives.",
+        "Works better in early Den runs before your heroes are fully invested."
+      ],
       "upgrades": [
         "Unlocked at Total Genre Level 2: Enemies take DMG equal to 10% of their max HP every 5s. Allies take DMG equal to 1% of their max HP every 5s.",
         "Unlocked at Total Genre Level 5: Enemies take DMG equal to 10% of their max HP every 3s."
@@ -66,12 +66,11 @@
       "name": "Megafungus",
       "recommended": false,
       "effect": "The ally deity with the highest attack grows in size and gains 20% of the Energy generated by other deployed deities.",
-      "why": "Skadi becomes the Megafungus carrier because she naturally has the highest ATK. At level 5 she inherits 50% of every ally's ATK and HP, meaning buffing supports' ATK directly scales her damage. Poseidon's crowd control gives Skadi consistent windows to cast and Caishen plus Dionysus feed energy and ATK buffs to the whole team.",
+      "why": "Whoever has the highest ATK in your team becomes the carrier - they grow in size and absorb a share of every ally's attack and HP. That means buffing your supports' ATK also makes your main damage dealer stronger. Focus buff picks on energy and ultimate damage so your carrier can cast as often as possible.",
       "tips": [
-        "Buff all heroes' ATK, not just Skadi. Every point of ATK on supports transfers 50% to her.",
-        "Prioritize energy buffs so Skadi and Poseidon reach their ultimates faster.",
-        "Starting Energy (+1000) is extremely valuable - take it whenever it appears.",
-        "Shield on Ultimate pairs with Energy Regen on Shield for a strong energy loop."
+        "Pick ATK buffs for all heroes - the carrier inherits 50% of every ally's ATK at max level.",
+        "Starting Energy (+1000) is a top priority - it lets your carrier reach the first ultimate much faster.",
+        "Shield on Ultimate plus Energy Regen on Shield create a strong energy loop - take both when available."
       ],
       "upgrades": [
         "Unlocked at Total Genre Level 2: The ally deity with the highest attack grows in size and gains immunity to crowd control. That deity also gains 20% of the Energy generated by other deployed allies and 20% of their ATK and HP.",
@@ -87,12 +86,26 @@
       "effect": "Normal Attack Speed +60%.",
       "tags": ["normal_attack", "speed"],
       "confirmed": true,
-      "note": "A conditional variant exists: +50% after not moving for 3s (seen in Base Genre Lv 0-1).",
+      "note": "A lower-tier variant exists: +30% (seen at Base/Normal Attack Genre Lv 0-1). A conditional variant also exists: +50% after not moving for 3s.",
       "priority": {
         "mask_of_sorrow": 1,
         "divine_nectar": "skip",
         "megafungus": 3,
         "ripper": 1
+      }
+    },
+    {
+      "id": "normal-atk-speed-low",
+      "name": "Normal Attack SPD (Low Tier)",
+      "effect": "Normal Attack Speed +30%.",
+      "tags": ["normal_attack", "speed"],
+      "confirmed": true,
+      "note": "Lower-tier variant seen at Normal Attack Genre Lv 0-1. Upgrades to +60% at higher Genre levels.",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": "skip",
+        "megafungus": 3,
+        "ripper": 2
       }
     },
     {
@@ -105,7 +118,7 @@
       "priority": {
         "mask_of_sorrow": 2,
         "divine_nectar": "skip",
-        "megafungus": 2,
+        "megafungus": 3,
         "ripper": 1
       }
     },
@@ -115,11 +128,26 @@
       "effect": "Normal Attack DMG +100%.",
       "tags": ["normal_attack", "damage"],
       "confirmed": true,
+      "note": "A lower-tier variant exists: +50% (seen at Normal Attack Genre Lv 0-1).",
       "priority": {
         "mask_of_sorrow": 1,
         "divine_nectar": "skip",
         "megafungus": 3,
         "ripper": 1
+      }
+    },
+    {
+      "id": "normal-atk-damage-low",
+      "name": "Normal Attack DMG (Low Tier)",
+      "effect": "Normal Attack DMG +50%.",
+      "tags": ["normal_attack", "damage"],
+      "confirmed": true,
+      "note": "Lower-tier variant seen at Normal Attack Genre Lv 0-1. Upgrades to +100% at higher Genre levels.",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 3,
+        "megafungus": 3,
+        "ripper": 2
       }
     },
     {
@@ -154,6 +182,21 @@
       "effect": "CRIT DMG +50%.",
       "tags": ["crit"],
       "confirmed": true,
+      "note": "A higher-tier variant exists: +75% (seen at CRIT Genre Lv 1-2).",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 1
+      }
+    },
+    {
+      "id": "crit-damage-high",
+      "name": "CRIT DMG (High Tier)",
+      "effect": "CRIT DMG +75%.",
+      "tags": ["crit"],
+      "confirmed": true,
+      "note": "Higher-tier variant seen at CRIT Genre Lv 1-2.",
       "priority": {
         "mask_of_sorrow": 2,
         "divine_nectar": 2,
@@ -168,7 +211,7 @@
       "tags": ["crit"],
       "confirmed": true,
       "priority": {
-        "mask_of_sorrow": 2,
+        "mask_of_sorrow": 1,
         "divine_nectar": 3,
         "megafungus": 2,
         "ripper": 2
@@ -195,10 +238,24 @@
       "tags": ["crit"],
       "confirmed": true,
       "priority": {
-        "mask_of_sorrow": 2,
+        "mask_of_sorrow": 3,
         "divine_nectar": 3,
         "megafungus": 2,
         "ripper": 2
+      }
+    },
+    {
+      "id": "crit-rate-flat",
+      "name": "CRIT Rate",
+      "effect": "CRIT Rate +30%.",
+      "tags": ["crit"],
+      "confirmed": true,
+      "note": "Unconditional flat CRIT Rate boost. Distinct from the vs-CC variant (+60%) and the high-HP variant. Seen at CRIT Genre Lv 1-2.",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 1
       }
     },
     {
@@ -220,9 +277,24 @@
       "effect": "Kill: Energy +25.",
       "tags": ["energy"],
       "confirmed": true,
+      "note": "A higher-tier variant exists: +100 Energy per kill (seen at Base Genre Lv 13-15).",
       "priority": {
         "mask_of_sorrow": 2,
         "divine_nectar": 2,
+        "megafungus": 1,
+        "ripper": 2
+      }
+    },
+    {
+      "id": "energy-on-kill-high",
+      "name": "Energy on Kill (High Tier)",
+      "effect": "Kill: Energy +100.",
+      "tags": ["energy"],
+      "confirmed": true,
+      "note": "Higher-tier variant seen at Base Genre Lv 13-15. Significantly more energy per kill than the base +25 variant.",
+      "priority": {
+        "mask_of_sorrow": 3,
+        "divine_nectar": 1,
         "megafungus": 1,
         "ripper": 2
       }
@@ -274,6 +346,21 @@
       "effect": "DMG Bonus +5%.",
       "tags": ["damage"],
       "confirmed": true,
+      "note": "A higher-tier variant exists: +10% (seen at Base Genre Lv 13-15).",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 2
+      }
+    },
+    {
+      "id": "damage-bonus-high",
+      "name": "Damage Bonus (High Tier)",
+      "effect": "DMG Bonus +10%.",
+      "tags": ["damage"],
+      "confirmed": true,
+      "note": "Higher-tier variant seen at Base Genre Lv 13-15.",
       "priority": {
         "mask_of_sorrow": 2,
         "divine_nectar": 2,
@@ -288,7 +375,7 @@
       "tags": ["normal_attack", "defense_pen"],
       "confirmed": true,
       "priority": {
-        "mask_of_sorrow": 3,
+        "mask_of_sorrow": 2,
         "divine_nectar": "skip",
         "megafungus": "skip",
         "ripper": 2
@@ -353,7 +440,7 @@
       "tags": ["crit", "energy"],
       "confirmed": true,
       "priority": {
-        "mask_of_sorrow": 3,
+        "mask_of_sorrow": "skip",
         "divine_nectar": 2,
         "megafungus": 1,
         "ripper": 2
@@ -451,7 +538,7 @@
         "mask_of_sorrow": 2,
         "divine_nectar": 2,
         "megafungus": 1,
-        "ripper": 2
+        "ripper": 3
       },
       "note": "Extremely valuable in Megafungus runs. Allows Skadi to reach her first ultimate much faster."
     },
@@ -507,7 +594,35 @@
         "megafungus": 2,
         "ripper": 3
       },
-      "note": "Strong synergy with Shield on Ultimate - casting ultimate grants a shield which then generates energy. Higher level upgrade (Energy Genre Lv 2-3): effect changes to Energy Regen SPD +20% while a shield is active."
+      "note": "Strong synergy with Shield on Ultimate. At higher Energy Genre levels the card changes to Energy Regen SPD +20% or +50% while a shield is active - these are separate buff entries."
+    },
+    {
+      "id": "energy-regen-on-shield-spd-low",
+      "name": "Energy Regen SPD on Shield (Low Tier)",
+      "effect": "Energy Regen SPD +20% while a shield is active.",
+      "tags": ["energy", "survival"],
+      "confirmed": true,
+      "note": "Separate buff from the 'Restores 100 Energy on shield expiry' variant. Seen at Energy Genre Lv 2-3.",
+      "priority": {
+        "mask_of_sorrow": "skip",
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 3
+      }
+    },
+    {
+      "id": "energy-regen-on-shield-spd-high",
+      "name": "Energy Regen SPD on Shield (High Tier)",
+      "effect": "Energy Regen SPD +50% while a shield is active.",
+      "tags": ["energy", "survival"],
+      "confirmed": true,
+      "note": "Higher-tier variant of the shield energy regen speed buff. Seen at Energy Genre Lv 1-2.",
+      "priority": {
+        "mask_of_sorrow": "skip",
+        "divine_nectar": 2,
+        "megafungus": 1,
+        "ripper": 3
+      }
     },
     {
       "id": "hp-conversion-to-shield",
@@ -542,12 +657,26 @@
       "tags": ["crit", "cc"],
       "confirmed": true,
       "priority": {
-        "mask_of_sorrow": 3,
+        "mask_of_sorrow": 2,
         "divine_nectar": 2,
         "megafungus": 2,
         "ripper": 2
       },
       "note": "Synergizes with Poseidon CC and Stun on CRIT."
+    },
+    {
+      "id": "hp-steal-on-dmg",
+      "name": "HP Steal on DMG",
+      "effect": "Deals additional DMG equal to 5% of max HP. CD: 5s.",
+      "tags": ["damage", "survival", "healing"],
+      "confirmed": true,
+      "note": "Seen in Base Genre runs. Passive on-hit bonus damage with a lifesteal-like effect. CD is per-proc, not per-hero.",
+      "priority": {
+        "mask_of_sorrow": 2,
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 2
+      }
     },
     {
       "id": "normal-atk-hp-steal",
@@ -595,10 +724,10 @@
       "tags": ["survival", "healing"],
       "confirmed": true,
       "priority": {
-        "mask_of_sorrow": 3,
-        "divine_nectar": 3,
-        "megafungus": 3,
-        "ripper": 3
+        "mask_of_sorrow": 2,
+        "divine_nectar": 2,
+        "megafungus": 2,
+        "ripper": 2
       },
       "note": "Exact effect text partially obscured in screenshot - needs verification."
     },
@@ -608,6 +737,21 @@
       "effect": "DMG RED Rate +3%.",
       "tags": ["survival"],
       "confirmed": true,
+      "note": "A lower-tier variant exists: +2% (seen at Base Genre Lv 13-15).",
+      "priority": {
+        "mask_of_sorrow": 3,
+        "divine_nectar": 3,
+        "megafungus": 3,
+        "ripper": 3
+      }
+    },
+    {
+      "id": "damage-reduction-low",
+      "name": "Damage Reduction (Low Tier)",
+      "effect": "DMG RED Rate +2%.",
+      "tags": ["survival"],
+      "confirmed": true,
+      "note": "Lower-tier variant seen at Base Genre Lv 13-15. Upgrades to +3% at higher Genre levels.",
       "priority": {
         "mask_of_sorrow": 3,
         "divine_nectar": 3,
@@ -636,7 +780,7 @@
       "confirmed": false,
       "note": "Exact stun duration not visible in screenshot - needs verification.",
       "priority": {
-        "mask_of_sorrow": 2,
+        "mask_of_sorrow": 1,
         "divine_nectar": 2,
         "megafungus": 2,
         "ripper": 2
