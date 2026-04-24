@@ -238,3 +238,5 @@ See memory file for full details: `memory/project_skill_videos.md`
    `ffmpeg -y -i source.mp4 -ss [START] -t [DURATION] -vf "crop=W:H:X:Y,scale=480:-1" -c:v libvpx-vp9 -b:v 0 -crf 35 -an public/skills/{hero_id}_skill_{n}.webm`
 3. Set `"video": "{hero_id}_skill_{n}.webm"` in hero JSON skill entry
 4. Upload `.webm` to R2 bucket under `skills/` for production
+5. Test coordinates: die koordinaten sollten sein: A (110/700 )(oben links), B (610/1110) (unten rechts). oder brauchst du. noch mehr ?
+Das rechteck hat 500x410 abmaße innerhalb des 720x1600 videos.
