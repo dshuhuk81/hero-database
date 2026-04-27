@@ -1,0 +1,638 @@
+[
+  {
+    "id": "resolve_1",
+    "name": "Resolve I",
+    "set": "Resolve",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "atk", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, ATK +5%" }
+  },
+  {
+    "id": "resolve_2",
+    "name": "Resolve II",
+    "set": "Resolve",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "atk", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, ATK +5%" }
+  },
+  {
+    "id": "clarity_1",
+    "name": "Clarity I",
+    "set": "Clarity",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "critRate", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, CRIT Rate +5%" }
+  },
+  {
+    "id": "clarity_2",
+    "name": "Clarity II",
+    "set": "Clarity",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "critRate", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, CRIT Rate +5%" }
+  },
+  {
+    "id": "mercy_1",
+    "name": "Mercy I",
+    "set": "Mercy",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, HP +5%" }
+  },
+  {
+    "id": "mercy_2",
+    "name": "Mercy II",
+    "set": "Mercy",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, HP +5%" }
+  },
+  {
+    "id": "zeal_1",
+    "name": "Zeal I",
+    "set": "Zeal",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "healEff", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, Healing Effectiveness +5%" }
+  },
+  {
+    "id": "zeal_2",
+    "name": "Zeal II",
+    "set": "Zeal",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "healEff", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, Healing Effectiveness +5%" }
+  },
+  {
+    "id": "peace_1",
+    "name": "Peace I",
+    "set": "Peace",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "dodgeRate", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, Dodge Rate +5%" }
+  },
+  {
+    "id": "peace_2",
+    "name": "Peace II",
+    "set": "Peace",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "dodgeRate", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, Dodge Rate +5%" }
+  },
+  {
+    "id": "humility_1",
+    "name": "Humility I",
+    "set": "Humility",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "armor", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, Armor +5%, M-RES +5%" }
+  },
+  {
+    "id": "humility_2",
+    "name": "Humility II",
+    "set": "Humility",
+    "rarity": "purple",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "armor", "base": 0, "bonus": 0 }],
+    "setBonuses": { "2": "At combat start, Armor +5%, M-RES +5%" }
+  },
+  {
+    "id": "desire_1",
+    "name": "Desire I",
+    "set": "Desire",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "atk", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, ATK +10%",
+      "4": "After 15s into the battle, ATK +20%"
+    }
+  },
+  {
+    "id": "desire_2",
+    "name": "Desire II",
+    "set": "Desire",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "atk", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, ATK +10%",
+      "4": "After 15s into the battle, ATK +20%"
+    }
+  },
+  {
+    "id": "desire_3",
+    "name": "Desire III",
+    "set": "Desire",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "atk", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, ATK +10%",
+      "4": "After 15s into the battle, ATK +20%"
+    }
+  },
+  {
+    "id": "desire_4",
+    "name": "Desire IV",
+    "set": "Desire",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "atk", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, ATK +10%",
+      "4": "After 15s into the battle, ATK +20%"
+    }
+  },
+  {
+    "id": "insight_1",
+    "name": "Insight I",
+    "set": "Insight",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "critRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, CRIT Rate +10%",
+      "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
+    }
+  },
+  {
+    "id": "insight_2",
+    "name": "Insight II",
+    "set": "Insight",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "critRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, CRIT Rate +10%",
+      "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
+    }
+  },
+  {
+    "id": "insight_3",
+    "name": "Insight III",
+    "set": "Insight",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "critRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, CRIT Rate +10%",
+      "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
+    }
+  },
+  {
+    "id": "insight_4",
+    "name": "Insight IV",
+    "set": "Insight",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "critRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, CRIT Rate +10%",
+      "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
+    }
+  },
+  {
+    "id": "sacrifice_1",
+    "name": "Sacrifice I",
+    "set": "Sacrifice",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "At combat start, max HP +30% while current HP remains unchanged"
+    }
+  },
+  {
+    "id": "sacrifice_2",
+    "name": "Sacrifice II",
+    "set": "Sacrifice",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "At combat start, max HP +30% while current HP remains unchanged"
+    }
+  },
+  {
+    "id": "sacrifice_3",
+    "name": "Sacrifice III",
+    "set": "Sacrifice",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "At combat start, max HP +30% while current HP remains unchanged"
+    }
+  },
+  {
+    "id": "sacrifice_4",
+    "name": "Sacrifice IV",
+    "set": "Sacrifice",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "At combat start, max HP +30% while current HP remains unchanged"
+    }
+  },
+  {
+    "id": "grace_1",
+    "name": "Grace I",
+    "set": "Grace",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "healEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Healing Effectiveness +15%",
+      "4": "Healing +30% on allies with HP below 50%"
+    }
+  },
+  {
+    "id": "grace_2",
+    "name": "Grace II",
+    "set": "Grace",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "healEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Healing Effectiveness +15%",
+      "4": "Healing +30% on allies with HP below 50%"
+    }
+  },
+  {
+    "id": "grace_3",
+    "name": "Grace III",
+    "set": "Grace",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "healEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Healing Effectiveness +15%",
+      "4": "Healing +30% on allies with HP below 50%"
+    }
+  },
+  {
+    "id": "grace_4",
+    "name": "Grace IV",
+    "set": "Grace",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "healEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Healing Effectiveness +15%",
+      "4": "Healing +30% on allies with HP below 50%"
+    }
+  },
+  {
+    "id": "stoic_1",
+    "name": "Stoic I",
+    "set": "Stoic",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "DMG received and dealt -30%"
+    }
+  },
+  {
+    "id": "stoic_2",
+    "name": "Stoic II",
+    "set": "Stoic",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "DMG received and dealt -30%"
+    }
+  },
+  {
+    "id": "stoic_3",
+    "name": "Stoic III",
+    "set": "Stoic",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "DMG received and dealt -30%"
+    }
+  },
+  {
+    "id": "stoic_4",
+    "name": "Stoic IV",
+    "set": "Stoic",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +10%",
+      "4": "DMG received and dealt -30%"
+    }
+  },
+  {
+    "id": "gnosis_1",
+    "name": "Gnosis I",
+    "set": "Gnosis",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "dodgeRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Dodge Rate +10%",
+      "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
+    }
+  },
+  {
+    "id": "gnosis_2",
+    "name": "Gnosis II",
+    "set": "Gnosis",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "dodgeRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Dodge Rate +10%",
+      "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
+    }
+  },
+  {
+    "id": "gnosis_3",
+    "name": "Gnosis III",
+    "set": "Gnosis",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "dodgeRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Dodge Rate +10%",
+      "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
+    }
+  },
+  {
+    "id": "gnosis_4",
+    "name": "Gnosis IV",
+    "set": "Gnosis",
+    "rarity": "gold",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "dodgeRate", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Dodge Rate +10%",
+      "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
+    }
+  },
+  {
+    "id": "wildness_1",
+    "name": "Wildness I",
+    "set": "Wildness",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "Gains 5% ATK every 5s, Max at 10 stacks"
+    }
+  },
+  {
+    "id": "wildness_2",
+    "name": "Wildness II",
+    "set": "Wildness",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "Gains 5% ATK every 5s, Max at 10 stacks"
+    }
+  },
+  {
+    "id": "wildness_3",
+    "name": "Wildness III",
+    "set": "Wildness",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "Gains 5% ATK every 5s, Max at 10 stacks"
+    }
+  },
+  {
+    "id": "wildness_4",
+    "name": "Wildness IV",
+    "set": "Wildness",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "Gains 5% ATK every 5s, Max at 10 stacks"
+    }
+  },
+  {
+    "id": "defiance_1",
+    "name": "Defiance I",
+    "set": "Defiance",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
+    }
+  },
+  {
+    "id": "defiance_2",
+    "name": "Defiance II",
+    "set": "Defiance",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
+    }
+  },
+  {
+    "id": "defiance_3",
+    "name": "Defiance III",
+    "set": "Defiance",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
+    }
+  },
+  {
+    "id": "defiance_4",
+    "name": "Defiance IV",
+    "set": "Defiance",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, HP +15%",
+      "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
+    }
+  },
+  {
+    "id": "fervor_1",
+    "name": "Fervor I",
+    "set": "Fervor",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "rechargeEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Energy Regen Bonus +10%",
+      "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
+    }
+  },
+  {
+    "id": "fervor_2",
+    "name": "Fervor II",
+    "set": "Fervor",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "rechargeEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Energy Regen Bonus +10%",
+      "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
+    }
+  },
+  {
+    "id": "fervor_3",
+    "name": "Fervor III",
+    "set": "Fervor",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "rechargeEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Energy Regen Bonus +10%",
+      "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
+    }
+  },
+  {
+    "id": "fervor_4",
+    "name": "Fervor IV",
+    "set": "Fervor",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "rechargeEff", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "2": "At combat start, Energy Regen Bonus +10%",
+      "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
+    }
+  },
+  {
+    "id": "oblivion_1",
+    "name": "Oblivion I",
+    "set": "Oblivion",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "4": "At combat start, gains immunity to Crowd Control for 8s"
+    }
+  },
+  {
+    "id": "oblivion_2",
+    "name": "Oblivion II",
+    "set": "Oblivion",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "4": "At combat start, gains immunity to Crowd Control for 8s"
+    }
+  },
+  {
+    "id": "oblivion_3",
+    "name": "Oblivion III",
+    "set": "Oblivion",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "4": "At combat start, gains immunity to Crowd Control for 8s"
+    }
+  },
+  {
+    "id": "oblivion_4",
+    "name": "Oblivion IV",
+    "set": "Oblivion",
+    "rarity": "red",
+    "type": "set",
+    "bp": 0,
+    "stats": [{ "key": "hp", "base": 0, "bonus": 0 }],
+    "setBonuses": {
+      "4": "At combat start, gains immunity to Crowd Control for 8s"
+    }
+  }
+]

@@ -59,6 +59,28 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 - **Tag Manager CMS**: Run `npm run tag-manager` to start Express UI for assigning tags to heroes
 - **Hero-to-Tag Mapping**: Each hero has `.synergies` array in their JSON file
 
+#### Virtue System (`src/data/virtues.json`)
+- **What**: Tetris-shaped upgrade pieces earned via AFK farming (Realm Rover Lost Coins), diamond cube summons, or events. Equippable per hero in a limited grid that scales with Ascension (Divine I = small, Divine V = max slots).
+- **Types**:
+  - `"singular"`: stat boost only, no set bonus. No duplicate of same singular per hero.
+  - `"set"`: belongs to a named set; unlocks 2-piece and/or 4-piece bonuses. No duplicate of same piece per hero.
+- **Rarities**: `"blue"` / `"purple"` / `"gold"` / `"red"` (Legendary). Sets exist in purple (2-piece only) and gold/red (2+4-piece). No 3-piece sets.
+- **Crafting**: 5 Shards = 1 whole Virtue. Enhance upgrades stats (using shards or other Virtues as material). Ascend raises level cap. Full refund on destroy.
+- **Data file**: `src/data/virtues.json` - single source of truth, array of all Virtue objects.
+- **Structure per Virtue**:
+  - `id`: snake_case unique identifier (e.g. `"oblivion_1"`)
+  - `name`: display name (e.g. `"Oblivion I"`)
+  - `set`: set name shared by all members (e.g. `"Oblivion"`) - omit for singulars
+  - `rarity`: `"blue"` | `"purple"` | `"gold"` | `"red"`
+  - `type`: `"set"` | `"singular"`
+  - `bp`: Battle Power contribution (integer)
+  - `stats`: array of `{ key, base, bonus }` - key matches hero stat keys; `bonus` is upgrade value (0 if not upgraded)
+  - `setBonuses`: `{ "2": "...", "4": "..." }` - effect text (set type only)
+- **Hero assignment**: Each hero JSON has optional `"virtues": ["virtue_id", ...]` array (manually curated, all optional).
+- **Shape**: Tetris shape intentionally omitted for now - will be added as matrix `[[1,1],[1,0]]` when a visual grid page is built.
+- **Display**: Hero detail page shows Virtue cards under "Recommended Virtues" section (color-coded by rarity) if any are assigned.
+- **Known Sets (partial)**: Sacrifice (gold, 2-piece: +10% HP at combat start), Far 2 / Far 3 (Realm Rover shop, 2-piece: +10% Energy Regen at combat start - considered meta for energy-dependent carries)
+
 #### Skill Analyzer (`src/utils/skillAnalyzer.js`)
 - Evaluates skill quality without manual ratings (auto-detection)
 - **Scoring factors**:
