@@ -12,14 +12,14 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home",      href: "/",          group: "primary" },
-  { label: "Heros",     href: "/heros",     group: "primary", badge: { text: "Updated", color: "var(--accent-purple)" } },
+  { label: "Heros",     href: "/heros",     group: "primary" },
   { label: "Compare",   href: "/compare",   group: "primary" },
-  { label: "Hero Guides", href: "/guides",   group: "content", badge: { text: "New", color: "var(--accent-new)" } },
+  { label: "Hero Guides", href: "/guides",   group: "content" },
   { label: "Tips",      href: "/tips",      group: "content" },
   { label: "Boss Encounters", href: "/bosses", group: "content" },
   { label: "Events",    href: "/events",    group: "content", badge: { text: "Update", color: "var(--accent-update)" } },
-  { label: "Tower",     href: "/tower",     group: "content", badge: { text: "New", color: "var(--accent-new)" } },
-  /*{ label: "Delusions Den", href: "/delusions-den", group: "content" },*/
+  { label: "Tower",     href: "/tower",     group: "content"},
+  { label: "Delusions Den", href: "/delusions-den", group: "content" , badge: { text: "New", color: "var(--accent-new)" } },
   { label: "Totems",    href: "/totems",    group: "content"},
   { label: "Tools",     href: "/calculator", group: "content" },
   { label: "Changes",   href: "/changelog", group: "meta" },
