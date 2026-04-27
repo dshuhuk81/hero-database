@@ -3,6 +3,7 @@ export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
 import Base from "../../layouts/Base.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
+import allVirtues from "../../data/virtues.json";
 /* STATIC PATHS */
 export function getStaticPaths() {
   return heroes.map((hero) => ({
@@ -15,6 +16,10 @@ const hero = getHeroById(id);
 const heroIndex = heroes.findIndex((entry) => entry.id === id);
 const heroTeamComps = (hero as any)?.teamComps;
 const hasComps = heroTeamComps && Object.values(heroTeamComps).some((arr) => Array.isArray(arr) && arr.length > 0);
+
+const heroVirtueIds: string[] = (hero as any).virtues ?? [];
+const heroVirtues = heroVirtueIds.map((vid) => (allVirtues as any[]).find((v) => v.id === vid)).filter(Boolean);
+const hasVirtues = heroVirtues.length > 0;
 const prevHero = heroIndex > 0 ? heroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < heroes.length - 1 ? heroes[heroIndex + 1] : null;
 
@@ -111,6 +116,7 @@ const dotSections = [
   { id: "section-synergies",  label: "Synergies" },
   ...(hasComps ? [{ id: "section-comps", label: "Compositions" }] : []),
   ...((hero as any).relicBreakpoints?.length ? [{ id: "section-investment", label: "Investment" }] : []),
+  ...(hasVirtues ? [{ id: "section-virtues", label: "Virtues" }] : []),
   ...((hero as any)["content-creator"]?.length ? [{ id: "section-videos", label: "Videos" }] : []),
 ];
 ---
@@ -617,7 +623,57 @@ const dotSections = [
       </section>
     )}
 
-    <!-- ── SECTION 8: VIDEO GUIDES ── -->
+    <!-- ── SECTION 8: VIRTUES ── -->
+    {hasVirtues && (
+      <section class="content-section" id="section-virtues">
+        <div class="section-label">Recommended Virtues</div>
+        <div class="virtue-grid">
+          {heroVirtues.map((v: any) => {
+            const virtueStats: { key: string; base: number; bonus: number }[] = v.stats ?? [];
+            return (
+              <div class={`virtue-card virtue-rarity-${v.rarity ?? "blue"}`}>
+                <div class="virtue-header">
+                  <span class="virtue-name">{v.name}</span>
+                  {v.type === "set" && <span class="virtue-set-badge">{v.set}</span>}
+                  {v.type === "singular" && <span class="virtue-singular-badge">Singular</span>}
+                </div>
+                {v.bp > 0 && <div class="virtue-bp">BP +{v.bp.toLocaleString()}</div>}
+                {virtueStats.length > 0 && (
+                  <div class="virtue-stats-list">
+                    {virtueStats.map((s: { key: string; base: number; bonus: number }) => {
+                      if (!s.base) return null;
+                      const label = STAT_LABELS[s.key] ?? s.key;
+                      const val = s.bonus > 0
+                        ? `${s.base.toLocaleString()} + ${s.bonus.toLocaleString()}`
+                        : s.base.toLocaleString();
+                      return <div class="virtue-stat">{label} {val}</div>;
+                    })}
+                  </div>
+                )}
+                {v.type === "set" && (v.setBonuses?.["2"] || v.setBonuses?.["4"]) && (
+                  <div class="virtue-bonuses">
+                    {v.setBonuses?.["2"] && (
+                      <div class="virtue-bonus-row">
+                        <span class="virtue-bonus-label">2-Piece</span>
+                        <span class="virtue-bonus-text">{v.setBonuses["2"]}</span>
+                      </div>
+                    )}
+                    {v.setBonuses?.["4"] && (
+                      <div class="virtue-bonus-row">
+                        <span class="virtue-bonus-label">4-Piece</span>
+                        <span class="virtue-bonus-text">{v.setBonuses["4"]}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- ── SECTION 9: VIDEO GUIDES ── -->
     {(hero as any)["content-creator"] && (hero as any)["content-creator"].length > 0 && (
       <section class="content-section" id="section-videos">
         <div class="section-label">Video Guides</div>
@@ -1742,7 +1798,101 @@ const dotSections = [
 .f2p-notes { margin: 0; font-size: 0.82rem; line-height: 1.55; color: rgba(255,255,255,0.65); }
 
 /* =============================================
-   SECTION 8: VIDEOS
+   SECTION 8: VIRTUES
+   ============================================= */
+.virtue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.virtue-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.virtue-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.virtue-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--faction-a);
+}
+.virtue-rarity-blue  { border-color: rgba(96,165,250,0.25); }
+.virtue-rarity-purple { border-color: rgba(167,139,250,0.35); }
+.virtue-rarity-gold  { border-color: rgba(234,179,8,0.35); }
+.virtue-rarity-red   { border-color: rgba(239,68,68,0.45); }
+.virtue-rarity-blue  .virtue-name { color: #60a5fa; }
+.virtue-rarity-purple .virtue-name { color: #a78bfa; }
+.virtue-rarity-gold  .virtue-name { color: #eab308; }
+.virtue-rarity-red   .virtue-name { color: #ef4444; }
+
+.virtue-set-badge,
+.virtue-singular-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.03em;
+}
+.virtue-singular-badge {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.35);
+}
+.virtue-bp {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+}
+.virtue-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.virtue-stat {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+}
+.virtue-bonuses {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 10px;
+}
+.virtue-bonus-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.virtue-bonus-label {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.1);
+  color: var(--faction-a);
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+.virtue-bonus-text {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.65);
+}
+
+/* =============================================
+   SECTION 9: VIDEOS
    ============================================= */
 .video-grid {
   display: grid;
