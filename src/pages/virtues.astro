@@ -105,8 +105,8 @@ function virtueAssetUrl(name: string, rarity?: string) {
         <div class="qg-pill">
           <svg class="qg-icon qg-icon--green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <div class="qg-content">
-            <span class="qg-label">Full Refund on Destroy</span>
-            <span class="qg-value">experiment risk-free</span>
+            <span class="qg-label">Free to Unequip</span>
+            <span class="qg-value">remove from hero anytime</span>
           </div>
         </div>
       </div>
@@ -320,7 +320,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
               <div class="upg-rules">
                 <div class="ur-row ur-good">Enhance with Shards or low-rarity Virtues as material</div>
                 <div class="ur-row ur-bad">Never use Gold or Red Virtues as Enhance material</div>
-                <div class="ur-row ur-good">Full material refund when destroying - safe to experiment</div>
+                <div class="ur-row ur-good">Virtues can be removed from a hero at any time at no cost</div>
               </div>
             </div>
 
@@ -959,8 +959,8 @@ function virtueAssetUrl(name: string, rarity?: string) {
   border-radius: 8px;
   line-height: 1.4;
 }
-.ur-good { background: rgba(74,222,128,0.07);  color: rgba(255,255,255,0.65); border-left: 2px solid #4ade80; }
-.ur-bad  { background: rgba(239,68,68,0.07);   color: rgba(255,255,255,0.65); border-left: 2px solid #f87171; }
+.ur-good { background: radial-gradient(ellipse at bottom left, rgba(74,222,128,0.12), rgba(74,222,128,0.03) 70%); color: rgba(255,255,255,0.65); }
+.ur-bad  { background: radial-gradient(ellipse at bottom left, rgba(239,68,68,0.12), rgba(239,68,68,0.03) 70%);  color: rgba(255,255,255,0.65); }
 
 /* ── REALM ROVER TAB ── */
 .rover-layout {
