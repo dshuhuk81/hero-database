@@ -1,0 +1,444 @@
+---
+export const prerender = true;
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import allVirtues from "../data/virtues.json";
+
+const virtues = allVirtues as any[];
+
+const bySet: Record<string, any[]> = {};
+const singulars: any[] = [];
+
+for (const v of virtues) {
+  if (v.type === "singular") {
+    singulars.push(v);
+  } else {
+    const key = v.set ?? "Unknown";
+    if (!bySet[key]) bySet[key] = [];
+    bySet[key].push(v);
+  }
+}
+
+const STAT_LABELS: Record<string, string> = {
+  hp: "HP", atk: "ATK", armor: "Armor", magicRes: "M-Res",
+  dodgeRate: "Dodge", critRate: "Crit Rate", critDmgBonus: "Crit DMG",
+  critRes: "Crit RES", critDmgRed: "Crit Red", energy: "Energy",
+  cooldownHaste: "Cooldown Haste", atkSpdBonus: "ATK SPD",
+  pDmgBonus: "Phys DMG Bonus", pDmgRed: "Phys DMG Red",
+  mDmgBonus: "Magic DMG Bonus", mDmgRed: "Magic DMG Red",
+  healEff: "Heal Eff", rechargeEff: "Recharge Eff",
+  lifestealEff: "Lifesteal", reflectEff: "Reflect Eff",
+  effectRes: "Effect RES", effectHit: "Effect Hit",
+  controlRes: "Control RES", controlBonus: "Control Bonus",
+  normalSkillPWR: "Normal Skill PWR", ultimatePWR: "Ultimate PWR",
+};
+
+function rarityLabel(r: string) {
+  const map: Record<string, string> = {
+    blue: "Common", purple: "Rare", gold: "Epic", red: "Legendary"
+  };
+  return map[r] ?? r;
+}
+---
+
+<Base
+  title="Virtues | Motto Immortal"
+  description="Complete guide to the Virtue system in Motto Immortal. Learn how to farm, summon, and equip Virtues via Realm Rover and the cube summon system."
+>
+<PageHero
+  tag="Equipment"
+  headline="Virtues"
+  subtitle="Tetris-style upgrade pieces with set bonuses - farmed via Realm Rover and cube summons"
+/>
+
+<div class="page-wrapper">
+  <div class="content-wrapper">
+
+    <!-- ── GUIDE SECTION ── -->
+    <section class="guide-section">
+      <h2 class="guide-heading">What are Virtues?</h2>
+      <p class="guide-text">
+        Virtues are the fourth optimization axis in Motto Immortal, alongside Skills, Relics, and Stats.
+        Each hero has a limited grid where you place Tetris-shaped Virtue pieces. Pieces provide raw stat
+        boosts and, when enough pieces from the same set are equipped, unlock powerful set bonuses.
+      </p>
+      <p class="guide-text">
+        The number of available grid slots scales with Ascension level: Divine I heroes have fewer slots,
+        Divine V heroes have the maximum. Divine V heroes are the primary beneficiaries of full 4-piece sets.
+      </p>
+
+      <div class="guide-grid">
+
+        <div class="guide-card">
+          <div class="guide-card-title">Obtaining Virtues</div>
+          <ul class="guide-list">
+            <li><strong>Blue Cubes</strong> - 300 Gems each, available directly. Drops blue / purple / gold pieces.</li>
+            <li><strong>Purple / Gold / Red Cubes</strong> - unlocked only via the point progression bar, not purchasable directly.</li>
+            <li><strong>Realm Rover</strong> - AFK mode that drops Virtues and Lost Coins passively.</li>
+            <li><strong>Events</strong> - Virtuous Progress and ranking events award additional summon cubes.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Point &amp; Pity System</div>
+          <ul class="guide-list">
+            <li>Every summon adds points to a progress bar.</li>
+            <li>Points unlock higher cube tiers in alternating order: Purple - Gold - Purple - Gold - Red.</li>
+            <li>Red (Legendary) cube: guaranteed drop every 10 summons.</li>
+            <li>At 200 points the bar resets - repeatable without limit.</li>
+            <li>Consistent blue cube usage passively builds points toward higher tiers.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Shards &amp; Crafting</div>
+          <ul class="guide-list">
+            <li>Drops come as whole Virtues or Shards.</li>
+            <li><strong>5 Shards = 1 whole Virtue</strong> (crafted in Bag - Virtue Shards tab).</li>
+            <li>Gold cube: 30% whole / 70% shard.</li>
+            <li>Red cube: 80% Epic drop / 20% Legendary drop.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Enhance &amp; Ascend</div>
+          <ul class="guide-list">
+            <li><strong>Enhance</strong> - levels up stats using Shards or other Virtues as material.</li>
+            <li><strong>Ascend</strong> - raises the level cap (e.g. 0 stars = cap 20, 1 star = cap 24, 2 stars = cap 28).</li>
+            <li>Blue Virtues are capped at 5 stars.</li>
+            <li><strong>Full material refund</strong> when destroying a Virtue - experimenting is risk-free.</li>
+            <li>Never use Gold or Red Virtues as Enhance material.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Set Rules</div>
+          <ul class="guide-list">
+            <li>Purple sets: 2-piece bonus only.</li>
+            <li>Gold / Red sets: 2-piece and 4-piece bonuses.</li>
+            <li>No 3-piece sets exist.</li>
+            <li>No duplicate of the same piece on one hero (e.g. no two Sacrifice I on the same hero).</li>
+            <li>No duplicate Singular on one hero either.</li>
+            <li>Set bonus beats Singular stat boost once 2-piece is reached in most cases.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Realm Rover (AFK Mode)</div>
+          <ul class="guide-list">
+            <li><strong>Unlock:</strong> Odyssey Stage 253. Access via Wilds - flying ship.</li>
+            <li>Configure lineups per division (Bronze / Silver / Gold / Gem / Mythic).</li>
+            <li>Earns Lost Coins, Virtues, and Totem Summon Keys passively.</li>
+            <li>Season duration: 7 days (ends when most players reach Mythic / Gem rank).</li>
+            <li>Region selection per season (e.g. Lava Zone = +500 Energy Bonus).</li>
+            <li><strong>Target: Top 20%</strong> - rewards are nearly identical to Top 5%, not worth overinvesting.</li>
+            <li>Popular Heroes display reflects playtime, not strength - do not blindly copy it.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">Lost Coins Shop Priorities</div>
+          <ul class="guide-list">
+            <li><strong>Far 2 / Far 3</strong> - top priority. 2-piece: +10% Energy Regen at combat start. Strong for all energy-dependent carries.</li>
+            <li>Gold Virtues - situationally useful when a specific missing piece is available.</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-title">General Tips</div>
+          <ul class="guide-list">
+            <li>Spend Blue Cubes consistently once you have 300+ excess Gems.</li>
+            <li>Configure Realm Rover lineups once - it runs itself after that.</li>
+            <li>Prioritize Divine V heroes for full 4-piece sets.</li>
+            <li>Sacrifice set is strong on HP tanks (e.g. Heracles).</li>
+            <li>Far 2 / Far 3 is the universal 2-piece option for energy-dependent carries.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── VIRTUE DATABASE ── -->
+    <section class="virtue-db-section">
+      <h2 class="guide-heading">Virtue Database</h2>
+      <p class="guide-text guide-text--muted">
+        This list covers all set-based Virtues. Additional singular stat pieces exist in-game but are not listed here as they serve only as slot fillers with no set bonuses. Hero-specific recommendations are shown on each hero's detail page.
+      </p>
+
+      <!-- Sets -->
+      {Object.keys(bySet).length > 0 && (
+        <div class="set-groups">
+          {Object.entries(bySet).map(([setName, pieces]) => {
+            const sample = pieces[0];
+            const bonus2 = sample?.setBonuses?.["2"] ?? "";
+            const bonus4 = sample?.setBonuses?.["4"] ?? "";
+            return (
+              <div class="set-group">
+                <div class="set-group-header">
+                  <span class="set-group-name">{setName}</span>
+                  <span class={`set-rarity-badge rarity-${sample?.rarity ?? "blue"}`}>{rarityLabel(sample?.rarity ?? "blue")}</span>
+                  <span class="set-piece-count">{pieces.length} pieces</span>
+                </div>
+                {(bonus2 || bonus4) && (
+                  <div class="set-bonuses">
+                    {bonus2 && (
+                      <div class="set-bonus-row">
+                        <span class="set-bonus-label">2-Piece</span>
+                        <span class="set-bonus-text">{bonus2}</span>
+                      </div>
+                    )}
+                    {bonus4 && (
+                      <div class="set-bonus-row">
+                        <span class="set-bonus-label">4-Piece</span>
+                        <span class="set-bonus-text">{bonus4}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div class="set-pieces-row">
+                  {pieces.map((v: any) => (
+                    <div class={`virtue-pill rarity-${v.rarity ?? "blue"}`}>
+                      <span class="virtue-pill-name">{v.name}</span>
+                      {v.bp > 0 && <span class="virtue-pill-bp">BP +{v.bp.toLocaleString()}</span>}
+                      {(v.stats ?? []).filter((s: any) => s.base > 0).map((s: any) => (
+                        <span class="virtue-pill-stat">
+                          {STAT_LABELS[s.key] ?? s.key} {s.bonus > 0 ? `${s.base.toLocaleString()}+${s.bonus.toLocaleString()}` : s.base.toLocaleString()}
+                        </span>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <!-- Singulars -->
+      {singulars.length > 0 && (
+        <div class="singulars-section">
+          <div class="singulars-header">Singular Pieces</div>
+          <div class="singulars-grid">
+            {singulars.map((v: any) => (
+              <div class={`virtue-pill rarity-${v.rarity ?? "blue"}`}>
+                <span class="virtue-pill-name">{v.name}</span>
+                {v.bp > 0 && <span class="virtue-pill-bp">BP +{v.bp.toLocaleString()}</span>}
+                {(v.stats ?? []).filter((s: any) => s.base > 0).map((s: any) => (
+                  <span class="virtue-pill-stat">
+                    {STAT_LABELS[s.key] ?? s.key} {s.bonus > 0 ? `${s.base.toLocaleString()}+${s.bonus.toLocaleString()}` : s.base.toLocaleString()}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {virtues.length === 0 && (
+        <p class="guide-text guide-text--muted">No Virtues added yet. Data will appear here once the database is populated.</p>
+      )}
+    </section>
+
+  </div>
+</div>
+</Base>
+
+<style>
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+/* ── GUIDE ── */
+.guide-section,
+.virtue-db-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.guide-heading {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #e0dff0;
+  margin: 0;
+}
+.guide-text {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+  max-width: 780px;
+}
+.guide-text--muted { color: rgba(255,255,255,0.45); }
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.guide-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.guide-card-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e0dff0;
+  letter-spacing: 0.02em;
+}
+.guide-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.guide-list li {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.62);
+}
+.guide-list strong { color: rgba(255,255,255,0.85); }
+
+/* ── VIRTUE DB ── */
+.set-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.set-group {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.set-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.set-group-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #e0dff0;
+}
+.set-piece-count {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+}
+.set-rarity-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+.rarity-blue   { background: rgba(96,165,250,0.15);  color: #60a5fa; }
+.rarity-purple { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.rarity-gold   { background: rgba(234,179,8,0.15);   color: #eab308; }
+.rarity-red    { background: rgba(239,68,68,0.15);   color: #ef4444; }
+
+.set-bonuses {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+}
+.set-bonus-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.set-bonus-label {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.55);
+  margin-top: 1px;
+}
+.set-bonus-text {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.65);
+}
+
+.set-pieces-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Virtue pill (used in set rows and singulars grid) */
+.virtue-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  min-width: 140px;
+}
+.virtue-pill.rarity-blue   { border-color: rgba(96,165,250,0.2); }
+.virtue-pill.rarity-purple { border-color: rgba(167,139,250,0.25); }
+.virtue-pill.rarity-gold   { border-color: rgba(234,179,8,0.25); }
+.virtue-pill.rarity-red    { border-color: rgba(239,68,68,0.3); }
+.virtue-pill-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #e0dff0;
+}
+.virtue-pill.rarity-blue   .virtue-pill-name { color: #60a5fa; }
+.virtue-pill.rarity-purple .virtue-pill-name { color: #a78bfa; }
+.virtue-pill.rarity-gold   .virtue-pill-name { color: #eab308; }
+.virtue-pill.rarity-red    .virtue-pill-name { color: #ef4444; }
+.virtue-pill-bp,
+.virtue-pill-stat {
+  font-size: 0.74rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Singulars */
+.singulars-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.singulars-header {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.singulars-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .guide-grid { grid-template-columns: 1fr; }
+  .set-pieces-row { flex-direction: column; }
+}
+</style>
