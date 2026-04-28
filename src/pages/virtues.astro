@@ -312,7 +312,10 @@ function virtueAssetUrl(name: string, rarity?: string) {
                 <div class="at-row"><span class="at-stars">0 stars</span><span class="at-cap">20</span></div>
                 <div class="at-row"><span class="at-stars">1 star</span><span class="at-cap">24</span></div>
                 <div class="at-row"><span class="at-stars">2 stars</span><span class="at-cap">28</span></div>
-                <div class="at-row at-note-row"><span class="at-stars">Blue max</span><span class="at-cap">5 stars</span></div>
+                <div class="at-row"><span class="at-stars">3 stars</span><span class="at-cap">32</span></div>
+                <div class="at-row"><span class="at-stars">4 stars</span><span class="at-cap">36</span></div>
+                <div class="at-row at-highlight-row"><span class="at-stars">5 stars (max)</span><span class="at-cap">40</span></div>
+                <div class="at-row at-note-row"><span class="at-stars">+4 levels per star</span><span class="at-cap">Blue cap</span></div>
               </div>
               <div class="upg-rules">
                 <div class="ur-row ur-good">Enhance with Shards or low-rarity Virtues as material</div>
@@ -941,6 +944,9 @@ function virtueAssetUrl(name: string, rarity?: string) {
 .at-note-row { background: rgba(255,255,255,0.02); }
 .at-note-row .at-stars { color: rgba(255,255,255,0.4); font-size: 0.72rem; }
 .at-note-row .at-cap   { color: rgba(255,255,255,0.4); font-size: 0.72rem; font-weight: 400; }
+.at-highlight-row { background: rgba(167,139,250,0.07); }
+.at-highlight-row .at-stars { color: #e0dff0; font-weight: 700; }
+.at-highlight-row .at-cap   { color: #a78bfa; font-size: 1rem; }
 
 .upg-rules {
   display: flex;
