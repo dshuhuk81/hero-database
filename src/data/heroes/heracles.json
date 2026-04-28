@@ -267,5 +267,33 @@
     "recommendation": "Divine -> D5",
     "priority": 1,
     "notes": "Awakened gear slots 2/4 per Excel."
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4"
+      ]
+    },
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2"
+      ]
+    },
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2"
+      ]
+    }
+  ]
 }

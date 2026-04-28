@@ -118,5 +118,33 @@
     "ENERGY_DRAIN",
     "AREA_DAMAGE_DEALER",
     "CROWD_CONTROL"
+  ],
+  "virtueSets": [
+    {
+      "label": "Insight",
+      "comment": "",
+      "virtues": [
+        "insight_1",
+        "insight_2",
+        "insight_3",
+        "insight_4"
+      ]
+    },
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2"
+      ]
+    },
+    {
+      "label": "Wildness",
+      "comment": "",
+      "virtues": [
+        "wildness_1",
+        "wildness_2"
+      ]
+    }
   ]
 }

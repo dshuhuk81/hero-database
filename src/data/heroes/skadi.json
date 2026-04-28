@@ -63,7 +63,6 @@
       "damageType": "Magical",
       "isUltimate": true,
       "video": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/skadi_skill_1.webm"
-      
     },
     {
       "id": "skill_2",
@@ -214,5 +213,33 @@
     "recommendation": "Divine -> D5",
     "priority": 1,
     "notes": null
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2",
+        "desire_3",
+        "desire_4"
+      ]
+    },
+    {
+      "label": "Fervor",
+      "comment": "",
+      "virtues": [
+        "fervor_1",
+        "fervor_2"
+      ]
+    },
+    {
+      "label": "Wildness",
+      "comment": "",
+      "virtues": [
+        "wildness_1",
+        "wildness_2"
+      ]
+    }
+  ]
 }

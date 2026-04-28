@@ -92,6 +92,7 @@ function adaptHero(raw) {
     activeBugNotes: raw.activeBugNotes ?? null,
     f2pInvestment: raw.f2pInvestment ?? null,
     virtues: raw.virtues ?? [],
+    virtueSets: raw.virtueSets ?? [],
   };
 }
 

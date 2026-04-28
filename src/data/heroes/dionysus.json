@@ -154,5 +154,33 @@
     "recommendation": "Base dupe -> wait for random drop",
     "priority": 3,
     "notes": null
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2"
+      ]
+    },
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2"
+      ]
+    }
+  ]
 }

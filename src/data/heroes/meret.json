@@ -152,5 +152,33 @@
     "recommendation": "Divine",
     "priority": 3,
     "notes": "Baseline utility at r1-10. Full potential only realized at r30, and only if paired with high-investment Hercules and Bastet. Not a priority for F2P players until those conditions are met."
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Grace",
+      "comment": "",
+      "virtues": [
+        "grace_1",
+        "grace_2",
+        "grace_3",
+        "grace_4"
+      ]
+    },
+    {
+      "label": "Fervor",
+      "comment": "",
+      "virtues": [
+        "fervor_1",
+        "fervor_2"
+      ]
+    },
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2"
+      ]
+    }
+  ]
 }

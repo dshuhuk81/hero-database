@@ -143,5 +143,33 @@
     "recommendation": "Divine -> D5",
     "priority": 3,
     "notes": null
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Insight",
+      "comment": "",
+      "virtues": [
+        "insight_1",
+        "insight_2",
+        "insight_3",
+        "insight_4"
+      ]
+    },
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2"
+      ]
+    },
+    {
+      "label": "Gnosis",
+      "comment": "",
+      "virtues": [
+        "gnosis_1",
+        "gnosis_2"
+      ]
+    }
+  ]
 }

@@ -182,5 +182,33 @@
     "recommendation": "Divine",
     "priority": 1,
     "notes": "Primary F2P Celestial target. Awakened gear slots 1/3/4. 5-6 copies in 61 days via Mindsea."
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Fervor",
+      "comment": "",
+      "virtues": [
+        "fervor_1",
+        "fervor_2",
+        "fervor_3",
+        "fervor_4"
+      ]
+    },
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2"
+      ]
+    },
+    {
+      "label": "Gnosis",
+      "comment": "",
+      "virtues": [
+        "gnosis_1",
+        "gnosis_2"
+      ]
+    }
+  ]
 }

@@ -142,5 +142,33 @@
     "recommendation": "Base dupe -> wait, or grab from Mindsea",
     "priority": 3,
     "notes": "Only Celestial worth grabbing as base copy from Mindsea if unlucky with pulls."
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2"
+      ]
+    },
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2"
+      ]
+    }
+  ]
 }
