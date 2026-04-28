@@ -136,7 +136,7 @@ const ratingsMap: Record<string, string> = hero.ratings as any ?? {};
 // Dot nav sections
 const dotSections = [
   { id: "section-profile",    label: "Profile" },
-  { id: "section-skills",     label: "Skills" },
+  { id: "skills",             label: "Skills" },
   { id: "section-ratings",    label: "Ratings" },
   { id: "section-stats",      label: "Stats" },
   { id: "section-synergies",  label: "Synergies" },
@@ -308,7 +308,7 @@ const dotSections = [
     </section>
 
     <!-- ── SECTION 2: SKILLS ── -->
-    <section class="content-section" id="section-skills">
+    <section class="content-section" id="skills">
       <div class="section-label">Skills &amp; Abilities</div>
 
       <!-- Skill tab strip -->
@@ -1070,6 +1070,7 @@ const dotSections = [
    CONTENT SECTIONS
    ============================================= */
 .content-section {
+  scroll-margin-top: 72px;
   padding: 64px 0 16px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
