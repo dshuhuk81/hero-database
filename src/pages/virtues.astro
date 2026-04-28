@@ -3,8 +3,6 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import allVirtues from "../data/virtues.json";
-import { readdirSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 
 const virtues = allVirtues as any[];
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
@@ -43,51 +41,22 @@ function rarityLabel(r: string) {
   return map[r] ?? r;
 }
 
-function normalizeAssetKey(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]/g, "");
-}
-
-const virtueAssetsDir = fileURLToPath(new URL("../../public/images/virtues", import.meta.url));
-
-const allAssetFiles = readdirSync(virtueAssetsDir)
-  .filter((fileName) => /\.png$/i.test(fileName));
-
-const virtueAssetsByKey: Record<string, string> = {};
-
-// Map rarity suffixes to JSON rarity values
-const rarityMap: Record<string, string> = {
-  "_elite": "gold",
-  "_rare": "blue",
-  "_epic": "purple",
-  "_legendary": "red"
+const raritySuffixMap: Record<string, string> = {
+  blue: "_rare",
+  purple: "_epic",
+  gold: "_elite",
+  red: "_legendary"
 };
 
-for (const fileName of allAssetFiles) {
-  const baseName = fileName.replace(/\.png$/i, "");
-  
-  // Check for rarity suffix and extract base name
-  let normalized = normalizeAssetKey(baseName);
-  let rarity = "gold"; // default
-  
-  for (const [suffix, rarityValue] of Object.entries(rarityMap)) {
-    if (baseName.endsWith(suffix)) {
-      const baseWithoutSuffix = baseName.slice(0, -suffix.length);
-      normalized = normalizeAssetKey(baseWithoutSuffix);
-      rarity = rarityValue;
-      break;
-    }
-  }
-  
-  // Create key: virtue name normalized + rarity suffix if not gold
-  const key = rarity === "gold" ? normalized : (normalized + "_" + rarity);
-  virtueAssetsByKey[key] = `${R2_BASE}/images/virtues/${fileName}`;
+function virtueAssetBaseName(name: string) {
+  const compact = name.replace(/\s+/g, "").replace(/[^a-zA-Z0-9]/g, "");
+  return compact ? compact.charAt(0).toLowerCase() + compact.slice(1) : "";
 }
 
 function virtueAssetUrl(name: string, rarity?: string) {
-  const normalized = normalizeAssetKey(name);
-  // Only add rarity suffix if not gold (elite)
-  const key = rarity && rarity !== "gold" ? (normalized + "_" + rarity) : normalized;
-  return virtueAssetsByKey[key] ?? "";
+  const baseName = virtueAssetBaseName(name);
+  const suffix = raritySuffixMap[rarity ?? "gold"] ?? raritySuffixMap.gold;
+  return baseName ? `${R2_BASE}/images/virtues/${baseName}${suffix}.png` : "";
 }
 ---
 
