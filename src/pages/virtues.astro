@@ -3,6 +3,8 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import allVirtues from "../data/virtues.json";
+import { readdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const virtues = allVirtues as any[];
 
@@ -39,6 +41,53 @@ function rarityLabel(r: string) {
   };
   return map[r] ?? r;
 }
+
+function normalizeAssetKey(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+const virtueAssetsDir = fileURLToPath(new URL("../../public/images/virtues", import.meta.url));
+
+const allAssetFiles = readdirSync(virtueAssetsDir)
+  .filter((fileName) => /\.png$/i.test(fileName));
+
+const virtueAssetsByKey: Record<string, string> = {};
+
+// Map rarity suffixes to JSON rarity values
+const rarityMap: Record<string, string> = {
+  "_elite": "gold",
+  "_rare": "blue",
+  "_epic": "purple",
+  "_legendary": "red"
+};
+
+for (const fileName of allAssetFiles) {
+  const baseName = fileName.replace(/\.png$/i, "");
+  
+  // Check for rarity suffix and extract base name
+  let normalized = normalizeAssetKey(baseName);
+  let rarity = "gold"; // default
+  
+  for (const [suffix, rarityValue] of Object.entries(rarityMap)) {
+    if (baseName.endsWith(suffix)) {
+      const baseWithoutSuffix = baseName.slice(0, -suffix.length);
+      normalized = normalizeAssetKey(baseWithoutSuffix);
+      rarity = rarityValue;
+      break;
+    }
+  }
+  
+  // Create key: virtue name normalized + rarity suffix if not gold
+  const key = rarity === "gold" ? normalized : (normalized + "_" + rarity);
+  virtueAssetsByKey[key] = `/images/virtues/${fileName}`;
+}
+
+function virtueAssetUrl(name: string, rarity?: string) {
+  const normalized = normalizeAssetKey(name);
+  // Only add rarity suffix if not gold (elite)
+  const key = rarity && rarity !== "gold" ? (normalized + "_" + rarity) : normalized;
+  return virtueAssetsByKey[key] ?? "";
+}
 ---
 
 <Base
@@ -56,113 +105,357 @@ function rarityLabel(r: string) {
 
     <!-- ── GUIDE SECTION ── -->
     <section class="guide-section">
-      <h2 class="guide-heading">What are Virtues?</h2>
-      <p class="guide-text">
-        Virtues are the fourth optimization axis in Motto Immortal, alongside Skills, Relics, and Stats.
-        Each hero has a limited grid where you place Tetris-shaped Virtue pieces. Pieces provide raw stat
-        boosts and, when enough pieces from the same set are equipped, unlock powerful set bonuses.
-      </p>
-      <p class="guide-text">
-        The number of available grid slots scales with Ascension level: Divine I heroes have fewer slots,
-        Divine V heroes have the maximum. Divine V heroes are the primary beneficiaries of full 4-piece sets.
-      </p>
 
-      <div class="guide-grid">
-
-        <div class="guide-card">
-          <div class="guide-card-title">Obtaining Virtues</div>
-          <ul class="guide-list">
-            <li><strong>Blue Cubes</strong> - 300 Gems each, available directly. Drops blue / purple / gold pieces.</li>
-            <li><strong>Purple / Gold / Red Cubes</strong> - unlocked only via the point progression bar, not purchasable directly.</li>
-            <li><strong>Realm Rover</strong> - AFK mode that drops Virtues and Lost Coins passively.</li>
-            <li><strong>Events</strong> - Virtuous Progress and ranking events award additional summon cubes.</li>
-          </ul>
+      <!-- QUICK GLANCE BAR -->
+      <div class="quick-glance">
+        <div class="qg-pill">
+          <svg class="qg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="7" rx="1"/><rect x="18" y="14" width="3" height="3" rx="1"/></svg>
+          <div class="qg-content">
+            <span class="qg-label">Tetris Grid System</span>
+            <span class="qg-value">slots scale with Ascension</span>
+          </div>
         </div>
-
-        <div class="guide-card">
-          <div class="guide-card-title">Point &amp; Pity System</div>
-          <ul class="guide-list">
-            <li>Every summon adds points to a progress bar.</li>
-            <li>Points unlock higher cube tiers in alternating order: Purple - Gold - Purple - Gold - Red.</li>
-            <li>Red (Legendary) cube: guaranteed drop every 10 summons.</li>
-            <li>At 200 points the bar resets - repeatable without limit.</li>
-            <li>Consistent blue cube usage passively builds points toward higher tiers.</li>
-          </ul>
+        <div class="qg-divider"></div>
+        <div class="qg-pill">
+          <svg class="qg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <div class="qg-content">
+            <span class="qg-label">4th Optimization Axis</span>
+            <span class="qg-value">alongside Skills, Relics, Stats</span>
+          </div>
         </div>
-
-        <div class="guide-card">
-          <div class="guide-card-title">Shards &amp; Crafting</div>
-          <ul class="guide-list">
-            <li>Drops come as whole Virtues or Shards.</li>
-            <li><strong>5 Shards = 1 whole Virtue</strong> (crafted in Bag - Virtue Shards tab).</li>
-            <li>Gold cube: 30% whole / 70% shard.</li>
-            <li>Red cube: 80% Epic drop / 20% Legendary drop.</li>
-          </ul>
+        <div class="qg-divider"></div>
+        <div class="qg-pill">
+          <svg class="qg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <div class="qg-content">
+            <span class="qg-label">Set Bonuses</span>
+            <span class="qg-value">2-piece and 4-piece thresholds</span>
+          </div>
         </div>
-
-        <div class="guide-card">
-          <div class="guide-card-title">Enhance &amp; Ascend</div>
-          <ul class="guide-list">
-            <li><strong>Enhance</strong> - levels up stats using Shards or other Virtues as material.</li>
-            <li><strong>Ascend</strong> - raises the level cap (e.g. 0 stars = cap 20, 1 star = cap 24, 2 stars = cap 28).</li>
-            <li>Blue Virtues are capped at 5 stars.</li>
-            <li><strong>Full material refund</strong> when destroying a Virtue - experimenting is risk-free.</li>
-            <li>Never use Gold or Red Virtues as Enhance material.</li>
-          </ul>
+        <div class="qg-divider"></div>
+        <div class="qg-pill">
+          <svg class="qg-icon qg-icon--green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="qg-content">
+            <span class="qg-label">Full Refund on Destroy</span>
+            <span class="qg-value">experiment risk-free</span>
+          </div>
         </div>
-
-        <div class="guide-card">
-          <div class="guide-card-title">Set Rules</div>
-          <ul class="guide-list">
-            <li>Purple sets: 2-piece bonus only.</li>
-            <li>Gold / Red sets: 2-piece and 4-piece bonuses.</li>
-            <li>No 3-piece sets exist.</li>
-            <li>No duplicate of the same piece on one hero (e.g. no two Sacrifice I on the same hero).</li>
-            <li>No duplicate Singular on one hero either.</li>
-            <li>Set bonus beats Singular stat boost once 2-piece is reached in most cases.</li>
-          </ul>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-card-title">Realm Rover (AFK Mode)</div>
-          <ul class="guide-list">
-            <li><strong>Unlock:</strong> Odyssey Stage 253. Access via Wilds - flying ship.</li>
-            <li>Configure lineups per division (Bronze / Silver / Gold / Gem / Mythic).</li>
-            <li>Earns Lost Coins, Virtues, and Totem Summon Keys passively.</li>
-            <li>Season duration: 7 days (ends when most players reach Mythic / Gem rank).</li>
-            <li>Region selection per season (e.g. Lava Zone = +500 Energy Bonus).</li>
-            <li><strong>Target: Top 20%</strong> - rewards are nearly identical to Top 5%, not worth overinvesting.</li>
-            <li>Popular Heroes display reflects playtime, not strength - do not blindly copy it.</li>
-          </ul>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-card-title">Lost Coins Shop Priorities</div>
-          <ul class="guide-list">
-            <li><strong>Far 2 / Far 3</strong> - top priority. 2-piece: +10% Energy Regen at combat start. Strong for all energy-dependent carries.</li>
-            <li>Gold Virtues - situationally useful when a specific missing piece is available.</li>
-          </ul>
-        </div>
-
-        <div class="guide-card">
-          <div class="guide-card-title">General Tips</div>
-          <ul class="guide-list">
-            <li>Spend Blue Cubes consistently once you have 300+ excess Gems.</li>
-            <li>Configure Realm Rover lineups once - it runs itself after that.</li>
-            <li>Prioritize Divine V heroes for full 4-piece sets.</li>
-            <li>Sacrifice set is strong on HP tanks (e.g. Heracles).</li>
-            <li>Far 2 / Far 3 is the universal 2-piece option for energy-dependent carries.</li>
-          </ul>
-        </div>
-
       </div>
+
+      <!-- RARITY STRIP -->
+      <div class="rarity-strip">
+        <div class="rarity-strip-label">Rarities</div>
+        <div class="rarity-strip-items">
+          <div class="rs-item rs-blue">
+            <img class="rs-virtue-thumb" src="/images/virtues/faithI_rare.png" alt="Common Virtue example" loading="lazy" decoding="async" />
+            <span class="rs-dot"></span>
+            <div class="rs-info">
+              <span class="rs-name">Common</span>
+              <span class="rs-sub">Blue Cube - 300 Gems</span>
+            </div>
+          </div>
+          <svg class="rs-arrow" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 6h6l-5 4 2 6-5-4-5 4 2-6L0 6h6z" opacity="0"/><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          <div class="rs-item rs-purple">
+            <img class="rs-virtue-thumb" src="/images/virtues/faithI_epic.png" alt="Rare Virtue example" loading="lazy" decoding="async" />
+            <span class="rs-dot"></span>
+            <div class="rs-info">
+              <span class="rs-name">Rare</span>
+              <span class="rs-sub">Purple Cube - via pity</span>
+            </div>
+          </div>
+          <svg class="rs-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          <div class="rs-item rs-gold">
+            <img class="rs-virtue-thumb" src="/images/virtues/sacrificeI_elite.png" alt="Epic Virtue example" loading="lazy" decoding="async" />
+            <span class="rs-dot"></span>
+            <div class="rs-info">
+              <span class="rs-name">Epic</span>
+              <span class="rs-sub">Gold Cube - via pity</span>
+            </div>
+          </div>
+          <svg class="rs-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          <div class="rs-item rs-red">
+            <img class="rs-virtue-thumb" src="/images/virtues/defianceI_legendary.png" alt="Legendary Virtue example" loading="lazy" decoding="async" />
+            <span class="rs-dot"></span>
+            <div class="rs-info">
+              <span class="rs-name">Legendary</span>
+              <span class="rs-sub">Red Cube - 1 per 10 summons</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="gtabs">
+        <div class="gtab-bar">
+          <button class="gtab-btn is-active" data-gtab="farming">Farming</button>
+          <button class="gtab-btn" data-gtab="sets">Sets &amp; Upgrading</button>
+          <button class="gtab-btn" data-gtab="rover">Realm Rover</button>
+        </div>
+
+        <!-- TAB: FARMING -->
+        <div class="gtab-panel is-active" id="gtab-farming">
+          <div class="farming-layout">
+
+            <div class="farming-sources">
+              <div class="fsource fsource--blue">
+                <div class="fsource-header">
+                  <span class="fsource-cube rarity-blue">Blue Cube</span>
+                  <span class="fsource-cost">300 Gems</span>
+                </div>
+                <p class="fsource-desc">Purchasable directly. Drops Common, Rare, and Epic pieces. Your primary consistent source.</p>
+              </div>
+              <div class="fsource fsource--purple">
+                <div class="fsource-header">
+                  <span class="fsource-cube rarity-purple">Purple Cube</span>
+                  <span class="fsource-cost">via pity bar</span>
+                </div>
+                <p class="fsource-desc">Unlocked through point progression. Not sold directly.</p>
+              </div>
+              <div class="fsource fsource--gold">
+                <div class="fsource-header">
+                  <span class="fsource-cube rarity-gold">Gold Cube</span>
+                  <span class="fsource-cost">via pity bar</span>
+                </div>
+                <p class="fsource-desc">30% whole Virtue / 70% shard drop. Strong source of Epic gear.</p>
+              </div>
+              <div class="fsource fsource--red">
+                <div class="fsource-header">
+                  <span class="fsource-cube rarity-red">Red Cube</span>
+                  <span class="fsource-cost">1 per 10 summons</span>
+                </div>
+                <p class="fsource-desc">80% Epic / 20% Legendary drop rate. Guaranteed once per 10 summons.</p>
+              </div>
+            </div>
+
+            <div class="farming-right">
+              <div class="pity-block">
+                <div class="pity-title">Pity Track</div>
+                <div class="pity-sub">Every summon adds points. At 200 the bar resets and repeats.</div>
+                <div class="pity-track">
+                  <div class="pt-node pt-blue">
+                    <span class="pt-label">Start</span>
+                    <span class="pt-cube rarity-blue">Blue</span>
+                  </div>
+                  <div class="pt-line"></div>
+                  <div class="pt-node">
+                    <span class="pt-label">~40 pts</span>
+                    <span class="pt-cube rarity-purple">Purple</span>
+                  </div>
+                  <div class="pt-line"></div>
+                  <div class="pt-node">
+                    <span class="pt-label">~80 pts</span>
+                    <span class="pt-cube rarity-gold">Gold</span>
+                  </div>
+                  <div class="pt-line"></div>
+                  <div class="pt-node">
+                    <span class="pt-label">~120 pts</span>
+                    <span class="pt-cube rarity-purple">Purple</span>
+                  </div>
+                  <div class="pt-line"></div>
+                  <div class="pt-node">
+                    <span class="pt-label">~160 pts</span>
+                    <span class="pt-cube rarity-gold">Gold</span>
+                  </div>
+                  <div class="pt-line"></div>
+                  <div class="pt-node pt-red">
+                    <span class="pt-label">200 pts</span>
+                    <span class="pt-cube rarity-red">Red</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shards-block">
+                <div class="shards-title">Shards &amp; Crafting</div>
+                <div class="shards-formula">
+                  <span class="sf-num">5</span>
+                  <span class="sf-unit">Shards</span>
+                  <svg class="sf-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  <span class="sf-num">1</span>
+                  <span class="sf-unit">Virtue</span>
+                </div>
+                <p class="shards-note">Craft in Bag - Virtue Shards tab. Drops can be whole pieces or shards depending on cube tier.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB: SETS & UPGRADING -->
+        <div class="gtab-panel" id="gtab-sets">
+          <div class="sets-layout">
+
+            <div class="set-rules-block">
+              <div class="srb-title">Set Threshold Rules</div>
+              <div class="set-threshold-grid">
+                <div class="sth-row">
+                  <span class="sth-rarity rarity-purple">Rare (Purple)</span>
+                  <div class="sth-badges">
+                    <span class="sth-badge sth-active">2-Piece</span>
+                    <span class="sth-badge sth-inactive">4-Piece (none)</span>
+                  </div>
+                </div>
+                <div class="sth-row">
+                  <span class="sth-rarity rarity-gold">Epic (Gold)</span>
+                  <div class="sth-badges">
+                    <span class="sth-badge sth-active">2-Piece</span>
+                    <span class="sth-badge sth-active">4-Piece</span>
+                  </div>
+                </div>
+                <div class="sth-row">
+                  <span class="sth-rarity rarity-red">Legendary (Red)</span>
+                  <div class="sth-badges">
+                    <span class="sth-badge sth-active">2-Piece</span>
+                    <span class="sth-badge sth-active">4-Piece</span>
+                  </div>
+                </div>
+              </div>
+              <div class="set-rules-notes">
+                <div class="srn-row">
+                  <span class="srn-icon srn-no">x</span>
+                  No 3-piece sets exist
+                </div>
+                <div class="srn-row">
+                  <span class="srn-icon srn-no">x</span>
+                  No duplicate pieces on one hero (e.g. two Sacrifice I)
+                </div>
+                <div class="srn-row">
+                  <span class="srn-icon srn-no">x</span>
+                  No duplicate Singulars per hero
+                </div>
+                <div class="srn-row">
+                  <span class="srn-icon srn-yes">v</span>
+                  Set bonus beats Singular once 2-piece threshold is reached
+                </div>
+                <div class="srn-row">
+                  <span class="srn-icon srn-yes">v</span>
+                  Divine V heroes benefit most from full 4-piece sets
+                </div>
+              </div>
+            </div>
+
+            <div class="upgrade-block">
+              <div class="upg-title">Enhance &amp; Ascend</div>
+              <div class="ascend-table">
+                <div class="at-head">
+                  <span>Stars</span>
+                  <span>Level Cap</span>
+                </div>
+                <div class="at-row"><span class="at-stars">0 stars</span><span class="at-cap">20</span></div>
+                <div class="at-row"><span class="at-stars">1 star</span><span class="at-cap">24</span></div>
+                <div class="at-row"><span class="at-stars">2 stars</span><span class="at-cap">28</span></div>
+                <div class="at-row at-note-row"><span class="at-stars">Blue max</span><span class="at-cap">5 stars</span></div>
+              </div>
+              <div class="upg-rules">
+                <div class="ur-row ur-good">Enhance with Shards or low-rarity Virtues as material</div>
+                <div class="ur-row ur-bad">Never use Gold or Red Virtues as Enhance material</div>
+                <div class="ur-row ur-good">Full material refund when destroying - safe to experiment</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB: REALM ROVER -->
+        <div class="gtab-panel" id="gtab-rover">
+          <div class="rover-layout">
+
+            <div class="rover-info">
+              <div class="rover-unlock">
+                <span class="ru-badge">Unlock Requirement</span>
+                <span class="ru-value">Odyssey Stage 25-3</span>
+                <span class="ru-loc">Access via Wilds - flying ship</span>
+              </div>
+              <div class="rover-facts">
+                <div class="rf-item">
+                  <span class="rf-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  </span>
+                  <div class="rf-text">
+                    <span class="rf-label">Season Length</span>
+                    <span class="rf-val">7 days per season</span>
+                  </div>
+                </div>
+                <div class="rf-item">
+                  <span class="rf-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                  </span>
+                  <div class="rf-text">
+                    <span class="rf-label">Rewards</span>
+                    <span class="rf-val">Lost Coins, Virtues, Totem Summon Keys</span>
+                  </div>
+                </div>
+                <div class="rf-item">
+                  <span class="rf-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+                  </span>
+                  <div class="rf-text">
+                    <span class="rf-label">Divisions</span>
+                    <span class="rf-val">Bronze / Silver / Gold / Gem / Mythic</span>
+                  </div>
+                </div>
+                <div class="rf-item">
+                  <span class="rf-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </span>
+                  <div class="rf-text">
+                    <span class="rf-label">Region Bonus</span>
+                    <span class="rf-val">e.g. Lava Zone = +500 Energy Bonus</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rover-target">
+              <div class="target-card">
+                <div class="tc-label">Target Rank</div>
+                <div class="tc-value">Top 20%</div>
+                <div class="tc-reason">Rewards are nearly identical to Top 5%. Overinvesting yields minimal gain.</div>
+              </div>
+              <div class="rover-warn">
+                <svg class="rw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Popular Heroes tab shows playtime, not hero strength. Do not blindly copy it.</span>
+              </div>
+              <div class="lost-coins-block">
+                <div class="lcb-title">Lost Coins Shop</div>
+                <div class="lcb-priority">
+                  <span class="lcp-label">Priority 1</span>
+                  <span class="lcp-name">Far 2 / Far 3</span>
+                  <span class="lcp-effect">+10% Energy Regen at combat start</span>
+                </div>
+                <div class="lcb-priority lcb-priority--2">
+                  <span class="lcp-label">Priority 2</span>
+                  <span class="lcp-name">Gold Virtues</span>
+                  <span class="lcp-effect">Situational - buy when a specific missing piece is in stock</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- META TIP CALLOUT -->
+      <div class="meta-tip">
+        <div class="mt-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="mt-body">
+          <span class="mt-title">Meta Tip - Fervoar 2 / Fervoar 3</span>
+          <span class="mt-text">The universal 2-piece pick for energy-dependent carries. +10% Energy Regen at combat start accelerates every ultimate-reliant hero. Buy from Lost Coins shop first, always.</span>
+        </div>
+        <div class="mt-tags">
+          <span class="mt-tag">Energy Carries</span>
+          <span class="mt-tag">2-Piece</span>
+          <span class="mt-tag">Realm Rover</span>
+        </div>
+      </div>
+
     </section>
 
     <!-- ── VIRTUE DATABASE ── -->
     <section class="virtue-db-section">
       <h2 class="guide-heading">Virtue Database</h2>
       <p class="guide-text guide-text--muted">
-        All known Virtues. Hero-specific recommendations are shown on each hero's detail page.
+        This list covers all set-based Virtues. Additional singular stat pieces exist in-game but are not listed here as they serve only as slot fillers with no set bonuses. Hero-specific recommendations are shown on each hero's detail page.
       </p>
 
       <!-- Sets -->
@@ -198,6 +491,21 @@ function rarityLabel(r: string) {
                 <div class="set-pieces-row">
                   {pieces.map((v: any) => (
                     <div class={`virtue-pill rarity-${v.rarity ?? "blue"}`}>
+                      <div class="virtue-pill-media-wrap">
+                        {virtueAssetUrl(v.name, v.rarity) ? (
+                          <img
+                            class="virtue-pill-media"
+                            src={virtueAssetUrl(v.name, v.rarity)}
+                            alt={`${v.name} virtue asset`}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div class="virtue-pill-media virtue-pill-media--missing" aria-hidden="true">
+                            <span>No asset</span>
+                          </div>
+                        )}
+                      </div>
                       <span class="virtue-pill-name">{v.name}</span>
                       {v.bp > 0 && <span class="virtue-pill-bp">BP +{v.bp.toLocaleString()}</span>}
                       {(v.stats ?? []).filter((s: any) => s.base > 0).map((s: any) => (
@@ -221,6 +529,21 @@ function rarityLabel(r: string) {
           <div class="singulars-grid">
             {singulars.map((v: any) => (
               <div class={`virtue-pill rarity-${v.rarity ?? "blue"}`}>
+                <div class="virtue-pill-media-wrap">
+                  {virtueAssetUrl(v.name, v.rarity) ? (
+                    <img
+                      class="virtue-pill-media"
+                      src={virtueAssetUrl(v.name, v.rarity)}
+                      alt={`${v.name} virtue asset`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div class="virtue-pill-media virtue-pill-media--missing" aria-hidden="true">
+                      <span>No asset</span>
+                    </div>
+                  )}
+                </div>
                 <span class="virtue-pill-name">{v.name}</span>
                 {v.bp > 0 && <span class="virtue-pill-bp">BP +{v.bp.toLocaleString()}</span>}
                 {(v.stats ?? []).filter((s: any) => s.base > 0).map((s: any) => (
@@ -260,56 +583,635 @@ function rarityLabel(r: string) {
 .virtue-db-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
-.guide-heading {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #e0dff0;
-  margin: 0;
-}
-.guide-text {
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.7);
-  margin: 0;
-  max-width: 780px;
-}
+.guide-text { font-size: 0.92rem; line-height: 1.7; color: rgba(255,255,255,0.7); margin: 0; max-width: 780px; }
 .guide-text--muted { color: rgba(255,255,255,0.45); }
+.guide-heading { font-size: 1.4rem; font-weight: 800; color: #e0dff0; margin: 0; }
 
-.guide-grid {
+/* ── QUICK GLANCE ── */
+.quick-glance {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 18px 24px;
+  flex-wrap: wrap;
+}
+.qg-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 180px;
+  padding: 4px 16px 4px 0;
+}
+.qg-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.35);
+}
+.qg-icon--green { color: #4ade80; }
+.qg-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.qg-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #e0dff0;
+}
+.qg-value {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.42);
+}
+.qg-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+  margin: 0 16px 0 0;
+}
+
+/* ── RARITY STRIP ── */
+.rarity-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.rarity-strip-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
+.rarity-strip-items {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rs-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+.rs-virtue-thumb {
+  width: 20px;
+  height: 26px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
+}
+.rs-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rs-item.rs-blue  { background: rgba(96,165,250,0.08);  border-color: rgba(96,165,250,0.2); }
+.rs-item.rs-blue .rs-dot { background: #60a5fa; }
+.rs-item.rs-purple { background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.2); }
+.rs-item.rs-purple .rs-dot { background: #a78bfa; }
+.rs-item.rs-gold  { background: rgba(234,179,8,0.08);   border-color: rgba(234,179,8,0.2); }
+.rs-item.rs-gold .rs-dot { background: #eab308; }
+.rs-item.rs-red   { background: rgba(239,68,68,0.08);   border-color: rgba(239,68,68,0.2); }
+.rs-item.rs-red .rs-dot { background: #ef4444; }
+.rs-info { display: flex; flex-direction: column; gap: 1px; }
+.rs-name { font-size: 0.78rem; font-weight: 700; color: #e0dff0; }
+.rs-sub  { font-size: 0.68rem; color: rgba(255,255,255,0.38); }
+.rs-arrow { width: 16px; height: 16px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
+
+/* ── TABS ── */
+.gtabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.gtab-bar {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 20px;
+}
+.gtab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.02em;
+}
+.gtab-btn:hover { color: rgba(255,255,255,0.7); }
+.gtab-btn.is-active { color: #e0dff0; border-bottom-color: #a78bfa; }
+.gtab-panel { display: none; }
+.gtab-panel.is-active { display: block; }
+
+/* ── FARMING TAB ── */
+.farming-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
-.guide-card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.09);
+.farming-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.fsource {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+}
+.fsource-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.fsource-cube {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+.fsource-cost {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.35);
+}
+.fsource-desc {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.55);
+  margin: 0;
+}
+.fsource--blue  { border-color: rgba(96,165,250,0.15); }
+.fsource--purple { border-color: rgba(167,139,250,0.15); }
+.fsource--gold  { border-color: rgba(234,179,8,0.15); }
+.fsource--red   { border-color: rgba(239,68,68,0.15); }
+
+.farming-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Pity Track */
+.pity-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 14px;
-  padding: 18px 20px;
+  padding: 16px 18px;
+}
+.pity-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #e0dff0;
+  margin-bottom: 4px;
+}
+.pity-sub {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 14px;
+}
+.pity-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.pt-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.pt-label {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+}
+.pt-cube {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.pt-line {
+  flex: 1;
+  min-width: 8px;
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+  margin-bottom: -4px;
+  margin-top: 12px;
+}
+
+/* Shards block */
+.shards-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.shards-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #e0dff0;
+  margin-bottom: 12px;
+}
+.shards-formula {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.sf-num {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #a78bfa;
+  line-height: 1;
+}
+.sf-unit {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+}
+.sf-arrow {
+  width: 20px;
+  height: 20px;
+  color: rgba(255,255,255,0.25);
+}
+.shards-note {
+  font-size: 0.74rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── SETS TAB ── */
+.sets-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.set-rules-block,
+.upgrade-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.srb-title,
+.upg-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e0dff0;
+}
+.set-threshold-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sth-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.sth-row:last-child { border-bottom: none; }
+.sth-rarity {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+.sth-badges { display: flex; gap: 6px; }
+.sth-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.sth-active   { background: rgba(74,222,128,0.12); color: #4ade80; }
+.sth-inactive { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.25); text-decoration: line-through; }
+.set-rules-notes { display: flex; flex-direction: column; gap: 6px; }
+.srn-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.4;
+}
+.srn-icon {
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  font-weight: 900;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.srn-yes { background: rgba(74,222,128,0.15); color: #4ade80; }
+.srn-no  { background: rgba(239,68,68,0.15);  color: #f87171; }
+
+/* Ascend table */
+.ascend-table {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.at-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.04);
+}
+.at-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 12px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.8rem;
+}
+.at-stars { color: rgba(255,255,255,0.65); }
+.at-cap   { color: #a78bfa; font-weight: 700; }
+.at-note-row { background: rgba(255,255,255,0.02); }
+.at-note-row .at-stars { color: rgba(255,255,255,0.4); font-size: 0.72rem; }
+.at-note-row .at-cap   { color: rgba(255,255,255,0.4); font-size: 0.72rem; font-weight: 400; }
+
+.upg-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ur-row {
+  font-size: 0.78rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+.ur-good { background: rgba(74,222,128,0.07);  color: rgba(255,255,255,0.65); border-left: 2px solid #4ade80; }
+.ur-bad  { background: rgba(239,68,68,0.07);   color: rgba(255,255,255,0.65); border-left: 2px solid #f87171; }
+
+/* ── REALM ROVER TAB ── */
+.rover-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.rover-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.rover-unlock {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ru-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.ru-value {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #e0dff0;
+}
+.ru-loc {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.42);
+}
+.rover-facts {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.guide-card-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #e0dff0;
-  letter-spacing: 0.02em;
+.rf-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
 }
-.guide-list {
-  margin: 0;
-  padding-left: 18px;
+.rf-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.35);
+  margin-top: 1px;
+}
+.rf-icon svg { width: 100%; height: 100%; }
+.rf-text { display: flex; flex-direction: column; gap: 2px; }
+.rf-label { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.55); }
+.rf-val   { font-size: 0.78rem; color: rgba(255,255,255,0.7); }
+
+.rover-target {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 12px;
 }
-.guide-list li {
-  font-size: 0.82rem;
-  line-height: 1.55;
+.target-card {
+  background: linear-gradient(135deg, rgba(167,139,250,0.1), rgba(234,179,8,0.05));
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tc-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(167,139,250,0.7);
+}
+.tc-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #a78bfa;
+  line-height: 1;
+}
+.tc-reason {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+.rover-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(234,179,8,0.06);
+  border: 1px solid rgba(234,179,8,0.15);
+  border-radius: 10px;
+  font-size: 0.77rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.45;
+}
+.rw-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #eab308;
+  margin-top: 1px;
+}
+.lost-coins-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lcb-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.lcb-priority {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(74,222,128,0.06);
+  border: 1px solid rgba(74,222,128,0.12);
+  border-radius: 8px;
+}
+.lcb-priority--2 {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.07);
+}
+.lcp-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  background: rgba(74,222,128,0.15);
+  color: #4ade80;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.lcb-priority--2 .lcp-label {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.4);
+}
+.lcp-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #e0dff0;
+  white-space: nowrap;
+}
+.lcp-effect {
+  font-size: 0.73rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+/* ── META TIP CALLOUT ── */
+.meta-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: linear-gradient(120deg, rgba(234,179,8,0.08), rgba(234,179,8,0.03));
+  border: 1px solid rgba(234,179,8,0.25);
+  border-radius: 16px;
+  padding: 18px 22px;
+}
+.mt-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: rgba(234,179,8,0.15);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mt-icon svg {
+  width: 18px;
+  height: 18px;
+  color: #eab308;
+}
+.mt-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.mt-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #eab308;
+}
+.mt-text {
+  font-size: 0.8rem;
   color: rgba(255,255,255,0.62);
+  line-height: 1.55;
 }
-.guide-list strong { color: rgba(255,255,255,0.85); }
+.mt-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.mt-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: rgba(234,179,8,0.1);
+  color: rgba(234,179,8,0.7);
+  border-radius: 20px;
+  white-space: nowrap;
+}
 
 /* ── VIRTUE DB ── */
 .set-groups {
@@ -399,6 +1301,32 @@ function rarityLabel(r: string) {
   background: rgba(255,255,255,0.04);
   min-width: 140px;
 }
+.virtue-pill-media-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.virtue-pill-media {
+  width: 72px;
+  height: 92px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.28));
+}
+.virtue-pill-media--missing {
+  border: 1px dashed rgba(255,255,255,0.12);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.virtue-pill-media--missing span {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+}
 .virtue-pill.rarity-blue   { border-color: rgba(96,165,250,0.2); }
 .virtue-pill.rarity-purple { border-color: rgba(167,139,250,0.25); }
 .virtue-pill.rarity-gold   { border-color: rgba(234,179,8,0.25); }
@@ -437,8 +1365,31 @@ function rarityLabel(r: string) {
   gap: 8px;
 }
 
+@media (max-width: 768px) {
+  .farming-layout,
+  .sets-layout,
+  .rover-layout { grid-template-columns: 1fr; }
+  .quick-glance { gap: 8px; }
+  .qg-divider { display: none; }
+  .meta-tip { flex-direction: column; }
+  .mt-tags { flex-direction: row; align-items: flex-start; }
+}
 @media (max-width: 640px) {
-  .guide-grid { grid-template-columns: 1fr; }
   .set-pieces-row { flex-direction: column; }
+  .pity-track { gap: 2px; }
+  .pt-line { min-width: 4px; }
 }
 </style>
+
+<script>
+  document.querySelectorAll(".gtab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = (btn as HTMLElement).dataset.gtab;
+      document.querySelectorAll(".gtab-btn").forEach(b => b.classList.remove("is-active"));
+      document.querySelectorAll(".gtab-panel").forEach(p => p.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      const panel = document.getElementById("gtab-" + target);
+      if (panel) panel.classList.add("is-active");
+    });
+  });
+</script>
