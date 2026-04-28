@@ -146,5 +146,33 @@
     "recommendation": "Base dupe -> work on dupes after Zeus/Nezha",
     "priority": 1,
     "notes": "Extremely F2P-friendly -- full kit at base dupe."
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Fervor",
+      "comment": "",
+      "virtues": [
+        "fervor_1",
+        "fervor_2",
+        "fervor_3",
+        "fervor_4"
+      ]
+    },
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2"
+      ]
+    }
+  ]
 }
