@@ -7,6 +7,7 @@ import { readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const virtues = allVirtues as any[];
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 
 const bySet: Record<string, any[]> = {};
 const singulars: any[] = [];
@@ -79,7 +80,7 @@ for (const fileName of allAssetFiles) {
   
   // Create key: virtue name normalized + rarity suffix if not gold
   const key = rarity === "gold" ? normalized : (normalized + "_" + rarity);
-  virtueAssetsByKey[key] = `/images/virtues/${fileName}`;
+  virtueAssetsByKey[key] = `${R2_BASE}/images/virtues/${fileName}`;
 }
 
 function virtueAssetUrl(name: string, rarity?: string) {
@@ -146,7 +147,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
         <div class="rarity-strip-label">Rarities</div>
         <div class="rarity-strip-items">
           <div class="rs-item rs-blue">
-            <img class="rs-virtue-thumb" src="/images/virtues/faithI_rare.png" alt="Common Virtue example" loading="lazy" decoding="async" />
+            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/faithI_rare.png`} alt="Common Virtue example" loading="lazy" decoding="async" />
             <span class="rs-dot"></span>
             <div class="rs-info">
               <span class="rs-name">Common</span>
@@ -155,7 +156,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
           </div>
           <svg class="rs-arrow" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 6h6l-5 4 2 6-5-4-5 4 2-6L0 6h6z" opacity="0"/><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
           <div class="rs-item rs-purple">
-            <img class="rs-virtue-thumb" src="/images/virtues/faithI_epic.png" alt="Rare Virtue example" loading="lazy" decoding="async" />
+            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/faithI_epic.png`} alt="Rare Virtue example" loading="lazy" decoding="async" />
             <span class="rs-dot"></span>
             <div class="rs-info">
               <span class="rs-name">Rare</span>
@@ -164,7 +165,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
           </div>
           <svg class="rs-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           <div class="rs-item rs-gold">
-            <img class="rs-virtue-thumb" src="/images/virtues/sacrificeI_elite.png" alt="Epic Virtue example" loading="lazy" decoding="async" />
+            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/sacrificeI_elite.png`} alt="Epic Virtue example" loading="lazy" decoding="async" />
             <span class="rs-dot"></span>
             <div class="rs-info">
               <span class="rs-name">Epic</span>
@@ -173,7 +174,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
           </div>
           <svg class="rs-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           <div class="rs-item rs-red">
-            <img class="rs-virtue-thumb" src="/images/virtues/defianceI_legendary.png" alt="Legendary Virtue example" loading="lazy" decoding="async" />
+            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/defianceI_legendary.png`} alt="Legendary Virtue example" loading="lazy" decoding="async" />
             <span class="rs-dot"></span>
             <div class="rs-info">
               <span class="rs-name">Legendary</span>
