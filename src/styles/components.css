@@ -328,6 +328,8 @@
 .donate-btn-kofi {
   border-color: rgba(255, 94, 91, 0.6);
   color: #ff5e5b;
+  width: 100%;
+  justify-content: center;
 }
 
 .donate-btn-kofi:hover {
@@ -338,13 +340,8 @@
 }
 
 .donate-btn-paypal {
-  font-size: 0.9rem;
-  padding: 10px 20px;
-  opacity: 0.7;
-}
-
-.donate-btn-paypal:hover {
-  opacity: 1;
+  width: 100%;
+  justify-content: center;
 }
 
 /* ─── Ad Slots ─── */
