@@ -56,13 +56,42 @@
       ],
       "recommendedComps": [
         {
-          "id": "baphomet_dps",
-          "label": "Nuba & Isis Comp",
-          "hero-comp": "nuba, yuelao, caishen, isis, dionysus",
-          "heroes": ["nuba", "yuelao", "caishen", "isis", "dionysus"],
-          "reason": "",
-          "notes": ["Nuba relic level 20, Isis relic level 20"],
-          "source": "auto"
+          "id": "baphomet_meta_1",
+          "label": "Meta - Tefnut Core",
+          "hero-comp": "dionysus, yuelao, tefnut, caishen, isis",
+          "heroes": ["dionysus", "yuelao", "tefnut", "caishen", "isis"],
+          "reason": "Highest damage output in the rankings - top 3 comps all use Tefnut (2.68B, 2.02B, 1.67B). Tefnut provides sustained single-target pressure ideal against Baphomet's defensive stance.",
+          "notes": [
+            "Tefnut is the highest-ceiling DPS flex pick for this boss",
+            "Caishen + Dionysus + Yuelao + Isis are core - do not replace",
+            "Prioritize Energy Regen; Baphomet's pentacle drains energy every 3s"
+          ],
+          "source": "community"
+        },
+        {
+          "id": "baphomet_meta_2",
+          "label": "Meta - Meret Variant",
+          "hero-comp": "dionysus, yuelao, meret, caishen, isis",
+          "heroes": ["dionysus", "yuelao", "meret", "caishen", "isis"],
+          "reason": "Most frequently seen comp overall (5/23), reaching up to 2.2B damage. Meret is more accessible than Tefnut and still performs well in the mid-to-high range.",
+          "notes": [
+            "Choose this if Tefnut is unavailable or underinvested",
+            "Meret provides reliable damage without relying on warrior sustain"
+          ],
+          "source": "community"
+        },
+        {
+          "id": "baphomet_beginner",
+          "label": "Beginner",
+          "hero-comp": "dionysus, yuelao, nuba, caishen, isis",
+          "heroes": ["dionysus", "yuelao", "nuba", "caishen", "isis"],
+          "reason": "Accessible comp for players without Tefnut or Meret well-invested. Nuba works in the flex slot and the core four heroes are widely available at lower evolution levels.",
+          "notes": [
+            "Nuba relic level 20 recommended if possible",
+            "Isis relic level 20 recommended",
+            "Core four (Dionysus, Yuelao, Caishen, Isis) are mandatory"
+          ],
+          "source": "community"
         }
       ]
     },
