@@ -4452,63 +4452,60 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Omniscient Arrow",
-        "description": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
+        "name": "Full Bloom",
+        "description": "Iris summons a spirit butterfly in an enemy-clustered area, dealing DMG equal to 150% of ATK. Then, it flaps its wings every 2s, dealing DMG equal to 150% of ATK to enemies within range and increasing their DMG taken by 10% for 8s.",
         "upgrades": {
-          "level2": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
-          "level3": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
-          "level4": "The arrow will deal DMG equal to 200% of ATK."
+          "level2": "Enemies within range have their Move SPD reduced by 50%.",
+          "level3": "Increases DMG per hit to 180% ATK.",
+          "level4": "Increases DMG dealt to enemies within range by 30%."
         },
         "damageType": "Magical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Omnipotence",
-        "description": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
+        "name": "Rainbow Step",
+        "description": "When taking DMG, Iris transforms into a rainbow and blinks behind a random ally, increasing nearby allies' ATK SPD by 20% for 10s. This effect can only trigger once every 15s.",
         "upgrades": {
-          "level2": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
-          "level3": "Increases ATK SPD to 150%.",
-          "level4": "Reduces Energy lost to 40."
-        },
-        "damageType": "Magical"
-      },
-      {
-        "id": "skill_3",
-        "name": "The Cunning Goddess",
-        "description": "When no enemies are within 3 meters of Isis, her ATK is increased by 30%. She loses this bonus when an enemy is within 3 meters of her.",
-        "upgrades": {
-          "level2": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
-          "level3": "Increases ATK bonus to 36%.",
-          "level4": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts."
+          "level2": "This effect triggers once every 13s.",
+          "level3": "Increases allies' ATK SPD to 30%.",
+          "level4": "This effect triggers once every 10s."
         },
         "damageType": ""
       },
       {
-        "id": "skill_4",
-        "name": "True Name Invocation",
-        "description": "For every 5 Ultimates cast by allies, Isis gains 20% increased ATK SPD, stacking up to 4 times.",
+        "id": "skill_3",
+        "name": "Dreamscape",
+        "description": "Summons a spectral butterfly, which slowly illuminates, above the nearest enemy. After 4s, it deals DMG equal to 100% of ATK to that enemy and nearby targets, and stuns them for 3s.",
         "upgrades": {
-          "level2": "Increases each stack of ATK SPD bonus to 25%.",
-          "level3": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
-          "level4": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)"
+          "level2": "Increases DMG dealt to 120%.",
+          "level3": "Stuns last for 5s.",
+          "level4": "Increases DMG dealt to 150%."
+        },
+        "damageType": "Magical"
+      },
+      {
+        "id": "skill_4",
+        "name": "Prism Arc",
+        "description": "Deals DMG equal to 250% of ATK to a random enemy and silences the target for 3s.",
+        "upgrades": {
+          "level2": "Increases DMG dealt to 270%.",
+          "level3": "Increases the silence duration to 5s.",
+          "level4": "Increases DMG dealt by 300%."
         },
         "damageType": "Magical"
       }
     ],
     "relic": {
-      "name": "Pristine Mantra",
-      "description": "Reduces the trigger count required for True Name Invocation to 3. Its stacks grant Isis additional effects: Each stack increases Isis's Hit Rate by 20%.",
-      "damageType": "Magical",
+      "name": "Another Encore",
+      "description": "Casting Dreamscape targets the 2 nearest enemies.",
       "upgrades": {
-        "level2": "Increases CRIT Rate by 30% at 3 stacks.",
-        "level3": "Stacks up to 6 times.",
-        "level4": "Each stack increases Hit Rate by 30%. (Unlock at Relic Lv.30)"
+        "level2": "When 2 enemies with Dreamscape get near, the mirage explodes, dealing 200% ATK as bonus DMG.",
+        "level3": "When 2 enemies with Dreamscape get near, the mirage explodes, dealing 240% ATK as bonus DMG.",
+        "level4": "When 2 enemies with Dreamscape get near, the mirage explodes, dealing 280% ATK as bonus DMG."
       }
     },
-    "synergies": [
-      "ATK_SPEED"
-    ],
+    "synergies": [],
     "baseAttackRate": 0.708,
     "bossUltimatesPer90s": 4,
     "coreMechanic": {
