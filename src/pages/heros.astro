@@ -26,6 +26,7 @@ const sortedHeroes = [...heroes]
   description="Browse all heroes in Motto Immortal. Filter by class, faction, role and ratings. View stats, skills and tier rankings for every hero."
 >
 <PageHero
+  id="heros"
   tag="Hero Database"
   headline="Choose your hero"
   subtitle="Browse all heroes, stats, skills & synergies"
@@ -38,16 +39,16 @@ const sortedHeroes = [...heroes]
 
 <div class="resultcontent">
   <div class="sort-bar">
-    <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
+    <p id="heroCounter" class="hero-counter" data-i18n-counter>0 Heroes shown</p>
     <div class="sort-controls">
-      <label for="sortSelect" class="sort-label">Sort by</label>
+      <label for="sortSelect" class="sort-label" data-i18n="heros_sort_by">Sort by</label>
       <select id="sortSelect" class="sort-select">
-        <option value="name-asc">Name (A-Z)</option>
-        <option value="name-desc">Name (Z-A)</option>
-        <option value="rating-desc">Rating (best first)</option>
-        <option value="rating-asc">Rating (worst first)</option>
-        <option value="class">Class</option>
-        <option value="rarity-desc">Rarity (highest first)</option>
+        <option value="name-asc" data-i18n="heros_sort_name_asc">Name (A-Z)</option>
+        <option value="name-desc" data-i18n="heros_sort_name_desc">Name (Z-A)</option>
+        <option value="rating-desc" data-i18n="heros_sort_rating_desc">Rating (best first)</option>
+        <option value="rating-asc" data-i18n="heros_sort_rating_asc">Rating (worst first)</option>
+        <option value="class" data-i18n="heros_sort_class">Class</option>
+        <option value="rarity-desc" data-i18n="heros_sort_rarity_desc">Rarity (highest first)</option>
       </select>
       <div class="view-toggle" role="group" aria-label="View mode">
         <button id="viewGrid" class="view-btn active" title="Gallery view" aria-label="Gallery view">
@@ -712,7 +713,9 @@ document.addEventListener("DOMContentLoaded", () => {
     listRows.forEach(row => {
       row.style.display = matchesFilters(row) ? "" : "none";
     });
-    heroCounter!.textContent = visible === 1 ? "1 Hero shown" : `${visible} Heroes shown`;
+    const lang = localStorage.getItem('lang') || 'en';
+    const suffix = lang === 'ru' ? ' Героев показано' : ' Heroes shown';
+    heroCounter!.textContent = `${visible}${suffix}`;
   }
 
   // ---- Sorting ----
