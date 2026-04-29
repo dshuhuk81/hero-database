@@ -521,6 +521,81 @@
           "source": "manual"
         }
       ]
+    },
+    {
+      "id": "nian_beast",
+      "name": "Nian Beast",
+      "mode": "Olds God's Return",
+      "battlepower": "33932",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "",
+      "summary": "A ferocious beast lurks on the last night of the year, spreading terror wherever it goes. Its form is like a snow-cloaked mountain, its eyes burning with the dying embers of the year's end. Repeatedly cast Ultimates to startle it and cause it to retreat. Only Eastern Deities, with their divine power, can force",
+      "strategyNotes": "Spam Ultimates to light fireworks - 30 fireworks ends the battle. The Nian Beast takes 10% increased DMG for every 5s in battle, so sustained fights favor you over time. Only Eastern Deities can be used.",
+      "mechanics": [
+        "Cast Ultimates to light fireworks; 30 fireworks ends the battle (win condition)",
+        "Takes 10% increased DMG for every 5s in battle (ramps in your favor)",
+        "Leaps across the battlefield dealing AoE knockdown + knockback on return"
+      ],
+      "mechanicTags": [
+        "ULTIMATE_TRIGGER",
+        "RAMPING_VULNERABILITY",
+        "AOE_BURST",
+        "KNOCKDOWN",
+        "KNOCKBACK",
+        "WIPE_CONDITION"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "Evil-Purging Stomp",
+          "description": "Leaps across the battlefield, dealing 100% ATK as DMG and knocking down targets hit. Upon returning, deals 100% ATK as DMG and knocks back units hit.",
+          "mechanics": ["AoE knockdown on leap", "AoE knockback on return"],
+          "mechanicTags": ["AOE_BURST", "KNOCKDOWN", "KNOCKBACK"]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Purging Fireworks",
+          "description": "Each time an ally on the field casts an Ultimate, a firework is lit. After 30 fireworks are lit, the Nian Beast will flee, ending the battle.",
+          "mechanics": ["30 Ultimate casts ends the battle (win condition)", "Incentivizes maximum Ultimate frequency"],
+          "mechanicTags": ["ULTIMATE_TRIGGER", "WIPE_CONDITION"]
+        },
+        {
+          "id": "skill_3",
+          "type": "Skill",
+          "name": "Waning Might",
+          "description": "The Nian Beast weakens as the night passes, taking 10% increased DMG for every 5s in battle.",
+          "mechanics": ["Stacking DMG vulnerability over time (favors player the longer the fight goes)"],
+          "mechanicTags": ["RAMPING_VULNERABILITY"]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "nian_beast_1",
+          "label": "Team A",
+          "hero-comp": "zeus, meret, yuelao, caishen, dionysus",
+          "heroes": ["zeus", "meret", "yuelao", "caishen", "dionysus"],
+          "reason": "Only Eastern Deities can be used. Prioritize heroes with short Ultimate cooldowns to reach 30 fireworks quickly.",
+          "notes": [
+            "Only Eastern Deities are eligible for this fight",
+            "Maximize Ultimate cast frequency to light fireworks faster",
+            "Damage ramps 10% per 5s - sustained fights become easier over time"
+          ],
+          "source": "auto"
+        },
+         {
+          "id": "nian_beast_2",
+          "label": "Team B",
+          "hero-comp": "yuelao, caishen, isis, meret, cronus",
+          "heroes": ["yuelao", "caishen", "isis", "meret", "cronus"],
+          "reason": "",
+          "notes": [
+          ],
+          "source": "auto"
+        }
+      ]
     }
   ]
 }
