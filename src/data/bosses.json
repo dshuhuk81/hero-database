@@ -14,7 +14,7 @@
       "class": "Tank",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/baphomet.webp",
       "summary": "High sustain boss with defensive stance and energy-drain mechanics.",
-      "strategyNotes": "Prioritize Energy Regen on supports to counter pentacle drain. During defensive stance, save ultimates and focus on non-ult damage to drain boss energy faster. Keep supports close to DPS to cleanse silence debuff immediately.",
+      "strategyNotes": "Prioritize Energy Regen on supports to counter pentacle drain. During defensive stance, save ultimates and focus on non-ult damage to drain boss energy faster. Dionysus ultimate can cleanse the silence debuff, but the 2s immunity window is short - effectiveness is RNG-dependent in auto mode. More reliable when played manually.",
       "mechanics": [
         "Energy drain zones (pentacle) every 3s",
         "Defensive stance reduces damage heavily",
@@ -127,7 +127,7 @@
         "class": "Tank",
         "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/epica.webp",
         "summary": "Control-heavy boss: repeated random-target damage + long root cage with knockback, scaling via Berserk.",
-        "strategyNotes": "Cleanse support essential to remove root debuffs. Shield/heal random targets during channel windows. Position backline carefully to avoid knockback disruption. Fast burst to prevent Berserk scaling.",
+        "strategyNotes": "Shield/heal random targets during channel windows. The root from Resentment Cage cannot be removed (it is a cage, not a standard debuff). Position backline carefully to avoid knockback disruption. Fast burst to prevent Berserk scaling.",
         "mechanics": [
           "Repeated random-target damage over time (8s channel)",
           "Roots a random enemy for 10s + knocks back nearby units",
@@ -179,7 +179,7 @@
       "class": "Tank",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/lilith.webp",
       "summary": "Summoner boss that delegates damage through spawned children. Main threat is sustained ATK SPD scaling and repeated summons; primary target is untargetable but takes shared damage.",
-      "strategyNotes": "Focus damage on children first they scale with Lilith's stats but are temporary. Cleanse reduces ATK SPD buff windows. AoE heroes shine here to clear multiple children efficiently. Sustain/healing layers critical because damage transfers to Lilith even when children absorb hits. Consider burst rotations to clear children before exponential scaling.",
+      "strategyNotes": "Focus damage on children first they scale with Lilith's stats but are temporary. AoE heroes shine here to clear multiple children efficiently. Sustain/healing layers critical because damage transfers to Lilith even when children absorb hits. Consider burst rotations to clear children before exponential scaling.",
       "mechanics": [
         "Summoned children inherit % of Lilith's base/current ATK and scale HP as 600% ATK",
         "Lilith is untargetable but takes all damage children take",
@@ -251,7 +251,7 @@
           "label": "Beginner",
           "hero-comp": "dionysus, yuelao, caishen, hladgunnr, isis",
           "heroes": ["dionysus", "yuelao", "caishen", "hladgunnr", "isis"],
-          "reason": "Viable comp without Zeus or Cronus (whale-heavy heroes). Hladgunnr provides reliable AoE DPS against Lilith children. Isis adds cleanse and sustain alongside the quad-support backbone.",
+          "reason": "Viable comp without Zeus or Cronus (whale-heavy heroes). Hladgunnr provides reliable AoE DPS against Lilith children. Isis adds sustain alongside the quad-support backbone.",
           "notes": [
             "Hladgunnr is the budget AoE DPS alternative to Zeus",
             "Scales well without high relic investment in a single carry",
@@ -270,7 +270,7 @@
       "class": "Tank",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/isthar_vi.webp",
       "summary": "Barrier-based boss that punishes teams outside the umbrella and swings fights with knockback and large battlefield-wide bursts.",
-      "strategyNotes": "Stay inside umbrella barrier for full damage output. Shield heroes critical to block knockback and AoE bursts. Time ultimates during burst windows when umbrella protection is active. Single-target DPS vastly preferred over AoE heroes.",
+      "strategyNotes": "Stay inside umbrella barrier for full damage output. Shield heroes critical to block knockback and AoE bursts. Use Dionysus ultimate to cleanse the ATK SPD and Move SPD slow from Sacred Ablution. Time ultimates during burst windows when umbrella protection is active. Single-target DPS vastly preferred over AoE heroes.",
       "mechanics": [
         "Umbrella barrier: units outside deal 80% less damage",
         "Knockback pulse; shielded units are immune",
@@ -396,7 +396,7 @@
       "class": "Tank",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/typhoon.webp",
       "summary": "Multi-part physical boss with fixed backline targeting, petrify mechanics, and opposing damage vulnerabilities. Splits damage across 3 independent heads (center, left, right) with the left head vulnerable to ranged attacks and the right vulnerable to melee, forcing mixed team compositions. Applies healing reduction to frontline units and threatens center backline with guaranteed petrification after repeated attacks.",
-      "strategyNotes": "Position your strongest hero away from center backline to avoid focused petrification. Build a balanced team with both melee and ranged damage dealers to exploit head vulnerabilities. Tanks should absorb the AoE knockback and ultimate. Healing is less effective on frontline due to 50% heal reduction, so prioritize shields and damage mitigation. Focus fire on one head at a time or spread damage based on your team's melee/ranged ratio.",
+      "strategyNotes": "Position your strongest hero away from center backline to avoid focused petrification. Build a balanced team with both melee and ranged damage dealers to exploit head vulnerabilities. Tanks should absorb the AoE knockback and ultimate. Healing is less effective on frontline due to 50% heal reduction - use Dionysus ultimate to cleanse the heal reduction debuff. Focus fire on one head at a time or spread damage based on your team's melee/ranged ratio.",
       "mechanics": [
           "Always targets center backline unit with normal attacks",
           "Petrifies targeted unit for 2s after 5 consecutive attacks",
@@ -468,7 +468,7 @@
           "label": "Ranged Focus",
           "hero-comp": "cancer, hladgunnr, isis, zeus, dionysus",
           "heroes": ["cancer", "hladgunnr", "isis", "zeus", "dionysus"],
-          "reason": "Triple ranged DPS composition to maximize left head vulnerability (+25% damage to all main damage dealers). Cancer tanks center backline petrification while ranged DPS stays safe. Dionysus provides shields and cleanse.",
+          "reason": "Triple ranged DPS composition to maximize left head vulnerability (+25% damage to all main damage dealers). Cancer tanks center backline petrification while ranged DPS stays safe. Dionysus provides shields and energy sustain.",
           "notes": [
             "Position Cancer in center backline to tank petrification",
             "All DPS exploit left head's ranged vulnerability",
