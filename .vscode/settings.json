@@ -3,6 +3,16 @@
         "/^cd /Users/daschultheiss/hero-database && node -e \"\nconst fs = require\\('fs'\\);\nconst dir = 'src/data/heroes';\nconst files = fs\\.readdirSync\\(dir\\)\\.filter\\(f => f\\.endsWith\\('\\.json'\\)\\);\nconst values = new Set\\(\\);\nlet relicCount = 0;\nfor \\(const f of files\\) \\{\n  const h = JSON\\.parse\\(fs\\.readFileSync\\(dir\\+'/'\\+f,'utf-8'\\)\\);\n  h\\.skills\\.forEach\\(s => values\\.add\\(s\\.damageType\\)\\);\n  if \\(h\\.relic\\?\\.damageType !== undefined\\) \\{ values\\.add\\(h\\.relic\\.damageType\\); relicCount\\+\\+; \\}\n\\}\nconsole\\.log\\('Distinct damageType values:', \\[\\.\\.\\.values\\]\\.map\\(v => JSON\\.stringify\\(v\\)\\)\\);\nconsole\\.log\\('Heroes with relic damageType:', relicCount, '/', files\\.length\\);\n\"$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^git check-ignore -v leak leak/game_extracted/region_754c000000/Battle/Data/SceneInfo/New_Arena_01_info\\.lua$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
+    },
+    "files.watcherExclude": {
+        "**/leak/**": true
+    },
+    "search.exclude": {
+        "**/leak/**": true
     }
 }

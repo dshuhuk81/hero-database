@@ -3,6 +3,9 @@
 ## Project Overview
 Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
 
+## Game leaked data
+unter data-mine/game_extracted there are a ton of ingame infos. maybe we can use something here. an explanation what was done to achieve that is within @Extraction_Progress.md
+
 ## Plan
 Do not make any changes until you have 95% confidence in what you need to build. Ask me follow up questions until you reach that confidence.
 

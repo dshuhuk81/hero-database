@@ -3540,11 +3540,11 @@
       {
         "id": "skill_1",
         "name": "Ultimate Domain",
-        "description": "Passive: At the start of battle, summons 3 inactive mechanical devices onto the field. Active: Activates the farthest device, expanding its area of effect. Allies inside recover HP and Energy per second; enemies inside have ATK Power and ATK Speed reduced. When all 3 devices are active, they merge into a single field-wide device -- immediately reducing all enemies' damage rate and boosting friendly damage rate and ATK Speed. Subsequent casts also trigger this Fusion effect.",
+        "description": "Passive: At the start of battle, summons 3 inactive mechanical devices onto the field. Active: Activates the furthest device, expanding its area of effect. Allies inside recover HP equal to 50% of ATK and 15 Energy per second; enemies inside have ATK reduced by 15% and ATK SPD reduced by 20%. When all 3 devices are active, all enemies' DMG is reduced by 20% and all allies' DMG is increased by 30% and ATK SPD by 50% for 5 seconds. Subsequent Ultimate casts also trigger this Fusion effect.",
         "upgrades": {
           "level2": "HP and Energy recovered per second by allies inside activated devices increased.",
-          "level3": "ATK Power and ATK Speed reduction on enemies inside devices increased.",
-          "level4": "Fusion effect amplified: greater enemy damage rate reduction and higher friendly damage rate and ATK Speed boost."
+          "level3": "ATK and ATK SPD reduction on enemies inside devices increased.",
+          "level4": "Fusion effect amplified: greater enemy DMG reduction and higher ally DMG and ATK SPD boost."
         },
         "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_1.png",
         "damageType": "magical",
@@ -3552,23 +3552,23 @@
       },
       {
         "id": "skill_2",
-        "name": "Weak Point Analysis",
-        "description": "Fires a laser at the enemy currently dealing the most damage, binding them for a duration. Each active device on the field extends the Bind duration by a set amount. Also reduces the target's Physical and Magical resistance.",
+        "name": "Weakness Analysis",
+        "description": "Fires a laser to Restrain the enemy with the highest DMG for 2 seconds. The duration is extended by 0.5 seconds for each activated device on the field. While restrained, the target's Armor and Magical RED are reduced by 20%.",
         "upgrades": {
-          "level2": "Physical and Magical resistance reduction increased.",
-          "level3": "Bind duration extension per active field device increased.",
-          "level4": "Physical and Magical resistance reduction increased again."
+          "level2": "Armor and Magical RED reduction increased.",
+          "level3": "Restrain duration extension per activated device increased.",
+          "level4": "Armor and Magical RED reduction increased again."
         },
         "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_2.png",
         "damageType": "magical"
       },
       {
         "id": "skill_3",
-        "name": "Force Field Shield",
-        "description": "Heals the most wounded allied unit and reduces the damage they receive for a duration. For each active device on the field, the damage reduction effect is additionally increased by a percentage.",
+        "name": "Force Shield",
+        "description": "Heals the weakest ally for HP equal to 150% of ATK and reduces their DMG taken by 10% for 5 seconds. For each activated device on the field, DMG taken is further reduced by 5%.",
         "upgrades": {
           "level2": "Healing effect increased.",
-          "level3": "Damage reduction from active field devices increased.",
+          "level3": "DMG reduction per activated device increased.",
           "level4": "Healing effect increased again."
         },
         "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_3.png",
@@ -3576,11 +3576,11 @@
       },
       {
         "id": "skill_4",
-        "name": "Source Resonance",
-        "description": "Hephaestus's Energy recovery speed is increased by a percentage.",
+        "name": "Origin Resonance",
+        "description": "Hephaestus's Energy Regen is increased by 20%.",
         "upgrades": {
-          "level2": "Energy recovery rate increase is higher.",
-          "level3": "Energy recovery rate increase is higher again.",
+          "level2": "Energy Regen increase is higher.",
+          "level3": "Energy Regen increase is higher again.",
           "level4": "Gains initial Energy at the start of battle."
         },
         "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_4.png",
@@ -3589,11 +3589,11 @@
     ],
     "relic": {
       "name": "Undying Forge",
-      "description": "At the start of battle, places a Forge in front of Hephaestus. If he moves away, he is teleported back and put in an intercepted state. While at the Forge, Hephaestus enters Focus state: unlimited attack range and reduced damage taken.",
+      "description": "At the start of battle, Hephaestus places a forge. If he leaves it, the forge teleports him back and puts him in an Overload state, unable to act for 5 seconds. While at the forge, Hephaestus enters a Focused state, gaining infinite attack range and taking 30% less DMG.",
       "upgrades": {
-        "level2": "In Focus state: cooldowns of Weak Point Analysis and Force Field Shield reduced.",
-        "level3": "In Focus state: Energy cost to cast Ultimate Domain reduced.",
-        "level4": "In Focus state: damage taken further reduced."
+        "level2": "In Focused state: cooldowns of Weakness Analysis and Force Shield reduced.",
+        "level3": "In Focused state: Energy cost to cast Ultimate Domain reduced.",
+        "level4": "In Focused state: DMG taken further reduced."
       },
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_relic.png"
     },
