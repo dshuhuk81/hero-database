@@ -16,13 +16,16 @@
     "import-attack-rates": "node scripts/import-attack-rates.cjs",
     "prepare": "git config core.hooksPath .githooks",
     "db:merge": "node scripts/merge-heroes-db.js",
+    "validate:hero-detail-stats": "node scripts/validate-hero-detail-stats.mjs",
     "validate:tags": "node scripts/test-hero-tags.js",
     "validate:all": "node validate-pvp-ratings.js && node scripts/test-hero-tags.js",
     "after:hero-edit": "node scripts/merge-heroes-db.js && node scripts/test-hero-tags.js",
     "after:tags": "node scripts/test-hero-tags.js && node scripts/merge-heroes-db.js",
     "after:boss-import": "node scripts/merge-heroes-db.js",
     "rebuild": "node scripts/merge-heroes-db.js && astro build",
-    "upload-assets": "node scripts/upload-to-r2.mjs"
+    "upload-assets": "node scripts/upload-to-r2.mjs",
+    "upload-assets:dry": "node scripts/upload-to-r2.mjs --dry-run",
+    "upload-assets:force": "node scripts/upload-to-r2.mjs --force"
   },
   "engines": {
     "node": "20.x"

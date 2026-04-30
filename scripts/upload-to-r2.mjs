@@ -6,6 +6,8 @@ import { dirname } from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
+const FORCE = process.argv.includes("--force");
+const DRY_RUN = process.argv.includes("--dry-run");
 
 // Load .env.r2
 const envPath = join(ROOT, ".env.r2");
@@ -81,6 +83,10 @@ async function uploadFile(filePath) {
   const contentType = MIME_TYPES[ext] || "application/octet-stream";
   const body = readFileSync(filePath);
 
+  if (DRY_RUN) {
+    return key;
+  }
+
   await client.send(
     new PutObjectCommand({
       Bucket: BUCKET,
@@ -96,6 +102,11 @@ async function uploadFile(filePath) {
 async function main() {
   const files = getAllFiles(PUBLIC_DIR);
   console.log(`Found ${files.length} files to upload`);
+  if (DRY_RUN) {
+    console.log(`[DRY RUN] ${FORCE ? "Overwrite mode enabled" : "Existing remote files will be skipped"}`);
+  } else if (FORCE) {
+    console.log(`[LIVE] Overwrite mode enabled`);
+  }
 
   let uploaded = 0;
   let skipped = 0;
@@ -104,14 +115,14 @@ async function main() {
   for (const filePath of files) {
     const key = relative(PUBLIC_DIR, filePath).replace(/\\/g, "/");
     try {
-      const exists = await fileExistsInR2(key);
+      const exists = FORCE ? false : await fileExistsInR2(key);
       if (exists) {
         console.log(`  SKIP ${key} (already exists)`);
         skipped++;
         continue;
       }
       await uploadFile(filePath);
-      console.log(`  OK   ${key}`);
+      console.log(`  ${DRY_RUN ? "PLAN" : "OK  "} ${key}${FORCE ? " (overwrite)" : ""}`);
       uploaded++;
     } catch (err) {
       console.error(`  ERR  ${key}: ${err.message}`);
