@@ -253,35 +253,25 @@ const JIUTIANXUANNV_COMPS = [
 
 const HEPHAESTUS_COMPS = [
   {
-    label: "PVE — Fusion Power Core",
+    label: "PVE — Tower and Long Fights",
     heroes: ["hephaestus", "caishen", "isis", "pan", "prometheus"],
-    reason: "This setup focuses on reaching Hephaestus's full power as fast as possible. Caishen speeds up his Ultimate cycles, allowing all three devices to activate earlier. Once active, the team benefits from a strong damage boost window where Isis can deal massive damage. Pan helps keep enemies inside the device zones, ensuring all debuffs apply consistently.",
+    reason: "The cleanest way to run Hephaestus. Caishen pushes energy into the team so Hephaestus reaches his third Ultimate faster. Once all three devices are live, Isis fires into a five-second window where she deals 30% more damage onto a target whose defenses have been stripped. Pan keeps enemies from escaping the device zones. Prometheus holds the frontline so nothing reaches Hephaestus.",
     notes: [
-      "Hephaestus needs 3 Ultimate casts to unlock his full power — Caishen is critical to reach this faster.",
-      "The 5-second Fusion window is the main damage phase — time your carry damage around it.",
-      "Pan's crowd control keeps enemies inside the zones, which is required for the debuffs to work reliably.",
-      "Prometheus stabilizes the frontline so enemies cannot easily reach Hephaestus."
+      "Hephaestus needs three Ultimates before the big window opens - Caishen is what makes that happen in time.",
+      "Wait for the Fusion window to fire your main damage - Isis inside that five-second burst hits far harder than outside it.",
+      "Pan's crowd control keeps enemies sitting inside the zones where the attack speed debuff applies.",
+      "Place Hephaestus in the back corner before the fight starts. He cannot reposition."
     ]
   },
   {
-    label: "PVP — Setup-Dependent Control",
+    label: "PVP — Survive Long Enough to Hit",
     heroes: ["hephaestus", "geb", "hladgunnr", "nyx", "cronus"],
-    reason: "A defensive PvP setup that can work if Hephaestus survives long enough to activate all devices. Geb pulls enemies into the zones while Nyx and Hladgunnr focus the most dangerous target. Cronus slows down enemy skill rotations, giving Hephaestus more time to scale.",
+    reason: "A slower PvP team built around letting Hephaestus reach two or three devices before the fight ends. Cronus slows enemy skill rotations and gives the team more time before the opposing burst lands. Geb pushes enemies toward the device zones. Weakness Analysis locks down their most dangerous attacker, and Hladgunnr delivers the damage when that window opens.",
     notes: [
-      "This team only works if Hephaestus survives long enough to use multiple Ultimates.",
-      "Fast burst teams can defeat this setup before it becomes effective.",
-      "Hephaestus cannot move — positioning before the fight is critical.",
-      "Nyx benefits from enemies being locked in place by Hephaestus."
-    ]
-  },
-  {
-    label: "Boss — Not Recommended",
-    heroes: ["hephaestus", "dionysus", "hecate", "poseidon", "mengpo"],
-    reason: "Hephaestus is generally not optimal for boss fights. His abilities depend on enemies being inside his zones and require time to scale. Boss fights favor consistent damage boosts and faster setups, which other supports provide better.",
-    notes: [
-      "Hephaestus provides no direct energy boost to the main damage dealer.",
-      "His damage window is short and harder to align with boss damage cycles.",
-      "Other supports like Caishen or Mengpo are more consistent for boss content."
+      "This only works if the fight lasts long enough. Against teams that burst everything down in ten seconds, look elsewhere.",
+      "Hephaestus cannot move - pick his starting position carefully and expect him to stay there.",
+      "Cronus buying time is what makes this viable in PvP - he is not optional in this lineup.",
+      "Weakness Analysis fires automatically on the highest-damage enemy, which usually lines up perfectly with Hladgunnr's target."
     ]
   }
 ];
@@ -2556,12 +2546,13 @@ const activeGuide = releasedGuides[0];
         <!-- VERDICT -->
         <section class="section">
           <div class="verdict-strip">
-            <div class="verdict-role">Zone-Control Support</div>
-            <p class="verdict-line">Deploys 3 devices at battle start. Each Ultimate activates one. Third activation triggers a field-wide Fusion - team damage up, enemy damage down, highest-damage carry locked out.</p>
+            <div class="verdict-role">Device Support</div>
+            <p class="verdict-line">Hephaestus is a <strong>Legendary Support</strong> from the <strong>Hearts faction</strong>. He drops three mechanical devices on the field at the start of every battle and spends his Ultimates turning them on one by one. The more devices running, the harder everything he does hits.</p>
+            <p class="verdict-line">He cannot move. His Relic plants him in place and he stays there. In exchange he takes 30% less damage and can attack from anywhere on the field. He is slow to get going, but once all three devices are online he buffs your entire team and debuffs the whole enemy team at the same time. No other support does both.</p>
             <div class="verdict-meta">
-              <span class="verdict-meta-item"><strong>Best in:</strong> Boss / Long PvE</span>
-              <span class="verdict-meta-item"><strong>Skip if:</strong> Fast PvP burst / Need revive</span>
-              <span class="verdict-meta-item"><strong>Key investment:</strong> Relic Lv3 first</span>
+              <span class="verdict-meta-item"><strong>Best in:</strong> Long PvE and Tower</span>
+              <span class="verdict-meta-item"><strong>Skip if:</strong> You need a revive or fast healing</span>
+              <span class="verdict-meta-item"><strong>First upgrade:</strong> Relic Lv3</span>
             </div>
           </div>
         </section>
@@ -2570,21 +2561,21 @@ const activeGuide = releasedGuides[0];
         <section class="section">
           <div class="sw-grid">
             <div class="sw-card strengths">
-              <div class="sw-title">Use Hephaestus when</div>
+              <div class="sw-title">He works well when</div>
               <ul class="sw-list">
-                <li>Fights last long enough for 3 Ultimate casts (Boss, Tower, multi-wave PvE)</li>
-                <li>Your carry benefits from resistance shred (Isis, Hecate, any Mage)</li>
-                <li>You have Caishen or Dionysus to accelerate his Energy loop</li>
-                <li>You want the highest-damage enemy locked down automatically</li>
+                <li>Fights run long enough for him to use his Ultimate three times - Tower stages and multi-wave PvE are ideal</li>
+                <li>Your damage dealer is magical - he strips armor and magic resistance off the toughest enemy automatically</li>
+                <li>You have Caishen alongside him - more energy means faster device activation</li>
+                <li>You want someone to stall the most dangerous enemy while your team deals damage</li>
               </ul>
             </div>
             <div class="sw-card weaknesses">
-              <div class="sw-title">Skip Hephaestus when</div>
+              <div class="sw-title">He struggles when</div>
               <ul class="sw-list">
-                <li>Fights end in under 15 seconds - Fusion will never fire</li>
-                <li>You need a revive (Mengpo) or immediate healing (Yuelao, Cancer)</li>
-                <li>You face mobile dive-burst comps that kill supports early</li>
-                <li>Relic Lv3 is not reachable yet - he feels slow without it</li>
+                <li>Fights end before he can use his Ultimate three times - he never reaches full strength</li>
+                <li>Your team needs a revive or strong healing - he only heals one ally at a time</li>
+                <li>Enemy assassins dive the backline - he cannot move away and gets punished hard</li>
+                <li>His Relic is below level 3 - the energy cost reduction there is what makes everything click</li>
               </ul>
             </div>
           </div>
@@ -2592,16 +2583,11 @@ const activeGuide = releasedGuides[0];
 
         <!-- HOW IT WORKS -->
         <section class="section">
-          <div class="section-title">How It Works</div>
+          <div class="section-title">How he plays out</div>
           <div class="mechanic-box">
-            <div class="mechanic-label">The Device and Fusion Loop</div>
-            <ul class="mechanic-list">
-              <li><strong>3 inactive devices</strong> are placed on the field at battle start via Ultimate Domain's passive - no action required, they are already there.</li>
-              <li>Each Ultimate cast activates the farthest inactive device. Active devices create persistent zones: allies inside recover HP and Energy per second; enemies inside lose ATK Power and ATK Speed.</li>
-              <li>Active device count scales two other skills directly: Weak Point Analysis gets a longer Bind duration per device, and Force Field Shield gets more damage reduction per device.</li>
-              <li>When all 3 devices are active, they <strong>merge into a field-wide Fusion effect</strong>: all enemies deal less damage, all allies deal more and gain ATK Speed for 5 seconds. Every subsequent Ultimate re-triggers Fusion.</li>
-              <li>His <strong>Forge</strong> anchors him in place permanently. He cannot reposition. If displaced, he teleports back. In exchange: unlimited attack range and reduced damage taken while anchored. Place him backline center at the start - that is the only positioning decision.</li>
-            </ul>
+            <p style="margin-bottom:12px; color:var(--text-muted); font-size:14px; line-height:1.6;">Three devices appear on the field the moment the fight starts. They do nothing yet. Each time Hephaestus uses his Ultimate, he switches one on. A switched-on device creates a zone - allies inside it slowly recover HP and energy, enemies inside it become slower and weaker.</p>
+            <p style="margin-bottom:12px; color:var(--text-muted); font-size:14px; line-height:1.6;">After the second device is on, his laser and his shield become noticeably stronger. The laser holds enemies in place for longer, the shield reduces more damage.</p>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6;">When all three are running, they merge. For five seconds, your entire team deals 30% more damage and attacks 50% faster, while the entire enemy team deals less. That is the moment you want your carry to fire. Every Ultimate he casts after that triggers the same five-second window again.</p>
           </div>
         </section>
 
@@ -2617,14 +2603,15 @@ const activeGuide = releasedGuides[0];
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
               <p class="skill-desc">
-                <strong>Passive:</strong> Deploys 3 inactive devices at battle start.<br/>
-                <strong>Active:</strong> Activates farthest device. Zones regen ally HP + Energy, reduce enemy ATK + ATK SPD. All 3 active triggers <span class="highlight">Fusion</span>: team DMG up, enemy DMG down, ATK SPD boost for 5s. Every subsequent cast re-triggers Fusion.
+                <strong>Passive:</strong> At the start of battle, summons 3 inactive mechanical devices onto the field.<br/>
+                <strong>Active:</strong> Activates the furthest device, expanding its area of effect. Allies inside recover HP equal to 50% of ATK and 15 Energy per second; enemies inside have ATK reduced by 15% and ATK SPD reduced by 20%. When all 3 devices are active, all enemies' DMG is reduced by 20% and all allies' DMG is increased by 30% and ATK SPD by 50% for 5 seconds. Subsequent Ultimate casts also trigger this <span class="highlight">Fusion</span> effect.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Zone ally HP + Energy regen increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Zone enemy ATK + ATK SPD reduction increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Fusion amplified: stronger enemy DMG reduction and higher ally DMG + ATK SPD boost.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">HP and Energy recovered per second by allies inside activated devices increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">ATK and ATK SPD reduction on enemies inside devices increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Fusion effect amplified: greater enemy DMG reduction and higher ally DMG and ATK SPD boost.</span></div>
               </div>
+              <div class="skill-note">This is his entire identity in one skill. The first three Ultimates build toward the five-second Fusion window - that is when everything explodes. After that, every Ultimate he casts restarts the window. The longer the fight, the more times Fusion fires, and the more valuable he becomes. Upgrade this to Lv4 once his Relic and his passive are sorted - it makes each Fusion window noticeably stronger.</div>
             </div>
 
             <div class="skill-card relic">
@@ -2634,80 +2621,70 @@ const activeGuide = releasedGuides[0];
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
               <p class="skill-desc">
-                Places a Forge at battle start. Moving away teleports Hephaestus back. While anchored: <span class="highlight">unlimited attack range</span> + reduced damage taken.
+                At the start of battle, Hephaestus places a forge. If he leaves it, the forge teleports him back and puts him in an <span class="highlight">Overload</span> state, unable to act for 5 seconds. While at the forge, Hephaestus enters a <span class="highlight">Focused</span> state, gaining infinite attack range and taking 30% less DMG.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Cooldowns of Weak Point Analysis and Force Field Shield reduced.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text"><strong>Energy cost to cast Ultimate reduced.</strong> - Critical investment breakpoint. Reach this first.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Damage taken while anchored further reduced.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">In Focused state: cooldowns of Weakness Analysis and Force Shield reduced.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">In Focused state: Energy cost to cast Ultimate Domain reduced.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">In Focused state: DMG taken further reduced.</span></div>
               </div>
+              <div class="skill-note">The trade-off that defines him. He cannot move - full stop. If something pushes him off his spot, he gets yanked back and frozen for five seconds, which usually means death. The upside is he takes 30% less damage and hits from any distance. <strong>Relic Lv3 is the most important upgrade in his entire kit</strong> - it lowers the energy cost of his Ultimate, which means faster device activation and earlier Fusion. Push the Relic to level 30 as the priority investment.</div>
             </div>
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_2.png" alt="Weak Point Analysis" />
-                <span class="skill-name">Weak Point Analysis</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_2.png" alt="Weakness Analysis" />
+                <span class="skill-name">Weakness Analysis</span>
                 <span class="skill-badge badge-skill">Active</span>
               </div>
               <p class="skill-desc">
-                Fires a laser at the enemy currently dealing the most damage. <span class="highlight">Binds</span> the target - duration extended per active device. Also reduces target's <span class="highlight">Physical and Magical resistance</span>.
+                Fires a laser to <span class="highlight">Restrain</span> the enemy with the highest DMG for 2 seconds. The duration is extended by 0.5 seconds for each activated device on the field. While restrained, the target's Armor and Magical RED are reduced by 20%.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Resistance reduction increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Bind duration per active device increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Resistance reduction increased again.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Armor and Magical RED reduction increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Restrain duration extension per activated device increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Armor and Magical RED reduction increased again.</span></div>
               </div>
+              <div class="skill-note">He automatically picks the most dangerous enemy on the field and locks them down. No decision-making required. With all three devices running, the lock lasts up to 3.5 seconds - and while that enemy is held still, their armor and magic resistance are stripped. If your carry is magical, this is the moment they should fire. Upgrade to Lv3 to extend the lock even further.</div>
             </div>
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_3.png" alt="Force Field Shield" />
-                <span class="skill-name">Force Field Shield</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_3.png" alt="Force Shield" />
+                <span class="skill-name">Force Shield</span>
                 <span class="skill-badge badge-skill">Active</span>
               </div>
               <p class="skill-desc">
-                Heals the most wounded ally. Applies a <span class="highlight">damage reduction</span> buff for a duration - base amount plus a bonus per active device on the field.
+                Heals the weakest ally for HP equal to 150% of ATK and reduces their DMG taken by 10% for 5 seconds. For each activated device on the field, DMG taken is further reduced by 5%.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Healing increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Damage reduction bonus per device increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Healing increased again.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Healing effect increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">DMG reduction per activated device increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Healing effect increased again.</span></div>
               </div>
+              <div class="skill-note">Heals whoever is lowest on HP and gives them a damage shield that grows with each active device. With all three devices up, the shield reaches 25% damage reduction on top of the heal. It only targets one ally, so do not treat this as team-wide sustain - it is more like emergency support for whoever is taking the most pressure. The device count is what makes it worthwhile.</div>
             </div>
 
             <div class="skill-card">
               <div class="skill-header">
-                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_4.png" alt="Source Resonance" />
-                <span class="skill-name">Source Resonance</span>
+                <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_4.png" alt="Origin Resonance" />
+                <span class="skill-name">Origin Resonance</span>
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
               <p class="skill-desc">
-                Increases Hephaestus's <span class="highlight">Energy recovery speed</span> passively. Lv4 grants initial Energy at battle start - first device activates earlier.
+                Hephaestus's <span class="highlight">Energy Regen</span> is increased by 20%.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Energy recovery rate higher.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Energy recovery rate higher again.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Grants initial Energy at battle start.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Energy Regen increase is higher.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Energy Regen increase is higher again.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Gains initial Energy at the start of battle.</span></div>
               </div>
+              <div class="skill-note">Boring on paper, important in practice. He needs to cast his Ultimate three times before he is fully online, so anything that gets him there faster is valuable. Lv4 gives him starting energy - meaning his first Ultimate arrives noticeably earlier. Pair that with Relic Lv3 lowering the energy cost per cast and the whole thing accelerates significantly. Upgrade to Lv4 early.</div>
             </div>
 
           </div>
         </section>
 
-        <!-- INVESTMENT ORDER -->
-        <section class="section">
-          <div class="section-title">Investment Order</div>
-          <div class="mechanic-box">
-            <div class="mechanic-label">Do this in order</div>
-            <ol class="mechanic-list" style="list-style:decimal; padding-left:20px;">
-              <li><strong>Relic Lv3</strong> - Energy cost reduction on Ultimate. Moves Fusion trigger earlier. This single upgrade has the highest fight-deciding impact in his entire kit.</li>
-              <li><strong>Source Resonance Lv4</strong> - Initial Energy at battle start. Combined with Relic Lv3, first device activates as early as possible.</li>
-              <li><strong>Ultimate Domain Lv4</strong> - Amplifies every Fusion window. Stronger team DMG boost and enemy DMG reduction on each trigger.</li>
-              <li><strong>Weak Point Analysis Lv3</strong> - Extends Bind duration per device. With 3 active, the enemy carry can be locked for the entire Fusion window.</li>
-              <li><strong>Force Field Shield Lv3</strong> - Increases damage reduction bonus per device. Lower priority than the loop accelerators above.</li>
-            </ol>
-          </div>
-        </section>
 
         <!-- RATINGS -->
         <section class="section" id="hephaestus-ratings">
@@ -2716,24 +2693,24 @@ const activeGuide = releasedGuides[0];
             <div class="rating-card">
               <div class="rating-mode">PVE / Campaign</div>
               <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
-              <div class="rating-desc">Device zones shine in long fights. Weaker in short early-campaign waves.</div>
+              <div class="rating-desc">His best mode. Long fights give him time to get all three devices running and repeat the Fusion window multiple times.</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A+</span></div>
-              <div class="rating-desc">Long fights guarantee Fusion. Resistance shred multiplies the whole team's output.</div>
+              <div class="rating-cell"><span class="rating-badge rating-b">B</span></div>
+              <div class="rating-desc">Fusion will fire eventually in a long boss fight, but he provides no energy to your carry and his healing only targets one ally. Other supports do more here.</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
               <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
-              <div class="rating-desc">Strong if Fusion fires. Hard-countered by dive-burst that ends fights before the third cast.</div>
+              <div class="rating-desc">Viable if the fight lasts. The automatic lockdown on the most dangerous enemy is genuinely strong. Teams that kill in ten seconds will end him before he matters.</div>
             </div>
           </div>
         </section>
 
         <!-- COMPS -->
         <section class="section" id="hephaestus-comps">
-          <div class="section-title">Suggested Comps</div>
+          <div class="section-title">Teams that work with him</div>
           <div class="comp-list">
             {HEPHAESTUS_COMPS.map(comp => (
               <div class="comp-entry">
@@ -2759,29 +2736,45 @@ const activeGuide = releasedGuides[0];
           </div>
         </section>
 
+        <!-- SHOULD YOU SUMMON -->
+        <section class="section">
+          <div class="section-title">Should you summon?</div>
+          <div class="verdict-strip">
+            <div class="verdict-role">Probably not your first pull</div>
+            <p class="verdict-line">Hephaestus is a good support - but he is a second or third one, not a first. He slots in beside a carry and another support to add a layer on top of what is already working. On his own, he does not carry a team anywhere.</p>
+            <p class="verdict-line">The bigger issue is the investment. His Relic needs to reach level 3 before he feels right, and that is a meaningful amount of resources. If you are already pushing the Relic on Caishen, Mengpo, or another support you use in every mode, spending that same investment on Hephaestus for a situational payoff is hard to justify.</p>
+            <p class="verdict-line">He also needs fights to go long. Most PvP matches and a lot of campaign stages are over before all three devices are running. In those situations he contributes almost nothing compared to a support who is useful from the first second.</p>
+            <div class="verdict-meta">
+              <span class="verdict-meta-item"><strong>Worth pulling if:</strong> You already have a strong support core and want depth for Tower</span>
+              <span class="verdict-meta-item"><strong>Skip if:</strong> You are still building your first carry or your Relic resources are tight</span>
+              <span class="verdict-meta-item"><strong>Free cards:</strong> Fine to build him that way - he does not need to be chased</span>
+            </div>
+          </div>
+        </section>
+
         <!-- KEY SYNERGIES -->
         <section class="section" id="hephaestus-synergy">
-          <div class="section-title">Key Synergies</div>
+          <div class="section-title">Who works well with him</div>
           <div class="synergy-list">
             <div class="synergy-entry">
-              <div class="synergy-hero-name">Caishen / Dionysus</div>
-              <p class="synergy-body">Energy support compresses the device ramp -- more Ultimates per fight means earlier Fusion and more repeat Fusion windows after it.</p>
-            </div>
-            <div class="synergy-entry">
-              <div class="synergy-hero-name">Prometheus / Geb</div>
-              <p class="synergy-body">Stationary or taunt tanks force enemies into device zones, keeping the ATK SPD debuff applied while Force Field Shield heals them automatically.</p>
-            </div>
-            <div class="synergy-entry">
-              <div class="synergy-hero-name">Poseidon</div>
-              <p class="synergy-body">Gather pulls multiple enemies into zones simultaneously -- maximum ATK SPD debuff coverage and Bind-target exposure in a single cast.</p>
+              <div class="synergy-hero-name">Caishen</div>
+              <p class="synergy-body">The most natural pairing. Caishen generates energy for the team, which means Hephaestus reaches his third Ultimate faster. Faster devices mean earlier Fusion. If you run Hephaestus, Caishen should almost always be next to him.</p>
             </div>
             <div class="synergy-entry">
               <div class="synergy-hero-name">Isis / Hecate</div>
-              <p class="synergy-body">Both benefit from the Fusion damage boost and Weak Point Analysis resistance shred on the primary target -- their output spikes sharply during the Fusion window.</p>
+              <p class="synergy-body">Magical damage dealers get double value from Hephaestus. The Fusion window boosts their damage by 30%, and Weakness Analysis strips the armor and magic resistance off whoever they are attacking at the same time. Both effects land on the same target during the same window.</p>
+            </div>
+            <div class="synergy-entry">
+              <div class="synergy-hero-name">Prometheus / Geb</div>
+              <p class="synergy-body">Tanks who hold their ground or taunt enemies in place push opponents into the device zones. Enemies sitting inside a zone deal less and move slower, which gives the rest of the team more time to work.</p>
+            </div>
+            <div class="synergy-entry">
+              <div class="synergy-hero-name">Poseidon</div>
+              <p class="synergy-body">Poseidon drags enemies together. If multiple enemies end up inside device zones at once, all of them take the attack and speed debuffs simultaneously - the zones do far more work than when enemies are spread out.</p>
             </div>
             <div class="synergy-entry">
               <div class="synergy-hero-name">Mengpo</div>
-              <p class="synergy-body">Revival extends fight duration, which is exactly the condition Hephaestus needs -- more time means more Fusion triggers and more total device heal ticks.</p>
+              <p class="synergy-body">Hephaestus needs time to reach full power. Mengpo keeps allies alive longer and revives those who fall. More fight time means more Fusion windows and more value from everything Hephaestus does.</p>
             </div>
           </div>
         </section>
@@ -4264,6 +4257,7 @@ const activeGuide = releasedGuides[0];
     display: flex;
     flex-direction: column;
     gap: 8px;
+    padding:0;
   }
 
   .sw-list li {
