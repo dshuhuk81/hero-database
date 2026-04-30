@@ -1,5 +1,8 @@
 # Hero Database – Copilot Instructions
 
+## Game leaked data
+unter data-mine/game_extracted there are a ton of ingame infos. maybe we can use something here. an explanation what was done to achieve that is within @Extraction_Progress.md
+
 ## New Heroes
 When a hero is added, we need to run this script to merge all individual hero JSON files into a single `all_heroes_db.json` that the frontend consumes. This also regenerates the ranking scores based on the new hero's stats and synergies.
 
