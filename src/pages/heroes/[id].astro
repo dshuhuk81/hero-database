@@ -174,6 +174,7 @@ const dotSections = [
 
   <!-- ===================== CINEMATIC SHOWCASE ===================== -->
   <section class="showcase" aria-label="Hero showcase">
+    <div class="showcase-bg"></div>
     <div
       class="showcase-art"
       style={`background-image:url(${hero.image});`}
@@ -876,6 +877,15 @@ const dotSections = [
   overflow: hidden;
 }
 
+.showcase-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
 .showcase-art {
   position: absolute;
   inset: 0;
@@ -886,6 +896,7 @@ const dotSections = [
   transition: transform 8s ease-out;
 }
 .showcase:hover .showcase-art { transform: scale(1); }
+
 
 .showcase-overlay {
   position: absolute;

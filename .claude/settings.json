@@ -61,7 +61,8 @@
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('image:', d.get\\('image'\\)\\); [print\\(f'skill {s[\\\\\"id\\\\\"]}:', s.get\\('image'\\)\\) for s in d.get\\('skills',[]\\)]\")",
       "Bash(curl -sI -X OPTIONS https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp -H 'Origin: https://motto-immortal.vercel.app' -H 'Access-Control-Request-Method: GET')",
       "Bash(curl -sI https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp -H 'Origin: https://motto-immortal.vercel.app')",
-      "Bash(sips -g pixelWidth -g pixelHeight /Users/daschultheiss/hero-database/public/hall.webp)"
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/daschultheiss/hero-database/public/hall.webp)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/daschultheiss/hero-database/leak/game_graphics/new_rolespine_shuren_skeletondata/shuren.png)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
