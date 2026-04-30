@@ -73,7 +73,8 @@
       "Bash(adb connect *)",
       "Bash(adb forward *)",
       "Bash(python3 /tmp/scan_l10n.py)",
-      "Bash(~/Library/Android/sdk/platform-tools/adb forward *)"
+      "Bash(~/Library/Android/sdk/platform-tools/adb forward *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({k:d[k] for k in ['id','name','faction','class','role','rarity','ratings'] if k in d}, indent=2\\)\\)\")"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes",
