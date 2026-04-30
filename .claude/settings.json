@@ -56,7 +56,12 @@
       "Bash(/tmp/ffmpeg-bin/ffmpeg -i /Users/daschultheiss/hero-database/meret-ultimate.mp4 -ss 47 -t 3 -c:v libvpx-vp9 -b:v 0 -crf 35 -vf \"scale=480:-1\" -an /Users/daschultheiss/hero-database/public/skills/meret_skill_1.webm)",
       "Bash(/tmp/ffmpeg-bin/ffmpeg -y -i /Users/daschultheiss/hero-database/meret-ultimate.mp4 -ss 47 -t 3 -vf \"crop=620:530:50:426,scale=480:-1\" -c:v libvpx-vp9 -b:v 0 -crf 35 -an /Users/daschultheiss/hero-database/public/skills/meret_skill_1.webm)",
       "Bash(/tmp/ffmpeg-bin/ffmpeg -y -i /Users/daschultheiss/hero-database/public/skills/meret-ultimate.mp4 -ss 47 -t 3 -vf \"crop=620:530:50:426,scale=480:-1\" -c:v libvpx-vp9 -b:v 0 -crf 35 -an /Users/daschultheiss/hero-database/public/skills/meret_skill_1.webm)",
-      "Bash(/tmp/ffmpeg-bin/ffmpeg -y -i /Users/daschultheiss/hero-database/public/skills/meret-ultimate.mp4 -ss 47 -t 3 -vf \"crop=500:410:110:700,scale=480:-1\" -c:v libvpx-vp9 -b:v 0 -crf 35 -an /Users/daschultheiss/hero-database/public/skills/meret_skill_1.webm)"
+      "Bash(/tmp/ffmpeg-bin/ffmpeg -y -i /Users/daschultheiss/hero-database/public/skills/meret-ultimate.mp4 -ss 47 -t 3 -vf \"crop=500:410:110:700,scale=480:-1\" -c:v libvpx-vp9 -b:v 0 -crf 35 -an /Users/daschultheiss/hero-database/public/skills/meret_skill_1.webm)",
+      "Bash(node scripts/validate-hero-detail-stats.mjs)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('image:', d.get\\('image'\\)\\); [print\\(f'skill {s[\\\\\"id\\\\\"]}:', s.get\\('image'\\)\\) for s in d.get\\('skills',[]\\)]\")",
+      "Bash(curl -sI -X OPTIONS https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp -H 'Origin: https://motto-immortal.vercel.app' -H 'Access-Control-Request-Method: GET')",
+      "Bash(curl -sI https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp -H 'Origin: https://motto-immortal.vercel.app')",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/daschultheiss/hero-database/public/hall.webp)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
