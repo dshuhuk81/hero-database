@@ -3634,6 +3634,106 @@
       }
     ]
   },
+  "hera": {
+    "id": "hera",
+    "name": "Hera",
+    "faction": "Starglint",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "",
+    "ratings": {
+      "overall": "",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "",
+      "pvp": "",
+      "pve": ""
+    },
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "Support",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "Support"
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "Support"
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "Support"
+      }
+    ],
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0
+  },
   "heracles": {
     "id": "heracles",
     "name": "Heracles",
@@ -4935,7 +5035,7 @@
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutian-xuannv.webp",
     "release": false,
     "faction": "Clubs",
-    "role": "Physical",
+    "role": "Nimble",
     "class": "Archer",
     "rarity": "Legendary",
     "description": "A board-control archer who switches between Execute and Yield stances based on battlefield state, drains enemy energy, and converts incoming damage into counter-strikes via the Taiji Formation.",
@@ -8550,6 +8650,121 @@
       "consensus": "full",
       "lastVerified": "2026-04"
     }
+  },
+  "serket": {
+    "id": "serket",
+    "name": "Serket",
+    "faction": "Diamonds",
+    "role": "Nimble",
+    "class": "Warrior",
+    "rarity": "Legendary",
+    "description": "A self-sustaining bruiser-summoner who burrows underground to dive the farthest enemy, summons 3 scorpions that inherit her full stats, and converts their deaths into AoE explosions with ATK-Down. Her underground survival mechanic permanently increases her max HP on first threshold, making her tankier the longer a fight lasts.",
+    "ratings": {
+      "overall": "A",
+      "grimSurge": "",
+      "delusionsDen": "",
+      "torrentRift": "",
+      "forgottenLabyrinth": "",
+      "pvp": "A",
+      "pve": "A"
+    },
+    "recommendedRelicLevel": 30,
+    "evolution": "Divine V",
+    "level": 300,
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "stats": {
+      "might": 0,
+      "hp": 0,
+      "atk": 0,
+      "armor": 0,
+      "magicRes": 0,
+      "dodgeRate": 0,
+      "hitBonus": 0,
+      "critRate": 0,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Sand Shadow Scorpions",
+        "description": "Serket burrows underground and summons 3 scorpions around herself. The scorpions inherit 100% of Serket's base stats but take increased damage, persisting for a duration.",
+        "upgrades": {
+          "level2": "Summoned scorpions' duration increased.",
+          "level3": "Summoned scorpions take reduced damage.",
+          "level4": "Summoned scorpions can also use the Underground Pierce skill."
+        },
+        "damageType": "Physical",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Underground Pierce",
+        "description": "Serket locks onto the farthest enemy, burrows underground and digs a tunnel toward them, dealing damage to enemies along the path. Upon emerging from the ground, knocks down surrounding enemies.",
+        "upgrades": {
+          "level2": "Damage dealt increased.",
+          "level3": "Gains a shield upon emerging from the ground.",
+          "level4": "Damage dealt increased again."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_3",
+        "name": "Scorpion Toxic Burst",
+        "description": "When summoned scorpions die or disappear, they explode, dealing damage to enemies within a radius and reducing their attack power for a duration.",
+        "upgrades": {
+          "level2": "Damage dealt increased.",
+          "level3": "Attack power reduction effect increased.",
+          "level4": "Damage dealt increased again."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_4",
+        "name": "Underground Regeneration",
+        "description": "While Serket is burrowed underground, she recovers HP every second. When Serket's HP first drops below a percentage of her max HP, she immediately burrows underground for a duration and permanently increases her max HP by a percentage.",
+        "upgrades": {
+          "level2": "HP recovered per second while underground increased.",
+          "level3": "Permanent max HP increase when first burrowing below the threshold increased.",
+          "level4": "HP recovered per second while underground increased again."
+        },
+        "damageType": "Physical"
+      }
+    ],
+    "relic": {
+      "name": "Toxic Miasma Domain",
+      "description": "Serket deals damage to surrounding enemies every second.",
+      "upgrades": {
+        "level2": "When receiving damage exceeding a percentage of her max HP, she becomes immune to that hit and takes reduced damage for the following duration. Triggers at most once every 12 seconds.",
+        "level3": "Each summoned scorpion also deals damage to surrounding enemies every second.",
+        "level4": "When each summoned scorpion receives damage exceeding a percentage of its max HP, it becomes immune to that hit and takes reduced damage for a duration. Triggers at most once every 12 seconds."
+      }
+    },
+    "synergies": [
+      "SUMMON",
+      "AREA_DAMAGE_DEALER",
+      "ATK_DOWN",
+      "SELF_SUSTAIN"
+    ]
   },
   "set": {
     "id": "set",
