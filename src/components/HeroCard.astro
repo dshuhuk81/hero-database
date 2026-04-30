@@ -60,12 +60,15 @@ const { hero } = Astro.props;
 .hero-card {
   display: block;
   width: 100%;
-  height: 320px;
+  height: 380px;
 
   position: relative;
   border-radius: 12px;
 
-  background: #222;
+  background-color: #0d1624;
+  background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
+  background-size: cover;
+  background-position: center top;
   color: #fff;
   text-decoration: none;
 
@@ -80,11 +83,10 @@ const { hero } = Astro.props;
 
   background-image: var(--hero-image);
   background-size: cover;
-  background-position: center;
+  background-position: center top;
 
   transition:
-    transform 0.45s cubic-bezier(.2,.8,.2,1),
-    background-position 0.45s cubic-bezier(.2,.8,.2,1);
+    transform 0.45s cubic-bezier(.2,.8,.2,1);
 
   will-change: transform;
   z-index: 0;
@@ -93,7 +95,6 @@ const { hero } = Astro.props;
 /* Hover Zoom */
 .hero-card:hover::before {
   transform: scale(1.12);
-  background-position: center 35%;
 }
 
 /* UI über dem Bild */
@@ -322,7 +323,7 @@ const { hero } = Astro.props;
 
 @media (max-width: 600px) {
   .hero-card {
-    height: 220px;
+    height: 260px;
   }
 }
 
