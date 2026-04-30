@@ -228,13 +228,13 @@
     }
   },
   "dionysus": {
-    "game_hero_id": 50051,
+    "game_hero_id": 5003,
     "all_game_hero_ids": [
-      50051,
-      5003
+      5003,
+      50051
     ],
     "match_confidence": "high",
-    "match_method": "en_name",
+    "match_method": "hero_skin_lua",
     "status": "ok",
     "notes": null,
     "assets": {
@@ -243,7 +243,7 @@
       "portrait_strip": "A_UI_HeadPortrait_Diaonisuosi01_Img",
       "portrait_circle": "A_UI_HeadPortrait_Diaonisuosi03_Img",
       "spine_name": "diaonisuosi",
-      "skill_icon_prefix": "ZhouSi"
+      "skill_icon_prefix": "DiAoNiSuoSi"
     }
   },
   "eris": {
@@ -843,27 +843,27 @@
     }
   },
   "set": {
-    "game_hero_id": 2001,
+    "game_hero_id": 2007,
     "all_game_hero_ids": null,
     "match_confidence": "high",
-    "match_method": "en_name",
+    "match_method": "hero_skin_lua",
     "status": "ok",
     "notes": null,
     "assets": {
       "internal_name": "saite",
-      "portrait_normal": "A_UI_HeadPortrait_Saihemaite02_Img",
-      "portrait_strip": "A_UI_HeadPortrait_Saihemaite01_Img",
-      "portrait_circle": "A_UI_HeadPortrait_Saihemaite03_Img",
-      "spine_name": "saihemaite",
-      "skill_icon_prefix": "SaiHeMaiTe"
+      "portrait_normal": "A_UI_HeadPortrait_Saite02_Img",
+      "portrait_strip": "A_UI_HeadPortrait_Saite01_Img",
+      "portrait_circle": "A_UI_HeadPortrait_Saite03_Img",
+      "spine_name": "saite",
+      "skill_icon_prefix": "SaiTe"
     }
   },
   "skadi": {
-    "game_hero_id": 1012,
+    "game_hero_id": 1010,
     "all_game_hero_ids": [
-      1012,
+      1010,
       1011,
-      1010
+      1012
     ],
     "match_confidence": "high",
     "match_method": "portrait_filename",
