@@ -62,10 +62,23 @@
       "Bash(curl -sI -X OPTIONS https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp -H 'Origin: https://motto-immortal.vercel.app' -H 'Access-Control-Request-Method: GET')",
       "Bash(curl -sI https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp -H 'Origin: https://motto-immortal.vercel.app')",
       "Bash(sips -g pixelWidth -g pixelHeight /Users/daschultheiss/hero-database/public/hall.webp)",
-      "Bash(sips -g pixelWidth -g pixelHeight /Users/daschultheiss/hero-database/leak/game_graphics/new_rolespine_shuren_skeletondata/shuren.png)"
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/daschultheiss/hero-database/leak/game_graphics/new_rolespine_shuren_skeletondata/shuren.png)",
+      "Bash(xxd /Users/daschultheiss/hero-database/leak/game_extracted/region_7581840000/EN_US/1069)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('name'\\), d.get\\('id'\\), d.get\\('faction'\\)\\)\")",
+      "Bash(node scripts/convert-game-assets.mjs --dry-run)",
+      "Bash(node scripts/convert-game-assets.mjs)",
+      "Bash(file /Users/daschultheiss/hero-database/leak/game_extracted/1000/*)",
+      "Bash(xxd /Users/daschultheiss/hero-database/leak/game_extracted/region_7581840000/skill_detail/0)",
+      "Bash(xxd /Users/daschultheiss/hero-database/leak/game_extracted/region_7581840000/EN_US/0)",
+      "Bash(adb connect *)",
+      "Bash(adb forward *)",
+      "Bash(python3 /tmp/scan_l10n.py)",
+      "Bash(~/Library/Android/sdk/platform-tools/adb forward *)"
     ],
     "additionalDirectories": [
-      "/Users/daschultheiss/hero-database/src/pages/shared-heroes"
+      "/Users/daschultheiss/hero-database/src/pages/shared-heroes",
+      "/tmp",
+      "/private/tmp"
     ]
   }
 }
