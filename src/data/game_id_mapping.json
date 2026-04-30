@@ -104,8 +104,8 @@
     "all_game_hero_ids": null,
     "match_confidence": "none",
     "match_method": null,
-    "status": "unmatched",
-    "notes": "manual_review_needed",
+    "status": "not_yet_released",
+    "notes": "Not found in divination_character_setting.json, hero_skin.lua, or game_graphics. Hero exists in project with skill descriptions but has no game data yet.",
     "assets": {}
   },
   "bastet": {
@@ -247,13 +247,23 @@
     }
   },
   "eris": {
-    "game_hero_id": null,
-    "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "unmatched",
-    "notes": "manual_review_needed",
-    "assets": {}
+    "game_hero_id": 3011,
+    "all_game_hero_ids": [
+      3011,
+      30111
+    ],
+    "match_confidence": "high",
+    "match_method": "divination_character_setting",
+    "status": "unreleased",
+    "notes": "en_name=Eris confirmed via divination_character_setting.json. ID 30111 is alternate skin (ELiSiRenOu). No skill icons in atlas. enable_time=2026-06-10, is_visible=0.",
+    "assets": {
+      "internal_name": "elisi",
+      "portrait_normal": "A_UI_HeadPortrait_Elisi02_Img",
+      "portrait_circle": "A_UI_HeadPortrait_Elisi03_Img",
+      "portrait_full": "A_UI_Portrait_Elisi_Img",
+      "spine_name": "elisi",
+      "skill_icon_prefix": null
+    }
   },
   "fengyi": {
     "game_hero_id": 3008,
@@ -331,7 +341,7 @@
     "match_confidence": "high",
     "match_method": "internal_name",
     "status": "unreleased",
-    "notes": "unreleased_until_2026-05-25 00:00:00",
+    "notes": "Internal CN name hela. EN display name is HERA (confirmed via divination_character_setting.json ID 5008). unreleased_until_2026-05-25.",
     "assets": {
       "internal_name": "hela",
       "portrait_normal": "A_UI_HeadPortrait_Hela02_Img",
@@ -400,8 +410,8 @@
     "all_game_hero_ids": null,
     "match_confidence": "none",
     "match_method": null,
-    "status": "unmatched",
-    "notes": "manual_review_needed",
+    "status": "not_yet_released",
+    "notes": "Not found in divination_character_setting.json, hero_skin.lua, or game_graphics. Hero exists in project with skill descriptions but has no game data yet.",
     "assets": {}
   },
   "iris": {
@@ -469,13 +479,18 @@
     }
   },
   "jiutian-xuannv": {
-    "game_hero_id": null,
+    "game_hero_id": 3013,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
-    "status": "unmatched",
-    "notes": "manual_review_needed",
-    "assets": {}
+    "match_confidence": "high",
+    "match_method": "divination_character_setting",
+    "status": "unreleased",
+    "notes": "en_name=Xuannv confirmed via divination. enable_time=2027-12-12. No portrait or spine in game_graphics leak. Only new_card_push UI assets found.",
+    "assets": {
+      "internal_name": "jiutianxuannv",
+      "portrait_normal": null,
+      "spine_name": null,
+      "skill_icon_prefix": null
+    }
   },
   "jormungandr": {
     "game_hero_id": 3004,
@@ -655,8 +670,8 @@
     "all_game_hero_ids": null,
     "match_confidence": "none",
     "match_method": null,
-    "status": "unmatched",
-    "notes": "manual_review_needed",
+    "status": "not_yet_released",
+    "notes": "Not found in divination_character_setting.json or hero_skin.lua. Divination ID 1012 = Nut appears to be a separate divination-NPC system, NOT the hero. No portrait or spine in game_graphics. Hero likely planned but not yet in game.",
     "assets": {}
   },
   "nuwa": {
@@ -840,6 +855,25 @@
       "portrait_circle": "A_UI_HeadPortrait_Saihemaite03_Img",
       "spine_name": "saihemaite",
       "skill_icon_prefix": "SaiHeMaiTe"
+    }
+  },
+  "serket": {
+    "game_hero_id": 2011,
+    "all_game_hero_ids": [
+      2011,
+      20111
+    ],
+    "match_confidence": "high",
+    "match_method": "divination_character_setting",
+    "status": "unreleased",
+    "notes": "EN name Selket confirmed via divination. Project ID is serket. enable_time=2026-05-20. Skin variant 20111 is XieZi skin.",
+    "assets": {
+      "internal_name": "saierkaite",
+      "portrait_normal": "A_UI_HeadPortrait_Saierkaite02_Img",
+      "portrait_circle": "A_UI_HeadPortrait_Saierkaite03_Img",
+      "portrait_full": "A_UI_Portrait_Saierkaite_Img",
+      "spine_name": "saierkaite",
+      "skill_icon_prefix": "SaiErKaiTe"
     }
   },
   "set": {

@@ -7,59 +7,59 @@ import { getHeroById } from "../data/heroes";
 // To add a new guide: add an entry to this array and a matching <div id="..."> in the HTML below.
 const guides = [
   {
-    id: "hephaestus", label: "Hephaestus", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp",
-    imgPos: "center 15%", imgPosActive: "center 10%",
-    quote: "Using volcanoes as his forge, smelting weapons - a single man becoming an army of thousands.",
-    tags: ["Hearts Faction", "Support", "Legendary"],
+    id: "meret", label: "Meret", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp",
+    imgPos: "center 20%", imgPosActive: "center 35%",
+    quote: "Goddess of Dance - Note-based Support and Anti-Burst Enabler",
+    tags: ["Diamonds Faction", "Support", "Legendary", "Unreleased"],
     badge: "New",
   },
   {
-    id: "meret", label: "Meret", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp",
-    imgPos: "center 20%", imgPosActive: "center 10%",
-    quote: "Goddess of Dance - Note-based Support and Anti-Burst Enabler",
-    tags: ["Diamonds Faction", "Support", "Legendary", "Unreleased"],
-  },
-  {
     id: "wenshen", label: "Wen-Shen", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp",
-    imgPos: "center 20%", imgPosActive: "center 10%",
+    imgPos: "center 20%", imgPosActive: "center 35%",
     quote: "When humanity had no cure, I willingly drew all pestilence upon myself.",
     tags: ["Clubs Faction", "Support", "Legendary"],
   },
   {
     id: "cronus", label: "Cronus", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp",
-    imgPos: "center 20%", imgPosActive: "center 10%",
+    imgPos: "center 20%", imgPosActive: "center 30%",
     quote: "Tempo Architect - Master of Rewind, Projection, and Cooldown",
     tags: ["Starglint Faction", "Support", "Legendary"],
   },
   {
     id: "mengpo", label: "Mengpo", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp",
-    imgPos: "center 10%", imgPosActive: "center 10%",
+    imgPos: "center 10%", imgPosActive: "center 35%",
     quote: "Goddess of Forgetting - Keeper of the Bridge Between Worlds",
     tags: ["Hearts Faction", "Support", "Legendary"],
   },
   {
     id: "nuba", label: "Nuba", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp",
-    imgPos: "center 30%", imgPosActive: "center 10%",
+    imgPos: "center 30%", imgPosActive: "center 20%",
     quote: "The world fears, banishes, and curses me. But I just don't understand what I've done wrong.",
     tags: ["Clubs Faction", "Warrior"],
   },
   {
     id: "skadi", label: "Skadi", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp",
-    imgPos: "center 15%", imgPosActive: "center 10%",
+    imgPos: "center 15%", imgPosActive: "center 30%",
     quote: "Core of Control - Goddess of Winter and the Hunt",
     tags: ["Spades Faction", "Mage", "Legendary"],
   },
   {
     id: "hera", label: "Hera", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp",
-    imgPos: "center 15%", imgPosActive: "center 10%",
+    imgPos: "center 15%", imgPosActive: "center 30%",
     quote: "Queen of the Gods - Sovereign of Power and Obsession",
     tags: ["Starglint Faction", "Support", "Legendary"],
   },
   {
     id: "jiutian-xuannv", label: "Jiutian Xuannv", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutian-xuannv.webp",
-    imgPos: "center 15%", imgPosActive: "center 10%",
+    imgPos: "center 15%", imgPosActive: "center 25%",
     quote: "Master of the Board - Goddess of Tactical Stances",
     tags: ["Clubs Faction", "Archer", "Legendary"],
+  },
+  {
+    id: "hephaestus", label: "Hephaestus", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp",
+    imgPos: "center 15%", imgPosActive: "center 25%",
+    quote: "Using volcanoes as his forge, smelting weapons - a single man becoming an army of thousands.",
+    tags: ["Hearts Faction", "Support", "Legendary"],
   },
 ];
 
@@ -253,35 +253,33 @@ const JIUTIANXUANNV_COMPS = [
 
 const HEPHAESTUS_COMPS = [
   {
-    label: "PVE — Fusion Power Core",
-    heroes: ["hephaestus", "caishen", "isis", "pan", "prometheus"],
-    reason: "This setup focuses on reaching Hephaestus's full power as fast as possible. Caishen speeds up his Ultimate cycles, allowing all three devices to activate earlier. Once active, the team benefits from a strong damage boost window where Isis can deal massive damage. Pan helps keep enemies inside the device zones, ensuring all debuffs apply consistently.",
+    label: "PVE - Zone-Control Sustain Core",
+    heroes: ["hephaestus", "prometheus", "isis", "pan", "freya"],
+    reason: "The foundational PvE composition built around maximizing device uptime and zone coverage. Prometheus provides a static frontline tank that complements Hephaestus's immobility - both are forge-bound anchors, creating a stable Bunker Core. Isis delivers sustained DPS from within the device heal zones. Pan layers AoE CC that keeps enemies inside the zones for maximum debuff exposure. Freya stacks a second heal source on top of the device regeneration.",
     notes: [
-      "Hephaestus needs 3 Ultimate casts to unlock his full power — Caishen is critical to reach this faster.",
-      "The 5-second Fusion window is the main damage phase — time your carry damage around it.",
-      "Pan's crowd control keeps enemies inside the zones, which is required for the debuffs to work reliably.",
-      "Prometheus stabilizes the frontline so enemies cannot easily reach Hephaestus."
+      "Hephaestus's devices already provide HP and Energy regeneration per second - with Freya adding dedicated healing, the team becomes extremely hard to burst down in prolonged PvE fights.",
+      "Pan's crowd control compresses enemies into the device zones, ensuring ATK Power and ATK Speed debuffs apply consistently without requiring precise positioning.",
+      "Prometheus's frontline anchor prevents enemies from reaching Hephaestus's Forge - protecting the single most important asset on the field."
     ]
   },
   {
-    label: "PVP — Setup-Dependent Control",
+    label: "PVP - Bunker Defense",
     heroes: ["hephaestus", "geb", "hladgunnr", "nyx", "cronus"],
-    reason: "A defensive PvP setup that can work if Hephaestus survives long enough to activate all devices. Geb pulls enemies into the zones while Nyx and Hladgunnr focus the most dangerous target. Cronus slows down enemy skill rotations, giving Hephaestus more time to scale.",
+    reason: "A defensive PvP composition built around the Bunker Core of Hephaestus and Geb. Geb's taunt draws enemies into the device zones where their ATK Power and ATK Speed are reduced. Hladgunnr delivers the burst payload into the debuffed, bound enemy carry. Nyx assassinates freely while Weak Point Analysis holds the priority target in place. Cronus provides additional tempo control and formation disruption that stacks with Hephaestus's zone debuffs.",
     notes: [
-      "This team only works if Hephaestus survives long enough to use multiple Ultimates.",
-      "Fast burst teams can defeat this setup before it becomes effective.",
-      "Hephaestus cannot move — positioning before the fight is critical.",
-      "Nyx benefits from enemies being locked in place by Hephaestus."
+      "Weak Point Analysis targets the enemy dealing the most damage and binds them - Nyx can then focus that same bound target without risk of counterattack during the Bind window.",
+      "Cronus's Temporal Vortex delays enemy active skill cooldowns while Hephaestus's Fusion effect simultaneously reduces enemy damage rate - layered tempo suppression from both heroes at once.",
+      "Strong against static or backline-heavy compositions; weaker against fast dive-burst teams that kill before the third Ult cast triggers Fusion."
     ]
   },
   {
-    label: "Boss — Not Recommended",
+    label: "PVE / Boss - Energy Loop",
     heroes: ["hephaestus", "dionysus", "hecate", "poseidon", "mengpo"],
-    reason: "Hephaestus is generally not optimal for boss fights. His abilities depend on enemies being inside his zones and require time to scale. Boss fights favor consistent damage boosts and faster setups, which other supports provide better.",
+    reason: "Built to maximize Ultimate rotation speed and reach Fusion in the shortest possible time. Dionysus dramatically accelerates Hephaestus's Energy regeneration on top of Source Resonance, enabling back-to-back device activations. Poseidon's gather effect pulls enemies into device zones for maximum debuff coverage. Hecate delivers sustained DoT damage that benefits from the extended fight duration the zones create. Mengpo's revival extends the fight, ensuring Fusion triggers even in difficult content.",
     notes: [
-      "Hephaestus provides no direct energy boost to the main damage dealer.",
-      "His damage window is short and harder to align with boss damage cycles.",
-      "Other supports like Caishen or Mengpo are more consistent for boss content."
+      "Source Resonance plus Dionysus Energy support can create an Ultra-Fast Ult rotation that reaches the third device activation - and thus Fusion - significantly earlier than in other compositions.",
+      "Poseidon's AoE gather is one of the strongest ways to maximize device coverage: enemies pulled into a zone receive ATK Speed reduction and HP drain simultaneously.",
+      "Hecate's 10-second DoT Ultimate is naturally suited to long fights - the device zones ensure the team survives long enough for multiple Hecate Ultimate casts to compound."
     ]
   }
 ];
@@ -640,8 +638,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -971,8 +969,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -1324,8 +1322,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -1695,8 +1693,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -2070,8 +2068,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -2436,8 +2434,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -2537,7 +2535,7 @@ const activeGuide = releasedGuides[0];
          HEPHAESTUS GUIDE
          ═══════════════════════════════════════ -->
     {releasedGuides.some(g => g.id === "hephaestus") && (
-    <div class="guide-slide is-active" id="hephaestus">
+    <div class="guide-slide" id="hephaestus">
       <div class="guide-container">
 
         <!-- HEADER -->
@@ -2553,61 +2551,82 @@ const activeGuide = releasedGuides[0];
           </div>
         </header>
 
-        <!-- VERDICT -->
-        <section class="section">
-          <div class="verdict-strip">
-            <div class="verdict-role">Zone-Control Support</div>
-            <p class="verdict-line">Deploys 3 devices at battle start. Each Ultimate activates one. Third activation triggers a field-wide Fusion -- team damage up, enemy damage down, highest-damage carry locked out.</p>
-            <div class="verdict-meta">
-              <span class="verdict-meta-item"><strong>Best in:</strong> Boss / Long PvE</span>
-              <span class="verdict-meta-item"><strong>Skip if:</strong> Fast PvP burst / Need revive</span>
-              <span class="verdict-meta-item"><strong>Key investment:</strong> Relic Lv3 first</span>
-            </div>
+        <!-- JUMP NAVIGATION -->
+        <nav class="jump-nav">
+          <div class="jump-nav-title">Quick Navigation</div>
+          <div class="jump-nav-links">
+            <a href="#hephaestus-overview">Overview</a>
+            <a href="#hephaestus-lore">Lore</a>
+            <a href="#hephaestus-fusion">Device System</a>
+            <a href="#hephaestus-skills">Skills</a>
+            <a href="#hephaestus-ratings">Ratings</a>
+            <a href="#hephaestus-positioning">Positioning</a>
+            <a href="#hephaestus-comps">Comps</a>
+            <a href="#hephaestus-strengths">Strengths</a>
+            <a href="#hephaestus-synergy">Synergy</a>
+            <a href="#hephaestus-playstyle">Playstyle</a>
+          </div>
+        </nav>
+
+        <div class="print-bar">
+          <button class="print-btn" onclick="window.print()">Save as PDF</button>
+        </div>
+
+        <!-- OVERVIEW -->
+        <section class="section" id="hephaestus-overview">
+          <div class="section-title">Overview</div>
+          <div class="overview-card">
+            <p>Hephaestus is a <strong>Legendary Support</strong> of the <strong>Hearts faction</strong> whose entire kit revolves around a unique zone-control system: he deploys <span class="highlight">3 mechanical devices</span> at battle start and activates them one by one with each Ultimate cast, building toward a field-wide <strong>Fusion effect</strong> that simultaneously buffs his team and debuffs all enemies.</p>
+            <p>He is not a healer, not a DPS, and not a standard buffer. He is a <em>Zone-Control Support</em> who shapes the battlefield by creating persistent areas that regenerate HP and Energy for allies while reducing ATK Power and ATK Speed for enemies standing inside them. His Weak Point Analysis automatically targets and binds the highest-damage enemy while shredding their resistances. His Force Field Shield scales its damage reduction with how many devices are active.</p>
+            <p>The critical design feature is his <strong>Forge Anchor</strong>: Hephaestus cannot move freely. If he leaves his Forge, he is teleported back into an intercepted state. In exchange, he gains unlimited attack range and reduced damage taken while in Focus state. His immobility is not a weakness to be worked around - it is the foundation his entire defensive identity is built upon.</p>
+            <p>Hephaestus rewards investment and patience. He needs 3 Ultimate casts to reach Fusion and Relic Lv3 to cycle those Ultimates at a competitive speed. In the right composition with the right investment, the Fusion effect is described as potentially one of the strongest team-wide buff states in the game.</p>
           </div>
         </section>
 
-        <!-- PLAY / SKIP -->
-        <section class="section">
-          <div class="sw-grid">
-            <div class="sw-card strengths">
-              <div class="sw-title">Use Hephaestus when</div>
-              <ul class="sw-list">
-                <li>Fights last long enough for 3 Ultimate casts (Boss, Tower, multi-wave PvE)</li>
-                <li>Your carry benefits from resistance shred (Isis, Hecate, any Mage)</li>
-                <li>You have Caishen or Dionysus to accelerate his Energy loop</li>
-                <li>You want the highest-damage enemy locked down automatically</li>
-              </ul>
-            </div>
-            <div class="sw-card weaknesses">
-              <div class="sw-title">Skip Hephaestus when</div>
-              <ul class="sw-list">
-                <li>Fights end in under 15 seconds -- Fusion will never fire</li>
-                <li>You need a revive (Mengpo) or immediate healing (Yuelao, Cancer)</li>
-                <li>You face mobile dive-burst comps that kill supports early</li>
-                <li>Relic Lv3 is not reachable yet -- he feels slow without it</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <!-- HOW IT WORKS -->
-        <section class="section">
-          <div class="section-title">How It Works</div>
+        <!-- LORE -->
+        <section class="section" id="hephaestus-lore">
+          <div class="section-title">Lore &amp; Background</div>
           <div class="mechanic-box">
-            <div class="mechanic-label">The Device and Fusion Loop</div>
+            <div class="mechanic-label">God of Fire and Forge - Greek Mythology</div>
+            <p style="font-size:14px; color:var(--text-muted); margin-bottom:14px; line-height:1.5;">Hephaestus is the Greek god of fire, the forge, craftsmanship, and invention - the only Olympian god depicted as physically imperfect and the only one who works for a living. Thrown from Olympus as an infant (accounts differ on whether by Zeus or Hera), he built his forge inside a volcano and created the most magnificent weapons and artifacts in mythology. His workshop was staffed by golden automatons of his own making - the earliest conception of mechanical servants. The game draws directly on this mythology for his mechanical device system.</p>
             <ul class="mechanic-list">
-              <li><strong>3 inactive devices</strong> are placed on the field at battle start via Ultimate Domain's passive -- no action required, they are already there.</li>
-              <li>Each Ultimate cast activates the farthest inactive device. Active devices create persistent zones: allies inside recover HP and Energy per second; enemies inside lose ATK Power and ATK Speed.</li>
-              <li>Active device count scales two other skills directly: Weak Point Analysis gets a longer Bind duration per device, and Force Field Shield gets more damage reduction per device.</li>
-              <li>When all 3 devices are active, they <strong>merge into a field-wide Fusion effect</strong>: all enemies deal less damage, all allies deal more and gain ATK Speed for 5 seconds. Every subsequent Ultimate re-triggers Fusion.</li>
-              <li>His <strong>Forge</strong> anchors him in place permanently. He cannot reposition. If displaced, he teleports back. In exchange: unlimited attack range and reduced damage taken while anchored. Place him backline center at the start -- that is the only positioning decision.</li>
+              <li><em>Ultimate Domain</em> (终极领域) channels his dominion over crafted machinery - the 3 devices are his automatons deployed onto the battlefield, each extending his reach and power</li>
+              <li><em>Undying Forge</em> (不灭锻炉) is the literal anchor of his mythology - Hephaestus belongs at his forge, and the game enforces this by returning him there if he strays</li>
+              <li><em>Source Resonance</em> (源流共鸣) reflects the inexhaustible fire of his volcanic workshop - his Energy never truly runs dry</li>
+              <li><em>Weak Point Analysis</em> (弱点解析) embodies the master craftsman's eye: identifying structural flaws and exploiting them with surgical precision, stripping the enemy's defenses</li>
+              <li><em>Force Field Shield</em> (力场护盾) is the protective craft side of his duality - the same hands that forge weapons also build shields for those he fights alongside</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- DEVICE FUSION SYSTEM -->
+        <section class="section" id="hephaestus-fusion">
+          <div class="section-title">Core Mechanic - The Device and Fusion System</div>
+          <div class="mechanic-box">
+            <div class="mechanic-label">How the Device Loop Works</div>
+            <ul class="mechanic-list">
+              <li>At battle start, <strong>3 inactive mechanical devices</strong> are placed on the field via Ultimate Domain's passive component.</li>
+              <li>Each cast of Ultimate Domain activates the <strong>farthest inactive device</strong>, expanding its area of effect. Allies inside regenerate HP and Energy per second; enemies inside suffer ATK Power and ATK Speed reduction.</li>
+              <li>Active device count directly scales two other skills: <strong>Weak Point Analysis</strong> extends its Bind duration by a set amount per active device, and <strong>Force Field Shield</strong> increases its damage reduction bonus per active device.</li>
+              <li>When all 3 devices are active, they <strong>merge into a single field-wide Fusion effect</strong>: immediately reduces all enemies' damage rate by a percentage and boosts friendly damage rate and ATK Speed for a duration.</li>
+              <li>Subsequent Ultimate casts after Fusion <strong>also trigger the Fusion effect</strong> - meaning the first Fusion is the floor, not the ceiling.</li>
+              <li>The loop: <strong>Source Resonance accelerates Energy - Ultimate Domain activates devices - devices scale Weak Point and Shield - 3rd activation triggers Fusion - Undying Forge Lv3 reduces Ult Energy cost - next Fusion comes faster.</strong></li>
+            </ul>
+          </div>
+          <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
+            <div class="mechanic-label" style="color: var(--gold-light);">The Forge Anchor - Immobility as Identity</div>
+            <ul class="mechanic-list">
+              <li>If Hephaestus moves away from the Forge, he is <strong>teleported back</strong> and enters an intercepted state (briefly unable to act). This is not punishable displacement - it is a guaranteed return.</li>
+              <li>While at the Forge he enters <strong>Focus state</strong>: unlimited attack range across the entire field and reduced damage taken. These bonuses only apply while he remains at the Forge.</li>
+              <li>This makes Hephaestus effectively <strong>immune to displacement skills</strong> such as knockbacks and pulls - he will always return to his Forge regardless of what the enemy does to him.</li>
+              <li>The tradeoff is total: he cannot reposition, he cannot retreat, and he cannot chase. His Forge placement at battle start is the only moment where positioning matters. Place him in the backline center.</li>
             </ul>
           </div>
         </section>
 
         <!-- SKILLS -->
         <section class="section" id="hephaestus-skills">
-          <div class="section-title">Skills</div>
+          <div class="section-title">Skill Breakdown</div>
           <div class="skills-grid">
 
             <div class="skill-card ultimate">
@@ -2617,13 +2636,16 @@ const activeGuide = releasedGuides[0];
                 <span class="skill-badge badge-ultimate">Ultimate</span>
               </div>
               <p class="skill-desc">
-                <strong>Passive:</strong> Deploys 3 inactive devices at battle start.<br/>
-                <strong>Active:</strong> Activates farthest device. Zones regen ally HP + Energy, reduce enemy ATK + ATK SPD. All 3 active triggers <span class="highlight">Fusion</span>: team DMG up, enemy DMG down, ATK SPD boost for 5s. Every subsequent cast re-triggers Fusion.
+                <strong>Passive:</strong> At the start of battle, summons <span class="highlight">3 inactive mechanical devices</span> onto the field.<br/><br/>
+                <strong>Active:</strong> Activates the farthest inactive device, expanding its area of effect. Allies inside recover HP and Energy per second; enemies inside have ATK Power and ATK Speed reduced. When all 3 devices are active, they <span class="highlight">merge into one field-wide device</span> - immediately reducing all enemies' damage rate and boosting friendly damage rate and ATK Speed. Subsequent Ult casts also trigger this Fusion effect.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Zone ally HP + Energy regen increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Zone enemy ATK + ATK SPD reduction increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Fusion amplified: stronger enemy DMG reduction and higher ally DMG + ATK SPD boost.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">HP and Energy recovered per second by allies inside activated devices increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">ATK Power and ATK Speed reduction on enemies inside devices increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Fusion effect amplified: greater enemy damage rate reduction and higher friendly damage rate and ATK Speed boost.</span></div>
+              </div>
+              <div class="skill-note">
+                The engine of Hephaestus's entire kit. The passive deployment of 3 devices at battle start means he arrives with the infrastructure already in place - each Ultimate cast is an activation, not a placement. Lv4 directly amplifies the Fusion payoff, making the third activation window significantly stronger.
               </div>
             </div>
 
@@ -2634,12 +2656,15 @@ const activeGuide = releasedGuides[0];
                 <span class="skill-badge badge-relic">Relic</span>
               </div>
               <p class="skill-desc">
-                Places a Forge at battle start. Moving away teleports Hephaestus back. While anchored: <span class="highlight">unlimited attack range</span> + reduced damage taken.
+                At the start of battle, places a <span class="highlight">Forge</span> in front of Hephaestus. If he moves away, he is teleported back and put in an intercepted state. While at the Forge, Hephaestus enters <span class="highlight">Focus state</span>: unlimited attack range and reduced damage taken.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Cooldowns of Weak Point Analysis and Force Field Shield reduced.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text"><strong>Energy cost to cast Ultimate reduced.</strong> -- Critical investment breakpoint. Reach this first.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Damage taken while anchored further reduced.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">In Focus state: cooldowns of Weak Point Analysis and Force Field Shield reduced.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">In Focus state: Energy cost to cast Ultimate Domain reduced.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">In Focus state: damage taken further reduced.</span></div>
+              </div>
+              <div class="skill-note">
+                Relic Lv3 is the defining investment breakpoint. The Energy cost reduction on Ultimate Domain directly accelerates the pace of device activation and therefore the timing of the Fusion trigger. Without it, Hephaestus reaches Fusion much later and the fight tempo feels slow. Lv2 is a meaningful quality-of-life improvement; Lv4 deepens his survivability further.
               </div>
             </div>
 
@@ -2650,12 +2675,15 @@ const activeGuide = releasedGuides[0];
                 <span class="skill-badge badge-skill">Active</span>
               </div>
               <p class="skill-desc">
-                Fires a laser at the enemy currently dealing the most damage. <span class="highlight">Binds</span> the target -- duration extended per active device. Also reduces target's <span class="highlight">Physical and Magical resistance</span>.
+                Fires a laser at the enemy currently dealing the most damage, <span class="highlight">binding</span> them for a duration. Each active device on the field extends the Bind duration by a set amount. Also reduces the target's <span class="highlight">Physical and Magical resistance</span>.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Resistance reduction increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Bind duration per active device increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Resistance reduction increased again.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Physical and Magical resistance reduction increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Bind duration extension per active field device increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Physical and Magical resistance reduction increased again.</span></div>
+              </div>
+              <div class="skill-note">
+                The auto-targeting logic is key: Weak Point Analysis always locks onto the highest-damage enemy, making it highly effective in auto-battle content. With all 3 devices active, the Bind duration can become extremely long - potentially locking the enemy carry for an entire fight phase. The resistance shred applies to both damage types, benefiting any DPS in the composition regardless of their damage source.
               </div>
             </div>
 
@@ -2666,12 +2694,15 @@ const activeGuide = releasedGuides[0];
                 <span class="skill-badge badge-skill">Active</span>
               </div>
               <p class="skill-desc">
-                Heals the most wounded ally. Applies a <span class="highlight">damage reduction</span> buff for a duration -- base amount plus a bonus per active device on the field.
+                Heals the most wounded allied unit and reduces the <span class="highlight">damage they receive</span> for a duration. For each active device on the field, the damage reduction effect is additionally increased by a percentage.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Healing increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Damage reduction bonus per device increased.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Healing increased again.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Healing effect increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Damage reduction from active field devices increased.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Healing effect increased again.</span></div>
+              </div>
+              <div class="skill-note">
+                Like Weak Point Analysis, Force Field Shield scales directly with active device count. With 3 devices active the damage reduction bonus becomes substantial, effectively creating a damage-mitigation shield on the most endangered ally at the moment it matters most. The auto-targeting on the most wounded unit makes it reliable in auto-battle without requiring manual coordination.
               </div>
             </div>
 
@@ -2682,54 +2713,71 @@ const activeGuide = releasedGuides[0];
                 <span class="skill-badge badge-skill">Passive</span>
               </div>
               <p class="skill-desc">
-                Increases Hephaestus's <span class="highlight">Energy recovery speed</span> passively. Lv4 grants initial Energy at battle start -- first device activates earlier.
+                Hephaestus's <span class="highlight">Energy recovery speed</span> is increased by a percentage.
               </p>
               <div class="skill-upgrade-block">
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Energy recovery rate higher.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Energy recovery rate higher again.</span></div>
-                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Grants initial Energy at battle start.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Energy recovery rate increase is higher.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Energy recovery rate increase is higher again.</span></div>
+                <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Gains initial Energy at the start of battle.</span></div>
+              </div>
+              <div class="skill-note">
+                The passive foundation of the device loop. Faster Energy means earlier first Ult cast, which means earlier first device activation, which means earlier Bind scaling on Weak Point Analysis and Shield scaling on Force Field. Lv4 initial Energy is a significant quality-of-life spike - Hephaestus reaches the first activation faster and the Fusion window shifts earlier in the fight.
               </div>
             </div>
 
           </div>
-        </section>
 
-        <!-- INVESTMENT ORDER -->
-        <section class="section">
-          <div class="section-title">Investment Order</div>
-          <div class="mechanic-box">
-            <div class="mechanic-label">Do this in order</div>
-            <ol class="mechanic-list" style="list-style:decimal; padding-left:20px;">
-              <li><strong>Relic Lv3</strong> -- Energy cost reduction on Ultimate. Moves Fusion trigger earlier. This single upgrade has the highest fight-deciding impact in his entire kit.</li>
-              <li><strong>Source Resonance Lv4</strong> -- Initial Energy at battle start. Combined with Relic Lv3, first device activates as early as possible.</li>
-              <li><strong>Ultimate Domain Lv4</strong> -- Amplifies every Fusion window. Stronger team DMG boost and enemy DMG reduction on each trigger.</li>
-              <li><strong>Weak Point Analysis Lv3</strong> -- Extends Bind duration per device. With 3 active, the enemy carry can be locked for the entire Fusion window.</li>
-              <li><strong>Force Field Shield Lv3</strong> -- Increases damage reduction bonus per device. Lower priority than the loop accelerators above.</li>
-            </ol>
+          <div class="mechanic-box" style="margin-top: 20px;">
+            <div class="mechanic-label">Skill Upgrade Priority</div>
+            <ul class="mechanic-list">
+              <li><strong>1. Undying Forge (Relic)</strong> - Lv3 Energy cost reduction is the most impactful single upgrade in the kit; reach this before farming stars or skill levels</li>
+              <li><strong>2. Source Resonance (Passive)</strong> - Lv4 initial Energy accelerates the first device activation and compresses the Fusion timeline</li>
+              <li><strong>3. Ultimate Domain (Ultimate)</strong> - Lv4 amplifies the Fusion payoff directly; every subsequent Fusion cast is stronger</li>
+              <li><strong>4. Weak Point Analysis (Active)</strong> - Lv3 extends Bind duration per device; with 3 active devices this can lock the carry for a prolonged window</li>
+              <li><strong>5. Force Field Shield (Active)</strong> - Lv3 increases damage reduction scaling per device; lower priority than the loop accelerators above</li>
+            </ul>
           </div>
         </section>
 
         <!-- RATINGS -->
         <section class="section" id="hephaestus-ratings">
-          <div class="section-title">Ratings</div>
+          <div class="section-title">Mode Ratings</div>
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVE / Campaign</div>
               <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
-              <div class="rating-desc">Device zones shine in long fights. Weaker in short early-campaign waves.</div>
+              <div class="rating-desc">Strong sustain zones and device scaling shine in longer PvE fights; slower ramp means 2nd/3rd team use in early campaign</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
               <div class="rating-cell"><span class="rating-badge rating-a">A+</span></div>
-              <div class="rating-desc">Long fights guarantee Fusion. Resistance shred multiplies the whole team's output.</div>
+              <div class="rating-desc">Long fights guarantee Fusion - resistance shred on boss is extremely valuable for the entire team's DPS output</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
               <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
-              <div class="rating-desc">Strong if Fusion fires. Hard-countered by dive-burst that ends fights before the third cast.</div>
+              <div class="rating-desc">Immobility limits adaptability; strong against static comps but hard-countered by dive-burst teams that end fights before Fusion</div>
             </div>
           </div>
-          <p style="font-size:12px; color:var(--text-muted); margin-top:12px; font-style:italic; text-align:center;">Ratings based on CN server skill analysis and kit mechanics. Released CN Version 1.8.</p>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:12px; font-style:italic; text-align:center;">* Ratings based on CN server skill analysis. Released CN Version 1.8. Niche S-tier with correct investment and composition.</p>
+        </section>
+
+        <!-- POSITIONING -->
+        <section class="section" id="hephaestus-positioning">
+          <div class="section-title">Recommended Positioning</div>
+          <div class="pos-grid">
+            <div class="pos-card">
+              <div class="pos-mode">Backline Center - Fixed Position</div>
+              <p>Hephaestus has no choice in positioning beyond his starting slot: his Forge is placed in front of him at battle start, and he cannot leave it. Place him in the <strong>backline center</strong> position to ensure the Forge spawns in a location that maximizes device coverage across the widest area of the field.</p>
+              <p>Incorrect starting position is the only positioning mistake available to make. Once the Forge is placed, his position is fixed for the entire fight. The Forge's teleport-back mechanic means the opponent cannot displace him - all investment in placement pays off reliably.</p>
+            </div>
+            <div class="pos-card">
+              <div class="pos-mode">Formation Structure</div>
+              <p><strong>Front:</strong> A stationary or taunt-based tank (Prometheus, Geb) - these units benefit from the device zones and keep enemies inside the debuff areas. Prometheus in particular creates a Bunker Core as a second immobile anchor alongside Hephaestus.</p>
+              <p><strong>Mid:</strong> DPS units (Isis, Hecate, Hladgunnr) positioned to benefit from device heal zones while their damage is amplified by Weak Point Analysis's resistance shred on the primary target.</p>
+              <p><strong>Back:</strong> Hephaestus plus a secondary support. The goal is to ensure the Forge zone covers as much of the formation's natural combat area as possible at battle start.</p>
+            </div>
+          </div>
         </section>
 
         <!-- COMPS -->
@@ -2744,8 +2792,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -2760,30 +2808,83 @@ const activeGuide = releasedGuides[0];
           </div>
         </section>
 
-        <!-- KEY SYNERGIES -->
+        <!-- STRENGTHS / WEAKNESSES -->
+        <section class="section" id="hephaestus-strengths">
+          <div class="section-title">Strengths &amp; Weaknesses</div>
+          <div class="sw-grid">
+            <div class="sw-card strengths">
+              <div class="sw-title">Strengths</div>
+              <ul class="sw-list">
+                <li>Unique zone-control mechanic - no other hero in Motto Immortal deploys persistent, deployable buff/debuff zones of this kind</li>
+                <li>Fusion effect provides a field-wide simultaneous team damage boost and enemy damage reduction - potentially the strongest single team-buff state in the game at full activation</li>
+                <li>Weak Point Analysis auto-targets the highest-damage enemy and shreds both physical and magical resistance - highly effective in auto-battle without manual input</li>
+                <li>Effectively immune to displacement skills - Forge teleport-back means knockbacks and pulls cannot permanently remove him from his position</li>
+                <li>Device zones scale two other skills directly: longer Bind on Weak Point Analysis and higher damage reduction on Force Field Shield</li>
+                <li>Boss content specialist - long fights guarantee Fusion and resistance shred on the boss amplifies the entire team's DPS output simultaneously</li>
+                <li>Source Resonance Lv4 initial Energy and Undying Forge Lv3 Energy reduction stack to significantly compress the Fusion timeline with correct investment</li>
+              </ul>
+            </div>
+            <div class="sw-card weaknesses">
+              <div class="sw-title">Weaknesses</div>
+              <ul class="sw-list">
+                <li>Slow ramp-up: 3 Ultimate casts required to reach Fusion - burst-heavy PvP compositions can end the fight before the third activation</li>
+                <li>Total immobility: Forge placement at battle start is the only positioning decision; poor starting placement means poor device zone coverage for the entire fight</li>
+                <li>Zero personal damage output - entirely dependent on teammates for DPS; a weak carry pool collapses his value to sustain and CC only</li>
+                <li>Strongly relic-dependent: without Relic Lv3 the Ult rotation feels slow and the Fusion trigger is delayed significantly</li>
+                <li>Anti-heal effects partially neutralize his device HP regeneration, reducing his sustain value in compositions or against teams running heal-denial skills</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- SYNERGY -->
         <section class="section" id="hephaestus-synergy">
-          <div class="section-title">Key Synergies</div>
+          <div class="section-title">Synergy Considerations</div>
           <div class="synergy-list">
             <div class="synergy-entry">
-              <div class="synergy-hero-name">Caishen / Dionysus</div>
-              <p class="synergy-body">Energy support compresses the device ramp -- more Ultimates per fight means earlier Fusion and more repeat Fusion windows after it.</p>
+              <div class="synergy-hero-name">Prometheus</div>
+              <p class="synergy-body">The strongest frontline anchor for Hephaestus. Both heroes are positionally static - Prometheus as a self-rooted tank and Hephaestus as Forge-bound - creating a Bunker Core that forces the enemy to engage into both simultaneously. Prometheus absorbs the damage, Hephaestus heals him through device zones and Force Field Shield, and both benefit from the Hearts faction bonus.</p>
             </div>
             <div class="synergy-entry">
-              <div class="synergy-hero-name">Prometheus / Geb</div>
-              <p class="synergy-body">Stationary or taunt tanks force enemies into device zones, keeping the ATK SPD debuff applied while Force Field Shield heals them automatically.</p>
+              <div class="synergy-hero-name">Geb</div>
+              <p class="synergy-body">Taunt-tank who draws enemies into the device zones where their ATK Power and ATK Speed are reduced. Geb holds enemies in place within the debuff area while taking reduced damage thanks to Force Field Shield. A reliable frontline anchor that keeps the device zones populated with debuffed targets.</p>
             </div>
             <div class="synergy-entry">
               <div class="synergy-hero-name">Poseidon</div>
-              <p class="synergy-body">Gather pulls multiple enemies into zones simultaneously -- maximum ATK SPD debuff coverage and Bind-target exposure in a single cast.</p>
+              <p class="synergy-body">Gather effect compresses enemies into the device zones, maximizing simultaneous debuff exposure. Multiple enemies inside the same zone receive ATK Speed reduction at once, compounding Hephaestus's team-wide debuff efficiency. One of the strongest tools for maximizing device zone coverage in a single cast.</p>
             </div>
             <div class="synergy-entry">
-              <div class="synergy-hero-name">Isis / Hecate</div>
-              <p class="synergy-body">Both benefit from the Fusion damage boost and Weak Point Analysis resistance shred on the primary target -- their output spikes sharply during the Fusion window.</p>
+              <div class="synergy-hero-name">Dionysus</div>
+              <p class="synergy-body">Energy support that stacks directly with Source Resonance to create an ultra-fast Ult rotation. More Energy means earlier device activations, earlier Fusion, and earlier repeat Fusion casts. The primary Energy-loop partner for Hephaestus in speed-focused compositions.</p>
+            </div>
+            <div class="synergy-entry">
+              <div class="synergy-hero-name">Pan</div>
+              <p class="synergy-body">AoE crowd control that chains with Weak Point Analysis. Pan's CC keeps enemies inside device zones for sustained debuff exposure, and his silence delays enemy Ultimates while Hephaestus ramps toward Fusion. Core PvE control partner.</p>
+            </div>
+            <div class="synergy-entry">
+              <div class="synergy-hero-name">Isis</div>
+              <p class="synergy-body">Stationary or low-mobility DPS that benefits maximally from device zone heal sustain. Isis can operate from a fixed position within the zone's range while her damage is amplified by the resistance shred from Weak Point Analysis and the Fusion damage rate boost once all 3 devices are active.</p>
+            </div>
+            <div class="synergy-entry">
+              <div class="synergy-hero-name">Hecate</div>
+              <p class="synergy-body">DoT damage source whose 10-second Ultimate benefits from the extended fight duration Hephaestus's sustain zones create. Multiple Hecate Ultimate casts in a single long fight compound with the Fusion ATK Speed boost to create an escalating damage loop. Ideal for boss content and prolonged PvE stages.</p>
             </div>
             <div class="synergy-entry">
               <div class="synergy-hero-name">Mengpo</div>
-              <p class="synergy-body">Revival extends fight duration, which is exactly the condition Hephaestus needs -- more time means more Fusion triggers and more total device heal ticks.</p>
+              <p class="synergy-body">Revival extends fight duration - longer fights mean more Fusion triggers, more Weak Point Analysis casts, and more device heal ticks. Mengpo's Samsara acts as insurance that the team survives long enough to reach the third device activation when the fight would otherwise end before Fusion.</p>
             </div>
+          </div>
+        </section>
+
+        <div class="divider-ornament">&#10022; &#10022; &#10022;</div>
+
+        <!-- PLAYSTYLE SUMMARY -->
+        <section class="section" id="hephaestus-playstyle">
+          <div class="section-title">Playstyle Summary</div>
+          <div class="overview-card">
+            <p>Hephaestus is a <em>set-and-forget zone architect</em> whose output accumulates passively over a fight rather than spiking on demand. The optimal approach is simple: place him in the backline center, let the Forge spawn, and focus entirely on the Ultimate rotation - activate the farthest device with each cast, prioritizing maximum zone coverage. The three secondary skills (Source Resonance, Weak Point Analysis, Force Field Shield) all operate automatically on correct targets without input.</p>
+            <p>The critical expression of skill is compositional, not mechanical. Building a team that can survive until the third activation is the primary design challenge. Slow ramp-up is the defining weakness: compositions that reach Fusion are extremely strong; compositions that are eliminated before the third cast never experience his peak. In PvE and boss content this is rarely an issue - long fights are his natural habitat. In PvP the timing question becomes the core strategic risk.</p>
+            <p>The common mistakes are structural, not reactive: placing him forward, building Attack stats instead of HP and Energy Recovery, running him in fast burst compositions where Fusion is unreachable, and ignoring Relic Lv3. Correct investment path is clear - reach Relic Lv3 before investing in stars or raw stat upgrades. The Energy cost reduction on Ultimate Domain has more fight-deciding impact than any stat point, because it moves the Fusion trigger forward in time and all of Hephaestus's value compounds from that moment.</p>
           </div>
         </section>
 
@@ -3060,8 +3161,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -3177,7 +3278,7 @@ const activeGuide = releasedGuides[0];
          MERET GUIDE
          ═══════════════════════════════════════ -->
     {releasedGuides.some(g => g.id === "meret") && (
-    <div class="guide-slide" id="meret">
+    <div class="guide-slide is-active" id="meret">
       <div class="guide-container">
 
         <!-- HEADER -->
@@ -3450,8 +3551,8 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
+                    <a href={`/heroes/${id}`} class="hero-chip">
+                      <img src={heroImage(id)} alt={heroName(id)} loading="lazy" />
                       <span class="hero-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
@@ -3975,44 +4076,6 @@ const activeGuide = releasedGuides[0];
 
   .section-title::before { background: linear-gradient(90deg, rgba(64,106,95,0.4), transparent); }
 
-  /* ── VERDICT STRIP ── */
-  .verdict-strip {
-    background: var(--dark-card);
-    border: 1px solid rgba(64,106,95,0.3);
-    padding: 22px 28px;
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-  }
-  .verdict-role {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent-teal);
-    margin-bottom: 8px;
-  }
-  .verdict-line {
-    font-size: 15px;
-    color: var(--text);
-    line-height: 1.55;
-    margin: 0 0 16px 0;
-  }
-  .verdict-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .verdict-meta-item {
-    background: rgba(64,106,95,0.1);
-    border: 1px solid rgba(64,106,95,0.25);
-    border-radius: 8px;
-    padding: 5px 12px;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-  .verdict-meta-item strong { color: var(--text); }
-
   /* ── OVERVIEW CARD ── */
   .overview-card {
     background: var(--dark-card);
@@ -4050,16 +4113,16 @@ const activeGuide = releasedGuides[0];
   .skill-card {
     background: linear-gradient(180deg, rgba(22,20,20,0.9), rgba(15,14,14,0.96));
     border: 1px solid rgba(64,106,95,0.2);
+    border-left: 3px solid rgba(64,106,95,0.6);
     padding: 20px 24px;
     position: relative;
-    overflow: hidden;
     transition: border-color 0.2s, box-shadow 0.2s;
     border-radius: 20px;
     box-shadow: 0 14px 40px rgba(7,6,12,0.4);
   }
 
   .skill-card:hover {
-    border-color: rgba(64,106,95,0.45);
+    border-left-color: var(--accent-teal);
     box-shadow: 0 16px 46px rgba(64,106,95,0.18);
   }
 
@@ -4068,12 +4131,12 @@ const activeGuide = releasedGuides[0];
     position: absolute;
     inset: 0;
     border-radius: 20px;
-    background: linear-gradient(135deg, rgba(64,106,95,0.06) 0%, transparent 55%);
+    background: linear-gradient(135deg, rgba(64,106,95,0.08) 0%, transparent 55%);
     pointer-events: none;
   }
 
-  .skill-card.ultimate { border-color: rgba(64,106,95,0.35); }
-  .skill-card.relic { border-color: rgba(64,106,95,0.28); }
+  .skill-card.ultimate { border-left-color: rgba(64,106,95,0.85); }
+  .skill-card.relic { border-left-color: rgba(64,106,95,0.7); }
 
   .skill-header {
     display: flex;
@@ -4121,8 +4184,7 @@ const activeGuide = releasedGuides[0];
     margin-top: 10px;
     padding: 8px 12px;
     background: rgba(12,12,12,0.6);
-    border: 1px solid rgba(64,106,95,0.2);
-    border-radius: 8px;
+    border-left: 2px solid rgba(64,106,95,0.4);
     font-size: 13px;
     color: var(--text-muted);
     font-style: italic;
@@ -4368,30 +4430,12 @@ const activeGuide = releasedGuides[0];
     transform: translateY(-2px);
   }
 
-  .hero-chip-portrait {
+  .hero-chip img {
     width: 100%;
     aspect-ratio: 1 / 1.1;
-    background-color: #0d1624;
-    background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
-    background-size: cover;
-    background-position: center top;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-
-  .hero-chip-portrait::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: var(--hero-img);
-    background-size: cover;
-    background-position: center top;
-    transition: transform 0.3s ease;
-  }
-
-  .hero-chip:hover .hero-chip-portrait::before {
-    transform: scale(1.08);
+    object-fit: cover;
+    object-position: center 20%;
+    display: block;
   }
 
   .hero-chip-name {
@@ -4484,11 +4528,10 @@ const activeGuide = releasedGuides[0];
   .synergy-list { display: flex; flex-direction: column; gap: 12px; }
   .synergy-entry {
     background: var(--dark-card);
-    border: 1px solid rgba(64,106,95,0.2);
+    border: 1px solid rgba(64,106,95,0.12);
+    border-left: 3px solid rgba(64,106,95,0.5);
     padding: 14px 18px;
-    border-radius: 12px;
-    position: relative;
-    overflow: hidden;
+    border-radius: 0 12px 12px 0;
   }
   .synergy-hero-name {
     font-size: 12px;

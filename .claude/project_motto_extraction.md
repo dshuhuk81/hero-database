@@ -1,13 +1,13 @@
 ---
 name: Motto Immortal Game Data Extraction
-description: Vollstaendiger Fortschritt der Datenextraktion aus Motto Immortal (com.goatgames.mot.gb.gp) — Lua-Configs, Grafiken, Hero-Mapping, offene Aufgaben
+description: Vollstaendiger Fortschritt der Datenextraktion aus Motto Immortal (com.goatgames.mot.gb.gp) -- Lua-Configs, Grafiken, Hero-Mapping, offene Aufgaben
 type: project
 originSessionId: 21095881-bee5-4039-a3ea-70ca9b9231e5
 ---
-# Motto Immortal – Extraction Status
+# Motto Immortal -- Extraction Status
 
-**Datum letzter Stand:** 2026-04-30
-**Arbeitspfad:** `/Users/daschultheiss/android/`
+**Datum letzter Stand:** 2026-04-30 (Session 2)
+**Arbeitspfad:** `/Users/daschultheiss/hero-database/leak/`
 
 ---
 
@@ -23,6 +23,21 @@ originSessionId: 21095881-bee5-4039-a3ea-70ca9b9231e5
 - Gesamter Prozess-Speicher nach ZIP-Magic (`PK\x03\x04`) gescannt
 - **6.991 Dateien** in `game_extracted/` -- alle lesbar
 - Haupt-Script: `/tmp/hook_memscan2.py`
+
+### EN-Lokalisierung aufgeloest (OHNE Frida noetig)
+**Quelle:** `leak/game_extracted/region_7584e4b000/client/config/divination/divination_character_setting.json`
+
+Diese JSON-Datei enthaelt alle Hero-EN-Namen direkt lesbar (kein Binary-Format).
+Kann mit `python3 -c "import json; ..."` direkt ausgewertet werden.
+
+**Wichtig:** Die `divination_character_setting.json` IDs entsprechen den `hero_id`-Feldern aus `hero_detail.json` und `hero_skin.lua`. Das Divinations-Feature des Spiels nutzt dieselben Hero-IDs.
+
+**Achtung -- Divination-NPC-Konflikt:**
+IDs 1010/1011/1012 sind alle Skadi-Varianten in `hero_skin.lua`, aber die Divination nennt:
+- 1010 = Skadi (korrekt)
+- 1011 = Nephthys (Divinations-NPC oder kuenftiger Held, kein Portrait geleakt)
+- 1012 = Nut (Divinations-NPC oder kuenftiger Held, kein Portrait geleakt)
+Konklusion: `nut` und `nephthys` sind NOCH NICHT im Spiel implementiert.
 
 ### Lua-Configs extrahiert
 Pfad: `game_extracted/region_754c000000/NewConfig/`
@@ -41,6 +56,16 @@ Pfad: `game_extracted/region_754c000000/NewConfig/`
 | `hero_spine.lua` | ~500 | Spine-ID -> Hero-ID-Link |
 | `battle/battle_constant.lua` | ~300 | Battle-Formeln |
 
+### JSON-Configs extrahiert
+Pfad: `game_extracted/region_7584e4b000/client/config/`
+
+| Datei | Inhalt |
+|-------|--------|
+| `hero_detail.json` | Alle Hero-Stats als JSON (192 Eintraege inkl. Varianten) |
+| `divination/divination_character_setting.json` | EN-Namen fuer alle Heroes (Gold-Quelle!) |
+| `language.json` | Sprachkuerzel-Mapping (EN_US, DE_DE, etc.) |
+| `item.json` | Item-Daten als JSON |
+
 ### Grafiken extrahiert
 Pfad: `game_graphics/` -- **16.182 PNG-Dateien**, 3,2 GB
 
@@ -49,15 +74,25 @@ Schluessel-Ordner:
 - `new_atlas_sa_ui_skill/` -- 373 Skill-Icons (Schema: `A_UI_Hero_<SkillPrefix>_Skill01.png`)
 - `new_atlas_sa_ui_item/` -- 746 Item-Icons
 - `new_rolespine_<name>_skeletondata/` -- 98+ Helden-Spine-Texturen
+- `new_texture_ui_herofigure_a_ui_portrait_<name>_img/` -- Full-body Portraits (838x2048)
 
-### game_id_mapping.json erstellt
+### game_id_mapping.json -- aktueller Stand 2026-04-30 (Session 2)
 **Datei:** `src/data/game_id_mapping.json`
 **Zweck:** Stabiles Mapping Projekt-Hero-ID -> Spieldaten (game_hero_id, internal_name, Portrait-Pfade, Skill-Icon-Prefix)
 
-**Stand 2026-04-30:**
-- 47 Helden vollstaendig gemappt (game_hero_id + assets)
-- 21 Helden: internal_name bekannt, game_hero_id fehlt noch (nicht in hero_mapping.json)
-- 5 Helden komplett unbekannt: `audhumla`, `eris`, `idun`, `jiutian-xuannv`, `nut`
+**Mapping-Status:**
+- 68 Helden mit `status=ok` (game_hero_id + assets vollstaendig)
+- 2 Helden mit `status=unreleased`: `hela` (2026-05-25), `jiutian-xuannv` (2027-12-12)
+- 3 Helden mit `status=not_yet_released`: `nut`, `audhumla`, `idun` (nicht in game data)
+- 0 Helden mit `status=unmatched`
+
+**Aufgeloeste Helden (Session 2):**
+- `eris` -> game_hero_id=3011, internal=`elisi`. Portrait geleakt + konvertiert. EN-Name Eris bestaetigt via divination.
+- `jiutian-xuannv` -> game_hero_id=3013, EN-Name=Xuannv. Nur new_card_push-Assets geleakt, kein Portrait/Spine.
+- `nut` -> Kein game_hero_id. Nicht im Spiel. Divination-ID 1012 ist Skadi-Variante, nicht der Held.
+- `audhumla` -> Kein game_hero_id. Nicht im Spiel. Kein Eintrag in divination oder game_graphics.
+- `idun` -> Kein game_hero_id. Nicht im Spiel. Kein Eintrag in divination oder game_graphics.
+- `hela` -- EN-Name korrigiert: interner Name `hela` (CN), aber EN display name ist **Hera** (bestaetigt via divination ID 5008).
 
 **Wichtige Korrekturen gegenueber altem hero_mapping.json:**
 - `saihemaite` = Sekhmet (nicht Set wie vorher falsch eingetragen)
@@ -72,8 +107,8 @@ Betrifft: Aries, Cancer, Capricorn, Leo, Libra, Pisces, Scorpio, Virgo, Dionysus
 
 **Release Schedule:**
 Vollstaendige Liste in `leak/RELEASE_SCHEDULE.md`.
-- Hela (5008) kommt 2026-05-25
-- tid=3013 kommt 2027-12-12 (sehr frueh geplant)
+- Hela/Hera (5008) kommt 2026-05-25
+- jiutian-xuannv/Xuannv (3013) kommt 2027-12-12
 
 ---
 
@@ -111,45 +146,103 @@ Alle numerischen Keys aus `hero_detail.lua` sind entschluesselt via `hero_enumer
 
 ## OFFENE AUFGABEN (priorisiert)
 
-### 1. EN_US Lokalisierung -- Hoehere Prioritaet
-**Problem:** `game_extracted/region_7581840000/EN_US/` enthaelt 1.077 binaere Dateien.
-Inner-Encryption unbekannt. Enthaelt alle `tid#HeroName_X`, `tid#SkillName_X`, `tid#SkillDes_X`.
+### 1. Skill-Effekte cross-referenzieren
+`skill_detail.lua` hat Skill-IDs + `des = 'tid#SkillDes_XXXX'` -- erst nach Lokalisierungs-Dump vollstaendig lesbar.
+`buff.lua` enthaelt die eigentliche Mechanik (type: 'Taunt', 'Immunity', 'Dot', etc.)
+Ablauf: skill_id -> buff_ids -> Mechanik aus buff.lua extrahieren
 
-**Losung: Frida-Hook beim Spielstart**
-Script: `/Users/daschultheiss/android/frida_dump_localization.py`
+### 2. Stats gegen hero_detail.json querpruefen (fortlaufend)
+game_hero_id -> hero_detail.json Eintrag -> atk_base, hp_base, def_base, critrate_base
+Abgleich mit den manuell eingetragenen Stats in den Hero-JSONs.
+Script: `npm run validate:hero-detail-stats`
+
+### 3. Eris Portrait-Qualitaet pruefen
+- Portrait `public/heroes/eris.webp` ist live auf R2 (249 KB, konvertiert 2026-04-30)
+- Eris hat KEINE Skill-Icons im `new_atlas_sa_ui_skill/` Atlas -- nur Spine-Animationen
+- Fallback: skill_icon_prefix=null bedeutet keine Skill-Icons werden konvertiert
+
+### 4. jiutian-xuannv Portrait (2027)
+Portrait erst verfuegbar wenn der Held naeher am Release (2027-12-12) geleakt wird.
+
+### 5. nut, audhumla, idun -- zukuenftige Releases
+Diese Helden haben Skill-Beschreibungen im Projekt (offenbar aus anderen Quellen),
+aber noch keine Spieldaten. Beim naechsten Frida-Scan nach ihnen suchen.
+
+### 6. Frida -- naechster Scan bei neuer Game-Version
 ```bash
 adb connect 127.0.0.1:5555
 adb forward tcp:27042 tcp:27042
-python3 /Users/daschultheiss/android/frida_dump_localization.py
-# Im Spiel: alle Menus aufrufen
-# Output: /Users/daschultheiss/android/string_dump.json
+# Spiel in BlueStacks oeffnen und vollstaendig laden
+python3 /tmp/hook_memscan2.py
+cp -r /tmp/game_extracted /Users/daschultheiss/hero-database/leak/game_extracted
 ```
-**Nutzen:**
-- Loest die 5 komplett unbekannten Helden auf (audhumla, eris, idun, jiutian-xuannv, nut)
-- Loest die 21 Helden mit internal_name aber ohne game_hero_id auf
-- Gibt exakte Skill-Beschreibungen fuer alle Helden
 
-### 2. game_id_mapping.json vervollstaendigen -- Manuell
-Die 21 Helden mit bekanntem internal_name aber ohne game_hero_id:
-anubis, ares, athena, bastet, cronus, demeter, geb, gemini, heracles, hladgunnr,
-khepri, mengpo, meret, momus, nuba, phoenix, prometheus, sagittarius, taurus, tefnut, ullr.
-Diese sind im Spiel vorhanden (Portraits existieren), aber fehlen in `hero_mapping.json`.
-Loesung: hero_mapping.json mit diesen internal_names erganzen + game_hero_id aus hero_detail.lua nachschlagen.
+---
 
-### 3. Skill-Effekte cross-referenzieren
-`skill_detail.lua` hat Skill-IDs + `des = 'tid#SkillDes_XXXX'` -- erst nach Lokalisierungs-Dump lesbar.
-`buff.lua` enthaelt die eigentliche Mechanik (type: 'Taunt', 'Immunity', 'Dot', etc.)
-Ablauf: Schritt 1 (Lokalisierung) -> dann skill_id -> buff_ids -> Mechanik
+## ERKENNTNISSE UEBER DAS DIVINATIONS-SYSTEM
 
-### 4. Portrait/Skill-Icons ins Projekt einbinden
-Mit fertigem Mapping sind alle Assets direkt ansteuerbar:
-- Portrait: `game_graphics/new_atlas_sa_ui_headportraitnormal/{portrait_normal}.png`
-- Skill-Icons: `game_graphics/new_atlas_sa_ui_skill/A_UI_Hero_{skill_icon_prefix}_Skill01.png`
-Konvertierung nach WebP (512x512) und Ablage in `src/assets/heroes/` und `src/assets/skills/`
+Die Datei `divination_character_setting.json` enthaelt Charaktere fuer ein Orakel/Horoskop-Feature im Spiel.
+Die IDs in dieser Datei entsprechen den Hero-IDs aus `hero_detail.json` und `hero_skin.lua`.
 
-### 5. Stats aus hero_detail.lua verifizieren
-game_hero_id -> hero_detail.lua Eintrag -> atk_base, hp_base, def_base, critrate_base
-Abgleich mit den manuell eingetragenen Stats in den Hero-JSONs.
+**Vollstaendige EN-Namen aller bekannten Heroes (Stand 2026-04-30):**
+
+| game_id | EN Name | Projekt-ID |
+|---------|---------|------------|
+| 101 | Duoxia (NPC) | aquarius |
+| 1001 | Hecate | hecate |
+| 1002 | Medusa | medusa |
+| 1003 | Hela | - (game-Hela, nicht Projekt-Held) |
+| 1004 | Poseidon | poseidon |
+| 1005 | Nemesis | nemesis |
+| 1006 | Elis | iris |
+| 1007 | Khepri | khepri |
+| 1008 | Momus | momus |
+| 1009 | Tefnut | tefnut |
+| 1010 | Skadi | skadi |
+| 1011 | Nephthys | (nicht im Projekt) |
+| 1012 | Nut | (nut -- nicht im Spiel) |
+| 2001 | Sekhmet | sekhmet |
+| 2002 | Ares | ares |
+| 2003 | Horus | horus |
+| 2004 | Geb | geb |
+| 2005 | Bastet | bastet |
+| 2006 | Athena | athena |
+| 2007 | Set | set |
+| 2008 | Phoenix | phoenix |
+| 2009 | Heracles | heracles |
+| 2010 | Meret | meret |
+| 2011 | Selket | -- (Serket im Projekt als Variante) |
+| 3001 | Anubis | anubis |
+| 3002 | Freya | freya |
+| 3003 | Demeter | demeter |
+| 3004 | Jormungandr | jormungandr |
+| 3005 | Artemis | artemis |
+| 3006 | Pan | pan |
+| 3007 | Diana | diana |
+| 3008 | Feng Yi | fengyi |
+| 3009 | Wenshen | wenshen |
+| 3010 | Nvba | nuba |
+| 3011 | Eris | eris |
+| 3013 | Xuannv | jiutian-xuannv |
+| 4001 | Isis | isis |
+| 4002 | Caishen | caishen |
+| 4003 | Yanluo | yanluo |
+| 4004 | Yue Lao | yuelao |
+| 4005 | Jingwei | jingwei |
+| 4006 | Prometheus | prometheus |
+| 4007 | Surtur | surtr |
+| 4008 | Ullr | ullr |
+| 4009 | Heladeguna | hladgunnr |
+| 4010 | Meng Po | mengpo |
+| 4011 | Hephaestus | hephaestus |
+| 5001 | Amon-Ra | amunra |
+| 5002 | Nyx | nyx |
+| 5003 | Dionysus | dionysus |
+| 5004 | Nuwa | nuwa |
+| 5005 | Zeus | zeus |
+| 5006 | Nezha | nezha |
+| 5007 | Chronus | cronus |
+| 5008 | Hera | hela (intern)/hera (EN) |
 
 ---
 
@@ -157,22 +250,13 @@ Abgleich mit den manuell eingetragenen Stats in den Hero-JSONs.
 
 | Datei | Beschreibung |
 |-------|-------------|
-| `game_extracted/` | 6.991 extrahierte Spieldateien |
-| `game_graphics/` | 16.182 PNG-Assets (3,2 GB) |
+| `leak/game_extracted/` | 6.991 extrahierte Spieldateien |
+| `leak/game_graphics/` | 16.182 PNG-Assets (3,2 GB) |
 | `leak/hero_mapping.json` | Rohdaten-Mapping -- 74 Eintraege (inkl. NPCs/Duplikate) |
 | `src/data/game_id_mapping.json` | **Haupt-Mapping** -- Projekt-ID -> Spieldaten |
 | `leak/RELEASE_SCHEDULE.md` | Helden mit enable_time Feature-Flag |
 | `leak/GRAPHICS_INDEX.md` | Index aller Grafik-Ordner |
 | `leak/EXTRACTION_PROGRESS.md` | Technische Dokumentation der Extraktionsmethode |
-| `frida_dump_localization.py` | Frida-Hook zum Dumpen aller Spieltexte |
+| `leak/frida_dump_localization.py` | Frida-Hook zum Dumpen aller Spieltexte (optional, divination.json reicht fuer Namen) |
 | `motto_full.apk` | Original-APK |
 | `motto_unsigned.apk` | Modifiziertes APK (Frida-Gadget injiziert) |
-
-### Frida-Wiederholung (neue Game-Version)
-```bash
-adb connect 127.0.0.1:5555
-adb forward tcp:27042 tcp:27042
-# Spiel in BlueStacks oeffnen und vollstaendig laden
-python3 /tmp/hook_memscan2.py
-cp -r /tmp/game_extracted /Users/daschultheiss/android/game_extracted
-```
