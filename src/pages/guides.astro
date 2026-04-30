@@ -49,12 +49,7 @@ const guides = [
     quote: "Core of Control - Goddess of Winter and the Hunt",
     tags: ["Spades Faction", "Mage", "Legendary"],
   },
-  {
-    id: "hera", label: "Hera", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp",
-    imgPos: "center 15%", imgPosActive: "center 10%",
-    quote: "Queen of the Gods - Sovereign of Power and Obsession",
-    tags: ["Starglint Faction", "Support", "Legendary"],
-  },
+
   {
     id: "jiutian-xuannv", label: "Jiutian Xuannv", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutian-xuannv.webp",
     imgPos: "center 15%", imgPosActive: "center 10%",
@@ -2533,7 +2528,7 @@ const activeGuide = releasedGuides[0];
         <!-- HEADER -->
         <header class="hero-header">
           <div class="epithet">Motto Immortal - Hero Guide</div>
-          <img class="hero-portrait" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp" alt="Hephaestus portrait" loading="lazy" />
+          <img class="hero-portrait hero-portrait-hephaestus" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp" alt="Hephaestus portrait" loading="lazy" />
           <h1 class="char-name">Hephaestus</h1>
           <p class="hero-quote">Using volcanoes as his forge, smelting weapons - a single man becoming an army of thousands.</p>
           <div class="tags">
@@ -3766,6 +3761,9 @@ const activeGuide = releasedGuides[0];
     position: absolute;
     top: 8px;
     right: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 10px;
     font-weight: 600;
     color: var(--text-bright);
@@ -3784,8 +3782,9 @@ const activeGuide = releasedGuides[0];
   }
 
   .accordion-panel.is-active .accordion-guide-badge {
-    height: 22px;
     font-size: 0.68rem;
+    min-height: 22px;
+    padding: 0 8px;
   }
 
   /* ── SLIDES ── */
@@ -3834,6 +3833,7 @@ const activeGuide = releasedGuides[0];
       0 0 28px rgba(250, 204, 21, 0.32),
       0 0 64px rgba(250, 234, 121, 0.2),
       0 18px 40px rgba(0, 0, 0, 0.45);
+    object-position: center 14%;
   }
 
   .epithet {
