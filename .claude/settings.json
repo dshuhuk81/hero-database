@@ -108,7 +108,8 @@
       "Bash('~/Library/Android/sdk/platform-tools/adb' shell *)",
       "Bash(python3)",
       "Bash(python3 -u frida_call_localization.py)",
-      "Bash(echo \"PID: $!\")"
+      "Bash(echo \"PID: $!\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('image:', d.get\\('image','NONE'\\)\\)\")"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes",
