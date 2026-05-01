@@ -109,7 +109,9 @@
       "Bash(python3)",
       "Bash(python3 -u frida_call_localization.py)",
       "Bash(echo \"PID: $!\")",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('image:', d.get\\('image','NONE'\\)\\)\")"
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('image:', d.get\\('image','NONE'\\)\\)\")",
+      "Bash([ -f \"public/heroes/$id.webp\" ])",
+      "Bash(curl -s --head \"https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/tank.webp\")"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes",
