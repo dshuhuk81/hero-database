@@ -57,16 +57,26 @@
 
 ### 2.2 Key Milestones to Aim For
 
-**How — push toward these chapters in order:**
+**How — push toward these stages in order:**
 
-| Milestone | What it unlocks | Why it matters |
+| Stage | What it unlocks | Why it matters |
 |---|---|---|
-| Around Chapter 10 | Most core game modes | You go from "one mode" to "full game" |
-| Around Chapter 20 | First awakening reward tier | Awakening is a major power spike per hero |
-| Chapter 39 | Mid-game reward tier | Opens up serious account-wide buffs |
-| **Chapter 57** | **4th Awakening unlock** | **Currently the highest reward milestone.** After this, the cost-to-reward ratio of pushing further drops sharply until new content is added. |
+| Prologue 4 (Stage 1-1) | Godcall Grove | Early summon feature |
+| Stage 1-6 | AFK Mode & Sanctum | Passive resource generation begins |
+| Stage 2-1 | Delusion's Den | Extra PvE content and rewards |
+| Stage 2-12 | Auto Attack, Celestial Spire | Auto-battle and tower mode |
+| Stage 3-9 | Mindsea (Guild) | Guild features, social rewards |
+| **Stage 3-18** | **Shrine (Undying Flame)** | **Account-wide stat bonuses - biggest early priority** |
+| Stage 4-8 | Grand Arena (PvP) | PvP mode and daily rewards |
+| Stage 5-1 | Destined Constellation | Allows Zodiac hero to exceed Level 140 |
+| Stage 5-4 | Resonating Altar | Level up 5 heroes - others match the lowest of the 5 |
+| Stage 5-18 | Bounty Pool | Additional passive rewards |
+| Stage 6-3 | Forgotten Labyrinth | Extra PvE content |
+| Stage 7-3 | Beacon of Honor | Feeds into Beacon Tree upgrades |
+| **Stage 8-3** | **Beacon Tree** | **Account-wide stat bonuses for every hero in every mode** |
+| Stage 19-3 | Totems | Late-game power system |
 
-Once you reach roughly Chapter 57, further pushes are mostly for pride and small relic drops. Focus your attention on Shrine, Beacon Tree, and PvE mode rewards from that point on.
+Push to Stage 3-18 first to unlock the Shrine, then aim for Stage 8-3 to activate the Beacon Tree. Both give account-wide buffs that help every hero in every mode.
 
 ### 2.3 How to Avoid Getting Stuck
 
