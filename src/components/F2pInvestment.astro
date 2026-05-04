@@ -8,7 +8,10 @@ const { f2pInvestment } = Astro.props;
 <div class="f2p-invest-card">
   <div class="fi-header">F2P Investment</div>
   <div class="fi-body">
-    <span class="fi-rec">{f2pInvestment}</span>
+    <div class="fi-row">
+      <span class="fi-label">Recommendation</span>
+      <span class="fi-value">{f2pInvestment}</span>
+    </div>
   </div>
 </div>
 
@@ -18,6 +21,7 @@ const { f2pInvestment } = Astro.props;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  sheight: 100%;
 }
 .fi-header {
   padding: var(--space-3) var(--space-4);
@@ -32,10 +36,24 @@ const { f2pInvestment } = Astro.props;
 .fi-body {
   padding: var(--space-4);
 }
-.fi-rec {
-  font-size: 1rem;
+.fi-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.fi-label {
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 110px;
+}
+.fi-value {
+  font-size: 0.9rem;
   font-weight: var(--weight-black);
   color: var(--faction-a);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 </style>
