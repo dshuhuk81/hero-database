@@ -1,41 +1,30 @@
 # Hero Database – Copilot Instructions
 
+## Project Overview
+Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
+
+## Tokens
+For creating new content use the design foundation laid out in styles/tokens.css. There is also a overview of the system in design-system.astro.
+
 ## Game leaked data
 unter data-mine/game_extracted there are a ton of ingame infos. maybe we can use something here. an explanation what was done to achieve that is within @Extraction_Progress.md
 
-## New Heroes
-When a hero is added, we need to run this script to merge all individual hero JSON files into a single `all_heroes_db.json` that the frontend consumes. This also regenerates the ranking scores based on the new hero's stats and synergies.
-
-```bash
-node scripts/merge-heroes-db.js
-
-## Project Overview
-Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
+## Plan
+Do not make any changes until you have 95% confidence in what you need to build. Ask me follow up questions until you reach that confidence.
 
 ## General To-Dos
 Before writing any code, describe your approach and wait for approval.
 
 If the requirements I give you are ambigous ask clarifying questinos before writing any code.
-
 After you finish writing any code, list the edge cases and suggest test cases to cover them.
-
-If a task requires changes to more than 3 files, stop and break it into smaller tasks first.
-
+If a task requires changes to more than 10 files, stop and break it into smaller tasks first.
 When there is a bug, start by writing a test that reproduces itm then fix it until the test passes.
-
 Every time I correct you, reflect on what you did wrong and come up with a plan to never make the same mistake again.
-
 Dont invent stuff or create new info that is not in the project. Use only data that is included in the project files, the json or md files. If youre missing data, ask.
 
 ## Boss DMG Data
 I have a Google Sheet with boss damage data that I want to integrate into the project. This data should be used to identify good boss dmg dps heroes and support heroes that are worth using for this kind of content.
 URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe6EMqSLMw/edit?usp=sharing
-
-## Infos about new unreleased heroes
-You can have skill descriptions in german and englisch in this file: `newHeroes.md. Use this file to get the skill descriptions for the new unreleased heroes. For stats and ratings of these heroes, ask me directly.
-
-## Ratings explanation
-There is a rating explanation for all grades either for overall tier ratings or specific content ratings. Its stored in `how-ratings-work.md` file. You can use this information to understand the meaning of each rating and the criteria for assigning them. This is important for maintaining consistency and accuracy when updating hero ratings or adding new heroes to the database.
 
 ### Images of Heroes
 - All hero images must be in `src/assets/heroes/` directory, named `{hero_id}.webp`
@@ -63,7 +52,7 @@ There is a rating explanation for all grades either for overall tier ratings or 
 - **Key Constants**: 
   - `CLASS_WEIGHTS` (hp/atk/def/pct multipliers by class)
   - `PERCENT_STATS_FOR_SCORE` (which % stats contribute to scoring)
-  - `SYNERGY_WEIGHT=12`, `SKILL_WEIGHT=100` (impact relative to stats)
+  - `SYNERGY_WEIGHT=11`, `SKILL_WEIGHT=92` (impact relative to stats)
 - **Tuning**: Edit constants directly in rankingScore.js; no config file
 
 #### Synergy Tag System (`src/utils/synergyTags.js`, `src/data/tags.json`)
@@ -75,6 +64,28 @@ There is a rating explanation for all grades either for overall tier ratings or 
 - **tags.json is array, not object**: All tags in single array format
 - **Tag Manager CMS**: Run `npm run tag-manager` to start Express UI for assigning tags to heroes
 - **Hero-to-Tag Mapping**: Each hero has `.synergies` array in their JSON file
+
+#### Virtue System (`src/data/virtues.json`)
+- **What**: Tetris-shaped upgrade pieces earned via AFK farming (Realm Rover Lost Coins), diamond cube summons, or events. Equippable per hero in a limited grid that scales with Ascension (Divine I = small, Divine V = max slots).
+- **Types**:
+  - `"singular"`: stat boost only, no set bonus. No duplicate of same singular per hero.
+  - `"set"`: belongs to a named set; unlocks 2-piece and/or 4-piece bonuses. No duplicate of same piece per hero.
+- **Rarities**: `"blue"` / `"purple"` / `"gold"` / `"red"` (Legendary). Sets exist in purple (2-piece only) and gold/red (2+4-piece). No 3-piece sets.
+- **Crafting**: 5 Shards = 1 whole Virtue. Enhance upgrades stats (using shards or other Virtues as material). Ascend raises level cap. Full refund on destroy.
+- **Data file**: `src/data/virtues.json` - single source of truth, array of all Virtue objects.
+- **Structure per Virtue**:
+  - `id`: snake_case unique identifier (e.g. `"oblivion_1"`)
+  - `name`: display name (e.g. `"Oblivion I"`)
+  - `set`: set name shared by all members (e.g. `"Oblivion"`) - omit for singulars
+  - `rarity`: `"blue"` | `"purple"` | `"gold"` | `"red"`
+  - `type`: `"set"` | `"singular"`
+  - `bp`: Battle Power contribution (integer)
+  - `stats`: array of `{ key, base, bonus }` - key matches hero stat keys; `bonus` is upgrade value (0 if not upgraded)
+  - `setBonuses`: `{ "2": "...", "4": "..." }` - effect text (set type only)
+- **Hero assignment**: Each hero JSON has optional `"virtues": ["virtue_id", ...]` array (manually curated, all optional).
+- **Shape**: Tetris shape intentionally omitted for now - will be added as matrix `[[1,1],[1,0]]` when a visual grid page is built.
+- **Display**: Hero detail page shows Virtue cards under "Recommended Virtues" section (color-coded by rarity) if any are assigned.
+- **Known Sets (partial)**: Sacrifice (gold, 2-piece: +10% HP at combat start), Far 2 / Far 3 (Realm Rover shop, 2-piece: +10% Energy Regen at combat start - considered meta for energy-dependent carries)
 
 #### Skill Analyzer (`src/utils/skillAnalyzer.js`)
 - Evaluates skill quality without manual ratings (auto-detection)
@@ -121,45 +132,6 @@ There is a rating explanation for all grades either for overall tier ratings or 
   - `applyMitigation()` – Armor-based damage reduction (Model A or B)
   - `computeEHP()` – Effective HP calculation for physical and magical
   - `getCritMultiplier()` – Base 1.5x + hero's critDmgBonus
-
-#### User Heroes & Sharing System (`src/pages/myheroes.astro`, `src/pages/shared-heroes/[id].astro`)
-- **Authentication**: Logged-in users can select and organize heroes in "My Heroes" page
-- **User Heroes Table** (`user_heroes` in Supabase):
-  - `user_id` (references auth.users)
-  - `hero_id` (hero identifier)
-  - `evolution` (1-15 integer tracking power level)
-  - `is_favorited` (boolean, currently unused)
-- **Shared Setups** (`shared_hero_configs` in Supabase):
-  - `share_id` (8-character unique ID for public sharing)
-  - `user_id` (setup creator)
-  - `heroes_data` (JSON array with hero_id + evolution for each selected hero)
-  - `created_at` (timestamp)
-- **Fight Outcomes** (`fight_outcomes` in Supabase):
-  - `user_id`, `team_player`, `team_enemy`, `bp_player`, `bp_enemy`
-  - `winner` ("player" or "enemy"), `predicted_win_rate`, `mode`, `notes`
-- **Evolution Levels** (1-15 mapping):
-  - 1: Elite, 2: Elite+, 3: Epic, 4: Epic+, 5: Legendary
-  - 6: Legendary+, 7: Exalted, 8: Exalted+, 9: Mythic
-  - 10: Divine, 11-15: Divine I through Divine V
-- **Frontend Features**:
-  - Hero card grid with background images (portraits)
-  - Per-hero evolution stepper (◀ Level ▶)
-  - Faction grouping with icons
-  - Share button generates public link automatically
-  - Non-selected heroes displayed at 50% opacity
-- **API Endpoints** (Astro SSR routes in `src/pages/api/`):
-  - `POST /api/auth/login` – Login with email/password, sets HTTP-only cookie
-  - `POST /api/auth/register` – Create account with email/password
-  - `POST /api/auth/logout` – Clear auth cookie
-  - `GET /api/health/auth` – Health check for Supabase connectivity
-  - `POST /api/user/heroes/share` (auth required) – Create shareable setup link
-  - `GET /api/shared-heroes/:shareId` (public) – Retrieve shared setup data
-  - `POST /api/user/heroes` (auth required) – Add hero to user collection
-  - `PATCH /api/user/heroes/:heroId` (auth required) – Update hero evolution or favorite status
-  - `DELETE /api/user/heroes/:heroId` (auth required) – Remove hero from collection
-  - `GET /api/user/heroes` (auth required) – Fetch all user's selected heroes
-  - `GET /api/user/battles` (auth required) – Fetch fight history with pagination
-  - `POST /api/user/battles` (auth required) – Submit fight outcome
 
 ## File Conventions
 
@@ -258,20 +230,6 @@ There is a rating explanation for all grades either for overall tier ratings or 
 3. Automatically maps `baseAttackRate` and `bossUltimatesPer90s` directly into hero JSON files
 4. Powers the Phase 1 & Phase 2 scaling in the Calculator's Boss mode
 
-### Use My Heroes Feature
-1. **Setup**: User must be logged in via `/login` or `/register`
-2. **Select Heroes**: Navigate to `/myheroes` → click hero cards to select/deselect
-3. **Manage Evolution**: Use ◀ ▶ buttons next to each selected hero to adjust level (1-15)
-4. **Share Setup**: Click "Share Setup" button → link auto-copied to clipboard
-5. **View Shared**: Anyone can access `/shared-heroes/{shareId}` to see the public setup
-
-### Test Sharing Locally
-1. Create account via `/register`
-2. Add heroes on `/myheroes`
-3. Click "Share Setup" → get link like `http://localhost:4322/shared-heroes/abc12def`
-4. Open link in incognito/different browser → should show public view
-5. Verify RLS policies in Supabase allow public read access to `shared_hero_configs`
-
 ### Validate Data
 - `node validate-bosses.js` – Check boss data consistency
 - `node validate-pvp-ratings.js` – Check PvP rating format
@@ -281,90 +239,12 @@ There is a rating explanation for all grades either for overall tier ratings or 
 - `node scripts/generator.js` – Regenerates teamCompsByHeroId.json from all hero files
 - `node scripts/merge-heroes-db.js` – Merges individual hero JSON files into all_heroes_db.json
 
-## Key Decision Points
-
-- **Class-Based Weighting**: Different hero classes (Tank, DPS, Support) score differently using `CLASS_WEIGHTS` multipliers (not separate tiers)
-- **Manual vs Auto Tagging**: Synergies are manually assigned in JSON; skill quality is auto-detected
-- **Hybrid Rendering**: Most pages are prerendered (`export const prerender = true`); API routes and dynamic pages use SSR via a single Vercel serverless function
-- **Divine V Only**: All stats represent max-level hero (no scaling by player level)
-
-## Integration Points
-
-- **Astro Pages** consume `all_heroes_db.json` and ratings at build time
-- **Astro API Routes** (`src/pages/api/`) handle auth, user data, and battles via Supabase (SSR, not prerendered)
-- **Auth Helper** (`src/lib/auth.ts`) provides `requireUser(request)` and `jsonResponse()` for all protected API routes
-- **Supabase Client** (`src/lib/supabase.js`) exports `supabaseClient` (anon) and `supabaseAdmin` (service role)
-- **Scripts** modify hero JSON files directly (no database)
-- **Tag Manager** is standalone Express app; edits tags.json and hero files
-- **Hero Adapter** resolves per-hero stats against class base-stats (heroAdapter.js)
-- **Skill Value Comparator** (`calculator.astro`) – Client-side skill damage calculator; parses skill descriptions at runtime, no server dependency
-- **My Heroes Page** (`myheroes.astro`) – Authenticated feature; interacts with API routes for user-specific data
-- **Shared Heroes Page** (`shared-heroes/[id].astro`) – Public-facing; fetches from API endpoint, no auth required
-- **Battle Sim Page** (`battle-sim.astro`) – PvP battle simulator with fight outcome submission to `/api/user/battles`
-
-## Development Tools
-
-### Analysis Scripts
-These are one-off debugging tools in root directory (not part of automated build):
-
-- **`analyze-outliers.js`**: Deep-dive into individual hero scores
-  - Shows base stats, skill power, synergy potential, and scenario-specific scores
-  - Usage: `node analyze-outliers.js` (searches by name)
-  - Useful for: Understanding why a hero scores unexpectedly high/low
-
-- **`debug-ranking.js`**: Compare hero stats and component scores side-by-side
-  - Shows HP, ATK, DEF, skill power, synergy, total score
-  - Useful for: Quick comparative analysis and debugging class weight tuning
-
-- **`analyze-boss-dps-heroes.js`**: Identifies DPS heroes effective in boss scenarios
-  - Useful for: Validating boss rating assignments
-
-## Debugging Tips
-
-- **Scores Look Wrong**: 
-  - Use `node analyze-outliers.js` with hero name to see component breakdown
-  - Check `CLASS_WEIGHTS` and constant multipliers in rankingScore.js
-  - Check if hero has proper `synergies` array assigned
-
-- **Tags Not Appearing**: 
-  - Verify tag exists in `tags.json` array (must be exact SNAKE_CASE)
-  - Verify tag is defined in `TAG_CATEGORIES` object in synergyTags.js
-  - Check hero's `.synergies` array contains the tag name
-
-- **Build Fails**:
-  - Check all_heroes_db.json JSON syntax with online validator
-  - Run validator scripts first: `node validate-bosses.js`
-  - Ensure all hero files are valid JSON
-  - Check that all hero JSON `relic.upgrades` keys are correctly spelled (not `uogrades`, etc.)
-
-- **Deployment**:
-  - Deploy command: `npm run build && npx vercel deploy --prebuilt --prod --yes`
-  - Vercel Hobby plan limits to 12 serverless functions; all API routes use Astro SSR (single function)
-  - New pages must include `export const prerender = true` unless they need SSR
-  - API routes in `src/pages/api/` must NOT have `prerender = true`
-  - Do NOT use global ISR config in astro.config.mjs (breaks POST requests and auth)
-
-- **Script Fails**: 
-  - Ensure file paths use `src/data/` relative to workspace root
-  - For analysis scripts: hero names must match exactly (case-insensitive match in code)
-
-- **Calculator Issues**:
-  - **Garbled characters (e.g. `Â·`, `â€"`)**: Non-ASCII characters in calculator.astro. All text must be ASCII-only. Use `LC_ALL=C grep -n '[^ -~]' src/pages/calculator.astro` to find offenders.
-  - **Damage shows 0 or NaN**: Skill description doesn't match regex patterns in `extractAtkPercents()`. Check for unusual phrasing.
-  - **HP% bars not showing**: Comparison hero not selected, or target HP is 0.
-  - **Multi-hit not detected**: Skill description doesn't match `extractHitCount()` patterns. Add new regex pattern if needed.
-  - **Burst summary empty**: No skills have parseable ATK% values.
-
-- **My Heroes Feature Issues**:
-  - **Share button not showing**: User must be logged in (check `authToken` in localStorage)
-  - **"Error: Failed to create share link" on click**: Check Vercel function logs (`vercel logs`)
-  - **Shared link returns 404**: Verify `shared_hero_configs` table exists in Supabase with correct schema
-  - **Shared heroes not showing**: Confirm RLS policies are set correctly (SELECT policy should allow `true`)
-  - **Evolution not updating**: Ensure `PATCH /api/user/heroes/:heroId` includes `evolution` field (1-15 range)
-  - **Heroes missing from user's collection**: Check if `user_id` in `user_heroes` table matches `auth.uid()` from token
-
-- **API Route Issues**:
-  - **401 with non-JSON response**: Supabase `getUser()` may throw `AuthApiError` instead of returning error object; `src/lib/auth.ts` has try/catch for this
-  - **FUNCTION_INVOCATION_FAILED**: Check Vercel function logs; usually an unhandled exception in the route handler
-  - **API returns 404**: Ensure the route file exists in `src/pages/api/` and does NOT have `export const prerender = true`
-  - **API returns HTML instead of JSON**: Route may be falling through to Astro's page renderer; ensure correct HTTP method exports (GET, POST, etc.)
+### Add Skill Preview Video
+See memory file for full details: `memory/project_skill_videos.md`
+1. Record gameplay clip, note skill start time and crop coordinates
+2. Convert with ffmpeg (static binary at `/tmp/ffmpeg-bin/ffmpeg`):
+   `ffmpeg -y -i source.mp4 -ss [START] -t [DURATION] -vf "crop=W:H:X:Y,scale=480:-1" -c:v libvpx-vp9 -b:v 0 -crf 35 -an public/skills/{hero_id}_skill_{n}.webm`
+3. Set `"video": "{hero_id}_skill_{n}.webm"` in hero JSON skill entry
+4. Upload `.webm` to R2 bucket under `skills/` for production
+5. Test coordinates: die koordinaten sollten sein: A (110/700 )(oben links), B (610/1110) (unten rechts). oder brauchst du. noch mehr ?
+Das rechteck hat 500x410 abmaße innerhalb des 720x1600 videos.

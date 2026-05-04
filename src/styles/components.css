@@ -1,122 +1,450 @@
 /* ============================================================
    COMPONENTS
    Shared UI patterns used across multiple pages.
-   Imported globally via Base.astro after tokens.css.
+   Import order: tokens -> reset -> base -> components
    ============================================================ */
 
 
 /* ============================================================
    LAYOUT UTILITIES
+   .page-wrapper is defined in base.css (global, with padding + responsive)
    ============================================================ */
 
-.page-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0;
-}   
-
-/* Standard page content container */
+/* Inner content container — used as a child of .page-wrapper on some pages */
 .content-wrapper {
-  max-width: 1400px;
-  margin: 0;
-  padding: 0;
+  max-width: var(--page-max-width);
+  width: 100%;
 }
 
-/* Main scrollable content area */
+/* Main scrollable content area — narrower, centered, with vertical padding */
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 32px 80px;
+  padding: var(--space-10) var(--space-8) var(--space-20);
 }
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 20px 16px 60px;
+    padding: var(--space-5) var(--space-4) var(--space-16);
   }
 }
 
 /* Page header + title pattern */
 .page-header {
-  margin-bottom: 28px;
+  margin-bottom: var(--space-8);
 }
 
 .page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: 0.01em;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  letter-spacing: var(--tracking-normal);
 }
 
 .page-subtitle {
-  color: rgba(230, 230, 235, 0.5);
-  font-size: 0.875rem;
-  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-top: var(--space-1);
 }
 
 /* Gold separator line */
 .separator {
   width: 100%;
   height: 2px;
-  background: rgba(250, 204, 21, 0.4);
-  margin: 10px 0 20px;
+  background: var(--accent-gold);
+  opacity: 0.4;
+  margin: var(--space-3) 0 var(--space-5);
+}
+
+
+/* ============================================================
+   SECTION LABEL
+   Kicker + heading pattern. Used in heroes/[id].astro, guides, heros.
+   Usage: <div class="content-section"><span class="section-label">LABEL</span><h2>Title</h2></div>
+   ============================================================ */
+
+.content-section {
+  margin-bottom: var(--space-8);
+}
+
+.section-label {
+  display: block;
+  font-size: var(--section-kicker-size);
+  font-weight: var(--section-kicker-weight);
+  color: var(--section-kicker-color);
+  letter-spacing: var(--section-kicker-tracking);
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+/* Decorative bar-style section title (guides.astro Goldstandard) */
+.section-title {
+  font-size: var(--section-title-size);
+  font-weight: var(--section-title-weight);
+  color: var(--section-title-color);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.section-title::before,
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.section-title::before {
+  max-width: 24px;
+}
+
+
+/* ============================================================
+   HERO CHIP
+   Small portrait + name tag. Used in comp rows on guides, bosses, tips.
+   Usage: <div class="hero-chip"><div class="hero-chip-portrait" style="background-image:url(...)"></div><span>Name</span></div>
+   ============================================================ */
+
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 3px 10px 3px 3px;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.hero-chip:hover {
+  border-color: var(--border-medium);
+  color: var(--text-bright);
+}
+
+.hero-chip-portrait {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--bg-overlay);
+  background-size: cover;
+  background-position: center top;
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   COMP ENTRY
+   Team composition block: label + reason + hero row + notes.
+   Usage: <div class="comp-entry"><div class="comp-entry-header">...</div><div class="comp-hero-row">...</div></div>
+   ============================================================ */
+
+.comp-entry {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.comp-entry-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.comp-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  flex-shrink: 0;
+}
+
+.comp-reason {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-snug);
+}
+
+.comp-hero-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.comp-notes {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: var(--leading-normal);
+  border-top: 1px solid var(--border-faint);
+  padding-top: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+
+/* ============================================================
+   RATING BADGE
+   Tier-colored pill. Data attribute drives gradient.
+   Usage: <span class="rating-badge" data-tier="SSS">SSS</span>
+   ============================================================ */
+
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--badge-padding);
+  border-radius: var(--badge-radius);
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  letter-spacing: var(--badge-tracking);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.rating-badge[data-tier="SSS"] {
+  background: linear-gradient(135deg, var(--tier-sss-from), var(--tier-sss-to));
+  color: var(--tier-sss-text);
+  box-shadow: 0 0 8px var(--tier-sss-glow);
+}
+
+.rating-badge[data-tier="SS"] {
+  background: linear-gradient(135deg, var(--tier-ss-from), var(--tier-ss-to));
+  color: var(--tier-ss-text);
+  box-shadow: 0 0 8px var(--tier-ss-glow);
+}
+
+.rating-badge[data-tier="S"] {
+  background: linear-gradient(135deg, var(--tier-s-from), var(--tier-s-to));
+  color: var(--tier-s-text);
+  box-shadow: 0 0 8px var(--tier-s-glow);
+}
+
+.rating-badge[data-tier="A"] {
+  background: linear-gradient(135deg, var(--tier-a-from), var(--tier-a-to));
+  color: var(--tier-a-text);
+}
+
+.rating-badge[data-tier="B"] {
+  background: linear-gradient(135deg, var(--tier-b-from), var(--tier-b-to));
+  color: var(--tier-b-text);
+}
+
+.rating-badge[data-tier="C"] {
+  background: linear-gradient(135deg, var(--tier-c-from), var(--tier-c-to));
+  color: var(--tier-c-text);
+}
+
+.rating-badge[data-tier="D"] {
+  background: linear-gradient(135deg, var(--tier-d-from), var(--tier-d-to));
+  color: var(--tier-d-text);
+}
+
+
+/* ============================================================
+   MECHANIC BOX
+   Color-coded info block for game mechanic explanations.
+   Usage: <div class="mechanic-box" data-type="warning">...</div>
+   ============================================================ */
+
+.mechanic-box {
+  border: 1px solid var(--accent-teal);
+  background: var(--accent-teal-dim);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-primary);
+}
+
+.mechanic-box[data-type="warning"] {
+  border-color: var(--accent-gold);
+  opacity: 0.45;
+  background: var(--accent-gold);
+  opacity: 0.06;
+}
+
+.mechanic-box[data-type="phase"] {
+  border-color: var(--accent-purple);
+  opacity: 0.45;
+  background: var(--accent-purple);
+  opacity: 0.06;
+}
+
+.mechanic-box[data-type="danger"] {
+  border-color: #ef4444;
+  opacity: 0.45;
+  background: #ef4444;
+  opacity: 0.06;
+}
+
+.mechanic-box-label {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--accent-teal);
+  margin-bottom: var(--space-2);
+}
+
+.mechanic-box[data-type="warning"] .mechanic-box-label {
+  color: var(--accent-gold);
+}
+
+.mechanic-box[data-type="phase"] .mechanic-box-label {
+  color: var(--accent-purple);
+}
+
+.mechanic-box[data-type="danger"] .mechanic-box-label {
+  color: #ef4444;
+}
+
+
+/* ============================================================
+   STAT BAR
+   Labeled stat row with colored progress bar.
+   Usage: <div class="stat-entry" data-category="offense"><span class="stat-label">ATK</span><span class="stat-value">12345</span><div class="stat-bar-track"><div class="stat-bar-fill" style="width:75%"></div></div></div>
+   ============================================================ */
+
+.stat-entry {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+}
+
+.stat-bar-track {
+  height: 4px;
+  background: var(--bg-raised);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--accent-gold);
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.stat-entry[data-category="defense"] .stat-bar-fill {
+  background: #60a5fa;
+}
+
+.stat-entry[data-category="utility"] .stat-bar-fill {
+  background: var(--accent-purple);
+}
+
+.stat-value {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   STICKY PAGE HEADER
+   Glassmorphism sticky header at top of detail pages.
+   Usage: <header class="sticky-page-header">...</header>
+   ============================================================ */
+
+.sticky-page-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-overlay);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-base);
+  opacity: 0.82;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 
 /* ============================================================
    PILL TAB BAR
-   Used by boss page (.boss-tabbar) and events page (.event-tabbar).
-   Pill-shaped scrollable tabs, distinct from the underline .tab-bar.
+   Scrollable pill-shaped tabs. Used on boss, events, tips pages.
+   Usage: <div class="pill-tabbar"><button class="pill-tab is-active">...</button></div>
    ============================================================ */
 
-/* ── OUTER TAB BAR ── */
-  .main-tabs {
-    display: flex;
-    gap: 8px;
-    margin: 0;
-    padding: 12px 0;
-    border-bottom: 1px solid #facc1566;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .main-tab {
-    border: 1px solid rgba(255,255,255,0.18);
-    background: rgba(255,255,255,0.04);
-    color: var(--text-secondary);
-    border-radius: var(--radius-full);
-    padding: 8px 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s ease;
-  }
-  .main-tab.is-active {
-    border-color: rgba(250,204,21,0.45);
-    background: rgba(250,204,21,0.12);
-    color: rgba(250,204,21,0.95);
-  }
-  .main-tab:hover:not(.is-active) {
-    background: rgba(255,255,255,0.08);
-    color: rgba(230,230,235,0.9);
-  }
-  .main-tab-panel { display: block; }
+.pill-tabbar {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-wrap: wrap;
+}
 
+.pill-tabbar::-webkit-scrollbar {
+  display: none;
+}
 
+.pill-tab {
+  flex: 0 0 auto;
+  border: 1px solid var(--border-medium);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-family: inherit;
+  letter-spacing: var(--tracking-wide);
+  cursor: pointer;
+  transition: var(--transition-colors);
+  white-space: nowrap;
+}
 
+.pill-tab.is-active {
+  border-color: var(--accent-gold);
+  opacity: 0.45;
+  background: var(--accent-gold);
+  opacity: 0.12;
+  color: var(--accent-gold);
+}
 
+.pill-tab:hover:not(.is-active) {
+  background: var(--bg-overlay);
+  color: var(--text-bright);
+}
+
+/* Legacy aliases — kept so existing pages don't break before migration */
 .boss-tabbar,
 .event-tabbar {
   display: flex;
   gap: 6px;
-  padding: 0 0 0 16px;
+  padding: 0 0 0 var(--space-4);
   overflow-x: auto;
   scrollbar-width: none;
   backdrop-filter: blur(10px);
   top: 0;
   z-index: 50;
   flex-shrink: 0;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .boss-tabbar::-webkit-scrollbar,
@@ -128,49 +456,91 @@
 .event-tab {
   flex: 0 0 auto;
   border: 1px solid var(--border-subtle);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-raised);
   color: var(--text-secondary);
-  padding: 8px 20px;
+  padding: var(--space-2) var(--space-5);
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
   font-family: inherit;
   letter-spacing: var(--tracking-wide);
   cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  transition: var(--transition-colors);
   white-space: nowrap;
 }
 
 .boss-tab.is-active,
 .event-tab.is-active {
-  border-color: rgba(250, 204, 21, 0.45);
-  background: rgba(250, 204, 21, 0.12);
-  color: rgba(250, 204, 21, 0.95);
+  border-color: var(--accent-gold);
+  opacity: 0.45;
+  background: var(--accent-gold);
+  opacity: 0.12;
+  color: var(--accent-gold);
 }
 
 .boss-tab:hover:not(.is-active),
 .event-tab:hover:not(.is-active) {
-  background: rgba(255, 255, 255, 0.09);
+  background: var(--bg-overlay);
   color: var(--text-bright);
 }
 
 @media (max-width: 600px) {
   .boss-tabbar,
   .event-tabbar {
-    padding: 10px 16px;
-    gap: 4px;
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-1);
   }
 
   .event-tab {
     padding: 5px 12px;
-    font-size: 0.76rem;
+    font-size: var(--text-xs);
   }
+}
+
+/* Legacy: main-tabs used by tips.astro — maps to pill-tabbar visually */
+.main-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--accent-gold);
+  opacity: 0.4;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.main-tab {
+  border: 1px solid var(--border-medium);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition-colors);
+}
+
+.main-tab.is-active {
+  border-color: rgba(250, 204, 21, 0.45);
+  background: rgba(250, 204, 21, 0.12);
+  color: var(--accent-gold-light);
+}
+
+.main-tab:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-bright);
+}
+
+.main-tab-panel {
+  display: block;
 }
 
 
 /* ============================================================
    UNDERLINE TAB BAR
-   Standard page-level navigation tabs with a gold indicator.
-   Use .tab-bar > .tab pattern.
+   Standard page-level nav tabs with gold underline indicator.
+   Usage: <div class="tab-bar"><button class="tab is-active">...</button></div>
    ============================================================ */
 
 .tab-bar {
@@ -213,21 +583,25 @@
   border-bottom-color: var(--tab-indicator);
 }
 
-/* SUPPORT SECTION */
+
+/* ============================================================
+   SUPPORT SECTION
+   ============================================================ */
+
 .support-section {
-  margin-top: 80px;
+  margin-top: var(--space-20);
   margin-left: auto;
   margin-right: auto;
 }
 
 .support-card {
   display: flex;
-  gap: 48px;
+  gap: var(--space-12);
   align-items: center;
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(250, 204, 21, 0.2);
   border-radius: var(--radius-xl);
-  padding: 40px;
+  padding: var(--space-10);
 }
 
 .support-text {
@@ -238,11 +612,11 @@
 .support-headline {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.75rem;
-  font-weight: 600;
+  gap: var(--space-3);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
   color: var(--accent-gold);
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
 }
 
 .support-heart {
@@ -253,10 +627,10 @@
 }
 
 .support-desc {
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   color: var(--text-secondary);
-  line-height: 1.65;
-  margin: 0 0 20px;
+  line-height: var(--leading-loose);
+  margin: 0 0 var(--space-5);
 }
 
 .support-list {
@@ -265,13 +639,13 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .support-list li {
-  font-size: 0.9rem;
-  color: rgba(230, 230, 235, 0.6);
-  padding-left: 18px;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  padding-left: var(--space-4);
   position: relative;
 }
 
@@ -292,23 +666,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-4);
   min-width: 200px;
 }
 
 .donate-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 14px 28px;
   background: transparent;
   border: 1.5px solid rgba(250, 204, 21, 0.6);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   color: var(--accent-gold);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
   text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: var(--transition-all);
   white-space: nowrap;
 }
 
@@ -344,35 +718,34 @@
   justify-content: center;
 }
 
-/* ─── Ad Slots ─── */
 .ad-slot-list,
 .ad-slot-hero {
   width: 100%;
   max-width: 900px;
-  margin: 0 auto 24px;
+  margin: 0 auto var(--space-6);
   min-height: 90px;
   text-align: center;
 }
 
 .ad-slot-hero {
-  margin-top: 32px;
-  padding: 0 16px;
+  margin-top: var(--space-8);
+  padding: 0 var(--space-4);
 }
 
 .support-alt {
-  font-size: 0.8rem;
-  color: rgba(230, 230, 235, 0.4);
+  font-size: var(--text-xs);
+  color: var(--text-disabled);
   text-align: center;
   margin: 0;
   max-width: 200px;
-  line-height: 1.5;
+  line-height: var(--leading-normal);
 }
 
 @media (max-width: 768px) {
   .support-card {
     flex-direction: column;
-    gap: 32px;
-    padding: 28px;
+    gap: var(--space-8);
+    padding: var(--space-6);
   }
 
   .support-cta {
@@ -388,10 +761,10 @@
 
 @media (max-width: 480px) {
   .support-card {
-    padding: 20px;
+    padding: var(--space-5);
   }
 
   .support-headline {
-    font-size: 1.4rem;
+    font-size: var(--text-2xl);
   }
 }

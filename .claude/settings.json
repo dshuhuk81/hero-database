@@ -111,7 +111,13 @@
       "Bash(echo \"PID: $!\")",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('image:', d.get\\('image','NONE'\\)\\)\")",
       "Bash([ -f \"public/heroes/$id.webp\" ])",
-      "Bash(curl -s --head \"https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/tank.webp\")"
+      "Bash(curl -s --head \"https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/tank.webp\")",
+      "Bash(grep -n \"style=\\\\\"\\\\|#[0-9a-fA-F]\\\\{3,6\\\\}\\\\|rgba\\\\|px\\\\b\" /Users/daschultheiss/hero-database/src/pages/bosses.astro)",
+      "Bash(sed -i '' s/pic-highlight/chip-highlight/g src/pages/tips.astro)",
+      "Bash(sed -i '' s/pic-flex-slot/chip-flex-slot/g src/pages/tips.astro)",
+      "Bash(sed -i '' s/pic-flex-img/chip-flex-img/g src/pages/tips.astro)",
+      "Bash(sed -i '' s/pic-flex-label/chip-flex-label/g src/pages/tips.astro)",
+      "Bash(sed -i '' s/pic-divider/chip-divider/g src/pages/tips.astro)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes",

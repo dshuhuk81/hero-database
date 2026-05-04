@@ -1,3 +1,8 @@
+# Gemini CLI Context
+
+This file contains foundational mandates and project-specific instructions for the Gemini CLI agent.
+Any instructions placed here take absolute precedence over the agent's general workflows and tool defaults.
+
 # Hero Database – Copilot Instructions
 
 ## Project Overview
@@ -248,3 +253,4 @@ See memory file for full details: `memory/project_skill_videos.md`
 4. Upload `.webm` to R2 bucket under `skills/` for production
 5. Test coordinates: die koordinaten sollten sein: A (110/700 )(oben links), B (610/1110) (unten rechts). oder brauchst du. noch mehr ?
 Das rechteck hat 500x410 abmaße innerhalb des 720x1600 videos.
+

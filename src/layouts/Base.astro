@@ -61,37 +61,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 </html>
 
 <style is:global>
-  @import '../styles/tokens.css';
-  @import '../styles/components.css';
-
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-
   @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    font-family: "Inter", system-ui, sans-serif;
-    background:
-      radial-gradient(ellipse at 30% -10%, rgba(120, 90, 200, 0.07), transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(255, 215, 100, 0.04), transparent 55%),
-      linear-gradient(to bottom, #0d0b10, #07060c);
-    background-attachment: fixed;
-    color: var(--text-primary);
-    min-height: 100vh;
-  }
-
-  /* Offset for desktop sidebar rail */
-  body {
-    margin-left: var(--sidebar-width); /* 48px */
-  }
-
-  @media (max-width: 768px) {
-    body {
-      margin-left: 0;
-      margin-bottom: 56px; /* mobile bottom nav */
-    }
-  }
+  @import '../styles/tokens.css';
+  @import '../styles/reset.css';
+  @import '../styles/base.css';
+  @import '../styles/components.css';
 </style>
