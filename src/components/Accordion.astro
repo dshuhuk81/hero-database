@@ -186,7 +186,7 @@ const activeIndex = activeId ? items.findIndex(i => i.id === activeId) : 0;
   }
 
   /* ── MOBILE: scroll strip ── */
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .accordion-strip {
       overflow-x: auto;
       overflow-y: hidden;
@@ -233,7 +233,7 @@ const activeIndex = activeId ? items.findIndex(i => i.id === activeId) : 0;
 
     .accordion-content {
       padding: var(--space-2);
-      height: 140px;
+      height: 100%;
     }
   }
 </style>
