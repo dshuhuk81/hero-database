@@ -419,45 +419,6 @@ const dotSections = [
           );
         })}
       </div>
-
-      <!-- Community sources -->
-      {(hero as any).metaSources && (
-        <div class="community-block">
-          <div class="community-block-label">
-            <span data-i18n="detail_community">Community Sources</span>
-            {(hero as any).metaSources.lastVerified && (
-              <span class="verified-tag">Verified {(hero as any).metaSources.lastVerified}</span>
-            )}
-          </div>
-          <div class="community-grid">
-            {(hero as any).metaSources.excelTier && (
-              <div class="community-tile">
-                <span class="community-source">Excel Tier List</span>
-                <span class="community-val">{(hero as any).metaSources.excelTier}</span>
-              </div>
-            )}
-            {(hero as any).metaSources.cnTier && (
-              <div class="community-tile">
-                <span class="community-source">CN Community</span>
-                <span class="community-val">{(hero as any).metaSources.cnTier}</span>
-              </div>
-            )}
-            {(hero as any).metaSources.egTier && (
-              <div class="community-tile">
-                <span class="community-source">EG Community</span>
-                <span class="community-val">{(hero as any).metaSources.egTier}</span>
-              </div>
-            )}
-            {(hero as any).metaSources.consensus && (
-              <div class="community-tile">
-                <span class="community-source">Consensus</span>
-                <span class={`consensus-badge consensus-${(hero as any).metaSources.consensus}`}>{(hero as any).metaSources.consensus}</span>
-              </div>
-            )}
-          </div>
-          <p class="community-note">Community tiers use T0/T1/T2 notation -- independent of site ratings above.</p>
-        </div>
-      )}
     </section>
 
     <!-- ── SECTION 4: STATS ── -->
