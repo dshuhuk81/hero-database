@@ -1,0 +1,377 @@
+{
+  "guides": [
+    {
+      "id": "meret",
+      "label": "Meret",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp",
+      "imgPos": "center 20%",
+      "imgPosActive": "center 10%",
+      "quote": "Goddess of Dance - Note-based Support and Anti-Burst Enabler",
+      "tags": ["Diamonds Faction", "Support", "Legendary", "Unreleased"],
+      "comps": [
+        {
+          "label": "PVE - Hecate Channel Core (Mixed Factions)",
+          "heroes": ["hecate", "momus", "yuelao", "meret", "cronus"],
+          "reason": "Built around Hecate's 10-second sustained channel - the highest total damage multiplier in the game. Momus shields Hecate through his no-cooldown shield-on-skill mechanic while his passive ATK amplification feeds her channel output. Yuelao's Red Thread links Hecate (highest ATK) with Momus (highest HP), sharing stats and turning Yuelao's ATK buff into a channel multiplier. Meret's Moon Note adds +30% ATK and +20% damage to Hecate. Cronus provides full-map CC (ATK SPD -100% for 5s) and Echo of Causality repeats the marked ally's skill casts.",
+          "notes": [
+            "Position Momus at the front at all times - his Taunt pulls enemies into Hecate's AoE and his Sweet Pain counter-attacks trigger additional AoE damage whenever he absorbs heavy hits.",
+            "Yuelao's Red Thread ideally links Hecate (highest ATK) with Momus (highest HP) - this pairing maximizes the shared stat bonus and creates a lifesteal feedback loop through Hecate's channel.",
+            "Meret's Relic 'Endless Echo' prevents the death of a Note-bearer once every 15s - Relic Level 1 covers baseline utility; Level 30 unlocks full protective output.",
+            "Cronus' Ultimate has a delayed release - time it before Hecate's channel begins, not after, to avoid wasting the CC window while the channel is already running."
+          ]
+        },
+        {
+          "label": "PVE - Full Diamonds (5-Faction Bonus)",
+          "heroes": ["heracles", "bastet", "set", "meret", "phoenix"],
+          "reason": "The only comp here that activates a full 5-faction bonus: all five heroes are Diamonds, unlocking the maximum ATK+HP team buff. Heracles carries with his pull-and-double-burst pattern (Worldshaker into Scarred Fury). Bastet holds the frontline through high Dodge Rate. Set provides 15% team Lifesteal via Dunes' Bloodrage and stacks armor shred through Sand Burial. Meret places Moon Note on Heracles (+30% ATK, +20% damage) and Sun Note on the highest-HP ally. Phoenix adds secondary DPS through Soul Burn and sustains presence via her revive mechanic.",
+          "notes": [
+            "Bastet requires Dodge% on gear slots 2 and 3 to function reliably as a frontliner - without this investment the comp's frontline stability degrades significantly.",
+            "Set's Relic 'Dance of the Sands' stacks up to 5 times - the longer the fight, the higher Sand Burial's damage ceiling. This comp scales especially well in extended PvE content such as boss encounters.",
+            "Meret's Moon Note should land on Heracles (highest ATK) - verify ATK values at battle start, as Phoenix can temporarily out-scale him through her ATK SPD stacking mechanic.",
+            "Phoenix's self-sacrifice mechanic (50% HP for Ashes to Everflame) is stabilized by Set's team-wide Lifesteal - this interaction makes the combo particularly durable in stamina-based stages."
+          ]
+        },
+        {
+          "label": "PVE - Nezha Carry with Mixed Support (2x Spades)",
+          "heroes": ["nezha", "momus", "yuelao", "meret", "tefnut"],
+          "reason": "Nezha as the strongest PvE carry in the current meta, stabilized by a triple support layer. His Lotus Ward grants Soul Fire to two frontline allies at battle start (+10% ATK, +30% Armor/M-RES permanently) - Momus is the primary recipient, becoming significantly tankier while holding Taunt. Yuelao's Red Thread lands on Nezha (highest ATK) and feeds +15% ATK plus Energy via Bond of Fated Pair, increasing his Ultimate frequency. Meret places Moon Note on Nezha (+30% ATK, +20% damage). Tefnut as the second Spades unit completes the comp with the only pure AoE cleanse in the game plus 50% AoE damage reduction.",
+          "notes": [
+            "This comp does not reach a full faction bonus - 2x Spades (Momus + Tefnut) activates only the lowest Spades partial bonus on ATK+HP. Switch to a Full Diamonds variant if maximizing faction bonuses is the priority. Also Nezha needs some heavy invest to work.",
+            "Tefnut's Relic 'The Second Rain' triggers Spirit Therapy additionally on every Soothing Rain cast - at Relic Level 30 this creates a dense heal chain that keeps Momus and Nezha stable on the frontline.",
+            "Nezha's Relic 'Rage of Reincarnation' stacks up to 5 times when allies fall - in longer fights where supports can be eliminated, Nezha escalates in power progressively. Plan around this ramp intentionally.",
+            "Yuelao's Red Thread should connect Nezha (highest ATK) with Momus (highest HP) - Momus absorbs 10% of incoming damage directed at Nezha while Nezha's Lifesteal returns health back into the linked pair."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wenshen",
+      "label": "Wen-Shen",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp",
+      "imgPos": "center 20%",
+      "imgPosActive": "center 10%",
+      "quote": "When humanity had no cure, I willingly drew all pestilence upon myself.",
+      "tags": ["Clubs Faction", "Support", "Legendary"],
+      "comps": [
+        {
+          "label": "PVP - Anti-Carry Lockdown Core",
+          "heroes": ["wenshen", "dionysus", "isis", "athena", "caishen"],
+          "reason": "Built around neutralizing the enemy carry through layered CC and debuffs. Dionysus's ATK Speed buff increases Jinx proc frequency; Isis delivers the damage payload into the control window Wenshen creates; Athena's shielding keeps Wenshen alive long enough for her full kit to fire; Caishen accelerates team Energy for faster Ultimate rotations.",
+          "notes": [
+            "Dionysus's ATK Speed buff is directly multiplicative with Jinx: more attacks per second means more rolls for Stun, Terror, or Petrify - increasing effective CC uptime without any cooldown cost.",
+            "Wenshen's Ultimate hard-locks the enemy carry for up to 6s. That window is Isis's primary damage phase - build Energy-focused items on Isis to guarantee her Ultimate fires before the lockdown expires.",
+            "If Wenshen dies during the fight, the killer's Jinx debuff compounds with Athena's existing protection, creating a second layer of anti-aggression pressure even after her death."
+          ]
+        },
+        {
+          "label": "PVP - Jinx Spread Engine",
+          "heroes": ["wenshen", "bastet", "anubis", "poseidon", "caishen"],
+          "reason": "A snowball composition built around the Relic's Jinx spread mechanic. Poseidon CC opens the first control window, Wenshen locks down and debuffs the primary target, Bastet and Anubis focus and eliminate the carry, and the Relic spreads Jinx to the next enemy - creating a chain that can destabilize the entire opposing team.",
+          "notes": [
+            "Both Wenshen's Skill 4 active and Bastet's targeting logic focus the enemy with the highest ATK. This double-focus on the carry significantly accelerates the first kill needed to trigger the Relic's spread chain.",
+            "Anubis benefits directly from Wenshen's heal reduction on Duality Inversion - targets receiving 60% reduced healing are far easier to finish through sustained pressure.",
+            "If the Relic chain fails to start (first kill does not happen), the team has no sustain fallback. Poseidon's early CC is the critical setup piece that must land."
+          ]
+        },
+        {
+          "label": "PVP - Death Trap",
+          "heroes": ["wenshen", "jormungandr", "capricorn", "dionysus", "athena"],
+          "reason": "A long-fight composition that weaponizes Wenshen's death. Wenshen is intentionally expendable: her Calamity-Ridden passive permanently Jinxes the killer, Cursed Ground's Aura of Misfortune lingers after her death, and the opposing team is left fighting through RNG CC and ATK/DEF debuffs. Jormungandr mirrors this same logic with his Revenge passive: upon taking lethal damage, he survives for 5 seconds, stores 60% of all damage received, then releases it as a burst - a second death-as-weapon layer that fires while Wenshen's Cursed Ground is still active on the field. Capricorn layers additional control; Dionysus accelerates Jinx proc frequency throughout.",
+          "notes": [
+            "Wenshen's death is a planned event, not a failure state. Position her in the mid-frontline to ensure she is targeted and killed quickly - triggering both her passive Jinx and Skill 4's lingering aura simultaneously.",
+            "When Jormungandr enters Revenge, enemies affected by Jinx continue to land RNG CC on him - which means they keep hitting him, maximizing the damage he stores and releases at the end of the 5-second window.",
+            "Athena's protection can delay Wenshen's death slightly - use this to ensure her Skill 4 Active fires at least once before she is eliminated. Hladgunnr is a simpler DPS alternative if a straightforward burst payload is preferred over Jormungandr's Revenge mechanic."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cronus",
+      "label": "Cronus",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp",
+      "imgPos": "center 20%",
+      "imgPosActive": "center 10%",
+      "quote": "Tempo Architect - Master of Rewind, Projection, and Cooldown",
+      "tags": ["Starglint Faction", "Support", "Legendary"],
+      "comps": [
+        {
+          "label": "PVP - Tempo Control Core",
+          "heroes": ["cronus", "isis", "caishen", "athena", "yuelao"],
+          "reason": "Best-fit allround Cronus shell based on role synergy analysis. Cronus provides tempo control, formation disruption, and near-death saves for the team. Isis is a skill-dependent carry that benefits directly from Cronus's protective utility and extended cast windows. Caishen accelerates team Energy cycles for faster Ultimate rotations. Athena stabilizes the frontline and protects Isis. Yuelao adds defensive stat sharing and sustained healing.",
+          "notes": [
+            "Cronus's Rewinding Remains saves Isis if she is focused - allowing her to survive the first burst wave and continue dealing damage into the later fight phase.",
+            "Caishen's Energy acceleration compounds with Echo of Causality Lv3's pre-battle CD reduction, ensuring the team reaches first Ultimates faster and maintains rotation frequency throughout.",
+            "Ideal for PvP and difficult push stages where tight fight windows and extra cast opportunities determine the outcome."
+          ]
+        },
+        {
+          "label": "PVP - Formation Break Control",
+          "heroes": ["cronus", "poseidon", "athena", "hela", "momus"],
+          "reason": "Recommended anti-tempo shell for PvP through tempo stacking and formation disruption. Cronus delays enemy skill rotations and displaces priority targets. Poseidon layers AoE crowd control that creates compounding control windows. Hela scales into a dominant damage source as the fight extends. Athena protects Hela against burst elimination. Momus anchors the frontline with a reliable taunt.",
+          "notes": [
+            "Poseidon's AoE CC creates windows where Cronus's displaced enemies are simultaneously stunned and repositioned - maximum disruption layered without requiring tight execution.",
+            "Hela benefits directly from Cronus's time-buying: more seconds alive means a higher Hela damage stack, and Rewinding Remains provides insurance against burst elimination.",
+            "Strong against fragile backline teams and compositions that rely on fast opening Ultimates to establish control."
+          ]
+        },
+        {
+          "label": "PVP - Backline Snipe",
+          "heroes": ["cronus", "bastet", "athena", "caishen", "poseidon"],
+          "reason": "Aggressive composition that exploits Cronus's Temporal Rift to expose backline targets for Bastet. Cronus breaks positioning and creates chaos while Bastet focuses the highest-priority exposed carry. Poseidon layers AoE crowd control to compound the disruption. Caishen accelerates team Energy so Cronus and Bastet reach their actives faster. Athena protects Bastet and Cronus against counter-burst.",
+          "notes": [
+            "Cronus's Temporal Rift teleports the nearest enemy to the farthest position, shattering the enemy formation - this directly improves Bastet's access to squishy backline targets.",
+            "If Bastet does not snowball quickly the team has limited sustain fallback - the formation-break approach is high-risk, high-reward and punished by tanky or self-sustaining opponents.",
+            "Best used against teams with fragile backline carries or Support-dependent compositions where disrupting positioning collapses the enemy win condition."
+          ]
+        },
+        {
+          "label": "PVE Push - Hela Ramp",
+          "heroes": ["cronus", "hela", "yuelao", "athena", "caishen"],
+          "reason": "For longer fights with high snowball potential. Hela scales with fight duration, and Cronus's entire kit is designed to extend fights and throttle the pace at which the opponent can eliminate allies. Rewinding Remains provides direct insurance against burst elimination during Hela's ramp phase. Yuelao adds sustained healing to further extend fight length.",
+          "notes": [
+            "Hela's damage output compounds with every extra second she survives - Cronus's tempo denial and Rewinding Remains save directly translate into higher Hela damage ceiling.",
+            "Best in defensive PvP setups and tight stage pushes where controlled, extended fights favor scaling damage over raw burst.",
+            "Caishen accelerates Energy cycles so Hela and Cronus cycle their Ultimates more frequently, reinforcing the anti-tempo suppression loop."
+          ]
+        },
+        {
+          "label": "Budget / Transition",
+          "heroes": ["cronus", "hecate", "athena", "caishen", "khepri"],
+          "reason": "A playable early option for players who pull Cronus before building a full endgame roster. Hecate provides reliable skill-based DPS. Athena stabilizes the frontline. Caishen supports Energy cycles. Khepri adds engage and CC windows. Cronus carries through utility rather than raw multiplier output at this investment level.",
+          "notes": [
+            "Not an endgame lineup - treat this as a transitional shell until a stronger carry (Isis, Hela) is available to take Hecate's slot.",
+            "Cronus's passive systems still provide full value here - the limitation is Hecate's lower ceiling compared to top-tier carries, not Cronus's own output."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mengpo",
+      "label": "Mengpo",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp",
+      "imgPos": "center 10%",
+      "imgPosActive": "center 10%",
+      "quote": "Goddess of Forgetting - Keeper of the Bridge Between Worlds",
+      "tags": ["Hearts Faction", "Support", "Legendary"],
+      "comps": [
+        {
+          "label": "PVE / Tower - Red Heart Core",
+          "heroes": ["mengpo", "hladgunnr", "prometheus", "caishen", "yuelao"],
+          "reason": "The classic Hearts-faction sustain team from Chinese community meta. Yuelao and Mengpo provide layered healing and revival; Caishen accelerates team Energy cycles; Prometheus generates sustained Energy flow; Hladgunnr delivers the burst damage payload kept alive by the support core.",
+          "notes": [
+            "Mengpo and Yuelao together create redundant sustain - if Stone of Three Fates is on cooldown, Yuelao's support fills the gap.",
+            "Caishen's Energy acceleration directly increases how often Mengpo generates Samsara stacks via her Ultimate.",
+            "Recommended for Tower progression where multi-stage survivability matters more than raw burst output."
+          ]
+        },
+        {
+          "label": "PVP - Resurrection Loop",
+          "heroes": ["mengpo", "jormungandr", "heracles", "hladgunnr", "poseidon"],
+          "reason": "Built around Mengpo's revival enabling death-triggered effects to fire a second time. Poseidon provides crowd control to create safe revival timing. Heracles and Hladgunnr deliver burst payloads while Jormungandr's Revenge mechanic turns enemy aggression into counter-damage.",
+          "notes": [
+            "If Jormungandr's Revenge passive triggers on death, Mengpo's revival allows a second Revenge window - a significant damage spike.",
+            "Poseidon's CC buys the split-second needed for Samsara to activate before enemies finish the revived unit.",
+            "Strong against tank-heavy teams; weaker against full-burst comps that kill multiple heroes simultaneously."
+          ]
+        },
+        {
+          "label": "PVP / PVE - Hypercarry Energy Engine",
+          "heroes": ["mengpo", "heracles", "prometheus", "anubis", "hladgunnr"],
+          "reason": "Anubis and Prometheus create sustained damage pressure and Energy flow. Mengpo's Lycoris Bloom funnels ATK% and Energy regen into Heracles, enabling near-constant Ultimate spam. Hladgunnr adds burst on top. Mengpo's revival acts as insurance, allowing Heracles to play aggressively.",
+          "notes": [
+            "Anubis brings strong PVP and Tower performance - his output complements Heracles without competing for Lycoris Bloom targeting.",
+            "Build Energy-focused items on Heracles to guarantee he consistently holds the highest Energy.",
+            "Stone of Three Fates protects the energy engine from CC disruption."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nuba",
+      "label": "Nuba",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp",
+      "imgPos": "center 30%",
+      "imgPosActive": "center 10%",
+      "quote": "The world fears, banishes, and curses me. But I just don't understand what I've done wrong.",
+      "tags": ["Clubs Faction", "Warrior"],
+      "comps": [
+        {
+          "label": "PVE - Sustain + Energy Lock",
+          "heroes": ["nuba", "nezha", "demeter", "caishen", "pan"],
+          "reason": "Nuba's Doom Mark pressure pairs with Pan and Demeter's Energy drain, while Caishen accelerates team Energy cycles and Nezha provides a reliable DPS anchor.",
+          "notes": [
+            "Caishen's Energy support can increase Ultimate frequency across the comp, reinforcing Nuba's attrition loop.",
+            "Nezha brings consistent front-loaded damage to cover Nuba's lower burst output."
+          ]
+        },
+        {
+          "label": "PVP - Control + Bruiser Core",
+          "heroes": ["nuba", "hladgunnr", "jormungandr", "anubis", "pan"],
+          "reason": "Nuba's ATK SPD drain stacks with Anubis's crowd control, while Jormungandr soaks burst and punishes focus to open windows for Hladgunnr's damage. Clubs faction bonus amplifies the team.",
+          "notes": [
+            "Anubis's stun on weakest enemy synergizes with Nuba's mark-based Stun from Infernal Soulbreaker.",
+            "Pan's silence and daze delay enemy ultimates, compounding with Nuba's Energy destruction.",
+            "Jormungandr's Revenge window turns enemy burst into lethal counter-damage."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "skadi",
+      "label": "Skadi",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp",
+      "imgPos": "center 15%",
+      "imgPosActive": "center 10%",
+      "quote": "Core of Control - Goddess of Winter and the Hunt",
+      "tags": ["Spades Faction", "Mage", "Legendary"],
+      "comps": [
+        {
+          "label": "PVE / PVP - Control Engine Core",
+          "heroes": ["skadi", "pan", "momus", "poseidon", "khepri"],
+          "reason": "The standard CN Control Loop team. Momus taunts to guarantee a control state on the frontline, Poseidon provides powerful AoE crowd control that groups and locks down enemies, Pan layers additional CC, and every controlled enemy triggers Skadi's Realm of Frost passive for bonus damage and Energy. Khepri dives to extend CC windows.",
+          "notes": [
+            "Poseidon's AoE CC hits multiple enemies simultaneously, maximizing Realm of Frost triggers per cast.",
+            "Momus taunt counts as a control state - Realm of Frost procs on taunted targets as well.",
+            "Pan's AoE CC feeds Skadi's passive on multiple enemies simultaneously, accelerating the Energy loop."
+          ]
+        },
+        {
+          "label": "PVP - Aggressive Burst-Control",
+          "heroes": ["skadi", "khepri", "pan", "hladgunnr", "caishen"],
+          "reason": "Built for fast PVP engages. Khepri dives immediately, Pan follows with AoE CC, and Skadi snowballs from the first control wave. Hladgunnr delivers a burst damage payload while enemies are locked down. Caishen accelerates Energy across the team to guarantee early Ultimates.",
+          "notes": [
+            "If the opening control wave misses or gets cleansed, the team loses its primary win condition - this is a high-risk, high-reward composition.",
+            "Caishen's Energy acceleration helps Skadi reach her Ultimate faster, which is critical in short PVP fights.",
+            "Hladgunnr's burst benefits from enemies being grouped and controlled - clean-up damage after Skadi's DoT softens them."
+          ]
+        },
+        {
+          "label": "PVE - Sustain Loop",
+          "heroes": ["skadi", "momus", "pan", "mengpo", "caishen"],
+          "reason": "Designed for long PVE fights that exploit Skadi's scaling over time. Mengpo's revival adds a safety net that extends fight duration, Caishen fuels Energy for faster Ultimate cycles, and the Momus + Pan control core keeps Realm of Frost active throughout. Skadi's Relic Lv2 pseudo-revival stacks with Mengpo's Samsara for double insurance.",
+          "notes": [
+            "In multi-stage PVE content, Skadi's ATK stacks from the Relic carry over between phases - the longer the fight, the stronger she becomes.",
+            "Mengpo's Lycoris Bloom may target Skadi if she leads in Energy, providing additional ATK% on top of Relic stacks.",
+            "Caishen's team Energy acceleration compounds with Skadi's passive Energy regeneration for near-constant Ultimate availability."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hera",
+      "label": "Hera",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp",
+      "imgPos": "center 20%",
+      "imgPosActive": "center 10%",
+      "quote": "Queen of Gods - Sovereign of Charm and Dominion",
+      "tags": ["Spades Faction", "Support", "Legendary"],
+      "comps": [
+        {
+          "label": "PVP - Continuous Control Chain (CN: san-xiang-dui)",
+          "heroes": ["hera", "momus", "yuelao", "cancer", "hladgunnr"],
+          "reason": "The CN community's primary Hera composition. Momus provides a frontline taunt that keeps enemies occupied and creates the first CC state; Hera's Charm then redirects the most dangerous attacker into their own team. Yuelao and Cancer supply layered healing to keep the control core alive. Hladgunnr delivers the burst payload into the CC window Hera creates.",
+          "notes": [
+            "Momus taunt + Hera Charm in succession creates overlapping control that leaves enemies with no safe attack target. Both the taunted and charmed units become threats to their own team.",
+            "Royal Crown's Bestowal will target Hladgunnr as the highest-ATK ally - ensuring she receives the ATK and ATK Speed boost at the critical burst moment.",
+            "Yuelao and Cancer's healing covers Hera's passive Royal Domain energy cost, keeping her alive long enough to cycle Fatal Infatuation a second time."
+          ]
+        },
+        {
+          "label": "PVP - Anti-Single-Carry Shutdown",
+          "heroes": ["hera", "hladgunnr", "pan", "anubis", "caishen"],
+          "reason": "Built to neutralize the opposing team's primary DPS. Hera's Fatal Infatuation locks down the highest-damage enemy carry while Crown's Bestowal simultaneously buffs Hladgunnr. Pan layers AoE crowd control to delay enemy Ultimate rotations. Anubis focuses the same high-ATK target Hera marks, and Caishen accelerates team Energy for faster Hera Ultimate cycles.",
+          "notes": [
+            "Fatal Infatuation and Anubis both target the highest-damage enemy - their focus compounds, accelerating the kill on the carry that would otherwise counter Hladgunnr.",
+            "Pan's AoE silence delays enemy Ultimates during Hera's Charm window, preventing the opposing team from spending their energy before the charmed unit's friendly fire lands.",
+            "Particularly strong against Isis-centric teams: Hera's Charm redirects Isis's auto-attack damage back into the opposing support stack."
+          ]
+        },
+        {
+          "label": "PVE - Sustained Control Support Core",
+          "heroes": ["hera", "momus", "mengpo", "pan", "caishen"],
+          "reason": "Designed for long PVE fights where Hera's control cycle can compound over time. Mengpo's revival extends the fight duration and stacks with Hera's Royal Domain damage reduction as a second survival layer. Pan and Momus supply continuous CC that ensures the Royal Domain suppression on entering enemies fires repeatedly. Caishen accelerates Energy for faster Hera Ultimate rotations throughout the fight.",
+          "notes": [
+            "Hera's Royal Domain energy regeneration stacks with Caishen's team-wide Energy acceleration - in long fights this creates near-constant Ultimate availability.",
+            "Mengpo's Lycoris Bloom may target Hera if she leads in Energy inside her Royal Domain, providing additional ATK% on top of her passive damage reduction stacks.",
+            "Royal Domain Lv4 provides a pseudo-revival on fatal damage - combined with Mengpo's Samsara, Hera has double insurance against burst elimination."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jiutian-xuannv",
+      "label": "Jiutian Xuannv",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutian-xuannv.webp",
+      "imgPos": "center 20%",
+      "imgPosActive": "center 10%",
+      "quote": "Ninth Heaven Mystic Girl - Stance-Switching Arbiter of Battle",
+      "tags": ["Clubs Faction", "Mage", "Legendary"],
+      "comps": [
+        {
+          "label": "PVE - Clubs Tower (mei hua ta) Core",
+          "heroes": ["jiutian-xuannv", "anubis", "eris", "jormungandr", "pan"],
+          "reason": "The primary Clubs-faction board-control lineup from CN zero-spender guides. Anubis provides frontline anchor and CC support. Eris extends the ranged backline structure alongside Jiutian. Jormungandr contributes sustained DoT pressure and Revenge mechanics. Pan layers additional CC that compounds with Jiutian's energy drain cycle.",
+          "notes": [
+            "Jiutian's Yield stance auto-attacks the weakest enemy - in a full-board lineup this creates a reliable cleanup vector for low-HP targets that slip through the frontline.",
+            "Jormungandr's DoT over time pairs well with the longer fight durations Jiutian's energy manipulation and mode cycling naturally create.",
+            "Clubs faction bonus stacks across all five members - team-wide ATK and HP amplifies both Jiutian's Execute stance ramp and Enter the Game's damage conversion."
+          ]
+        },
+        {
+          "label": "PVE / Challenge - Tower Pressure",
+          "heroes": ["jiutian-xuannv", "pan", "wenshen", "momus", "khepri"],
+          "reason": "Built for extended challenge content. Pan's crowd control and Wenshen's debuff utility create sustained pressure. Momus provides a frontline taunt anchor, ensuring Jiutian's White/Black designation fires correctly. Khepri dives to expose backline targets for Jiutian's Yield stance. CN posts cite Pan as a required piece in Jiutian's time-limited challenge (xian shi tiao zhan) stages.",
+          "notes": [
+            "Pan is described in CN community posts as a mandatory partner in Jiutian's challenge stages - prioritize her in PvE push content.",
+            "Momus's frontline taunt guarantees the frontmost/rearmost designation system fires as intended, preventing White/Black piece misassignment.",
+            "Wenshen's debuffs compound with Jiutian's energy drain to slow enemy ultimate rotations - particularly valuable in multi-wave PvE content."
+          ]
+        },
+        {
+          "label": "PVP / PVE - Nezha Synergy",
+          "heroes": ["jiutian-xuannv", "nezha", "pan", "caishen", "jormungandr"],
+          "reason": "Community-validated pairing where Jiutian and Nezha operate as complementary damage sources. Nezha provides consistent front-loaded burst that pairs with Jiutian's stance-switching ranged pressure. Pan layers CC that feeds Jiutian's energy manipulation cycle. Caishen accelerates team Energy for faster Ultimate rotations, extending the number of stance-switch cycles per fight.",
+          "notes": [
+            "CN community posts explicitly describe Jiutian and Nezha as 'quite useful together' - the combination is tested and validated in multiple player reports.",
+            "Caishen's Energy acceleration directly increases how frequently Jiutian can cast her Ultimate and switch stances, compounding her mode-cycling value over time.",
+            "Keep Jiutian in the rearmost backline slot and Nezha as frontline pressure anchor to ensure correct White/Black piece designation from Swift Control, Slow Response."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hephaestus",
+      "label": "Hephaestus",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp",
+      "imgPos": "center 15%",
+      "imgPosActive": "center 10%",
+      "quote": "Using volcanoes as his forge, smelting weapons - a single man becoming an army of thousands.",
+      "tags": ["Hearts Faction", "Support", "Legendary"],
+      "badge": "New",
+      "comps": [
+        {
+          "label": "PVE - Tower and Long Fights",
+          "heroes": ["hephaestus", "caishen", "isis", "pan", "prometheus"],
+          "reason": "The cleanest way to run Hephaestus. Caishen pushes energy into the team so Hephaestus reaches his third Ultimate faster. Once all three devices are live, Isis fires into a five-second window where she deals 30% more damage onto a target whose defenses have been stripped. Pan keeps enemies from escaping the device zones. Prometheus holds the frontline so nothing reaches Hephaestus.",
+          "notes": [
+            "Hephaestus needs three Ultimates before the big window opens - Caishen is what makes that happen in time.",
+            "Wait for the Fusion window to fire your main damage - Isis inside that five-second burst hits far harder than outside it.",
+            "Pan's crowd control keeps enemies sitting inside the zones where the attack speed debuff applies.",
+            "Place Hephaestus in the back corner before the fight starts. He cannot reposition."
+          ]
+        },
+        {
+          "label": "PVP - Survive Long Enough to Hit",
+          "heroes": ["hephaestus", "geb", "hladgunnr", "nyx", "cronus"],
+          "reason": "A slower PvP team built around letting Hephaestus reach two or three devices before the fight ends. Cronus slows enemy skill rotations and gives the team more time before the opposing burst lands. Geb pushes enemies toward the device zones. Weakness Analysis locks down their most dangerous attacker, and Hladgunnr delivers the damage when that window opens.",
+          "notes": [
+            "This only works if the fight lasts long enough. Against teams that burst everything down in ten seconds, look elsewhere.",
+            "Hephaestus cannot move - pick his starting position carefully and expect him to stay there.",
+            "Cronus buying time is what makes this viable in PvP - he is not optional in this lineup.",
+            "Weakness Analysis fires automatically on the highest-damage enemy, which usually lines up perfectly with Hladgunnr's target."
+          ]
+        }
+      ]
+    }
+  ]
+}

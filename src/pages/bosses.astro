@@ -3,6 +3,7 @@ export const prerender = true;
 import bosses from "../data/bosses.json";
 import { getHeroById } from "../data/heroes";
 import Base from "../layouts/Base.astro";
+import Accordion from "../components/Accordion.astro";
 import PageHero from "../components/PageHero.astro";
 import "../styles/compositions.css";
 import "../styles/events.css";
@@ -79,28 +80,14 @@ function bossSkillIcon(bossId, index) {
 
 <!-- Boss accordion navigation -->
 <div class="boss-accordion-nav">
-  <div style="width:40%; display:flex;">
-    {bosses.bosses.map((boss, index) => (
-      <button
-        class={`accordion-panel ${index === 0 ? "is-active" : ""}`}
-        type="button"
-        data-boss-tab
-        data-index={index}
-      >
-        <img
-          src={boss.image}
-          alt={boss.name}
-          class="accordion-img"
-          loading={index === 0 ? "eager" : "lazy"}
-        />
-        <div class="accordion-content">
-          <span class="accordion-label-row">
-            <span class="accordion-label">{boss.name}</span>
-          </span>
-        </div>
-      </button>
-    ))}
-  </div>
+  <Accordion
+    instanceId="bosses"
+    items={bosses.bosses.map(boss => ({
+      id: boss.id,
+      label: boss.name,
+      image: boss.image,
+    }))}
+  />
 </div>
 
 <div class="page-wrapper">
@@ -134,11 +121,6 @@ function bossSkillIcon(bossId, index) {
                   {boss.summary && <p class="boss-summary">{boss.summary}</p>}
                 </div>
 
-                <!-- Prev/Next inside the visual column -->
-                <div class="boss-nav-pair">
-                  <button class="boss-nav boss-nav-left" aria-label="Previous boss" type="button">&#x2039;</button>
-                  <button class="boss-nav boss-nav-right" aria-label="Next boss" type="button">&#x203A;</button>
-                </div>
               </div>
 
               <!-- RIGHT: info panel -->
@@ -243,146 +225,14 @@ function bossSkillIcon(bossId, index) {
 <style>
   /* ── BOSS ACCORDION NAVIGATION ── */
   .boss-accordion-nav {
-    display: flex;
     height: 200px;
-    overflow: hidden;
-    background: var(--bg-base);
     width: 100%;
-    justify-content: center;
-  }
-
-  .accordion-panel {
-    position: relative;
-    flex: 0 0 95px;
-    border: none;
-    padding: 0;
-    cursor: pointer;
     overflow: hidden;
-    font-family: inherit;
-    transition: flex 420ms cubic-bezier(0.4, 0, 0.2, 1);
-    outline: none;
-    border-radius: 0;
-    background: transparent;
-    border-left: 1px solid var(--border-faint);
-  }
-
-  .accordion-panel:first-child {
-    border-left: none;
-  }
-
-  .accordion-panel.is-active {
-    flex: 1 1 0;
-    cursor: default;
-  }
-
-  /* Boss image layer */
-  .accordion-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 20%;
-    transform: scale(1.05);
-    filter: brightness(0.3) saturate(0.4);
-    transition: transform 420ms cubic-bezier(0.4, 0, 0.2, 1),
-                filter 420ms cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-  }
-
-  .accordion-panel.is-active .accordion-img {
-    transform: scale(1);
-    filter: brightness(0.85) saturate(1.1);
-  }
-
-  .accordion-panel:not(.is-active):hover .accordion-img {
-    filter: brightness(0.45) saturate(0.6);
-  }
-
-  /* Gradient overlay for text readability */
-  .accordion-panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.85) 0%,
-      rgba(0, 0, 0, 0.15) 30%,
-      transparent 50%
-    );
-    transition: background 420ms ease;
-  }
-
-  .accordion-panel.is-active::before {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.6) 0%,
-      rgba(0, 0, 0, 0.1) 25%,
-      transparent 45%
-    );
-  }
-
-  /* Accent border for active panel */
-  .accordion-panel.is-active::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
-    z-index: 3;
-  }
-
-  /* Content layout */
-  .accordion-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    height: 100%;
-    padding: var(--space-3);
-    color: var(--text-bright);
-    text-align: left;
-  }
-
-  /* Boss name label */
-  .accordion-label {
-    font-size: var(--text-sm);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-wide);
-    text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);
-    white-space: normal;
-    word-break: break-word;
-    transition: font-size var(--duration-normal) var(--ease-out);
-  }
-
-  .accordion-label-row {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    min-width: 0;
-  }
-
-  .accordion-panel.is-active .accordion-label {
-    font-size: var(--text-2xl);
   }
 
   @media (max-width: 768px) {
     .boss-accordion-nav {
       height: 160px;
-    }
-    .accordion-panel {
-      flex: 0 0 52px;
-    }
-    .accordion-panel.is-active .accordion-label {
-      font-size: var(--text-xl);
-    }
-    .accordion-content {
-      padding: var(--space-3);
     }
   }
 
@@ -390,24 +240,16 @@ function bossSkillIcon(bossId, index) {
     .boss-accordion-nav {
       height: 120px;
     }
-    .accordion-panel {
-      flex: 0 0 40px;
-    }
-    .accordion-panel.is-active .accordion-label {
-      font-size: var(--text-base);
-    }
   }
 </style>
 
 <!-- Boss tab switching script -->
 <script>
   const slides = Array.from(document.querySelectorAll("[data-boss-slide]"));
-  const bossTabs = Array.from(document.querySelectorAll("[data-boss-tab]"));
-  const prevBtns = Array.from(document.querySelectorAll(".boss-nav-left"));
-  const nextBtns = Array.from(document.querySelectorAll(".boss-nav-right"));
+  const bossTabs = Array.from(document.querySelectorAll('[data-accordion-instance="bosses"] [data-accordion-tab]'));
   let currentIndex = 0;
 
-  function updateSlides(index) {
+  function updateSlides(index: number) {
     currentIndex = (index + slides.length) % slides.length;
     slides.forEach((s, i) => s.classList.toggle("is-active", i === currentIndex));
     bossTabs.forEach((t, i) => t.classList.toggle("is-active", i === currentIndex));
@@ -415,11 +257,10 @@ function bossSkillIcon(bossId, index) {
 
   if (slides.length) updateSlides(0);
 
-  prevBtns.forEach(b => b.addEventListener("click", () => updateSlides(currentIndex - 1)));
-  nextBtns.forEach(b => b.addEventListener("click", () => updateSlides(currentIndex + 1)));
-  bossTabs.forEach(tab => {
-    tab.addEventListener("click", () => updateSlides(Number(tab.dataset.index || 0)));
+  bossTabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => updateSlides(i));
   });
+
   document.addEventListener("keydown", e => {
     if (e.key === "ArrowLeft") updateSlides(currentIndex - 1);
     if (e.key === "ArrowRight") updateSlides(currentIndex + 1);

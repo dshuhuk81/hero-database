@@ -118,7 +118,10 @@
       "Bash(sed -i '' s/pic-flex-img/chip-flex-img/g src/pages/tips.astro)",
       "Bash(sed -i '' s/pic-flex-label/chip-flex-label/g src/pages/tips.astro)",
       "Bash(sed -i '' s/pic-divider/chip-divider/g src/pages/tips.astro)",
-      "WebFetch(domain:docs.google.com)"
+      "WebFetch(domain:docs.google.com)",
+      "Bash(node run.js ' *)",
+      "Bash(node run.js /tmp/playwright-dd2.js)",
+      "Bash(node run.js /tmp/playwright-g1.js)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes",

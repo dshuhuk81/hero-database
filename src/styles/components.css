@@ -443,6 +443,26 @@
   display: block;
 }
 
+@media (max-width: 640px) {
+  .main-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+  .main-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .main-tab {
+    flex-shrink: 0;
+    font-size: var(--text-sm);
+    padding: var(--space-2) var(--space-4);
+  }
+}
+
 
 /* ============================================================
    UNDERLINE TAB BAR
@@ -709,4 +729,173 @@
   font-size: var(--text-sm);
   line-height: 1.45;
   color: rgba(134, 239, 172, 0.9);
+}
+
+/* ============================================================
+   MOBILE FILTER OVERLAY (heros.astro)
+   ============================================================ */
+
+.filter-fab {
+  display: none;
+}
+
+.filter-overlay-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 200;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.filter-overlay-backdrop.is-open {
+  display: block;
+}
+
+.filter-overlay-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 201;
+  background: rgba(13, 12, 18, 0.98);
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-4) var(--space-8);
+  transform: translateY(100%);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.filter-overlay-panel.is-open {
+  transform: translateY(0);
+}
+
+.filter-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.filter-overlay-title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-bright);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.filter-overlay-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-bright);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.filter-overlay-close:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 768px) {
+  .filter-fab {
+    display: flex;
+    position: fixed;
+    bottom: var(--space-6);
+    right: var(--space-5);
+    z-index: 150;
+    align-items: center;
+    gap: var(--space-2);
+    height: 48px;
+    padding: 0 var(--space-5);
+    border-radius: 999px;
+    background: var(--accent-gold);
+    color: #0d0c12;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .filter-fab:hover {
+    background: var(--accent-gold-light, #fde68a);
+  }
+
+  .filter-fab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: #0d0c12;
+    color: var(--accent-gold);
+    font-size: 0.65rem;
+    font-weight: var(--weight-bold);
+  }
+
+  .filter-fab-badge:empty {
+    display: none;
+  }
+
+  .filter-bar--desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .filter-overlay-backdrop,
+  .filter-overlay-panel {
+    display: none !important;
+  }
+
+  .filter-fab {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   FILTER OVERLAY - TAG WRAP ON MOBILE
+   Overrides filter.astro scoped styles for overlay mode
+   ============================================================ */
+@media (max-width: 768px) {
+  .filter-bar.filter-overlay-open .tag-scroll-wrap {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .filter-bar.filter-overlay-open .tag-scroll {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .filter-bar.filter-overlay-open .chip-row--tags {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .filter-bar.filter-overlay-open .tag-chip {
+    flex: 0 0 auto !important;
+    white-space: normal !important;
+  }
+
+  .filter-bar.filter-overlay-open .tag-scroll-btn {
+    display: none !important;
+  }
+
+  .filter-bar.filter-overlay-open .filter-row--faction {
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+  }
 }
