@@ -6,8 +6,18 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 <a
   class="hero-card"
   href={`/heroes/${hero.id}`}
-  style={`--hero-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp);`}
 >
+  <img
+    class="hero-card-image"
+    src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp`}
+    alt={`${hero.name} portrait`}
+    width="512"
+    height="512"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+  />
+
   {hero.newHero && (
     <div class="hero-flag-badge hero-flag-badge-new">NEW</div>
   )}
@@ -59,26 +69,20 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
   overflow: hidden; /* NUR HIER */
 }
 
-/* Bild-Layer */
-.hero-card::before {
-  content: "";
+.hero-card-image {
   position: absolute;
   inset: 0;
-
-  background-image: var(--hero-image);
-  background-size: cover;
-  background-position: center top;
-
-  transition:
-    transform 0.45s cubic-bezier(.2,.8,.2,1);
-
-  will-change: transform;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.45s cubic-bezier(.2,.8,.2,1);
   z-index: 0;
 }
 
 /* Hover Zoom */
-.hero-card:hover::before {
-  transform: scale(1.12);
+.hero-card:hover .hero-card-image {
+  transform: scale(1.08);
 }
 
 /* UI über dem Bild */
@@ -275,6 +279,18 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 @media (max-width: 600px) {
   .hero-card {
     height: 260px;
+  }
+
+  .hero-card:hover .hero-card-image {
+    transform: none;
+  }
+
+  .name-overlay,
+  .hero-flag-badge,
+  .rating-badge,
+  .card-badge {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
