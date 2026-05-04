@@ -388,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 4px 16px;
-  overflow: hidden;
+  overflow: visible;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
@@ -563,6 +563,7 @@ document.addEventListener("DOMContentLoaded", () => {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .search-icon {
@@ -681,6 +682,49 @@ document.addEventListener("DOMContentLoaded", () => {
     justify-content: space-between;
     margin-bottom: var(--space-5);
     flex-shrink: 0;
+  }
+
+  .filter-row {
+    overflow: visible;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .filter-row--main,
+  .filter-row--faction {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-row--main > .filter-group,
+  .filter-row--faction > .filter-group,
+  .filter-group--search,
+  .filter-group--reset {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-group--search {
+    max-width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .filter-group--reset .filter-label {
+    display: none;
+  }
+
+  .reset-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filter-row--faction > .filter-group {
+    flex: 1 1 100%;
+    min-width: 0;
   }
 
   .filter-row--faction {
