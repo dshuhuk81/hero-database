@@ -1,0 +1,79 @@
+---
+interface Props {
+  relicRecommendation: string;
+  usedIn: string;
+  explanation: string;
+}
+const { relicRecommendation, usedIn, explanation } = Astro.props;
+---
+
+<div class="relic-invest-card">
+  <div class="ri-header">Relic Investment</div>
+  <div class="ri-body">
+    <div class="ri-row">
+      <span class="ri-label">Recommendation</span>
+      <span class="ri-value ri-value--highlight">{relicRecommendation}</span>
+    </div>
+    <div class="ri-row">
+      <span class="ri-label">Used In</span>
+      <span class="ri-value">{usedIn}</span>
+    </div>
+    <p class="ri-explanation">{explanation}</p>
+  </div>
+</div>
+
+<style>
+.relic-invest-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.ri-header {
+  padding: var(--space-3) var(--space-4);
+  background: var(--chip-bg);
+  border-bottom: 1px solid var(--border-faint);
+  font-size: 0.68rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+}
+.ri-body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.ri-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.ri-label {
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 110px;
+}
+.ri-value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+.ri-value--highlight {
+  font-weight: var(--weight-black);
+  color: var(--faction-a);
+}
+.ri-explanation {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-faint);
+  padding-top: var(--space-3);
+}
+</style>

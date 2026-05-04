@@ -223,23 +223,6 @@
     "depthRating": "mid",
     "commonlyMisunderstood": false
   },
-  "relicBreakpoints": [
-    {
-      "level": 20,
-      "type": "mandatory",
-      "effect": "Early DPS baseline established. First and second burst both functional."
-    },
-    {
-      "level": 30,
-      "type": "mandatory",
-      "effect": "Second burst timing tightens; grouping range increases. Main stopping point."
-    },
-    {
-      "level": 50,
-      "type": "high_spender",
-      "effect": "Maximum damage ceiling. High-spender only."
-    }
-  ],
   "synergyLinks": [
     {
       "heroId": "athena",
@@ -258,11 +241,6 @@
     "egTier": "T0",
     "consensus": "full",
     "lastVerified": "2026-04"
-  },
-  "f2pInvestment": {
-    "recommendation": "Divine -> D5",
-    "priority": 1,
-    "notes": "Awakened gear slots 2/4 per Excel."
   },
   "virtueSets": [
     {
