@@ -1,5 +1,6 @@
 ---
 const { hero } = Astro.props;
+const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 ---
 
 <a
@@ -11,9 +12,9 @@ const { hero } = Astro.props;
     <div class="hero-flag-badge hero-flag-badge-new">NEW</div>
   )}
 
-  {hero.rating && (
-    <div class={`rating-badge rating-${hero.rating.toLowerCase()}`}>
-      {hero.rating}
+  {overallRating && (
+    <div class={`rating-badge rating-${overallRating.toLowerCase()}`}>
+      {overallRating}
     </div>
   )}
 

@@ -53,7 +53,7 @@ function adaptHero(raw) {
     id: raw.id,
     name: raw.name,
     image: raw.image ?? `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${raw.id}.webp`,
-    release: raw.release ?? true,
+    release: raw.release ?? raw.released ?? true,
     faction: raw.faction,
     role: raw.role,
     class: raw.class,
@@ -65,7 +65,7 @@ function adaptHero(raw) {
       pve: centralizedRatings.pve ?? raw.ratings?.pve ?? null,
     },
     // Backward-Compat
-    rating: raw.ratings?.overall ?? null,
+    rating: centralizedRatings.overall ?? raw.ratings?.overall ?? null,
     // ✅ Stats 1:1 aus Hero-JSON (Divine 5 raw in-game stats, not normalized)
     stats: raw.stats ?? {},
     // Add baseAttackRate and bossUltimatesPer90s for frontend use

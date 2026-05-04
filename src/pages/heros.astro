@@ -86,7 +86,7 @@ const sortedHeroes = [...heroes]
           data-faction={hero.faction.toLowerCase()}
           data-rarity={hero.rarity.toLowerCase()}
           data-tags={hero.synergies?.join("|").toLowerCase() || ""}
-          data-rating={hero.rating?.toLowerCase() || "n/a"}
+            data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
       >
         <div class="icon-stack">
           <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${hero.faction.toLowerCase()}.webp`} />
@@ -122,7 +122,7 @@ const sortedHeroes = [...heroes]
             data-faction={hero.faction.toLowerCase()}
             data-rarity={hero.rarity.toLowerCase()}
             data-tags={hero.synergies?.join("|").toLowerCase() || ""}
-            data-rating={hero.rating?.toLowerCase() || "n/a"}
+            data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
             data-pvp={hero.ratings?.pvp?.toLowerCase() || "n/a"}
             data-pve={hero.ratings?.pve?.toLowerCase() || "n/a"}
             data-excel-tier={hero.metaSources?.excelTier || ""}
