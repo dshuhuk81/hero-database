@@ -101,98 +101,6 @@
 
 
 /* ============================================================
-   HERO CHIP
-   Small portrait + name tag. Used in comp rows on guides, bosses, tips.
-   Usage: <div class="hero-chip"><div class="hero-chip-portrait" style="background-image:url(...)"></div><span>Name</span></div>
-   ============================================================ */
-
-.hero-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  padding: 3px 10px 3px 3px;
-  font-size: var(--text-sm);
-  color: var(--text-primary);
-  white-space: nowrap;
-  text-decoration: none;
-}
-
-.hero-chip:hover {
-  border-color: var(--border-medium);
-  color: var(--text-bright);
-}
-
-.hero-chip-portrait {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: var(--bg-overlay);
-  background-size: cover;
-  background-position: center top;
-  flex-shrink: 0;
-}
-
-
-/* ============================================================
-   COMP ENTRY
-   Team composition block: label + reason + hero row + notes.
-   Usage: <div class="comp-entry"><div class="comp-entry-header">...</div><div class="comp-hero-row">...</div></div>
-   ============================================================ */
-
-.comp-entry {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.comp-entry-header {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.comp-label {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: var(--accent-gold);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  flex-shrink: 0;
-}
-
-.comp-reason {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  line-height: var(--leading-snug);
-}
-
-.comp-hero-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: center;
-}
-
-.comp-notes {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  font-style: italic;
-  line-height: var(--leading-normal);
-  border-top: 1px solid var(--border-faint);
-  padding-top: var(--space-2);
-  margin-top: var(--space-1);
-}
-
-
-/* ============================================================
    RATING BADGE
    Tier-colored pill. Data attribute drives gradient.
    Usage: <span class="rating-badge" data-tier="SSS">SSS</span>
@@ -211,40 +119,40 @@
   white-space: nowrap;
 }
 
-.rating-badge[data-tier="SSS"] {
+[data-tier="SSS"] {
   background: linear-gradient(135deg, var(--tier-sss-from), var(--tier-sss-to));
   color: var(--tier-sss-text);
   box-shadow: 0 0 8px var(--tier-sss-glow);
 }
 
-.rating-badge[data-tier="SS"] {
+[data-tier="SS"] {
   background: linear-gradient(135deg, var(--tier-ss-from), var(--tier-ss-to));
   color: var(--tier-ss-text);
   box-shadow: 0 0 8px var(--tier-ss-glow);
 }
 
-.rating-badge[data-tier="S"] {
+[data-tier="S"] {
   background: linear-gradient(135deg, var(--tier-s-from), var(--tier-s-to));
   color: var(--tier-s-text);
   box-shadow: 0 0 8px var(--tier-s-glow);
 }
 
-.rating-badge[data-tier="A"] {
+[data-tier="A"] {
   background: linear-gradient(135deg, var(--tier-a-from), var(--tier-a-to));
   color: var(--tier-a-text);
 }
 
-.rating-badge[data-tier="B"] {
+[data-tier="B"] {
   background: linear-gradient(135deg, var(--tier-b-from), var(--tier-b-to));
   color: var(--tier-b-text);
 }
 
-.rating-badge[data-tier="C"] {
+[data-tier="C"] {
   background: linear-gradient(135deg, var(--tier-c-from), var(--tier-c-to));
   color: var(--tier-c-text);
 }
 
-.rating-badge[data-tier="D"] {
+[data-tier="D"] {
   background: linear-gradient(135deg, var(--tier-d-from), var(--tier-d-to));
   color: var(--tier-d-text);
 }
@@ -322,7 +230,6 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--border-faint);
 }
 
 .stat-label {
@@ -767,4 +674,39 @@
   .support-headline {
     font-size: var(--text-2xl);
   }
+}
+
+
+/* ============================================================
+   UPGRADE ROW
+   Skill/relic upgrade level badge + description text.
+   Usage: <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">Effect</span></div>
+   ============================================================ */
+
+.upgrade-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-raised);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-faint);
+}
+
+.upgrade-lv {
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+  padding: 2px var(--space-2);
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.35);
+  color: #86efac;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.upgrade-text {
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: rgba(134, 239, 172, 0.9);
 }
