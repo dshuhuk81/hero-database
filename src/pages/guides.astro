@@ -48,14 +48,7 @@ const guides = [/*
     imgPos: "center 15%", imgPosActive: "center 10%",
     quote: "Core of Control - Goddess of Winter and the Hunt",
     tags: ["Spades Faction", "Mage", "Legendary"],
-  },
-/*
-  {
-    id: "jiutian-xuannv", label: "Jiutian Xuannv", heroImage: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutian-xuannv.webp",
-    imgPos: "center 15%", imgPosActive: "center 10%",
-    quote: "Master of the Board - Goddess of Tactical Stances",
-    tags: ["Clubs Faction", "Archer", "Legendary"],
-  },*/
+  }
 ];
 
 // ─── HELPERS ───
@@ -584,17 +577,17 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">CC + ATK SPD drain = oppressive in long control fights</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Campaign / PVE</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Solid debuffer; revive adds longevity; ATK SPD drain effective in prolonged campaign stages</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-b">B</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="B">B</span></div>
               <div class="rating-desc">Energy drain slows boss ults; Stun useful</div>
             </div>
           </div>
@@ -904,22 +897,22 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVE / Campaign</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Revival + CC cleanse = unmatched sustain in prolonged PVE</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Tower / Progression</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Multi-stage fights reward the revival loop; untargetability blocks burst shutdowns</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Stone of Three Fates counters boss CC phases; Lycoris Bloom accelerates DPS rotation</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Strong in sustained PVP; weaker against full-burst comps that wipe multiple units simultaneously</div>
             </div>
           </div>
@@ -1257,22 +1250,22 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVE / Campaign</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Multi-target scaling and sustained control loops make her dominant in prolonged PVE content</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Tower / Progression</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Multi-stage fights reward snowball potential; ATK stacks and Energy carry momentum between waves</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Single-target limits passive proc frequency; DoT and ramp-up scaling still contribute, but loop is slower to start</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Strong in control-heavy meta; hard-countered by Cleanse and CC-Immunity compositions</div>
             </div>
           </div>
@@ -1628,22 +1621,22 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Hard CC Ultimate + permanent death debuff = one of the strongest anti-carry tools in PVP meta</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVE / Campaign</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Heal reduction and ATK debuff aura provide consistent value; Cursed Ground and debuff kit scale well in extended campaign fights</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-b">B</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="B">B</span></div>
               <div class="rating-desc">Duality Inversion's max-HP damage is useful; Jinx CC RNG is less impactful on single targets with high control resistance</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Tower / Progression</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">ATK/DEF aura debuffs and heal reduction contribute to multi-stage survivability; death passive triggers reliably</div>
             </div>
           </div>
@@ -2003,22 +1996,22 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Anti-carry targeting, Charm redirection, Energy Denial via Relic Lv3 - oppressive against single-carry compositions</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVE / Campaign</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Strong carry buff and control provide consistent value; team-dependent in content where enemies resist or ignore CC</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Tower / Progression</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Control and self-sustain via Royal Domain support extended multi-stage fights; value depends on content's CC susceptibility</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-b">B</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="B">B</span></div>
               <div class="rating-desc">Crown's Bestowal adds carry support value; core CC identity diminished when targets are immune to Charm and Obsession</div>
             </div>
           </div>
@@ -2369,22 +2362,22 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVE / Tower</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Clubs Tower core; reduces difficulty and scales over longer fights</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss / High-Score</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Energy manipulation and stance cycling compound in sustained boss encounters</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Tools exist but CN data currently prioritizes PvE; position-dependent</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Early Game</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Playable without max investment but noticeably team-dependent</div>
             </div>
           </div>
@@ -2522,7 +2515,7 @@ const activeGuide = releasedGuides[0];
          HEPHAESTUS GUIDE
          ═══════════════════════════════════════ -->
     {releasedGuides.some(g => g.id === "hephaestus") && (
-    <div class="guide-slide is-active" id="hephaestus">
+    <div class="guide-slide" id="hephaestus">
       <div class="guide-container">
 
         <!-- HEADER -->
@@ -2687,17 +2680,17 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVE / Campaign</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">His best mode. Long fights give him time to get all three devices running and repeat the Fusion window multiple times.</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-b">B</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="B">B</span></div>
               <div class="rating-desc">Fusion will fire eventually in a long boss fight, but he provides no energy to your carry and his healing only targets one ally. Other supports do more here.</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Viable if the fight lasts. The automatic lockdown on the most dangerous enemy is genuinely strong. Teams that kill in ten seconds will end him before he matters.</div>
             </div>
           </div>
@@ -2999,17 +2992,17 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Rewind save + formation break + CD manipulation + Projection = dominant in most PvP scenarios</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Campaign / Push</div>
-              <div class="rating-cell"><span class="rating-badge rating-ss">SS</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="SS">SS</span></div>
               <div class="rating-desc">Anti-tempo kit and Rewinding Remains provide top-tier value in campaign push; formation disruption and cooldown manipulation compound across multi-stage fights</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Situational; Energy block and Echo of Causality double-cast add value but formation disruption is less relevant</div>
             </div>
           </div>
@@ -3164,7 +3157,7 @@ const activeGuide = releasedGuides[0];
          MERET GUIDE
          ═══════════════════════════════════════ -->
     {releasedGuides.some(g => g.id === "meret") && (
-    <div class="guide-slide" id="meret">
+    <div class="guide-slide is-active" id="meret">
       <div class="guide-container">
 
         <!-- HEADER -->
@@ -3392,17 +3385,17 @@ const activeGuide = releasedGuides[0];
           <div class="rating-grid">
             <div class="rating-card">
               <div class="rating-mode">PVP</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Note damage-sharing and Relic death-save counter single-target burst elimination. Strong against focused carry-kill strategies. Less effective against full AoE burst that exceeds the sharing threshold simultaneously.</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Campaign / Tower Push</div>
-              <div class="rating-cell"><span class="rating-badge rating-s">S</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="S">S</span></div>
               <div class="rating-desc">Core support in the Diamonds faction endgame lineup. Her Note system and tempo contribution become increasingly important in higher-difficulty content where Athena cannot substitute the full buff output.</div>
             </div>
             <div class="rating-card">
               <div class="rating-mode">Boss Fights</div>
-              <div class="rating-cell"><span class="rating-badge rating-a">A</span></div>
+              <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
               <div class="rating-desc">Moon Note ATK buff and Crit Rate at Lv3 directly amplify carry damage output. Less impact than in multi-target scenarios, but the carry amplification and team sustain remain relevant in sustained single-target fights.</div>
             </div>
           </div>
@@ -4413,9 +4406,7 @@ const activeGuide = releasedGuides[0];
   .tag-rarity { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(250,204,21,0.06); }
   .tag-unreleased { border-color: rgba(255,160,80,0.6); color: rgba(255,180,100,0.9); background: rgba(255,120,40,0.07); }
 
-  /* ── RATING EXTENSIONS ── */
-  .rating-sss { background: linear-gradient(135deg, #ff6b6b, #ff8787); color: #fff; box-shadow: 0 0 12px rgba(255,107,107,0.4); }
-  .rating-ss  { background: linear-gradient(135deg, #ffd93d, #ffe66d); color: #1a1a1a; box-shadow: 0 0 12px rgba(255,217,61,0.4); }
+  /* ── RATING: handled by [data-tier] selectors in components.css ── */
 
   /* ── SKILL UPGRADE BLOCK (within skill cards) ── */
   .skill-upgrade-block {
