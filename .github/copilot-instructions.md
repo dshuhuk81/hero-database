@@ -6,6 +6,9 @@ Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks a
 ## Tokens
 For creating new content use the design foundation laid out in styles/tokens.css. There is also a overview of the system in design-system.astro.
 
+## CSS
+Dont use inline css styles. Add new css styles to the global stylesheet at src/styles/components.css and use class names to apply them. If you need a new utility class, add it to the utilities section of components.css and follow the existing naming conventions.
+
 ## Game leaked data
 unter data-mine/game_extracted there are a ton of ingame infos. maybe we can use something here. an explanation what was done to achieve that is within @Extraction_Progress.md
 
@@ -248,3 +251,6 @@ See memory file for full details: `memory/project_skill_videos.md`
 4. Upload `.webm` to R2 bucket under `skills/` for production
 5. Test coordinates: die koordinaten sollten sein: A (110/700 )(oben links), B (610/1110) (unten rechts). oder brauchst du. noch mehr ?
 Das rechteck hat 500x410 abmaße innerhalb des 720x1600 videos.
+
+
+
