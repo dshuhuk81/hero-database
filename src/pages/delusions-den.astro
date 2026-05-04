@@ -29,12 +29,13 @@ const TAG_META: Record<string, { short: string; cls: string }> = {
   cc:            { short: "CC",   cls: "tag-violet" },
 };
 
+const DD_R2 = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/delusionden";
 const BLESSING_IMG: Record<string, string> = {
-  "mask-of-sorrow": "/delusionden/mask.webp",
-  "divine-nectar":  "/delusionden/nectar.webp",
-  "horn-of-doom":   "/delusionden/horn.webp",
-  "megafungus":     "/delusionden/fungus.webp",
-  "ripper":         "/delusionden/ripper.webp",
+  "mask-of-sorrow": `${DD_R2}/mask.webp`,
+  "divine-nectar":  `${DD_R2}/nectar.webp`,
+  "horn-of-doom":   `${DD_R2}/horn.webp`,
+  "megafungus":     `${DD_R2}/fungus.webp`,
+  "ripper":         `${DD_R2}/ripper.webp`,
 };
 
 const BLESSING_KEYS = ["mask_of_sorrow", "divine_nectar", "megafungus", "ripper", "horn_of_doom"] as const;
@@ -218,7 +219,7 @@ const DD_COMPS = [
         <div class="dd-reward-grid">
           <div class="dd-reward-card">
             <div class="dd-reward-img-wrap">
-              <img src="/delusionden/frame.webp" alt="Avatar Frame" class="dd-reward-img" />
+              <img src={`${DD_R2}/frame.webp`} alt="Avatar Frame" class="dd-reward-img" />
             </div>
             <div class="dd-reward-title">Avatar Frame</div>
             <div class="dd-reward-name">Profane Gaze</div>
@@ -226,7 +227,7 @@ const DD_COMPS = [
           </div>
           <div class="dd-reward-card">
             <div class="dd-reward-img-wrap">
-              <img src="/delusionden/token.webp" alt="Oculus Token" class="dd-reward-img" />
+              <img src={`${DD_R2}/token.webp`} alt="Oculus Token" class="dd-reward-img" />
             </div>
             <div class="dd-reward-title">Oculus Tokens</div>
             <div class="dd-reward-name">Shop Currency</div>
@@ -1480,10 +1481,45 @@ const DD_COMPS = [
     .bl-row-left { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
     .bl-row-right { padding: 16px 18px; }
 
-    .buff-list-header,
-    .buff-row { grid-template-columns: 160px 1fr 100px; font-size: 0.78rem; }
-    .buff-name { font-size: 0.8rem; }
-
     .dd-hero-grid { justify-content: center; }
+
+    /* 6.1 stages: horizontal scroll strip */
+    .flow-row {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+    .flow-row::-webkit-scrollbar { display: none; }
+
+    /* 6.2 buff table: card layout */
+    .buff-list-header { display: none; }
+    .buff-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 14px;
+    }
+    .buff-col-name {
+      padding-right: 0;
+      font-size: 0.82rem;
+    }
+    .buff-col-effect {
+      font-size: 0.78rem;
+      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .buff-col-prios {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding-left: 0;
+      border-left: none;
+    }
   }
 </style>

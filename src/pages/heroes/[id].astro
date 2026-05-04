@@ -276,9 +276,6 @@ const dotSections = [
                 <span class={`depth-badge depth-${(hero as any).coreMechanic.depthRating}`}>
                   {(hero as any).coreMechanic.depthRating} depth
                 </span>
-                {(hero as any).coreMechanic.commonlyMisunderstood && (
-                  <span class="misunderstood-badge">Commonly Misunderstood</span>
-                )}
               </div>
               <p class="mechanic-summary">{(hero as any).coreMechanic.summary}</p>
             </div>
@@ -1107,17 +1104,6 @@ const dotSections = [
 .depth-high { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #d8b4fe; }
 .depth-mid  { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
 .depth-low  { background: rgba(107,114,128,0.15); border: 1px solid rgba(107,114,128,0.35); color: #d1d5db; }
-.misunderstood-badge {
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-md);
-  font-size: 0.65rem;
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  background: rgba(234,179,8,0.12);
-  border: 1px solid rgba(234,179,8,0.35);
-  color: #fde68a;
-}
 
 /* Key Stats Grid */
 .key-stats-label {
@@ -1500,20 +1486,6 @@ const dotSections = [
   font-weight: var(--weight-black);
   color: var(--text-bright);
 }
-.consensus-badge {
-  display: inline-block;
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-md);
-  font-size: 0.72rem;
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  width: fit-content;
-}
-.consensus-full     { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35); color: #86efac; }
-.consensus-partial  { background: rgba(234,179,8,0.12); border: 1px solid rgba(234,179,8,0.35); color: #fde68a; }
-.consensus-contested{ background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; }
-.community-note { font-size: 0.65rem; color: var(--text-disabled); font-style: italic; margin: var(--space-2) 0 0; }
 
 /* =============================================
    SECTION 4: STATS
@@ -1909,7 +1881,7 @@ const dotSections = [
   .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .big-rating-tiles { grid-template-columns: repeat(3,1fr); gap: var(--space-2); }
   .big-rating-val { font-size: 2rem; }
-  .stat-columns { grid-template-columns: 1fr; gap: var(--space-4); }
+  .stat-columns { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
   .scroll-content { padding: 0 var(--space-4) 80px; }
   .syn-links-grid { grid-template-columns: 1fr; }
   .video-grid { grid-template-columns: 1fr; }
@@ -1918,13 +1890,16 @@ const dotSections = [
   .showcase-nav { width: 38px; height: 38px; }
   .showcase-nav.prev { left: 12px; }
   .showcase-nav.next { right: 12px; }
+  .virtue-sets-row { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
 }
 
 @media (max-width: 480px) {
-  .big-rating-tiles { grid-template-columns: 1fr; max-width: 300px; margin-left: auto; margin-right: auto; }
+  .big-rating-tiles { grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
   .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .skill-tab { min-width: 70px; padding: var(--space-2) var(--space-3) var(--space-3); }
   .skill-tab-icon { width: 36px; height: 36px; }
+  .stat-columns { grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
+  .virtue-sets-row { grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
 }
 </style>
 

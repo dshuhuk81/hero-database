@@ -21,6 +21,12 @@ function formatTagLabel(tag) {
 ════════════════════════════════════ -->
 <section class="filters filter-bar" id="filterBar">
 
+  <!-- Mobile overlay header (only visible when overlay is open) -->
+  <div class="filter-mobile-header" id="filterMobileHeader">
+    <span class="filter-overlay-title">Filter Heroes</span>
+    <button class="filter-overlay-close" id="filterOverlayClose" type="button" aria-label="Close filters">&#x2715;</button>
+  </div>
+
   <!-- ROW 1: Class · Role · Rarity · Search · Reset -->
   <div class="filter-row filter-row--main">
 
@@ -639,5 +645,73 @@ document.addEventListener("DOMContentLoaded", () => {
   .filter-divider        { display: none; }
   .filter-row--main      { gap: 10px 12px; }
   .filter-group--search  { max-width: 100%; }
+}
+
+/* Mobile overlay header: hidden by default, shown when overlay is active */
+.filter-mobile-header {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Hide filter bar on mobile by default */
+  .filter-bar {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 201;
+    border-radius: 0;
+    margin: 0;
+    max-height: 100dvh;
+    overflow-y: auto;
+    padding: var(--space-5) var(--space-4) 100px;
+    border: none;
+    transform: translateY(100%);
+    transition: transform 0.3s var(--ease-out, cubic-bezier(0.25,0.46,0.45,0.94));
+  }
+
+  /* When overlay is open */
+  .filter-bar.filter-overlay-open {
+    display: flex;
+    transform: translateY(0);
+  }
+
+  .filter-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-5);
+    flex-shrink: 0;
+  }
+
+  .filter-row--faction {
+    flex-wrap: wrap;
+  }
+
+  /* Tags: wrap instead of horizontal scroll in overlay */
+  .tag-scroll-wrap {
+    overflow: visible;
+  }
+
+  .tag-scroll {
+    overflow: visible;
+  }
+
+  .chip-row--tags {
+    flex-wrap: wrap;
+  }
+
+  .chip-row--tags .tag-chip {
+    flex: 0 0 auto;
+  }
+
+  .tag-scroll-btn {
+    display: none;
+  }
+
+  /* Faction row: allow wrapping so all chips show */
+  .filter-row--faction {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
 }
 </style>
