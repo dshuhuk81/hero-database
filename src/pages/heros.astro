@@ -13,11 +13,7 @@ import Filter from "../components/filter.astro";
 const sortedHeroes = [...heroes]
   .filter(hero => hero.release !== false)
   .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
-
-
 /* No need for escapeRegExp anymore */
-
-
 
 ---
 
@@ -81,8 +77,9 @@ const sortedHeroes = [...heroes]
   </div>
 
   <!-- Ad slot: hero list top -->
-  <div class="ad-slot-list">
+  <div class="ad-slot-list is-empty" id="heroTopAdSlot">
     <ins class="adsbygoogle"
+      id="heroTopAdIns"
       style="display:block"
       data-ad-client="ca-pub-1272647850363446"
       data-ad-slot="auto"
@@ -104,9 +101,30 @@ const sortedHeroes = [...heroes]
             data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
       >
         <div class="icon-stack">
-          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${hero.faction.toLowerCase()}.webp`} />
-          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${hero.role.toLowerCase()}.webp`} />
-          <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${hero.class.toLowerCase()}.webp`} />
+          <img
+            src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${hero.faction.toLowerCase()}.webp`}
+            alt=""
+            width="20"
+            height="20"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${hero.role.toLowerCase()}.webp`}
+            alt=""
+            width="20"
+            height="20"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${hero.class.toLowerCase()}.webp`}
+            alt=""
+            width="20"
+            height="20"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         <HeroCard hero={hero} />
       </div>
@@ -322,6 +340,9 @@ const sortedHeroes = [...heroes]
   position: relative;
   width: 210px;
   border-radius: var(--radius-md);
+  content-visibility: auto;
+  contain-intrinsic-size: 210px 380px;
+  contain: layout style paint;
 }
 
 @media (max-width: 600px) {
@@ -334,6 +355,33 @@ const sortedHeroes = [...heroes]
   }
   .icon-stack {
     left: 0;
+  }
+
+  .hero-wrapper::before {
+    display: none;
+  }
+}
+
+.ad-slot-list {
+  min-height: 0;
+  transition: margin var(--duration-fast) var(--ease-out), max-height var(--duration-fast) var(--ease-out);
+}
+
+.ad-slot-list .adsbygoogle {
+  display: block;
+  min-height: 0;
+}
+
+@media (max-width: 768px) {
+  .ad-slot-list.is-empty {
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .ad-slot-list.is-filled {
+    margin: 0 auto var(--space-4);
+    max-height: 420px;
   }
 }
 
@@ -867,6 +915,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterBar = document.getElementById("filterBar") as HTMLElement | null;
   const filterOverlayBackdrop = document.getElementById("filterOverlayBackdrop") as HTMLElement | null;
   const filterOverlayClose = document.getElementById("filterOverlayClose") as HTMLButtonElement | null;
+  const heroTopAdSlot = document.getElementById("heroTopAdSlot") as HTMLElement | null;
+  const heroTopAdIns = document.getElementById("heroTopAdIns") as HTMLElement | null;
+
+  let topAdObserver: MutationObserver | null = null;
+
+  function syncTopAdState() {
+    if (!heroTopAdSlot || !heroTopAdIns) return;
+    const isFilled = heroTopAdIns.getAttribute("data-ad-status") === "filled";
+    heroTopAdSlot.classList.toggle("is-filled", isFilled);
+    heroTopAdSlot.classList.toggle("is-empty", !isFilled);
+  }
+
+  function watchTopAdState() {
+    if (!heroTopAdIns) return;
+    syncTopAdState();
+    topAdObserver = new MutationObserver(syncTopAdState);
+    topAdObserver.observe(heroTopAdIns, {
+      attributes: true,
+      attributeFilter: ["data-ad-status"]
+    });
+    window.setTimeout(syncTopAdState, 2000);
+    window.setTimeout(syncTopAdState, 5000);
+  }
 
   function openFilterOverlay() {
     filterBar?.classList.add("filter-overlay-open");
@@ -906,5 +977,10 @@ document.addEventListener("DOMContentLoaded", () => {
   resetButton?.addEventListener("click", updateFabBadge);
 
   updateFabBadge();
+  watchTopAdState();
+
+  window.addEventListener("beforeunload", () => {
+    topAdObserver?.disconnect();
+  });
 });
 </script>
