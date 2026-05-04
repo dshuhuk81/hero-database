@@ -117,7 +117,8 @@
       "Bash(sed -i '' s/pic-flex-slot/chip-flex-slot/g src/pages/tips.astro)",
       "Bash(sed -i '' s/pic-flex-img/chip-flex-img/g src/pages/tips.astro)",
       "Bash(sed -i '' s/pic-flex-label/chip-flex-label/g src/pages/tips.astro)",
-      "Bash(sed -i '' s/pic-divider/chip-divider/g src/pages/tips.astro)"
+      "Bash(sed -i '' s/pic-divider/chip-divider/g src/pages/tips.astro)",
+      "WebFetch(domain:docs.google.com)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes",

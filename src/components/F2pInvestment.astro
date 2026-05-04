@@ -1,0 +1,41 @@
+---
+interface Props {
+  f2pInvestment: string;
+}
+const { f2pInvestment } = Astro.props;
+---
+
+<div class="f2p-invest-card">
+  <div class="fi-header">F2P Investment</div>
+  <div class="fi-body">
+    <span class="fi-rec">{f2pInvestment}</span>
+  </div>
+</div>
+
+<style>
+.f2p-invest-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.fi-header {
+  padding: var(--space-3) var(--space-4);
+  background: var(--chip-bg);
+  border-bottom: 1px solid var(--border-faint);
+  font-size: 0.68rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+}
+.fi-body {
+  padding: var(--space-4);
+}
+.fi-rec {
+  font-size: 1rem;
+  font-weight: var(--weight-black);
+  color: var(--faction-a);
+  line-height: 1.5;
+}
+</style>

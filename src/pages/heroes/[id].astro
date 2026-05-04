@@ -3,7 +3,10 @@ export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
 import Base from "../../layouts/Base.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
+import RelicInvestment from '../../components/RelicInvestment.astro';
+import F2pInvestment from '../../components/F2pInvestment.astro';
 import allVirtues from "../../data/virtues.json";
+import allInvest from "../../data/ratings/invest.json";
 /* STATIC PATHS */
 export function getStaticPaths() {
   return heroes.map((hero) => ({
@@ -27,6 +30,7 @@ const resolvedVirtueSets = heroVirtueSets.map((vs) => ({
     .filter(Boolean),
 }));
 const hasVirtues = resolvedVirtueSets.length > 0;
+const heroInvest = (allInvest as any)[id] ?? null;
 const prevHero = heroIndex > 0 ? heroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < heroes.length - 1 ? heroes[heroIndex + 1] : null;
 
@@ -135,7 +139,7 @@ const dotSections = [
   { id: "section-stats",      label: "Stats" },
   { id: "section-synergies",  label: "Synergies" },
   ...(hasComps ? [{ id: "section-comps", label: "Compositions" }] : []),
-  ...((hero as any).relicBreakpoints?.length ? [{ id: "section-investment", label: "Investment" }] : []),
+  ...(heroInvest ? [{ id: "section-investment", label: "Investment" }] : []),
   ...(hasVirtues ? [{ id: "section-virtues", label: "Virtues" }] : []),
   ...((hero as any)["content-creator"]?.length ? [{ id: "section-videos", label: "Videos" }] : []),
 ];
@@ -546,42 +550,16 @@ const dotSections = [
     )}
 
     <!-- ── SECTION 7: INVESTMENT GUIDE ── -->
-    {(hero as any).relicBreakpoints && (hero as any).relicBreakpoints.length > 0 && (
+    {heroInvest && (
       <section class="content-section" id="section-investment">
         <div class="section-label" data-i18n="detail_investment">Investment Guide</div>
-
-        <div class="investment-grid">
-          <div class="relic-timeline">
-            {(hero as any).relicBreakpoints.map((bp: { level: number; type: string; effect: string }, i: number) => (
-              <div class="relic-bp-row">
-                <div class="relic-bp-left">
-                  <div class="relic-bp-dot"></div>
-                  {i < (hero as any).relicBreakpoints.length - 1 && <div class="relic-bp-line"></div>}
-                </div>
-                <div class="relic-bp-content">
-                  <div class="relic-bp-header">
-                    <span class="relic-bp-lv">Relic {bp.level}</span>
-                    <span class={`relic-bp-badge bp-${bp.type}`}>
-                      {bp.type === "Mid Game" ? "Mid Game" : bp.type === "mandatory" ? "Mandatory" : bp.type === "recommended" ? "Recommended" : bp.type === "Early game" ? "Early game" : bp.type === "Late game" ? "Late game" : "High Spender"}
-                    </span>
-                  </div>
-                  <p class="relic-bp-effect">{bp.effect}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {(hero as any).f2pInvestment && (
-            <div class="f2p-card">
-              <div class="f2p-header">F2P Recommendation</div>
-              <div class="f2p-body">
-                <span class="f2p-rec">{(hero as any).f2pInvestment.recommendation}</span>
-                {(hero as any).f2pInvestment.notes && (
-                  <p class="f2p-notes">{(hero as any).f2pInvestment.notes}</p>
-                )}
-              </div>
-            </div>
-          )}
+        <div class="investment-cards">
+          <RelicInvestment
+            relicRecommendation={heroInvest.relicRecommendation}
+            usedIn={heroInvest.usedIn}
+            explanation={heroInvest.explanation}
+          />
+          <F2pInvestment f2pInvestment={heroInvest.f2pInvestment} />
         </div>
       </section>
     )}
@@ -1597,9 +1575,7 @@ const dotSections = [
   flex-direction: column;
   gap: var(--space-1);
   padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--border-faint);
 }
-.stat-entry:last-child { border-bottom: none; }
 
 .stat-entry-label {
   font-size: 0.75rem;
@@ -1611,6 +1587,7 @@ const dotSections = [
   flex-direction: column; 
   gap: var(--space-1); 
   width: 100%;}
+  
 .stat-entry-val {
   font-size: 0.88rem;
   font-weight: var(--weight-bold);
@@ -1746,74 +1723,12 @@ const dotSections = [
 /* =============================================
    SECTION 7: INVESTMENT GUIDE
    ============================================= */
-.investment-grid {
+.investment-cards {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: var(--space-8);
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
   align-items: start;
 }
-
-.relic-timeline { display: flex; flex-direction: column; }
-.relic-bp-row { display: flex; gap: var(--space-4); }
-.relic-bp-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  flex-shrink: 0;
-  padding-top: var(--space-1);
-}
-.relic-bp-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: var(--radius-full);
-  background: var(--faction-a);
-  border: 2px solid rgba(0,0,0,0.5);
-  box-shadow: 0 0 8px var(--faction-glow);
-  flex-shrink: 0;
-}
-.relic-bp-line {
-  width: 2px;
-  flex: 1;
-  min-height: 20px;
-  background: linear-gradient(to bottom, var(--faction-a), var(--border-faint));
-  margin: var(--space-1) 0;
-}
-.relic-bp-content { padding-bottom: var(--space-6); flex: 1; }
-.relic-bp-header { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); }
-.relic-bp-lv { font-size: 0.9rem; font-weight: var(--weight-black); color: var(--text-bright); }
-.relic-bp-badge {
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-md);
-  font-size: 0.65rem;
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-.bp-mandatory    { background: rgba(99,179,237,0.15); border: 1px solid rgba(99,179,237,0.35); color: #90cdf4; }
-.bp-recommended  { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35); color: #86efac; }
-.bp-high_spender { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.35); color: #fde68a; }
-.relic-bp-effect { margin: 0; font-size: 0.85rem; line-height: 1.55; color: var(--text-secondary); }
-
-.f2p-card {
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-.f2p-header {
-  padding: var(--space-3) var(--space-4);
-  background: var(--chip-bg);
-  border-bottom: 1px solid var(--border-faint);
-  font-size: 0.68rem;
-  font-weight: var(--weight-black);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
-  color: var(--text-disabled);
-}
-.f2p-body { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
-.f2p-rec { font-size: 1.1rem; font-weight: var(--weight-black); color: var(--faction-a); }
-.f2p-notes { margin: 0; font-size: var(--text-sm); line-height: 1.55; color: var(--text-muted); }
 
 /* =============================================
    SECTION 8: VIRTUES
@@ -2005,7 +1920,7 @@ const dotSections = [
    ============================================= */
 @media (max-width: 1024px) {
   .stat-columns { grid-template-columns: 1fr 1fr; }
-  .investment-grid { grid-template-columns: 1fr; }
+  .investment-cards { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 900px) {
