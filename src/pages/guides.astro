@@ -471,13 +471,13 @@ const activeGuide = releasedGuides[0];
         <section class="section" id="nuba-faction">
           <div class="section-title">Club Faction Synergy</div>
           <div class="mechanic-box" style="border-color: rgba(64,106,95,0.35); background: linear-gradient(135deg, rgba(64,106,95,0.07), rgba(64,106,95,0.05));">
-            <div class="mechanic-label" style="color: var(--gold-light);">Faction Bonus — Club</div>
+            <div class="mechanic-label" style="color: var(--accent-gold-light);">Faction Bonus — Club</div>
             <p style="font-size:14px; color:var(--text-muted); margin-bottom:14px;">Fielding multiple Club faction heroes grants the <em>entire team</em> bonus ATK and HP. Thresholds:</p>
             <ul class="mechanic-list">
-              <li><strong style="color:var(--gold-light);">3 Club heroes:</strong> +15% ATK &amp; HP for the team</li>
-              <li><strong style="color:var(--gold-light);">3 + 2 (mixed):</strong> +25% ATK &amp; HP for the team</li>
-              <li><strong style="color:var(--gold-light);">4 Club heroes:</strong> +30% ATK &amp; HP for the team</li>
-              <li><strong style="color:var(--gold-light);">5 Club heroes:</strong> +35% ATK &amp; HP for the team — maximum bonus</li>
+              <li><strong style="color:var(--accent-gold-light);">3 Club heroes:</strong> +15% ATK &amp; HP for the team</li>
+              <li><strong style="color:var(--accent-gold-light);">3 + 2 (mixed):</strong> +25% ATK &amp; HP for the team</li>
+              <li><strong style="color:var(--accent-gold-light);">4 Club heroes:</strong> +30% ATK &amp; HP for the team</li>
+              <li><strong style="color:var(--accent-gold-light);">5 Club heroes:</strong> +35% ATK &amp; HP for the team — maximum bonus</li>
             </ul>
             <p style="font-size:13px; color:var(--text-muted); margin-top:14px; font-style:italic;">Based on skill mechanics, Nuba could benefit from sustained HP (enabling her revive to matter more) and amplified ATK (making her Stun windows hit harder). Maximizing the Club faction count could strengthen her kit.</p>
           </div>
@@ -625,9 +625,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -956,9 +956,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -1309,9 +1309,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -1680,9 +1680,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -1873,7 +1873,7 @@ const activeGuide = releasedGuides[0];
             </ul>
           </div>
           <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
-            <div class="mechanic-label" style="color: var(--gold-light);">Internal Kit Synergy</div>
+            <div class="mechanic-label" style="color: var(--accent-gold-light);">Internal Kit Synergy</div>
             <ul class="mechanic-list">
               <li><strong>Crown's Bestowal</strong> buffs the friendly carry with the highest ATK - while <strong>Fatal Infatuation</strong> simultaneously locks down the opposing carry with the highest damage output. One cast covers both flanks.</li>
               <li><strong>Tide of Obsession</strong> charms a third target and redirects their auto-attacks, creating a three-vector control state: friendly carry boosted, enemy carry locked, second enemy turned on their own team.</li>
@@ -2055,9 +2055,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -2240,7 +2240,7 @@ const activeGuide = releasedGuides[0];
             </ul>
           </div>
           <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
-            <div class="mechanic-label" style="color: var(--gold-light);">Why Positioning Is Non-Negotiable</div>
+            <div class="mechanic-label" style="color: var(--accent-gold-light);">Why Positioning Is Non-Negotiable</div>
             <ul class="mechanic-list">
               <li>The White/Black piece system fires based on <em>physical position at battle start</em>. Incorrect frontline or backline slot assignments misfires the buffs - potentially giving damage reduction to a carry and damage bonus to a tank.</li>
               <li>The Ultimate's stance switch depends on live unit count - team deaths shift her mode. In a losing fight she may move to Yield (cleanup) at exactly the moment more burst pressure is needed.</li>
@@ -2421,9 +2421,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -2715,9 +2715,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -2862,7 +2862,7 @@ const activeGuide = releasedGuides[0];
             </ul>
           </div>
           <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
-            <div class="mechanic-label" style="color: var(--gold-light);">Why Relic Investment Matters - Competitive Breakpoints</div>
+            <div class="mechanic-label" style="color: var(--accent-gold-light);">Why Relic Investment Matters - Competitive Breakpoints</div>
             <ul class="mechanic-list">
               <li><strong>Relic Lv1:</strong> Projection is active (6s duration, 50% ATK/HP) - viable as a temporary allied copy, but the impact is limited without the CD refresh.</li>
               <li><strong>Relic Lv2 [Relic Lv.10]:</strong> Echo CD refresh on spawn - the first genuine power spike. This is the minimum competitive investment level.</li>
@@ -3047,9 +3047,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -3234,7 +3234,7 @@ const activeGuide = releasedGuides[0];
             </p>
           </div>
           <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
-            <div class="mechanic-label" style="color: var(--gold-light);">Relic Breakpoints - Endless Echo</div>
+            <div class="mechanic-label" style="color: var(--accent-gold-light);">Relic Breakpoints - Endless Echo</div>
             <ul class="mechanic-list">
               <li><strong>Relic Lv1:</strong> When a Note-bearer would die, prevents their death and grants a shield equal to <strong>300% of ATK</strong> with a 15-second cooldown. This is the single largest power spike in Meret's investment path - it converts a good support into a genuine anti-collapse tool.</li>
               <li><strong>Relic Lv2 [Relic Lv.10]:</strong> For each Note on the field, Meret gains a percentage of damage reduction. This makes Meret herself harder to eliminate through focused burst.</li>
@@ -3376,7 +3376,7 @@ const activeGuide = releasedGuides[0];
           </div>
 
           <div class="mechanic-box" style="margin-top:16px; border-color: rgba(180,130,80,0.25); background: linear-gradient(135deg, rgba(180,130,80,0.06), rgba(180,130,80,0.04));">
-            <div class="mechanic-label" style="color: var(--gold-light);">Awakening Priority</div>
+            <div class="mechanic-label" style="color: var(--accent-gold-light);">Awakening Priority</div>
             <ul class="mechanic-list">
               <li><strong>Recharge Effectiveness</strong> - top priority. Stacks with Star Note Energy regen and the 200 Energy Ultimate refund, accelerating the entire Note-buff cycle.</li>
               <li><strong>Healing Effectiveness</strong> - direct multiplier on Sands in Stride and The Curtain Never Falls.</li>
@@ -3437,9 +3437,9 @@ const activeGuide = releasedGuides[0];
                 </div>
                 <div class="comp-hero-row">
                   {comp.heroes.map(id => (
-                    <a href={`/heroes/${id}`} class="hero-chip" style={`--hero-img: url(${heroImage(id)})`}>
-                      <div class="hero-chip-portrait" aria-hidden="true"></div>
-                      <span class="hero-chip-name">{heroName(id)}</span>
+                    <a href={`/heroes/${id}`} class="hero-card-chip" style={`--hero-img: url(${heroImage(id)})`}>
+                      <div class="hero-card-chip-portrait" aria-hidden="true"></div>
+                      <span class="hero-card-chip-name">{heroName(id)}</span>
                     </a>
                   ))}
                 </div>
@@ -3549,23 +3549,6 @@ const activeGuide = releasedGuides[0];
   </script>
 </Base>
 
-<style is:global>
-  :root {
-    --crimson: #406a5f;
-    --gold: rgba(250, 204, 21, 0.95);
-    --gold-light: rgba(250, 234, 121, 0.95);
-    --dark: #0D0A0A;
-    --dark-mid: #1A1212;
-    --dark-card: #130E0E;
-    --text: #E8DDD0;
-    --text-muted: #9A8A7A;
-    --accent-teal: #406a5f;
-    --skill-text: #ffffff;
-    --skill-bg: #407264;
-  }
-
-
-</style>
 
 <style>
 
@@ -3724,7 +3707,7 @@ const activeGuide = releasedGuides[0];
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--gold, #facc15), var(--accent-teal, #5eead4));
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
     z-index: 3;
   }
 
@@ -3837,12 +3820,12 @@ const activeGuide = releasedGuides[0];
   }
 
   .epithet {
-    font-size: 11px;
-    letter-spacing: 0.35em;
-    color: var(--gold);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    color: var(--accent-gold);
     text-transform: uppercase;
     opacity: 0.8;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-6);
   }
 
   .char-name {
@@ -3899,46 +3882,47 @@ const activeGuide = releasedGuides[0];
 
   /* ── JUMP NAVIGATION ── */
   .jump-nav {
-    background: rgba(19, 14, 14, 0.85);
+    background: rgba(13, 11, 20, 0.85);
     border: 1px solid rgba(64, 106, 95, 0.4);
     border-radius: var(--radius-md);
-    padding: 20px 24px;
+    padding: var(--space-5) var(--space-6);
     margin: 36px 0 48px;
     backdrop-filter: blur(4px);
   }
 
   .jump-nav-title {
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
-    color: var(--gold-light);
-    margin-bottom: 14px;
+    color: var(--accent-gold-light);
+    margin-bottom: var(--space-3);
     opacity: 0.9;
   }
 
   .jump-nav-links {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
+    gap: var(--space-3);
   }
 
   .jump-nav-links a {
-    padding: 8px 12px;
-    font-size: 13px;
-    color: var(--text);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
     text-decoration: none;
-    border: 1px solid rgba(64, 106, 95, 0.5);
+    border: 1px solid var(--accent-teal-dim);
+    border-color: rgba(64, 106, 95, 0.5);
     border-radius: var(--radius-sm);
-    background: rgba(64, 106, 95, 0.15);
-    transition: all 0.2s ease;
+    background: var(--accent-teal-dim);
+    transition: var(--transition-colors);
     display: block;
     text-align: center;
   }
 
   .jump-nav-links a:hover {
     background: rgba(64, 106, 95, 0.35);
-    border-color: rgba(64, 106, 95, 0.8);
-    color: var(--gold-light);
+    border-color: var(--accent-teal);
+    color: var(--accent-gold-light);
   }
 
   /* ── SECTION HEADERS ── */
@@ -3948,14 +3932,14 @@ const activeGuide = releasedGuides[0];
   }
 
   .section-title {
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    color: var(--gold);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    color: var(--accent-gold);
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
   }
 
   .section-title::before, .section-title::after {
@@ -3969,65 +3953,66 @@ const activeGuide = releasedGuides[0];
 
   /* ── VERDICT STRIP ── */
   .verdict-strip {
-    background: var(--dark-card);
+    background: var(--bg-surface);
     border: 1px solid rgba(64,106,95,0.3);
     padding: 22px 28px;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     position: relative;
     overflow: hidden;
   }
   .verdict-role {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
     color: var(--accent-teal);
-    margin-bottom: 8px;
+    margin-bottom: var(--space-2);
   }
   .verdict-line {
-    font-size: 15px;
-    color: var(--text);
-    line-height: 1.55;
-    margin: 0 0 16px 0;
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    line-height: var(--leading-snug);
+    margin: 0 0 var(--space-4) 0;
   }
   .verdict-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: var(--space-3);
   }
   .verdict-meta-item {
-    background: rgba(64,106,95,0.1);
+    background: var(--accent-teal-dim);
     border: 1px solid rgba(64,106,95,0.25);
-    border-radius: 8px;
-    padding: 5px 12px;
-    font-size: 12px;
+    border-radius: var(--radius-md);
+    padding: 5px var(--space-3);
+    font-size: var(--text-sm);
     color: var(--text-muted);
   }
-  .verdict-meta-item strong { color: var(--text); }
+  .verdict-meta-item strong { color: var(--text-primary); }
 
   /* ── OVERVIEW CARD ── */
   .overview-card {
-    background: var(--dark-card);
+    background: var(--bg-surface);
     border: 1px solid rgba(64,106,95,0.3);
     border-top: 2px solid var(--accent-teal);
-    padding: 28px 32px;
+    padding: var(--space-6) var(--space-8);
     position: relative;
-    border-radius: 20px;
-    line-height: 150%;
+    border-radius: var(--radius-2xl);
+    line-height: var(--leading-normal);
   }
 
   .overview-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(64,106,95,0.05) 0%, transparent 50%);
+    background: linear-gradient(135deg, var(--accent-teal-dim) 0%, transparent 50%);
     pointer-events: none;
+    border-radius: var(--radius-2xl);
   }
 
   .overview-card p {
-    color: var(--text);
+    color: var(--text-primary);
     opacity: 0.9;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-3);
   }
 
   .overview-card p:last-child { margin-bottom: 0; }
@@ -4040,14 +4025,14 @@ const activeGuide = releasedGuides[0];
   }
 
   .skill-card {
-    background: linear-gradient(180deg, rgba(22,20,20,0.9), rgba(15,14,14,0.96));
+    background: linear-gradient(180deg, var(--bg-raised), var(--bg-surface));
     border: 1px solid rgba(64,106,95,0.2);
-    padding: 20px 24px;
+    padding: var(--space-5) var(--space-6);
     position: relative;
     overflow: hidden;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    border-radius: 20px;
-    box-shadow: 0 14px 40px rgba(7,6,12,0.4);
+    transition: border-color var(--duration-normal) var(--ease-out), box-shadow var(--duration-normal) var(--ease-out);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-lg);
   }
 
   .skill-card:hover {
@@ -4059,8 +4044,8 @@ const activeGuide = releasedGuides[0];
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(64,106,95,0.06) 0%, transparent 55%);
+    border-radius: var(--radius-2xl);
+    background: linear-gradient(135deg, var(--accent-teal-dim) 0%, transparent 55%);
     pointer-events: none;
   }
 
@@ -4070,8 +4055,8 @@ const activeGuide = releasedGuides[0];
   .skill-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
     flex-wrap: wrap;
   }
 
@@ -4083,18 +4068,18 @@ const activeGuide = releasedGuides[0];
   }
 
   .skill-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--text-primary);
   }
 
   .skill-badge {
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    padding: 2px 10px;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    padding: 2px var(--space-3);
     border-radius: var(--radius-sm);
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     color: var(--text-bright);
   }
 
@@ -4104,75 +4089,65 @@ const activeGuide = releasedGuides[0];
   }
 
   .skill-desc {
-    color: var(--text);
-    font-size: 14.5px;
-    line-height: 1.5;
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
   }
 
   .skill-note {
-    margin-top: 10px;
-    padding: 8px 12px;
+    margin-top: var(--space-3);
+    padding: var(--space-2) var(--space-3);
     background: rgba(12,12,12,0.6);
     border: 1px solid rgba(64,106,95,0.2);
-    border-radius: 8px;
-    font-size: 13px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
     color: var(--text-muted);
     font-style: italic;
     opacity: 0.9;
   }
 
-  /* ── MECHANIC BOX ── */
+  /* ── MECHANIC BOX (guides variant - richer than base) ── */
   .mechanic-box {
-    background: linear-gradient(135deg, rgba(64,106,95,0.12), rgba(64,106,95,0.08));
+    background: linear-gradient(135deg, var(--accent-teal-dim), rgba(64,106,95,0.08));
     border: 1px solid rgba(64,106,95,0.3);
-    padding: 24px 28px;
+    padding: var(--space-6) var(--space-6);
     position: relative;
-    border-radius: 20px;
-  }
-
-  .mechanic-box::before {
-    content: '\2726';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--accent-teal);
-    font-size: 16px;
-    background: var(--dark);
-    padding: 0 8px;
+    border-radius: var(--radius-2xl);
   }
 
   .mechanic-label {
-    font-size: 12px;
-    letter-spacing: 0.2em;
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-widest);
     color: var(--accent-teal);
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: var(--space-3);
+    font-weight: var(--weight-semibold);
   }
 
   .mechanic-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .mechanic-list li {
-    padding-left: 20px;
+    padding-left: var(--space-5);
     position: relative;
-    font-size: 14.5px;
-    color: var(--text);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
     opacity: 0.88;
-    line-height: 1.5;
+    line-height: var(--leading-normal);
   }
 
   .mechanic-list li::before {
-    content: '\25B8';
+    content: '>';
     position: absolute;
     left: 0;
     color: var(--accent-teal);
-    font-size: 12px;
-    top: 2px;
+    font-size: var(--text-sm);
+    top: 0;
+    font-weight: var(--weight-bold);
   }
 
   /* ── RATING ── */
@@ -4183,19 +4158,19 @@ const activeGuide = releasedGuides[0];
   }
 
   .rating-card {
-    background: var(--dark-card);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 18px 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: var(--space-4) var(--space-5);
     text-align: center;
-    border-radius: 20px;
+    border-radius: var(--radius-2xl);
   }
 
   .rating-mode {
-    font-size: 10px;
-    letter-spacing: 0.2em;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
     color: var(--text-muted);
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-2);
   }
 
   .rating-cell { padding: 8px; text-align: center; }
@@ -4233,20 +4208,20 @@ const activeGuide = releasedGuides[0];
   }
 
   .sw-card {
-    background: var(--dark-card);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 20px 22px;
-    border-radius: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-2xl);
   }
 
   .sw-card.strengths { border-top: 2px solid var(--accent-teal); }
   .sw-card.weaknesses { border-top: 2px solid var(--accent-teal); }
 
   .sw-title {
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: var(--space-3);
   }
 
   .sw-card.strengths .sw-title { color: var(--accent-teal); }
@@ -4256,17 +4231,17 @@ const activeGuide = releasedGuides[0];
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding:0;
+    gap: var(--space-2);
+    padding: 0;
   }
 
   .sw-list li {
-    font-size: 13.5px;
-    color: var(--text);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
     opacity: 0.85;
-    padding-left: 18px;
+    padding-left: var(--space-4);
     position: relative;
-    line-height: 1.5;
+    line-height: var(--leading-normal);
   }
 
   .sw-card.strengths .sw-list li::before { content: '+'; position: absolute; left: 0; color: var(--accent-teal); font-weight: 700; }
@@ -4276,95 +4251,97 @@ const activeGuide = releasedGuides[0];
   .pos-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
 
   .pos-card {
-    background: var(--dark-card);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 18px 20px;
-    border-radius: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-2xl);
   }
 
   .pos-mode {
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
     color: var(--accent-teal);
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: var(--space-3);
   }
 
   .pos-card p {
-    font-size: 13.5px;
+    font-size: var(--text-sm);
     color: var(--text-muted);
-    line-height: 1.6;
+    line-height: var(--leading-loose);
   }
 
   /* ── COMPOSITIONS ── */
   .comp-list {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: var(--space-4);
   }
 
+  /* guides-specific comp-entry override (card style with teal accent) */
   .comp-entry {
-    background: var(--dark-card);
+    background: var(--bg-surface);
     border: 1px solid rgba(64,106,95,0.18);
-    padding: 18px 20px;
-    border-radius: 20px;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-2xl);
   }
 
   .comp-entry-header {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .comp-label {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--accent-teal);
   }
 
   .comp-reason {
     margin: 0;
-    font-size: 13.5px;
+    font-size: var(--text-sm);
     color: var(--text-muted);
-    line-height: 1.6;
+    line-height: var(--leading-loose);
   }
 
+  /* Card-style hero chip used in comp grids (different from inline .hero-chip) */
   .comp-hero-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
   }
 
   @media (max-width: 640px) {
     .comp-hero-row { grid-template-columns: repeat(2, 1fr); }
   }
 
-  .hero-chip {
+  .hero-card-chip {
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid var(--border-subtle);
     background: rgba(255,255,255,0.03);
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    transition: border-color 160ms ease, transform 160ms ease;
+    transition: border-color var(--duration-normal) var(--ease-out), transform var(--duration-normal) var(--ease-out);
   }
 
-  .hero-chip:hover {
+  .hero-card-chip:hover {
     border-color: rgba(64,106,95,0.5);
     transform: translateY(-2px);
   }
 
-  .hero-chip-portrait {
+  .hero-card-chip-portrait {
     width: 100%;
     aspect-ratio: 1 / 1.1;
-    background-color: #0d1624;
+    background-color: var(--bg-overlay);
     background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
     background-size: cover;
     background-position: center top;
@@ -4373,52 +4350,52 @@ const activeGuide = releasedGuides[0];
     flex-shrink: 0;
   }
 
-  .hero-chip-portrait::before {
+  .hero-card-chip-portrait::before {
     content: '';
     position: absolute;
     inset: 0;
     background-image: var(--hero-img);
     background-size: cover;
     background-position: center top;
-    transition: transform 0.3s ease;
+    transition: transform var(--duration-slow) var(--ease-out);
   }
 
-  .hero-chip:hover .hero-chip-portrait::before {
+  .hero-card-chip:hover .hero-card-chip-portrait::before {
     transform: scale(1.08);
   }
 
-  .hero-chip-name {
-    padding: 6px 6px 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
+  .hero-card-chip-name {
+    padding: var(--space-2) var(--space-2) var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--text-primary);
     text-align: center;
-    line-height: 1.2;
+    line-height: var(--leading-tight);
   }
 
   .comp-notes {
     margin: 0;
-    padding-left: 16px;
+    padding-left: var(--space-4);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-1);
   }
 
   .comp-notes li {
-    font-size: 12.5px;
-    line-height: 1.5;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
     color: var(--text-muted);
   }
 
   /* ── SYNERGY ── */
   .synergy-note {
-    background: var(--dark-card);
+    background: var(--bg-surface);
     border: 1px solid rgba(64,106,95,0.15);
-    padding: 20px 24px;
-    font-size: 14px;
+    padding: var(--space-5) var(--space-6);
+    font-size: var(--text-sm);
     color: var(--text-muted);
-    line-height: 1.7;
-    border-radius: 20px;
+    line-height: var(--leading-loose);
+    border-radius: var(--radius-2xl);
   }
 
   .synergy-note strong {
@@ -4430,10 +4407,10 @@ const activeGuide = releasedGuides[0];
   .highlight { color: var(--accent-teal); font-style: normal; }
   .doom { color: var(--accent-teal); font-style: italic; }
   .revive { color: #c23b4a; font-style: italic; }
-  .note-muted { font-size: 13px; color: var(--text-muted); font-style: italic; border-left: 2px solid rgba(64,106,95,0.3); padding-left: 12px; margin-top: 8px; }
+  .note-muted { font-size: var(--text-sm); color: var(--text-muted); font-style: italic; border-left: 2px solid rgba(64,106,95,0.3); padding-left: var(--space-3); margin-top: var(--space-2); }
 
   /* ── MENGPO TAGS ── */
-  .tag-rarity { border-color: var(--gold); color: var(--gold); background: rgba(250,204,21,0.06); }
+  .tag-rarity { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(250,204,21,0.06); }
   .tag-unreleased { border-color: rgba(255,160,80,0.6); color: rgba(255,180,100,0.9); background: rgba(255,120,40,0.07); }
 
   /* ── RATING EXTENSIONS ── */
@@ -4474,30 +4451,30 @@ const activeGuide = releasedGuides[0];
   }
 
   /* ── SYNERGY LIST (Mengpo) ── */
-  .synergy-list { display: flex; flex-direction: column; gap: 12px; }
+  .synergy-list { display: flex; flex-direction: column; gap: var(--space-3); }
   .synergy-entry {
-    background: var(--dark-card);
+    background: var(--bg-surface);
     border: 1px solid rgba(64,106,95,0.2);
-    padding: 14px 18px;
-    border-radius: 12px;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
     position: relative;
     overflow: hidden;
   }
   .synergy-hero-name {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--accent-teal);
-    margin-bottom: 5px;
+    margin-bottom: var(--space-1);
   }
-  .synergy-body { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+  .synergy-body { font-size: var(--text-sm); color: var(--text-muted); line-height: var(--leading-loose); margin: 0; }
 
   .divider-ornament {
     text-align: center;
     color: var(--accent-teal);
-    font-size: 18px;
-    margin: 8px 0;
+    font-size: var(--text-lg);
+    margin: var(--space-2) 0;
     opacity: 0.5;
     letter-spacing: 8px;
   }

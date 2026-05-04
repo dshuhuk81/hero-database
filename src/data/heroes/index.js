@@ -3,6 +3,7 @@
 // Auto-Import aller Hero-JSON-Dateien
 const heroModules = import.meta.glob("./*.json", { eager: true });
 const rawHeroes = Object.values(heroModules).map((m) => m.default);
+import heroRatings from "../ratings/hero-ratings.json";
 
 import { synergyProfileForHero, synergyPotentialForHero } from "../../utils/synergyTags.js";
 
@@ -47,6 +48,7 @@ const RANKABLE_STATS = [
    ADAPTER
    ============================ */
 function adaptHero(raw) {
+  const centralizedRatings = heroRatings?.[raw.id] ?? {};
   return {
     id: raw.id,
     name: raw.name,
@@ -58,13 +60,9 @@ function adaptHero(raw) {
     rarity: raw.rarity,
     description: raw.description ?? "",
     ratings: {
-      overall: raw.ratings?.overall ?? null,
-      grimSurge: raw.ratings?.grimSurge ?? null,
-      delusionsDen: raw.ratings?.delusionsDen ?? null,
-      torrentRift: raw.ratings?.torrentRift ?? null,
-      forgottenLabyrinth: raw.ratings?.forgottenLabyrinth ?? null,
-      pvp: raw.ratings?.pvp ?? null,
-      pve: raw.ratings?.pve ?? null,
+      overall: centralizedRatings.overall ?? raw.ratings?.overall ?? null,
+      pvp: centralizedRatings.pvp ?? raw.ratings?.pvp ?? null,
+      pve: centralizedRatings.pve ?? raw.ratings?.pve ?? null,
     },
     // Backward-Compat
     rating: raw.ratings?.overall ?? null,

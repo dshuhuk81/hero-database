@@ -1,0 +1,86 @@
+/* ============================================================
+   CSS RESET
+   Minimal, opinionated reset for consistent cross-browser baseline.
+   Import order: tokens -> reset -> base -> components
+   ============================================================ */
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Root defaults */
+html {
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+/* Body defaults — font, color, and min-height handled in base.css */
+body {
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Form element inheritance */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove list styles when role="list" is set (accessibility-aware) */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Prevent text overflow in headings */
+h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* Remove default button styles */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* Anchor inheritance */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Table defaults */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* HR reset */
+hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+}

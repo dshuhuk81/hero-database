@@ -239,14 +239,6 @@ function bossSkillIcon(bossId, index) {
 
 </Base>
 
-<style is:global>
-  /* Page wrapper for content below PageHero */
-  .page-wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0px 16px 0;
-  }
-</style>
 
 <style>
   /* ── BOSS ACCORDION NAVIGATION ── */
@@ -254,7 +246,7 @@ function bossSkillIcon(bossId, index) {
     display: flex;
     height: 200px;
     overflow: hidden;
-    background: #0d0a0a;
+    background: var(--bg-base);
     width: 100%;
     justify-content: center;
   }
@@ -271,7 +263,7 @@ function bossSkillIcon(bossId, index) {
     outline: none;
     border-radius: 0;
     background: transparent;
-    border-left: 1px solid rgba(255,255,255,0.06);
+    border-left: 1px solid var(--border-faint);
   }
 
   .accordion-panel:first-child {
@@ -323,13 +315,12 @@ function bossSkillIcon(bossId, index) {
   }
 
   .accordion-panel.is-active::before {
-    background:
-      linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.6) 0%,
-        rgba(0, 0, 0, 0.1) 25%,
-        transparent 45%
-      );
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.1) 25%,
+      transparent 45%
+    );
   }
 
   /* Accent border for active panel */
@@ -340,7 +331,7 @@ function bossSkillIcon(bossId, index) {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #facc15, #5eead4);
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
     z-index: 3;
   }
 
@@ -353,32 +344,31 @@ function bossSkillIcon(bossId, index) {
     justify-content: flex-end;
     align-items: flex-start;
     height: 100%;
-    padding: 14px;
-    color: #fff;
+    padding: var(--space-3);
+    color: var(--text-bright);
     text-align: left;
   }
 
   /* Boss name label */
   .accordion-label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
     text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 1px 3px rgba(0,0,0,0.8);
     white-space: normal;
     word-break: break-word;
-    transition: font-size 320ms ease;
-
+    transition: font-size var(--duration-normal) var(--ease-out);
   }
 
   .accordion-label-row {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-2);
     min-width: 0;
   }
 
   .accordion-panel.is-active .accordion-label {
-    font-size: 1.4rem;
+    font-size: var(--text-2xl);
   }
 
   @media (max-width: 768px) {
@@ -389,10 +379,10 @@ function bossSkillIcon(bossId, index) {
       flex: 0 0 52px;
     }
     .accordion-panel.is-active .accordion-label {
-      font-size: 1.1rem;
+      font-size: var(--text-xl);
     }
     .accordion-content {
-      padding: 10px;
+      padding: var(--space-3);
     }
   }
 
@@ -404,7 +394,7 @@ function bossSkillIcon(bossId, index) {
       flex: 0 0 40px;
     }
     .accordion-panel.is-active .accordion-label {
-      font-size: 0.95rem;
+      font-size: var(--text-base);
     }
   }
 </style>

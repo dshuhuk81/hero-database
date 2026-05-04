@@ -31,10 +31,8 @@ export interface HeroStats {
 
 export interface HeroRatings {
   overall: string;
-  grimSurge: string;
-  delusionsDen: string;
-  torrentRift: string;
   pvp: string;
+  pve: string;
 }
 
 export interface SkillUpgrades {
