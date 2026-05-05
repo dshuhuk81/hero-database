@@ -864,6 +864,278 @@
 }
 
 /* ============================================================
+   WISHLIST MODULE
+   Faction-based hero wishlist display. Used on tips.astro.
+   Usage: <section class="wl-module">...</section>
+   CSS custom properties --faction-color/glow/dim set inline per faction.
+   ============================================================ */
+
+.wl-module {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: linear-gradient(160deg, #1a1730 0%, #0f0e1a 50%, #12101f 100%);
+  border: 1px solid rgba(250, 204, 21, 0.45);
+  border-radius: var(--radius-xl);
+  padding: 0 0 var(--space-5);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(250, 204, 21, 0.12),
+    0 8px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(250, 204, 21, 0.15);
+}
+
+.wl-module::before,
+.wl-module::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--accent-gold);
+  transform: rotate(45deg);
+  opacity: 0.7;
+}
+.wl-module::before { top: -5px; left: 20px; }
+.wl-module::after  { top: -5px; right: 20px; }
+
+.wl-header {
+  text-align: center;
+  padding: 0 var(--space-6) var(--space-5);
+  background: linear-gradient(180deg, rgba(15, 14, 26, 0) 0%, rgba(15, 14, 26, 0.6) 100%);
+}
+
+.wl-header-ornament {
+  display: flex;
+  justify-content: center;
+  margin-bottom: -10px;
+  padding-top: var(--space-1);
+}
+
+.wl-header-ornament svg {
+  width: 160px;
+  height: 48px;
+}
+
+.wl-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: #f4e8b0;
+  letter-spacing: 0.08em;
+  margin: 0 0 var(--space-3);
+  text-shadow:
+    0 0 20px rgba(250, 204, 21, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.1;
+}
+
+.wl-subtitle {
+  font-size: var(--text-sm);
+  color: #e8a840;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.wl-subtitle-note {
+  color: rgba(232, 168, 64, 0.75);
+  font-size: var(--text-xs);
+}
+
+.wl-body {
+  padding: 0 var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.wl-faction {
+  padding-bottom: var(--space-1);
+}
+
+.wl-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: 0 var(--space-1);
+}
+
+.wl-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--faction-color) 40%,
+    var(--faction-color) 60%,
+    transparent 100%);
+  opacity: 0.4;
+}
+
+.wl-faction-hex {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px var(--faction-glow));
+}
+
+.wl-faction-hex::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--faction-dim);
+  border: 1.5px solid var(--faction-color);
+  border-radius: var(--radius-xl);
+  opacity: 0.9;
+}
+
+.wl-faction-icon {
+  position: relative;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.wl-card-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+}
+
+.wl-card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1.5px solid rgba(250, 204, 21, 0.35);
+  background: #0d0b18;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wl-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--faction-color) 0%, transparent 35%);
+  opacity: 0.18;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wl-card-portrait {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.wl-card-holo {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.18) 0%,
+    rgba(56, 189, 248, 0.12) 30%,
+    transparent 55%,
+    rgba(168, 85, 247, 0.08) 80%,
+    rgba(56, 189, 248, 0.15) 100%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.wl-card-vignette {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(0deg, rgba(5, 4, 15, 0.85) 0%, transparent 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.wl-card-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 5;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: var(--radius-sm);
+  color: var(--faction-color);
+  filter: drop-shadow(0 0 3px var(--faction-glow));
+}
+
+.wl-card-badge .wl-faction-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.wl-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 0 0 1px rgba(250, 204, 21, 0.6),
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 0 12px var(--faction-glow);
+}
+
+.wl-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-4) var(--space-4) 0;
+}
+
+.wl-popularity-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  border: 1px solid rgba(167, 139, 250, 0.5);
+  border-radius: var(--radius-full);
+  color: #f4f1ff;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: var(--transition-all);
+  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.4);
+}
+
+.wl-popularity-btn:hover {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.6);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 520px) {
+  .wl-module {
+    max-width: 100%;
+    border-radius: var(--radius-lg);
+  }
+
+  .wl-card-row {
+    gap: 6px;
+  }
+}
+
+/* ============================================================
    FILTER OVERLAY - TAG WRAP ON MOBILE
    Overrides filter.astro scoped styles for overlay mode
    ============================================================ */
