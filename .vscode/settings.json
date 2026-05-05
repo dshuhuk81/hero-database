@@ -7,6 +7,10 @@
         "/^git check-ignore -v leak leak/game_extracted/region_754c000000/Battle/Data/SceneInfo/New_Arena_01_info\\.lua$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^python3 -c \"\nimport sys\nsys\\.path\\.insert\\(0, ''\\)\ntry:\n    import pypdf\n    with open\\('/Users/daschultheiss/hero-database/src/pages/Beginner Guide V2a\\.pdf', 'rb'\\) as f:\n        reader = pypdf\\.PdfReader\\(f\\)\n        for i, page in enumerate\\(reader\\.pages\\):\n            print\\(f'=== PAGE \\{i\\+1\\} ==='\\)\n            print\\(page\\.extract_text\\(\\)\\)\nexcept ImportError:\n    try:\n        import PyPDF2\n        with open\\('/Users/daschultheiss/hero-database/src/pages/Beginner Guide V2a\\.pdf', 'rb'\\) as f:\n            reader = PyPDF2\\.PdfReader\\(f\\)\n            for i, page in enumerate\\(reader\\.pages\\):\n                print\\(f'=== PAGE \\{i\\+1\\} ==='\\)\n                print\\(page\\.extract_text\\(\\)\\)\n    except ImportError:\n        print\\('No PDF library available'\\)\n\"$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     },
     "files.watcherExclude": {
