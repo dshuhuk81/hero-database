@@ -75,92 +75,21 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     headline="Tips"
     subtitle="Beginner tips and shrine system breakdowns"
   />
-<div class="page-wrapper tips-page">
-  <div class="tips-meta">
-    <p class="tips-last-updated">Last updated: 2026-05-05</p>
-  </div>
+<div class="page-wrapper">
   <!-- TAB BAR -->
-  <div class="main-tabs" role="tablist" aria-label="Tips tabs">
-    <button
-      id="main-tab-beginner"
-      class="main-tab is-active"
-      data-tab="beginner"
-      role="tab"
-      aria-controls="tab-beginner"
-      aria-selected="true"
-    >Beginner</button>
-    <button
-      id="main-tab-shrine"
-      class="main-tab"
-      data-tab="shrine"
-      role="tab"
-      aria-controls="tab-shrine"
-      aria-selected="false"
-      tabindex="-1"
-    >Shrine</button>
+  <div class="main-tabs">
+    <button class="main-tab is-active" data-tab="beginner">Beginner</button>
+    <button class="main-tab" data-tab="shrine">Shrine</button>
   </div>
 
   <!-- ====================================================
        TAB: BEGINNER (default)
        ==================================================== -->
-  <div id="tab-beginner" class="main-tab-panel" role="tabpanel" tabindex="0" aria-labelledby="main-tab-beginner">
-    <!-- SUB-TAB NAVIGATION -->
-    <div class="tips-subnav" role="tablist" aria-label="Beginner sections">
-      <button
-        id="subtab-btn-early"
-        class="tips-subnav-btn is-active"
-        data-subtab="early"
-        role="tab"
-        aria-controls="subtab-early"
-        aria-selected="true"
-      >Early Game</button>
-      <button
-        id="subtab-btn-midlate"
-        class="tips-subnav-btn"
-        data-subtab="midlate"
-        role="tab"
-        aria-controls="subtab-midlate"
-        aria-selected="false"
-        tabindex="-1"
-      >Mid-Late</button>
-      <button
-        id="subtab-btn-teams"
-        class="tips-subnav-btn"
-        data-subtab="teams"
-        role="tab"
-        aria-controls="subtab-teams"
-        aria-selected="false"
-        tabindex="-1"
-      >Team Building</button>
-      <button
-        id="subtab-btn-mechanics"
-        class="tips-subnav-btn"
-        data-subtab="mechanics"
-        role="tab"
-        aria-controls="subtab-mechanics"
-        aria-selected="false"
-        tabindex="-1"
-      >Mechanics</button>
-    </div>
-
-    <!-- SUB-TAB: EARLY GAME -->
-    <div id="subtab-early" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-early">
-      <main class="eg-main-content">
-
-      <!-- JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Early Game sections">
-        <span class="tips-jump-label">On this page</span>
-        <a href="#section-f2p" class="tips-jump-link">F2P Guide</a>
-        <a href="#section-first" class="tips-jump-link">What to Do First</a>
-        <a href="#section-odyssey" class="tips-jump-link">Odyssey</a>
-        <a href="#section-summons" class="tips-jump-link">Summons</a>
-        <a href="#section-chronos" class="tips-jump-link">Chronos</a>
-        <a href="#section-mindsea" class="tips-jump-link">Mindsea</a>
-        <a href="#section-wishlist" class="tips-jump-link">Wishlist</a>
-      </nav>
+  <div id="tab-beginner" class="main-tab-panel">
+    <main class="eg-main-content">
 
       <!-- F2P NOTE -->
-      <div id="section-f2p" class="tips-f2p-note">
+      <div class="eg-content-card eg-note-card">
         <p>
           This guide is written from a <strong>F2P and low-spender perspective</strong>.
           If you are a whale or have heavily starred heroes, you can replace
@@ -168,8 +97,27 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
         </p>
       </div>
 
+      <!-- CORE RULE -->
+      <div class="eg-content-card eg-core-rule-card">
+        <h2>The Core Rule of the Game</h2>
+        <p>You are <strong>not</strong> building 5 equal heroes.</p>
+        <div class="core-rule-split">
+          <div class="core-rule-carry">
+            <div class="core-rule-label">1-2 Carries</div>
+            <p>Deal the damage. Get the gear, the relics, the investment.</p>
+          </div>
+          <div class="core-rule-support">
+            <div class="core-rule-label">3-4 Supports</div>
+            <p>Give the carry energy, buffs, and uptime. They exist to enable the carry.</p>
+          </div>
+        </div>
+        <div class="eg-team-example">
+          <p>Example: if Isis is your carry, you need supports to give her energy, healing and buffs to deal faster damage and use her ultimate more often than the enemy team does.</p>
+        </div>
+      </div>
+
       <!-- WHAT SHOULD I DO FIRST -->
-      <div id="section-first" class="tips-section">
+      <div class="eg-content-card">
         <h2>What Should I Do First?</h2>
         <p>Focus on pushing Odyssey, Torment Rift and building your first team. Summon to get a good roster (1-2 damage dealers, 2 supports, 1-2 tanks).</p>
         <div class="eg-priority-matrix">
@@ -208,8 +156,94 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
         </div>
       </div>
 
+      <!-- NORMAL SUMMONS & WISHLIST -->
+      <div class="eg-content-card">
+        <h2>Normal Summons and Wish List</h2>
+        <h3>Summoning Tips</h3>
+        <ul>
+          <li>The Wish List unlocks after 30 regular summons.</li>
+          <li>Once you have finished ascending one of the left-side deities on the wish list, swap them for one on the right.</li>
+          <li>Pity System: Guaranteed deity every 50 summons.</li>
+          <li>It is not recommended to spend Elysian Gems on regular summons - except for the first 1-2 days to get some units into your roster.</li>
+        </ul>
+        <h3>Shop Priority</h3>
+        <div class="pinion-table">
+          <div class="pinion-row pinion-header">
+            <div class="pinion-type">Item</div>
+            <div class="pinion-when">Action</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Regular Store - 30% off</div>
+            <div class="pinion-when">Buy every reset. Refresh up to 3x if needed.</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Reversion Shop</div>
+            <div class="pinion-when">Buy these for leveling your Beacon Tree when needed.</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Random Gear</div>
+            <div class="pinion-when">Do not buy.</div>
+          </div>
+        </div>
+        <h3>One-Copy Wonders</h3>
+        <p>These are deities that can fulfill their role at Elite rarity in the Early Game. Get a copy early - most are supports. The order depends on which heroes you summon more of.</p>
+        <div class="hero-chip-grid">
+          <a class="hero-pic" href="/heroes/heracles">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
+            <span class="hero-chip-name">Heracles</span>
+          </a>
+          <a class="hero-pic" href="/heroes/cronus">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div>
+            <span class="hero-chip-name">Chronos</span>
+          </a>
+          <a class="hero-pic" href="/heroes/nuba">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
+            <span class="hero-chip-name">Nuba</span>
+          </a>
+          <a class="hero-pic" href="/heroes/nyx">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nyx.webp')"></div>
+            <span class="hero-chip-name">Nyx</span>
+          </a>
+        </div>
+        <p class="eg-footnote">Most support heroes also qualify as one-copy wonders. Focus on heroes you have the most copies of.</p>
+        <h3>Ascension Tips</h3>
+        <ul>
+          <li>Avoid using regular ascended-grade deities as fodder. Only use Zodiac deities as fodder.</li>
+          <li>Focus on building one hero per faction at a time to avoid spreading fodder too thin.</li>
+          <li>You can start building a deity once you have 2 Elite+ copies (Zodiacs) - that is enough to reach Mythic.</li>
+          <li>Some deities do not perform well until they reach Divine, so wait for four copies to ascend them right away.</li>
+          <li>Once a deity reaches Mythic, they no longer require fodder (only the deity itself).</li>
+          <li>Zodiac deities cap at Legendary+. Only ascend a Zodiac to Legendary if you have 2 extra copies to use as fodder.</li>
+        </ul>
+      </div>
+
+      <!-- FACTION SUMMONS -->
+      <div class="eg-content-card">
+        <h2>Faction Summons</h2>
+        <p>In the early phase your main carry and good supports are your primary targets. Spend your feathers on heroes you are missing or that you need to level up for progression.</p>
+        <p>Priority order: <strong>Carry &gt; Support &gt; Tank</strong></p>
+        <div class="eg-team-example">
+          <p>The Wish List also applies to Faction summons. It is recommended to save faction feathers for the upcoming banner event - this happens every 2 weeks.</p>
+        </div>
+      </div>
+
+      <!-- CHRONOS CHAMBER -->
+      <div class="eg-content-card">
+        <h2>Chronos Chamber</h2>
+        <p>Unlocks after a total of 750 summons. Within the Chronos Chamber you can summon Starglint Deities using Star Tracer currency. You can specify which deity you want to summon.</p>
+        <div class="eg-team-example">
+          <h4>Recommended Order</h4>
+          <p>Go for <strong>Nyx first</strong> - after that go for <strong>Zeus</strong> all the way. Zeus is the best damage-dealing hero for all modes, but needs Divine ascension and Relic Level 30 to be fully upgraded.</p>
+        </div>
+        <h3>Pity System</h3>
+        <ul>
+          <li>You will get the Starglint deity every 40 summons guaranteed.</li>
+          <li>After doing 30 summons you can switch to single pulls to save resources until getting the deity.</li>
+        </ul>
+      </div>
+
       <!-- ODYSSEY MILESTONES -->
-      <div id="section-odyssey" class="tips-section tips-anchor">
+      <div class="eg-content-card" id="odyssey-milestones">
         <h2>Odyssey (Campaign) Milestones</h2>
         <p>Keep pushing to unlock stages and events. The two most impactful early targets are <strong>Stage 3-18</strong> (Shrine) and <strong>Stage 8-3</strong> (Beacon Tree).</p>
         <div class="milestone-table">
@@ -289,99 +323,341 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
             <div class="milestone-why">Late-game power system</div>
           </div>
         </div>
-        <div class="tips-callout">
+        <div class="eg-team-example">
           <p>Push to Stage 3-18 first to unlock the Shrine, then aim for Stage 8-3 to activate the Beacon Tree. Both give account-wide buffs that help every hero in every mode.</p>
         </div>
       </div>
 
-      <!-- NORMAL SUMMONS & WISHLIST -->
-      <div id="section-summons" class="tips-section">
-        <h2>Normal Summons and Wish List</h2>
-        <h3>Summoning Tips</h3>
-        <ul>
-          <li>The Wish List unlocks after 30 regular summons.</li>
-          <li>Once you have finished ascending one of the left-side deities on the wish list, swap them for one on the right.</li>
-          <li>Pity System: Guaranteed deity every 50 summons.</li>
-          <li>It is not recommended to spend Elysian Gems on regular summons - except for the first 1-2 days to get some units into your roster.</li>
-        </ul>
-        <h3>Shop Priority</h3>
-        <div class="pinion-table">
-          <div class="pinion-row pinion-header">
-            <div class="pinion-type">Item</div>
-            <div class="pinion-when">Action</div>
+      <!-- WHAT MAKES MY ACCOUNT STRONGER -->
+      <div class="eg-content-card">
+        <h2>What Makes My Account Stronger?</h2>
+        <div class="eg-pillar-list">
+          <div class="eg-pillar">
+            <div class="eg-pillar-num">1</div>
+            <div class="eg-pillar-body">
+              <div class="eg-pillar-title">Odyssey -- Shrine</div>
+              <p>Best early account scaling. Push this first. If you are stuck - check shrine for better relics and keep an eye on your Odyssey progress because beating boss stages gives you Undying Flames to level up your shrine.</p>
+            </div>
           </div>
-          <div class="pinion-row">
-            <div class="pinion-type">Regular Store - 30% off</div>
-            <div class="pinion-when">Buy every reset. Refresh up to 3x if needed.</div>
+          <div class="eg-pillar">
+            <div class="eg-pillar-num">2</div>
+            <div class="eg-pillar-body">
+              <div class="eg-pillar-title">Torment Rift -- Beacon Tree</div>
+              <p>Second permanent scaling system. Do not skip weekly progress here. If stuck, check if you can allocate points to get better account bonus stats.</p>
+            </div>
           </div>
-          <div class="pinion-row">
-            <div class="pinion-type">Reversion Shop</div>
-            <div class="pinion-when">Buy these for leveling your Beacon Tree when needed.</div>
+          <div class="eg-pillar">
+            <div class="eg-pillar-num">3</div>
+            <div class="eg-pillar-body">
+              <div class="eg-pillar-title">Main Carry Relic and Gear</div>
+              <p>Most stage walls are investment walls, not roster walls. Upgrade your gear for damage heroes. Your top two damage dealers should have the best gear.</p>
+            </div>
           </div>
-          <div class="pinion-row">
-            <div class="pinion-type">Random Gear</div>
-            <div class="pinion-when">Do not buy.</div>
-          </div>
-        </div>
-        <h3>One-Copy Wonders</h3>
-        <p>These are deities that can fulfill their role at Elite rarity in the Early Game. Get a copy early - most are supports. The order depends on which heroes you summon more of.</p>
-        <div class="hero-chip-grid">
-          <a class="hero-pic" href="/heroes/heracles">
-            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-            <span class="hero-chip-name">Heracles</span>
-          </a>
-          <a class="hero-pic" href="/heroes/cronus">
-            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div>
-            <span class="hero-chip-name">Chronos</span>
-          </a>
-          <a class="hero-pic" href="/heroes/nuba">
-            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
-            <span class="hero-chip-name">Nuba</span>
-          </a>
-          <a class="hero-pic" href="/heroes/nyx">
-            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nyx.webp')"></div>
-            <span class="hero-chip-name">Nyx</span>
-          </a>
-        </div>
-        <p class="eg-footnote">Most support heroes also qualify as one-copy wonders. Focus on heroes you have the most copies of.</p>
-        <h3>Ascension Tips</h3>
-        <ul>
-          <li>Avoid using regular ascended-grade deities as fodder. Only use Zodiac deities as fodder.</li>
-          <li>Focus on building one hero per faction at a time to avoid spreading fodder too thin.</li>
-          <li>You can start building a deity once you have 2 Elite+ copies (Zodiacs) - that is enough to reach Mythic.</li>
-          <li>Some deities do not perform well until they reach Divine, so wait for four copies to ascend them right away.</li>
-          <li>Once a deity reaches Mythic, they no longer require fodder (only the deity itself).</li>
-          <li>Zodiac deities cap at Legendary+. Only ascend a Zodiac to Legendary if you have 2 extra copies to use as fodder.</li>
-        </ul>
-      </div>
-
-      <!-- FACTION SUMMONS -->
-      <div class="tips-section">
-        <h3>Faction Summons</h3>
-        <p>In the early phase your main carry and good supports are your primary targets. Spend your feathers on heroes you are missing or that you need to level up for progression.</p>
-        <p>Priority order: <strong>Carry &gt; Support &gt; Tank</strong></p>
-        <div class="tips-callout">
-          <p>The Wish List also applies to Faction summons. It is recommended to save faction feathers for the upcoming banner event - this happens every 2 weeks.</p>
         </div>
       </div>
 
-      <!-- CHRONOS CHAMBER -->
-      <div id="section-chronos" class="tips-section">
-        <h2>Chronos Chamber</h2>
-        <p>Unlocks after a total of 750 summons. Within the Chronos Chamber you can summon Starglint Deities using Star Tracer currency. You can specify which deity you want to summon.</p>
-        <div class="tips-callout">
-          <h4 style="margin: 0 0 var(--space-2) 0; font-size: var(--text-base); font-weight: var(--weight-semibold);">Recommended Order</h4>
-          <p>Go for <strong>Nyx first</strong> - after that go for <strong>Zeus</strong> all the way. Zeus is the best damage-dealing hero for all modes, but needs Divine ascension and Relic Level 30 to be fully upgraded.</p>
+      <!-- ROLE EXAMPLES -->
+      <div class="eg-content-card">
+        <h2>What Each Slot Is Supposed to Do</h2>
+        <p>Here are examples for the early and mid game of what deity belongs to each role.</p>
+        <div class="eg-role-grid">
+          <div class="eg-role-col">
+            <div class="eg-role-label">Carry / DPS</div>
+            <ul class="eg-role-list">
+              <li><strong>Hecate</strong> - sustained damage channel with highest total multipliers</li>
+              <li><strong>Skadi</strong> - AoE mage with density-scaling burst</li>
+              <li><strong>Heracles</strong> - true damage burst with pull-and-group mechanic</li>
+              <li><strong>Anubis</strong> - execute carry with built-in self-heal</li>
+              <li><strong>Fengyi</strong> - good AoE DPS</li>
+            </ul>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/hecate">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
+                <span class="hero-chip-name">Hecate</span>
+              </a>
+              <a class="hero-pic" href="/heroes/skadi">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
+                <span class="hero-chip-name">Skadi</span>
+              </a>
+              <a class="hero-pic" href="/heroes/heracles">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
+                <span class="hero-chip-name">Heracles</span>
+              </a>
+              <a class="hero-pic" href="/heroes/anubis">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
+                <span class="hero-chip-name">Anubis</span>
+              </a>
+              <a class="hero-pic" href="/heroes/fengyi">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/fengyi.webp')"></div>
+                <span class="hero-chip-name">Fengyi</span>
+              </a>
+            </div>
+          </div>
+          <div class="eg-role-col">
+            <div class="eg-role-label">Tank</div>
+            <ul class="eg-role-list">
+              <li><strong>Momus</strong> - shield spam and taunt, directly enables Hecate</li>
+              <li><strong>Aquarius</strong> - team shield and knockdown</li>
+              <li><strong>Prometheus</strong> - strong at Relic 1 unlock</li>
+              <li><strong>Geb</strong> - passive proximity damage reduction</li>
+              <li><strong>Nuwa (Starglint)</strong> - premium pick, all core functions active at 1 copy</li>
+            </ul>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/momus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
+                <span class="hero-chip-name">Momus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/aquarius">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/aquarius.webp')"></div>
+                <span class="hero-chip-name">Aquarius</span>
+              </a>
+              <a class="hero-pic" href="/heroes/prometheus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/prometheus.webp')"></div>
+                <span class="hero-chip-name">Prometheus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/geb">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/geb.webp')"></div>
+                <span class="hero-chip-name">Geb</span>
+              </a>
+              <a class="hero-pic" href="/heroes/nuwa">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
+                <span class="hero-chip-name">Nuwa</span>
+              </a>
+            </div>
+          </div>
         </div>
-        <h3>Pity System</h3>
+      </div>
+
+      <!-- DAMAGE DEALERS -->
+      <div class="eg-content-card" id="damage-dealers">
+        <h2>Damage Dealers to Build First</h2>
+        <p>Damage dealers (DDs) are usually Archer, Assassin, and Mage class heroes. Warriors like Nezha and Hladgunnr can also fill the DD role.</p>
+        <div class="phase-row-grid">
+          <div class="phase-row">
+            <div class="phase-row-label early-label">Early to Mid</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/isis">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/isis.webp')"></div>
+                <span class="hero-chip-name">Isis</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/fengyi">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/fengyi.webp')"></div>
+                <span class="hero-chip-name">Fengyi</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/nemesis">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nemesis.webp')"></div>
+                <span class="hero-chip-name">Nemesis</span>
+              </a>
+            </div>
+          </div>
+          <div class="phase-row">
+            <div class="phase-row-label late-label">Mid to Late</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/skadi">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
+                <span class="hero-chip-name">Skadi</span>
+              </a>
+              <a class="hero-pic" href="/heroes/hecate">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
+                <span class="hero-chip-name">Hecate</span>
+              </a>
+              <a class="hero-pic" href="/heroes/anubis">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
+                <span class="hero-chip-name">Anubis</span>
+              </a>
+              <a class="hero-pic" href="/heroes/bastet">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
+                <span class="hero-chip-name">Bastet</span>
+              </a>
+              <a class="hero-pic" href="/heroes/phoenix">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
+                <span class="hero-chip-name">Phoenix</span>
+              </a>
+              <a class="hero-pic" href="/heroes/jingwei">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
+                <span class="hero-chip-name">Jingwei</span>
+              </a>
+              <a class="hero-pic" href="/heroes/hela">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hela.webp')"></div>
+                <span class="hero-chip-name">Hela</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUPPORT HEROES -->
+      <div class="eg-content-card" id="supports">
+        <h2>Support Heroes to Build First</h2>
+        <p>Support heroes are usually the Support class, but heroes from other classes like Set and Diana can fill support roles effectively.</p>
+        <div class="support-tiers">
+          <div class="support-tier">
+            <div class="support-tier-label">Priority 1</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/mengpo">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
+                <span class="hero-chip-name">Mengpo</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/caishen">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
+                <span class="hero-chip-name">Caishen</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/yuelao">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
+                <span class="hero-chip-name">Yuelao</span>
+              </a>
+            </div>
+          </div>
+          <div class="support-tier">
+            <div class="support-tier-label">Priority 2</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/tefnut">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/tefnut.webp')"></div>
+                <span class="hero-chip-name">Tefnut</span>
+              </a>
+              <a class="hero-pic" href="/heroes/pan">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
+                <span class="hero-chip-name">Pan</span>
+              </a>
+              <a class="hero-pic" href="/heroes/cancer">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cancer.webp')"></div>
+                <span class="hero-chip-name">Cancer</span>
+              </a>
+            </div>
+          </div>
+          <div class="support-tier">
+            <div class="support-tier-label">Priority 3</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/athena">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
+                <span class="hero-chip-name">Athena</span>
+              </a>
+              <a class="hero-pic" href="/heroes/set">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/set.webp')"></div>
+                <span class="hero-chip-name">Set</span>
+              </a>
+              <a class="hero-pic" href="/heroes/diana">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
+                <span class="hero-chip-name">Diana</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="diana-dionysus-box">
+          <h3>Diana vs Dionysus - Which to Build First?</h3>
+          <div class="dd-split">
+            <div class="dd-card dd-beginner">
+              <div class="dd-label">Diana - Beginner Friendly</div>
+              <p>Restores energy to allies, which means your carry uses their ultimate more often. Simple, consistent, and effective in any team.</p>
+              <p class="dd-tag">Good as your first energy support pick.</p>
+            </div>
+            <div class="dd-card dd-advanced">
+              <div class="dd-label">Dionysus - Advanced</div>
+              <p>Increases attack speed, boosting damage indirectly. More powerful in optimized teams where the carry already has energy covered.</p>
+              <p class="dd-tag">Better once your team has a strong rotation established.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENERGY VS TEMPO SUPPORT -->
+      <div class="eg-content-card">
+        <h2>Energy Support vs Tempo Support</h2>
+        <p>Understanding the difference helps you build better team synergies.</p>
+        <div class="dd-split">
+          <div class="dd-card dd-beginner">
+            <div class="dd-label">Energy Support</div>
+            <ul>
+              <li><strong>Caishen</strong> - instant 100 energy and sustained regen to nearby allies. Best-in-slot battery.</li>
+              <li><strong>Diana</strong> - grants 15 Energy per second</li>
+            </ul>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/caishen">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
+                <span class="hero-chip-name">Caishen</span>
+              </a>
+              <a class="hero-pic" href="/heroes/diana">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
+                <span class="hero-chip-name">Diana</span>
+              </a>
+            </div>
+          </div>
+          <div class="dd-card dd-advanced">
+            <div class="dd-label">Tempo Support</div>
+            <ul>
+              <li><strong>Dionysus (Starglint)</strong> - Frenzy gives 50% ATK speed and 50% move speed to all allies. Strongest tempo tool in the game.</li>
+              <li><strong>Athena</strong> - 40-60% ATK speed to all allies</li>
+              <li><strong>Diana</strong> - Waxing Blessing fires at combat start with 40% ATK speed</li>
+            </ul>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/dionysus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/dionysus.webp')"></div>
+                <span class="hero-chip-name">Dionysus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/athena">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
+                <span class="hero-chip-name">Athena</span>
+              </a>
+              <a class="hero-pic" href="/heroes/diana">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
+                <span class="hero-chip-name">Diana</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RELIC BREAKPOINTS -->
+      <div class="eg-content-card" id="relic-breakpoints">
+        <h2>Relic Breakpoints</h2>
+        <p>Do not judge these deities too early - they might not seem strong at the start but gain value through their relic level.</p>
+        <h3>Key Breakpoints</h3>
+        <div class="eg-team-example">
+          <p><strong>Hecate:</strong> starts feeling like a carry when her relic reaches Level 10. Below this she underperforms.</p>
+          <p><strong>Poseidon:</strong> strong impact at Relic Level 10. Not worth a frontline slot before this.</p>
+          <p><strong>Phoenix:</strong> higher relic levels unlock her infinite revive mechanic - the main reason to use her in Torment Rift.</p>
+        </div>
+        <h3>Relic Elixir Tiers</h3>
+        <p>Start collecting the Genesis Elixir first to unlock relics and bring some to Level 10. Relics are not a priority in the beginning since you need your deity to be Exalted(+) or higher to unlock them.</p>
+        <div class="eg-elixir-tiers">
+          <div class="eg-elixir-card">
+            <div class="eg-elixir-range">Relic Level 1-10</div>
+            <div class="eg-elixir-name">Genesis Elixir</div>
+          </div>
+          <div class="eg-elixir-card">
+            <div class="eg-elixir-range">Relic Level 10-30</div>
+            <div class="eg-elixir-name">Apotheosis Elixir</div>
+          </div>
+          <div class="eg-elixir-card">
+            <div class="eg-elixir-range">Relic Level 30+</div>
+            <div class="eg-elixir-name">Eternity Elixir</div>
+          </div>
+        </div>
+        <h3>Priority Order</h3>
+        <ol>
+          <li><strong>PvE core carries first:</strong> your main damage dealers (e.g. Isis to Relic 20).</li>
+          <li><strong>Key timing relics second:</strong> heroes whose relic changes the opening seconds (e.g. Poseidon at Relic 10).</li>
+          <li><strong>Premium endgame investments last:</strong> level 30+ is expensive - only when income supports it.</li>
+        </ol>
+      </div>
+
+      <!-- DEITY SWAP -->
+      <div class="eg-content-card" id="deity-swap-new">
+        <h2>Deity Swap Event</h2>
+        <p>The Deity Swap Event lets you transfer all investment from one hero - stats, awakening, everything - onto a different hero. It is one of the biggest safety nets for early mistakes.</p>
+        <div class="eg-warning-box">
+          <h3>Do Not Rush It</h3>
+          <p>Wait until you have enough game knowledge to know which hero you want to swap into. Swapping into another bad pick wastes the event entirely.</p>
+        </div>
+        <h3>Good Swap Targets</h3>
         <ul>
-          <li>You will get the Starglint deity every 40 summons guaranteed.</li>
-          <li>After doing 30 summons you can switch to single pulls to save resources until getting the deity.</li>
+          <li><strong>Swap out:</strong> wrong early carry, duplicate role, old investment you no longer use.</li>
+          <li><strong>Swap into:</strong> Hecate, Fengyi, Caishen, Yuelao, Demeter, or any other carry your account is built around now.</li>
         </ul>
       </div>
 
       <!-- STARGLINT MINDSEA -->
-      <div id="section-mindsea" class="tips-section">
+      <div class="eg-content-card">
         <h2>Starglint and Mindsea</h2>
         <p>The Starglint faction has the most rare heroes. They can only be obtained through their special currency "Star Tracer", regular summons (0.2% drop chance) or in the Mindsea shop.</p>
         <h3>Join a Mindsea as Early as Possible</h3>
@@ -406,26 +682,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
           </a>
         </div>
       </div>
-
-      <!-- CORE RULE -->
-      <div class="eg-content-card eg-core-rule-card">
-        <h2>The Core Rule of the Game</h2>
-        <p>You are <strong>not</strong> building 5 equal heroes.</p>
-        <div class="core-rule-split">
-          <div class="core-rule-carry">
-            <div class="core-rule-label">1-2 Carries</div>
-            <p>Deal the damage. Get the gear, the relics, the investment.</p>
-          </div>
-          <div class="core-rule-support">
-            <div class="core-rule-label">3-4 Supports</div>
-            <p>Give the carry energy, buffs, and uptime. They exist to enable the carry.</p>
-          </div>
-        </div>
-        <div class="eg-team-example">
-          <p>Example: if Isis is your carry, you need supports to give her energy, healing and buffs to deal faster damage and use her ultimate more often than the enemy team does.</p>
-        </div>
-      </div>
-
 
       <!-- WHEN STUCK -->
       <div class="eg-content-card">
@@ -902,564 +1158,12 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       </div>
 
     </main>
-    </div>
-
-    <!-- SUB-TAB: MID-LATE -->
-    <div id="subtab-midlate" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-midlate" hidden>
-    <main class="tips-main-content">
-
-      <!-- MID-LATE JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Mid-Late sections">
-        <span class="tips-jump-label">On this page</span>
-        <a href="#section-relic" class="tips-jump-link">Relic Breakpoints</a>
-        <a href="#section-deity-swap" class="tips-jump-link">Deity Swap</a>
-        <a href="#section-when-stuck" class="tips-jump-link">When Stuck</a>
-      </nav>
-
-      <!-- RELIC BREAKPOINTS -->
-      <div id="section-relic" class="tips-section tips-anchor">
-        <h2>Relic Breakpoints</h2>
-        <p>Do not judge these deities too early - they might not seem strong at the start but gain value through their relic level.</p>
-        <h3>Key Breakpoints</h3>
-        <div class="tips-callout">
-          <p><strong>Hecate:</strong> starts feeling like a carry when her relic reaches Level 10. Below this she underperforms.</p>
-          <p><strong>Poseidon:</strong> strong impact at Relic Level 10. Not worth a frontline slot before this.</p>
-          <p><strong>Phoenix:</strong> higher relic levels unlock her infinite revive mechanic - the main reason to use her in Torment Rift.</p>
-        </div>
-        <h3>Relic Elixir Tiers</h3>
-        <p>Start collecting the Genesis Elixir first to unlock relics and bring some to Level 10. Relics are not a priority in the beginning since you need your deity to be Exalted(+) or higher to unlock them.</p>
-        <div class="tips-elixir-grid">
-          <div class="tips-elixir-card">
-            <div class="tips-elixir-range">Relic Level 1-10</div>
-            <div class="tips-elixir-name">Genesis Elixir</div>
-          </div>
-          <div class="tips-elixir-card">
-            <div class="tips-elixir-range">Relic Level 10-30</div>
-            <div class="tips-elixir-name">Apotheosis Elixir</div>
-          </div>
-          <div class="tips-elixir-card">
-            <div class="tips-elixir-range">Relic Level 30+</div>
-            <div class="tips-elixir-name">Eternity Elixir</div>
-          </div>
-        </div>
-        <h3>Priority Order</h3>
-        <ol>
-          <li><strong>PvE core carries first:</strong> your main damage dealers (e.g. Isis to Relic 20).</li>
-          <li><strong>Key timing relics second:</strong> heroes whose relic changes the opening seconds (e.g. Poseidon at Relic 10).</li>
-          <li><strong>Premium endgame investments last:</strong> level 30+ is expensive - only when income supports it.</li>
-        </ol>
-      </div>
-
-      <!-- DEITY SWAP -->
-      <div id="section-deity-swap" class="tips-section tips-anchor">
-        <h2>Deity Swap Event</h2>
-        <p>The Deity Swap Event lets you transfer all investment from one hero - stats, awakening, everything - onto a different hero. It is one of the biggest safety nets for early mistakes.</p>
-        <div class="tips-warning-box">
-          <h3>Do Not Rush It</h3>
-          <p>Wait until you have enough game knowledge to know which hero you want to swap into. Swapping into another bad pick wastes the event entirely.</p>
-        </div>
-        <h3>Good Swap Targets</h3>
-        <ul>
-          <li><strong>Swap out:</strong> wrong early carry, duplicate role, old investment you no longer use.</li>
-          <li><strong>Swap into:</strong> Hecate, Fengyi, Caishen, Yuelao, Demeter, or any other carry your account is built around now.</li>
-        </ul>
-      </div>
-
-      <!-- WHEN YOU FEEL STUCK -->
-      <div id="section-when-stuck" class="tips-section tips-anchor">
-        <h2>When You Feel Stuck</h2>
-        <p>Use this checklist when Odyssey progress stalls or you cannot beat the next stage.</p>
-        <div class="tips-step-list">
-          <div class="tips-step">
-            <div class="tips-step-num">1</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Your Shrine</div>
-              <p>If Odyssey progress upgrades Shrine, go push Odyssey first. Some stages give you "Undying Flame" as reward to level up your shrine.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">2</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Beacon Tree</div>
-              <p>Weekly Torment Rift progress gives account-wide stats that never get wasted.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">3</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Carry Relic</div>
-              <p>Some heroes are weak before their breakpoint. Do not judge them too early.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">4</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Gear Placement</div>
-              <p>Your top two damage dealers should have priority gear. Do not spread it around.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">5</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Resonating Altar</div>
-              <p>You level five heroes to share their level with every hero on the Altar. If your Altar slots are empty you are missing account-wide level boosts.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">6</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Totems</div>
-              <p>Totems must be pulled and upgraded with duplicates. Even one upgraded Totem is worth the early investment. Use an Attack or Damage totem first. Also try different hero positions in a fight.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </main>
-    </div>
-
-    <!-- SUB-TAB: TEAM BUILDING -->
-    <div id="subtab-teams" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-teams" hidden>
-    <main class="tips-main-content">
-
-      <!-- TEAM BUILDING JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Team Building sections">
-        <span class="tips-jump-label">On this page</span>
-        <a href="#section-support" class="tips-jump-link">Support Heroes</a>
-        <a href="#section-compositions" class="tips-jump-link">Team Compositions</a>
-      </nav>
-
-      <!-- SUPPORT HEROES -->
-      <div id="section-support" class="tips-section tips-anchor">
-        <h2>Support Heroes</h2>
-        <p>Understanding the difference between Energy Support and Tempo Support helps you build better team synergies and choose the right support for your carry.</p>
-
-        <h3>Energy Support vs Tempo Support</h3>
-        <div class="tips-support-comparison">
-          <div class="tips-support-card">
-            <div class="tips-support-label">Energy Support</div>
-            <p class="tips-support-desc">Provides energy generation and battery effects to sustain your carry's ultimate casts.</p>
-            <ul>
-              <li><strong>Caishen</strong> - instant 100 energy and sustained regen to nearby allies. Best-in-slot battery.</li>
-              <li><strong>Diana</strong> - grants 15 Energy per second</li>
-            </ul>
-            <div class="hero-chip-grid" style="margin-top: var(--space-3)">
-              <a class="hero-pic chip-highlight" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="tips-support-card">
-            <div class="tips-support-label">Tempo Support</div>
-            <p class="tips-support-desc">Provides attack speed and movement speed buffs to accelerate your team's rotation and positioning.</p>
-            <ul>
-              <li><strong>Dionysus (Starglint)</strong> - Frenzy gives 50% ATK speed and 50% move speed to all allies. Strongest tempo tool in the game.</li>
-              <li><strong>Athena</strong> - 40-60% ATK speed to all allies</li>
-              <li><strong>Diana</strong> - Waxing Blessing fires at combat start with 40% ATK speed</li>
-            </ul>
-            <div class="hero-chip-grid" style="margin-top: var(--space-3)">
-              <a class="hero-pic chip-highlight" href="/heroes/dionysus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/dionysus.webp')"></div>
-                <span class="hero-chip-name">Dionysus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/athena">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
-                <span class="hero-chip-name">Athena</span>
-              </a>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TEAM COMPOSITIONS -->
-      <div id="section-compositions" class="tips-section tips-anchor">
-        <h2>Team Compositions</h2>
-        <p>These are solid starting compositions to build toward. Mix and match based on which heroes you have available.</p>
-        <p><strong>Note on Meret:</strong> She can function as a control-focused carry, not only as a support piece. In the comps below she appears in protective shells, but she is also viable as your primary damage dealer when properly invested.</p>
-
-        <div class="comp-list">
-          <div class="comp-card">
-            <div class="comp-title">Isis</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/isis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/isis.webp')"></div>
-                <span class="hero-chip-name">Isis</span>
-              </a>
-              <span class="chip-divider">or</span>
-              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-              <a class="hero-pic" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-            </div>
-            <p class="comp-note">A versatile early-mid comp. Poseidon anchors the frontline with early CC, Caishen accelerates energy rotation, and Isis or Jingwei delivers the damage payload.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Control + Debuff</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/tefnut">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/tefnut.webp')"></div>
-                <span class="hero-chip-name">Tefnut</span>
-              </a>
-            </div>
-            <p class="comp-note">Momus taunts to protect the backline, Yuelao layers healing, and Tefnut supports Hecate's sustained magical damage output.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Heracles & Mengpo</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/bastet">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
-                <span class="hero-chip-name">Bastet</span>
-              </a>
-              <a class="hero-pic" href="/heroes/phoenix">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
-                <span class="hero-chip-name">Phoenix</span>
-              </a>
-              <a class="hero-pic" href="/heroes/mengpo">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
-                <span class="hero-chip-name">Mengpo</span>
-              </a>
-            </div>
-            <p class="comp-note">Heracles soaks damage upfront while Bastet and Phoenix pressure high-value targets. Mengpo provides revival insurance for a second life on key heroes.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Clubs</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/nuba">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
-                <span class="hero-chip-name">Nuba</span>
-              </a>
-              <a class="hero-pic" href="/heroes/nuwa">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
-                <span class="hero-chip-name">Nuwa</span>
-              </a>
-              <a class="hero-pic" href="/heroes/anubis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
-                <span class="hero-chip-name">Anubis</span>
-              </a>
-              <a class="hero-pic" href="/heroes/pan">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
-                <span class="hero-chip-name">Pan</span>
-              </a>
-              <div class="chip-flex-slot">
-                <div class="chip-flex-img">?</div>
-                <span class="chip-flex-label">Any DD</span>
-              </div>
-            </div>
-            <p class="comp-note">Nuba and Pan layer CC and debuffs while Anubis locks down priority targets. Nuwa adds legendary-tier support. Bring your strongest DD as the damage anchor.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Skadi CC</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-              <a class="hero-pic" href="/heroes/khepri">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
-                <span class="hero-chip-name">Khepri</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-              <a class="hero-pic" href="/heroes/iris">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/iris.webp')"></div>
-                <span class="hero-chip-name">Iris</span>
-              </a>
-              <div class="chip-flex-slot">
-                <div class="chip-flex-img">?</div>
-                <span class="chip-flex-label">Any hero</span>
-              </div>
-            </div>
-            <p class="comp-note">The classic Skadi control loop. Poseidon opens with AoE CC, Khepri dives the backline, and every controlled enemy triggers Skadi's passive for bonus damage and energy.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Diamonds</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/bastet">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
-                <span class="hero-chip-name">Bastet</span>
-              </a>
-              <a class="hero-pic" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/phoenix">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
-                <span class="hero-chip-name">Phoenix</span>
-              </a>
-              <a class="hero-pic" href="/heroes/set">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/set.webp')"></div>
-                <span class="hero-chip-name">Set</span>
-              </a>
-              <a class="hero-pic" href="/heroes/athena">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
-                <span class="hero-chip-name">Athena</span>
-              </a>
-              <span class="chip-divider">or</span>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-            </div>
-            <p class="comp-note">Bastet and Heracles anchor the frontline. Set adds disruption, Phoenix targets high-value backline heroes, and Athena or Diana provides protection or healing depending on what you need.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hladgunnr & Heracles</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/hladgunnr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
-                <span class="hero-chip-name">Hladgunnr</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-              <a class="hero-pic" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-            </div>
-            <p class="comp-note">A high-damage multi-warrior comp. Heracles and Hladgunnr split frontline duties, Jingwei and Hecate deliver consistent damage, and Skadi closes gaps on any CC-vulnerable target.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Nuba & Cronus</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/nuba">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
-                <span class="hero-chip-name">Nuba</span>
-              </a>
-              <a class="hero-pic" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/mengpo">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
-                <span class="hero-chip-name">Mengpo</span>
-              </a>
-              <a class="hero-pic" href="/heroes/cronus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div>
-                <span class="hero-chip-name">Chronos</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-            </div>
-            <p class="comp-note">Caishen accelerates Jingwei and Chronos into faster ultimate cycles. Nuba and Mengpo keep the frontline alive. A strong mid-game energy rotation comp.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hecate</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/cancer">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cancer.webp')"></div>
-                <span class="hero-chip-name">Cancer</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic" href="/heroes/meret">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
-                <span class="hero-chip-name">Meret</span>
-              </a>
-            </div>
-            <p class="comp-note">A heavy support shell for Hecate. Momus taunts, Cancer and Yuelao stack heals and shields, with Meret completing the protective core.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Skadi</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/khepri">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
-                <span class="hero-chip-name">Khepri</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-              <a class="hero-pic" href="/heroes/pan">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
-                <span class="hero-chip-name">Pan</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-              <a class="hero-pic" href="/heroes/nuwa">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
-                <span class="hero-chip-name">Nuwa</span>
-              </a>
-            </div>
-            <p class="comp-note">Skadi is your damage carry. Poseidon opens with AoE CC, Khepri disrupts the backline, and Pan and Nuwa provide layered support and control.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hladgunnr & Clubs</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/capricorn">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/capricorn.webp')"></div>
-                <span class="hero-chip-name">Capricorn</span>
-              </a>
-              <a class="hero-pic" href="/heroes/wenshen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp')"></div>
-                <span class="hero-chip-name">Wenshen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/jormungandr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jormungandr.webp')"></div>
-                <span class="hero-chip-name">Jormungandr</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hladgunnr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
-                <span class="hero-chip-name">Hladgunnr</span>
-              </a>
-              <a class="hero-pic" href="/heroes/anubis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
-                <span class="hero-chip-name">Anubis</span>
-              </a>
-            </div>
-            <p class="comp-note">Capricorn and Wenshen provide sustained physical pressure. Jormungandr and Hladgunnr hold the frontline. Anubis locks down priority targets in the backline.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hecate & Hephaestus</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/meret">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
-                <span class="hero-chip-name">Meret</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hephaestus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
-                <span class="hero-chip-name">Hephaestus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-            </div>
-            <p class="comp-note">Hephaestus synergizes with Momus in a heavy frontline shell. Yuelao and Meret stack support, with Hecate as the damage carry.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Warriors</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/prometheus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/prometheus.webp')"></div>
-                <span class="hero-chip-name">Prometheus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hephaestus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
-                <span class="hero-chip-name">Hephaestus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/nezha">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nezha.webp')"></div>
-                <span class="hero-chip-name">Nezha</span>
-              </a>
-            </div>
-            <p class="comp-note">Nezha acts as the spearhead. Prometheus and Hephaestus form a sturdy frontline while Yuelao and Diana keep everyone alive and in the fight.</p>
-          </div>
-        </div>
-      </div>
-
-    </main>
-    </div>
-
-    <!-- SUB-TAB: MECHANICS -->
-    <div id="subtab-mechanics" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics" hidden>
-      <main class="eg-main-content">
-        <div class="eg-content-card eg-note-card">
-          <h2>Mechanics (Coming soon)</h2>
-          <p>
-            This section is still being written. For now, use the other tabs for the highest-impact basics:
-          </p>
-          <ul>
-            <li><strong>Early Game</strong>: Odyssey milestones, summons, and wishlist setup</li>
-            <li><strong>Mid-Late</strong>: relic breakpoints and account power systems</li>
-            <li><strong>Shrine</strong>: placements, seats, talismans, and example setup</li>
-          </ul>
-        </div>
-      </main>
-    </div>
   </div>
 
   <!-- ====================================================
        TAB: SHRINE
        ==================================================== -->
-  <div id="tab-shrine" class="main-tab-panel" role="tabpanel" tabindex="0" aria-labelledby="main-tab-shrine" style="display:none" hidden>
+  <div id="tab-shrine" class="main-tab-panel" style="display:none">
     <main class="shrine-main-content">
       <div class="sh-tldr-box">
         <h3 class="sh-tldr-title">TLDR - Quick Takeaways</h3>
@@ -1474,7 +1178,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
       <!-- SHRINE TABLE OF CONTENTS -->
       <div class="sh-toc-card">
-        <h3 class="sh-toc-title">On this page</h3>
+        <h3 class="sh-toc-title">Jump to Section</h3>
         <div class="sh-toc-grid">
           <a href="#shrine-general" class="sh-toc-item">General Pray</a>
           <a href="#shrine-placement" class="sh-toc-item">Slots &amp; Placement</a>
@@ -1727,22 +1431,10 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     const mainTabs = document.querySelectorAll('.main-tab');
     const mainPanels = document.querySelectorAll('.main-tab-panel');
 
-    function switchMainTab(tabId: string, opts: { updateHash?: boolean } = {}) {
-      const { updateHash = true } = opts;
-      mainTabs.forEach(t => {
-        const isActive = (t as HTMLElement).dataset.tab === tabId;
-        (t as HTMLElement).classList.toggle('is-active', isActive);
-        (t as HTMLElement).setAttribute('aria-selected', String(isActive));
-        (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
-      });
-      mainPanels.forEach(p => {
-        const isActive = (p as HTMLElement).id === 'tab-' + tabId;
-        (p as HTMLElement).style.display = isActive ? '' : 'none';
-        (p as HTMLElement).toggleAttribute('hidden', !isActive);
-      });
-      if (updateHash) history.replaceState(null, '', '#' + tabId);
-      if (tabId === 'shrine') startSparkles();
-      else stopSparkles();
+    function switchMainTab(tabId: string) {
+      mainTabs.forEach(t => (t as HTMLElement).classList.toggle('is-active', (t as HTMLElement).dataset.tab === tabId));
+      mainPanels.forEach(p => { (p as HTMLElement).style.display = (p as HTMLElement).id === 'tab-' + tabId ? '' : 'none'; });
+      history.replaceState(null, '', '#' + tabId);
     }
 
     mainTabs.forEach(tab => {
@@ -1752,273 +1444,78 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       });
     });
 
-    function setupRovingTabs(tabs: NodeListOf<Element>, getId: (el: Element) => string | undefined, activate: (id: string) => void) {
-      const list = Array.from(tabs) as HTMLElement[];
-      list.forEach((tabEl, idx) => {
-        tabEl.addEventListener('keydown', (e: KeyboardEvent) => {
-          const key = e.key;
-          const horizontalNext = key === 'ArrowRight' || key === 'ArrowDown';
-          const horizontalPrev = key === 'ArrowLeft' || key === 'ArrowUp';
-          if (horizontalNext || horizontalPrev || key === 'Home' || key === 'End') {
-            e.preventDefault();
-            const nextIdx = key === 'Home'
-              ? 0
-              : key === 'End'
-                ? list.length - 1
-                : (idx + (horizontalNext ? 1 : -1) + list.length) % list.length;
-            list[nextIdx]?.focus();
-            return;
-          }
+    // Handle URL hash on load
+    const outerHash = (location.hash || '').replace('#', '');
+    const validOuter = ['beginner', 'shrine'];
+    if (outerHash && validOuter.includes(outerHash)) switchMainTab(outerHash);
 
-          if (key === 'Enter' || key === ' ') {
-            e.preventDefault();
-            const id = getId(tabEl);
-            if (id) activate(id);
-          }
-        });
-      });
-    }
-
-    setupRovingTabs(mainTabs, (el) => (el as HTMLElement).dataset.tab, (id) => switchMainTab(id));
-
-    // - HASH ROUTING (tabs + deep links)
-    function getHashId() {
-      return decodeURIComponent((location.hash || '').replace('#', ''));
-    }
-
-    function showForTargetId(targetId: string) {
-      if (!targetId) return false;
-
-      if (targetId === 'beginner' || targetId === 'shrine') {
-        switchMainTab(targetId);
-        return true;
-      }
-
-      const target = document.getElementById(targetId);
-      if (!target) return false;
-
-      const inShrine = !!target.closest('#tab-shrine');
-      const inBeginner = !!target.closest('#tab-beginner');
-
-      if (inShrine) {
-        switchMainTab('shrine', { updateHash: false });
-      } else if (inBeginner) {
-        switchMainTab('beginner', { updateHash: false });
-        const panel = target.closest('.tips-panel') as HTMLElement | null;
-        if (panel?.id?.startsWith('subtab-')) {
-          const subtabId = panel.id.replace('subtab-', '');
-          if (subtabId) switchSubTab(subtabId);
-        }
-      }
-
-      target.scrollIntoView({ block: 'start' });
-      return true;
-    }
-
-    // Handle URL hash on load + on hash changes
-    showForTargetId(getHashId());
-    window.addEventListener('hashchange', () => showForTargetId(getHashId()));
-
-    // Ensure in-page anchors open the right tab/subtab
-    document.addEventListener('click', (e) => {
-      const a = (e.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
-      if (!a) return;
-      const href = a.getAttribute('href');
-      if (!href) return;
-      const targetId = decodeURIComponent(href.replace('#', ''));
-      if (!targetId) return;
-      if (!document.getElementById(targetId)) return;
-      e.preventDefault();
-      history.replaceState(null, '', '#' + targetId);
-      showForTargetId(targetId);
-    });
-
-    // - SUB-TAB SWITCHING (Beginner tabs)
-    const subTabs = document.querySelectorAll('.tips-subnav-btn');
-    const subPanels = document.querySelectorAll('.tips-panel');
-
-    function switchSubTab(subtabId: string) {
-      subTabs.forEach(t => {
-        const isActive = (t as HTMLElement).dataset.subtab === subtabId;
-        (t as HTMLElement).classList.toggle('is-active', isActive);
-        (t as HTMLElement).setAttribute('aria-selected', String(isActive));
-        (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
-      });
-      subPanels.forEach(p => {
-        const shouldShow = (p as HTMLElement).id === 'subtab-' + subtabId;
-        (p as HTMLElement).classList.toggle('is-active', shouldShow);
-        (p as HTMLElement).toggleAttribute('hidden', !shouldShow);
-      });
-    }
-
-    subTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const id = (tab as HTMLElement).dataset.subtab;
-        if (id) switchSubTab(id);
-      });
-    });
-
-    setupRovingTabs(subTabs, (el) => (el as HTMLElement).dataset.subtab, (id) => switchSubTab(id));
-
-    // - STICKY JUMPBARS + "YOU ARE HERE" HIGHLIGHT
-    function setupJumpbars() {
-      const jumpbars = document.querySelectorAll('.tips-jumpbar');
-      jumpbars.forEach((jumpbar) => {
-        const links = Array.from(jumpbar.querySelectorAll('a[href^="#"]')) as HTMLAnchorElement[];
-        const targets = links
-          .map((a) => decodeURIComponent((a.getAttribute('href') || '').replace('#', '')))
-          .map((id) => ({ id, el: id ? document.getElementById(id) : null }))
-          .filter((t) => t.el);
-
-        if (!targets.length) return;
-
-        const panel = (jumpbar as HTMLElement).closest('.tips-panel');
-        let activeId: string | null = null;
-
-        function setActive(id: string) {
-          if (activeId === id) return;
-          activeId = id;
-          links.forEach((a) => {
-            const linkId = decodeURIComponent((a.getAttribute('href') || '').replace('#', ''));
-            a.classList.toggle('is-active', linkId === id);
-          });
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-          if (panel && !panel.classList.contains('is-active')) return;
-          const visible = entries
-            .filter((e) => e.isIntersecting)
-            .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top));
-          const best = visible[0]?.target as HTMLElement | undefined;
-          if (best?.id) setActive(best.id);
-        }, { root: null, rootMargin: '-20% 0px -75% 0px', threshold: [0, 0.1, 0.25] });
-
-        targets.forEach((t) => observer.observe(t.el as Element));
-        // Set initial state
-        const initial = targets.find((t) => t.id === getHashId())?.id || targets[0].id;
-        if (initial) setActive(initial);
-      });
-    }
-
-    setupJumpbars();
-
-    // - SHRINE SPARKS ANIMATION (pauses when not visible; respects reduced-motion)
-    const prefersReducedMotion = typeof window !== 'undefined'
-      && 'matchMedia' in window
-      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let sparklesInitialized = false;
-    const sparkleControllers: Array<{ start: () => void; stop: () => void }> = [];
-
-    function createSparkleController(canvas: HTMLCanvasElement) {
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return null;
-
-      function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
-      const resizeObserver = new ResizeObserver(() => resize());
-
-      function spawnSpark() {
-        const w = canvas.width, h = canvas.height;
-        return {
-          x: w * 0.35 + Math.random() * (w * 0.3),
-          y: h * 0.55 + Math.random() * (h * 0.4),
-          vx: (Math.random() - 0.5) * 0.6,
-          vy: -(0.6 + Math.random() * 1.4),
-          size: 1.2 + Math.random() * 3.5,
-          alpha: 0, life: 0,
-          lifeSpeed: 0.004 + Math.random() * 0.006,
-          twinkle: Math.random() * Math.PI * 2,
-          color: `hsl(${200 + Math.random() * 40}, 100%, ${75 + Math.random() * 25}%)`,
-        };
-      }
-
-      const sparks: any[] = [];
-      for (let i = 0; i < 60; i++) {
-        const s = spawnSpark();
-        (s as any).life = Math.random();
-        sparks.push(s);
-      }
-
-      function drawStar(x: number, y: number, size: number, alpha: number, color: string, twinkle: number, time: number) {
-        const shimmer = 0.7 + 0.3 * Math.sin(time * 6 + twinkle);
-        const a = alpha * shimmer;
-        if (a <= 0) return;
-        ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y);
-        const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 5);
-        glow.addColorStop(0, 'rgba(120,220,255,0.35)'); glow.addColorStop(1, 'rgba(30,100,255,0)');
-        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, 0, size * 5, 0, Math.PI * 2); ctx.fill();
-        const long = size * 4.5, short_ = size * 2.5, thin = size * 0.25;
-        function drawBeam(angle: number, len: number) {
-          ctx.save(); ctx.rotate(angle);
-          const grad = ctx.createLinearGradient(-len, 0, len, 0);
-          grad.addColorStop(0, 'rgba(255,255,255,0)'); grad.addColorStop(0.5, color); grad.addColorStop(1, 'rgba(255,255,255,0)');
-          ctx.fillStyle = grad; ctx.beginPath(); ctx.ellipse(0, 0, len, thin, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-        }
-        drawBeam(0, long); drawBeam(Math.PI / 2, long); drawBeam(Math.PI / 4, short_); drawBeam(-Math.PI / 4, short_);
-        const core = ctx.createRadialGradient(0, 0, 0, 0, 0, size);
-        core.addColorStop(0, 'white'); core.addColorStop(1, 'rgba(120,220,255,0)');
-        ctx.fillStyle = core; ctx.beginPath(); ctx.arc(0, 0, size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      }
-
-      let t = 0;
-      let rafId: number | null = null;
-
-      function tick() {
-        rafId = requestAnimationFrame(tick);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        t += 0.016;
-        for (const s of sparks) {
-          s.life += s.lifeSpeed;
-          s.alpha = s.life < 0.2 ? s.life / 0.2 : s.life < 0.75 ? 1 : 1 - (s.life - 0.75) / 0.25;
-          s.alpha = Math.max(0, Math.min(1, s.alpha));
-          s.x += s.vx + Math.sin(t * 1.5 + s.twinkle) * 0.15; s.y += s.vy;
-          drawStar(s.x, s.y, s.size, s.alpha, s.color, s.twinkle, t);
-          if (s.life >= 1) Object.assign(s, spawnSpark());
-        }
-      }
-
-      function start() {
-        if (rafId != null) return;
+    // - SHRINE SPARKS ANIMATION
+    function initializeSparkles() {
+      const canvases = document.querySelectorAll('.shrine-spark-canvas');
+      canvases.forEach((canvas: any) => {
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
         resize();
-        resizeObserver.observe(canvas);
-        rafId = requestAnimationFrame(tick);
-      }
-
-      function stop() {
-        if (rafId == null) return;
-        cancelAnimationFrame(rafId);
-        rafId = null;
-        resizeObserver.disconnect();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-
-      return { start, stop };
-    }
-
-    function initializeSparklesOnce() {
-      if (sparklesInitialized || prefersReducedMotion) return;
-      const canvases = document.querySelectorAll('.shrine-spark-canvas') as NodeListOf<HTMLCanvasElement>;
-      canvases.forEach((canvas) => {
-        const controller = createSparkleController(canvas);
-        if (controller) sparkleControllers.push(controller);
+        function spawnSpark() {
+          const w = canvas.width, h = canvas.height;
+          return {
+            x: w * 0.35 + Math.random() * (w * 0.3),
+            y: h * 0.55 + Math.random() * (h * 0.4),
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: -(0.6 + Math.random() * 1.4),
+            size: 1.2 + Math.random() * 3.5,
+            alpha: 0, life: 0,
+            lifeSpeed: 0.004 + Math.random() * 0.006,
+            twinkle: Math.random() * Math.PI * 2,
+            color: `hsl(${200 + Math.random() * 40}, 100%, ${75 + Math.random() * 25}%)`,
+          };
+        }
+        const sparks: any[] = [];
+        for (let i = 0; i < 60; i++) { const s = spawnSpark(); (s as any).life = Math.random(); sparks.push(s); }
+        function drawStar(x: number, y: number, size: number, alpha: number, color: string, twinkle: number, time: number) {
+          const shimmer = 0.7 + 0.3 * Math.sin(time * 6 + twinkle);
+          const a = alpha * shimmer;
+          if (a <= 0) return;
+          ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y);
+          const glow = ctx.createRadialGradient(0,0,0,0,0,size*5);
+          glow.addColorStop(0,'rgba(120,220,255,0.35)'); glow.addColorStop(1,'rgba(30,100,255,0)');
+          ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0,0,size*5,0,Math.PI*2); ctx.fill();
+          const long = size*4.5, short_ = size*2.5, thin = size*0.25;
+          function drawBeam(angle: number, len: number) {
+            ctx.save(); ctx.rotate(angle);
+            const grad = ctx.createLinearGradient(-len,0,len,0);
+            grad.addColorStop(0,'rgba(255,255,255,0)'); grad.addColorStop(0.5,color); grad.addColorStop(1,'rgba(255,255,255,0)');
+            ctx.fillStyle = grad; ctx.beginPath(); ctx.ellipse(0,0,len,thin,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+          }
+          drawBeam(0,long); drawBeam(Math.PI/2,long); drawBeam(Math.PI/4,short_); drawBeam(-Math.PI/4,short_);
+          const core = ctx.createRadialGradient(0,0,0,0,0,size);
+          core.addColorStop(0,'white'); core.addColorStop(1,'rgba(120,220,255,0)');
+          ctx.fillStyle = core; ctx.beginPath(); ctx.arc(0,0,size,0,Math.PI*2); ctx.fill(); ctx.restore();
+        }
+        let t = 0;
+        function tick() {
+          ctx.clearRect(0,0,canvas.width,canvas.height); t += 0.016;
+          for (const s of sparks) {
+            s.life += s.lifeSpeed;
+            s.alpha = s.life < 0.2 ? s.life/0.2 : s.life < 0.75 ? 1 : 1-(s.life-0.75)/0.25;
+            s.alpha = Math.max(0, Math.min(1, s.alpha));
+            s.x += s.vx + Math.sin(t*1.5+s.twinkle)*0.15; s.y += s.vy;
+            drawStar(s.x, s.y, s.size, s.alpha, s.color, s.twinkle, t);
+            if (s.life >= 1) Object.assign(s, spawnSpark());
+          }
+          requestAnimationFrame(tick);
+        }
+        tick();
       });
-      sparklesInitialized = true;
     }
 
-    function startSparkles() {
-      initializeSparklesOnce();
-      if (prefersReducedMotion) return;
-      if (document.hidden) return;
-      sparkleControllers.forEach(c => c.start());
-    }
-
-    function stopSparkles() {
-      sparkleControllers.forEach(c => c.stop());
-    }
-
-    document.addEventListener('visibilitychange', () => {
-      const shrineActive = document.querySelector('.main-tab.is-active')?.getAttribute('data-tab') === 'shrine';
-      if (document.hidden || !shrineActive) stopSparkles();
-      else startSparkles();
+    // Initialize sparkles when shrine tab is shown
+    document.querySelectorAll('.main-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        if ((tab as HTMLElement).dataset.tab === 'shrine') {
+          setTimeout(initializeSparkles, 50);
+        }
+      });
     });
 
   </script>
@@ -2026,146 +1523,11 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
 <style is:global>
   /* - EARLY GAME STYLES - */
-  .tips-page {
-    padding-top: var(--space-6);
-  }
-
-  .tips-page .main-tabs {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 0 var(--space-4);
-    border-bottom: 1px solid rgba(250, 204, 21, 0.22);
-    opacity: 1;
-    justify-content: flex-start;
-    gap: var(--space-2);
-  }
-
-  .tips-page .main-tab {
-    border-radius: var(--radius-md);
-    border-color: transparent;
-    background: rgba(255, 255, 255, 0.04);
-    padding: var(--space-2) var(--space-4);
-    font-size: var(--text-sm);
-  }
-
-  .tips-page .main-tab.is-active {
-    border-color: rgba(250, 204, 21, 0.34);
-    background: rgba(250, 204, 21, 0.1);
-  }
-
-  .tips-page .tips-subnav {
-    max-width: 900px;
-    margin: var(--space-7) auto 0;
-    padding: 0 0 var(--space-3);
-    border-bottom: 1px solid var(--border-faint);
-    justify-content: flex-start;
-    gap: var(--space-6);
-  }
-
-  .tips-page .tips-subnav-btn {
-    position: relative;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    padding: 0 0 var(--space-2);
-    color: var(--text-muted);
-    font-size: 0.95rem;
-  }
-
-  .tips-page .tips-subnav-btn::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 2px;
-    border-radius: var(--radius-full);
-    background: transparent;
-  }
-
-  .tips-page .tips-subnav-btn.is-active {
-    background: transparent;
-    color: var(--accent-gold-light);
-  }
-
-  .tips-page .tips-subnav-btn.is-active::after {
-    background: var(--accent-gold);
-  }
-
-  .tips-page .tips-subnav-btn:hover:not(.is-active) {
-    background: transparent;
-    color: var(--text-bright);
-  }
-
   .eg-main-content {
     max-width: 900px;
     margin: 0 auto;
-    padding: var(--space-7) 0 var(--space-20);
+    padding: var(--space-10) var(--space-6) var(--space-20);
   }
-
-  .tips-main-content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: var(--space-7) 0 var(--space-20);
-  }
-
-  .tips-meta {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0;
-  }
-  .tips-last-updated {
-    margin: 0 0 var(--space-3);
-    color: var(--text-muted);
-    font-size: 0.85rem;
-  }
-  .tips-anchor,
-  .tips-section,
-  .tips-f2p-note {
-    scroll-margin-top: 96px;
-  }
-
-  .tips-jumpbar {
-    position: sticky;
-    top: var(--space-4);
-    z-index: 20;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-4);
-    padding: var(--space-3) 0 var(--space-4);
-    margin: 0 0 var(--space-7);
-    border: 0;
-    border-bottom: 1px solid var(--border-faint);
-    border-radius: 0;
-    background: rgba(6, 9, 18, 0.82);
-    backdrop-filter: blur(10px);
-  }
-
-  .tips-jump-label {
-    color: var(--text-muted);
-    font-size: 0.72rem;
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-  }
-
-  .tips-jump-link {
-    display: inline-flex;
-    align-items: center;
-    padding: 0 0 2px;
-    border: 0;
-    border-bottom: 1px solid transparent;
-    border-radius: 0;
-    background: transparent;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.85rem;
-    line-height: 1.2;
-    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
-  }
-  .tips-jump-link:hover { background: transparent; border-color: rgba(250, 204, 21, 0.35); color: var(--text-primary); }
-  .tips-jump-link.is-active { background: transparent; border-color: rgba(250, 204, 21, 0.7); color: #fde68a; }
   .eg-content-card {
     background: var(--bg-surface);
     padding: var(--space-6) var(--space-7) var(--space-7);
@@ -2588,11 +1950,10 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
   /* Shrine TOC */
   .sh-toc-card {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid var(--border-faint);
-    border-radius: 0;
-    padding: 0 0 var(--space-5);
+    background: rgba(250,204,21,0.04);
+    border: 1px solid rgba(250,204,21,0.2);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
     margin-bottom: var(--space-8);
   }
   .sh-toc-title {
@@ -2606,21 +1967,20 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   .sh-toc-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
+    gap: var(--space-3);
   }
   .sh-toc-item {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid transparent;
-    border-radius: 0;
-    padding: 0 0 2px;
+    background: rgba(250,204,21,0.08);
+    border: 1px solid rgba(250,204,21,0.2);
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-4);
     font-size: 0.85rem;
     font-weight: var(--weight-semibold);
-    color: var(--text-secondary);
+    color: var(--accent-gold);
     text-decoration: none;
     transition: var(--transition-colors);
   }
-  .sh-toc-item:hover { background: transparent; border-color: rgba(250,204,21,0.5); color: var(--accent-gold-light); }
+  .sh-toc-item:hover { background: rgba(250,204,21,0.15); border-color: rgba(250,204,21,0.4); }
 
   /* Shrine sections */
   #shrine-general, #shrine-placement, #shrine-artefacts,
@@ -2827,39 +2187,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
   /* - RESPONSIVE - */
   @media (max-width: 768px) {
-    .tips-page { padding-top: var(--space-5); }
-    .tips-page .main-tabs {
-      padding-left: 0;
-      padding-right: 0;
-    }
-    .tips-page .tips-subnav {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      padding-left: 0;
-      padding-right: 0;
-      gap: var(--space-5);
-      scrollbar-width: none;
-    }
-    .tips-page .tips-subnav::-webkit-scrollbar {
-      display: none;
-    }
-    .eg-main-content,
-    .tips-main-content {
-      padding: var(--space-6) 0 60px;
-    }
-    .tips-jumpbar {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      gap: var(--space-4);
-      scrollbar-width: none;
-    }
-    .tips-jumpbar::-webkit-scrollbar {
-      display: none;
-    }
-    .tips-jump-label,
-    .tips-jump-link {
-      flex: 0 0 auto;
-    }
+    .eg-main-content { padding: var(--space-7) var(--space-4) 60px; }
     .eg-content-card { padding: var(--space-5) var(--space-4); }
     .eg-content-card h2 { font-size: 1.35rem; }
     .phase-grid { grid-template-columns: 1fr; gap: var(--space-3); }
@@ -2878,45 +2206,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     .eg-elixir-tiers { grid-template-columns: 1fr; }
     .core-rule-split { grid-template-columns: 1fr; }
     .dd-split { grid-template-columns: 1fr; }
-
-    /* Table-like layouts: stack on mobile */
-    .milestone-table, .pinion-table { display: block; }
-    .milestone-row, .pinion-row { display: block; }
-    .milestone-header, .pinion-header { display: none; }
-
-    .milestone-row, .pinion-row {
-      background: var(--chip-bg);
-      border: 1px solid var(--border-faint);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      margin-bottom: var(--space-3);
-    }
-
-    .milestone-chapter, .milestone-unlock, .milestone-why,
-    .pinion-type, .pinion-when {
-      display: block;
-      padding: var(--space-3) var(--space-4);
-      border-bottom: 1px solid var(--border-faint);
-      width: auto;
-    }
-    .milestone-why, .pinion-when { border-bottom: 0; }
-
-    .milestone-chapter::before { content: "Stage"; }
-    .milestone-unlock::before { content: "Unlocks"; }
-    .milestone-why::before { content: "Why it matters"; }
-    .pinion-type::before { content: "Item"; }
-    .pinion-when::before { content: "Action"; }
-
-    .milestone-chapter::before, .milestone-unlock::before, .milestone-why::before,
-    .pinion-type::before, .pinion-when::before {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: var(--weight-bold);
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-wide);
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
   }
   @media (max-width: 480px) {
     .hero-pills { gap: var(--space-2); }

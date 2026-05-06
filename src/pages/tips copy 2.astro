@@ -75,81 +75,31 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     headline="Tips"
     subtitle="Beginner tips and shrine system breakdowns"
   />
-<div class="page-wrapper tips-page">
-  <div class="tips-meta">
-    <p class="tips-last-updated">Last updated: 2026-05-05</p>
-  </div>
+<div class="page-wrapper">
   <!-- TAB BAR -->
-  <div class="main-tabs" role="tablist" aria-label="Tips tabs">
-    <button
-      id="main-tab-beginner"
-      class="main-tab is-active"
-      data-tab="beginner"
-      role="tab"
-      aria-controls="tab-beginner"
-      aria-selected="true"
-    >Beginner</button>
-    <button
-      id="main-tab-shrine"
-      class="main-tab"
-      data-tab="shrine"
-      role="tab"
-      aria-controls="tab-shrine"
-      aria-selected="false"
-      tabindex="-1"
-    >Shrine</button>
+  <div class="main-tabs">
+    <button class="main-tab is-active" data-tab="beginner">Beginner</button>
+    <button class="main-tab" data-tab="shrine">Shrine</button>
   </div>
 
   <!-- ====================================================
        TAB: BEGINNER (default)
        ==================================================== -->
-  <div id="tab-beginner" class="main-tab-panel" role="tabpanel" tabindex="0" aria-labelledby="main-tab-beginner">
+  <div id="tab-beginner" class="main-tab-panel">
     <!-- SUB-TAB NAVIGATION -->
-    <div class="tips-subnav" role="tablist" aria-label="Beginner sections">
-      <button
-        id="subtab-btn-early"
-        class="tips-subnav-btn is-active"
-        data-subtab="early"
-        role="tab"
-        aria-controls="subtab-early"
-        aria-selected="true"
-      >Early Game</button>
-      <button
-        id="subtab-btn-midlate"
-        class="tips-subnav-btn"
-        data-subtab="midlate"
-        role="tab"
-        aria-controls="subtab-midlate"
-        aria-selected="false"
-        tabindex="-1"
-      >Mid-Late</button>
-      <button
-        id="subtab-btn-teams"
-        class="tips-subnav-btn"
-        data-subtab="teams"
-        role="tab"
-        aria-controls="subtab-teams"
-        aria-selected="false"
-        tabindex="-1"
-      >Team Building</button>
-      <button
-        id="subtab-btn-mechanics"
-        class="tips-subnav-btn"
-        data-subtab="mechanics"
-        role="tab"
-        aria-controls="subtab-mechanics"
-        aria-selected="false"
-        tabindex="-1"
-      >Mechanics</button>
+    <div class="tips-subnav">
+      <button class="tips-subnav-btn is-active" data-subtab="early">Early Game</button>
+      <button class="tips-subnav-btn" data-subtab="midlate">Mid-Late</button>
+      <button class="tips-subnav-btn" data-subtab="teams">Team Building</button>
+      <button class="tips-subnav-btn" data-subtab="mechanics">Mechanics</button>
     </div>
 
     <!-- SUB-TAB: EARLY GAME -->
-    <div id="subtab-early" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-early">
+    <div id="subtab-early" class="tips-panel is-active">
       <main class="eg-main-content">
 
       <!-- JUMPBAR -->
       <nav class="tips-jumpbar" aria-label="Early Game sections">
-        <span class="tips-jump-label">On this page</span>
         <a href="#section-f2p" class="tips-jump-link">F2P Guide</a>
         <a href="#section-first" class="tips-jump-link">What to Do First</a>
         <a href="#section-odyssey" class="tips-jump-link">Odyssey</a>
@@ -209,7 +159,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       </div>
 
       <!-- ODYSSEY MILESTONES -->
-      <div id="section-odyssey" class="tips-section tips-anchor">
+      <div id="section-odyssey" class="tips-section" style="scroll-margin-top: var(--space-10)">
         <h2>Odyssey (Campaign) Milestones</h2>
         <p>Keep pushing to unlock stages and events. The two most impactful early targets are <strong>Stage 3-18</strong> (Shrine) and <strong>Stage 8-3</strong> (Beacon Tree).</p>
         <div class="milestone-table">
@@ -905,19 +855,18 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     </div>
 
     <!-- SUB-TAB: MID-LATE -->
-    <div id="subtab-midlate" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-midlate" hidden>
+    <div id="subtab-midlate" class="tips-panel">
     <main class="tips-main-content">
 
       <!-- MID-LATE JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Mid-Late sections">
-        <span class="tips-jump-label">On this page</span>
+      <div class="tips-jumpbar">
         <a href="#section-relic" class="tips-jump-link">Relic Breakpoints</a>
         <a href="#section-deity-swap" class="tips-jump-link">Deity Swap</a>
         <a href="#section-when-stuck" class="tips-jump-link">When Stuck</a>
-      </nav>
+      </div>
 
       <!-- RELIC BREAKPOINTS -->
-      <div id="section-relic" class="tips-section tips-anchor">
+      <div id="section-relic" class="tips-section" style="scroll-margin-top: var(--space-10)">
         <h2>Relic Breakpoints</h2>
         <p>Do not judge these deities too early - they might not seem strong at the start but gain value through their relic level.</p>
         <h3>Key Breakpoints</h3>
@@ -951,7 +900,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       </div>
 
       <!-- DEITY SWAP -->
-      <div id="section-deity-swap" class="tips-section tips-anchor">
+      <div id="section-deity-swap" class="tips-section" style="scroll-margin-top: var(--space-10)">
         <h2>Deity Swap Event</h2>
         <p>The Deity Swap Event lets you transfer all investment from one hero - stats, awakening, everything - onto a different hero. It is one of the biggest safety nets for early mistakes.</p>
         <div class="tips-warning-box">
@@ -966,7 +915,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       </div>
 
       <!-- WHEN YOU FEEL STUCK -->
-      <div id="section-when-stuck" class="tips-section tips-anchor">
+      <div id="section-when-stuck" class="tips-section" style="scroll-margin-top: var(--space-10)">
         <h2>When You Feel Stuck</h2>
         <p>Use this checklist when Odyssey progress stalls or you cannot beat the next stage.</p>
         <div class="tips-step-list">
@@ -1019,18 +968,17 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     </div>
 
     <!-- SUB-TAB: TEAM BUILDING -->
-    <div id="subtab-teams" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-teams" hidden>
+    <div id="subtab-teams" class="tips-panel">
     <main class="tips-main-content">
 
       <!-- TEAM BUILDING JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Team Building sections">
-        <span class="tips-jump-label">On this page</span>
+      <div class="tips-jumpbar">
         <a href="#section-support" class="tips-jump-link">Support Heroes</a>
         <a href="#section-compositions" class="tips-jump-link">Team Compositions</a>
-      </nav>
+      </div>
 
       <!-- SUPPORT HEROES -->
-      <div id="section-support" class="tips-section tips-anchor">
+      <div id="section-support" class="tips-section" style="scroll-margin-top: var(--space-10)">
         <h2>Support Heroes</h2>
         <p>Understanding the difference between Energy Support and Tempo Support helps you build better team synergies and choose the right support for your carry.</p>
 
@@ -1082,7 +1030,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       </div>
 
       <!-- TEAM COMPOSITIONS -->
-      <div id="section-compositions" class="tips-section tips-anchor">
+      <div id="section-compositions" class="tips-section" style="scroll-margin-top: var(--space-10)">
         <h2>Team Compositions</h2>
         <p>These are solid starting compositions to build toward. Mix and match based on which heroes you have available.</p>
         <p><strong>Note on Meret:</strong> She can function as a control-focused carry, not only as a support piece. In the comps below she appears in protective shells, but she is also viable as your primary damage dealer when properly invested.</p>
@@ -1439,27 +1387,14 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     </div>
 
     <!-- SUB-TAB: MECHANICS -->
-    <div id="subtab-mechanics" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics" hidden>
-      <main class="eg-main-content">
-        <div class="eg-content-card eg-note-card">
-          <h2>Mechanics (Coming soon)</h2>
-          <p>
-            This section is still being written. For now, use the other tabs for the highest-impact basics:
-          </p>
-          <ul>
-            <li><strong>Early Game</strong>: Odyssey milestones, summons, and wishlist setup</li>
-            <li><strong>Mid-Late</strong>: relic breakpoints and account power systems</li>
-            <li><strong>Shrine</strong>: placements, seats, talismans, and example setup</li>
-          </ul>
-        </div>
-      </main>
+    <div id="subtab-mechanics" class="tips-panel">
     </div>
   </div>
 
   <!-- ====================================================
        TAB: SHRINE
        ==================================================== -->
-  <div id="tab-shrine" class="main-tab-panel" role="tabpanel" tabindex="0" aria-labelledby="main-tab-shrine" style="display:none" hidden>
+  <div id="tab-shrine" class="main-tab-panel" style="display:none">
     <main class="shrine-main-content">
       <div class="sh-tldr-box">
         <h3 class="sh-tldr-title">TLDR - Quick Takeaways</h3>
@@ -1474,7 +1409,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
       <!-- SHRINE TABLE OF CONTENTS -->
       <div class="sh-toc-card">
-        <h3 class="sh-toc-title">On this page</h3>
+        <h3 class="sh-toc-title">Jump to Section</h3>
         <div class="sh-toc-grid">
           <a href="#shrine-general" class="sh-toc-item">General Pray</a>
           <a href="#shrine-placement" class="sh-toc-item">Slots &amp; Placement</a>
@@ -1727,22 +1662,10 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     const mainTabs = document.querySelectorAll('.main-tab');
     const mainPanels = document.querySelectorAll('.main-tab-panel');
 
-    function switchMainTab(tabId: string, opts: { updateHash?: boolean } = {}) {
-      const { updateHash = true } = opts;
-      mainTabs.forEach(t => {
-        const isActive = (t as HTMLElement).dataset.tab === tabId;
-        (t as HTMLElement).classList.toggle('is-active', isActive);
-        (t as HTMLElement).setAttribute('aria-selected', String(isActive));
-        (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
-      });
-      mainPanels.forEach(p => {
-        const isActive = (p as HTMLElement).id === 'tab-' + tabId;
-        (p as HTMLElement).style.display = isActive ? '' : 'none';
-        (p as HTMLElement).toggleAttribute('hidden', !isActive);
-      });
-      if (updateHash) history.replaceState(null, '', '#' + tabId);
-      if (tabId === 'shrine') startSparkles();
-      else stopSparkles();
+    function switchMainTab(tabId: string) {
+      mainTabs.forEach(t => (t as HTMLElement).classList.toggle('is-active', (t as HTMLElement).dataset.tab === tabId));
+      mainPanels.forEach(p => { (p as HTMLElement).style.display = (p as HTMLElement).id === 'tab-' + tabId ? '' : 'none'; });
+      history.replaceState(null, '', '#' + tabId);
     }
 
     mainTabs.forEach(tab => {
@@ -1752,102 +1675,20 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       });
     });
 
-    function setupRovingTabs(tabs: NodeListOf<Element>, getId: (el: Element) => string | undefined, activate: (id: string) => void) {
-      const list = Array.from(tabs) as HTMLElement[];
-      list.forEach((tabEl, idx) => {
-        tabEl.addEventListener('keydown', (e: KeyboardEvent) => {
-          const key = e.key;
-          const horizontalNext = key === 'ArrowRight' || key === 'ArrowDown';
-          const horizontalPrev = key === 'ArrowLeft' || key === 'ArrowUp';
-          if (horizontalNext || horizontalPrev || key === 'Home' || key === 'End') {
-            e.preventDefault();
-            const nextIdx = key === 'Home'
-              ? 0
-              : key === 'End'
-                ? list.length - 1
-                : (idx + (horizontalNext ? 1 : -1) + list.length) % list.length;
-            list[nextIdx]?.focus();
-            return;
-          }
-
-          if (key === 'Enter' || key === ' ') {
-            e.preventDefault();
-            const id = getId(tabEl);
-            if (id) activate(id);
-          }
-        });
-      });
-    }
-
-    setupRovingTabs(mainTabs, (el) => (el as HTMLElement).dataset.tab, (id) => switchMainTab(id));
-
-    // - HASH ROUTING (tabs + deep links)
-    function getHashId() {
-      return decodeURIComponent((location.hash || '').replace('#', ''));
-    }
-
-    function showForTargetId(targetId: string) {
-      if (!targetId) return false;
-
-      if (targetId === 'beginner' || targetId === 'shrine') {
-        switchMainTab(targetId);
-        return true;
-      }
-
-      const target = document.getElementById(targetId);
-      if (!target) return false;
-
-      const inShrine = !!target.closest('#tab-shrine');
-      const inBeginner = !!target.closest('#tab-beginner');
-
-      if (inShrine) {
-        switchMainTab('shrine', { updateHash: false });
-      } else if (inBeginner) {
-        switchMainTab('beginner', { updateHash: false });
-        const panel = target.closest('.tips-panel') as HTMLElement | null;
-        if (panel?.id?.startsWith('subtab-')) {
-          const subtabId = panel.id.replace('subtab-', '');
-          if (subtabId) switchSubTab(subtabId);
-        }
-      }
-
-      target.scrollIntoView({ block: 'start' });
-      return true;
-    }
-
-    // Handle URL hash on load + on hash changes
-    showForTargetId(getHashId());
-    window.addEventListener('hashchange', () => showForTargetId(getHashId()));
-
-    // Ensure in-page anchors open the right tab/subtab
-    document.addEventListener('click', (e) => {
-      const a = (e.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
-      if (!a) return;
-      const href = a.getAttribute('href');
-      if (!href) return;
-      const targetId = decodeURIComponent(href.replace('#', ''));
-      if (!targetId) return;
-      if (!document.getElementById(targetId)) return;
-      e.preventDefault();
-      history.replaceState(null, '', '#' + targetId);
-      showForTargetId(targetId);
-    });
+    // Handle URL hash on load
+    const outerHash = (location.hash || '').replace('#', '');
+    const validOuter = ['beginner', 'shrine'];
+    if (outerHash && validOuter.includes(outerHash)) switchMainTab(outerHash);
 
     // - SUB-TAB SWITCHING (Beginner tabs)
     const subTabs = document.querySelectorAll('.tips-subnav-btn');
     const subPanels = document.querySelectorAll('.tips-panel');
 
     function switchSubTab(subtabId: string) {
-      subTabs.forEach(t => {
-        const isActive = (t as HTMLElement).dataset.subtab === subtabId;
-        (t as HTMLElement).classList.toggle('is-active', isActive);
-        (t as HTMLElement).setAttribute('aria-selected', String(isActive));
-        (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
-      });
+      subTabs.forEach(t => (t as HTMLElement).classList.toggle('is-active', (t as HTMLElement).dataset.subtab === subtabId));
       subPanels.forEach(p => {
         const shouldShow = (p as HTMLElement).id === 'subtab-' + subtabId;
         (p as HTMLElement).classList.toggle('is-active', shouldShow);
-        (p as HTMLElement).toggleAttribute('hidden', !shouldShow);
       });
     }
 
@@ -1858,167 +1699,73 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       });
     });
 
-    setupRovingTabs(subTabs, (el) => (el as HTMLElement).dataset.subtab, (id) => switchSubTab(id));
-
-    // - STICKY JUMPBARS + "YOU ARE HERE" HIGHLIGHT
-    function setupJumpbars() {
-      const jumpbars = document.querySelectorAll('.tips-jumpbar');
-      jumpbars.forEach((jumpbar) => {
-        const links = Array.from(jumpbar.querySelectorAll('a[href^="#"]')) as HTMLAnchorElement[];
-        const targets = links
-          .map((a) => decodeURIComponent((a.getAttribute('href') || '').replace('#', '')))
-          .map((id) => ({ id, el: id ? document.getElementById(id) : null }))
-          .filter((t) => t.el);
-
-        if (!targets.length) return;
-
-        const panel = (jumpbar as HTMLElement).closest('.tips-panel');
-        let activeId: string | null = null;
-
-        function setActive(id: string) {
-          if (activeId === id) return;
-          activeId = id;
-          links.forEach((a) => {
-            const linkId = decodeURIComponent((a.getAttribute('href') || '').replace('#', ''));
-            a.classList.toggle('is-active', linkId === id);
-          });
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-          if (panel && !panel.classList.contains('is-active')) return;
-          const visible = entries
-            .filter((e) => e.isIntersecting)
-            .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top));
-          const best = visible[0]?.target as HTMLElement | undefined;
-          if (best?.id) setActive(best.id);
-        }, { root: null, rootMargin: '-20% 0px -75% 0px', threshold: [0, 0.1, 0.25] });
-
-        targets.forEach((t) => observer.observe(t.el as Element));
-        // Set initial state
-        const initial = targets.find((t) => t.id === getHashId())?.id || targets[0].id;
-        if (initial) setActive(initial);
-      });
-    }
-
-    setupJumpbars();
-
-    // - SHRINE SPARKS ANIMATION (pauses when not visible; respects reduced-motion)
-    const prefersReducedMotion = typeof window !== 'undefined'
-      && 'matchMedia' in window
-      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let sparklesInitialized = false;
-    const sparkleControllers: Array<{ start: () => void; stop: () => void }> = [];
-
-    function createSparkleController(canvas: HTMLCanvasElement) {
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return null;
-
-      function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
-      const resizeObserver = new ResizeObserver(() => resize());
-
-      function spawnSpark() {
-        const w = canvas.width, h = canvas.height;
-        return {
-          x: w * 0.35 + Math.random() * (w * 0.3),
-          y: h * 0.55 + Math.random() * (h * 0.4),
-          vx: (Math.random() - 0.5) * 0.6,
-          vy: -(0.6 + Math.random() * 1.4),
-          size: 1.2 + Math.random() * 3.5,
-          alpha: 0, life: 0,
-          lifeSpeed: 0.004 + Math.random() * 0.006,
-          twinkle: Math.random() * Math.PI * 2,
-          color: `hsl(${200 + Math.random() * 40}, 100%, ${75 + Math.random() * 25}%)`,
-        };
-      }
-
-      const sparks: any[] = [];
-      for (let i = 0; i < 60; i++) {
-        const s = spawnSpark();
-        (s as any).life = Math.random();
-        sparks.push(s);
-      }
-
-      function drawStar(x: number, y: number, size: number, alpha: number, color: string, twinkle: number, time: number) {
-        const shimmer = 0.7 + 0.3 * Math.sin(time * 6 + twinkle);
-        const a = alpha * shimmer;
-        if (a <= 0) return;
-        ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y);
-        const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 5);
-        glow.addColorStop(0, 'rgba(120,220,255,0.35)'); glow.addColorStop(1, 'rgba(30,100,255,0)');
-        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, 0, size * 5, 0, Math.PI * 2); ctx.fill();
-        const long = size * 4.5, short_ = size * 2.5, thin = size * 0.25;
-        function drawBeam(angle: number, len: number) {
-          ctx.save(); ctx.rotate(angle);
-          const grad = ctx.createLinearGradient(-len, 0, len, 0);
-          grad.addColorStop(0, 'rgba(255,255,255,0)'); grad.addColorStop(0.5, color); grad.addColorStop(1, 'rgba(255,255,255,0)');
-          ctx.fillStyle = grad; ctx.beginPath(); ctx.ellipse(0, 0, len, thin, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-        }
-        drawBeam(0, long); drawBeam(Math.PI / 2, long); drawBeam(Math.PI / 4, short_); drawBeam(-Math.PI / 4, short_);
-        const core = ctx.createRadialGradient(0, 0, 0, 0, 0, size);
-        core.addColorStop(0, 'white'); core.addColorStop(1, 'rgba(120,220,255,0)');
-        ctx.fillStyle = core; ctx.beginPath(); ctx.arc(0, 0, size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      }
-
-      let t = 0;
-      let rafId: number | null = null;
-
-      function tick() {
-        rafId = requestAnimationFrame(tick);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        t += 0.016;
-        for (const s of sparks) {
-          s.life += s.lifeSpeed;
-          s.alpha = s.life < 0.2 ? s.life / 0.2 : s.life < 0.75 ? 1 : 1 - (s.life - 0.75) / 0.25;
-          s.alpha = Math.max(0, Math.min(1, s.alpha));
-          s.x += s.vx + Math.sin(t * 1.5 + s.twinkle) * 0.15; s.y += s.vy;
-          drawStar(s.x, s.y, s.size, s.alpha, s.color, s.twinkle, t);
-          if (s.life >= 1) Object.assign(s, spawnSpark());
-        }
-      }
-
-      function start() {
-        if (rafId != null) return;
+    // - SHRINE SPARKS ANIMATION
+    function initializeSparkles() {
+      const canvases = document.querySelectorAll('.shrine-spark-canvas');
+      canvases.forEach((canvas: any) => {
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
         resize();
-        resizeObserver.observe(canvas);
-        rafId = requestAnimationFrame(tick);
-      }
-
-      function stop() {
-        if (rafId == null) return;
-        cancelAnimationFrame(rafId);
-        rafId = null;
-        resizeObserver.disconnect();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-
-      return { start, stop };
-    }
-
-    function initializeSparklesOnce() {
-      if (sparklesInitialized || prefersReducedMotion) return;
-      const canvases = document.querySelectorAll('.shrine-spark-canvas') as NodeListOf<HTMLCanvasElement>;
-      canvases.forEach((canvas) => {
-        const controller = createSparkleController(canvas);
-        if (controller) sparkleControllers.push(controller);
+        function spawnSpark() {
+          const w = canvas.width, h = canvas.height;
+          return {
+            x: w * 0.35 + Math.random() * (w * 0.3),
+            y: h * 0.55 + Math.random() * (h * 0.4),
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: -(0.6 + Math.random() * 1.4),
+            size: 1.2 + Math.random() * 3.5,
+            alpha: 0, life: 0,
+            lifeSpeed: 0.004 + Math.random() * 0.006,
+            twinkle: Math.random() * Math.PI * 2,
+            color: `hsl(${200 + Math.random() * 40}, 100%, ${75 + Math.random() * 25}%)`,
+          };
+        }
+        const sparks: any[] = [];
+        for (let i = 0; i < 60; i++) { const s = spawnSpark(); (s as any).life = Math.random(); sparks.push(s); }
+        function drawStar(x: number, y: number, size: number, alpha: number, color: string, twinkle: number, time: number) {
+          const shimmer = 0.7 + 0.3 * Math.sin(time * 6 + twinkle);
+          const a = alpha * shimmer;
+          if (a <= 0) return;
+          ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y);
+          const glow = ctx.createRadialGradient(0,0,0,0,0,size*5);
+          glow.addColorStop(0,'rgba(120,220,255,0.35)'); glow.addColorStop(1,'rgba(30,100,255,0)');
+          ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0,0,size*5,0,Math.PI*2); ctx.fill();
+          const long = size*4.5, short_ = size*2.5, thin = size*0.25;
+          function drawBeam(angle: number, len: number) {
+            ctx.save(); ctx.rotate(angle);
+            const grad = ctx.createLinearGradient(-len,0,len,0);
+            grad.addColorStop(0,'rgba(255,255,255,0)'); grad.addColorStop(0.5,color); grad.addColorStop(1,'rgba(255,255,255,0)');
+            ctx.fillStyle = grad; ctx.beginPath(); ctx.ellipse(0,0,len,thin,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+          }
+          drawBeam(0,long); drawBeam(Math.PI/2,long); drawBeam(Math.PI/4,short_); drawBeam(-Math.PI/4,short_);
+          const core = ctx.createRadialGradient(0,0,0,0,0,size);
+          core.addColorStop(0,'white'); core.addColorStop(1,'rgba(120,220,255,0)');
+          ctx.fillStyle = core; ctx.beginPath(); ctx.arc(0,0,size,0,Math.PI*2); ctx.fill(); ctx.restore();
+        }
+        let t = 0;
+        function tick() {
+          ctx.clearRect(0,0,canvas.width,canvas.height); t += 0.016;
+          for (const s of sparks) {
+            s.life += s.lifeSpeed;
+            s.alpha = s.life < 0.2 ? s.life/0.2 : s.life < 0.75 ? 1 : 1-(s.life-0.75)/0.25;
+            s.alpha = Math.max(0, Math.min(1, s.alpha));
+            s.x += s.vx + Math.sin(t*1.5+s.twinkle)*0.15; s.y += s.vy;
+            drawStar(s.x, s.y, s.size, s.alpha, s.color, s.twinkle, t);
+            if (s.life >= 1) Object.assign(s, spawnSpark());
+          }
+          requestAnimationFrame(tick);
+        }
+        tick();
       });
-      sparklesInitialized = true;
     }
 
-    function startSparkles() {
-      initializeSparklesOnce();
-      if (prefersReducedMotion) return;
-      if (document.hidden) return;
-      sparkleControllers.forEach(c => c.start());
-    }
-
-    function stopSparkles() {
-      sparkleControllers.forEach(c => c.stop());
-    }
-
-    document.addEventListener('visibilitychange', () => {
-      const shrineActive = document.querySelector('.main-tab.is-active')?.getAttribute('data-tab') === 'shrine';
-      if (document.hidden || !shrineActive) stopSparkles();
-      else startSparkles();
+    // Initialize sparkles when shrine tab is shown
+    document.querySelectorAll('.main-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        if ((tab as HTMLElement).dataset.tab === 'shrine') {
+          setTimeout(initializeSparkles, 50);
+        }
+      });
     });
 
   </script>
@@ -2026,146 +1773,11 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
 <style is:global>
   /* - EARLY GAME STYLES - */
-  .tips-page {
-    padding-top: var(--space-6);
-  }
-
-  .tips-page .main-tabs {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 0 var(--space-4);
-    border-bottom: 1px solid rgba(250, 204, 21, 0.22);
-    opacity: 1;
-    justify-content: flex-start;
-    gap: var(--space-2);
-  }
-
-  .tips-page .main-tab {
-    border-radius: var(--radius-md);
-    border-color: transparent;
-    background: rgba(255, 255, 255, 0.04);
-    padding: var(--space-2) var(--space-4);
-    font-size: var(--text-sm);
-  }
-
-  .tips-page .main-tab.is-active {
-    border-color: rgba(250, 204, 21, 0.34);
-    background: rgba(250, 204, 21, 0.1);
-  }
-
-  .tips-page .tips-subnav {
-    max-width: 900px;
-    margin: var(--space-7) auto 0;
-    padding: 0 0 var(--space-3);
-    border-bottom: 1px solid var(--border-faint);
-    justify-content: flex-start;
-    gap: var(--space-6);
-  }
-
-  .tips-page .tips-subnav-btn {
-    position: relative;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    padding: 0 0 var(--space-2);
-    color: var(--text-muted);
-    font-size: 0.95rem;
-  }
-
-  .tips-page .tips-subnav-btn::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 2px;
-    border-radius: var(--radius-full);
-    background: transparent;
-  }
-
-  .tips-page .tips-subnav-btn.is-active {
-    background: transparent;
-    color: var(--accent-gold-light);
-  }
-
-  .tips-page .tips-subnav-btn.is-active::after {
-    background: var(--accent-gold);
-  }
-
-  .tips-page .tips-subnav-btn:hover:not(.is-active) {
-    background: transparent;
-    color: var(--text-bright);
-  }
-
   .eg-main-content {
     max-width: 900px;
     margin: 0 auto;
-    padding: var(--space-7) 0 var(--space-20);
+    padding: var(--space-10) var(--space-6) var(--space-20);
   }
-
-  .tips-main-content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: var(--space-7) 0 var(--space-20);
-  }
-
-  .tips-meta {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0;
-  }
-  .tips-last-updated {
-    margin: 0 0 var(--space-3);
-    color: var(--text-muted);
-    font-size: 0.85rem;
-  }
-  .tips-anchor,
-  .tips-section,
-  .tips-f2p-note {
-    scroll-margin-top: 96px;
-  }
-
-  .tips-jumpbar {
-    position: sticky;
-    top: var(--space-4);
-    z-index: 20;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-4);
-    padding: var(--space-3) 0 var(--space-4);
-    margin: 0 0 var(--space-7);
-    border: 0;
-    border-bottom: 1px solid var(--border-faint);
-    border-radius: 0;
-    background: rgba(6, 9, 18, 0.82);
-    backdrop-filter: blur(10px);
-  }
-
-  .tips-jump-label {
-    color: var(--text-muted);
-    font-size: 0.72rem;
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-  }
-
-  .tips-jump-link {
-    display: inline-flex;
-    align-items: center;
-    padding: 0 0 2px;
-    border: 0;
-    border-bottom: 1px solid transparent;
-    border-radius: 0;
-    background: transparent;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.85rem;
-    line-height: 1.2;
-    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
-  }
-  .tips-jump-link:hover { background: transparent; border-color: rgba(250, 204, 21, 0.35); color: var(--text-primary); }
-  .tips-jump-link.is-active { background: transparent; border-color: rgba(250, 204, 21, 0.7); color: #fde68a; }
   .eg-content-card {
     background: var(--bg-surface);
     padding: var(--space-6) var(--space-7) var(--space-7);
@@ -2588,11 +2200,10 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
   /* Shrine TOC */
   .sh-toc-card {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid var(--border-faint);
-    border-radius: 0;
-    padding: 0 0 var(--space-5);
+    background: rgba(250,204,21,0.04);
+    border: 1px solid rgba(250,204,21,0.2);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
     margin-bottom: var(--space-8);
   }
   .sh-toc-title {
@@ -2606,21 +2217,20 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   .sh-toc-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
+    gap: var(--space-3);
   }
   .sh-toc-item {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid transparent;
-    border-radius: 0;
-    padding: 0 0 2px;
+    background: rgba(250,204,21,0.08);
+    border: 1px solid rgba(250,204,21,0.2);
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-4);
     font-size: 0.85rem;
     font-weight: var(--weight-semibold);
-    color: var(--text-secondary);
+    color: var(--accent-gold);
     text-decoration: none;
     transition: var(--transition-colors);
   }
-  .sh-toc-item:hover { background: transparent; border-color: rgba(250,204,21,0.5); color: var(--accent-gold-light); }
+  .sh-toc-item:hover { background: rgba(250,204,21,0.15); border-color: rgba(250,204,21,0.4); }
 
   /* Shrine sections */
   #shrine-general, #shrine-placement, #shrine-artefacts,
@@ -2827,39 +2437,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
   /* - RESPONSIVE - */
   @media (max-width: 768px) {
-    .tips-page { padding-top: var(--space-5); }
-    .tips-page .main-tabs {
-      padding-left: 0;
-      padding-right: 0;
-    }
-    .tips-page .tips-subnav {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      padding-left: 0;
-      padding-right: 0;
-      gap: var(--space-5);
-      scrollbar-width: none;
-    }
-    .tips-page .tips-subnav::-webkit-scrollbar {
-      display: none;
-    }
-    .eg-main-content,
-    .tips-main-content {
-      padding: var(--space-6) 0 60px;
-    }
-    .tips-jumpbar {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      gap: var(--space-4);
-      scrollbar-width: none;
-    }
-    .tips-jumpbar::-webkit-scrollbar {
-      display: none;
-    }
-    .tips-jump-label,
-    .tips-jump-link {
-      flex: 0 0 auto;
-    }
+    .eg-main-content { padding: var(--space-7) var(--space-4) 60px; }
     .eg-content-card { padding: var(--space-5) var(--space-4); }
     .eg-content-card h2 { font-size: 1.35rem; }
     .phase-grid { grid-template-columns: 1fr; gap: var(--space-3); }
@@ -2878,45 +2456,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     .eg-elixir-tiers { grid-template-columns: 1fr; }
     .core-rule-split { grid-template-columns: 1fr; }
     .dd-split { grid-template-columns: 1fr; }
-
-    /* Table-like layouts: stack on mobile */
-    .milestone-table, .pinion-table { display: block; }
-    .milestone-row, .pinion-row { display: block; }
-    .milestone-header, .pinion-header { display: none; }
-
-    .milestone-row, .pinion-row {
-      background: var(--chip-bg);
-      border: 1px solid var(--border-faint);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      margin-bottom: var(--space-3);
-    }
-
-    .milestone-chapter, .milestone-unlock, .milestone-why,
-    .pinion-type, .pinion-when {
-      display: block;
-      padding: var(--space-3) var(--space-4);
-      border-bottom: 1px solid var(--border-faint);
-      width: auto;
-    }
-    .milestone-why, .pinion-when { border-bottom: 0; }
-
-    .milestone-chapter::before { content: "Stage"; }
-    .milestone-unlock::before { content: "Unlocks"; }
-    .milestone-why::before { content: "Why it matters"; }
-    .pinion-type::before { content: "Item"; }
-    .pinion-when::before { content: "Action"; }
-
-    .milestone-chapter::before, .milestone-unlock::before, .milestone-why::before,
-    .pinion-type::before, .pinion-when::before {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: var(--weight-bold);
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-wide);
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
   }
   @media (max-width: 480px) {
     .hero-pills { gap: var(--space-2); }
