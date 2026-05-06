@@ -1,6 +1,40 @@
 {
   "guides": [
     {
+      "id": "hephaestus",
+      "label": "Hephaestus",
+      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp",
+      "imgPos": "center 15%",
+      "imgPosActive": "center 10%",
+      "quote": "Using volcanoes as his forge, smelting weapons - a single man becoming an army of thousands.",
+      "tags": ["Hearts Faction", "Support", "Legendary"],
+      "badge": "New",
+      "comps": [
+        {
+          "label": "PVE - Tower and Long Fights",
+          "heroes": ["hephaestus", "caishen", "isis", "pan", "prometheus"],
+          "reason": "The cleanest way to run Hephaestus. Caishen pushes energy into the team so Hephaestus reaches his third Ultimate faster. Once all three devices are live, Isis fires into a five-second window where she deals 30% more damage onto a target whose defenses have been stripped. Pan keeps enemies from escaping the device zones. Prometheus holds the frontline so nothing reaches Hephaestus.",
+          "notes": [
+            "Hephaestus needs three Ultimates before the big window opens - Caishen is what makes that happen in time.",
+            "Wait for the Fusion window to fire your main damage - Isis inside that five-second burst hits far harder than outside it.",
+            "Pan's crowd control keeps enemies sitting inside the zones where the attack speed debuff applies.",
+            "Place Hephaestus in the back corner before the fight starts. He cannot reposition."
+          ]
+        },
+        {
+          "label": "PVP - Survive Long Enough to Hit",
+          "heroes": ["hephaestus", "geb", "hladgunnr", "nyx", "cronus"],
+          "reason": "A slower PvP team built around letting Hephaestus reach two or three devices before the fight ends. Cronus slows enemy skill rotations and gives the team more time before the opposing burst lands. Geb pushes enemies toward the device zones. Weakness Analysis locks down their most dangerous attacker, and Hladgunnr delivers the damage when that window opens.",
+          "notes": [
+            "This only works if the fight lasts long enough. Against teams that burst everything down in ten seconds, look elsewhere.",
+            "Hephaestus cannot move - pick his starting position carefully and expect him to stay there.",
+            "Cronus buying time is what makes this viable in PvP - he is not optional in this lineup.",
+            "Weakness Analysis fires automatically on the highest-damage enemy, which usually lines up perfectly with Hladgunnr's target."
+          ]
+        }
+      ]
+    },
+    {
       "id": "meret",
       "label": "Meret",
       "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp",
@@ -335,40 +369,6 @@
             "CN community posts explicitly describe Jiutian and Nezha as 'quite useful together' - the combination is tested and validated in multiple player reports.",
             "Caishen's Energy acceleration directly increases how frequently Jiutian can cast her Ultimate and switch stances, compounding her mode-cycling value over time.",
             "Keep Jiutian in the rearmost backline slot and Nezha as frontline pressure anchor to ensure correct White/Black piece designation from Swift Control, Slow Response."
-          ]
-        }
-      ]
-    },
-    {
-      "id": "hephaestus",
-      "label": "Hephaestus",
-      "heroImage": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp",
-      "imgPos": "center 15%",
-      "imgPosActive": "center 10%",
-      "quote": "Using volcanoes as his forge, smelting weapons - a single man becoming an army of thousands.",
-      "tags": ["Hearts Faction", "Support", "Legendary"],
-      "badge": "New",
-      "comps": [
-        {
-          "label": "PVE - Tower and Long Fights",
-          "heroes": ["hephaestus", "caishen", "isis", "pan", "prometheus"],
-          "reason": "The cleanest way to run Hephaestus. Caishen pushes energy into the team so Hephaestus reaches his third Ultimate faster. Once all three devices are live, Isis fires into a five-second window where she deals 30% more damage onto a target whose defenses have been stripped. Pan keeps enemies from escaping the device zones. Prometheus holds the frontline so nothing reaches Hephaestus.",
-          "notes": [
-            "Hephaestus needs three Ultimates before the big window opens - Caishen is what makes that happen in time.",
-            "Wait for the Fusion window to fire your main damage - Isis inside that five-second burst hits far harder than outside it.",
-            "Pan's crowd control keeps enemies sitting inside the zones where the attack speed debuff applies.",
-            "Place Hephaestus in the back corner before the fight starts. He cannot reposition."
-          ]
-        },
-        {
-          "label": "PVP - Survive Long Enough to Hit",
-          "heroes": ["hephaestus", "geb", "hladgunnr", "nyx", "cronus"],
-          "reason": "A slower PvP team built around letting Hephaestus reach two or three devices before the fight ends. Cronus slows enemy skill rotations and gives the team more time before the opposing burst lands. Geb pushes enemies toward the device zones. Weakness Analysis locks down their most dangerous attacker, and Hladgunnr delivers the damage when that window opens.",
-          "notes": [
-            "This only works if the fight lasts long enough. Against teams that burst everything down in ten seconds, look elsewhere.",
-            "Hephaestus cannot move - pick his starting position carefully and expect him to stay there.",
-            "Cronus buying time is what makes this viable in PvP - he is not optional in this lineup.",
-            "Weakness Analysis fires automatically on the highest-damage enemy, which usually lines up perfectly with Hladgunnr's target."
           ]
         }
       ]

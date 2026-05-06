@@ -122,7 +122,12 @@
       "Bash(node run.js ' *)",
       "Bash(node run.js /tmp/playwright-dd2.js)",
       "Bash(node run.js /tmp/playwright-g1.js)",
-      "Bash(node run.js /tmp/playwright-test-tips.js)"
+      "Bash(node run.js /tmp/playwright-test-tips.js)",
+      "Bash(xargs -I {} basename {} .json)",
+      "Bash(node -e \"require\\('./lib/helpers'\\).detectDevServers\\(\\).then\\(servers => console.log\\(JSON.stringify\\(servers\\)\\)\\)\")",
+      "Bash(node run.js /tmp/test-hephaestus-guide.js)",
+      "Bash(node -e \"require\\('./lib/helpers'\\).detectDevServers\\(\\).then\\(servers => console.log\\(JSON.stringify\\(servers, null, 2\\)\\)\\)\")",
+      "Bash(node run.js /tmp/playwright-test-events-mobile.js)"
     ],
     "additionalDirectories": [
       "/Users/daschultheiss/hero-database/src/pages/shared-heroes",
