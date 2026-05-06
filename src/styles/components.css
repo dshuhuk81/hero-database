@@ -465,6 +465,473 @@
 
 
 /* ============================================================
+   TIPS SUB-TAB NAVIGATION
+   Pill-style sub-tabs within the Beginner tab.
+   Usage: <div class="tips-subnav"><button class="tips-subnav-btn is-active">Early Game</button>...</div>
+   ============================================================ */
+
+.tips-subnav {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.tips-subnav-btn {
+  border: 1px solid var(--border-medium);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition-colors);
+}
+
+.tips-subnav-btn.is-active {
+  border-color: rgba(250, 204, 21, 0.45);
+  background: rgba(250, 204, 21, 0.12);
+  color: var(--accent-gold-light);
+}
+
+.tips-subnav-btn:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-bright);
+}
+
+.tips-panel {
+  display: none;
+}
+
+.tips-panel.is-active {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .tips-subnav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .tips-subnav::-webkit-scrollbar {
+    display: none;
+  }
+  .tips-subnav-btn {
+    flex-shrink: 0;
+    font-size: var(--text-sm);
+    padding: var(--space-2) var(--space-4);
+  }
+}
+
+
+/* ============================================================
+   TIPS PAGE VISUAL COMPONENTS
+   Styles for Early Game panel restructure.
+   ============================================================ */
+
+/* Jumpbar — quick navigation links at top of panel */
+.tips-jumpbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tips-jump-link {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  background: rgba(250, 204, 21, 0.08);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--accent-gold-light);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: var(--transition-colors);
+}
+
+.tips-jump-link:hover {
+  background: rgba(250, 204, 21, 0.15);
+  border-color: rgba(250, 204, 21, 0.5);
+}
+
+/* Callout box — accent stripe for important notes/examples */
+.tips-callout {
+  margin: var(--space-3) 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--accent-gold);
+  background: rgba(250, 204, 21, 0.05);
+  color: var(--text-primary);
+}
+
+.tips-callout p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.tips-callout p + p {
+  margin-top: var(--space-2);
+}
+
+/* F2P note — prominent banner at top */
+.tips-f2p-note {
+  margin-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.03) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+}
+
+.tips-f2p-note p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Main content container for tips panels */
+.tips-main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-8) var(--space-20);
+}
+
+.eg-main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-8) var(--space-20);
+}
+
+@media (max-width: 768px) {
+  .tips-main-content,
+  .eg-main-content {
+    padding: var(--space-5) var(--space-4) var(--space-16);
+  }
+}
+
+/* Section wrapper for Early Game content */
+.tips-section {
+  margin-bottom: var(--space-8);
+}
+
+.tips-section h2 {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.tips-section h3 {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  margin: var(--space-4) 0 var(--space-2) 0;
+}
+
+@media (max-width: 640px) {
+  .tips-jumpbar {
+    gap: var(--space-1);
+  }
+  .tips-jump-link {
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-2);
+  }
+}
+
+/* Warning box for tips content */
+.tips-warning-box {
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(239, 68, 68, 0.05);
+  border-left: 3px solid rgba(239, 68, 68, 0.5);
+  color: var(--text-primary);
+}
+
+.tips-warning-box h3 {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-bright);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.tips-warning-box p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.tips-warning-box ul {
+  margin: var(--space-2) 0 0 0;
+  padding-left: var(--space-5);
+}
+
+.tips-warning-box li {
+  margin-bottom: var(--space-1);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Elixir tier cards */
+.tips-elixir-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+.tips-elixir-card {
+  padding: var(--space-4);
+  background: rgba(250, 204, 21, 0.03);
+  border: 1px solid rgba(250, 204, 21, 0.15);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.tips-elixir-range {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent-gold);
+  margin-bottom: var(--space-2);
+}
+
+.tips-elixir-name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-bright);
+}
+
+/* Numbered step list for When Stuck checklist */
+.tips-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+.tips-step {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.tips-step-num {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(250, 204, 21, 0.1);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: var(--radius-sm);
+  font-weight: var(--weight-bold);
+  color: var(--accent-gold);
+  font-size: var(--text-sm);
+  flex-shrink: 0;
+}
+
+.tips-step-body {
+  flex: 1;
+}
+
+.tips-step-title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text-bright);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.tips-step-body p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Support heroes comparison cards */
+.tips-support-comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+  margin: var(--space-4) 0;
+}
+
+.tips-support-card {
+  padding: var(--space-4);
+  background: rgba(250, 204, 21, 0.03);
+  border: 1px solid rgba(250, 204, 21, 0.15);
+  border-radius: var(--radius-md);
+}
+
+.tips-support-label {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--accent-gold);
+  margin-bottom: var(--space-3);
+  display: block;
+}
+
+.tips-support-card p {
+  margin: var(--space-2) 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.tips-support-card p:first-of-type {
+  margin-top: 0;
+}
+
+.tips-support-card ul {
+  margin: var(--space-2) 0;
+  padding-left: var(--space-5);
+}
+
+.tips-support-card li {
+  margin-bottom: var(--space-1);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Team composition cards */
+.comp-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.comp-card {
+  background: var(--chip-bg);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-left: 3px solid rgba(168, 85, 247, 0.5);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+}
+
+.comp-title {
+  font-size: 0.95rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  margin-bottom: var(--space-3);
+}
+
+.comp-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: var(--space-3) 0 0;
+}
+
+/* Hero chip styling */
+.hero-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-2) 0;
+  align-items: flex-start;
+}
+
+.hero-pic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  text-decoration: none;
+  color: inherit;
+  width: 64px;
+  flex-shrink: 0;
+}
+
+.hero-chip-portrait {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  background-size: cover;
+  background-position: center top 25%;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.hero-pic:hover .hero-chip-portrait {
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+}
+
+.hero-pic.chip-highlight .hero-chip-portrait {
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 6px rgba(168, 85, 247, 0.2);
+}
+
+.hero-chip-name {
+  font-size: 0.67rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+  line-height: 1.3;
+  max-width: 64px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip-divider {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  color: var(--text-disabled);
+  font-size: 0.8rem;
+  font-style: italic;
+  padding: 0 2px;
+  margin-top: -10px;
+}
+
+.chip-flex-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 64px;
+  flex-shrink: 0;
+}
+
+.chip-flex-img {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(250, 204, 21, 0.4);
+  background: rgba(250, 204, 21, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(250, 204, 21, 0.4);
+  font-size: 1.2rem;
+}
+
+.chip-flex-label {
+  font-size: 0.67rem;
+  text-align: center;
+  color: var(--accent-gold);
+  font-weight: var(--weight-semibold);
+}
+
+
+/* ============================================================
    UNDERLINE TAB BAR
    Standard page-level nav tabs with gold underline indicator.
    Usage: <div class="tab-bar"><button class="tab is-active">...</button></div>
