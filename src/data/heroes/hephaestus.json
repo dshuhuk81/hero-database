@@ -16,14 +16,14 @@
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
   "level": 300,
-  "baseAttackRate": 0,
-  "bossUltimatesPer90s": 0,
+  "baseAttackRate": 0.436,
+  "bossUltimatesPer90s": 7,
   "stats": {
-    "might": 0,
+    "might": 631000,
     "hp": 2101693,
-    "atk": 191990,
-    "armor": 47132,
-    "magicRes": 54827,
+    "atk": 191893,
+    "armor": 47131,
+    "magicRes": 54826,
     "dodgeRate": 6,
     "hitBonus": 0,
     "critRate": 4,
@@ -49,61 +49,61 @@
     "ultimatePWR": 0
   },
   "skills": [
-  {
-    "id": "skill_1",
-    "name": "Mech Domain",
-    "description": "Summons 3 inactive mechanical devices at combat start. When cast, activates the furthest device. Allies within its AoE restore 15 Energy and HP equal to 50% ATK per sec. Enemies in the AoE gain -15% ATK and -20% ATK SPD. If all devices are activated, decreases DMG dealt by enemies by 20%, and grants all allies 30% DMG bonus and 50% ATK SPD for 5s. This effect also triggers on Hephaestus's subsequent Ultimates.",
-    "upgrades": {
-      "level2": "Allies in the activated device's AoE restore 20 Energy and HP equal to 60% ATK per sec.",
-      "level3": "Enemies in the activated device's AoE gain -20% ATK and -30% ATK SPD.",
-      "level4": "If all devices are activated, decreases DMG dealt by enemies by 40%, and grants all allies 50% DMG bonus and 80% ATK SPD."
+    {
+      "id": "skill_1",
+      "name": "Mech Domain",
+      "description": "Summons 3 inactive mechanical devices at combat start. When cast, activates the furthest device. Allies within its AoE restore 15 Energy and HP equal to 50% ATK per sec. Enemies in the AoE gain -15% ATK and -20% ATK SPD. If all devices are activated, decreases DMG dealt by enemies by 20%, and grants all allies 30% DMG bonus and 50% ATK SPD for 5s. This effect also triggers on Hephaestus's subsequent Ultimates.",
+      "upgrades": {
+        "level2": "Allies in the activated device's AoE restore 20 Energy and HP equal to 60% ATK per sec.",
+        "level3": "Enemies in the activated device's AoE gain -20% ATK and -30% ATK SPD.",
+        "level4": "If all devices are activated, decreases DMG dealt by enemies by 40%, and grants all allies 50% DMG bonus and 80% ATK SPD."
+      },
+      "damageType": "",
+      "isUltimate": true
     },
-    "damageType": "",
-    "isUltimate": true
+    {
+      "id": "skill_2",
+      "name": "Artisan's Insight",
+      "description": "Hephaestus fires a beam to restrain the enemy with the highest DPS for 2s (+0.5s for each activated device on the field), reducing the target's Armor and M-RES by 20%.",
+      "upgrades": {
+        "level2": "Reduces Armor and M-RES by 30%.",
+        "level3": "Duration extends by 1s for each activated device on the field.",
+        "level4": "Reduces Armor and M-RES by 50%."
+      },
+      "damageType": ""
+    },
+    {
+      "id": "skill_3",
+      "name": "Primal Resonance",
+      "description": "Hephaestus's Energy Regen +20% (Passive).",
+      "upgrades": {
+        "level2": "Hephaestus's Energy Regen +30%.",
+        "level3": "Hephaestus's Energy Regen +40%.",
+        "level4": "Hephaestus gains 200 initial Energy on entry."
+      },
+      "damageType": ""
+    },
+    {
+      "id": "skill_4",
+      "name": "Molten Aegis",
+      "description": "Heals the weakest ally for HP equal to 150% ATK and reduces their incoming DMG by 10% for 5s. For each activated device on the field, further reduces incoming DMG by 5%.",
+      "upgrades": {
+        "level2": "Restores HP equal to 170% ATK.",
+        "level3": "For each activated device on the field, further reduces incoming DMG by 7.5%.",
+        "level4": "Healing is increased to HP equal to 200% of ATK."
+      },
+      "damageType": ""
+    }
+  ],
+  "relic": {
+    "name": "Undying Forge",
+    "description": "At combat start, Hephaestus places a forging bench before him. When he moves away, it teleports him back and inflicts Overload, disabling him for 5s. Hephaestus enters the [Dedicated] state near the bench, gaining infinite attack range and 30% DMG RED.",
+    "upgrades": {
+      "level2": "In the [Dedicated] state, the CD of Artisan's Insight and Molten Aegis -50%.",
+      "level3": "In the [Dedicated] state, Hephaestus's max Energy -30%.",
+      "level4": "In the [Dedicated] state, Hephaestus takes 60% less DMG."
+    }
   },
-  {
-    "id": "skill_2",
-    "name": "Artisan's Insight",
-    "description": "Hephaestus fires a beam to restrain the enemy with the highest DPS for 2s (+0.5s for each activated device on the field), reducing the target's Armor and M-RES by 20%.",
-    "upgrades": {
-      "level2": "Reduces Armor and M-RES by 30%.",
-      "level3": "Duration extends by 1s for each activated device on the field.",
-      "level4": "Reduces Armor and M-RES by 50%."
-    },
-    "damageType": ""
-  },
-  {
-    "id": "skill_3",
-    "name": "Primal Resonance",
-    "description": "Hephaestus's Energy Regen +20% (Passive).",
-    "upgrades": {
-      "level2": "Hephaestus's Energy Regen +30%.",
-      "level3": "Hephaestus's Energy Regen +40%.",
-      "level4": "Hephaestus gains 200 initial Energy on entry."
-    },
-    "damageType": ""
-  },
-  {
-    "id": "skill_4",
-    "name": "Molten Aegis",
-    "description": "Heals the weakest ally for HP equal to 150% ATK and reduces their incoming DMG by 10% for 5s. For each activated device on the field, further reduces incoming DMG by 5%.",
-    "upgrades": {
-      "level2": "Restores HP equal to 170% ATK.",
-      "level3": "For each activated device on the field, further reduces incoming DMG by 7.5%.",
-      "level4": "Healing is increased to HP equal to 200% of ATK."
-    },
-    "damageType": ""
-  }
-],
-"relic": {
-  "name": "Undying Forge",
-  "description": "At combat start, Hephaestus places a forging bench before him. When he moves away, it teleports him back and inflicts Overload, disabling him for 5s. Hephaestus enters the [Dedicated] state near the bench, gaining infinite attack range and 30% DMG RED.",
-  "upgrades": {
-    "level2": "In the [Dedicated] state, the CD of Artisan's Insight and Molten Aegis -50%.",
-    "level3": "In the [Dedicated] state, Hephaestus's max Energy -30%.",
-    "level4": "In the [Dedicated] state, Hephaestus takes 60% less DMG."
-  }
-},
   "synergies": [
     "HEAL_TEAM",
     "ATK_SPD_DOWN",
