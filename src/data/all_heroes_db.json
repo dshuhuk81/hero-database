@@ -3113,7 +3113,7 @@
     "id": "hephaestus",
     "name": "Hephaestus",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp",
-    "release": false,
+    "release": true,
     "faction": "Hearts",
     "role": "Hefty",
     "class": "Support",
@@ -3162,63 +3162,58 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Ultimate Domain",
-        "description": "Passive: At the start of battle, summons 3 inactive mechanical devices onto the field. Active: Activates the furthest device, expanding its area of effect. Allies inside recover HP equal to 50% of ATK and 15 Energy per second; enemies inside have ATK reduced by 15% and ATK SPD reduced by 20%. When all 3 devices are active, all enemies' DMG is reduced by 20% and all allies' DMG is increased by 30% and ATK SPD by 50% for 5 seconds. Subsequent Ultimate casts also trigger this Fusion effect.",
+        "name": "Mech Domain",
+        "description": "Summons 3 inactive mechanical devices at combat start. When cast, activates the furthest device. Allies within its AoE restore 15 Energy and HP equal to 50% ATK per sec. Enemies in the AoE gain -15% ATK and -20% ATK SPD. If all devices are activated, decreases DMG dealt by enemies by 20%, and grants all allies 30% DMG bonus and 50% ATK SPD for 5s. This effect also triggers on Hephaestus's subsequent Ultimates.",
         "upgrades": {
-          "level2": "HP and Energy recovered per second by allies inside activated devices increased.",
-          "level3": "ATK and ATK SPD reduction on enemies inside devices increased.",
-          "level4": "Fusion effect amplified: greater enemy DMG reduction and higher ally DMG and ATK SPD boost."
+          "level2": "Allies in the activated device's AoE restore 20 Energy and HP equal to 60% ATK per sec.",
+          "level3": "Enemies in the activated device's AoE gain -20% ATK and -30% ATK SPD.",
+          "level4": "If all devices are activated, decreases DMG dealt by enemies by 40%, and grants all allies 50% DMG bonus and 80% ATK SPD."
         },
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_1.png",
-        "damageType": "magical",
+        "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Weakness Analysis",
-        "description": "Fires a laser to Restrain the enemy with the highest DMG for 2 seconds. The duration is extended by 0.5 seconds for each activated device on the field. While restrained, the target's Armor and Magical RED are reduced by 20%.",
+        "name": "Artisan's Insight",
+        "description": "Hephaestus fires a beam to restrain the enemy with the highest DPS for 2s (+0.5s for each activated device on the field), reducing the target's Armor and M-RES by 20%.",
         "upgrades": {
-          "level2": "Armor and Magical RED reduction increased.",
-          "level3": "Restrain duration extension per activated device increased.",
-          "level4": "Armor and Magical RED reduction increased again."
+          "level2": "Reduces Armor and M-RES by 30%.",
+          "level3": "Duration extends by 1s for each activated device on the field.",
+          "level4": "Reduces Armor and M-RES by 50%."
         },
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_2.png",
-        "damageType": "magical"
+        "damageType": ""
       },
       {
         "id": "skill_3",
-        "name": "Force Shield",
-        "description": "Heals the weakest ally for HP equal to 150% of ATK and reduces their DMG taken by 10% for 5 seconds. For each activated device on the field, DMG taken is further reduced by 5%.",
+        "name": "Primal Resonance",
+        "description": "Hephaestus's Energy Regen +20% (Passive).",
         "upgrades": {
-          "level2": "Healing effect increased.",
-          "level3": "DMG reduction per activated device increased.",
-          "level4": "Healing effect increased again."
+          "level2": "Hephaestus's Energy Regen +30%.",
+          "level3": "Hephaestus's Energy Regen +40%.",
+          "level4": "Hephaestus gains 200 initial Energy on entry."
         },
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_3.png",
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "Origin Resonance",
-        "description": "Hephaestus's Energy Regen is increased by 20%.",
+        "name": "Molten Aegis",
+        "description": "Heals the weakest ally for HP equal to 150% ATK and reduces their incoming DMG by 10% for 5s. For each activated device on the field, further reduces incoming DMG by 5%.",
         "upgrades": {
-          "level2": "Energy Regen increase is higher.",
-          "level3": "Energy Regen increase is higher again.",
-          "level4": "Gains initial Energy at the start of battle."
+          "level2": "Restores HP equal to 170% ATK.",
+          "level3": "For each activated device on the field, further reduces incoming DMG by 7.5%.",
+          "level4": "Healing is increased to HP equal to 200% of ATK."
         },
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_4.png",
         "damageType": ""
       }
     ],
     "relic": {
       "name": "Undying Forge",
-      "description": "At the start of battle, Hephaestus places a forge. If he leaves it, the forge teleports him back and puts him in an Overload state, unable to act for 5 seconds. While at the forge, Hephaestus enters a Focused state, gaining infinite attack range and taking 30% less DMG.",
+      "description": "At combat start, Hephaestus places a forging bench before him. When he moves away, it teleports him back and inflicts Overload, disabling him for 5s. Hephaestus enters the [Dedicated] state near the bench, gaining infinite attack range and 30% DMG RED.",
       "upgrades": {
-        "level2": "In Focused state: cooldowns of Weakness Analysis and Force Shield reduced.",
-        "level3": "In Focused state: Energy cost to cast Ultimate Domain reduced.",
-        "level4": "In Focused state: DMG taken further reduced."
-      },
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_relic.png"
+        "level2": "In the [Dedicated] state, the CD of Artisan's Insight and Molten Aegis -50%.",
+        "level3": "In the [Dedicated] state, Hephaestus's max Energy -30%.",
+        "level4": "In the [Dedicated] state, Hephaestus takes 60% less DMG."
+      }
     },
     "synergies": [
       "HEAL_TEAM",
@@ -3236,6 +3231,16 @@
           "sacrifice_2",
           "sacrifice_3",
           "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
         ]
       },
       {

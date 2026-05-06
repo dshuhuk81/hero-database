@@ -2164,7 +2164,7 @@ const activeGuide = releasedGuides[0];
      HEPHAESTUS GUIDE
      ═══════════════════════════════════════ -->
 {releasedGuides.some(g => g.id === "hephaestus") && (
-<div class="guide-slide" id="hephaestus">
+<div class="guide-slide is-active" id="hephaestus">
   <div class="guide-container">
 
     <!-- HEADER -->
@@ -2180,52 +2180,167 @@ const activeGuide = releasedGuides[0];
       </div>
     </header>
 
-    <!-- VERDICT -->
-    <section class="section">
+    <!-- JUMP NAVIGATION -->
+    <nav class="jump-nav">
+      <div class="jump-nav-title">Quick Navigation</div>
+      <div class="jump-nav-links">
+        <a href="#hephaestus-overview">Overview</a>
+        <a href="#hephaestus-unique">What Makes Him Different</a>
+        <a href="#hephaestus-skills">Skills Explained</a>
+        <a href="#hephaestus-ratings">Ratings</a>
+        <a href="#hephaestus-synergies">Synergies</a>
+        <a href="#hephaestus-comps">Team Comps</a>
+        <a href="#hephaestus-counters">PVP Counters</a>
+        <a href="#hephaestus-strengths">Strengths & Weaknesses</a>
+        <a href="#hephaestus-build">Build Guide</a>
+      </div>
+    </nav>
+
+    <div class="print-bar">
+      <button class="print-btn" onclick="window.print()">Save as PDF</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section class="section" id="hephaestus-overview">
+      <div class="section-title">Overview</div>
       <div class="verdict-strip">
         <div class="verdict-role">Device Support</div>
-        <p class="verdict-line">Hephaestus is a <strong>Legendary Support</strong> from the <strong>Hearts faction</strong>. At the start of battle, he deploys three mechanical devices and activates them one by one with each Ultimate.</p>
-        <p class="verdict-line">Each active device creates a zone where allies recover HP and Energy per second, while enemies inside lose Attack and Attack Speed. When all three devices are active, they merge into a field-wide effect that reduces enemy damage and increases ally damage and Attack Speed for a short duration.</p>
-        <p class="verdict-line">He also targets the highest-damage enemy with a beam that restrains them and reduces both Armor and Magic Resistance. His Relic anchors him in place, granting damage reduction and unlimited attack range while active.</p>
+        <p class="verdict-line">Hephaestus is a <strong>Legendary Support</strong> from the <strong>Hearts faction</strong>. Think of him as a stationary fortress - he plants himself in one spot and creates a network of three mechanical devices across the field.</p>
+        <p class="verdict-line">What makes him special is that he works in phases. At the start of battle, all three devices are inactive. Every time Hephaestus casts his Ultimate, one device turns on. Once a device is active, it becomes a safe zone for your allies - they heal up and gain energy inside it, while enemies trapped there become weaker (lower attack and attack speed).</p>
+        <p class="verdict-line">The real power comes when all three devices are active at once. When that happens, they create a massive effect across the entire battlefield - your enemies take more damage from your team, and your allies attack faster and hit harder for 5 seconds. This resets each time Hephaestus uses his Ultimate.</p>
         <div class="verdict-meta">
-          <span class="verdict-meta-item"><strong>Core:</strong> Activates devices with Ultimate</span>
-          <span class="verdict-meta-item"><strong>Effect:</strong> Buffs allies and debuffs enemies at the same time</span>
-          <span class="verdict-meta-item"><strong>Scaling:</strong> More active devices strengthen his skills</span>
+          <span class="verdict-meta-item"><strong>Core:</strong> Activate all 3 devices through Ultimates</span>
+          <span class="verdict-meta-item"><strong>Payoff:</strong> Field-wide buff when all devices are online</span>
+          <span class="verdict-meta-item"><strong>Trade:</strong> Must stay planted at his forge to work</span>
         </div>
       </div>
     </section>
 
-    <!-- PLAY / SKIP -->
-    <section class="section">
-      <div class="sw-grid">
-        <div class="sw-card strengths">
-          <div class="sw-title">He works well when</div>
-          <ul class="sw-list">
-            <li>Multiple Ultimate casts can be used during the fight</li>
-            <li>Enemies remain inside device zones</li>
-            <li>Allies benefit from continuous HP and Energy recovery</li>
-            <li>Controlling the highest-damage enemy is valuable</li>
-          </ul>
+    <!-- WHAT MAKES HIM DIFFERENT -->
+    <section class="section" id="hephaestus-unique">
+      <div class="section-title">What Makes Him Different</div>
+      <p style="margin-bottom:16px; color:var(--text-muted); font-size:14px; line-height:1.6;">Hephaestus is one of four legendary supports in Hearts faction, but he plays very differently from the others.</p>
+
+      <div style="margin-bottom:20px;">
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:8px;">vs Caishen (Energy Battery)</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Caishen's job is to give your team constant energy so their damage dealers can cast their big moves over and over. Hephaestus doesn't give energy - he gives buffs and debuffs. His devices weaken enemies while protecting allies, and he needs energy himself to activate all three devices in a fight.</p>
         </div>
-        <div class="sw-card weaknesses">
-          <div class="sw-title">He struggles when</div>
-          <ul class="sw-list">
-            <li>Device zones are not effectively utilized</li>
-            <li>Enemies move out of the affected areas</li>
-            <li>His positioning is compromised due to being anchored in place</li>
-            <li>He is displaced and enters Overload, becoming unable to act</li>
-          </ul>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:8px;">vs Yuelao (Pair Linker)</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Yuelao links two specific allies together - usually your strongest attacker and your tankiest hero - and they share stats with each other. Hephaestus doesn't link anyone. Instead, his zones help anyone standing in them equally. He also stops one enemy at a time with restraint, controlling which threat matters most.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:8px;">vs Mengpo (Revive Support)</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Mengpo brings dead allies back to life if she stacks up her Samsara power. Hephaestus prevents allies from dying in the first place - his zones heal them constantly and reduce damage they take. He stops the biggest enemy threat before they can hurt your team. It's prevention over rescue.</p>
         </div>
       </div>
+
+      <p style="color:var(--text-muted); font-size:14px; line-height:1.6;"><strong>Hephaestus' unique advantage:</strong> He's the only Hearts support with a physical/tanky nature. All the others are magical supports. This means he scales differently with gear and can survive in spots where other supports get deleted. But he must stay put - if he gets moved away from his forge, he gets stunned for 5 seconds.</p>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section class="section">
-      <div class="section-title">How he plays out</div>
-      <div class="mechanic-box">
-        <p style="margin-bottom:12px; color:var(--text-muted); font-size:14px; line-height:1.6;">Three devices appear on the field at the start of the fight. Each time Hephaestus uses his Ultimate, one inactive device is activated. Active devices create zones that restore HP and Energy to allies while reducing Attack and Attack Speed of enemies inside them.</p>
-        <p style="margin-bottom:12px; color:var(--text-muted); font-size:14px; line-height:1.6;">As more devices become active, his other abilities scale. Weakness Analysis restrains the highest-damage enemy for longer, and Force Shield provides increased damage reduction.</p>
-        <p style="color:var(--text-muted); font-size:14px; line-height:1.6;">When all three devices are active, they merge into a single effect that reduces enemy damage and increases ally damage and Attack Speed for 5 seconds. This effect is triggered again with subsequent Ultimate casts.</p>
+    <!-- SKILLS EXPLAINED -->
+    <section class="section" id="hephaestus-skills">
+      <div class="section-title">Skill Breakdown</div>
+      <div class="skills-grid">
+
+        <div class="skill-card ultimate">
+          <div class="skill-header">
+            <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_1.webp" alt="Mech Domain" />
+            <span class="skill-name">Mech Domain</span>
+            <span class="skill-badge badge-ultimate">Ultimate</span>
+          </div>
+          <p class="skill-desc">
+            Summons <span class="highlight">3 inactive mechanical devices</span> at combat start. When cast, activates the furthest device. Allies within its AoE restore <span class="highlight">15 Energy and HP equal to 50% ATK</span> per sec. Enemies in the AoE gain <span class="highlight">-15% ATK and -20% ATK SPD</span>. If all devices are activated, <span class="highlight">decreases enemy DMG by 20%, grants all allies 30% DMG bonus and 50% ATK SPD</span> for 5s.
+          </p>
+          <div class="skill-upgrade-block">
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Allies restore 20 Energy and HP equal to 60% ATK per sec.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Enemies gain -20% ATK and -30% ATK SPD.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">All devices active: decreases enemy DMG by 40%, grants 50% DMG bonus and 80% ATK SPD.</span></div>
+          </div>
+          <div class="skill-note">
+            Getting all 3 devices active takes time (3 Ultimates), so fights need to last long enough for Hephaestus to reach that full-field payoff. The Fusion effect (all 3 active) is transformational for team damage and survival.
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_2.webp" alt="Artisan's Insight" />
+            <span class="skill-name">Artisan's Insight</span>
+            <span class="skill-badge badge-skill">Active</span>
+          </div>
+          <p class="skill-desc">
+            Fires a beam to restrain the enemy with the highest DPS for <span class="highlight">2 seconds</span> (+0.5s for each activated device), reducing their <span class="highlight">Armor and M-RES by 20%</span>. Vulnerable targets take more damage, making this a key setup tool.
+          </p>
+          <div class="skill-upgrade-block">
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Reduces Armor and M-RES by 30%.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Duration extends by 1s for each activated device on the field.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Reduces Armor and M-RES by 50%.</span></div>
+          </div>
+          <div class="skill-note">
+            Scales with devices: Lv3 changes per-device scaling from +0.5s to +1s duration. By Lv3, the restraint can reach 5 seconds with all 3 devices active. Critical for locking down high-threat enemies.
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_3.webp" alt="Primal Resonance" />
+            <span class="skill-name">Primal Resonance</span>
+            <span class="skill-badge badge-skill">Passive</span>
+          </div>
+          <p class="skill-desc">
+            Hephaestus's <span class="highlight">Energy Regen +20%</span>. This is always active and critical - Hephaestus must cast his Ultimate 3 times in a single fight to get all devices online.
+          </p>
+          <div class="skill-upgrade-block">
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Energy Regen +30%.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">Energy Regen +40%.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Gains 200 initial Energy on entry.</span></div>
+          </div>
+          <div class="skill-note">
+            Lv4 is a massive power spike: 200 starting Energy means Hephaestus enters fights ready to immediately activate the first device. Energy regen stats (Far 2/3 Virtues, energy-regen gear) become essential for hitting 3 Ultimates per fight.
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-header">
+            <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_skill_4.webp" alt="Molten Aegis" />
+            <span class="skill-name">Molten Aegis</span>
+            <span class="skill-badge badge-skill">Active</span>
+          </div>
+          <p class="skill-desc">
+            Heals the weakest ally for <span class="highlight">HP equal to 150% ATK</span> and reduces their incoming <span class="highlight">DMG by 10% for 5s</span>. For each activated device on the field, further reduces incoming DMG by 5%.
+          </p>
+          <div class="skill-upgrade-block">
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv2</span><span class="upgrade-text">Restores HP equal to 170% ATK.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv3</span><span class="upgrade-text">For each device, further reduces DMG by 7.5%.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">Healing increased to HP equal to 200% ATK.</span></div>
+          </div>
+          <div class="skill-note">
+            Targets the weakest ally automatically. Damage reduction scales with devices: at Lv3 with all 3 devices active, healed allies take 32.5% less damage. Combined with the device zones, this creates multiple survival layers.
+          </div>
+        </div>
+
+        <div class="skill-card relic">
+          <div class="skill-header">
+            <img class="skill-icon" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hephaestus_relic.webp" alt="Undying Forge" />
+            <span class="skill-name">Undying Forge</span>
+            <span class="skill-badge badge-relic">Relic</span>
+          </div>
+          <p class="skill-desc">
+            At combat start, Hephaestus places a forge before him. In the <span class="highlight">[Dedicated] state</span> near the bench, he gains <span class="highlight">infinite attack range and 30% DMG RED</span>. If he moves away, the forge teleports him back and inflicts <span class="highlight">Overload, disabling him for 5s</span>.
+          </p>
+          <div class="skill-upgrade-block">
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv2 [Relic Lv.10]</span><span class="upgrade-text">In [Dedicated] state, CD of Artisan's Insight and Molten Aegis -50%.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv3 [Relic Lv.20]</span><span class="upgrade-text">In [Dedicated] state, max Energy -30%.</span></div>
+            <div class="upgrade-row"><span class="skill-upgrade-level">Lv4</span><span class="upgrade-text">In [Dedicated] state, Hephaestus takes 60% less DMG.</span></div>
+          </div>
+          <div class="skill-note">
+            Relic Lv1 establishes Hephaestus's core identity: immobile but nigh-untouchable. Lv2 (Relic Lv.10) is a major spike - halving cooldowns on his heal and restraint lets him cycle abilities twice as fast. Lv4 stacks to 90% total DR with base 30%, making him nearly invincible if positioned safely.
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -2236,17 +2351,45 @@ const activeGuide = releasedGuides[0];
         <div class="rating-card">
           <div class="rating-mode">PVE / Campaign</div>
           <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
-          <div class="rating-desc">Provides both ally buffs and enemy debuffs through device activation.</div>
+          <div class="rating-desc">Campaign stages are perfect for him - fights last long enough to activate all devices, and enemies stay in their zones.</div>
         </div>
         <div class="rating-card">
           <div class="rating-mode">Boss Fights</div>
           <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
-          <div class="rating-desc">Applies consistent debuffs and scaling effects once devices are active.</div>
+          <div class="rating-desc">Bosses don't run away from zones, so his debuffs stick. The healing from devices keeps your team alive through long fights.</div>
         </div>
         <div class="rating-card">
           <div class="rating-mode">PVP</div>
           <div class="rating-cell"><span class="rating-badge" data-tier="A">A</span></div>
-          <div class="rating-desc">Applies control and debuffs to the highest-damage enemy automatically.</div>
+          <div class="rating-desc">Good if enemies have low mobility. Gets countered hard by fast teams and energy-draining heroes.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYNERGIES -->
+    <section class="section" id="hephaestus-synergies">
+      <div class="section-title">Who Works With Him</div>
+      <div style="margin-bottom:20px;">
+        <p style="margin-bottom:12px; color:var(--text-muted); font-size:14px; line-height:1.6;">Hephaestus needs team members who either enable him to cast his Ultimate more often, or who can make full use of the buffs he provides.</p>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">Energy Supports - Give him the energy he needs</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Caishen is perfect here. He gives massive amounts of energy to the whole team, which gets Hephaestus to his third Ultimate faster.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">Zone Control Heroes - Geb, Prometheus</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">These heroes create their own areas of effect that trap or control enemies. Combined with Hephaestus's zones, enemies have nowhere to run and stay debuffed longer.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">AOE Control - Pan, Poseidon</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">They hit multiple enemies at once or control wide areas. Hephaestus's debuffs make these attacks even stronger.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">Magic Damage Heroes - Isis, Hecate</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">These heroes deal magic damage and scale off his attack stat. Plus, they benefit from the 30% damage boost when all devices are active.</p>
         </div>
       </div>
     </section>
@@ -2276,6 +2419,254 @@ const activeGuide = releasedGuides[0];
             )}
           </div>
         ))}
+      </div>
+    </section>
+
+    <!-- PVP COUNTERS -->
+    <section class="section" id="hephaestus-counters">
+      <div class="section-title">PVP Counters - What Beats Him</div>
+      <div class="mechanic-box">
+        <p style="margin-bottom:12px; color:var(--text-muted); font-size:14px; line-height:1.6;">Hephaestus is strong but has clear weaknesses in PVP. Here's what to watch for:</p>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">Fast Burst Teams</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Teams that end fights in seconds before Hephaestus can activate all 3 devices. If he only has 1-2 devices active, his payoff damage is weak. Speed kills him before he gets going.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">Assassins With Control - Like Nyx</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Assassins jump to the backline and stun/control your team before they can organize. If Hephaestus gets stunned early, he wastes time and can't keep the fight alive. Nyx specifically can mute his healing.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">Energy Drain Heroes - Like Pan or Cronus</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Pan steals energy with his Ultimate and silences high-energy targets, while Cronus reduces cooldowns and messes with tempo. If Hephaestus can't get energy for his Ultimate, he can't activate devices. Cronus especially slows him down while speeding up the enemy team.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">Displacement/Pull Heroes</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Anything that moves Hephaestus away from his forge. Once he's pulled away, he gets stunned for 5 seconds and becomes completely useless. During that 5-second window, your team is sitting ducks with no support.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRENGTHS & WEAKNESSES -->
+    <section class="section" id="hephaestus-strengths">
+      <div class="section-title">Strengths & Weaknesses</div>
+      <div class="sw-grid">
+        <div class="sw-card strengths">
+          <div class="sw-title">Strengths</div>
+          <ul class="sw-list">
+            <li>Exceptional team sustain - Multi-layer healing (150-200% ATK scaling) plus damage reduction stacking makes team nearly unkillable once ramped</li>
+            <li>Teamwide damage amplification - +30% all-ally damage bonus when all 3 devices active; synergizes perfectly with DPS-heavy carries</li>
+            <li>Heavy enemy debuff layers - Reduces enemy ATK by 15%, ATK SPD by 20%, and armor/M-RES by up to 50% while restraining highest threat</li>
+            <li>Scales infinitely with energy regen - Each point of energy regen accelerates device activation; exponential power growth with Fervor/Far virtue sets</li>
+            <li>Unique support role - Only physical/tanky support in game, scales differently with gear and doesn't overlap with magical supports</li>
+          </ul>
+        </div>
+        <div class="sw-card weaknesses">
+          <div class="sw-title">Weaknesses</div>
+          <ul class="sw-list">
+            <li>Requires time to reach peak power - Needs 3 Ultimates (~15-20 seconds) to activate all 3 devices; crippled in short fights or early-game rushes</li>
+            <li>Immobility creates positioning risk - Forge anchors him to one location; forced movement away triggers 5-second stun that leaves team without support</li>
+            <li>Catastrophic to displacement CC - Pan/Khepri/Set pulls mean stun + defenseless team; one bad position equals match loss</li>
+            <li>Energy starvation is fatal - Pan's energy drain and Cronus cooldown reduction prevent him from hitting 3 Ultimates; hard-countered by energy-denial supports</li>
+            <li>Vulnerable to burst compositions - Fast teams can burst down team before 3 devices activate or before he heals allies to safety</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILD GUIDE -->
+    <section class="section" id="hephaestus-build">
+      <div class="section-title">Build Guide - How To Gear Him</div>
+
+      <div style="margin-bottom:20px;">
+        <h4 style="margin-bottom:12px; color:var(--text-primary);">Stat Priorities</h4>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">1. Energy Regen (Most Important)</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">Hephaestus needs to cast his Ultimate 3 times during a fight. Energy regen is what makes that possible. Stack energy regen percentage and consider gear that reduces ultimate cooldown. Without enough energy, he only gets 1-2 devices active and loses most of his power.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px; margin-bottom:12px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">2. HP (Health)</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">More HP means more healing through his scaling abilities (his heals are 150-200% of his attack stat). Plus, as a support who can't move, he gets hit more often. HP lets him survive long enough to heal his team.</p>
+        </div>
+
+        <div style="background:var(--bg-secondary); padding:12px 16px; border-radius:8px;">
+          <p style="margin:0; font-weight:600; color:var(--text-primary); margin-bottom:6px;">3. Armor and Magic Resist</p>
+          <p style="margin:0; color:var(--text-muted); font-size:14px; line-height:1.6;">These synergize perfectly with his Relic, which gives 30% damage reduction when he's at the forge. More defenses make that 30% even more valuable. These stats also help him survive burst damage from fast teams.</p>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <h4 style="margin-bottom:16px; color:var(--text-primary);">Recommended Virtues</h4>
+        <div class="heph-virtue-sets">
+
+          <div class="virtue-set-card">
+            <div class="vsc-header">
+              <span class="vsc-title">Sacrifice</span>
+              <span class="vsc-rarity rarity-gold">Epic</span>
+            </div>
+            <div class="vsc-bonuses">
+              <div class="vsc-bonus">2-Piece: +10% HP at combat start</div>
+              <div class="vsc-bonus">4-Piece: +30% max HP while current HP stays the same</div>
+            </div>
+            <div class="vsc-pieces">
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/sacrificeI_elite.png" alt="Sacrifice I" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Sacrifice I</span>
+              </div>
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/sacrificeII_elite.png" alt="Sacrifice II" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Sacrifice II</span>
+              </div>
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/sacrificeIII_elite.png" alt="Sacrifice III" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Sacrifice III</span>
+              </div>
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/sacrificeIV_elite.png" alt="Sacrifice IV" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Sacrifice IV</span>
+              </div>
+            </div>
+            <p class="vsc-note">His heals scale off attack and HP. More max HP means bigger heals to allies. Your best option for pure support output.</p>
+          </div>
+
+          <div class="virtue-set-card">
+            <div class="vsc-header">
+              <span class="vsc-title">Fervor</span>
+              <span class="vsc-rarity rarity-red">Legendary</span>
+            </div>
+            <div class="vsc-bonuses">
+              <div class="vsc-bonus">2-Piece: +10% Energy Regen Bonus at combat start</div>
+              <div class="vsc-bonus">4-Piece: Upon using Ultimate, gains 10% ATK (max 4 stacks)</div>
+            </div>
+            <div class="vsc-pieces">
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/fervorI_legendary.png" alt="Fervor I" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Fervor I</span>
+              </div>
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/fervorII_legendary.png" alt="Fervor II" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Fervor II</span>
+              </div>
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/fervorIII_legendary.png" alt="Fervor III" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Fervor III</span>
+              </div>
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/fervorIV_legendary.png" alt="Fervor IV" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Fervor IV</span>
+              </div>
+            </div>
+            <p class="vsc-note">Hephaestus needs to cast 3 Ultimates to activate all devices. Energy regen accelerates this critical requirement. The 4-piece ATK stacking helps teammates too.</p>
+          </div>
+
+          <div class="virtue-set-card">
+            <div class="vsc-header">
+              <span class="vsc-title">Stoic</span>
+              <span class="vsc-rarity rarity-gold">Epic</span>
+            </div>
+            <div class="vsc-bonuses">
+              <div class="vsc-bonus">2-Piece: +10% HP at combat start</div>
+              <div class="vsc-bonus">4-Piece: DMG received and dealt -30%</div>
+            </div>
+            <div class="vsc-pieces">
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/stoicI_elite.png" alt="Stoic I" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Stoic I</span>
+              </div>
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/stoicII_elite.png" alt="Stoic II" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Stoic II</span>
+              </div>
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/stoicIII_elite.png" alt="Stoic III" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Stoic III</span>
+              </div>
+              <div class="virtue-pill rarity-gold">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/stoicIV_elite.png" alt="Stoic IV" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Stoic IV</span>
+              </div>
+            </div>
+            <p class="vsc-note">His Relic already gives 30% damage reduction. Stoic stacks multiplicatively, making him incredibly hard to kill. Your survival pick for high-pressure fights.</p>
+          </div>
+
+          <div class="virtue-set-card">
+            <div class="vsc-header">
+              <span class="vsc-title">Defiance</span>
+              <span class="vsc-rarity rarity-red">Legendary</span>
+            </div>
+            <div class="vsc-bonuses">
+              <div class="vsc-bonus">2-Piece: +15% HP at combat start</div>
+              <div class="vsc-bonus">4-Piece: At 50% HP, dispels all debuffs and Control, restores 10% max HP per sec for 5s (once per battle)</div>
+            </div>
+            <div class="vsc-pieces">
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/defianceI_legendary.png" alt="Defiance I" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Defiance I</span>
+              </div>
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/defianceII_legendary.png" alt="Defiance II" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Defiance II</span>
+              </div>
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/defianceIII_legendary.png" alt="Defiance III" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Defiance III</span>
+              </div>
+              <div class="virtue-pill rarity-red">
+                <div class="virtue-pill-media-wrap">
+                  <img class="virtue-pill-media" src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/images/virtues/defianceIV_legendary.png" alt="Defiance IV" loading="lazy" />
+                </div>
+                <span class="virtue-pill-name">Defiance IV</span>
+              </div>
+            </div>
+            <p class="vsc-note">In PVP, control abilities shut him down. Defiance lets him stay active and dispels crowd control effects. Choose this for control-heavy opponent teams.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="background:var(--bg-secondary); padding:16px; border-radius:8px;">
+        <h4 style="margin:0 0 12px 0; color:var(--text-primary);">Build Strategy Summary</h4>
+        <ul class="mechanic-list">
+          <li>PVE / Boss builds: Stack Sacrifice for healing output + Stoic for defense. He becomes an unkillable healer.</li>
+          <li>PVP builds: Mix Stoic for defense with Defiance if facing control-heavy teams. Keep energy regen high through gear and stats.</li>
+          <li>Always prioritize energy regen gear first, then HP, then defenses. Without energy, none of his other stats matter.</li>
+          <li>His recommended Relic level is 30 - upgrade this early. The damage reduction boost is crucial to his survival.</li>
+        </ul>
       </div>
     </section>
 
@@ -2669,7 +3060,7 @@ const activeGuide = releasedGuides[0];
          MERET GUIDE
          ═══════════════════════════════════════ -->
     {releasedGuides.some(g => g.id === "meret") && (
-    <div class="guide-slide is-active" id="meret">
+    <div class="guide-slide" id="meret">
       <div class="guide-container">
 
         <!-- HEADER -->
@@ -3943,5 +4334,131 @@ const activeGuide = releasedGuides[0];
       margin: 1.5cm 1.5cm 2cm;
       size: A4;
     }
+  }
+
+  /* ── VIRTUE CARDS ── */
+  .heph-virtue-sets {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .virtue-set-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .vsc-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .vsc-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #e0dff0;
+  }
+
+  .vsc-rarity {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  .vsc-rarity.rarity-gold {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+  }
+
+  .vsc-rarity.rarity-red {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+  }
+
+  .vsc-bonuses {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+  }
+
+  .vsc-bonus {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .vsc-pieces {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .vsc-note {
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+  }
+
+  /* Virtue pill styles (imported from virtues.astro) */
+  .virtue-pill {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    min-width: 140px;
+  }
+
+  .virtue-pill-media-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+
+  .virtue-pill-media {
+    width: 72px;
+    height: 92px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+  }
+
+  .virtue-pill-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #e0dff0;
+  }
+
+  .virtue-pill.rarity-gold {
+    border-color: rgba(234, 179, 8, 0.25);
+  }
+
+  .virtue-pill.rarity-gold .virtue-pill-name {
+    color: #eab308;
+  }
+
+  .virtue-pill.rarity-red {
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .virtue-pill.rarity-red .virtue-pill-name {
+    color: #ef4444;
   }
 </style>
