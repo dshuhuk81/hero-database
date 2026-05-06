@@ -1,0 +1,116 @@
+{
+  "overview": [
+    "Cronus is a <strong>Legendary Support</strong> of the <strong>Starglint faction</strong> whose kit is built around a single strategic archetype: <span class=\"highlight\">Turn-Tempo Manipulation</span>. He is not a healer, not a main DPS, and not a straightforward plug-and-play unit. Instead, his entire design revolves around making enemy skill rotations slower while making his own team's rotations faster and more impactful.",
+    "His kit accomplishes three things simultaneously: <strong>controlling tempo</strong> by debuffing enemy ATK Speed, cooldowns, and Energy regeneration; <strong>manipulating cooldowns</strong> to generate extra cast windows for allied carries; and <strong>saving team members</strong> from death through a time-rewind mechanic that restores a near-dead ally to their best state within the last 5 seconds.",
+    "Based on kit analysis, Cronus is mechanically very likely to be strongest in <strong>PvP</strong> and in <strong>difficult push stages</strong> where fight outcomes are decided by tempo and narrow burst windows rather than raw DPS output. In pure boss damage races he is more situational. His Relic is not an optional enhancement - the Projection system is the mechanic that defines his endgame identity.",
+    "<span class=\"note-muted\">Guide data verified against the EN in-game client (April 2026, Deity Trial). Skill descriptions and numerical values reflect Lv.4 data from the official EN localization. Ratings are mechanics-based assessments informed by 5 trial battles, not community-confirmed tier placements.</span>"
+  ],
+  "lore": {
+    "label": "God of Time - Greek Mythology",
+    "intro": "Cronus draws on the Greek mythological figure associated with time - frequently conflated with Kronos the Titan and Khronos the personification of time in later traditions. In the game, Cronus is titled God of Time and is officially described as a Starglint faction Support whose identity revolves around rewinding allies, reducing cooldowns, and summoning projections. The game channels this mythological duality into his mechanical design as a master of temporal flow on the battlefield.",
+    "bullets": [
+      "<em>Temporal Vortex</em> channels his dominion over time - slowing, warping, and ultimately freezing the temporal flow for his enemies",
+      "<em>Ferry of Time</em> represents his ability to reach across time and pull a projection of a past ally into the current moment",
+      "<em>Temporal Rift</em> is a tear in the fabric of space and time - used to rearrange positioning as though repositioning pieces on a board outside time",
+      "<em>Rewinding Remains</em> embodies his most personal power: the ability to reverse time for a single ally, restoring them to a healthier state moments before a lethal blow lands",
+      "<em>Echo of Causality</em> reflects cause and effect across time - when a chosen traveler acts, Cronus ensures that action reverberates a second time"
+    ]
+  },
+  "factionSynergy": null,
+  "coreMechanic": {
+    "sectionTitle": "Core Mechanic - The Projection System",
+    "label": "Ferry of Time - How Projections Work",
+    "bullets": [
+      "Cronus's Relic (<strong>Doctrine of Time</strong>) grants the skill <strong>Ferry of Time</strong>: every <strong>15 seconds</strong>, Cronus projects a Translucent Echo of an allied god into battle for <strong>6 seconds</strong>.",
+      "Projection priority: the <em>Time Traveler</em> is projected first; otherwise allies are projected from highest to lowest ATK.",
+      "The projection inherits <strong>50% of Cronus's ATK and Max HP</strong> - it scales with how Cronus is built, not with the stats of the unit being projected. It copies <strong>all skills</strong> of the projected unit, and its character and skill levels scale with Cronus's level.",
+      "At <strong>Relic Lv2 [Relic Lv.10]</strong>, when the Translucent Echo spawns, <strong>all skill CDs of the Echo are refreshed</strong> - enabling immediate skill output at the moment of projection arrival.",
+      "At <strong>Relic Lv3 [Relic Lv.20]</strong>, projection duration is extended to <strong>10 seconds</strong>, significantly increasing the window for the copied skills to fire.",
+      "At <strong>Relic Lv4</strong>, the projection spawns with <strong>1000 Energy</strong> - enabling it to fire an Ultimate almost immediately upon entering the field.",
+      "The core loop: <strong>Cronus slows and disrupts enemies → Projection spawns as a copy of a key ally → Relic Lv2 refreshes Echo CDs → the team gains a second damage source within one fight window.</strong>"
+    ],
+    "highlightBox": {
+      "label": "Why Relic Investment Matters - Competitive Breakpoints",
+      "bullets": [
+        "<strong>Relic Lv1:</strong> Projection is active (6s duration, 50% ATK/HP) - viable as a temporary allied copy, but the impact is limited without the CD refresh.",
+        "<strong>Relic Lv2 [Relic Lv.10]:</strong> Echo CD refresh on spawn - the first genuine power spike. This is the minimum competitive investment level.",
+        "<strong>Relic Lv3 [Relic Lv.20]:</strong> Duration extended to 10s - a substantial increase in the projection's active window.",
+        "<strong>Relic Lv4:</strong> Projection spawns with 1000 Energy - the endgame breakpoint where Cronus transitions from strong support to a tempo-multiplying carry.",
+        "Cronus's endgame identity depends on the Relic. Relic Lv2 (Lv.10) is the first competitive breakpoint. Relic Lv4 is the point where Cronus transitions from strong utility support to fight-warping tempo multiplier."
+      ]
+    }
+  },
+  "skillNotes": {
+    "ult": "This is a layered anti-tempo AoE with four distinct debuff layers: damage, tempo-down, skill-delay, and energy-deny. Lv2 delays enemy active skills directly. Lv4 cuts off natural Energy regeneration entirely during the debuff window - effectively preventing enemies from reaching their next Ultimate through passive regen. The skill wins not through burst but through timing theft: it shifts enemy rotations backward and opens narrow fight windows in your favor.",
+    "relic": "The most impactful piece of Cronus's kit. Relic Lv2 (unlocked at Relic Lv.10) is the first competitive breakpoint - the CD refresh on Echo spawn enables immediate skill output. Lv4 makes the Echo immediately dangerous by entering with 1000 Energy, enabling it to fire an Ultimate almost instantly. The 50% ATK/HP inheritance means Cronus's own stat investment directly determines the Echo's combat effectiveness.",
+    "skill2": "This is not a standard single-target CC - it is Formation Break plus Double-Hit Stun. Teleporting the nearest enemy to the farthest position collapses defensive spacing and exposes backline targets. Lv3 creates a self-reinforcing CD loop: the more your team casts, the faster this skill returns, generating more displacement and more Stuns.",
+    "skill3": "This is not a revive - it is a time rewind. The distinction matters: unlike resurrection mechanics, the ally does not die first. Their entire state is restored to a pre-burst snapshot, including HP, Energy, and any buffs that were active. Lv3 makes Cronus himself extremely difficult to eliminate by focus-fire, since he gains the same self-save once per fight.",
+    "skill4": "The second cornerstone of Cronus's kit alongside the Projection. The Time Traveler designation targets the ally with the highest CD Reduction stat - that ally's active skill (excluding Ultimate and Entry) fires a second time immediately. The 20s base CD (15s at Lv4) means this effect fires roughly every other active rotation. Lv3 gives the entire team a faster fight start by reducing initial CDs by 5s. Build CDR on your primary carry to ensure they are consistently designated."
+  },
+  "skillUpgradePriority": [
+    "<strong>1. Echo of Causality (Passive 2)</strong> - Pre-battle CD reduction at Lv3 creates a team-wide tempo advantage from the opening second; the double-cast on the Time Traveler is the constant engine of Cronus's value",
+    "<strong>2. Ferry of Time (Relic)</strong> - Lv2 CD reset on projection spawn is the first major power spike; Lv4 initial Energy is the endgame breakpoint. Minimum competitive level: Relic Lv2",
+    "<strong>3. Temporal Vortex (Ultimate)</strong> - Lv4 Energy block prevents enemies from naturally regenerating Energy during the debuff window, compounding the anti-tempo effect significantly",
+    "<strong>4. Rewinding Remains (Passive 1)</strong> - Lv3 self-save makes Cronus significantly harder to eliminate by focus-fire; upgrade after the core offensive systems are established",
+    "<strong>5. Temporal Rift (Active)</strong> - Lv3 CD reduction loop accelerates formation disruption frequency; strong but lower priority than the passive systems that define Cronus's identity"
+  ],
+  "ratingDescriptions": {
+    "PVP": "Rewind save + formation break + CD manipulation + Projection = dominant in most PvP scenarios",
+    "Campaign / Push": "Anti-tempo kit and Rewinding Remains provide top-tier value in campaign push; formation disruption and cooldown manipulation compound across multi-stage fights",
+    "Boss Fights": "Situational; Energy block and Echo of Causality double-cast add value but formation disruption is less relevant"
+  },
+  "positioning": [
+    {
+      "mode": "Backline Support",
+      "paragraphs": [
+        "Cronus needs to survive long enough for his passive systems to fire. Rewinding Remains and Echo of Causality both operate passively - they require Cronus to be alive and not disrupted when the trigger conditions are met. Place him in a protected backline slot, not exposed as a frontline target.",
+        "Rewinding Remains Lv3 provides built-in self-insurance: if Cronus would die, the effect triggers on himself once. This is not a substitute for correct positioning - it is a safety net when positioning fails or when the opponent focuses him specifically."
+      ]
+    },
+    {
+      "mode": "Recommended Formation Shell",
+      "paragraphs": [
+        "<strong>Front:</strong> Tank or Taunt unit (Momus, Athena) - absorbs opening burst and ensures Cronus's passives fire into the first fight phase without interruption.",
+        "<strong>Mid:</strong> Skill-heavy carry designated as the Time Traveler. Build CDR on this unit to guarantee Echo of Causality targets them. Their active skill will fire twice every rotation.",
+        "<strong>Back:</strong> Cronus plus secondary support. Cronus should be the last unit the opponent reaches, as his value compounds the longer he survives."
+      ]
+    }
+  ],
+  "strengths": [
+    "AoE anti-tempo Ultimate reduces enemy ATK Speed, delays active skills, and blocks Energy regeneration - three distinct debuff layers in one cast",
+    "Temporal Rift is Formation Break plus Double Stun - very effective against backline-dependent and positioning-reliant compositions",
+    "Rewinding Remains provides a save mechanic that restores an ally's full state, not just HP - Energy and buffs are preserved at the prior snapshot",
+    "Echo of Causality doubles one ally's active skill every rotation - a consistent, passive damage and utility multiplier that requires no execution overhead",
+    "Projection system creates a second temporary version of a key ally - at Relic Lv2 paired with a CD reset, this amounts to a second full team rotation",
+    "Temporal Rift Lv3 self-accelerates on cast frequency - the more your team plays actively, the faster formation disruption returns",
+    "Scales with team quality: the stronger the ally designated as Time Traveler or projected, the higher Cronus's multiplier output"
+  ],
+  "weaknesses": [
+    "Not a top pick for pure single-target boss DPS races where tempo manipulation and formation disruption are irrelevant",
+    "Value scales with ally quality - if the carry pool is weak, Cronus loses significant multiplier output",
+    "Relic-dependent: without Relic Lv2 the Projection system lacks its defining CD reset; without Lv4 the projection's impact is delayed",
+    "Against raw stat-check teams that simply overwhelm utility through damage output, Cronus's kit cannot compensate for large stat disparities alone",
+    "Rewinding Remains reduces the saved target's ATK and ATK Speed after triggering - the saved ally is temporarily weakened following the rescue window"
+  ],
+  "synergy": {
+    "type": "list",
+    "entries": [
+      { "name": "Isis", "text": "The best-fit allround Cronus carry partner based on kit synergy. Isis is a skill-dependent damage source that benefits directly from Cronus's protective utility and extended cast windows. Rewinding Remains saves her from burst, Echo of Causality doubles her active, and the Projection can create a temporary second Isis in critical fight phases." },
+      { "name": "Athena", "text": "Primary frontline protector for Cronus and the designated carry. Athena's shielding ensures Cronus survives long enough for his passive systems to fire, and buys the seconds needed for Rewinding Remains to save a near-dead ally. Present in almost every viable Cronus composition." },
+      { "name": "Poseidon", "text": "AoE crowd control that compounds with Cronus's tempo suppression. Poseidon's CC creates the first control window that allows Temporal Rift to land cleanly, and his AoE grouping maximizes the disruption from Cronus's formation-break displacement. Strong PvP partner." },
+      { "name": "Caishen", "text": "Team-wide Energy acceleration that compounds with Echo of Causality Lv3's pre-battle CD reduction. More Energy means earlier Ultimates and faster active skill rotations, which in turn accelerates Temporal Rift's Lv3 CD reduction loop. Core support partner in most Cronus compositions." },
+      { "name": "Hela", "text": "Ramp damage source that benefits from Cronus's time-buying. Hela scales with fight duration - and Cronus's entire kit is designed to extend fights and reduce the pace at which the opponent can eliminate allies. Rewinding Remains provides direct insurance against burst elimination of Hela during her ramp phase." },
+      { "name": "Bastet", "text": "Snipe DPS that exploits the positioning chaos created by Temporal Rift. Cronus's formation break exposes backline targets that Bastet can then focus. The combination is aggressive and high-risk - if Bastet does not snowball into the disrupted formation, the team lacks sustain fallback." },
+      { "name": "Yuelao", "text": "Sustain and defensive stat sharing that extends the viability of Cronus's passive systems. Longer fights mean more Projection spawns, more Rewinding Remains triggers, and more Echo of Causality double-casts. Yuelao is the preferred secondary support when the composition prioritizes extended control over burst aggression." },
+      { "name": "Khepri", "text": "Dive and engage support that creates CC windows through direct frontline pressure. Khepri's engagement extends the chain of control states that feed into Temporal Rift's Lv3 CD loop, and his frontline disruption buys time for Cronus's passive systems to accumulate value." },
+      { "name": "Momus", "text": "Additional frontline stability and taunt effects that buy time for Cronus's passive systems to fire. Momus absorbs the opening burst wave and ensures Rewinding Remains and Echo of Causality can operate without Cronus being disrupted in the first fight phase." },
+      { "name": "Anubis", "text": "Anti-backline specialist who layers well with Cronus's formation displacement against squishy Mage and Archer targets. Strong in Arena matchups with soft backlines; less effective against highly tanky or self-sustaining compositions." },
+      { "name": "Hecate", "text": "Reliable skill-based DPS for transition and budget compositions. Does not reach the ceiling of top carries like Isis or Hela, but provides consistent active-skill output that activates Echo of Causality and feeds into Temporal Rift's Lv3 CD reduction loop." }
+    ]
+  },
+  "playstyle": [
+    "Cronus plays as a <em>tempo multiplier</em> whose output is determined by the quality of the allies he supports and the fight duration he can secure. He is not a hero you slot into any lineup - he demands a team with at least one strong skill-based carry who can become the Time Traveler and benefit from doubled active casts, plus a frontline capable of buying enough seconds for his passive systems to fire.",
+    "The core rotation is not mechanical - it is structural. Cronus's Ultimate slows and debuffs the enemy team while his passive systems handle ally preservation and cast amplification automatically. Temporal Rift provides on-demand formation disruption that should be used to expose specific targets or create Stun windows for your carry. Rewinding Remains fires passively when an ally approaches death - no input required, which frees attention for team orchestration.",
+    "Investment path matters here more than in most heroes: Relic Lv2 is the first competitive breakpoint, transforming the Projection from a minor bonus into a team-wide second rotation trigger. Below that level, Cronus is a strong utility support. Above it, he becomes a highly disruptive tempo asset whose PvP and push value is mechanically very likely to place in the upper segment. Cronus is not an early-game solo fix - he is a multiplier for accounts that already have quality in the core roster."
+  ]
+}
