@@ -40,13 +40,73 @@
       ]
     }
   },
-  "skillNotes": {
-    "ult": "This is a layered anti-tempo AoE with four distinct debuff layers: damage, tempo-down, skill-delay, and energy-deny. Lv2 delays enemy active skills directly. Lv4 cuts off natural Energy regeneration entirely during the debuff window - effectively preventing enemies from reaching their next Ultimate through passive regen. The skill wins not through burst but through timing theft: it shifts enemy rotations backward and opens narrow fight windows in your favor.",
-    "relic": "The most impactful piece of Cronus's kit. Relic Lv2 (unlocked at Relic Lv.10) is the first competitive breakpoint - the CD refresh on Echo spawn enables immediate skill output. Lv4 makes the Echo immediately dangerous by entering with 1000 Energy, enabling it to fire an Ultimate almost instantly. The 50% ATK/HP inheritance means Cronus's own stat investment directly determines the Echo's combat effectiveness.",
-    "skill2": "This is not a standard single-target CC - it is Formation Break plus Double-Hit Stun. Teleporting the nearest enemy to the farthest position collapses defensive spacing and exposes backline targets. Lv3 creates a self-reinforcing CD loop: the more your team casts, the faster this skill returns, generating more displacement and more Stuns.",
-    "skill3": "This is not a revive - it is a time rewind. The distinction matters: unlike resurrection mechanics, the ally does not die first. Their entire state is restored to a pre-burst snapshot, including HP, Energy, and any buffs that were active. Lv3 makes Cronus himself extremely difficult to eliminate by focus-fire, since he gains the same self-save once per fight.",
-    "skill4": "The second cornerstone of Cronus's kit alongside the Projection. The Time Traveler designation targets the ally with the highest CD Reduction stat - that ally's active skill (excluding Ultimate and Entry) fires a second time immediately. The 20s base CD (15s at Lv4) means this effect fires roughly every other active rotation. Lv3 gives the entire team a faster fight start by reducing initial CDs by 5s. Build CDR on your primary carry to ensure they are consistently designated."
-  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Temporal Vortex",
+      "badge": "Ultimate",
+      "icon": "cronus_skill_1.png",
+      "description": "Summons a Temporal Vortex that deals <span class=\"highlight\">280% ATK</span> Magical DMG to all enemy units, reducing their <span class=\"highlight\">ATK SPD by 100%</span> and <span class=\"highlight\">Move SPD by 100%</span> for <span class=\"highlight\">5s</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Also increases enemy active skill CD by 5 seconds for enemies within the area." },
+        { "level": "Lv3", "text": "Increases DMG dealt to 360% ATK." },
+        { "level": "Lv4", "text": "Affected enemies cannot regenerate Energy naturally during the effect duration." }
+      ],
+      "note": "This is a layered anti-tempo AoE with four distinct debuff layers: damage, tempo-down, skill-delay, and energy-deny. Lv2 delays enemy active skills directly. Lv4 cuts off natural Energy regeneration entirely during the debuff window - effectively preventing enemies from reaching their next Ultimate through passive regen. The skill wins not through burst but through timing theft: it shifts enemy rotations backward and opens narrow fight windows in your favor."
+    },
+    {
+      "key": "relic",
+      "name": "Ferry of Time",
+      "badge": "Relic",
+      "icon": "cronus_relic.png",
+      "description": "Every <span class=\"highlight\">15 seconds</span>, Cronus cyclically projects a Translucent Echo of a teammate into the battle for <span class=\"highlight\">6 seconds</span>. Priority: <em>Time Traveler</em> first, then allies from highest to lowest ATK. The Echo inherits <span class=\"highlight\">50% of Cronus's ATK and Max HP</span> and copies all skills. Scales with Cronus's level.",
+      "upgrades": [
+        { "level": "Lv2 [Relic Lv.10]", "text": "Upon entering the battlefield, the Translucent Echo refreshes all skill CDs." },
+        { "level": "Lv3 [Relic Lv.20]", "text": "Translucent Echo duration is increased to 10s." },
+        { "level": "Lv4", "text": "Translucent Echo gains 1000 Energy upon entering battle." }
+      ],
+      "note": "The most impactful piece of Cronus's kit. Relic Lv2 (unlocked at Relic Lv.10) is the first competitive breakpoint - the CD refresh on Echo spawn enables immediate skill output. Lv4 makes the Echo immediately dangerous by entering with 1000 Energy, enabling it to fire an Ultimate almost instantly. The 50% ATK/HP inheritance means Cronus's own stat investment directly determines the Echo's combat effectiveness."
+    },
+    {
+      "key": "skill2",
+      "name": "Temporal Rift",
+      "badge": "Active",
+      "icon": "cronus_skill_2.png",
+      "description": "Cronus teleports the nearest enemy to the position of the farthest enemy, dealing <span class=\"highlight\">180% ATK</span> Magical DMG to both targets and <span class=\"highlight\">Stunning</span> them for <span class=\"highlight\">2 seconds</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Increases DMG dealt to 200% ATK." },
+        { "level": "Lv3", "text": "Each time an allied unit casts an Active Skill, the CD of this skill is reduced by 0.5 seconds." },
+        { "level": "Lv4", "text": "Stun duration is increased to 3s." }
+      ],
+      "note": "This is not a standard single-target CC - it is Formation Break plus Double-Hit Stun. Teleporting the nearest enemy to the farthest position collapses defensive spacing and exposes backline targets. Lv3 creates a self-reinforcing CD loop: the more your team casts, the faster this skill returns, generating more displacement and more Stuns."
+    },
+    {
+      "key": "skill3",
+      "name": "Rewinding Remains",
+      "badge": "Passive",
+      "icon": "cronus_skill_3.png",
+      "description": "When an allied unit is about to fall, Cronus rewinds that unit to its <span class=\"highlight\">optimal state from the past 5 seconds</span>. After the rewind, the target's ATK and ATK SPD are reduced by <span class=\"highlight\">90%</span> for <span class=\"highlight\">2s</span>. Base CD: <span class=\"highlight\">18s</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Reduces the CD to 15s." },
+        { "level": "Lv3", "text": "When Cronus is about to fall, this effect triggers once for free on himself." },
+        { "level": "Lv4", "text": "Reduces the CD to 12s." }
+      ],
+      "note": "This is not a revive - it is a time rewind. The distinction matters: unlike resurrection mechanics, the ally does not die first. Their entire state is restored to a pre-burst snapshot, including HP, Energy, and any buffs that were active. Lv3 makes Cronus himself extremely difficult to eliminate by focus-fire, since he gains the same self-save once per fight."
+    },
+    {
+      "key": "skill4",
+      "name": "Echo of Causality",
+      "badge": "Passive",
+      "icon": "cronus_skill_4.png",
+      "description": "At the start of battle, marks the allied unit with the highest <span class=\"highlight\">CD Reduction</span> as <em>[Time Traveler]</em>. When the Time Traveler casts an Active Skill (excluding Ultimate and Entry Skill), <span class=\"highlight\">that skill is cast again immediately</span>. Base CD: <span class=\"highlight\">20s</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Reduces the skill CD to 18s." },
+        { "level": "Lv3", "text": "At the start of battle, reduce the initial CD of all allied units by 5s." },
+        { "level": "Lv4", "text": "Reduces the skill CD to 15s." }
+      ],
+      "note": "The second cornerstone of Cronus's kit alongside the Projection. The Time Traveler designation targets the ally with the highest CD Reduction stat - that ally's active skill (excluding Ultimate and Entry) fires a second time immediately. The 20s base CD (15s at Lv4) means this effect fires roughly every other active rotation. Lv3 gives the entire team a faster fight start by reducing initial CDs by 5s. Build CDR on your primary carry to ensure they are consistently designated."
+    }
+  ],
   "skillUpgradePriority": [
     "<strong>1. Echo of Causality (Passive 2)</strong> - Pre-battle CD reduction at Lv3 creates a team-wide tempo advantage from the opening second; the double-cast on the Time Traveler is the constant engine of Cronus's value",
     "<strong>2. Ferry of Time (Relic)</strong> - Lv2 CD reset on projection spawn is the first major power spike; Lv4 initial Energy is the endgame breakpoint. Minimum competitive level: Relic Lv2",
@@ -54,11 +114,11 @@
     "<strong>4. Rewinding Remains (Passive 1)</strong> - Lv3 self-save makes Cronus significantly harder to eliminate by focus-fire; upgrade after the core offensive systems are established",
     "<strong>5. Temporal Rift (Active)</strong> - Lv3 CD reduction loop accelerates formation disruption frequency; strong but lower priority than the passive systems that define Cronus's identity"
   ],
-  "ratingDescriptions": {
-    "PVP": "Rewind save + formation break + CD manipulation + Projection = dominant in most PvP scenarios",
-    "Campaign / Push": "Anti-tempo kit and Rewinding Remains provide top-tier value in campaign push; formation disruption and cooldown manipulation compound across multi-stage fights",
-    "Boss Fights": "Situational; Energy block and Echo of Causality double-cast add value but formation disruption is less relevant"
-  },
+  "ratings": [
+    { "mode": "PVP", "tier": "SS", "desc": "Rewind save + formation break + CD manipulation + Projection = dominant in most PvP scenarios" },
+    { "mode": "Campaign / Push", "tier": "SS", "desc": "Anti-tempo kit and Rewinding Remains provide top-tier value in campaign push; formation disruption and cooldown manipulation compound across multi-stage fights" },
+    { "mode": "Boss Fights", "tier": "A", "desc": "Situational; Energy block and Echo of Causality double-cast add value but formation disruption is less relevant" }
+  ],
   "positioning": [
     {
       "mode": "Backline Support",

@@ -28,13 +28,73 @@
       "At Relic Lv2, Skadi gains a <strong>pseudo-revival</strong>: upon fatal damage, she freezes herself for 3 seconds (invincible) and heals 20% max HP per second — extending the loop instead of resetting it."
     ]
   },
-  "skillNotes": {
-    "ult": "This is not a burst ultimate — it is a persistent AoE damage field with ramp-up scaling. At Lv3, the 12% stacking per hit (up to 15 stacks = +180%) transforms it into a snowballing damage engine. Grouping enemies with pull effects maximizes hit count and stacking speed.",
-    "skill2": "Functions as Skadi's setup skill. The DoT softens targets while the Lv4 Freeze at the end feeds directly into Realm of Frost and amplifies the next Drifting Vortex cast. This is the bridge between her CC and her Ultimate.",
-    "skill3": "Skadi's hard CC. The Freeze triggers Realm of Frost immediately, generating Energy and ATK stacks. Lv4 extending the duration to 3s is significant because it widens the window for allies to attack the frozen target and proc additional Realm of Frost triggers.",
-    "skill4": "The core mechanic. Lv3 is the most important upgrade in Skadi's entire kit — the 30 Energy per proc creates the self-sustaining loop that defines her playstyle. Every CC event in the fight becomes a direct contribution to Skadi's next Ultimate.",
-    "relic": "Lv2 is the critical breakpoint. The pseudo-revival is not just defensive — it prevents a DPS reset by keeping Skadi in the fight with all her ATK stacks intact. In CN meta, Relic Lv2 is considered mandatory for competitive play. Lv4 extends the ATK buff duration from 3s to 8s, making it far easier to maintain max stacks."
-  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Drifting Vortex",
+      "badge": "Ultimate",
+      "icon": "skadi_skill_1.webp",
+      "description": "Creates an <strong>Ice Vortex</strong> that continuously moves around the battlefield targeting enemy units for <strong>8 seconds</strong>. Deals <strong>36% ATK</strong> as damage to nearby enemies every 0.5s. If the vortex passes through <span class=\"highlight\">Crowd Controlled</span> enemies, damage increases to <strong>60% ATK</strong>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Damage increased to 48% ATK (80% ATK on CC'd enemies)." },
+        { "level": "Lv3", "text": "Each hit on the same target increases Ice Storm damage by 12%, stacking up to 15 times." },
+        { "level": "Lv4", "text": "Damage increased to 60% ATK (100% ATK on CC'd enemies)." }
+      ],
+      "note": "This is not a burst ultimate — it is a persistent AoE damage field with ramp-up scaling. At Lv3, the 12% stacking per hit (up to 15 stacks = +180%) transforms it into a snowballing damage engine. Grouping enemies with pull effects maximizes hit count and stacking speed."
+    },
+    {
+      "key": "relic",
+      "name": "Iceforged Veins",
+      "badge": "Relic",
+      "icon": "skadi_relic.webp",
+      "description": "Triggering <span class=\"highlight\">Realm of Frost</span> grants <strong>8% ATK</strong> for 3 seconds, stacking up to <strong>10 times</strong>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "When about to fall, freezes for 3s (invincible, restores 20% max HP/s). Triggers once per battle." },
+        { "level": "Lv3", "text": "Grants 12% ATK for 3s, stacking up to 10 times." },
+        { "level": "Lv4", "text": "Grants 12% ATK for 8s, stacking up to 10 times." }
+      ],
+      "note": "Lv2 is the critical breakpoint. The pseudo-revival is not just defensive — it prevents a DPS reset by keeping Skadi in the fight with all her ATK stacks intact. In CN meta, Relic Lv2 is considered mandatory for competitive play. Lv4 extends the ATK buff duration from 3s to 8s, making it far easier to maintain max stacks."
+    },
+    {
+      "key": "skill2",
+      "name": "Ring of Blizzard",
+      "badge": "Skill 2",
+      "icon": "skadi_skill_2.webp",
+      "description": "Summons a <strong>Blizzard</strong> (3m radius) dealing <strong>40% ATK</strong> as damage every 0.5s for 3 seconds, then deals <strong>100% ATK</strong> to remaining enemies in the zone.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Tick damage increased to 60% ATK every 0.5s." },
+        { "level": "Lv3", "text": "Tick damage increased to 80% ATK every 0.5s." },
+        { "level": "Lv4", "text": "Remaining enemies are Frozen for 3 seconds after the blizzard ends." }
+      ],
+      "note": "Functions as Skadi's setup skill. The DoT softens targets while the Lv4 Freeze at the end feeds directly into Realm of Frost and amplifies the next Drifting Vortex cast. This is the bridge between her CC and her Ultimate."
+    },
+    {
+      "key": "skill3",
+      "name": "Ice Prison",
+      "badge": "Skill 3",
+      "icon": "skadi_skill_3.webp",
+      "description": "Freezes the current target for <strong>2 seconds</strong> and deals <strong>240% ATK</strong> as damage.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Also deals 80% ATK/s to surrounding units." },
+        { "level": "Lv3", "text": "Damage increased to 270% ATK." },
+        { "level": "Lv4", "text": "Freeze duration extended to 3 seconds." }
+      ],
+      "note": "Skadi's hard CC. The Freeze triggers Realm of Frost immediately, generating Energy and ATK stacks. Lv4 extending the duration to 3s is significant because it widens the window for allies to attack the frozen target and proc additional Realm of Frost triggers."
+    },
+    {
+      "key": "skill4",
+      "name": "Realm of Frost",
+      "badge": "Passive",
+      "icon": "skadi_skill_4.webp",
+      "description": "When an enemy is <span class=\"highlight\">Crowd Controlled</span>, Skadi summons an Ice Spike dealing <strong>60% ATK</strong> as damage.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Damage increased to 80% ATK." },
+        { "level": "Lv3", "text": "Restores 30 Energy on each trigger." },
+        { "level": "Lv4", "text": "Damage increased to 100% ATK." }
+      ],
+      "note": "The core mechanic. Lv3 is the most important upgrade in Skadi's entire kit — the 30 Energy per proc creates the self-sustaining loop that defines her playstyle. Every CC event in the fight becomes a direct contribution to Skadi's next Ultimate."
+    }
+  ],
   "skillUpgradePriority": [
     "<strong>1. Realm of Frost (Passive)</strong> — Energy restoration at Lv3 is the foundation of the entire control loop",
     "<strong>2. Drifting Vortex (Ultimate)</strong> — Multi-hit stacking at Lv3 transforms damage output; main damage source",
@@ -42,12 +102,12 @@
     "<strong>4. Ring of Blizzard</strong> — Lv4 Freeze provides additional CC that feeds the loop",
     "<strong>5. Ice Prison</strong> — Useful but single-target; upgrade after core skills are maxed"
   ],
-  "ratingDescriptions": {
-    "PVE / Campaign": "Multi-target scaling and sustained control loops make her dominant in prolonged PVE content",
-    "Tower / Progression": "Multi-stage fights reward snowball potential; ATK stacks and Energy carry momentum between waves",
-    "Boss Fights": "Single-target limits passive proc frequency; DoT and ramp-up scaling still contribute, but loop is slower to start",
-    "PVP": "Strong in control-heavy meta; hard-countered by Cleanse and CC-Immunity compositions"
-  },
+  "ratings": [
+    { "mode": "PVE / Campaign", "tier": "SS", "desc": "Multi-target scaling and sustained control loops make her dominant in prolonged PVE content" },
+    { "mode": "Tower / Progression", "tier": "S", "desc": "Multi-stage fights reward snowball potential; ATK stacks and Energy carry momentum between waves" },
+    { "mode": "Boss Fights", "tier": "A", "desc": "Single-target limits passive proc frequency; DoT and ramp-up scaling still contribute, but loop is slower to start" },
+    { "mode": "PVP", "tier": "S", "desc": "Strong in control-heavy meta; hard-countered by Cleanse and CC-Immunity compositions" }
+  ],
   "positioning": [
     {
       "mode": "Backline — Carry Position",

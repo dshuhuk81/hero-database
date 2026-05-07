@@ -37,13 +37,73 @@
       ]
     }
   },
-  "skillNotes": {
-    "ult": "The Ultimate is a state manager, not a damage nuke. Cast it to set the correct stance for the current battlefield phase - Execute while winning for ramp damage; Yield while behind for cleanup. Lv2 adds an AoE damage component that partially compensates for the lack of a traditional nuke payload.",
-    "relic": "Lv1 is immediately impactful - bonus damage in both stances is felt right away. Lv3 is the major functional breakpoint: the Enter the Game cooldown reset shifts from probabilistic to guaranteed, making her defensive conversion loop far more reliable. CN players debate \"Jiutian Relic Lv3 vs Zeus Relic Lv2\" - suggesting the Lv3 upgrade is considered high-value.",
-    "skill2": "Fires at battle start with no action required. Its entire value is positional - wrong slot assignment negates the benefit. Run a dedicated frontline tank and a dedicated backline carry to ensure the correct designations land. Lv3 adds a shield on designation swap, giving whoever repositions first a meaningful survivability layer.",
-    "skill3": "More than raw damage - this skill adds genuine energy disruption. Against high-energy-rotation enemies (bosses, energy-cycling supports), the drain side becomes extremely valuable. The self-recovery side accelerates her own Ultimate cadence in early-fight phases. Upgrade priority increases in sustained PvE content where energy denial compounds over multiple rotations.",
-    "skill4": "A defensive-to-offensive converter. She does not simply tank hits - she stores them and fires them back. Against enemies who cannot burst her down in one rotation, she generates additional damage from their own aggression. Benefits from controlled, medium-duration exchanges. Hard one-shots before the formation triggers waste this mechanic entirely."
-  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Win Half Against Heaven",
+      "badge": "Ultimate",
+      "icon": "jiutian_xuannv_skill_1.png",
+      "description": "Reads the battlefield and switches stance based on unit count. If friendly unit count &ge; enemy unit count: switches to <span class=\"highlight\">Execute stance</span> and grants an ATK Speed boost. If friendly unit count &lt; enemy unit count: switches to <span class=\"highlight\">Yield stance</span> and grants an ATK Speed boost.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Deals damage to all enemy units equal to a percentage of their highest ATK." },
+        { "level": "Lv3", "text": "Execute stance grants a greater ATK increase per hit." },
+        { "level": "Lv4", "text": "Yield stance additionally grants a basic attack damage boost for a duration." }
+      ],
+      "note": "The Ultimate is a state manager, not a damage nuke. Cast it to set the correct stance for the current battlefield phase - Execute while winning for ramp damage; Yield while behind for cleanup. Lv2 adds an AoE damage component that partially compensates for the lack of a traditional nuke payload."
+    },
+    {
+      "key": "relic",
+      "name": "Strike the Void, Hit the Real",
+      "badge": "Relic",
+      "icon": "jiutian_xuannv_relic.png",
+      "description": "Strengthens both stances. <span class=\"highlight\">Execute:</span> Each attack additionally deals bonus damage based on own ATK and the target's max HP (capped). <span class=\"highlight\">Yield:</span> The first attacks after entering Yield stance deal bonus damage based on own ATK and the target's lost HP (capped).",
+      "upgrades": [
+        { "level": "Lv2", "text": "When Enter the Game activates and hits are received, gains energy and resets the formation cooldown (proc chance)." },
+        { "level": "Lv3", "text": "The Enter the Game cooldown reset becomes guaranteed instead of chance-based." },
+        { "level": "Lv4", "text": "Execute and Yield stance damage ratios and upper limits are further increased." }
+      ],
+      "note": "Lv1 is immediately impactful - bonus damage in both stances is felt right away. Lv3 is the major functional breakpoint: the Enter the Game cooldown reset shifts from probabilistic to guaranteed, making her defensive conversion loop far more reliable. CN players rate the Lv3 upgrade as high-value."
+    },
+    {
+      "key": "skill2",
+      "name": "Swift Control, Slow Response",
+      "badge": "Skill 2",
+      "icon": "jiutian_xuannv_skill_2.png",
+      "description": "At battle start, designates the frontmost ally as the <span class=\"highlight\">White piece</span> (damage received reduced) and the rearmost ally as the <span class=\"highlight\">Black piece</span> (damage dealt increased). When White advances into enemy territory it converts to Black; when Black is approached by an enemy it converts to White. Each swap triggers once per field.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Black piece damage bonus percentage increased." },
+        { "level": "Lv3", "text": "When a unit swaps designation, it gains a shield based on a percentage of Jiutian's ATK." },
+        { "level": "Lv4", "text": "White piece damage reduction effect increased." }
+      ],
+      "note": "Fires at battle start with no action required. Its entire value is positional - wrong slot assignment negates the benefit. Run a dedicated frontline tank and a dedicated backline carry to ensure the correct designations land. Lv3 adds a shield on designation swap, giving whoever repositions first a meaningful survivability layer."
+    },
+    {
+      "key": "skill3",
+      "name": "Tactical Interception",
+      "badge": "Skill 3",
+      "icon": "jiutian_xuannv_skill_3.png",
+      "description": "Fires at multiple targets nearest to her, dealing ATK-based damage (hits the same target multiple times if fewer targets than projectiles). Energy comparison determines secondary effect: if target's energy is <em>below</em> Jiutian's, she <span class=\"highlight\">recovers her own energy</span>. If target's energy is <em>equal to or above</em> hers, she <span class=\"highlight\">drains the target's energy</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Energy recovered when target energy is below Jiutian's is further increased." },
+        { "level": "Lv3", "text": "Energy drained when target energy is equal to or above Jiutian's is further increased." },
+        { "level": "Lv4", "text": "Energy drain when target energy is equal to or above Jiutian's becomes significantly larger." }
+      ],
+      "note": "More than raw damage - this skill adds genuine energy disruption. Against high-energy-rotation enemies (bosses, energy-cycling supports), the drain side becomes extremely valuable. The self-recovery side accelerates her own Ultimate cadence in early-fight phases. Upgrade priority increases in sustained PvE content where energy denial compounds over multiple rotations."
+    },
+    {
+      "key": "skill4",
+      "name": "Enter the Game",
+      "badge": "Skill 4",
+      "icon": "jiutian_xuannv_skill_4.png",
+      "description": "When Jiutian Xuannv receives an attack, she summons the <span class=\"highlight\">Taiji Formation</span>. During the formation, all incoming damage is 100% nullified and accumulated. After the formation ends, she fires at the nearest enemy dealing the accumulated total as her attack. This skill has a cooldown.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Skill cooldown slightly reduced." },
+        { "level": "Lv3", "text": "Skill cooldown greatly reduced." },
+        { "level": "Lv4", "text": "Continuously gains higher damage nullification during the formation." }
+      ],
+      "note": "A defensive-to-offensive converter. She does not simply tank hits - she stores them and fires them back. Against enemies who cannot burst her down in one rotation, she generates additional damage from their own aggression. Benefits from controlled, medium-duration exchanges. Hard one-shots before the formation triggers waste this mechanic entirely."
+    }
+  ],
   "skillUpgradePriority": [
     "<strong>1. Win Half Against Heaven (Ultimate)</strong> - State-management core; Lv2 AoE and Lv3 Execute bonus are both meaningful upgrades",
     "<strong>2. Strike the Void, Hit the Real (Relic)</strong> - Lv3 guaranteed Enter the Game reset is the single largest power spike in her kit",
@@ -51,12 +111,12 @@
     "<strong>4. Swift Control, Slow Response</strong> - Lv3 shield on designation swap adds survivability to the positional loop",
     "<strong>5. Enter the Game</strong> - Cooldown reductions matter but are partially covered by Relic Lv2/3 anyway"
   ],
-  "ratingDescriptions": {
-    "PVE / Tower": "Clubs Tower core; reduces difficulty and scales over longer fights",
-    "Boss / High-Score": "Energy manipulation and stance cycling compound in sustained boss encounters",
-    "PVP": "Tools exist but CN data currently prioritizes PvE; position-dependent",
-    "Early Game": "Playable without max investment but noticeably team-dependent"
-  },
+  "ratings": [
+    { "mode": "PVE / Tower", "tier": "S", "desc": "Clubs Tower core; reduces difficulty and scales over longer fights" },
+    { "mode": "Boss / High-Score", "tier": "S", "desc": "Energy manipulation and stance cycling compound in sustained boss encounters" },
+    { "mode": "PVP", "tier": "A", "desc": "Tools exist but CN data currently prioritizes PvE; position-dependent" },
+    { "mode": "Early Game", "tier": "A", "desc": "Playable without max investment but noticeably team-dependent" }
+  ],
   "positioning": [
     {
       "mode": "Backline - Mandatory",

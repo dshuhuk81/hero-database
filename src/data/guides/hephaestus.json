@@ -17,13 +17,73 @@
       "<strong>Hephaestus' unique advantage:</strong> He's the only Hearts support with a physical/tanky nature. All the others are magical supports. This means he scales differently with gear and can survive in spots where other supports get deleted. But he must stay put - if he gets moved away from his forge, he gets stunned for 5 seconds."
     ]
   },
-  "skillNotes": {
-    "ult": "Getting all 3 devices active takes time (3 Ultimates), so fights need to last long enough for Hephaestus to reach that full-field payoff. The Fusion effect (all 3 active) is transformational for team damage and survival.",
-    "relic": "Relic Lv1 establishes Hephaestus's core identity: immobile but nigh-untouchable. Lv2 (Relic Lv.10) is a major spike - halving cooldowns on his heal and restraint lets him cycle abilities twice as fast. Lv4 stacks to 90% total DR with base 30%, making him nearly invincible if positioned safely.",
-    "skill2": "Scales with devices: Lv3 changes per-device scaling from +0.5s to +1s duration. By Lv3, the restraint can reach 5 seconds with all 3 devices active. Critical for locking down high-threat enemies.",
-    "skill3": "Lv4 is a massive power spike: 200 starting Energy means Hephaestus enters fights ready to immediately activate the first device. Energy regen stats (Far 2/3 Virtues, energy-regen gear) become essential for hitting 3 Ultimates per fight.",
-    "skill4": "Targets the weakest ally automatically. Damage reduction scales with devices: at Lv3 with all 3 devices active, healed allies take 32.5% less damage. Combined with the device zones, this creates multiple survival layers."
-  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Mech Domain",
+      "badge": "Ultimate",
+      "icon": "hephaestus_skill_1.webp",
+      "description": "Summons <span class=\"highlight\">3 inactive mechanical devices</span> at combat start. When cast, activates the furthest device. Allies within its AoE restore <span class=\"highlight\">15 Energy and HP equal to 50% ATK</span> per sec. Enemies in the AoE gain <span class=\"highlight\">-15% ATK and -20% ATK SPD</span>. If all devices are activated, <span class=\"highlight\">decreases enemy DMG by 20%, grants all allies 30% DMG bonus and 50% ATK SPD</span> for 5s.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Allies restore 20 Energy and HP equal to 60% ATK per sec." },
+        { "level": "Lv3", "text": "Enemies gain -20% ATK and -30% ATK SPD." },
+        { "level": "Lv4", "text": "All devices active: decreases enemy DMG by 40%, grants 50% DMG bonus and 80% ATK SPD." }
+      ],
+      "note": "Getting all 3 devices active takes time (3 Ultimates), so fights need to last long enough for Hephaestus to reach that full-field payoff. The Fusion effect (all 3 active) is transformational for team damage and survival."
+    },
+    {
+      "key": "relic",
+      "name": "Undying Forge",
+      "badge": "Relic",
+      "icon": "hephaestus_relic.webp",
+      "description": "At combat start, Hephaestus places a forge before him. In the <span class=\"highlight\">[Dedicated] state</span> near the bench, he gains <span class=\"highlight\">infinite attack range and 30% DMG RED</span>. If he moves away, the forge teleports him back and inflicts <span class=\"highlight\">Overload, disabling him for 5s</span>.",
+      "upgrades": [
+        { "level": "Lv2 [Relic Lv.10]", "text": "In [Dedicated] state, CD of Artisan's Insight and Molten Aegis -50%." },
+        { "level": "Lv3 [Relic Lv.20]", "text": "In [Dedicated] state, max Energy -30%." },
+        { "level": "Lv4", "text": "In [Dedicated] state, Hephaestus takes 60% less DMG." }
+      ],
+      "note": "Relic Lv1 establishes Hephaestus's core identity: immobile but nigh-untouchable. Lv2 (Relic Lv.10) is a major spike - halving cooldowns on his heal and restraint lets him cycle abilities twice as fast. Lv4 stacks to 90% total DR with base 30%, making him nearly invincible if positioned safely."
+    },
+    {
+      "key": "skill2",
+      "name": "Artisan's Insight",
+      "badge": "Active",
+      "icon": "hephaestus_skill_2.webp",
+      "description": "Fires a beam to restrain the enemy with the highest DPS for <span class=\"highlight\">2 seconds</span> (+0.5s for each activated device), reducing their <span class=\"highlight\">Armor and M-RES by 20%</span>. Vulnerable targets take more damage, making this a key setup tool.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Reduces Armor and M-RES by 30%." },
+        { "level": "Lv3", "text": "Duration extends by 1s for each activated device on the field." },
+        { "level": "Lv4", "text": "Reduces Armor and M-RES by 50%." }
+      ],
+      "note": "Scales with devices: Lv3 changes per-device scaling from +0.5s to +1s duration. By Lv3, the restraint can reach 5 seconds with all 3 devices active. Critical for locking down high-threat enemies."
+    },
+    {
+      "key": "skill3",
+      "name": "Primal Resonance",
+      "badge": "Passive",
+      "icon": "hephaestus_skill_3.webp",
+      "description": "Hephaestus's <span class=\"highlight\">Energy Regen +20%</span>. This is always active and critical - Hephaestus must cast his Ultimate 3 times in a single fight to get all devices online.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Energy Regen +30%." },
+        { "level": "Lv3", "text": "Energy Regen +40%." },
+        { "level": "Lv4", "text": "Gains 200 initial Energy on entry." }
+      ],
+      "note": "Lv4 is a massive power spike: 200 starting Energy means Hephaestus enters fights ready to immediately activate the first device. Energy regen stats (Far 2/3 Virtues, energy-regen gear) become essential for hitting 3 Ultimates per fight."
+    },
+    {
+      "key": "skill4",
+      "name": "Molten Aegis",
+      "badge": "Active",
+      "icon": "hephaestus_skill_4.webp",
+      "description": "Heals the <span class=\"highlight\">weakest ally</span> for HP equal to <span class=\"highlight\">150% ATK</span> and reduces their incoming <span class=\"highlight\">DMG by 10% for 5s</span>. For each activated device on the field, further reduces incoming DMG by 5%.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Restores HP equal to 170% ATK." },
+        { "level": "Lv3", "text": "For each device, further reduces DMG by 7.5%." },
+        { "level": "Lv4", "text": "Healing increased to HP equal to 200% ATK." }
+      ],
+      "note": "Targets the weakest ally automatically. Damage reduction scales with devices: at Lv3 with all 3 devices active, healed allies take 32.5% less damage. Combined with the device zones, this creates multiple survival layers."
+    }
+  ],
   "skillUpgradePriority": [
     "<strong>1. Primal Resonance (Energy Passive)</strong> - Lv4's 200 starting Energy enables immediate first device activation; Energy regen is the critical stat",
     "<strong>2. Mech Domain (Ultimate)</strong> - More device activations per fight directly scales all of his other outputs",
@@ -31,11 +91,11 @@
     "<strong>4. Artisan's Insight</strong> - Restraint duration scales with device count at Lv3; key for locking the highest threat",
     "<strong>5. Molten Aegis</strong> - Healing and damage reduction scale with devices; lower priority than core energy and device systems"
   ],
-  "ratingDescriptions": {
-    "PVE / Campaign": "Campaign stages are perfect for him - fights last long enough to activate all devices, and enemies stay in their zones.",
-    "Boss Fights": "Bosses don't run away from zones, so his debuffs stick. The healing from devices keeps your team alive through long fights.",
-    "PVP": "Good if enemies have low mobility. Gets countered hard by fast teams and energy-draining heroes."
-  },
+  "ratings": [
+    { "mode": "PVE / Campaign", "tier": "A", "desc": "Campaign stages are perfect for him - fights last long enough to activate all devices, and enemies stay in their zones." },
+    { "mode": "Boss Fights", "tier": "A", "desc": "Bosses don't run away from zones, so his debuffs stick. The healing from devices keeps your team alive through long fights." },
+    { "mode": "PVP", "tier": "A", "desc": "Good if enemies have low mobility. Gets countered hard by fast teams and energy-draining heroes." }
+  ],
   "positioning": [
     {
       "mode": "Stationary Backline - Hard Requirement",
