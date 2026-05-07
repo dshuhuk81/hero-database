@@ -60,36 +60,41 @@
      Canonical source — used by HeroCard and rating badges.
      ============================================================ */
 
-  --tier-sss-from: #ff4d4d;
-  --tier-sss-to:   #b91c1c;
-  --tier-sss-text: #fff5f5;
-  --tier-sss-glow: rgba(255, 60, 60, 0.55);
+  --tier-splus-from: #ff4d4d;
+  --tier-splus-to:   #b91c1c;
+  --tier-splus-text: #fff5f5;
+  --tier-splus-glow: rgba(255, 60, 60, 0.55);
 
-  --tier-ss-from:  #ffe066;
-  --tier-ss-to:    #facc15;
-  --tier-ss-text:  #3a2a00;
-  --tier-ss-glow:  rgba(255, 224, 102, 0.35);
-
-  --tier-s-from:   #fde68a;
-  --tier-s-to:     #fbbf24;
-  --tier-s-text:   #3a2a00;
-  --tier-s-glow:   rgba(251, 191, 36, 0.35);
+  --tier-s-from:  #ffe066;
+  --tier-s-to:    #facc15;
+  --tier-s-text:  #3a2a00;
+  --tier-s-glow:  rgba(255, 224, 102, 0.35);
 
   --tier-a-from:   #fdba74;
   --tier-a-to:     #fb923c;
   --tier-a-text:   #3b1d00;
 
-  --tier-b-from:   #c4b5fd;
-  --tier-b-to:     #8b5cf6;
-  --tier-b-text:   #1e103a;
+  --tier-aplus-from:   #c4b5fd;
+  --tier-aplus-to:     #8b5cf6;
+  --tier-aplus-text:   #1e103a;
+  --tier-aplus-glow:  rgba(139, 92, 246, 0.35);
 
-  --tier-c-from:   #93c5fd;
-  --tier-c-to:     #3b82f6;
-  --tier-c-text:   #001a33;
+  --tier-bplus-from:  #67e8f9;
+  --tier-bplus-to:    #06b6d4;
+  --tier-bplus-text:  #002830;
+
+  --tier-b-from:   #93c5fd;
+  --tier-b-to:     #3b82f6;
+  --tier-b-text:   #001a33;
+
+  --tier-c-from:   #5eead4;
+  --tier-c-to:     #14b8a6;
+  --tier-c-text:   #002c26;
 
   --tier-d-from:   #5eead4;
   --tier-d-to:     #14b8a6;
   --tier-d-text:   #002c26;
+
 
 
   /* ============================================================

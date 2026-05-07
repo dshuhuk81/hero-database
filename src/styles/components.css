@@ -119,22 +119,22 @@
   white-space: nowrap;
 }
 
-[data-tier="SSS"] {
-  background: linear-gradient(135deg, var(--tier-sss-from), var(--tier-sss-to));
-  color: var(--tier-sss-text);
-  box-shadow: 0 0 8px var(--tier-sss-glow);
-}
-
-[data-tier="SS"] {
-  background: linear-gradient(135deg, var(--tier-ss-from), var(--tier-ss-to));
-  color: var(--tier-ss-text);
-  box-shadow: 0 0 8px var(--tier-ss-glow);
+[data-tier="S+"] {
+  background: linear-gradient(135deg, var(--tier-splus-from), var(--tier-splus-to));
+  color: var(--tier-splus-text);
+  box-shadow: 0 0 8px var(--tier-splus-glow);
 }
 
 [data-tier="S"] {
   background: linear-gradient(135deg, var(--tier-s-from), var(--tier-s-to));
   color: var(--tier-s-text);
   box-shadow: 0 0 8px var(--tier-s-glow);
+}
+
+[data-tier="A+"] {
+  background: linear-gradient(135deg, var(--tier-aplus-from), var(--tier-aplus-to));
+  color: var(--tier-aplus-text);
+  box-shadow: 0 0 8px var(--tier-aplus-glow);
 }
 
 [data-tier="A"] {
@@ -147,16 +147,19 @@
   color: var(--tier-b-text);
 }
 
+[data-tier="B+"] {
+  background: linear-gradient(135deg, var(--tier-bplus-from), var(--tier-bplus-to));
+  color: var(--tier-bplus-text);
+}
+
 [data-tier="C"] {
   background: linear-gradient(135deg, var(--tier-c-from), var(--tier-c-to));
   color: var(--tier-c-text);
 }
-
 [data-tier="D"] {
   background: linear-gradient(135deg, var(--tier-d-from), var(--tier-d-to));
   color: var(--tier-d-text);
 }
-
 
 /* ============================================================
    MECHANIC BOX
