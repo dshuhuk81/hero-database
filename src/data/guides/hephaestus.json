@@ -3,7 +3,7 @@
     "Hephaestus is a <strong>Legendary Support</strong> from the <strong>Hearts faction</strong>. Think of him as a stationary fortress - he plants himself in one spot and creates a network of three mechanical devices across the field.",
     "At the start of battle, all three devices are inactive. Every time Hephaestus casts his Ultimate, one device turns on. Once a device is active, it becomes a safe zone for your allies - they heal up and gain energy inside it, while enemies trapped there become weaker (lower attack and attack speed).",
     "The real power comes when all three devices are active at once. When that happens, they create a massive effect across the entire battlefield - your enemies take more damage from your team, and your allies attack faster and hit harder for 5 seconds. This resets each time Hephaestus uses his Ultimate.",
-    "<strong>Core:</strong> Activate all 3 devices through Ultimates. <strong>Payoff:</strong> Field-wide buff when all devices are online. <strong>Trade:</strong> Must stay planted at his forge to work."
+    "<strong>Core:</strong> Activate all 3 devices through Ultimates. <strong>Payoff:</strong> Field-wide buff when all devices are online. <strong>Trade:</strong> Must stay planted at his forge to work and not so good in the early game."
   ],
   "lore": null,
   "factionSynergy": null,
@@ -11,7 +11,7 @@
     "sectionTitle": "What Makes Him Different",
     "label": "vs Other Hearts Supports",
     "bullets": [
-      "<strong>vs Caishen (Energy Battery):</strong> Caishen's job is to give your team constant energy so their damage dealers can cast their big moves over and over. Hephaestus doesn't give energy - he gives buffs and debuffs. His devices weaken enemies while protecting allies, and he needs energy himself to activate all three devices in a fight.",
+      "<strong>vs Caishen (Energy Battery):</strong> Caishen's job is to give your team constant energy so their damage dealers can cast their big moves over and over. He is not a pure Caishen replacement, but he provides conditional zone-based Energy plus damage amplification. His devices weaken enemies while protecting allies, and he needs energy himself to activate all three devices in a fight.",
       "<strong>vs Yuelao (Pair Linker):</strong> Yuelao links two specific allies together - usually your strongest attacker and your tankiest hero - and they share stats with each other. Hephaestus doesn't link anyone. Instead, his zones help anyone standing in them equally. He also stops one enemy at a time with restraint, controlling which threat matters most.",
       "<strong>vs Mengpo (Revive Support):</strong> Mengpo brings dead allies back to life if she stacks up her Samsara power. Hephaestus prevents allies from dying in the first place - his zones heal them constantly and reduce damage they take. It's prevention over rescue.",
       "<strong>Hephaestus' unique advantage:</strong> He's the only Hearts support with a physical/tanky nature. All the others are magical supports. This means he scales differently with gear and can survive in spots where other supports get deleted. But he must stay put - if he gets moved away from his forge, he gets stunned for 5 seconds."
@@ -90,11 +90,6 @@
     "<strong>3. Undying Forge (Relic)</strong> - Lv2 halved cooldowns doubles active skill cycling speed; Lv4 near-invincibility in protected position",
     "<strong>4. Artisan's Insight</strong> - Restraint duration scales with device count at Lv3; key for locking the highest threat",
     "<strong>5. Molten Aegis</strong> - Healing and damage reduction scale with devices; lower priority than core energy and device systems"
-  ],
-  "ratings": [
-    { "mode": "PVE / Campaign", "tier": "A", "desc": "Campaign stages are perfect for him - fights last long enough to activate all devices, and enemies stay in their zones." },
-    { "mode": "Boss Fights", "tier": "A", "desc": "Bosses don't run away from zones, so his debuffs stick. The healing from devices keeps your team alive through long fights." },
-    { "mode": "PVP", "tier": "A", "desc": "Good if enemies have low mobility. Gets countered hard by fast teams and energy-draining heroes." }
   ],
   "positioning": [
     {

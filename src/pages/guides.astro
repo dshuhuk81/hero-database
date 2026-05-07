@@ -3,7 +3,9 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import { getHeroById } from "../data/heroes";
 import Accordion from "../components/Accordion.astro";
+import RatingTiles from "../components/RatingTiles.astro";
 import heroGuidesData from "../data/hero-guides.json";
+import heroRatings from "../data/ratings/hero-ratings.json";
 
 import guideHephaestus from "../data/guides/hephaestus.json";
 import guideMeret from "../data/guides/meret.json";
@@ -16,6 +18,7 @@ import guideNuba from "../data/guides/nuba.json";
 import guideWenshen from "../data/guides/wenshen.json";
 
 const guides = heroGuidesData.guides;
+const heroRatingsById = heroRatings as Record<string, { overall?: string; pvp?: string; pve?: string }>;
 
 const guideDataMap: Record<string, any> = {
   hephaestus: guideHephaestus,
@@ -98,6 +101,7 @@ const releasedGuides = guides.filter((g) => getHeroById(g.id)?.release === true)
     const data = guideDataMap[g.id];
     if (!data) return null;
     const id = g.id;
+    const ratings = heroRatingsById[id] ?? {};
     return (
       <div class={`guide-slide${idx === 0 ? ' is-active' : ''}`} id={id}>
         <div class="guide-container">
@@ -235,16 +239,8 @@ const releasedGuides = guides.filter((g) => getHeroById(g.id)?.release === true)
           </section>
 
           <section class="section" id={`${id}-ratings`}>
-            <div class="section-title">Mode Ratings</div>
-            <div class="rating-grid">
-              {data.ratings.map((r: any) => (
-                <div class="rating-card">
-                  <div class="rating-mode">{r.mode}</div>
-                  <div class="rating-cell"><span class="rating-badge" data-tier={r.tier}>{r.tier}</span></div>
-                  <div class="rating-desc">{r.desc}</div>
-                </div>
-              ))}
-            </div>
+            <div class="section-title">Meta Ratings</div>
+            <RatingTiles ratings={ratings} />
           </section>
 
           <section class="section" id={`${id}-positioning`}>
@@ -811,51 +807,6 @@ const releasedGuides = guides.filter((g) => getHeroById(g.id)?.release === true)
     font-size: var(--text-sm);
     top: 0;
     font-weight: var(--weight-bold);
-  }
-
-  /* ── RATING ── */
-  .rating-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 14px;
-  }
-
-  .rating-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    padding: var(--space-4) var(--space-5);
-    text-align: center;
-    border-radius: var(--radius-2xl);
-  }
-
-  .rating-mode {
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-widest);
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: var(--space-2);
-  }
-
-  .rating-cell { padding: 8px; text-align: center; }
-
-  .rating-badge {
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    min-width: 50px;
-    text-align: center;
-  }
-
-  .rating-s { background: linear-gradient(135deg, #a8e6cf, #c4f0d9); color: #1a1a1a; box-shadow: 0 0 12px rgba(168, 230, 207, 0.4); }
-  .rating-a { background: linear-gradient(135deg, #74b9ff, #a29bfe); color: var(--text-bright); }
-  .rating-b { background: linear-gradient(135deg, #dfe6e9, #b2bec3); color: #2d3436; }
-
-  .rating-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-style: italic;
   }
 
   /* ── STRENGTH / WEAKNESS ── */

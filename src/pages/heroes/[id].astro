@@ -5,6 +5,7 @@ import Base from "../../layouts/Base.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
 import RelicInvestment from '../../components/RelicInvestment.astro';
 import F2pInvestment from '../../components/F2pInvestment.astro';
+import RatingTiles from '../../components/RatingTiles.astro';
 import allVirtues from "../../data/virtues.json";
 import allInvest from "../../data/ratings/invest.json";
 /* STATIC PATHS */
@@ -122,14 +123,6 @@ function resolveSkillVideoSrc(video: unknown): string {
   if (value.startsWith("/")) return value;
   return `/skills/${value}`;
 }
-
-const ratingCategories = [
-  { key: "overall", label: "Overall" },
-  { key: "pvp",     label: "PvP" },
-  { key: "pve",     label: "PvE" },
-];
-
-const ratingsMap: Record<string, string> = hero.ratings as any ?? {};
 
 // Dot nav sections
 const dotSections = [
@@ -408,18 +401,7 @@ const dotSections = [
     <section class="content-section" id="section-ratings">
       <div class="section-label" data-i18n="detail_ratings">Meta Ratings</div>
 
-      <!-- Big 3 rating tiles -->
-      <div class="big-rating-tiles">
-        {ratingCategories.map(cat => {
-          const val = ratingsMap[cat.key] || "";
-          return (
-            <div class={`big-rating-tile rating-tile-${(val || "na").toLowerCase()}`}>
-              <span class="big-rating-val">{val || "N/A"}</span>
-              <span class="big-rating-label">{cat.label}</span>
-            </div>
-          );
-        })}
-      </div>
+      <RatingTiles ratings={hero.ratings} />
     </section>
 
     <!-- ── SECTION 4: STATS ── -->
@@ -1355,56 +1337,6 @@ const dotSections = [
 .skill-upgrades { display: flex; flex-direction: column; gap: var(--space-2); }
 /* .upgrade-row / .upgrade-lv / .upgrade-text defined in components.css */
 
-/* =============================================
-   SECTION 3: RATINGS
-   ============================================= */
-.big-rating-tiles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
-}
-
-.big-rating-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-7) var(--space-4);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-raised);
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
-}
-.big-rating-tile:hover { transform: translateY(-3px); }
-
-.big-rating-val {
-  font-size: 3rem;
-  font-weight: var(--weight-black);
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-.big-rating-label {
-  font-size: 0.72rem;
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
-  color: var(--text-muted);
-}
-
-/* Tile color variants */
-.rating-tile-sss { background: linear-gradient(135deg, rgba(185,28,28,0.2), rgba(127,0,0,0.1)); border-color: rgba(185,28,28,0.4); }
-.rating-tile-sss .big-rating-val { background: linear-gradient(135deg,#ff6b6b,#dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.rating-tile-ss { background: linear-gradient(135deg, rgba(250,204,21,0.15), rgba(245,158,11,0.08)); border-color: rgba(250,204,21,0.35); }
-.rating-tile-ss .big-rating-val { background: linear-gradient(135deg,#ffe066,#facc15); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.rating-tile-s { background: linear-gradient(135deg, rgba(253,230,138,0.12), rgba(251,191,36,0.06)); border-color: rgba(253,230,138,0.3); }
-.rating-tile-s .big-rating-val { background: linear-gradient(135deg,#fde68a,#fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.rating-tile-a .big-rating-val { color: #fdba74; }
-.rating-tile-b .big-rating-val { color: #c4b5fd; }
-.rating-tile-c .big-rating-val { color: #93c5fd; }
-.rating-tile-na .big-rating-val { color: var(--text-disabled); font-size: 1.8rem; }
-
 /* Scenario grid */
 .scenario-block { margin-bottom: var(--space-6); }
 .scenario-block-label {
@@ -1870,7 +1802,6 @@ const dotSections = [
 
 @media (max-width: 900px) {
   .profile-grid { grid-template-columns: 1fr; gap: var(--space-6); }
-  .big-rating-tiles { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1879,8 +1810,6 @@ const dotSections = [
   .showcase-name { font-size: clamp(2rem, 8vw, 3rem); }
   .showcase-identity { padding: 0 var(--space-5) var(--space-7); }
   .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .big-rating-tiles { grid-template-columns: repeat(3,1fr); gap: var(--space-2); }
-  .big-rating-val { font-size: 2rem; }
   .stat-columns { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
   .scroll-content { padding: 0 var(--space-4) 80px; }
   .syn-links-grid { grid-template-columns: 1fr; }
@@ -1894,7 +1823,6 @@ const dotSections = [
 }
 
 @media (max-width: 480px) {
-  .big-rating-tiles { grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
   .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
   .skill-tab { min-width: 70px; padding: var(--space-2) var(--space-3) var(--space-3); }
   .skill-tab-icon { width: 36px; height: 36px; }
