@@ -22,9 +22,7 @@
     "after:hero-edit": "node scripts/merge-heroes-db.js && node scripts/test-hero-tags.js",
     "after:tags": "node scripts/test-hero-tags.js && node scripts/merge-heroes-db.js",
     "after:boss-import": "node scripts/merge-heroes-db.js",
-    "rebuild": "node scripts/merge-heroes-db.js && astro build",
     "upload-assets": "node scripts/upload-to-r2.mjs",
-    "upload-assets:dry": "node scripts/upload-to-r2.mjs --dry-run",
     "upload-assets:force": "node scripts/upload-to-r2.mjs --force"
   },
   "engines": {

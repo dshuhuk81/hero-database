@@ -105,11 +105,15 @@
     }
   },
   "synergies": [
+    "ATK_SPD_UP",
+    "BUFF_TEAM",
+    "DAMAGE_REDUCTION_TEAM",
+    "ENERGY_RESTORE_TEAM",
     "HEAL_TEAM",
+    "ATK_DOWN",
     "ATK_SPD_DOWN",
     "CROWD_CONTROL",
-    "BUFF_TEAM",
-    "VULNERABLE"
+    "REMOVES_ARMOR"
   ],
   "virtueSets": [
     {
@@ -165,9 +169,15 @@
     "Assassins with CC like Nyx can mute his healing and stun him before he gets going",
     "Displacement/Pull heroes that move Hephaestus away from his forge trigger a 5-second stun that completely disables him"
   ],
-    "detailComps": [
+  "detailComps": [
     {
-      "heroes": ["hephaestus", "nezha", "heracles", "diana", "set"]
+      "heroes": [
+        "hephaestus",
+        "nezha",
+        "heracles",
+        "diana",
+        "set"
+      ]
     }
   ]
 }
