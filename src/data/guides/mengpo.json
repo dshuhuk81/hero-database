@@ -29,13 +29,73 @@
       "Relic Lv4 lowers the untargetable threshold from 5 surviving allies to 4, extending the protection window."
     ]
   },
-  "skillNotes": {
-    "ult": "The entire support identity sits here. Use the active proactively before dangerous phases to bank stacks. At Lv3+, holding two stacks creates a safety margin against rapid successive deaths — though simultaneous multi-hero deaths can exhaust both stacks instantly.",
-    "skill2": "Fires automatically at no cost when any ally is controlled. The Lv3 CD reduction to 15s is the key breakpoint in fights with recurring CC patterns such as boss stun phases.",
-    "skill3": "Mengpo's only offensive contribution. Functions as a soft peel for her carries. Damage type is Magical. Lowest upgrade priority.",
-    "skill4": "The hypercarry enabler. At Lv3 the ATK bonus doubles from 15% to 30%; Lv4 raises Energy regen from 50 to 80 per second. Build Energy-focused virtues on your primary DPS to guarantee they consistently receive this buff.",
-    "relic": "Protects the revival engine from being shut down. Lv3 creates a feedback loop: a falling ally partially recharges Mengpo's Ultimate, accelerating the next Samsara stack. First Relic upgrade priority."
-  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Samsara's Shore",
+      "badge": "Ultimate",
+      "icon": "mengpo_skill_1.webp",
+      "description": "<strong>Passive:</strong> While holding <span class=\"revive\">Samsara stacks</span>, consumes one stack to revive a fallen ally and restore 50% of their max HP.<br/><strong>Active:</strong> Grants Mengpo one stack of <span class=\"revive\">Samsara</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Revived units restore 80% of their max HP." },
+        { "level": "Lv3", "text": "Increases the maximum stacks of Samsara to 2." },
+        { "level": "Lv4", "text": "Revived units restore 100% of their max HP." }
+      ],
+      "note": "The entire support identity sits here. Use the active proactively before dangerous phases to bank stacks. At Lv3+, holding two stacks creates a safety margin against rapid successive deaths — though simultaneous multi-hero deaths can exhaust both stacks instantly."
+    },
+    {
+      "key": "relic",
+      "name": "No Return",
+      "badge": "Relic",
+      "icon": "mengpo_relic.webp",
+      "description": "When there are 5 or more surviving allies (excluding minions), Mengpo traverses the boundary between life and death, making herself <span class=\"highlight\">untargetable</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "A unit revived by Samsara gains 200 Energy." },
+        { "level": "Lv3", "text": "Restores 200 Energy whenever an ally falls." },
+        { "level": "Lv4", "text": "Threshold reduced to 4 surviving allies to trigger untargetable." }
+      ],
+      "note": "Protects the revival engine from being shut down. Lv3 creates a feedback loop: a falling ally partially recharges Mengpo's Ultimate, accelerating the next Samsara stack. First Relic upgrade priority."
+    },
+    {
+      "key": "skill2",
+      "name": "Stone of Three Fates",
+      "badge": "Skill 2",
+      "icon": "mengpo_skill_2.webp",
+      "description": "<strong>Passive:</strong> When an ally is <span class=\"highlight\">controlled</span>, immediately restores HP equal to 200% of Mengpo's ATK and removes their debuffs. CD: 20s.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Restores HP equal to 220% ATK." },
+        { "level": "Lv3", "text": "Reduces the CD to 15s." },
+        { "level": "Lv4", "text": "Restores HP equal to 250% ATK." }
+      ],
+      "note": "Fires automatically at no cost when any ally is controlled. The Lv3 CD reduction to 15s is the key breakpoint in fights with recurring CC patterns such as boss stun phases."
+    },
+    {
+      "key": "skill3",
+      "name": "Waters of Oblivion",
+      "badge": "Skill 3",
+      "icon": "mengpo_skill_3.webp",
+      "description": "Deals DMG equal to 270% of ATK to the enemy closest to backline allies and inflicts <span class=\"highlight\">River of Oblivion</span>, pushing them toward their initial position for 3s.",
+      "upgrades": [
+        { "level": "Lv2", "text": "River of Oblivion also reduces the target's CRIT Rate by 30%." },
+        { "level": "Lv3", "text": "Duration extends to 5s." },
+        { "level": "Lv4", "text": "Deals 300% ATK as DMG." }
+      ],
+      "note": "Mengpo's only offensive contribution. Functions as a soft peel for her carries. Damage type is Magical. Lowest upgrade priority."
+    },
+    {
+      "key": "skill4",
+      "name": "Lycoris Bloom",
+      "badge": "Skill 4",
+      "icon": "mengpo_skill_4.webp",
+      "description": "Buffs the ally with the <span class=\"highlight\">highest Energy</span>, increasing their ATK by 15% and restoring 50 Energy per second to them for 5s.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Grants 20% DMG RED to the target." },
+        { "level": "Lv3", "text": "Increases ATK bonus to 30%." },
+        { "level": "Lv4", "text": "Restores 80 Energy per second." }
+      ],
+      "note": "The hypercarry enabler. At Lv3 the ATK bonus doubles from 15% to 30%; Lv4 raises Energy regen from 50 to 80 per second. Build Energy-focused virtues on your primary DPS to guarantee they consistently receive this buff."
+    }
+  ],
   "skillUpgradePriority": [
     "<strong>1. Samsara's Shore (Ultimate)</strong> — Core mechanic; HP restore and max stack increase are essential",
     "<strong>2. No Return (Relic)</strong> — Energy feedback loop at Lv3 directly amplifies Samsara uptime",
@@ -43,12 +103,12 @@
     "<strong>4. Stone of Three Fates</strong> — CD reduction at Lv3 is the key breakpoint",
     "<strong>5. Waters of Oblivion</strong> — Lowest priority; upgrade when above skills are maxed"
   ],
-  "ratingDescriptions": {
-    "PVE / Campaign": "Revival + CC cleanse = unmatched sustain in prolonged PVE",
-    "Tower / Progression": "Multi-stage fights reward the revival loop; untargetability blocks burst shutdowns",
-    "Boss Fights": "Stone of Three Fates counters boss CC phases; Lycoris Bloom accelerates DPS rotation",
-    "PVP": "Strong in sustained PVP; weaker against full-burst comps that wipe multiple units simultaneously"
-  },
+  "ratings": [
+    { "mode": "PVE / Campaign", "tier": "SS", "desc": "Revival + CC cleanse = unmatched sustain in prolonged PVE" },
+    { "mode": "Tower / Progression", "tier": "SS", "desc": "Multi-stage fights reward the revival loop; untargetability blocks burst shutdowns" },
+    { "mode": "Boss Fights", "tier": "SS", "desc": "Stone of Three Fates counters boss CC phases; Lycoris Bloom accelerates DPS rotation" },
+    { "mode": "PVP", "tier": "SS", "desc": "Strong in sustained PVP; weaker against full-burst comps that wipe multiple units simultaneously" }
+  ],
   "positioning": [
     {
       "mode": "Backline — Hard Requirement",

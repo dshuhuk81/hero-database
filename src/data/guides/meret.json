@@ -28,13 +28,73 @@
       ]
     }
   },
-  "skillNotes": {
-    "ult": "Two phases: Notes are distributed passively at battle entry, then activated together when the Ultimate fires. Lv3 Crit Rate on Moon Note is the key upgrade for Crit-dependent carries.",
-    "relic": "Relic Lv1 is Meret's biggest power spike: a Note-bearer survives a kill shot and gains a shield. Lv2 (Relic Lv.10) adds scaling damage reduction for Meret herself.",
-    "skill2": "Targets the weakest ally automatically. Lv3 adds bonus max-HP-based healing to Note-bearers, making them significantly harder to kill under sustained pressure.",
-    "skill3": "Fires automatically when an ally drops below the HP threshold. Lv4 removes the per-unit trigger limit, turning this into repeatable emergency sustain. Combined with the Relic death-save, this creates two independent survival layers.",
-    "skill4": "The core of Meret's anti-burst value. The 60/40 damage split softens focused burst, and the secondary stat bonuses (+10% Max HP, +20% damage dealt, +10% Energy regen) stack with the Ultimate's activation buffs. Lv3 further increases the Moon carry's damage output."
-  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "All Heavens in Praise",
+      "badge": "Ultimate",
+      "icon": "meret_skill_1.webp",
+      "description": "At battle start, Meret distributes a <span class=\"highlight\">Sun Note</span> to the ally with the highest Max HP, a <span class=\"highlight\">Moon Note</span> to the ally with the highest ATK, and a <span class=\"highlight\">Star Note</span> to herself. Upon activation: Sun grants a shield equal to <span class=\"highlight\">30% of Max HP</span>, Moon grants <span class=\"highlight\">+30% ATK for 8 seconds</span>, Star restores <span class=\"highlight\">200 Energy</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Sun Note grants a stronger shield." },
+        { "level": "Lv3", "text": "Moon Note additionally increases Crit Rate." },
+        { "level": "Lv4", "text": "Star Note restores more Energy." }
+      ],
+      "note": "Two phases: Notes are distributed passively at battle entry, then activated together when the Ultimate fires. Lv3 Crit Rate on Moon Note is the key upgrade for Crit-dependent carries."
+    },
+    {
+      "key": "relic",
+      "name": "Endless Echo",
+      "badge": "Relic",
+      "icon": "meret_relic.webp",
+      "description": "When a Note-bearing ally would die, prevents their death and grants a shield equal to <span class=\"highlight\">300% of ATK</span>. <span class=\"highlight\">15-second cooldown</span>.",
+      "upgrades": [
+        { "level": "Lv2 [Relic Lv.10]", "text": "For each Note on the field, Meret gains a percentage of damage reduction." },
+        { "level": "Lv3 [Relic Lv.20]", "text": "The shield granted to a Note-bearer about to die is increased." },
+        { "level": "Lv4", "text": "Meret's damage reduction while Notes are on the field is further increased." }
+      ],
+      "note": "Relic Lv1 is Meret's biggest power spike: a Note-bearer survives a kill shot and gains a shield. Lv2 (Relic Lv.10) adds scaling damage reduction for Meret herself."
+    },
+    {
+      "key": "skill2",
+      "name": "Sands in Stride",
+      "badge": "Active",
+      "icon": "meret_skill_2.webp",
+      "description": "Heals the <span class=\"highlight\">most vulnerable ally</span>, restoring HP equal to <span class=\"highlight\">60% of ATK per second</span> for 5 seconds.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Increases healing per second." },
+        { "level": "Lv3", "text": "If the target has a Note, additionally heals them for a percentage of their max HP each second." },
+        { "level": "Lv4", "text": "Increases the duration of the healing effect." }
+      ],
+      "note": "Targets the weakest ally automatically. Lv3 adds bonus max-HP-based healing to Note-bearers, making them significantly harder to kill under sustained pressure."
+    },
+    {
+      "key": "skill3",
+      "name": "The Curtain Never Falls",
+      "badge": "Passive",
+      "icon": "meret_skill_3.webp",
+      "description": "When an ally drops below <span class=\"highlight\">50% HP</span>, Meret heals them for <span class=\"highlight\">25% of their Max HP</span>. Can trigger once per unit.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Increases healing effect." },
+        { "level": "Lv3", "text": "Further increases healing effect." },
+        { "level": "Lv4", "text": "Removes the trigger limit - each unit can trigger this effect multiple times." }
+      ],
+      "note": "Fires automatically when an ally drops below the HP threshold. Lv4 removes the per-unit trigger limit, turning this into repeatable emergency sustain. Combined with the Relic death-save, this creates two independent survival layers."
+    },
+    {
+      "key": "skill4",
+      "name": "Universal Resonance",
+      "badge": "Passive",
+      "icon": "meret_skill_4.webp",
+      "description": "Marked allies share damage taken. The main target takes <span class=\"highlight\">60% of incoming damage</span>; the remaining <span class=\"highlight\">40% is split</span> among the other Note holders. Additionally: Sun grants <span class=\"highlight\">+10% Max HP</span>, Moon grants <span class=\"highlight\">+20% damage dealt</span>, Star grants <span class=\"highlight\">+10% Energy regeneration</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Sun Note further increases Max HP." },
+        { "level": "Lv3", "text": "Moon Note further increases damage dealt." },
+        { "level": "Lv4", "text": "Star Note further increases Energy regeneration speed." }
+      ],
+      "note": "The core of Meret's anti-burst value. The 60/40 damage split softens focused burst, and the secondary stat bonuses (+10% Max HP, +20% damage dealt, +10% Energy regen) stack with the Ultimate's activation buffs. Lv3 further increases the Moon carry's damage output."
+    }
+  ],
   "skillUpgradePriority": [
     "<strong>1. All Heavens in Praise (Ultimate)</strong> - Note buff activation and Lv3 Crit Rate on Moon Note directly amplify carry damage; primary upgrade target",
     "<strong>2. Endless Echo (Relic)</strong> - Lv1 death-save is mandatory; Lv2 scaling damage reduction is the baseline for competitive play",
@@ -42,11 +102,11 @@
     "<strong>4. The Curtain Never Falls (Skill 3)</strong> - Lv4 removes per-unit trigger limit, creating repeatable emergency sustain",
     "<strong>5. Sands in Stride (Skill 2)</strong> - Lv3 max-HP-based bonus healing on Note-bearers; lower priority than the core Note and survival systems"
   ],
-  "ratingDescriptions": {
-    "PVP": "Note damage-sharing and Relic death-save counter single-target burst elimination. Strong against focused carry-kill strategies. Less effective against full AoE burst that exceeds the sharing threshold simultaneously.",
-    "Campaign / Tower Push": "Core support in the Diamonds faction endgame lineup. Her Note system and tempo contribution become increasingly important in higher-difficulty content where Athena cannot substitute the full buff output.",
-    "Boss Fights": "Moon Note ATK buff and Crit Rate at Lv3 directly amplify carry damage output. Less impact than in multi-target scenarios, but the carry amplification and team sustain remain relevant in sustained single-target fights."
-  },
+  "ratings": [
+    { "mode": "PVP", "tier": "A", "desc": "Note damage-sharing and Relic death-save counter single-target burst elimination. Strong against focused carry-kill strategies. Less effective against full AoE burst that exceeds the sharing threshold simultaneously." },
+    { "mode": "Campaign / Tower Push", "tier": "S", "desc": "Core support in the Diamonds faction endgame lineup. Her Note system and tempo contribution become increasingly important in higher-difficulty content where Athena cannot substitute the full buff output." },
+    { "mode": "Boss Fights", "tier": "A", "desc": "Moon Note ATK buff and Crit Rate at Lv3 directly amplify carry damage output. Less impact than in multi-target scenarios, but the carry amplification and team sustain remain relevant in sustained single-target fights." }
+  ],
   "positioning": [
     {
       "mode": "Protected Backline",

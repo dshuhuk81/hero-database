@@ -39,13 +39,73 @@
       ]
     }
   },
-  "skillNotes": {
-    "ult": "The boosted normal attack damage is the key detail: Hera does not just disable a threat, she amplifies it and redirects it. The stronger the enemy auto-attacker, the more damage their own team absorbs during the Charm duration. Works most devastatingly against teams with a dominant auto-attack carry.",
-    "relic": "Relic Lv3 is Hera's most important investment threshold. Adding Energy Denial to Charm converts a strong CC effect into a strategic shutdown: the charmed carry cannot build toward their own Ultimate while damaging their allies. Lv4 creates a self-sustaining loop if the charmed unit is strong enough to actually secure kills.",
-    "skill2": "Auto-targeting means no manual carry designation is needed: the highest-ATK ally always receives the buff. Build your team's carry to have the highest ATK and the crown reliably lands on the correct target every cycle. The ATK Speed component makes this particularly valuable for heroes whose output scales with attack frequency.",
-    "skill3": "This is an unconditional hard-disable against the opposing team's most threatening damage source. Unlike Charm, Obsession does not redirect the target - it simply removes them from the fight entirely for its duration while restoring Hera's HP. The combination of immobilization, DoT, and self-healing makes this the most directly impactful skill in her kit on a per-cast basis.",
-    "skill4": "Royal Domain is Hera's durability engine. The Energy regeneration bonus accelerates her Ultimate cycle, ensuring she completes multiple Charm rotations in a single fight. The Suppression on enemy entry to the friendly half can interrupt dives and disrupt aggressive engage patterns. Lv4 provides a pseudo-revival identical in concept to Skadi's Relic Lv2 - a last-resort survival window rather than a passive sustain tool."
-  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Tide of Obsession",
+      "badge": "Ultimate",
+      "icon": "hera_skill_1.webp",
+      "description": "Hera releases a wave of Charm toward the nearest enemy. The struck enemy is <span class=\"highlight\">Charmed</span> and attacks their own allies. While Charmed, the target's normal attack damage is boosted.",
+      "upgrades": [
+        { "level": "Lv2", "text": "The charmed target's normal attack damage bonus is increased further." },
+        { "level": "Lv3", "text": "Charm duration is extended." },
+        { "level": "Lv4", "text": "The charmed target's normal attack damage bonus is increased further." }
+      ],
+      "note": "The boosted normal attack damage is the key detail: Hera does not just disable a threat, she amplifies it and redirects it. The stronger the enemy auto-attacker, the more damage their own team absorbs during the Charm duration. Works most devastatingly against teams with a dominant auto-attack carry."
+    },
+    {
+      "key": "relic",
+      "name": "Charm Seal",
+      "badge": "Relic",
+      "icon": "hera_relic.webp",
+      "description": "Enemies who have been under Hera's <span class=\"highlight\">Charm</span> or <span class=\"highlight\">Obsession</span> control have their <span class=\"highlight\">Effect Resistance reduced</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Charmed enemies also receive Crown's Bestowal (ATK/ATK Speed buff applied to the enemy carry)." },
+        { "level": "Lv3", "text": "Charmed enemies cannot gain Energy for the duration of the Charm." },
+        { "level": "Lv4", "text": "If the charmed enemy kills an ally during the Charm, the Charm duration is extended." }
+      ],
+      "note": "Relic Lv3 is Hera's most important investment threshold. Adding Energy Denial to Charm converts a strong CC effect into a strategic shutdown: the charmed carry cannot build toward their own Ultimate while damaging their allies. Lv4 creates a self-sustaining loop if the charmed unit is strong enough to actually secure kills."
+    },
+    {
+      "key": "skill1",
+      "name": "Crown's Bestowal",
+      "badge": "Skill 1",
+      "icon": "hera_skill_2.webp",
+      "description": "Hera grants her crown to the friendly hero with the <span class=\"highlight\">highest ATK</span>, increasing their <strong>ATK</strong> and <strong>ATK Speed</strong> for a duration.",
+      "upgrades": [
+        { "level": "Lv2", "text": "ATK bonus is increased." },
+        { "level": "Lv3", "text": "Duration is extended." },
+        { "level": "Lv4", "text": "ATK Speed bonus is increased." }
+      ],
+      "note": "Auto-targeting means no manual carry designation is needed: the highest-ATK ally always receives the buff. Build your team's carry to have the highest ATK and the crown reliably lands on the correct target every cycle. The ATK Speed component makes this particularly valuable for heroes whose output scales with attack frequency."
+    },
+    {
+      "key": "skill3",
+      "name": "Fatal Infatuation",
+      "badge": "Skill 2",
+      "icon": "hera_skill_3.webp",
+      "description": "Targets the enemy dealing the <span class=\"highlight\">highest damage</span> and applies <span class=\"highlight\">Obsession</span>: the target cannot attack, moves slower, and is gradually pulled toward Hera. The target takes DoT equal to a percentage of Hera's ATK per second. Hera heals herself for the same amount.",
+      "upgrades": [
+        { "level": "Lv2", "text": "DoT per second is increased." },
+        { "level": "Lv3", "text": "Obsession duration is extended." },
+        { "level": "Lv4", "text": "DoT per second is increased further." }
+      ],
+      "note": "This is an unconditional hard-disable against the opposing team's most threatening damage source. Unlike Charm, Obsession does not redirect the target - it simply removes them from the fight entirely for its duration while restoring Hera's HP."
+    },
+    {
+      "key": "skill4",
+      "name": "Royal Domain",
+      "badge": "Passive",
+      "icon": "hera_skill_4.webp",
+      "description": "At battle start, Hera deploys a <span class=\"highlight\">Power Field</span> over the friendly half of the battlefield. Inside the field, Hera regenerates Energy faster and gains stacking <strong>Damage Reduction</strong> (up to a cap). When enemies first enter the field, they are <span class=\"highlight\">Suppressed</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Damage reduction inside the field is increased." },
+        { "level": "Lv3", "text": "Suppression duration on enemy entry is extended." },
+        { "level": "Lv4", "text": "When Hera would take fatal damage, she withdraws the field, becomes briefly immune, and heals a percentage of her Max HP." }
+      ],
+      "note": "Royal Domain is Hera's durability engine. The Energy regeneration bonus accelerates her Ultimate cycle, ensuring she completes multiple Charm rotations in a single fight. Lv4 provides a pseudo-revival - a last-resort survival window rather than a passive sustain tool."
+    }
+  ],
   "skillUpgradePriority": [
     "<strong>1. Charm Seal (Relic)</strong> - Lv3 Energy Denial is the most impactful breakpoint in Hera's entire kit; prioritize Relic investment above all else",
     "<strong>2. Fatal Infatuation (Skill 2)</strong> - The hard anti-carry disable; Lv3 duration extension significantly increases the window the opposing carry is removed from the fight",
@@ -53,12 +113,12 @@
     "<strong>4. Royal Domain (Passive)</strong> - Lv4 pseudo-revival is valuable as insurance; Lv3 extended Suppression improves field control",
     "<strong>5. Crown's Bestowal (Skill 1)</strong> - Strong carry buff, but lower priority than the control skills that define Hera's kit"
   ],
-  "ratingDescriptions": {
-    "PVP": "Anti-carry targeting, Charm redirection, Energy Denial via Relic Lv3 - oppressive against single-carry compositions",
-    "PVE / Campaign": "Strong carry buff and control provide consistent value; team-dependent in content where enemies resist or ignore CC",
-    "Tower / Progression": "Control and self-sustain via Royal Domain support extended multi-stage fights; value depends on content's CC susceptibility",
-    "Boss Fights": "Crown's Bestowal adds carry support value; core CC identity diminished when targets are immune to Charm and Obsession"
-  },
+  "ratings": [
+    { "mode": "PVP", "tier": "S", "desc": "Anti-carry targeting, Charm redirection, Energy Denial via Relic Lv3 - oppressive against single-carry compositions" },
+    { "mode": "PVE / Campaign", "tier": "A", "desc": "Strong carry buff and control provide consistent value; team-dependent in content where enemies resist or ignore CC" },
+    { "mode": "Tower / Progression", "tier": "A", "desc": "Control and self-sustain via Royal Domain support extended multi-stage fights; value depends on content's CC susceptibility" },
+    { "mode": "Boss Fights", "tier": "B", "desc": "Crown's Bestowal adds carry support value; core CC identity diminished when targets are immune to Charm and Obsession" }
+  ],
   "positioning": [
     {
       "mode": "Backline - Control Anchor",
