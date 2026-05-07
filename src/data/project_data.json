@@ -1,0 +1,475 @@
+{
+  "name": "Hero Database data index",
+  "generatedAt": "2026-05-07",
+  "purpose": "Index of project data JSON files and the kind of content stored in each file.",
+  "notes": [
+    "The primary data root is src/data.",
+    "No JSON files were found under public.",
+    "src/data/ratings/ratings-interpreter.json has a .json extension but contains tab-separated text, so it is indexed as non-JSON data."
+  ],
+  "dataRoots": {
+    "src/data": {
+      "description": "Main application data consumed by Astro pages, components, utilities, and scripts.",
+      "jsonFileCountExcludingThisIndex": 105
+    },
+    "data/snapshots": {
+      "description": "Historical or analysis snapshots outside the app source data tree.",
+      "jsonFileCount": 1
+    },
+    "public": {
+      "description": "Static web assets. Images and scripts are present, but no JSON files were found.",
+      "jsonFileCount": 0
+    }
+  },
+  "lookupRules": {
+    "heroProfile": {
+      "sourcePattern": "src/data/heroes/{heroId}.json",
+      "aggregateCopy": "src/data/all_heroes_db.json",
+      "runtimeAdapter": "src/data/heroes/index.js",
+      "notes": "Hero pages and calculators use src/data/heroes/index.js, which glob-imports hero JSON files and overlays centralized ratings from src/data/ratings/hero-ratings.json."
+    },
+    "heroRatings": {
+      "path": "src/data/ratings/hero-ratings.json",
+      "key": "heroId"
+    },
+    "heroInvestment": {
+      "path": "src/data/ratings/invest.json",
+      "key": "heroId"
+    },
+    "heroGuideDetail": {
+      "sourcePattern": "src/data/guides/{heroId}.json",
+      "listingFile": "src/data/hero-guides.json"
+    }
+  },
+  "collections": {
+    "heroes": {
+      "description": "Canonical hero profiles, stats, skills, relic data, synergies, ratings fallbacks, guide links, and optional meta fields.",
+      "sourceDirectory": "src/data/heroes",
+      "sourceFilePattern": "src/data/heroes/{heroId}.json",
+      "sourceFileCount": 75,
+      "aggregateFile": "src/data/all_heroes_db.json",
+      "aggregateShape": "object keyed by heroId",
+      "commonFields": [
+        "id",
+        "name",
+        "image",
+        "release",
+        "faction",
+        "role",
+        "class",
+        "rarity",
+        "description",
+        "ratings",
+        "recommendedRelicLevel",
+        "evolution",
+        "level",
+        "stats",
+        "skills",
+        "relic",
+        "synergies",
+        "baseAttackRate",
+        "bossUltimatesPer90s"
+      ],
+      "files": [
+        { "id": "amunra", "name": "Amunra", "path": "src/data/heroes/amunra.json" },
+        { "id": "anubis", "name": "Anubis", "path": "src/data/heroes/anubis.json" },
+        { "id": "aquarius", "name": "Aquarius", "path": "src/data/heroes/aquarius.json" },
+        { "id": "ares", "name": "Ares", "path": "src/data/heroes/ares.json" },
+        { "id": "aries", "name": "Aries", "path": "src/data/heroes/aries.json" },
+        { "id": "artemis", "name": "Artemis", "path": "src/data/heroes/artemis.json" },
+        { "id": "athena", "name": "Athena", "path": "src/data/heroes/athena.json" },
+        { "id": "audhumla", "name": "Audhumla", "path": "src/data/heroes/audhumla.json" },
+        { "id": "bastet", "name": "Bastet", "path": "src/data/heroes/bastet.json" },
+        { "id": "caishen", "name": "Caishen", "path": "src/data/heroes/caishen.json" },
+        { "id": "cancer", "name": "Cancer", "path": "src/data/heroes/cancer.json" },
+        { "id": "canopicjar", "name": "Canopic Jar", "path": "src/data/heroes/canopicjar.json" },
+        { "id": "capricorn", "name": "Capricorn", "path": "src/data/heroes/capricorn.json" },
+        { "id": "cronus", "name": "Cronus", "path": "src/data/heroes/cronus.json" },
+        { "id": "demeter", "name": "Demeter", "path": "src/data/heroes/demeter.json" },
+        { "id": "diana", "name": "Diana", "path": "src/data/heroes/diana.json" },
+        { "id": "dionysus", "name": "Dionysus", "path": "src/data/heroes/dionysus.json" },
+        { "id": "eris", "name": "Eris", "path": "src/data/heroes/eris.json" },
+        { "id": "fengyi", "name": "Fengyi", "path": "src/data/heroes/fengyi.json" },
+        { "id": "freya", "name": "Freya", "path": "src/data/heroes/freya.json" },
+        { "id": "geb", "name": "Geb", "path": "src/data/heroes/geb.json" },
+        { "id": "gemini", "name": "Gemini", "path": "src/data/heroes/gemini.json" },
+        { "id": "hecate", "name": "Hecate", "path": "src/data/heroes/hecate.json" },
+        { "id": "hela", "name": "Hela", "path": "src/data/heroes/hela.json" },
+        { "id": "hephaestus", "name": "Hephaestus", "path": "src/data/heroes/hephaestus.json" },
+        { "id": "hera", "name": "Hera", "path": "src/data/heroes/hera.json" },
+        { "id": "heracles", "name": "Heracles", "path": "src/data/heroes/heracles.json" },
+        { "id": "hladgunnr", "name": "Hladgunnr", "path": "src/data/heroes/hladgunnr.json" },
+        { "id": "horus", "name": "Horus", "path": "src/data/heroes/horus.json" },
+        { "id": "idun", "name": "Idun", "path": "src/data/heroes/idun.json" },
+        { "id": "iris", "name": "Iris", "path": "src/data/heroes/iris.json" },
+        { "id": "isis", "name": "Isis", "path": "src/data/heroes/isis.json" },
+        { "id": "jinchan", "name": "Jinchan", "path": "src/data/heroes/jinchan.json" },
+        { "id": "jingwei", "name": "Jingwei", "path": "src/data/heroes/jingwei.json" },
+        { "id": "jiutian-xuannv", "name": "Jiutian Xuannv", "path": "src/data/heroes/jiutian-xuannv.json" },
+        { "id": "jormungandr", "name": "Jormungandr", "path": "src/data/heroes/jormungandr.json" },
+        { "id": "khepri", "name": "Khepri", "path": "src/data/heroes/khepri.json" },
+        { "id": "kraken", "name": "Kraken", "path": "src/data/heroes/kraken.json" },
+        { "id": "leo", "name": "Leo", "path": "src/data/heroes/leo.json" },
+        { "id": "libra", "name": "Libra", "path": "src/data/heroes/libra.json" },
+        { "id": "medusa", "name": "Medusa", "path": "src/data/heroes/medusa.json" },
+        { "id": "mengpo", "name": "Mengpo", "path": "src/data/heroes/mengpo.json" },
+        { "id": "meret", "name": "Meret", "path": "src/data/heroes/meret.json" },
+        { "id": "momus", "name": "Momus", "path": "src/data/heroes/momus.json" },
+        { "id": "nemesis", "name": "Nemesis", "path": "src/data/heroes/nemesis.json" },
+        { "id": "nezha", "name": "Nezha", "path": "src/data/heroes/nezha.json" },
+        { "id": "nuba", "name": "Nuba", "path": "src/data/heroes/nuba.json" },
+        { "id": "nut", "name": "Nut", "path": "src/data/heroes/nut.json" },
+        { "id": "nuwa", "name": "Nuwa", "path": "src/data/heroes/nuwa.json" },
+        { "id": "nymphia", "name": "Nymphia", "path": "src/data/heroes/nymphia.json" },
+        { "id": "nyx", "name": "Nyx", "path": "src/data/heroes/nyx.json" },
+        { "id": "pan", "name": "Pan", "path": "src/data/heroes/pan.json" },
+        { "id": "phoenix", "name": "Phoenix", "path": "src/data/heroes/phoenix.json" },
+        { "id": "pisces", "name": "Pisces", "path": "src/data/heroes/pisces.json" },
+        { "id": "poseidon", "name": "Poseidon", "path": "src/data/heroes/poseidon.json" },
+        { "id": "prometheus", "name": "Prometheus", "path": "src/data/heroes/prometheus.json" },
+        { "id": "ratatoskr", "name": "Ratatoskr", "path": "src/data/heroes/ratatoskr.json" },
+        { "id": "sagittarius", "name": "Sagittarius", "path": "src/data/heroes/sagittarius.json" },
+        { "id": "scorpio", "name": "Scorpio", "path": "src/data/heroes/scorpio.json" },
+        { "id": "sekhmet", "name": "Sekhmet", "path": "src/data/heroes/sekhmet.json" },
+        { "id": "serket", "name": "Serket", "path": "src/data/heroes/serket.json" },
+        { "id": "set", "name": "Set", "path": "src/data/heroes/set.json" },
+        { "id": "skadi", "name": "Skadi", "path": "src/data/heroes/skadi.json" },
+        { "id": "surtr", "name": "Surtr", "path": "src/data/heroes/surtr.json" },
+        { "id": "tailao", "name": "Tailao", "path": "src/data/heroes/tailao.json" },
+        { "id": "taurus", "name": "Taurus", "path": "src/data/heroes/taurus.json" },
+        { "id": "tefnut", "name": "Tefnut", "path": "src/data/heroes/tefnut.json" },
+        { "id": "treant", "name": "Treant", "path": "src/data/heroes/treant.json" },
+        { "id": "ullr", "name": "Ullr", "path": "src/data/heroes/ullr.json" },
+        { "id": "ushabti", "name": "Ushabti", "path": "src/data/heroes/ushabti.json" },
+        { "id": "virgo", "name": "Virgo", "path": "src/data/heroes/virgo.json" },
+        { "id": "wenshen", "name": "Wen-Shen", "path": "src/data/heroes/wenshen.json" },
+        { "id": "yanluo", "name": "Yanluo", "path": "src/data/heroes/yanluo.json" },
+        { "id": "yuelao", "name": "Yuelao", "path": "src/data/heroes/yuelao.json" },
+        { "id": "zeus", "name": "Zeus", "path": "src/data/heroes/zeus.json" }
+      ]
+    },
+    "ratings": {
+      "description": "Centralized ranking and investment recommendation data.",
+      "files": [
+        {
+          "path": "src/data/ratings/hero-ratings.json",
+          "shape": "object keyed by heroId",
+          "recordCount": 75,
+          "contains": [
+            "display name",
+            "overall rating",
+            "pvp rating",
+            "pve rating"
+          ]
+        },
+        {
+          "path": "src/data/ratings/invest.json",
+          "shape": "object keyed by heroId",
+          "recordCount": 49,
+          "contains": [
+            "relic recommendation",
+            "where the hero is used",
+            "investment explanation",
+            "free-to-play investment guidance"
+          ]
+        },
+        {
+          "path": "src/data/ratings/ratings-interpreter.json",
+          "status": "not_valid_json",
+          "format": "tab-separated text",
+          "contains": [
+            "letter rating to tier mapping"
+          ]
+        }
+      ]
+    },
+    "guides": {
+      "description": "Hero guide listings and full guide detail records.",
+      "listingFile": {
+        "path": "src/data/hero-guides.json",
+        "shape": "object with guides array",
+        "recordCount": 9,
+        "contains": [
+          "guide card metadata",
+          "hero image",
+          "quote",
+          "tags",
+          "recommended compositions",
+          "composition notes"
+        ]
+      },
+      "detailDirectory": "src/data/guides",
+      "detailFileCount": 9,
+      "commonFields": [
+        "overview",
+        "lore",
+        "factionSynergy",
+        "coreMechanic",
+        "skills",
+        "skillUpgradePriority",
+        "ratings",
+        "positioning",
+        "strengths",
+        "weaknesses",
+        "synergy",
+        "playstyle"
+      ],
+      "files": [
+        { "id": "cronus", "path": "src/data/guides/cronus.json" },
+        { "id": "hephaestus", "path": "src/data/guides/hephaestus.json" },
+        { "id": "hera", "path": "src/data/guides/hera.json" },
+        { "id": "jiutian-xuannv", "path": "src/data/guides/jiutian-xuannv.json" },
+        { "id": "mengpo", "path": "src/data/guides/mengpo.json" },
+        { "id": "meret", "path": "src/data/guides/meret.json" },
+        { "id": "nuba", "path": "src/data/guides/nuba.json" },
+        { "id": "skadi", "path": "src/data/guides/skadi.json" },
+        { "id": "wenshen", "path": "src/data/guides/wenshen.json" }
+      ]
+    },
+    "bossesAndCompositions": {
+      "description": "Boss data, auto-composition rules, and community composition vote data.",
+      "files": [
+        {
+          "path": "src/data/bosses.json",
+          "shape": "object with version, autoRules, and bosses array",
+          "recordCount": 8,
+          "ids": [
+            "baphomet",
+            "spirit_of_night_hag",
+            "epica",
+            "lilith",
+            "isthar_vi",
+            "jackfrost",
+            "typhoon",
+            "nian_beast"
+          ],
+          "contains": [
+            "boss identity",
+            "mode",
+            "battle power",
+            "mechanic tags",
+            "skills",
+            "recommended teams",
+            "auto-composition hints"
+          ]
+        },
+        {
+          "path": "src/data/communityComps.json",
+          "shape": "object keyed by bossId",
+          "recordCount": 2,
+          "contains": [
+            "community team compositions",
+            "vote counts"
+          ]
+        }
+      ]
+    },
+    "gameModes": {
+      "description": "Mode-specific static data for event pages and gameplay tools.",
+      "files": [
+        {
+          "path": "src/data/events.json",
+          "shape": "object with campaigns array",
+          "recordCount": 7,
+          "ids": [
+            "hephaestus-campaign",
+            "meret-campaign",
+            "wenshen-campaign",
+            "skadi-campaign",
+            "mengpo-campaign",
+            "nuba-campaign",
+            "heracles-campaign"
+          ],
+          "contains": [
+            "campaign names",
+            "featured hero",
+            "stage names",
+            "front and back row compositions"
+          ]
+        },
+        {
+          "path": "src/data/delusions-den.json",
+          "shape": "object with blessings and buffs arrays",
+          "recordCounts": {
+            "blessings": 5,
+            "buffs": 55
+          },
+          "contains": [
+            "blessing effects",
+            "recommendations",
+            "tips",
+            "buff categories",
+            "buff effects"
+          ]
+        },
+        {
+          "path": "src/data/shrineSetups.json",
+          "shape": "array",
+          "recordCount": 2,
+          "contains": [
+            "shrine setup labels",
+            "god placement lists"
+          ]
+        },
+        {
+          "path": "src/data/totems.json",
+          "shape": "object with version, slotType, description, totem_archetypes, and totems",
+          "recordCount": 14,
+          "contains": [
+            "totem archetypes",
+            "totem names",
+            "team slot metadata",
+            "totem effects"
+          ]
+        },
+        {
+          "path": "src/data/virtues.json",
+          "shape": "array",
+          "recordCount": 69,
+          "contains": [
+            "virtue id",
+            "virtue name",
+            "set",
+            "rarity",
+            "type",
+            "battle power",
+            "stat bonuses",
+            "set bonuses"
+          ]
+        }
+      ]
+    },
+    "statsAndBonuses": {
+      "description": "Calculator and stat reference data.",
+      "files": [
+        {
+          "path": "src/data/accountBonuses.json",
+          "shape": "object with description and presets",
+          "contains": [
+            "account bonus presets",
+            "calculator preset metadata"
+          ]
+        },
+        {
+          "path": "src/data/stats/base-stats.json",
+          "shape": "object keyed by hero class",
+          "recordCount": 6,
+          "keys": [
+            "Tank",
+            "Warrior",
+            "Assassin",
+            "Archer",
+            "Mage",
+            "Support"
+          ],
+          "contains": [
+            "base stat profiles by class"
+          ]
+        }
+      ]
+    },
+    "tagsAndSynergy": {
+      "description": "Tag definitions, synergy scoring, and manual meta overrides.",
+      "files": [
+        {
+          "path": "src/data/tags.json",
+          "shape": "array",
+          "recordCount": 34,
+          "contains": [
+            "hero tag names used by filters and synergy utilities"
+          ]
+        },
+        {
+          "path": "src/data/synergyMatrix.json",
+          "shape": "object keyed by tag-pair expression",
+          "recordCount": 6,
+          "contains": [
+            "synergy score and text for tag combinations"
+          ]
+        },
+        {
+          "path": "src/data/metaOverrides.json",
+          "shape": "object keyed by heroId",
+          "recordCount": 12,
+          "contains": [
+            "manual hero meta adjustments",
+            "override notes"
+          ]
+        }
+      ]
+    },
+    "siteMetadata": {
+      "description": "Data used for site chrome, page update labels, changelog, supporters, and external asset mapping.",
+      "files": [
+        {
+          "path": "src/data/changelog.json",
+          "shape": "array",
+          "recordCount": 22,
+          "contains": [
+            "date",
+            "version",
+            "title",
+            "change list"
+          ]
+        },
+        {
+          "path": "src/data/pageUpdates.json",
+          "shape": "object keyed by page id",
+          "recordCount": 10,
+          "contains": [
+            "last update metadata by page"
+          ]
+        },
+        {
+          "path": "src/data/supporters.json",
+          "shape": "array",
+          "recordCount": 1,
+          "contains": [
+            "supporter names",
+            "notes",
+            "dates"
+          ]
+        },
+        {
+          "path": "src/data/game_id_mapping.json",
+          "shape": "object keyed by heroId",
+          "recordCount": 74,
+          "contains": [
+            "game asset or source id mapping used by import and conversion scripts"
+          ]
+        }
+      ]
+    },
+    "snapshots": {
+      "description": "Project-level data snapshots outside src/data.",
+      "files": [
+        {
+          "path": "data/snapshots/v1_baseline.json",
+          "shape": "array",
+          "recordCount": 69,
+          "contains": [
+            "hero id",
+            "synergies",
+            "relic presence",
+            "ratings"
+          ]
+        }
+      ]
+    },
+    "generatedIndexes": {
+      "description": "Generated or maintained index files.",
+      "files": [
+        {
+          "path": "src/data/project_data.json",
+          "shape": "object",
+          "contains": [
+            "data roots",
+            "lookup rules",
+            "collection summaries",
+            "paths to project data files"
+          ]
+        }
+      ]
+    }
+  }
+}
