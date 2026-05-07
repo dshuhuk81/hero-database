@@ -4,25 +4,41 @@ interface NavItem {
   label: string;
   href: string;
   group?: "primary" | "content" | "meta";
+  status?: {
+    type: "maintenance";
+    tooltip?: string;
+  };
   badge?: {
     text: string;
     color?: string;
   };
 }
+const defaultMaintenanceTooltip = "currently under maintenance";
 
 const navItems: NavItem[] = [
   { label: "Home",      href: "/",          group: "primary" },
-  { label: "Heros",     href: "/heros",     group: "primary" },
-  { label: "Hero Guides", href: "/guides",   group: "content" },
+  { label: "Heros",     href: "/heros",     group: "primary", badge: { text: "Update", color: "var(--accent-purple)" } },
   { label: "Tips",      href: "/tips",      group: "content" },
   { label: "Boss Encounters", href: "/bosses", group: "content" },
-  { label: "Events",    href: "/events",    group: "content", },
-  { label: "Tower",     href: "/tower",     group: "content"},
+  { label: "Events",    href: "/events",    group: "content", badge: { text: "Update", color: "var(--accent-purple)" } },
+  {
+    label: "Tower",
+    href: "/tower",
+    group: "content",
+    status: {
+      type: "maintenance",
+      tooltip: "Currently under maintenance!"
+    }
+  },
   { label: "Delusions Den", href: "/delusions-den", group: "content"},
   { label: "Totems",    href: "/totems",    group: "content"},
-  { label: "Virtues",   href: "/virtues",   group: "content",  },
-    { label: "Summon Calendar", href: "/summon-calendar", group: "content" },
-
+  { label: "Virtues",   href: "/virtues",   group: "content", badge: { text: "New", color: "var(--accent-new)" } },
+  { label: "Summon Calendar", href: "/summon-calendar", group: "content" },
+  {
+    label: "Calculator",
+    href: "/calculator",
+    group: "content",
+  },
   { label: "Changes",   href: "/changelog", group: "meta" },
   { label: "About",     href: "/about",     group: "meta" },
 ];
@@ -31,7 +47,6 @@ const navItems: NavItem[] = [
 const icons: Record<string, string> = {
   "Home": `<path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>`,
   "Heros": `<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19.5 6.5L21 3l-3.5 1.5"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6"/><path d="M8 16l-4 4"/><path d="M4.5 6.5L3 3l3.5 1.5"/>`,
-  "Hero Guides": `<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,
   "Summon Calendar": `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1" fill="currentColor" stroke="none"/>`,
   "Tips": `<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
   "Boss Encounters": `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
@@ -39,6 +54,7 @@ const icons: Record<string, string> = {
   "Tower": `<path d="M6 22V8l6-6 6 6v14"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2"/><path d="M12 17v5"/><path d="M10 10h4"/>`,
   "Totems": `<path d="M12 2L8 6v3l-2 2v4l2 2v3l4 2 4-2v-3l2-2v-4l-2-2V6z"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/>`,
   "Tools": `<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="8" y="6" width="8" height="4" rx="1"/><circle cx="8" cy="14" r=".75"/><circle cx="12" cy="14" r=".75"/><circle cx="16" cy="14" r=".75"/><circle cx="8" cy="18" r=".75"/><circle cx="12" cy="18" r=".75"/><line x1="16" y1="16" x2="16" y2="20"/>`,
+  "Calculator": `<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="8" y="6" width="8" height="4" rx="1"/><circle cx="8" cy="14" r=".75"/><circle cx="12" cy="14" r=".75"/><circle cx="16" cy="14" r=".75"/><circle cx="8" cy="18" r=".75"/><circle cx="12" cy="18" r=".75"/><line x1="16" y1="16" x2="16" y2="20"/>`,
   "Virtues": `<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/>`,
   "Delusions Den": `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`,
   "Changes": `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><circle cx="12" cy="15" r="3"/><path d="M12 13.5V15l1 1"/>`,
@@ -60,80 +76,118 @@ const metaItems    = navItems.filter(i => i.group === "meta");
 function getIcon(label: string) {
   return icons[label] || icons["Home"];
 }
+
+function isMaintenance(item: NavItem) {
+  return item.status?.type === "maintenance";
+}
+
+function getTooltip(item: NavItem) {
+  return item.status?.tooltip ?? defaultMaintenanceTooltip;
+}
 ---
 
 <!-- Desktop Rail -->
 <aside class="rail">
   <nav class="rail-nav">
-    {primaryItems.map((item) => (
-      <a
-        href={item.href}
-        class={`rail-item ${isActive(item.href) ? "active" : ""}`}
-        data-tooltip={item.label}
+    {primaryItems.map((item) => {
+      const disabled = isMaintenance(item);
+      const tooltip = disabled ? getTooltip(item) : item.label;
+      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+      const itemContent = (
+        <>
+          <div class="rail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+            {isActive(item.href) && !disabled && <span class="active-pill" />}
+          </div>
+          {item.badge && (
+            <span
+              class="alpha-chip"
+              style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+            >
+              {item.badge.text}
+            </span>
+          )}
+        </>
+      );
 
-      >
-        <div class="rail-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
-          {isActive(item.href) && <span class="active-pill" />}
-        </div>
-        {item.badge && (
-          <span
-            class="alpha-chip"
-            style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
-          >
-            {item.badge.text}
-          </span>
-        )}
-      </a>
-    ))}
-
-    <div class="rail-divider" />
-
-    {contentItems.map((item) => (
-      <a
-        href={item.href}
-        class={`rail-item ${isActive(item.href) ? "active" : ""}`}
-        data-tooltip={item.label}
-
-      >
-        <div class="rail-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
-          {isActive(item.href) && <span class="active-pill" />}
-        </div>
-        {item.badge && (
-          <span
-            class="alpha-chip"
-            style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
-          >
-            {item.badge.text}
-          </span>
-        )}
-      </a>
-    ))}
+      return disabled ? (
+        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
+          {itemContent}
+        </span>
+      ) : (
+        <a href={item.href} class={itemClass} data-tooltip={tooltip}>
+          {itemContent}
+        </a>
+      );
+    })}
 
     <div class="rail-divider" />
 
-    {metaItems.map((item) => (
-      <a
-        href={item.href}
-        class={`rail-item ${isActive(item.href) ? "active" : ""}`}
-        data-tooltip={item.label}
+    {contentItems.map((item) => {
+      const disabled = isMaintenance(item);
+      const tooltip = disabled ? getTooltip(item) : item.label;
+      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+      const itemContent = (
+        <>
+          <div class="rail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+            {isActive(item.href) && !disabled && <span class="active-pill" />}
+          </div>
+          {item.badge && (
+            <span
+              class="alpha-chip"
+              style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+            >
+              {item.badge.text}
+            </span>
+          )}
+        </>
+      );
 
-      >
-        <div class="rail-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
-          {isActive(item.href) && <span class="active-pill" />}
-        </div>
-        {item.badge && (
-          <span
-            class="alpha-chip"
-            style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
-          >
-            {item.badge.text}
-          </span>
-        )}
-      </a>
-    ))}
+      return disabled ? (
+        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
+          {itemContent}
+        </span>
+      ) : (
+        <a href={item.href} class={itemClass} data-tooltip={tooltip}>
+          {itemContent}
+        </a>
+      );
+    })}
+
+    <div class="rail-divider" />
+
+    {metaItems.map((item) => {
+      const disabled = isMaintenance(item);
+      const tooltip = disabled ? getTooltip(item) : item.label;
+      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+      const itemContent = (
+        <>
+          <div class="rail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+            {isActive(item.href) && !disabled && <span class="active-pill" />}
+          </div>
+          {item.badge && (
+            <span
+              class="alpha-chip"
+              style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+            >
+              {item.badge.text}
+            </span>
+          )}
+        </>
+      );
+
+      return disabled ? (
+        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
+          {itemContent}
+        </span>
+      ) : (
+        <a href={item.href} class={itemClass} data-tooltip={tooltip}>
+          {itemContent}
+        </a>
+      );
+    })}
   </nav>
   
 
@@ -156,17 +210,29 @@ function getIcon(label: string) {
 
 <!-- Mobile Bottom Bar -->
 <nav class="mobile-bar">
-  {mobileItems.map((item) => (
-    <a
-      href={item.href}
-      class={`mobile-item ${isActive(item.href) ? "active" : ""}`}
-    >
-      <div class="mobile-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
-      </div>
-      <span class="mobile-label">{item.label}</span>
-    </a>
-  ))}
+  {mobileItems.map((item) => {
+    const disabled = isMaintenance(item);
+    const tooltip = getTooltip(item);
+    const itemClass = `mobile-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+    const itemContent = (
+      <>
+        <div class="mobile-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+        </div>
+        <span class="mobile-label">{item.label}</span>
+      </>
+    );
+
+    return disabled ? (
+      <span class={itemClass} title={tooltip} aria-disabled="true" role="link">
+        {itemContent}
+      </span>
+    ) : (
+      <a href={item.href} class={itemClass}>
+        {itemContent}
+      </a>
+    );
+  })}
   <button class="mobile-item mobile-more-btn" id="mobileMoreBtn" type="button">
     <div class="mobile-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -196,26 +262,37 @@ function getIcon(label: string) {
 <div class="more-sheet-backdrop" id="moreSheetBackdrop">
   <div class="more-sheet" id="moreSheet">
     <div class="more-sheet-handle"></div>
-    {mobileOverflowItems.map((item) => (
-      <a
-        href={item.href}
-        class={`more-sheet-item ${isActive(item.href) ? "active" : ""}`}
+    {mobileOverflowItems.map((item) => {
+      const disabled = isMaintenance(item);
+      const tooltip = getTooltip(item);
+      const itemClass = `more-sheet-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+      const itemContent = (
+        <>
+          <div class="more-sheet-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
+          </div>
+          <span class="more-sheet-label">{item.label}</span>
+          {item.badge && (
+            <span
+              class="alpha-chip-inline"
+              style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
+            >
+              {item.badge.text}
+            </span>
+          )}
+        </>
+      );
 
-      >
-        <div class="more-sheet-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item.label)} />
-        </div>
-        <span class="more-sheet-label">{item.label}</span>
-        {item.badge && (
-          <span
-            class="alpha-chip-inline"
-            style={item.badge.color ? `background-color: ${item.badge.color};` : ''}
-          >
-            {item.badge.text}
-          </span>
-        )}
-      </a>
-    ))}
+      return disabled ? (
+        <span class={itemClass} title={tooltip} aria-disabled="true" role="link">
+          {itemContent}
+        </span>
+      ) : (
+        <a href={item.href} class={itemClass}>
+          {itemContent}
+        </a>
+      );
+    })}
     <div class="more-sheet-divider" />
     <a href="/#support" class="more-sheet-item more-sheet-support">
       <div class="more-sheet-icon">
@@ -371,6 +448,15 @@ function getIcon(label: string) {
 
   .rail-item.active {
     color: #facc15;
+  }
+
+  .rail-item.nav-disabled,
+  .rail-item.nav-disabled:hover:not(.active),
+  .rail-item.nav-disabled:hover {
+    cursor: not-allowed;
+    color: var(--text-disabled);
+    background: transparent;
+    opacity: 0.55;
   }
 
   /* ─── Tooltip on hover ─── */
@@ -560,6 +646,13 @@ function getIcon(label: string) {
     color: #facc15;
   }
 
+  .mobile-item.nav-disabled,
+  .mobile-item.nav-disabled:hover {
+    cursor: not-allowed;
+    color: var(--text-disabled);
+    opacity: 0.55;
+  }
+
   .mobile-item.active::before {
     content: "";
     position: absolute;
@@ -653,6 +746,14 @@ function getIcon(label: string) {
 
   .more-sheet-item.active {
     color: #facc15;
+  }
+
+  .more-sheet-item.nav-disabled,
+  .more-sheet-item.nav-disabled:hover {
+    cursor: not-allowed;
+    color: var(--text-disabled);
+    background: none;
+    opacity: 0.55;
   }
 
   .more-sheet-icon {

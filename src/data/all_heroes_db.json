@@ -1743,7 +1743,63 @@
       "depthRating": "mid",
       "commonlyMisunderstood": false
     },
-    "synergyLinks": [],
+    "synergyLinks": [
+      {
+        "heroId": "isis",
+        "type": "tank",
+        "description": "The best-fit allround Cronus carry partner based on kit synergy. Isis is a skill-dependent damage source that benefits directly from Cronus's protective utility and extended cast windows. Rewinding Remains saves her from burst, Echo of Causality doubles her active, and the Projection can create a temporary second Isis in critical fight phases."
+      },
+      {
+        "heroId": "athena",
+        "type": "tank",
+        "description": "Primary frontline protector for Cronus and the designated carry. Athena's shielding ensures Cronus survives long enough for his passive systems to fire, and buys the seconds needed for Rewinding Remains to save a near-dead ally. Present in almost every viable Cronus composition."
+      },
+      {
+        "heroId": "poseidon",
+        "type": "cc",
+        "description": "AoE crowd control that compounds with Cronus's tempo suppression. Poseidon's CC creates the first control window that allows Temporal Rift to land cleanly, and his AoE grouping maximizes the disruption from Cronus's formation-break displacement. Strong PvP partner."
+      },
+      {
+        "heroId": "caishen",
+        "type": "cc",
+        "description": "Team-wide Energy acceleration that compounds with Echo of Causality Lv3's pre-battle CD reduction. More Energy means earlier Ultimates and faster active skill rotations, which in turn accelerates Temporal Rift's Lv3 CD reduction loop. Core support partner in most Cronus compositions."
+      },
+      {
+        "heroId": "hela",
+        "type": "dps",
+        "description": "Ramp damage source that benefits from Cronus's time-buying. Hela scales with fight duration - and Cronus's entire kit is designed to extend fights and reduce the pace at which the opponent can eliminate allies. Rewinding Remains provides direct insurance against burst elimination of Hela during her ramp phase."
+      },
+      {
+        "heroId": "bastet",
+        "type": "support",
+        "description": "Snipe DPS that exploits the positioning chaos created by Temporal Rift. Cronus's formation break exposes backline targets that Bastet can then focus. The combination is aggressive and high-risk - if Bastet does not snowball into the disrupted formation, the team lacks sustain fallback."
+      },
+      {
+        "heroId": "yuelao",
+        "type": "support",
+        "description": "Sustain and defensive stat sharing that extends the viability of Cronus's passive systems. Longer fights mean more Projection spawns, more Rewinding Remains triggers, and more Echo of Causality double-casts. Yuelao is the preferred secondary support when the composition prioritizes extended control over burst aggression."
+      },
+      {
+        "heroId": "khepri",
+        "type": "tank",
+        "description": "Dive and engage support that creates CC windows through direct frontline pressure. Khepri's engagement extends the chain of control states that feed into Temporal Rift's Lv3 CD loop, and his frontline disruption buys time for Cronus's passive systems to accumulate value."
+      },
+      {
+        "heroId": "momus",
+        "type": "tank",
+        "description": "Additional frontline stability and taunt effects that buy time for Cronus's passive systems to fire. Momus absorbs the opening burst wave and ensures Rewinding Remains and Echo of Causality can operate without Cronus being disrupted in the first fight phase."
+      },
+      {
+        "heroId": "anubis",
+        "type": "tank",
+        "description": "Anti-backline specialist who layers well with Cronus's formation displacement against squishy Mage and Archer targets. Strong in Arena matchups with soft backlines; less effective against highly tanky or self-sustaining compositions."
+      },
+      {
+        "heroId": "hecate",
+        "type": "dps",
+        "description": "Reliable skill-based DPS for transition and budget compositions. Does not reach the ceiling of top carries like Isis or Hela, but provides consistent active-skill output that activates Echo of Causality and feeds into Temporal Rift's Lv3 CD reduction loop."
+      }
+    ],
     "virtueSets": [
       {
         "label": "Fervor",
@@ -1771,6 +1827,22 @@
           "stoic_2"
         ]
       }
+    ],
+    "strengths": [
+      "AoE anti-tempo Ultimate reduces enemy ATK Speed, delays active skills, and blocks Energy regeneration - three distinct debuff layers in one cast",
+      "Temporal Rift is Formation Break plus Double Stun - very effective against backline-dependent and positioning-reliant compositions",
+      "Rewinding Remains provides a save mechanic that restores an ally's full state, not just HP - Energy and buffs are preserved at the prior snapshot",
+      "Echo of Causality doubles one ally's active skill every rotation - a consistent, passive damage and utility multiplier that requires no execution overhead",
+      "Projection system creates a second temporary version of a key ally - at Relic Lv2 paired with a CD reset, this amounts to a second full team rotation",
+      "Temporal Rift Lv3 self-accelerates on cast frequency - the more your team plays actively, the faster formation disruption returns",
+      "Scales with team quality: the stronger the ally designated as Time Traveler or projected, the higher Cronus's multiplier output"
+    ],
+    "weaknesses": [
+      "Not a top pick for pure single-target boss DPS races where tempo manipulation and formation disruption are irrelevant",
+      "Value scales with ally quality - if the carry pool is weak, Cronus loses significant multiplier output",
+      "Relic-dependent: without Relic Lv2 the Projection system lacks its defining CD reset; without Lv4 the projection's impact is delayed",
+      "Against raw stat-check teams that simply overwhelm utility through damage output, Cronus's kit cannot compensate for large stat disparities alone",
+      "Rewinding Remains reduces the saved target's ATK and ATK Speed after triggering - the saved ally is temporarily weakened following the rescue window"
     ]
   },
   "demeter": {
@@ -3259,7 +3331,24 @@
           "defiance_2"
         ]
       }
-    ]
+    ],
+    "strengths": [
+      "Exceptional team sustain - Multi-layer healing (150-200% ATK scaling) plus damage reduction stacking makes team nearly unkillable once ramped",
+      "Teamwide damage amplification - +30% all-ally damage bonus when all 3 devices active; synergizes perfectly with DPS-heavy carries",
+      "Heavy enemy debuff layers - Reduces enemy ATK by 15%, ATK SPD by 20%, and armor/M-RES by up to 50% while restraining highest threat",
+      "Scales infinitely with energy regen - Each point of energy regen accelerates device activation; exponential power growth with Fervor/Far virtue sets",
+      "Unique support role - Only physical/tanky support in game, scales differently with gear and doesn't overlap with magical supports"
+    ],
+    "weaknesses": [
+      "Requires time to reach peak power - Needs 3 Ultimates (~15-20 seconds) to activate all 3 devices; crippled in short fights or early-game rushes",
+      "Immobility creates positioning risk - Forge anchors him to one location; forced movement away triggers 5-second stun that leaves team without support",
+      "Catastrophic to displacement CC - Pan/Khepri/Set pulls mean stun + defenseless team; one bad position equals match loss",
+      "Energy starvation is fatal - Pan's energy drain and Cronus cooldown reduction prevent him from hitting 3 Ultimates; hard-countered by energy-denial supports",
+      "Vulnerable to burst compositions - Fast teams can burst down team before 3 devices activate or before he heals allies to safety",
+      "Assassins with CC like Nyx can mute his healing and stun him before he gets going",
+      "Displacement/Pull heroes that move Hephaestus away from his forge trigger a 5-second stun that completely disables him"
+    ],
+    "synergyLinks": []
   },
   "hera": {
     "id": "hera",
@@ -3356,7 +3445,58 @@
     ],
     "synergies": [],
     "baseAttackRate": 0,
-    "bossUltimatesPer90s": 0
+    "bossUltimatesPer90s": 0,
+    "strengths": [
+      "Dual-axis control: simultaneously buffs friendly carry (Crown's Bestowal) and disables enemy carry (Fatal Infatuation) in the same rotation",
+      "Charm redirection converts the most dangerous enemy auto-attacker into a source of friendly fire - value scales with the strength of the charmed target",
+      "Royal Domain provides passive Energy regeneration, enabling faster Ultimate cycles than most supports without external Energy support",
+      "Charm Seal Relic stacks Effect Resistance reduction after each control event, making all subsequent CC more reliable as the fight progresses",
+      "Relic Lv3 adds Energy Denial to Charm - a hard counter to Ultimate-dependent enemy carries",
+      "Self-heal from Fatal Infatuation provides partial sustain without requiring a dedicated healer slot",
+      "Royal Domain Lv4 pseudo-revival acts as a survival safety net equivalent in concept to Skadi's Relic Lv2",
+      "CN community rates her as a stronger, more modern variant of Pan - indicating high competitive ceiling"
+    ],
+    "weaknesses": [
+      "Heavily gated by Relic investment - considered significantly stronger at Relic Lv3 and above; weaker at low investment levels",
+      "Charm and Obsession both fail against high Effect Resistance targets, CC-immune enemies, or Cleanse abilities",
+      "Value drops sharply against multi-carry or balanced teams without a dominant single DPS to disable",
+      "Crown's Bestowal requires the team to have a clear highest-ATK carry to benefit - unfocused team builds dilute the buff",
+      "Boss and PvE content with CC-immune enemies strips most of her kit value, leaving only the carry buff",
+      "Burst compositions that eliminate Hera before she completes a second control cycle prevent the Charm Seal stack from compounding",
+      "Still early meta: exact Relic breakpoints and dupe value remain under-documented (data as of March 2026)"
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "momus",
+        "type": "tank",
+        "description": "The CN community's primary recommended partner (source: TapTap, Feb/March 2026). Momus's AoE Taunt creates the first CC state on the frontline, which Hera's Charm then layers on top. The combination leaves the opposing team with no safe attack target: taunted units cannot stop attacking Momus, charmed units attack their own allies. Also functions as the primary tank protecting Hera's backline position."
+      },
+      {
+        "heroId": "hladgunnr",
+        "type": "dps",
+        "description": "The natural Crown's Bestowal target in most compositions: high ATK value ensures she reliably receives the buff, and she benefits significantly from both the ATK multiplier and the ATK Speed component. Her burst payloads land into windows that Hera's Charm and Obsession create, where the opposing team is either attacking themselves or locked out of responding."
+      },
+      {
+        "heroId": "pan",
+        "type": "cc",
+        "description": "AoE CC partner that chains directly with Hera's single-target control. Pan's silence and daze extend the windows enemies spend unable to act, compounding with Charm Seal's accumulated Effect Resistance reduction. CN community references a \"Hera + Momus\" CC chain composition that could equivalently substitute Pan for the AoE CC layer."
+      },
+      {
+        "heroId": "yuelao",
+        "type": "support",
+        "description": "Healing support that covers Hera's partial self-sustain and extends her survivability between control cycles. The CN \"san-xiang-dui\" (three-item team) composition specifically pairs Hera with Yuelao and Cancer as the healing core. Keeping Hera alive into the third or fourth control rotation extracts the full compounding value of the Charm Seal Effect Resistance reduction."
+      },
+      {
+        "heroId": "caishen",
+        "type": "support",
+        "description": "Team-wide Energy acceleration compounds with Hera's Royal Domain Energy regeneration. More Energy means faster Ultimate rotations, which means faster Charm cycles and more Charm Seal stacks in the same fight window. In sustained compositions, Caishen can create near-constant Ultimate availability across the team."
+      },
+      {
+        "heroId": "mengpo",
+        "type": "support",
+        "description": "Revival stacks directly with Hera's Royal Domain Lv4 pseudo-revival for double insurance. Longer fights compound Hera's Charm Seal stacks further - and Mengpo's Lycoris Bloom may target Hera if she leads in Energy inside her Royal Domain, providing additional ATK% on top of her damage reduction. Recommended for sustained PVE compositions."
+      }
+    ]
   },
   "heracles": {
     "id": "heracles",
@@ -4665,6 +4805,50 @@
           "wildness_2"
         ]
       }
+    ],
+    "strengths": [
+      "Flexible dual-stance system adapts to board state automatically - Execute for ramp, Yield for cleanup",
+      "Energy manipulation via Tactical Interception adds genuine disruption value beyond raw damage, especially in boss and PvE content",
+      "Enter the Game converts enemy aggression into counter-damage, punishing sustained multi-hit patterns",
+      "Scales strongly in longer PvE fights where mode cycling, energy drain compounding, and Relic bonuses all have time to stack",
+      "High relevance in Clubs Tower (梅花塔) and push content - CN community explicitly notes she reduces difficulty there",
+      "Relic offers clear functional breakpoints: immediate damage at Lv1, reliable defensive loop at Lv3",
+      "CN reports suggest she can exceed comparable carries in specific high-damage ranking setups"
+    ],
+    "weaknesses": [
+      "Heavily position-dependent - White/Black piece designation requires intentional team construction; cannot be blind-slotted",
+      "Team-dependent as a carry; CN community notes she requires significant investment and teammate support as a solo carry",
+      "Enter the Game is bypassed by hard one-shot burst before the Taiji Formation activates",
+      "Stance switch logic is automated by unit count - in a losing fight she may enter Yield mode when Execute pressure is more needed",
+      "PvP ceiling less established than PvE; CN sources focus primarily on tower and boss content",
+      "Underperforms early game without proper positioning and team support in place"
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "pan",
+        "type": "cc",
+        "description": "Cited in CN challenge guides as a mandatory partner in Jiutian's time-limited challenge stages. Pan's crowd control layers with Jiutian's energy drain to slow enemy ultimate rotations. AoE CC also gives the Taiji Formation time to cycle before enemies can focus Jiutian down."
+      },
+      {
+        "heroId": "jormungandr",
+        "type": "energy",
+        "description": "Repeatedly featured in CN Clubs Tower team compositions alongside Jiutian. DoT damage compounds naturally with the longer fight durations Jiutian's energy manipulation and mode cycling create. Both heroes benefit from extended PvE encounters rather than short burst windows."
+      },
+      {
+        "heroId": "nezha",
+        "type": "dps",
+        "description": "CN community explicitly describes Jiutian and Nezha as \"quite useful together.\" Nezha provides consistent front-loaded burst pressure that pairs with Jiutian's ranged stance-switching output - two different damage vectors operating simultaneously without competing for the same resources."
+      },
+      {
+        "heroId": "anubis",
+        "type": "cc",
+        "description": "Present in the CN zero-spender Clubs Tower team lineup alongside Jiutian. His targeting logic and CC patterns create controlled fight conditions where Jiutian's positional designation system and stance switches function as intended."
+      },
+      {
+        "heroId": "caishen",
+        "type": "energy",
+        "description": "Faster team Energy cycles mean more Ultimate casts, more stance switches, and more Tactical Interception procs per fight. Each additional Ultimate cast also creates another opportunity to set the optimal stance for the current board state."
+      }
     ]
   },
   "jormungandr": {
@@ -5454,6 +5638,60 @@
           "defiance_2"
         ]
       }
+    ],
+    "strengths": [
+      "Full-HP revival creates a genuine second life for any fallen carry",
+      "Untargetability in early-fight phases protects the revival engine",
+      "Anti-CC cleanse fires passively at no cost — free value in any CC-heavy matchup",
+      "Lycoris Bloom rewards Energy-focused team construction with sustained ATK% and Energy regen",
+      "Relic energy feedback loop: ally deaths refuel Samsara stack generation",
+      "Backline peel from Waters of Oblivion repositions divers without consuming support actions",
+      "Enables aggressive playstyles and risk-heavy teams that would otherwise be unviable"
+    ],
+    "weaknesses": [
+      "Two or more heroes dying simultaneously exhausts both Samsara stacks at once",
+      "Untargetability has a hard headcount requirement — falls away as allies die",
+      "Stone of Three Fates has a cooldown; a second CC wave in the window receives no protection",
+      "Revival advantage negated by anti-revive mechanics on some boss encounters",
+      "Energy lock or silence stalls Samsara stack generation",
+      "Brings minimal direct damage — teams must field other dedicated damage sources"
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "heracles",
+        "type": "support",
+        "description": "Primary carry target. His high sustained damage benefits directly from Lycoris Bloom's ATK% buff, and the revival safety net enables aggressive positioning. Build Energy-focused virtues on Heracles to ensure Lycoris Bloom consistently targets him."
+      },
+      {
+        "heroId": "prometheus",
+        "type": "energy",
+        "description": "Energy engine support. His Energy generation compounds with Lycoris Bloom and the Relic Lv3 energy-on-death feedback, dramatically increasing team Ultimate frequency."
+      },
+      {
+        "heroId": "jormungandr",
+        "type": "support",
+        "description": "Poison damage scales with fight duration. Mengpo extends fights by design — every revival adds more time for poison stacks to compound. Death-triggered passives may also fire a second time after revival."
+      },
+      {
+        "heroId": "hladgunnr",
+        "type": "support",
+        "description": "Burst damage benefits from Lycoris Bloom's ATK% and the Energy regen extending Ultimate availability. Mengpo's sustain provides the breathing room for full burst rotations without fear of a failed burst window ending the fight."
+      },
+      {
+        "heroId": "yuelao",
+        "type": "support",
+        "description": "Both are Hearts faction Supports — pairing them maximizes faction bonus stacking and creates layered healing coverage. The combination forms the 'Red Heart Core' team from Chinese community meta, considered one of the strongest sustained PVE setups."
+      },
+      {
+        "heroId": "caishen",
+        "type": "cc",
+        "description": "Team-wide Energy acceleration is directly multiplicative with Lycoris Bloom. More Energy means more Ultimate casts, more Lycoris Bloom fires, and faster Samsara stack regeneration via the Relic feedback loop."
+      },
+      {
+        "heroId": "poseidon",
+        "type": "support",
+        "description": "Crowd control creates windows for Mengpo's revival to activate safely. Poseidon's CC buys the split-second needed before enemies can delete the just-revived ally. Most relevant in fast-paced PVP environments."
+      }
     ]
   },
   "meret": {
@@ -5611,6 +5849,43 @@
           "sacrifice_3",
           "sacrifice_4"
         ]
+      }
+    ],
+    "strengths": [
+      "High role compression - shields the tank, buffs the carry, shares damage, and regenerates Energy simultaneously",
+      "Note damage-sharing is a passive anti-burst layer with no cast timing or positioning requirement",
+      "Relic Lv1 converts a carry kill into a survival event - the most impactful early Relic breakpoint in the Diamonds support slot",
+      "Moon Note Lv3 adds Crit Rate on top of ATK to the main carry",
+      "The Curtain Never Falls fires automatically when allies drop below 50% HP",
+      "Works reliably in standard team compositions with a clear tank and a clear carry"
+    ],
+    "weaknesses": [
+      "Note targeting is fully automated - a poorly built team with unclear stat hierarchy causes Notes to land on the wrong units",
+      "No direct damage output - her value depends entirely on the carry she supports",
+      "Full-team AoE burst can exceed the combined Note-bearer HP pool, bypassing the damage-sharing protection",
+      "If enemies target Meret directly and ignore Note-bearers, the Note system collapses",
+      "Athena is the only substitute but does not replicate Meret's buff and tempo contribution"
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "heracles",
+        "type": "tank",
+        "description": "The primary Moon Note target. Moon Note's ATK buff and Crit Rate (Lv3) feed directly into Heracles's burst output, and the Relic death-save protects him from the burst-kill attempts that typically end carry runs. The two heroes work as a pair - Meret's value scales directly with Heracles's damage ceiling."
+      },
+      {
+        "heroId": "bastet",
+        "type": "tank",
+        "description": "The primary Sun Note target in the Diamonds lineup. Bastet's high HP as the frontline anchor ensures Sun Note lands correctly without stat manipulation. Meret's shield and Max HP bonus on Bastet directly extend her frontline uptime, which in turn protects the burst window Heracles needs. Stable combination in both PvE and PvP content."
+      },
+      {
+        "heroId": "phoenix",
+        "type": "support",
+        "description": "Meret and Phoenix together create two separate survival layers for the Diamonds team. Meret handles pre-death burst mitigation through Note sharing and Relic. Phoenix handles post-death recovery through revive. The combination means a failed burst window does not end the run. Both heroes are present in the established endgame lineup."
+      },
+      {
+        "heroId": "set",
+        "type": "support",
+        "description": "Set's lifesteal aura and sustained utility extend fight duration, which compounds with Meret's time-dependent value. More fight time means more Note-buff uptime, more Sands in Stride heal ticks, and more The Curtain Never Falls emergency heals. Relevant in longer PvE encounters and sustained tower content."
       }
     ]
   },
@@ -6267,7 +6542,24 @@
           "wildness_2"
         ]
       }
-    ]
+    ],
+    "strengths": [
+      "Applies <span class=\"doom\">Crimson Doom Mark</span> at battle start passively — no ramp-up required for debuffing",
+      "Permanent ATK SPD reduction on marked enemies stacks up to 4× — grows more oppressive as the fight extends",
+      "Built-in self-revive through Drought Devil sources provides exceptional staying power",
+      "Energy drain/destruction on Ultimate can delay and disrupt enemy Ultimate rotations",
+      "Reliable Stun on Skill 1 against marked targets — near-100% CC uptime against tagged enemies",
+      "Passive lifesteal + overflow shield (Rite of Ashes) makes her self-sustaining once invested",
+      "Dual debuff coverage: DMG reduction + ATK SPD reduction simultaneously"
+    ],
+    "weaknesses": [
+      "At low dupe/relic investment, Doom Mark passive ticks can actually <em>feed</em> enemy Energy instead of draining it",
+      "Self-revive requires sources to exist — if marks expire before she dies, no revive token is available",
+      "Single-target focus on Ultimate active — mark re-application hits only the nearest enemy",
+      "No direct healing outside of the revive HP restore — vulnerable to sustained burst before marks expire",
+      "Utility-focused — needs supporting DPS; does not function as a standalone damage carry"
+    ],
+    "synergyLinks": []
   },
   "nut": {
     "id": "nut",
@@ -8162,24 +8454,39 @@
     },
     "synergyLinks": [
       {
-        "heroId": "poseidon",
-        "type": "core",
-        "description": "Foundational pairing -- Poseidon groups; Skadi AoE hits entire cluster at max efficiency."
+        "heroId": "pan",
+        "type": "cc",
+        "description": "Primary CC partner. Pan's AoE crowd control hits multiple enemies simultaneously, generating multiple Realm of Frost triggers per cast. His silence and daze delay enemy Ultimates while Skadi's loop ramps up. Core partner in every CN Skadi composition."
       },
       {
         "heroId": "momus",
-        "type": "core",
-        "description": "Momus taunts into Skadi AoE -- enemies pulled, taunted in place, then deleted."
+        "type": "tank",
+        "description": "AoE Taunt guarantees a control state on the frontline. Taunted enemies count as crowd-controlled for Realm of Frost purposes — Momus creates reliable, repeatable passive triggers even when other CC is on cooldown. Also serves as the primary tank absorbing burst aimed at Skadi."
       },
       {
-        "heroId": "yuelao",
-        "type": "core",
-        "description": "Full Spade meta trio with Yuelao buffing both Skadi and Hecate simultaneously."
+        "heroId": "poseidon",
+        "type": "cc",
+        "description": "Powerful AoE crowd control that locks down multiple enemies at once. Poseidon's CC creates reliable windows for Realm of Frost to trigger on grouped targets, and his control chains extend the duration enemies spend in a CC state — directly feeding Skadi's Energy loop and ATK stacking."
       },
       {
-        "heroId": "hecate",
-        "type": "core",
-        "description": "Full Spade meta trio -- Skadi secondary carry alongside Hecate primary."
+        "heroId": "khepri",
+        "type": "tank",
+        "description": "Engage and dive support. Khepri creates CC windows through direct engagement, extending the chain of control states that feed Skadi's passive. Also provides frontline disruption that buys time for Skadi's loop to activate."
+      },
+      {
+        "heroId": "caishen",
+        "type": "support",
+        "description": "Team-wide Energy acceleration compounds with Realm of Frost's Energy restoration. More Energy means earlier Ultimates across the team — including Skadi's Drifting Vortex. In sustain compositions, Caishen's acceleration creates near-permanent Ultimate availability."
+      },
+      {
+        "heroId": "hladgunnr",
+        "type": "cc",
+        "description": "Burst damage finisher. Once Skadi's control loop has softened and grouped enemies, Hladgunnr delivers the killing blow. The CC-heavy environment created by Skadi's team also benefits Hladgunnr's own damage windows. Best paired in aggressive PVP compositions."
+      },
+      {
+        "heroId": "mengpo",
+        "type": "support",
+        "description": "Revival extends fight duration — and longer fights mean more Realm of Frost procs, more ATK stacks, and more Ultimate casts. Mengpo's Samsara stacks with Skadi's Relic Lv2 pseudo-revival for double insurance. Lycoris Bloom may also target Skadi if she leads in Energy, adding ATK% on top of Relic stacks."
       }
     ],
     "virtueSets": [
@@ -8209,6 +8516,23 @@
           "wildness_2"
         ]
       }
+    ],
+    "strengths": [
+      "Damage scales with team CC output — the more control, the higher the damage",
+      "Triple scaling axis: fight duration, control frequency, and hit stacking compound multiplicatively",
+      "Energy self-sustain through Realm of Frost allows near-constant Ultimate availability in CC-heavy teams",
+      "Relic ATK stacking grows stronger over time — snowball potential in extended fights is extreme",
+      "Relic Lv2 pseudo-revival prevents DPS reset and extends the scaling window",
+      "AoE DoT from Ring of Blizzard + persistent Ultimate covers large areas when enemies are grouped",
+      "Ring of Blizzard Lv4 Freeze creates additional CC that feeds back into the loop"
+    ],
+    "weaknesses": [
+      "Entirely dependent on teammates providing crowd control — near-useless in CC-less teams",
+      "Hard-countered by Cleanse and CC-Immunity effects that shut down the passive engine",
+      "Vulnerable to burst compositions that kill before the control loop can start",
+      "Needs setup time — first few seconds of a fight are her weakest point",
+      "Tornado pathing is positioning-dependent; scattered enemies reduce hit frequency",
+      "Single-target encounters (bosses) severely limit Realm of Frost proc rate"
     ]
   },
   "surtr": {
@@ -9107,6 +9431,71 @@
           "defiance_1",
           "defiance_2"
         ]
+      }
+    ],
+    "strengths": [
+      "Ultimate provides one of the longest hard-CC lockdowns in the game - up to 6s full disable on the nearest enemy",
+      "Death passive permanently Jinxes the killer, turning the opposing team's primary aggressor into a liability",
+      "Aura of Misfortune at Lv4 persists after death, applying -20% ATK and -20% DEF debuffs with no upkeep required",
+      "Duality Inversion deals damage based on max HP - scales against high-HP Tanks and bruisers regardless of Wen-Shen's own ATK",
+      "Heal reduction (up to 60% at Skill 2 Lv4) is rare and highly relevant against sustain-heavy compositions",
+      "Relic Lv3 enables active, repeatable Jinx application independent of her death",
+      "Can be obtained through quest rewards in CN - no Gacha investment required for the base unit"
+    ],
+    "weaknesses": [
+      "Jinx is RNG-based - at base 50% proc chance with a 4s internal cooldown, it is reliable over time but not a guaranteed instant CC",
+      "No direct healing, shielding, or team-wide buffs - teams must source all sustain externally",
+      "Duality Inversion targets the symmetrically opposite position - counterplay exists through deliberate enemy positioning",
+      "Skill 4 active targets the highest-ATK enemy - may dash into an unintended position against diverse team compositions",
+      "Relic Lv3 is the mechanic unlock for proactive Jinx application; below Lv3, Jinx is reactive only (death trigger)",
+      "One-shot before her death passive fires entirely neutralizes Calamity-Ridden",
+      "CC immunity compositions fully negate the Jinx system"
+    ],
+    "synergyLinks": [
+      {
+        "heroId": "dionysus",
+        "type": "support",
+        "description": "ATK Speed amplification is directly multiplicative with Jinx. Each additional attack per second generates another roll for Stun, Terror, or Petrify on the afflicted enemy. More attacks per second also means more rolls for Knockdown on movement. Dionysus does not add new CC - he increases the frequency of Jinx's existing RNG, effectively raising sustained CC uptime without any cooldown cost."
+      },
+      {
+        "heroId": "isis",
+        "type": "cc",
+        "description": "Classic control-to-DPS enable pairing. Wen-Shen's Ultimate creates a 4-6s free damage window against the locked-down target. Isis delivers her damage payload into that window without needing to survive the counter-attack. The ATK/DEF aura from Cursed Ground further amplifies Isis's output against debuffed targets."
+      },
+      {
+        "heroId": "athena",
+        "type": "tank",
+        "description": "Shield and protection extend how long Wen-Shen stays alive before her death passive triggers. More survival time means more Ultimate casts, more Duality Inversion curses, and more Skill 4 active dashes before the planned death. Athena also provides a second layer of anti-aggression protection on top of the Jinx debuff the killer receives."
+      },
+      {
+        "heroId": "caishen",
+        "type": "cc",
+        "description": "Energy acceleration increases the frequency of Wen-Shen's Ultimate, which is her primary CC and DPS tool. More Ultimate casts per fight means more extended lockdown phases and more DoT damage. In compositions built around the Jinx spread chain, faster Ultimates also means the opening Jinx application lands earlier."
+      },
+      {
+        "heroId": "bastet",
+        "type": "cc",
+        "description": "Wen-Shen's Skill 4 active and Bastet's targeting logic both prioritize the highest-ATK enemy. This creates a natural double-focus on the opposing carry: Wen-Shen applies the ATK aura debuff and dashes into the carry, while Bastet follows with her own targeting. The combined pressure significantly accelerates the first kill needed to trigger the Relic spread chain."
+      },
+      {
+        "heroId": "anubis",
+        "type": "support",
+        "description": "Anti-heal and anti-squishy pressure compound directly. Wen-Shen's Duality Inversion reduces target healing by up to 60%; Anubis focuses and eliminates low-HP or high-threat targets. Together they prevent enemy carries from recovering through sustain while accelerating the kills that trigger the Jinx spread chain."
+      },
+      {
+        "heroId": "poseidon",
+        "type": "cc",
+        "description": "Early AoE CC from Poseidon creates the setup window for Wen-Shen's Ultimate to land cleanly. A Poseidon control wave in the opening seconds delays enemy action long enough to guarantee the full 4-6s lockdown connects on the primary threat. CC chaining of this kind is particularly impactful in PVP where timing the first disable can determine the fight outcome."
+      },
+      {
+        "heroId": "jormungandr",
+        "type": "dps",
+        "description": "Jormungandr's Revenge passive mirrors Wen-Shen's own weaponization of death. After taking lethal damage he survives for 5 seconds, stores 60% of incoming damage, and releases it as a burst - a second death-trap layer that fires into the same chaos window Wen-Shen's Cursed Ground and Jinx create. Enemies afflicted by Jinx continue attacking him during his Revenge state, which maximizes his stored damage and burst output when it releases."
+      },
+      {
+        "heroId": "capricorn",
+        "type": "cc",
+        "description": "Additional CC layer that stacks directly on top of Jinx. Capricorn's crowd control limits enemy movement, which compounds with Jinx's Knockdown chance on movement - the two CC sources cover different action types and create overlapping pressure that becomes increasingly difficult to play through as the fight progresses."
       }
     ]
   },

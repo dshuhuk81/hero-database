@@ -136,5 +136,70 @@
         "defiance_2"
       ]
     }
+  ],
+  "strengths": [
+    "Ultimate provides one of the longest hard-CC lockdowns in the game - up to 6s full disable on the nearest enemy",
+    "Death passive permanently Jinxes the killer, turning the opposing team's primary aggressor into a liability",
+    "Aura of Misfortune at Lv4 persists after death, applying -20% ATK and -20% DEF debuffs with no upkeep required",
+    "Duality Inversion deals damage based on max HP - scales against high-HP Tanks and bruisers regardless of Wen-Shen's own ATK",
+    "Heal reduction (up to 60% at Skill 2 Lv4) is rare and highly relevant against sustain-heavy compositions",
+    "Relic Lv3 enables active, repeatable Jinx application independent of her death",
+    "Can be obtained through quest rewards in CN - no Gacha investment required for the base unit"
+  ],
+  "weaknesses": [
+    "Jinx is RNG-based - at base 50% proc chance with a 4s internal cooldown, it is reliable over time but not a guaranteed instant CC",
+    "No direct healing, shielding, or team-wide buffs - teams must source all sustain externally",
+    "Duality Inversion targets the symmetrically opposite position - counterplay exists through deliberate enemy positioning",
+    "Skill 4 active targets the highest-ATK enemy - may dash into an unintended position against diverse team compositions",
+    "Relic Lv3 is the mechanic unlock for proactive Jinx application; below Lv3, Jinx is reactive only (death trigger)",
+    "One-shot before her death passive fires entirely neutralizes Calamity-Ridden",
+    "CC immunity compositions fully negate the Jinx system"
+  ],
+  "synergyLinks": [
+    {
+      "heroId": "dionysus",
+      "type": "support",
+      "description": "ATK Speed amplification is directly multiplicative with Jinx. Each additional attack per second generates another roll for Stun, Terror, or Petrify on the afflicted enemy. More attacks per second also means more rolls for Knockdown on movement. Dionysus does not add new CC - he increases the frequency of Jinx's existing RNG, effectively raising sustained CC uptime without any cooldown cost."
+    },
+    {
+      "heroId": "isis",
+      "type": "cc",
+      "description": "Classic control-to-DPS enable pairing. Wen-Shen's Ultimate creates a 4-6s free damage window against the locked-down target. Isis delivers her damage payload into that window without needing to survive the counter-attack. The ATK/DEF aura from Cursed Ground further amplifies Isis's output against debuffed targets."
+    },
+    {
+      "heroId": "athena",
+      "type": "tank",
+      "description": "Shield and protection extend how long Wen-Shen stays alive before her death passive triggers. More survival time means more Ultimate casts, more Duality Inversion curses, and more Skill 4 active dashes before the planned death. Athena also provides a second layer of anti-aggression protection on top of the Jinx debuff the killer receives."
+    },
+    {
+      "heroId": "caishen",
+      "type": "cc",
+      "description": "Energy acceleration increases the frequency of Wen-Shen's Ultimate, which is her primary CC and DPS tool. More Ultimate casts per fight means more extended lockdown phases and more DoT damage. In compositions built around the Jinx spread chain, faster Ultimates also means the opening Jinx application lands earlier."
+    },
+    {
+      "heroId": "bastet",
+      "type": "cc",
+      "description": "Wen-Shen's Skill 4 active and Bastet's targeting logic both prioritize the highest-ATK enemy. This creates a natural double-focus on the opposing carry: Wen-Shen applies the ATK aura debuff and dashes into the carry, while Bastet follows with her own targeting. The combined pressure significantly accelerates the first kill needed to trigger the Relic spread chain."
+    },
+    {
+      "heroId": "anubis",
+      "type": "support",
+      "description": "Anti-heal and anti-squishy pressure compound directly. Wen-Shen's Duality Inversion reduces target healing by up to 60%; Anubis focuses and eliminates low-HP or high-threat targets. Together they prevent enemy carries from recovering through sustain while accelerating the kills that trigger the Jinx spread chain."
+    },
+    {
+      "heroId": "poseidon",
+      "type": "cc",
+      "description": "Early AoE CC from Poseidon creates the setup window for Wen-Shen's Ultimate to land cleanly. A Poseidon control wave in the opening seconds delays enemy action long enough to guarantee the full 4-6s lockdown connects on the primary threat. CC chaining of this kind is particularly impactful in PVP where timing the first disable can determine the fight outcome."
+    },
+    {
+      "heroId": "jormungandr",
+      "type": "dps",
+      "description": "Jormungandr's Revenge passive mirrors Wen-Shen's own weaponization of death. After taking lethal damage he survives for 5 seconds, stores 60% of incoming damage, and releases it as a burst - a second death-trap layer that fires into the same chaos window Wen-Shen's Cursed Ground and Jinx create. Enemies afflicted by Jinx continue attacking him during his Revenge state, which maximizes his stored damage and burst output when it releases."
+    },
+    {
+      "heroId": "capricorn",
+      "type": "cc",
+      "description": "Additional CC layer that stacks directly on top of Jinx. Capricorn's crowd control limits enemy movement, which compounds with Jinx's Knockdown chance on movement - the two CC sources cover different action types and create overlapping pressure that becomes increasingly difficult to play through as the fight progresses."
+    }
   ]
 }
