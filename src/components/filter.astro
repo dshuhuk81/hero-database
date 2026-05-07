@@ -693,6 +693,7 @@ document.addEventListener("DOMContentLoaded", () => {
   .filter-row--main,
   .filter-row--faction {
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
   }
 
@@ -700,7 +701,7 @@ document.addEventListener("DOMContentLoaded", () => {
   .filter-row--faction > .filter-group,
   .filter-group--search,
   .filter-group--reset {
-    flex: 1 1 100%;
+    flex: 0 0 auto;
     width: 100%;
     min-width: 0;
   }
@@ -723,12 +724,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   .filter-row--faction > .filter-group {
-    flex: 1 1 100%;
+    flex: 0 0 auto;
     min-width: 0;
   }
 
   .filter-row--faction {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   /* Tags: wrap instead of horizontal scroll in overlay */
@@ -754,7 +755,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* Faction row: allow wrapping so all chips show */
   .filter-row--faction {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     overflow: visible;
   }
 }

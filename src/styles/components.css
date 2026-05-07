@@ -1264,28 +1264,6 @@
   display: block;
 }
 
-.filter-overlay-panel {
-  position: fixed;
-  inset: 0;
-  z-index: 201;
-  background: rgba(13, 12, 18, 0.98);
-  overflow-y: auto;
-  padding: var(--space-5) var(--space-4) var(--space-8);
-  transform: translateY(100%);
-  transition: transform 0.3s var(--ease-out);
-}
-
-.filter-overlay-panel.is-open {
-  transform: translateY(0);
-}
-
-.filter-overlay-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-5);
-}
-
 .filter-overlay-title {
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
@@ -1364,8 +1342,7 @@
 }
 
 @media (min-width: 769px) {
-  .filter-overlay-backdrop,
-  .filter-overlay-panel {
+  .filter-overlay-backdrop {
     display: none !important;
   }
 
@@ -1678,7 +1655,7 @@
   }
 
   .filter-bar.filter-overlay-open .filter-row--faction {
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
     overflow: visible !important;
   }
 }
