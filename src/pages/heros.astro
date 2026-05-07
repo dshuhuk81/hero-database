@@ -328,10 +328,13 @@ const sortedHeroes = [...heroes]
 }
 
 .grid {
+  --overflow-safe: 28px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: var(--space-5);
   justify-content: center;
+  padding: var(--overflow-safe);
+  margin: calc(var(--overflow-safe) * -1);
 }
 
 /* HERO WRAPPER - RARITY BORDERS + GLOW */
@@ -380,10 +383,6 @@ const sortedHeroes = [...heroes]
     margin: 0 auto var(--space-4);
     max-height: 420px;
   }
-}
-
-.heros-page-wrapper {
-  overflow-x: hidden;
 }
 
 .hero-wrapper.rarity-common {
