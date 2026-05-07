@@ -169,27 +169,5 @@
     "Full-team AoE burst can exceed the combined Note-bearer HP pool, bypassing the damage-sharing protection",
     "If enemies target Meret directly and ignore Note-bearers, the Note system collapses",
     "Athena is the only substitute but does not replicate Meret's buff and tempo contribution"
-  ],
-  "synergyLinks": [
-    {
-      "heroId": "heracles",
-      "type": "tank",
-      "description": "The primary Moon Note target. Moon Note's ATK buff and Crit Rate (Lv3) feed directly into Heracles's burst output, and the Relic death-save protects him from the burst-kill attempts that typically end carry runs. The two heroes work as a pair - Meret's value scales directly with Heracles's damage ceiling."
-    },
-    {
-      "heroId": "bastet",
-      "type": "tank",
-      "description": "The primary Sun Note target in the Diamonds lineup. Bastet's high HP as the frontline anchor ensures Sun Note lands correctly without stat manipulation. Meret's shield and Max HP bonus on Bastet directly extend her frontline uptime, which in turn protects the burst window Heracles needs. Stable combination in both PvE and PvP content."
-    },
-    {
-      "heroId": "phoenix",
-      "type": "support",
-      "description": "Meret and Phoenix together create two separate survival layers for the Diamonds team. Meret handles pre-death burst mitigation through Note sharing and Relic. Phoenix handles post-death recovery through revive. The combination means a failed burst window does not end the run. Both heroes are present in the established endgame lineup."
-    },
-    {
-      "heroId": "set",
-      "type": "support",
-      "description": "Set's lifesteal aura and sustained utility extend fight duration, which compounds with Meret's time-dependent value. More fight time means more Note-buff uptime, more Sands in Stride heal ticks, and more The Curtain Never Falls emergency heals. Relevant in longer PvE encounters and sustained tower content."
-    }
   ]
 }

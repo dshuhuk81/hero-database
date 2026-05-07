@@ -1754,124 +1754,69 @@
 }
 
 .hdc-card {
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
   overflow: hidden;
-}
-
-.hdc-card-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  background: var(--chip-bg);
-  border-bottom: 1px solid var(--border-faint);
-}
-
-.hdc-title {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-bold);
-  color: var(--text-bright);
-  flex: 1;
-}
-
-.hdc-context-badge {
-  display: inline-flex;
-  align-items: center;
-  height: 20px;
-  padding: 0 var(--space-2);
-  border-radius: var(--radius-sm);
-  font-size: 0.65rem;
-  font-weight: var(--weight-black);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  white-space: nowrap;
-}
-
-.hdc-context-pvp {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-}
-
-.hdc-context-pve {
-  background: rgba(34, 197, 94, 0.12);
-  color: #4ade80;
-  border: 1px solid rgba(34, 197, 94, 0.2);
-}
-
-.hdc-context-boss {
-  background: rgba(234, 179, 8, 0.12);
-  color: #facc15;
-  border: 1px solid rgba(234, 179, 8, 0.2);
-}
-
-.hdc-context-general {
-  background: var(--chip-bg);
-  color: var(--text-muted);
-  border: 1px solid var(--border-faint);
-}
-
-.hdc-description {
-  margin: 0;
-  padding: var(--space-3) var(--space-4);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-faint);
 }
 
 .hdc-hero-strip {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
-  padding: var(--space-4);
+  gap: var(--space-4);
+  
 }
 
 .hdc-hero-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
+  display: block;
+  position: relative;
   text-decoration: none;
   color: inherit;
-  width: 64px;
+  width: 128px;
+  height: 160px;
   flex-shrink: 0;
   border-radius: var(--radius-md);
-  padding: var(--space-1);
-  transition: background var(--duration-fast) var(--ease-out);
+  background-color: #0d1624;
+  background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
+  background-size: cover;
+  background-position: center top;
+  transition: transform var(--duration-fast) var(--ease-out);
+  overflow: hidden;
 }
 
 .hdc-hero-slot:hover {
-  background: var(--chip-bg);
+  transform: translateY(-2px);
 }
 
-.hdc-hero-slot--current .hdc-portrait {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.35);
+.hdc-hero-slot--current {
+  border: 2px solid rgba(250, 204, 21, 0.35);
 }
 
-.hdc-portrait {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-md);
-  background-size: cover;
-  background-position: center top 25%;
-  border: 1px solid var(--border-subtle);
-  transition: border-color var(--duration-fast) var(--ease-out);
+.hdc-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
 }
 
-.hdc-hero-slot:hover .hdc-portrait {
-  border-color: var(--border-medium);
+.hdc-name-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 8px 6px;
+  text-align: center;
+  background: linear-gradient(to top, rgba(10, 10, 16, 0.92), rgba(10, 10, 16, 0.58), rgba(10, 10, 16, 0.12));
 }
 
 .hdc-hero-name {
-  font-size: 0.6rem;
-  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: var(--weight-medium);
+  color: var(--text-bright);
   text-align: center;
   line-height: 1.2;
-  max-width: 60px;
+  max-width: 112px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

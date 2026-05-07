@@ -36,25 +36,25 @@ function heroName(id: string): string {
   <div class="hdc-list">
     {comps.map((comp) => (
       <div class="hdc-card">
-        <div class="hdc-card-header">
-          <span class="hdc-title">{comp.title}</span>
-          {comp.context && (
-            <span class={`hdc-context-badge hdc-context-${comp.context.toLowerCase()}`}>{comp.context}</span>
-          )}
-        </div>
-        {comp.description && (
-          <p class="hdc-description">{comp.description}</p>
-        )}
         <div class="hdc-hero-strip">
           {comp.heroes.map((hid) => (
-            <a href={`/heroes/${hid}`} class={`hdc-hero-slot${hid === currentHeroId ? " hdc-hero-slot--current" : ""}`} title={heroName(hid)}>
-              <div
-                class="hdc-portrait"
-                style={`background-image:url(${heroImg(hid)})`}
-                role="img"
-                aria-label={heroName(hid)}
-              ></div>
-              <span class="hdc-hero-name">{heroName(hid)}</span>
+            <a
+              href={`/heroes/${hid}`}
+              class={`hdc-hero-slot${hid === currentHeroId ? " hdc-hero-slot--current" : ""}`}
+              title={heroName(hid)}
+            >
+              <img
+                class="hdc-hero-image"
+                src={heroImg(hid)}
+                alt={`${heroName(hid)} portrait`}
+                width="512"
+                height="512"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="hdc-name-overlay">
+                <span class="hdc-hero-name">{heroName(hid)}</span>
+              </div>
             </a>
           ))}
         </div>

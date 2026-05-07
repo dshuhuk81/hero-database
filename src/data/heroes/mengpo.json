@@ -157,42 +157,5 @@
     "Revival advantage negated by anti-revive mechanics on some boss encounters",
     "Energy lock or silence stalls Samsara stack generation",
     "Brings minimal direct damage — teams must field other dedicated damage sources"
-  ],
-  "synergyLinks": [
-    {
-      "heroId": "heracles",
-      "type": "support",
-      "description": "Primary carry target. His high sustained damage benefits directly from Lycoris Bloom's ATK% buff, and the revival safety net enables aggressive positioning. Build Energy-focused virtues on Heracles to ensure Lycoris Bloom consistently targets him."
-    },
-    {
-      "heroId": "prometheus",
-      "type": "energy",
-      "description": "Energy engine support. His Energy generation compounds with Lycoris Bloom and the Relic Lv3 energy-on-death feedback, dramatically increasing team Ultimate frequency."
-    },
-    {
-      "heroId": "jormungandr",
-      "type": "support",
-      "description": "Poison damage scales with fight duration. Mengpo extends fights by design — every revival adds more time for poison stacks to compound. Death-triggered passives may also fire a second time after revival."
-    },
-    {
-      "heroId": "hladgunnr",
-      "type": "support",
-      "description": "Burst damage benefits from Lycoris Bloom's ATK% and the Energy regen extending Ultimate availability. Mengpo's sustain provides the breathing room for full burst rotations without fear of a failed burst window ending the fight."
-    },
-    {
-      "heroId": "yuelao",
-      "type": "support",
-      "description": "Both are Hearts faction Supports — pairing them maximizes faction bonus stacking and creates layered healing coverage. The combination forms the 'Red Heart Core' team from Chinese community meta, considered one of the strongest sustained PVE setups."
-    },
-    {
-      "heroId": "caishen",
-      "type": "cc",
-      "description": "Team-wide Energy acceleration is directly multiplicative with Lycoris Bloom. More Energy means more Ultimate casts, more Lycoris Bloom fires, and faster Samsara stack regeneration via the Relic feedback loop."
-    },
-    {
-      "heroId": "poseidon",
-      "type": "support",
-      "description": "Crowd control creates windows for Mengpo's revival to activate safely. Poseidon's CC buys the split-second needed before enemies can delete the just-revived ally. Most relevant in fast-paced PVP environments."
-    }
   ]
 }

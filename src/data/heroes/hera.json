@@ -112,37 +112,5 @@
     "Boss and PvE content with CC-immune enemies strips most of her kit value, leaving only the carry buff",
     "Burst compositions that eliminate Hera before she completes a second control cycle prevent the Charm Seal stack from compounding",
     "Still early meta: exact Relic breakpoints and dupe value remain under-documented (data as of March 2026)"
-  ],
-  "synergyLinks": [
-    {
-      "heroId": "momus",
-      "type": "tank",
-      "description": "The CN community's primary recommended partner (source: TapTap, Feb/March 2026). Momus's AoE Taunt creates the first CC state on the frontline, which Hera's Charm then layers on top. The combination leaves the opposing team with no safe attack target: taunted units cannot stop attacking Momus, charmed units attack their own allies. Also functions as the primary tank protecting Hera's backline position."
-    },
-    {
-      "heroId": "hladgunnr",
-      "type": "dps",
-      "description": "The natural Crown's Bestowal target in most compositions: high ATK value ensures she reliably receives the buff, and she benefits significantly from both the ATK multiplier and the ATK Speed component. Her burst payloads land into windows that Hera's Charm and Obsession create, where the opposing team is either attacking themselves or locked out of responding."
-    },
-    {
-      "heroId": "pan",
-      "type": "cc",
-      "description": "AoE CC partner that chains directly with Hera's single-target control. Pan's silence and daze extend the windows enemies spend unable to act, compounding with Charm Seal's accumulated Effect Resistance reduction. CN community references a \"Hera + Momus\" CC chain composition that could equivalently substitute Pan for the AoE CC layer."
-    },
-    {
-      "heroId": "yuelao",
-      "type": "support",
-      "description": "Healing support that covers Hera's partial self-sustain and extends her survivability between control cycles. The CN \"san-xiang-dui\" (three-item team) composition specifically pairs Hera with Yuelao and Cancer as the healing core. Keeping Hera alive into the third or fourth control rotation extracts the full compounding value of the Charm Seal Effect Resistance reduction."
-    },
-    {
-      "heroId": "caishen",
-      "type": "support",
-      "description": "Team-wide Energy acceleration compounds with Hera's Royal Domain Energy regeneration. More Energy means faster Ultimate rotations, which means faster Charm cycles and more Charm Seal stacks in the same fight window. In sustained compositions, Caishen can create near-constant Ultimate availability across the team."
-    },
-    {
-      "heroId": "mengpo",
-      "type": "support",
-      "description": "Revival stacks directly with Hera's Royal Domain Lv4 pseudo-revival for double insurance. Longer fights compound Hera's Charm Seal stacks further - and Mengpo's Lycoris Bloom may target Hera if she leads in Energy inside her Royal Domain, providing additional ATK% on top of her damage reduction. Recommended for sustained PVE compositions."
-    }
   ]
 }

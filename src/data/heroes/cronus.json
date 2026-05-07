@@ -123,63 +123,6 @@
     "depthRating": "mid",
     "commonlyMisunderstood": false
   },
-  "synergyLinks": [
-    {
-      "heroId": "isis",
-      "type": "tank",
-      "description": "The best-fit allround Cronus carry partner based on kit synergy. Isis is a skill-dependent damage source that benefits directly from Cronus's protective utility and extended cast windows. Rewinding Remains saves her from burst, Echo of Causality doubles her active, and the Projection can create a temporary second Isis in critical fight phases."
-    },
-    {
-      "heroId": "athena",
-      "type": "tank",
-      "description": "Primary frontline protector for Cronus and the designated carry. Athena's shielding ensures Cronus survives long enough for his passive systems to fire, and buys the seconds needed for Rewinding Remains to save a near-dead ally. Present in almost every viable Cronus composition."
-    },
-    {
-      "heroId": "poseidon",
-      "type": "cc",
-      "description": "AoE crowd control that compounds with Cronus's tempo suppression. Poseidon's CC creates the first control window that allows Temporal Rift to land cleanly, and his AoE grouping maximizes the disruption from Cronus's formation-break displacement. Strong PvP partner."
-    },
-    {
-      "heroId": "caishen",
-      "type": "cc",
-      "description": "Team-wide Energy acceleration that compounds with Echo of Causality Lv3's pre-battle CD reduction. More Energy means earlier Ultimates and faster active skill rotations, which in turn accelerates Temporal Rift's Lv3 CD reduction loop. Core support partner in most Cronus compositions."
-    },
-    {
-      "heroId": "hela",
-      "type": "dps",
-      "description": "Ramp damage source that benefits from Cronus's time-buying. Hela scales with fight duration - and Cronus's entire kit is designed to extend fights and reduce the pace at which the opponent can eliminate allies. Rewinding Remains provides direct insurance against burst elimination of Hela during her ramp phase."
-    },
-    {
-      "heroId": "bastet",
-      "type": "support",
-      "description": "Snipe DPS that exploits the positioning chaos created by Temporal Rift. Cronus's formation break exposes backline targets that Bastet can then focus. The combination is aggressive and high-risk - if Bastet does not snowball into the disrupted formation, the team lacks sustain fallback."
-    },
-    {
-      "heroId": "yuelao",
-      "type": "support",
-      "description": "Sustain and defensive stat sharing that extends the viability of Cronus's passive systems. Longer fights mean more Projection spawns, more Rewinding Remains triggers, and more Echo of Causality double-casts. Yuelao is the preferred secondary support when the composition prioritizes extended control over burst aggression."
-    },
-    {
-      "heroId": "khepri",
-      "type": "tank",
-      "description": "Dive and engage support that creates CC windows through direct frontline pressure. Khepri's engagement extends the chain of control states that feed into Temporal Rift's Lv3 CD loop, and his frontline disruption buys time for Cronus's passive systems to accumulate value."
-    },
-    {
-      "heroId": "momus",
-      "type": "tank",
-      "description": "Additional frontline stability and taunt effects that buy time for Cronus's passive systems to fire. Momus absorbs the opening burst wave and ensures Rewinding Remains and Echo of Causality can operate without Cronus being disrupted in the first fight phase."
-    },
-    {
-      "heroId": "anubis",
-      "type": "tank",
-      "description": "Anti-backline specialist who layers well with Cronus's formation displacement against squishy Mage and Archer targets. Strong in Arena matchups with soft backlines; less effective against highly tanky or self-sustaining compositions."
-    },
-    {
-      "heroId": "hecate",
-      "type": "dps",
-      "description": "Reliable skill-based DPS for transition and budget compositions. Does not reach the ceiling of top carries like Isis or Hela, but provides consistent active-skill output that activates Echo of Causality and feeds into Temporal Rift's Lv3 CD reduction loop."
-    }
-  ],
   "virtueSets": [
     {
       "label": "Fervor",
@@ -223,5 +166,10 @@
     "Relic-dependent: without Relic Lv2 the Projection system lacks its defining CD reset; without Lv4 the projection's impact is delayed",
     "Against raw stat-check teams that simply overwhelm utility through damage output, Cronus's kit cannot compensate for large stat disparities alone",
     "Rewinding Remains reduces the saved target's ATK and ATK Speed after triggering - the saved ally is temporarily weakened following the rescue window"
-  ]
+  ],  
+  "detailComps": [
+  {
+    "heroes": ["cronus", "caishen", "mengpo", "nuba", "zeus"]
+  }
+]
 }

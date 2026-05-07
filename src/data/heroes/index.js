@@ -91,6 +91,9 @@ function adaptHero(raw) {
     f2pInvestment: raw.f2pInvestment ?? null,
     virtues: raw.virtues ?? [],
     virtueSets: raw.virtueSets ?? [],
+    strengths: raw.strengths ?? [],
+    weaknesses: raw.weaknesses ?? [],
+    detailComps: raw.detailComps ?? [],
   };
 }
 

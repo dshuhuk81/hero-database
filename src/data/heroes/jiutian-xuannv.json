@@ -159,32 +159,5 @@
     "Stance switch logic is automated by unit count - in a losing fight she may enter Yield mode when Execute pressure is more needed",
     "PvP ceiling less established than PvE; CN sources focus primarily on tower and boss content",
     "Underperforms early game without proper positioning and team support in place"
-  ],
-  "synergyLinks": [
-    {
-      "heroId": "pan",
-      "type": "cc",
-      "description": "Cited in CN challenge guides as a mandatory partner in Jiutian's time-limited challenge stages. Pan's crowd control layers with Jiutian's energy drain to slow enemy ultimate rotations. AoE CC also gives the Taiji Formation time to cycle before enemies can focus Jiutian down."
-    },
-    {
-      "heroId": "jormungandr",
-      "type": "energy",
-      "description": "Repeatedly featured in CN Clubs Tower team compositions alongside Jiutian. DoT damage compounds naturally with the longer fight durations Jiutian's energy manipulation and mode cycling create. Both heroes benefit from extended PvE encounters rather than short burst windows."
-    },
-    {
-      "heroId": "nezha",
-      "type": "dps",
-      "description": "CN community explicitly describes Jiutian and Nezha as \"quite useful together.\" Nezha provides consistent front-loaded burst pressure that pairs with Jiutian's ranged stance-switching output - two different damage vectors operating simultaneously without competing for the same resources."
-    },
-    {
-      "heroId": "anubis",
-      "type": "cc",
-      "description": "Present in the CN zero-spender Clubs Tower team lineup alongside Jiutian. His targeting logic and CC patterns create controlled fight conditions where Jiutian's positional designation system and stance switches function as intended."
-    },
-    {
-      "heroId": "caishen",
-      "type": "energy",
-      "description": "Faster team Energy cycles mean more Ultimate casts, more stance switches, and more Tactical Interception procs per fight. Each additional Ultimate cast also creates another opportunity to set the optimal stance for the current board state."
-    }
   ]
 }

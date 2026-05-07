@@ -516,36 +516,11 @@ const dotSections = [
 
     <!-- __ SECTION 5c: DETAIL COMPS __ -->
     <section class="content-section" id="section-detail-comps">
-      <div class="section-label">Recommended Team Compositions</div>
+      <div class="section-label">Example Team Compositions</div>
       <HeroDetailComps comps={heroDetailComps} currentHeroId={id} />
     </section>
 
-    <!-- ── SECTION 6: COMPOSITIONS ── -->
-    {hasComps && (
-      <section class="content-section" id="section-comps">
-        <div class="section-label" data-i18n="detail_comps">Team Compositions</div>
-
-        <div class="comp-mode-tabs" role="tablist">
-          <button class="comp-mode-tab active" data-comp-mode="general" role="tab" data-i18n="detail_comp_general">General</button>
-          <button class="comp-mode-tab" data-comp-mode="pve" role="tab" data-i18n="detail_comp_pve">PvE</button>
-          <button class="comp-mode-tab" data-comp-mode="pvp" role="tab" data-i18n="detail_comp_pvp">PvP</button>
-        </div>
-
-        <div class="comp-panels">
-          <div class="comp-panel active" data-comp-panel="general">
-            <HeroCompositions heroId={id} mode="general" />
-          </div>
-          <div class="comp-panel" data-comp-panel="pve" style="display:none">
-            <HeroCompositions heroId={id} mode="pve" />
-          </div>
-          <div class="comp-panel" data-comp-panel="pvp" style="display:none">
-            <HeroCompositions heroId={id} mode="pvp" />
-          </div>
-        </div>
-      </section>
-    )}
-
-    <!-- ── SECTION 7: INVESTMENT GUIDE ── -->
+    <!-- ── SECTION 6: INVESTMENT GUIDE ── -->
     {heroInvest && (
       <section class="content-section" id="section-investment">
         <div class="section-label" data-i18n="detail_investment">Investment Guide</div>
@@ -562,7 +537,7 @@ const dotSections = [
       </section>
     )}
 
-    <!-- __ SECTION 8: VIRTUES __ -->
+    <!-- __ SECTION 7: VIRTUES __ -->
     {hasVirtues && (
       <section class="content-section" id="section-virtues">
         <div class="section-label" data-i18n="detail_virtues">Recommended Virtues</div>
