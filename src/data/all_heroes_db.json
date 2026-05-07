@@ -3243,7 +3243,17 @@
       "Assassins with CC like Nyx can mute his healing and stun him before he gets going",
       "Displacement/Pull heroes that move Hephaestus away from his forge trigger a 5-second stun that completely disables him"
     ],
-    "synergyLinks": []
+    "detailComps": [
+      {
+        "heroes": [
+          "hephaestus",
+          "nezha",
+          "heracles",
+          "diana",
+          "set"
+        ]
+      }
+    ]
   },
   "hera": {
     "id": "hera",
