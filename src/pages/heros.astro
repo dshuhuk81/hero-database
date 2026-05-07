@@ -98,7 +98,7 @@ const sortedHeroes = [...heroes]
           data-faction={hero.faction.toLowerCase()}
           data-rarity={hero.rarity.toLowerCase()}
           data-tags={hero.synergies?.join("|").toLowerCase() || ""}
-            data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
+          data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
       >
         <div class="icon-stack">
           <img
@@ -338,10 +338,8 @@ const sortedHeroes = [...heroes]
 
 .hero-wrapper {
   position: relative;
-  width: 210px;
+  width: auto;
   border-radius: var(--radius-md);
-  content-visibility: auto;
-  contain: layout style paint;
 }
 
 @media (max-width: 600px) {
@@ -452,11 +450,10 @@ const sortedHeroes = [...heroes]
 }
 
 .icon-stack img {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   background: var(--bg-base);
   border-radius: 50%;
-  padding: 3px;
   border: 1px solid var(--border-medium);
 }
 
