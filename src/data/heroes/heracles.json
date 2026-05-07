@@ -113,121 +113,16 @@
   ],
   "baseAttackRate": 0.364,
   "bossUltimatesPer90s": 3,
-  "teamComps": {
-    "pve": [
-      {
-        "label": "Basic",
-        "stars": 3,
-        "description": "Formation not fixed. Heracles can run with any 4 supports. Budget entry point due to wide availability outside rate-up banners.",
-        "targets": "Clubs, Diamonds",
-        "totems": [
-          "sanctified_blood"
-        ],
-        "front": [
-          "heracles"
-        ],
-        "back": [
-          "bastet",
-          "meret",
-          "set",
-          "phoenix"
-        ]
-      },
-      {
-        "label": "Finisher",
-        "stars": 4,
-        "description": "Eris's execute ability perfectly covers Heracles's weakness after two hammers, eliminating low-HP targets he cannot finish.",
-        "targets": "Clubs, Diamonds",
-        "totems": [
-          "sanctified_blood",
-          "keystone_of_wonders"
-        ],
-        "front": [
-          "heracles"
-        ],
-        "back": [
-          "eris",
-          "serket",
-          "nuba",
-          "dionysus"
-        ]
-      },
-      {
-        "label": "Dual Core",
-        "stars": 5,
-        "description": "Heracles provides crowd control and acts as meat shield. Zeus, Nuba, Caishen and Mengpo stack buffs and energy to maximize Heracles's output.",
-        "targets": "All",
-        "totems": [
-          "sanctified_blood",
-          "keystone_of_wonders"
-        ],
-        "front": [
-          "heracles"
-        ],
-        "back": [
-          "zeus",
-          "nuba",
-          "caishen",
-          "mengpo"
-        ]
-      },
-      {
-        "label": "Corpse Explosion",
-        "stars": 4,
-        "description": "Mainly targets Treant. Requires Heracles double hammer simultaneously with Jormungandr explosion for maximum burst.",
-        "targets": "All",
-        "totems": [
-          "sanctified_blood",
-          "horn_of_potency"
-        ],
-        "front": [
-          "heracles",
-          "jormungandr"
-        ],
-        "back": [
-          "phoenix",
-          "anubis",
-          "nyx"
-        ]
-      },
-      {
-        "label": "Corpse Explosion Advanced",
-        "stars": 5,
-        "description": "Heracles double hammer + Jormungandr explosion + Nut's energy bullet = total annihilation. Destroys Treant and beyond.",
-        "targets": "All",
-        "totems": [
-          "sanctified_blood",
-          "horn_of_potency"
-        ],
-        "front": [
-          "heracles",
-          "jormungandr"
-        ],
-        "back": [
-          "nut",
-          "anubis",
-          "nyx"
-        ]
-      }
-    ]
-  },
+  "detailComps": [
+    {
+      "heroes": ["heracles", "zeus", "mengpo", "nuba", "caishen"]
+    }
+  ],
   "coreMechanic": {
     "summary": "Hard carry: pull-group then two-burst damage pattern. Second burst arrives before enemy can recover. CN and Excel fully aligned T0. Avoid vs Pan (energy drain counters both bursts).",
     "depthRating": "mid",
     "commonlyMisunderstood": false
   },
-  "synergyLinks": [
-    {
-      "heroId": "athena",
-      "type": "core",
-      "description": "Athena attack speed buff amplifies Hercules judgment window output."
-    },
-    {
-      "heroId": "poseidon",
-      "type": "core",
-      "description": "Poseidon groups; Hercules bursts the cluster. Cross-faction but highly effective."
-    }
-  ],
   "virtueSets": [
     {
       "label": "Stoic",

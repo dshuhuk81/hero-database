@@ -112,48 +112,11 @@
   ],
   "baseAttackRate": 1.351,
   "bossUltimatesPer90s": 3,
-  "teamComps": {
-    "pve": [
-      {
-        "label": "Standard",
-        "stars": 4,
-        "description": "High strength, can beat all teams. Skadi provides CC while Poseidon and Khepri anchor the front, Pan buffs, and Nuwa sustains the team.",
-        "targets": "All",
-        "totems": [
-          "keystone_of_wonders",
-          "undying_staff"
-        ],
-        "front": [
-          "skadi",
-          "poseidon"
-        ],
-        "back": [
-          "khepri",
-          "pan",
-          "nuwa"
-        ]
-      },
-      {
-        "label": "Ultimate",
-        "stars": 5,
-        "description": "Mainly targets Dog-head enemies and immortal Treant. Cronus replaces Nuwa for CDR and formation disruption.",
-        "targets": "All",
-        "totems": [
-          "keystone_of_wonders",
-          "undying_staff"
-        ],
-        "front": [
-          "skadi",
-          "poseidon"
-        ],
-        "back": [
-          "khepri",
-          "pan",
-          "cronus"
-        ]
-      }
-    ]
-  },
+    "detailComps": [
+    {
+      "heroes": ["skadi", "poseidon", "khepri", "pan", "nuwa"]
+    }
+  ],
   "coreMechanic": {
     "summary": "AoE carry with damage scaling by enemy density and built-in lifesteal. Non-overlapping synergies -- slots into any comp. CN: closest non-Celestial DPS to a Celestial.",
     "depthRating": "mid",

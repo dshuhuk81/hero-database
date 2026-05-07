@@ -126,86 +126,11 @@
   ],
   "baseAttackRate": 1.749,
   "bossUltimatesPer90s": 4,
-  "teamComps": {
-    "pve": [
-      {
-        "label": "Basic",
-        "stars": 1,
-        "description": "Entry-level Hecate team against Diamond-faction enemies. Tefnut and Cancer add support depth.",
-        "targets": "Diamonds",
-        "totems": [
-          "undying_staff",
-          "horn_of_potency"
-        ],
-        "front": [
-          "hecate"
-        ],
-        "back": [
-          "momus",
-          "yuelao",
-          "tefnut",
-          "cancer"
-        ]
-      },
-      {
-        "label": "Standard",
-        "stars": 2,
-        "description": "Meret replaces Tefnut for stronger sustain and buff coverage. Still specifically targets Diamonds.",
-        "targets": "Diamonds",
-        "totems": [
-          "undying_staff",
-          "horn_of_potency"
-        ],
-        "front": [
-          "hecate"
-        ],
-        "back": [
-          "momus",
-          "yuelao",
-          "meret",
-          "cancer"
-        ]
-      },
-      {
-        "label": "Advanced",
-        "stars": 3,
-        "description": "Caishen replaces Cancer for better energy cycling. Now works against Diamonds and Hearts.",
-        "targets": "Diamonds, Hearts",
-        "totems": [
-          "undying_staff",
-          "horn_of_potency"
-        ],
-        "front": [
-          "hecate"
-        ],
-        "back": [
-          "momus",
-          "yuelao",
-          "meret",
-          "caishen"
-        ]
-      },
-      {
-        "label": "Ultimate",
-        "stars": 5,
-        "description": "Cronus adds time manipulation and doubles key skill casts. Strongest Hecate variant -- works against all factions.",
-        "targets": "All",
-        "totems": [
-          "undying_staff",
-          "horn_of_potency"
-        ],
-        "front": [
-          "hecate"
-        ],
-        "back": [
-          "momus",
-          "yuelao",
-          "meret",
-          "cronus"
-        ]
-      }
-    ]
-  },
+    "detailComps": [
+    {
+      "heroes": ["hecate", "momus", "yuelao", "meret", "cronus"]
+    }
+  ],
   "coreMechanic": {
     "summary": "10-second sustained damage channel with highest total damage multiplier in game. Slow output loses early but wins late. Core trio: Yuelao (ATK link) + Momus (shields) + Hecate.",
     "depthRating": "mid",

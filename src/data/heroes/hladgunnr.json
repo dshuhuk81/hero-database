@@ -114,89 +114,11 @@
   ],
   "baseAttackRate": 1.296,
   "bossUltimatesPer90s": 4,
-  "teamComps": {
-    "pve": [
-      {
-        "label": "Basic",
-        "stars": 1,
-        "description": "Very strong early-game but falls off hard late. Cannot beat any team in later campaign stages.",
-        "targets": "Spades",
-        "totems": [
-          "horn_of_potency",
-          "unsullied_lotus",
-          "defiant_vow"
-        ],
-        "front": [
-          "hladgunnr"
-        ],
-        "back": [
-          "wenshen",
-          "yanluo",
-          "prometheus",
-          "nyx"
-        ]
-      },
-      {
-        "label": "Charm",
-        "stars": 5,
-        "description": "The strongest Hladgunnr variant. Hera's charm synergizes directly with Hladgunnr's execute mechanic. Nuba and Caishen provide buff and energy support.",
-        "targets": "Spades, Diamonds, Hearts",
-        "totems": [
-          "horn_of_potency",
-          "unsullied_lotus",
-          "defiant_vow"
-        ],
-        "front": [
-          "hladgunnr"
-        ],
-        "back": [
-          "hera",
-          "nuba",
-          "wenshen",
-          "caishen"
-        ]
-      },
-      {
-        "label": "Snake",
-        "stars": 2,
-        "description": "Requires 3 or more Jormungandr explosions before Hladgunnr finishes. Dependent on snake explosion count -- unreliable without setup.",
-        "targets": "Spades",
-        "totems": [
-          "horn_of_potency",
-          "unsullied_lotus",
-          "defiant_vow"
-        ],
-        "front": [
-          "hladgunnr",
-          "jormungandr"
-        ],
-        "back": [
-          "wenshen",
-          "capricorn",
-          "nyx"
-        ]
-      },
-      {
-        "label": "Ultimate",
-        "stars": 5,
-        "description": "Jormungandr explosions + Nut's energy bullet basically clears the screen. Even if 1-2 enemies survive with low HP, Hladgunnr finishes them.",
-        "targets": "Hearts, Diamonds, Spades",
-        "totems": [
-          "horn_of_potency",
-          "windrunners_grace"
-        ],
-        "front": [
-          "hladgunnr",
-          "jormungandr"
-        ],
-        "back": [
-          "nut",
-          "wenshen",
-          "nyx"
-        ]
-      }
-    ]
-  },
+    "detailComps": [
+    {
+      "heroes": ["hladgunnr", "jormungandr", "wenshen", "nuba", "caishen"]
+    }
+  ],
   "coreMechanic": {
     "summary": "Meatshield tank that exploits line-hold mechanics. With high-investment allies her unbreakable line enables damage exploitation on specific stages. Stat dampening limits PvE ceiling.",
     "depthRating": "mid",
