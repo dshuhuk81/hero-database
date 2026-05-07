@@ -1,0 +1,135 @@
+{
+  "skillImages": {
+    "ult":    "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_ultimate.png",
+    "skill2": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_skill_1.png",
+    "skill3": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_skill_3.png",
+    "skill4": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_skill_2.png",
+    "relic":  "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nuba_relic.png"
+  },
+  "overview": [
+    "Nuba, the <em>Goddess of Drought</em>, is a <strong>Warrior</strong> of the <strong>Club</strong> faction whose entire kit revolves around <span class=\"doom\">Crimson Doom Mark</span> — a stacking debuff system that drains resources, reduces effectiveness, and punishes enemies for carrying her mark.",
+    "Unlike most Warriors who deal straightforward burst damage, Nuba layers multiple debuffs over time while simultaneously reducing enemy effectiveness and amplifying her own follow-up damage. Her passive resurrection mechanic via <em>Rise of the Drought</em> provides unexpected survivability in extended fights.",
+    "As a Club faction hero, Nuba scales strongly when fielded alongside other Club heroes — the faction bonus grants stacking ATK and HP to the whole team, reinforcing a protected backline scaling role rather than a primary tank role."
+  ],
+  "factionSynergy": {
+    "label": "Faction Bonus — Club",
+    "intro": "Fielding multiple Club faction heroes grants the <em>entire team</em> bonus ATK and HP. Thresholds:",
+    "items": [
+      { "label": "3 Club heroes:", "text": "+15% ATK &amp; HP for the team" },
+      { "label": "3 + 2 (mixed):", "text": "+25% ATK &amp; HP for the team" },
+      { "label": "4 Club heroes:", "text": "+30% ATK &amp; HP for the team" },
+      { "label": "5 Club heroes:", "text": "+35% ATK &amp; HP for the team — maximum bonus" }
+    ],
+    "note": "Nuba benefits from sustained HP (enabling her revive to matter more) and amplified ATK (making her Stun windows hit harder). Maximizing the Club faction count strengthens her kit."
+  },
+  "lore": null,
+  "coreMechanic": {
+    "sectionTitle": "Core Mechanic — Crimson Doom Mark",
+    "label": "The Doom Mark System",
+    "bullets": [
+      "Applied to the 3 farthest enemies at the <strong>start of battle</strong> passively via her Ultimate passive, and re-applied to the nearest enemy whenever the Ultimate activates.",
+      "Every 2.5s, Doom Mark deals DMG equal to 15% of current HP (capped at 240% ATK) and <strong>destroys 50 Energy</strong> — actively stalling enemy Ultimate cycles.",
+      "When a marked enemy falls, the mark does not disappear — it drains the target's essence and spawns a <strong>Source of the Drought Devil</strong> at the target's location.",
+      "Skill 1 (Infernal Soulbreaker) deals bonus damage and <strong>Stuns</strong> targets that carry the mark.",
+      "The Source of the Drought Devil is her <strong>revive token</strong> — consumed by Rise of the Drought to bring Nuba back to life at her current position.",
+      "Her Relic (Curse of Decay) makes marked enemies deal less DMG and permanently lose ATK SPD with each Ultimate cast — stacks up to 4 times."
+    ]
+  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Siphon of Souls",
+      "badge": "Ultimate",
+      "icon": "nuba_ultimate.png",
+      "description": "<strong>Passive:</strong> At the start of battle, inflicts <span class=\"doom\">Crimson Doom Mark</span> on the 3 farthest enemies. Every 2.5s, Doom Mark deals DMg equal to 15% of current HP (capped at 240% ATK) and destroys 50 Energy. When a marked enemy falls, the mark drains their essence and spawns a <em>Source of the Drought Devil</em>.<br/><br/><strong>Active:</strong> Upon activation, inflicts <span class=\"doom\">Crimson Doom Mark</span> on the nearest enemy, <span class=\"highlight\">disabling them</span>, dealing damage, and absorbing 200 Energy.",
+      "upgrades": [],
+      "note": "Dual-purpose: passive mark spread at battle start (3 farthest enemies) + active single-target mark, disable, and Energy drain. The active absorbs 200 Energy from the target — potentially resetting their Ultimate charge."
+    },
+    {
+      "key": "relic",
+      "name": "Curse of Decay",
+      "badge": "Relic",
+      "icon": "nuba_relic.png",
+      "description": "Enemies infested with <span class=\"doom\">Crimson Doom Mark</span> deal less DMG. Each time Nuba casts her Ultimate, all enemies infested with Crimson Doom Mark <span class=\"highlight\">permanently lose ATK SPD</span> (stacks up to 4 times).",
+      "upgrades": [],
+      "note": "ATK SPD reduction is permanent and stacks with every Ultimate cast (up to 4×). At Relic Lv2, Nuba herself gains 15% DMG RED per active Doom Mark — with 3 marks on the field, that's 45% personal damage reduction. Lv3 halves the Doom Mark tick interval from 2.5s to 1.5s."
+    },
+    {
+      "key": "skill2",
+      "name": "Infernal Soulbreaker",
+      "badge": "Skill 1",
+      "icon": "nuba_skill_1.png",
+      "description": "Deals damage to an enemy and <span class=\"highlight\">interrupts</span> them. If the target has <span class=\"doom\">Crimson Doom Mark</span>, the skill deals higher damage and <span class=\"highlight\">Stuns</span> the target instead of simply interrupting.",
+      "upgrades": [],
+      "note": "Primary CC tool. Requires a marked target to reach full potential — which is likely in most fights given the passive mark at battle start. The Stun duration increases to 3s at Lv3."
+    },
+    {
+      "key": "skill4",
+      "name": "Rise of the Drought",
+      "badge": "Skill 2",
+      "icon": "nuba_skill_2.png",
+      "description": "When Nuba falls in battle, she consumes one <em>Source of the Drought Devil</em> to <span class=\"highlight\">revive</span> at her current location and restore HP. (Requires Lv4 to activate.)",
+      "upgrades": [],
+      "note": "Self-revive gated behind the Drought Devil sources generated by falling marked enemies. The HP restored scales with how long the source existed before use (Lv3). Requires skill investment to unlock at Lv1."
+    },
+    {
+      "key": "skill3",
+      "name": "Rite of Ashes",
+      "badge": "Passive",
+      "icon": "nuba_skill_3.png",
+      "description": "Passive lifesteal: a percentage of damage dealt is converted to HP. When healing exceeds Nuba's max HP, the excess becomes a shield.",
+      "upgrades": [],
+      "note": "Passive lifesteal that converts overflow healing into a shield. At Lv4, Nuba heals for 100% of all damage dealt by herself AND the Doom Mark ticks — in sustained fights this creates near-permanent shielding."
+    }
+  ],
+  "skillUpgradePriority": [
+    "<strong>1. Siphon of Souls (Ultimate)</strong> — Core mechanic; Energy absorption scaling and active DMG increases are essential",
+    "<strong>2. Curse of Decay (Relic)</strong> — ATK SPD stacking is the primary debuff axis; Lv2 personal DMG RED is massive",
+    "<strong>3. Rite of Ashes</strong> — Lifesteal and shield ceiling increase with Lv upgrades; makes her self-sustaining",
+    "<strong>4. Rise of the Drought</strong> — Lv3 scales revive HP with source duration; Lv4 increases base restoration",
+    "<strong>5. Infernal Soulbreaker</strong> — Stun duration increase at Lv3 is useful; lower overall priority"
+  ],
+  "ratings": [
+    { "mode": "PVP", "tier": "S", "desc": "CC + ATK SPD drain = oppressive in long control fights" },
+    { "mode": "PVE / Campaign", "tier": "S", "desc": "Solid debuffer; revive adds longevity; ATK SPD drain effective in prolonged campaign stages" },
+    { "mode": "Boss Fights", "tier": "B", "desc": "Energy drain slows boss ults; Stun useful; single-target focus limits Doom Mark spread" }
+  ],
+  "positioning": [
+    {
+      "mode": "Backrow Priority",
+      "paragraphs": [
+        "Nuba is best protected in the backline as a scaling anchor rather than exposed early as a tank. Club faction pairing (e.g., Pan) complements her Energy denial loop, while a defensive support like Yuelao can add sustain to keep the control core online longer.",
+        "In longer fights, backline placement increases consistency of her ATK SPD stacking, Energy denial cadence, and reliable revive timing. If lacking dupe/relic investment she will give enemies free energy — protect her until she's properly invested."
+      ]
+    }
+  ],
+  "strengths": [
+    "Applies <span class=\"doom\">Crimson Doom Mark</span> at battle start passively — no ramp-up required for debuffing",
+    "Permanent ATK SPD reduction on marked enemies stacks up to 4× — grows more oppressive as the fight extends",
+    "Built-in self-revive through Drought Devil sources provides exceptional staying power",
+    "Energy drain/destruction on Ultimate can delay and disrupt enemy Ultimate rotations",
+    "Reliable Stun on Skill 1 against marked targets — near-100% CC uptime against tagged enemies",
+    "Passive lifesteal + overflow shield (Rite of Ashes) makes her self-sustaining once invested",
+    "Dual debuff coverage: DMG reduction + ATK SPD reduction simultaneously"
+  ],
+  "weaknesses": [
+    "At low dupe/relic investment, Doom Mark passive ticks can actually <em>feed</em> enemy Energy instead of draining it",
+    "Self-revive requires sources to exist — if marks expire before she dies, no revive token is available",
+    "Single-target focus on Ultimate active — mark re-application hits only the nearest enemy",
+    "No direct healing outside of the revive HP restore — vulnerable to sustained burst before marks expire",
+    "Utility-focused — needs supporting DPS; does not function as a standalone damage carry"
+  ],
+  "synergy": {
+    "type": "note",
+    "paragraphs": [
+      "<strong>Club faction stacking</strong> is Nuba's most concrete synergy path. Running 3–5 Club heroes gives the whole team bonus ATK and HP — both stats support a protected scaling setup where Nuba remains in backline and ramps safely over time.",
+      "In the proposed structure, <strong>Nuba + Pan</strong> form the Energy control backbone: Nuba destroys and absorbs Energy while Pan adds additional denial and control timing.",
+      "<strong>Demeter</strong> serves as the protection and stun-layering frontline, while <strong>Caishen</strong> accelerates team Energy cycles and supports tempo. <strong>Yuelao</strong> rounds out the core through defensive stat sharing and sustain."
+    ]
+  },
+  "playstyle": [
+    "Nuba fits a <em>protected attrition control core</em> style. She does not win by early collapse pressure, but by making enemies progressively less capable of fighting back as ATK SPD and Energy pressure compound over the course of a fight.",
+    "Backline safety improves consistency of three key outcomes: <strong>ATK SPD stacking uptime</strong>, <strong>Energy denial frequency</strong>, and <strong>reliable revival trigger timing</strong>. In that model, she is a scaling anchor enabled by frontline protection, not the primary tank absorbing the first burst cycle.",
+    "The most important player decision is ensuring she survives long enough to accumulate Doom Mark sources for her revive. Once she has a revive token banked and ATK SPD stacks building, long fights increasingly favor this structure: protect Nuba, cycle control and Energy denial, let inevitability build through layered debuffs."
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "overview": [
+    "Hephaestus is a <strong>Legendary Support</strong> from the <strong>Hearts faction</strong>. Think of him as a stationary fortress - he plants himself in one spot and creates a network of three mechanical devices across the field.",
+    "At the start of battle, all three devices are inactive. Every time Hephaestus casts his Ultimate, one device turns on. Once a device is active, it becomes a safe zone for your allies - they heal up and gain energy inside it, while enemies trapped there become weaker (lower attack and attack speed).",
+    "The real power comes when all three devices are active at once. When that happens, they create a massive effect across the entire battlefield - your enemies take more damage from your team, and your allies attack faster and hit harder for 5 seconds. This resets each time Hephaestus uses his Ultimate.",
+    "<strong>Core:</strong> Activate all 3 devices through Ultimates. <strong>Payoff:</strong> Field-wide buff when all devices are online. <strong>Trade:</strong> Must stay planted at his forge to work."
+  ],
+  "lore": null,
+  "factionSynergy": null,
+  "coreMechanic": {
+    "sectionTitle": "What Makes Him Different",
+    "label": "vs Other Hearts Supports",
+    "bullets": [
+      "<strong>vs Caishen (Energy Battery):</strong> Caishen's job is to give your team constant energy so their damage dealers can cast their big moves over and over. Hephaestus doesn't give energy - he gives buffs and debuffs. His devices weaken enemies while protecting allies, and he needs energy himself to activate all three devices in a fight.",
+      "<strong>vs Yuelao (Pair Linker):</strong> Yuelao links two specific allies together - usually your strongest attacker and your tankiest hero - and they share stats with each other. Hephaestus doesn't link anyone. Instead, his zones help anyone standing in them equally. He also stops one enemy at a time with restraint, controlling which threat matters most.",
+      "<strong>vs Mengpo (Revive Support):</strong> Mengpo brings dead allies back to life if she stacks up her Samsara power. Hephaestus prevents allies from dying in the first place - his zones heal them constantly and reduce damage they take. It's prevention over rescue.",
+      "<strong>Hephaestus' unique advantage:</strong> He's the only Hearts support with a physical/tanky nature. All the others are magical supports. This means he scales differently with gear and can survive in spots where other supports get deleted. But he must stay put - if he gets moved away from his forge, he gets stunned for 5 seconds."
+    ]
+  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Mech Domain",
+      "badge": "Ultimate",
+      "icon": "hephaestus_skill_1.webp",
+      "description": "Summons <span class=\"highlight\">3 inactive mechanical devices</span> at combat start. When cast, activates the furthest device. Allies within its AoE restore <span class=\"highlight\">15 Energy and HP equal to 50% ATK</span> per sec. Enemies in the AoE gain <span class=\"highlight\">-15% ATK and -20% ATK SPD</span>. If all devices are activated, <span class=\"highlight\">decreases enemy DMG by 20%, grants all allies 30% DMG bonus and 50% ATK SPD</span> for 5s.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Allies restore 20 Energy and HP equal to 60% ATK per sec." },
+        { "level": "Lv3", "text": "Enemies gain -20% ATK and -30% ATK SPD." },
+        { "level": "Lv4", "text": "All devices active: decreases enemy DMG by 40%, grants 50% DMG bonus and 80% ATK SPD." }
+      ],
+      "note": "Getting all 3 devices active takes time (3 Ultimates), so fights need to last long enough for Hephaestus to reach that full-field payoff. The Fusion effect (all 3 active) is transformational for team damage and survival."
+    },
+    {
+      "key": "relic",
+      "name": "Undying Forge",
+      "badge": "Relic",
+      "icon": "hephaestus_relic.webp",
+      "description": "At combat start, Hephaestus places a forge before him. In the <span class=\"highlight\">[Dedicated] state</span> near the bench, he gains <span class=\"highlight\">infinite attack range and 30% DMG RED</span>. If he moves away, the forge teleports him back and inflicts <span class=\"highlight\">Overload, disabling him for 5s</span>.",
+      "upgrades": [
+        { "level": "Lv2 [Relic Lv.10]", "text": "In [Dedicated] state, CD of Artisan's Insight and Molten Aegis -50%." },
+        { "level": "Lv3 [Relic Lv.20]", "text": "In [Dedicated] state, max Energy -30%." },
+        { "level": "Lv4", "text": "In [Dedicated] state, Hephaestus takes 60% less DMG." }
+      ],
+      "note": "Relic Lv1 establishes Hephaestus's core identity: immobile but nigh-untouchable. Lv2 (Relic Lv.10) is a major spike - halving cooldowns on his heal and restraint lets him cycle abilities twice as fast. Lv4 stacks to 90% total DR with base 30%, making him nearly invincible if positioned safely."
+    },
+    {
+      "key": "skill2",
+      "name": "Artisan's Insight",
+      "badge": "Active",
+      "icon": "hephaestus_skill_2.webp",
+      "description": "Fires a beam to restrain the enemy with the highest DPS for <span class=\"highlight\">2 seconds</span> (+0.5s for each activated device), reducing their <span class=\"highlight\">Armor and M-RES by 20%</span>. Vulnerable targets take more damage, making this a key setup tool.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Reduces Armor and M-RES by 30%." },
+        { "level": "Lv3", "text": "Duration extends by 1s for each activated device on the field." },
+        { "level": "Lv4", "text": "Reduces Armor and M-RES by 50%." }
+      ],
+      "note": "Scales with devices: Lv3 changes per-device scaling from +0.5s to +1s duration. By Lv3, the restraint can reach 5 seconds with all 3 devices active. Critical for locking down high-threat enemies."
+    },
+    {
+      "key": "skill3",
+      "name": "Primal Resonance",
+      "badge": "Passive",
+      "icon": "hephaestus_skill_3.webp",
+      "description": "Hephaestus's <span class=\"highlight\">Energy Regen +20%</span>. This is always active and critical - Hephaestus must cast his Ultimate 3 times in a single fight to get all devices online.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Energy Regen +30%." },
+        { "level": "Lv3", "text": "Energy Regen +40%." },
+        { "level": "Lv4", "text": "Gains 200 initial Energy on entry." }
+      ],
+      "note": "Lv4 is a massive power spike: 200 starting Energy means Hephaestus enters fights ready to immediately activate the first device. Energy regen stats (Far 2/3 Virtues, energy-regen gear) become essential for hitting 3 Ultimates per fight."
+    },
+    {
+      "key": "skill4",
+      "name": "Molten Aegis",
+      "badge": "Active",
+      "icon": "hephaestus_skill_4.webp",
+      "description": "Heals the <span class=\"highlight\">weakest ally</span> for HP equal to <span class=\"highlight\">150% ATK</span> and reduces their incoming <span class=\"highlight\">DMG by 10% for 5s</span>. For each activated device on the field, further reduces incoming DMG by 5%.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Restores HP equal to 170% ATK." },
+        { "level": "Lv3", "text": "For each device, further reduces DMG by 7.5%." },
+        { "level": "Lv4", "text": "Healing increased to HP equal to 200% ATK." }
+      ],
+      "note": "Targets the weakest ally automatically. Damage reduction scales with devices: at Lv3 with all 3 devices active, healed allies take 32.5% less damage. Combined with the device zones, this creates multiple survival layers."
+    }
+  ],
+  "skillUpgradePriority": [
+    "<strong>1. Primal Resonance (Energy Passive)</strong> - Lv4's 200 starting Energy enables immediate first device activation; Energy regen is the critical stat",
+    "<strong>2. Mech Domain (Ultimate)</strong> - More device activations per fight directly scales all of his other outputs",
+    "<strong>3. Undying Forge (Relic)</strong> - Lv2 halved cooldowns doubles active skill cycling speed; Lv4 near-invincibility in protected position",
+    "<strong>4. Artisan's Insight</strong> - Restraint duration scales with device count at Lv3; key for locking the highest threat",
+    "<strong>5. Molten Aegis</strong> - Healing and damage reduction scale with devices; lower priority than core energy and device systems"
+  ],
+  "ratings": [
+    { "mode": "PVE / Campaign", "tier": "A", "desc": "Campaign stages are perfect for him - fights last long enough to activate all devices, and enemies stay in their zones." },
+    { "mode": "Boss Fights", "tier": "A", "desc": "Bosses don't run away from zones, so his debuffs stick. The healing from devices keeps your team alive through long fights." },
+    { "mode": "PVP", "tier": "A", "desc": "Good if enemies have low mobility. Gets countered hard by fast teams and energy-draining heroes." }
+  ],
+  "positioning": [
+    {
+      "mode": "Stationary Backline - Hard Requirement",
+      "paragraphs": [
+        "Hephaestus must stay at his forge position. His Relic grants infinite attack range and 30% damage reduction while he remains in the Dedicated state. Forced movement away from the forge triggers Overload - a 5-second stun that leaves the team without support. Place him in the back corner before the fight starts and do not expect repositioning."
+      ]
+    }
+  ],
+  "strengths": [
+    "Exceptional team sustain - Multi-layer healing (150-200% ATK scaling) plus damage reduction stacking makes team nearly unkillable once ramped",
+    "Teamwide damage amplification - +30% all-ally damage bonus when all 3 devices active; synergizes perfectly with DPS-heavy carries",
+    "Heavy enemy debuff layers - Reduces enemy ATK by 15%, ATK SPD by 20%, and armor/M-RES by up to 50% while restraining highest threat",
+    "Scales infinitely with energy regen - Each point of energy regen accelerates device activation; exponential power growth with Fervor/Far virtue sets",
+    "Unique support role - Only physical/tanky support in game, scales differently with gear and doesn't overlap with magical supports"
+  ],
+  "weaknesses": [
+    "Requires time to reach peak power - Needs 3 Ultimates (~15-20 seconds) to activate all 3 devices; crippled in short fights or early-game rushes",
+    "Immobility creates positioning risk - Forge anchors him to one location; forced movement away triggers 5-second stun that leaves team without support",
+    "Catastrophic to displacement CC - Pan/Khepri/Set pulls mean stun + defenseless team; one bad position equals match loss",
+    "Energy starvation is fatal - Pan's energy drain and Cronus cooldown reduction prevent him from hitting 3 Ultimates; hard-countered by energy-denial supports",
+    "Vulnerable to burst compositions - Fast teams can burst down team before 3 devices activate or before he heals allies to safety",
+    "Assassins with CC like Nyx can mute his healing and stun him before he gets going",
+    "Displacement/Pull heroes that move Hephaestus away from his forge trigger a 5-second stun that completely disables him"
+  ],
+  "synergy": {
+    "type": "note",
+    "paragraphs": [
+      "<strong>Energy Supports (Caishen):</strong> Hephaestus needs to cast his Ultimate 3 times during a fight. Caishen gives massive amounts of energy to the whole team, getting Hephaestus to his third Ultimate faster.",
+      "<strong>Zone Control Heroes (Geb, Prometheus):</strong> These heroes create their own areas of effect that trap or control enemies. Combined with Hephaestus's zones, enemies have nowhere to run and stay debuffed longer.",
+      "<strong>AoE Control (Pan, Poseidon):</strong> They hit multiple enemies at once or control wide areas. Hephaestus's debuffs make these attacks even stronger.",
+      "<strong>Magic Damage Heroes (Isis, Hecate):</strong> These heroes deal magic damage and scale off his attack stat. Plus, they benefit from the 30% damage boost when all devices are active."
+    ]
+  },
+  "playstyle": [
+    "Hephaestus works in phases. The opening 15-20 seconds are his weakest window - he has devices to activate and needs energy to do it. Protect him during this phase and let Caishen or another energy source push him toward his third Ultimate.",
+    "Once all three devices are active, the team dynamics shift completely. Enemies debuffed, allies healed and boosted, the restraint on the highest-threat target extended to its maximum duration. At that point Hephaestus isn't just a support - he is the field itself, dictating what happens everywhere at once.",
+    "Position him carefully before the fight starts and do not expect repositioning. One displacement ability against Hephaestus - a single pull from Pan, a dive from Khepri - costs the team five seconds of support. Avoid that outcome by anticipating aggressive flanks before deploying him."
+  ]
+}

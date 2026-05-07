@@ -1,0 +1,178 @@
+{
+  "overview": [
+    "Wen-Shen, the <em>Plague Goddess</em>, is a <strong>Legendary Support</strong> of the <strong>Clubs faction</strong> whose kit is built around a single debuff system: <span class=\"doom\">Jinx</span>. She is not a healer, not a damage buffer, and not a passive safety net - she is a <em>control trap unit</em> whose primary purpose is to neutralize enemy carries, punish aggression, and remain dangerous even after death.",
+    "Her Ultimate applies a long hard-CC lockdown to the nearest enemy. Her Skill 2 curses the symmetrically opposite target, dealing max-HP-based damage and reducing their healing. Her passive permanently Jinxes any enemy that defeats her. Her Skill 4 creates an ATK and DEF debuff aura that lingers on the battlefield even after she falls. The Relic ties it all together: Jinx spreads from defeated enemies to the next, creating a chain that can sweep through an entire opposing team.",
+    "Wen-Shen requires no kills and no sustain investment to deliver value. Her presence alone applies pressure - and her death can be the most impactful moment of the fight.",
+    "<span class=\"note-muted\">Wen-Shen is not yet released globally. All ratings and strategic assessments are based on skill data from CN server screenshots. Numerical stats are unavailable.</span>"
+  ],
+  "lore": {
+    "label": "The Plague Goddess - Chinese Mythology",
+    "intro": "In Chinese mythology, the Plague God (Wen-Shen, or the Pestilence Deity) is not a figure of malice but of sacrifice. According to legend: \"When humanity had no cure, Wen-Shen willingly drew all diseases upon herself in exchange for the health of the mortal world.\" She is a deity who chose suffering as an act of compassion.",
+    "bullets": [
+      "<em>Calamity-Ridden</em> (Skill 3) directly mirrors her mythological role: she absorbs the punishment of disease, and anyone who tries to end her suffering is cursed in return",
+      "<em>Cursed Ground</em> (Skill 4) represents the lingering pestilence she carried - it does not leave with her death, but remains to afflict those around her",
+      "<em>Origin of Pestilence</em> (Relic) captures the myth of plague spreading from host to host after the original carrier falls",
+      "<em>Duality Inversion</em> (Skill 2) reflects the balance between illness and cure - the curse slowly undoes itself, but at a cost, and healing is suppressed while it holds",
+      "<em>Star of Ill Omen</em> (Ultimate) is named after the traditional Chinese belief that certain stars signal catastrophe for those born under their influence - once locked, there is no escape"
+    ]
+  },
+  "factionSynergy": null,
+  "coreMechanic": {
+    "sectionTitle": "Core Mechanic - The Jinx System",
+    "label": "How Jinx Works",
+    "bullets": [
+      "<span class=\"doom\">Jinxed</span> is a persistent debuff state. While active, the afflicted enemy has a <strong>50% chance to be Stunned, Terrified, or Petrified for 2.5s when attacking</strong>, and a <strong>50% chance to be Knocked Down when moving</strong>.",
+      "Each Jinx CC effect can only trigger <strong>once every 4 seconds</strong> - making it RNG-dependent but reliable over the course of a fight rather than a guaranteed instant lockdown.",
+      "At <strong>Skill 3 Lv3</strong>, Jinxed enemies also deal <strong>20% reduced damage</strong> - a permanent debuff on top of the CC rolls.",
+      "At <strong>Skill 3 Lv4</strong>, all Jinx trigger chances increase from 50% to <strong>60%</strong>, raising effective CC uptime significantly."
+    ],
+    "subsections": [
+      {
+        "label": "Sources of Jinx",
+        "bullets": [
+          "<strong>Calamity-Ridden (Skill 3, Passive):</strong> The enemy that defeats Wen-Shen is permanently Jinxed.",
+          "<strong>Origin of Pestilence (Relic):</strong> When a Jinxed enemy is defeated, Jinx spreads to the nearest enemy and deals 200% ATK damage. This chain can propagate across the full enemy team if kills continue.",
+          "<strong>Duality Inversion + Relic Lv3:</strong> Enemies cursed by Duality Inversion become permanently Jinxed - unlocking a second reliable Jinx application independent of Wen-Shen's death."
+        ]
+      },
+      {
+        "label": "The Full Chain",
+        "content": "Duality Inversion [Relic Lv3] → permanent Jinx on cursor target\nJinxed: attack → 50-60% chance Stun / Terror / Petrify (2.5s)\nJinxed: move → 50-60% chance Knockdown\n[Skill 3 Lv3] Jinxed → also 20% reduced damage output\nJinxed enemy defeated → [Relic] Jinx spreads + 200-260% ATK damage\nWen-Shen defeated → [Skill 3] killer permanently Jinxed"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Star of Ill Omen",
+      "badge": "Ultimate",
+      "icon": "wenshen_skill_1.webp",
+      "description": "Jinxes the nearest enemy, <span class=\"highlight\">disabling them for 4s</span> while dealing DMG equal to <strong>80% of ATK per second</strong>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Duration extends to 5s." },
+        { "level": "Lv3", "text": "Increases DMG per sec to 100% ATK." },
+        { "level": "Lv4", "text": "Duration extends to 6s." }
+      ],
+      "note": "A full hard-CC lockdown on the nearest enemy: no movement, no attacks, no skill casts for up to 6 seconds at Lv4. Combined with 100% ATK per second in DoT, this is simultaneously a disable and a sustained damage tool. The 6s window is one of the longest hard CCs in the game."
+    },
+    {
+      "key": "relic",
+      "name": "Origin of Pestilence",
+      "badge": "Relic",
+      "icon": "wenshen_relic.webp",
+      "description": "When a <span class=\"doom\">Jinxed</span> enemy is defeated, Jinx <span class=\"highlight\">spreads to 1 nearest enemy</span>, dealing DMG equal to <strong>200% of ATK</strong> to the new target.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Upon spreading, increases DMG to 260% ATK." },
+        { "level": "Lv3", "text": "Enemies cursed by Duality Inversion are permanently Jinxed." },
+        { "level": "Lv4", "text": "The target takes 20% increased DMG while Jinxed." }
+      ],
+      "note": "Lv3 is a true mechanic unlock. Before Lv3, Jinx can only be applied via the death passive - reactive, not proactive. At Lv3, every Duality Inversion cast permanently Jinxes the target. Lv4's 20% increased damage taken on Jinxed targets turns every Jinxed enemy into an amplified kill target for the entire team."
+    },
+    {
+      "key": "skill2",
+      "name": "Duality Inversion",
+      "badge": "Skill 2",
+      "icon": "wenshen_skill_2.webp",
+      "description": "Curses the <span class=\"highlight\">symmetrically opposite enemy</span>, dealing DMG equal to <strong>50% of their max HP</strong> (up to 1000% of Wen-Shen's ATK). The curse is slowly lifted over 5s, restoring the lost HP.",
+      "upgrades": [
+        { "level": "Lv2", "text": "While cursed, the target receives 30% reduced healing." },
+        { "level": "Lv3", "text": "The curse is slowly lifted over 8s, restoring the lost HP." },
+        { "level": "Lv4", "text": "While cursed, the target receives 60% reduced healing." }
+      ],
+      "note": "The only confirmed position-dependent skill in the game: targets the enemy at the mirror position to Wen-Shen's slot. Damage is based on the target's max HP - an anti-tank tool that scales against high-HP enemies. With Relic Lv3 active, every cast permanently Jinxes the target - making this the primary Jinx application in non-death scenarios."
+    },
+    {
+      "key": "skill3",
+      "name": "Calamity-Ridden",
+      "badge": "Passive",
+      "icon": "wenshen_skill_3.webp",
+      "description": "<strong>Passive:</strong> The enemy defeating Wen-Shen becomes <span class=\"doom\">permanently Jinxed</span>. Jinxed: 50% chance to be Stunned, Terrified, or Petrified for 2.5s when attacking; 50% chance to be Knocked Down when moving. Jinx can only trigger once every 4s.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Enemies also take DMG equal to 50% of her ATK per sec while Jinxed." },
+        { "level": "Lv3", "text": "Jinxed enemies deal 20% reduced DMG." },
+        { "level": "Lv4", "text": "Increases the chance of triggering a Jinxed effect to 60%." }
+      ],
+      "note": "The death passive reframes how Wen-Shen's health is valued. Killing her is not a clean win - the hero that eliminates her inherits a permanent CC liability. At Lv3, the 20% damage reduction on Jinxed enemies is particularly impactful: the hero that kills her becomes a weakened version of itself for the rest of the match."
+    },
+    {
+      "key": "skill4",
+      "name": "Cursed Ground",
+      "badge": "Skill 4",
+      "icon": "wenshen_skill_4.webp",
+      "description": "<strong>Passive:</strong> Creates an Aura of Misfortune within a 3-meter radius, reducing the <span class=\"highlight\">ATK of enemies inside by 20%</span>.<br/><br/><strong>Active:</strong> Flies toward the enemy with the <span class=\"highlight\">highest ATK</span>, dealing DMG equal to <strong>180% of ATK</strong>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Enemies inside the Aura also have their DEF reduced by 20%." },
+        { "level": "Lv3", "text": "Increases DMG dealt to 200% ATK." },
+        { "level": "Lv4", "text": "Wen-Shen's Aura of Misfortune lingers on the spot when she is defeated." }
+      ],
+      "note": "Lv4 is the combination unlock with Calamity-Ridden: when Wen-Shen dies, the Aura of Misfortune remains at her last position. Two post-death effects activate simultaneously. The active's targeting logic - highest ATK enemy - consistently finds the primary carry or DPS unit."
+    }
+  ],
+  "skillUpgradePriority": [
+    "<strong>1. Star of Ill Omen (Ultimate)</strong> - Core lockdown; Lv4 extends hard CC to 6s and maximizes DoT output per cycle",
+    "<strong>2. Calamity-Ridden (Skill 3)</strong> - Lv3's 20% damage reduction on Jinxed is a permanent team-wide defensive buff activated by Wen-Shen's death",
+    "<strong>3. Origin of Pestilence (Relic)</strong> - Lv3 is a mechanic unlock: Duality Inversion becomes a reliable active Jinx setter; Lv4 adds 20% increased damage taken on all Jinxed targets",
+    "<strong>4. Cursed Ground (Skill 4)</strong> - Lv4 aura persistence after death compounds with the death passive; upgrade after core skills are set",
+    "<strong>5. Duality Inversion (Skill 2)</strong> - Heal reduction scales with Relic investment; lower standalone priority but unlocks the Jinx chain at Relic Lv3"
+  ],
+  "ratings": [
+    { "mode": "PVP", "tier": "SS", "desc": "Hard CC Ultimate + permanent death debuff = one of the strongest anti-carry tools in PVP meta" },
+    { "mode": "PVE / Campaign", "tier": "S", "desc": "Heal reduction and ATK debuff aura provide consistent value; Cursed Ground and debuff kit scale well in extended campaign fights" },
+    { "mode": "Boss Fights", "tier": "B", "desc": "Duality Inversion's max-HP damage is useful; Jinx CC RNG is less impactful on single targets with high control resistance" },
+    { "mode": "Tower / Progression", "tier": "A", "desc": "ATK/DEF aura debuffs and heal reduction contribute to multi-stage survivability; death passive triggers reliably" }
+  ],
+  "positioning": [
+    {
+      "mode": "Mid-Frontline - Intentionally Expendable",
+      "paragraphs": [
+        "Wen-Shen is the only hero in the game who is designed to die on purpose. Her death passive and Skill 4's lingering aura are most valuable when she is eliminated at a point where her team still has fighting capacity to exploit the aftermath. Placing her too far back delays her death and wastes the passive window; placing her in the hard frontline may cause her to die before her Ultimate and Duality Inversion have fired.",
+        "The optimal position is mid-priority - accessible enough that she draws an early elimination attempt, but not so exposed that she falls before contributing her CC and debuffs. Position 2 or 3 is typically correct depending on team composition."
+      ]
+    },
+    {
+      "mode": "Formation Structure",
+      "paragraphs": [
+        "<strong>Front:</strong> A tank or bruiser who absorbs the opening burst and keeps the enemy occupied while Wen-Shen's kit fires.",
+        "<strong>Mid (Wen-Shen):</strong> She needs one or two skill casts before dying - her Skill 4 active dash should connect before she falls, placing the Aura of Misfortune on the highest-ATK enemy.",
+        "<strong>Back:</strong> Damage carries and support. They are the primary beneficiaries of the Jinx debuff, the ATK/DEF aura, and the heal reduction - they must be alive to collect the value her death generates."
+      ]
+    }
+  ],
+  "strengths": [
+    "Ultimate provides one of the longest hard-CC lockdowns in the game - up to 6s full disable on the nearest enemy",
+    "Death passive permanently Jinxes the killer, turning the opposing team's primary aggressor into a liability",
+    "Aura of Misfortune at Lv4 persists after death, applying -20% ATK and -20% DEF debuffs with no upkeep required",
+    "Duality Inversion deals damage based on max HP - scales against high-HP Tanks and bruisers regardless of Wen-Shen's own ATK",
+    "Heal reduction (up to 60% at Skill 2 Lv4) is rare and highly relevant against sustain-heavy compositions",
+    "Relic Lv3 enables active, repeatable Jinx application independent of her death",
+    "Can be obtained through quest rewards in CN - no Gacha investment required for the base unit"
+  ],
+  "weaknesses": [
+    "Jinx is RNG-based - at base 50% proc chance with a 4s internal cooldown, it is reliable over time but not a guaranteed instant CC",
+    "No direct healing, shielding, or team-wide buffs - teams must source all sustain externally",
+    "Duality Inversion targets the symmetrically opposite position - counterplay exists through deliberate enemy positioning",
+    "Skill 4 active targets the highest-ATK enemy - may dash into an unintended position against diverse team compositions",
+    "Relic Lv3 is the mechanic unlock for proactive Jinx application; below Lv3, Jinx is reactive only (death trigger)",
+    "One-shot before her death passive fires entirely neutralizes Calamity-Ridden",
+    "CC immunity compositions fully negate the Jinx system"
+  ],
+  "synergy": {
+    "type": "list",
+    "entries": [
+      { "name": "Dionysus", "text": "ATK Speed amplification is directly multiplicative with Jinx. Each additional attack per second generates another roll for Stun, Terror, or Petrify on the afflicted enemy. More attacks per second also means more rolls for Knockdown on movement. Dionysus does not add new CC - he increases the frequency of Jinx's existing RNG, effectively raising sustained CC uptime without any cooldown cost." },
+      { "name": "Isis", "text": "Classic control-to-DPS enable pairing. Wen-Shen's Ultimate creates a 4-6s free damage window against the locked-down target. Isis delivers her damage payload into that window without needing to survive the counter-attack. The ATK/DEF aura from Cursed Ground further amplifies Isis's output against debuffed targets." },
+      { "name": "Athena", "text": "Shield and protection extend how long Wen-Shen stays alive before her death passive triggers. More survival time means more Ultimate casts, more Duality Inversion curses, and more Skill 4 active dashes before the planned death. Athena also provides a second layer of anti-aggression protection on top of the Jinx debuff the killer receives." },
+      { "name": "Caishen", "text": "Energy acceleration increases the frequency of Wen-Shen's Ultimate, which is her primary CC and DPS tool. More Ultimate casts per fight means more extended lockdown phases and more DoT damage. In compositions built around the Jinx spread chain, faster Ultimates also means the opening Jinx application lands earlier." },
+      { "name": "Bastet", "text": "Wen-Shen's Skill 4 active and Bastet's targeting logic both prioritize the highest-ATK enemy. This creates a natural double-focus on the opposing carry: Wen-Shen applies the ATK aura debuff and dashes into the carry, while Bastet follows with her own targeting. The combined pressure significantly accelerates the first kill needed to trigger the Relic spread chain." },
+      { "name": "Anubis", "text": "Anti-heal and anti-squishy pressure compound directly. Wen-Shen's Duality Inversion reduces target healing by up to 60%; Anubis focuses and eliminates low-HP or high-threat targets. Together they prevent enemy carries from recovering through sustain while accelerating the kills that trigger the Jinx spread chain." },
+      { "name": "Poseidon", "text": "Early AoE CC from Poseidon creates the setup window for Wen-Shen's Ultimate to land cleanly. A Poseidon control wave in the opening seconds delays enemy action long enough to guarantee the full 4-6s lockdown connects on the primary threat. CC chaining of this kind is particularly impactful in PVP where timing the first disable can determine the fight outcome." },
+      { "name": "Jormungandr", "text": "Jormungandr's Revenge passive mirrors Wen-Shen's own weaponization of death. After taking lethal damage he survives for 5 seconds, stores 60% of incoming damage, and releases it as a burst - a second death-trap layer that fires into the same chaos window Wen-Shen's Cursed Ground and Jinx create. Enemies afflicted by Jinx continue attacking him during his Revenge state, which maximizes his stored damage and burst output when it releases." },
+      { "name": "Capricorn", "text": "Additional CC layer that stacks directly on top of Jinx. Capricorn's crowd control limits enemy movement, which compounds with Jinx's Knockdown chance on movement - the two CC sources cover different action types and create overlapping pressure that becomes increasingly difficult to play through as the fight progresses." }
+    ]
+  },
+  "playstyle": [
+    "Wen-Shen plays as a <em>control trap unit</em> - a hero whose primary contribution is disruption rather than healing, shielding, or damage amplification. She is not slotted into a team for what she keeps alive; she is slotted in for what she prevents from functioning.",
+    "The core loop is built around sequencing her kit before her planned death. In the opening phase: Skill 4's active dash connects onto the highest-ATK carry, placing the Aura of Misfortune and dealing damage. Duality Inversion curses the mirror-position enemy, reducing their healing and - at Relic Lv3 - permanently Jinxing them. The Ultimate fires and hard-locks the nearest threat for up to 6 seconds. When Wen-Shen inevitably falls, the killer is permanently Jinxed, the Aura of Misfortune remains on the battlefield, and the Relic begins chaining Jinx through each subsequent death.",
+    "The critical skill expression is positioning and sequencing. Understanding which enemy will be at the mirror position of Duality Inversion, which enemy will receive the Skill 4 dash, and how long Wen-Shen needs to survive before her death becomes a net positive for the team - these decisions determine whether she functions as a game-changing disruptor or an expensive passive trigger. Teams built to exploit her death window convert her sacrifice into a cascading control advantage that persists long after she leaves the field."
+  ]
+}

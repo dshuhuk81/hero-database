@@ -1,0 +1,162 @@
+{
+  "overview": [
+    "Skadi is a <strong>Legendary Mage</strong> of the <strong>Spades faction</strong> whose entire kit revolves around a single axis: <span class=\"highlight\">crowd control amplification</span>. She is not a burst nuker — instead, she is a <em>conditional hypercarry</em> whose damage scales with how much control her team can generate.",
+    "Her passive, <span class=\"highlight\">Realm of Frost</span>, automatically deals bonus damage and restores Energy whenever allies attack crowd-controlled enemies. Her Ultimate, <strong>Drifting Vortex</strong>, creates a persistent ice tornado that ramps damage with each successive hit and deals increased damage to controlled targets. Her Relic stacks ATK% on every Realm of Frost trigger and provides a pseudo-revival at Level 2.",
+    "Skadi is a hybrid of Control Enabler, AoE DoT DPS, and Energy Engine. In the right team, she creates a self-reinforcing loop where control feeds damage, damage feeds Energy, and Energy feeds more Ultimates. Without control teammates, her output collapses."
+  ],
+  "lore": {
+    "label": "Goddess of Winter — The Mythology",
+    "intro": "Skadi originates from Norse mythology as the goddess of winter, mountains, and hunting. A Jotunn (giant) by birth, she married into the Aesir after the death of her father Thjazi. Known for her fierce independence and mastery of ice and snow, she chose to live in the frozen mountains rather than the warm halls of the gods. The game draws directly on this mythology for her mechanics.",
+    "bullets": [
+      "<em>Drifting Vortex</em> channels her dominion over winter storms — a persistent ice tornado sweeping the battlefield",
+      "<em>Ring of Blizzard</em> summons the blizzards that define her mountain domain, freezing enemies caught within",
+      "<em>Ice Prison</em> reflects her cold, unyielding judgment — locking a single target in ice",
+      "<em>Realm of Frost</em> represents her passive presence: wherever winter touches, her power awakens",
+      "Her Relic, <em>Iceforged Veins</em>, references the frost that runs in her blood as a Jotunn — growing stronger the longer the battle persists"
+    ]
+  },
+  "factionSynergy": null,
+  "coreMechanic": {
+    "sectionTitle": "Core Mechanic — Realm of Frost",
+    "label": "The Control-Scaling Engine",
+    "bullets": [
+      "Skadi's passive, <strong>Realm of Frost</strong>, is the engine that drives her entire kit. When any ally attacks a <span class=\"highlight\">crowd-controlled</span> enemy, Skadi summons an Ice Spike dealing bonus damage.",
+      "At <strong>Skill Level 3</strong>, each Realm of Frost trigger also restores <strong>30 Energy</strong> — creating a direct link between team CC and Skadi's Ultimate frequency.",
+      "Her Relic, <strong>Iceforged Veins</strong>, grants <strong>8% ATK per trigger</strong> (up to 10 stacks) at base level, scaling to 12% ATK at Relic Lv3 and extending duration to 8 seconds at Lv4.",
+      "The core loop: <strong>Control → Realm of Frost proc → Bonus Damage + Energy + ATK stacks → faster Ultimate → more AoE damage → repeat.</strong>",
+      "Skadi's damage output is <em>directly proportional</em> to the amount of crowd control her team generates. More CC = more passive procs = more Energy = more Ultimates = more total damage.",
+      "At Relic Lv2, Skadi gains a <strong>pseudo-revival</strong>: upon fatal damage, she freezes herself for 3 seconds (invincible) and heals 20% max HP per second — extending the loop instead of resetting it."
+    ]
+  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "Drifting Vortex",
+      "badge": "Ultimate",
+      "icon": "skadi_skill_1.webp",
+      "description": "Creates an <strong>Ice Vortex</strong> that continuously moves around the battlefield targeting enemy units for <strong>8 seconds</strong>. Deals <strong>36% ATK</strong> as damage to nearby enemies every 0.5s. If the vortex passes through <span class=\"highlight\">Crowd Controlled</span> enemies, damage increases to <strong>60% ATK</strong>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Damage increased to 48% ATK (80% ATK on CC'd enemies)." },
+        { "level": "Lv3", "text": "Each hit on the same target increases Ice Storm damage by 12%, stacking up to 15 times." },
+        { "level": "Lv4", "text": "Damage increased to 60% ATK (100% ATK on CC'd enemies)." }
+      ],
+      "note": "This is not a burst ultimate — it is a persistent AoE damage field with ramp-up scaling. At Lv3, the 12% stacking per hit (up to 15 stacks = +180%) transforms it into a snowballing damage engine. Grouping enemies with pull effects maximizes hit count and stacking speed."
+    },
+    {
+      "key": "relic",
+      "name": "Iceforged Veins",
+      "badge": "Relic",
+      "icon": "skadi_relic.webp",
+      "description": "Triggering <span class=\"highlight\">Realm of Frost</span> grants <strong>8% ATK</strong> for 3 seconds, stacking up to <strong>10 times</strong>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "When about to fall, freezes for 3s (invincible, restores 20% max HP/s). Triggers once per battle." },
+        { "level": "Lv3", "text": "Grants 12% ATK for 3s, stacking up to 10 times." },
+        { "level": "Lv4", "text": "Grants 12% ATK for 8s, stacking up to 10 times." }
+      ],
+      "note": "Lv2 is the critical breakpoint. The pseudo-revival is not just defensive — it prevents a DPS reset by keeping Skadi in the fight with all her ATK stacks intact. In CN meta, Relic Lv2 is considered mandatory for competitive play. Lv4 extends the ATK buff duration from 3s to 8s, making it far easier to maintain max stacks."
+    },
+    {
+      "key": "skill2",
+      "name": "Ring of Blizzard",
+      "badge": "Skill 2",
+      "icon": "skadi_skill_2.webp",
+      "description": "Summons a <strong>Blizzard</strong> (3m radius) dealing <strong>40% ATK</strong> as damage every 0.5s for 3 seconds, then deals <strong>100% ATK</strong> to remaining enemies in the zone.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Tick damage increased to 60% ATK every 0.5s." },
+        { "level": "Lv3", "text": "Tick damage increased to 80% ATK every 0.5s." },
+        { "level": "Lv4", "text": "Remaining enemies are Frozen for 3 seconds after the blizzard ends." }
+      ],
+      "note": "Functions as Skadi's setup skill. The DoT softens targets while the Lv4 Freeze at the end feeds directly into Realm of Frost and amplifies the next Drifting Vortex cast. This is the bridge between her CC and her Ultimate."
+    },
+    {
+      "key": "skill3",
+      "name": "Ice Prison",
+      "badge": "Skill 3",
+      "icon": "skadi_skill_3.webp",
+      "description": "Freezes the current target for <strong>2 seconds</strong> and deals <strong>240% ATK</strong> as damage.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Also deals 80% ATK/s to surrounding units." },
+        { "level": "Lv3", "text": "Damage increased to 270% ATK." },
+        { "level": "Lv4", "text": "Freeze duration extended to 3 seconds." }
+      ],
+      "note": "Skadi's hard CC. The Freeze triggers Realm of Frost immediately, generating Energy and ATK stacks. Lv4 extending the duration to 3s is significant because it widens the window for allies to attack the frozen target and proc additional Realm of Frost triggers."
+    },
+    {
+      "key": "skill4",
+      "name": "Realm of Frost",
+      "badge": "Passive",
+      "icon": "skadi_skill_4.webp",
+      "description": "When an enemy is <span class=\"highlight\">Crowd Controlled</span>, Skadi summons an Ice Spike dealing <strong>60% ATK</strong> as damage.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Damage increased to 80% ATK." },
+        { "level": "Lv3", "text": "Restores 30 Energy on each trigger." },
+        { "level": "Lv4", "text": "Damage increased to 100% ATK." }
+      ],
+      "note": "The core mechanic. Lv3 is the most important upgrade in Skadi's entire kit — the 30 Energy per proc creates the self-sustaining loop that defines her playstyle. Every CC event in the fight becomes a direct contribution to Skadi's next Ultimate."
+    }
+  ],
+  "skillUpgradePriority": [
+    "<strong>1. Realm of Frost (Passive)</strong> — Energy restoration at Lv3 is the foundation of the entire control loop",
+    "<strong>2. Drifting Vortex (Ultimate)</strong> — Multi-hit stacking at Lv3 transforms damage output; main damage source",
+    "<strong>3. Iceforged Veins (Relic)</strong> — Lv2 pseudo-revival is mandatory for competitive play; Lv4 extends ATK buff duration",
+    "<strong>4. Ring of Blizzard</strong> — Lv4 Freeze provides additional CC that feeds the loop",
+    "<strong>5. Ice Prison</strong> — Useful but single-target; upgrade after core skills are maxed"
+  ],
+  "ratings": [
+    { "mode": "PVE / Campaign", "tier": "SS", "desc": "Multi-target scaling and sustained control loops make her dominant in prolonged PVE content" },
+    { "mode": "Tower / Progression", "tier": "S", "desc": "Multi-stage fights reward snowball potential; ATK stacks and Energy carry momentum between waves" },
+    { "mode": "Boss Fights", "tier": "A", "desc": "Single-target limits passive proc frequency; DoT and ramp-up scaling still contribute, but loop is slower to start" },
+    { "mode": "PVP", "tier": "S", "desc": "Strong in control-heavy meta; hard-countered by Cleanse and CC-Immunity compositions" }
+  ],
+  "positioning": [
+    {
+      "mode": "Backline — Carry Position",
+      "paragraphs": [
+        "Skadi needs setup time before her loop activates. She must survive the opening exchange to begin stacking ATK from her Relic and generating Energy from Realm of Frost. Place her in position 4 or 5 — as far from enemy frontline threats as possible.",
+        "Her Relic Lv2 pseudo-revival provides insurance, but burning it early to survive poor positioning wastes the DPS extension it provides in late-fight."
+      ]
+    },
+    {
+      "mode": "Formation Structure",
+      "paragraphs": [
+        "<strong>Front:</strong> Tank or Taunt unit (Momus) — absorbs initial burst and establishes the first control state via taunt.",
+        "<strong>Mid:</strong> CC units (Poseidon, Pan) — lock down and group enemies with layered AoE crowd control to maximize Realm of Frost triggers.",
+        "<strong>Back:</strong> Skadi + secondary support or burst DPS. Skadi must not be the first unit engaged. The team's job is to create a CC-rich environment before Skadi's Ultimate activates."
+      ]
+    }
+  ],
+  "strengths": [
+    "Damage scales with team CC output — the more control, the higher the damage",
+    "Triple scaling axis: fight duration, control frequency, and hit stacking compound multiplicatively",
+    "Energy self-sustain through Realm of Frost allows near-constant Ultimate availability in CC-heavy teams",
+    "Relic ATK stacking grows stronger over time — snowball potential in extended fights is extreme",
+    "Relic Lv2 pseudo-revival prevents DPS reset and extends the scaling window",
+    "AoE DoT from Ring of Blizzard + persistent Ultimate covers large areas when enemies are grouped",
+    "Ring of Blizzard Lv4 Freeze creates additional CC that feeds back into the loop"
+  ],
+  "weaknesses": [
+    "Entirely dependent on teammates providing crowd control — near-useless in CC-less teams",
+    "Hard-countered by Cleanse and CC-Immunity effects that shut down the passive engine",
+    "Vulnerable to burst compositions that kill before the control loop can start",
+    "Needs setup time — first few seconds of a fight are her weakest point",
+    "Tornado pathing is positioning-dependent; scattered enemies reduce hit frequency",
+    "Single-target encounters (bosses) severely limit Realm of Frost proc rate"
+  ],
+  "synergy": {
+    "type": "list",
+    "entries": [
+      { "name": "Pan", "text": "Primary CC partner. Pan's AoE crowd control hits multiple enemies simultaneously, generating multiple Realm of Frost triggers per cast. His silence and daze delay enemy Ultimates while Skadi's loop ramps up. Core partner in every CN Skadi composition." },
+      { "name": "Momus", "text": "AoE Taunt guarantees a control state on the frontline. Taunted enemies count as crowd-controlled for Realm of Frost purposes — Momus creates reliable, repeatable passive triggers even when other CC is on cooldown. Also serves as the primary tank absorbing burst aimed at Skadi." },
+      { "name": "Poseidon", "text": "Powerful AoE crowd control that locks down multiple enemies at once. Poseidon's CC creates reliable windows for Realm of Frost to trigger on grouped targets, and his control chains extend the duration enemies spend in a CC state — directly feeding Skadi's Energy loop and ATK stacking." },
+      { "name": "Khepri", "text": "Engage and dive support. Khepri creates CC windows through direct engagement, extending the chain of control states that feed Skadi's passive. Also provides frontline disruption that buys time for Skadi's loop to activate." },
+      { "name": "Caishen", "text": "Team-wide Energy acceleration compounds with Realm of Frost's Energy restoration. More Energy means earlier Ultimates across the team — including Skadi's Drifting Vortex. In sustain compositions, Caishen's acceleration creates near-permanent Ultimate availability." },
+      { "name": "Hladgunnr (Swan)", "text": "Burst damage finisher. Once Skadi's control loop has softened and grouped enemies, Hladgunnr delivers the killing blow. The CC-heavy environment created by Skadi's team also benefits Hladgunnr's own damage windows. Best paired in aggressive PVP compositions." },
+      { "name": "Mengpo", "text": "Revival extends fight duration — and longer fights mean more Realm of Frost procs, more ATK stacks, and more Ultimate casts. Mengpo's Samsara stacks with Skadi's Relic Lv2 pseudo-revival for double insurance. Lycoris Bloom may also target Skadi if she leads in Energy, adding ATK% on top of Relic stacks." }
+    ]
+  },
+  "playstyle": [
+    "Skadi plays as a <em>conditional hypercarry</em> whose damage is entirely determined by her team's ability to generate crowd control. She is not a hero you slot into any composition — she demands a team built around feeding her passive engine.",
+    "The core rotation is straightforward: teammates apply CC first, grouping and controlling enemies. Realm of Frost triggers automatically on every controlled target, dealing damage, restoring Energy, and stacking ATK from the Relic. Once enough Energy is banked, Drifting Vortex deploys and begins its multi-hit ramp-up. Ring of Blizzard provides additional DoT and, at Lv4, a Freeze that feeds back into the loop. Ice Prison handles single high-priority targets.",
+    "The critical skill expression is team orchestration, not mechanical play. Ensuring CC chains overlap, enemies stay grouped for maximum tornado hits, and Skadi survives the opening seconds before her loop activates — that is where games are won or lost. Without control, Skadi's passive is silent, her Energy starved, and her damage negligible. With it, she becomes one of the most potent scaling carries in the game."
+  ]
+}

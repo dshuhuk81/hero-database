@@ -1,0 +1,155 @@
+{
+  "overview": [
+    "Meret is a <strong>Legendary Support</strong> of the <strong>Diamonds faction</strong> built around a single layered system: the <span class=\"highlight\">Note mechanic</span>. She is not a healer in the traditional sense and not a main DPS. Her role is <em>Tempo Enabler and Anti-Burst Stabilizer</em> - she shields the frontline, buffs the carry, regenerates her own Energy, distributes incoming damage across Note-bearers, and provides death immunity through her Relic.",
+    "Her kit compresses tank protection, carry amplification, Energy management, emergency healing, and burst mitigation into a single hero slot. In higher-difficulty content, she is a core support in the Diamonds faction - Athena can substitute defensively but cannot replicate Meret's buff and tempo output."
+  ],
+  "lore": null,
+  "factionSynergy": null,
+  "coreMechanic": {
+    "sectionTitle": "Core Mechanic - The Note System",
+    "label": "How Notes Are Assigned",
+    "bullets": [
+      "<strong>Sun Note</strong> is assigned at battle start to the ally with the <strong>highest HP</strong>. This is almost always the frontline tank. The Sun Note grants a shield and increases Max HP, providing immediate frontline protection.",
+      "<strong>Moon Note</strong> is assigned at battle start to the ally with the <strong>highest ATK</strong>. This should be your main carry. The Moon Note increases ATK and, at Skill Lv3, also grants a Crit Rate bonus.",
+      "<strong>Star Note</strong> is assigned to <strong>Meret herself</strong>. It provides two Energy benefits: a passive <strong>+10% Energy regeneration</strong> from Universal Resonance, and a burst of <strong>200 Energy</strong> when the Ultimate activates. Together these significantly accelerate her Ultimate cycle.",
+      "All three Notes are distributed <strong>passively at battle entry</strong> before any action is taken. Activating the Ultimate triggers all Notes to deliver their buffs simultaneously.",
+      "<strong>Universal Resonance - Damage Sharing:</strong> While Notes are active, incoming damage to any Note-bearer is split: the target takes <strong>60%</strong>, the remaining <strong>40% is divided among the other Note holders</strong>. A focused burst on your carry is reduced from 100% to 60% - significant, but not fully redistributed.",
+      "The sharing applies regardless of who is attacked - burst aimed at the frontline is also split with the carry and Meret. All three Note-bearers contribute to absorbing damage, so their combined HP pool matters.",
+      "<strong>Critical Requirement - Stat Hierarchy:</strong> Note assignment is fully automated. If a secondary DPS has higher ATK than the intended carry, Moon Note goes to the wrong unit. Your team needs one clear tank (highest HP) and one clear carry (highest ATK) - otherwise the Note system misfires."
+    ],
+    "highlightBox": {
+      "label": "Relic Breakpoints - Endless Echo",
+      "bullets": [
+        "<strong>Relic Lv1:</strong> When a Note-bearer would die, prevents their death and grants a shield equal to <strong>300% of ATK</strong> with a 15-second cooldown. This is the single largest power spike in Meret's investment path.",
+        "<strong>Relic Lv2 [Relic Lv.10]:</strong> For each Note on the field, Meret gains a percentage of damage reduction. This makes Meret herself harder to eliminate through focused burst.",
+        "<strong>Relic Lv3 [Relic Lv.20]:</strong> The shield granted to a Note-bearer about to die is increased. Combined with Lv1, this raises the survival threshold further.",
+        "<strong>Relic Lv4:</strong> Meret's damage reduction while Notes are on the field is further increased. Full defensive output for extended fights.",
+        "<strong>Investment recommendation:</strong> Relic Lv1 is the first mandatory breakpoint. Lv2 (Lv.10) is the baseline for competitive play. Full investment is relevant only once Heracles and Bastet are already at high relic levels."
+      ]
+    }
+  },
+  "skills": [
+    {
+      "key": "ult",
+      "name": "All Heavens in Praise",
+      "badge": "Ultimate",
+      "icon": "meret_skill_1.webp",
+      "description": "At battle start, Meret distributes a <span class=\"highlight\">Sun Note</span> to the ally with the highest Max HP, a <span class=\"highlight\">Moon Note</span> to the ally with the highest ATK, and a <span class=\"highlight\">Star Note</span> to herself. Upon activation: Sun grants a shield equal to <span class=\"highlight\">30% of Max HP</span>, Moon grants <span class=\"highlight\">+30% ATK for 8 seconds</span>, Star restores <span class=\"highlight\">200 Energy</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Sun Note grants a stronger shield." },
+        { "level": "Lv3", "text": "Moon Note additionally increases Crit Rate." },
+        { "level": "Lv4", "text": "Star Note restores more Energy." }
+      ],
+      "note": "Two phases: Notes are distributed passively at battle entry, then activated together when the Ultimate fires. Lv3 Crit Rate on Moon Note is the key upgrade for Crit-dependent carries."
+    },
+    {
+      "key": "relic",
+      "name": "Endless Echo",
+      "badge": "Relic",
+      "icon": "meret_relic.webp",
+      "description": "When a Note-bearing ally would die, prevents their death and grants a shield equal to <span class=\"highlight\">300% of ATK</span>. <span class=\"highlight\">15-second cooldown</span>.",
+      "upgrades": [
+        { "level": "Lv2 [Relic Lv.10]", "text": "For each Note on the field, Meret gains a percentage of damage reduction." },
+        { "level": "Lv3 [Relic Lv.20]", "text": "The shield granted to a Note-bearer about to die is increased." },
+        { "level": "Lv4", "text": "Meret's damage reduction while Notes are on the field is further increased." }
+      ],
+      "note": "Relic Lv1 is Meret's biggest power spike: a Note-bearer survives a kill shot and gains a shield. Lv2 (Relic Lv.10) adds scaling damage reduction for Meret herself."
+    },
+    {
+      "key": "skill2",
+      "name": "Sands in Stride",
+      "badge": "Active",
+      "icon": "meret_skill_2.webp",
+      "description": "Heals the <span class=\"highlight\">most vulnerable ally</span>, restoring HP equal to <span class=\"highlight\">60% of ATK per second</span> for 5 seconds.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Increases healing per second." },
+        { "level": "Lv3", "text": "If the target has a Note, additionally heals them for a percentage of their max HP each second." },
+        { "level": "Lv4", "text": "Increases the duration of the healing effect." }
+      ],
+      "note": "Targets the weakest ally automatically. Lv3 adds bonus max-HP-based healing to Note-bearers, making them significantly harder to kill under sustained pressure."
+    },
+    {
+      "key": "skill3",
+      "name": "The Curtain Never Falls",
+      "badge": "Passive",
+      "icon": "meret_skill_3.webp",
+      "description": "When an ally drops below <span class=\"highlight\">50% HP</span>, Meret heals them for <span class=\"highlight\">25% of their Max HP</span>. Can trigger once per unit.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Increases healing effect." },
+        { "level": "Lv3", "text": "Further increases healing effect." },
+        { "level": "Lv4", "text": "Removes the trigger limit - each unit can trigger this effect multiple times." }
+      ],
+      "note": "Fires automatically when an ally drops below the HP threshold. Lv4 removes the per-unit trigger limit, turning this into repeatable emergency sustain. Combined with the Relic death-save, this creates two independent survival layers."
+    },
+    {
+      "key": "skill4",
+      "name": "Universal Resonance",
+      "badge": "Passive",
+      "icon": "meret_skill_4.webp",
+      "description": "Marked allies share damage taken. The main target takes <span class=\"highlight\">60% of incoming damage</span>; the remaining <span class=\"highlight\">40% is split</span> among the other Note holders. Additionally: Sun grants <span class=\"highlight\">+10% Max HP</span>, Moon grants <span class=\"highlight\">+20% damage dealt</span>, Star grants <span class=\"highlight\">+10% Energy regeneration</span>.",
+      "upgrades": [
+        { "level": "Lv2", "text": "Sun Note further increases Max HP." },
+        { "level": "Lv3", "text": "Moon Note further increases damage dealt." },
+        { "level": "Lv4", "text": "Star Note further increases Energy regeneration speed." }
+      ],
+      "note": "The core of Meret's anti-burst value. The 60/40 damage split softens focused burst, and the secondary stat bonuses (+10% Max HP, +20% damage dealt, +10% Energy regen) stack with the Ultimate's activation buffs. Lv3 further increases the Moon carry's damage output."
+    }
+  ],
+  "skillUpgradePriority": [
+    "<strong>1. All Heavens in Praise (Ultimate)</strong> - Note buff activation and Lv3 Crit Rate on Moon Note directly amplify carry damage; primary upgrade target",
+    "<strong>2. Endless Echo (Relic)</strong> - Lv1 death-save is mandatory; Lv2 scaling damage reduction is the baseline for competitive play",
+    "<strong>3. Universal Resonance (Skill 4)</strong> - Lv3 Moon Note damage increase and Lv4 Energy regen stack with Ultimate buffs",
+    "<strong>4. The Curtain Never Falls (Skill 3)</strong> - Lv4 removes per-unit trigger limit, creating repeatable emergency sustain",
+    "<strong>5. Sands in Stride (Skill 2)</strong> - Lv3 max-HP-based bonus healing on Note-bearers; lower priority than the core Note and survival systems"
+  ],
+  "ratings": [
+    { "mode": "PVP", "tier": "A", "desc": "Note damage-sharing and Relic death-save counter single-target burst elimination. Strong against focused carry-kill strategies. Less effective against full AoE burst that exceeds the sharing threshold simultaneously." },
+    { "mode": "Campaign / Tower Push", "tier": "S", "desc": "Core support in the Diamonds faction endgame lineup. Her Note system and tempo contribution become increasingly important in higher-difficulty content where Athena cannot substitute the full buff output." },
+    { "mode": "Boss Fights", "tier": "A", "desc": "Moon Note ATK buff and Crit Rate at Lv3 directly amplify carry damage output. Less impact than in multi-target scenarios, but the carry amplification and team sustain remain relevant in sustained single-target fights." }
+  ],
+  "positioning": [
+    {
+      "mode": "Protected Backline",
+      "paragraphs": [
+        "Meret's heals, damage sharing, and Relic triggers all require her to stay alive. Place her in a protected backline slot behind the main frontline anchor. Star Note accelerates her own Energy cycle for faster Ultimate returns."
+      ]
+    },
+    {
+      "mode": "Recommended Formation Shell",
+      "paragraphs": [
+        "<strong>Front:</strong> Your highest-HP unit (Bastet in Diamonds). Sun Note targets this slot automatically.",
+        "<strong>Mid / Carry slot:</strong> Your highest-ATK unit (Heracles). Moon Note must land here for ATK and Crit buffs.",
+        "<strong>Back:</strong> Meret. Protected, cycling Energy from Star Note."
+      ]
+    }
+  ],
+  "strengths": [
+    "High role compression - shields the tank, buffs the carry, shares damage, and regenerates Energy simultaneously",
+    "Note damage-sharing is a passive anti-burst layer with no cast timing or positioning requirement",
+    "Relic Lv1 converts a carry kill into a survival event - the most impactful early Relic breakpoint in the Diamonds support slot",
+    "Moon Note Lv3 adds Crit Rate on top of ATK to the main carry",
+    "The Curtain Never Falls fires automatically when allies drop below 50% HP",
+    "Works reliably in standard team compositions with a clear tank and a clear carry"
+  ],
+  "weaknesses": [
+    "Note targeting is fully automated - a poorly built team with unclear stat hierarchy causes Notes to land on the wrong units",
+    "No direct damage output - her value depends entirely on the carry she supports",
+    "Full-team AoE burst can exceed the combined Note-bearer HP pool, bypassing the damage-sharing protection",
+    "If enemies target Meret directly and ignore Note-bearers, the Note system collapses",
+    "Athena is the only substitute but does not replicate Meret's buff and tempo contribution"
+  ],
+  "synergy": {
+    "type": "list",
+    "entries": [
+      { "name": "Heracles", "text": "The primary Moon Note target. Moon Note's ATK buff and Crit Rate (Lv3) feed directly into Heracles's burst output, and the Relic death-save protects him from the burst-kill attempts that typically end carry runs. The two heroes work as a pair - Meret's value scales directly with Heracles's damage ceiling." },
+      { "name": "Bastet", "text": "The primary Sun Note target in the Diamonds lineup. Bastet's high HP as the frontline anchor ensures Sun Note lands correctly without stat manipulation. Meret's shield and Max HP bonus on Bastet directly extend her frontline uptime, which in turn protects the burst window Heracles needs. Stable combination in both PvE and PvP content." },
+      { "name": "Phoenix", "text": "Meret and Phoenix together create two separate survival layers for the Diamonds team. Meret handles pre-death burst mitigation through Note sharing and Relic. Phoenix handles post-death recovery through revive. The combination means a failed burst window does not end the run. Both heroes are present in the established endgame lineup." },
+      { "name": "Set", "text": "Set's lifesteal aura and sustained utility extend fight duration, which compounds with Meret's time-dependent value. More fight time means more Note-buff uptime, more Sands in Stride heal ticks, and more The Curtain Never Falls emergency heals. Relevant in longer PvE encounters and sustained tower content." }
+    ]
+  },
+  "playstyle": [
+    "Meret is a <em>passive system enabler</em>. Once deployed with the correct stat hierarchy, her Note distribution, damage sharing, healing, and Relic saves all fire automatically. The skill ceiling is not in execution but in <strong>team construction</strong>: one clear tank (highest HP), one clear carry (highest ATK).",
+    "Relic Lv1 is the first mandatory unlock - it lets the team survive a failed burst attempt. Relic Lv2 (Lv.10) is the baseline for competitive play. Full Relic investment is relevant only after the rest of the Diamonds core (Heracles first) is already at high relic levels.",
+    "Meret is not a hero for early or transitional rosters. She is a multiplier for a team that already has a burst anchor in Heracles and a stable frontline. Below that threshold, Athena is the correct substitute. Once the team needs tempo and buffs on top of survival - especially in higher-difficulty tower content - Meret completes the Diamonds endgame lineup."
+  ]
+}
