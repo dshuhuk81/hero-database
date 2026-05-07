@@ -3,6 +3,8 @@ export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes";
 import Base from "../../layouts/Base.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
+import HeroDetailComps from '../../components/HeroDetailComps.astro';
+import StrengthWeakness from '../../components/StrengthWeakness.astro';
 import RelicInvestment from '../../components/RelicInvestment.astro';
 import F2pInvestment from '../../components/F2pInvestment.astro';
 import RatingTiles from '../../components/RatingTiles.astro';
@@ -20,6 +22,9 @@ const hero = getHeroById(id);
 const heroIndex = heroes.findIndex((entry) => entry.id === id);
 const heroTeamComps = (hero as any)?.teamComps;
 const hasComps = heroTeamComps && Object.values(heroTeamComps).some((arr) => Array.isArray(arr) && arr.length > 0);
+const heroStrengths: string[] = (hero as any).strengths ?? [];
+const heroWeaknesses: string[] = (hero as any).weaknesses ?? [];
+const heroDetailComps: any[] = (hero as any).detailComps ?? [];
 
 type VirtueSet = { label: string; comment?: string; virtues: string[] };
 const heroVirtueSets: VirtueSet[] = (hero as any).virtueSets ?? [];
@@ -501,6 +506,18 @@ const dotSections = [
           </div>
         </div>
       )}
+    </section>
+
+    <!-- __ SECTION 5b: STRENGTHS & WEAKNESSES __ -->
+    <section class="content-section" id="section-strengths">
+      <div class="section-label">Strengths &amp; Weaknesses</div>
+      <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} />
+    </section>
+
+    <!-- __ SECTION 5c: DETAIL COMPS __ -->
+    <section class="content-section" id="section-detail-comps">
+      <div class="section-label">Recommended Team Compositions</div>
+      <HeroDetailComps comps={heroDetailComps} currentHeroId={id} />
     </section>
 
     <!-- ── SECTION 6: COMPOSITIONS ── -->

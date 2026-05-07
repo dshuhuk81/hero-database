@@ -1,0 +1,53 @@
+---
+interface Props {
+  strengths?: string[];
+  weaknesses?: string[];
+}
+
+const { strengths = [], weaknesses = [] } = Astro.props;
+
+const hasContent = strengths.length > 0 || weaknesses.length > 0;
+---
+
+<div class="sw-grid">
+  <div class="sw-col sw-col--strengths">
+    <div class="sw-header sw-header--strengths">
+      <svg class="sw-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 2l1.5 4.5H14l-3.75 2.75 1.5 4.5L8 11l-3.75 2.75 1.5-4.5L2 6.5h4.5L8 2z" fill="currentColor"/>
+      </svg>
+      Strengths
+    </div>
+    <div class="sw-body">
+      {strengths.length > 0 ? (
+        <ul class="sw-list">
+          {strengths.map((item) => (
+            <li class="sw-item sw-item--strength">{item}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="sw-empty">No strengths listed yet.</p>
+      )}
+    </div>
+  </div>
+
+  <div class="sw-col sw-col--weaknesses">
+    <div class="sw-header sw-header--weaknesses">
+      <svg class="sw-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 5v4M8 10.5v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Weaknesses
+    </div>
+    <div class="sw-body">
+      {weaknesses.length > 0 ? (
+        <ul class="sw-list">
+          {weaknesses.map((item) => (
+            <li class="sw-item sw-item--weakness">{item}</li>
+          ))}
+        </ul>
+      ) : (
+        <p class="sw-empty">No weaknesses listed yet.</p>
+      )}
+    </div>
+  </div>
+</div>

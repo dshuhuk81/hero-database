@@ -1,0 +1,66 @@
+---
+import { getHeroById } from "../data/heroes";
+
+interface CompEntry {
+  title: string;
+  context?: string;
+  description?: string;
+  heroes: string[];
+}
+
+interface Props {
+  comps?: CompEntry[];
+  currentHeroId: string;
+}
+
+const { comps = [], currentHeroId } = Astro.props;
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+
+function heroImg(id: string): string {
+  const hero = getHeroById(id);
+  const img = hero?.image;
+  if (typeof img === "string" && img.length > 0) {
+    if (img.startsWith("http://") || img.startsWith("https://")) return img;
+    return img.startsWith("/") ? img : `/${img}`;
+  }
+  return `${R2_BASE}/heroes/${id}.webp`;
+}
+
+function heroName(id: string): string {
+  return getHeroById(id)?.name ?? id;
+}
+---
+
+{comps.length > 0 ? (
+  <div class="hdc-list">
+    {comps.map((comp) => (
+      <div class="hdc-card">
+        <div class="hdc-card-header">
+          <span class="hdc-title">{comp.title}</span>
+          {comp.context && (
+            <span class={`hdc-context-badge hdc-context-${comp.context.toLowerCase()}`}>{comp.context}</span>
+          )}
+        </div>
+        {comp.description && (
+          <p class="hdc-description">{comp.description}</p>
+        )}
+        <div class="hdc-hero-strip">
+          {comp.heroes.map((hid) => (
+            <a href={`/heroes/${hid}`} class={`hdc-hero-slot${hid === currentHeroId ? " hdc-hero-slot--current" : ""}`} title={heroName(hid)}>
+              <div
+                class="hdc-portrait"
+                style={`background-image:url(${heroImg(hid)})`}
+                role="img"
+                aria-label={heroName(hid)}
+              ></div>
+              <span class="hdc-hero-name">{heroName(hid)}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <p class="hdc-empty">No team compositions listed yet.</p>
+)}
