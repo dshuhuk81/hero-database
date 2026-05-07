@@ -159,43 +159,6 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 }
 
 /* ================================
-   RATING BADGE – EXTENDED TIERS
-   ================================ */
-
-.rating-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 32px;
-  min-height: 32px;
-  padding: 0 8px;
-
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-
-  border-radius: 999px;
-  white-space: nowrap;
-
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-
-  box-shadow:
-    0 2px 8px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-
-  z-index: 4;
-}
-
-/* tier colors handled by [data-tier] selectors in components.css */
-
-/* ================================
    CARD INFO BADGES (bottom strip)
    ================================ */
 
@@ -244,7 +207,6 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 
   .name-overlay,
   .hero-flag-badge,
-  .rating-badge,
   .card-badge {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
