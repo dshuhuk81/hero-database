@@ -1,6 +1,7 @@
 // src/utils/synergyTags.js
 import { fullSkillText } from "./heroTags.js";
 import fs from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -47,58 +48,17 @@ function snippetAround(text, matchIndex, maxLen = 180) {
 
 // Evidence patterns - removed (using manual tags instead)
 
-// Tag categories
-const TAG_CATEGORIES = {
-  TEAM_SUPPORT: [
-    "ATK_SPD_UP",
-    "BUFF_TEAM",
-    "CC_IMMUNITY_TEAM",
-    "CDR_TEAM",
-    "DAMAGE_REDUCTION_TEAM",
-    "DEBUFF_CLEANSE_TEAM",
-    "ENERGY_RESTORE_TEAM",
-    "HEAL_TEAM",
-    "SHIELD_TEAM",
-  ],
-  ENEMY_DEBUFF: [
-    "ATK_DOWN",
-    "ATK_SPD_DOWN",
-    "BUFF_DISPEL",
-    "CROWD_CONTROL",
-    "ENEMY_VULNERABILITY",
-    "ENERGY_DRAIN",
-    "REDUCES_ATTRIBUTES",
-    "REMOVES_ARMOR",
-    "TAUNT",
-  ],
-  SELF_BUFF: [
-    "ATK_SPEED",
-    "ATK_UP",
-    "CC_RESISTANCE",
-    "DMG_RED",
-    "DODGE_BUFF",
-    "ENERGY_RESTORE",
-    "GAIN_ARMOR",
-    "HEAL",
-    "HEAL_EFFECT_UP",
-    "HIT_AVOID",
-    "HP_UP",
-    "LIFE_STEAL_UP",
-    "SHIELD",
-  ],
-  PLAYSTYLE: [
-    "AREA_DAMAGE_DEALER",
-    "BASIC_ATTACK_SCALER",
-  ],
-  ENGINE_TAGS: [
-    "SUSTAIN_ENGINE",
-    "CONTROL_ENGINE",
-    "BURST_ENGINE",
-    "ENERGY_ENGINE",
-    "ON_HIT_ENGINE",
-    "PULL_ENGINE",
-  ],
-};
+function loadTagCategoriesSync() {
+  try {
+    const categoriesPath = path.join(process.cwd(), "src/data/tagCategories.json");
+    const categories = JSON.parse(readFileSync(categoriesPath, "utf-8"));
+    return Object.fromEntries(categories.map((category) => [category.id, category.tags || []]));
+  } catch {
+    return {};
+  }
+}
+
+const TAG_CATEGORIES = loadTagCategoriesSync();
 
 function getCategoryForTag(tag) {
   for (const [category, tags] of Object.entries(TAG_CATEGORIES)) {
@@ -136,13 +96,10 @@ export function synergyProfileForHero(hero) {
 // Synergy profile by category (for UI display)
 export function synergyProfileForHeroByCategory(hero) {
   const prof = synergyProfileForHero(hero);
-  const categorized = {
-    TEAM_SUPPORT: [],
-    ENEMY_DEBUFF: [],
-    SELF_BUFF: [],
-    PLAYSTYLE: [],
-    OTHER: [],
-  };
+  const categorized = Object.fromEntries(
+    Object.keys(TAG_CATEGORIES).map((category) => [category, []])
+  );
+  categorized.OTHER = [];
 
   for (const tag of prof.tags) {
     const category = getCategoryForTag(tag);

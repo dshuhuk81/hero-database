@@ -1,7 +1,13 @@
 ---
 import tags from "../data/tags.json";
+import tagCategories from "../data/tagCategories.json";
 
 const ACRONYMS = new Set(["ATK", "SPD", "HP", "DMG", "CC", "CDR", "AOE"]);
+const categorizedTags = new Set(tagCategories.flatMap((category) => category.tags));
+const orderedTags = [
+  ...tagCategories.flatMap((category) => category.tags).filter((tag) => tags.includes(tag)),
+  ...tags.filter((tag) => !categorizedTags.has(tag)),
+];
 
 function formatTagLabel(tag) {
   return String(tag)
@@ -189,7 +195,7 @@ function formatTagLabel(tag) {
         </button>
         <div class="tag-scroll" data-tag-scroll>
           <div class="chip-row chip-row--tags" data-tag-scroll-row>
-            {tags.map((tag) => (
+            {orderedTags.map((tag) => (
               <button class="chip tag-chip" data-tag={tag} type="button">
                 {formatTagLabel(tag)}
               </button>

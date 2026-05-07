@@ -1,6 +1,6 @@
 # Project Memory: Hero Database
 
-Last reviewed: 2026-05-05
+Last reviewed: 2026-05-07
 
 This file is a working memory for future agents. It summarizes the current project from the repository as it exists now, and calls out stale notes where older docs disagree with source code.
 
@@ -138,24 +138,28 @@ Rating strings are tier labels such as `SSS`, `SS`, `S`, `A`, `B`, `C`.
 
 ## Synergy Tags
 
-Current tag count: 34 in `src/data/tags.json`.
+Current tag count: 36 in `src/data/tags.json`.
 
 Important files:
 
-- `src/data/tags.json`: tag list.
-- `src/utils/synergyTags.js`: categorization and synergy potential scoring.
-- `scripts/tag-manager-server.js`: local tag manager server.
-- `tag-manager-frontend/index.html`: tag manager UI.
+- `src/data/tags.json`: canonical tag list.
+- `src/data/tagCategories.json`: shared category, order, and grouping metadata for tags.
+- `src/utils/synergyTags.js`: reads shared category metadata and computes synergy potential.
+- `src/components/filter.astro`: renders public tag filters from the shared category ordering.
+- `scripts/tag-manager-server.js`: local tag manager server; serves `/api/tags` and `/api/tag-categories`.
+- `tag-manager-frontend/index.html`: tag manager UI; loads tag/category data from the backend instead of hard-coded tag lists.
 
 Current synergy tags are manually assigned in each hero's `synergies` array. `synergyTags.js` no longer auto-detects tags from skill text for the frontend profile; it reads the manual array and generates display/evidence from that.
 
-Current categories in `synergyTags.js`:
+Current categories in `src/data/tagCategories.json`:
 
 - `TEAM_SUPPORT`: examples include `ATK_SPD_UP`, `BUFF_TEAM`, `CDR_TEAM`, `ENERGY_RESTORE_TEAM`, `HEAL_TEAM`, `SHIELD_TEAM`.
 - `ENEMY_DEBUFF`: examples include `ATK_DOWN`, `CROWD_CONTROL`, `ENERGY_DRAIN`, `REMOVES_ARMOR`, `TAUNT`.
-- `SELF_BUFF`: examples include `ATK_SPEED`, `ATK_UP`, `DMG_RED`, `DODGE_BUFF`, `ENERGY_RESTORE`, `HEAL`, `SHIELD`.
+- `SELF_BUFFS`: examples include `ATK_SPEED`, `ATK_UP`, `DMG_RED`, `DODGE_BUFF`, `ENERGY_RESTORE`, `HEAL`, `SHIELD`.
 - `PLAYSTYLE`: `AREA_DAMAGE_DEALER`, `BASIC_ATTACK_SCALER`.
-- `ENGINE_TAGS`: `SUSTAIN_ENGINE`, `CONTROL_ENGINE`, `BURST_ENGINE`, `ENERGY_ENGINE`, `ON_HIT_ENGINE`, `PULL_ENGINE`.
+- `UTILITY`: `REVIVE`, `SUMMON`, `SELF_SUSTAIN`.
+
+When adding, renaming, deleting, or reordering tags, keep `tags.json` and `tagCategories.json` in sync. The tag-manager backend updates category metadata on rename/delete, and uncategorized tags fall back to `Custom Tags` in the manager response.
 
 The synergy potential score currently only rewards team support tags, with especially high value for team energy restore and cooldown reduction.
 

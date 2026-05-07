@@ -11,20 +11,20 @@ TAGS_CHANGED=$(echo "$STAGED" | grep -E '^src/data/tags\.json$')
 
 MISSING=""
 
+DB_PATH='src/data/all_heroes_db.json'
+DB_STAGED=$(echo "$STAGED" | grep -E '^src/data/all_heroes_db\.json$')
+
 # If hero JSON files changed, derived files must also be staged
 if [ -n "$HERO_CHANGED" ]; then
-  DB_STAGED=$(echo "$STAGED" | grep -E '^src/data/all_heroes_db\.json$')
-
-  if [ -z "$DB_STAGED" ]; then
-    MISSING="${MISSING}\n  - src/data/all_heroes_db.json missing"
+  if [ -z "$DB_STAGED" ] && ! git diff --quiet -- "$DB_PATH"; then
+    MISSING="${MISSING}\n  - src/data/all_heroes_db.json changed but not staged"
   fi
 fi
 
 # If tags.json changed, the hero DB must also be re-generated
 if [ -n "$TAGS_CHANGED" ]; then
-  DB_STAGED=$(echo "$STAGED" | grep -E '^src/data/all_heroes_db\.json$')
-  if [ -z "$DB_STAGED" ]; then
-    MISSING="${MISSING}\n  - src/data/all_heroes_db.json missing (tags changed)"
+  if [ -z "$DB_STAGED" ] && ! git diff --quiet -- "$DB_PATH"; then
+    MISSING="${MISSING}\n  - src/data/all_heroes_db.json changed but not staged (tags changed)"
   fi
 fi
 

@@ -674,24 +674,7 @@
     let heroes = [];
     let allTags = [];
     let currentHero = null;
-    let tagCategories = {
-      'Team Support': [
-        'ATK_SPD_UP', 'BUFF_TEAM', 'CC_IMMUNITY_TEAM', 'CDR_TEAM',
-        'DAMAGE_REDUCTION_TEAM', 'DEBUFF_CLEANSE_TEAM', 'ENERGY_RESTORE_TEAM', 'HEAL_TEAM', 'SHIELD_TEAM'
-      ],
-      'Enemy Debuff': [
-        'ATK_DOWN', 'ATK_SPD_DOWN', 'BUFF_DISPEL', 'CROWD_CONTROL', 'ENEMY_VULNERABILITY',
-        'ENERGY_DRAIN', 'REDUCES_ATTRIBUTES', 'REMOVES_ARMOR', 'TAUNT'
-      ],
-      'Playstyle': [
-        'AREA_DAMAGE_DEALER', 'BASIC_ATTACK_SCALER'
-      ],
-      'Self Buffs': [
-        'ATK_SPEED', 'ATK_UP', 'CC_RESISTANCE', 'DMG_RED', 'DODGE_BUFF',
-        'ENERGY_RESTORE', 'GAIN_ARMOR', 'HEAL', 'HEAL_EFFECT_UP', 'HIT_AVOID', 'HP_UP',
-        'LIFE_STEAL_UP', 'SHIELD'
-      ]
-    };
+    let tagCategories = [];
 
     // Load initial data
     async function init() {
@@ -705,6 +688,8 @@
         }
         allTags = await tagsRes.json();
         console.log('✅ Loaded tags:', allTags.length);
+
+        await loadTagCategories();
 
         const heroesRes = await fetch(`${API}/heroes`);
         console.log('Heroes response status:', heroesRes.status);
@@ -725,6 +710,22 @@
           <div style="font-size: 11px; margin-top: 10px;">Check browser console (F12)</div>
         </div>`;
       }
+    }
+
+    async function loadTagCategories() {
+      try {
+        const categoriesRes = await fetch(`${API}/tag-categories`);
+        if (!categoriesRes.ok) {
+          throw new Error(`Tag categories API responded with ${categoriesRes.status}`);
+        }
+
+        tagCategories = await categoriesRes.json();
+      } catch (err) {
+        console.warn('Could not load tag categories:', err);
+        tagCategories = [];
+      }
+
+      updateTagCategories();
     }
 
     function renderHeroList() {
@@ -778,13 +779,14 @@
       const container = document.getElementById('tagsContainer');
       container.innerHTML = '';
 
-      for (const [category, tags] of Object.entries(tagCategories)) {
+      for (const category of tagCategories) {
+        const tags = category.tags || [];
         const section = document.createElement('div');
         section.className = 'tag-section';
 
         const title = document.createElement('div');
         title.className = 'tag-section-title';
-        title.textContent = category;
+        title.textContent = category.label;
         section.appendChild(title);
 
         const grid = document.createElement('div');
@@ -793,11 +795,7 @@
         for (const tag of tags) {
           const checkbox = document.createElement('label');
           checkbox.className = 'tag-checkbox';
-          const categoryClass = category === 'Team Support' ? 'category-team-support' :
-                                category === 'Enemy Debuff' ? 'category-enemy-debuff' :
-                                category === 'Playstyle' ? 'category-playstyle' :
-                                'category-self-buffs';
-          checkbox.classList.add(categoryClass);
+          checkbox.classList.add(getCategoryClass(category));
 
           const input = document.createElement('input');
           input.type = 'checkbox';
@@ -826,6 +824,22 @@
 
     function getSelectedTags() {
       return Array.from(document.querySelectorAll('#tagsContainer input[type="checkbox"]:checked')).map(cb => cb.value);
+    }
+
+    function getCategoryClass(category) {
+      switch (category.id) {
+        case 'TEAM_SUPPORT':
+          return 'category-team-support';
+        case 'ENEMY_DEBUFF':
+          return 'category-enemy-debuff';
+        case 'PLAYSTYLE':
+          return 'category-playstyle';
+        case 'UTILITY':
+        case 'CUSTOM':
+          return 'category-self-only';
+        default:
+          return 'category-self-buffs';
+      }
     }
 
     async function saveSynergies() {
@@ -964,6 +978,7 @@
 
         if (res.ok) {
           allTags = data.tags;
+          await loadTagCategories();
           renderTagList();
           renderEditor(); // Refresh hero editor if open
           showStatus('✅ ' + data.message, 'success');
@@ -989,6 +1004,7 @@
 
         if (res.ok) {
           allTags = data.tags;
+          await loadTagCategories();
           renderTagList();
           renderEditor(); // Refresh hero editor if open
           showStatus('✅ ' + data.message, 'success');
@@ -1028,7 +1044,6 @@
           allTags = data.tags;
           renderTagList();
           
-          // Update tagCategories for editor
           updateTagCategories();
           renderEditor(); // Refresh hero editor if open
           showStatus('✅ ' + data.message, 'success');
@@ -1041,15 +1056,20 @@
     }
 
     function updateTagCategories() {
-      // Add new tags to a "Custom Tags" category
+      const baseCategories = tagCategories.filter(category => category.id !== 'CUSTOM');
+      const categorizedTags = new Set(baseCategories.flatMap(category => category.tags || []));
+
       const customTags = allTags.filter(tag => {
-        return !Object.values(tagCategories).flat().includes(tag);
+        return !categorizedTags.has(tag);
       });
 
+      tagCategories = baseCategories;
       if (customTags.length > 0) {
-        tagCategories['Custom Tags'] = customTags;
-      } else if (tagCategories['Custom Tags']) {
-        delete tagCategories['Custom Tags'];
+        tagCategories.push({
+          id: 'CUSTOM',
+          label: 'Custom Tags',
+          tags: customTags,
+        });
       }
     }
 

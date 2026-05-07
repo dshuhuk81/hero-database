@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HERO_DIR = path.join(__dirname, '../src/data/heroes');
 const TAGS_FILE = path.join(__dirname, '../src/data/tags.json');
+const TAG_CATEGORIES_FILE = path.join(__dirname, '../src/data/tagCategories.json');
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 
 // Load tags from file (single source of truth)
 let AVAILABLE_TAGS = [];
+let TAG_CATEGORIES = [];
 
 async function loadTags() {
   try {
@@ -38,6 +40,18 @@ async function loadTags() {
   }
 }
 
+async function loadTagCategories() {
+  try {
+    const data = await fs.readFile(TAG_CATEGORIES_FILE, 'utf-8');
+    TAG_CATEGORIES = JSON.parse(data);
+  } catch (err) {
+    console.warn(`\n⚠️  Could not load tag categories from ${TAG_CATEGORIES_FILE}`);
+    console.warn(`   Tags will still load, but uncategorized tags will appear under Custom Tags.`);
+    console.warn(`   Error: ${err.message}\n`);
+    TAG_CATEGORIES = [];
+  }
+}
+
 async function saveTags() {
   try {
     await fs.writeFile(TAGS_FILE, JSON.stringify(AVAILABLE_TAGS, null, 2) + '\n', 'utf-8');
@@ -46,9 +60,49 @@ async function saveTags() {
   }
 }
 
+async function saveTagCategories() {
+  try {
+    await fs.writeFile(TAG_CATEGORIES_FILE, JSON.stringify(TAG_CATEGORIES, null, 2) + '\n', 'utf-8');
+  } catch (err) {
+    console.error('Error saving tag categories:', err);
+  }
+}
+
+function getTagCategoryGroups() {
+  const available = new Set(AVAILABLE_TAGS);
+  const categorized = new Set();
+  const groups = TAG_CATEGORIES
+    .map((category) => {
+      const tags = (category.tags || []).filter((tag) => available.has(tag));
+      for (const tag of tags) categorized.add(tag);
+      return {
+        id: category.id,
+        label: category.label,
+        tags,
+      };
+    })
+    .filter((category) => category.tags.length > 0);
+
+  const customTags = AVAILABLE_TAGS.filter((tag) => !categorized.has(tag));
+  if (customTags.length > 0) {
+    groups.push({
+      id: 'CUSTOM',
+      label: 'Custom Tags',
+      tags: customTags,
+    });
+  }
+
+  return groups;
+}
+
 // GET /api/tags - returns all available tags
 app.get('/api/tags', (req, res) => {
   res.json(AVAILABLE_TAGS);
+});
+
+// GET /api/tag-categories - returns shared tag categories plus uncategorized tags
+app.get('/api/tag-categories', (req, res) => {
+  res.json(getTagCategoryGroups());
 });
 
 // GET /api/heroes - returns all heroes with their synergies
@@ -184,6 +238,16 @@ app.put('/api/tags/:oldTag', async (req, res) => {
     // Update tag in list
     AVAILABLE_TAGS[tagIndex] = newTag;
 
+    // Update tag in category metadata
+    let categoriesChanged = false;
+    for (const category of TAG_CATEGORIES) {
+      const idx = category.tags?.indexOf(oldTag) ?? -1;
+      if (idx !== -1) {
+        category.tags[idx] = newTag;
+        categoriesChanged = true;
+      }
+    }
+
     // Update all heroes that have this tag
     const files = await fs.readdir(HERO_DIR);
     let updatedCount = 0;
@@ -206,6 +270,7 @@ app.put('/api/tags/:oldTag', async (req, res) => {
     }
 
     await saveTags();
+    if (categoriesChanged) await saveTagCategories();
 
     res.json({
       success: true,
@@ -231,6 +296,17 @@ app.delete('/api/tags/:tag', async (req, res) => {
     // Remove tag from list
     AVAILABLE_TAGS.splice(tagIndex, 1);
 
+    // Remove tag from category metadata
+    let categoriesChanged = false;
+    for (const category of TAG_CATEGORIES) {
+      if (!Array.isArray(category.tags)) continue;
+      const nextTags = category.tags.filter((categoryTag) => categoryTag !== tag);
+      if (nextTags.length !== category.tags.length) {
+        category.tags = nextTags;
+        categoriesChanged = true;
+      }
+    }
+
     // Remove tag from all heroes
     const files = await fs.readdir(HERO_DIR);
     let updatedCount = 0;
@@ -253,6 +329,7 @@ app.delete('/api/tags/:tag', async (req, res) => {
     }
 
     await saveTags();
+    if (categoriesChanged) await saveTagCategories();
 
     res.json({
       success: true,
@@ -269,6 +346,7 @@ const PORT = process.env.PORT || 3000;
 
 // Load tags on startup, then start server
 await loadTags();
+await loadTagCategories();
 app.listen(PORT, () => {
   console.log(`\n🎯 Synergy Tag Manager running on http://localhost:${PORT}`);
   console.log(`📝 Edit synergies at http://localhost:${PORT}`);
