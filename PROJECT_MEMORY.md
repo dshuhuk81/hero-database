@@ -165,6 +165,10 @@ The synergy potential score currently only rewards team support tags, with espec
 
 ## Game Systems Captured
 
+### Equipment and Stat Upgrades
+Each hero equips **4 Artifact slots**. Every slot has one **reforge stat** (also called "enchant") that can be leveled from 1 to 20. Leveling costs Hammers; the higher the current level, the more Hammers a single upgrade attempt costs, and the lower the base success chance. It is essential to maximize damage and survivability for your hero. This system is explained here: 
+`data-mine/Reforge_Stats.md`
+
 ### Heroes
 
 Heroes are the primary database object. The site tracks stats, classes, factions, roles, rarity, skill text, skill upgrades, relic effects, synergy tags, investment hints, videos, virtues, and relationships to other heroes.
