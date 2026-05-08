@@ -8,11 +8,6 @@
   "class": "Support",
   "rarity": "Legendary",
   "description": "A Tempo/Cooldown/Control Support who manipulates fight tempo by debuffing enemy skill rotations, doubling allied active casts, saving near-death allies via time rewind, and projecting temporary copies of allied heroes into battle.",
-  "ratings": {
-    "overall": "S",
-    "pvp": "S",
-    "pve": "SS"
-  },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
   "level": 300,
@@ -166,10 +161,16 @@
     "Relic-dependent: without Relic Lv2 the Projection system lacks its defining CD reset; without Lv4 the projection's impact is delayed",
     "Against raw stat-check teams that simply overwhelm utility through damage output, Cronus's kit cannot compensate for large stat disparities alone",
     "Rewinding Remains reduces the saved target's ATK and ATK Speed after triggering - the saved ally is temporarily weakened following the rescue window"
-  ],  
+  ],
   "detailComps": [
-  {
-    "heroes": ["cronus", "caishen", "mengpo", "nuba", "zeus"]
-  }
-]
+    {
+      "heroes": [
+        "cronus",
+        "caishen",
+        "mengpo",
+        "nuba",
+        "zeus"
+      ]
+    }
+  ]
 }

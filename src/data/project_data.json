@@ -1,6 +1,6 @@
 {
   "name": "Hero Database data index",
-  "generatedAt": "2026-05-07",
+  "generatedAt": "2026-05-08",
   "purpose": "Index of project data JSON files and the kind of content stored in each file.",
   "notes": [
     "The primary data root is src/data.",
@@ -26,7 +26,7 @@
       "sourcePattern": "src/data/heroes/{heroId}.json",
       "aggregateCopy": "src/data/all_heroes_db.json",
       "runtimeAdapter": "src/data/heroes/index.js",
-      "notes": "Hero pages and calculators use src/data/heroes/index.js, which glob-imports hero JSON files and overlays centralized ratings from src/data/ratings/hero-ratings.json."
+      "notes": "Hero JSON files no longer contain ratings. Runtime hero data is assembled in src/data/heroes/index.js; pages that need ratings should additionally merge src/data/ratings/hero-ratings.json (see src/data/heroes/withRatings.js)."
     },
     "heroRatings": {
       "path": "src/data/ratings/hero-ratings.json",
@@ -43,7 +43,7 @@
   },
   "collections": {
     "heroes": {
-      "description": "Canonical hero profiles, stats, skills, relic data, synergies, ratings fallbacks, guide links, and optional meta fields.",
+      "description": "Canonical hero profiles, stats, skills, relic data, synergies, guide links, and optional meta fields. Ratings live in src/data/ratings/hero-ratings.json.",
       "sourceDirectory": "src/data/heroes",
       "sourceFilePattern": "src/data/heroes/{heroId}.json",
       "sourceFileCount": 75,
@@ -59,7 +59,6 @@
         "class",
         "rarity",
         "description",
-        "ratings",
         "recommendedRelicLevel",
         "evolution",
         "level",

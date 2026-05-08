@@ -3,7 +3,6 @@
 // Auto-Import aller Hero-JSON-Dateien
 const heroModules = import.meta.glob("./*.json", { eager: true });
 const rawHeroes = Object.values(heroModules).map((m) => m.default);
-import heroRatings from "../ratings/hero-ratings.json";
 
 import { synergyProfileForHero, synergyPotentialForHero } from "../../utils/synergyTags.js";
 
@@ -48,7 +47,6 @@ const RANKABLE_STATS = [
    ADAPTER
    ============================ */
 function adaptHero(raw) {
-  const centralizedRatings = heroRatings?.[raw.id] ?? {};
   return {
     id: raw.id,
     name: raw.name,
@@ -59,13 +57,6 @@ function adaptHero(raw) {
     class: raw.class,
     rarity: raw.rarity,
     description: raw.description ?? "",
-    ratings: {
-      overall: centralizedRatings.overall ?? raw.ratings?.overall ?? null,
-      pvp: centralizedRatings.pvp ?? raw.ratings?.pvp ?? null,
-      pve: centralizedRatings.pve ?? raw.ratings?.pve ?? null,
-    },
-    // Backward-Compat
-    rating: centralizedRatings.overall ?? raw.ratings?.overall ?? null,
     // ✅ Stats 1:1 aus Hero-JSON (Divine 5 raw in-game stats, not normalized)
     stats: raw.stats ?? {},
     // Add baseAttackRate and bossUltimatesPer90s for frontend use

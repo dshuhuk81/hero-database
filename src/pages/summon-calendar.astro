@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../layouts/Base.astro";
 import allHeroes from "../data/all_heroes_db.json";
+import heroRatings from "../data/ratings/hero-ratings.json";
 
 type Status = "released" | "coming-soon" | "far-future";
 
@@ -23,7 +24,7 @@ const schedule: ScheduleEntry[] = [
   { id: "cronus",        status: "released",    order: 8 },
   { id: "wenshen",       status: "released",    order: 9 },
   { id: "meret",         status: "released",    order: 10 },
-  { id: "hephaestus",    status: "coming-soon", order: 11 },
+  { id: "hephaestus",    status: "released", order: 11 },
   { id: "serket",        status: "coming-soon", order: 12 },
   { id: "hera",          status: "coming-soon", order: 13 },
   { id: "eris",          status: "coming-soon", order: 14 },
@@ -39,26 +40,19 @@ const schedule: ScheduleEntry[] = [
 
 const heroMap = new Map(Object.values(allHeroes as Record<string, any>).map((h: any) => [h.id, h]));
 
-const LOCAL_HERO_IMAGES = new Set([
-  "hladgunnr","nezha","tefnut","heracles","nuba","mengpo","skadi","cronus","wenshen","meret",
-  "hephaestus","serket","hera","eris","amunra","anubis","aquarius","ares","aries","artemis",
-  "athena","bastet","caishen","cancer","canopicjar","capricorn","demeter","diana","dionysus",
-  "eris","fengyi","freya","geb","gemini","hecate","hephaestus","hera","heracles","hladgunnr",
-  "horus","iris","isis","jinchan","jingwei","jormungandr","khepri","kraken","leo","libra",
-  "medusa","mengpo","meret","momus","nemesis","nezha","nuba","nuwa","nymphia","nyx","pan",
-  "phoenix","pisces","poseidon","prometheus","ratatoskr","sagittarius","scorpio","sekhmet",
-  "serket","set","skadi","surtr","tailao","taurus","tefnut","treant","ullr","ushabti","virgo",
-  "wenshen","yanluo","yuelao","zeus"
-]);
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_PLACEHOLDER = `${R2_BASE}/heroes/placeholder.png`;
 
 function heroImg(id: string): string {
-  return LOCAL_HERO_IMAGES.has(id) ? `/heroes/${id}.webp` : "/heroes/placeholder.png";
+  return `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
 }
 
-const iconUrl = (type: string, value: string) => value ? `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/${type}/${value.toLowerCase()}.webp` : null;
+const iconUrl = (type: string, value: string) =>
+  value ? `${R2_BASE}/icons/${type}/${value.toLowerCase()}.webp` : null;
 
 function resolveEntry(entry: ScheduleEntry) {
   const h = heroMap.get(entry.id) || {};
+  const r = (heroRatings as Record<string, any>)?.[entry.id] ?? {};
   const faction = h.faction || "";
   const heroClass = h.class || "";
   const role = h.role || "";
@@ -72,9 +66,9 @@ function resolveEntry(entry: ScheduleEntry) {
     factionIconUrl: faction ? iconUrl("factions", faction) : null,
     roleIconUrl: role ? iconUrl("roles", role) : null,
     rarity: h.rarity || "Legendary",
-    overallRating: h.ratings?.overall || "?",
-    pvpRating: h.ratings?.pvp || "?",
-    pveRating: h.ratings?.pve || "?",
+    overallRating: r.overall || "?",
+    pvpRating: r.pvp || "?",
+    pveRating: r.pve || "?",
     status: entry.status,
     order: entry.order,
   };
@@ -84,25 +78,6 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
 const comingSoon = schedule.filter(e => e.status === "coming-soon").map(resolveEntry);
 const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEntry);
 
-const ratingGradient: Record<string, string> = {
-  "SSS": "linear-gradient(135deg, #ff4d4d, #b91c1c)",
-  "SS":  "linear-gradient(135deg, #ffe066, #facc15)",
-  "S":   "linear-gradient(135deg, #fde68a, #d97706)",
-  "A":   "linear-gradient(135deg, #86efac, #16a34a)",
-  "B":   "linear-gradient(135deg, #93c5fd, #2563eb)",
-  "C":   "linear-gradient(135deg, #d1d5db, #6b7280)",
-  "?":   "linear-gradient(135deg, #6b7280, #374151)",
-};
-
-const ratingTextColor: Record<string, string> = {
-  "SSS": "#fff5f5",
-  "SS":  "#3a2a00",
-  "S":   "#3a2a00",
-  "A":   "#052e16",
-  "B":   "#1e3a5f",
-  "C":   "#1f2937",
-  "?":   "#f3f4f6",
-};
 ---
 
 <Base
@@ -153,7 +128,7 @@ const ratingTextColor: Record<string, string> = {
                 class="spotlight-img"
                 src={heroImg(hero.id)}
                 alt={hero.displayName}
-                onerror="this.style.display='none';this.parentElement.classList.add('img-missing')"
+                onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')`}
               />
               <div class="spotlight-img-fade"></div>
             </div>
@@ -235,7 +210,7 @@ const ratingTextColor: Record<string, string> = {
               {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
             </div>
             <div class="tl-ratings">
-              <span class="tl-pill" style={`background: ${ratingGradient[hero.overallRating]}; color: ${ratingTextColor[hero.overallRating]};`}>{hero.overallRating}</span>
+              <span class="tl-pill" data-tier={hero.overallRating}>{hero.overallRating}</span>
             </div>
             <div class="tl-status-badge released-badge">Released</div>
           </a>
@@ -246,10 +221,10 @@ const ratingTextColor: Record<string, string> = {
           <span class="tgl-dot soon-dot"></span>
           Coming Soon
         </div>
-        {comingSoon.map((hero) => (
-          <a href={`/heroes/${hero.id}`} class="timeline-row soon-row">
-            <div class="tl-order">{hero.order}</div>
-            <img class="tl-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'tl-portrait tl-portrait-missing\'>?</div>')" />
+	        {comingSoon.map((hero) => (
+	          <a href={`/heroes/${hero.id}`} class="timeline-row soon-row">
+	            <div class="tl-order">{hero.order}</div>
+	            <img class="tl-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
             <div class="tl-info">
               <span class="tl-name">{hero.displayName}</span>
               <span class="tl-sub">
@@ -260,9 +235,7 @@ const ratingTextColor: Record<string, string> = {
             <div class="tl-faction">
               {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
             </div>
-            <div class="tl-ratings">
-              <span class="tl-pill" style={`background: ${ratingGradient[hero.overallRating]}; color: ${ratingTextColor[hero.overallRating]};`}>{hero.overallRating}</span>
-            </div>
+            <div class="tl-ratings" aria-hidden="true"></div>
             <div class="tl-status-badge soon-badge">Soon</div>
           </a>
         ))}
@@ -277,7 +250,7 @@ const ratingTextColor: Record<string, string> = {
             {farFuture.map((hero) => (
               <a href={`/heroes/${hero.id}`} class="timeline-row future-row">
                 <div class="tl-order">{hero.order}</div>
-                <img class="tl-portrait future-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'tl-portrait tl-portrait-missing\'>?</div>')" />
+                <img class="tl-portrait future-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
                 <div class="tl-info">
                   <span class="tl-name">{hero.displayName}</span>
                   <span class="tl-sub">
@@ -288,9 +261,7 @@ const ratingTextColor: Record<string, string> = {
                 <div class="tl-faction">
                   {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
                 </div>
-                <div class="tl-ratings">
-                  <span class="tl-pill" style={`background: ${ratingGradient[hero.overallRating]}; color: ${ratingTextColor[hero.overallRating]};`}>{hero.overallRating}</span>
-                </div>
+                <div class="tl-ratings" aria-hidden="true"></div>
                 <div class="tl-status-badge future-badge-tl">Far Future</div>
               </a>
             ))}

@@ -8,11 +8,6 @@
   "class": "Mage",
   "rarity": "Legendary",
   "description": "Core of Control",
-  "ratings": {
-    "overall": "SS",
-    "pvp": "S",
-    "pve": "SS"
-  },
   "recommendedRelicLevel": 0,
   "evolution": "Divine V",
   "level": 300,
@@ -112,9 +107,15 @@
   ],
   "baseAttackRate": 1.351,
   "bossUltimatesPer90s": 3,
-    "detailComps": [
+  "detailComps": [
     {
-      "heroes": ["skadi", "poseidon", "khepri", "pan", "nuwa"]
+      "heroes": [
+        "skadi",
+        "poseidon",
+        "khepri",
+        "pan",
+        "nuwa"
+      ]
     }
   ],
   "coreMechanic": {

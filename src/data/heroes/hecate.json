@@ -8,11 +8,6 @@
   "class": "Mage",
   "rarity": "Legendary",
   "description": "Hecate, the tripled-formed goddess of the dark moon, opportunity, and irresistible death, embodies the shadow side of the world.",
-  "ratings": {
-    "overall": "SS",
-    "pvp": "SS",
-    "pve": "SS"
-  },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
   "level": 300,
@@ -126,9 +121,15 @@
   ],
   "baseAttackRate": 1.749,
   "bossUltimatesPer90s": 4,
-    "detailComps": [
+  "detailComps": [
     {
-      "heroes": ["hecate", "momus", "yuelao", "meret", "cronus"]
+      "heroes": [
+        "hecate",
+        "momus",
+        "yuelao",
+        "meret",
+        "cronus"
+      ]
     }
   ],
   "coreMechanic": {

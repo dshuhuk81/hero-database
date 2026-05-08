@@ -8,11 +8,6 @@
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "Hladgunnr, the elegant and dignified Valkyrie of the Swan, always appears to mortals in a robe of white feathers. Her kiss can bring eternal rest or rouse the final courage of the dying.",
-  "ratings": {
-    "overall": "A",
-    "pvp": "A",
-    "pve": "B"
-  },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
   "level": 300,
@@ -114,9 +109,15 @@
   ],
   "baseAttackRate": 1.296,
   "bossUltimatesPer90s": 4,
-    "detailComps": [
+  "detailComps": [
     {
-      "heroes": ["hladgunnr", "jormungandr", "wenshen", "nuba", "caishen"]
+      "heroes": [
+        "hladgunnr",
+        "jormungandr",
+        "wenshen",
+        "nuba",
+        "caishen"
+      ]
     }
   ],
   "coreMechanic": {

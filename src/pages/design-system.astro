@@ -391,8 +391,8 @@ import Base from "../layouts/Base.astro";
         <div class="ds-astro-name">HeroCard</div>
         <div class="ds-astro-path">src/components/HeroCard.astro</div>
         <div class="ds-astro-props">
-          <code>hero: HeroData</code> (required) -- full hero object from all_heroes_db.json<br/>
-          Reads: <code>hero.id</code>, <code>hero.name</code>, <code>hero.rating</code>, <code>hero.ratings</code>, <code>hero.rarity</code>, <code>hero.newHero</code>
+          <code>hero: HeroData</code> (required) -- hero object (typically from <code>src/data/heroes/withRatings</code>)<br/>
+          Reads: <code>hero.id</code>, <code>hero.name</code>, <code>hero.ratings</code>, <code>hero.rarity</code>, <code>hero.newHero</code>
         </div>
         <div class="ds-astro-note">Card for heros.astro grid. Image via CSS background-image from R2. Renders rating-badge internally.</div>
       </div>

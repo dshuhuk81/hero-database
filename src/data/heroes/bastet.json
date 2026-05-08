@@ -8,11 +8,6 @@
   "class": "Assassin",
   "rarity": "Legendary",
   "description": "Bastet, the black cat guardian of homes, embodies elegance and mystery.",
-  "ratings": {
-    "overall": "S",
-    "pvp": "S",
-    "pve": "A"
-  },
   "recommendedRelicLevel": 20,
   "evolution": "Divine V",
   "level": 300,
@@ -117,9 +112,15 @@
     "depthRating": "low",
     "commonlyMisunderstood": false
   },
-   "detailComps": [
+  "detailComps": [
     {
-      "heroes": ["bastet", "heracles", "phoenix", "set", "diana"]
+      "heroes": [
+        "bastet",
+        "heracles",
+        "phoenix",
+        "set",
+        "diana"
+      ]
     }
   ],
   "virtueSets": [

@@ -8,11 +8,6 @@
   "class": "Warrior",
   "rarity": "Legendary",
   "description": "",
-  "ratings": {
-    "overall": "SS",
-    "pvp": "S",
-    "pve": "SS"
-  },
   "recommendedRelicLevel": 30,
   "evolution": "Divine V",
   "level": 300,
@@ -116,9 +111,15 @@
   ],
   "baseAttackRate": 0.732,
   "bossUltimatesPer90s": 5,
-    "detailComps": [
+  "detailComps": [
     {
-      "heroes": ["nezha", "momus", "yuelao", "meret", "tefnut"]
+      "heroes": [
+        "nezha",
+        "momus",
+        "yuelao",
+        "meret",
+        "tefnut"
+      ]
     }
   ],
   "coreMechanic": {
