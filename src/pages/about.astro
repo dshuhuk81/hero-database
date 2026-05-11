@@ -14,6 +14,13 @@ function formatDate(dateStr: string) {
   });
 }
 
+const THANK_YOU = [
+  {
+    name: "Community",
+    contribution: "Ariadne, SpOnti, M1ghtyM0use.",
+  }
+];
+
 ---
 
 <Base title="About | Motto Immortal">
@@ -68,37 +75,79 @@ function formatDate(dateStr: string) {
         </div>
       </div>
     </section>
-      <section class="about-section">
-        <h2>My Story</h2>
-        <p class="about-text">
-          Motto Immortal Database was born out of a passion for gaming and a desire to create a vibrant community 
-          hub for gamers worldwide. This is a personal, one man project and I decided to share my love for games 
-          and gaming culture with others. As there are great other cc's out there who provide a similar experience,
-           I wanted to create something that brings joy, meaning for this game and also bring this game to more players.
-        </p>
-      </section>
+      <div class="about-cards" aria-label="About sections">
+        <section class="dc-card about-card">
+          <h2 class="dc-card-title">My Story</h2>
+          <p class="about-text">
+            Motto Immortal Database was born out of a passion for gaming and a desire to create a vibrant community 
+            hub for gamers worldwide. This is a personal, one man project and I decided to share my love for games 
+            and gaming culture with others. As there are great other cc's out there who provide a similar experience,
+            I wanted to create something that brings joy, meaning for this game and also bring this game to more players.
+          </p>
+        </section>
 
-      <section class="about-section">
-        <h2>My Mission</h2>
-        <p class="about-text">
-          At Motto Immortal, my mission is to celebrate the timeless joy of gaming and to create a welcoming space 
-          for gamers of all backgrounds. I strive to provide high-quality content that informs, entertains, and 
-          inspires our community. I dont want to be disrepectful to official sources but add another layer of content
-          and information to the gaming community.
-        </p>
-      </section>
+        <section class="dc-card about-card">
+          <h2 class="dc-card-title">My Mission</h2>
+          <p class="about-text">
+            At Motto Immortal, my mission is to celebrate the timeless joy of gaming and to create a welcoming space 
+            for gamers of all backgrounds. I strive to provide high-quality content that informs, entertains, and 
+            inspires our community. I dont want to be disrepectful to official sources but add another layer of content
+            and information to the gaming community.
+          </p>
+        </section>
 
-      <section class="about-section">
-        <h2>Join me</h2>
-        <p class="about-text">
-          I invite you to join us on this exciting journey as we continue to grow and evolve. Whether you're a 
-          casual gamer looking for recommendations or a hardcore enthusiast seeking in-depth analysis, 
-          there's something for everyone at Motto Immortal. If you have ideas for new content, features, or ways to improve the 
-          site, please don't hesitate to reach out. Together, we can create a vibrant and inclusive gaming community 
-          that celebrates the joy of gaming in all its forms. Contact me on discord (ds_frieren) or via email.
-  
-        </p>
-      </section>
+        <section class="dc-card about-card">
+          <h2 class="dc-card-title">Join me</h2>
+          <p class="about-text">
+            I invite you to join us on this exciting journey as we continue to grow and evolve. Whether you're a 
+            casual gamer looking for recommendations or a hardcore enthusiast seeking in-depth analysis, 
+            there's something for everyone at Motto Immortal. If you have ideas for new content, features, or ways to improve the 
+            site, please don't hesitate to reach out. Together, we can create a vibrant and inclusive gaming community 
+            that celebrates the joy of gaming in all its forms. Contact me on discord (ds_frieren) or via email.
+          </p>
+        </section>
+
+        <section class="dc-card about-card about-card--thanks" aria-label="Thank you">
+          <div class="about-thanks-head">
+            <h2 class="dc-card-title about-thanks-title">
+              <span class="about-thanks-title-text">Thank you</span>
+              <span class="about-thanks-sparkle" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l1.2 4.2L18 8l-4.8 1.8L12 14l-1.2-4.2L6 8l4.8-1.8L12 2z"/>
+                  <path d="M19 12l.7 2.4L22 15l-2.3.6L19 18l-.7-2.4L16 15l2.3-.6L19 12z"/>
+                </svg>
+              </span>
+            </h2>
+            <div class="about-thanks-chip" aria-label="Contributors" title="Credits for data and content contributions">
+              Contributors
+            </div>
+          </div>
+
+          <p class="about-text about-thanks-desc">
+            This project benefits a lot from people who share data, testing results, and knowledge. The list below is a small
+            shout-out section. If you want your name added/updated/removed, please ping me on Discord (ds_frieren).
+          </p>
+
+          <div class="about-thanks-art" aria-hidden="true">
+            <div class="about-thanks-bubble bubble-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+
+          </div>
+
+          <ul class="about-thanks-list">
+            {THANK_YOU.map((item) => (
+              <li class="about-thanks-item">
+                <span class="about-thanks-name">{item.name}</span>
+                <span class="about-thanks-sep" aria-hidden="true">—</span>
+                <span class="about-thanks-text">{item.contribution}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
 </main>
  
 </Base>
@@ -143,6 +192,210 @@ function formatDate(dateStr: string) {
 
   .about-me-text {
     flex: 1;
+  }
+
+  /* ===============================
+     CARDS (matches damage-calculator)
+     =============================== */
+  .about-cards {
+    display: grid;
+    gap: var(--space-6, 24px);
+    margin-top: var(--space-6, 24px);
+  }
+
+  .dc-card {
+    border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-xl, 16px);
+    padding: var(--space-6, 24px);
+  }
+
+  .dc-card-title {
+    margin: 0 0 var(--space-3, 12px);
+    font-size: 1rem;
+  }
+
+  .about-card .dc-card-title {
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* ===============================
+     THANK YOU (playful)
+     =============================== */
+  .about-card--thanks {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: calc(var(--space-6, 24px) + 72px);
+    background:
+      radial-gradient(900px 340px at -10% 20%, rgba(168, 85, 247, 0.18), transparent 60%),
+      radial-gradient(740px 320px at 110% -10%, rgba(250, 204, 21, 0.14), transparent 55%),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.012));
+  }
+
+  .about-card--thanks::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    background:
+      radial-gradient(circle at 15% 30%, rgba(250, 204, 21, 0.18) 0 2px, transparent 3px),
+      radial-gradient(circle at 28% 75%, rgba(168, 85, 247, 0.20) 0 2px, transparent 3px),
+      radial-gradient(circle at 82% 22%, rgba(99, 102, 241, 0.18) 0 2px, transparent 3px),
+      radial-gradient(circle at 72% 68%, rgba(250, 204, 21, 0.14) 0 2px, transparent 3px);
+    opacity: 0.8;
+    pointer-events: none;
+    mask-image: radial-gradient(closest-side at 50% 50%, rgba(0,0,0,0.8), transparent 78%);
+  }
+
+  .about-thanks-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-thanks-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .about-thanks-sparkle {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(250, 204, 21, 0.95);
+    filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.25));
+  }
+
+  .about-thanks-sparkle svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .about-thanks-chip {
+    padding: 6px 10px;
+    border-radius: var(--radius-full, 999px);
+    font-weight: 750;
+    letter-spacing: 0.01em;
+    font-size: 0.85rem;
+    background: rgba(168, 85, 247, 0.14);
+    border: 1px solid rgba(168, 85, 247, 0.32);
+    color: rgba(245, 245, 250, 0.9);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-thanks-desc {
+    margin-top: var(--space-3, 12px);
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-thanks-art {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    display: grid;
+    grid-auto-flow: column;
+    gap: 10px;
+    align-items: center;
+    z-index: 0;
+    opacity: 0.95;
+    pointer-events: none;
+  }
+
+  .about-thanks-bubble {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(0, 0, 0, 0.16);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+    transform: translateY(0);
+    animation: thanks-float 5.5s ease-in-out infinite;
+  }
+
+  .about-thanks-bubble svg {
+    width: 20px;
+    height: 20px;
+    color: rgba(245, 245, 250, 0.85);
+  }
+
+  .bubble-1 { color: rgba(250, 204, 21, 0.92); animation-delay: -0.6s; }
+  .bubble-2 { color: rgba(168, 85, 247, 0.92); animation-delay: -1.6s; }
+  .bubble-3 { color: rgba(99, 102, 241, 0.92); animation-delay: -2.4s; }
+
+  .bubble-1 svg { color: currentColor; }
+  .bubble-2 svg { color: currentColor; }
+  .bubble-3 svg { color: currentColor; }
+
+  @keyframes thanks-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .about-thanks-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4, 16px) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3, 12px);
+  }
+
+  .about-thanks-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+    border-radius: var(--radius-lg, 12px);
+    position: relative;
+    z-index: 1;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  }
+
+  .about-thanks-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(168, 85, 247, 0.28);
+    background: rgba(168, 85, 247, 0.06);
+  }
+
+  .about-thanks-name {
+    font-weight: 700;
+    color: var(--text-bright, rgba(245, 245, 250, 0.95));
+  }
+
+  .about-thanks-text {
+    color: rgba(230, 230, 235, 0.9);
+  }
+
+  .about-thanks-sep {
+    color: rgba(230, 230, 235, 0.5);
+  }
+
+  @media (max-width: 640px) {
+    .about-card--thanks {
+      padding-bottom: var(--space-6, 24px);
+    }
+
+    .about-thanks-art {
+      position: static;
+      margin-top: var(--space-3, 12px);
+      justify-content: start;
+      opacity: 0.9;
+    }
   }
 
   /* ===============================
