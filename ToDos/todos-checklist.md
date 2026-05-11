@@ -36,5 +36,5 @@ Google indexing: Remove/disable internal links to non-existent hero pages in the
 
 7)
 Done: No
-Progress: Pending manual action. In Google Search Console: Sitemaps -> submit `https://motto-immortal.vercel.app/sitemap-index.xml`, then URL Inspection -> "Request indexing" for `/`, `/heros/`, `/bosses/`, `/tips/`, `/summon-calendar/` (and optionally 3-5 top hero detail pages).
+Progress: Update on 2026-05-11. Sitemap `https://motto-immortal.vercel.app/sitemap-index.xml` submitted in Google Search Console (status: Google processes periodically; no issues reported). Next manual action: URL Inspection -> "Request indexing" for `/`, `/heros/`, `/bosses/`, `/tips/`, `/summon-calendar/` (and optionally 3-5 top hero detail pages).
 Google indexing: In Google Search Console re-submit `sitemap-index.xml` and request indexing for key hub pages (home, `/heros/`, `/bosses/`, `/tips/`, `/summon-calendar/`).

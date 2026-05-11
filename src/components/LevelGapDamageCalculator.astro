@@ -447,13 +447,13 @@ const LV_PRESSING_DATA = parseLvPressingLua();
 		      if (!els.mechanicHelp) return;
 		      if (mechanic === MECHANICS.lvpress) {
 		        els.mechanicHelp.textContent =
-		          "Spire (Tower): Uses extracted config data (lv_pressing). Outgoing damage can go down and damage taken can go up when you are under-leveled. (Real fights still vary due to skills/crit/defense.)";
+		          "Spire (Tower): Outgoing damage can go down and damage taken can go up when you are under-leveled. (Real fights still vary due to skills/crit/defense.)";
 		        if (els.hint) els.hint.innerHTML = "Tip: This mode is <strong>bidirectional</strong> -- both your damage output and the damage you take change based on the level gap.";
 		        return;
 		      }
 			      if (mechanic === MECHANICS.alpha) {
 			        els.mechanicHelp.textContent =
-			          "Odyssey (Campaign): Rough outgoing-damage sandbox (α=1.2, +15 safe zone). Live captures show incoming damage can change too, but not with a stable formula yet — so Damage Taken stays n/a here.";
+			          "Odyssey (Campaign): Rough outgoing-damage sandbox (+15 safe zone). Live captures show incoming damage can change too, but not with a stable formula yet — so Damage Taken stays n/a here.";
 			        if (els.hint) els.hint.innerHTML = "Tip: Treat this as an <strong>experimental estimate</strong>. The live Odyssey captures below are better evidence than this formula for now.";
 			        return;
 			      }
