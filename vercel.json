@@ -3,5 +3,17 @@
   "devCommand": "astro dev",
   "installCommand": "npm install",
   "framework": "astro",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/heroes/cashien",
+      "destination": "/heroes/caishen/",
+      "permanent": true
+    },
+    {
+      "source": "/heroes/cashien/",
+      "destination": "/heroes/caishen/",
+      "permanent": true
+    }
+  ]
 }

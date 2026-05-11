@@ -3,6 +3,7 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import allHeroes from "../data/all_heroes_db.json";
 import heroRatings from "../data/ratings/hero-ratings.json";
+import { heroes as heroPages } from "../data/heroes/withRatings";
 
 type Status = "released" | "coming-soon" | "far-future";
 
@@ -39,6 +40,7 @@ const schedule: ScheduleEntry[] = [
 ];
 
 const heroMap = new Map(Object.values(allHeroes as Record<string, any>).map((h: any) => [h.id, h]));
+const heroPageIds = new Set((heroPages as any[]).map((h) => h.id));
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_PLACEHOLDER = `${R2_BASE}/heroes/placeholder.png`;
@@ -71,6 +73,7 @@ function resolveEntry(entry: ScheduleEntry) {
     pveRating: r.pve || "?",
     status: entry.status,
     order: entry.order,
+    hasDetailPage: heroPageIds.has(entry.id),
   };
 }
 
@@ -248,22 +251,41 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
               Far Future
             </div>
             {farFuture.map((hero) => (
-              <a href={`/heroes/${hero.id}`} class="timeline-row future-row">
-                <div class="tl-order">{hero.order}</div>
-                <img class="tl-portrait future-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
-                <div class="tl-info">
-                  <span class="tl-name">{hero.displayName}</span>
-                  <span class="tl-sub">
-                    {hero.classIconUrl ? <img src={hero.classIconUrl} alt={hero.heroClass} class="tl-icon" title={hero.heroClass} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.heroClass}>?</span>}
-                    {hero.roleIconUrl ? <img src={hero.roleIconUrl} alt={hero.role} class="tl-icon" title={hero.role} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.role}>?</span>}
-                  </span>
+              hero.hasDetailPage ? (
+                <a href={`/heroes/${hero.id}`} class="timeline-row future-row">
+                  <div class="tl-order">{hero.order}</div>
+                  <img class="tl-portrait future-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
+                  <div class="tl-info">
+                    <span class="tl-name">{hero.displayName}</span>
+                    <span class="tl-sub">
+                      {hero.classIconUrl ? <img src={hero.classIconUrl} alt={hero.heroClass} class="tl-icon" title={hero.heroClass} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.heroClass}>?</span>}
+                      {hero.roleIconUrl ? <img src={hero.roleIconUrl} alt={hero.role} class="tl-icon" title={hero.role} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.role}>?</span>}
+                    </span>
+                  </div>
+                  <div class="tl-faction">
+                    {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
+                  </div>
+                  <div class="tl-ratings" aria-hidden="true"></div>
+                  <div class="tl-status-badge future-badge-tl">Far Future</div>
+                </a>
+              ) : (
+                <div class="timeline-row future-row is-disabled" aria-disabled="true" title="No hero detail page yet">
+                  <div class="tl-order">{hero.order}</div>
+                  <img class="tl-portrait future-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
+                  <div class="tl-info">
+                    <span class="tl-name">{hero.displayName}</span>
+                    <span class="tl-sub">
+                      {hero.classIconUrl ? <img src={hero.classIconUrl} alt={hero.heroClass} class="tl-icon" title={hero.heroClass} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.heroClass}>?</span>}
+                      {hero.roleIconUrl ? <img src={hero.roleIconUrl} alt={hero.role} class="tl-icon" title={hero.role} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.role}>?</span>}
+                    </span>
+                  </div>
+                  <div class="tl-faction">
+                    {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
+                  </div>
+                  <div class="tl-ratings" aria-hidden="true"></div>
+                  <div class="tl-status-badge future-badge-tl">Far Future</div>
                 </div>
-                <div class="tl-faction">
-                  {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
-                </div>
-                <div class="tl-ratings" aria-hidden="true"></div>
-                <div class="tl-status-badge future-badge-tl">Far Future</div>
-              </a>
+              )
             ))}
           </>
         )}
@@ -665,6 +687,8 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
 
   .future-row { opacity: 0.45; filter: saturate(0.4); }
   .future-row:hover { opacity: 0.85; filter: saturate(1); }
+  .timeline-row.is-disabled { cursor: default; }
+  .timeline-row.is-disabled:hover { background: transparent; border-color: transparent; opacity: 0.45; filter: saturate(0.4); }
 
   .tl-order {
     font-size: 0.75rem;
