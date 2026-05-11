@@ -1,0 +1,1129 @@
+---
+import { readFileSync } from "node:fs";
+
+type LvPressingRow = {
+  outMult: number;
+  inMult: number;
+  realOutMult: number;
+  reduceFix: number;
+  increaseFix: number;
+  realReduceFix: number;
+};
+
+type LvPressingData = {
+  base: number;
+  maxDiff: number;
+  rows: Record<number, LvPressingRow>;
+};
+
+function parseLvPressingLua(): LvPressingData | null {
+  try {
+    const fileUrl = new URL(
+      "../../leak/game_extracted/region_754c000000/NewConfig/battle/lv_pressing.lua",
+      import.meta.url,
+    );
+    const src = readFileSync(fileUrl, "utf-8");
+
+    const blocks = new Map<number, Record<string, number>>();
+    const blockRe = /t\[(\d+)\]\s*=\s*\{([\s\S]*?)\n\}/g;
+    let m: RegExpExecArray | null;
+    while ((m = blockRe.exec(src))) {
+      const idx = Number.parseInt(m[1] || "0", 10);
+      const body = m[2] || "";
+      const row: Record<string, number> = {};
+      for (const line of body.split("\n")) {
+        const trimmed = line.trim().replace(/,$/, "");
+        if (!trimmed || !trimmed.includes("=")) continue;
+        const [kRaw, vRaw] = trimmed.split("=", 2).map((s) => s.trim());
+        if (!kRaw || !vRaw) continue;
+        const num = Number(vRaw);
+        if (Number.isFinite(num)) row[kRaw] = num;
+      }
+      if (Number.isFinite(idx)) blocks.set(idx, row);
+    }
+
+    const diffToBlock = new Map<number, number>();
+    const mapRe = /\[(\d+)\]\s*=\s*t\[(\d+)\]/g;
+    while ((m = mapRe.exec(src))) {
+      const diff = Number.parseInt(m[1] || "0", 10);
+      const block = Number.parseInt(m[2] || "0", 10);
+      if (Number.isFinite(diff) && Number.isFinite(block)) diffToBlock.set(diff, block);
+    }
+
+    const base = 1024;
+    const defaults = blocks.get(403) || {};
+    const maxDiff = Math.max(0, ...Array.from(diffToBlock.keys()));
+
+    const rows: Record<number, LvPressingRow> = {};
+    rows[0] = { outMult: 1, inMult: 1, realOutMult: 1, reduceFix: 0, increaseFix: 0, realReduceFix: 0 };
+
+    for (let diff = 1; diff <= maxDiff; diff++) {
+      const blockId = diffToBlock.get(diff);
+      const baseRow = blockId ? blocks.get(blockId) || {} : {};
+      const merged = { ...defaults, ...baseRow };
+
+      const reduceFix = Math.max(0, Math.round(Number(merged.reduce_damage_fix ?? 0)));
+      const increaseFix = Math.max(0, Math.round(Number(merged.increase_damage_fix ?? 0)));
+      const realReduceFix = Math.max(0, Math.round(Number(merged.real_reduce_damage_fix ?? 0)));
+
+      const outMult = (base - reduceFix) / base;
+      const inMult = (base + increaseFix) / base;
+      const realOutMult = (base - realReduceFix) / base;
+
+      rows[diff] = { outMult, inMult, realOutMult, reduceFix, increaseFix, realReduceFix };
+    }
+
+    return { base, maxDiff, rows };
+  } catch {
+    return null;
+  }
+}
+
+const LV_PRESSING_DATA = parseLvPressingLua();
+---
+
+      <section class="dc-shell" aria-label="Damage reduction calculator">
+	        <div class="dc-tabs" role="tablist" aria-label="Calculator tabs">
+	          <button class="dc-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="dc-panel-calculator" id="dc-tab-calculator" data-dc-tab="calculator">
+	            Calculator
+	          </button>
+	          <button class="dc-tab" type="button" role="tab" aria-selected="false" aria-controls="dc-panel-table" id="dc-tab-table" data-dc-tab="table">
+	            Table
+	          </button>
+	          <div class="dc-tabs-spacer" aria-hidden="true"></div>
+	        </div>
+
+  <div class="dc-panels">
+          <!-- ===================== Calculator Panel ===================== -->
+          <section class="dc-panel" role="tabpanel" id="dc-panel-calculator" aria-labelledby="dc-tab-calculator" data-dc-panel="calculator">
+            <div class="dc-grid">
+	              <div class="dc-card">
+	                <h3 class="dc-card-title">Inputs</h3>
+
+	                <div class="dc-field">
+	                  <div class="dc-field-head">
+	                    <label class="dc-label" for="dc-mechanic">Mechanic</label>
+	                  </div>
+			                  <select id="dc-mechanic" class="dc-select">
+			                    <option value="lvpress" selected>Spire (Tower) — Level Pressing</option>
+			                    <option value="alpha">Odyssey (Campaign) — Approx Model</option>
+			                    <option value="none">No level scaling</option>
+			                  </select>
+			                  <p class="dc-help" id="dc-mechanic-help">
+			                    Spire (Tower) uses a level-pressing system that can reduce your outgoing damage and increase incoming damage taken when you are under-leveled (values shown are config-derived coefficients).
+			                  </p>
+			                  <p class="dc-help dc-help-muted" id="dc-mechanic-note">
+			                    Real fights vary due to skills, crits, defense, enemy composition, and stage scripts. Odyssey values are observational and should not be treated as a solved formula yet.
+			                  </p>
+		                </div>
+
+	                <div class="dc-field">
+	                  <div class="dc-field-head">
+	                    <label class="dc-label" for="dc-player-range">Player Level</label>
+                    <div class="dc-inline">
+                    <input class="dc-number" id="dc-player-number" type="number" min="1" max="999" step="1" value="348" inputmode="numeric" />
+                  </div>
+                </div>
+                  <input id="dc-player-range" type="range" min="1" max="999" step="1" value="348" />
+                </div>
+
+                <div class="dc-field">
+                  <div class="dc-field-head">
+                    <label class="dc-label" for="dc-enemy-range">Enemy Level</label>
+                    <div class="dc-inline">
+	                      <input class="dc-number" id="dc-enemy-number" type="number" min="1" max="999" step="1" value="430" inputmode="numeric" />
+                    </div>
+                  </div>
+	                  <input id="dc-enemy-range" type="range" min="1" max="999" step="1" value="430" />
+                </div>
+
+	                <div class="dc-presets" aria-label="Presets">
+	                  <button class="dc-btn dc-btn-ghost" type="button" id="dc-preset-equal">Equal Level</button>
+	                </div>
+              </div>
+
+	              <div class="dc-card dc-card-output" id="dc-output-card">
+	                <div class="dc-output-top">
+	                  <div>
+	                    <div class="dc-kicker">Outgoing Damage</div>
+	                    <div class="dc-damage" id="dc-damage">38%</div>
+	                  </div>
+	                  <div class="dc-outgoing-incoming" aria-label="Incoming damage taken">
+	                    <div class="dc-kicker">Damage Taken</div>
+	                    <div class="dc-incoming" id="dc-incoming">1.82×</div>
+	                  </div>
+	                </div>
+
+	                <div class="dc-progress" aria-label="Outgoing damage percent">
+	                  <div class="dc-progress-track">
+	                    <div class="dc-progress-fill" id="dc-progress-fill" style="width: 38%"></div>
+	                  </div>
+	                  <div class="dc-progress-meta">
+	                    <span id="dc-progress-text">38% outgoing damage (config)</span>
+	                    <span class="dc-alpha" id="dc-model-tag">LvPress</span>
+	                  </div>
+	                </div>
+
+                <div class="dc-stats">
+                  <div class="dc-stat">
+                    <div class="dc-stat-label">Gap</div>
+	                    <div class="dc-stat-value" id="dc-gap">+82 levels</div>
+                  </div>
+                  <div class="dc-stat">
+                    <div class="dc-stat-label">Ratio</div>
+	                    <div class="dc-stat-value" id="dc-ratio">+23.6%</div>
+                  </div>
+                  <div class="dc-stat">
+                    <div class="dc-stat-label">Severity</div>
+                    <div class="dc-stat-value">
+	                      <span class="dc-badge" id="dc-severity-badge">Severe</span>
+                    </div>
+                  </div>
+                </div>
+
+	                <p class="dc-hint" id="dc-hint">
+	                  Tip: Choose the mechanic above.
+	                </p>
+
+                <div class="dc-toast" id="dc-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+              </div>
+            </div>
+	        <section class="dc-card dc-evidence" aria-label="Observed live combat data">
+	          <div class="dc-evidence-head">
+	            <div>
+	              <h3 class="dc-card-title">Observed Live Combat Data</h3>
+	              <p class="dc-footnote">
+	                Frida HP-bar captures show that incoming damage can change in Odyssey too, but Odyssey does not yet have a stable calculator formula. Use these rows as evidence/context, not as exact prediction.
+	              </p>
+	            </div>
+	          </div>
+
+	          <div class="dc-table-wrap dc-evidence-wrap" role="region" aria-label="Observed combat capture summary" tabindex="0">
+	            <table class="dc-table dc-evidence-table">
+	              <thead>
+	                <tr>
+	                  <th>Capture</th>
+	                  <th>Gap</th>
+	                  <th>Outgoing Median</th>
+	                  <th>Damage Taken Median</th>
+	                  <th>Notes</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                <tr>
+	                  <td>Baseline</td>
+	                  <td>~0</td>
+	                  <td>487K (1.00×)</td>
+	                  <td>516K (1.00×)</td>
+	                  <td>Reference fight for ratios</td>
+	                </tr>
+	                <tr>
+	                  <td>Spire/Tower L348→L430</td>
+	                  <td>+82</td>
+	                  <td>346K (0.71×)</td>
+	                  <td>833K (1.61×)</td>
+	                  <td>Clear bidirectional pressure</td>
+	                </tr>
+	                <tr>
+	                  <td>Odyssey 39-33 bucket</td>
+	                  <td>+77</td>
+	                  <td>442K (0.91×)</td>
+	                  <td>694K (1.34×)</td>
+	                  <td>Large sample, mixed stages/retries</td>
+	                </tr>
+	                <tr>
+	                  <td>Odyssey 39-34</td>
+	                  <td>+78</td>
+	                  <td>830K (1.70×)</td>
+	                  <td>567K (1.10×)</td>
+	                  <td>Clean single fight, low incoming n</td>
+	                </tr>
+	                <tr>
+	                  <td>Odyssey 39-35</td>
+	                  <td>+78</td>
+	                  <td>699K (1.44×)</td>
+	                  <td>1.22M (2.37×)</td>
+	                  <td>Clean single fight, low incoming n</td>
+	                </tr>
+	                <tr>
+	                  <td>Odyssey 39-36 multi-stage</td>
+	                  <td>+78</td>
+	                  <td>538K (1.10×)</td>
+	                  <td>604K (1.17×)</td>
+	                  <td>Best incoming sample, mixed rounds</td>
+	                </tr>
+	              </tbody>
+	            </table>
+	          </div>
+	        </section>
+	      </section>
+
+	          <!-- ===================== Table Panel ===================== -->
+	          <section class="dc-panel is-hidden" role="tabpanel" id="dc-panel-table" aria-labelledby="dc-tab-table" data-dc-panel="table" hidden>
+            <div class="dc-card">
+              <div class="dc-table-head">
+                <div class="dc-table-controls">
+	                  <div class="dc-field compact">
+	                    <label class="dc-label" for="dc-table-player">Player Level</label>
+	                    <select id="dc-table-player" class="dc-select" aria-label="Select player level"></select>
+	                  </div>
+	                  <div class="dc-field compact">
+	                    <label class="dc-label" for="dc-table-mechanic">Mechanic</label>
+			                    <select id="dc-table-mechanic" class="dc-select" aria-label="Select mechanic">
+			                      <option value="lvpress">Spire (Tower) — Level Pressing</option>
+			                      <option value="alpha">Odyssey (Campaign) — Approx Model</option>
+			                      <option value="none">No level scaling</option>
+			                    </select>
+	                  </div>
+	                </div>
+
+                <div class="dc-table-actions"></div>
+              </div>
+
+              <div class="dc-table-wrap" role="region" aria-label="Damage table" tabindex="0">
+                <table class="dc-table">
+                  <thead>
+                    <tr>
+	                      <th>Enemy Level</th>
+	                      <th>Gap</th>
+	                      <th>Ratio %</th>
+	                      <th>Outgoing %</th>
+	                      <th>Damage Taken</th>
+	                      <th>Severity</th>
+	                    </tr>
+                  </thead>
+                  <tbody id="dc-table-body"></tbody>
+                </table>
+              </div>
+
+              <p class="dc-footnote">
+                Rows are pre-calculated for common gaps: +0, +5, +10, +15, +20, +30, +50, +75, +100, +150, +200. Enemy level is capped at 999.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <noscript>
+        <div class="dc-noscript">This page needs JavaScript enabled to calculate results.</div>
+      </noscript>
+
+<script define:vars={{ lvPressing: LV_PRESSING_DATA }}>
+	    class DamageCalculatorAlpha {
+	      constructor() {
+	        this.alpha = 1.2;
+	        this.safeZone = 15;
+	        this.maxReduction = 90; // floor at 10%
+	      }
+
+	      calculateOutgoingPercent(playerLv, enemyLv) {
+	        const gap = enemyLv - playerLv;
+	        if (gap <= this.safeZone) return 100;
+	        const ratio = gap / playerLv;
+	        const damage = 100 / (1 + this.alpha * ratio);
+	        return Math.max(10, damage);
+	      }
+
+	      getSeverity(damagePercent) {
+	        if (damagePercent >= 90) return "safe";
+	        if (damagePercent >= 75) return "minor";
+	        if (damagePercent >= 50) return "moderate";
+	        if (damagePercent >= 25) return "severe";
+	        if (damagePercent >= 10) return "critical";
+	        return "impossible";
+	      }
+	    }
+
+	    const LV_PRESSING = /** @type {null | { base: number, maxDiff: number, rows: Record<string, any> }} */ (
+	      lvPressing || null
+	    );
+
+	    const MECHANICS = /** @type {const} */ ({
+	      lvpress: "lvpress",
+	      alpha: "alpha",
+	      none: "none",
+	    });
+
+	    const clampInt = (value, min, max) => {
+	      const n = Number.parseInt(String(value), 10);
+	      if (!Number.isFinite(n)) return min;
+	      return Math.min(max, Math.max(min, n));
+	    };
+
+	    const formatSigned = (n) => `${n >= 0 ? "+" : ""}${n}`;
+	    const formatPct = (n, digits = 1) => `${n >= 0 ? "+" : ""}${n.toFixed(digits)}%`;
+
+	    const severityMeta = {
+	      safe: { label: "Safe Zone", pill: "Safe", color: "var(--dc-safe)" },
+	      minor: { label: "Minor Penalty", pill: "Minor", color: "var(--dc-minor)" },
+	      moderate: { label: "Moderate Penalty", pill: "Moderate", color: "var(--dc-moderate)" },
+	      severe: { label: "Severe Penalty", pill: "Severe", color: "var(--dc-severe)" },
+	      critical: { label: "Critical", pill: "Critical", color: "var(--dc-critical)" },
+	      impossible: { label: "Impossible", pill: "Impossible", color: "var(--dc-impossible)" },
+	    };
+
+	    const calcAlpha = new DamageCalculatorAlpha();
+	    const GAP_ROWS = [0, 5, 10, 15, 20, 30, 50, 75, 100, 150, 200];
+
+	    const root = document.querySelector(".dc-shell");
+	    if (!root) throw new Error("Damage calculator root not found");
+
+	    const els = {
+	      tabButtons: /** @type {NodeListOf<HTMLButtonElement>} */ (root.querySelectorAll("[data-dc-tab]")),
+	      panels: /** @type {NodeListOf<HTMLElement>} */ (root.querySelectorAll("[data-dc-panel]")),
+	      mechanic: /** @type {HTMLSelectElement} */ (root.querySelector("#dc-mechanic")),
+	      mechanicHelp: /** @type {HTMLElement} */ (root.querySelector("#dc-mechanic-help")),
+	      hint: /** @type {HTMLElement} */ (root.querySelector("#dc-hint")),
+	      playerRange: /** @type {HTMLInputElement} */ (root.querySelector("#dc-player-range")),
+	      playerNumber: /** @type {HTMLInputElement} */ (root.querySelector("#dc-player-number")),
+	      enemyRange: /** @type {HTMLInputElement} */ (root.querySelector("#dc-enemy-range")),
+	      enemyNumber: /** @type {HTMLInputElement} */ (root.querySelector("#dc-enemy-number")),
+	      presetEqual: /** @type {HTMLButtonElement} */ (root.querySelector("#dc-preset-equal")),
+	      damage: /** @type {HTMLElement} */ (root.querySelector("#dc-damage")),
+	      incoming: /** @type {HTMLElement} */ (root.querySelector("#dc-incoming")),
+	      gap: /** @type {HTMLElement} */ (root.querySelector("#dc-gap")),
+	      ratio: /** @type {HTMLElement} */ (root.querySelector("#dc-ratio")),
+	      severityBadge: /** @type {HTMLElement} */ (root.querySelector("#dc-severity-badge")),
+	      outputCard: /** @type {HTMLElement} */ (root.querySelector("#dc-output-card")),
+	      progressFill: /** @type {HTMLElement} */ (root.querySelector("#dc-progress-fill")),
+	      progressText: /** @type {HTMLElement} */ (root.querySelector("#dc-progress-text")),
+	      modelTag: /** @type {HTMLElement} */ (root.querySelector("#dc-model-tag")),
+	      toast: /** @type {HTMLElement} */ (root.querySelector("#dc-toast")),
+
+	      tablePlayer: /** @type {HTMLSelectElement} */ (root.querySelector("#dc-table-player")),
+	      tableMechanic: /** @type {HTMLSelectElement} */ (root.querySelector("#dc-table-mechanic")),
+	      tableBody: /** @type {HTMLElement} */ (root.querySelector("#dc-table-body")),
+	    };
+
+		    let toastTimer = 0;
+		    const setToast = (message) => {
+	      els.toast.textContent = message;
+	      els.toast.classList.add("is-on");
+	      window.clearTimeout(toastTimer);
+	      toastTimer = window.setTimeout(() => els.toast.classList.remove("is-on"), 1700);
+	    };
+
+	    const lvPressingForDiff = (diff) => {
+	      if (!LV_PRESSING || !LV_PRESSING.rows) return null;
+	      const maxDiff = Number(LV_PRESSING.maxDiff || 0);
+	      const d = Math.max(0, Math.min(maxDiff, diff));
+	      return LV_PRESSING.rows[String(d)] || LV_PRESSING.rows[String(maxDiff)] || null;
+	    };
+
+	    const computeValues = (playerLv, enemyLv, mechanic) => {
+	      const gap = enemyLv - playerLv;
+	      const ratio = playerLv > 0 ? gap / playerLv : 0;
+
+	      if (mechanic === MECHANICS.none) {
+	        return { outgoingPct: 100, incomingMult: 1, gap, ratio, modelTag: "None" };
+	      }
+
+	      if (mechanic === MECHANICS.alpha) {
+	        const outgoing = calcAlpha.calculateOutgoingPercent(playerLv, enemyLv);
+	        return { outgoingPct: outgoing, incomingMult: null, gap, ratio, modelTag: "α=1.2" };
+	      }
+
+	      const diff = Math.max(0, enemyLv - playerLv);
+	      const row = lvPressingForDiff(diff);
+	      if (!row) return { outgoingPct: 100, incomingMult: 1, gap, ratio, modelTag: "LvPress" };
+
+	      const outgoingPct = Math.max(0, Math.min(100, (Number(row.outMult) || 1) * 100));
+	      const incomingMult = Math.max(0, Number(row.inMult) || 1);
+	      return { outgoingPct, incomingMult, gap, ratio, modelTag: "LvPress" };
+	    };
+
+	    const applySeverity = (damagePercent) => {
+	      const key = calcAlpha.getSeverity(damagePercent);
+	      const meta = severityMeta[key] || severityMeta.safe;
+	      els.outputCard.dataset.severity = key;
+	      els.outputCard.style.setProperty("--dc-accent", meta.color);
+	      els.severityBadge.textContent = meta.pill;
+	      els.severityBadge.style.background = meta.color;
+	      els.severityBadge.title = meta.label;
+	      return meta;
+	    };
+
+		    const setMechanicHelp = (mechanic) => {
+		      if (!els.mechanicHelp) return;
+		      if (mechanic === MECHANICS.lvpress) {
+		        els.mechanicHelp.textContent =
+		          "Spire (Tower): Uses extracted config data (lv_pressing). Outgoing damage can go down and damage taken can go up when you are under-leveled. (Real fights still vary due to skills/crit/defense.)";
+		        if (els.hint) els.hint.innerHTML = "Tip: This mode is <strong>bidirectional</strong> -- both your damage output and the damage you take change based on the level gap.";
+		        return;
+		      }
+			      if (mechanic === MECHANICS.alpha) {
+			        els.mechanicHelp.textContent =
+			          "Odyssey (Campaign): Rough outgoing-damage sandbox (α=1.2, +15 safe zone). Live captures show incoming damage can change too, but not with a stable formula yet — so Damage Taken stays n/a here.";
+			        if (els.hint) els.hint.innerHTML = "Tip: Treat this as an <strong>experimental estimate</strong>. The live Odyssey captures below are better evidence than this formula for now.";
+			        return;
+			      }
+	      els.mechanicHelp.textContent =
+	        "No level scaling: shows 100% outgoing damage and 1.00× damage taken (useful for PvP-like modes/events).";
+	      if (els.hint) els.hint.textContent = "Tip: Use this when the mode ignores level gaps.";
+	    };
+
+	    const getState = () => {
+	      const playerLv = clampInt(els.playerNumber.value, 1, 999);
+	      const enemyLv = clampInt(els.enemyNumber.value, 1, 999);
+	      const mechanic = (els.mechanic?.value || MECHANICS.lvpress);
+	      return { playerLv, enemyLv, mechanic };
+	    };
+
+	    const syncInputs = () => {
+	      const playerLv = clampInt(els.playerNumber.value, 1, 999);
+	      const enemyLv = clampInt(els.enemyNumber.value, 1, 999);
+	      els.playerNumber.value = String(playerLv);
+	      els.playerRange.value = String(playerLv);
+	      els.enemyNumber.value = String(enemyLv);
+	      els.enemyRange.value = String(enemyLv);
+	    };
+
+	    const renderTable = () => {
+	      const playerLv = clampInt(els.tablePlayer.value || els.playerNumber.value, 1, 999);
+	      const mechanic = (els.tableMechanic?.value || els.mechanic?.value || MECHANICS.lvpress);
+
+	      const rows = GAP_ROWS.map((gapWanted) => {
+	        const enemyLv = Math.min(999, playerLv + gapWanted);
+	        const gap = enemyLv - playerLv;
+	        const ratio = playerLv > 0 ? gap / playerLv : 0;
+
+	        const { outgoingPct, incomingMult } = computeValues(playerLv, enemyLv, mechanic);
+	        const outgoingRounded = Math.round(outgoingPct);
+	        const sevKey = calcAlpha.getSeverity(outgoingPct);
+	        const sev = severityMeta[sevKey] || severityMeta.safe;
+
+	        const capNote = playerLv + gapWanted > 999 ? " (capped)" : "";
+	        const incomingText = mechanic === MECHANICS.alpha ? "n/a" : `${(incomingMult ?? 1).toFixed(2)}×`;
+
+	        return `
+	          <tr data-severity="${sevKey}">
+	            <td>L${enemyLv}${capNote}</td>
+	            <td>${formatSigned(gap)}</td>
+	            <td>${(ratio * 100).toFixed(1)}%</td>
+	            <td><span class="dc-cell-pill" style="background:${sev.color}">${outgoingRounded}%</span></td>
+	            <td>${incomingText}</td>
+	            <td>${sev.pill}</td>
+	          </tr>
+	        `;
+	      }).join("");
+
+	      els.tableBody.innerHTML = rows;
+	    };
+
+	    const updateCalculator = () => {
+	      syncInputs();
+	      const { playerLv, enemyLv, mechanic } = getState();
+	      setMechanicHelp(mechanic);
+
+	      // Keep table mechanic select in sync (and vice versa)
+	      if (els.tableMechanic && els.tableMechanic.value !== mechanic) {
+	        els.tableMechanic.value = mechanic;
+	      }
+
+	      const { outgoingPct, incomingMult, gap, ratio, modelTag } = computeValues(playerLv, enemyLv, mechanic);
+	      const outgoingRounded = Math.round(outgoingPct);
+
+	      els.damage.textContent = `${outgoingRounded}%`;
+	      els.modelTag.textContent = modelTag;
+
+	      els.progressFill.style.width = `${Math.max(0, Math.min(100, outgoingPct))}%`;
+	      els.gap.textContent = `${formatSigned(gap)} levels`;
+	      els.ratio.textContent = formatPct(ratio * 100, 1);
+
+	      if (mechanic === MECHANICS.alpha) {
+	        els.progressText.textContent = `${outgoingRounded}% outgoing damage (engine approx.)`;
+	        els.incoming.textContent = "n/a";
+	        els.incoming.title = "Incoming damage is also affected in-game but is not yet modeled for this engine-approximation mode.";
+	      } else if (mechanic === MECHANICS.none) {
+	        els.progressText.textContent = "No level scaling → 100% outgoing";
+	        els.incoming.textContent = "1.00×";
+	        els.incoming.title = "No incoming scaling in this mode.";
+	      } else {
+	        els.progressText.textContent = `${outgoingRounded}% outgoing damage (config)`;
+	        els.incoming.textContent = `${(incomingMult ?? 1).toFixed(2)}×`;
+	        const takenPct = ((incomingMult ?? 1) * 100).toFixed(0);
+	        els.incoming.title = `Incoming damage taken ≈ ${takenPct}% (config-derived)`;
+	      }
+
+	      applySeverity(outgoingPct);
+
+	      // Keep table player control in sync
+	      if (els.tablePlayer && els.tablePlayer.value !== String(playerLv)) {
+	        els.tablePlayer.value = String(playerLv);
+	      }
+
+	      renderTable();
+	    };
+
+	    const setTab = (tabKey) => {
+	      els.tabButtons.forEach((btn) => {
+	        const active = btn.dataset.dcTab === tabKey;
+	        btn.classList.toggle("is-active", active);
+	        btn.setAttribute("aria-selected", active ? "true" : "false");
+	        btn.tabIndex = active ? 0 : -1;
+	      });
+
+	      els.panels.forEach((panel) => {
+	        const active = panel.dataset.dcPanel === tabKey;
+	        panel.classList.toggle("is-hidden", !active);
+	        panel.hidden = !active;
+	      });
+	    };
+
+	    // Populate table player dropdown
+	    const options = [];
+	    for (let i = 1; i <= 999; i++) options.push(`<option value="${i}">${i}</option>`);
+	    els.tablePlayer.innerHTML = options.join("");
+	    els.tablePlayer.value = String(clampInt(els.playerNumber.value, 1, 999));
+	    els.tableMechanic.value = els.mechanic.value || MECHANICS.lvpress;
+
+	    // Events: tabs
+	    els.tabButtons.forEach((btn) => {
+	      btn.addEventListener("click", () => setTab(btn.dataset.dcTab || "calculator"));
+	      btn.addEventListener("keydown", (e) => {
+	        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+	        e.preventDefault();
+	        const list = Array.from(els.tabButtons);
+	        const idx = list.indexOf(btn);
+	        const nextIdx = e.key === "ArrowRight" ? (idx + 1) % list.length : (idx - 1 + list.length) % list.length;
+	        list[nextIdx]?.focus();
+	        list[nextIdx]?.click();
+	      });
+	    });
+
+	    // Events: calculator inputs
+	    els.playerRange.addEventListener("input", () => {
+	      els.playerNumber.value = els.playerRange.value;
+	      updateCalculator();
+	    });
+	    els.enemyRange.addEventListener("input", () => {
+	      els.enemyNumber.value = els.enemyRange.value;
+	      updateCalculator();
+	    });
+	    els.playerNumber.addEventListener("input", () => updateCalculator());
+	    els.enemyNumber.addEventListener("input", () => updateCalculator());
+	    els.mechanic.addEventListener("change", () => updateCalculator());
+
+	    els.presetEqual.addEventListener("click", () => {
+	      syncInputs();
+	      els.enemyNumber.value = els.playerNumber.value;
+	      updateCalculator();
+	      setToast("Set to equal level");
+	    });
+
+	    // Events: table controls
+	    els.tablePlayer.addEventListener("change", () => {
+	      els.playerNumber.value = els.tablePlayer.value;
+	      updateCalculator();
+	    });
+	    els.tableMechanic.addEventListener("change", () => {
+	      els.mechanic.value = els.tableMechanic.value;
+	      updateCalculator();
+	    });
+
+		    // Initial paint
+		    updateCalculator();
+		  </script>
+
+  <style>
+    :global(:root) {
+      --dc-safe: #22c55e;
+      --dc-minor: #facc15;
+      --dc-moderate: #fb923c;
+      --dc-severe: #ef4444;
+      --dc-critical: #b91c1c;
+      --dc-impossible: #000000;
+    }
+
+    .dc-shell {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .dc-header {
+      padding: var(--space-6);
+      border: 1px solid var(--border-subtle);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius: var(--radius-xl);
+    }
+
+    .dc-title {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.01em;
+    }
+
+    .dc-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      line-height: 1.55;
+      max-width: 80ch;
+    }
+
+    .dc-tabs {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .dc-tab {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      padding: 10px 14px;
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .dc-tab:hover {
+      color: var(--text-bright);
+      background: rgba(168, 85, 247, 0.10);
+      border-color: rgba(168, 85, 247, 0.20);
+    }
+
+    .dc-tab.is-active {
+      color: var(--text-bright);
+      background: rgba(168, 85, 247, 0.16);
+      border-color: rgba(168, 85, 247, 0.28);
+      box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.10) inset;
+    }
+
+    .dc-tabs-spacer {
+      flex: 1;
+    }
+
+    .dc-panels {
+      display: block;
+    }
+
+    .dc-panel.is-hidden {
+      display: none;
+    }
+
+    .dc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    @media (max-width: 900px) {
+      .dc-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dc-card {
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+    }
+
+    .dc-evidence {
+      margin-top: var(--space-6);
+    }
+
+    .dc-evidence-wrap {
+      margin-top: var(--space-4);
+    }
+
+    .dc-card-title {
+      margin: 0 0 var(--space-4);
+      font-size: 1rem;
+    }
+
+    .dc-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+
+    .dc-field.compact {
+      margin-bottom: 0;
+    }
+
+    .dc-field-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+
+    .dc-label {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    .dc-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-purple);
+    }
+
+    .dc-number {
+      width: 92px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.18);
+      color: var(--text-bright);
+      padding: 8px 10px;
+      font-weight: 650;
+    }
+
+    .dc-check {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .dc-check input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent-gold);
+    }
+
+    .dc-check.compact {
+      margin-top: 24px;
+    }
+
+	    .dc-help {
+	      margin: calc(var(--space-2) * -1) 0 var(--space-4);
+	      color: var(--text-muted);
+	      font-size: var(--text-sm);
+	      line-height: 1.55;
+	      padding-top: var(--space-2);
+	    }
+
+	    .dc-help-muted {
+	      opacity: 0.85;
+	    }
+
+    .dc-presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+    }
+
+    .dc-btn {
+      appearance: none;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      background: rgba(168, 85, 247, 0.14);
+      color: var(--text-bright);
+      padding: 10px 12px;
+      border-radius: var(--radius-lg);
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .dc-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(168, 85, 247, 0.18);
+      border-color: rgba(168, 85, 247, 0.35);
+    }
+
+    .dc-btn:active {
+      transform: translateY(0);
+    }
+
+    .dc-btn-ghost {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .dc-btn-ghost:hover {
+      background: rgba(250, 204, 21, 0.08);
+      border-color: rgba(250, 204, 21, 0.18);
+      color: var(--text-bright);
+    }
+
+    .dc-card-output {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dc-card-output::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: radial-gradient(ellipse at 20% 0%, rgba(168,85,247,0.12), transparent 55%),
+                  radial-gradient(ellipse at 80% 40%, rgba(250,204,21,0.08), transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dc-card-output > * {
+      position: relative;
+      z-index: 1;
+    }
+
+	    .dc-output-top {
+	      display: flex;
+	      align-items: flex-start;
+	      justify-content: space-between;
+	      gap: var(--space-3);
+	    }
+
+	    .dc-outgoing-incoming {
+	      display: flex;
+	      flex-direction: column;
+	      align-items: flex-end;
+	      gap: 4px;
+	    }
+
+	    .dc-incoming {
+	      font-size: 1.15rem;
+	      font-weight: 850;
+	      letter-spacing: -0.01em;
+	      color: var(--text-bright);
+	    }
+
+    .dc-kicker {
+      font-size: var(--text-xs);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .dc-damage {
+      margin-top: var(--space-2);
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--dc-accent, var(--text-bright));
+    }
+
+    .dc-progress {
+      margin-top: var(--space-5);
+    }
+
+    .dc-progress-track {
+      height: 14px;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.10);
+      overflow: hidden;
+    }
+
+    .dc-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: var(--radius-full);
+      background: var(--dc-accent, linear-gradient(90deg, rgba(34,197,94,0.95), rgba(250,204,21,0.95), rgba(239,68,68,0.95)));
+      box-shadow: 0 0 14px rgba(0,0,0,0.35);
+      transition: width var(--duration-slow) var(--ease-out);
+    }
+
+    .dc-progress-meta {
+      margin-top: var(--space-2);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-2);
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .dc-alpha {
+      font-family: var(--font-mono);
+      opacity: 0.85;
+    }
+
+    .dc-stats {
+      margin-top: var(--space-6);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    @media (max-width: 520px) {
+      .dc-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dc-stat {
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-faint);
+      background: rgba(0,0,0,0.15);
+    }
+
+    .dc-stat-label {
+      font-size: var(--text-xs);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .dc-stat-value {
+      margin-top: var(--space-2);
+      font-weight: 800;
+      color: var(--text-bright);
+    }
+
+    .dc-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #0b0b0e;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .dc-hint {
+      margin: var(--space-5) 0 0;
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      line-height: 1.6;
+    }
+
+    .dc-toast {
+      position: absolute;
+      right: var(--space-5);
+      bottom: var(--space-5);
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 8px 10px;
+      border-radius: var(--radius-lg);
+      color: var(--text-bright);
+      font-size: var(--text-sm);
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+    }
+
+    .dc-toast.is-on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Table */
+    .dc-table-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .dc-table-controls {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+	    .dc-select {
+	      width: 140px;
+	      border-radius: var(--radius-lg);
+	      border: 1px solid var(--border-subtle);
+	      background: rgba(0,0,0,0.18);
+	      color: var(--text-bright);
+	      padding: 10px 12px;
+	      font-weight: 650;
+	    }
+
+	    #dc-mechanic.dc-select {
+	      width: 100%;
+	    }
+
+	    #dc-table-mechanic.dc-select {
+	      width: 220px;
+	    }
+
+    .dc-table-wrap {
+      overflow: auto;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.12);
+      max-height: 60vh;
+    }
+
+	    .dc-table {
+	      width: 100%;
+	      border-collapse: collapse;
+	      min-width: 760px;
+	    }
+
+    .dc-table th,
+    .dc-table td {
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+      font-size: var(--text-sm);
+    }
+
+    .dc-table th {
+      position: sticky;
+      top: 0;
+      background: rgba(13, 11, 20, 0.92);
+      backdrop-filter: blur(10px);
+      color: var(--text-secondary);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      z-index: 1;
+    }
+
+    .dc-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .dc-cell-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-weight: 900;
+      color: #0b0b0e;
+    }
+
+    .dc-footnote {
+      margin: var(--space-4) 0 0;
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      line-height: 1.6;
+    }
+
+	    .dc-noscript {
+	      margin-top: var(--space-6);
+	      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: rgba(239, 68, 68, 0.08);
+      border-radius: var(--radius-xl);
+      padding: var(--space-4);
+      color: var(--text-primary);
+    }
+  </style>

@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
+import Accordion from "../components/Accordion.astro";
 import "../styles/compositions.css";
 import "../styles/events.css";
 import "../styles/components.css";
@@ -12,7 +13,12 @@ import eventsData from "../data/events.json";
 const pageUpdate = getPageUpdate("events");
 
 function getHero(heroId: string) {
-  return allHeroes[heroId as keyof typeof allHeroes];
+  const rawId = String(heroId || "");
+  const lowerId = rawId.toLowerCase();
+  const compactId = lowerId.replace(/[\s_-]+/g, "");
+  return allHeroes[lowerId as keyof typeof allHeroes]
+    ?? allHeroes[compactId as keyof typeof allHeroes]
+    ?? allHeroes[rawId as keyof typeof allHeroes];
 }
 
 function campaignFactionIcon(faction: string) {
@@ -42,28 +48,24 @@ const campaigns = eventsData.campaigns.map((campaign) => {
   pageUpdate={pageUpdate}
 />
 
+<div class="event-accordion-nav">
+  <Accordion
+    instanceId="events"
+    items={campaigns.map((campaign) => ({
+      id: campaign.id,
+      label: campaign.name,
+      image: getHero(campaign.hero)?.image ?? "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg.jpg",
+    }))}
+  />
+</div>
+
 <div class="page-wrapper">
   <div class="content-wrapper">
-
-    <!-- Campaign sub-tabs -->
-    <div class="main-tabs">
-      {campaigns.map((campaign, index) => (
-        <button
-          class={`main-tab ${index === 0 ? "is-active" : ""}`}
-          data-campaign-tab={campaign.id}
-          data-hero-id={campaign.heroId}
-          data-campaign-name={campaign.name}
-          data-campaign-description={campaign.description}
-        >
-          {campaign.name}
-        </button>
-      ))}
-    </div>
 
     <!-- Campaign slides -->
     <main class="events-main">
       {campaigns.map((campaign, index) => (
-        <div class={`event-slide ${index === 0 ? "is-active" : ""}`} id={campaign.id}>
+        <div class={`event-slide ${index === 0 ? "is-active" : ""}`} id={campaign.id} data-event-slide>
           <!-- STAGES LIST -->
           <div class="stages-container">
             {campaign.stages.map((stage) => (
@@ -159,23 +161,41 @@ const campaigns = eventsData.campaigns.map((campaign) => {
 
 </Base>
 
+<style>
+  .event-accordion-nav {
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .event-accordion-nav {
+      height: 160px;
+    }
+  }
+</style>
+
 <script>
-  const campaignTabs = document.querySelectorAll('[data-campaign-tab]');
-  const campaignSlides = document.querySelectorAll('.event-slide');
+  const campaignTabs = Array.from(document.querySelectorAll('[data-accordion-instance="events"] [data-accordion-tab]'));
+  const campaignSlides = Array.from(document.querySelectorAll('[data-event-slide]'));
+  let currentIndex = 0;
 
-  campaignTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const tabId = tab.getAttribute('data-campaign-tab');
-      if (!tabId) return;
+  function updateCampaign(index) {
+    if (!campaignSlides.length) return;
 
-      campaignTabs.forEach(t => t.classList.remove('is-active'));
-      campaignSlides.forEach(s => s.classList.remove('is-active'));
+    currentIndex = (index + campaignSlides.length) % campaignSlides.length;
+    campaignTabs.forEach((tab, tabIndex) => tab.classList.toggle('is-active', tabIndex === currentIndex));
+    campaignSlides.forEach((slide, slideIndex) => slide.classList.toggle('is-active', slideIndex === currentIndex));
+  }
 
-      tab.classList.add('is-active');
-      const slide = document.getElementById(tabId);
-      if (slide) {
-        slide.classList.add('is-active');
-      }
-    });
+  if (campaignSlides.length) updateCampaign(0);
+
+  campaignTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => updateCampaign(index));
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "ArrowLeft") updateCampaign(currentIndex - 1);
+    if (event.key === "ArrowRight") updateCampaign(currentIndex + 1);
   });
 </script>

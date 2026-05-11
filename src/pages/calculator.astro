@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
+import LevelGapDamageCalculator from "../components/LevelGapDamageCalculator.astro";
 import { heroes } from "../data/heroes";
 import accountBonusesConfig from "../data/accountBonuses.json";
 
@@ -23,25 +24,56 @@ const pageUpdate = getPageUpdate("calculator");
   <PageHero
     tag="Tools"
     headline="Tools"
-    subtitle="Skill Value Comparator"
+    subtitle="Skill value and level gap calculators"
     pageUpdate={pageUpdate}
   />
 <div class="page-wrapper">
 
 <main class="main-content">
-
-  <div class="tldr-box">
-    <h3 class="tldr-title">How This Works</h3>
-    <ul class="tldr-list">
-      <li><strong>Base values only:</strong> All numbers assume Level 300, Divine V, no items — raw hero power.</li>
-      <li><strong>Model A vs B:</strong> Two different damage mitigation formulas. Model A is simpler (flat reduction), Model B uses diminishing returns. Neither is confirmed as the exact in-game formula.</li>
-      <li><strong>K/C factors</strong> in Advanced Settings control mitigation strength — higher K = more damage reduced. Leave defaults unless you're theory-crafting.</li>
-      <li><strong>Account Bonuses</strong> lets you simulate having extra stats from account progression (VIP, research, etc.).</li>
-    </ul>
+  <div class="tool-tabs" role="tablist" aria-label="Tool calculators">
+    <button
+      class="tool-tab is-active"
+      type="button"
+      role="tab"
+      aria-selected="true"
+      aria-controls="skill-calculator-panel"
+      id="skill-calculator-tab"
+      data-tool-tab="skill"
+    >
+      Skill Value Calculator
+    </button>
+    <button
+      class="tool-tab"
+      type="button"
+      role="tab"
+      aria-selected="false"
+      aria-controls="level-gap-calculator-panel"
+      id="level-gap-calculator-tab"
+      data-tool-tab="level-gap"
+    >
+      Level Gap Damage
+    </button>
   </div>
 
-  <div class="content-wrapper">
-    <div class="toolbar">
+  <section
+    class="tool-panel is-active"
+    role="tabpanel"
+    id="skill-calculator-panel"
+    aria-labelledby="skill-calculator-tab"
+    data-tool-panel="skill"
+  >
+    <div class="tldr-box">
+      <h3 class="tldr-title">How This Works</h3>
+      <ul class="tldr-list">
+        <li><strong>Base values only:</strong> All numbers assume Level 300, Divine V, no items — raw hero power.</li>
+        <li><strong>Model A vs B:</strong> Two different damage mitigation formulas. Model A is simpler (flat reduction), Model B uses diminishing returns. Neither is confirmed as the exact in-game formula.</li>
+        <li><strong>K/C factors</strong> in Advanced Settings control mitigation strength — higher K = more damage reduced. Leave defaults unless you're theory-crafting.</li>
+        <li><strong>Account Bonuses</strong> lets you simulate having extra stats from account progression (VIP, research, etc.).</li>
+      </ul>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="toolbar">
       <div class="toolbar-main">
         <div class="toolbar-field">
           <label for="hero-a-select">Primary Hero</label>
@@ -132,12 +164,56 @@ const pageUpdate = getPageUpdate("calculator");
       <div class="hero-slot secondary hidden" id="hero-b-container">
         <div id="hero-b-slot"></div>
       </div>
-    </section>
-  </div>
+      </section>
+    </div>
+  </section>
+
+  <section
+    class="tool-panel"
+    role="tabpanel"
+    id="level-gap-calculator-panel"
+    aria-labelledby="level-gap-calculator-tab"
+    data-tool-panel="level-gap"
+    hidden
+  >
+    <LevelGapDamageCalculator />
+  </section>
 </main>
 </div>
 
 <script define:vars={{ heroes: sortedHeroes, bonusPresets: bonusPresets }}>
+  const toolTabs = Array.from(document.querySelectorAll("[data-tool-tab]"));
+  const toolPanels = Array.from(document.querySelectorAll("[data-tool-panel]"));
+
+  function setToolTab(tabKey) {
+    toolTabs.forEach((tab) => {
+      const isActive = tab.dataset.toolTab === tabKey;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", isActive ? "true" : "false");
+      tab.tabIndex = isActive ? 0 : -1;
+    });
+
+    toolPanels.forEach((panel) => {
+      const isActive = panel.dataset.toolPanel === tabKey;
+      panel.classList.toggle("is-active", isActive);
+      panel.hidden = !isActive;
+    });
+  }
+
+  toolTabs.forEach((tab) => {
+    tab.addEventListener("click", () => setToolTab(tab.dataset.toolTab || "skill"));
+    tab.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      const currentIndex = toolTabs.indexOf(tab);
+      const nextIndex = event.key === "ArrowRight"
+        ? (currentIndex + 1) % toolTabs.length
+        : (currentIndex - 1 + toolTabs.length) % toolTabs.length;
+      toolTabs[nextIndex]?.focus();
+      toolTabs[nextIndex]?.click();
+    });
+  });
+
   function formatNumber(value) {
     return Math.round(value).toLocaleString();
   }
@@ -1093,6 +1169,46 @@ const pageUpdate = getPageUpdate("calculator");
 <style is:global>
 
 
+  .tool-tabs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 16px 0 24px;
+    padding: var(--space-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .tool-tab {
+    appearance: none;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 10px 14px;
+    border-radius: var(--radius-lg);
+    font-family: inherit;
+    font-weight: 650;
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .tool-tab:hover {
+    color: var(--text-bright);
+    background: rgba(212, 175, 55, 0.10);
+    border-color: rgba(212, 175, 55, 0.20);
+  }
+
+  .tool-tab.is-active {
+    color: var(--text-bright);
+    background: rgba(212, 175, 55, 0.16);
+    border-color: rgba(212, 175, 55, 0.30);
+  }
+
+  .tool-panel[hidden] {
+    display: none;
+  }
+
   .hero-header {
     height: 300px;
     background-image: url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg.jpg");
@@ -1413,7 +1529,7 @@ const pageUpdate = getPageUpdate("calculator");
     height: auto;
     border-radius: var(--radius-lg);
     object-fit: cover;
-    object-position: center 30%;
+    object-position: center 12%;
     background: rgba(0, 0, 0, 0.3);
   }
 
@@ -2035,6 +2151,7 @@ const pageUpdate = getPageUpdate("calculator");
       min-width: 0;
       max-width: 180px;
       height: auto;
+      object-position: center 10%;
     }
 
     .hero-stats-grid {
