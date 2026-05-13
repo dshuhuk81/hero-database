@@ -1,0 +1,2205 @@
+---
+export const prerender = true;
+import Base from "../layouts/Base.astro";
+
+const heroId    = "serket";
+const heroName  = "Serket";
+const heroFaction = "Diamonds";
+const heroClass = "Warrior";
+const heroRole  = "Nimble";
+const heroRarity = "Legendary";
+const heroRating = "A";
+const heroImage = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/serket.webp";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+
+// Diamonds faction uses bright gold/amber tones (no specific map entry)
+const factionA   = "#e2b858";
+const factionB   = "#b8963a";
+const factionGlow = "rgba(226,184,88,0.18)";
+
+const sections = [
+  { id: "section-identity",     label: "Identity" },
+  { id: "section-summons",      label: "Summons" },
+  { id: "section-survivability", label: "Survivability" },
+  { id: "section-playstyle",    label: "Playstyle" },
+  { id: "section-synergies",    label: "Synergies" },
+  { id: "section-teams",        label: "Teams" },
+  { id: "section-modes",        label: "Game Modes" },
+  { id: "section-pvp",          label: "PvP + Counters" },
+  { id: "section-build",        label: "Build Guide" },
+  { id: "section-verdict",      label: "Verdict" },
+];
+---
+
+<Base
+  title="Serket Guide -- Bruiser Summoner Deep Dive | Motto Immortal"
+  description="In-depth guide for Serket in Motto Immortal. Summon mechanics, survivability, team compositions, build priorities, counters, and tier placement."
+>
+<div
+  class="hero-page"
+  data-faction={heroFaction}
+  style={`--faction-a:${factionA};--faction-b:${factionB};--faction-glow:${factionGlow};`}
+>
+
+  <!-- ===================== STICKY THIN HEADER ===================== -->
+  <header class="hero-page-header">
+    <a href={`/heroes/${heroId}`} class="page-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7-7"/></svg>
+      <span>{heroName}</span>
+    </a>
+    <span class="page-hero-name">{heroName} -- Guide</span>
+    <div class="hero-page-header-right">
+      <span class="hdr-rating" data-tier={heroRating}>{heroRating}</span>
+      <a href={`/calculator?hero=${heroId}`} class="hdr-calc-link">Calculator</a>
+    </div>
+  </header>
+
+  <!-- ===================== CINEMATIC SHOWCASE ===================== -->
+  <section class="showcase" aria-label="Serket hero showcase">
+    <div class="showcase-bg"></div>
+    <div
+      class="showcase-art"
+      style={`background-image:url(${heroImage});`}
+      role="img"
+      aria-label={heroName}
+    ></div>
+    <div class="showcase-overlay"></div>
+
+    <div class="showcase-identity">
+      <div class="guide-kicker">Hero Guide</div>
+      <h1 class="showcase-name">{heroName}</h1>
+      <div class="showcase-badges">
+        <span class="id-badge">
+          <img src={`${R2_BASE}/icons/factions/${heroFaction.toLowerCase()}.webp`} alt={heroFaction} class="id-badge-icon" />
+          {heroFaction}
+        </span>
+        <span class="id-badge">
+          <img src={`${R2_BASE}/icons/classes/${heroClass.toLowerCase()}.webp`} alt={heroClass} class="id-badge-icon" />
+          {heroClass}
+        </span>
+        <span class="id-badge">
+          <img src={`${R2_BASE}/icons/roles/${heroRole.toLowerCase()}.webp`} alt={heroRole} class="id-badge-icon" />
+          {heroRole}
+        </span>
+        <span class="id-badge rarity-badge">{heroRarity}</span>
+      </div>
+      <p class="guide-showcase-tagline">
+        Summon death as a damage event. Scorpions that fight on their own AI. Five simultaneous value layers.
+      </p>
+    </div>
+
+    <div class="showcase-scroll-hint" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- ===================== FLOATING DOT NAV ===================== -->
+  <nav class="dot-nav" aria-label="Page sections">
+    {sections.map((s) => (
+      <a class="dot-nav-item" href={`#${s.id}`} data-section={s.id} title={s.label} aria-label={s.label}>
+        <span class="dot"></span>
+        <span class="dot-label">{s.label}</span>
+      </a>
+    ))}
+  </nav>
+
+  <!-- ===================== MAIN SCROLL CONTENT ===================== -->
+  <main class="scroll-content">
+
+    <!-- ========================================================
+         SECTION 1: WHAT MAKES HER UNIQUE
+         ======================================================== -->
+    <section class="content-section" id="section-identity">
+      <div class="section-label">What Makes Her Unique</div>
+
+      <p class="guide-prose">
+        Other summoners in the roster -- Nuwa with her figurines, Gemini with Castor, Zeus with his Echoes -- also produce persistent stat-inheriting allied units. What separates Serket is two properties no other summoner shares: her scorpions explode on death for AoE + ATK-Down (no other summoner has a death-value trigger), and her scorpions autonomously use her active skill on their own AI at Ult Lv.4. Zeus's Echoes are the closest comparison but only fire when Zeus himself casts -- that is a coupled multi-cast, not autonomous summon behavior. Summon death is a loss event for every other summoner. For Serket it is a damage event.
+      </p>
+
+      <p class="guide-prose">
+        She is also the only Diamonds Warrior with the Nimble subtype and the only one whose core mechanic physically removes her from the battlefield via burrowing before re-engaging. Most divers operate with a single value layer. Serket runs five simultaneously from a single ultimate cast.
+      </p>
+
+      <div class="value-layers-grid">
+        <div class="value-layer-card">
+          <div class="value-layer-num">1</div>
+          <div class="value-layer-body">
+            <div class="value-layer-title">Underground Dive</div>
+            <p class="value-layer-desc">Serket burrows to the farthest enemy, dealing damage along the entire path and knocking down enemies on emerge.</p>
+          </div>
+        </div>
+        <div class="value-layer-card">
+          <div class="value-layer-num">2</div>
+          <div class="value-layer-body">
+            <div class="value-layer-title">Three Scorpions</div>
+            <p class="value-layer-desc">Each scorpion inherits 100% of Serket's base stats and, at Ult Lv.4, can independently use Burrowing Pierce themselves.</p>
+          </div>
+        </div>
+        <div class="value-layer-card">
+          <div class="value-layer-num">3</div>
+          <div class="value-layer-body">
+            <div class="value-layer-title">Board-Wide Relic AoE</div>
+            <p class="value-layer-desc">At Relic Lv.3, each scorpion independently ticks AoE damage, adding up to 240% ATK/sec additional sustained board damage.</p>
+          </div>
+        </div>
+        <div class="value-layer-card">
+          <div class="value-layer-num">4</div>
+          <div class="value-layer-body">
+            <div class="value-layer-title">Death Explosions</div>
+            <p class="value-layer-desc">Every scorpion that dies detonates for 200% ATK AoE in a 3m radius and applies a 10-second ATK-Down debuff to all hit enemies.</p>
+          </div>
+        </div>
+        <div class="value-layer-card">
+          <div class="value-layer-num">5</div>
+          <div class="value-layer-body">
+            <div class="value-layer-title">Underground Heal + HP Threshold</div>
+            <p class="value-layer-desc">While underground at any point, she heals 60% ATK/sec. When HP first falls below 40%, she auto-burrows and permanently gains +30% max HP.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mechanic-card guide-identity-card">
+        <div class="mechanic-header">
+          <span class="mechanic-title">What Actually Makes Her Different</span>
+        </div>
+        <p class="mechanic-summary">
+          The SUMMON tag is currently only assigned to Serket in the DB, but Nuwa, Gemini, and Zeus also summon persistent stat-inheriting units -- a DB tag inconsistency, not real mechanical exclusivity. Her two verified unique properties: (1) scorpion death generates offensive value (200% ATK AoE + ATK-Down) -- every other summoner treats death as a neutral loss; (2) scorpions autonomously use her active skill on their own AI (Ult Lv.4). Zeus's Echoes only fire when Zeus himself casts -- that is a coupled multi-cast, not autonomous summon behavior.
+        </p>
+      </div>
+
+      <!-- Serket vs Nuwa -->
+      <div class="guide-section-sub">Serket vs. Nuwa -- Same Family, Different Axes</div>
+      <p class="guide-prose">
+        Since Nuwa is the top confirmed synergy partner, the obvious question is whether they compete. They do not. They operate on entirely different combat axes: Nuwa is a team enabler whose figurines buff and protect allied heroes; Serket is a self-completer whose scorpions are extensions of her own threat, not team utility. Running them together gives front/back coverage the enemy cannot address simultaneously -- Nuwa anchors the frontline with her Bulwark barrier while Serket dives the backline.
+      </p>
+      <div class="nuwa-compare-grid">
+        <div class="nuwa-compare-header"></div>
+        <div class="nuwa-compare-header">Serket</div>
+        <div class="nuwa-compare-header">Nuwa</div>
+
+        <div class="nuwa-compare-label">Class / Role</div>
+        <div class="nuwa-compare-cell">Warrior / Nimble</div>
+        <div class="nuwa-compare-cell">Tank / Hefty</div>
+
+        <div class="nuwa-compare-label">Summon count</div>
+        <div class="nuwa-compare-cell">3 simultaneous (via Ult)</div>
+        <div class="nuwa-compare-cell">Up to 3 (1 per skill, on-demand)</div>
+
+        <div class="nuwa-compare-label">Stat inheritance</div>
+        <div class="nuwa-compare-cell">100% base stats (uniform across all 3)</div>
+        <div class="nuwa-compare-cell">Asymmetric: 100-200% HP, 100-150% ATK per figurine type</div>
+
+        <div class="nuwa-compare-label">Summon refresh</div>
+        <div class="nuwa-compare-cell">Wait for ult cooldown</div>
+        <div class="nuwa-compare-cell nuwa-compare-cell--highlight">Recasting heals existing figurine to full + adds new effect</div>
+
+        <div class="nuwa-compare-label">Summon behavior</div>
+        <div class="nuwa-compare-cell">All 3 deal AoE relic + dive farthest (Lv.4)</div>
+        <div class="nuwa-compare-cell">Bulwark charges/stuns, Greataxe AoE, Support heals</div>
+
+        <div class="nuwa-compare-label">Summon on death</div>
+        <div class="nuwa-compare-cell nuwa-compare-cell--highlight">Explodes -- AoE + ATK-Down</div>
+        <div class="nuwa-compare-cell">Disappears silently</div>
+
+        <div class="nuwa-compare-label">Replicates controller's active</div>
+        <div class="nuwa-compare-cell nuwa-compare-cell--highlight">Yes -- autonomous AI (Ult Lv.4)</div>
+        <div class="nuwa-compare-cell">No</div>
+
+        <div class="nuwa-compare-label">Team-facing value</div>
+        <div class="nuwa-compare-cell">Self-completing pressure unit</div>
+        <div class="nuwa-compare-cell">Team CC, shields, healing, damage-sharing</div>
+      </div>
+      <div class="guide-verdict-box guide-verdict-box--spaced">
+        <span class="guide-verdict-label">When to pick which</span>
+        Have a strong carry that needs an enabler? Nuwa. Have a control-heavy team that needs a self-sufficient backline pressure unit? Serket. Have both? Run them together.
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 2: SUMMON MECHANICS
+         ======================================================== -->
+    <section class="content-section" id="section-summons">
+      <div class="section-label">Summon Mechanics</div>
+
+      <p class="guide-prose">
+        When Serket activates Thousand Sand Shadows, she burrows underground and three scorpions spawn at her position. Each scorpion inherits 100% of her base stats -- ATK, HP, Armor, Magic Resistance -- but takes increased damage as a built-in balancing tax. At base, they last 10 seconds. Ult Lv.2 extends their duration.
+      </p>
+
+      <div class="milestone-strip">
+        <div class="milestone-node">
+          <div class="milestone-badge milestone-base">Base</div>
+          <div class="milestone-label">Relic AoE on Serket. Functional baseline but modest output.</div>
+        </div>
+        <div class="milestone-connector"></div>
+        <div class="milestone-node">
+          <div class="milestone-badge milestone-lv2">Lv.2</div>
+          <div class="milestone-label">Serket gains a personal damage-immunity proc once per 12 seconds. First major defensive spike.</div>
+        </div>
+        <div class="milestone-connector"></div>
+        <div class="milestone-node">
+          <div class="milestone-badge milestone-lv3">Lv.3</div>
+          <div class="milestone-label">Each scorpion also deals AoE damage every second. Three scorpions = 240% ATK/sec board-wide. Major damage spike.</div>
+        </div>
+        <div class="milestone-connector"></div>
+        <div class="milestone-node">
+          <div class="milestone-badge milestone-lv4">Lv.4</div>
+          <div class="milestone-label">Each scorpion gains its own immunity proc (once per 12s each). Three independent saves make clean removal extremely difficult.</div>
+        </div>
+      </div>
+
+      <p class="guide-prose">
+        At Ult Lv.4, scorpions can also use Burrowing Pierce independently, letting each one dive to the farthest enemy. This is the single biggest power spike in the kit -- it turns the ultimate from three stat-inheriting units into three micro-Serkets capable of simultaneous backline assault.
+      </p>
+
+      <div class="guide-section-sub">Scorpion Death: Punishing Both Answers</div>
+      <p class="guide-prose">
+        When any scorpion dies or expires, it triggers Venomblast Demise: a 200% ATK AoE explosion in a 3m radius, plus a 10-second ATK-Down debuff applied to all enemies in range. This means the enemy is penalized both for letting scorpions live and for killing them. Scorpion death is not a loss event -- it is a damage event.
+      </p>
+
+      <div class="scenario-cards-grid">
+        <div class="scenario-action-card">
+          <div class="scenario-action">Enemy AoE-clears all three scorpions</div>
+          <div class="scenario-result">Three simultaneous explosions -- 600% ATK AoE total -- plus three stacked ATK-Down debuffs applied to the whole enemy team.</div>
+        </div>
+        <div class="scenario-action-card">
+          <div class="scenario-action">Enemy ignores the scorpions</div>
+          <div class="scenario-result">240% ATK/sec sustained board-wide AoE at Relic Lv.3, plus three independent Burrowing Pierce dives to the backline at Ult Lv.4.</div>
+        </div>
+        <div class="scenario-action-card">
+          <div class="scenario-action">Enemy single-targets scorpions</div>
+          <div class="scenario-result">At Relic Lv.4, each scorpion has its own immunity proc. Single-targeting one at a time absorbs three consecutive save windows before they go down.</div>
+        </div>
+        <div class="scenario-action-card">
+          <div class="scenario-action">Fight extends, ultimate recharges</div>
+          <div class="scenario-result">A new set of three scorpions arrives while previous explosions are still landing. Board pressure compounds across multiple rotations.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 3: SURVIVABILITY
+         ======================================================== -->
+    <section class="content-section" id="section-survivability">
+      <div class="section-label">Survivability</div>
+
+      <p class="guide-prose">
+        Serket has two fully independent survival systems, each capable of absorbing a lethal hit or resetting her from a low-HP position. They sequence into each other naturally during combat.
+      </p>
+
+      <div class="sustain-layers">
+        <div class="sustain-layer sustain-layer--relic">
+          <div class="sustain-layer-header">
+            <span class="sustain-layer-name">Relic -- Venomous Domain Lv.2</span>
+            <span class="sustain-trigger-label">Triggers once per 12 seconds</span>
+          </div>
+          <p class="sustain-layer-desc">
+            When a single hit exceeds a percentage of her max HP, she becomes immune to that hit and takes reduced damage for the following window. This resets on a 12-second cooldown throughout the entire fight -- not just once.
+          </p>
+        </div>
+        <div class="sustain-layer sustain-layer--passive">
+          <div class="sustain-layer-header">
+            <span class="sustain-layer-name">Burrowing Rebirth -- HP Threshold</span>
+            <span class="sustain-trigger-label">Once per battle</span>
+          </div>
+          <p class="sustain-layer-desc">
+            The first time her HP drops below 40%, she automatically burrows underground for 3 seconds and permanently increases her max HP by 30%. While underground at any point -- from this trigger, from her active, or during her ultimate -- she heals at 60% ATK per second.
+          </p>
+        </div>
+        <div class="sustain-layer sustain-layer--emerge">
+          <div class="sustain-layer-header">
+            <span class="sustain-layer-name">Underground Pierce -- Emerge Shield</span>
+            <span class="sustain-trigger-label">Skill Lv.3, on every active cast</span>
+          </div>
+          <p class="sustain-layer-desc">
+            When Serket emerges from the ground after using Burrowing Pierce, she gains a shield. This compounds with the relic immunity and threshold heal to provide overlapping protection windows throughout a fight.
+          </p>
+        </div>
+        <div class="sustain-layer sustain-layer--scorpion">
+          <div class="sustain-layer-header">
+            <span class="sustain-layer-name">Scorpion Immunity -- Relic Lv.4</span>
+            <span class="sustain-trigger-label">Once per 12 seconds per scorpion</span>
+          </div>
+          <p class="sustain-layer-desc">
+            Each of the three scorpions independently gains the same damage-immunity proc from the Lv.4 relic upgrade. Three sequential immunity windows spread across the scorpion pool make committing a burst rotation to clear them impractical.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-comparison-row">
+        <div class="guide-compare-card">
+          <div class="guide-compare-label">Aries</div>
+          <div class="guide-compare-value">1 invincibility trigger on lethal hit</div>
+        </div>
+        <div class="guide-compare-card">
+          <div class="guide-compare-label">Anubis</div>
+          <div class="guide-compare-value">1 untargetable phase on cumulative HP loss</div>
+        </div>
+        <div class="guide-compare-card guide-compare-card--highlight">
+          <div class="guide-compare-label">Serket</div>
+          <div class="guide-compare-value">2 save cycles + permanent HP buff + repeating relic immunity + ongoing underground heal</div>
+        </div>
+      </div>
+
+      <div class="mechanic-card" style="">
+        <div class="mechanic-header">
+          <span class="mechanic-title">How the Interlock Works</span>
+        </div>
+        <p class="mechanic-summary">
+          Enemy bursts through her HP -- relic absorbs the hit, DR window activates. Sustained pressure bleeds her to 40% -- auto-burrow for 3 seconds, continuous heal, permanent HP increase takes effect. She emerges with a shield and the relic immunity has reset. Two independent save cycles before the enemy has applied full pressure.
+        </p>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 4: PLAYSTYLE
+         ======================================================== -->
+    <section class="content-section" id="section-playstyle">
+      <div class="section-label">Playstyle and Archetype</div>
+
+      <p class="guide-prose">
+        Serket is a bruiser-summoner with disruption tools. She is not a backline assassin in the sense of Nyx or Bastet -- she does not delete targets on contact, she does not arrive in the backline at combat start, and she has no execute mechanic. She arrives when her active is available, dives to the farthest enemy, applies a knockdown on emerge, and generates sustained pressure through her scorpion pool.
+      </p>
+
+      <div class="archetype-grid">
+        <div class="archetype-card archetype-partial">
+          <div class="archetype-match-label">Partial</div>
+          <div class="archetype-name">Pure Bruiser</div>
+          <p class="archetype-note">Strong sustain and survivability, but does not hold aggro or taunt. Leaves the frontline to dive.</p>
+        </div>
+        <div class="archetype-card archetype-no">
+          <div class="archetype-match-label">No</div>
+          <div class="archetype-name">Assassin</div>
+          <p class="archetype-note">No execute, no untargetable traversal phase, no combat-start opener. She is a disruptor, not a deleter.</p>
+        </div>
+        <div class="archetype-card archetype-partial">
+          <div class="archetype-match-label">Partial</div>
+          <div class="archetype-name">Summon Carry</div>
+          <p class="archetype-note">Scorpions are her highest-scaling damage source but not her only one. She also contributes direct damage and disruption.</p>
+        </div>
+        <div class="archetype-card archetype-partial">
+          <div class="archetype-match-label">Partial</div>
+          <div class="archetype-name">Disruption / Control</div>
+          <p class="archetype-note">Knockdown on emerge and ATK-Down from death explosions, but no hard CC chain or team-wide stun.</p>
+        </div>
+      </div>
+
+      <div class="guide-verdict-box">
+        <span class="guide-verdict-label">Clean Description</span>
+        A bruiser whose damage is partially externalized into three summons, with disruption as a side product.
+      </div>
+
+      <p class="guide-prose">
+        Her job in a fight is to create a targeting problem the enemy cannot cleanly solve. Focusing her means scorpions run free. Focusing scorpions means absorbing explosions and triggering her threshold heal. Ignoring both means sustained AoE and backline pressure from four simultaneous sources. She makes the enemy uncomfortable; she does not surgically remove them.
+      </p>
+    </section>
+
+    <!-- ========================================================
+         SECTION 5: SYNERGIES
+         ======================================================== -->
+    <section class="content-section" id="section-synergies">
+      <div class="section-label">Synergies</div>
+
+      <div class="synergy-tier-block">
+        <div class="synergy-tier-header synergy-tier-header--confirmed">
+          <span class="synergy-tier-name">Confirmed Partners</span>
+          <span class="synergy-tier-note">Directly validated in live play</span>
+        </div>
+        <div class="synergy-partner-list">
+          <div class="synergy-partner-card">
+            <div class="synergy-partner-portrait" style={`background-image:url(${R2_BASE}/heroes/nuwa.webp)`} role="img" aria-label="Nuwa"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Nuwa</div>
+              <p class="synergy-partner-desc">Serket's DR aura helps keep Nuwa alive at the frontline. Nuwa's passive triggers from Serket's positioning. They hold the frontline together, with Serket absorbing burst that would otherwise delete Nuwa.</p>
+            </div>
+          </div>
+          <div class="synergy-partner-card">
+            <div class="synergy-partner-portrait" style={`background-image:url(${R2_BASE}/heroes/nuba.webp)`} role="img" aria-label="Nuba"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Nuba</div>
+              <p class="synergy-partner-desc">Directly compatible with Serket's frontline bruiser role. Both apply sustained frontline pressure and compound well without competing for the same role.</p>
+            </div>
+          </div>
+          <div class="synergy-partner-card synergy-partner-card--energy">
+            <div class="synergy-partner-portrait synergy-partner-portrait--energy" role="img" aria-label="Energy Recovery Support"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Energy-Recovery Support</div>
+              <p class="synergy-partner-desc">Serket's entire kit depends on her ultimate cycle. Without energy generation support, scorpion uptime drops and her pressure window shrinks. An energy-recovery support (e.g. Caishen) is effectively mandatory.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="synergy-tier-block">
+        <div class="synergy-tier-header synergy-tier-header--strong">
+          <span class="synergy-tier-name">Strong Kit-Based Synergies</span>
+          <span class="synergy-tier-note">Logical mechanical interactions with high expected impact</span>
+        </div>
+        <div class="synergy-partner-list">
+          <div class="synergy-partner-card">
+            <div class="synergy-partner-portrait" style={`background-image:url(${R2_BASE}/heroes/cronus.webp)`} role="img" aria-label="Cronus"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Cronus</div>
+              <p class="synergy-partner-desc">Time Traveler double-casts the highest-CDR ally's active. Double-casting Burrowing Pierce doubles dive damage, the emerge shield, and potentially synchronizes scorpion dive timing. High impact if it works as described.</p>
+            </div>
+          </div>
+          <div class="synergy-partner-card">
+            <div class="synergy-partner-portrait" style={`background-image:url(${R2_BASE}/heroes/set.webp)`} role="img" aria-label="Set"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Set</div>
+              <p class="synergy-partner-desc">Set's lifesteal aura affects Serket and all three scorpions simultaneously. His armor shred amplifies physical output from Serket, the scorpions, and their explosions. Diamond faction bonus is available when running both.</p>
+            </div>
+          </div>
+          <div class="synergy-partner-card">
+            <div class="synergy-partner-portrait" style={`background-image:url(${R2_BASE}/heroes/athena.webp)`} role="img" aria-label="Athena"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Athena</div>
+              <p class="synergy-partner-desc">DR aura extends Serket's time on the surface. ATK speed buff scales the inherited stats of all three scorpions, directly increasing their DPS output.</p>
+            </div>
+          </div>
+          <div class="synergy-partner-card">
+            <div class="synergy-partner-portrait" style={`background-image:url(${R2_BASE}/heroes/momus.webp)`} role="img" aria-label="Momus"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Momus</div>
+              <p class="synergy-partner-desc">Continuous shielding protects Serket above ground, ensuring her threshold heal triggers from meaningful combat damage rather than chip. Shielding absorbs enough burst to prevent her immunity window from being bypassed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="synergy-tier-block">
+        <div class="synergy-tier-header synergy-tier-header--plausible">
+          <span class="synergy-tier-name">Plausible Interactions</span>
+          <span class="synergy-tier-note">Logical fit, no confirmed data</span>
+        </div>
+        <div class="synergy-partner-list">
+          <div class="synergy-partner-card">
+            <div class="synergy-partner-portrait" style={`background-image:url(${R2_BASE}/heroes/poseidon.webp)`} role="img" aria-label="Poseidon"></div>
+            <div class="synergy-partner-body">
+              <div class="synergy-partner-name">Poseidon</div>
+              <p class="synergy-partner-desc">Groups enemies together so every relic AoE tick and scorpion explosion hits more targets at once. The logic is sound but no live data confirms this pairing specifically for Serket.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 6: TEAM COMPOSITIONS
+         ======================================================== -->
+    <section class="content-section" id="section-teams">
+      <div class="section-label">Team Compositions</div>
+
+      <div class="team-comp-cards">
+
+        <div class="team-comp-card">
+          <div class="team-comp-header">
+            <span class="team-comp-name">Frontline Bruiser Team</span>
+            <span class="team-comp-badge team-comp-badge--recommended">Recommended</span>
+          </div>
+          <p class="team-comp-desc">
+            Built around the confirmed Nuba and Nuwa synergy. Serket and Nuwa anchor the frontline, with Serket's DR aura keeping Nuwa alive. Nuba adds frontline pressure. Energy support ensures Serket cycles her ultimate consistently. Flex slot for healer or revive.
+          </p>
+          <div class="team-comp-roster">
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/serket.webp)`} role="img" aria-label="Serket"></div>
+              <div class="team-slot-label">Serket</div>
+              <div class="team-slot-role">Frontline / Summons</div>
+            </div>
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/nuwa.webp)`} role="img" aria-label="Nuwa"></div>
+              <div class="team-slot-label">Nuwa</div>
+              <div class="team-slot-role">Frontline DPS</div>
+            </div>
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/nuba.webp)`} role="img" aria-label="Nuba"></div>
+              <div class="team-slot-label">Nuba</div>
+              <div class="team-slot-role">Frontline Pressure</div>
+            </div>
+            <div class="team-slot team-slot--flex">
+              <div class="team-slot-portrait team-slot-portrait--flex" role="img" aria-label="Energy Support"></div>
+              <div class="team-slot-label">Energy Support</div>
+              <div class="team-slot-role">e.g. Caishen</div>
+            </div>
+            <div class="team-slot team-slot--flex">
+              <div class="team-slot-portrait team-slot-portrait--flex" role="img" aria-label="Healer or Revive"></div>
+              <div class="team-slot-label">Sustain Flex</div>
+              <div class="team-slot-role">Mengpo or Iris</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-comp-card">
+          <div class="team-comp-header">
+            <span class="team-comp-name">Cronus Double-Cast Team</span>
+            <span class="team-comp-badge team-comp-badge--theory">Theory</span>
+          </div>
+          <p class="team-comp-desc">
+            Optimizes Serket's dive value by doubling Burrowing Pierce through Cronus's Time Traveler. Momus shields Serket above ground. Poseidon groups enemies into scorpion relic zones. Energy generation flex ensures ultimate cycle stays active.
+          </p>
+          <div class="team-comp-roster">
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/serket.webp)`} role="img" aria-label="Serket"></div>
+              <div class="team-slot-label">Serket</div>
+              <div class="team-slot-role">Main Pressure</div>
+            </div>
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/cronus.webp)`} role="img" aria-label="Cronus"></div>
+              <div class="team-slot-label">Cronus</div>
+              <div class="team-slot-role">Double-Cast</div>
+            </div>
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/momus.webp)`} role="img" aria-label="Momus"></div>
+              <div class="team-slot-label">Momus</div>
+              <div class="team-slot-role">Continuous Shield</div>
+            </div>
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/poseidon.webp)`} role="img" aria-label="Poseidon"></div>
+              <div class="team-slot-label">Poseidon</div>
+              <div class="team-slot-role">AoE Grouping</div>
+            </div>
+            <div class="team-slot team-slot--flex">
+              <div class="team-slot-portrait team-slot-portrait--flex" role="img" aria-label="Energy Flex"></div>
+              <div class="team-slot-label">Energy Flex</div>
+              <div class="team-slot-role">Caishen or Iris</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-comp-card">
+          <div class="team-comp-header">
+            <span class="team-comp-name">Diamond Faction Bonus</span>
+            <span class="team-comp-badge team-comp-badge--faction">Faction</span>
+          </div>
+          <p class="team-comp-desc">
+            Serket + Set + Aries gives a 3-Diamond core covering Nimble, buffer-warrior, and Hefty subtype roles. Add Bastet or Sekhmet for a 4-Diamond stacking lineup. Set's armor shred and lifesteal aura directly multiply Serket and the scorpions' output.
+          </p>
+          <div class="team-comp-roster">
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/serket.webp)`} role="img" aria-label="Serket"></div>
+              <div class="team-slot-label">Serket</div>
+              <div class="team-slot-role">Nimble Warrior</div>
+            </div>
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/set.webp)`} role="img" aria-label="Set"></div>
+              <div class="team-slot-label">Set</div>
+              <div class="team-slot-role">Buffer Warrior</div>
+            </div>
+            <div class="team-slot">
+              <div class="team-slot-portrait" style={`background-image:url(${R2_BASE}/heroes/aries.webp)`} role="img" aria-label="Aries"></div>
+              <div class="team-slot-label">Aries</div>
+              <div class="team-slot-role">Hefty Tank</div>
+            </div>
+            <div class="team-slot team-slot--flex">
+              <div class="team-slot-portrait team-slot-portrait--flex" role="img" aria-label="4th Diamond"></div>
+              <div class="team-slot-label">4th Diamond</div>
+              <div class="team-slot-role">Bastet or Sekhmet</div>
+            </div>
+            <div class="team-slot team-slot--flex">
+              <div class="team-slot-portrait team-slot-portrait--flex" role="img" aria-label="Support Flex"></div>
+              <div class="team-slot-label">Support</div>
+              <div class="team-slot-role">Energy + Sustain</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 7: GAME MODES
+         ======================================================== -->
+    <section class="content-section" id="section-modes">
+      <div class="section-label">Game Mode Performance</div>
+
+      <div class="mode-grid">
+        <div class="mode-row mode-row--header">
+          <span class="mode-col-name">Mode</span>
+          <span class="mode-col-rating">Rating</span>
+          <span class="mode-col-notes">Notes</span>
+        </div>
+        <div class="mode-row">
+          <span class="mode-col-name">PvP Defense</span>
+          <span class="mode-col-rating"><span class="mode-badge mode-badge--strong">Strong</span></span>
+          <span class="mode-col-notes">Board clutter forces attacker to split AoE. Backline pressure creates target dilemmas. Sustain absorbs burst trades.</span>
+        </div>
+        <div class="mode-row">
+          <span class="mode-col-name">PvP Offense</span>
+          <span class="mode-col-rating"><span class="mode-badge mode-badge--good">Good</span></span>
+          <span class="mode-col-notes">Backline dive pressures enemy carries. Less explosive than pure assassins but significantly more durable in extended fights.</span>
+        </div>
+        <div class="mode-row">
+          <span class="mode-col-name">PvE Wave Clear</span>
+          <span class="mode-col-rating"><span class="mode-badge mode-badge--good">Good</span></span>
+          <span class="mode-col-notes">Summons and relic AoE handle wave health passively. Knockdown on emerge assists progression through dense enemy groups.</span>
+        </div>
+        <div class="mode-row">
+          <span class="mode-col-name">Boss / Single Target</span>
+          <span class="mode-col-rating"><span class="mode-badge mode-badge--moderate">Moderate</span></span>
+          <span class="mode-col-notes">Most of her value is AoE-spread. Scorpions against a single boss provide chip damage but no critical single-target mechanic.</span>
+        </div>
+        <div class="mode-row">
+          <span class="mode-col-name">Tower / Progression</span>
+          <span class="mode-col-rating"><span class="mode-badge mode-badge--good">Good</span></span>
+          <span class="mode-col-notes">Sustain stack handles extended battles. The permanent HP buff compounds across waves within a session.</span>
+        </div>
+        <div class="mode-row">
+          <span class="mode-col-name">Odyssey</span>
+          <span class="mode-col-rating"><span class="mode-badge mode-badge--good">Good</span></span>
+          <span class="mode-col-notes">Self-sustaining bruiser kits historically scale well across long campaign chains. Threshold HP buff compounds in long sessions.</span>
+        </div>
+        <div class="mode-row">
+          <span class="mode-col-name">Delusions Den</span>
+          <span class="mode-col-rating"><span class="mode-badge mode-badge--unknown">Unknown</span></span>
+          <span class="mode-col-notes">Summons and relic AoE suit attrition-style blessings. Threshold heal fits wave-survival. No confirmed data available yet.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 8: PVP + COUNTERS
+         ======================================================== -->
+    <section class="content-section" id="section-pvp">
+      <div class="section-label">PvP Performance and Counters</div>
+
+      <p class="guide-prose">
+        Three scorpions plus Serket create a four-unit presence that forces the enemy into a no-win targeting situation. AoE clearing the scorpions triggers three simultaneous explosions and ATK-Down stacks. Ignoring them produces 240% ATK/sec sustained board damage and backline dives. Single-targeting them one by one consumes three consecutive immunity procs at Relic Lv.4. Meanwhile, Serket dives the backline, applies a knockdown, and emerges with a shield. The enemy carry is never safe.
+      </p>
+
+      <div class="guide-section-sub">What She Does Well in PvP</div>
+      <ul class="guide-strength-list">
+        <li>Board clutter creates targeting confusion -- enemy AoE must choose between heroes and scorpions</li>
+        <li>ATK-Down from scorpion explosions weakens every enemy DPS hero for 10 seconds</li>
+        <li>Threshold heal and permanent HP buff mean burst compositions need to commit fully to kill her</li>
+        <li>Backline reach pressures the enemy carry without sacrificing frontline durability</li>
+      </ul>
+
+      <div class="guide-section-sub">Counters</div>
+      <div class="counter-grid">
+        <div class="counter-card">
+          <div class="counter-type">Heavy AoE</div>
+          <div class="counter-examples">Hecate (10s channel), Skadi</div>
+          <p class="counter-why">Wide damage hits Serket directly through the scorpion mass. High-volume AoE absorbs explosion value but still kills her.</p>
+        </div>
+        <div class="counter-card">
+          <div class="counter-type">Untargetable Opener</div>
+          <div class="counter-examples">Nyx</div>
+          <p class="counter-why">Nyx arrives behind the backline before Serket can dive. She cannot respond to a combat-start repositioning she hasn't reached yet.</p>
+        </div>
+        <div class="counter-card">
+          <div class="counter-type">Hard CC on Emerge</div>
+          <div class="counter-examples">Any stun or knockdown landing on emerge</div>
+          <p class="counter-why">Serket commits to her emerge position. A hard CC window landing precisely on emerge nullifies her knockdown and leaves her exposed.</p>
+        </div>
+        <div class="counter-card">
+          <div class="counter-type">Energy Drain</div>
+          <div class="counter-examples">Pan</div>
+          <p class="counter-why">Stops her ultimate cycle entirely. No scorpions means no scorpion value, no explosions, no AoE -- the entire kit structure collapses without ult access.</p>
+        </div>
+        <div class="counter-card">
+          <div class="counter-type">Execute Threshold</div>
+          <div class="counter-examples">Anubis (r20)</div>
+          <p class="counter-why">Execute at below 5% HP can trigger through invincible skill windows. If her threshold heal lands her at low HP, the execute range overlaps dangerously.</p>
+        </div>
+        <div class="counter-card">
+          <div class="counter-type">True Damage</div>
+          <div class="counter-examples">Jormungandr (stored true damage state)</div>
+          <p class="counter-why">Bypasses her HP-based survival math entirely. Her DR layers and immunity windows do not protect against true damage calculations.</p>
+        </div>
+        <div class="counter-card">
+          <div class="counter-type">Debuff Cleanse</div>
+          <div class="counter-examples">Mengpo</div>
+          <p class="counter-why">Strips ATK-Down from scorpion explosions before it takes effect, nullifying one of the key team-debuff components of her kit.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SECTION 9: BUILD GUIDE
+         ======================================================== -->
+    <section class="content-section" id="section-build">
+      <div class="section-label">Build Guide</div>
+
+      <div class="build-tabs-wrapper">
+
+        <div class="build-block">
+          <div class="build-block-header">
+            <span class="build-block-name">Build A -- Summon Scaling</span>
+            <span class="build-block-tag">Recommended Primary</span>
+          </div>
+          <p class="guide-prose">
+            ATK scales her own damage, each scorpion's damage, all relic AoE ticks, all explosion damage, and her per-second underground heal. Max HP directly multiplies scorpion HP pools and the permanent threshold bonus. CDR gets her ultimate cycle back faster, increasing scorpion uptime and underground heal windows.
+          </p>
+          <div class="stat-priority-list">
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--1">1</span>
+              <span class="stat-priority-name">ATK</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill" style="width:100%"></div></div>
+              <span class="stat-priority-note">Scales all damage sources including the underground heal</span>
+            </div>
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--2">2</span>
+              <span class="stat-priority-name">Max HP</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill" style="width:82%"></div></div>
+              <span class="stat-priority-note">Scorpions inherit HP; threshold bonus multiplies from max HP</span>
+            </div>
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--3">3</span>
+              <span class="stat-priority-name">Cooldown Haste</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill" style="width:64%"></div></div>
+              <span class="stat-priority-note">More ult cycles = more scorpion uptime and more underground heal</span>
+            </div>
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--4">4</span>
+              <span class="stat-priority-name">Lifesteal</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill" style="width:46%"></div></div>
+              <span class="stat-priority-note">Pairs with constant relic AoE ticks for extra sustained healing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="build-block build-block--alt">
+          <div class="build-block-header">
+            <span class="build-block-name">Build B -- Disruptive Bruiser</span>
+            <span class="build-block-tag build-block-tag--alt">For CC-Heavy Comps</span>
+          </div>
+          <p class="guide-prose">
+            For compositions built around crowd control and disruption chains. Effect Hit ensures ATK-Down from scorpion explosions lands on resistant targets. CDR is elevated to maximize knockdown frequency from Burrowing Pierce.
+          </p>
+          <div class="stat-priority-list">
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--1">1</span>
+              <span class="stat-priority-name">ATK</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill stat-priority-bar-fill--alt" style="width:100%"></div></div>
+              <span class="stat-priority-note">Still the primary damage multiplier for all sources</span>
+            </div>
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--2">2</span>
+              <span class="stat-priority-name">Cooldown Haste</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill stat-priority-bar-fill--alt" style="width:85%"></div></div>
+              <span class="stat-priority-note">Maximize knockdown frequency on Burrowing Pierce</span>
+            </div>
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--3">3</span>
+              <span class="stat-priority-name">Effect Hit</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill stat-priority-bar-fill--alt" style="width:68%"></div></div>
+              <span class="stat-priority-note">Ensures ATK-Down lands on targets with high effect resistance</span>
+            </div>
+            <div class="stat-priority-row">
+              <span class="stat-priority-rank stat-priority-rank--4">4</span>
+              <span class="stat-priority-name">Max HP</span>
+              <div class="stat-priority-bar-track"><div class="stat-priority-bar-fill stat-priority-bar-fill--alt" style="width:50%"></div></div>
+              <span class="stat-priority-note">Still important for survivability and scorpion inheritance</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="guide-section-sub">Relic Investment Milestones</div>
+      <div class="relic-milestone-table">
+        <div class="relic-row relic-row--header">
+          <span class="relic-col-level">Level</span>
+          <span class="relic-col-what">What You Gain</span>
+          <span class="relic-col-priority">Priority</span>
+        </div>
+        <div class="relic-row">
+          <span class="relic-col-level"><span class="relic-lv-pill relic-lv-pill--base">Lv.1</span></span>
+          <span class="relic-col-what">Relic AoE on Serket -- ticks damage to surrounding enemies each second</span>
+          <span class="relic-col-priority">Functional baseline</span>
+        </div>
+        <div class="relic-row">
+          <span class="relic-col-level"><span class="relic-lv-pill relic-lv-pill--lv2">Lv.2</span></span>
+          <span class="relic-col-what">Personal damage immunity -- absorbs one large hit, then DR window activates. Once per 12 seconds.</span>
+          <span class="relic-col-priority">Recommended minimum</span>
+        </div>
+        <div class="relic-row relic-row--spike">
+          <span class="relic-col-level"><span class="relic-lv-pill relic-lv-pill--lv3">Lv.3</span></span>
+          <span class="relic-col-what">Each scorpion also ticks AoE every second -- three scorpions combine for up to 240% ATK/sec board-wide</span>
+          <span class="relic-col-priority">Major damage spike</span>
+        </div>
+        <div class="relic-row relic-row--spike">
+          <span class="relic-col-level"><span class="relic-lv-pill relic-lv-pill--lv4">Lv.4</span></span>
+          <span class="relic-col-what">Each scorpion gains its own immunity proc -- three independent save windows make clean scorpion removal very difficult</span>
+          <span class="relic-col-priority">Maximum investment</span>
+        </div>
+      </div>
+
+      <div class="guide-section-sub">Virtues</div>
+      <p class="guide-prose">
+        Prioritize 4-piece sets with ATK% or HP% bonuses -- both stats directly multiply scorpion inheritance. For the 2-piece slot, choose Lifesteal (for sustained healing via relic ticks) or CDR depending on build preference. Avoid pure crit-DPS virtue sets; the kit has no crit-amplifying scaling mechanics.
+      </p>
+    </section>
+
+    <!-- ========================================================
+         SECTION 10: VERDICT
+         ======================================================== -->
+    <section class="content-section" id="section-verdict">
+      <div class="section-label">Verdict</div>
+
+      <p class="guide-prose">
+        Serket is genuinely strong. Five simultaneous value layers from a single ultimate, a survivability system with two independent save cycles, and a board presence that punishes every enemy response. The hype is justified, but the context matters: she is a frontline bruiser-summoner that requires the right infrastructure to perform. Without energy-recovery support, her ultimate cycle stalls. Without meaningful relic investment -- especially Lv.3 -- her scorpion damage is modest.
+      </p>
+
+      <div class="verdict-tier-grid">
+        <div class="verdict-tier-card">
+          <div class="verdict-context">Overall</div>
+          <div class="verdict-rating verdict-rating--a">A / A+</div>
+        </div>
+        <div class="verdict-tier-card">
+          <div class="verdict-context">PvP</div>
+          <div class="verdict-rating verdict-rating--aplus">A+</div>
+          <div class="verdict-sub">Potential S in synergy lobbies</div>
+        </div>
+        <div class="verdict-tier-card">
+          <div class="verdict-context">PvE / Wave Clear</div>
+          <div class="verdict-rating verdict-rating--a">A</div>
+        </div>
+        <div class="verdict-tier-card">
+          <div class="verdict-context">Boss / Single Target</div>
+          <div class="verdict-rating verdict-rating--bplus">B+</div>
+        </div>
+        <div class="verdict-tier-card">
+          <div class="verdict-context">Relic Dependency</div>
+          <div class="verdict-rating verdict-rating--medium">Medium-High</div>
+          <div class="verdict-sub">Real spikes at Lv.3 and Lv.4</div>
+        </div>
+        <div class="verdict-tier-card">
+          <div class="verdict-context">Investment Confidence</div>
+          <div class="verdict-rating verdict-rating--medium">Medium-High</div>
+        </div>
+      </div>
+
+      <div class="guide-section-sub">What She Does Well</div>
+      <ul class="guide-strength-list">
+        <li>Five simultaneous value layers from a single ultimate cast -- more than most heroes combine in an entire kit</li>
+        <li>Self-sufficient survivability means no dedicated healer is required for her to stay alive</li>
+        <li>Backline pressure without sacrificing frontline durability -- she does both roles simultaneously</li>
+        <li>Punishes every enemy response to her scorpions, whether killed or ignored</li>
+      </ul>
+
+      <div class="guide-section-sub">Where She Is Limited</div>
+      <ul class="guide-weakness-list">
+        <li>No execute -- she chips and disrupts but relies on teammates to secure kills</li>
+        <li>No combat-start opener -- first wave of enemy actives lands before she is in position</li>
+        <li>Boss single-target damage is modest -- AoE spread value is largely wasted against one target</li>
+        <li>Fully dependent on ultimate cycle -- energy drain opponents shut down her entire kit structure</li>
+      </ul>
+
+      <div class="guide-verdict-box guide-verdict-box--bottom">
+        <span class="guide-verdict-label">Investment Recommendation</span>
+        Recommended if building around Diamond faction or wanting a durable frontline carry that doubles as sustained board pressure. Relic Lv.3 and Lv.4 are the true scaling gates. Target Lv.2 as a minimum, push Lv.3 if she becomes a core pick, and commit to Lv.4 only with long-term investment confidence.
+      </div>
+
+    </section>
+
+  </main>
+</div>
+</Base>
+
+<style>
+/* =============================================
+   PAGE FOUNDATION (mirrors [id].astro)
+   ============================================= */
+.hero-page {
+  --faction-a: #e2b858;
+  --faction-b: #b8963a;
+  --faction-glow: rgba(226,184,88,0.18);
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+/* =============================================
+   HERO PAGE HEADER
+   ============================================= */
+.hero-page-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-overlay);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  background: rgba(7, 6, 12, 0.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.page-back {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: var(--transition-colors);
+  flex-shrink: 0;
+}
+.page-back svg { width: 16px; height: 16px; }
+.page-back:hover { color: var(--text-primary); }
+
+.page-hero-name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  text-align: center;
+  flex: 1;
+  padding: 0 var(--space-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-page-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.hdr-rating {
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-wide);
+}
+
+.hdr-calc-link {
+  font-size: 0.78rem;
+  font-weight: var(--weight-semibold);
+  color: var(--faction-a);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--faction-a);
+  border-radius: var(--radius-md);
+  opacity: 0.85;
+  transition: var(--transition-colors);
+}
+.hdr-calc-link:hover { opacity: 1; background: var(--bg-raised); }
+
+/* =============================================
+   SHOWCASE
+   ============================================= */
+.showcase {
+  position: relative;
+  width: 100%;
+  height: 88vh;
+  min-height: 520px;
+  max-height: 900px;
+  overflow: hidden;
+}
+
+.showcase-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.showcase-art {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 14%;
+  background-repeat: no-repeat;
+  transform: scale(1.04);
+  transition: transform 8s ease-out;
+}
+.showcase:hover .showcase-art { transform: scale(1); }
+
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(7,6,12,0.25) 0%, transparent 30%, transparent 50%, rgba(7,6,12,0.92) 85%, rgba(7,6,12,1) 100%),
+    linear-gradient(to right, rgba(7,6,12,0.35) 0%, transparent 40%);
+}
+
+.showcase-identity {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 0 var(--space-10) var(--space-10);
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+}
+
+.guide-kicker {
+  font-size: 0.7rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--faction-a);
+  margin-bottom: var(--space-2);
+  opacity: 0.8;
+}
+
+.showcase-name {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: var(--weight-black);
+  line-height: 1.0;
+  color: var(--text-bright);
+  margin: 0 0 var(--space-4);
+  text-shadow: 0 4px 32px rgba(0,0,0,0.6);
+  letter-spacing: -0.02em;
+}
+
+.showcase-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: rgba(0,0,0,0.45);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-bright);
+  backdrop-filter: blur(8px);
+}
+.id-badge-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+.rarity-badge {
+  border-color: var(--faction-a);
+  color: var(--faction-a);
+}
+
+.guide-showcase-tagline {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin: var(--space-3) 0 0;
+  max-width: 520px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.showcase-scroll-hint {
+  position: absolute;
+  bottom: var(--space-4);
+  right: var(--space-10);
+  z-index: 10;
+  animation: bounce 2s ease-in-out infinite;
+  color: var(--text-disabled);
+}
+.showcase-scroll-hint svg { width: 20px; height: 20px; }
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* =============================================
+   FLOATING DOT NAV
+   ============================================= */
+.dot-nav {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-sticky);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dot-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  flex-direction: row-reverse;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--border-medium);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--duration-fast) ease;
+  flex-shrink: 0;
+}
+
+.dot-label {
+  font-size: 0.72rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  background: rgba(0,0,0,0.7);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
+  pointer-events: none;
+}
+
+.dot-nav-item:hover .dot-label,
+.dot-nav-item.active .dot-label { opacity: 1; transform: translateX(0); }
+.dot-nav-item:hover .dot,
+.dot-nav-item.active .dot {
+  background: var(--faction-a);
+  border-color: var(--faction-a);
+  box-shadow: 0 0 8px var(--faction-a);
+}
+
+@media (max-width: 1100px) { .dot-nav { display: none; } }
+
+/* =============================================
+   SCROLL CONTENT + SECTIONS
+   ============================================= */
+.scroll-content {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6) 100px;
+}
+
+.content-section {
+  scroll-margin-top: 72px;
+  padding: 64px 0 var(--space-4);
+  border-bottom: 1px solid var(--border-faint);
+}
+.content-section:last-child { border-bottom: none; }
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--faction-a);
+  margin-bottom: var(--space-7);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--faction-a), transparent);
+  opacity: 0.35;
+}
+
+/* =============================================
+   GUIDE PROSE
+   ============================================= */
+.guide-prose {
+  font-size: 0.94rem;
+  line-height: 1.72;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-6);
+  max-width: 72ch;
+}
+
+.guide-section-sub {
+  font-size: 0.75rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+  margin: var(--space-8) 0 var(--space-4);
+}
+
+/* =============================================
+   SECTION 1: VALUE LAYERS
+   ============================================= */
+.value-layers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.value-layer-card {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  padding: var(--space-5);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--duration-fast);
+}
+.value-layer-card:hover { border-color: var(--border-subtle); }
+
+.value-layer-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--faction-a), var(--faction-b));
+  color: #1a1a1a;
+  font-size: 0.85rem;
+  font-weight: var(--weight-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.value-layer-body { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.value-layer-title {
+  font-size: 0.82rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  letter-spacing: 0.01em;
+}
+
+.value-layer-desc {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.guide-identity-card {
+  border-color: var(--border-subtle);
+  border-left-width: 3px;
+  border-left-color: var(--faction-a);
+}
+
+/* mechanic-card already defined in components.css */
+.mechanic-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--faction-a);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+.mechanic-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+.mechanic-title {
+  font-size: 0.72rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--faction-a);
+}
+.mechanic-summary {
+  margin: 0;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* =============================================
+   SECTION 2: SUMMONS -- RELIC MILESTONE STRIP
+   ============================================= */
+.milestone-strip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin: 0 0 var(--space-8);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+}
+
+.milestone-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 0 var(--space-2);
+}
+
+.milestone-badge {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+}
+.milestone-base { background: var(--bg-overlay); border: 1px solid var(--border-medium); color: var(--text-muted); }
+.milestone-lv2  { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); color: #34d399; }
+.milestone-lv3  { background: rgba(226,184,88,0.15); border: 1px solid rgba(226,184,88,0.35); color: var(--faction-a); }
+.milestone-lv4  { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #d8b4fe; }
+
+.milestone-label {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.milestone-connector {
+  flex-shrink: 0;
+  width: 32px;
+  height: 2px;
+  background: var(--border-subtle);
+  margin-top: 18px;
+  align-self: flex-start;
+}
+
+/* Scenario Cards */
+.scenario-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.scenario-action-card {
+  padding: var(--space-5);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: border-color var(--duration-fast);
+}
+.scenario-action-card:hover { border-color: rgba(226,184,88,0.25); }
+
+.scenario-action {
+  font-size: 0.8rem;
+  font-weight: var(--weight-bold);
+  color: var(--faction-a);
+  line-height: 1.3;
+}
+
+.scenario-result {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* =============================================
+   SECTION 3: SURVIVABILITY
+   ============================================= */
+.sustain-layers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.sustain-layer {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-faint);
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sustain-layer--relic   { border-left: 3px solid #34d399; }
+.sustain-layer--passive { border-left: 3px solid var(--faction-a); }
+.sustain-layer--emerge  { border-left: 3px solid #60a5fa; }
+.sustain-layer--scorpion { border-left: 3px solid #a78bfa; }
+
+.sustain-layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.sustain-layer-name {
+  font-size: 0.82rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+}
+
+.sustain-trigger-label {
+  font-size: 0.68rem;
+  font-weight: var(--weight-medium);
+  color: var(--text-disabled);
+  font-style: italic;
+}
+
+.sustain-layer-desc {
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.guide-comparison-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.guide-compare-card {
+  padding: var(--space-4);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.guide-compare-card--highlight {
+  border-color: rgba(226,184,88,0.35);
+  background: rgba(226,184,88,0.04);
+}
+
+.guide-compare-label {
+  font-size: 0.72rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-muted);
+}
+.guide-compare-card--highlight .guide-compare-label { color: var(--faction-a); }
+
+.guide-compare-value {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* =============================================
+   SECTION 4: ARCHETYPE
+   ============================================= */
+.archetype-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
+}
+
+.archetype-card {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-faint);
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.archetype-partial { border-top: 2px solid rgba(226,184,88,0.45); }
+.archetype-no      { border-top: 2px solid rgba(107,114,128,0.35); }
+
+.archetype-match-label {
+  font-size: 0.65rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+}
+.archetype-partial .archetype-match-label { color: var(--faction-a); }
+
+.archetype-name {
+  font-size: 0.92rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+}
+
+.archetype-note {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.guide-verdict-box {
+  padding: var(--space-5) var(--space-6);
+  background: rgba(226,184,88,0.06);
+  border: 1px solid rgba(226,184,88,0.28);
+  border-radius: var(--radius-lg);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.guide-verdict-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--faction-a);
+  margin-bottom: var(--space-2);
+}
+
+/* =============================================
+   SECTION 5: SYNERGIES
+   ============================================= */
+.synergy-tier-block {
+  margin-bottom: var(--space-10);
+}
+
+.synergy-tier-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.synergy-tier-name {
+  font-size: 0.82rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+}
+
+.synergy-tier-note {
+  font-size: 0.72rem;
+  color: var(--text-disabled);
+  font-style: italic;
+}
+
+.synergy-tier-header--confirmed .synergy-tier-name { color: #34d399; }
+.synergy-tier-header--strong .synergy-tier-name { color: var(--faction-a); }
+.synergy-tier-header--plausible .synergy-tier-name { color: var(--text-secondary); }
+
+/* === Nuwa comparison grid === */
+.guide-section-sub {
+  font-size: 0.78rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faction-a);
+  margin: var(--space-8) 0 var(--space-4);
+}
+
+.nuwa-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border-faint);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 0.82rem;
+}
+
+.nuwa-compare-header {
+  background: var(--bg-overlay);
+  padding: var(--space-3) var(--space-4);
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  text-align: center;
+}
+
+.nuwa-compare-header:first-child {
+  background: var(--bg-elevated);
+}
+
+.nuwa-compare-label {
+  background: var(--bg-raised);
+  padding: var(--space-3) var(--space-4);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+}
+
+.nuwa-compare-cell {
+  background: var(--bg-base);
+  padding: var(--space-3) var(--space-4);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.nuwa-compare-cell--highlight {
+  color: var(--faction-a);
+  font-weight: var(--weight-semibold);
+}
+
+/* === Verdict callout box === */
+.guide-verdict-box {
+  padding: var(--space-5) var(--space-6);
+  background: var(--bg-raised);
+  border-left: 3px solid var(--faction-a);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.guide-verdict-box--spaced {
+  margin-top: var(--space-5);
+}
+
+.guide-verdict-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faction-a);
+  margin-bottom: var(--space-2);
+}
+
+.synergy-partner-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.synergy-partner-card {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+  padding: var(--space-5);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: border-color var(--duration-fast);
+}
+.synergy-partner-card:hover { border-color: var(--border-subtle); }
+
+.synergy-partner-portrait {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background-size: cover;
+  background-position: center top;
+  border: 2px solid var(--border-medium);
+  background-color: var(--bg-overlay);
+}
+
+.synergy-partner-portrait--energy {
+  background-image: none;
+  background: linear-gradient(135deg, var(--bg-overlay), var(--border-faint));
+}
+
+.synergy-partner-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.synergy-partner-name {
+  font-size: 0.88rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+}
+
+.synergy-partner-desc {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* =============================================
+   SECTION 6: TEAM COMPS
+   ============================================= */
+.team-comp-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.team-comp-card {
+  padding: var(--space-6);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+}
+
+.team-comp-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.team-comp-name {
+  font-size: 1rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+}
+
+.team-comp-badge {
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.team-comp-badge--recommended { background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.35); color: #34d399; }
+.team-comp-badge--theory       { background: rgba(226,184,88,0.12); border: 1px solid rgba(226,184,88,0.3); color: var(--faction-a); }
+.team-comp-badge--faction      { background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.3); color: #d8b4fe; }
+
+.team-comp-desc {
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-5);
+}
+
+.team-comp-roster {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.team-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  min-width: 80px;
+  max-width: 110px;
+}
+
+.team-slot-portrait {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background-size: cover;
+  background-position: center top;
+  border: 2px solid var(--border-medium);
+  background-color: var(--bg-overlay);
+}
+
+.team-slot--flex .team-slot-portrait,
+.team-slot-portrait--flex {
+  background: linear-gradient(135deg, var(--bg-overlay), var(--border-faint));
+  border-style: dashed;
+  border-color: var(--border-subtle);
+}
+
+.team-slot-label {
+  font-size: 0.72rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.team-slot-role {
+  font-size: 0.65rem;
+  color: var(--text-disabled);
+  text-align: center;
+}
+
+/* =============================================
+   SECTION 7: GAME MODES
+   ============================================= */
+.mode-grid {
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.mode-row {
+  display: grid;
+  grid-template-columns: 160px 110px 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-faint);
+}
+.mode-row:last-child { border-bottom: none; }
+
+.mode-row--header {
+  background: var(--bg-overlay);
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+  padding: var(--space-3) var(--space-5);
+}
+.mode-row:not(.mode-row--header):hover { background: var(--bg-raised); }
+
+.mode-col-name {
+  font-size: 0.84rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+}
+
+.mode-col-rating { display: flex; }
+
+.mode-col-notes {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.mode-badge {
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+}
+.mode-badge--strong   { background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.3); color: #34d399; }
+.mode-badge--good     { background: rgba(96,165,250,0.15); border: 1px solid rgba(96,165,250,0.3); color: #93c5fd; }
+.mode-badge--moderate { background: rgba(226,184,88,0.12); border: 1px solid rgba(226,184,88,0.3); color: var(--faction-a); }
+.mode-badge--unknown  { background: var(--bg-overlay); border: 1px solid var(--border-medium); color: var(--text-disabled); }
+
+/* =============================================
+   SECTION 8: PVP + COUNTERS
+   ============================================= */
+.guide-strength-list,
+.guide-weakness-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.guide-strength-list li,
+.guide-weakness-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-raised);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-faint);
+}
+
+.guide-strength-list li::before {
+  content: "+";
+  flex-shrink: 0;
+  font-weight: var(--weight-black);
+  color: #34d399;
+  margin-top: 1px;
+}
+
+.guide-weakness-list li::before {
+  content: "-";
+  flex-shrink: 0;
+  font-weight: var(--weight-black);
+  color: #f87171;
+  margin-top: 1px;
+}
+
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.counter-card {
+  padding: var(--space-5);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-top: 2px solid rgba(248,113,113,0.35);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.counter-type {
+  font-size: 0.8rem;
+  font-weight: var(--weight-bold);
+  color: #f87171;
+}
+
+.counter-examples {
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.counter-why {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* =============================================
+   SECTION 9: BUILD GUIDE
+   ============================================= */
+.build-tabs-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+}
+
+.build-block {
+  padding: var(--space-6);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  border-top: 3px solid var(--faction-a);
+}
+
+.build-block--alt {
+  border-top-color: #818cf8;
+}
+
+.build-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.build-block-name {
+  font-size: 0.92rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+}
+
+.build-block-tag {
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding: 2px var(--space-2);
+  background: rgba(226,184,88,0.12);
+  border: 1px solid rgba(226,184,88,0.3);
+  border-radius: var(--radius-md);
+  color: var(--faction-a);
+}
+.build-block-tag--alt {
+  background: rgba(129,140,248,0.12);
+  border-color: rgba(129,140,248,0.3);
+  color: #818cf8;
+}
+
+.stat-priority-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.stat-priority-row {
+  display: grid;
+  grid-template-columns: 22px 110px 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.stat-priority-rank {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: var(--weight-black);
+  flex-shrink: 0;
+}
+.stat-priority-rank--1 { background: linear-gradient(135deg, var(--faction-a), var(--faction-b)); color: #1a1a1a; }
+.stat-priority-rank--2 { background: var(--bg-overlay); border: 1px solid var(--border-medium); color: var(--text-secondary); }
+.stat-priority-rank--3 { background: var(--bg-overlay); border: 1px solid var(--border-faint); color: var(--text-muted); }
+.stat-priority-rank--4 { background: var(--bg-overlay); border: 1px solid var(--border-faint); color: var(--text-disabled); }
+
+.stat-priority-name {
+  font-size: 0.8rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+}
+
+.stat-priority-bar-track {
+  height: 4px;
+  background: var(--border-faint);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.stat-priority-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--faction-a), var(--faction-b));
+  border-radius: var(--radius-full);
+}
+.stat-priority-bar-fill--alt {
+  background: linear-gradient(90deg, #818cf8, #6366f1);
+}
+
+.stat-priority-note {
+  font-size: 0.7rem;
+  color: var(--text-disabled);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+/* Relic milestone table */
+.relic-milestone-table {
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-8);
+}
+
+.relic-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 130px;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border-faint);
+}
+.relic-row:last-child { border-bottom: none; }
+
+.relic-row--header {
+  background: var(--bg-overlay);
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+  padding: var(--space-3) var(--space-5);
+}
+
+.relic-row--spike { background: rgba(226,184,88,0.03); }
+
+.relic-col-level { display: flex; }
+.relic-col-what {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.relic-col-priority {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.relic-row--spike .relic-col-priority { color: var(--faction-a); font-weight: var(--weight-semibold); }
+
+.relic-lv-pill {
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+}
+.relic-lv-pill--base { background: var(--bg-overlay); border: 1px solid var(--border-medium); color: var(--text-muted); }
+.relic-lv-pill--lv2  { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+.relic-lv-pill--lv3  { background: rgba(226,184,88,0.15); border: 1px solid rgba(226,184,88,0.3); color: var(--faction-a); }
+.relic-lv-pill--lv4  { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3); color: #d8b4fe; }
+
+/* =============================================
+   SECTION 10: VERDICT
+   ============================================= */
+.verdict-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.verdict-tier-card {
+  padding: var(--space-5);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.verdict-context {
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-disabled);
+}
+
+.verdict-rating {
+  font-size: 1.6rem;
+  font-weight: var(--weight-black);
+  line-height: 1;
+}
+.verdict-rating--a      { color: var(--faction-a); }
+.verdict-rating--aplus  { background: linear-gradient(135deg, var(--faction-a), #f0c97a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.verdict-rating--bplus  { color: #60a5fa; }
+.verdict-rating--medium { font-size: 1.1rem; color: var(--text-secondary); }
+
+.verdict-sub {
+  font-size: 0.68rem;
+  color: var(--text-disabled);
+  line-height: 1.3;
+}
+
+.guide-verdict-box--bottom {
+  margin-top: var(--space-6);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 900px) {
+  .build-tabs-wrapper { grid-template-columns: 1fr; }
+  .guide-comparison-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .scroll-content { padding: 0 var(--space-4) 80px; }
+  .showcase-identity { padding: 0 var(--space-5) var(--space-8); }
+  .mode-row { grid-template-columns: 1fr; gap: var(--space-2); }
+  .mode-row--header { display: none; }
+  .relic-row { grid-template-columns: 70px 1fr; }
+  .relic-col-priority { display: none; }
+  .stat-priority-row { grid-template-columns: 22px 90px 1fr; }
+  .stat-priority-note { display: none; }
+  .team-comp-roster { gap: var(--space-3); }
+}
+</style>
+
+<script>
+// Dot nav active-section tracking
+const navItems = document.querySelectorAll('.dot-nav-item');
+const sections = document.querySelectorAll('.content-section[id]');
+
+function updateActiveNav() {
+  let activeId = '';
+  sections.forEach((sec) => {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= 120) activeId = sec.id;
+  });
+  navItems.forEach((item) => {
+    const target = item.getAttribute('data-section');
+    item.classList.toggle('active', target === activeId);
+  });
+}
+
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
+</script>

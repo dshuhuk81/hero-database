@@ -45,7 +45,7 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Sand Shadow Scorpions",
+      "name": "Thousand Sand Shadows",
       "description": "Serket burrows underground and summons 3 scorpions around herself. The scorpions inherit 100% of Serket's base stats but take increased damage, persisting for a duration.",
       "upgrades": {
         "level2": "Summoned scorpions' duration increased.",
@@ -57,7 +57,7 @@
     },
     {
       "id": "skill_2",
-      "name": "Underground Pierce",
+      "name": "Burrowing Pierce",
       "description": "Serket locks onto the farthest enemy, burrows underground and digs a tunnel toward them, dealing damage to enemies along the path. Upon emerging from the ground, knocks down surrounding enemies.",
       "upgrades": {
         "level2": "Damage dealt increased.",
@@ -68,7 +68,7 @@
     },
     {
       "id": "skill_3",
-      "name": "Scorpion Toxic Burst",
+      "name": "Venomblast Demise",
       "description": "When summoned scorpions die or disappear, they explode, dealing damage to enemies within a radius and reducing their attack power for a duration.",
       "upgrades": {
         "level2": "Damage dealt increased.",
@@ -79,7 +79,7 @@
     },
     {
       "id": "skill_4",
-      "name": "Underground Regeneration",
+      "name": "Burrowing Rebirth",
       "description": "While Serket is burrowed underground, she recovers HP every second. When Serket's HP first drops below a percentage of her max HP, she immediately burrows underground for a duration and permanently increases her max HP by a percentage.",
       "upgrades": {
         "level2": "HP recovered per second while underground increased.",
@@ -90,7 +90,7 @@
     }
   ],
   "relic": {
-    "name": "Toxic Miasma Domain",
+    "name": "Venomous Domain",
     "description": "Serket deals damage to surrounding enemies every second.",
     "upgrades": {
       "level2": "When receiving damage exceeding a percentage of her max HP, she becomes immune to that hit and takes reduced damage for the following duration. Triggers at most once every 12 seconds.",
@@ -99,9 +99,5 @@
     }
   },
   "synergies": [
-    "SUMMON",
-    "AREA_DAMAGE_DEALER",
-    "ATK_DOWN",
-    "SELF_SUSTAIN"
   ]
 }
