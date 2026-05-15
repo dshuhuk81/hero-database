@@ -67,7 +67,7 @@ function skillBadgeClass(badge: string): string {
   return "skill-badge badge-skill";
 }
 
-const releasedGuides = guides.filter((g) => getHeroById(g.id)?.release === true);
+const releasedGuides = guides.filter((g) => import.meta.env.DEV || getHeroById(g.id)?.release === true);
 ---
 
 <Base title="Guides | Motto Immortal">

@@ -7,7 +7,7 @@ import { heroes } from "../data/heroes";
 import accountBonusesConfig from "../data/accountBonuses.json";
 
 const sortedHeroes = [...heroes]
-  .filter(hero => hero.release !== false)
+  .filter(hero => import.meta.env.DEV || hero.release !== false)
   .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
 
 const defaultHeroA = sortedHeroes.find((hero) => hero.id === "nuba") || sortedHeroes[0];

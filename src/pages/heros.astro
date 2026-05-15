@@ -9,9 +9,9 @@ import Filter from "../components/filter.astro";
 
 /* Alphabetisch nach Name sortieren */
 
-// Only show released heroes
+// In dev (localhost) show all heroes; in production hide unreleased ones
 const sortedHeroes = [...heroes]
-  .filter(hero => hero.release !== false)
+  .filter(hero => import.meta.env.DEV || hero.release !== false)
   .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
 /* No need for escapeRegExp anymore */
 

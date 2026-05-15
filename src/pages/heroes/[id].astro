@@ -12,9 +12,11 @@ import allVirtues from "../../data/virtues.json";
 import allInvest from "../../data/ratings/invest.json";
 /* STATIC PATHS */
 export function getStaticPaths() {
-  return heroes.map((hero) => ({
-    params: { id: hero.id },
-  }));
+  return heroes
+    .filter((hero) => import.meta.env.DEV || (hero as any).release !== false)
+    .map((hero) => ({
+      params: { id: hero.id },
+    }));
 }
 
 const { id } = Astro.params;

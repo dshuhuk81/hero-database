@@ -823,31 +823,28 @@
       }
     ]
   },
-  "audhumla": {
-    "id": "audhumla",
-    "name": "Audhumla",
-    "image": "/heroes/placeholder.png",
+  "eden": {
+    "id": "eden",
+    "name": "Eden",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/eden.webp",
     "release": false,
-    "faction": "Diamonds",
-    "role": "Nimble",
-    "class": "Archer",
+    "faction": "Hearts",
+    "role": "Arcane",
+    "class": "Support",
     "rarity": "Legendary",
     "description": "",
-    "recommendedRelicLevel": 30,
     "evolution": "Divine V",
     "level": 300,
-    "baseAttackRate": 0,
-    "bossUltimatesPer90s": 0,
     "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
-      "dodgeRate": 0,
+      "might": 631000,
+      "hp": 2384964,
+      "atk": 210169,
+      "armor": 36550,
+      "magicRes": 32703,
+      "dodgeRate": 6,
       "hitBonus": 0,
-      "critRate": 0,
-      "critRes": 0,
+      "critRate": 4,
+      "critRes": 6,
       "critDmgBonus": 0,
       "critDmgRed": 0,
       "energy": 0,
@@ -871,61 +868,67 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "End-Oath Lock",
-        "description": "Passive: Audhumla has a shorter Basic ATK interval. Active: She reloads her weapon and locks onto the nearest enemy target for a duration, gaining ATK SPD but becoming unable to cast active skills. When this skill is cast, she locks onto one target. If the target moves out of her attack range, she will move until the target is within attack range. If the target becomes hidden, untargetable, or dies, she automatically switches targets.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Gains DMG Reduction during the duration.",
-          "level3": "Gains Lifesteal during the duration.",
-          "level4": "Increases Basic ATK and base skill DMG."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical",
+        "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Primordial Repulsion",
-        "description": "When an enemy is within a certain range, Audhumla deals DMG equal to a percentage of ATK to the nearest target and knocks them back to the edge of the battlefield. When there are no enemy units within that range, she fires a laser at the nearest target, dealing DMG equal to a percentage of ATK to units along the path.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "When enemies are within range, increases DMG dealt to the nearest target.",
-          "level3": "When firing the laser, increases DMG dealt to units along the path.",
-          "level4": "Further increases laser DMG dealt to units along the path."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       },
       {
         "id": "skill_3",
-        "name": "Constant Sequence Blades",
-        "description": "When continuously attacking the same target, Audhumla overloads her weapon. Each attack increases her ATK SPD, stacking up to a limit. If she switches targets, the additional ATK SPD is cleared.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Increases the ATK SPD gained per attack.",
-          "level3": "Further increases the ATK SPD gained per attack.",
-          "level4": "Greatly increases the ATK SPD gained per attack."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "Triple-Life Judgment",
-        "description": "Every third consecutive Basic ATK against the same enemy deals additional true DMG equal to a percentage of the target's max HP. This true DMG cannot exceed a percentage of Audhumla's ATK. Switching targets removes this effect.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Increases the max HP true DMG ratio and its cap.",
-          "level3": "Further increases the max HP true DMG ratio and its cap.",
-          "level4": "Greatly increases the max HP true DMG ratio and its cap."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       }
     ],
     "relic": {
-      "name": "Final Demise",
-      "description": "When Audhumla is about to die, she enters the [Overload] state. In [Overload], she cannot die for a duration and gains increased ATK SPD, but cannot cast active skills. When the state ends, she dies. [Inevitable Death]: Death cannot be avoided by any means, but the unit can still be revived. [Undying]: The unit cannot die, but can still take DMG, be targeted, and be controlled.",
-      "damageType": "Physical",
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
       "upgrades": {
-        "level2": "In [Overload], gains additional ATK SPD.",
-        "level3": "In [Overload], gains Lifesteal.",
-        "level4": "Increases the max HP true DMG ratio and cap of Triple-Life Judgment."
+        "level2": "",
+        "level3": "",
+        "level4": ""
       }
     },
-    "synergies": []
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
   },
   "bastet": {
     "id": "bastet",
@@ -2132,20 +2135,17 @@
     "class": "Archer",
     "rarity": "Legendary",
     "description": "",
-    "recommendedRelicLevel": 30,
     "evolution": "Divine V",
     "level": 300,
-    "baseAttackRate": 0,
-    "bossUltimatesPer90s": 0,
     "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
-      "dodgeRate": 0,
+      "might": 632000,
+      "hp": 1696744,
+      "atk": 232292,
+      "armor": 31741,
+      "magicRes": 28855,
+      "dodgeRate": 6,
       "hitBonus": 0,
-      "critRate": 0,
+      "critRate": 10,
       "critRes": 0,
       "critDmgBonus": 0,
       "critDmgRed": 0,
@@ -2170,65 +2170,67 @@
     "skills": [
       {
         "id": "skill_1",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/eris_skill_1.png",
-        "name": "Win Half Against Heaven",
-        "description": "Reads the battlefield and switches stance based on unit count. If friendly unit count >= enemy unit count: switches to Execute stance and grants an ATK Speed boost for a duration. If friendly unit count < enemy unit count: switches to Yield stance and grants an ATK Speed boost for a duration.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Deals damage to all enemy units equal to a percentage of their highest ATK.",
-          "level3": "Execute stance grants a greater ATK increase amplitude on attacks.",
-          "level4": "Yield stance additionally grants a basic attack damage boost for a duration."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical",
+        "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/eris_skill_2.png",
-        "name": "Swift Control, Slow Response",
-        "description": "At battle start, designates the frontmost ally as the White piece (damage received reduced) and the rearmost ally as the Black piece (damage dealt increased). When White advances into enemy territory it converts to Black; when Black is approached by an enemy it converts to White. Each swap triggers once per field.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Black piece damage bonus percentage increased.",
-          "level3": "When a unit swaps designation, it gains a shield based on a percentage of Jiutian's ATK.",
-          "level4": "White piece damage reduction effect increased."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
         "damageType": ""
       },
       {
         "id": "skill_3",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/eris_skill_3.png",
-        "name": "Tactical Interception",
-        "description": "Fires at multiple targets nearest to her, dealing a percentage of ATK as damage (hits the same target multiple times if fewer targets than projectiles). If target's current energy is below Jiutian's: recovers own energy. If target's current energy is equal to or above Jiutian's: drains target's energy.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Energy recovered when target energy is below Jiutian's is further increased.",
-          "level3": "Energy drained when target energy is equal to or above Jiutian's is further increased.",
-          "level4": "Energy drain when target energy is equal to or above Jiutian's becomes significantly larger."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       },
       {
         "id": "skill_4",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/eris_skill_4.png",
-        "name": "Enter the Game",
-        "description": "When Jiutian Xuannv receives an attack, she summons the Taiji Formation for a duration. During the formation, all incoming damage is 100% nullified and accumulated. After the formation ends, she fires at the nearest enemy dealing the accumulated damage. This skill has a cooldown.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Skill cooldown slightly reduced.",
-          "level3": "Skill cooldown greatly reduced.",
-          "level4": "Continuously gains higher damage nullification during the formation."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       }
     ],
     "relic": {
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/eris_relic.png",
-      "name": "Strike the Void, Hit the Real",
-      "description": "Strengthens Execute and Yield stances. Execute: each attack additionally deals bonus damage based on own ATK and target's max HP (capped). Yield: the first attacks after entering Yield stance deal bonus damage based on own ATK and target's lost HP (capped).",
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
       "upgrades": {
-        "level2": "When Enter the Game activates and hits are received, gains energy and resets the formation cooldown (proc chance).",
-        "level3": "The Enter the Game cooldown reset becomes guaranteed instead of chance-based.",
-        "level4": "Execute and Yield stance damage ratios and upper limits are further increased."
+        "level2": "",
+        "level3": "",
+        "level4": ""
       }
     },
-    "synergies": []
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
   },
   "fengyi": {
     "id": "fengyi",
@@ -2657,6 +2659,220 @@
     "baseAttackRate": 0.591,
     "bossUltimatesPer90s": 5
   },
+  "hades": {
+    "id": "hades",
+    "name": "Hades",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hades.webp",
+    "release": false,
+    "faction": "Starglint",
+    "role": "Nimble",
+    "class": "Warrior",
+    "rarity": "Legendary",
+    "description": "",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 825000,
+      "hp": 3025341,
+      "atk": 273594,
+      "armor": 47352,
+      "magicRes": 47352,
+      "dodgeRate": 0,
+      "hitBonus": 10,
+      "critRate": 6,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
+  },
+  "hebo": {
+    "id": "hebo",
+    "name": "Hebo",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hebo.webp",
+    "release": false,
+    "faction": "Spades",
+    "role": "Hefty",
+    "class": "Warrior",
+    "rarity": "Legendary",
+    "description": "",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 631000,
+      "hp": 2212308,
+      "atk": 214074,
+      "armor": 37397,
+      "magicRes": 31857,
+      "dodgeRate": 0,
+      "hitBonus": 10,
+      "critRate": 6,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
+  },
   "hecate": {
     "id": "hecate",
     "name": "Hecate",
@@ -2841,6 +3057,113 @@
         ]
       }
     ]
+  },
+  "heket": {
+    "id": "heket",
+    "name": "Heket",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heket.webp",
+    "release": false,
+    "faction": "Clubs",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 632000,
+      "hp": 2101693,
+      "atk": 187782,
+      "armor": 51940,
+      "magicRes": 55788,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 4,
+      "critRes": 6,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
   },
   "hela": {
     "id": "hela",
@@ -3137,24 +3460,25 @@
   "hera": {
     "id": "hera",
     "name": "Hera",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp",
+    "release": false,
     "faction": "Starglint",
     "role": "Arcane",
-    "release": false,
     "class": "Support",
     "rarity": "Legendary",
     "description": "",
     "evolution": "Divine V",
     "level": 300,
     "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
+      "might": 824000,
+      "hp": 2398911,
+      "atk": 293467,
+      "armor": 40013,
+      "magicRes": 46169,
       "dodgeRate": 0,
       "hitBonus": 0,
-      "critRate": 0,
-      "critRes": 0,
+      "critRate": 10,
+      "critRes": 6,
       "critDmgBonus": 0,
       "critDmgRed": 0,
       "energy": 0,
@@ -3185,7 +3509,7 @@
           "level3": "",
           "level4": ""
         },
-        "damageType": "Support",
+        "damageType": "",
         "isUltimate": true
       },
       {
@@ -3197,7 +3521,7 @@
           "level3": "",
           "level4": ""
         },
-        "damageType": "Support"
+        "damageType": ""
       },
       {
         "id": "skill_3",
@@ -3208,7 +3532,7 @@
           "level3": "",
           "level4": ""
         },
-        "damageType": "Support"
+        "damageType": ""
       },
       {
         "id": "skill_4",
@@ -3219,31 +3543,26 @@
           "level3": "",
           "level4": ""
         },
-        "damageType": "Support"
+        "damageType": ""
       }
     ],
+    "relic": {
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
     "synergies": [],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
-    "strengths": [
-      "Dual-axis control: simultaneously buffs friendly carry (Crown's Bestowal) and disables enemy carry (Fatal Infatuation) in the same rotation",
-      "Charm redirection converts the most dangerous enemy auto-attacker into a source of friendly fire - value scales with the strength of the charmed target",
-      "Royal Domain provides passive Energy regeneration, enabling faster Ultimate cycles than most supports without external Energy support",
-      "Charm Seal Relic stacks Effect Resistance reduction after each control event, making all subsequent CC more reliable as the fight progresses",
-      "Relic Lv3 adds Energy Denial to Charm - a hard counter to Ultimate-dependent enemy carries",
-      "Self-heal from Fatal Infatuation provides partial sustain without requiring a dedicated healer slot",
-      "Royal Domain Lv4 pseudo-revival acts as a survival safety net equivalent in concept to Skadi's Relic Lv2",
-      "CN community rates her as a stronger, more modern variant of Pan - indicating high competitive ceiling"
-    ],
-    "weaknesses": [
-      "Heavily gated by Relic investment - considered significantly stronger at Relic Lv3 and above; weaker at low investment levels",
-      "Charm and Obsession both fail against high Effect Resistance targets, CC-immune enemies, or Cleanse abilities",
-      "Value drops sharply against multi-carry or balanced teams without a dominant single DPS to disable",
-      "Crown's Bestowal requires the team to have a clear highest-ATK carry to benefit - unfocused team builds dilute the buff",
-      "Boss and PvE content with CC-immune enemies strips most of her kit value, leaving only the carry buff",
-      "Burst compositions that eliminate Hera before she completes a second control cycle prevent the Charm Seal stack from compounding",
-      "Still early meta: exact Relic breakpoints and dupe value remain under-documented (data as of March 2026)"
-    ]
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
   },
   "heracles": {
     "id": "heracles",
@@ -3642,116 +3961,6 @@
       "depthRating": "low",
       "commonlyMisunderstood": false
     }
-  },
-  "idun": {
-    "id": "idun",
-    "name": "Idun",
-    "image": "/heroes/placeholder.png",
-    "release": false,
-    "faction": "Hearts",
-    "role": "Arcane",
-    "class": "Support",
-    "rarity": "Legendary",
-    "description": "Idun.",
-    "recommendedRelicLevel": 0,
-    "evolution": "Divine V",
-    "level": 300,
-    "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
-      "dodgeRate": 0,
-      "hitBonus": 0,
-      "critRate": 0,
-      "critRes": 0,
-      "critDmgBonus": 0,
-      "critDmgRed": 0,
-      "energy": 0,
-      "cooldownHaste": 0,
-      "atkSpdBonus": 0,
-      "pDmgBonus": 0,
-      "pDmgRed": 0,
-      "mDmgBonus": 0,
-      "mDmgRed": 0,
-      "healEff": 0,
-      "rechargeEff": 0,
-      "lifestealEff": 0,
-      "reflectEff": 0,
-      "effectRes": 0,
-      "effectHit": 0,
-      "controlRes": 0,
-      "controlBonus": 0,
-      "normalSkillPWR": 0,
-      "ultimatePWR": 0
-    },
-    "skills": [
-      {
-        "id": "skill_1",
-        "name": "Eternal Oath",
-        "type": "Ultimate",
-        "description": "Grants the frontmost ally a shield based on a percentage of Idun's ATK and reduces damage taken for a duration. Prioritizes allies with Golden Apple.",
-        "upgrades": {
-          "level2": "Increases duration of shield and damage reduction.",
-          "level3": "Increases damage reduction effect.",
-          "level4": "Further increases shield scaling based on ATK."
-        }
-      },
-      {
-        "id": "skill_2",
-        "name": "Fruit of Eternity",
-        "type": "Relic Passive",
-        "description": "If the Ultimate targets an ally with Golden Apple, grants additional ATK based on Idun's stats for a duration.",
-        "upgrades": {
-          "level2": "Also grants Crit Chance during the duration.",
-          "level3": "Also grants Overpower effect.",
-          "level4": "Also grants additional Lifesteal."
-        }
-      },
-      {
-        "id": "skill_3",
-        "name": "Life Awakening",
-        "type": "Active",
-        "description": "Heals the weakest ally based on Idun's ATK and the target’s lost HP. Can additionally trigger once on allies with Golden Apple.",
-        "upgrades": {
-          "level2": "Increases healing based on ATK.",
-          "level3": "Increases healing based on missing HP.",
-          "level4": "Further increases overall healing scaling."
-        }
-      },
-      {
-        "id": "skill_4",
-        "name": "Divine Protection",
-        "type": "Passive",
-        "description": "Upon near death, Idun summons a massive Golden Apple shield that converts max HP into sustain over time. Triggers once per battle.",
-        "upgrades": {
-          "level2": "Increases shield strength.",
-          "level3": "Reduces damage taken during the effect.",
-          "level4": "Further increases shield strength."
-        }
-      }
-    ],
-    "relic": {
-      "name": "Divine Sharing (神性共享)",
-      "description": "At battle start, grants the nearest frontline ally Golden Apple, providing a percentage of Idun’s base stats (ATK, HP, Armor, M-RES). While the target is alive, Idun takes reduced damage.",
-      "upgrades": {
-        "level2": "Increases stat transfer ratio.",
-        "level3": "Further reduces damage taken while Golden Apple target is alive.",
-        "level4": "Further increases stat transfer ratio."
-      }
-    },
-    "synergies": [
-      "BUFF_TEAM",
-      "DAMAGE_REDUCTION_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "DMG_RED",
-      "HEAL",
-      "SHIELD"
-    ],
-    "baseAttackRate": 0.935,
-    "bossUltimatesPer90s": 10
   },
   "iris": {
     "id": "iris",
@@ -4197,30 +4406,27 @@
       }
     ]
   },
-  "jiutian-xuannv": {
-    "id": "jiutian-xuannv",
+  "jiutianxuannv": {
+    "id": "jiutianxuannv",
     "name": "Jiutian Xuannv",
-    "image": "/heroes/placeholder.png",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutianxuannv.webp",
     "release": false,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Archer",
     "rarity": "Legendary",
-    "description": "A board-control archer who switches between Execute and Yield stances based on battlefield state, drains enemy energy, and converts incoming damage into counter-strikes via the Taiji Formation.",
-    "recommendedRelicLevel": 30,
+    "description": "",
     "evolution": "Divine V",
     "level": 300,
-    "baseAttackRate": 0,
-    "bossUltimatesPer90s": 0,
     "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
-      "dodgeRate": 0,
+      "might": 632000,
+      "hp": 1842179,
+      "atk": 231186,
+      "armor": 25970,
+      "magicRes": 31704,
+      "dodgeRate": 6,
       "hitBonus": 0,
-      "critRate": 0,
+      "critRate": 10,
       "critRes": 0,
       "critDmgBonus": 0,
       "critDmgRed": 0,
@@ -4245,115 +4451,67 @@
     "skills": [
       {
         "id": "skill_1",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_1.png",
-        "name": "Win Half Against Heaven",
-        "description": "Reads the battlefield and switches stance based on unit count. If friendly unit count >= enemy unit count: switches to Execute stance and grants an ATK Speed boost for a duration. If friendly unit count < enemy unit count: switches to Yield stance and grants an ATK Speed boost for a duration.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Deals damage to all enemy units equal to a percentage of their highest ATK.",
-          "level3": "Execute stance grants a greater ATK increase amplitude on attacks.",
-          "level4": "Yield stance additionally grants a basic attack damage boost for a duration."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical",
+        "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_2.png",
-        "name": "Swift Control, Slow Response",
-        "description": "At battle start, designates the frontmost ally as the White piece (damage received reduced) and the rearmost ally as the Black piece (damage dealt increased). When White advances into enemy territory it converts to Black; when Black is approached by an enemy it converts to White. Each swap triggers once per field.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Black piece damage bonus percentage increased.",
-          "level3": "When a unit swaps designation, it gains a shield based on a percentage of Jiutian's ATK.",
-          "level4": "White piece damage reduction effect increased."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
         "damageType": ""
       },
       {
         "id": "skill_3",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_3.png",
-        "name": "Tactical Interception",
-        "description": "Fires at multiple targets nearest to her, dealing a percentage of ATK as damage (hits the same target multiple times if fewer targets than projectiles). If target's current energy is below Jiutian's: recovers own energy. If target's current energy is equal to or above Jiutian's: drains target's energy.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Energy recovered when target energy is below Jiutian's is further increased.",
-          "level3": "Energy drained when target energy is equal to or above Jiutian's is further increased.",
-          "level4": "Energy drain when target energy is equal to or above Jiutian's becomes significantly larger."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       },
       {
         "id": "skill_4",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_skill_4.png",
-        "name": "Enter the Game",
-        "description": "When Jiutian Xuannv receives an attack, she summons the Taiji Formation for a duration. During the formation, all incoming damage is 100% nullified and accumulated. After the formation ends, she fires at the nearest enemy dealing the accumulated damage. This skill has a cooldown.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Skill cooldown slightly reduced.",
-          "level3": "Skill cooldown greatly reduced.",
-          "level4": "Continuously gains higher damage nullification during the formation."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       }
     ],
     "relic": {
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/jiutian_xuannv_relic.png",
-      "name": "Strike the Void, Hit the Real",
-      "description": "Strengthens Execute and Yield stances. Execute: each attack additionally deals bonus damage based on own ATK and target's max HP (capped). Yield: the first attacks after entering Yield stance deal bonus damage based on own ATK and target's lost HP (capped).",
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
       "upgrades": {
-        "level2": "When Enter the Game activates and hits are received, gains energy and resets the formation cooldown (proc chance).",
-        "level3": "The Enter the Game cooldown reset becomes guaranteed instead of chance-based.",
-        "level4": "Execute and Yield stance damage ratios and upper limits are further increased."
+        "level2": "",
+        "level3": "",
+        "level4": ""
       }
     },
-    "synergies": [
-      "ATK_SPD_UP",
-      "ENERGY_DRAIN",
-      "AREA_DAMAGE_DEALER",
-      "CROWD_CONTROL"
-    ],
-    "virtueSets": [
-      {
-        "label": "Insight",
-        "comment": "",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2"
-        ]
-      }
-    ],
-    "strengths": [
-      "Flexible dual-stance system adapts to board state automatically - Execute for ramp, Yield for cleanup",
-      "Energy manipulation via Tactical Interception adds genuine disruption value beyond raw damage, especially in boss and PvE content",
-      "Enter the Game converts enemy aggression into counter-damage, punishing sustained multi-hit patterns",
-      "Scales strongly in longer PvE fights where mode cycling, energy drain compounding, and Relic bonuses all have time to stack",
-      "High relevance in Clubs Tower (梅花塔) and push content - CN community explicitly notes she reduces difficulty there",
-      "Relic offers clear functional breakpoints: immediate damage at Lv1, reliable defensive loop at Lv3",
-      "CN reports suggest she can exceed comparable carries in specific high-damage ranking setups"
-    ],
-    "weaknesses": [
-      "Heavily position-dependent - White/Black piece designation requires intentional team construction; cannot be blind-slotted",
-      "Team-dependent as a carry; CN community notes she requires significant investment and teammate support as a solo carry",
-      "Enter the Game is bypassed by hard one-shot burst before the Taiji Formation activates",
-      "Stance switch logic is automated by unit count - in a losing fight she may enter Yield mode when Execute pressure is more needed",
-      "PvP ceiling less established than PvE; CN sources focus primarily on tower and boss content",
-      "Underperforms early game without proper positioning and team support in place"
-    ]
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
   },
   "jormungandr": {
     "id": "jormungandr",
@@ -5555,6 +5713,113 @@
       "commonlyMisunderstood": false
     }
   },
+  "nephtys": {
+    "id": "nephtys",
+    "name": "Nephtys",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nephtys.webp",
+    "release": false,
+    "faction": "Spades",
+    "role": "Hefty",
+    "class": "Warrior",
+    "rarity": "Legendary",
+    "description": "",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 632000,
+      "hp": 2322923,
+      "atk": 209072,
+      "armor": 39821,
+      "magicRes": 32895,
+      "dodgeRate": 0,
+      "hitBonus": 10,
+      "critRate": 6,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
+  },
   "nezha": {
     "id": "nezha",
     "name": "Nezha",
@@ -5887,28 +6152,25 @@
   "nut": {
     "id": "nut",
     "name": "Nut",
-    "image": "/heroes/placeholder.png",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nut.webp",
     "release": false,
     "faction": "Spades",
     "role": "Arcane",
     "class": "Mage",
     "rarity": "Legendary",
     "description": "",
-    "recommendedRelicLevel": 30,
     "evolution": "Divine V",
     "level": 300,
-    "baseAttackRate": 0,
-    "bossUltimatesPer90s": 0,
     "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
+      "might": 632000,
+      "hp": 18119864,
+      "atk": 231512,
+      "armor": 24469,
+      "magicRes": 33703,
       "dodgeRate": 0,
       "hitBonus": 0,
-      "critRate": 0,
-      "critRes": 0,
+      "critRate": 10,
+      "critRes": 6,
       "critDmgBonus": 0,
       "critDmgRed": 0,
       "energy": 0,
@@ -5932,65 +6194,67 @@
     "skills": [
       {
         "id": "skill_1",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nut_skill_1.png",
-        "name": "Win Half Against Heaven",
-        "description": "Reads the battlefield and switches stance based on unit count. If friendly unit count >= enemy unit count: switches to Execute stance and grants an ATK Speed boost for a duration. If friendly unit count < enemy unit count: switches to Yield stance and grants an ATK Speed boost for a duration.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Deals damage to all enemy units equal to a percentage of their highest ATK.",
-          "level3": "Execute stance grants a greater ATK increase amplitude on attacks.",
-          "level4": "Yield stance additionally grants a basic attack damage boost for a duration."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical",
+        "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nut_skill_2.png",
-        "name": "Swift Control, Slow Response",
-        "description": "At battle start, designates the frontmost ally as the White piece (damage received reduced) and the rearmost ally as the Black piece (damage dealt increased). When White advances into enemy territory it converts to Black; when Black is approached by an enemy it converts to White. Each swap triggers once per field.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Black piece damage bonus percentage increased.",
-          "level3": "When a unit swaps designation, it gains a shield based on a percentage of Jiutian's ATK.",
-          "level4": "White piece damage reduction effect increased."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
         "damageType": ""
       },
       {
         "id": "skill_3",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nut_skill_3.png",
-        "name": "Tactical Interception",
-        "description": "Fires at multiple targets nearest to her, dealing a percentage of ATK as damage (hits the same target multiple times if fewer targets than projectiles). If target's current energy is below Jiutian's: recovers own energy. If target's current energy is equal to or above Jiutian's: drains target's energy.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Energy recovered when target energy is below Jiutian's is further increased.",
-          "level3": "Energy drained when target energy is equal to or above Jiutian's is further increased.",
-          "level4": "Energy drain when target energy is equal to or above Jiutian's becomes significantly larger."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       },
       {
         "id": "skill_4",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nut_skill_4.png",
-        "name": "Enter the Game",
-        "description": "When Jiutian Xuannv receives an attack, she summons the Taiji Formation for a duration. During the formation, all incoming damage is 100% nullified and accumulated. After the formation ends, she fires at the nearest enemy dealing the accumulated damage. This skill has a cooldown.",
+        "name": "",
+        "description": "",
         "upgrades": {
-          "level2": "Skill cooldown slightly reduced.",
-          "level3": "Skill cooldown greatly reduced.",
-          "level4": "Continuously gains higher damage nullification during the formation."
+          "level2": "",
+          "level3": "",
+          "level4": ""
         },
-        "damageType": "Physical"
+        "damageType": ""
       }
     ],
     "relic": {
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/nut_relic.png",
-      "name": "Strike the Void, Hit the Real",
-      "description": "Strengthens Execute and Yield stances. Execute: each attack additionally deals bonus damage based on own ATK and target's max HP (capped). Yield: the first attacks after entering Yield stance deal bonus damage based on own ATK and target's lost HP (capped).",
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
       "upgrades": {
-        "level2": "When Enter the Game activates and hits are received, gains energy and resets the formation cooldown (proc chance).",
-        "level3": "The Enter the Game cooldown reset becomes guaranteed instead of chance-based.",
-        "level4": "Execute and Yield stance damage ratios and upper limits are further increased."
+        "level2": "",
+        "level3": "",
+        "level4": ""
       }
     },
-    "synergies": []
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    }
   },
   "nuwa": {
     "id": "nuwa",
@@ -7308,7 +7572,7 @@
     "id": "serket",
     "name": "Serket",
     "faction": "Diamonds",
-    "role": "Nimble",
+    "role": "Hefty",
     "release": false,
     "class": "Warrior",
     "rarity": "Legendary",
@@ -7319,14 +7583,14 @@
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "stats": {
-      "might": 0,
-      "hp": 0,
-      "atk": 0,
-      "armor": 0,
-      "magicRes": 0,
+      "might": 631000,
+      "hp": 3064047,
+      "atk": 200069,
+      "armor": 24238,
+      "magicRes": 38089,
       "dodgeRate": 0,
-      "hitBonus": 0,
-      "critRate": 0,
+      "hitBonus": 10,
+      "critRate": 6,
       "critRes": 0,
       "critDmgBonus": 0,
       "critDmgRed": 0,
@@ -7351,7 +7615,7 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Sand Shadow Scorpions",
+        "name": "Thousand Sand Shadows",
         "description": "Serket burrows underground and summons 3 scorpions around herself. The scorpions inherit 100% of Serket's base stats but take increased damage, persisting for a duration.",
         "upgrades": {
           "level2": "Summoned scorpions' duration increased.",
@@ -7363,7 +7627,7 @@
       },
       {
         "id": "skill_2",
-        "name": "Underground Pierce",
+        "name": "Burrowing Pierce",
         "description": "Serket locks onto the farthest enemy, burrows underground and digs a tunnel toward them, dealing damage to enemies along the path. Upon emerging from the ground, knocks down surrounding enemies.",
         "upgrades": {
           "level2": "Damage dealt increased.",
@@ -7374,7 +7638,7 @@
       },
       {
         "id": "skill_3",
-        "name": "Scorpion Toxic Burst",
+        "name": "Venomblast Demise",
         "description": "When summoned scorpions die or disappear, they explode, dealing damage to enemies within a radius and reducing their attack power for a duration.",
         "upgrades": {
           "level2": "Damage dealt increased.",
@@ -7385,7 +7649,7 @@
       },
       {
         "id": "skill_4",
-        "name": "Underground Regeneration",
+        "name": "Burrowing Rebirth",
         "description": "While Serket is burrowed underground, she recovers HP every second. When Serket's HP first drops below a percentage of her max HP, she immediately burrows underground for a duration and permanently increases her max HP by a percentage.",
         "upgrades": {
           "level2": "HP recovered per second while underground increased.",
@@ -7396,7 +7660,7 @@
       }
     ],
     "relic": {
-      "name": "Toxic Miasma Domain",
+      "name": "Venomous Domain",
       "description": "Serket deals damage to surrounding enemies every second.",
       "upgrades": {
         "level2": "When receiving damage exceeding a percentage of her max HP, she becomes immune to that hit and takes reduced damage for the following duration. Triggers at most once every 12 seconds.",
@@ -7404,12 +7668,7 @@
         "level4": "When each summoned scorpion receives damage exceeding a percentage of its max HP, it becomes immune to that hit and takes reduced damage for a duration. Triggers at most once every 12 seconds."
       }
     },
-    "synergies": [
-      "SUMMON",
-      "AREA_DAMAGE_DEALER",
-      "ATK_DOWN",
-      "SELF_SUSTAIN"
-    ]
+    "synergies": []
   },
   "set": {
     "id": "set",
