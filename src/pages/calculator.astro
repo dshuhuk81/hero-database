@@ -5,6 +5,7 @@ import PageHero from "../components/PageHero.astro";
 import LevelGapDamageCalculator from "../components/LevelGapDamageCalculator.astro";
 import { heroes } from "../data/heroes";
 import accountBonusesConfig from "../data/accountBonuses.json";
+import { getPageUpdate } from "../utils/getPageUpdate";
 
 const sortedHeroes = [...heroes]
   .filter(hero => import.meta.env.DEV || hero.release !== false)
@@ -14,9 +15,6 @@ const defaultHeroA = sortedHeroes.find((hero) => hero.id === "nuba") || sortedHe
 const defaultHeroB = sortedHeroes.find((hero) => hero.id !== defaultHeroA.id) || sortedHeroes[0];
 
 const bonusPresets = accountBonusesConfig.presets;
-
-
-import { getPageUpdate } from "../utils/getPageUpdate";
 const pageUpdate = getPageUpdate("calculator");
 ---
 
@@ -65,9 +63,9 @@ const pageUpdate = getPageUpdate("calculator");
     <div class="tldr-box">
       <h3 class="tldr-title">How This Works</h3>
       <ul class="tldr-list">
-        <li><strong>Base values only:</strong> All numbers assume Level 300, Divine V, no items — raw hero power.</li>
+        <li><strong>Base values only:</strong> All numbers assume Level 300, Divine V, no items -- raw hero power.</li>
         <li><strong>Model A vs B:</strong> Two different damage mitigation formulas. Model A is simpler (flat reduction), Model B uses diminishing returns. Neither is confirmed as the exact in-game formula.</li>
-        <li><strong>K/C factors</strong> in Advanced Settings control mitigation strength — higher K = more damage reduced. Leave defaults unless you're theory-crafting.</li>
+        <li><strong>K/C factors</strong> in Advanced Settings control mitigation strength -- higher K = more damage reduced. Leave defaults unless you're theory-crafting.</li>
         <li><strong>Account Bonuses</strong> lets you simulate having extra stats from account progression (VIP, research, etc.).</li>
       </ul>
     </div>
