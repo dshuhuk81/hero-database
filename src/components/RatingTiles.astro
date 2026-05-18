@@ -3,6 +3,8 @@ type Ratings = {
   overall?: string | null;
   pvp?: string | null;
   pve?: string | null;
+  pveEarly?: string | null;
+  pveLate?: string | null;
 };
 
 interface Props {
@@ -10,19 +12,21 @@ interface Props {
 }
 
 const { ratings = {} } = Astro.props;
-const ratingCategories = [
+const singleCategories = [
   { key: "overall", label: "Overall" },
   { key: "pvp", label: "PvP" },
-  { key: "pve", label: "PvE" },
 ] as const;
 
 function tierClass(value: string) {
   return value ? value.toLowerCase().replace(/\+/g, "plus") : "na";
 }
+
+const pveEarly = ratings?.pveEarly || "";
+const pveLate = ratings?.pveLate || ratings?.pve || "";
 ---
 
 <div class="big-rating-tiles">
-  {ratingCategories.map((cat) => {
+  {singleCategories.map((cat) => {
     const val = ratings?.[cat.key] || "";
     return (
       <div class={`big-rating-tile rating-tile-${tierClass(val)}`}>
@@ -31,6 +35,22 @@ function tierClass(value: string) {
       </div>
     );
   })}
+
+  <div class="big-rating-tile big-rating-tile-split">
+    <div class="pve-split-row">
+      <span class={`pve-split-cell rating-tile-${tierClass(pveEarly)}`}>
+        <span class="big-rating-val pve-split-val">{pveEarly || "N/A"}</span>
+      </span>
+      <span class="pve-split-divider"></span>
+      <span class={`pve-split-cell rating-tile-${tierClass(pveLate)}`}>
+        <span class="big-rating-val pve-split-val">{pveLate || "N/A"}</span>
+      </span>
+    </div>
+    <div class="pve-split-labels">
+      <span class="big-rating-label">PvE Early</span>
+      <span class="big-rating-label">PvE Late</span>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -41,12 +61,13 @@ function tierClass(value: string) {
     margin-bottom: var(--space-6);
   }
 
+  /* Two deterministic rows: value (flexible, centered) + label (fixed).
+     Equal tile heights -> equal value rows -> values align across tiles. */
   .big-rating-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    justify-items: center;
+    gap: var(--space-4);
     padding: var(--space-7) var(--space-4);
     border-radius: var(--radius-xl);
     border: 1px solid var(--border-subtle);
@@ -58,14 +79,49 @@ function tierClass(value: string) {
     transform: translateY(-3px);
   }
 
+  .big-rating-tile-split {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  /* value row */
   .big-rating-val {
+    align-self: center;
     font-size: 3rem;
     font-weight: var(--weight-black);
     line-height: 1;
     letter-spacing: 0;
   }
 
+  .pve-split-row {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
+  .pve-split-cell {
+    display: flex;
+    justify-content: center;
+    flex: 1 1 0;
+  }
+
+  .pve-split-divider {
+    width: 1px;
+    height: 2.4rem;
+    flex: 0 0 auto;
+    background: var(--border-subtle);
+  }
+
+  .pve-split-val {
+    font-size: 2.4rem;
+  }
+
+  /* label row */
   .big-rating-label {
+    text-align: center;
     font-size: 0.72rem;
     font-weight: var(--weight-bold);
     text-transform: uppercase;
@@ -73,8 +129,18 @@ function tierClass(value: string) {
     color: var(--text-muted);
   }
 
-  .rating-tile-sss,
-  .rating-tile-splus {
+  .pve-split-labels {
+    display: flex;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
+  .pve-split-labels .big-rating-label {
+    flex: 1 1 0;
+  }
+
+  .big-rating-tile.rating-tile-sss,
+  .big-rating-tile.rating-tile-splus {
     background: linear-gradient(135deg, rgba(185, 28, 28, 0.2), rgba(127, 0, 0, 0.1));
     border-color: rgba(185, 28, 28, 0.4);
   }
@@ -87,7 +153,7 @@ function tierClass(value: string) {
     background-clip: text;
   }
 
-  .rating-tile-ss {
+  .big-rating-tile.rating-tile-ss {
     background: linear-gradient(135deg, rgba(250, 204, 21, 0.15), rgba(245, 158, 11, 0.08));
     border-color: rgba(250, 204, 21, 0.35);
   }
@@ -99,7 +165,7 @@ function tierClass(value: string) {
     background-clip: text;
   }
 
-  .rating-tile-s {
+  .big-rating-tile.rating-tile-s {
     background: linear-gradient(135deg, rgba(253, 230, 138, 0.12), rgba(251, 191, 36, 0.06));
     border-color: rgba(253, 230, 138, 0.3);
   }
@@ -140,14 +206,52 @@ function tierClass(value: string) {
       gap: var(--space-2);
     }
 
+    .big-rating-tile {
+      padding: var(--space-6) var(--space-2);
+      gap: var(--space-3);
+    }
+
     .big-rating-val {
       font-size: 2rem;
+    }
+
+    .pve-split-val {
+      font-size: 1.5rem;
+    }
+
+    .pve-split-row {
+      gap: var(--space-1);
+    }
+
+    .pve-split-divider {
+      height: 1.6rem;
+    }
+
+    .big-rating-label {
+      font-size: 0.58rem;
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .pve-split-labels {
+      gap: var(--space-1);
+    }
+
+    .pve-split-labels .big-rating-label {
+      white-space: nowrap;
     }
   }
 
   @media (max-width: 480px) {
     .big-rating-tiles {
       gap: var(--space-2);
+    }
+
+    .pve-split-val {
+      font-size: 1.25rem;
+    }
+
+    .big-rating-label {
+      font-size: 0.5rem;
     }
   }
 </style>

@@ -46,10 +46,10 @@
     {
       "id": "skill_1",
       "name": "Thousand Sand Shadows",
-      "description": "Serket burrows underground and summons 3 scorpions around herself. The scorpions inherit 100% of Serket's base stats but take increased damage, persisting for a duration.",
+      "description": "Serket burrows underground and summons 3 scorpions around herself. The scorpions inherit 100% of Serket's base stats but take 200% damage, persisting for 10 seconds.",
       "upgrades": {
-        "level2": "Summoned scorpions' duration increased.",
-        "level3": "Summoned scorpions take reduced damage.",
+        "level2": "Summoned scorpions' duration increased to 15 seconds.",
+        "level3": "Summoned scorpions take 180% damage instead of 200%.",
         "level4": "Summoned scorpions can also use the Underground Pierce skill."
       },
       "damageType": "Physical",
@@ -58,44 +58,44 @@
     {
       "id": "skill_2",
       "name": "Burrowing Pierce",
-      "description": "Serket locks onto the farthest enemy, burrows underground and digs a tunnel toward them, dealing damage to enemies along the path. Upon emerging from the ground, knocks down surrounding enemies.",
+      "description": "Serket locks onto the farthest enemy, burrows underground and digs a tunnel toward them, dealing 150% ATK damage to enemies along the path. Upon emerging from the ground, knocks down surrounding enemies.",
       "upgrades": {
-        "level2": "Damage dealt increased.",
-        "level3": "Gains a shield upon emerging from the ground.",
-        "level4": "Damage dealt increased again."
+        "level2": "Damage dealt increased to 200% ATK.",
+        "level3": "Gains a shield equal to 200% ATK upon emerging from the ground.",
+        "level4": "Damage dealt increased to 250% ATK."
       },
       "damageType": "Physical"
     },
     {
       "id": "skill_3",
       "name": "Venomblast Demise",
-      "description": "When summoned scorpions die or disappear, they explode, dealing damage to enemies within a radius and reducing their attack power for a duration.",
+      "description": "When summoned scorpions die or disappear, they explode, dealing 200% ATK damage to enemies within a 3 meter radius and reducing their attack power by 10% for 10 seconds.",
       "upgrades": {
-        "level2": "Damage dealt increased.",
-        "level3": "Attack power reduction effect increased.",
-        "level4": "Damage dealt increased again."
+        "level2": "Damage dealt increased to 240% ATK.",
+        "level3": "Attack power reduction increased to 15%.",
+        "level4": "Damage dealt increased to 280% ATK."
       },
       "damageType": "Physical"
     },
     {
       "id": "skill_4",
       "name": "Burrowing Rebirth",
-      "description": "While Serket is burrowed underground, she recovers HP every second. When Serket's HP first drops below a percentage of her max HP, she immediately burrows underground for a duration and permanently increases her max HP by a percentage.",
+      "description": "While Serket is burrowed underground, she recovers HP equal to 60% of her ATK every second. When Serket's HP first drops below 40% of her max HP, she immediately burrows underground for 3 seconds and permanently increases her max HP by 30%.",
       "upgrades": {
-        "level2": "HP recovered per second while underground increased.",
-        "level3": "Permanent max HP increase when first burrowing below the threshold increased.",
-        "level4": "HP recovered per second while underground increased again."
+        "level2": "HP recovered per second while underground increased to 80% of ATK.",
+        "level3": "Permanent max HP increase when first burrowing below the threshold increased to 40%.",
+        "level4": "HP recovered per second while underground increased to 100% of ATK."
       },
       "damageType": "Physical"
     }
   ],
   "relic": {
     "name": "Venomous Domain",
-    "description": "Serket deals damage to surrounding enemies every second.",
+    "description": "Serket deals 80% ATK damage to surrounding enemies every second.",
     "upgrades": {
-      "level2": "When receiving damage exceeding a percentage of her max HP, she becomes immune to that hit and takes reduced damage for the following duration. Triggers at most once every 12 seconds.",
-      "level3": "Each summoned scorpion also deals damage to surrounding enemies every second.",
-      "level4": "When each summoned scorpion receives damage exceeding a percentage of its max HP, it becomes immune to that hit and takes reduced damage for a duration. Triggers at most once every 12 seconds."
+      "level2": "When receiving damage exceeding 20% of her max HP, she becomes immune to that hit and takes 50% reduced damage for the following 3 seconds. Triggers at most once every 15 seconds.",
+      "level3": "Each summoned scorpion also deals 80% ATK damage to surrounding enemies every second.",
+      "level4": "When each summoned scorpion receives damage exceeding 20% of its max HP, it becomes immune to that hit and takes 50% reduced damage for the following 3 seconds. Triggers at most once every 15 seconds."
     }
   },
   "synergies": [
