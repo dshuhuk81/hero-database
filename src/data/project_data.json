@@ -338,16 +338,8 @@
       ]
     },
     "statsAndBonuses": {
-      "description": "Calculator and stat reference data.",
+      "description": "Stat reference data.",
       "files": [
-        {
-          "path": "src/data/accountBonuses.json",
-          "shape": "object with description and presets",
-          "contains": [
-            "account bonus presets",
-            "calculator preset metadata"
-          ]
-        },
         {
           "path": "src/data/stats/base-stats.json",
           "shape": "object keyed by hero class",

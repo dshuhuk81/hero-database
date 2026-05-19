@@ -109,14 +109,6 @@ export const navEntries: NavEntry[] = [
     icon: `<path d="M12 2L8 6v3l-2 2v4l2 2v3l4 2 4-2v-3l2-2v-4l-2-2V6z"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/>`,
   },
   {
-    label: "Calculator",
-    href: "/calculator",
-    group: "content",
-    teaser: true,
-    description: "Skill damage calculator & PvP battle sim",
-    icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><rect x="8" y="6" width="8" height="4" rx="1"/><circle cx="8" cy="14" r=".75"/><circle cx="12" cy="14" r=".75"/><circle cx="16" cy="14" r=".75"/><circle cx="8" cy="18" r=".75"/><circle cx="12" cy="18" r=".75"/><line x1="16" y1="16" x2="16" y2="20"/>`,
-  },
-  {
     label: "Summon Calendar",
     href: "/summon-calendar",
     group: "content",

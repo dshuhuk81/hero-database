@@ -37,8 +37,6 @@ export const translations = {
     index_events_desc: "Campaign stages & event team guides",
     index_totems: "Totems",
     index_totems_desc: "All totems with effects, tags & ratings",
-    index_calculator: "Calculator",
-    index_calculator_desc: "Skill damage calculator & PvP battle sim",
 
     // Support section
     support_headline: "Keep this free",
@@ -117,8 +115,6 @@ export const translations = {
     index_events_desc: "Уровни кампании и гайды по событиям",
     index_totems: "Тотемы",
     index_totems_desc: "Все тотемы с эффектами и рейтингами",
-    index_calculator: "Калькулятор",
-    index_calculator_desc: "Калькулятор урона навыков и симулятор PvP",
 
     // Support section
     support_headline: "Поддержи проект",
