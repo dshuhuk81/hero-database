@@ -30,7 +30,7 @@ const schedule: ScheduleEntry[] = [
   { id: "hera",          status: "coming-soon", order: 13 },
   { id: "eris",          status: "coming-soon", order: 14 },
   { id: "nut",          status: "coming-soon", order: 15 },
-  { id: "nephtys",       status: "far-future", order: 16 },
+  { id: "nephtys",       status: "coming-soon", order: 16 },
   { id: "eden",          status: "far-future", order: 17 },
   { id: "jiutianxuannv",      status: "far-future", order: 18 },
   { id: "audhumla",      status: "far-future", order: 19 },
@@ -145,9 +145,7 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
               <h3 class="spotlight-name">{hero.displayName}</h3>
               <p class="hero-role">{hero.role}</p>
             </div>
-            <div class="spotlight-next-badge">
-              {i === 0 ? "NEXT" : `SOON`}
-            </div>
+
           </a>
         ))}
       </div>
