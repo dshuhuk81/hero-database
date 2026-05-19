@@ -18,7 +18,7 @@
     "db:merge": "node scripts/merge-heroes-db.js",
     "validate:hero-detail-stats": "node scripts/validate-hero-detail-stats.mjs",
     "validate:tags": "node scripts/test-hero-tags.js",
-    "validate:all": "node validate-pvp-ratings.js && node scripts/test-hero-tags.js",
+    "validate:all": "node scripts/validate-bosses.js && node scripts/test-hero-tags.js",
     "after:hero-edit": "node scripts/merge-heroes-db.js && node scripts/test-hero-tags.js",
     "after:tags": "node scripts/test-hero-tags.js && node scripts/merge-heroes-db.js",
     "after:boss-import": "node scripts/merge-heroes-db.js",

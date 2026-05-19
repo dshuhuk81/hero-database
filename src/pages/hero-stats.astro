@@ -1,0 +1,196 @@
+---
+export const prerender = true;
+
+import { heroes } from "../data/heroes/withRatings";
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+
+// Curated combat stat columns (key -> short header label)
+const STAT_COLUMNS: { key: string; label: string; percent: boolean }[] = [
+  { key: "might",        label: "Might",     percent: false },
+  { key: "hp",           label: "HP",        percent: false },
+  { key: "atk",          label: "ATK",       percent: false },
+  { key: "armor",        label: "Armor",     percent: false },
+  { key: "magicRes",     label: "M-Res",     percent: false },
+  { key: "critRate",     label: "Crit Rate", percent: true  },
+  { key: "critDmgBonus", label: "Crit DMG",  percent: true  },
+  { key: "atkSpdBonus",  label: "ATK SPD",   percent: true  },
+  { key: "dodgeRate",    label: "Dodge",     percent: true  },
+  { key: "energy",       label: "Energy",    percent: false },
+  { key: "cooldownHaste",label: "CD Haste",  percent: true  },
+  { key: "pDmgBonus",    label: "P-DMG",     percent: true  },
+  { key: "mDmgBonus",    label: "M-DMG",     percent: true  },
+];
+
+// In dev show all heroes; in production hide unreleased ones
+const rows = [...heroes]
+  .filter((hero) => import.meta.env.DEV || hero.release !== false)
+  .sort((a, b) => (b.stats?.might ?? 0) - (a.stats?.might ?? 0));
+
+function statVal(hero: any, key: string): number {
+  return Number(hero?.stats?.[key]) || 0;
+}
+
+function fmt(value: number, percent: boolean): string {
+  const n = Number(value) || 0;
+  if (percent) return `${n}%`;
+  return n.toLocaleString("en-US");
+}
+---
+
+<Base
+  title="Hero Stats | Motto Immortal Database"
+  description="Compare every hero's Divine V combat stats in one sortable table. Sort by Might, HP, ATK, Armor, Crit and more."
+>
+  <PageHero
+    id="hero-stats"
+    tag="Hero Database"
+    headline="Hero Stats"
+    subtitle="All heroes, all combat stats - sort any column"
+  />
+
+  <div class="page-wrapper">
+    <div class="hstats-toolbar">
+      <input
+        type="search"
+        id="hstatsSearch"
+        class="hstats-search"
+        placeholder="Search hero by name..."
+        aria-label="Search hero by name"
+        autocomplete="off"
+      />
+      <p class="hstats-count" id="hstatsCount">{rows.length} heroes</p>
+    </div>
+
+    <div class="hstats-scroll">
+      <table class="hstats-table" id="hstatsTable">
+        <thead>
+          <tr>
+            <th class="hstats-th hstats-th-hero" data-key="name" data-type="text" scope="col">
+              <span>Hero</span><span class="hstats-arrow"></span>
+            </th>
+            <th class="hstats-th" data-key="class" data-type="text" scope="col">
+              <span>Class</span><span class="hstats-arrow"></span>
+            </th>
+            <th class="hstats-th" data-key="faction" data-type="text" scope="col">
+              <span>Faction</span><span class="hstats-arrow"></span>
+            </th>
+            {STAT_COLUMNS.map((col) => (
+              <th class="hstats-th hstats-th-num" data-key={col.key} data-type="num" scope="col">
+                <span>{col.label}</span><span class="hstats-arrow"></span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody id="hstatsBody">
+          {rows.map((hero) => (
+            <tr class="hstats-row" data-name={hero.name.toLowerCase()}>
+              <td class="hstats-td hstats-td-hero">
+                <a class="hstats-hero" href={`/heroes/${hero.id}`}>
+                  <span
+                    class="hstats-avatar"
+                    style={`background-image:url(${R2_BASE}/heroes/${hero.id}.webp)`}
+                    aria-hidden="true"
+                  ></span>
+                  <span class="hstats-name">{hero.name}</span>
+                </a>
+              </td>
+              <td class="hstats-td" data-sort={hero.class ?? ""}>{hero.class ?? "-"}</td>
+              <td class="hstats-td" data-sort={hero.faction ?? ""}>{hero.faction ?? "-"}</td>
+              {STAT_COLUMNS.map((col) => {
+                const raw = statVal(hero, col.key);
+                return (
+                  <td class="hstats-td hstats-td-num" data-sort={raw}>
+                    {fmt(raw, col.percent)}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      const table = document.getElementById("hstatsTable");
+      const body = document.getElementById("hstatsBody");
+      const search = document.getElementById("hstatsSearch");
+      const count = document.getElementById("hstatsCount");
+      if (!table || !body) return;
+
+      const headers = Array.from(table.querySelectorAll("th.hstats-th"));
+      const total = body.querySelectorAll("tr").length;
+      let sortKey = null;
+      let sortDir = 1; // 1 = asc, -1 = desc
+
+      function colIndex(th) {
+        return headers.indexOf(th);
+      }
+
+      function cellSortValue(row, idx, type) {
+        const cell = row.children[idx];
+        if (!cell) return type === "num" ? 0 : "";
+        if (idx === 0) {
+          return row.getAttribute("data-name") || "";
+        }
+        const ds = cell.getAttribute("data-sort");
+        if (type === "num") return Number(ds) || 0;
+        return (ds || cell.textContent || "").toLowerCase();
+      }
+
+      function sortBy(th) {
+        const key = th.getAttribute("data-key");
+        const type = th.getAttribute("data-type");
+        const idx = colIndex(th);
+
+        if (sortKey === key) {
+          sortDir = -sortDir;
+        } else {
+          sortKey = key;
+          // numbers default high-to-low, text default A-Z
+          sortDir = type === "num" ? -1 : 1;
+        }
+
+        const rows = Array.from(body.querySelectorAll("tr"));
+        rows.sort((ra, rb) => {
+          const va = cellSortValue(ra, idx, type);
+          const vb = cellSortValue(rb, idx, type);
+          if (va < vb) return -1 * sortDir;
+          if (va > vb) return 1 * sortDir;
+          return 0;
+        });
+        rows.forEach((r) => body.appendChild(r));
+
+        headers.forEach((h) => {
+          h.classList.remove("is-asc", "is-desc");
+        });
+        th.classList.add(sortDir === 1 ? "is-asc" : "is-desc");
+      }
+
+      headers.forEach((th) => {
+        th.addEventListener("click", () => sortBy(th));
+      });
+
+      function applySearch() {
+        const q = (search && search.value ? search.value : "").trim().toLowerCase();
+        let shown = 0;
+        body.querySelectorAll("tr").forEach((row) => {
+          const name = row.getAttribute("data-name") || "";
+          const match = q === "" || name.indexOf(q) !== -1;
+          row.style.display = match ? "" : "none";
+          if (match) shown++;
+        });
+        if (count) {
+          count.textContent =
+            shown === total ? total + " heroes" : shown + " of " + total + " heroes";
+        }
+      }
+
+      if (search) search.addEventListener("input", applySearch);
+    })();
+  </script>
+</Base>

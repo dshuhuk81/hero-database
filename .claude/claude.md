@@ -4,14 +4,14 @@
 Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
 
 ## Tokens
-For creating new content use the design foundation laid out in styles/tokens.css. There is also a overview of the system in design-system.astro.
+For creating new content use the design foundation laid out in src/styles/tokens.css. There is also a overview of the system in src/pages/design-system.astro.
 
 ## CSS
 Dont use inline css styles. Add new css styles to the global stylesheet at src/styles/components.css and use class names to apply them. If you need a new utility class, add it to the utilities section of components.css and follow the existing naming conventions.
 
 
 ## Game leaked data
-unter data-mine/game_extracted there are a ton of ingame infos. maybe we can use something here. an explanation what was done to achieve that is within @Extraction_Progress.md
+unter data-mine/ there are a ton of ingame infos (md files, xlsx, screenshots, json dumps). maybe we can use something here. an explanation what was done to achieve that is within data-mine/EXTRACTION_PROGRESS.md
 
 ## Plan
 Do not make any changes until you have 95% confidence in what you need to build. Ask me follow up questions until you reach that confidence.
@@ -46,18 +46,10 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 1. **Hero Source Files** → `src/data/heroes/*.json` (individual hero definitions)
 2. **Merged Database** → `src/data/all_heroes_db.json` (generated aggregation)
 3. **Synergy Tags** → `src/data/tags.json` (SINGLE SOURCE OF TRUTH for all tag categories)
-4. **Derived Data** → `src/data/derived/teamCompsByHeroId.json` (computed team compositions)
+
+> NOTE: The old computed Ranking Score System (`src/utils/rankingScore.js`) and the derived `teamCompsByHeroId.json` flow were REMOVED. Heroes are now ranked purely by the manual `ratings` strings (SSS..C) in each hero JSON. Scripts `auto-tune-weights.js` / `suggest-weight-tuning.js` still reference the deleted rankingScore.js and are dead/orphaned.
 
 ### Critical Systems
-
-#### Ranking Score System (`src/utils/rankingScore.js`)
-- **Multi-factor formula**: Base stats (class-weighted) + Percent stats + Synergy bonus + Skill rating
-- **Class Weights**: Different damage multipliers per hero class (Tank weights HP/DEF heavily; Archer weights ATK/Crit)
-- **Key Constants**: 
-  - `CLASS_WEIGHTS` (hp/atk/def/pct multipliers by class)
-  - `PERCENT_STATS_FOR_SCORE` (which % stats contribute to scoring)
-  - `SYNERGY_WEIGHT=11`, `SKILL_WEIGHT=92` (impact relative to stats)
-- **Tuning**: Edit constants directly in rankingScore.js; no config file
 
 #### Synergy Tag System (`src/utils/synergyTags.js`, `src/data/tags.json`)
 - **Tag Categories** (defined in `TAG_CATEGORIES` in synergyTags.js):
@@ -203,24 +195,18 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 ### Add New Hero
 1. Create `src/data/heroes/{hero_id}.json` with all required fields (26 stats, 4 skills, 5 rating fields)
 2. Copy structure from existing hero (e.g., `zeus.json`)
-3. Run `node scripts/merge-heroes-db.js` to regenerate all_heroes_db.json
-4. Run `npm run build` to regenerate rankings
+3. Run `npm run db:merge` (alias `node scripts/merge-heroes-db.js`) to regenerate all_heroes_db.json
+4. Run `npm run build`
 5. Hero appears on `/heroes` page
 
 ### Add/Update Hero Stats
 1. Edit `src/data/heroes/{hero_id}.json` with Divine V game stats
-2. Run build: `npm run build`
-3. Stats automatically contribute to ranking score on next computation
+2. Run `npm run db:merge` then `npm run build`
 
 ### Update Hero Rating
-1. Edit `ratings` object in `src/data/heroes/{hero_id}.json` (use SSS/SS/S/A/B/C)
+1. Edit `ratings` object in `src/data/heroes/{hero_id}.json` (use SSS/SS/S/A/B/C) - this is the only ranking source now
 2. Update both `overall` and scenario ratings (pvp, pve, grimSurge, delusionsDen, torrentRift)
-3. Run `npm run build` to regenerate rankings
-
-### Tune Ranking Scores
-1. Open `src/utils/rankingScore.js`
-2. Adjust `CLASS_WEIGHTS`, `PERCENT_STATS_FOR_SCORE`, or weight constants
-3. Run `npm run build` or `npm run dev` to regenerate rankings
+3. Run `npm run db:merge` then `npm run build`
 
 ### Manage Synergy Tags (CMS)
 1. Start server: `npm run tag-manager`
@@ -235,13 +221,17 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 4. Powers the Phase 1 & Phase 2 scaling in the Calculator's Boss mode
 
 ### Validate Data
-- `node validate-bosses.js` – Check boss data consistency
-- `node validate-pvp-ratings.js` – Check PvP rating format
-- `node scripts/test-hero-tags.js` – Validate synergy tags exist
+- `npm run validate:all` – runs validate-bosses + test-hero-tags
+- `node scripts/validate-bosses.js` – Check boss data consistency
+- `npm run validate:tags` (alias `node scripts/test-hero-tags.js`) – Validate synergy tags exist
+- (`validate:hero-detail-stats` / `scripts/validate-hero-detail-stats.mjs` is broken - depends on deleted `leak/game_extracted/` dir)
 
-### Generate Derived Data
-- `node scripts/generator.js` – Regenerates teamCompsByHeroId.json from all hero files
-- `node scripts/merge-heroes-db.js` – Merges individual hero JSON files into all_heroes_db.json
+### Generate Merged DB
+- `npm run db:merge` (alias `node scripts/merge-heroes-db.js`) – Merges individual hero JSON files into all_heroes_db.json
+- Convenience chains: `npm run after:hero-edit`, `npm run after:tags`, `npm run after:boss-import`
+
+### Upload Assets to R2
+- `npm run upload-assets` (alias `node scripts/upload-to-r2.mjs`), force re-upload: `npm run upload-assets:force`
 
 ### Add Skill Preview Video
 See memory file for full details: `memory/project_skill_videos.md`
