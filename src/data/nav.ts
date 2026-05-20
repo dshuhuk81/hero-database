@@ -47,7 +47,7 @@ export const navEntries: NavEntry[] = [
     group: "primary",
     teaser: true,
     description: "Browse all heroes with stats & ratings",
-    badge: { text: "Update", color: "var(--accent-purple)" },
+    badge: { text: "Updated", color: "var(--accent-purple)" },
     icon: `<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19.5 6.5L21 3l-3.5 1.5"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6"/><path d="M8 16l-4 4"/><path d="M4.5 6.5L3 3l3.5 1.5"/>`,
   },
   {
@@ -99,6 +99,8 @@ export const navEntries: NavEntry[] = [
     teaser: true,
     description: "Campaign stages & event team guides",
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+      badge: { text: "Updated", color: "var(--accent-purple)" },
+
   },
   {
     label: "Totems",
