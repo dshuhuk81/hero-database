@@ -1,0 +1,330 @@
+---
+export const prerender = true;
+import Base from "../layouts/Base.astro";
+import { heroes } from "../data/heroes/withRatings";
+import { getCnHeroes, getCnOverview, formatCnValue } from "../utils/cnDiff.js";
+
+const cnHeroes = getCnHeroes(heroes as any[]);
+const overview = getCnOverview(cnHeroes);
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_PLACEHOLDER = `${R2_BASE}/heroes/placeholder.png`;
+function heroImg(id: string): string {
+  return `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
+}
+
+const CHANGE_LABEL: Record<string, string> = {
+  buff: "Buff",
+  nerf: "Nerf",
+  diff: "Different",
+  neutral: "Same",
+};
+---
+
+<Base
+  title="CN vs Global - Motto Immortal"
+  description="Compare every hero's skills between the original Chinese base and the Global build of Motto Immortal. See where Global diverges from CN - the source version - to anticipate pending balance fixes and reworks."
+>
+  <main class="page-wrap">
+
+    <header class="page-header">
+      <div class="header-deco"></div>
+      <div class="header-content">
+        <div class="header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="page-title">CN vs Global</h1>
+          <p class="page-subtitle">Where the Global build differs from the original Chinese version. CN is the base - differences are on the Global side.</p>
+        </div>
+      </div>
+      <div class="disclaimer">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/>
+        </svg>
+        CN data is manually read from the Chinese client. Numbers are language-agnostic; structural and damage-type differences are flagged and may instead be Global data errors. Treat as a forecast, not a guarantee.
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="cn-overview">
+        <div class="cn-stat">
+          <span class="cn-stat-num">{overview.heroes}</span>
+          <span class="cn-stat-lbl">Heroes tracked</span>
+        </div>
+        <div class="cn-stat">
+          <span class="cn-stat-num">{overview.changedHeroes}</span>
+          <span class="cn-stat-lbl">With differences</span>
+        </div>
+        <div class="cn-stat cn-stat-buff">
+          <span class="cn-stat-num">{overview.buff}</span>
+          <span class="cn-stat-lbl">Buffs</span>
+        </div>
+        <div class="cn-stat cn-stat-nerf">
+          <span class="cn-stat-num">{overview.nerf}</span>
+          <span class="cn-stat-lbl">Nerfs</span>
+        </div>
+        <div class="cn-stat cn-stat-diff">
+          <span class="cn-stat-num">{overview.diff}</span>
+          <span class="cn-stat-lbl">Other diffs</span>
+        </div>
+        {overview.latestCaptured && (
+          <div class="cn-stat">
+            <span class="cn-stat-num cn-stat-date">{overview.latestCaptured}</span>
+            <span class="cn-stat-lbl">CN snapshot</span>
+          </div>
+        )}
+      </div>
+    </section>
+
+    {cnHeroes.length === 0 && (
+      <section class="section">
+        <p class="cn-empty">No CN comparison data yet. Add a <code>cn</code> block to a hero JSON to populate this page.</p>
+      </section>
+    )}
+
+    <section class="section">
+      <div class="cn-hero-list">
+        {cnHeroes.map((hero) => (
+          <article class="cn-hero-card">
+            <a href={`/heroes/${hero.id}#section-cn`} class="cn-hero-head">
+              <img
+                class="cn-hero-img"
+                src={heroImg(hero.id)}
+                alt={hero.name}
+                loading="lazy"
+                onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`}
+              />
+              <div class="cn-hero-id">
+                <h2 class="cn-hero-name">{hero.name}</h2>
+                <p class="cn-hero-meta">{hero.class} &middot; {hero.role} &middot; {hero.faction}</p>
+              </div>
+              <div class="cn-hero-badges">
+                {hero.summary.totals.buff > 0 && <span class="cn-badge cn-badge-buff">{hero.summary.totals.buff} Buff</span>}
+                {hero.summary.totals.nerf > 0 && <span class="cn-badge cn-badge-nerf">{hero.summary.totals.nerf} Nerf</span>}
+                {hero.summary.totals.diff > 0 && <span class="cn-badge cn-badge-diff">{hero.summary.totals.diff} Diff</span>}
+                {!hero.summary.hasChanges && <span class="cn-badge cn-badge-same">Matches Global</span>}
+              </div>
+            </a>
+
+            {hero.summary.hasChanges && (
+              <div class="cn-table-wrap">
+                <table class="cn-table cn-compare-table">
+                  <colgroup>
+                    <col class="cn-col-skill" />
+                    <col class="cn-col-value" />
+                    <col class="cn-col-global" />
+                    <col class="cn-col-cn" />
+                    <col class="cn-col-change" />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th class="cn-cell-skill">Skill</th>
+                      <th class="cn-cell-value">Value</th>
+                      <th class="cn-cell-global">Global</th>
+                      <th class="cn-cell-cn">CN</th>
+                      <th class="cn-cell-change">Change</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {hero.summary.skills.flatMap((skill: any) =>
+                      skill.changedRows.map((row: any) => (
+                        <tr>
+                          <td class="cn-cell-skill cn-td-skill">{skill.name}</td>
+                          <td class="cn-cell-value">{row.label}</td>
+                          <td class="cn-cell-global cn-td-global">{formatCnValue(row.global, row.unit)}</td>
+                          <td class="cn-cell-cn cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
+                          <td class="cn-cell-change">
+                            <span class={`cn-tag cn-tag-${row.change}`}>{CHANGE_LABEL[row.change] || row.change}</span>
+                            {row.verified === false && <span class="cn-tag cn-tag-unverified">Unconfirmed</span>}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {hero.summary.skills.some((s: any) => s.notes.length > 0) && (
+              <ul class="cn-notes">
+                {hero.summary.skills.flatMap((s: any) =>
+                  s.notes.map((n: string) => <li><strong>{s.name}:</strong> {n}</li>)
+                )}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+
+  </main>
+</Base>
+
+<style>
+  .page-wrap {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: var(--space-8) var(--page-gutter) var(--space-20);
+  }
+
+  .page-header {
+    position: relative;
+    margin-bottom: var(--space-8);
+    padding: var(--space-6);
+    overflow: hidden;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+
+  .header-deco {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 80% 0%, rgba(250, 204, 21, 0.07), transparent 58%),
+      radial-gradient(ellipse at 12% 100%, rgba(168, 85, 247, 0.05), transparent 62%);
+  }
+
+  .header-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .header-icon {
+    display: inline-flex;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--accent-gold);
+    background: var(--accent-gold-dim);
+    border: 1px solid rgba(250, 204, 21, 0.22);
+    border-radius: var(--radius-md);
+  }
+
+  .header-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .page-title {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-2xl);
+  }
+
+  .page-subtitle {
+    max-width: 68ch;
+    margin: 0;
+    color: var(--text-secondary);
+  }
+
+  .disclaimer {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    color: rgba(250, 204, 21, 0.78);
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    background: rgba(250, 204, 21, 0.05);
+    border: 1px solid rgba(250, 204, 21, 0.14);
+    border-radius: var(--radius-md);
+  }
+
+  .disclaimer svg {
+    flex: 0 0 14px;
+    margin-top: 2px;
+  }
+
+  .section {
+    margin-bottom: var(--space-8);
+  }
+
+  .cn-compare-table {
+    --cn-table-skill: 16%;
+    --cn-table-value: 34%;
+    --cn-table-global: 15%;
+    --cn-table-cn: 15%;
+    --cn-table-change: 20%;
+
+    min-width: 880px;
+    table-layout: fixed;
+  }
+
+  .cn-col-skill,
+  .cn-cell-skill { width: var(--cn-table-skill); }
+
+  .cn-col-value,
+  .cn-cell-value { width: var(--cn-table-value); }
+
+  .cn-col-global,
+  .cn-cell-global { width: var(--cn-table-global); }
+
+  .cn-col-cn,
+  .cn-cell-cn { width: var(--cn-table-cn); }
+
+  .cn-col-change,
+  .cn-cell-change { width: var(--cn-table-change); }
+
+  .cn-compare-table th,
+  .cn-compare-table td {
+    overflow-wrap: anywhere;
+    white-space: normal;
+    word-break: normal;
+  }
+
+  .cn-compare-table .cn-td-global,
+  .cn-compare-table .cn-td-cn {
+    overflow-wrap: break-word;
+  }
+
+  @media (max-width: 768px) {
+    .page-wrap {
+      padding: var(--space-5) var(--space-4) var(--space-16);
+    }
+
+    .page-header {
+      padding: var(--space-5);
+    }
+
+    .header-content {
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .header-icon {
+      flex-basis: 40px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .header-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .cn-hero-head {
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .cn-hero-badges {
+      flex-basis: 100%;
+      justify-content: flex-start;
+      padding-left: 68px;
+    }
+  }
+</style>

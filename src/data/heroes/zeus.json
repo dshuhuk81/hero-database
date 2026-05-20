@@ -170,5 +170,77 @@
         "gnosis_2"
       ]
     }
-  ]
+  ],
+  "cn": {
+    "captured": "2026-05-19",
+    "source": "CN client extracted skill text",
+    "skills": [
+      {
+        "id": "skill_1",
+        "cnName": "神王雷殛",
+        "values": [
+          { "label": "hit count", "field": "count", "global": 3, "cn": 3, "unit": "x", "change": "neutral" },
+          { "label": "per-hit base", "field": "atkPct", "global": 120, "cn": 120, "unit": "%", "change": "neutral" },
+          { "label": "per-hit Lv2", "field": "atkPct", "global": 160, "cn": 160, "unit": "%", "change": "neutral" },
+          { "label": "entry energy Lv3", "field": "count", "global": 500, "cn": 500, "unit": "", "change": "neutral" },
+          { "label": "per-hit Lv4", "field": "atkPct", "global": 200, "cn": 200, "unit": "%", "change": "neutral" }
+        ],
+        "notes": []
+      },
+      {
+        "id": "skill_2",
+        "cnName": "审判",
+        "values": [
+          { "label": "base dmg", "field": "atkPct", "global": 270, "cn": 270, "unit": "%", "change": "neutral" },
+          { "label": "current HP dmg base", "field": "pct", "global": 8, "cn": 8, "unit": "%", "change": "neutral" },
+          { "label": "current HP dmg cap base", "field": "atkPct", "global": 100, "cn": 300, "unit": "%", "change": "nerf" },
+          { "label": "dmg Lv2", "field": "atkPct", "global": 300, "cn": 300, "unit": "%", "change": "neutral" },
+          { "label": "current HP dmg Lv4", "field": "pct", "global": 12, "cn": 12, "unit": "%", "change": "neutral" },
+          { "label": "current HP dmg cap Lv4", "field": "atkPct", "global": 150, "cn": 400, "unit": "%", "change": "nerf" },
+          { "label": "damage type", "field": "damageType", "global": "", "cn": "Magic", "unit": "", "change": "diff", "verified": false }
+        ],
+        "notes": ["Global Judgment keeps the same ATK and current-HP percentages but uses much lower ATK caps for the current-HP damage portion. Global Zeus is undertuned vs the CN source here.", "Global damageType is blank while CN marks Judgment as Magic; treat as a data/schema flag until verified."]
+      },
+      {
+        "id": "skill_3",
+        "cnName": "圣化降世",
+        "values": [
+          { "label": "Echo HP base", "field": "pct", "global": 35, "cn": 35, "unit": "%", "change": "neutral" },
+          { "label": "Echo ATK base", "field": "pct", "global": 75, "cn": 75, "unit": "%", "change": "neutral" },
+          { "label": "Echo duration", "field": "seconds", "global": 15, "cn": 15, "unit": "s", "change": "neutral" },
+          { "label": "single-hit trigger threshold", "field": "pct", "global": 20, "cn": 20, "unit": "%", "change": "neutral" },
+          { "label": "cooldown", "field": "seconds", "global": 20, "cn": 20, "unit": "s", "change": "neutral" },
+          { "label": "Echo HP Lv2", "field": "pct", "global": 50, "cn": 50, "unit": "%", "change": "neutral" },
+          { "label": "Echo ATK Lv4", "field": "pct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" },
+          { "label": "skill type", "field": "damageType", "global": "Magical", "cn": "Passive", "unit": "", "change": "diff", "verified": false }
+        ],
+        "notes": ["Global JSON labels Almighty Advent as Magical even though the CN text marks it as Passive and the values describe Echo creation/inheritance. Treat as a data/schema flag, not a confirmed balance change."]
+      },
+      {
+        "id": "skill_4",
+        "cnName": "超载解放",
+        "values": [
+          { "label": "ATK SPD per stack base", "field": "pct", "global": 8, "cn": 8, "unit": "%", "change": "neutral" },
+          { "label": "Ultimate DMG per stack base", "field": "pct", "global": 2, "cn": 2, "unit": "%", "change": "neutral" },
+          { "label": "max stacks", "field": "count", "global": 10, "cn": 10, "unit": "x", "change": "neutral" },
+          { "label": "Thundercrack dmg base", "field": "pct", "global": 30, "cn": 30, "unit": "%", "change": "neutral" },
+          { "label": "ATK SPD per stack Lv2", "field": "pct", "global": 12, "cn": 12, "unit": "%", "change": "neutral" },
+          { "label": "Ultimate DMG per stack Lv2", "field": "pct", "global": 3, "cn": 3, "unit": "%", "change": "neutral" },
+          { "label": "Thundercrack trigger Lv3", "field": "count", "global": 8, "cn": 8, "unit": "x", "change": "neutral" },
+          { "label": "Thundercrack dmg Lv4", "field": "pct", "global": 50, "cn": 50, "unit": "%", "change": "neutral" }
+        ],
+        "notes": []
+      },
+      {
+        "id": "relic",
+        "cnName": "神权律动",
+        "values": [
+          { "label": "Echo ult damage base", "field": "pct", "global": 70, "cn": 70, "unit": "%", "change": "neutral" },
+          { "label": "Judgment bonus Lv2", "field": "pct", "global": 20, "cn": 20, "unit": "%", "change": "neutral" },
+          { "label": "Echo ult damage Lv3", "field": "pct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" }
+        ],
+        "notes": []
+      }
+    ]
+  }
 }

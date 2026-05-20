@@ -85,6 +85,8 @@ function adaptHero(raw) {
     strengths: raw.strengths ?? [],
     weaknesses: raw.weaknesses ?? [],
     detailComps: raw.detailComps ?? [],
+    // CN-vs-Global comparison block (optional, manually curated from CN client)
+    cn: raw.cn ?? null,
   };
 }
 

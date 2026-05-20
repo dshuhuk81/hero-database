@@ -129,6 +129,33 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   - `computeEHP()` – Effective HP calculation for physical and magical
   - `getCritMultiplier()` – Base 1.5x + hero's critDmgBonus
 
+#### CN vs Global Comparison System (`src/utils/cnDiff.js`, `src/pages/cn-preview.astro`)
+- **Purpose**: Show where the Global build diverges from the original Chinese (CN) version. CN is the canonical base and never "changes"; Global is a copy that lags or diverges. The feature forecasts pending Global balance fixes and surfaces undertuned/overtuned heroes.
+- **Data source**: Optional `cn` block manually curated into each `src/data/heroes/{hero_id}.json`. Ingestion input is per-hero CN skill text dropped at `data-mine/cn/{hero_id}.json` (hero stats + CN/EN skill text + leveled upgrades). Screenshots were tried and rejected (vision misreads digits - produced a false positive); extracted text is the proven pipeline. Numbers are language-agnostic so Chinese text is never displayed.
+- **Mapping rule**: CN files use their own skill ordering and EN names that differ from Global. Map CN skill -> Global skill by CONTENT (description + values + upgrade structure), never by id or en-name. Display name always comes from the Global hero JSON (English); CN `cnName` is stored for reference only and never rendered.
+- **`cn` block shape** (additive, Global data untouched):
+  ```json
+  "cn": {
+    "captured": "YYYY-MM-DD",
+    "source": "CN client extracted skill text",
+    "skills": [
+      { "id": "<global skill id: skill_1..4 or relic>",
+        "cnName": "<chinese, reference only>",
+        "values": [
+          { "label": "...", "field": "atkPct|pct|seconds|count|meters|damageType",
+            "global": <value>, "cn": <value>, "unit": "%|s|x|m|",
+            "change": "buff|nerf|diff|neutral", "verified": false }
+        ],
+        "notes": ["..."] }
+    ]
+  }
+  ```
+- **`change` semantics (authoritative)**: describes GLOBAL relative to the CN base, by player benefit. `buff` = Global BETTER than CN. `nerf` = Global WORSE than CN. `diff` = non-numeric / direction-ambiguous (e.g. damageType). `neutral` = equal. Direction is stat-aware (more good-effect = better; higher cooldown / longer self-debuff = worse). The ingestion step decides per row.
+- **`verified: false`**: marks an uncertain row (e.g. a type difference that may be a Global JSON error rather than a real divergence). Renders an "Unconfirmed" tag. Resolve by either fixing the Global value (row auto-drops to neutral) or setting `verified: true`. Never mutate Global combat data from inference alone.
+- **Engine**: `src/utils/cnDiff.js` - pure functions only, never invents data. `getCnSummary(hero)`, `getCnHeroes(heroes)`, `getCnOverview(...)`, `formatCnValue(...)`. Header comment in that file is the source of truth for semantics.
+- **UI**: `/cn-preview` hub (every tracked hero, sorted by change count, ASCII-only, styled via `components.css` `.cn-*` classes) + a "CN vs Global" section on the hero detail page (`#section-cn`, dot-nav entry, changed rows only) - both render only when a `cn` block exists. `cn` is passed through the runtime adapter in `src/data/heroes/index.js`.
+- **damageType caveat**: per-skill damage element is NOT reliably in APK configs (effect-chain indirection + missing skill name->ID mapping). Only resolvable empirically (true ignores Armor + M-Res). Treat type diffs as advisory (`verified:false`) until in-game tested.
+
 ## File Conventions
 
 ### Hero Data (`src/data/heroes/*.json`)
@@ -181,7 +208,7 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 ```
 
 **Required Fields**: id, name, class, role, faction, rarity, evolution, level, stats (all 26 fields), ratings (all 5 fields), skills (4 skills with damageType each), synergies array
-**Optional**: description, recommendedRelicLevel, relic, teamComps, content-creator, image
+**Optional**: description, recommendedRelicLevel, relic, teamComps, content-creator, image, cn (CN-vs-Global comparison block - see CN vs Global Comparison System)
 **Rating Strings**: SSS, SS, S, A, B, C (not numbers)
 **Formation Positions**: back-left, back-right, front-left, front-center, front-right
 
@@ -219,6 +246,14 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 2. Run `node scripts/import-attack-rates.cjs`
 3. Automatically maps `baseAttackRate` and `bossUltimatesPer90s` directly into hero JSON files
 4. Powers the Phase 1 & Phase 2 scaling in the Calculator's Boss mode
+
+### Ingest CN vs Global Data
+1. Drop per-hero CN skill text at `data-mine/cn/{hero_id}.json` (hero stats + CN/EN skill text + leveled upgrades)
+2. Map each CN skill to the Global skill by CONTENT (not id/en-name); confirm stats match Global as a sanity check
+3. Diff numeric values; write a `cn` block into `src/data/heroes/{hero_id}.json` (see CN vs Global Comparison System for shape + `change` semantics)
+4. Flag uncertain/non-numeric diffs with `verified: false`
+5. Log the hero + skill mapping + result in `data-mine/cn/_manifest.json`
+6. Run `npm run db:merge` then `npm run build`; verify `/cn-preview` and the hero detail `#section-cn`
 
 ### Validate Data
 - `npm run validate:all` – runs validate-bosses + test-hero-tags
