@@ -251,6 +251,32 @@ Boss mode uses:
 
 It also supports mitigation models, armor/M-Res based estimates, physical reduction, HP impact bars, burst summaries, crit handling, and account stat presets.
 
+### CN vs Global Comparison
+
+Important files:
+
+- `src/pages/cn-preview.astro` (hub page at `/cn-preview`)
+- `src/utils/cnDiff.js` (pure diff engine + semantics doc in its header)
+- `src/styles/components.css` (`.cn-*` classes)
+- `src/pages/heroes/[id].astro` (`#section-cn` block on hero detail pages)
+- `src/data/heroes/<id>.json` optional `cn` block (additive, Global data untouched)
+- `data-mine/cn/<hero>.json` per-hero CN skill text ingestion input
+- `data-mine/cn/_manifest.json` ingest log (capture date, skill mapping, result summary per hero)
+- `.claude/CLAUDE.md` "CN vs Global Comparison System" section is the authoritative spec
+
+Premise: CN is the canonical base and never "changes"; Global is a copy that lags or diverges. The feature surfaces where Global differs from the CN source to forecast pending balance fixes and identify undertuned heroes.
+
+Key rules:
+
+- Map CN skill to Global skill by CONTENT, never by id or en-name (CN files use their own skill ordering and EN names).
+- Only English names render in the UI; CN `cnName` is stored for reference and never displayed.
+- `change` semantics describe GLOBAL relative to the CN base: `buff` = Global better than CN, `nerf` = Global worse than CN, `diff` = non-numeric / direction-ambiguous, `neutral` = equal.
+- Numbers are language-agnostic; screenshot/vision ingestion was tried and rejected (digit misread produced a false positive). Extracted text is the proven pipeline.
+- `verified: false` flags uncertain rows (often damageType differences that may be a Global JSON error rather than a real divergence). Never mutate Global combat data from inference alone.
+- Hero detail section and hub render only when a `cn` block exists; detail shows changed rows only.
+
+Workflow: drop `data-mine/cn/<hero>.json`, write a `cn` block into the matching `src/data/heroes/<hero>.json`, log the mapping + result in `_manifest.json`, run `npm run db:merge` then `npm run build`, verify `/cn-preview` and the detail `#section-cn`.
+
 ### Delusions Den
 
 Important files:

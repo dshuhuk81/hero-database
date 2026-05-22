@@ -60,6 +60,15 @@ export const navEntries: NavEntry[] = [
     icon: `<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>`,
   },
   {
+    label: "CN vs Global",
+    href: "/cn-preview",
+    group: "primary",
+    teaser: true,
+    description: "Compare Global hero skills against the Chinese base version",
+    badge: { text: "New", color: "var(--accent-new)" },
+    icon: `<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M8 7h4"/><path d="M10 5v4"/><path d="M15.5 15h.01"/><path d="M17.5 17h.01"/><path d="M14.5 18.5h.01"/>`,
+  },
+  {
     label: "Virtue Guide",
     href: "/virtues",
     group: "content",

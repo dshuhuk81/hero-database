@@ -103,12 +103,22 @@ function computeStatRankings(heroes) {
 
   for (const stat of RANKABLE_STATS) {
     const sorted = [...heroes]
-      .filter((h) => typeof h.stats?.[stat] === "number")
-      .sort((a, b) => b.stats[stat] - a.stats[stat]);
+      .filter((h) => typeof h.stats?.[stat] === "number" && h.stats[stat] > 0)
+      .sort((a, b) => {
+        const diff = b.stats[stat] - a.stats[stat];
+        return diff !== 0 ? diff : a.id.localeCompare(b.id);
+      });
 
+    let previousValue = null;
+    let currentRank = 0;
     sorted.forEach((hero, index) => {
+      const value = hero.stats[stat];
+      if (value !== previousValue) {
+        currentRank = index + 1;
+        previousValue = value;
+      }
       if (!rankings[hero.id]) rankings[hero.id] = {};
-      rankings[hero.id][stat] = index + 1; // Rank 1 = bester Wert
+      rankings[hero.id][stat] = currentRank; // Rank 1 = bester Wert
     });
   }
 

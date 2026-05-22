@@ -119,6 +119,12 @@ function statBarWidth(key: string, val: number): number {
   return Math.min((val / max) * 100, 100);
 }
 
+function statRank(key: string, val: number): number | null {
+  if (!Number.isFinite(val) || val <= 0) return null;
+  const rank = Number(((hero as any).rankings ?? {})[key]);
+  return Number.isFinite(rank) && rank > 0 ? rank : null;
+}
+
 // Tag label display: SNAKE_CASE -> Title Case
 function tagLabel(tag: unknown): string {
   const s = String(tag ?? "");
@@ -290,9 +296,13 @@ const dotSections = [
           <div class="key-stats-grid">
             {KEY_STATS.map(key => {
               const val = Number((hero.stats as any)[key] ?? 0);
+              const rank = statRank(key, val);
               return (
                 <div class="key-stat-block">
-                  <span class="key-stat-value">{formatStatVal(key, val)}</span>
+                  <div class="key-stat-topline">
+                    <span class="key-stat-value">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                  </div>
                   <span class="key-stat-label">{STAT_LABELS[key]}</span>
                   <div class="key-stat-bar">
                     <div class="key-stat-bar-fill" style={`width:${statBarWidth(key, val)}%`}></div>
@@ -483,11 +493,15 @@ const dotSections = [
           <div class="stat-col-header offensive-hdr" data-i18n="detail_offensive">Offensive</div>
           {OFFENSIVE_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
+            const rank = statRank(key, val);
             return (
               <div class="stat-entry">
                 <span class="stat-entry-label">{STAT_LABELS[key]}</span>
                 <div class="stat-entry-right">
-                  <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                  <div class="stat-entry-meta">
+                    <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                  </div>
                   <div class="stat-entry-bar">
                     <div class="stat-entry-fill offensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
                   </div>
@@ -502,11 +516,15 @@ const dotSections = [
           <div class="stat-col-header defensive-hdr" data-i18n="detail_defensive">Defensive</div>
           {DEFENSIVE_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
+            const rank = statRank(key, val);
             return (
               <div class="stat-entry">
                 <span class="stat-entry-label">{STAT_LABELS[key]}</span>
                 <div class="stat-entry-right">
-                  <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                  <div class="stat-entry-meta">
+                    <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                  </div>
                   <div class="stat-entry-bar">
                     <div class="stat-entry-fill defensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
                   </div>
@@ -521,11 +539,15 @@ const dotSections = [
           <div class="stat-col-header utility-hdr" data-i18n="detail_utility">Utility</div>
           {UTILITY_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
+            const rank = statRank(key, val);
             return (
               <div class="stat-entry">
                 <span class="stat-entry-label">{STAT_LABELS[key]}</span>
                 <div class="stat-entry-right">
-                  <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                  <div class="stat-entry-meta">
+                    <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                  </div>
                   <div class="stat-entry-bar">
                     <div class="stat-entry-fill utility-fill" style={`width:${statBarWidth(key, val)}%`}></div>
                   </div>
@@ -1172,12 +1194,22 @@ const dotSections = [
 }
 .key-stat-block:hover { border-color: var(--border-subtle); }
 
+.key-stat-topline,
+.stat-entry-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
 .key-stat-value {
   font-size: 1.15rem;
   font-weight: var(--weight-black);
   color: var(--text-bright);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
+  min-width: 0;
 }
 .key-stat-label {
   font-size: 0.68rem;
@@ -1185,6 +1217,23 @@ const dotSections = [
   text-transform: uppercase;
   letter-spacing: var(--tracking-normal);
   color: var(--text-muted);
+}
+.stat-rank {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 2px var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--faction-a) 45%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--faction-a) 12%, transparent);
+  color: var(--faction-a);
+  font-size: 0.62rem;
+  font-weight: var(--weight-black);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 .key-stat-bar {
   margin-top: var(--space-2);
@@ -1526,6 +1575,7 @@ const dotSections = [
   font-weight: var(--weight-bold);
   color: var(--text-bright);
   font-variant-numeric: tabular-nums;
+  min-width: 0;
 }
 .stat-entry-bar {
   height: 3px;

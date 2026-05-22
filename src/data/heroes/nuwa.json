@@ -142,5 +142,81 @@
         "defiance_2"
       ]
     }
-  ]
+  ],
+  "cn": {
+    "captured": "2026-05-22",
+    "source": "CN client extracted skill text",
+    "skills": [
+      {
+        "id": "skill_1",
+        "cnName": "造物法则",
+        "values": [
+          { "label": "charge dmg", "field": "atkPct", "global": 270, "cn": 270, "unit": "%", "change": "neutral" },
+          { "label": "stun", "field": "seconds", "global": 2, "cn": 2, "unit": "s", "change": "neutral" },
+          { "label": "tank HP inherit", "field": "pct", "global": 200, "cn": 200, "unit": "%", "change": "neutral" },
+          { "label": "tank ATK inherit", "field": "pct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" },
+          { "label": "barrier base", "field": "atkPct", "global": 1600, "cn": 1600, "unit": "%", "change": "neutral" },
+          { "label": "barrier duration", "field": "seconds", "global": 6, "cn": 6, "unit": "s", "change": "neutral" },
+          { "label": "barrier Lv2", "field": "atkPct", "global": 2200, "cn": 2200, "unit": "%", "change": "neutral" },
+          { "label": "barrier Lv3", "field": "atkPct", "global": 3000, "cn": 3000, "unit": "%", "change": "neutral" },
+          { "label": "tank dmg reduction Lv4", "field": "pct", "global": 20, "cn": 20, "unit": "%", "change": "neutral" }
+        ],
+        "notes": []
+      },
+      {
+        "id": "skill_2",
+        "cnName": "神佑护盾",
+        "values": [
+          { "label": "base shield", "field": "atkPct", "global": 240, "cn": 240, "unit": "%", "change": "neutral" },
+          { "label": "shield radius", "field": "meters", "global": 3, "cn": 3, "unit": "m", "change": "neutral" },
+          { "label": "shield Lv2", "field": "atkPct", "global": 270, "cn": 270, "unit": "%", "change": "neutral" },
+          { "label": "dmg taken reduction Lv4", "field": "pct", "global": 50, "cn": 50, "unit": "%", "change": "neutral" }
+        ],
+        "notes": []
+      },
+      {
+        "id": "skill_3",
+        "cnName": "抟土造人",
+        "values": [
+          { "label": "charge dmg", "field": "atkPct", "global": 300, "cn": 300, "unit": "%", "change": "neutral" },
+          { "label": "stun", "field": "seconds", "global": 1, "cn": 1, "unit": "s", "change": "neutral" },
+          { "label": "axe HP inherit", "field": "pct", "global": 150, "cn": 150, "unit": "%", "change": "neutral" },
+          { "label": "axe ATK inherit", "field": "pct", "global": 120, "cn": 120, "unit": "%", "change": "neutral" },
+          { "label": "recast cluster dmg", "field": "atkPct", "global": 300, "cn": 300, "unit": "%", "change": "neutral" },
+          { "label": "stun Lv2", "field": "seconds", "global": 1.5, "cn": 1.5, "unit": "s", "change": "neutral" },
+          { "label": "taunt Lv3", "field": "seconds", "global": 5, "cn": 5, "unit": "s", "change": "neutral" },
+          { "label": "armor buff Lv3", "field": "pct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" },
+          { "label": "smash dmg Lv4", "field": "atkPct", "global": 330, "cn": 330, "unit": "%", "change": "neutral" },
+          { "label": "cluster dmg Lv4", "field": "atkPct", "global": 330, "cn": 330, "unit": "%", "change": "neutral" }
+        ],
+        "notes": []
+      },
+      {
+        "id": "skill_4",
+        "cnName": "补天",
+        "values": [
+          { "label": "support HP inherit", "field": "pct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" },
+          { "label": "support ATK inherit", "field": "pct", "global": 150, "cn": 150, "unit": "%", "change": "neutral" },
+          { "label": "heal per tick", "field": "atkPct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" },
+          { "label": "heal interval", "field": "seconds", "global": 2.5, "cn": 2.5, "unit": "s", "change": "neutral" },
+          { "label": "recast heal", "field": "atkPct", "global": 300, "cn": 300, "unit": "%", "change": "neutral" },
+          { "label": "frontline buff Lv2", "field": "pct", "global": 10, "cn": 10, "unit": "%", "change": "neutral" },
+          { "label": "backline buff Lv2", "field": "pct", "global": 10, "cn": 10, "unit": "%", "change": "neutral" },
+          { "label": "buff duration Lv2", "field": "seconds", "global": 10, "cn": 10, "unit": "s", "change": "neutral" },
+          { "label": "normal atk heal Lv3", "field": "atkPct", "global": 110, "cn": 110, "unit": "%", "change": "neutral" },
+          { "label": "tank-heal interval Lv4", "field": "seconds", "global": 2.5, "cn": 2.5, "unit": "s", "change": "neutral" }
+        ],
+        "notes": ["L2 frontline buff label differs in wording (Global 'Dodge Rate' vs CN 'evasion') - same mechanic, same value, not a balance diff."]
+      },
+      {
+        "id": "relic",
+        "cnName": "元灵",
+        "values": [
+          { "label": "DMG RED per figurine Lv2", "field": "pct", "global": 30, "cn": 30, "unit": "%", "change": "neutral" },
+          { "label": "energy per defeated Lv3", "field": "count", "global": 100, "cn": 100, "unit": "x", "change": "neutral" }
+        ],
+        "notes": []
+      }
+    ]
+  }
 }
