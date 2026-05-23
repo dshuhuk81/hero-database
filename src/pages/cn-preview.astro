@@ -4,8 +4,9 @@ import Base from "../layouts/Base.astro";
 import { heroes } from "../data/heroes/withRatings";
 import { getCnHeroes, getCnOverview, formatCnValue } from "../utils/cnDiff.js";
 
-const cnHeroes = getCnHeroes(heroes as any[]);
-const overview = getCnOverview(cnHeroes);
+const allCnHeroes = getCnHeroes(heroes as any[]);
+const cnHeroes = allCnHeroes.filter((h) => h.summary.hasChanges);
+const overview = getCnOverview(allCnHeroes);
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_PLACEHOLDER = `${R2_BASE}/heroes/placeholder.png`;
@@ -107,48 +108,45 @@ const CHANGE_LABEL: Record<string, string> = {
                 {hero.summary.totals.buff > 0 && <span class="cn-badge cn-badge-buff">{hero.summary.totals.buff} Buff</span>}
                 {hero.summary.totals.nerf > 0 && <span class="cn-badge cn-badge-nerf">{hero.summary.totals.nerf} Nerf</span>}
                 {hero.summary.totals.diff > 0 && <span class="cn-badge cn-badge-diff">{hero.summary.totals.diff} Diff</span>}
-                {!hero.summary.hasChanges && <span class="cn-badge cn-badge-same">Matches Global</span>}
               </div>
             </a>
 
-            {hero.summary.hasChanges && (
-              <div class="cn-table-wrap">
-                <table class="cn-table cn-compare-table">
-                  <colgroup>
-                    <col class="cn-col-skill" />
-                    <col class="cn-col-value" />
-                    <col class="cn-col-global" />
-                    <col class="cn-col-cn" />
-                    <col class="cn-col-change" />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th class="cn-cell-skill">Skill</th>
-                      <th class="cn-cell-value">Value</th>
-                      <th class="cn-cell-global">Global</th>
-                      <th class="cn-cell-cn">CN</th>
-                      <th class="cn-cell-change">Change</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {hero.summary.skills.flatMap((skill: any) =>
-                      skill.changedRows.map((row: any) => (
-                        <tr>
-                          <td class="cn-cell-skill cn-td-skill">{skill.name}</td>
-                          <td class="cn-cell-value">{row.label}</td>
-                          <td class="cn-cell-global cn-td-global">{formatCnValue(row.global, row.unit)}</td>
-                          <td class="cn-cell-cn cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
-                          <td class="cn-cell-change">
-                            <span class={`cn-tag cn-tag-${row.change}`}>{CHANGE_LABEL[row.change] || row.change}</span>
-                            {row.verified === false && <span class="cn-tag cn-tag-unverified">Unconfirmed</span>}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
+            <div class="cn-table-wrap">
+              <table class="cn-table cn-compare-table">
+                <colgroup>
+                  <col class="cn-col-skill" />
+                  <col class="cn-col-value" />
+                  <col class="cn-col-global" />
+                  <col class="cn-col-cn" />
+                  <col class="cn-col-change" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="cn-cell-skill">Skill</th>
+                    <th class="cn-cell-value">Value</th>
+                    <th class="cn-cell-global">Global</th>
+                    <th class="cn-cell-cn">CN</th>
+                    <th class="cn-cell-change">Change</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hero.summary.skills.flatMap((skill: any) =>
+                    skill.changedRows.map((row: any) => (
+                      <tr>
+                        <td class="cn-cell-skill cn-td-skill">{skill.name}</td>
+                        <td class="cn-cell-value">{row.label}</td>
+                        <td class="cn-cell-global cn-td-global">{formatCnValue(row.global, row.unit)}</td>
+                        <td class="cn-cell-cn cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
+                        <td class="cn-cell-change">
+                          <span class={`cn-tag cn-tag-${row.change}`}>{CHANGE_LABEL[row.change] || row.change}</span>
+                          {row.verified === false && <span class="cn-tag cn-tag-unverified">Unconfirmed</span>}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
 
             {hero.summary.skills.some((s: any) => s.notes.length > 0) && (
               <ul class="cn-notes">

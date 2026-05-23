@@ -270,10 +270,12 @@ Key rules:
 
 - Map CN skill to Global skill by CONTENT, never by id or en-name (CN files use their own skill ordering and EN names).
 - Only English names render in the UI; CN `cnName` is stored for reference and never displayed.
+- **Text-only diffs excluded** – wording/label differences (e.g. "evasion" vs "Dodge Rate") do NOT create value rows. Exception: damageType changes always included as rows.
 - `change` semantics describe GLOBAL relative to the CN base: `buff` = Global better than CN, `nerf` = Global worse than CN, `diff` = non-numeric / direction-ambiguous, `neutral` = equal.
 - Numbers are language-agnostic; screenshot/vision ingestion was tried and rejected (digit misread produced a false positive). Extracted text is the proven pipeline.
 - `verified: false` flags uncertain rows (often damageType differences that may be a Global JSON error rather than a real divergence). Never mutate Global combat data from inference alone.
-- Hero detail section and hub render only when a `cn` block exists; detail shows changed rows only.
+- **No-diff rendering** – heroes with zero divergences (all neutral rows, no buff/nerf/diff) show "Matches Global" badge, not a CN table.
+- Hero detail section and hub render only when a `cn` block exists and has at least one change; detail shows changed rows only.
 
 Workflow: drop `data-mine/cn/<hero>.json`, write a `cn` block into the matching `src/data/heroes/<hero>.json`, log the mapping + result in `_manifest.json`, run `npm run db:merge` then `npm run build`, verify `/cn-preview` and the detail `#section-cn`.
 

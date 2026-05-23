@@ -151,10 +151,12 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
   }
   ```
 - **`change` semantics (authoritative)**: describes GLOBAL relative to the CN base, by player benefit. `buff` = Global BETTER than CN. `nerf` = Global WORSE than CN. `diff` = non-numeric / direction-ambiguous (e.g. damageType). `neutral` = equal. Direction is stat-aware (more good-effect = better; higher cooldown / longer self-debuff = worse). The ingestion step decides per row.
+- **Text-only differences excluded**: Wording/description diffs (e.g. "evasion" vs "Dodge Rate") do NOT create value rows. Exception: damageType changes always included (e.g. "Physical" vs "Passive"). Structural/label differences go in the `notes` array instead.
 - **`verified: false`**: marks an uncertain row (e.g. a type difference that may be a Global JSON error rather than a real divergence). Renders an "Unconfirmed" tag. Resolve by either fixing the Global value (row auto-drops to neutral) or setting `verified: true`. Never mutate Global combat data from inference alone.
+- **No-diff rendering**: Heroes with zero divergences (all `neutral` rows, no `buff`/`nerf`/`diff`) do NOT render a CN section on detail page. Hub shows "Matches Global" badge instead of a diff table.
 - **Engine**: `src/utils/cnDiff.js` - pure functions only, never invents data. `getCnSummary(hero)`, `getCnHeroes(heroes)`, `getCnOverview(...)`, `formatCnValue(...)`. Header comment in that file is the source of truth for semantics.
-- **UI**: `/cn-preview` hub (every tracked hero, sorted by change count, ASCII-only, styled via `components.css` `.cn-*` classes) + a "CN vs Global" section on the hero detail page (`#section-cn`, dot-nav entry, changed rows only) - both render only when a `cn` block exists. `cn` is passed through the runtime adapter in `src/data/heroes/index.js`.
-- **damageType caveat**: per-skill damage element is NOT reliably in APK configs (effect-chain indirection + missing skill name->ID mapping). Only resolvable empirically (true ignores Armor + M-Res). Treat type diffs as advisory (`verified:false`) until in-game tested.
+- **UI**: `/cn-preview` hub (every tracked hero, sorted by change count, ASCII-only, styled via `components.css` `.cn-*` classes) + a "CN vs Global" section on the hero detail page (`#section-cn`, dot-nav entry, changed rows only) - both render only when a `cn` block exists and has at least one change. `cn` is passed through the runtime adapter in `src/data/heroes/index.js`.
+- **damageType caveat**: per-skill damage element is NOT reliably in APK configs (effect-chain indirection + missing skill name->ID mapping). Only resolvable empirically (true ignores Armor + M-Res). Treat type diffs as advisory (`verified:false`) until in-game tested. damageType is an exception to the text-only rule and always shown.
 
 ## File Conventions
 
@@ -251,9 +253,10 @@ URL: https://docs.google.com/spreadsheets/d/1fGSqpG8d3dH576k6Ws6LegNRKXBuawltaRe
 1. Drop per-hero CN skill text at `data-mine/cn/{hero_id}.json` (hero stats + CN/EN skill text + leveled upgrades)
 2. Map each CN skill to the Global skill by CONTENT (not id/en-name); confirm stats match Global as a sanity check
 3. Diff numeric values; write a `cn` block into `src/data/heroes/{hero_id}.json` (see CN vs Global Comparison System for shape + `change` semantics)
-4. Flag uncertain/non-numeric diffs with `verified: false`
-5. Log the hero + skill mapping + result in `data-mine/cn/_manifest.json`
-6. Run `npm run db:merge` then `npm run build`; verify `/cn-preview` and the hero detail `#section-cn`
+4. **Exclude text-only differences** – wording/label diffs do not create value rows; put them in the `notes` array instead. Exception: damageType changes always included as rows.
+5. Flag uncertain/non-numeric diffs with `verified: false`
+6. Log the hero + skill mapping + result in `data-mine/cn/_manifest.json`
+7. Run `npm run db:merge` then `npm run build`; verify `/cn-preview` and the hero detail `#section-cn`. Heroes with zero changes render "Matches Global" badge; no CN table shown.
 
 ### Validate Data
 - `npm run validate:all` – runs validate-bosses + test-hero-tags

@@ -143,7 +143,7 @@ function resolveSkillVideoSrc(video: unknown): string {
 const dotSections = [
   { id: "section-profile",    label: "Profile" },
   { id: "skills",             label: "Skills" },
-  ...(cnSummary ? [{ id: "section-cn", label: "CN vs Global" }] : []),
+  ...(cnSummary && cnSummary.hasChanges ? [{ id: "section-cn", label: "CN vs Global" }] : []),
   { id: "section-ratings",    label: "Ratings" },
   { id: "section-stats",      label: "Stats" },
   { id: "section-synergies",  label: "Synergies" },
@@ -417,7 +417,7 @@ const dotSections = [
     </section>
 
     <!-- ── SECTION: CN vs GLOBAL ── -->
-    {cnSummary && (
+    {cnSummary && cnSummary.hasChanges && (
       <section class="content-section" id="section-cn">
         <div class="section-label">
           <span>CN vs Global</span>
@@ -428,45 +428,40 @@ const dotSections = [
           {cnSummary.totals.buff > 0 && <span class="cn-badge cn-badge-buff">{cnSummary.totals.buff} Buff</span>}
           {cnSummary.totals.nerf > 0 && <span class="cn-badge cn-badge-nerf">{cnSummary.totals.nerf} Nerf</span>}
           {cnSummary.totals.diff > 0 && <span class="cn-badge cn-badge-diff">{cnSummary.totals.diff} Diff</span>}
-          {!cnSummary.hasChanges && <span class="cn-badge cn-badge-same">All values match Global</span>}
           <a href="/cn-preview" class="cn-detail-link">All heroes &rarr;</a>
         </div>
 
-        {cnSummary.hasChanges ? (
-          <div class="cn-table-wrap">
-            <table class="cn-table">
-              <thead>
-                <tr>
-                  <th>Skill</th>
-                  <th>Value</th>
-                  <th>Global</th>
-                  <th>CN</th>
-                  <th>Change</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cnSummary.skills.flatMap((skill: any) =>
-                  skill.changedRows.map((row: any) => (
-                    <tr class="cn-row-changed">
-                      <td class="cn-td-skill">{skill.name}</td>
-                      <td>{row.label}</td>
-                      <td class="cn-td-global">{formatCnValue(row.global, row.unit)}</td>
-                      <td class="cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
-                      <td>
-                        <span class={`cn-tag cn-tag-${row.change}`}>{row.change === "buff" ? "Buff" : row.change === "nerf" ? "Nerf" : "Different"}</span>
-                        {row.verified === false && <span class="cn-tag cn-tag-unverified">Unconfirmed</span>}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p class="cn-empty">All skill values match the Global version in this CN snapshot.</p>
-        )}
+        <div class="cn-table-wrap">
+          <table class="cn-table">
+            <thead>
+              <tr>
+                <th>Skill</th>
+                <th>Value</th>
+                <th>Global</th>
+                <th>CN</th>
+                <th>Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cnSummary.skills.flatMap((skill: any) =>
+                skill.changedRows.map((row: any) => (
+                  <tr class="cn-row-changed">
+                    <td class="cn-td-skill">{skill.name}</td>
+                    <td>{row.label}</td>
+                    <td class="cn-td-global">{formatCnValue(row.global, row.unit)}</td>
+                    <td class="cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
+                    <td>
+                      <span class={`cn-tag cn-tag-${row.change}`}>{row.change === "buff" ? "Buff" : row.change === "nerf" ? "Nerf" : "Different"}</span>
+                      {row.verified === false && <span class="cn-tag cn-tag-unverified">Unconfirmed</span>}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
-        {cnSummary.hasChanges && cnSummary.skills.some((s: any) => s.changedRows.length > 0 && s.notes.length > 0) && (
+        {cnSummary.skills.some((s: any) => s.changedRows.length > 0 && s.notes.length > 0) && (
           <ul class="cn-notes">
             {cnSummary.skills
               .filter((s: any) => s.changedRows.length > 0)

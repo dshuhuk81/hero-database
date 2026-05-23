@@ -43,57 +43,58 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "",
-      "description": "",
+      "name": "Fatal Infatuation",
+      "description": "Hera targets the enemy with the highest DMG dealt, inflicting Charm for 3s. Charmed enemies cannot attack, have reduced Movement SPD, and move toward Hera. During the effect, the target takes DMG equal to 100% of Hera’s ATK every second, and the same amount is converted into Hera’s HP.",
       "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+        "level2": "Increases per-second DMG to 120% of ATK.",
+        "level3": "Increases duration to 5s.",
+        "level4": "Increases per-second DMG to 150% of ATK."
       },
-      "damageType": "",
+      "damageType": "Magical",
       "isUltimate": true
     },
     {
       "id": "skill_2",
-      "name": "",
-      "description": "",
+      "name": "Authority Domain",
+      "description": "At the start of battle, Hera creates an Authority Domain on the allied side of the battlefield. While inside the domain, Hera gains 2.5% Energy Recovery SPD and 5% DMG Reduction every 5s, stacking up to 6 times. Enemies entering the domain for the first time are suppressed for 2s.",
       "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+        "level2": "Every 5s, Hera additionally gains 7% DMG Reduction.",
+        "level3": "Enemies entering the domain for the first time are suppressed for 3s.",
+        "level4": "When Hera takes fatal DMG, she retracts the Authority Domain, becomes immune to DMG for 2.5s, and restores 30% of max HP."
       },
-      "damageType": ""
+      "damageType": "Magical"
     },
     {
       "id": "skill_3",
-      "name": "",
-      "description": "",
+      "name": "Crown Bestowal",
+      "description": "Hera grants her crown to the allied unit with the highest ATK, increasing their ATK by 30% and ATK SPD by 100% for 3s.",
       "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+        "level2": "Increases ATK bonus to 50%.",
+        "level3": "Increases duration to 4s.",
+        "level4": "Increases ATK bonus to 150%."
       },
-      "damageType": ""
+      "damageType": "Support"
     },
     {
       "id": "skill_4",
-      "name": "",
-      "description": "",
+      "name": "Desire Frenzy",
+      "description": "Hera releases a wave of temptation toward the farthest enemy target, inflicting Charm. Charmed enemies attack their own allies. Enemies hit also have their Basic ATK DMG increased by 40% for 3s.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "Increases Basic ATK DMG increase to 60%.",
+        "level3": "Increases duration to 4s.",
+        "level4": "Increases Basic ATK DMG increase to 80%."
       },
-      "damageType": ""
+      "damageType": "Magical"
     }
   ],
   "relic": {
-    "name": "Vortex of Grace",
-    "description": "Releases Great Rising Gale to create 1 whirlwind.",
+    "name": "Phantom of Enchantment",
+    "description": "Enemies controlled by Hera’s Charm and Infatuation effects have their Effect Resistance reduced by 30%.",
+    "damageType": "Magical",
     "upgrades": {
-      "level2": "",
-      "level3": "",
-      "level4": ""
+      "level2": "Enemies charmed by Hera additionally receive one instance of Crown Bestowal.",
+      "level3": "Enemies affected by Charm cannot restore Energy during the effect duration.",
+      "level4": "If a charmed enemy is killed during the effect duration, the Charm duration is extended by 5s."
     }
   },
   "synergies": [
