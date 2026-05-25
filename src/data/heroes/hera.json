@@ -2,7 +2,7 @@
   "id": "hera",
   "name": "Hera",
   "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hera.webp",
-  "release": true,
+  "release": false,
   "faction": "Starglint",
   "role": "Arcane",
   "class": "Support",
@@ -43,58 +43,61 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Fatal Obsession",
-      "description": "Inflicts Obsession on the enemy with the highest DPS for 3s, disabling their attacks, reducing their Move SPD, and pulling them to Hera. The target takes 100% of Hera's ATK as DMG per sec, which converts into Hera's HP.",
+      "name": "Fatal Fondness",
+      "description": "Hera targets the enemy who has dealt the most DMG, inflicting Obsession (unable to attack, reduced Movement SPD, and moves toward Hera) for 3s. The target takes DMG equal to 100% of Hera's ATK per second, and Hera restores HP equal to the DMG dealt.",
       "upgrades": {
-        "level2": "The target takes 120% of Hera's ATK as DMG per sec.",
-        "level3": "Duration extends to 5s.",
-        "level4": "The target takes 150% of Hera's ATK as DMG per sec."
+        "level2": "Increases per-second DMG to 120% of ATK.",
+        "level3": "Increases duration to 5s.",
+        "level4": "Increases per-second DMG to 150% of ATK."
       },
       "damageType": "Magical",
-      "isUltimate": true
+      "isUltimate": false
     },
     {
       "id": "skill_2",
       "name": "Sovereign Domain",
-      "description": "At combat start, Hera creates a Sovereign Domain in the ally half. While in the domain, she gains 2.5% Energy Regen and 5% DMG RED every 5s. Max at 6 stacks. When an enemy enters the domain for the first time, they are suppressed for 2s.",
+      "description": "At the start of battle, Hera creates a Domain of Power on the allied side of the field. While in the domain, Hera gains 2.5% Energy Regen and 5% DMG RED every 5s, stacking up to 6 times. When an enemy enters the domain for the first time, they are suppressed for 2s.",
       "upgrades": {
-        "level2": "Hera gains 7% DMG RED every 5s.",
-        "level3": "When an enemy enters the domain for the first time, they are suppressed for 3s.",
-        "level4": "Upon taking Lethal DMG, Hera retracts the domain, becoming immune to DMG for 2.5s and restores 30% of her max HP."
+        "level2": "Every 5s, Hera additionally gains 7% DMG Reduction.",
+        "level3": "Enemies entering the domain for the first time are suppressed for 3s.",
+        "level4": "When Hera takes fatal DMG, she retracts the Sovereign Domain, becomes immune to DMG for 2.5s, and restores 30% of max HP."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": false
     },
     {
       "id": "skill_3",
-      "name": "Crown Bestowal",
-      "description": "Hera crowns the ally with the highest ATK, granting +30% ATK and +100% ATK SPD for 3s.",
+      "name": "Crown's Bestowal",
+      "description": "Hera grants her crown to the ally with the highest ATK, increasing their ATK by 30% and ATK SPD by 100% for 3s.",
       "upgrades": {
-        "level2": "Increases ATK by 50%.",
-        "level3": "Duration extends to 4s.",
-        "level4": "Increases ATK SPD by 150%."
+        "level2": "Increases ATK bonus to 50%.",
+        "level3": "Increases duration to 4s.",
+        "level4": "Increases ATK bonus to 150%."
       },
-      "damageType": "Support"
+      "damageType": "Support",
+      "isUltimate": false
     },
     {
       "id": "skill_4",
-      "name": "Dominance Spree",
-      "description": "Hera releases a wave of Charm toward the farthest enemy (Charm: Afflicted units attack their own allies). Enemies hit deal 40% increased Normal Attack DMG for 3s.",
+      "name": "Powerlust Tide",
+      "description": "Hera unleashes a Charm Wave at the farthest enemy in a rectangular AoE in front of her, charming them to attack their own allies. The Normal Attack DMG of enemies hit is increased by 40% for 3s.",
       "upgrades": {
-        "level2": "Enemies hit deal 60% increased Normal Attack DMG.",
-        "level3": "Duration extends to 4s.",
-        "level4": "Enemies hit deal 80% increased Normal Attack DMG."
+        "level2": "Increases Normal Attack DMG bonus to 60%.",
+        "level3": "Increases duration to 4s.",
+        "level4": "Increases Normal Attack DMG bonus to 80%."
       },
-      "damageType": "Magical"
+      "damageType": "Magical",
+      "isUltimate": true
     }
   ],
   "relic": {
-    "name": "Allure Brand",
-    "description": "Enemies that have been controlled by Hera's Charm and Obsession have their Effect RES reduced by 30%.",
+    "name": "Phantom Brand",
+    "description": "Enemies that have been controlled by Hera's Charm and Obsession effects have their Control RES and Effect RES reduced by 30%.",
     "damageType": "Magical",
     "upgrades": {
-      "level2": "Enemies Charmed by Hera also receive one instance of Crown Bestowal.",
-      "level3": "Enemies Charmed by Hera cannot gain Energy for the duration.",
-      "level4": "Kills conducted by enemies Charmed by Hera extend the duration of Charm by 5s."
+      "level2": "Enemies charmed by Hera additionally receive one instance of Crown's Bestowal.",
+      "level3": "Enemies affected by Charm cannot restore Energy during the effect duration.",
+      "level4": "If a charmed enemy is killed during the effect duration, the Charm duration is extended by 5s."
     }
   },
   "synergies": [],
