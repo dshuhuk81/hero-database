@@ -163,61 +163,307 @@
         "id": "skill_1",
         "cnName": "火莲绽",
         "values": [
-          { "label": "base dmg", "field": "atkPct", "global": 200, "cn": 200, "unit": "%", "change": "neutral" },
-          { "label": "target radius", "field": "meters", "global": 3, "cn": 3, "unit": "m", "change": "neutral" },
-          { "label": "Lotus lifesteal base", "field": "pct", "global": 15, "cn": 20, "unit": "%", "change": "nerf" },
-          { "label": "Lotus pulse dmg/sec", "field": "atkPct", "global": 90, "cn": 100, "unit": "%", "change": "nerf" },
-          { "label": "Lotus pulse radius", "field": "meters", "global": 3, "cn": 3, "unit": "m", "change": "neutral" },
-          { "label": "armor reduction Lv2", "field": "pct", "global": 10, "cn": 15, "unit": "%", "change": "nerf" },
-          { "label": "armor reduction duration", "field": "seconds", "global": 2, "cn": 2, "unit": "s", "change": "neutral" },
-          { "label": "Lotus lifesteal Lv3", "field": "pct", "global": 30, "cn": 40, "unit": "%", "change": "nerf" },
-          { "label": "Lotus duration Lv4", "field": "seconds", "global": 15, "cn": 15, "unit": "s", "change": "neutral" }
+          {
+            "label": "base dmg",
+            "field": "atkPct",
+            "global": 200,
+            "cn": 200,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "target radius",
+            "field": "meters",
+            "global": 3,
+            "cn": 3,
+            "unit": "m",
+            "change": "neutral"
+          },
+          {
+            "label": "Lotus lifesteal base",
+            "field": "pct",
+            "global": 15,
+            "cn": 20,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "Lotus pulse dmg/sec",
+            "field": "atkPct",
+            "global": 90,
+            "cn": 100,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "Lotus pulse radius",
+            "field": "meters",
+            "global": 3,
+            "cn": 3,
+            "unit": "m",
+            "change": "neutral"
+          },
+          {
+            "label": "armor reduction Lv2",
+            "field": "pct",
+            "global": 10,
+            "cn": 15,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "armor reduction duration",
+            "field": "seconds",
+            "global": 2,
+            "cn": 2,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "Lotus lifesteal Lv3",
+            "field": "pct",
+            "global": 30,
+            "cn": 40,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "Lotus duration Lv4",
+            "field": "seconds",
+            "global": 15,
+            "cn": 15,
+            "unit": "s",
+            "change": "neutral"
+          }
         ],
-        "notes": ["Global Lotus Embodied values are lower than the CN base: lifesteal, pulse damage, and armor reduction are all undertuned vs CN."]
+        "notes": [
+          "Global Lotus Embodied values are lower than the CN base: lifesteal, pulse damage, and armor reduction are all undertuned vs CN."
+        ]
       },
       {
         "id": "skill_2",
         "cnName": "莲花护佑",
         "values": [
-          { "label": "frontline allies", "field": "count", "global": 2, "cn": 2, "unit": "x", "change": "neutral" },
-          { "label": "Soul Fire ATK base", "field": "pct", "global": 10, "cn": 10, "unit": "%", "change": "neutral" },
-          { "label": "Soul Fire Armor/M-RES base", "field": "pct", "global": 30, "cn": 30, "unit": "%", "change": "neutral" },
-          { "label": "Soul Fire ATK Lv2", "field": "pct", "global": 20, "cn": 20, "unit": "%", "change": "neutral" },
-          { "label": "Soul Fire Armor/M-RES Lv2", "field": "pct", "global": 40, "cn": 40, "unit": "%", "change": "neutral" },
-          { "label": "reclaim shield Lv3", "field": "atkPct", "global": 200, "cn": 200, "unit": "%", "change": "neutral" },
-          { "label": "Soul Fire ATK Lv4", "field": "pct", "global": 30, "cn": 30, "unit": "%", "change": "neutral" },
-          { "label": "Soul Fire Armor/M-RES Lv4", "field": "pct", "global": 50, "cn": 50, "unit": "%", "change": "neutral" },
-          { "label": "skill type", "field": "damageType", "global": "Physical", "cn": "Passive", "unit": "", "change": "diff", "verified": false }
+          {
+            "label": "frontline allies",
+            "field": "count",
+            "global": 2,
+            "cn": 2,
+            "unit": "x",
+            "change": "neutral"
+          },
+          {
+            "label": "Soul Fire ATK base",
+            "field": "pct",
+            "global": 10,
+            "cn": 10,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Soul Fire Armor/M-RES base",
+            "field": "pct",
+            "global": 30,
+            "cn": 30,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Soul Fire ATK Lv2",
+            "field": "pct",
+            "global": 20,
+            "cn": 20,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Soul Fire Armor/M-RES Lv2",
+            "field": "pct",
+            "global": 40,
+            "cn": 40,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "reclaim shield Lv3",
+            "field": "atkPct",
+            "global": 200,
+            "cn": 200,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Soul Fire ATK Lv4",
+            "field": "pct",
+            "global": 30,
+            "cn": 30,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Soul Fire Armor/M-RES Lv4",
+            "field": "pct",
+            "global": 50,
+            "cn": 50,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "skill type",
+            "field": "damageType",
+            "global": "Physical",
+            "cn": "Passive",
+            "unit": "",
+            "change": "diff",
+            "verified": false
+          }
         ],
-        "notes": ["Global JSON labels Lotus Ward as Physical even though both descriptions are passive Soul Fire buffs; CN marks the skill as passive. Treat as a data/schema flag, not a confirmed balance change."]
+        "notes": [
+          "Global JSON labels Lotus Ward as Physical even though both descriptions are passive Soul Fire buffs; CN marks the skill as passive. Treat as a data/schema flag, not a confirmed balance change."
+        ]
       },
       {
         "id": "skill_3",
         "cnName": "风火破军",
         "values": [
-          { "label": "base dmg", "field": "atkPct", "global": 80, "cn": 80, "unit": "%", "change": "neutral" },
-          { "label": "Lotus dmg base", "field": "atkPct", "global": 120, "cn": 120, "unit": "%", "change": "neutral" },
-          { "label": "dmg Lv2", "field": "atkPct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" },
-          { "label": "Lotus dmg Lv2", "field": "atkPct", "global": 140, "cn": 140, "unit": "%", "change": "neutral" },
-          { "label": "Lv3 effect", "field": "mechanic", "global": "25% ATK up during Lotus", "cn": "20% ATK steal from target, capped at 100% own ATK", "unit": "", "change": "diff", "verified": false },
-          { "label": "ATK SPD Lv4", "field": "pct", "global": 25, "cn": 25, "unit": "%", "change": "neutral" },
-          { "label": "ATK SPD duration", "field": "seconds", "global": 10, "cn": 10, "unit": "s", "change": "neutral" }
+          {
+            "label": "base dmg",
+            "field": "atkPct",
+            "global": 80,
+            "cn": 80,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Lotus dmg base",
+            "field": "atkPct",
+            "global": 120,
+            "cn": 120,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg Lv2",
+            "field": "atkPct",
+            "global": 100,
+            "cn": 100,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Lotus dmg Lv2",
+            "field": "atkPct",
+            "global": 140,
+            "cn": 140,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Lv3 effect",
+            "field": "mechanic",
+            "global": "25% ATK up during Lotus",
+            "cn": "20% ATK steal from target, capped at 100% own ATK",
+            "unit": "",
+            "change": "diff",
+            "verified": false
+          },
+          {
+            "label": "ATK SPD Lv4",
+            "field": "pct",
+            "global": 25,
+            "cn": 25,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "ATK SPD duration",
+            "field": "seconds",
+            "global": 10,
+            "cn": 10,
+            "unit": "s",
+            "change": "neutral"
+          }
         ],
-        "notes": ["Lv3 differs structurally: Global gives a flat 25% ATK increase during Lotus Embodied, while CN steals 20% ATK from the locked enemy with a cap. Direction is ambiguous without gameplay verification."]
+        "notes": [
+          "Lv3 differs structurally: Global gives a flat 25% ATK increase during Lotus Embodied, while CN steals 20% ATK from the locked enemy with a cap. Direction is ambiguous without gameplay verification."
+        ]
       },
       {
         "id": "skill_4",
         "cnName": "混天绔",
         "values": [
-          { "label": "pull count base", "field": "count", "global": 2, "cn": 2, "unit": "x", "change": "neutral" },
-          { "label": "pull range", "field": "meters", "global": 1, "cn": 1, "unit": "m", "change": "neutral" },
-          { "label": "base dmg", "field": "atkPct", "global": 100, "cn": 100, "unit": "%", "change": "neutral" },
-          { "label": "Lotus dmg base", "field": "atkPct", "global": 160, "cn": 160, "unit": "%", "change": "neutral" },
-          { "label": "dmg Lv2", "field": "atkPct", "global": 120, "cn": 120, "unit": "%", "change": "neutral" },
-          { "label": "Lotus dmg Lv2", "field": "atkPct", "global": 180, "cn": 180, "unit": "%", "change": "neutral" },
-          { "label": "bonus dmg taken Lv3", "field": "pct", "global": 20, "cn": 20, "unit": "%", "change": "neutral" },
-          { "label": "bonus dmg duration", "field": "seconds", "global": 8, "cn": 8, "unit": "s", "change": "neutral" },
-          { "label": "pull count Lv4", "field": "count", "global": 3, "cn": 3, "unit": "x", "change": "neutral" }
+          {
+            "label": "pull count base",
+            "field": "count",
+            "global": 2,
+            "cn": 2,
+            "unit": "x",
+            "change": "neutral"
+          },
+          {
+            "label": "pull range",
+            "field": "meters",
+            "global": 1,
+            "cn": 1,
+            "unit": "m",
+            "change": "neutral"
+          },
+          {
+            "label": "base dmg",
+            "field": "atkPct",
+            "global": 100,
+            "cn": 100,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Lotus dmg base",
+            "field": "atkPct",
+            "global": 160,
+            "cn": 160,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg Lv2",
+            "field": "atkPct",
+            "global": 120,
+            "cn": 120,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "Lotus dmg Lv2",
+            "field": "atkPct",
+            "global": 180,
+            "cn": 180,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "bonus dmg taken Lv3",
+            "field": "pct",
+            "global": 20,
+            "cn": 20,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "bonus dmg duration",
+            "field": "seconds",
+            "global": 8,
+            "cn": 8,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "pull count Lv4",
+            "field": "count",
+            "global": 3,
+            "cn": 3,
+            "unit": "x",
+            "change": "neutral"
+          }
         ],
         "notes": []
       },
@@ -225,17 +471,94 @@
         "id": "relic",
         "cnName": "涅槃之怒",
         "values": [
-          { "label": "energy per ally fall", "field": "count", "global": 150, "cn": 150, "unit": "", "change": "neutral" },
-          { "label": "dmg dealt base", "field": "pct", "global": 15, "cn": 15, "unit": "%", "change": "neutral" },
-          { "label": "dmg reduction base", "field": "pct", "global": 10, "cn": 10, "unit": "%", "change": "neutral" },
-          { "label": "buff duration", "field": "seconds", "global": 25, "cn": 25, "unit": "s", "change": "neutral" },
-          { "label": "max stacks", "field": "count", "global": 5, "cn": 5, "unit": "x", "change": "neutral" },
-          { "label": "dmg dealt Lv2", "field": "pct", "global": 30, "cn": 30, "unit": "%", "change": "neutral" },
-          { "label": "dmg reduction Lv2", "field": "pct", "global": 10, "cn": 10, "unit": "%", "change": "neutral" },
-          { "label": "dmg dealt Lv3", "field": "pct", "global": 30, "cn": 30, "unit": "%", "change": "neutral" },
-          { "label": "dmg reduction Lv3", "field": "pct", "global": 25, "cn": 25, "unit": "%", "change": "neutral" },
-          { "label": "starting energy Lv4", "field": "count", "global": 300, "cn": 300, "unit": "", "change": "neutral" },
-          { "label": "energy regen Lv4", "field": "pct", "global": 30, "cn": 30, "unit": "%", "change": "neutral" }
+          {
+            "label": "energy per ally fall",
+            "field": "count",
+            "global": 150,
+            "cn": 150,
+            "unit": "",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg dealt base",
+            "field": "pct",
+            "global": 15,
+            "cn": 15,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg reduction base",
+            "field": "pct",
+            "global": 10,
+            "cn": 10,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "buff duration",
+            "field": "seconds",
+            "global": 25,
+            "cn": 25,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "max stacks",
+            "field": "count",
+            "global": 5,
+            "cn": 5,
+            "unit": "x",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg dealt Lv2",
+            "field": "pct",
+            "global": 30,
+            "cn": 30,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg reduction Lv2",
+            "field": "pct",
+            "global": 10,
+            "cn": 10,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg dealt Lv3",
+            "field": "pct",
+            "global": 30,
+            "cn": 30,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg reduction Lv3",
+            "field": "pct",
+            "global": 25,
+            "cn": 25,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "starting energy Lv4",
+            "field": "count",
+            "global": 300,
+            "cn": 300,
+            "unit": "",
+            "change": "neutral"
+          },
+          {
+            "label": "energy regen Lv4",
+            "field": "pct",
+            "global": 30,
+            "cn": 30,
+            "unit": "%",
+            "change": "neutral"
+          }
         ],
         "notes": []
       }

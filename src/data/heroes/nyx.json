@@ -149,12 +149,54 @@
         "id": "skill_1",
         "cnName": "暗夜突袭",
         "values": [
-          { "label": "base dmg", "field": "atkPct", "global": 200, "cn": 200, "unit": "%", "change": "neutral" },
-          { "label": "energy block duration", "field": "seconds", "global": 8, "cn": 8, "unit": "s", "change": "neutral" },
-          { "label": "stun duration base", "field": "seconds", "global": 3, "cn": 3, "unit": "s", "change": "neutral" },
-          { "label": "dmg Lv2", "field": "atkPct", "global": 220, "cn": 220, "unit": "%", "change": "neutral" },
-          { "label": "stun Lv3", "field": "seconds", "global": 4, "cn": 4, "unit": "s", "change": "neutral" },
-          { "label": "dmg Lv4", "field": "atkPct", "global": 250, "cn": 250, "unit": "%", "change": "neutral" }
+          {
+            "label": "base dmg",
+            "field": "atkPct",
+            "global": 200,
+            "cn": 200,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "energy block duration",
+            "field": "seconds",
+            "global": 8,
+            "cn": 8,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "stun duration base",
+            "field": "seconds",
+            "global": 3,
+            "cn": 3,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg Lv2",
+            "field": "atkPct",
+            "global": 220,
+            "cn": 220,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "stun Lv3",
+            "field": "seconds",
+            "global": 4,
+            "cn": 4,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg Lv4",
+            "field": "atkPct",
+            "global": 250,
+            "cn": 250,
+            "unit": "%",
+            "change": "neutral"
+          }
         ],
         "notes": []
       },
@@ -162,14 +204,70 @@
         "id": "skill_2",
         "cnName": "黑夜审判",
         "values": [
-          { "label": "hit count", "field": "count", "global": 4, "cn": 4, "unit": "x", "change": "neutral" },
-          { "label": "dmg per hit", "field": "atkPct", "global": 180, "cn": 180, "unit": "%", "change": "neutral" },
-          { "label": "final hit stun", "field": "seconds", "global": 2, "cn": 2, "unit": "s", "change": "neutral" },
-          { "label": "final hit bonus Lv2", "field": "pct", "global": 10, "cn": 10, "unit": "% lost HP", "change": "neutral" },
-          { "label": "final hit bonus cap Lv2", "field": "atkPct", "global": 200, "cn": 200, "unit": "%", "change": "neutral" },
-          { "label": "dmg per hit Lv3", "field": "atkPct", "global": 200, "cn": 200, "unit": "%", "change": "neutral" },
-          { "label": "final hit bonus Lv4", "field": "pct", "global": 15, "cn": 15, "unit": "% lost HP", "change": "neutral" },
-          { "label": "final hit bonus cap Lv4", "field": "atkPct", "global": 300, "cn": 300, "unit": "%", "change": "neutral" }
+          {
+            "label": "hit count",
+            "field": "count",
+            "global": 4,
+            "cn": 4,
+            "unit": "x",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg per hit",
+            "field": "atkPct",
+            "global": 180,
+            "cn": 180,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit stun",
+            "field": "seconds",
+            "global": 2,
+            "cn": 2,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit bonus Lv2",
+            "field": "pct",
+            "global": 10,
+            "cn": 10,
+            "unit": "% lost HP",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit bonus cap Lv2",
+            "field": "atkPct",
+            "global": 200,
+            "cn": 200,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg per hit Lv3",
+            "field": "atkPct",
+            "global": 200,
+            "cn": 200,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit bonus Lv4",
+            "field": "pct",
+            "global": 15,
+            "cn": 15,
+            "unit": "% lost HP",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit bonus cap Lv4",
+            "field": "atkPct",
+            "global": 300,
+            "cn": 300,
+            "unit": "%",
+            "change": "neutral"
+          }
         ],
         "notes": []
       },
@@ -177,12 +275,54 @@
         "id": "skill_3",
         "cnName": "黑夜侵蚀",
         "values": [
-          { "label": "hit count", "field": "count", "global": 3, "cn": 3, "unit": "x", "change": "neutral" },
-          { "label": "dmg per hit", "field": "atkPct", "global": 150, "cn": 150, "unit": "%", "change": "neutral" },
-          { "label": "final hit dmg", "field": "atkPct", "global": 250, "cn": 250, "unit": "%", "change": "neutral" },
-          { "label": "dmg per hit Lv2", "field": "atkPct", "global": 180, "cn": 180, "unit": "%", "change": "neutral" },
-          { "label": "final hit dmg Lv3", "field": "atkPct", "global": 280, "cn": 280, "unit": "%", "change": "neutral" },
-          { "label": "final hit crit Lv4", "field": "bool", "global": true, "cn": true, "unit": "", "change": "neutral" }
+          {
+            "label": "hit count",
+            "field": "count",
+            "global": 3,
+            "cn": 3,
+            "unit": "x",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg per hit",
+            "field": "atkPct",
+            "global": 150,
+            "cn": 150,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit dmg",
+            "field": "atkPct",
+            "global": 250,
+            "cn": 250,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg per hit Lv2",
+            "field": "atkPct",
+            "global": 180,
+            "cn": 180,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit dmg Lv3",
+            "field": "atkPct",
+            "global": 280,
+            "cn": 280,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "final hit crit Lv4",
+            "field": "bool",
+            "global": true,
+            "cn": true,
+            "unit": "",
+            "change": "neutral"
+          }
         ],
         "notes": []
       },
@@ -190,13 +330,62 @@
         "id": "skill_4",
         "cnName": "黑夜领域",
         "values": [
-          { "label": "dodge per ally", "field": "pct", "global": 5, "cn": 5, "unit": "%", "change": "neutral" },
-          { "label": "atk per ally", "field": "pct", "global": 4, "cn": 4, "unit": "%", "change": "neutral" },
-          { "label": "dodge Lv2", "field": "pct", "global": 10, "cn": 10, "unit": "%", "change": "neutral" },
-          { "label": "atk Lv2", "field": "pct", "global": 5, "cn": 5, "unit": "%", "change": "neutral" },
-          { "label": "double duration Lv3", "field": "seconds", "global": 10, "cn": 10, "unit": "s", "change": "neutral" },
-          { "label": "dodge Lv4", "field": "pct", "global": 20, "cn": 20, "unit": "%", "change": "neutral" },
-          { "label": "atk Lv4", "field": "pct", "global": 6, "cn": 6, "unit": "%", "change": "neutral" }
+          {
+            "label": "dodge per ally",
+            "field": "pct",
+            "global": 5,
+            "cn": 5,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "atk per ally",
+            "field": "pct",
+            "global": 4,
+            "cn": 4,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dodge Lv2",
+            "field": "pct",
+            "global": 10,
+            "cn": 10,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "atk Lv2",
+            "field": "pct",
+            "global": 5,
+            "cn": 5,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "double duration Lv3",
+            "field": "seconds",
+            "global": 10,
+            "cn": 10,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "dodge Lv4",
+            "field": "pct",
+            "global": 20,
+            "cn": 20,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "atk Lv4",
+            "field": "pct",
+            "global": 6,
+            "cn": 6,
+            "unit": "%",
+            "change": "neutral"
+          }
         ],
         "notes": []
       },
@@ -204,9 +393,30 @@
         "id": "relic",
         "cnName": "至暗恐惧",
         "values": [
-          { "label": "fear duration", "field": "seconds", "global": 2, "cn": 2, "unit": "s", "change": "neutral" },
-          { "label": "fear duration Lv3", "field": "seconds", "global": 3, "cn": 3, "unit": "s", "change": "neutral" },
-          { "label": "armor ignore Lv4", "field": "pct", "global": 70, "cn": 70, "unit": "%", "change": "neutral" }
+          {
+            "label": "fear duration",
+            "field": "seconds",
+            "global": 2,
+            "cn": 2,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "fear duration Lv3",
+            "field": "seconds",
+            "global": 3,
+            "cn": 3,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "armor ignore Lv4",
+            "field": "pct",
+            "global": 70,
+            "cn": 70,
+            "unit": "%",
+            "change": "neutral"
+          }
         ],
         "notes": []
       }
