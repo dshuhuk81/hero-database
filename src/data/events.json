@@ -1,6 +1,62 @@
 {
   "campaigns": [
     {
+      "id": "hera-campaign",
+      "name": "Hera Campaign",
+      "hero": "hera",
+      "description": "Complete PVE campaign stages using Hera and allies",
+      "stages": [
+        {
+          "id": 1,
+          "name": "1. Upon the Golden Throne",
+          "composition": {
+            "front": ["taurus", "aquarius"],
+            "back": ["hera", "", ""]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2. Which God Stirred the Dust",
+          "composition": {
+            "front": ["hera", "isis"],
+            "back": ["taurus", "cancer", "prometheus"]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. From Solitary Fight to Shared Glory",
+          "composition": {
+            "front": ["caishen", "yuelao"],
+            "back": ["prometheus", "yanluo", "libra"]
+          }
+        },
+        {
+          "id": 4,
+          "name": "4. Nectar for the Toast",
+          "composition": {
+            "front": ["momus", "hera"],
+            "back": ["medusa", "hela", "poseidon"]
+          }
+        },
+        {
+          "id": 5,
+          "name": "5. Joy of the Revel",
+          "composition": {
+            "front": ["poseidon", "momus"],
+            "back": ["khepri", "iris", "hera"]
+          }
+        },
+        {
+          "id": 6,
+          "name": "6. One More Cup",
+          "composition": {
+            "front": ["momus", "poseidon"],
+            "back": ["skadi", "anubis", "hera"]
+          }
+        }
+      ]
+    },
+    {
       "id": "serket-campaign",
       "name": "Serket Campaign",
       "hero": "serket",
@@ -9,7 +65,6 @@
         {
           "id": 1,
           "name": "1. First-Sin: Nameless",
-
           "composition": {
             "front": ["serket", ""],
             "back": ["", "", ""]
@@ -18,7 +73,6 @@
         {
           "id": 2,
           "name": "2. Second-Sin: No Return",
-
           "composition": {
             "front": ["taurus", "libra"],
             "back": ["sagittarius", "cancer", "serket"]
@@ -27,7 +81,6 @@
         {
           "id": 3,
           "name": "3. Third-Sin: Complicity",
-
           "composition": {
             "front": ["libra", "sagittarius"],
             "back": ["serket", "cancer", "virgo"]
@@ -36,7 +89,6 @@
         {
           "id": 4,
           "name": "4. Brief Union",
-
           "composition": {
             "front": ["", ""],
             "back": ["", "", ""]
@@ -45,7 +97,6 @@
         {
           "id": 5,
           "name": "5. Guild Bearer",
-
           "composition": {
             "front": ["", ""],
             "back": ["", "", ""]
@@ -54,7 +105,6 @@
         {
           "id": 6,
           "name": "6. Sentence of Solitude",
-
           "composition": {
             "front": ["", ""],
             "back": ["", "", ""]
@@ -63,7 +113,6 @@
         {
           "id": 7,
           "name": "7. Penalty of Abondonment",
-
           "composition": {
             "front": ["", ""],
             "back": ["", "", ""]
@@ -72,536 +121,9 @@
         {
           "id": 8,
           "name": "8. Dance with Scorpions",
-
           "composition": {
             "front": ["", ""],
             "back": ["", "", ""]
-          }
-        }
-      ]
-    },
-      {
-        "id": "hephaestus-campaign",
-        "name": "Hephaestus Campaign",
-        "hero": "Hephaestus",
-        "description": "Complete PVE campaign stages using Hephaestus and allies",
-        "stages": [
-          {
-          "id": 1,
-          "name": "1. Put up or shut up.",
-
-          "composition": {
-            "front": ["taurus", "aries"],
-            "back": ["cancer", "hephaestus", "libra"]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Under Assessment.",
-
-          "composition": {
-            "front": ["taurus", "prometheus"],
-            "back": ["hephaestus", "caishen", "isis"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. A new Demand.",
-
-          "composition": {
-            "front": ["caishen", "ullr"],
-            "back": ["yuelao", "isis", "hephaestus"]
-          }       
-        },
-        {
-          "id": 4,
-          "name": "4. Request Change: Act Now!",
-
-          "composition": {
-            "front": ["hephaestus", "taurus"],
-            "back": ["prometheus", "caishen", "isis"]
-          }       
-        },
-        {
-          "id": 5,
-          "name": "5. Iteration: Push to Limit.",
-
-          "composition": {
-            "front": ["anubis", "nuba"],
-            "back": ["jingwei", "hephaestus", "diana"]
-          }       
-        },
-        {
-          "id": 6,
-          "name": "6. After Action: Full Review.",
-
-          "composition": {
-            "front": ["poseidon", "momus"],
-            "back": ["hecate", "hephaestus", "tefnut"]
-          }       
-        },
-        {
-          "id": 7,
-          "name": "7. Knock on the Heart.",
-
-          "composition": {
-            "front": ["momus", "poseidon"],
-            "back": ["skadi", "hephaestus", "iris"]
-          }       
-        }
-      ]
-    },
-      {
-        "id": "meret-campaign",
-        "name": "Meret Campaign",
-        "hero": "Meret",
-        "description": "Complete PVE campaign stages using Meret and allies",
-        "stages": [
-          {
-          "id": 1,
-          "name": "1. Sandstorm Resonance.",
-
-          "composition": {
-            "front": ["taurus", ""],
-            "back": ["isis", "meret", ""]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Crimson Gold Whirl.",
-
-          "composition": {
-            "front": ["prometheus", "taurus"],
-            "back": ["isis", "meret", "cancer"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. Curtain Call.",
-
-          "composition": {
-            "front": ["prometheus", "yuelao"],
-            "back": ["isis", "meret", "caishen"]
-          }       
-        },
-        {
-          "id": 4,
-          "name": "4. Dance and Undercurrent.",
-
-          "composition": {
-            "front": ["prometheus", "ares"],
-            "back": ["meret", "caishen", "isis"]
-          }       
-        },
-        {
-          "id": 5,
-          "name": "5. Steps of Requiem.",
-
-          "composition": {
-            "front": ["geb", "ares"],
-            "back": ["jingwei", "meret", "phoenix"]
-          }       
-        },
-        {
-          "id": 6,
-          "name": "6. Leap beyond Illusions.",
-
-          "composition": {
-            "front": ["ares", "prometheus"],
-            "back": ["jingwei", "meret", "phoenix"]
-          }       
-        },
-        {
-          "id": 7,
-          "name": "7. Spiral of Fusion.",
-
-          "composition": {
-            "front": ["ares", "prometheus"],
-            "back": ["jingwei", "meret", "phoenix"]
-          }       
-        },
-        {
-          "id": 8,
-          "name": "8. Hearts Call.",
-
-          "composition": {
-            "front": ["momus", "poseidon"],
-            "back": ["khepri", "tefnut", "skadi"]
-          }       
-        }
-      ]
-    },
-    {
-      "id": "wenshen-campaign",
-      "name": "Wen Shen Campaign",
-      "hero": "Wen Shen",
-      "description": "Complete PVE campaign stages using Wen Shen and allies",
-      "stages": [
-        {
-          "id": 1,
-          "name": "1. Timid Soul.",
-
-          "composition": {
-            "front": ["aries", "isis"],
-            "back": ["libra", "taurus", "cancer"]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Lasting Storms.",
-
-          "composition": {
-            "front": ["taurus", "anubis"],
-            "back": ["wenshen", "aquarius", ""]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. Fate's Decree.",
-
-          "composition": {
-            "front": ["demeter", "anubis"],
-            "back": ["wenshen", "fengyi", "aries"]
-          }       
-        },
-        {
-          "id": 4,
-          "name": "4. Worse Even.",
-
-          "composition": {
-            "front": ["demeter", "anubis"],
-            "back": ["fengyi", "aries", "wenshen"]
-          }       
-        },
-        {
-          "id": 5,
-          "name": "5. Ceaseless Doom.",
-
-          "composition": {
-            "front": ["anubis", "aries"],
-            "back": ["wenshen", "fengyi", "demeter"]
-          }       
-        },
-        {
-          "id": 6,
-          "name": "6. Sound of Sorrow",
-
-          "composition": {
-            "front": ["taurus", "anubis"],
-            "back": ["wenshen", "fengyi", "demeter"]
-          }       
-        },
-        {
-          "id": 7,
-          "name": "7. Pale Blossom.",
-
-          "composition": {
-            "front": ["heracles", "bastet"],
-            "back": ["horus", "set", "athena"]
-          }       
-        }
-      ]
-    },
-    {
-      "id": "skadi-campaign",
-      "name": "Skadi Campaign",
-      "hero": "skadi",
-      "description": "Complete PVE campaign stages using Skadi and allies",
-      "stages": [
-        {
-          "id": 1,
-          "name": "1. By your Side.",
-
-          "composition": {
-            "front": ["aquarius", "skadi"],
-            "back": ["", "", ""]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Pale Realm.",
-
-          "composition": {
-            "front": ["poseidon", "khepri"],
-            "back": ["skadi", "tefnut", "pan"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. Frigrid Blade.",
-
-          "composition": {
-            "front": ["momus", "poseidon"],
-            "back": ["skadi", "pan", "tefnut"]
-          }       
-        },
-        {
-          "id": 4,
-          "name": "4. Exquisite Heart of Frost.",
-
-          "composition": {
-            "front": ["khepri", "poseidon"],
-            "back": ["skadi", "momus", "tefnut"]
-          }       
-        },
-        {
-          "id": 5,
-          "name": "5. Solidify and Ascend.",
-
-          "composition": {
-            "front": ["khepri", "poseidon"],
-            "back": ["skadi", "tefnut", "pan"]
-          }       
-        },
-        {
-          "id": 6,
-          "name": "6. The Last Winter.",
-
-          "composition": {
-            "front": ["poseidon", "momus"],
-            "back": ["pan", "skadi", "tefnut"]
-          }       
-        },
-        {
-          "id": 7,
-          "name": "7. Burning Snow.",
-
-          "composition": {
-            "front": ["ullr", "heracles"],
-            "back": ["hladgunnr", "caishen", "phoenix"]
-          }       
-        }
-      ]
-    },
-    {
-      "id": "mengpo-campaign",
-      "name": "Mengpo Campaign",
-      "hero": "mengpo",
-      "description": "Complete PVE campaign stages using Mengpo and allies",
-      "stages": [
-        {
-          "id": 1,
-          "name": "1. Lament for the dead.",
-
-          "composition": {
-            "front": ["aquarius", "taurus"],
-            "back": ["isis", "mengpo", "aries"]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Beauty in Decay.",
-
-          "composition": {
-            "front": ["taurus", "aries"],
-            "back": ["cancer", "libra", "mengpo"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. A journey against the tide.",
-
-          "composition": {
-            "front": ["demeter", "anubis"],
-            "back": ["fengyi", "diana", "pan"]
-          }       
-        },
-        {
-          "id": 4,
-          "name": "4. The Vanishing Dream.",
-
-          "composition": {
-            "front": ["ullr", "taurus"],
-            "back": ["mengpo", "caishen", "isis"]
-          }       
-        },
-        {
-          "id": 5,
-          "name": "5. Petals and Leaves Entwined.",
-
-          "composition": {
-            "front": ["demeter", "anubis"],
-            "back": ["fengyi", "wenshen", "mengpo"]
-          }       
-        },
-        {
-          "id": 6,
-          "name": "6. Withering of the Fallen Petals.",
-
-          "composition": {
-            "front": ["bastet", "geb"],
-            "back": ["phoenix", "mengpo", "set"]
-          }       
-        },
-        {
-          "id": 7,
-          "name": "7. Cold Moons Glow.",
-
-          "composition": {
-            "front": ["nyx", "prometheus"],
-            "back": ["anubis", "caishen", "mengpo"]
-          }       
-        }
-      ]
-    },
-    {
-      "id": "nuba-campaign",
-      "name": "Nuba Campaign",
-      "hero": "nuba",
-      "description": "Complete PVE campaign stages using Nuba and allies",
-      "stages": [
-        {
-          "id": 1,
-          "name": "1. A lonely figure drifts from lands discret, scorched earth beneath her foot.",
-
-          "composition": {
-            "front": ["gemini", "taurus"],
-            "back": ["freya", "scorpio", "capricorn"]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Red plains stretch far, the rivers dry.",
-
-          "composition": {
-            "front": ["leo", "aries"],
-            "back": ["sagittarius", "scorpio", "cancer"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. Bones lie beneath a cold, barren sky.",
-
-          "composition": {
-            "front": ["leo", "aries"],
-            "back": ["sagittarius", "scorpio", "cancer"]
-          }
-        },
-        {
-          "id": 4,
-          "name": "4. Slandered, the innocent flees away: all eyes clouded, lost in gray.",
-
-          "composition": {
-            "front": ["leo", "aries"],
-            "back": ["sagittarius", "virgo", "anubis"]
-          }
-        },
-        {
-          "id": 5,
-          "name": "5. Parched and bound, she fights the shadows on.",
-
-          "composition": {
-            "front": ["nuba", "anubis"],
-            "back": ["", "wenshen", ""]
-          }
-        },
-        {
-          "id": 6,
-          "name": "6. Everywhere crimson, the woods are gone.",
-
-          "composition": {
-            "front": ["nuba", "anubis"],
-            "back": ["taurus", "wenshen", "virgo"]
-          }
-        }
-        ,
-        {
-          "id": 7,
-          "name": "7. A thousand years the wasteland cries, no green can stay",
-
-          "composition": {
-            "front": ["nuba", "taurus"],
-            "back": ["virgo", "wenshen", "anubis"]
-          }
-        }
-         ,
-        {
-          "id": 8,
-          "name": "8. A thousand years the wasteland cries, no green can stay",
-
-          "composition": {
-            "front": ["heracles", "athena"],
-            "back": ["phoenix", "set", "bastet"]
-          }
-        }
-      ]
-    },
-    {
-      "id": "heracles-campaign",
-      "name": "Heracles Campaign",
-      "hero": "heracles",
-      "description": "Complete PVE campaign stages using Heracles and allies",
-      "stages": [
-        {
-          "id": 1,
-          "name": "1.My Tales and I - Rise",
-
-          "composition": {
-            "front": ["heracles", ""],
-            "back": ["", "", ""]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2.My Tales and I - Twist",
-
-          "composition": {
-            "front": ["hladgunnr", "caishen"],
-            "back": ["yuelao", "isis", "cancer"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. The Lion and the Blood - Rise",
-
-          "composition": {
-            "front": ["heracles", "taurus"],
-            "back": ["scorpio", "cancer", "virgo"]
-          }
-        },
-        {
-          "id": 4,
-          "name": "4.The Lion and the Blood - Twist",
-
-          "composition": {
-            "front": ["jormungandr", "heracles"],
-            "back": ["sagittarius", "aries", "leo"]
-          }
-        },
-        {
-          "id": 5,
-          "name": "5. The Tempest - Rise",
-
-          "composition": {
-            "front": ["heracles", "poseidon"],
-            "back": ["cancer", "medusa", "pisces"]
-          }
-        },
-        {
-          "id": 6,
-          "name": "6. The Tempest - Twist",
-
-          "composition": {
-            "front": ["libra", "gemini"],
-            "back": ["heracles", "anubis", "fengyi"]
-          }
-        },
-        {
-          "id": 7,
-          "name": "7. The Tempest - Finale",
-
-          "composition": {
-            "front": ["ares", "athena"],
-            "back": ["phoenix", "set", "heracles"]
-          }
-        },
-        {
-          "id": 8,
-          "name": "8. Let the gods honor his name",
-
-          "composition": {
-            "front": ["heracles", "bastet"],
-            "back": ["fengyi", "poseidon", "yanluo"]
           }
         }
       ]
