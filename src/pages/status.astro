@@ -1,0 +1,2119 @@
+---
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+import { getProjectStatus } from "../utils/projectStatus.js";
+
+const status = getProjectStatus();
+const generatedDate = new Intl.DateTimeFormat("en", {
+  dateStyle: "medium",
+  timeStyle: "short",
+}).format(new Date(status.generatedAt));
+
+const formatNumber = (value) => new Intl.NumberFormat("en").format(value);
+const maxDistributionValue = (segments) => Math.max(...segments.map((segment) => segment.value), 1);
+
+const kpis = [
+  {
+    label: "Heroes",
+    value: status.totals.heroes,
+    detail: `${status.totals.released} released / ${status.totals.unreleased} unreleased`,
+    tone: "neutral",
+  },
+  {
+    label: "Missing ratings",
+    value: status.totals.missingRatings,
+    detail: `${status.totals.partialRatings} partial rating sets`,
+    tone: status.totals.missingRatings ? "critical" : "ok",
+  },
+  {
+    label: "Pages",
+    value: status.totals.staticRoutes,
+    detail: `${status.totals.navPages} nav / ${status.totals.unlinkedPublicRoutes} unlinked`,
+    tone: status.totals.unlinkedPublicRoutes ? "warning" : "ok",
+  },
+  {
+    label: "Bosses",
+    value: status.totals.bosses,
+    detail: `${status.totals.tags} mechanic and synergy tags`,
+    tone: "neutral",
+  },
+  {
+    label: "Integrity issues",
+    value: status.totals.orphanRatings + status.totals.stalePageUpdates,
+    detail: `${status.totals.orphanRatings} rating IDs / ${status.totals.stalePageUpdates} page update keys`,
+    tone: status.totals.orphanRatings + status.totals.stalePageUpdates ? "critical" : "ok",
+  },
+  {
+    label: "Active bugs",
+    value: status.totals.activeBugs,
+    detail: `${status.totals.newHeroes} marked as new hero`,
+    tone: status.totals.activeBugs ? "critical" : "ok",
+  },
+];
+---
+
+<Base
+  title="Project Status | Motto Immortal Database"
+  description="Internal project status dashboard for content inventory, hero coverage and data maintenance."
+>
+  <main class="status-shell">
+    <header class="status-header">
+      <div>
+        <span class="status-kicker">Project dashboard</span>
+        <h1>Content Status</h1>
+        <p>Inventory, coverage and maintenance signals for the hero database.</p>
+        <p class="admin-hint">Editing uses the local admin server. Start it with <code>npm run tag-manager</code>.</p>
+      </div>
+      <div class="health-panel" aria-label="Project health score">
+        <span class="health-label">Health score</span>
+        <strong>{status.healthScore}%</strong>
+        <span class="health-caption">Generated {generatedDate}</span>
+      </div>
+    </header>
+
+    <section class="kpi-grid" aria-label="Key metrics">
+      {kpis.map((item) => (
+        <article class="kpi-card" data-tone={item.tone}>
+          <span class="kpi-label">{item.label}</span>
+          <strong>{formatNumber(item.value)}</strong>
+          <span class="kpi-detail">{item.detail}</span>
+        </article>
+      ))}
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel panel-wide">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker">Coverage</span>
+            <h2>Content completeness</h2>
+          </div>
+        </div>
+
+        <div class="coverage-list">
+          {status.coverage.map((item) => (
+            <div class="coverage-row">
+              <div class="coverage-copy">
+                <strong>{item.label}</strong>
+                <span>{item.detail}</span>
+              </div>
+              <div class="coverage-meter" aria-label={`${item.label}: ${item.value}%`}>
+                <span style={`width: ${item.value}%`}></span>
+              </div>
+              <span class="coverage-value">{item.value}%</span>
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker">Queue</span>
+            <h2>Next actions</h2>
+          </div>
+        </div>
+
+        <div class="action-list">
+          {status.actionQueue.map((item) => (
+            <div class="action-item" data-severity={item.severity}>
+              <span class="action-count">{item.count}</span>
+              <div>
+                <strong>{item.label}</strong>
+                <span>{item.detail || "No open items"}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </article>
+    </section>
+
+    <section class="page-inventory-grid" aria-label="Page inventory">
+      <article class="panel">
+        <div class="panel-heading compact">
+          <div>
+            <span class="panel-kicker">Pages</span>
+            <h2>Route inventory</h2>
+          </div>
+        </div>
+        <div class="route-stats">
+          <div><strong>{status.totals.routes}</strong><span>Total Astro routes</span></div>
+          <div><strong>{status.totals.dynamicRoutes}</strong><span>Dynamic routes</span></div>
+          <div><strong>{status.totals.internalRoutes}</strong><span>Internal routes</span></div>
+          <div><strong>{status.totals.unlinkedPublicRoutes}</strong><span>Unlinked public</span></div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading compact">
+          <div>
+            <span class="panel-kicker">Navigation</span>
+            <h2>Unlinked public routes</h2>
+          </div>
+        </div>
+        <div class="route-list">
+          {status.pages.unlinkedPublicRoutes.length
+            ? status.pages.unlinkedPublicRoutes.map((route) => <span>{route}</span>)
+            : <span class="route-ok">No unlinked public pages</span>
+          }
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading compact">
+          <div>
+            <span class="panel-kicker">Internal</span>
+            <h2>Kept outside navigation</h2>
+          </div>
+        </div>
+        <div class="route-list">
+          {status.pages.internalRoutes.map((route) => <span>{route}</span>)}
+        </div>
+      </article>
+    </section>
+
+    <section class="distribution-grid" aria-label="Hero distribution">
+      {[
+        ["Faction", status.distributions.faction],
+        ["Class", status.distributions.class],
+        ["Role", status.distributions.role],
+        ["Rating", status.ratings],
+      ].map(([title, segments]) => (
+        <article class="panel distribution-panel">
+          <div class="panel-heading compact">
+            <div>
+              <span class="panel-kicker">Distribution</span>
+              <h2>{title}</h2>
+            </div>
+          </div>
+          <div class="distribution-list">
+            {segments.map((segment) => (
+              <div class="distribution-row">
+                <span>{segment.label}</span>
+                <div class="distribution-bar" aria-hidden="true">
+                  <span style={`width: ${(segment.value / maxDistributionValue(segments)) * 100}%`}></span>
+                </div>
+                <strong>{segment.value}</strong>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))}
+    </section>
+
+    <section class="panel inventory-panel">
+      <div class="inventory-top">
+        <div>
+          <span class="panel-kicker">Hero inventory</span>
+          <h2>Maintenance table</h2>
+        </div>
+        <div class="inventory-tools">
+          <label class="search-field">
+            <span class="sr-only">Search heroes</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="M20 20l-3.5-3.5"></path>
+            </svg>
+            <input id="statusSearch" type="search" placeholder="Search hero, class, faction" />
+          </label>
+          <div class="filter-tabs" role="group" aria-label="Inventory filters">
+            <button class="filter-tab active" type="button" data-filter="all">All</button>
+            <button class="filter-tab" type="button" data-filter="critical">Needs data</button>
+            <button class="filter-tab" type="button" data-filter="warning">Needs content</button>
+            <button class="filter-tab" type="button" data-filter="unreleased">Unreleased</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="inventory-table">
+          <thead>
+            <tr>
+              <th>Hero</th>
+              <th>Status</th>
+              <th>Release</th>
+              <th>Class</th>
+              <th>Faction</th>
+              <th>Role</th>
+              <th>Overall</th>
+              <th>Coverage</th>
+              <th>Missing</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody">
+            {status.heroStatuses.map((hero) => (
+              <tr
+                data-row
+                data-severity={hero.severity}
+                data-release={hero.release ? "released" : "unreleased"}
+                data-search={`${hero.name} ${hero.id} ${hero.class} ${hero.faction} ${hero.role}`.toLowerCase()}
+              >
+                <td>
+                  <a class="hero-link" href={`/heroes/${hero.id}`}>
+                    <img
+                      src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp`}
+                      alt=""
+                      width="36"
+                      height="36"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span>{hero.name}</span>
+                  </a>
+                </td>
+                <td><span class="status-pill" data-severity={hero.severity}>{hero.statusLabel}</span></td>
+                <td>{hero.release ? "Released" : "Unreleased"}</td>
+                <td>{hero.class}</td>
+                <td>{hero.faction}</td>
+                <td>{hero.role}</td>
+                <td>
+                  {hero.ratings?.overall
+                    ? <span class="rating-badge compact-rating" data-rating-cell data-tier={hero.ratings.overall}>{hero.ratings.overall}</span>
+                    : <span class="empty-value" data-rating-cell>Missing</span>
+                  }
+                </td>
+                <td>
+                  <div class="mini-meter" aria-label={`${hero.completenessPercent}% complete`}>
+                    <span style={`width: ${hero.completenessPercent}%`}></span>
+                  </div>
+                  <span class="mini-meter-value">{hero.completenessPercent}%</span>
+                </td>
+                <td class="missing-cell">{hero.missingChecks.slice(0, 4).join(", ") || "None"}</td>
+                <td>
+                  <button class="table-action-btn" type="button" data-edit-hero={hero.id}>Edit</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="edit-backdrop" id="editBackdrop" hidden></div>
+    <aside class="edit-drawer" id="editDrawer" aria-hidden="true" aria-labelledby="editDrawerTitle">
+      <div class="edit-drawer-head">
+        <div>
+          <span class="panel-kicker">Admin edit</span>
+          <h2 id="editDrawerTitle">Hero content</h2>
+          <p id="editDrawerMeta">Local JSON editor</p>
+        </div>
+        <button class="icon-close-btn" type="button" id="editClose" aria-label="Close editor">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form class="edit-form" id="heroEditForm">
+        <input type="hidden" name="id" />
+
+        <section class="edit-section">
+          <h3>Basics</h3>
+          <label class="toggle-row">
+            <input type="checkbox" name="release" />
+            <span>Released</span>
+          </label>
+          <label class="toggle-row">
+            <input type="checkbox" name="newHero" />
+            <span>New hero badge</span>
+          </label>
+          <label>
+            <span>Description</span>
+            <textarea name="description" rows="3" placeholder="Short hero description"></textarea>
+          </label>
+          <label>
+            <span>Core mechanic</span>
+            <textarea name="coreMechanicSummary" rows="3" placeholder="Optional mechanic summary"></textarea>
+          </label>
+          <div class="two-field-grid">
+            <label>
+              <span>Mechanic depth</span>
+              <select name="coreMechanicDepth">
+                <option value="">Unset</option>
+                <option value="low">Low</option>
+                <option value="mid">Mid</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+            <label class="toggle-row mechanic-toggle">
+              <input type="checkbox" name="coreMechanicMisunderstood" />
+              <span>Often misunderstood</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <h3>Ratings</h3>
+          <div class="rating-grid">
+            {["overall", "pvp", "pve", "pveEarly", "pveLate"].map((field) => (
+              <label>
+                <span>{field}</span>
+                <select name={field}>
+                  <option value="">Missing</option>
+                  <option value="S+">S+</option>
+                  <option value="S">S</option>
+                  <option value="A+">A+</option>
+                  <option value="A">A</option>
+                  <option value="B+">B+</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <div class="section-title-row">
+            <div>
+              <h3>Synergy tags</h3>
+              <p>Select mechanic tags used by filtering, team logic and hero comparisons.</p>
+            </div>
+            <span class="selection-pill" id="synergyCount">0 selected</span>
+          </div>
+          <div class="tag-toolbar">
+            <div class="tag-search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M20 20l-3.5-3.5"></path>
+              </svg>
+              <input id="tagSearch" type="search" placeholder="Search mechanic tags" />
+            </div>
+            <button class="tag-clear-btn" type="button" id="clearSynergyTags">Clear</button>
+          </div>
+          <div class="selected-tag-summary" id="selectedTagSummary">No tags selected</div>
+          <div class="tag-picker" id="tagPicker" aria-live="polite">
+            <span class="tag-picker-empty">Start the local admin server to load tags.</span>
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <h3>Investment</h3>
+          <div class="two-field-grid">
+            <label>
+              <span>Relic recommendation</span>
+              <input name="relicRecommendation" type="text" placeholder="30, 30-50, Early 10..." />
+            </label>
+            <label>
+              <span>Used in</span>
+              <input name="usedIn" type="text" placeholder="PvP / Odyssey / Spire" />
+            </label>
+          </div>
+          <label>
+            <span>F2P investment</span>
+            <input name="investmentF2p" type="text" placeholder="Base dupe, Divine, tbd..." />
+          </label>
+          <label>
+            <span>Investment explanation</span>
+            <textarea name="investmentExplanation" rows="4" placeholder="Why and when to invest"></textarea>
+          </label>
+        </section>
+
+        <section class="edit-section">
+          <h3>Flags</h3>
+          <label class="toggle-row">
+            <input type="checkbox" name="activeBug" />
+            <span>Active bug</span>
+          </label>
+          <label>
+            <span>Bug notes</span>
+            <textarea name="activeBugNotes" rows="2" placeholder="Known issue notes"></textarea>
+          </label>
+          <label>
+            <span>Hero JSON F2P note</span>
+            <input name="heroF2pInvestment" type="text" placeholder="Optional hero-level f2pInvestment field" />
+          </label>
+          <label>
+            <span>Hero JSON recommended relic level</span>
+            <input name="recommendedRelicLevel" type="number" min="0" step="1" placeholder="30" />
+          </label>
+        </section>
+
+        <div class="edit-status" id="editStatus" role="status"></div>
+
+        <div class="edit-actions">
+          <button class="secondary-action" type="button" id="editCancel">Cancel</button>
+          <button class="primary-action" type="submit">Save changes</button>
+        </div>
+      </form>
+    </aside>
+
+    <section class="panel versions-panel">
+      <div class="panel-heading compact">
+        <div>
+          <span class="panel-kicker">Versions</span>
+          <h2>Page update map</h2>
+        </div>
+      </div>
+      <div class="version-list">
+        {status.pageUpdates.map((item) => (
+          <div class="version-item">
+            <span>{item.area}</span>
+            <strong>{item.version}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const ADMIN_API = "http://localhost:3000";
+    const search = document.getElementById("statusSearch");
+    const tabs = [...document.querySelectorAll(".filter-tab")];
+    const rows = [...document.querySelectorAll("[data-row]")];
+    let activeFilter = "all";
+
+    function matchesFilter(row) {
+      if (activeFilter === "all") return true;
+      if (activeFilter === "unreleased") return row.dataset.release === "unreleased";
+      return row.dataset.severity === activeFilter;
+    }
+
+    function applyFilters() {
+      const query = (search?.value || "").trim().toLowerCase();
+      rows.forEach((row) => {
+        const matchesSearch = !query || row.dataset.search.includes(query);
+        row.hidden = !(matchesSearch && matchesFilter(row));
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        activeFilter = tab.dataset.filter || "all";
+        tabs.forEach((item) => item.classList.toggle("active", item === tab));
+        applyFilters();
+      });
+    });
+
+    search?.addEventListener("input", applyFilters);
+
+    const editDrawer = document.getElementById("editDrawer");
+    const editBackdrop = document.getElementById("editBackdrop");
+    const editForm = document.getElementById("heroEditForm");
+    const editClose = document.getElementById("editClose");
+    const editCancel = document.getElementById("editCancel");
+    const editStatus = document.getElementById("editStatus");
+    const editTitle = document.getElementById("editDrawerTitle");
+    const editMeta = document.getElementById("editDrawerMeta");
+    const editButtons = [...document.querySelectorAll("[data-edit-hero]")];
+    const tagPicker = document.getElementById("tagPicker");
+    const tagSearch = document.getElementById("tagSearch");
+    const synergyCount = document.getElementById("synergyCount");
+    const selectedTagSummary = document.getElementById("selectedTagSummary");
+    const clearSynergyTags = document.getElementById("clearSynergyTags");
+    let tagGroups = [];
+    let selectedSynergies = new Set();
+
+    function setEditStatus(message, tone = "neutral") {
+      if (!editStatus) return;
+      editStatus.classList.remove("has-details");
+      editStatus.textContent = message;
+      editStatus.dataset.tone = tone;
+    }
+
+    function uniqueList(items) {
+      return [...new Set(items.filter(Boolean))];
+    }
+
+    function addTextElement(parent, tagName, className, text) {
+      const element = document.createElement(tagName);
+      element.className = className;
+      element.textContent = text;
+      parent.append(element);
+      return element;
+    }
+
+    function renderSaveSummary(changedFiles, validation) {
+      if (!editStatus) return;
+      editStatus.textContent = "";
+      editStatus.classList.add("has-details");
+      editStatus.dataset.tone = validation?.ok ? "ok" : "critical";
+
+      addTextElement(editStatus, "strong", "save-summary-title", validation?.ok ? "Saved and validated" : "Saved, validation needs review");
+
+      const changedWrap = document.createElement("div");
+      changedWrap.className = "save-summary-section";
+      addTextElement(changedWrap, "span", "save-summary-label", "Changed files");
+
+      const changedList = document.createElement("ul");
+      changedList.className = "changed-file-list";
+      const files = changedFiles.length ? changedFiles : ["No file writes were needed"];
+      for (const file of files) {
+        addTextElement(changedList, "li", "", file);
+      }
+      changedWrap.append(changedList);
+      editStatus.append(changedWrap);
+
+      const validationWrap = document.createElement("div");
+      validationWrap.className = "save-summary-section";
+      addTextElement(validationWrap, "span", "save-summary-label", "Validation");
+
+      const validationList = document.createElement("div");
+      validationList.className = "validation-result-list";
+      for (const result of validation?.results || []) {
+        const row = document.createElement("details");
+        row.className = `validation-result ${result.ok ? "ok" : "failed"}`;
+        row.open = !result.ok;
+
+        const summary = document.createElement("summary");
+        summary.textContent = `${result.ok ? "Pass" : "Fail"}: ${result.label} (${Math.round(result.durationMs / 100) / 10}s)`;
+        row.append(summary);
+
+        if (result.output) {
+          addTextElement(row, "pre", "validation-output", result.output);
+        }
+        validationList.append(row);
+      }
+      validationWrap.append(validationList);
+      editStatus.append(validationWrap);
+    }
+
+    function openDrawer() {
+      editBackdrop.hidden = false;
+      editDrawer.setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => {
+        editBackdrop.classList.add("open");
+        editDrawer.classList.add("open");
+      });
+    }
+
+    function closeDrawer() {
+      editBackdrop.classList.remove("open");
+      editDrawer.classList.remove("open");
+      editDrawer.setAttribute("aria-hidden", "true");
+      window.setTimeout(() => {
+        editBackdrop.hidden = true;
+      }, 180);
+    }
+
+    function setField(name, value) {
+      const field = editForm?.elements.namedItem(name);
+      if (!field) return;
+      if (field.type === "checkbox") {
+        field.checked = Boolean(value);
+      } else {
+        field.value = value ?? "";
+      }
+    }
+
+    function getField(name) {
+      const field = editForm?.elements.namedItem(name);
+      if (!field) return "";
+      if (field.type === "checkbox") return field.checked;
+      return field.value;
+    }
+
+    async function apiFetch(path, options = {}) {
+      const response = await fetch(`${ADMIN_API}${path}`, {
+        headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+        ...options,
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(payload.error || `Request failed with ${response.status}`);
+      }
+      return payload;
+    }
+
+    async function loadTagGroups() {
+      if (tagGroups.length) return tagGroups;
+      tagGroups = await apiFetch("/api/tag-categories");
+      return tagGroups;
+    }
+
+    function updateSynergyCount() {
+      if (!synergyCount) return;
+      synergyCount.textContent = `${selectedSynergies.size} selected`;
+
+      if (!selectedTagSummary) return;
+      if (!selectedSynergies.size) {
+        selectedTagSummary.textContent = "No tags selected";
+        selectedTagSummary.dataset.empty = "true";
+        return;
+      }
+
+      const selectedLabels = [...selectedSynergies]
+        .sort()
+        .map(formatTagLabel)
+        .slice(0, 8);
+      const remaining = Math.max(0, selectedSynergies.size - selectedLabels.length);
+      selectedTagSummary.dataset.empty = "false";
+      selectedTagSummary.textContent = `${selectedLabels.join(", ")}${remaining ? ` +${remaining} more` : ""}`;
+    }
+
+    function formatTagLabel(tag) {
+      return String(tag)
+        .toLowerCase()
+        .split("_")
+        .filter(Boolean)
+        .map((part) => {
+          const known = {
+            atk: "ATK",
+            aoe: "AoE",
+            cc: "CC",
+            cdr: "CDR",
+            dmg: "DMG",
+            hp: "HP",
+            pve: "PvE",
+            pvp: "PvP",
+          };
+          return known[part] || part.charAt(0).toUpperCase() + part.slice(1);
+        })
+        .join(" ");
+    }
+
+    function coreMechanicFromHero(hero) {
+      const mechanic = hero.coreMechanic;
+      if (!mechanic) {
+        return { summary: "", depthRating: "", commonlyMisunderstood: false };
+      }
+      if (typeof mechanic === "string") {
+        return {
+          summary: mechanic === "[object Object]" ? "" : mechanic,
+          depthRating: "",
+          commonlyMisunderstood: false,
+        };
+      }
+      return {
+        summary: mechanic.summary || "",
+        depthRating: mechanic.depthRating || "",
+        commonlyMisunderstood: Boolean(mechanic.commonlyMisunderstood),
+      };
+    }
+
+    function renderTagPicker(filter = "") {
+      if (!tagPicker) return;
+      const query = filter.trim().toLowerCase();
+      tagPicker.innerHTML = "";
+
+      if (!tagGroups.length) {
+        const empty = document.createElement("span");
+        empty.className = "tag-picker-empty";
+        empty.textContent = "Start the local admin server to load tags.";
+        tagPicker.append(empty);
+        updateSynergyCount();
+        return;
+      }
+
+      let visibleCount = 0;
+      for (const group of tagGroups) {
+        const tags = (group.tags || []).filter((tag) => !query || tag.toLowerCase().includes(query));
+        if (!tags.length) continue;
+        visibleCount += tags.length;
+
+        const groupEl = document.createElement("div");
+        groupEl.className = "tag-group";
+
+        const groupHead = document.createElement("div");
+        groupHead.className = "tag-group-head";
+
+        const heading = document.createElement("strong");
+        heading.textContent = group.label || group.id || "Tags";
+
+        const count = document.createElement("span");
+        count.textContent = `${tags.length} tag${tags.length === 1 ? "" : "s"}`;
+
+        groupHead.append(heading, count);
+        groupEl.append(groupHead);
+
+        const chips = document.createElement("div");
+        chips.className = "tag-chip-list";
+
+        for (const tag of tags) {
+          const label = document.createElement("label");
+          label.className = "tag-chip";
+          label.title = tag;
+
+          const input = document.createElement("input");
+          input.type = "checkbox";
+          input.value = tag;
+          input.checked = selectedSynergies.has(tag);
+          input.addEventListener("change", () => {
+            if (input.checked) {
+              selectedSynergies.add(tag);
+            } else {
+              selectedSynergies.delete(tag);
+            }
+            label.classList.toggle("selected", input.checked);
+            updateSynergyCount();
+          });
+
+          const checkmark = document.createElement("span");
+          checkmark.className = "tag-chip-check";
+
+          const span = document.createElement("span");
+          span.className = "tag-chip-label";
+          span.textContent = formatTagLabel(tag);
+
+          const code = document.createElement("small");
+          code.textContent = tag;
+
+          label.classList.toggle("selected", input.checked);
+          label.append(input, checkmark, span, code);
+          chips.append(label);
+        }
+
+        groupEl.append(chips);
+        tagPicker.append(groupEl);
+      }
+
+      if (!visibleCount) {
+        const empty = document.createElement("span");
+        empty.className = "tag-picker-empty";
+        empty.textContent = "No matching tags.";
+        tagPicker.append(empty);
+      }
+
+      updateSynergyCount();
+    }
+
+    function fillEditForm(payload) {
+      const { hero, ratings, investment } = payload;
+      editTitle.textContent = hero.name || hero.id;
+      editMeta.textContent = `${hero.id} · ${hero.faction || "Missing faction"} · ${hero.class || "Missing class"}`;
+
+      setField("id", hero.id);
+      setField("release", hero.release !== false);
+      setField("newHero", Boolean(hero.newHero));
+      setField("description", hero.description || "");
+      const coreMechanic = coreMechanicFromHero(hero);
+      setField("coreMechanicSummary", coreMechanic.summary);
+      setField("coreMechanicDepth", coreMechanic.depthRating);
+      setField("coreMechanicMisunderstood", coreMechanic.commonlyMisunderstood);
+      setField("activeBug", Boolean(hero.activeBug));
+      setField("activeBugNotes", hero.activeBugNotes || "");
+      setField("heroF2pInvestment", hero.f2pInvestment || "");
+      setField("recommendedRelicLevel", hero.recommendedRelicLevel ?? "");
+      selectedSynergies = new Set(hero.synergies || []);
+
+      for (const field of ["overall", "pvp", "pve", "pveEarly", "pveLate"]) {
+        setField(field, ratings?.[field] || "");
+      }
+
+      setField("relicRecommendation", investment?.relicRecommendation || "");
+      setField("usedIn", investment?.usedIn || "");
+      setField("investmentF2p", investment?.f2pInvestment || "");
+      setField("investmentExplanation", investment?.explanation || "");
+      renderTagPicker(tagSearch?.value || "");
+    }
+
+    async function openEditor(heroId) {
+      openDrawer();
+      editForm.reset();
+      selectedSynergies = new Set();
+      if (tagSearch) tagSearch.value = "";
+      renderTagPicker();
+      setEditStatus("Loading hero content...");
+      try {
+        await loadTagGroups();
+        const payload = await apiFetch(`/api/admin/heroes/${heroId}`);
+        fillEditForm(payload);
+        setEditStatus("Ready. Changes are written to local JSON files.", "ok");
+      } catch (error) {
+        setEditStatus(`Cannot reach local admin server: ${error.message}. Start npm run tag-manager.`, "critical");
+      }
+    }
+
+    function updateVisibleRow(heroId) {
+      const row = rows.find((item) => item.querySelector(`[data-edit-hero="${heroId}"]`));
+      if (!row) return;
+      const release = getField("release");
+      const overall = getField("overall");
+      const releaseCell = row.children[2];
+      const ratingCell = row.querySelector("[data-rating-cell]");
+
+      row.dataset.release = release ? "released" : "unreleased";
+      if (releaseCell) releaseCell.textContent = release ? "Released" : "Unreleased";
+      if (ratingCell) {
+        ratingCell.textContent = overall || "Missing";
+        if (overall) {
+          ratingCell.className = "rating-badge compact-rating";
+          ratingCell.dataset.tier = overall;
+        } else {
+          ratingCell.className = "empty-value";
+          delete ratingCell.dataset.tier;
+        }
+        ratingCell.dataset.ratingCell = "";
+      }
+    }
+
+    editButtons.forEach((button) => {
+      button.addEventListener("click", () => openEditor(button.dataset.editHero));
+    });
+
+    tagSearch?.addEventListener("input", () => renderTagPicker(tagSearch.value));
+    clearSynergyTags?.addEventListener("click", () => {
+      selectedSynergies = new Set();
+      renderTagPicker(tagSearch?.value || "");
+    });
+
+    editClose?.addEventListener("click", closeDrawer);
+    editCancel?.addEventListener("click", closeDrawer);
+    editBackdrop?.addEventListener("click", closeDrawer);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && editDrawer?.classList.contains("open")) closeDrawer();
+    });
+
+    editForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const heroId = getField("id");
+      setEditStatus("Saving changes...");
+
+      try {
+        const saveResponses = [];
+
+        saveResponses.push(await apiFetch(`/api/admin/heroes/${heroId}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            release: getField("release"),
+            newHero: getField("newHero"),
+            description: getField("description"),
+            coreMechanic: {
+              summary: getField("coreMechanicSummary"),
+              depthRating: getField("coreMechanicDepth"),
+              commonlyMisunderstood: getField("coreMechanicMisunderstood"),
+            },
+            activeBug: getField("activeBug"),
+            activeBugNotes: getField("activeBugNotes"),
+            f2pInvestment: getField("heroF2pInvestment"),
+            recommendedRelicLevel: getField("recommendedRelicLevel"),
+          }),
+        }));
+
+        saveResponses.push(await apiFetch(`/api/admin/ratings/${heroId}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            overall: getField("overall"),
+            pvp: getField("pvp"),
+            pve: getField("pve"),
+            pveEarly: getField("pveEarly"),
+            pveLate: getField("pveLate"),
+          }),
+        }));
+
+        saveResponses.push(await apiFetch(`/api/admin/invest/${heroId}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            relicRecommendation: getField("relicRecommendation"),
+            usedIn: getField("usedIn"),
+            f2pInvestment: getField("investmentF2p"),
+            explanation: getField("investmentExplanation"),
+          }),
+        }));
+
+        saveResponses.push(await apiFetch(`/api/heroes/${heroId}/synergies`, {
+          method: "POST",
+          body: JSON.stringify({
+            synergies: [...selectedSynergies].sort(),
+          }),
+        }));
+
+        updateVisibleRow(heroId);
+        const changedFiles = uniqueList(saveResponses.flatMap((response) => response.changedFiles || []));
+        setEditStatus("Saved. Running validation...");
+        const validation = await apiFetch("/api/admin/validate", {
+          method: "POST",
+          body: JSON.stringify({ checks: ["tags"] }),
+        });
+        renderSaveSummary(changedFiles, validation);
+      } catch (error) {
+        setEditStatus(`Save failed: ${error.message}`, "critical");
+      }
+    });
+  </script>
+</Base>
+
+<style>
+  .status-shell {
+    width: min(1480px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 48px 0 96px;
+  }
+
+  .status-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 24px;
+    align-items: end;
+    margin-bottom: 24px;
+  }
+
+  .status-kicker,
+  .panel-kicker {
+    display: block;
+    color: var(--accent-gold);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .status-header h1 {
+    font-size: 42px;
+    letter-spacing: 0;
+    margin: 0 0 8px;
+  }
+
+  .status-header p {
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 0;
+  }
+
+  .status-header .admin-hint {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    margin-top: 14px;
+    padding: 0 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .admin-hint code {
+    margin: 0 3px;
+  }
+
+  .health-panel,
+  .kpi-card,
+  .panel {
+    border: 1px solid var(--border-subtle);
+    background: rgba(13, 11, 20, 0.82);
+    border-radius: var(--radius-md);
+  }
+
+  .health-panel {
+    padding: 20px;
+  }
+
+  .health-label,
+  .health-caption,
+  .kpi-label,
+  .kpi-detail {
+    display: block;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .health-panel strong {
+    display: block;
+    color: var(--text-bright);
+    font-size: 48px;
+    line-height: 1;
+    margin: 8px 0;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .kpi-card {
+    min-height: 132px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--border-medium);
+  }
+
+  .kpi-card[data-tone="critical"]::before,
+  .action-item[data-severity="critical"] .action-count,
+  .status-pill[data-severity="critical"] {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  .kpi-card[data-tone="warning"]::before,
+  .action-item[data-severity="warning"] .action-count,
+  .status-pill[data-severity="warning"] {
+    background: var(--accent-gold);
+    color: #201700;
+  }
+
+  .kpi-card[data-tone="ok"]::before,
+  .action-item[data-severity="ok"] .action-count,
+  .status-pill[data-severity="ok"] {
+    background: #22c55e;
+    color: #03130a;
+  }
+
+  .kpi-card strong {
+    display: block;
+    color: var(--text-bright);
+    font-size: 34px;
+    line-height: 1;
+    margin: 18px 0 10px;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .panel-heading.compact {
+    margin-bottom: 14px;
+  }
+
+  .panel h2 {
+    font-size: var(--text-xl);
+    letter-spacing: 0;
+    margin: 0;
+  }
+
+  .coverage-list,
+  .action-list,
+  .distribution-list,
+  .version-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .coverage-row {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 52px;
+    gap: 14px;
+    align-items: center;
+    min-height: 46px;
+  }
+
+  .coverage-copy strong,
+  .action-item strong {
+    display: block;
+    color: var(--text-bright);
+    font-size: var(--text-sm);
+  }
+
+  .coverage-copy span,
+  .action-item span:not(.action-count) {
+    display: block;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .coverage-meter,
+  .distribution-bar,
+  .mini-meter {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .coverage-meter {
+    height: 10px;
+  }
+
+  .coverage-meter span,
+  .distribution-bar span,
+  .mini-meter span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, var(--accent-gold));
+  }
+
+  .coverage-value {
+    color: var(--text-bright);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    text-align: right;
+  }
+
+  .action-item {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    min-height: 56px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-md);
+  }
+
+  .action-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-bright);
+    font-weight: var(--weight-bold);
+  }
+
+  .action-item[data-severity="info"] .action-count {
+    background: #38bdf8;
+    color: #03131d;
+  }
+
+  .distribution-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .page-inventory-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .route-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .route-stats div {
+    min-height: 74px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-sm);
+  }
+
+  .route-stats strong {
+    display: block;
+    color: var(--text-bright);
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .route-stats span,
+  .route-list span {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .route-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .route-list span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 9px;
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .route-list .route-ok {
+    color: #86efac;
+  }
+
+  .distribution-row {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr) 32px;
+    gap: 10px;
+    align-items: center;
+    min-height: 28px;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+  }
+
+  .distribution-row strong {
+    color: var(--text-bright);
+    text-align: right;
+  }
+
+  .distribution-bar {
+    height: 8px;
+  }
+
+  .inventory-panel {
+    margin-bottom: 12px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .inventory-top {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .inventory-tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .search-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    min-width: 260px;
+    padding: 0 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+  }
+
+  .search-field svg {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+  }
+
+  .search-field input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    color: var(--text-primary);
+    background: transparent;
+    font: inherit;
+  }
+
+  .filter-tabs {
+    display: inline-flex;
+    min-height: 38px;
+    padding: 3px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .filter-tab {
+    border: 0;
+    border-radius: var(--radius-sm);
+    padding: 0 12px;
+    color: var(--text-secondary);
+    background: transparent;
+    font: inherit;
+    font-size: var(--text-sm);
+    cursor: pointer;
+  }
+
+  .filter-tab.active {
+    color: var(--text-bright);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .table-wrap {
+    overflow: auto;
+  }
+
+  .inventory-table {
+    width: 100%;
+    min-width: 1220px;
+    border-collapse: collapse;
+  }
+
+  .inventory-table th,
+  .inventory-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border-faint);
+    text-align: left;
+    vertical-align: middle;
+    font-size: var(--text-sm);
+  }
+
+  .inventory-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    color: var(--text-muted);
+    background: #100e18;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .inventory-table tr:hover td {
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-bright);
+    text-decoration: none;
+    font-weight: var(--weight-semibold);
+  }
+
+  .hero-link img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    background: var(--bg-raised);
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    white-space: nowrap;
+  }
+
+  .compact-rating {
+    min-width: 28px;
+    justify-content: center;
+  }
+
+  .empty-value,
+  .missing-cell {
+    color: var(--text-muted);
+  }
+
+  .missing-cell {
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mini-meter {
+    display: inline-block;
+    width: 78px;
+    height: 7px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .mini-meter-value {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+
+  .table-action-btn,
+  .primary-action,
+  .secondary-action,
+  .icon-close-btn {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .table-action-btn {
+    min-height: 28px;
+    padding: 0 10px;
+    color: var(--text-bright);
+    background: rgba(255, 255, 255, 0.07);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+  }
+
+  .table-action-btn:hover,
+  .secondary-action:hover,
+  .icon-close-btn:hover {
+    border-color: var(--border-medium);
+    background: rgba(255, 255, 255, 0.11);
+  }
+
+  .edit-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 650;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-out);
+  }
+
+  .edit-backdrop.open {
+    opacity: 1;
+  }
+
+  .edit-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 700;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: min(560px, calc(100vw - 24px));
+    height: 100vh;
+    border-left: 1px solid var(--border-medium);
+    background: #0c0a12;
+    box-shadow: var(--shadow-xl);
+    transform: translateX(102%);
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
+
+  .edit-drawer.open {
+    transform: translateX(0);
+  }
+
+  .edit-drawer-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .edit-drawer-head h2 {
+    margin: 0;
+    font-size: var(--text-2xl);
+    letter-spacing: 0;
+  }
+
+  .edit-drawer-head p {
+    margin: 6px 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .icon-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .icon-close-btn svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .edit-form {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    overflow: auto;
+    padding: 18px 22px 22px;
+  }
+
+  .edit-section {
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .edit-section h3 {
+    margin: 0;
+    font-size: var(--text-md);
+    letter-spacing: 0;
+  }
+
+  .section-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .section-title-row p {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    line-height: 1.35;
+  }
+
+  .selection-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 26px;
+    padding: 0 9px;
+    border: 1px solid rgba(250, 204, 21, 0.28);
+    border-radius: var(--radius-full);
+    background: rgba(250, 204, 21, 0.1);
+    color: var(--accent-gold);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    white-space: nowrap;
+  }
+
+  .edit-section label {
+    display: grid;
+    gap: 6px;
+  }
+
+  .edit-section label > span {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .edit-section input:not([type="checkbox"]),
+  .edit-section textarea,
+  .edit-section select {
+    width: 100%;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.22);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-sm);
+  }
+
+  .edit-section input:not([type="checkbox"]),
+  .edit-section select {
+    height: 36px;
+    padding: 0 10px;
+  }
+
+  .edit-section textarea {
+    resize: vertical;
+    min-height: 72px;
+    padding: 10px;
+  }
+
+  .tag-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tag-search-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 11px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-muted);
+  }
+
+  .tag-search-field svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+  }
+
+  .tag-search-field input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-xs);
+  }
+
+  .tag-clear-btn {
+    min-height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: var(--text-xs);
+    cursor: pointer;
+  }
+
+  .tag-clear-btn:hover {
+    border-color: var(--border-medium);
+    color: var(--text-bright);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .selected-tag-summary {
+    min-height: 34px;
+    padding: 8px 10px;
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    line-height: 1.35;
+  }
+
+  .selected-tag-summary[data-empty="true"] {
+    color: var(--text-muted);
+  }
+
+  .tag-picker {
+    display: grid;
+    gap: 14px;
+    max-height: 380px;
+    overflow: auto;
+    padding: 2px 4px 2px 0;
+  }
+
+  :global(.tag-group) {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  :global(.tag-group-head) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  :global(.tag-group-head > strong) {
+    color: var(--text-bright);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0;
+  }
+
+  :global(.tag-group-head > span) {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    white-space: nowrap;
+  }
+
+  :global(.tag-chip-list) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  :global(.tag-chip) {
+    display: grid !important;
+    grid-template-columns: 18px minmax(0, 1fr);
+    grid-template-areas:
+      "check label"
+      "check code";
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 1px;
+    min-height: 42px;
+    max-width: 100%;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    padding: 7px 8px;
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      background var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  :global(.tag-chip input) {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  :global(.tag-chip-check) {
+    grid-area: check;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    color: transparent !important;
+    font-size: 11px !important;
+    line-height: 1;
+  }
+
+  :global(.tag-chip-label) {
+    grid-area: label;
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0;
+    color: inherit !important;
+    font-size: var(--text-xs) !important;
+    font-weight: var(--weight-semibold) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  :global(.tag-chip small) {
+    grid-area: code;
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  :global(.tag-chip.selected) {
+    border-color: rgba(250, 204, 21, 0.55);
+    background: rgba(250, 204, 21, 0.12);
+    color: var(--text-bright);
+  }
+
+  :global(.tag-chip.selected .tag-chip-check) {
+    border-color: rgba(250, 204, 21, 0.75);
+    background: var(--accent-gold);
+  }
+
+  :global(.tag-chip.selected .tag-chip-check::after) {
+    content: "";
+    width: 7px;
+    height: 4px;
+    border-left: 2px solid #1d1600;
+    border-bottom: 2px solid #1d1600;
+    transform: rotate(-45deg) translateY(-1px);
+  }
+
+  :global(.tag-chip.selected small) {
+    color: rgba(244, 241, 255, 0.6);
+  }
+
+  :global(.tag-picker-empty) {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .toggle-row {
+    display: flex !important;
+    grid-template-columns: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 9px !important;
+    min-height: 30px;
+  }
+
+  .toggle-row input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-gold);
+  }
+
+  .toggle-row span {
+    color: var(--text-primary) !important;
+    font-size: var(--text-sm) !important;
+    font-weight: var(--weight-medium) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  .mechanic-toggle {
+    align-self: end;
+    min-height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.16);
+  }
+
+  .rating-grid,
+  .two-field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .rating-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .edit-status {
+    min-height: 38px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    font-size: var(--text-sm);
+  }
+
+  .edit-status[data-tone="ok"] {
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #86efac;
+  }
+
+  .edit-status[data-tone="critical"] {
+    border-color: rgba(239, 68, 68, 0.45);
+    color: #fca5a5;
+  }
+
+  .edit-status.has-details {
+    display: grid;
+    gap: 12px;
+    color: var(--text-secondary);
+  }
+
+  :global(.save-summary-title) {
+    color: var(--text-bright);
+    font-size: var(--text-sm);
+  }
+
+  :global(.save-summary-section) {
+    display: grid;
+    gap: 7px;
+  }
+
+  :global(.save-summary-label) {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  :global(.changed-file-list) {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  :global(.changed-file-list li) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
+
+  :global(.validation-result-list) {
+    display: grid;
+    gap: 6px;
+  }
+
+  :global(.validation-result) {
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  :global(.validation-result.ok) {
+    border-color: rgba(34, 197, 94, 0.25);
+  }
+
+  :global(.validation-result.failed) {
+    border-color: rgba(239, 68, 68, 0.38);
+  }
+
+  :global(.validation-result summary) {
+    cursor: pointer;
+    padding: 8px 9px;
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+  }
+
+  :global(.validation-result.ok summary) {
+    color: #86efac;
+  }
+
+  :global(.validation-result.failed summary) {
+    color: #fca5a5;
+  }
+
+  :global(.validation-output) {
+    max-height: 180px;
+    overflow: auto;
+    margin: 0;
+    padding: 0 9px 9px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+
+  .edit-actions {
+    position: sticky;
+    bottom: -22px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 0 0;
+    background: linear-gradient(to top, #0c0a12 75%, rgba(12, 10, 18, 0));
+  }
+
+  .primary-action,
+  .secondary-action {
+    min-height: 38px;
+    padding: 0 14px;
+    font-weight: var(--weight-semibold);
+  }
+
+  .primary-action {
+    color: #1b1400;
+    background: var(--accent-gold);
+    border-color: rgba(250, 204, 21, 0.7);
+  }
+
+  .secondary-action {
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .versions-panel {
+    margin-bottom: 0;
+  }
+
+  .version-list {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+
+  .version-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 38px;
+    padding: 0 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-sm);
+  }
+
+  .version-item span {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    text-transform: capitalize;
+  }
+
+  .version-item strong {
+    color: var(--accent-gold);
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 1200px) {
+    .kpi-grid,
+    .distribution-grid,
+    .page-inventory-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .status-shell {
+      width: min(100% - 28px, 1480px);
+      padding-top: 28px;
+    }
+
+    .status-header {
+      grid-template-columns: 1fr;
+    }
+
+    .status-header h1 {
+      font-size: 34px;
+    }
+
+    .kpi-grid,
+    .distribution-grid,
+    .page-inventory-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .route-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .coverage-row {
+      grid-template-columns: 1fr 52px;
+    }
+
+    .coverage-copy {
+      grid-column: 1 / -1;
+    }
+
+    .inventory-top {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .inventory-tools,
+    .search-field {
+      width: 100%;
+    }
+
+    .filter-tabs {
+      width: 100%;
+      overflow: auto;
+    }
+
+    .filter-tab {
+      white-space: nowrap;
+      min-height: 32px;
+    }
+
+    .rating-grid,
+    .two-field-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tag-toolbar,
+    :global(.tag-chip-list) {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

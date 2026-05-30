@@ -4,12 +4,31 @@
 import express from 'express';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = path.join(__dirname, '..');
 const HERO_DIR = path.join(__dirname, '../src/data/heroes');
 const TAGS_FILE = path.join(__dirname, '../src/data/tags.json');
 const TAG_CATEGORIES_FILE = path.join(__dirname, '../src/data/tagCategories.json');
+const HERO_RATINGS_FILE = path.join(__dirname, '../src/data/ratings/hero-ratings.json');
+const INVEST_FILE = path.join(__dirname, '../src/data/ratings/invest.json');
+const execFileAsync = promisify(execFile);
+
+const VALIDATION_CHECKS = {
+  tags: {
+    label: 'Synergy tags',
+    command: 'npm',
+    args: ['run', 'validate:tags'],
+  },
+  heroDetailStats: {
+    label: 'Hero detail stats',
+    command: 'npm',
+    args: ['run', 'validate:hero-detail-stats'],
+  },
+};
 
 const app = express();
 app.use(express.json());
@@ -19,7 +38,8 @@ app.use(express.static(path.join(__dirname, '../tag-manager-frontend')));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
@@ -65,6 +85,137 @@ async function saveTagCategories() {
     await fs.writeFile(TAG_CATEGORIES_FILE, JSON.stringify(TAG_CATEGORIES, null, 2) + '\n', 'utf-8');
   } catch (err) {
     console.error('Error saving tag categories:', err);
+  }
+}
+
+function assertHeroId(id) {
+  if (!id || !/^[a-z0-9-]+$/i.test(id)) {
+    const err = new Error('Invalid hero id');
+    err.statusCode = 400;
+    throw err;
+  }
+}
+
+async function readJson(filePath) {
+  const content = await fs.readFile(filePath, 'utf-8');
+  return JSON.parse(content);
+}
+
+async function writeJson(filePath, data) {
+  await fs.writeFile(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
+}
+
+function relativePath(filePath) {
+  return path.relative(PROJECT_ROOT, filePath);
+}
+
+async function readHeroById(id) {
+  assertHeroId(id);
+  const filePath = path.join(HERO_DIR, `${id}.json`);
+
+  try {
+    const hero = await readJson(filePath);
+    return { filePath, hero };
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      const notFound = new Error(`Hero not found: ${id}`);
+      notFound.statusCode = 404;
+      throw notFound;
+    }
+    throw err;
+  }
+}
+
+function normalizeString(value) {
+  if (value === null || value === undefined) return '';
+  return String(value).trim();
+}
+
+function normalizeBool(value) {
+  if (value === true || value === 'true') return true;
+  if (value === false || value === 'false') return false;
+  return Boolean(value);
+}
+
+function sanitizeRating(value) {
+  const rating = normalizeString(value);
+  const allowed = new Set(['', 'S+', 'S', 'A+', 'A', 'B+', 'B', 'C', 'D']);
+  if (!allowed.has(rating)) {
+    const err = new Error(`Invalid rating value: ${rating}`);
+    err.statusCode = 400;
+    throw err;
+  }
+  return rating;
+}
+
+function normalizeCoreMechanic(value) {
+  if (!value) {
+    return { summary: '', depthRating: '', commonlyMisunderstood: false };
+  }
+
+  if (typeof value === 'string') {
+    return {
+      summary: value === '[object Object]' ? '' : normalizeString(value),
+      depthRating: '',
+      commonlyMisunderstood: false,
+    };
+  }
+
+  const depthRating = normalizeString(value.depthRating);
+  const allowedDepth = new Set(['', 'low', 'mid', 'high']);
+  if (!allowedDepth.has(depthRating)) {
+    const err = new Error(`Invalid core mechanic depthRating: ${depthRating}`);
+    err.statusCode = 400;
+    throw err;
+  }
+
+  return {
+    summary: normalizeString(value.summary),
+    depthRating,
+    commonlyMisunderstood: normalizeBool(value.commonlyMisunderstood),
+  };
+}
+
+function sendError(res, err) {
+  const status = err.statusCode || 500;
+  if (status >= 500) console.error(err);
+  return res.status(status).json({ error: err.message });
+}
+
+function trimCommandOutput(output) {
+  const text = normalizeString(output);
+  if (!text) return '';
+  const lines = text.split(/\r?\n/).filter(Boolean);
+  return lines.slice(-30).join('\n');
+}
+
+async function runValidationCheck(id) {
+  const check = VALIDATION_CHECKS[id];
+  const startedAt = Date.now();
+
+  try {
+    const { stdout, stderr } = await execFileAsync(check.command, check.args, {
+      cwd: PROJECT_ROOT,
+      timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+
+    return {
+      id,
+      label: check.label,
+      ok: true,
+      durationMs: Date.now() - startedAt,
+      output: trimCommandOutput(`${stdout}\n${stderr}`),
+    };
+  } catch (err) {
+    return {
+      id,
+      label: check.label,
+      ok: false,
+      durationMs: Date.now() - startedAt,
+      exitCode: err.code ?? null,
+      output: trimCommandOutput(`${err.stdout || ''}\n${err.stderr || ''}\n${err.message || ''}`),
+    };
   }
 }
 
@@ -136,6 +287,171 @@ app.get('/api/heroes', async (req, res) => {
   }
 });
 
+// =====================
+// LOCAL CONTENT ADMIN ENDPOINTS
+// =====================
+
+// GET /api/admin/heroes/:id - full editable payload for a hero
+app.get('/api/admin/heroes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { hero } = await readHeroById(id);
+    const ratings = await readJson(HERO_RATINGS_FILE);
+    const invest = await readJson(INVEST_FILE);
+
+    res.json({
+      hero,
+      ratings: ratings[id] || {
+        name: hero.name,
+        overall: '',
+        pvp: '',
+        pve: '',
+        pveEarly: '',
+        pveLate: '',
+      },
+      investment: invest[id] || {
+        relicRecommendation: '',
+        usedIn: '',
+        explanation: '',
+        f2pInvestment: '',
+      },
+    });
+  } catch (err) {
+    sendError(res, err);
+  }
+});
+
+// PATCH /api/admin/heroes/:id - update safe hero-level fields
+app.patch('/api/admin/heroes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { filePath, hero } = await readHeroById(id);
+    const allowedFields = [
+      'release',
+      'newHero',
+      'description',
+      'activeBug',
+      'activeBugNotes',
+      'coreMechanic',
+      'recommendedRelicLevel',
+      'f2pInvestment',
+    ];
+
+    for (const field of allowedFields) {
+      if (!Object.prototype.hasOwnProperty.call(req.body, field)) continue;
+
+      if (field === 'release' || field === 'newHero' || field === 'activeBug') {
+        hero[field] = normalizeBool(req.body[field]);
+      } else if (field === 'coreMechanic') {
+        hero[field] = normalizeCoreMechanic(req.body[field]);
+      } else if (field === 'recommendedRelicLevel') {
+        const value = req.body[field];
+        if (value === '' || value === null || value === undefined) {
+          hero[field] = null;
+        } else {
+          const numericValue = Number(value);
+          if (!Number.isFinite(numericValue)) {
+            const err = new Error('recommendedRelicLevel must be a number');
+            err.statusCode = 400;
+            throw err;
+          }
+          hero[field] = numericValue;
+        }
+      } else {
+        hero[field] = normalizeString(req.body[field]);
+      }
+    }
+
+    await writeJson(filePath, hero);
+    res.json({ success: true, hero, changedFiles: [relativePath(filePath)] });
+  } catch (err) {
+    sendError(res, err);
+  }
+});
+
+// PATCH /api/admin/ratings/:id - update rating tiers
+app.patch('/api/admin/ratings/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { hero } = await readHeroById(id);
+    const ratings = await readJson(HERO_RATINGS_FILE);
+    const hasExistingRating = Boolean(ratings[id]);
+    const current = ratings[id] || { name: hero.name };
+    const next = {
+      name: hero.name,
+      overall: sanitizeRating(req.body.overall ?? current.overall ?? ''),
+      pvp: sanitizeRating(req.body.pvp ?? current.pvp ?? ''),
+      pve: sanitizeRating(req.body.pve ?? current.pve ?? ''),
+      pveEarly: sanitizeRating(req.body.pveEarly ?? current.pveEarly ?? ''),
+      pveLate: sanitizeRating(req.body.pveLate ?? current.pveLate ?? ''),
+    };
+
+    if (!hasExistingRating && !next.overall && !next.pvp && !next.pve && !next.pveEarly && !next.pveLate) {
+      return res.json({ success: true, skipped: true, ratings: next, changedFiles: [] });
+    }
+
+    ratings[id] = next;
+    await writeJson(HERO_RATINGS_FILE, ratings);
+    res.json({ success: true, ratings: ratings[id], changedFiles: [relativePath(HERO_RATINGS_FILE)] });
+  } catch (err) {
+    sendError(res, err);
+  }
+});
+
+// PATCH /api/admin/invest/:id - update investment guidance
+app.patch('/api/admin/invest/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await readHeroById(id);
+    const invest = await readJson(INVEST_FILE);
+    const hasExistingInvestment = Boolean(invest[id]);
+    const current = invest[id] || {};
+
+    const next = {
+      relicRecommendation: normalizeString(req.body.relicRecommendation ?? current.relicRecommendation),
+      usedIn: normalizeString(req.body.usedIn ?? current.usedIn),
+      explanation: normalizeString(req.body.explanation ?? current.explanation),
+      f2pInvestment: normalizeString(req.body.f2pInvestment ?? current.f2pInvestment),
+    };
+
+    if (!hasExistingInvestment && !next.relicRecommendation && !next.usedIn && !next.explanation && !next.f2pInvestment) {
+      return res.json({ success: true, skipped: true, investment: next, changedFiles: [] });
+    }
+
+    invest[id] = next;
+    await writeJson(INVEST_FILE, invest);
+    res.json({ success: true, investment: invest[id], changedFiles: [relativePath(INVEST_FILE)] });
+  } catch (err) {
+    sendError(res, err);
+  }
+});
+
+// POST /api/admin/validate - run local validation checks after editing
+app.post('/api/admin/validate', async (req, res) => {
+  try {
+    const requestedChecks = Array.isArray(req.body?.checks) && req.body.checks.length > 0
+      ? req.body.checks
+      : ['tags'];
+    const checks = requestedChecks.filter((id) => VALIDATION_CHECKS[id]);
+
+    if (checks.length === 0) {
+      return res.status(400).json({ error: 'No valid validation checks requested' });
+    }
+
+    const results = [];
+    for (const id of checks) {
+      results.push(await runValidationCheck(id));
+    }
+
+    res.json({
+      ok: results.every((result) => result.ok),
+      results,
+    });
+  } catch (err) {
+    sendError(res, err);
+  }
+});
+
 // POST /api/heroes/:id/synergies - save synergies for a hero
 app.post('/api/heroes/:id/synergies', async (req, res) => {
   try {
@@ -173,6 +489,7 @@ app.post('/api/heroes/:id/synergies', async (req, res) => {
     res.json({
       success: true,
       message: `Synergies updated for ${hero.name}`,
+      changedFiles: [relativePath(filePath)],
       hero: {
         id: hero.id,
         name: hero.name,
