@@ -246,6 +246,15 @@
       "skill_icon_prefix": "DiAoNiSuoSi"
     }
   },
+  "eden": {
+    "game_hero_id": null,
+    "all_game_hero_ids": null,
+    "match_confidence": "none",
+    "match_method": null,
+    "status": "not_yet_released",
+    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
+    "assets": {}
+  },
   "eris": {
     "game_hero_id": 3011,
     "all_game_hero_ids": [
@@ -255,7 +264,7 @@
     "match_confidence": "high",
     "match_method": "divination_character_setting",
     "status": "unreleased",
-    "notes": "en_name=Eris confirmed via divination_character_setting.json. ID 30111 is alternate skin (ELiSiRenOu). No skill icons in atlas. enable_time=2026-06-10, is_visible=0.",
+    "notes": "en_name=Eris confirmed via divination_character_setting.json. ID 30111 is alternate skin (ELiSiRenOu). No skill icons in atlas. enable_time=2026-06-03 in live global extraction.",
     "assets": {
       "internal_name": "elisi",
       "portrait_normal": "A_UI_HeadPortrait_Elisi02_Img",
@@ -319,6 +328,24 @@
       "internal_name": "shuangzizuo"
     }
   },
+  "hades": {
+    "game_hero_id": null,
+    "all_game_hero_ids": null,
+    "match_confidence": "none",
+    "match_method": null,
+    "status": "not_yet_released",
+    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
+    "assets": {}
+  },
+  "hebo": {
+    "game_hero_id": null,
+    "all_game_hero_ids": null,
+    "match_confidence": "none",
+    "match_method": null,
+    "status": "not_yet_released",
+    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
+    "assets": {}
+  },
   "hecate": {
     "game_hero_id": 1001,
     "all_game_hero_ids": null,
@@ -335,13 +362,38 @@
       "skill_icon_prefix": "HeKaTe"
     }
   },
+  "heket": {
+    "game_hero_id": null,
+    "all_game_hero_ids": null,
+    "match_confidence": "none",
+    "match_method": null,
+    "status": "not_yet_released",
+    "notes": "Project hero exists, but no confirmed game hero ID or CN asset internal name is available yet.",
+    "assets": {}
+  },
   "hela": {
+    "game_hero_id": 1003,
+    "all_game_hero_ids": null,
+    "match_confidence": "high",
+    "match_method": "en_name",
+    "status": "ok",
+    "notes": null,
+    "assets": {
+      "internal_name": "haila",
+      "portrait_normal": "A_UI_HeadPortrait_Haila02_Img",
+      "portrait_strip": "A_UI_HeadPortrait_Haila01_Img",
+      "portrait_circle": "A_UI_HeadPortrait_Haila03_Img",
+      "spine_name": "haila",
+      "skill_icon_prefix": "HaiLa"
+    }
+  },
+  "hera": {
     "game_hero_id": 5008,
     "all_game_hero_ids": null,
     "match_confidence": "high",
     "match_method": "internal_name",
-    "status": "unreleased",
-    "notes": "Internal CN name hela. EN display name is HERA (confirmed via divination_character_setting.json ID 5008). unreleased_until_2026-05-25.",
+    "status": "ok",
+    "notes": "Internal CN name hela. EN display name is Hera (confirmed via divination_character_setting.json ID 5008). Released 2026-05-25.",
     "assets": {
       "internal_name": "hela",
       "portrait_normal": "A_UI_HeadPortrait_Hela02_Img",
@@ -478,7 +530,7 @@
       "skill_icon_prefix": "JingWei"
     }
   },
-  "jiutian-xuannv": {
+  "jiutianxuannv": {
     "game_hero_id": 3013,
     "all_game_hero_ids": null,
     "match_confidence": "high",
@@ -638,6 +690,15 @@
       "skill_icon_prefix": "NieMoXiSi"
     }
   },
+  "nephtys": {
+    "game_hero_id": null,
+    "all_game_hero_ids": null,
+    "match_confidence": "none",
+    "match_method": null,
+    "status": "not_yet_released",
+    "notes": "Project hero exists, but no standalone game hero ID or CN asset internal name is confirmed. Divination label Nephtys appears on ID 1011, which currently uses Skadi assets.",
+    "assets": {}
+  },
   "nezha": {
     "game_hero_id": 5006,
     "all_game_hero_ids": null,
@@ -666,13 +727,15 @@
     }
   },
   "nut": {
-    "game_hero_id": null,
+    "game_hero_id": 1012,
     "all_game_hero_ids": null,
-    "match_confidence": "none",
-    "match_method": null,
+    "match_confidence": "high",
+    "match_method": "user_confirmed",
     "status": "not_yet_released",
-    "notes": "Not found in divination_character_setting.json or hero_skin.lua. Divination ID 1012 = Nut appears to be a separate divination-NPC system, NOT the hero. No portrait or spine in game_graphics. Hero likely planned but not yet in game.",
-    "assets": {}
+    "notes": "Game hero ID 1012 is Nut. hero_detail currently reports internal_name=sikadi, which overlaps with Skadi assets. Do not rename sikadi assets to Nut without checking the source asset group.",
+    "assets": {
+      "internal_name": "sikadi"
+    }
   },
   "nuwa": {
     "game_hero_id": 5004,
@@ -865,8 +928,8 @@
     ],
     "match_confidence": "high",
     "match_method": "divination_character_setting",
-    "status": "unreleased",
-    "notes": "EN name Selket confirmed via divination. Project ID is serket. enable_time=2026-05-20. Skin variant 20111 is XieZi skin.",
+    "status": "ok",
+    "notes": "EN name Selket confirmed via divination. Project ID is serket. Released 2026-05-20. Skin variant 20111 is XieZi skin.",
     "assets": {
       "internal_name": "saierkaite",
       "portrait_normal": "A_UI_HeadPortrait_Saierkaite02_Img",
@@ -896,8 +959,7 @@
     "game_hero_id": 1010,
     "all_game_hero_ids": [
       1010,
-      1011,
-      1012
+      1011
     ],
     "match_confidence": "high",
     "match_method": "portrait_filename",

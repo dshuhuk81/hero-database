@@ -96,7 +96,17 @@
       "level4": "Kills conducted by enemies Charmed by Hera extend the duration of Charm by 5s."
     }
   },
-  "synergies": [],
+  "synergies": [
+    "ATK_SPD_UP",
+    "BUFF_TEAM",
+    "CROWD_CONTROL",
+    "DMG_RED",
+    "ENERGY_DRAIN",
+    "ENERGY_RESTORE",
+    "HEAL",
+    "HIT_AVOID",
+    "REDUCES_ATTRIBUTES"
+  ],
   "baseAttackRate": 0,
   "bossUltimatesPer90s": 0,
   "coreMechanic": {

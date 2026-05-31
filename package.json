@@ -17,6 +17,8 @@
     "prepare": "git config core.hooksPath .githooks",
     "db:merge": "node scripts/merge-heroes-db.js",
     "validate:hero-detail-stats": "node scripts/validate-hero-detail-stats.mjs",
+    "sync:cn-hero-table": "node scripts/sync-cn-en-hero-table.mjs",
+    "rename:cn-full-skills": "node scripts/rename-cn-full-skills.mjs",
     "validate:tags": "node scripts/test-hero-tags.js",
     "validate:all": "node scripts/validate-bosses.js && node scripts/test-hero-tags.js",
     "after:hero-edit": "node scripts/merge-heroes-db.js && node scripts/test-hero-tags.js",
