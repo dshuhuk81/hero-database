@@ -473,6 +473,7 @@ const kpis = [
 
   <script>
     const ADMIN_API = "http://localhost:3000";
+    const REQUIRED_ADMIN_FEATURES = ["strengthsWeaknesses", "investmentSingleSource"];
     const search = document.getElementById("statusSearch");
     const tabs = [...document.querySelectorAll(".filter-tab")];
     const rows = [...document.querySelectorAll("[data-row]")];
@@ -631,6 +632,21 @@ const kpis = [
         throw new Error(payload.error || `Request failed with ${response.status}`);
       }
       return payload;
+    }
+
+    async function verifyAdminCapabilities() {
+      let capabilities;
+      try {
+        capabilities = await apiFetch("/api/admin/capabilities");
+      } catch {
+        throw new Error("Local admin server is outdated or unavailable. Restart npm run tag-manager");
+      }
+
+      const features = new Set(capabilities.features || []);
+      const missing = REQUIRED_ADMIN_FEATURES.filter((feature) => !features.has(feature));
+      if (missing.length) {
+        throw new Error("Local admin server is outdated. Restart npm run tag-manager");
+      }
     }
 
     async function loadTagGroups() {
@@ -875,6 +891,7 @@ const kpis = [
       renderTagPicker();
       setEditStatus("Loading hero content...");
       try {
+        await verifyAdminCapabilities();
         await loadTagGroups();
         const payload = await apiFetch(`/api/admin/heroes/${heroId}`);
         fillEditForm(payload);
@@ -947,6 +964,7 @@ const kpis = [
       setEditStatus("Saving changes...");
 
       try {
+        await verifyAdminCapabilities();
         const saveResponses = [];
 
         saveResponses.push(await apiFetch(`/api/admin/heroes/${heroId}`, {

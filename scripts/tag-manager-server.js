@@ -29,6 +29,10 @@ const VALIDATION_CHECKS = {
     args: ['run', 'validate:hero-detail-stats'],
   },
 };
+const ADMIN_CAPABILITIES = {
+  apiVersion: 2,
+  features: ['strengthsWeaknesses', 'investmentSingleSource'],
+};
 
 const app = express();
 app.use(express.json());
@@ -317,6 +321,11 @@ app.get('/api/heroes', async (req, res) => {
 // LOCAL CONTENT ADMIN ENDPOINTS
 // =====================
 
+// GET /api/admin/capabilities - allows the dashboard to reject stale server processes
+app.get('/api/admin/capabilities', (req, res) => {
+  res.json(ADMIN_CAPABILITIES);
+});
+
 // GET /api/admin/heroes/:id - full editable payload for a hero
 app.get('/api/admin/heroes/:id', async (req, res) => {
   try {
@@ -360,6 +369,12 @@ app.patch('/api/admin/heroes/:id', async (req, res) => {
       'strengths',
       'weaknesses',
     ];
+    const unsupportedFields = Object.keys(req.body || {}).filter((field) => !allowedFields.includes(field));
+    if (unsupportedFields.length > 0) {
+      const err = new Error(`Unsupported hero fields: ${unsupportedFields.join(', ')}`);
+      err.statusCode = 400;
+      throw err;
+    }
 
     for (const field of allowedFields) {
       if (!Object.prototype.hasOwnProperty.call(req.body, field)) continue;

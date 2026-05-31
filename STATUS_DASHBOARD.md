@@ -45,6 +45,8 @@ The dashboard can render without the local admin server, but editing requires `n
 Cannot reach local admin server: Failed to fetch. Start npm run tag-manager.
 ```
 
+Restart `npm run tag-manager` after pulling or editing `scripts/tag-manager-server.js`. The dashboard checks the local server capabilities before opening the editor and again before saving. This prevents an older already-running server process from silently ignoring newer editor fields.
+
 ## Main Files
 
 Dashboard and status calculation:
@@ -123,6 +125,7 @@ Current endpoints:
 
 ```text
 GET   /api/admin/heroes/:id
+GET   /api/admin/capabilities
 PATCH /api/admin/heroes/:id
 PATCH /api/admin/ratings/:id
 PATCH /api/admin/invest/:id
