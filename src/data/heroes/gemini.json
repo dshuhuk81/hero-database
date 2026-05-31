@@ -78,10 +78,18 @@
   ],
   "synergies": [
     "CROWD_CONTROL",
-    "REDUCES_ATTRIBUTES",
     "GAIN_ARMOR",
-    "HEAL"
+    "HEAL",
+    "REDUCES_ATTRIBUTES"
   ],
   "baseAttackRate": 0.591,
-  "bossUltimatesPer90s": 5
+  "bossUltimatesPer90s": 5,
+  "newHero": false,
+  "coreMechanic": {
+    "summary": "",
+    "depthRating": "",
+    "commonlyMisunderstood": false
+  },
+  "strengths": [],
+  "weaknesses": []
 }

@@ -75,11 +75,19 @@
     }
   ],
   "synergies": [
+    "AREA_DAMAGE_DEALER",
     "HEAL_TEAM",
-    "SHIELD_TEAM",
     "REDUCES_ATTRIBUTES",
-    "AREA_DAMAGE_DEALER"
+    "SHIELD_TEAM"
   ],
   "baseAttackRate": 0.523,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "newHero": false,
+  "coreMechanic": {
+    "summary": "",
+    "depthRating": "",
+    "commonlyMisunderstood": false
+  },
+  "strengths": [],
+  "weaknesses": []
 }
