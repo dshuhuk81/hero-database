@@ -44,6 +44,10 @@ function ratingCoverageFor(hero) {
   };
 }
 
+function hasStrengthWeakness(hero) {
+  return isFilled(hero.strengths) && isFilled(hero.weaknesses);
+}
+
 function routeFromPagePath(filePath) {
   const normalized = filePath
     .replace("../pages", "")
@@ -91,7 +95,7 @@ function getHeroChecks(hero) {
     { key: "stats", label: "Stats", ok: isFilled(hero.stats) },
     { key: "skills", label: "Skills", ok: isFilled(hero.skills) },
     { key: "rating", label: "Rating", ok: isFilled(hero.ratings?.overall) },
-    { key: "relic", label: "Relic", ok: isFilled(hero.relic) || isFilled(hero.recommendedRelicLevel) },
+    { key: "relic", label: "Relic", ok: isFilled(hero.relic) },
     { key: "synergy", label: "Synergy", ok: isFilled(hero.synergies) || isFilled(hero.synergyTags) },
     { key: "virtues", label: "Virtues", ok: isFilled(hero.virtues) || isFilled(hero.virtueSets) },
     { key: "comps", label: "Comps", ok: isFilled(hero.detailComps) },
@@ -145,7 +149,7 @@ export function getProjectStatus() {
   });
   const missingStats = heroes.filter((hero) => !isFilled(hero.stats));
   const missingSkills = heroes.filter((hero) => !isFilled(hero.skills));
-  const heroesWithBugs = heroes.filter((hero) => hero.activeBug);
+  const missingStrengthWeakness = heroes.filter((hero) => !hasStrengthWeakness(hero));
   const orphanRatings = ratingIds.filter((id) => !heroIds.has(id));
 
   const heroStatuses = heroes
@@ -167,10 +171,10 @@ export function getProjectStatus() {
         hasStats,
         hasSkills,
         hasRating,
-        hasBug: Boolean(hero.activeBug),
         completenessPercent: coverage.percent,
         ratingPercent: coverage.ratingPercent,
         missingChecks,
+        hasStrengthWeakness: hasStrengthWeakness(hero),
       };
       const severity = getSeverity(status);
 
@@ -189,6 +193,7 @@ export function getProjectStatus() {
   const coreChecksTotal = heroes.length * 2;
   const coreChecksPassed = heroes.filter((hero) => isFilled(hero.stats)).length + heroes.filter((hero) => isFilled(hero.skills)).length;
   const ratingCoverage = percent(heroes.length - missingRatings.length, heroes.length);
+  const strengthWeaknessComplete = heroes.length - missingStrengthWeakness.length;
   const metaCoverage = Math.round(
     heroes.reduce((sum, hero) => sum + getHeroChecks(hero).percent, 0) / Math.max(heroes.length, 1)
   );
@@ -222,6 +227,12 @@ export function getProjectStatus() {
       detail: unreleasedHeroes.slice(0, 8).map((hero) => hero.name).join(", "),
     },
     {
+      label: "Add strengths & weaknesses",
+      count: missingStrengthWeakness.length,
+      severity: missingStrengthWeakness.length ? "info" : "ok",
+      detail: missingStrengthWeakness.slice(0, 8).map((hero) => hero.name).join(", "),
+    },
+    {
       label: "Fix orphan rating IDs",
       count: orphanRatings.length,
       severity: orphanRatings.length ? "critical" : "ok",
@@ -249,11 +260,12 @@ export function getProjectStatus() {
       released: releasedHeroes.length,
       unreleased: unreleasedHeroes.length,
       newHeroes: heroes.filter((hero) => hero.newHero).length,
-      activeBugs: heroesWithBugs.length,
       missingRatings: missingRatings.length,
       partialRatings: partialRatings.length,
       missingStats: missingStats.length,
       missingSkills: missingSkills.length,
+      strengthWeaknessComplete,
+      missingStrengthWeakness: missingStrengthWeakness.length,
       bosses: (bossesData.bosses || []).length,
       tags: tags.length,
       orphanRatings: orphanRatings.length,
@@ -270,6 +282,11 @@ export function getProjectStatus() {
       { label: "Overall ratings", value: metrics.ratingCoverage, detail: "Heroes with overall tier" },
       { label: "Navigation coverage", value: metrics.navCoverage, detail: "Public static pages in navigation" },
       { label: "Meta completeness", value: metrics.metaCoverage, detail: "Optional content fields" },
+      {
+        label: "Strengths & weaknesses",
+        value: percent(strengthWeaknessComplete, heroes.length),
+        detail: "Editorial hero enrichment",
+      },
     ],
     distributions: {
       faction: asSegments(countBy(heroes, "faction")),

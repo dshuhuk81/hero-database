@@ -68,7 +68,6 @@ function adaptHero(raw) {
     synergies: raw.synergies ?? [],
     // ✅ Content Creator Guides
     "content-creator": raw["content-creator"] ?? [],
-    recommendedRelicLevel: raw.recommendedRelicLevel,
     level: raw.level,
     evolution: raw.evolution,
     newHero: raw.newHero ?? false,
@@ -77,9 +76,6 @@ function adaptHero(raw) {
     metaSources: raw.metaSources ?? null,
     relicBreakpoints: raw.relicBreakpoints ?? null,
     synergyLinks: raw.synergyLinks ?? null,
-    activeBug: raw.activeBug ?? null,
-    activeBugNotes: raw.activeBugNotes ?? null,
-    f2pInvestment: raw.f2pInvestment ?? null,
     virtues: raw.virtues ?? [],
     virtueSets: raw.virtueSets ?? [],
     strengths: raw.strengths ?? [],

@@ -91,7 +91,6 @@ export interface Hero {
   newHero?: boolean;
   description: string;
   ratings: HeroRatings;
-  recommendedRelicLevel?: number;
   level?: number;
   evolution?: string;
   stats: HeroStats;

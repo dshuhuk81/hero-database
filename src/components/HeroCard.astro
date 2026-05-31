@@ -28,19 +28,6 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
     </div>
   )}
 
-  <!-- Info badges: bottom strip above name overlay -->
-  {hero.activeBug && (
-    <div class="card-info-badges">
-      <span class="card-badge card-badge-bug" title={hero.activeBugNotes || 'Known bug'}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-          <line x1="12" y1="9" x2="12" y2="13"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-      </span>
-    </div>
-  )}
-
   <div class="name-overlay">
     <span class="hero-name">{hero.name}</span>
   </div>
@@ -158,44 +145,6 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
   letter-spacing: 0.3px;
 }
 
-/* ================================
-   CARD INFO BADGES (bottom strip)
-   ================================ */
-
-.card-info-badges {
-  position: absolute;
-  bottom: 42px;
-  left: 8px;
-  display: flex;
-  gap: 5px;
-  z-index: 4;
-}
-
-.card-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.card-badge svg {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
-}
-
-.card-badge-bug {
-  background: rgba(239, 68, 68, 0.75);
-  border: 1px solid rgba(239, 68, 68, 0.9);
-  color: #fff;
-  box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
-}
-
-
 @media (max-width: 600px) {
   .hero-card {
     height: 260px;
@@ -206,8 +155,7 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
   }
 
   .name-overlay,
-  .hero-flag-badge,
-  .card-badge {
+  .hero-flag-badge {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }

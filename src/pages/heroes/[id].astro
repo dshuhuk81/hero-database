@@ -254,19 +254,6 @@ const dotSections = [
   <!-- ===================== MAIN SCROLL CONTENT ===================== -->
   <main class="scroll-content">
 
-    <!-- BUG BANNER (if active) -->
-    {hero.activeBug && (
-      <div class="bug-banner">
-        <svg class="bug-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-        </svg>
-        <div class="bug-text">
-          <strong data-i18n="detail_known_bug">Known Bug</strong>
-          <span>{hero.activeBugNotes}</span>
-        </div>
-      </div>
-    )}
-
     <!-- ── SECTION 1: PROFILE ── -->
     <section class="content-section" id="section-profile">
       <div class="section-label" data-i18n="detail_profile">Profile</div>
@@ -396,9 +383,6 @@ const dotSections = [
                   <h3 class="skill-panel-name">{hero.relic.name}</h3>
                   <div class="skill-panel-badges">
                     <span class="skill-panel-type" data-i18n="detail_relic">Relic</span>
-                    {(hero as any).recommendedRelicLevel !== undefined && (
-                      <span class={`relic-lv-badge rlv-${(hero as any).recommendedRelicLevel}`}>Lv. {(hero as any).recommendedRelicLevel}</span>
-                    )}
                   </div>
                 </div>
               </div>
@@ -590,10 +574,12 @@ const dotSections = [
     </section>
 
     <!-- __ SECTION 5b: STRENGTHS & WEAKNESSES __ -->
-    <section class="content-section" id="section-strengths">
-      <div class="section-label">Strengths &amp; Weaknesses</div>
-      <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} />
-    </section>
+    {(heroStrengths.length > 0 || heroWeaknesses.length > 0) && (
+      <section class="content-section" id="section-strengths">
+        <div class="section-label">Strengths &amp; Weaknesses</div>
+        <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} />
+      </section>
+    )}
 
     <!-- __ SECTION 5c: DETAIL COMPS __ -->
     <section class="content-section" id="section-detail-comps">
@@ -1087,24 +1073,6 @@ const dotSections = [
 }
 
 /* =============================================
-   BUG BANNER
-   ============================================= */
-.bug-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  margin: var(--space-6) 0 0;
-  background: rgba(239, 68, 68, 0.10);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  border-radius: var(--radius-lg);
-  color: #fca5a5;
-}
-.bug-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; color: #ef4444; }
-.bug-text { display: flex; flex-direction: column; gap: 3px; font-size: var(--text-sm); }
-.bug-text strong { font-weight: var(--weight-bold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: var(--tracking-wide); color: #ef4444; }
-
-/* =============================================
    SECTION 1: PROFILE
    ============================================= */
 .profile-grid {
@@ -1387,16 +1355,6 @@ const dotSections = [
 .dmg-badge.dmg-magical  { background: rgba(59,130,246,0.18); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
 .dmg-badge.dmg-physical { background: rgba(249,115,22,0.18); border: 1px solid rgba(249,115,22,0.35); color: #fdba74; }
 .dmg-badge.dmg-true     { background: var(--border-faint); border: 1px solid var(--border-medium); color: #e5e7eb; }
-
-.relic-lv-badge {
-  padding: 3px var(--space-2);
-  border-radius: var(--radius-md);
-  font-size: 0.68rem;
-  font-weight: var(--weight-bold);
-}
-.rlv-30 { background: linear-gradient(135deg,#fbbf24,#f59e0b); color: #1a1a1a; }
-.rlv-20 { background: linear-gradient(135deg,#818cf8,#6366f1); color: var(--text-bright); }
-.rlv-10 { background: linear-gradient(135deg,#10b981,#059669); color: var(--text-bright); }
 
 .skill-body {
   display: block;

@@ -45,10 +45,10 @@ const kpis = [
     tone: status.totals.orphanRatings + status.totals.stalePageUpdates ? "critical" : "ok",
   },
   {
-    label: "Active bugs",
-    value: status.totals.activeBugs,
-    detail: `${status.totals.newHeroes} marked as new hero`,
-    tone: status.totals.activeBugs ? "critical" : "ok",
+    label: "Editorial backlog",
+    value: status.totals.missingStrengthWeakness,
+    detail: `${status.totals.strengthWeaknessComplete} enriched / ${status.totals.newHeroes} marked as new`,
+    tone: "neutral",
   },
 ];
 ---
@@ -238,6 +238,7 @@ const kpis = [
               <th>Role</th>
               <th>Overall</th>
               <th>Coverage</th>
+              <th>Enrichment</th>
               <th>Missing</th>
               <th>Actions</th>
             </tr>
@@ -279,6 +280,11 @@ const kpis = [
                     <span style={`width: ${hero.completenessPercent}%`}></span>
                   </div>
                   <span class="mini-meter-value">{hero.completenessPercent}%</span>
+                </td>
+                <td data-enrichment-cell>
+                  <span class="enrichment-pill" data-complete={String(hero.hasStrengthWeakness)}>
+                    {hero.hasStrengthWeakness ? "S&W complete" : "S&W missing"}
+                  </span>
                 </td>
                 <td class="missing-cell">{hero.missingChecks.slice(0, 4).join(", ") || "None"}</td>
                 <td>
@@ -370,6 +376,31 @@ const kpis = [
         <section class="edit-section">
           <div class="section-title-row">
             <div>
+              <h3>Strengths &amp; weaknesses</h3>
+              <p>Add concise editorial guidance for the public hero detail page.</p>
+            </div>
+          </div>
+          <div class="editorial-list-grid">
+            <div class="editorial-list-block">
+              <div class="editorial-list-head">
+                <h4>Strengths</h4>
+                <button class="list-add-btn" type="button" data-add-editorial="strengths">Add</button>
+              </div>
+              <div class="editorial-list" id="strengthList"></div>
+            </div>
+            <div class="editorial-list-block">
+              <div class="editorial-list-head">
+                <h4>Weaknesses</h4>
+                <button class="list-add-btn" type="button" data-add-editorial="weaknesses">Add</button>
+              </div>
+              <div class="editorial-list" id="weaknessList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="edit-section">
+          <div class="section-title-row">
+            <div>
               <h3>Synergy tags</h3>
               <p>Select mechanic tags used by filtering, team logic and hero comparisons.</p>
             </div>
@@ -410,26 +441,6 @@ const kpis = [
           <label>
             <span>Investment explanation</span>
             <textarea name="investmentExplanation" rows="4" placeholder="Why and when to invest"></textarea>
-          </label>
-        </section>
-
-        <section class="edit-section">
-          <h3>Flags</h3>
-          <label class="toggle-row">
-            <input type="checkbox" name="activeBug" />
-            <span>Active bug</span>
-          </label>
-          <label>
-            <span>Bug notes</span>
-            <textarea name="activeBugNotes" rows="2" placeholder="Known issue notes"></textarea>
-          </label>
-          <label>
-            <span>Hero JSON F2P note</span>
-            <input name="heroF2pInvestment" type="text" placeholder="Optional hero-level f2pInvestment field" />
-          </label>
-          <label>
-            <span>Hero JSON recommended relic level</span>
-            <input name="recommendedRelicLevel" type="number" min="0" step="1" placeholder="30" />
           </label>
         </section>
 
@@ -505,8 +516,11 @@ const kpis = [
     const synergyCount = document.getElementById("synergyCount");
     const selectedTagSummary = document.getElementById("selectedTagSummary");
     const clearSynergyTags = document.getElementById("clearSynergyTags");
+    const strengthList = document.getElementById("strengthList");
+    const weaknessList = document.getElementById("weaknessList");
     let tagGroups = [];
     let selectedSynergies = new Set();
+    let editorialLists = { strengths: [], weaknesses: [] };
 
     function setEditStatus(message, tone = "neutral") {
       if (!editStatus) return;
@@ -685,6 +699,58 @@ const kpis = [
       };
     }
 
+    function renderEditorialList(type) {
+      const container = type === "strengths" ? strengthList : weaknessList;
+      if (!container) return;
+      container.innerHTML = "";
+
+      const items = editorialLists[type];
+      if (!items.length) {
+        addTextElement(container, "span", "editorial-list-empty", `No ${type} listed yet.`);
+        return;
+      }
+
+      for (const [index, value] of items.entries()) {
+        const row = document.createElement("div");
+        row.className = "editorial-list-row";
+
+        const textarea = document.createElement("textarea");
+        textarea.rows = 2;
+        textarea.value = value;
+        textarea.placeholder = type === "strengths" ? "Add a concrete strength" : "Add a concrete weakness";
+        textarea.setAttribute("aria-label", `${type} item ${index + 1}`);
+        textarea.addEventListener("input", () => {
+          editorialLists[type][index] = textarea.value;
+        });
+
+        const remove = document.createElement("button");
+        remove.className = "list-remove-btn";
+        remove.type = "button";
+        remove.textContent = "Remove";
+        remove.setAttribute("aria-label", `Remove ${type} item ${index + 1}`);
+        remove.addEventListener("click", () => {
+          editorialLists[type].splice(index, 1);
+          renderEditorialList(type);
+        });
+
+        row.append(textarea, remove);
+        container.append(row);
+      }
+    }
+
+    function setEditorialLists(hero) {
+      editorialLists = {
+        strengths: [...(hero.strengths || [])],
+        weaknesses: [...(hero.weaknesses || [])],
+      };
+      renderEditorialList("strengths");
+      renderEditorialList("weaknesses");
+    }
+
+    function getEditorialList(type) {
+      return editorialLists[type].map((item) => item.trim()).filter(Boolean);
+    }
+
     function renderTagPicker(filter = "") {
       if (!tagPicker) return;
       const query = filter.trim().toLowerCase();
@@ -784,11 +850,8 @@ const kpis = [
       setField("coreMechanicSummary", coreMechanic.summary);
       setField("coreMechanicDepth", coreMechanic.depthRating);
       setField("coreMechanicMisunderstood", coreMechanic.commonlyMisunderstood);
-      setField("activeBug", Boolean(hero.activeBug));
-      setField("activeBugNotes", hero.activeBugNotes || "");
-      setField("heroF2pInvestment", hero.f2pInvestment || "");
-      setField("recommendedRelicLevel", hero.recommendedRelicLevel ?? "");
       selectedSynergies = new Set(hero.synergies || []);
+      setEditorialLists(hero);
 
       for (const field of ["overall", "pvp", "pve", "pveEarly", "pveLate"]) {
         setField(field, ratings?.[field] || "");
@@ -805,6 +868,9 @@ const kpis = [
       openDrawer();
       editForm.reset();
       selectedSynergies = new Set();
+      editorialLists = { strengths: [], weaknesses: [] };
+      renderEditorialList("strengths");
+      renderEditorialList("weaknesses");
       if (tagSearch) tagSearch.value = "";
       renderTagPicker();
       setEditStatus("Loading hero content...");
@@ -825,6 +891,7 @@ const kpis = [
       const overall = getField("overall");
       const releaseCell = row.children[2];
       const ratingCell = row.querySelector("[data-rating-cell]");
+      const enrichmentCell = row.querySelector("[data-enrichment-cell]");
 
       row.dataset.release = release ? "released" : "unreleased";
       if (releaseCell) releaseCell.textContent = release ? "Released" : "Unreleased";
@@ -839,6 +906,15 @@ const kpis = [
         }
         ratingCell.dataset.ratingCell = "";
       }
+      if (enrichmentCell) {
+        const complete = getEditorialList("strengths").length > 0 && getEditorialList("weaknesses").length > 0;
+        enrichmentCell.innerHTML = "";
+        const pill = document.createElement("span");
+        pill.className = "enrichment-pill";
+        pill.dataset.complete = String(complete);
+        pill.textContent = complete ? "S&W complete" : "S&W missing";
+        enrichmentCell.append(pill);
+      }
     }
 
     editButtons.forEach((button) => {
@@ -849,6 +925,13 @@ const kpis = [
     clearSynergyTags?.addEventListener("click", () => {
       selectedSynergies = new Set();
       renderTagPicker(tagSearch?.value || "");
+    });
+    document.querySelectorAll("[data-add-editorial]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const type = button.dataset.addEditorial;
+        editorialLists[type].push("");
+        renderEditorialList(type);
+      });
     });
 
     editClose?.addEventListener("click", closeDrawer);
@@ -877,10 +960,8 @@ const kpis = [
               depthRating: getField("coreMechanicDepth"),
               commonlyMisunderstood: getField("coreMechanicMisunderstood"),
             },
-            activeBug: getField("activeBug"),
-            activeBugNotes: getField("activeBugNotes"),
-            f2pInvestment: getField("heroF2pInvestment"),
-            recommendedRelicLevel: getField("recommendedRelicLevel"),
+            strengths: getEditorialList("strengths"),
+            weaknesses: getEditorialList("weaknesses"),
           }),
         }));
 
@@ -1404,6 +1485,26 @@ const kpis = [
     white-space: nowrap;
   }
 
+  :global(.enrichment-pill) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 8px;
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    border-radius: var(--radius-sm);
+    background: rgba(56, 189, 248, 0.09);
+    color: #bae6fd;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    white-space: nowrap;
+  }
+
+  :global(.enrichment-pill[data-complete="true"]) {
+    border-color: rgba(34, 197, 94, 0.28);
+    background: rgba(34, 197, 94, 0.09);
+    color: #bbf7d0;
+  }
+
   .compact-rating {
     min-width: 28px;
     justify-content: center;
@@ -1617,6 +1718,78 @@ const kpis = [
     resize: vertical;
     min-height: 72px;
     padding: 10px;
+  }
+
+  .editorial-list-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .editorial-list-block {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .editorial-list-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .editorial-list-head h4 {
+    margin: 0;
+    color: var(--text-bright);
+    font-size: var(--text-xs);
+    letter-spacing: 0;
+  }
+
+  .list-add-btn,
+  :global(.list-remove-btn) {
+    min-height: 26px;
+    padding: 0 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: var(--text-xs);
+    cursor: pointer;
+  }
+
+  .list-add-btn:hover,
+  :global(.list-remove-btn:hover) {
+    border-color: var(--border-medium);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-bright);
+  }
+
+  .editorial-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  :global(.editorial-list-row) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: start;
+  }
+
+  :global(.editorial-list-row textarea) {
+    min-height: 62px;
+    padding: 8px;
+    font-size: var(--text-xs);
+    line-height: 1.45;
+  }
+
+  :global(.editorial-list-empty) {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
   }
 
   .tag-toolbar {

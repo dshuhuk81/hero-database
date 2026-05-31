@@ -176,6 +176,32 @@ function normalizeCoreMechanic(value) {
   };
 }
 
+function normalizeTextList(value, field) {
+  if (!Array.isArray(value)) {
+    const err = new Error(`${field} must be an array`);
+    err.statusCode = 400;
+    throw err;
+  }
+
+  return value
+    .map((entry) => {
+      if (typeof entry !== 'string') {
+        const err = new Error(`${field} entries must be strings`);
+        err.statusCode = 400;
+        throw err;
+      }
+
+      const text = normalizeString(entry);
+      if (/<[^>]+>/.test(text)) {
+        const err = new Error(`${field} entries must be plain text without HTML`);
+        err.statusCode = 400;
+        throw err;
+      }
+      return text;
+    })
+    .filter(Boolean);
+}
+
 function sendError(res, err) {
   const status = err.statusCode || 500;
   if (status >= 500) console.error(err);
@@ -330,33 +356,20 @@ app.patch('/api/admin/heroes/:id', async (req, res) => {
       'release',
       'newHero',
       'description',
-      'activeBug',
-      'activeBugNotes',
       'coreMechanic',
-      'recommendedRelicLevel',
-      'f2pInvestment',
+      'strengths',
+      'weaknesses',
     ];
 
     for (const field of allowedFields) {
       if (!Object.prototype.hasOwnProperty.call(req.body, field)) continue;
 
-      if (field === 'release' || field === 'newHero' || field === 'activeBug') {
+      if (field === 'release' || field === 'newHero') {
         hero[field] = normalizeBool(req.body[field]);
       } else if (field === 'coreMechanic') {
         hero[field] = normalizeCoreMechanic(req.body[field]);
-      } else if (field === 'recommendedRelicLevel') {
-        const value = req.body[field];
-        if (value === '' || value === null || value === undefined) {
-          hero[field] = null;
-        } else {
-          const numericValue = Number(value);
-          if (!Number.isFinite(numericValue)) {
-            const err = new Error('recommendedRelicLevel must be a number');
-            err.statusCode = 400;
-            throw err;
-          }
-          hero[field] = numericValue;
-        }
+      } else if (field === 'strengths' || field === 'weaknesses') {
+        hero[field] = normalizeTextList(req.body[field], field);
       } else {
         hero[field] = normalizeString(req.body[field]);
       }

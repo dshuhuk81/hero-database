@@ -1,6 +1,6 @@
 # Status Dashboard and Local Admin Editing
 
-Last updated: 2026-05-30
+Last updated: 2026-05-31
 
 This document describes the internal project status dashboard, the local editing workflow, what has already been implemented, and sensible next improvements.
 
@@ -83,13 +83,16 @@ The dashboard currently shows:
 - Missing overall ratings.
 - Partial rating sets.
 - Boss and tag counts.
-- Active bug count.
+- Editorial enrichment backlog.
 - Page inventory.
 - Navigation coverage.
+- Editorial strengths and weaknesses coverage.
 - Route inventory.
 - Internal routes kept outside public navigation.
 - Rating, faction, class and role distributions.
 - Hero maintenance table with search and filters.
+- Separate enrichment status per hero, without treating missing editorial text as broken core data.
+- Action queue entry for heroes missing strengths and weaknesses.
 
 The dashboard is calculated from local source files at build/render time.
 
@@ -140,10 +143,6 @@ The drawer currently supports:
 - New hero badge toggle.
 - Description.
 - Core mechanic.
-- Active bug toggle.
-- Active bug notes.
-- Hero-level F2P note.
-- Hero-level recommended relic level.
 - Ratings:
   - Overall
   - PvP
@@ -160,6 +159,11 @@ The drawer currently supports:
   - Searchable.
   - Grouped by category.
   - Saved into each hero JSON's `synergies` array.
+- Strengths and weaknesses:
+  - Editable as separate repeatable text lists.
+  - Saved into each hero JSON's `strengths` and `weaknesses` arrays.
+  - Empty entries are removed during save.
+  - HTML fragments are rejected by the local admin API so the public component receives plain text.
 
 After saving, the drawer shows:
 
@@ -189,6 +193,30 @@ Current behavior:
 Important implementation note:
 
 The tag chips are created dynamically in client-side JavaScript. Astro CSS is scoped by default, so the dynamically generated chip classes must be styled with `:global(...)` in `status.astro`. Without this, the browser shows native checkboxes and broken inline layout.
+
+### 6. Strengths And Weaknesses Enrichment
+
+Strengths and weaknesses are treated as editorial enrichment, not as a core health check. Missing lists are visible in the dashboard, but they do not reduce a hero's technical completeness score or mark the hero as broken.
+
+Current data state:
+
+- 9 of 79 heroes have both lists.
+- 70 heroes still need enrichment.
+- Hera and Jiutian Xuannv were populated from their existing guide JSON files.
+- Existing Nuba entries were normalized from HTML fragments to plain text.
+- Public hero detail pages hide the entire strengths and weaknesses section when both lists are empty.
+
+### 7. Flags Cleanup And Investment Source
+
+The former `Flags` section was removed from the drawer after reviewing its actual usage.
+
+- `activeBug` and `activeBugNotes` had no active hero entries and are no longer rendered publicly.
+- Hero-level `f2pInvestment` was unused.
+- Hero-level `recommendedRelicLevel` duplicated the richer relic recommendation stored in `invest.json`.
+- The small relic-level badge based on `recommendedRelicLevel` was removed from public hero detail pages.
+- `newHero` remains available under `Basics` because the public hero cards actively use that badge.
+
+`src/data/ratings/invest.json` is now the single editable source for relic recommendations and F2P investment guidance. Historical hero JSON fields remain in place for now, but they are no longer read or edited by the application.
 
 ## Local-Only Safety Model
 
@@ -226,7 +254,7 @@ Known note: `WORKFLOWS.md` contains some stale historical script descriptions. C
 ## Current Limitations
 
 - The dashboard totals are calculated at page render/build time. After saving in the drawer, refresh the page to recalculate all dashboard metrics.
-- The visible row updates release and overall rating immediately, but deeper coverage numbers require refresh.
+- The visible row updates release, overall rating and strengths/weaknesses enrichment immediately, but aggregate coverage numbers require refresh.
 - There is no undo button in the UI yet. Use Git to inspect and revert local changes.
 - There is no batch editing yet.
 - Validation runs automatically after save, but there is not yet a separate manual `Run validation` button.
@@ -253,7 +281,7 @@ Data safety:
 
 Editing UX:
 
-- Add section tabs inside the drawer: Basics, Ratings, Investment, Tags, Flags.
+- Add section tabs inside the drawer: Basics, Ratings, Editorial, Investment, Tags.
 - Add "only show selected tags" mode.
 - Add "missing fields only" mode for a hero.
 - Add bulk actions for unreleased heroes.
