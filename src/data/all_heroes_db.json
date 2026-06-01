@@ -11548,6 +11548,116 @@
       }
     ]
   },
+  "zaojun": {
+    "id": "zaojun",
+    "name": "Zaojun",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/zaojun.webp",
+    "release": false,
+    "faction": "Hearts",
+    "role": "Arcane",
+    "class": "Archer",
+    "rarity": "Legendary",
+    "description": "",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 632000,
+      "hp": 1704824,
+      "atk": 232292,
+      "armor": 28711,
+      "magicRes": 31597,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 10,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    },
+    "newHero": false,
+    "strengths": [],
+    "weaknesses": []
+  },
   "zeus": {
     "id": "zeus",
     "name": "Zeus",
