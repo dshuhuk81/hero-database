@@ -1,6 +1,6 @@
 # Status Dashboard and Local Admin Editing
 
-Last updated: 2026-05-31
+Last updated: 2026-06-01
 
 This document describes the internal project status dashboard, the local editing workflow, what has already been implemented, and sensible next improvements.
 
@@ -15,13 +15,15 @@ Primary goals:
 - Allow common hero maintenance tasks directly from the dashboard.
 - Keep write access local-only, so the public static site does not expose a production write API.
 
-The dashboard is available at:
+The dashboard is available during local development at:
 
 ```text
 /status
 ```
 
-It is included in the sidebar/meta navigation.
+It is included in the sidebar/meta navigation only while running `npm run dev`.
+
+The production build removes the generated `/status` directory, its dedicated client chunk and its sitemap entry. The dashboard is not deployed to the live site.
 
 ## How To Use
 
@@ -53,6 +55,7 @@ Dashboard and status calculation:
 
 - `src/pages/status.astro`
 - `src/utils/projectStatus.js`
+- `astro.config.mjs`
 
 Navigation:
 

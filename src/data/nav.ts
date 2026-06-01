@@ -30,11 +30,13 @@ export interface NavEntry {
   badge?: { text: string; color?: string };
   /** Marks the destination as under maintenance (disables the link). */
   status?: { type: "maintenance"; tooltip?: string };
+  /** Keep internal tooling visible during local development only. */
+  localOnly?: boolean;
 }
 
 export const defaultMaintenanceTooltip = "currently under maintenance";
 
-export const navEntries: NavEntry[] = [
+const allNavEntries: NavEntry[] = [
   {
     label: "Home",
     href: "/",
@@ -137,6 +139,7 @@ export const navEntries: NavEntry[] = [
     label: "Status",
     href: "/status",
     group: "meta",
+    localOnly: true,
     icon: `<path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="11" width="3" height="5" rx="1"/><rect x="12" y="7" width="3" height="9" rx="1"/><rect x="17" y="3" width="3" height="13" rx="1"/>`,
   },
   {
@@ -146,6 +149,8 @@ export const navEntries: NavEntry[] = [
     icon: `<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>`,
   },
 ];
+
+export const navEntries = allNavEntries.filter((entry) => !entry.localOnly || import.meta.env.DEV);
 
 /** Entries shown on the index.astro teaser grid, in array order. */
 export const teaserEntries = navEntries.filter((e) => e.teaser);

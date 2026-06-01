@@ -101,7 +101,7 @@ Der Hook ist unter `.githooks/pre-commit` im Repo gespeichert und wird via `npm 
 |---|---|
 | `npm run dev` | Astro Dev-Server starten |
 | `npm run dev:all` | Dev-Server + API-Server zusammen |
-| `npm run tag-manager` | Lokaler Admin-/Tag-Manager-Server auf http://localhost:3000; wird auch vom `/status` Dashboard zum Schreiben von Hero-Daten, Ratings, Investment und Synergy-Tags genutzt |
+| `npm run tag-manager` | Lokaler Admin-/Tag-Manager-Server auf http://localhost:3000; wird auch vom nur lokal sichtbaren `/status` Dashboard zum Schreiben von Hero-Daten, Ratings, Investment und Synergy-Tags genutzt |
 
 Siehe auch: `STATUS_DASHBOARD.md`
 
