@@ -2649,14 +2649,77 @@
         "level4": "Ignore 90% DEF."
       }
     },
-    "synergies": [],
+    "synergies": [
+      "REMOVES_ARMOR",
+      "BASIC_ATTACK_SCALER",
+      "HIT_AVOID",
+      "SUMMON"
+    ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "coreMechanic": {
       "summary": "",
       "depthRating": "",
       "commonlyMisunderstood": false
-    }
+    },
+    "strengths": [
+      "Unique DPS amplification: each additional Puppet multiplies total output. More Puppets = higher burst ceiling on every Ultimate cycle.",
+      "Passive Puppet generation from ally deaths. Gains power precisely when a team is under pressure, inverting the normal carry disadvantage.",
+      "Built-in survivability through Puppet Decoy death-dodge. Exceptional durability for an Archer class.",
+      "DEF penetration relic applies to all active Puppets simultaneously. 90% DEF ignore at max relic amplifies the entire Puppet swarm.",
+      "Relic Lv3: enemy Deity deaths trigger Puppet summoning. Potential snowball in PvP where both teams are losing units.",
+      "Missing/Max HP damage on Ultimate at Skill 1 Lv3–4. Effective against tanky high-HP targets."
+    ],
+    "weaknesses": [
+      "Requires Puppet buildup time. Without accumulated Puppets, Eris is a below-average Archer.",
+      "Fast burst compositions end fights before Puppet stacks and death-triggers accumulate.",
+      "Puppet inheritance starts at 20% ATK (Skill 2 base). High Skill 2 upgrade investment required to reach damage ceiling.",
+      "Maximum Puppet count gated behind Skill 4 upgrade levels (3 → 5 → 7).",
+      "Puppet Decoy has a 30s base cooldown. In repeated burst matchups, the dodge may not be available for every lethal threat."
+    ],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
+        ]
+      }
+    ],
+    "detailComps": [
+      {
+        "heroes": [
+          "eris",
+          "momus",
+          "caishen",
+          "dionysus",
+          "mengpo"
+        ]
+      }
+    ]
   },
   "fengyi": {
     "id": "fengyi",
@@ -4029,6 +4092,39 @@
       "Less effective into frontline-heavy teams",
       "Ultimate targeting struggles against melee units",
       "Can lose value in fast-paced burst matchups"
+    ],
+    "detailComps": [
+      {
+        "heroes": [
+          "hera",
+          "momus",
+          "caishen",
+          "nuba",
+          "dionysus"
+        ]
+      }
+    ],
+    "virtueSets": [
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "wildness_4"
+        ]
+      }
     ]
   },
   "heracles": {
@@ -6247,6 +6343,17 @@
       "Revival advantage negated by anti-revive mechanics on some boss encounters",
       "Energy lock or silence stalls Samsara stack generation",
       "Brings minimal direct damage — teams must field other dedicated damage sources"
+    ],
+    "detailComps": [
+      {
+        "heroes": [
+          "mengpo",
+          "hladgunnr",
+          "caishen",
+          "promotheus",
+          "yuelao"
+        ]
+      }
     ]
   },
   "meret": {
@@ -7628,7 +7735,10 @@
       "summary": "",
       "depthRating": "",
       "commonlyMisunderstood": false
-    }
+    },
+    "newHero": false,
+    "strengths": [],
+    "weaknesses": []
   },
   "nuwa": {
     "id": "nuwa",

@@ -136,5 +136,37 @@
     "Less effective into frontline-heavy teams",
     "Ultimate targeting struggles against melee units",
     "Can lose value in fast-paced burst matchups"
+  ],
+  "detailComps": [
+    {
+      "heroes": [
+        "hera",
+        "momus",
+        "caishen",
+        "nuba",
+        "dionysus"
+      ]
+    }
+  ],"virtueSets": [
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2",
+        "defiance_3",
+        "defiance_4"
+      ]
+    },
+    {
+      "label": "Fervor",
+      "comment": "",
+      "virtues": [
+        "fervor_1",
+        "fervor_2",
+        "fervor_3",
+        "wildness_4"
+      ]
+    }
   ]
 }

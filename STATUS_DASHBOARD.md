@@ -87,8 +87,8 @@ The dashboard currently shows:
 - Released vs unreleased heroes.
 - Missing overall ratings.
 - Partial rating sets.
-- Boss and tag counts.
 - Editorial enrichment backlog.
+- CN nerf inventory linking to the CN preview page.
 - Page inventory.
 - Navigation coverage.
 - Editorial strengths and weaknesses coverage.
@@ -223,6 +223,23 @@ The former `Flags` section was removed from the drawer after reviewing its actua
 - `newHero` remains available under `Basics` because the public hero cards actively use that badge.
 
 `src/data/ratings/invest.json` is now the single editable source for relic recommendations and F2P investment guidance. Historical hero JSON fields remain in place for now, but they are no longer read or edited by the application.
+
+### 8. CN Comparison As Inventory
+
+CN comparison data is informational, not a per-hero maintenance requirement. Most heroes are expected to match the CN base version.
+
+- Missing `cn` blocks do not appear in hero `Missing` labels.
+- CN data does not affect per-hero completeness or project health.
+- The dashboard shows a neutral `Heroes nerfed` KPI instead.
+- The KPI links to `/cn-preview` for the detailed comparison.
+
+### 9. Common Hero Expectations
+
+Common heroes intentionally use a smaller dashboard completeness checklist.
+
+- `Relic`, `Virtues` and `Comps` are not required for heroes with rarity `Common`.
+- These fields do not appear in their hero-level `Missing` labels and do not reduce their completeness percentage.
+- Cancer remains fully evaluated as an explicit exception. It is currently stored as rarity `Epic`.
 
 ## Local-Only Safety Model
 

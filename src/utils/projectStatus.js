@@ -1,9 +1,8 @@
 import { heroes } from "../data/heroes/withRatings";
 import heroRatings from "../data/ratings/hero-ratings.json";
-import bossesData from "../data/bosses.json";
-import tags from "../data/tags.json";
 import pageUpdates from "../data/pageUpdates.json";
 import { navEntries } from "../data/nav";
+import { getCnHeroes, getCnOverview } from "./cnDiff.js";
 
 const RATING_FIELDS = ["overall", "pvp", "pve", "pveEarly", "pveLate"];
 const REQUIRED_FIELDS = ["id", "name", "faction", "role", "class", "rarity"];
@@ -90,16 +89,20 @@ function getPageInventory() {
 function getHeroChecks(hero) {
   const ratings = ratingCoverageFor(hero);
   const requiredFields = REQUIRED_FIELDS.every((field) => isFilled(hero[field]));
+  const expectsAdvancedContent = hero.rarity !== "Common" || hero.id === "cancer";
   const checks = [
     { key: "identity", label: "Identity", ok: requiredFields },
     { key: "stats", label: "Stats", ok: isFilled(hero.stats) },
     { key: "skills", label: "Skills", ok: isFilled(hero.skills) },
     { key: "rating", label: "Rating", ok: isFilled(hero.ratings?.overall) },
-    { key: "relic", label: "Relic", ok: isFilled(hero.relic) },
     { key: "synergy", label: "Synergy", ok: isFilled(hero.synergies) || isFilled(hero.synergyTags) },
-    { key: "virtues", label: "Virtues", ok: isFilled(hero.virtues) || isFilled(hero.virtueSets) },
-    { key: "comps", label: "Comps", ok: isFilled(hero.detailComps) },
-    { key: "cn", label: "CN", ok: isFilled(hero.cn) },
+    ...(expectsAdvancedContent
+      ? [
+          { key: "relic", label: "Relic", ok: isFilled(hero.relic) },
+          { key: "virtues", label: "Virtues", ok: isFilled(hero.virtues) || isFilled(hero.virtueSets) },
+          { key: "comps", label: "Comps", ok: isFilled(hero.detailComps) },
+        ]
+      : []),
   ];
   const passed = checks.filter((check) => check.ok).length;
 
@@ -137,6 +140,9 @@ function getHealthScore(metrics) {
 
 export function getProjectStatus() {
   const pageInventory = getPageInventory();
+  const cnHeroes = getCnHeroes(heroes);
+  const cnOverview = getCnOverview(cnHeroes);
+  const nerfedHeroes = cnHeroes.filter((hero) => hero.summary.totals.nerf > 0);
   const heroIds = new Set(heroes.map((hero) => hero.id));
   const ratingIds = Object.keys(heroRatings);
 
@@ -266,8 +272,10 @@ export function getProjectStatus() {
       missingSkills: missingSkills.length,
       strengthWeaknessComplete,
       missingStrengthWeakness: missingStrengthWeakness.length,
-      bosses: (bossesData.bosses || []).length,
-      tags: tags.length,
+      cnTrackedHeroes: cnOverview.heroes,
+      cnChangedHeroes: cnOverview.changedHeroes,
+      cnNerfedHeroes: nerfedHeroes.length,
+      cnNerfs: cnOverview.nerf,
       orphanRatings: orphanRatings.length,
       stalePageUpdates: pageInventory.stalePageUpdates.length,
       routes: pageInventory.routes.length,
