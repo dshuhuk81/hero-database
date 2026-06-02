@@ -3,7 +3,6 @@ export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes/withRatings";
 import Base from "../../layouts/Base.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
-import HeroDetailComps from '../../components/HeroDetailComps.astro';
 import StrengthWeakness from '../../components/StrengthWeakness.astro';
 import RelicInvestment from '../../components/RelicInvestment.astro';
 import F2pInvestment from '../../components/F2pInvestment.astro';
@@ -27,7 +26,6 @@ const heroTeamComps = (hero as any)?.teamComps;
 const hasComps = heroTeamComps && Object.values(heroTeamComps).some((arr) => Array.isArray(arr) && arr.length > 0);
 const heroStrengths: string[] = (hero as any).strengths ?? [];
 const heroWeaknesses: string[] = (hero as any).weaknesses ?? [];
-const heroDetailComps: any[] = (hero as any).detailComps ?? [];
 
 type VirtueSet = { label: string; comment?: string; virtues: string[] };
 const heroVirtueSets: VirtueSet[] = (hero as any).virtueSets ?? [];
@@ -183,7 +181,7 @@ const dotSections = [
     <div class="showcase-bg"></div>
     <div
       class="showcase-art"
-      style={`background-image:url(${hero.image});`}
+      style={`background-image:url(${hero.image});${(hero as any).imgY ? `--hero-img-y:${(hero as any).imgY};` : ''}`}
       role="img"
       aria-label={hero.name}
     ></div>
@@ -600,12 +598,6 @@ const dotSections = [
         <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} />
       </section>
     )}
-
-    <!-- __ SECTION 5c: DETAIL COMPS __ -->
-    <section class="content-section" id="section-detail-comps">
-      <div class="section-label">Example Team Compositions</div>
-      <HeroDetailComps comps={heroDetailComps} currentHeroId={id} />
-    </section>
 
     <!-- ── SECTION 6: INVESTMENT GUIDE ── -->
     {heroInvest && (
