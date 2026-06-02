@@ -100,7 +100,7 @@ function getHeroChecks(hero) {
       ? [
           { key: "relic", label: "Relic", ok: isFilled(hero.relic) },
           { key: "virtues", label: "Virtues", ok: isFilled(hero.virtues) || isFilled(hero.virtueSets) },
-          { key: "comps", label: "Comps", ok: isFilled(hero.detailComps) },
+          { key: "comps", label: "Comps", ok: isFilled(hero.detailComps) || isFilled(hero.synergyPartners) },
         ]
       : []),
   ];
