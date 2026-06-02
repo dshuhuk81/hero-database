@@ -57,5 +57,51 @@
   "synergies": [
     "AREA_DAMAGE_DEALER",
     "SHIELD"
+  ],
+  "synergyPartners": [
+    {
+      "heroId": "nezha",
+      "via": [
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "hephaestus",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR"
+      ]
+    },
+    {
+      "heroId": "iris",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "set",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "REMOVES_ARMOR",
+        "CROWD_CONTROL"
+      ]
+    },
+    {
+      "heroId": "cronus",
+      "via": [
+        "CDR_TEAM",
+        "CROWD_CONTROL",
+        "BUFF_TEAM"
+      ]
+    }
   ]
 }

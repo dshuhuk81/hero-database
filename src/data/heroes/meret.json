@@ -196,5 +196,61 @@
     "Full-team AoE burst can exceed the combined Note-bearer HP pool, bypassing the damage-sharing protection",
     "If enemies target Meret directly and ignore Note-bearers, the Note system collapses",
     "Athena is the only substitute but does not replicate Meret's buff and tempo contribution"
+  ],
+  "synergyPartners": [
+    {
+      "heroId": "dionysus",
+      "via": [
+        "CC_IMMUNITY_TEAM",
+        "CDR_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "cancer",
+      "via": [
+        "DAMAGE_REDUCTION_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "CC_IMMUNITY_TEAM"
+      ]
+    },
+    {
+      "heroId": "nezha",
+      "via": [
+        "BUFF_TEAM",
+        "REMOVES_ARMOR",
+        "ENEMY_VULNERABILITY",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM"
+      ]
+    },
+    {
+      "heroId": "hephaestus",
+      "via": [
+        "BUFF_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "REMOVES_ARMOR"
+      ]
+    },
+    {
+      "heroId": "athena",
+      "via": [
+        "BUFF_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ENERGY_RESTORE_TEAM"
+      ]
+    }
   ]
 }

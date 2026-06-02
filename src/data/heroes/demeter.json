@@ -145,5 +145,56 @@
         "defiance_4"
       ]
     }
+  ],
+  "synergyPartners": [
+    {
+      "heroId": "cancer",
+      "via": [
+        "DAMAGE_REDUCTION_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "CC_IMMUNITY_TEAM"
+      ]
+    },
+    {
+      "heroId": "dionysus",
+      "via": [
+        "CC_IMMUNITY_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM"
+      ]
+    },
+    {
+      "heroId": "meret",
+      "via": [
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM"
+      ]
+    },
+    {
+      "heroId": "tefnut",
+      "via": [
+        "DEBUFF_CLEANSE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "DAMAGE_REDUCTION_TEAM"
+      ]
+    },
+    {
+      "heroId": "athena",
+      "via": [
+        "DAMAGE_REDUCTION_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ENERGY_RESTORE_TEAM"
+      ]
+    }
   ]
 }

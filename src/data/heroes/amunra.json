@@ -162,5 +162,61 @@
         "gnosis_4"
       ]
     }
+  ],
+  "synergyPartners": [
+    {
+      "heroId": "nezha",
+      "via": [
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR",
+        "ENEMY_VULNERABILITY",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM"
+      ]
+    },
+    {
+      "heroId": "hephaestus",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR"
+      ]
+    },
+    {
+      "heroId": "dionysus",
+      "via": [
+        "ATK_SPD_UP",
+        "CDR_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "SHIELD_TEAM",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "athena",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "ENERGY_RESTORE_TEAM"
+      ]
+    },
+    {
+      "heroId": "set",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "SHIELD_TEAM",
+        "REMOVES_ARMOR",
+        "CROWD_CONTROL"
+      ]
+    }
   ]
 }

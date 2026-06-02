@@ -21,6 +21,9 @@ const SUGGEST_SCRIPT = path.join(__dirname, 'suggest-synergy-tags.mjs');
 const VIRTUE_SUGGESTIONS_FILE = path.join(__dirname, '../src/data/suggestionsVirtues.json');
 const VIRTUE_DISMISSED_FILE = path.join(__dirname, '../src/data/suggestionsVirtuesDismissed.json');
 const VIRTUE_SUGGEST_SCRIPT = path.join(__dirname, 'suggest-virtues.mjs');
+const COMP_SUGGESTIONS_FILE = path.join(__dirname, '../src/data/suggestionsComps.json');
+const COMP_DISMISSED_FILE = path.join(__dirname, '../src/data/suggestionsCompsDismissed.json');
+const COMP_SUGGEST_SCRIPT = path.join(__dirname, 'suggest-comps.mjs');
 const execFileAsync = promisify(execFile);
 
 const VALIDATION_CHECKS = {
@@ -712,6 +715,91 @@ app.post('/api/heroes/:id/virtues', async (req, res) => {
       message: `Added virtue set ${virtueSet.label} to ${hero.name}`,
       changedFiles: [relativePath(filePath)],
       virtueSets: hero.virtueSets,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(err.statusCode || 500).json({ error: err.message });
+  }
+});
+
+// =====================
+// SYNERGY-PARTNER (COMP) SUGGESTION ENDPOINTS
+// Read-only "who buffs this hero" recommendations -> human gate. Accept writes detailComps.
+// =====================
+
+async function readCompDismissed() {
+  try {
+    return await readJson(COMP_DISMISSED_FILE);
+  } catch {
+    return {};
+  }
+}
+
+async function buildCompSuggestionsPayload() {
+  let data;
+  try {
+    data = await readJson(COMP_SUGGESTIONS_FILE);
+  } catch {
+    return { generatedAt: null, missing: true, summary: null, heroes: [] };
+  }
+  const dismissed = await readCompDismissed();
+  const heroes = (data.heroes || []).filter((h) => !dismissed[h.id]);
+  return { generatedAt: data.generatedAt, summary: data.summary, heroes };
+}
+
+// GET /api/comp-suggestions - pending partner comps (dismissed heroes filtered out)
+app.get('/api/comp-suggestions', async (req, res) => {
+  try {
+    res.json(await buildCompSuggestionsPayload());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/comp-suggestions/regenerate - re-run the comp engine
+app.post('/api/comp-suggestions/regenerate', async (req, res) => {
+  try {
+    await execFileAsync('node', [COMP_SUGGEST_SCRIPT], { cwd: PROJECT_ROOT });
+    res.json(await buildCompSuggestionsPayload());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message, stderr: err.stderr });
+  }
+});
+
+// POST /api/comp-suggestions/dismiss - { heroId } reject the whole comp for a hero
+app.post('/api/comp-suggestions/dismiss', async (req, res) => {
+  try {
+    const { heroId } = req.body || {};
+    if (!heroId) return res.status(400).json({ error: 'heroId is required' });
+    assertHeroId(heroId);
+    const dismissed = await readCompDismissed();
+    dismissed[heroId] = true;
+    await writeJson(COMP_DISMISSED_FILE, dismissed);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(err.statusCode || 500).json({ error: err.message });
+  }
+});
+
+// POST /api/heroes/:id/synergy-partners - set synergyPartners { partners:[{heroId, via:[tags]}] }
+app.post('/api/heroes/:id/synergy-partners', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { partners } = req.body || {};
+    if (!Array.isArray(partners) || partners.length === 0 || partners.some((p) => !p.heroId)) {
+      return res.status(400).json({ error: 'partners must be a non-empty array of { heroId, via }' });
+    }
+    const { filePath, hero } = await readHeroById(id);
+    hero.synergyPartners = partners.map((p) => ({ heroId: p.heroId, via: Array.isArray(p.via) ? p.via : [] }));
+    await writeJson(filePath, hero);
+    res.json({
+      success: true,
+      message: `Set ${partners.length} synergy partners for ${hero.name}`,
+      changedFiles: [relativePath(filePath)],
+      synergyPartners: hero.synergyPartners,
     });
   } catch (err) {
     console.error(err);

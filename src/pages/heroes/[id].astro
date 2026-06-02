@@ -560,6 +560,26 @@ const dotSections = [
         </div>
       )}
 
+      <!-- Boosted By: heroes whose kit synergizes with / buffs this hero -->
+      {(hero as any).synergyPartners && (hero as any).synergyPartners.length > 0 && (
+        <div class="syn-partners-block">
+          <div class="tag-cloud-label">Boosted By</div>
+          <div class="syn-links-grid">
+            {(hero as any).synergyPartners.map((p: { heroId: string; via: string[] }) => (
+              <a href={`/heroes/${p.heroId}`} class="syn-link-card syn-synergy">
+                <div class="syn-link-portrait" style={`background-image:url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${p.heroId}.webp)`} role="img" aria-label={p.heroId}></div>
+                <div class="syn-link-body">
+                  <div class="syn-link-row">
+                    <span class="syn-link-name">{p.heroId}</span>
+                  </div>
+                  <p class="syn-link-desc">boosts via {(p.via || []).map((t) => tagLabel(t)).join(", ")}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       <!-- Tag chips -->
       {hero.synergies && hero.synergies.length > 0 && (
         <div class="tag-cloud">

@@ -677,6 +677,7 @@
       <div class="header-buttons">
         <button class="btn-header" id="suggestionsBtn">💡 Suggestions<span class="header-badge" id="suggBadge" style="display:none;">0</span></button>
         <button class="btn-header" id="virtuesBtn">🔮 Virtues<span class="header-badge" id="virtueBadge" style="display:none;">0</span></button>
+        <button class="btn-header" id="compsBtn">🤝 Synergy Partners<span class="header-badge" id="compBadge" style="display:none;">0</span></button>
         <button class="btn-header" id="editTagsBtn">🏷️ Edit Tags</button>
       </div>
     </div>
@@ -752,6 +753,24 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" id="virtueRegenBtn">🔄 Re-run engine</button>
         <button class="btn btn-secondary" id="virtueCloseBtn2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comp Suggestions Modal -->
+  <div class="modal" id="compsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🤝 Synergy Partners <span style="font-weight:400;font-size:13px;color:#888;">- heroes whose kit boosts this hero (not a full team)</span></h2>
+        <button class="modal-close" id="compCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="sugg-summary" id="compSummary"></div>
+        <div id="compList"><div class="sugg-empty">Loading...</div></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="compRegenBtn">🔄 Re-run engine</button>
+        <button class="btn btn-secondary" id="compCloseBtn2">Close</button>
       </div>
     </div>
   </div>
@@ -1338,6 +1357,136 @@
     }
 
     // =====================
+    // SYNERGY-PARTNER (COMP) QUEUE
+    // =====================
+
+    let compSuggestions = [];
+
+    function updateCompBadge() {
+      const badge = document.getElementById('compBadge');
+      const n = compSuggestions.length;
+      badge.textContent = n;
+      badge.style.display = n > 0 ? 'inline-block' : 'none';
+    }
+
+    async function loadCompSuggestions(render) {
+      try {
+        const res = await fetch(`${API}/comp-suggestions`);
+        const data = await res.json();
+        compSuggestions = data.missing ? [] : (data.heroes || []);
+        document.getElementById('compSummary').textContent = data.missing
+          ? 'No suggestionsComps.json yet - click "Re-run engine" to generate.'
+          : `${compSuggestions.length} hero comps proposed. Generated ${data.generatedAt ? new Date(data.generatedAt).toLocaleString() : '-'}.`;
+        updateCompBadge();
+        if (render) renderCompSuggestions();
+      } catch (err) {
+        document.getElementById('compSummary').textContent = 'Error loading comp suggestions: ' + err.message;
+      }
+    }
+
+    function renderCompSuggestions() {
+      const list = document.getElementById('compList');
+      if (!compSuggestions.length) {
+        list.innerHTML = '<div class="sugg-empty">Queue empty. All caught up. 🎉</div>';
+        return;
+      }
+      list.innerHTML = '';
+      for (const h of compSuggestions) {
+        const card = document.createElement('div');
+        card.className = 'sugg-hero';
+        card.dataset.id = h.id;
+        card.dataset.partners = JSON.stringify(h.partners.map(p => ({ heroId: p.id, via: p.matched })));
+        const partners = h.partners.map((p) => `
+          <div class="sugg-row">
+            <div class="sugg-row-main">
+              <span class="sugg-tag add">${p.name}</span>
+              <span class="sugg-conf weak">${p.rating || '-'}</span>
+              <span class="sugg-conf medium">x${p.score}</span>
+              <div class="sugg-evidence">boosts via ${p.matched.map(t => t.replace(/_/g, ' ')).join(', ')}</div>
+            </div>
+          </div>`).join('');
+        card.innerHTML = `
+          <h4>${h.name} <span style="font-weight:400;color:#888;font-size:12px;">${h.class}/${h.role} &middot; needs: ${h.needed.map(t=>t.replace(/_/g,' ')).join(', ')}</span></h4>
+          ${partners}
+          <div class="sugg-actions" style="margin-top:8px;">
+            <button class="sugg-btn accept" data-act="accept">Accept partners</button>
+            <button class="sugg-btn reject" data-act="reject">Dismiss</button>
+          </div>`;
+        list.appendChild(card);
+      }
+      list.onclick = onCompClick;
+    }
+
+    function removeCompCard(heroId) {
+      compSuggestions = compSuggestions.filter(h => h.id !== heroId);
+      updateCompBadge();
+      renderCompSuggestions();
+    }
+
+    async function onCompClick(e) {
+      const btn = e.target.closest('.sugg-btn');
+      if (!btn) return;
+      const card = btn.closest('.sugg-hero');
+      const heroId = card.dataset.id;
+      const partners = JSON.parse(card.dataset.partners || '[]');
+      const act = btn.dataset.act;
+      card.querySelectorAll('.sugg-btn').forEach(b => b.disabled = true);
+      try {
+        if (act === 'accept') {
+          const res = await fetch(`${API}/heroes/${heroId}/synergy-partners`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ partners })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'save failed');
+          removeCompCard(heroId);
+        } else if (act === 'reject') {
+          await fetch(`${API}/comp-suggestions/dismiss`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ heroId })
+          });
+          removeCompCard(heroId);
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+        card.querySelectorAll('.sugg-btn').forEach(b => b.disabled = false);
+      }
+    }
+
+    async function regenerateCompSuggestions() {
+      const btn = document.getElementById('compRegenBtn');
+      btn.disabled = true;
+      const orig = btn.textContent;
+      btn.textContent = '⏳ Running...';
+      try {
+        const res = await fetch(`${API}/comp-suggestions/regenerate`, { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'engine failed');
+        compSuggestions = data.heroes || [];
+        document.getElementById('compSummary').textContent =
+          `${compSuggestions.length} hero comps proposed. Regenerated just now.`;
+        updateCompBadge();
+        renderCompSuggestions();
+      } catch (err) {
+        alert('Re-run failed: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+    }
+
+    function openComps() {
+      document.getElementById('compsModal').classList.add('active');
+      loadCompSuggestions(true);
+    }
+
+    function closeComps() {
+      document.getElementById('compsModal').classList.remove('active');
+    }
+
+    // =====================
     // TAG EDITOR MODAL
     // =====================
 
@@ -1536,11 +1685,21 @@
       document.getElementById('virtuesModal').addEventListener('click', (e) => {
         if (e.target.id === 'virtuesModal') closeVirtues();
       });
+
+      // Comp suggestions modal
+      document.getElementById('compsBtn').addEventListener('click', openComps);
+      document.getElementById('compCloseBtn').addEventListener('click', closeComps);
+      document.getElementById('compCloseBtn2').addEventListener('click', closeComps);
+      document.getElementById('compRegenBtn').addEventListener('click', regenerateCompSuggestions);
+      document.getElementById('compsModal').addEventListener('click', (e) => {
+        if (e.target.id === 'compsModal') closeComps();
+      });
     });
 
     init();
     loadSuggestions(false);
     loadVirtueSuggestions(false);
+    loadCompSuggestions(false);
   </script>
 </body>
 </html>

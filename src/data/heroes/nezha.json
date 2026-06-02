@@ -579,5 +579,53 @@
         "notes": []
       }
     ]
-  }
+  },
+  "synergyPartners": [
+    {
+      "heroId": "hephaestus",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR"
+      ]
+    },
+    {
+      "heroId": "dionysus",
+      "via": [
+        "ATK_SPD_UP",
+        "CDR_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "iris",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "set",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "REMOVES_ARMOR",
+        "CROWD_CONTROL"
+      ]
+    },
+    {
+      "heroId": "athena",
+      "via": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "ENERGY_RESTORE_TEAM"
+      ]
+    }
+  ]
 }

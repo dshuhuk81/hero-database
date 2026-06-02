@@ -76,6 +76,7 @@ function adaptHero(raw) {
     metaSources: raw.metaSources ?? null,
     relicBreakpoints: raw.relicBreakpoints ?? null,
     synergyLinks: raw.synergyLinks ?? null,
+    synergyPartners: raw.synergyPartners ?? [],
     virtues: raw.virtues ?? [],
     virtueSets: raw.virtueSets ?? [],
     strengths: raw.strengths ?? [],

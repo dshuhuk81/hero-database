@@ -1,0 +1,17 @@
+{
+  "_doc": {
+    "purpose": "Deterministic 'who buffs this hero' partner suggestions. Consumed by scripts/suggest-comps.mjs. NEVER auto-writes to hero files - produces evidence-backed candidates for human review.",
+    "model": "Directional. This hero's NEEDS = its stat drivers (reused from virtueRules.json via detectDrivers). A partner's CONTRIBUTION = only its tags in contributionCategories (team support + enemy debuff that the whole team benefits from). A partner is a candidate only when it has a tag this hero needs. Rank by number of needs filled, tie-break by overall rating. ADD-only.",
+    "whySafe": "No invented relationships. Partner appears because it literally carries tag X (already human-curated in its synergies) and this hero literally needs X (driver-detected). The matched tags are the evidence.",
+    "excluded": "A partner's SELF_BUFFS / PLAYSTYLE / UTILITY tags never count - they help only the partner, not this hero."
+  },
+  "contributionCategories": ["TEAM_SUPPORT", "ENEMY_DEBUFF"],
+  "needTags": {
+    "ATK_SCALER": ["BUFF_TEAM", "ATK_SPD_UP", "REMOVES_ARMOR", "ENEMY_VULNERABILITY", "CROWD_CONTROL", "CDR_TEAM"],
+    "CRIT": ["BUFF_TEAM", "ENEMY_VULNERABILITY", "REMOVES_ARMOR"],
+    "ENERGY_DEP": ["ENERGY_RESTORE_TEAM", "CDR_TEAM"],
+    "HEALER": ["SHIELD_TEAM", "DAMAGE_REDUCTION_TEAM", "ENERGY_RESTORE_TEAM", "CC_IMMUNITY_TEAM", "DEBUFF_CLEANSE_TEAM"],
+    "DODGE": ["DAMAGE_REDUCTION_TEAM", "SHIELD_TEAM"],
+    "SURVIVABILITY": ["HEAL_TEAM", "SHIELD_TEAM", "DAMAGE_REDUCTION_TEAM", "CC_IMMUNITY_TEAM", "DEBUFF_CLEANSE_TEAM", "ENERGY_RESTORE_TEAM"]
+  }
+}
