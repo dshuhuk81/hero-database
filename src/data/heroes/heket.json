@@ -46,9 +46,9 @@
       "name": "",
       "description": "",
       "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+        "level2": "",
+        "level3": "",
+        "level4": ""
       },
       "damageType": "",
       "isUltimate": true
@@ -58,9 +58,9 @@
       "name": "",
       "description": "",
       "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+        "level2": "",
+        "level3": "",
+        "level4": ""
       },
       "damageType": ""
     },
@@ -69,9 +69,9 @@
       "name": "",
       "description": "",
       "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+        "level2": "",
+        "level3": "",
+        "level4": ""
       },
       "damageType": ""
     },
@@ -96,14 +96,44 @@
       "level4": ""
     }
   },
-  "synergies": [
- 
-  ],
+  "synergies": [],
   "baseAttackRate": 0,
   "bossUltimatesPer90s": 0,
   "coreMechanic": {
     "summary": "",
     "depthRating": "",
     "commonlyMisunderstood": false
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2",
+        "defiance_3",
+        "defiance_4"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4"
+      ]
+    }
+  ]
 }

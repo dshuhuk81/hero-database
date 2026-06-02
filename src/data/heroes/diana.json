@@ -113,5 +113,37 @@
     "summary": "Energy battery with high ATK speed buff. Crescent Mark is the second strongest controllable armor debuff in game. Due to armor scaling, this debuff is disproportionately powerful.",
     "depthRating": "high",
     "commonlyMisunderstood": true
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2",
+        "desire_3",
+        "desire_4"
+      ]
+    },
+    {
+      "label": "Wildness",
+      "comment": "",
+      "virtues": [
+        "wildness_1",
+        "wildness_2",
+        "wildness_3",
+        "wildness_4"
+      ]
+    },
+    {
+      "label": "Insight",
+      "comment": "",
+      "virtues": [
+        "insight_1",
+        "insight_2",
+        "insight_3",
+        "insight_4"
+      ]
+    }
+  ]
 }

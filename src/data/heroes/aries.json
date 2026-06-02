@@ -83,5 +83,27 @@
     "AREA_DAMAGE_DEALER"
   ],
   "baseAttackRate": 0.639,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "virtueSets": [
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2",
+        "desire_3",
+        "desire_4"
+      ]
+    },
+    {
+      "label": "Wildness",
+      "comment": "",
+      "virtues": [
+        "wildness_1",
+        "wildness_2",
+        "wildness_3",
+        "wildness_4"
+      ]
+    }
+  ]
 }

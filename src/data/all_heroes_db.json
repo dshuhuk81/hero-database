@@ -142,6 +142,26 @@
           "sacrifice_1",
           "sacrifice_2"
         ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Gnosis",
+        "comment": "",
+        "virtues": [
+          "gnosis_1",
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4"
+        ]
       }
     ]
   },
@@ -290,6 +310,26 @@
           "gnosis_1",
           "gnosis_2"
         ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
+        ]
       }
     ]
   },
@@ -376,7 +416,39 @@
       "DMG_RED"
     ],
     "baseAttackRate": 0.546,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
+    ]
   },
   "ares": {
     "id": "ares",
@@ -493,7 +565,39 @@
       "summary": "5-second invincibility window is his only value. Easily countered. CN: 5-second lifespan. Do not invest.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      },
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      }
+    ]
   },
   "aries": {
     "id": "aries",
@@ -580,7 +684,29 @@
       "AREA_DAMAGE_DEALER"
     ],
     "baseAttackRate": 0.639,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "artemis": {
     "id": "artemis",
@@ -684,9 +810,9 @@
     "synergies": [
       "CROWD_CONTROL",
       "REDUCES_ATTRIBUTES",
+      "CC_RESISTANCE",
       "DODGE_BUFF",
-      "HIT_AVOID",
-      "CC_RESISTANCE"
+      "HIT_AVOID"
     ],
     "baseAttackRate": 1.574,
     "bossUltimatesPer90s": 5,
@@ -694,7 +820,29 @@
       "summary": "As enemy instakills your team; as ally does nothing. No investment value.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "athena": {
     "id": "athena",
@@ -829,6 +977,38 @@
         "heroId": "heracles",
         "type": "core",
         "description": "ATK speed buff amplifies Hercules judgment window on same principle as Zeus."
+      }
+    ],
+    "virtueSets": [
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
       }
     ]
   },
@@ -1090,6 +1270,16 @@
           "gnosis_1",
           "gnosis_2"
         ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
       }
     ]
   },
@@ -1258,6 +1448,16 @@
           "defiance_1",
           "defiance_2"
         ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
+        ]
       }
     ]
   },
@@ -1419,6 +1619,16 @@
           "defiance_1",
           "defiance_2"
         ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
+        ]
       }
     ]
   },
@@ -1480,6 +1690,28 @@
     ],
     "synergies": [
       "CROWD_CONTROL"
+    ],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
     ]
   },
   "capricorn": {
@@ -1582,7 +1814,29 @@
       "depthRating": "low",
       "commonlyMisunderstood": false
     },
-    "synergyLinks": []
+    "synergyLinks": [],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "cronus": {
     "id": "cronus",
@@ -1734,6 +1988,16 @@
           "stoic_1",
           "stoic_2"
         ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
       }
     ],
     "strengths": [
@@ -1879,7 +2143,39 @@
       "summary": "Times you out as enemy; useless as ally. No investment value.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
+    ]
   },
   "diana": {
     "id": "diana",
@@ -1996,7 +2292,39 @@
       "summary": "Energy battery with high ATK speed buff. Crescent Mark is the second strongest controllable armor debuff in game. Due to armor scaling, this debuff is disproportionately powerful.",
       "depthRating": "high",
       "commonlyMisunderstood": true
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      }
+    ]
   },
   "dionysus": {
     "id": "dionysus",
@@ -2112,7 +2440,8 @@
       "ATK_SPEED",
       "ENERGY_RESTORE",
       "HEAL",
-      "SELF_SUSTAIN"
+      "SELF_SUSTAIN",
+      "ENEMY_VULNERABILITY"
     ],
     "coreMechanic": {
       "summary": "Energy battery with insane damage-boosting buffs. Highest DPS-increasing support at full uptime. Weakness: dies early and the buff window disappears.",
@@ -2151,6 +2480,16 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
         ]
       }
     ],
@@ -2581,7 +2920,39 @@
       "summary": "",
       "depthRating": "",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
+    ]
   },
   "eris": {
     "id": "eris",
@@ -2862,7 +3233,29 @@
       "summary": "Early-game race carry only. No late-game use. If lucky, use for early PvP placement then swap out.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "freya": {
     "id": "freya",
@@ -2972,7 +3365,8 @@
       "SELF_SUSTAIN",
       "CC_RESISTANCE",
       "ENERGY_RESTORE",
-      "DMG_RED"
+      "DMG_RED",
+      "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.364,
     "bossUltimatesPer90s": 3,
@@ -2980,7 +3374,49 @@
       "summary": "Pure healing, zero utility. If you win with Freya you could have won with an empty slot. Skip.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
+        ]
+      },
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      }
+    ]
   },
   "geb": {
     "id": "geb",
@@ -3097,7 +3533,29 @@
       "summary": "Huge rock times you out as enemy. No value as ally. Do not invest.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
+    ]
   },
   "gemini": {
     "id": "gemini",
@@ -3193,7 +3651,39 @@
       "commonlyMisunderstood": false
     },
     "strengths": [],
-    "weaknesses": []
+    "weaknesses": [],
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      }
+    ]
   },
   "hades": {
     "id": "hades",
@@ -3702,7 +4192,39 @@
       "summary": "",
       "depthRating": "",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      }
+    ]
   },
   "hela": {
     "id": "hela",
@@ -3817,7 +4339,39 @@
       "summary": "Carry potential requires high investment alongside Poseidon, Khepri, Iris. Skadi performs the same role with less investment.",
       "depthRating": "mid",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
+        ]
+      }
+    ]
   },
   "hephaestus": {
     "id": "hephaestus",
@@ -3974,6 +4528,16 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
         ]
       }
     ],
@@ -4178,6 +4742,26 @@
           "fervor_3",
           "wildness_4"
         ]
+      },
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
       }
     ]
   },
@@ -4334,6 +4918,26 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
         ]
       }
     ]
@@ -4712,7 +5316,29 @@
           ]
         }
       ]
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "horus": {
     "id": "horus",
@@ -4829,7 +5455,39 @@
       "summary": "Enemy Horus executes your team; your Horus jumps and dies. Do not invest.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      }
+    ]
   },
   "iris": {
     "id": "iris",
@@ -4935,7 +5593,8 @@
       "ATK_SPD_UP",
       "ATK_SPEED",
       "BUFF_TEAM",
-      "CROWD_CONTROL"
+      "CROWD_CONTROL",
+      "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.708,
     "bossUltimatesPer90s": 4,
@@ -4949,6 +5608,38 @@
         "heroId": "poseidon",
         "type": "core",
         "description": "Pairs with Poseidon to amplify grouped AoE DPS output."
+      }
+    ],
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
       }
     ]
   },
@@ -5063,7 +5754,39 @@
       "summary": "Max HP% damage plus armor penetration and crit buffs during ultimate. Second-best single-target bossing unit after Zeus. Free 7-day login unit, easily replaced.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      }
+    ]
   },
   "jinchan": {
     "id": "jinchan",
@@ -5124,6 +5847,38 @@
     "synergies": [
       "HEAL_TEAM",
       "GAIN_ARMOR"
+    ],
+    "virtueSets": [
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
+        ]
+      },
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
     ]
   },
   "jingwei": {
@@ -5281,6 +6036,16 @@
         "virtues": [
           "gnosis_1",
           "gnosis_2"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
         ]
       }
     ]
@@ -5757,7 +6522,29 @@
           ]
         }
       ]
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "khepri": {
     "id": "khepri",
@@ -5917,6 +6704,16 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
         ]
       }
     ]
@@ -6158,7 +6955,29 @@
       "SUMMON"
     ],
     "baseAttackRate": 0.874,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "medusa": {
     "id": "medusa",
@@ -6272,7 +7091,29 @@
       "summary": "No real use. Both CN and Excel agree: skip.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "mengpo": {
     "id": "mengpo",
@@ -6414,6 +7255,26 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
         ]
       }
     ],
@@ -6598,6 +7459,36 @@
           "sacrifice_3",
           "sacrifice_4"
         ]
+      },
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
       }
     ],
     "strengths": [
@@ -6763,6 +7654,26 @@
           "grace_1",
           "grace_2"
         ]
+      },
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
       }
     ]
   },
@@ -6879,7 +7790,29 @@
       "summary": "Early carry PvP burst window; falls off hard as DPS in late game. Damage too random and slow for consistent performance. CN: Nyx's inferior.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "nephtys": {
     "id": "nephtys",
@@ -7148,6 +8081,16 @@
         "virtues": [
           "wildness_1",
           "wildness_2"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
         ]
       }
     ],
@@ -7995,6 +8938,26 @@
           "defiance_1",
           "defiance_2"
         ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
+        ]
+      },
+      {
+        "label": "Gnosis",
+        "comment": "",
+        "virtues": [
+          "gnosis_1",
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4"
+        ]
       }
     ],
     "cn": {
@@ -8379,6 +9342,28 @@
     ],
     "synergies": [
       "AREA_DAMAGE_DEALER"
+    ],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
     ]
   },
   "nyx": {
@@ -8524,6 +9509,16 @@
         "virtues": [
           "desire_1",
           "desire_2"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
         ]
       }
     ],
@@ -8912,7 +9907,8 @@
       "ATK_SPD_DOWN",
       "CROWD_CONTROL",
       "ENERGY_DRAIN",
-      "ENERGY_RESTORE"
+      "ENERGY_RESTORE",
+      "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.543,
     "bossUltimatesPer90s": 5,
@@ -8941,6 +9937,16 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4"
         ]
       }
     ]
@@ -9065,7 +10071,29 @@
       "depthRating": "low",
       "commonlyMisunderstood": false
     },
-    "synergyLinks": []
+    "synergyLinks": [],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "pisces": {
     "id": "pisces",
@@ -9161,7 +10189,29 @@
       "commonlyMisunderstood": false
     },
     "strengths": [],
-    "weaknesses": []
+    "weaknesses": [],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "poseidon": {
     "id": "poseidon",
@@ -9327,6 +10377,26 @@
           "defiance_1",
           "defiance_2"
         ]
+      },
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
       }
     ]
   },
@@ -9448,7 +10518,39 @@
       "depthRating": "low",
       "commonlyMisunderstood": false
     },
-    "synergyLinks": []
+    "synergyLinks": [],
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
+    ]
   },
   "ratatoskr": {
     "id": "ratatoskr",
@@ -9602,7 +10704,29 @@
       "AREA_DAMAGE_DEALER"
     ],
     "baseAttackRate": 0.788,
-    "bossUltimatesPer90s": 5
+    "bossUltimatesPer90s": 5,
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "scorpio": {
     "id": "scorpio",
@@ -9689,7 +10813,29 @@
       "AREA_DAMAGE_DEALER"
     ],
     "baseAttackRate": 0.479,
-    "bossUltimatesPer90s": 6
+    "bossUltimatesPer90s": 6,
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "sekhmet": {
     "id": "sekhmet",
@@ -9807,7 +10953,29 @@
       "summary": "Push for enemy grouping only. Single use case: group enemies for AoE follow-up. No other investment value.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "serket": {
     "id": "serket",
@@ -10238,7 +11406,29 @@
           "notes": []
         }
       ]
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "set": {
     "id": "set",
@@ -10371,6 +11561,28 @@
         "heroId": "heracles",
         "type": "core",
         "description": "ATK% buff and lifesteal amplify Heracles burst windows."
+      }
+    ],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
       }
     ]
   },
@@ -10652,7 +11864,8 @@
       "ATK_UP",
       "SHIELD",
       "AREA_DAMAGE_DEALER",
-      "SUMMON"
+      "SUMMON",
+      "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.828,
     "bossUltimatesPer90s": 3,
@@ -10660,7 +11873,29 @@
       "summary": "Garbage multipliers and kit. Both CN and Excel agree completely: do not invest.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ]
   },
   "tailao": {
     "id": "tailao",
@@ -10719,6 +11954,28 @@
     ],
     "synergies": [
       "HEAL"
+    ],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
     ]
   },
   "taurus": {
@@ -10809,7 +12066,29 @@
       "SELF_SUSTAIN"
     ],
     "baseAttackRate": 0.86,
-    "bossUltimatesPer90s": 4
+    "bossUltimatesPer90s": 4,
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      }
+    ]
   },
   "tefnut": {
     "id": "tefnut",
@@ -10957,6 +12236,16 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
         ]
       }
     ]
@@ -11134,7 +12423,29 @@
       "summary": "Late-game back row protection with shields, knockback, and stun. CN: unique ally protection mechanic. Tech use only becomes relevant months into the future.",
       "depthRating": "low",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
+    ]
   },
   "ushabti": {
     "id": "ushabti",
@@ -11279,6 +12590,28 @@
       "CROWD_CONTROL",
       "REDUCES_ATTRIBUTES",
       "SHIELD"
+    ],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
     ]
   },
   "wenshen": {
@@ -11413,6 +12746,16 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
         ]
       }
     ],
@@ -11580,6 +12923,26 @@
           "defiance_1",
           "defiance_2"
         ]
+      },
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
       }
     ]
   },
@@ -11719,6 +13082,26 @@
         "virtues": [
           "defiance_1",
           "defiance_2"
+        ]
+      },
+      {
+        "label": "Insight",
+        "comment": "",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      },
+      {
+        "label": "Grace",
+        "comment": "",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
         ]
       }
     ]
@@ -12008,6 +13391,16 @@
         "virtues": [
           "gnosis_1",
           "gnosis_2"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
         ]
       }
     ],

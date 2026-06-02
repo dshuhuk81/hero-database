@@ -110,5 +110,27 @@
     "summary": "Late-game back row protection with shields, knockback, and stun. CN: unique ally protection mechanic. Tech use only becomes relevant months into the future.",
     "depthRating": "low",
     "commonlyMisunderstood": false
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2",
+        "defiance_3",
+        "defiance_4"
+      ]
+    }
+  ]
 }

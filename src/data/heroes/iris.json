@@ -102,7 +102,8 @@
     "ATK_SPD_UP",
     "ATK_SPEED",
     "BUFF_TEAM",
-    "CROWD_CONTROL"
+    "CROWD_CONTROL",
+    "ENEMY_VULNERABILITY"
   ],
   "baseAttackRate": 0.708,
   "bossUltimatesPer90s": 4,
@@ -116,6 +117,38 @@
       "heroId": "poseidon",
       "type": "core",
       "description": "Pairs with Poseidon to amplify grouped AoE DPS output."
+    }
+  ],
+  "virtueSets": [
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4"
+      ]
+    },
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2",
+        "defiance_3",
+        "defiance_4"
+      ]
     }
   ]
 }

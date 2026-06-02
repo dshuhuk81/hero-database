@@ -86,5 +86,27 @@
     "SELF_SUSTAIN"
   ],
   "baseAttackRate": 0.86,
-  "bossUltimatesPer90s": 4
+  "bossUltimatesPer90s": 4,
+  "virtueSets": [
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4"
+      ]
+    }
+  ]
 }

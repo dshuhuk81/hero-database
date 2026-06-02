@@ -100,9 +100,9 @@
   "synergies": [
     "CROWD_CONTROL",
     "REDUCES_ATTRIBUTES",
+    "CC_RESISTANCE",
     "DODGE_BUFF",
-    "HIT_AVOID",
-    "CC_RESISTANCE"
+    "HIT_AVOID"
   ],
   "baseAttackRate": 1.574,
   "bossUltimatesPer90s": 5,
@@ -110,5 +110,27 @@
     "summary": "As enemy instakills your team; as ally does nothing. No investment value.",
     "depthRating": "low",
     "commonlyMisunderstood": false
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2",
+        "desire_3",
+        "desire_4"
+      ]
+    },
+    {
+      "label": "Wildness",
+      "comment": "",
+      "virtues": [
+        "wildness_1",
+        "wildness_2",
+        "wildness_3",
+        "wildness_4"
+      ]
+    }
+  ]
 }

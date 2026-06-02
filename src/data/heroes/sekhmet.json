@@ -114,5 +114,27 @@
     "summary": "Push for enemy grouping only. Single use case: group enemies for AoE follow-up. No other investment value.",
     "depthRating": "low",
     "commonlyMisunderstood": false
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2",
+        "desire_3",
+        "desire_4"
+      ]
+    },
+    {
+      "label": "Wildness",
+      "comment": "",
+      "virtues": [
+        "wildness_1",
+        "wildness_2",
+        "wildness_3",
+        "wildness_4"
+      ]
+    }
+  ]
 }

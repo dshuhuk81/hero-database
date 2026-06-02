@@ -676,6 +676,7 @@
       </div>
       <div class="header-buttons">
         <button class="btn-header" id="suggestionsBtn">💡 Suggestions<span class="header-badge" id="suggBadge" style="display:none;">0</span></button>
+        <button class="btn-header" id="virtuesBtn">🔮 Virtues<span class="header-badge" id="virtueBadge" style="display:none;">0</span></button>
         <button class="btn-header" id="editTagsBtn">🏷️ Edit Tags</button>
       </div>
     </div>
@@ -733,6 +734,24 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" id="suggRegenBtn">🔄 Re-run engine</button>
         <button class="btn btn-secondary" id="suggCloseBtn2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Virtue Suggestions Modal -->
+  <div class="modal" id="virtuesModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🔮 Virtue-Set Suggestions</h2>
+        <button class="modal-close" id="virtueCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="sugg-summary" id="virtueSummary"></div>
+        <div id="virtueList"><div class="sugg-empty">Loading...</div></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="virtueRegenBtn">🔄 Re-run engine</button>
+        <button class="btn btn-secondary" id="virtueCloseBtn2">Close</button>
       </div>
     </div>
   </div>
@@ -1180,6 +1199,145 @@
     }
 
     // =====================
+    // VIRTUE-SET SUGGESTION QUEUE
+    // =====================
+
+    let virtueSuggestions = [];
+
+    function virtuePendingCount() {
+      return virtueSuggestions.reduce((n, h) => n + h.suggestedAdd.length, 0);
+    }
+
+    function updateVirtueBadge() {
+      const badge = document.getElementById('virtueBadge');
+      const n = virtuePendingCount();
+      badge.textContent = n;
+      badge.style.display = n > 0 ? 'inline-block' : 'none';
+    }
+
+    async function loadVirtueSuggestions(render) {
+      try {
+        const res = await fetch(`${API}/virtue-suggestions`);
+        const data = await res.json();
+        virtueSuggestions = data.missing ? [] : (data.heroes || []);
+        document.getElementById('virtueSummary').textContent = data.missing
+          ? 'No suggestionsVirtues.json yet - click "Re-run engine" to generate.'
+          : `${virtuePendingCount()} candidate sets across ${virtueSuggestions.length} heroes. Generated ${data.generatedAt ? new Date(data.generatedAt).toLocaleString() : '-'}.`;
+        updateVirtueBadge();
+        if (render) renderVirtueSuggestions();
+      } catch (err) {
+        document.getElementById('virtueSummary').textContent = 'Error loading virtue suggestions: ' + err.message;
+      }
+    }
+
+    function renderVirtueSuggestions() {
+      const list = document.getElementById('virtueList');
+      if (!virtueSuggestions.length) {
+        list.innerHTML = '<div class="sugg-empty">Queue empty. All caught up. 🎉</div>';
+        return;
+      }
+      list.innerHTML = '';
+      for (const h of virtueSuggestions) {
+        const card = document.createElement('div');
+        card.className = 'sugg-hero';
+        card.dataset.id = h.id;
+        const rows = h.suggestedAdd.map((a) => {
+          const bonus = a.bonus4 ? `${a.bonus2} / ${a.bonus4}` : (a.bonus2 || '');
+          return `
+            <div class="sugg-row" data-set="${a.set}" data-members="${(a.members || []).join(',')}">
+              <div class="sugg-row-main">
+                <span class="sugg-tag add">+ ${a.set}</span>
+                <span class="sugg-conf ${a.confidence}">${a.confidence}</span>
+                <span class="sugg-conf weak">${a.rarity} / ${a.stat}</span>
+                <div class="sugg-evidence">drivers: ${a.drivers.join(', ')} &mdash; ${escapeHtml(bonus)}<br>"${escapeHtml(a.evidence)}"</div>
+              </div>
+              <div class="sugg-actions">
+                <button class="sugg-btn accept" data-act="accept">Add set</button>
+                <button class="sugg-btn reject" data-act="reject">Dismiss</button>
+              </div>
+            </div>`;
+        });
+        card.innerHTML = `<h4>${h.name} <span style="font-weight:400;color:#888;font-size:12px;">${h.class}/${h.role} &middot; owns: ${h.owned.join(', ') || '-'}</span></h4>${rows.join('')}`;
+        list.appendChild(card);
+      }
+      list.onclick = onVirtueClick;
+    }
+
+    function removeVirtueRow(heroId, set) {
+      const hero = virtueSuggestions.find(h => h.id === heroId);
+      if (!hero) return;
+      hero.suggestedAdd = hero.suggestedAdd.filter(a => a.set !== set);
+      virtueSuggestions = virtueSuggestions.filter(h => h.suggestedAdd.length);
+      updateVirtueBadge();
+      renderVirtueSuggestions();
+    }
+
+    async function onVirtueClick(e) {
+      const btn = e.target.closest('.sugg-btn');
+      if (!btn) return;
+      const row = btn.closest('.sugg-row');
+      const card = btn.closest('.sugg-hero');
+      const heroId = card.dataset.id;
+      const set = row.dataset.set;
+      const members = (row.dataset.members || '').split(',').filter(Boolean);
+      const act = btn.dataset.act;
+      card.querySelectorAll('.sugg-btn').forEach(b => b.disabled = true);
+      try {
+        if (act === 'accept') {
+          const res = await fetch(`${API}/heroes/${heroId}/virtues`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ virtueSet: { label: set, comment: '', virtues: members } })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'save failed');
+          removeVirtueRow(heroId, set);
+        } else if (act === 'reject') {
+          await fetch(`${API}/virtue-suggestions/dismiss`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ heroId, set })
+          });
+          removeVirtueRow(heroId, set);
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+        card.querySelectorAll('.sugg-btn').forEach(b => b.disabled = false);
+      }
+    }
+
+    async function regenerateVirtueSuggestions() {
+      const btn = document.getElementById('virtueRegenBtn');
+      btn.disabled = true;
+      const orig = btn.textContent;
+      btn.textContent = '⏳ Running...';
+      try {
+        const res = await fetch(`${API}/virtue-suggestions/regenerate`, { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'engine failed');
+        virtueSuggestions = data.heroes || [];
+        document.getElementById('virtueSummary').textContent =
+          `${virtuePendingCount()} candidate sets across ${virtueSuggestions.length} heroes. Regenerated just now.`;
+        updateVirtueBadge();
+        renderVirtueSuggestions();
+      } catch (err) {
+        alert('Re-run failed: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+    }
+
+    function openVirtues() {
+      document.getElementById('virtuesModal').classList.add('active');
+      loadVirtueSuggestions(true);
+    }
+
+    function closeVirtues() {
+      document.getElementById('virtuesModal').classList.remove('active');
+    }
+
+    // =====================
     // TAG EDITOR MODAL
     // =====================
 
@@ -1369,10 +1527,20 @@
       document.getElementById('suggestionsModal').addEventListener('click', (e) => {
         if (e.target.id === 'suggestionsModal') closeSuggestions();
       });
+
+      // Virtue suggestions modal
+      document.getElementById('virtuesBtn').addEventListener('click', openVirtues);
+      document.getElementById('virtueCloseBtn').addEventListener('click', closeVirtues);
+      document.getElementById('virtueCloseBtn2').addEventListener('click', closeVirtues);
+      document.getElementById('virtueRegenBtn').addEventListener('click', regenerateVirtueSuggestions);
+      document.getElementById('virtuesModal').addEventListener('click', (e) => {
+        if (e.target.id === 'virtuesModal') closeVirtues();
+      });
     });
 
     init();
     loadSuggestions(false);
+    loadVirtueSuggestions(false);
   </script>
 </body>
 </html>

@@ -102,7 +102,8 @@
     "ATK_UP",
     "SHIELD",
     "AREA_DAMAGE_DEALER",
-    "SUMMON"
+    "SUMMON",
+    "ENEMY_VULNERABILITY"
   ],
   "baseAttackRate": 0.828,
   "bossUltimatesPer90s": 3,
@@ -110,5 +111,27 @@
     "summary": "Garbage multipliers and kit. Both CN and Excel agree completely: do not invest.",
     "depthRating": "low",
     "commonlyMisunderstood": false
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Desire",
+      "comment": "",
+      "virtues": [
+        "desire_1",
+        "desire_2",
+        "desire_3",
+        "desire_4"
+      ]
+    },
+    {
+      "label": "Wildness",
+      "comment": "",
+      "virtues": [
+        "wildness_1",
+        "wildness_2",
+        "wildness_3",
+        "wildness_4"
+      ]
+    }
+  ]
 }

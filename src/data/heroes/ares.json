@@ -113,5 +113,37 @@
     "summary": "5-second invincibility window is his only value. Easily countered. CN: 5-second lifespan. Do not invest.",
     "depthRating": "low",
     "commonlyMisunderstood": false
-  }
+  },
+  "virtueSets": [
+    {
+      "label": "Insight",
+      "comment": "",
+      "virtues": [
+        "insight_1",
+        "insight_2",
+        "insight_3",
+        "insight_4"
+      ]
+    },
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4"
+      ]
+    }
+  ]
 }

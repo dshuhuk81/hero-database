@@ -1,5 +1,12 @@
 # build output
 dist/
+# generated synergy-tag suggestions (derived from tagRules.json + hero skill text)
+src/data/suggestions.json
+# local review state (accepted/rejected suggestions)
+src/data/suggestionsDismissed.json
+# generated virtue-set suggestions (derived from virtueRules.json + virtues.json)
+src/data/suggestionsVirtues.json
+src/data/suggestionsVirtuesDismissed.json
 # generated types
 .astro/
 data-mine/

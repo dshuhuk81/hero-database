@@ -112,7 +112,8 @@
     "ATK_SPEED",
     "ENERGY_RESTORE",
     "HEAL",
-    "SELF_SUSTAIN"
+    "SELF_SUSTAIN",
+    "ENEMY_VULNERABILITY"
   ],
   "coreMechanic": {
     "summary": "Energy battery with insane damage-boosting buffs. Highest DPS-increasing support at full uptime. Weakness: dies early and the buff window disappears.",
@@ -151,6 +152,16 @@
       "virtues": [
         "defiance_1",
         "defiance_2"
+      ]
+    },
+    {
+      "label": "Grace",
+      "comment": "",
+      "virtues": [
+        "grace_1",
+        "grace_2",
+        "grace_3",
+        "grace_4"
       ]
     }
   ],

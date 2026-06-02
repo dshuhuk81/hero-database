@@ -18,6 +18,9 @@ const INVEST_FILE = path.join(__dirname, '../src/data/ratings/invest.json');
 const SUGGESTIONS_FILE = path.join(__dirname, '../src/data/suggestions.json');
 const SUGGESTIONS_DISMISSED_FILE = path.join(__dirname, '../src/data/suggestionsDismissed.json');
 const SUGGEST_SCRIPT = path.join(__dirname, 'suggest-synergy-tags.mjs');
+const VIRTUE_SUGGESTIONS_FILE = path.join(__dirname, '../src/data/suggestionsVirtues.json');
+const VIRTUE_DISMISSED_FILE = path.join(__dirname, '../src/data/suggestionsVirtuesDismissed.json');
+const VIRTUE_SUGGEST_SCRIPT = path.join(__dirname, 'suggest-virtues.mjs');
 const execFileAsync = promisify(execFile);
 
 const VALIDATION_CHECKS = {
@@ -606,6 +609,110 @@ app.post('/api/suggestions/dismiss', async (req, res) => {
     }
     await writeJson(SUGGESTIONS_DISMISSED_FILE, dismissed);
     res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(err.statusCode || 500).json({ error: err.message });
+  }
+});
+
+// =====================
+// VIRTUE-SET SUGGESTION ENDPOINTS
+// Read-only recommendations -> human gate. Accept appends a virtueSet.
+// =====================
+
+async function readVirtueDismissed() {
+  try {
+    return await readJson(VIRTUE_DISMISSED_FILE);
+  } catch {
+    return {};
+  }
+}
+
+async function buildVirtueSuggestionsPayload() {
+  let data;
+  try {
+    data = await readJson(VIRTUE_SUGGESTIONS_FILE);
+  } catch {
+    return { generatedAt: null, missing: true, summary: null, heroes: [] };
+  }
+  const dismissed = await readVirtueDismissed();
+  const heroes = (data.heroes || [])
+    .map((h) => ({
+      ...h,
+      suggestedAdd: (h.suggestedAdd || []).filter(
+        (a) => !(dismissed[h.id] && Array.isArray(dismissed[h.id].add) && dismissed[h.id].add.includes(a.set))
+      ),
+    }))
+    .filter((h) => h.suggestedAdd.length);
+  return { generatedAt: data.generatedAt, summary: data.summary, heroes };
+}
+
+// GET /api/virtue-suggestions - pending virtue-set suggestions (dismissed filtered out)
+app.get('/api/virtue-suggestions', async (req, res) => {
+  try {
+    res.json(await buildVirtueSuggestionsPayload());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/virtue-suggestions/regenerate - re-run the virtue engine
+app.post('/api/virtue-suggestions/regenerate', async (req, res) => {
+  try {
+    await execFileAsync('node', [VIRTUE_SUGGEST_SCRIPT], { cwd: PROJECT_ROOT });
+    res.json(await buildVirtueSuggestionsPayload());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message, stderr: err.stderr });
+  }
+});
+
+// POST /api/virtue-suggestions/dismiss - { heroId, set } persist a reject
+app.post('/api/virtue-suggestions/dismiss', async (req, res) => {
+  try {
+    const { heroId, set } = req.body || {};
+    if (!heroId || !set) {
+      return res.status(400).json({ error: 'heroId and set are required' });
+    }
+    assertHeroId(heroId);
+    const dismissed = await readVirtueDismissed();
+    dismissed[heroId] = dismissed[heroId] || {};
+    dismissed[heroId].add = dismissed[heroId].add || [];
+    if (!dismissed[heroId].add.includes(set)) dismissed[heroId].add.push(set);
+    await writeJson(VIRTUE_DISMISSED_FILE, dismissed);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(err.statusCode || 500).json({ error: err.message });
+  }
+});
+
+// POST /api/heroes/:id/virtues - append a virtue set { label, comment, virtues:[ids] }
+app.post('/api/heroes/:id/virtues', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { virtueSet } = req.body || {};
+    if (!virtueSet || !virtueSet.label || !Array.isArray(virtueSet.virtues)) {
+      return res.status(400).json({ error: 'virtueSet { label, virtues[] } is required' });
+    }
+    const { filePath, hero } = await readHeroById(id);
+    hero.virtueSets = Array.isArray(hero.virtueSets) ? hero.virtueSets : [];
+    if (hero.virtueSets.some((vs) => vs.label === virtueSet.label)) {
+      return res.status(409).json({ error: `Hero already has virtue set: ${virtueSet.label}` });
+    }
+    hero.virtueSets.push({
+      label: virtueSet.label,
+      comment: virtueSet.comment || '',
+      virtues: virtueSet.virtues,
+    });
+    await writeJson(filePath, hero);
+    res.json({
+      success: true,
+      message: `Added virtue set ${virtueSet.label} to ${hero.name}`,
+      changedFiles: [relativePath(filePath)],
+      virtueSets: hero.virtueSets,
+    });
   } catch (err) {
     console.error(err);
     res.status(err.statusCode || 500).json({ error: err.message });

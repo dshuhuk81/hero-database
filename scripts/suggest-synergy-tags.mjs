@@ -30,7 +30,7 @@ const SELF_RE = /\b(himself|herself|itself|self)\b/i;
 const ANTIHEAL_RE = /(cannot be healed|healing (?:is )?reduced|reduce\w* healing|cannot receive (?:shields? or )?healing|prevents? healing)/i;
 const NONORMALS_RE = /no longer performs normal attacks/i;
 
-function loadRules() {
+export function loadRules() {
   const raw = JSON.parse(fs.readFileSync(RULES_FILE, "utf8"));
   const compiled = {};
   for (const [tag, def] of Object.entries(raw.rules)) {
@@ -78,7 +78,7 @@ function scopeOk(scope, s, heroNameRe) {
   }
 }
 
-function detectForHero(hero, rules) {
+export function detectForHero(hero, rules) {
   const sentences = heroSentences(hero);
   const fullText = sentences.join(" ");
   const noNormals = NONORMALS_RE.test(fullText);
@@ -125,7 +125,13 @@ function main() {
     const suggestedAdd = matched
       .filter((t) => !curSet.has(t))
       .map((t) => ({ tag: t, confidence: hits[t].confidence, evidence: hits[t].evidence }));
-    const flagRemove = current.filter((t) => !matchedSet.has(t)).map((t) => ({ tag: t }));
+    // flagRemove: only STRONG-detectability tags the engine could not find any text for.
+    // These are trustworthy review candidates (genuine over-tag OR a rule vocab gap).
+    // Medium/weak unmatched tags are excluded - the engine is too unreliable there to
+    // suggest removal, which would pressure the user to delete correct manual judgment.
+    const flagRemove = current
+      .filter((t) => !matchedSet.has(t) && rules[t] && rules[t].confidence === "strong")
+      .map((t) => ({ tag: t, confidence: "strong" }));
     const confirmed = current.filter((t) => matchedSet.has(t));
 
     totalAdd += suggestedAdd.length;
@@ -189,4 +195,7 @@ function main() {
   if (!reportOnly) console.log(`\nwrote ${path.relative(ROOT, OUT_FILE)}`);
 }
 
-main();
+// Only run when invoked directly, not when imported by tests.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}

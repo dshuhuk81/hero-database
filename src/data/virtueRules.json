@@ -1,0 +1,48 @@
+{
+  "_doc": {
+    "purpose": "Deterministic virtue-set recommendation rules. Consumed by scripts/suggest-virtues.mjs. NEVER auto-writes to hero files - produces evidence-backed suggestions for human review.",
+    "model": "Two stages. (1) Detect a hero's stat DRIVERS from class + skill text. (2) Map each driver to the virtue SETS that grant the matching stat (set->stat is read straight from virtues.json, not invented). Suggest candidate sets, never a ranking.",
+    "driverShape": {
+      "confidence": "strong | medium",
+      "classes": "optional - hero.class must be one of these (structural gate)",
+      "patterns": "optional - skill/relic text must match one of these regex (any). Both gates apply when both present.",
+      "sets": "candidate virtue set names whose stat benefits this driver"
+    },
+    "evidence": "each suggested set carries the matched skill sentence (or a structural note like 'Support class') so the reviewer can verify.",
+    "noFlagRemove": "Virtue choice has legit reasons beyond skills (Battle Power, availability, F2P access). The engine only ADDS candidate sets; it never suggests removing an existing virtueSet."
+  },
+  "drivers": {
+    "ATK_SCALER": {
+      "confidence": "strong",
+      "classes": ["Warrior", "Archer", "Mage", "Assassin"],
+      "patterns": ["% of ATK", "% ATK", "ATK as DMG"],
+      "sets": ["Desire", "Wildness"]
+    },
+    "CRIT": {
+      "confidence": "strong",
+      "patterns": ["CRIT Rate", "CRIT DMG", "critical", "\\bcrit\\b"],
+      "sets": ["Insight"]
+    },
+    "ENERGY_DEP": {
+      "confidence": "medium",
+      "patterns": ["Energy Regen", "restores? \\d+ Energy", "\\d+ bonus Energy", "Energy at combat start", "upon (?:using|casting) (?:the |an )?Ultimate", "gains? \\d+ Energy"],
+      "sets": ["Fervor"]
+    },
+    "HEALER": {
+      "confidence": "strong",
+      "classes": ["Support"],
+      "patterns": ["heal", "restore\\w* HP", "recover\\w* HP", "Healing Effect"],
+      "sets": ["Grace"]
+    },
+    "DODGE": {
+      "confidence": "medium",
+      "patterns": ["dodge", "evasion", "evade"],
+      "sets": ["Gnosis"]
+    },
+    "SURVIVABILITY": {
+      "confidence": "strong",
+      "classes": ["Tank", "Support"],
+      "sets": ["Sacrifice", "Stoic", "Defiance"]
+    }
+  }
+}

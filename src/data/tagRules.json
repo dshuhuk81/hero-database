@@ -45,7 +45,7 @@
     "DEBUFF_CLEANSE_TEAM": {
       "scope": "team",
       "confidence": "strong",
-      "patterns": ["cleanse", "remove\\w* (?:one |a |all )?(?:debuff|negative effect|control effect)", "dispel\\w* (?:debuff|negative)", "clears? (?:debuff|negative)", "purif"]
+      "patterns": ["cleans\\w*", "remove\\w* (?:one |a |all )?(?:debuff|negative effect|control effect)", "dispel\\w* (?:debuff|negative)", "clears? (?:debuff|negative)", "purif\\w*"]
     },
     "ENERGY_RESTORE_TEAM": {
       "scope": "team",
@@ -76,17 +76,17 @@
     "BUFF_DISPEL": {
       "scope": "enemy",
       "confidence": "medium",
-      "patterns": ["dispel\\w* .*(?:buff|positive|beneficial)", "remove\\w* (?:buff|positive|beneficial)", "strip\\w* .*buff", "purge"]
+      "patterns": ["dispel\\w* .*(?:buff|positive|beneficial)", "remove\\w* (?:buff|positive|beneficial)", "strip\\w* .*buff", "purg\\w*"]
     },
     "CROWD_CONTROL": {
       "scope": "enemy",
       "confidence": "strong",
-      "patterns": ["stun", "freeze", "frozen", "\\broot", "sleep", "charm", "silence", "knock(?:s|ed|ing)?(?: down| back| up| airborne)?", "petrif", "immobiliz", "suppress", "\\bfear\\b", "pull\\w* .*(?:in|toward|nearest)", "push\\w* \\d", "knockdown"]
+      "patterns": ["stun", "freez\\w*", "frozen", "\\broot", "sleep", "charm", "silenc\\w*", "knock(?:s|ed|ing)?(?: down| back| up| airborne)?", "knockback", "knockdown", "petrif\\w*", "immobiliz\\w*", "suppress\\w*", "\\bfear(?:ed|s|ing)?\\b", "pull\\w* (?:in|\\d|the|all|nearby|nearest|toward)", "push\\w* \\d", "ensnar\\w*", "snare", "entangl\\w*", "banish\\w*", "interrupt\\w*", "airborne", "\\bnet\\b"]
     },
     "ENEMY_VULNERABILITY": {
       "scope": "enemy",
       "confidence": "strong",
-      "patterns": ["take\\w* \\d+% more DMG", "take\\w* (?:more|increased) DMG", "increased DMG taken", "vulnerab", "amplif\\w* DMG"]
+      "patterns": ["take\\w* .*?(?:more|increased) DMG", "(?:more|increased) DMG (?:from|for|taken|during)", "increases? DMG taken", "DMG taken (?:is |by )", "vulnerab", "amplif\\w* DMG", "\\d+% (?:more|increased) DMG"]
     },
     "ENERGY_DRAIN": {
       "scope": "enemy",
@@ -189,12 +189,12 @@
     "REVIVE": {
       "scope": "any",
       "confidence": "strong",
-      "patterns": ["revive", "resurrect", "return\\w* to (?:battle|life)", "brought back to life", "back to battle"]
+      "patterns": ["reviv\\w*", "resurrect\\w*", "return\\w* to (?:battle|life)", "brought back to life", "back to battle"]
     },
     "SUMMON": {
       "scope": "any",
       "confidence": "medium",
-      "patterns": ["summon", "conjure", "creates? (?:a |two |\\d+ )?(?:minion|ingot|clone|spirit|sentry|turret|totem)", "surrounded by \\d"]
+      "patterns": ["summon\\w*", "conjur\\w*", "creates? (?:a |two |\\d+ )?(?:minion|ingot|clone|spirit|sentry|turret|totem)", "surrounded by \\d"]
     },
     "SELF_SUSTAIN": {
       "scope": "self",
