@@ -380,14 +380,6 @@
           ]
         },
         {
-          "path": "src/data/synergyMatrix.json",
-          "shape": "object keyed by tag-pair expression",
-          "recordCount": 6,
-          "contains": [
-            "synergy score and text for tag combinations"
-          ]
-        },
-        {
           "path": "src/data/metaOverrides.json",
           "shape": "object keyed by heroId",
           "recordCount": 12,

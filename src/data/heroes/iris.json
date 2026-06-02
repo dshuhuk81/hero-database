@@ -96,7 +96,14 @@
       "level4": "When 2 enemies with Dreamscape get near, the mirage explodes, dealing 280% ATK as bonus DMG."
     }
   },
-  "synergies": [],
+  "synergies": [
+    "SUMMON",
+    "AREA_DAMAGE_DEALER",
+    "ATK_SPD_UP",
+    "ATK_SPEED",
+    "BUFF_TEAM",
+    "CROWD_CONTROL"
+  ],
   "baseAttackRate": 0.708,
   "bossUltimatesPer90s": 4,
   "coreMechanic": {

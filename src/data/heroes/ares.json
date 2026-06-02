@@ -97,15 +97,15 @@
     }
   },
   "synergies": [
-    "ENEMY_VULNERABILITY",
     "AREA_DAMAGE_DEALER",
-    "BASIC_ATTACK_SCALER",
     "ATK_UP",
     "CC_RESISTANCE",
-    "DMG_RED",
     "HIT_AVOID",
     "LIFE_STEAL_UP",
-    "SHIELD"
+    "SHIELD",
+    "REDUCES_ATTRIBUTES",
+    "REMOVES_ARMOR",
+    "SELF_SUSTAIN"
   ],
   "baseAttackRate": 0.59,
   "bossUltimatesPer90s": 3,

@@ -100,7 +100,18 @@
     },
     "damageType": "Physical"
   },
-  "synergies": [],
+  "synergies": [
+    "SUMMON",
+    "CROWD_CONTROL",
+    "AREA_DAMAGE_DEALER",
+    "ATK_UP",
+    "SHIELD",
+    "ATK_DOWN",
+    "HP_UP",
+    "HEAL",
+    "SELF_SUSTAIN",
+    "DMG_RED"
+  ],
   "cn": {
     "captured": "2026-05-20",
     "source": "CN client extracted skill text",

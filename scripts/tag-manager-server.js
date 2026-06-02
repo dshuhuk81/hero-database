@@ -15,6 +15,9 @@ const TAGS_FILE = path.join(__dirname, '../src/data/tags.json');
 const TAG_CATEGORIES_FILE = path.join(__dirname, '../src/data/tagCategories.json');
 const HERO_RATINGS_FILE = path.join(__dirname, '../src/data/ratings/hero-ratings.json');
 const INVEST_FILE = path.join(__dirname, '../src/data/ratings/invest.json');
+const SUGGESTIONS_FILE = path.join(__dirname, '../src/data/suggestions.json');
+const SUGGESTIONS_DISMISSED_FILE = path.join(__dirname, '../src/data/suggestionsDismissed.json');
+const SUGGEST_SCRIPT = path.join(__dirname, 'suggest-synergy-tags.mjs');
 const execFileAsync = promisify(execFile);
 
 const VALIDATION_CHECKS = {
@@ -527,6 +530,85 @@ app.post('/api/heroes/:id/synergies', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
+  }
+});
+
+// =====================
+// SYNERGY SUGGESTION ENGINE ENDPOINTS
+// Read-only detection output -> human gate. Accepts reuse the synergies POST.
+// =====================
+
+async function readDismissed() {
+  try {
+    return await readJson(SUGGESTIONS_DISMISSED_FILE);
+  } catch {
+    return {};
+  }
+}
+
+function isDismissed(dismissed, heroId, kind, tag) {
+  const entry = dismissed[heroId];
+  return Boolean(entry && Array.isArray(entry[kind]) && entry[kind].includes(tag));
+}
+
+async function buildSuggestionsPayload() {
+  let data;
+  try {
+    data = await readJson(SUGGESTIONS_FILE);
+  } catch {
+    return { generatedAt: null, missing: true, summary: null, heroes: [] };
+  }
+  const dismissed = await readDismissed();
+  const heroes = (data.heroes || [])
+    .map((h) => ({
+      ...h,
+      suggestedAdd: (h.suggestedAdd || []).filter((a) => !isDismissed(dismissed, h.id, 'add', a.tag)),
+      flagRemove: (h.flagRemove || []).filter((r) => !isDismissed(dismissed, h.id, 'remove', r.tag)),
+    }))
+    .filter((h) => h.suggestedAdd.length || h.flagRemove.length);
+  return { generatedAt: data.generatedAt, summary: data.summary, heroes };
+}
+
+// GET /api/suggestions - pending tag suggestions (dismissed entries filtered out)
+app.get('/api/suggestions', async (req, res) => {
+  try {
+    res.json(await buildSuggestionsPayload());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/suggestions/regenerate - re-run the detection engine, return fresh queue
+app.post('/api/suggestions/regenerate', async (req, res) => {
+  try {
+    await execFileAsync('node', [SUGGEST_SCRIPT], { cwd: PROJECT_ROOT });
+    res.json(await buildSuggestionsPayload());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message, stderr: err.stderr });
+  }
+});
+
+// POST /api/suggestions/dismiss - { heroId, kind: 'add'|'remove', tag } persist a reject
+app.post('/api/suggestions/dismiss', async (req, res) => {
+  try {
+    const { heroId, kind, tag } = req.body || {};
+    if (!heroId || !['add', 'remove'].includes(kind) || !tag) {
+      return res.status(400).json({ error: 'heroId, kind (add|remove) and tag are required' });
+    }
+    assertHeroId(heroId);
+    const dismissed = await readDismissed();
+    dismissed[heroId] = dismissed[heroId] || {};
+    dismissed[heroId][kind] = dismissed[heroId][kind] || [];
+    if (!dismissed[heroId][kind].includes(tag)) {
+      dismissed[heroId][kind].push(tag);
+    }
+    await writeJson(SUGGESTIONS_DISMISSED_FILE, dismissed);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 });
 

@@ -1,0 +1,34 @@
+{
+  "anubis": {
+    "remove": [
+      "ENERGY_DRAIN",
+      "REDUCES_ATTRIBUTES"
+    ]
+  },
+  "ares": {
+    "remove": [
+      "CC_RESISTANCE"
+    ]
+  },
+  "artemis": {
+    "add": [
+      "ENEMY_VULNERABILITY"
+    ],
+    "remove": [
+      "CROWD_CONTROL",
+      "REDUCES_ATTRIBUTES",
+      "HIT_AVOID"
+    ]
+  },
+  "athena": {
+    "remove": [
+      "BUFF_TEAM"
+    ]
+  },
+  "caishen": {
+    "add": [
+      "AREA_DAMAGE_DEALER",
+      "SUMMON"
+    ]
+  }
+}

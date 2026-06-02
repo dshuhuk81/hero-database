@@ -40,7 +40,7 @@
     "normalSkillPWR": 0,
     "ultimatePWR": 0
   },
-    "skills": [
+  "skills": [
     {
       "id": "skill_1",
       "name": "Puppet's Advent",
@@ -95,10 +95,11 @@
     }
   },
   "synergies": [
-  "REMOVES_ARMOR",
-  "BASIC_ATTACK_SCALER",
-  "HIT_AVOID",
-  "SUMMON"
+    "REMOVES_ARMOR",
+    "BASIC_ATTACK_SCALER",
+    "HIT_AVOID",
+    "SUMMON",
+    "HP_UP"
   ],
   "baseAttackRate": 0,
   "bossUltimatesPer90s": 0,
@@ -122,7 +123,7 @@
     "Maximum Puppet count gated behind Skill 4 upgrade levels (3 → 5 → 7).",
     "Puppet Decoy has a 30s base cooldown. In repeated burst matchups, the dodge may not be available for every lethal threat."
   ],
-   "virtueSets": [
+  "virtueSets": [
     {
       "label": "Desire",
       "comment": "",

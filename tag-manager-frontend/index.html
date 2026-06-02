@@ -586,6 +586,84 @@
         justify-content: flex-start;
       }
     }
+
+    /* --- Suggestion queue --- */
+    .header-badge {
+      display: inline-block;
+      min-width: 18px;
+      padding: 0 6px;
+      margin-left: 6px;
+      border-radius: 10px;
+      background: #e0245e;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 18px;
+      text-align: center;
+    }
+    .sugg-summary {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+    .sugg-hero {
+      border: 1px solid #e3e3e8;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .sugg-hero h4 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+    .sugg-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 0;
+      border-top: 1px dashed #ececf0;
+    }
+    .sugg-row:first-of-type { border-top: none; }
+    .sugg-row-main { flex: 1; min-width: 0; }
+    .sugg-tag {
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .sugg-tag.add { color: #1a7f37; }
+    .sugg-tag.remove { color: #b35900; }
+    .sugg-conf {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      padding: 1px 6px;
+      border-radius: 8px;
+      margin-left: 6px;
+      background: #eef;
+      color: #335;
+    }
+    .sugg-conf.strong { background: #d6f5dc; color: #1a7f37; }
+    .sugg-conf.medium { background: #fff3cd; color: #8a6d00; }
+    .sugg-conf.weak { background: #f0f0f0; color: #777; }
+    .sugg-evidence {
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    .sugg-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .sugg-btn {
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .sugg-btn.accept { background: #1a7f37; color: #fff; }
+    .sugg-btn.reject { background: #e3e3e8; color: #333; }
+    .sugg-btn:disabled { opacity: .5; cursor: default; }
+    .sugg-empty { color: #777; padding: 20px; text-align: center; }
   </style>
 </head>
 <body>
@@ -597,6 +675,7 @@
         <div><strong id="editedCount">0</strong> Tagged</div>
       </div>
       <div class="header-buttons">
+        <button class="btn-header" id="suggestionsBtn">💡 Suggestions<span class="header-badge" id="suggBadge" style="display:none;">0</span></button>
         <button class="btn-header" id="editTagsBtn">🏷️ Edit Tags</button>
       </div>
     </div>
@@ -636,6 +715,24 @@
 
       <div class="placeholder" id="placeholder">
         <div class="loading">Loading heroes...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggestions Modal -->
+  <div class="modal" id="suggestionsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>💡 Synergy Tag Suggestions</h2>
+        <button class="modal-close" id="suggCloseBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="sugg-summary" id="suggSummary"></div>
+        <div id="suggList"><div class="sugg-empty">Loading...</div></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="suggRegenBtn">🔄 Re-run engine</button>
+        <button class="btn btn-secondary" id="suggCloseBtn2">Close</button>
       </div>
     </div>
   </div>
@@ -908,6 +1005,181 @@
     }
 
     // =====================
+    // SUGGESTION QUEUE
+    // =====================
+
+    let suggestions = [];
+
+    function suggPendingCount() {
+      return suggestions.reduce((n, h) => n + h.suggestedAdd.length + h.flagRemove.length, 0);
+    }
+
+    function updateSuggBadge() {
+      const badge = document.getElementById('suggBadge');
+      const n = suggPendingCount();
+      badge.textContent = n;
+      badge.style.display = n > 0 ? 'inline-block' : 'none';
+    }
+
+    async function loadSuggestions(render) {
+      try {
+        const res = await fetch(`${API}/suggestions`);
+        const data = await res.json();
+        suggestions = data.missing ? [] : (data.heroes || []);
+        document.getElementById('suggSummary').textContent = data.missing
+          ? 'No suggestions.json yet - click "Re-run engine" to generate.'
+          : `${suggPendingCount()} pending across ${suggestions.length} heroes. Generated ${data.generatedAt ? new Date(data.generatedAt).toLocaleString() : '-'}.`;
+        updateSuggBadge();
+        if (render) renderSuggestions();
+      } catch (err) {
+        document.getElementById('suggSummary').textContent = 'Error loading suggestions: ' + err.message;
+      }
+    }
+
+    function renderSuggestions() {
+      const list = document.getElementById('suggList');
+      if (!suggestions.length) {
+        list.innerHTML = '<div class="sugg-empty">Queue empty. All caught up. 🎉</div>';
+        return;
+      }
+      list.innerHTML = '';
+      for (const h of suggestions) {
+        const card = document.createElement('div');
+        card.className = 'sugg-hero';
+        card.dataset.id = h.id;
+        const rows = [];
+        for (const a of h.suggestedAdd) {
+          rows.push(`
+            <div class="sugg-row" data-kind="add" data-tag="${a.tag}">
+              <div class="sugg-row-main">
+                <span class="sugg-tag add">+ ${a.tag.replace(/_/g, ' ')}</span>
+                <span class="sugg-conf ${a.confidence}">${a.confidence}</span>
+                <div class="sugg-evidence">"${escapeHtml(a.evidence)}"</div>
+              </div>
+              <div class="sugg-actions">
+                <button class="sugg-btn accept" data-act="accept-add">Add</button>
+                <button class="sugg-btn reject" data-act="reject">Dismiss</button>
+              </div>
+            </div>`);
+        }
+        for (const r of h.flagRemove) {
+          rows.push(`
+            <div class="sugg-row" data-kind="remove" data-tag="${r.tag}">
+              <div class="sugg-row-main">
+                <span class="sugg-tag remove">? ${r.tag.replace(/_/g, ' ')}</span>
+                <span class="sugg-conf weak">no evidence</span>
+                <div class="sugg-evidence">Manual tag with no matching skill text. Remove, or keep if intentional.</div>
+              </div>
+              <div class="sugg-actions">
+                <button class="sugg-btn accept" data-act="accept-remove">Remove</button>
+                <button class="sugg-btn reject" data-act="reject">Keep</button>
+              </div>
+            </div>`);
+        }
+        card.innerHTML = `<h4>${h.name}</h4>${rows.join('')}`;
+        list.appendChild(card);
+      }
+      list.onclick = onSuggClick;
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    }
+
+    async function writeHeroSynergies(heroId, synergies) {
+      const res = await fetch(`${API}/heroes/${heroId}/synergies`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ synergies })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'save failed');
+      const heroData = heroes.find(h => h.id === heroId);
+      if (heroData) heroData.synergies = synergies;
+      if (currentHero && currentHero.id === heroId) {
+        currentHero.synergies = synergies;
+        renderEditor();
+      }
+      renderHeroList();
+      updateEditedCount();
+    }
+
+    function removeSuggRow(heroId, kind, tag) {
+      const hero = suggestions.find(h => h.id === heroId);
+      if (!hero) return;
+      if (kind === 'add') hero.suggestedAdd = hero.suggestedAdd.filter(a => a.tag !== tag);
+      else hero.flagRemove = hero.flagRemove.filter(r => r.tag !== tag);
+      suggestions = suggestions.filter(h => h.suggestedAdd.length || h.flagRemove.length);
+      updateSuggBadge();
+      renderSuggestions();
+    }
+
+    async function onSuggClick(e) {
+      const btn = e.target.closest('.sugg-btn');
+      if (!btn) return;
+      const row = btn.closest('.sugg-row');
+      const card = btn.closest('.sugg-hero');
+      const heroId = card.dataset.id;
+      const kind = row.dataset.kind;
+      const tag = row.dataset.tag;
+      const act = btn.dataset.act;
+      card.querySelectorAll('.sugg-btn').forEach(b => b.disabled = true);
+      try {
+        const heroData = heroes.find(h => h.id === heroId);
+        const current = heroData ? [...heroData.synergies] : [];
+        if (act === 'accept-add') {
+          if (!current.includes(tag)) current.push(tag);
+          await writeHeroSynergies(heroId, current);
+          removeSuggRow(heroId, 'add', tag);
+        } else if (act === 'accept-remove') {
+          await writeHeroSynergies(heroId, current.filter(t => t !== tag));
+          removeSuggRow(heroId, 'remove', tag);
+        } else if (act === 'reject') {
+          await fetch(`${API}/suggestions/dismiss`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ heroId, kind, tag })
+          });
+          removeSuggRow(heroId, kind, tag);
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+        card.querySelectorAll('.sugg-btn').forEach(b => b.disabled = false);
+      }
+    }
+
+    async function regenerateSuggestions() {
+      const btn = document.getElementById('suggRegenBtn');
+      btn.disabled = true;
+      const orig = btn.textContent;
+      btn.textContent = '⏳ Running...';
+      try {
+        const res = await fetch(`${API}/suggestions/regenerate`, { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'engine failed');
+        suggestions = data.heroes || [];
+        document.getElementById('suggSummary').textContent =
+          `${suggPendingCount()} pending across ${suggestions.length} heroes. Regenerated just now.`;
+        updateSuggBadge();
+        renderSuggestions();
+      } catch (err) {
+        alert('Re-run failed: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+    }
+
+    function openSuggestions() {
+      document.getElementById('suggestionsModal').classList.add('active');
+      loadSuggestions(true);
+    }
+
+    function closeSuggestions() {
+      document.getElementById('suggestionsModal').classList.remove('active');
+    }
+
+    // =====================
     // TAG EDITOR MODAL
     // =====================
 
@@ -1088,9 +1360,19 @@
       document.getElementById('tagEditorModal').addEventListener('click', (e) => {
         if (e.target.id === 'tagEditorModal') closeTagEditor();
       });
+
+      // Suggestions modal
+      document.getElementById('suggestionsBtn').addEventListener('click', openSuggestions);
+      document.getElementById('suggCloseBtn').addEventListener('click', closeSuggestions);
+      document.getElementById('suggCloseBtn2').addEventListener('click', closeSuggestions);
+      document.getElementById('suggRegenBtn').addEventListener('click', regenerateSuggestions);
+      document.getElementById('suggestionsModal').addEventListener('click', (e) => {
+        if (e.target.id === 'suggestionsModal') closeSuggestions();
+      });
     });
 
     init();
+    loadSuggestions(false);
   </script>
 </body>
 </html>

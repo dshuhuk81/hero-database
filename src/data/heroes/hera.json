@@ -105,7 +105,10 @@
     "ENERGY_RESTORE",
     "HEAL",
     "HIT_AVOID",
-    "REDUCES_ATTRIBUTES"
+    "REDUCES_ATTRIBUTES",
+    "BASIC_ATTACK_SCALER",
+    "ATK_SPEED",
+    "ATK_UP"
   ],
   "baseAttackRate": 0,
   "bossUltimatesPer90s": 0,
@@ -147,7 +150,8 @@
         "dionysus"
       ]
     }
-  ],"virtueSets": [
+  ],
+  "virtueSets": [
     {
       "label": "Defiance",
       "comment": "",

@@ -1,0 +1,2179 @@
+{
+  "generatedAt": "2026-06-02T06:57:05.974Z",
+  "field": "synergies",
+  "summary": {
+    "heroes": 80,
+    "manualTags": 546,
+    "engineMatched": 442,
+    "confirmed": 439,
+    "suggestedAdd": 3,
+    "flagRemove": 107,
+    "addByConfidence": {
+      "strong": 2,
+      "medium": 1,
+      "weak": 0
+    },
+    "precisionVsManual": 0.993,
+    "recallVsManual": 0.804
+  },
+  "heroes": [
+    {
+      "id": "amunra",
+      "name": "Amunra",
+      "current": [
+        "ENERGY_RESTORE_TEAM",
+        "ATK_DOWN",
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "CC_RESISTANCE",
+        "DODGE_BUFF",
+        "ENERGY_RESTORE",
+        "HEAL"
+      ],
+      "confirmed": [
+        "ENERGY_RESTORE_TEAM",
+        "ATK_DOWN",
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "CC_RESISTANCE",
+        "DODGE_BUFF",
+        "ENERGY_RESTORE",
+        "HEAL"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "anubis",
+      "name": "Anubis",
+      "current": [
+        "CROWD_CONTROL",
+        "ENERGY_DRAIN",
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "HIT_AVOID",
+        "LIFE_STEAL_UP",
+        "SELF_SUSTAIN"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "HIT_AVOID",
+        "LIFE_STEAL_UP",
+        "SELF_SUSTAIN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENERGY_DRAIN"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "aquarius",
+      "name": "Aquarius",
+      "current": [
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "SHIELD",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "SHIELD",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "ares",
+      "name": "Ares",
+      "current": [
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "CC_RESISTANCE",
+        "HIT_AVOID",
+        "LIFE_STEAL_UP",
+        "SHIELD",
+        "REDUCES_ATTRIBUTES",
+        "REMOVES_ARMOR",
+        "SELF_SUSTAIN"
+      ],
+      "confirmed": [
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "HIT_AVOID",
+        "LIFE_STEAL_UP",
+        "SHIELD",
+        "REDUCES_ATTRIBUTES",
+        "REMOVES_ARMOR",
+        "SELF_SUSTAIN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CC_RESISTANCE"
+        }
+      ]
+    },
+    {
+      "id": "aries",
+      "name": "Aries",
+      "current": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "ATK_UP",
+        "LIFE_STEAL_UP",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "ATK_UP",
+        "LIFE_STEAL_UP",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "artemis",
+      "name": "Artemis",
+      "current": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "DODGE_BUFF",
+        "HIT_AVOID",
+        "CC_RESISTANCE"
+      ],
+      "confirmed": [
+        "DODGE_BUFF",
+        "CC_RESISTANCE"
+      ],
+      "suggestedAdd": [
+        {
+          "tag": "ENEMY_VULNERABILITY",
+          "confidence": "strong",
+          "evidence": "Artemis fires piercing arrows at the most vulnerable enemy, dealing DMG equal to 200% of ATK to each enemy hit."
+        }
+      ],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        },
+        {
+          "tag": "HIT_AVOID"
+        }
+      ]
+    },
+    {
+      "id": "athena",
+      "name": "Athena",
+      "current": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "GAIN_ARMOR",
+        "SHIELD",
+        "ATK_SPEED",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE_TEAM"
+      ],
+      "confirmed": [
+        "ATK_SPD_UP",
+        "DAMAGE_REDUCTION_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "GAIN_ARMOR",
+        "SHIELD",
+        "ATK_SPEED",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE_TEAM"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "BUFF_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "audhumla",
+      "name": "Audhumla",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "bastet",
+      "name": "Bastet",
+      "current": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "DMG_RED",
+        "DODGE_BUFF",
+        "HIT_AVOID"
+      ],
+      "confirmed": [
+        "AREA_DAMAGE_DEALER",
+        "DODGE_BUFF",
+        "HIT_AVOID"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        },
+        {
+          "tag": "DMG_RED"
+        }
+      ]
+    },
+    {
+      "id": "caishen",
+      "name": "Caishen",
+      "current": [
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "BUFF_TEAM",
+        "HIT_AVOID",
+        "SELF_SUSTAIN",
+        "HEAL_EFFECT_UP"
+      ],
+      "confirmed": [
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "BUFF_TEAM",
+        "HIT_AVOID",
+        "SELF_SUSTAIN",
+        "HEAL_EFFECT_UP"
+      ],
+      "suggestedAdd": [
+        {
+          "tag": "AREA_DAMAGE_DEALER",
+          "confidence": "strong",
+          "evidence": "Caishen restores 100 Energy to allies in a large area around him and then restores 25 Energy per sec to them for the next 10s."
+        },
+        {
+          "tag": "SUMMON",
+          "confidence": "medium",
+          "evidence": "Caishen is surrounded by 2 Golden Ingots upon entering battle."
+        }
+      ],
+      "flagRemove": []
+    },
+    {
+      "id": "cancer",
+      "name": "Cancer",
+      "current": [
+        "DAMAGE_REDUCTION_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ATK_UP",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "CC_IMMUNITY_TEAM",
+        "ENERGY_RESTORE",
+        "SHIELD",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "DAMAGE_REDUCTION_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ATK_UP",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "CC_IMMUNITY_TEAM",
+        "ENERGY_RESTORE",
+        "SHIELD",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DEBUFF_CLEANSE_TEAM"
+        },
+        {
+          "tag": "ENERGY_RESTORE_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "canopicjar",
+      "name": "Canopic Jar",
+      "current": [
+        "CROWD_CONTROL"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "capricorn",
+      "name": "Capricorn",
+      "current": [
+        "CROWD_CONTROL",
+        "ENEMY_VULNERABILITY",
+        "ATK_SPEED",
+        "HEAL"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "ATK_SPEED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENEMY_VULNERABILITY"
+        },
+        {
+          "tag": "HEAL"
+        }
+      ]
+    },
+    {
+      "id": "cronus",
+      "name": "Cronus",
+      "current": [
+        "CDR_TEAM",
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "BUFF_TEAM",
+        "ENERGY_DRAIN",
+        "REVIVE",
+        "ATK_DOWN",
+        "SUMMON",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE"
+      ],
+      "confirmed": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "ATK_DOWN",
+        "SUMMON",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CDR_TEAM"
+        },
+        {
+          "tag": "BUFF_TEAM"
+        },
+        {
+          "tag": "ENERGY_DRAIN"
+        },
+        {
+          "tag": "REVIVE"
+        }
+      ]
+    },
+    {
+      "id": "demeter",
+      "name": "Demeter",
+      "current": [
+        "SHIELD_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "CROWD_CONTROL",
+        "ENERGY_DRAIN",
+        "HEAL",
+        "CC_RESISTANCE",
+        "GAIN_ARMOR",
+        "DMG_RED",
+        "SHIELD"
+      ],
+      "confirmed": [
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "ENERGY_DRAIN",
+        "CC_RESISTANCE",
+        "DMG_RED",
+        "SHIELD"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DAMAGE_REDUCTION_TEAM"
+        },
+        {
+          "tag": "HEAL"
+        },
+        {
+          "tag": "GAIN_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "diana",
+      "name": "Diana",
+      "current": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "REDUCES_ATTRIBUTES",
+        "REMOVES_ARMOR",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "ENERGY_RESTORE"
+      ],
+      "confirmed": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "REDUCES_ATTRIBUTES",
+        "REMOVES_ARMOR",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "ENERGY_RESTORE"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "dionysus",
+      "name": "Dionysus",
+      "current": [
+        "ATK_SPD_UP",
+        "CC_IMMUNITY_TEAM",
+        "CDR_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ATK_UP",
+        "DMG_RED",
+        "HIT_AVOID",
+        "ATK_SPEED",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SELF_SUSTAIN"
+      ],
+      "confirmed": [
+        "ATK_SPD_UP",
+        "CC_IMMUNITY_TEAM",
+        "CDR_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "SHIELD_TEAM",
+        "DMG_RED",
+        "HIT_AVOID",
+        "ATK_SPEED",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SELF_SUSTAIN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DAMAGE_REDUCTION_TEAM"
+        },
+        {
+          "tag": "HEAL_TEAM"
+        },
+        {
+          "tag": "ATK_UP"
+        }
+      ]
+    },
+    {
+      "id": "eden",
+      "name": "Eden",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "eris",
+      "name": "Eris",
+      "current": [
+        "REMOVES_ARMOR",
+        "BASIC_ATTACK_SCALER",
+        "HIT_AVOID",
+        "SUMMON",
+        "HP_UP"
+      ],
+      "confirmed": [
+        "BASIC_ATTACK_SCALER",
+        "HIT_AVOID",
+        "SUMMON",
+        "HP_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REMOVES_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "fengyi",
+      "name": "Fengyi",
+      "current": [
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "ENERGY_RESTORE"
+      ],
+      "confirmed": [
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "ENERGY_RESTORE"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "freya",
+      "name": "Freya",
+      "current": [
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "CROWD_CONTROL",
+        "HEAL",
+        "HEAL_EFFECT_UP",
+        "SELF_SUSTAIN",
+        "CC_RESISTANCE",
+        "ENERGY_RESTORE",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "HEAL_TEAM",
+        "CROWD_CONTROL",
+        "HEAL",
+        "HEAL_EFFECT_UP",
+        "SELF_SUSTAIN",
+        "CC_RESISTANCE",
+        "ENERGY_RESTORE",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DAMAGE_REDUCTION_TEAM"
+        },
+        {
+          "tag": "ENERGY_RESTORE_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "geb",
+      "name": "Geb",
+      "current": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "HP_UP",
+        "ATK_DOWN"
+      ],
+      "confirmed": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "HP_UP",
+        "ATK_DOWN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini",
+      "current": [
+        "CROWD_CONTROL",
+        "GAIN_ARMOR",
+        "HEAL",
+        "REDUCES_ATTRIBUTES",
+        "SUMMON"
+      ],
+      "confirmed": [
+        "HEAL",
+        "SUMMON"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        },
+        {
+          "tag": "GAIN_ARMOR"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "hades",
+      "name": "Hades",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "hebo",
+      "name": "Hebo",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "hecate",
+      "name": "Hecate",
+      "current": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SUMMON",
+        "SELF_SUSTAIN",
+        "LIFE_STEAL_UP"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SUMMON",
+        "SELF_SUSTAIN",
+        "LIFE_STEAL_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "heket",
+      "name": "Heket",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "hela",
+      "name": "Hela",
+      "current": [
+        "ENERGY_DRAIN",
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "ENERGY_DRAIN",
+        "ENERGY_RESTORE",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "AREA_DAMAGE_DEALER"
+        },
+        {
+          "tag": "ATK_UP"
+        },
+        {
+          "tag": "HEAL"
+        }
+      ]
+    },
+    {
+      "id": "hephaestus",
+      "name": "Hephaestus",
+      "current": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "ATK_DOWN",
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR",
+        "SUMMON",
+        "AREA_DAMAGE_DEALER",
+        "REDUCES_ATTRIBUTES",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "HEAL_EFFECT_UP",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "ATK_DOWN",
+        "REMOVES_ARMOR",
+        "SUMMON",
+        "AREA_DAMAGE_DEALER",
+        "REDUCES_ATTRIBUTES",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "HEAL_EFFECT_UP",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DAMAGE_REDUCTION_TEAM"
+        },
+        {
+          "tag": "ATK_SPD_DOWN"
+        },
+        {
+          "tag": "CROWD_CONTROL"
+        }
+      ]
+    },
+    {
+      "id": "hera",
+      "name": "Hera",
+      "current": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "DMG_RED",
+        "ENERGY_DRAIN",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "HIT_AVOID",
+        "REDUCES_ATTRIBUTES",
+        "BASIC_ATTACK_SCALER",
+        "ATK_SPEED",
+        "ATK_UP"
+      ],
+      "confirmed": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "HIT_AVOID",
+        "BASIC_ATTACK_SCALER",
+        "ATK_SPEED",
+        "ATK_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENERGY_DRAIN"
+        },
+        {
+          "tag": "HEAL"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "heracles",
+      "name": "Heracles",
+      "current": [
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SHIELD",
+        "HP_UP",
+        "HIT_AVOID"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "DMG_RED",
+        "SHIELD",
+        "HP_UP",
+        "HIT_AVOID"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ATK_SPEED"
+        },
+        {
+          "tag": "ENERGY_RESTORE"
+        },
+        {
+          "tag": "HEAL"
+        }
+      ]
+    },
+    {
+      "id": "hladgunnr",
+      "name": "Hladgunnr",
+      "current": [
+        "BASIC_ATTACK_SCALER",
+        "ATK_UP",
+        "CC_RESISTANCE",
+        "DMG_RED",
+        "HEAL",
+        "LIFE_STEAL_UP",
+        "SHIELD",
+        "CROWD_CONTROL",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "BASIC_ATTACK_SCALER",
+        "CC_RESISTANCE",
+        "DMG_RED",
+        "HEAL",
+        "LIFE_STEAL_UP",
+        "SHIELD",
+        "CROWD_CONTROL",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ATK_UP"
+        }
+      ]
+    },
+    {
+      "id": "horus",
+      "name": "Horus",
+      "current": [
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR",
+        "ATK_SPEED",
+        "ATK_UP",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "REDUCES_ATTRIBUTES"
+      ],
+      "confirmed": [
+        "REMOVES_ARMOR",
+        "ATK_SPEED",
+        "ATK_UP",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "REDUCES_ATTRIBUTES"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        }
+      ]
+    },
+    {
+      "id": "iris",
+      "name": "Iris",
+      "current": [
+        "SUMMON",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPD_UP",
+        "ATK_SPEED",
+        "BUFF_TEAM",
+        "CROWD_CONTROL"
+      ],
+      "confirmed": [
+        "SUMMON",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPD_UP",
+        "ATK_SPEED",
+        "BUFF_TEAM",
+        "CROWD_CONTROL"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "isis",
+      "name": "Isis",
+      "current": [
+        "ATK_SPEED",
+        "ATK_UP",
+        "BASIC_ATTACK_SCALER",
+        "ATK_SPD_UP"
+      ],
+      "confirmed": [
+        "ATK_SPEED",
+        "ATK_UP",
+        "BASIC_ATTACK_SCALER",
+        "ATK_SPD_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "jinchan",
+      "name": "Jinchan",
+      "current": [
+        "HEAL_TEAM",
+        "GAIN_ARMOR"
+      ],
+      "confirmed": [
+        "HEAL_TEAM"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "GAIN_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "jingwei",
+      "name": "Jingwei",
+      "current": [
+        "ENEMY_VULNERABILITY",
+        "BASIC_ATTACK_SCALER",
+        "ATK_UP",
+        "CC_RESISTANCE"
+      ],
+      "confirmed": [
+        "ATK_UP",
+        "CC_RESISTANCE"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENEMY_VULNERABILITY"
+        },
+        {
+          "tag": "BASIC_ATTACK_SCALER"
+        }
+      ]
+    },
+    {
+      "id": "jiutianxuannv",
+      "name": "Jiutian Xuannv",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "jormungandr",
+      "name": "Jormungandr",
+      "current": [
+        "CROWD_CONTROL",
+        "ENEMY_VULNERABILITY",
+        "TAUNT",
+        "AREA_DAMAGE_DEALER",
+        "DMG_RED",
+        "SHIELD",
+        "SUMMON",
+        "HIT_AVOID",
+        "SELF_SUSTAIN"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "TAUNT",
+        "AREA_DAMAGE_DEALER",
+        "SHIELD",
+        "SUMMON",
+        "HIT_AVOID",
+        "SELF_SUSTAIN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENEMY_VULNERABILITY"
+        },
+        {
+          "tag": "DMG_RED"
+        }
+      ]
+    },
+    {
+      "id": "khepri",
+      "name": "Khepri",
+      "current": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SHIELD",
+        "CC_RESISTANCE",
+        "HIT_AVOID",
+        "HP_UP"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "SHIELD",
+        "CC_RESISTANCE",
+        "HIT_AVOID",
+        "HP_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        },
+        {
+          "tag": "HEAL"
+        }
+      ]
+    },
+    {
+      "id": "kraken",
+      "name": "Kraken",
+      "current": [
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        }
+      ]
+    },
+    {
+      "id": "leo",
+      "name": "Leo",
+      "current": [
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "ATK_UP",
+        "GAIN_ARMOR",
+        "CC_RESISTANCE",
+        "BASIC_ATTACK_SCALER",
+        "REDUCES_ATTRIBUTES"
+      ],
+      "confirmed": [
+        "REMOVES_ARMOR",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "CC_RESISTANCE",
+        "BASIC_ATTACK_SCALER",
+        "REDUCES_ATTRIBUTES"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        },
+        {
+          "tag": "ATK_UP"
+        },
+        {
+          "tag": "GAIN_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "libra",
+      "name": "Libra",
+      "current": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "ATK_UP",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "ATK_DOWN",
+        "SUMMON"
+      ],
+      "confirmed": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "ATK_UP",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "ATK_DOWN",
+        "SUMMON"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "medusa",
+      "name": "Medusa",
+      "current": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "HEAL"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "HEAL"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "mengpo",
+      "name": "Mengpo",
+      "current": [
+        "BUFF_TEAM",
+        "DEBUFF_CLEANSE_TEAM",
+        "HEAL_TEAM",
+        "REDUCES_ATTRIBUTES",
+        "ENERGY_RESTORE",
+        "HIT_AVOID",
+        "REVIVE",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "ENERGY_RESTORE_TEAM",
+        "DMG_RED",
+        "ATK_UP"
+      ],
+      "confirmed": [
+        "BUFF_TEAM",
+        "HEAL_TEAM",
+        "REDUCES_ATTRIBUTES",
+        "ENERGY_RESTORE",
+        "HIT_AVOID",
+        "REVIVE",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "ENERGY_RESTORE_TEAM",
+        "DMG_RED",
+        "ATK_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DEBUFF_CLEANSE_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "meret",
+      "name": "Meret",
+      "current": [
+        "BUFF_TEAM",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "HP_UP",
+        "SHIELD",
+        "SELF_SUSTAIN",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "HP_UP",
+        "SHIELD",
+        "SELF_SUSTAIN",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "BUFF_TEAM"
+        },
+        {
+          "tag": "DAMAGE_REDUCTION_TEAM"
+        },
+        {
+          "tag": "ENERGY_RESTORE_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "momus",
+      "name": "Momus",
+      "current": [
+        "DAMAGE_REDUCTION_TEAM",
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "TAUNT",
+        "DMG_RED",
+        "GAIN_ARMOR",
+        "HEAL",
+        "HIT_AVOID",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "CC_RESISTANCE",
+        "SUMMON"
+      ],
+      "confirmed": [
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "TAUNT",
+        "DMG_RED",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "CC_RESISTANCE",
+        "SUMMON"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DAMAGE_REDUCTION_TEAM"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        },
+        {
+          "tag": "GAIN_ARMOR"
+        },
+        {
+          "tag": "HEAL"
+        },
+        {
+          "tag": "HIT_AVOID"
+        }
+      ]
+    },
+    {
+      "id": "nemesis",
+      "name": "Nemesis",
+      "current": [
+        "REDUCES_ATTRIBUTES",
+        "ATK_UP",
+        "DODGE_BUFF",
+        "HIT_AVOID",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "ATK_UP",
+        "DODGE_BUFF",
+        "HIT_AVOID",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "nephtys",
+      "name": "Nephtys",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "nezha",
+      "name": "Nezha",
+      "current": [
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "ATK_UP",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "LIFE_STEAL_UP",
+        "SHIELD",
+        "REMOVES_ARMOR",
+        "SELF_SUSTAIN",
+        "GAIN_ARMOR",
+        "ENEMY_VULNERABILITY",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM"
+      ],
+      "confirmed": [
+        "BUFF_TEAM",
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "ATK_UP",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "LIFE_STEAL_UP",
+        "SHIELD",
+        "REMOVES_ARMOR",
+        "SELF_SUSTAIN",
+        "GAIN_ARMOR",
+        "ENEMY_VULNERABILITY",
+        "DAMAGE_REDUCTION_TEAM",
+        "ENERGY_RESTORE_TEAM"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "nuba",
+      "name": "Nuba",
+      "current": [
+        "BUFF_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "TAUNT",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SHIELD",
+        "REVIVE",
+        "ATK_SPEED",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "HEAL",
+        "SHIELD",
+        "REVIVE",
+        "ATK_SPEED",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "BUFF_TEAM"
+        },
+        {
+          "tag": "HEAL_TEAM"
+        },
+        {
+          "tag": "SHIELD_TEAM"
+        },
+        {
+          "tag": "TAUNT"
+        },
+        {
+          "tag": "ENERGY_RESTORE"
+        }
+      ]
+    },
+    {
+      "id": "nut",
+      "name": "Nut",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "nuwa",
+      "name": "Nuwa",
+      "current": [
+        "BUFF_TEAM",
+        "CC_IMMUNITY_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "TAUNT",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE",
+        "SUMMON",
+        "SHIELD",
+        "DMG_RED",
+        "BASIC_ATTACK_SCALER",
+        "HEAL"
+      ],
+      "confirmed": [
+        "BUFF_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "TAUNT",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE",
+        "SUMMON",
+        "SHIELD",
+        "DMG_RED",
+        "BASIC_ATTACK_SCALER",
+        "HEAL"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CC_IMMUNITY_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "nymphia",
+      "name": "Nymphia",
+      "current": [
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "AREA_DAMAGE_DEALER"
+        }
+      ]
+    },
+    {
+      "id": "nyx",
+      "name": "Nyx",
+      "current": [
+        "CROWD_CONTROL",
+        "ENERGY_DRAIN",
+        "REMOVES_ARMOR",
+        "ATK_UP",
+        "HIT_AVOID",
+        "AREA_DAMAGE_DEALER",
+        "DODGE_BUFF",
+        "SUMMON"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "REMOVES_ARMOR",
+        "ATK_UP",
+        "HIT_AVOID",
+        "AREA_DAMAGE_DEALER",
+        "DODGE_BUFF",
+        "SUMMON"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENERGY_DRAIN"
+        }
+      ]
+    },
+    {
+      "id": "pan",
+      "name": "Pan",
+      "current": [
+        "ATK_SPD_DOWN",
+        "CROWD_CONTROL",
+        "ENERGY_DRAIN",
+        "ENERGY_RESTORE"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "ENERGY_DRAIN",
+        "ENERGY_RESTORE"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ATK_SPD_DOWN"
+        }
+      ]
+    },
+    {
+      "id": "phoenix",
+      "name": "Phoenix",
+      "current": [
+        "ATK_SPEED",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "HIT_AVOID",
+        "REVIVE",
+        "HP_UP",
+        "AREA_DAMAGE_DEALER",
+        "SUMMON",
+        "BASIC_ATTACK_SCALER",
+        "SELF_SUSTAIN",
+        "HEAL_EFFECT_UP"
+      ],
+      "confirmed": [
+        "ATK_SPEED",
+        "ATK_UP",
+        "HEAL",
+        "HIT_AVOID",
+        "REVIVE",
+        "HP_UP",
+        "AREA_DAMAGE_DEALER",
+        "SUMMON",
+        "BASIC_ATTACK_SCALER",
+        "SELF_SUSTAIN",
+        "HEAL_EFFECT_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENERGY_RESTORE"
+        }
+      ]
+    },
+    {
+      "id": "pisces",
+      "name": "Pisces",
+      "current": [
+        "AREA_DAMAGE_DEALER",
+        "HEAL_TEAM",
+        "REDUCES_ATTRIBUTES",
+        "SHIELD_TEAM",
+        "BUFF_TEAM",
+        "SHIELD",
+        "SUMMON"
+      ],
+      "confirmed": [
+        "AREA_DAMAGE_DEALER",
+        "HEAL_TEAM",
+        "REDUCES_ATTRIBUTES",
+        "SHIELD_TEAM",
+        "BUFF_TEAM",
+        "SHIELD",
+        "SUMMON"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "poseidon",
+      "name": "Poseidon",
+      "current": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "SHIELD",
+        "SUMMON",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "SHIELD",
+        "SUMMON",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "prometheus",
+      "name": "Prometheus",
+      "current": [
+        "CROWD_CONTROL",
+        "ENEMY_VULNERABILITY",
+        "REMOVES_ARMOR",
+        "TAUNT",
+        "DMG_RED",
+        "GAIN_ARMOR",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "HP_UP"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "TAUNT",
+        "DMG_RED",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "HP_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENEMY_VULNERABILITY"
+        },
+        {
+          "tag": "REMOVES_ARMOR"
+        },
+        {
+          "tag": "GAIN_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "ratatoskr",
+      "name": "Ratatoskr",
+      "current": [
+        "CROWD_CONTROL"
+      ],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        }
+      ]
+    },
+    {
+      "id": "sagittarius",
+      "name": "Sagittarius",
+      "current": [
+        "REMOVES_ARMOR",
+        "ATK_UP",
+        "LIFE_STEAL_UP",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "ATK_UP",
+        "LIFE_STEAL_UP",
+        "SELF_SUSTAIN",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REMOVES_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "scorpio",
+      "name": "Scorpio",
+      "current": [
+        "ATK_DOWN",
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "SHIELD",
+        "ATK_UP",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "SHIELD",
+        "ATK_UP",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ATK_DOWN"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "sekhmet",
+      "name": "Sekhmet",
+      "current": [
+        "CROWD_CONTROL",
+        "BASIC_ATTACK_SCALER",
+        "ATK_SPEED",
+        "ATK_UP",
+        "DMG_RED",
+        "LIFE_STEAL_UP",
+        "AREA_DAMAGE_DEALER",
+        "SELF_SUSTAIN",
+        "BUFF_TEAM"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "BASIC_ATTACK_SCALER",
+        "ATK_SPEED",
+        "LIFE_STEAL_UP",
+        "AREA_DAMAGE_DEALER",
+        "SELF_SUSTAIN",
+        "BUFF_TEAM"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ATK_UP"
+        },
+        {
+          "tag": "DMG_RED"
+        }
+      ]
+    },
+    {
+      "id": "serket",
+      "name": "Serket",
+      "current": [
+        "SUMMON",
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "SHIELD",
+        "ATK_DOWN",
+        "HP_UP",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "DMG_RED"
+      ],
+      "confirmed": [
+        "SUMMON",
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "SHIELD",
+        "ATK_DOWN",
+        "HP_UP",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "DMG_RED"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "set",
+      "name": "Set",
+      "current": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "SHIELD_TEAM",
+        "REMOVES_ARMOR",
+        "ATK_UP",
+        "LIFE_STEAL_UP",
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "SELF_SUSTAIN",
+        "SHIELD",
+        "ATK_SPEED",
+        "BASIC_ATTACK_SCALER"
+      ],
+      "confirmed": [
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "SHIELD_TEAM",
+        "ATK_UP",
+        "LIFE_STEAL_UP",
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "SELF_SUSTAIN",
+        "SHIELD",
+        "ATK_SPEED",
+        "BASIC_ATTACK_SCALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REMOVES_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "skadi",
+      "name": "Skadi",
+      "current": [
+        "CROWD_CONTROL",
+        "ENEMY_VULNERABILITY",
+        "AREA_DAMAGE_DEALER",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "SUMMON",
+        "HIT_AVOID",
+        "SELF_SUSTAIN"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "AREA_DAMAGE_DEALER",
+        "ENERGY_RESTORE",
+        "SUMMON",
+        "HIT_AVOID",
+        "SELF_SUSTAIN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENEMY_VULNERABILITY"
+        },
+        {
+          "tag": "ATK_UP"
+        }
+      ]
+    },
+    {
+      "id": "surtr",
+      "name": "Surtr",
+      "current": [
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "ATK_UP",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "SUMMON"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "ATK_UP",
+        "SHIELD",
+        "AREA_DAMAGE_DEALER",
+        "SUMMON"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "tailao",
+      "name": "Tailao",
+      "current": [
+        "HEAL"
+      ],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "HEAL"
+        }
+      ]
+    },
+    {
+      "id": "taurus",
+      "name": "Taurus",
+      "current": [
+        "ATK_DOWN",
+        "TAUNT",
+        "GAIN_ARMOR",
+        "HEAL",
+        "SHIELD",
+        "ENEMY_VULNERABILITY",
+        "SELF_SUSTAIN"
+      ],
+      "confirmed": [
+        "ATK_DOWN",
+        "TAUNT",
+        "HEAL",
+        "SHIELD",
+        "ENEMY_VULNERABILITY",
+        "SELF_SUSTAIN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "GAIN_ARMOR"
+        }
+      ]
+    },
+    {
+      "id": "tefnut",
+      "name": "Tefnut",
+      "current": [
+        "DEBUFF_CLEANSE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ATK_DOWN",
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "ENERGY_RESTORE",
+        "AREA_DAMAGE_DEALER",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "SHIELD",
+        "DAMAGE_REDUCTION_TEAM",
+        "HIT_AVOID"
+      ],
+      "confirmed": [
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ATK_DOWN",
+        "CROWD_CONTROL",
+        "ENERGY_RESTORE",
+        "AREA_DAMAGE_DEALER",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "SHIELD",
+        "DAMAGE_REDUCTION_TEAM",
+        "HIT_AVOID"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "DEBUFF_CLEANSE_TEAM"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "treant",
+      "name": "Treant",
+      "current": [
+        "AREA_DAMAGE_DEALER",
+        "SHIELD"
+      ],
+      "confirmed": [
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "SHIELD"
+        }
+      ]
+    },
+    {
+      "id": "ullr",
+      "name": "Ullr",
+      "current": [
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "CROWD_CONTROL",
+        "HEAL",
+        "SHIELD",
+        "SELF_SUSTAIN",
+        "ENERGY_RESTORE",
+        "HP_UP"
+      ],
+      "confirmed": [
+        "CROWD_CONTROL",
+        "HEAL",
+        "SHIELD",
+        "SELF_SUSTAIN",
+        "ENERGY_RESTORE",
+        "HP_UP"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENERGY_RESTORE_TEAM"
+        },
+        {
+          "tag": "HEAL_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "ushabti",
+      "name": "Ushabti",
+      "current": [
+        "REDUCES_ATTRIBUTES"
+      ],
+      "confirmed": [
+        "REDUCES_ATTRIBUTES"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "virgo",
+      "name": "Virgo",
+      "current": [
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "REDUCES_ATTRIBUTES",
+        "SHIELD"
+      ],
+      "confirmed": [
+        "SHIELD_TEAM",
+        "CROWD_CONTROL",
+        "SHIELD"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        }
+      ]
+    },
+    {
+      "id": "wenshen",
+      "name": "Wen-Shen",
+      "current": [
+        "CROWD_CONTROL",
+        "ATK_DOWN",
+        "REDUCES_ATTRIBUTES",
+        "ENEMY_VULNERABILITY",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "confirmed": [
+        "ATK_DOWN",
+        "AREA_DAMAGE_DEALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "CROWD_CONTROL"
+        },
+        {
+          "tag": "REDUCES_ATTRIBUTES"
+        },
+        {
+          "tag": "ENEMY_VULNERABILITY"
+        }
+      ]
+    },
+    {
+      "id": "yanluo",
+      "name": "Yanluo",
+      "current": [
+        "ENERGY_RESTORE_TEAM",
+        "CROWD_CONTROL",
+        "ENEMY_VULNERABILITY",
+        "ENERGY_DRAIN",
+        "DMG_RED",
+        "ENERGY_RESTORE",
+        "HEAL",
+        "SELF_SUSTAIN"
+      ],
+      "confirmed": [
+        "ENERGY_RESTORE_TEAM",
+        "CROWD_CONTROL",
+        "ENERGY_DRAIN",
+        "HEAL",
+        "SELF_SUSTAIN"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ENEMY_VULNERABILITY"
+        },
+        {
+          "tag": "DMG_RED"
+        },
+        {
+          "tag": "ENERGY_RESTORE"
+        }
+      ]
+    },
+    {
+      "id": "yuelao",
+      "name": "Yuelao",
+      "current": [
+        "BUFF_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "SHIELD_TEAM",
+        "ATK_UP",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "ENERGY_RESTORE"
+      ],
+      "confirmed": [
+        "BUFF_TEAM",
+        "ENERGY_RESTORE_TEAM",
+        "HEAL_TEAM",
+        "ATK_UP",
+        "HEAL",
+        "SELF_SUSTAIN",
+        "ENERGY_RESTORE"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "SHIELD_TEAM"
+        }
+      ]
+    },
+    {
+      "id": "zaojun",
+      "name": "Zaojun",
+      "current": [],
+      "confirmed": [],
+      "suggestedAdd": [],
+      "flagRemove": []
+    },
+    {
+      "id": "zeus",
+      "name": "Zeus",
+      "current": [
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "ATK_UP",
+        "ENERGY_RESTORE",
+        "SUMMON",
+        "DODGE_BUFF",
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "BASIC_ATTACK_SCALER"
+      ],
+      "confirmed": [
+        "AREA_DAMAGE_DEALER",
+        "ATK_SPEED",
+        "ENERGY_RESTORE",
+        "SUMMON",
+        "DODGE_BUFF",
+        "ATK_SPD_UP",
+        "BUFF_TEAM",
+        "BASIC_ATTACK_SCALER"
+      ],
+      "suggestedAdd": [],
+      "flagRemove": [
+        {
+          "tag": "ATK_UP"
+        }
+      ]
+    }
+  ]
+}
