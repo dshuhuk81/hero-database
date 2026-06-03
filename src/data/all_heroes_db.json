@@ -1267,8 +1267,7 @@
       "ATK_SPEED",
       "HEAL",
       "SELF_SUSTAIN",
-      "AREA_DAMAGE_DEALER",
-      "ENERGY_RESTORE_TEAM"
+      "AREA_DAMAGE_DEALER"
     ],
     "baseAttackRate": 0.787,
     "bossUltimatesPer90s": 5,
@@ -10250,9 +10249,7 @@
       "REMOVES_ARMOR",
       "SELF_SUSTAIN",
       "GAIN_ARMOR",
-      "ENEMY_VULNERABILITY",
-      "DAMAGE_REDUCTION_TEAM",
-      "ENERGY_RESTORE_TEAM"
+      "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.732,
     "bossUltimatesPer90s": 5,
@@ -10762,8 +10759,7 @@
         "via": [
           "ATK_SPD_UP",
           "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "ENERGY_RESTORE_TEAM"
+          "CROWD_CONTROL"
         ]
       }
     ]

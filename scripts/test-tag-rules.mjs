@@ -93,6 +93,34 @@ test("suppressors: anti-heal and no-normals", () => {
   assert.ok(!noNormals.BASIC_ATTACK_SCALER, "no-normals suppresses BASIC_ATTACK_SCALER");
 });
 
+test("ally-as-trigger suppresses team scope (scope gate fix)", () => {
+  // Relic pattern: "when ally falls, HERO gains X" - ally is trigger, hero is recipient
+  const nezhaRelic = detectForHero(
+    fakeHero("Nezha", [
+      "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 15%, and reduces DMG taken by 10% for 25s.",
+    ]),
+    rules
+  );
+  assert.ok(!nezhaRelic.ENERGY_RESTORE_TEAM, "when-ally-falls sentence must not trigger ENERGY_RESTORE_TEAM");
+  assert.ok(!nezhaRelic.DAMAGE_REDUCTION_TEAM, "when-ally-falls sentence must not trigger DAMAGE_REDUCTION_TEAM");
+
+  // "until any ally falls" is a termination condition, not a recipient
+  const amunraSkill = detectForHero(
+    fakeHero("Amunra", [
+      "Amun-Ra gains Energy Regen boost, increasing his Energy Regen by 50%, until any ally falls.",
+    ]),
+    rules
+  );
+  assert.ok(!amunraSkill.ENERGY_RESTORE_TEAM, "until-ally sentence must not trigger ENERGY_RESTORE_TEAM");
+
+  // Legitimate team energy restore must still fire
+  const realTeam = detectForHero(
+    fakeHero("Tester", ["Restores 150 Energy to all allies when cast."]),
+    rules
+  );
+  assert.ok(realTeam.ENERGY_RESTORE_TEAM, "direct team energy restore must still fire");
+});
+
 test("real hero (nezha) detects core tags", () => {
   const nezha = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/heroes/nezha.json"), "utf8"));
   const hits = detectForHero(nezha, rules);

@@ -29,6 +29,12 @@ const ENEMY_RE = /\b(enem(?:y|ies)|target|foe|opponent)\b/i;
 const SELF_RE = /\b(himself|herself|itself|self)\b/i;
 const ANTIHEAL_RE = /(cannot be healed|healing (?:is )?reduced|reduce\w* healing|cannot receive (?:shields? or )?healing|prevents? healing)/i;
 const NONORMALS_RE = /no longer performs normal attacks/i;
+// Detects sentences where "ally" is a trigger condition or scaling factor rather than
+// the recipient of the buff. Sentences matching this pattern are excluded from
+// team-scope detection: the effect goes to the hero (self), not to allies.
+// Covers: "when[ever] an ally falls", "until any ally falls/dies",
+//         "per [surviving] ally", "for each [surviving] ally".
+const ALLY_TRIGGER_RE = /(?:\bwhen(?:ever)?\s+(?:an?\s+|any\s+)?ally\b[^,;.]*\b(?:fall|die|los|kill|elim)\w*|\buntil\s+(?:any\s+)?ally\b|\bper\s+(?:surviving\s+)?ally\b|\bfor\s+each\s+(?:surviving\s+)?ally\b)/i;
 
 export function loadRules() {
   const raw = JSON.parse(fs.readFileSync(RULES_FILE, "utf8"));
@@ -58,9 +64,12 @@ function heroSentences(hero) {
   }
   if (hero.relic?.description) parts.push(hero.relic.description);
   if (hero.relic?.upgrades) parts.push(...Object.values(hero.relic.upgrades).filter(Boolean));
-  // split into sentences; keep them readable as evidence
+  // Split at sentence boundaries AND at colon/semicolon clause boundaries.
+  // Colon/semicolon splits keep each clause independently scoreable so that a
+  // self-scaling suffix ("she gains X for each ally") cannot suppress detection
+  // of a prior team-buff clause in the same sentence.
   return parts
-    .flatMap((p) => String(p).split(/(?<=[.!])\s+/))
+    .flatMap((p) => String(p).split(/(?<=[.!])\s+|(?<=[;:])\s+/))
     .map((s) => s.trim())
     .filter(Boolean);
 }
@@ -70,7 +79,7 @@ function scopeOk(scope, s, heroNameRe) {
   const enemy = ENEMY_RE.test(s);
   const self = SELF_RE.test(s) || (heroNameRe && heroNameRe.test(s));
   switch (scope) {
-    case "team": return ally;
+    case "team": return ally && !ALLY_TRIGGER_RE.test(s);
     case "enemy": return enemy;
     case "self": return self || (!ally && !enemy);
     case "any": return true;
