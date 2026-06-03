@@ -2991,6 +2991,33 @@
   border-color: var(--accent-gold);
 }
 
+.roster-level-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: var(--space-1) var(--space-3);
+}
+
+.roster-level-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.roster-level-input {
+  width: 58px;
+  text-align: center;
+  border: none !important;
+  background: transparent !important;
+  padding: 2px 0 !important;
+  font-weight: var(--weight-semibold);
+}
+
 .roster-dropdown {
   position: absolute;
   top: 100%;

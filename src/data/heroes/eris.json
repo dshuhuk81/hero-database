@@ -45,54 +45,54 @@
     {
       "id": "skill_1",
       "name": "Puppet's Advent",
-      "description": "Eris fires a bullet at the enemy with the lowest HP, dealing 200% ATK as Physical DMG. Each Puppet also fires a bullet, dealing DMG equal to 300% of the Puppet's ATK.",
+      "description": "Eris unleashes a shot at the weakest enemy, dealing 200% ATK as DMG. Commands all puppets to synchronize fire for additional DMG equal to 300% of their ATK per shot.",
       "upgrades": {
-        "level2": "Eris's bullet DMG increases to 300% ATK.",
-        "level3": "Each Puppet bullet additionally deals DMG equal to 7.5% of the target's missing HP (up to 600% of the Puppet's ATK).",
-        "level4": "Eris's bullet additionally deals DMG equal to 15% of the target's Max HP (up to 500% of Eris's ATK)."
+        "level2": "Eris's shot deals 300% ATK as DMG.",
+        "level3": "Each Puppet shot deals bonus DMG equal to 7.5% of the target's lost HP (up to 600% of the puppets ATK).",
+        "level4": "Eris's shot deals bonus DMG equal to 15% of the target's max HP (up to 500% of Eris's ATK)."
       },
       "damageType": "Physical",
       "isUltimate": true
     },
     {
       "id": "skill_2",
-      "name": "Mystic Threads",
-      "description": "Fires a bullet dealing 100% DMG to the target and summons a Puppet for 30s. The Puppet inherits 20% of Eris's ATK and Max HP. Puppets attack whenever Eris performs a Basic Attack, dealing DMG equal to 100% of their ATK. Eris can have up to 3 Puppets.",
+      "name": "Secret Strands",
+      "description": "Unleashes a shot to deal 100% DMG to the target and summons a Puppet for 30s. Puppets: Inherit 20% of Eris's ATK and Max HP. Puppets cannot move or act independently; instead they assist Eris's Normal Attacks regardless of distance, dealing 100% of their ATK as DMG. Max 3 Puppets.",
       "upgrades": {
-        "level2": "Puppet inheritance increases to 30% of Eris's ATK and Max HP.",
-        "level3": "Each Basic Attack reduces this skill's cooldown by 0.5s.",
-        "level4": "Puppets inherit 60% of Eris's ATK and 30% of Eris's Max HP."
+        "level2": "Puppet: Inherits 30% of Eris's ATK and Max HP.",
+        "level3": "Each of Eris's Normal Attack reduces this skill's CD by 0.5s.",
+        "level4": "Puppet: Inherits 60% of Eris's ATK and 30% of Max HP."
       },
       "damageType": "Physical"
     },
     {
       "id": "skill_3",
-      "name": "Puppet Decoy",
-      "description": "When Eris takes lethal damage, she becomes untargetable for 3s. This effect has a 30s cooldown.",
+      "name": "Requiem of Strings",
+      "description": "Upon the defeat of any non-puppet ally (including Deitys and Minions), summons 1 puppet at their position (Passive). Max 3 puppets, each lasting 25s. Puppet: inherits 60% of Eris's ATK and 30% max HP.",
       "upgrades": {
-        "level2": "Untargetable duration increases to 6s.",
-        "level3": "Cooldown decreases to 25s.",
-        "level4": "When Eris participates in killing an enemy unit, this skill's cooldown is reduced by 7.5s."
+        "level2": "Max 5 puppets.",
+        "level3": "Max 7 puppets.",
+        "level4": "Puppet duration extends to 35s."
       }
     },
     {
       "id": "skill_4",
-      "name": "Summoning Threads",
-      "description": "Passive: When any allied unit other than a Puppet falls, summon 1 Puppet at their location. Puppets last 25s and inherit 60% of Eris's ATK and 30% of her Max HP. Maximum 3 Puppets.",
+      "name": "Puppet Sacrifice",
+      "description": "Upon taking Lethal DMG, Eris becomes untargetable for 3s. CD: 30s.",
       "upgrades": {
-        "level2": "Maximum Puppets increases to 5.",
-        "level3": "Maximum Puppets increases to 7.",
-        "level4": "Puppet duration increases to 35s."
+        "level2": "Duration extends to 6s.",
+        "level3": "CD decreases to 25s.",
+        "level4": "When Eris secures a kill, this skill's CD is reduced by 7.5s."
       }
     }
   ],
   "relic": {
-    "name": "Puppet's Hex",
-    "description": "Eris marks her current target. Damage dealt by Eris and her Puppets ignores 30% of the target's DEF.",
+    "name": "Curse of Puppets",
+    "description": "Eris marks an enemy, ignoring 30% of the target's DEF when she and her puppets deal DMG (passive).",
     "upgrades": {
-      "level2": "Ignore 60% DEF.",
-      "level3": "Enemy Deity deaths can also trigger Puppet summoning.",
-      "level4": "Ignore 90% DEF."
+      "level2": "Ignores 60% of the target's DEF.",
+      "level3": "Summons puppets upon the defeat an enemy Deitys.",
+      "level4": "Ignores 90% of the target's DEF."
     }
   },
   "synergies": [

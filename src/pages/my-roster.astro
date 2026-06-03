@@ -18,6 +18,17 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
         <p class="page-subtitle" id="rosterSubtitle">Loading...</p>
       </div>
       <div class="roster-actions" id="editActions">
+        <div class="roster-level-wrap">
+          <label class="roster-level-label" for="globalLevel">Hero Level</label>
+          <input
+            type="number"
+            class="roster-input roster-level-input"
+            id="globalLevel"
+            min="1"
+            max="300"
+            value="300"
+          />
+        </div>
         <div class="roster-picker-wrap">
           <input
             type="text"
@@ -51,12 +62,37 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
 <div class="roster-share-toast" id="shareToast">Link copied!</div>
 
 <script define:vars={{ heroList }}>
-  const EVOLUTIONS = ["None", "Divine I", "Divine II", "Divine III", "Divine IV", "Divine V"];
+  const EVOLUTIONS = [
+    "None",
+    "Epic", "Epic+",
+    "Legendary", "Legendary+",
+    "Exalted", "Exalted+",
+    "Mythic",
+    "Divine", "Divine I", "Divine II", "Divine III", "Divine IV", "Divine V"
+  ];
   const STORAGE_KEY = "hero-roster-v1";
 
   const heroes = heroList;
-  let roster = [];
-  let isViewMode = false;
+  // rosterData shape: { level: number, heroes: [{id, relic, evolution}] }
+  var rosterData = { level: 300, heroes: [] };
+  var isViewMode = false;
+
+  // --- normalize old array format or new object format ---
+  function normalizeRosterData(raw) {
+    if (Array.isArray(raw)) {
+      var lvl = (raw.length > 0 && raw[0].level) ? raw[0].level : 300;
+      return {
+        level: lvl,
+        heroes: raw.map(function(h) {
+          return { id: h.id, relic: h.relic != null ? h.relic : 30, evolution: h.evolution || "None" };
+        })
+      };
+    }
+    if (raw && typeof raw === "object" && Array.isArray(raw.heroes)) {
+      return raw;
+    }
+    return { level: 300, heroes: [] };
+  }
 
   function encodeRoster(data) {
     return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
@@ -71,14 +107,15 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
   }
 
   function saveRoster() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(roster));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rosterData));
   }
 
   function loadRoster() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      var raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return normalizeRosterData(raw);
     } catch (_) {
-      return [];
+      return { level: 300, heroes: [] };
     }
   }
 
@@ -108,7 +145,6 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
         + '<div class="roster-card-name">' + hero.name + '</div>'
         + '<div><span class="' + evoBadgeClass + '">' + evo + '</span></div>'
         + '<div class="roster-card-stats">'
-        + '<span class="roster-stat-label">Lv</span><span class="roster-stat-value">' + entry.level + '</span>'
         + '<span class="roster-stat-label">Relic</span><span class="roster-stat-value">' + entry.relic + '</span>'
         + '</div>'
         + '</div>'
@@ -126,10 +162,6 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
       + '<div class="roster-card-name">' + hero.name + '</div>'
       + '<div class="roster-card-inputs">'
       + '<div class="roster-input-row">'
-      + '<span class="roster-input-label">Lv</span>'
-      + '<input class="roster-input" type="number" min="1" max="300" value="' + entry.level + '" data-field="level" data-hero="' + entry.id + '" />'
-      + '</div>'
-      + '<div class="roster-input-row">'
       + '<span class="roster-input-label">Relic</span>'
       + '<input class="roster-input" type="number" min="0" max="30" value="' + entry.relic + '" data-field="relic" data-hero="' + entry.id + '" />'
       + '</div>'
@@ -144,18 +176,18 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
 
   function renderGrid() {
     var grid = document.getElementById("rosterGrid");
-    if (roster.length === 0) {
+    if (rosterData.heroes.length === 0) {
       grid.innerHTML = '<div class="roster-empty">No heroes added yet.</div>';
       return;
     }
-    grid.innerHTML = roster.map(cardHtml).join("");
+    grid.innerHTML = rosterData.heroes.map(cardHtml).join("");
     applyBgImages(grid);
 
     if (!isViewMode) {
       grid.querySelectorAll("[data-remove]").forEach(function(btn) {
         btn.addEventListener("click", function() {
           var id = btn.dataset.remove;
-          roster = roster.filter(function(e) { return e.id !== id; });
+          rosterData.heroes = rosterData.heroes.filter(function(e) { return e.id !== id; });
           saveRoster();
           renderGrid();
           updateSubtitle();
@@ -166,7 +198,7 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
         input.addEventListener("change", function() {
           var id = input.dataset.hero;
           var field = input.dataset.field;
-          var entry = roster.find(function(e) { return e.id === id; });
+          var entry = rosterData.heroes.find(function(e) { return e.id === id; });
           if (entry) {
             if (field === "evolution") {
               entry[field] = input.value;
@@ -182,14 +214,14 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
 
   function updateSubtitle() {
     var el = document.getElementById("rosterSubtitle");
-    var n = roster.length;
-    el.textContent = n === 0 ? "No heroes added" : (n + " hero" + (n === 1 ? "" : "s"));
+    var n = rosterData.heroes.length;
+    el.textContent = n === 0 ? "No heroes added" : (n + " hero" + (n === 1 ? "" : "s") + " - Lv " + rosterData.level);
   }
 
   function buildDropdown(filter) {
     var dropdown = document.getElementById("heroDropdown");
     var addedIds = {};
-    roster.forEach(function(e) { addedIds[e.id] = true; });
+    rosterData.heroes.forEach(function(e) { addedIds[e.id] = true; });
 
     var filtered = heroes.filter(function(h) {
       return h.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
@@ -220,8 +252,8 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
   }
 
   function addHero(id) {
-    if (roster.find(function(e) { return e.id === id; })) return;
-    roster.push({ id: id, level: 300, relic: 30, evolution: "None" });
+    if (rosterData.heroes.find(function(e) { return e.id === id; })) return;
+    rosterData.heroes.push({ id: id, relic: 30, evolution: "None" });
     saveRoster();
     renderGrid();
     updateSubtitle();
@@ -240,7 +272,17 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
   }
 
   function initEditMode() {
-    roster = loadRoster();
+    rosterData = loadRoster();
+
+    var levelInput = document.getElementById("globalLevel");
+    levelInput.value = rosterData.level;
+
+    levelInput.addEventListener("change", function() {
+      rosterData.level = parseInt(levelInput.value, 10) || 300;
+      saveRoster();
+      updateSubtitle();
+    });
+
     renderGrid();
     updateSubtitle();
 
@@ -265,8 +307,8 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
     });
 
     document.getElementById("shareBtn").addEventListener("click", function() {
-      if (roster.length === 0) { showToast("Add heroes first!"); return; }
-      var encoded = encodeRoster(roster);
+      if (rosterData.heroes.length === 0) { showToast("Add heroes first!"); return; }
+      var encoded = encodeRoster(rosterData);
       var url = location.origin + location.pathname + "?r=" + encoded;
       navigator.clipboard.writeText(url).then(function() {
         showToast("Link copied to clipboard!");
@@ -277,7 +319,7 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
 
     document.getElementById("clearBtn").addEventListener("click", function() {
       if (!confirm("Clear all heroes from roster?")) return;
-      roster = [];
+      rosterData.heroes = [];
       saveRoster();
       renderGrid();
       updateSubtitle();
@@ -286,21 +328,21 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
 
   function initViewMode(encoded) {
     isViewMode = true;
-    var decoded = decodeRoster(encoded);
-    if (!decoded || !Array.isArray(decoded)) {
+    var raw = decodeRoster(encoded);
+    if (!raw) {
       document.getElementById("rosterGrid").innerHTML = '<div class="roster-empty">Invalid roster link.</div>';
       document.getElementById("rosterSubtitle").textContent = "Invalid link";
       return;
     }
-    roster = decoded;
+    rosterData = normalizeRosterData(raw);
 
     document.getElementById("editActions").hidden = true;
     document.getElementById("viewActions").hidden = false;
     document.getElementById("viewInfo").hidden = false;
-    var n = roster.length;
-    var countStr = n + " hero" + (n === 1 ? "" : "s");
+    var n = rosterData.heroes.length;
+    var countStr = n + " hero" + (n === 1 ? "" : "s") + " - Lv " + rosterData.level;
     document.getElementById("viewHeroCount").textContent = countStr;
-    document.getElementById("rosterSubtitle").textContent = countStr;
+    document.getElementById("rosterSubtitle").textContent = n + " hero" + (n === 1 ? "" : "s");
 
     renderGrid();
   }
