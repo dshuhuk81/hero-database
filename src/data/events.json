@@ -1,5 +1,78 @@
 {
   "campaigns": [
+    ,
+    {
+      "id": "eris-campaign",
+      "name": "Eris Campaign",
+      "hero": "eris",
+      "description": "Complete PVE campaign stages using Eris and allies",
+      "stages": [
+        {
+          "id": 1,
+          "name": "1. Internal Strife",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        },
+        {
+          "id": 2,
+          "name": "2. Your Heart's Desire",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        },
+        {
+          "id": 3,
+          "name": "3. Battle of Interrogation",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        },
+        {
+          "id": 4,
+          "name": "4. Safeguard's Flip Side",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        },
+        {
+          "id": 5,
+          "name": "5. Who Would Serve",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        },
+        {
+          "id": 6,
+          "name": "6. Shadow of the Forest",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        },
+        {
+          "id": 7,
+          "name": "7. Widening Crack",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        },
+        {
+          "id": 8,
+          "name": "8. A Faltering Team",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "eris", ""]
+          }
+        }
+      ]
+    },
     {
       "id": "hera-campaign",
       "name": "Hera Campaign",
@@ -52,78 +125,6 @@
           "composition": {
             "front": ["momus", "poseidon"],
             "back": ["skadi", "anubis", "hera"]
-          }
-        }
-      ]
-    },
-    {
-      "id": "serket-campaign",
-      "name": "Serket Campaign",
-      "hero": "serket",
-      "description": "Complete PVE campaign stages using Serket and allies",
-      "stages": [
-        {
-          "id": 1,
-          "name": "1. First-Sin: Nameless",
-          "composition": {
-            "front": ["serket", ""],
-            "back": ["", "", ""]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Second-Sin: No Return",
-          "composition": {
-            "front": ["taurus", "libra"],
-            "back": ["sagittarius", "cancer", "serket"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. Third-Sin: Complicity",
-          "composition": {
-            "front": ["libra", "sagittarius"],
-            "back": ["serket", "cancer", "virgo"]
-          }
-        },
-        {
-          "id": 4,
-          "name": "4. Brief Union",
-          "composition": {
-            "front": ["serket", "sagittarius"],
-            "back": ["phoenix", "athena", "set"]
-          }
-        },
-        {
-          "id": 5,
-          "name": "5. Guild Bearer",
-          "composition": {
-            "front": ["leo", "bastet"],
-            "back": ["phoenix", "athena", "serket"]
-          }
-        },
-        {
-          "id": 6,
-          "name": "6. Sentence of Solitude",
-          "composition": {
-            "front": ["leo", "set"],
-            "back": ["bastet", "serket", "phoenix"]
-          }
-        },
-        {
-          "id": 7,
-          "name": "7. Penalty of Abondonment",
-          "composition": {
-            "front": ["athena", "sagittarius"],
-            "back": ["leo", "serket", "bastet"]
-          }
-        },
-        {
-          "id": 8,
-          "name": "8. Dance with Scorpions",
-          "composition": {
-            "front": ["poseidon", "momus"],
-            "back": ["khepri", "skadi", "tefnut"]
           }
         }
       ]

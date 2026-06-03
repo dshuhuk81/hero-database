@@ -3824,7 +3824,8 @@
     "id": "eris",
     "name": "Eris",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/eris.webp",
-    "release": false,
+    "release": true,
+    "newHero": true,
     "faction": "Clubs",
     "role": "Nimble",
     "class": "Archer",
@@ -6011,7 +6012,7 @@
       "depthRating": "",
       "commonlyMisunderstood": false
     },
-    "newHero": true,
+    "newHero": false,
     "activeBug": false,
     "activeBugNotes": "",
     "recommendedRelicLevel": null,
