@@ -98,14 +98,14 @@
     }
   },
   "synergies": [
-    "ENERGY_RESTORE_TEAM",
-    "ATK_DOWN",
-    "CROWD_CONTROL",
-    "AREA_DAMAGE_DEALER",
-    "CC_RESISTANCE",
-    "DODGE_BUFF",
-    "ENERGY_RESTORE",
-    "HEAL"
+    "TEAM_ENERGY_RESTORE",
+    "ENEMY_ATK_DOWN",
+    "ENEMY_CROWD_CONTROL",
+    "PLAYSTYLE_AREA_DAMAGE",
+    "SELF_CC_RESISTANCE",
+    "SELF_DODGE",
+    "SELF_ENERGY_RESTORE",
+    "SELF_HEAL"
   ],
   "baseAttackRate": 1.401,
   "bossUltimatesPer90s": 5,
@@ -167,55 +167,55 @@
     {
       "heroId": "nezha",
       "via": [
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION",
         "ENEMY_VULNERABILITY",
-        "DAMAGE_REDUCTION_TEAM",
-        "ENERGY_RESTORE_TEAM"
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_ENERGY_RESTORE"
       ]
     },
     {
       "heroId": "hephaestus",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_ENERGY_RESTORE",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION"
       ]
     },
     {
       "heroId": "dionysus",
       "via": [
-        "ATK_SPD_UP",
-        "CDR_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "SHIELD_TEAM",
+        "TEAM_ATK_SPD_UP",
+        "TEAM_CDR",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_SHIELD",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "athena",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "SHIELD_TEAM",
-        "CROWD_CONTROL",
-        "ENERGY_RESTORE_TEAM"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_SHIELD",
+        "ENEMY_CROWD_CONTROL",
+        "TEAM_ENERGY_RESTORE"
       ]
     },
     {
       "heroId": "set",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "SHIELD_TEAM",
-        "REMOVES_ARMOR",
-        "CROWD_CONTROL"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_SHIELD",
+        "ENEMY_ARMOR_REDUCTION",
+        "ENEMY_CROWD_CONTROL"
       ]
     }
   ]

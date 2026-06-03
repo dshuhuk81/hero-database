@@ -430,6 +430,32 @@ const kpis = [
         </section>
 
         <section class="edit-section">
+          <div class="section-title-row">
+            <div>
+              <h3>Synergy Partners</h3>
+              <p>Heroes this hero pairs well with in team compositions.</p>
+            </div>
+            <button class="list-add-btn" type="button" id="addPartnerBtn">Add</button>
+          </div>
+          <div id="partnerList" class="partner-list"></div>
+          <div class="partner-add-form" id="partnerAddForm" hidden>
+            <div class="partner-hero-search-wrap">
+              <input id="partnerHeroSearch" type="search" placeholder="Search hero by name..." autocomplete="off" />
+              <div id="partnerHeroResults" class="partner-hero-results" hidden></div>
+            </div>
+            <div id="partnerSelectedHero" class="partner-selected-hero" hidden></div>
+            <div class="partner-via-section" id="partnerViaSection" hidden>
+              <span class="partner-via-label">Via tags (shared synergies):</span>
+              <div id="partnerViaTags" class="partner-via-tags"></div>
+            </div>
+            <div class="partner-add-actions">
+              <button class="secondary-action" type="button" id="cancelAddPartner">Cancel</button>
+              <button class="primary-action" type="button" id="confirmAddPartner" disabled>Add partner</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="edit-section">
           <h3>Investment</h3>
           <div class="two-field-grid">
             <label>
@@ -529,6 +555,9 @@ const kpis = [
     let tagGroups = [];
     let selectedSynergies = new Set();
     let editorialLists = { strengths: [], weaknesses: [] };
+    let synergyPartners: { heroId: string; via: string[] }[] = [];
+    let allHeroesList: { id: string; name: string; class: string; synergies: string[] }[] = [];
+    let pendingPartner: { heroId: string | null; via: Set<string> } = { heroId: null, via: new Set() };
 
     function setEditStatus(message, tone = "neutral") {
       if (!editStatus) return;
@@ -662,6 +691,156 @@ const kpis = [
       return tagGroups;
     }
 
+    async function loadAllHeroes() {
+      if (allHeroesList.length) return allHeroesList;
+      allHeroesList = await apiFetch("/api/heroes");
+      return allHeroesList;
+    }
+
+    function renderPartnerList() {
+      const container = document.getElementById("partnerList");
+      if (!container) return;
+      container.innerHTML = "";
+      if (!synergyPartners.length) {
+        const empty = document.createElement("span");
+        empty.className = "partner-list-empty";
+        empty.textContent = "No synergy partners added yet.";
+        container.append(empty);
+        return;
+      }
+      for (const [index, partner] of synergyPartners.entries()) {
+        const heroEntry = allHeroesList.find((h) => h.id === partner.heroId);
+        const heroName = heroEntry ? heroEntry.name : partner.heroId;
+
+        const card = document.createElement("div");
+        card.className = "partner-card";
+
+        const info = document.createElement("div");
+        info.className = "partner-card-info";
+
+        const nameEl = document.createElement("strong");
+        nameEl.className = "partner-card-name";
+        nameEl.textContent = heroName;
+
+        const viaTags = document.createElement("div");
+        viaTags.className = "partner-card-via";
+        for (const tag of partner.via || []) {
+          const pill = document.createElement("span");
+          pill.className = "partner-via-pill";
+          pill.textContent = formatTagLabel(tag);
+          viaTags.append(pill);
+        }
+
+        info.append(nameEl, viaTags);
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "list-remove-btn";
+        removeBtn.type = "button";
+        removeBtn.textContent = "Remove";
+        removeBtn.setAttribute("aria-label", `Remove ${heroName} as synergy partner`);
+        removeBtn.addEventListener("click", () => {
+          synergyPartners.splice(index, 1);
+          renderPartnerList();
+        });
+
+        card.append(info, removeBtn);
+        container.append(card);
+      }
+    }
+
+    function renderPartnerHeroResults(query) {
+      const resultsEl = document.getElementById("partnerHeroResults");
+      if (!resultsEl) return;
+      const q = query.trim().toLowerCase();
+      const filtered = q
+        ? allHeroesList.filter((h) => h.name.toLowerCase().includes(q) || h.id.includes(q))
+        : allHeroesList;
+      const existingIds = new Set(synergyPartners.map((p) => p.heroId));
+      const available = filtered.filter((h) => !existingIds.has(h.id)).slice(0, 8);
+
+      resultsEl.innerHTML = "";
+      if (!available.length) {
+        resultsEl.hidden = !q;
+        return;
+      }
+      resultsEl.hidden = false;
+      for (const hero of available) {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "partner-result-item";
+        item.textContent = hero.name;
+        item.addEventListener("click", () => {
+          pendingPartner.heroId = hero.id;
+          const searchEl = document.getElementById("partnerHeroSearch");
+          if (searchEl) searchEl.value = hero.name;
+          resultsEl.hidden = true;
+          const selectedEl = document.getElementById("partnerSelectedHero");
+          if (selectedEl) {
+            selectedEl.textContent = `Selected: ${hero.name}`;
+            selectedEl.hidden = false;
+          }
+          const viaSection = document.getElementById("partnerViaSection");
+          if (viaSection) viaSection.hidden = false;
+          renderPartnerViaTags();
+          const confirmBtn = document.getElementById("confirmAddPartner");
+          if (confirmBtn) confirmBtn.disabled = false;
+        });
+        resultsEl.append(item);
+      }
+    }
+
+    function renderPartnerViaTags() {
+      const container = document.getElementById("partnerViaTags");
+      if (!container) return;
+      container.innerHTML = "";
+      const allTags = tagGroups.flatMap((g) => g.tags || []).sort();
+      for (const tag of allTags) {
+        const label = document.createElement("label");
+        label.className = "partner-via-chip";
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.value = tag;
+        input.checked = pendingPartner.via.has(tag);
+        input.addEventListener("change", () => {
+          if (input.checked) {
+            pendingPartner.via.add(tag);
+          } else {
+            pendingPartner.via.delete(tag);
+          }
+          label.classList.toggle("selected", input.checked);
+        });
+
+        const span = document.createElement("span");
+        span.textContent = formatTagLabel(tag);
+
+        label.classList.toggle("selected", input.checked);
+        label.append(input, span);
+        container.append(label);
+      }
+    }
+
+    function openPartnerAddForm() {
+      pendingPartner = { heroId: null, via: new Set() };
+      const addForm = document.getElementById("partnerAddForm");
+      const searchEl = document.getElementById("partnerHeroSearch");
+      const resultsEl = document.getElementById("partnerHeroResults");
+      const selectedEl = document.getElementById("partnerSelectedHero");
+      const viaSection = document.getElementById("partnerViaSection");
+      const confirmBtn = document.getElementById("confirmAddPartner");
+      if (addForm) addForm.hidden = false;
+      if (searchEl) searchEl.value = "";
+      if (resultsEl) resultsEl.hidden = true;
+      if (selectedEl) selectedEl.hidden = true;
+      if (viaSection) viaSection.hidden = true;
+      if (confirmBtn) confirmBtn.disabled = true;
+    }
+
+    function closePartnerAddForm() {
+      const addForm = document.getElementById("partnerAddForm");
+      if (addForm) addForm.hidden = true;
+    }
+
     function updateSynergyCount() {
       if (!synergyCount) return;
       synergyCount.textContent = `${selectedSynergies.size} selected`;
@@ -690,6 +869,7 @@ const kpis = [
         .map((part) => {
           const known = {
             atk: "ATK",
+            spd: "SPD",
             aoe: "AoE",
             cc: "CC",
             cdr: "CDR",
@@ -874,7 +1054,9 @@ const kpis = [
       setField("coreMechanicDepth", coreMechanic.depthRating);
       setField("coreMechanicMisunderstood", coreMechanic.commonlyMisunderstood);
       selectedSynergies = new Set(hero.synergies || []);
+      synergyPartners = [...(hero.synergyPartners || [])];
       setEditorialLists(hero);
+      renderPartnerList();
 
       for (const field of ["overall", "pvp", "pve", "pveEarly", "pveLate"]) {
         setField(field, ratings?.[field] || "");
@@ -892,14 +1074,19 @@ const kpis = [
       editForm.reset();
       selectedSynergies = new Set();
       editorialLists = { strengths: [], weaknesses: [] };
+      synergyPartners = [];
+      pendingPartner = { heroId: null, via: new Set() };
       renderEditorialList("strengths");
       renderEditorialList("weaknesses");
+      renderPartnerList();
+      closePartnerAddForm();
       if (tagSearch) tagSearch.value = "";
       renderTagPicker();
       setEditStatus("Loading hero content...");
       try {
         await verifyAdminCapabilities();
         await loadTagGroups();
+        await loadAllHeroes();
         const payload = await apiFetch(`/api/admin/heroes/${heroId}`);
         fillEditForm(payload);
         setEditStatus("Ready. Changes are written to local JSON files.", "ok");
@@ -956,6 +1143,22 @@ const kpis = [
         editorialLists[type].push("");
         renderEditorialList(type);
       });
+    });
+
+    document.getElementById("addPartnerBtn")?.addEventListener("click", openPartnerAddForm);
+    document.getElementById("cancelAddPartner")?.addEventListener("click", closePartnerAddForm);
+    document.getElementById("confirmAddPartner")?.addEventListener("click", () => {
+      if (!pendingPartner.heroId) return;
+      synergyPartners.push({ heroId: pendingPartner.heroId, via: [...pendingPartner.via].sort() });
+      closePartnerAddForm();
+      renderPartnerList();
+    });
+    document.getElementById("partnerHeroSearch")?.addEventListener("input", (event) => {
+      renderPartnerHeroResults((event.target as HTMLInputElement).value);
+    });
+    document.getElementById("partnerHeroSearch")?.addEventListener("focus", (event) => {
+      const val = (event.target as HTMLInputElement).value;
+      if (val) renderPartnerHeroResults(val);
     });
 
     editClose?.addEventListener("click", closeDrawer);
@@ -1016,6 +1219,11 @@ const kpis = [
           body: JSON.stringify({
             synergies: [...selectedSynergies].sort(),
           }),
+        }));
+
+        saveResponses.push(await apiFetch(`/api/heroes/${heroId}/synergy-partners`, {
+          method: "POST",
+          body: JSON.stringify({ partners: synergyPartners }),
         }));
 
         updateVisibleRow(heroId);
@@ -1829,6 +2037,165 @@ const kpis = [
     color: var(--text-muted);
     font-size: var(--text-xs);
   }
+
+  /* ---- Synergy Partners ---- */
+  :global(.partner-list) {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  :global(.partner-list-empty) {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+
+  :global(.partner-card) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: start;
+    padding: 8px 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  :global(.partner-card-info) {
+    display: grid;
+    gap: 4px;
+  }
+
+  :global(.partner-card-name) {
+    font-size: var(--text-sm);
+    color: var(--text-bright);
+  }
+
+  :global(.partner-card-via) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  :global(.partner-via-pill) {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  :global(.partner-add-form) {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.03);
+    margin-top: 4px;
+  }
+
+  :global(.partner-hero-search-wrap) {
+    position: relative;
+  }
+
+  :global(.partner-hero-search-wrap input) {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  :global(.partner-hero-results) {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: grid;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--surface-elevated, #1a1826);
+    overflow: hidden;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  :global(.partner-result-item) {
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--text-sm);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  :global(.partner-result-item:hover) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  :global(.partner-selected-hero) {
+    font-size: var(--text-sm);
+    color: var(--accent-gold);
+  }
+
+  :global(.partner-via-label) {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+  }
+
+  :global(.partner-via-tags) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-height: 140px;
+    overflow-y: auto;
+  }
+
+  :global(.partner-via-chip) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    cursor: pointer;
+  }
+
+  :global(.partner-via-chip input) {
+    display: none;
+  }
+
+  :global(.partner-via-chip:hover) {
+    border-color: var(--border-medium);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  :global(.partner-via-chip.selected) {
+    border-color: var(--accent-gold);
+    background: rgba(var(--accent-gold-rgb, 184, 148, 66), 0.12);
+    color: var(--accent-gold);
+  }
+
+  :global(.partner-add-actions) {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  :global(.partner-via-section) {
+    display: grid;
+    gap: 6px;
+  }
+  /* ---- end Synergy Partners ---- */
 
   .tag-toolbar {
     display: grid;

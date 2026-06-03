@@ -124,15 +124,15 @@ export async function synergyPotentialForHero(hero) {
   let s = 0;
 
   // TEAM SUPPORT ONLY - counts toward synergy score
-  if (has(SYNERGY_TAGS.ENERGY_RESTORE_TEAM)) s += 10;
-  if (has(SYNERGY_TAGS.CDR_TEAM)) s += 8;
-  if (has(SYNERGY_TAGS.ATK_SPD_UP)) s += 4;
-  if (has(SYNERGY_TAGS.BUFF_TEAM)) s += 4;
-  if (has(SYNERGY_TAGS.SHIELD_TEAM)) s += 1;
-  if (has(SYNERGY_TAGS.HEAL_TEAM)) s += 1;
-  if (has(SYNERGY_TAGS.DEBUFF_CLEANSE_TEAM)) s += 1;
-  if (has(SYNERGY_TAGS.DAMAGE_REDUCTION_TEAM)) s += 1;
-  if (has(SYNERGY_TAGS.CC_IMMUNITY_TEAM)) s += 1;
+  if (has(SYNERGY_TAGS.TEAM_ENERGY_RESTORE)) s += 10;
+  if (has(SYNERGY_TAGS.TEAM_CDR)) s += 8;
+  if (has(SYNERGY_TAGS.TEAM_ATK_SPD_UP)) s += 4;
+  if (has(SYNERGY_TAGS.TEAM_BUFF)) s += 4;
+  if (has(SYNERGY_TAGS.TEAM_SHIELD)) s += 1;
+  if (has(SYNERGY_TAGS.TEAM_HEAL)) s += 1;
+  if (has(SYNERGY_TAGS.TEAM_DEBUFF_CLEANSE)) s += 1;
+  if (has(SYNERGY_TAGS.TEAM_DAMAGE_REDUCTION)) s += 1;
+  if (has(SYNERGY_TAGS.TEAM_CC_IMMUNITY)) s += 1;
 
   return Math.min(s, 100);
 }

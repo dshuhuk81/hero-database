@@ -81,7 +81,7 @@ async function analyzeTeamComposition() {
       console.log(`  🎯 MAIN DPS: 12% max HP damage, 270%+ ATK SPD stacking`);
     }
     if (id === 'dionysus') {
-      console.log(`  🔥 KEY: ATK_SPD_UP (50-60%), CDR_TEAM (30%), ENERGY_RESTORE_TEAM`);
+      console.log(`  🔥 KEY: TEAM_ATK_SPD_UP (50-60%), TEAM_CDR (30%), TEAM_ENERGY_RESTORE`);
       console.log(`  ⚠️  CRITICAL: Dionysus ALREADY provides ATK SPD to entire team!`);
     }
   });
@@ -100,7 +100,7 @@ async function analyzeTeamComposition() {
     
     if (id === 'athena') {
       console.log(`\n  Analysis:`);
-      console.log(`    • Provides: ATK_SPD_UP, HEAL_TEAM, SHIELD_TEAM, DAMAGE_REDUCTION_TEAM`);
+      console.log(`    • Provides: TEAM_ATK_SPD_UP, TEAM_HEAL, TEAM_SHIELD, TEAM_DAMAGE_REDUCTION`);
       console.log(`    ❌ PROBLEM: ATK SPD UP is REDUNDANT with Dionysus (50-60% already)`);
       console.log(`    ❌ ATK SPD has diminishing returns - 60% → 100% is NOT 2x damage`);
       console.log(`    ✓ Survival is good but not needed with this comp`);
@@ -109,11 +109,11 @@ async function analyzeTeamComposition() {
     
     if (id === 'yuelao') {
       console.log(`\n  Analysis:`);
-      console.log(`    • Provides: ATK_UP (25%), ENERGY_RESTORE_TEAM, Links (stat sharing)`);
-      console.log(`    ✅ ATK_UP: 25% ATK to Isis = HUGE for % max HP damage!`);
+      console.log(`    • Provides: SELF_ATK_UP (25%), TEAM_ENERGY_RESTORE, Links (stat sharing)`);
+      console.log(`    ✅ SELF_ATK_UP: 25% ATK to Isis = HUGE for % max HP damage!`);
       console.log(`       → Isis's 12% max HP cap is 400% ATK`);
       console.log(`       → 25% more ATK = 25% more % HP damage per hit!`);
-      console.log(`    ✅ ENERGY_RESTORE: More ultimates = more Omniscient state uptime`);
+      console.log(`    ✅ SELF_ENERGY_RESTORE: More ultimates = more Omniscient state uptime`);
       console.log(`    ✅ CRIT buffs: +20% CRIT Rate to healed targets`);
       console.log(`    ✅ Stat sharing: Links Isis (high ATK) with tank (high HP)`);
       console.log(`    📈 Direct DPS multiplication: ~25-30% damage increase`);
@@ -121,7 +121,7 @@ async function analyzeTeamComposition() {
     
     if (id === 'diana') {
       console.log(`\n  Analysis:`);
-      console.log(`    • Provides: ATK_SPD_UP, ENERGY_RESTORE_TEAM, REMOVES_ARMOR`);
+      console.log(`    • Provides: TEAM_ATK_SPD_UP, TEAM_ENERGY_RESTORE, ENEMY_ARMOR_REDUCTION`);
       console.log(`    ❌ ATK SPD UP: Also redundant with Dionysus`);
       console.log(`    ✓ Armor shred: Helps but Isis has armor pen already`);
       console.log(`    ❌ Diana is DPS, competes with Isis for damage rather than multiplying`);
@@ -159,8 +159,8 @@ async function analyzeTeamComposition() {
 4. RATING SYSTEM BLIND SPOT:
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Current system rates heroes in ISOLATION:
-   ✓ Athena gets 25 points for ATK_SPD_UP
-   ✓ Yuelao gets 23 points for ENERGY_RESTORE_TEAM
+   ✓ Athena gets 25 points for TEAM_ATK_SPD_UP
+   ✓ Yuelao gets 23 points for TEAM_ENERGY_RESTORE
    ❌ System DOESN'T consider:
       - Is ATK SPD already covered? (YES by Dionysus!)
       - Does this hero amplify the CARRY specifically? (Yuelao → Isis)
@@ -185,7 +185,7 @@ async function analyzeTeamComposition() {
   console.log('='.repeat(90));
   console.log(`
 The current boss rating system evaluates heroes in ISOLATION, giving Athena
-high marks for ATK_SPD_UP without considering:
+high marks for TEAM_ATK_SPD_UP without considering:
 
 ❌ Team composition context (is ATK SPD already covered?)
 ❌ Buff overlap and diminishing returns

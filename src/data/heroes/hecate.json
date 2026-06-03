@@ -113,14 +113,13 @@
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_relic.webp"
   },
   "synergies": [
-    "CROWD_CONTROL",
-    "REDUCES_ATTRIBUTES",
-    "AREA_DAMAGE_DEALER",
-    "ENERGY_RESTORE",
-    "HEAL",
-    "SUMMON",
+    "ENEMY_CROWD_CONTROL",
+    "ENEMY_ATTRIBUTE_REDUCTION",
+    "PLAYSTYLE_AREA_DAMAGE",
+    "SELF_ENERGY_RESTORE",
+    "SELF_HEAL",
     "SELF_SUSTAIN",
-    "LIFE_STEAL_UP"
+    "SELF_LIFESTEAL_UP"
   ],
   "baseAttackRate": 1.749,
   "bossUltimatesPer90s": 4,
@@ -189,48 +188,48 @@
     {
       "heroId": "nezha",
       "via": [
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION",
         "ENEMY_VULNERABILITY",
-        "ENERGY_RESTORE_TEAM"
+        "TEAM_ENERGY_RESTORE"
       ]
     },
     {
       "heroId": "hephaestus",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_ENERGY_RESTORE",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION"
       ]
     },
     {
       "heroId": "dionysus",
       "via": [
-        "ATK_SPD_UP",
-        "CDR_TEAM",
-        "ENERGY_RESTORE_TEAM",
+        "TEAM_ATK_SPD_UP",
+        "TEAM_CDR",
+        "TEAM_ENERGY_RESTORE",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "iris",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "set",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "REMOVES_ARMOR",
-        "CROWD_CONTROL"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_ARMOR_REDUCTION",
+        "ENEMY_CROWD_CONTROL"
       ]
     }
   ]

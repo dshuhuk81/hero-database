@@ -86,8 +86,8 @@ async function analyze() {
   console.log('your main DPS effectively doubles their damage output!');
   console.log('');
   console.log('SOLUTION: Boss scenario needs to differentiate between:');
-  console.log('  1. FORCE MULTIPLIER tags (ATK_SPD_UP, ATK_UP, CRIT_RATE_UP, CDR_TEAM, ENERGY_RESTORE_TEAM)');
-  console.log('  2. Generic support tags (HEAL_TEAM, SHIELD_TEAM, etc.)');
+  console.log('  1. FORCE MULTIPLIER tags (TEAM_ATK_SPD_UP, SELF_ATK_UP, CRIT_RATE_UP, TEAM_CDR, TEAM_ENERGY_RESTORE)');
+  console.log('  2. Generic support tags (TEAM_HEAL, TEAM_SHIELD, etc.)');
   console.log('');
   console.log('Force multiplier tags should receive HIGH weight (1.5-2.0x) in boss fights');
   console.log('because they directly amplify your carry\'s damage output.');

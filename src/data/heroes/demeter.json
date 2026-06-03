@@ -97,15 +97,13 @@
     }
   },
   "synergies": [
-    "SHIELD_TEAM",
-    "DAMAGE_REDUCTION_TEAM",
-    "CROWD_CONTROL",
-    "ENERGY_DRAIN",
-    "HEAL",
-    "CC_RESISTANCE",
-    "GAIN_ARMOR",
-    "DMG_RED",
-    "SHIELD"
+    "TEAM_SHIELD",
+    "ENEMY_CROWD_CONTROL",
+    "ENEMY_ENERGY_DRAIN",
+    "SELF_HEAL",
+    "SELF_CC_RESISTANCE",
+    "SELF_DAMAGE_REDUCTION",
+    "SELF_SHIELD"
   ],
   "baseAttackRate": 0.559,
   "bossUltimatesPer90s": 5,
@@ -150,50 +148,50 @@
     {
       "heroId": "cancer",
       "via": [
-        "DAMAGE_REDUCTION_TEAM",
-        "DEBUFF_CLEANSE_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM",
-        "CC_IMMUNITY_TEAM"
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_CC_IMMUNITY"
       ]
     },
     {
       "heroId": "dionysus",
       "via": [
-        "CC_IMMUNITY_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "DEBUFF_CLEANSE_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM"
+        "TEAM_CC_IMMUNITY",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD"
       ]
     },
     {
       "heroId": "meret",
       "via": [
-        "DAMAGE_REDUCTION_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM"
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD"
       ]
     },
     {
       "heroId": "tefnut",
       "via": [
-        "DEBUFF_CLEANSE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM",
-        "DAMAGE_REDUCTION_TEAM"
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_DAMAGE_REDUCTION"
       ]
     },
     {
       "heroId": "athena",
       "via": [
-        "DAMAGE_REDUCTION_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM",
-        "ENERGY_RESTORE_TEAM"
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_ENERGY_RESTORE"
       ]
     }
   ]

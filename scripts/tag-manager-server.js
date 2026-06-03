@@ -789,8 +789,8 @@ app.post('/api/heroes/:id/synergy-partners', async (req, res) => {
   try {
     const { id } = req.params;
     const { partners } = req.body || {};
-    if (!Array.isArray(partners) || partners.length === 0 || partners.some((p) => !p.heroId)) {
-      return res.status(400).json({ error: 'partners must be a non-empty array of { heroId, via }' });
+    if (!Array.isArray(partners) || partners.some((p) => !p.heroId)) {
+      return res.status(400).json({ error: 'partners must be an array of { heroId, via }' });
     }
     const { filePath, hero } = await readHeroById(id);
     hero.synergyPartners = partners.map((p) => ({ heroId: p.heroId, via: Array.isArray(p.via) ? p.via : [] }));

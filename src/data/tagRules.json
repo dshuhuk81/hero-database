@@ -12,194 +12,406 @@
       "self": "self pronoun (himself/herself/itself/self) OR hero name OR (no ally word AND no enemy word)"
     },
     "globalSuppressors": {
-      "antiHeal": "sentence with 'cannot be healed' / 'healing reduced' / 'reduce healing' suppresses HEAL and HEAL_TEAM for that sentence",
-      "noNormals": "hero text containing 'no longer performs normal attacks' suppresses BASIC_ATTACK_SCALER entirely"
+      "antiHeal": "sentence with 'cannot be healed' / 'healing reduced' / 'reduce healing' suppresses SELF_HEAL and TEAM_HEAL for that sentence",
+      "noNormals": "hero text containing 'no longer performs normal attacks' suppresses PLAYSTYLE_BASIC_ATTACK_SCALER entirely"
     }
   },
   "rules": {
-    "ATK_SPD_UP": {
+    "TEAM_ATK_SPD_UP": {
       "scope": "team",
       "confidence": "strong",
-      "patterns": ["ATK SPD", "attack speed"]
+      "patterns": [
+        "\\bgain\\w* .*ATK SPD",
+        "ATK SPD \\+\\d",
+        "grants? .*ATK SPD",
+        "increases? .*ATK SPD",
+        "attack speed"
+      ]
     },
-    "BUFF_TEAM": {
+    "TEAM_BUFF": {
       "scope": "team",
       "confidence": "medium",
-      "patterns": ["\\+\\d+% ATK", "increases? .*ATK", "ATK by \\d", "CRIT Rate", "CRIT DMG", "increases? .*DMG dealt", "DMG bonus", "grants? .*\\d+% ATK"]
+      "patterns": [
+        "\\+\\d+% ATK",
+        "increases? .*ATK",
+        "ATK by \\d",
+        "CRIT Rate",
+        "CRIT DMG",
+        "increases? .*DMG dealt",
+        "DMG bonus",
+        "grants? .*\\d+% ATK"
+      ]
     },
-    "CC_IMMUNITY_TEAM": {
+    "TEAM_CC_IMMUNITY": {
       "scope": "team",
       "confidence": "medium",
-      "patterns": ["immune to (?:control|CC|crowd control)", "control(?:-| )immun", "CC immun", "cannot be (?:controlled|stunned|frozen)", "Super Armor"]
+      "patterns": [
+        "immune to (?:control|CC|crowd control)",
+        "control(?:-| )immun",
+        "CC immun",
+        "cannot be (?:controlled|stunned|frozen)",
+        "Super Armor"
+      ]
     },
-    "CDR_TEAM": {
+    "TEAM_CDR": {
       "scope": "team",
       "confidence": "medium",
-      "patterns": ["cooldown", "\\bCD\\b", "cooldown haste", "reduc\\w* .*cooldown"]
+      "patterns": [
+        "cooldown",
+        "\\bCD\\b",
+        "cooldown haste",
+        "reduc\\w* .*cooldown"
+      ]
     },
-    "DAMAGE_REDUCTION_TEAM": {
+    "TEAM_DAMAGE_REDUCTION": {
       "scope": "team",
       "confidence": "strong",
-      "patterns": ["DMG RED", "reduc\\w* DMG taken", "damage reduction", "reduc\\w* damage taken", "take\\w* \\d+% less DMG"]
+      "patterns": [
+        "DMG RED",
+        "reduc\\w* DMG taken",
+        "damage reduction",
+        "reduc\\w* damage taken",
+        "take\\w* \\d+% less DMG"
+      ]
     },
-    "DEBUFF_CLEANSE_TEAM": {
+    "TEAM_DEBUFF_CLEANSE": {
       "scope": "team",
       "confidence": "strong",
-      "patterns": ["cleans\\w*", "remove\\w* (?:one |a |all )?(?:debuff|negative effect|control effect)", "dispel\\w* (?:debuff|negative)", "clears? (?:debuff|negative)", "purif\\w*"]
+      "patterns": [
+        "cleans\\w*",
+        "remove\\w* (?:one |a |all )?(?:debuff|negative effect|control effect)",
+        "dispel\\w* (?:debuff|negative)",
+        "clears? (?:debuff|negative)",
+        "purif\\w*"
+      ]
     },
-    "ENERGY_RESTORE_TEAM": {
+    "TEAM_ENERGY_RESTORE": {
       "scope": "team",
       "confidence": "strong",
-      "patterns": ["restore\\w* \\d+ Energy", "Energy Regen", "restore\\w* Energy", "grants? .*Energy", "\\d+ Energy per sec"]
+      "patterns": [
+        "restore\\w* \\d+ Energy",
+        "Energy Regen",
+        "restore\\w* Energy",
+        "grants? .*Energy",
+        "\\d+ Energy per sec"
+      ]
     },
-    "HEAL_TEAM": {
+    "TEAM_HEAL": {
       "scope": "team",
       "confidence": "strong",
-      "patterns": ["restore\\w* HP", "heal\\w*", "recover\\w* HP", "restore\\w* .*max HP"]
+      "patterns": [
+        "restore\\w* HP",
+        "heal\\w*",
+        "recover\\w* HP",
+        "restore\\w* .*max HP"
+      ]
     },
-    "SHIELD_TEAM": {
+    "TEAM_SHIELD": {
       "scope": "team",
       "confidence": "strong",
-      "patterns": ["shield"]
+      "patterns": [
+        "shield"
+      ]
     },
-
-    "ATK_DOWN": {
+    "ENEMY_ATK_DOWN": {
       "scope": "enemy",
       "confidence": "strong",
-      "patterns": ["ATK (?:is )?reduced", "reduc\\w* (?:their |the )?ATK", "lower\\w* .*ATK", "ATK down", "-\\d+% ATK"]
+      "patterns": [
+        "ATK (?:is )?reduced",
+        "reduc\\w* (?:their |the )?ATK",
+        "lower\\w* .*ATK",
+        "ATK down",
+        "-\\d+% ATK"
+      ]
     },
-    "ATK_SPD_DOWN": {
+    "ENEMY_ATK_SPD_DOWN": {
       "scope": "enemy",
       "confidence": "medium",
-      "patterns": ["ATK SPD reduced", "reduc\\w* .*ATK SPD", "slow\\w* .*attack", "attack speed reduced"]
+      "patterns": [
+        "ATK SPD reduced",
+        "reduc\\w* .*ATK SPD",
+        "slow\\w* .*attack",
+        "attack speed reduced"
+      ]
     },
-    "BUFF_DISPEL": {
+    "ENEMY_BUFF_DISPEL": {
       "scope": "enemy",
       "confidence": "medium",
-      "patterns": ["dispel\\w* .*(?:buff|positive|beneficial)", "remove\\w* (?:buff|positive|beneficial)", "strip\\w* .*buff", "purg\\w*"]
+      "patterns": [
+        "dispel\\w* .*(?:buff|positive|beneficial)",
+        "remove\\w* (?:buff|positive|beneficial)",
+        "strip\\w* .*buff",
+        "purg\\w*"
+      ]
     },
-    "CROWD_CONTROL": {
+    "ENEMY_CROWD_CONTROL": {
       "scope": "enemy",
       "confidence": "strong",
-      "patterns": ["stun", "freez\\w*", "frozen", "\\broot", "sleep", "charm", "silenc\\w*", "knock(?:s|ed|ing)?(?: down| back| up| airborne)?", "knockback", "knockdown", "petrif\\w*", "immobiliz\\w*", "suppress\\w*", "\\bfear(?:ed|s|ing)?\\b", "pull\\w* (?:in|\\d|the|all|nearby|nearest|toward)", "push\\w* \\d", "ensnar\\w*", "snare", "entangl\\w*", "banish\\w*", "interrupt\\w*", "airborne", "\\bnet\\b"]
+      "patterns": [
+        "stun",
+        "freez\\w*",
+        "frozen",
+        "\\broot",
+        "sleep",
+        "charm",
+        "silenc\\w*",
+        "knock(?:s|ed|ing)?(?: down| back| up| airborne)?",
+        "knockback",
+        "knockdown",
+        "petrif\\w*",
+        "immobiliz\\w*",
+        "suppress\\w*",
+        "\\bfear(?:ed|s|ing)?\\b",
+        "pull\\w* (?:in|\\d|the|all|nearby|nearest|toward)",
+        "push\\w* \\d",
+        "ensnar\\w*",
+        "snare",
+        "entangl\\w*",
+        "banish\\w*",
+        "interrupt\\w*",
+        "airborne",
+        "\\bnet\\b"
+      ]
     },
     "ENEMY_VULNERABILITY": {
       "scope": "enemy",
       "confidence": "strong",
-      "patterns": ["take\\w* .*?(?:more|increased) DMG", "(?:more|increased) DMG (?:from|for|taken|during)", "increases? DMG taken", "DMG taken (?:is |by )", "vulnerab", "amplif\\w* DMG", "\\d+% (?:more|increased) DMG"]
+      "patterns": [
+        "take\\w* .*?(?:more|increased) DMG",
+        "(?:more|increased) DMG (?:from|for|taken|during)",
+        "increases? DMG taken",
+        "DMG taken (?:is |by )",
+        "vulnerab",
+        "amplif\\w* DMG",
+        "\\d+% (?:more|increased) DMG"
+      ]
     },
-    "ENERGY_DRAIN": {
+    "ENEMY_ENERGY_DRAIN": {
       "scope": "enemy",
       "confidence": "medium",
-      "patterns": ["drain\\w* .*Energy", "reduc\\w* .*Energy", "remove\\w* .*Energy", "Energy (?:is )?reduced", "lose\\w* .*Energy"]
+      "patterns": [
+        "drain\\w* .*Energy",
+        "reduc\\w* .*Energy",
+        "remove\\w* .*Energy",
+        "Energy (?:is )?reduced",
+        "lose\\w* .*Energy"
+      ]
     },
-    "REDUCES_ATTRIBUTES": {
+    "ENEMY_ATTRIBUTE_REDUCTION": {
       "scope": "enemy",
       "confidence": "medium",
-      "patterns": ["reduc\\w* .*(?:M-RES|Armor|DEF|stats|attributes|Crit)", "lower\\w* .*(?:M-RES|Armor|DEF|stats|attributes)", "-\\d+% (?:M-RES|Armor|DEF)"]
+      "patterns": [
+        "reduc\\w* .*(?:M-RES|Armor|DEF|stats|attributes|Crit)",
+        "lower\\w* .*(?:M-RES|Armor|DEF|stats|attributes)",
+        "-\\d+% (?:M-RES|Armor|DEF)"
+      ]
     },
-    "REMOVES_ARMOR": {
+    "ENEMY_ARMOR_REDUCTION": {
       "scope": "enemy",
       "confidence": "strong",
-      "patterns": ["reduc\\w* .*Armor", "Armor (?:is )?reduced", "ignore\\w* .*Armor", "Armor reduction", "-\\d+% Armor", "remove\\w* .*Armor", "armor pen"]
+      "patterns": [
+        "reduc\\w* .*Armor",
+        "Armor (?:is )?reduced",
+        "ignore\\w* .*Armor",
+        "Armor reduction",
+        "-\\d+% Armor",
+        "remove\\w* .*Armor",
+        "armor pen"
+      ]
     },
-    "TAUNT": {
+    "ENEMY_TAUNT": {
       "scope": "enemy",
       "confidence": "strong",
-      "patterns": ["taunt"]
+      "patterns": [
+        "taunt"
+      ]
     },
-
-    "AREA_DAMAGE_DEALER": {
+    "PLAYSTYLE_AREA_DAMAGE": {
       "scope": "any",
       "confidence": "strong",
-      "patterns": ["enemies (?:within|in|along)", "all enemies", "nearby enemies", "in a (?:large|small|wide)? ?area", "\\bAoE\\b", "enemies along the path", "area around", "enemies in a", "all units"]
+      "patterns": [
+        "enemies (?:within|in|along)",
+        "all enemies",
+        "nearby enemies",
+        "\\bAoE\\b",
+        "enemies along the path",
+        "enemies in a",
+        "all units"
+      ]
     },
-    "BASIC_ATTACK_SCALER": {
+    "PLAYSTYLE_BASIC_ATTACK_SCALER": {
       "scope": "any",
       "confidence": "strong",
-      "patterns": ["normal attack", "basic attack"]
+      "patterns": [
+        "normal attack",
+        "basic attack"
+      ]
     },
-
-    "ATK_SPEED": {
+    "SELF_ATK_SPEED": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["ATK SPD", "attack speed"]
+      "patterns": [
+        "\\bgain\\w* .*ATK SPD",
+        "ATK SPD \\+\\d",
+        "increases? .*ATK SPD",
+        "attack speed"
+      ]
     },
-    "ATK_UP": {
+    "SELF_ATK_UP": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["gains? .*\\d+% ATK", "ATK \\+", "increases? .*own ATK", "increases? ATK by", "ATK bonus to \\d", "increases? ATK bonus"]
+      "patterns": [
+        "gains? .*\\d+% ATK",
+        "ATK \\+",
+        "increases? .*own ATK",
+        "increases? ATK by"
+      ]
     },
-    "CC_RESISTANCE": {
+    "SELF_CC_RESISTANCE": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["control res", "CC res", "resist\\w* .*(?:control|CC|stun)", "Super Armor", "tenacity", "control resistance"]
+      "patterns": [
+        "control res",
+        "CC res",
+        "resist\\w* .*(?:control|CC|stun)",
+        "Super Armor",
+        "tenacity",
+        "control resistance"
+      ]
     },
-    "DMG_RED": {
+    "SELF_DAMAGE_REDUCTION": {
       "scope": "self",
       "confidence": "strong",
-      "patterns": ["DMG RED", "reduc\\w* DMG taken", "damage reduction", "take\\w* \\d+% less DMG"]
+      "patterns": [
+        "DMG RED",
+        "reduc\\w* DMG taken",
+        "damage reduction",
+        "take\\w* \\d+% less DMG"
+      ]
     },
-    "DODGE_BUFF": {
+    "SELF_DODGE": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["dodge", "evasion", "evade"]
+      "patterns": [
+        "gains? .*Dodge Rate",
+        "increases? .*Dodge Rate",
+        "Dodge Rate \\+",
+        "evasion",
+        "evade"
+      ]
     },
-    "ENERGY_RESTORE": {
+    "SELF_ENERGY_RESTORE": {
       "scope": "self",
       "confidence": "strong",
-      "patterns": ["restore\\w* \\d+ Energy", "gains? \\d+ Energy", "Energy Regen", "restore\\w* .*Energy to himself", "restore\\w* .*Energy to herself", "\\d+ bonus Energy"]
+      "patterns": [
+        "restore\\w* \\d+ Energy",
+        "gains? \\d+ Energy",
+        "Energy Regen",
+        "restore\\w* .*Energy to himself",
+        "restore\\w* .*Energy to herself",
+        "\\d+ bonus Energy"
+      ]
     },
-    "GAIN_ARMOR": {
+    "SELF_ARMOR_UP": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["\\d+%? Armor\\b", "Armor \\+\\d", "increases? .*own Armor", "increases? Armor by"]
+      "patterns": [
+        "\\d+%? Armor\\b",
+        "Armor \\+\\d",
+        "increases? .*own Armor",
+        "increases? Armor by"
+      ]
     },
-    "HEAL": {
+    "SELF_HEAL": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["restore\\w* HP", "heal\\w*", "recover\\w* HP"]
+      "patterns": [
+        "restore\\w* HP",
+        "heal\\w*",
+        "recover\\w* HP"
+      ]
     },
-    "HEAL_EFFECT_UP": {
+    "SELF_HEAL_EFFECT_UP": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["increases? healing (?:effect|received)", "healing (?:is )?increased", "heal\\w* effect (?:is )?increased", "healing effect is increased"]
+      "patterns": [
+        "increases? healing (?:effect|received)",
+        "healing (?:is )?increased",
+        "heal\\w* effect (?:is )?increased",
+        "healing effect is increased"
+      ]
     },
-    "HIT_AVOID": {
+    "SELF_HIT_AVOID": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["invincib", "immune to (?:the )?DMG", "cannot be (?:hit|targeted)", "untargetable", "block\\w* (?:the )?(?:next )?attack", "becomes immune"]
+      "patterns": [
+        "invincib",
+        "immune to (?:the )?DMG",
+        "cannot be (?:hit|targeted)",
+        "untargetable",
+        "block\\w* (?:the )?(?:next )?attack",
+        "becomes immune"
+      ]
     },
-    "HP_UP": {
+    "SELF_HP_UP": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["max HP \\+", "increases? .*max HP", "\\+\\d+% max HP", "increases? HP by", "gains? .*max HP"]
+      "patterns": [
+        "max HP \\+",
+        "increases? .*max HP",
+        "\\+\\d+% max HP",
+        "increases? HP by",
+        "gains? .*max HP"
+      ]
     },
-    "LIFE_STEAL_UP": {
+    "SELF_LIFESTEAL_UP": {
       "scope": "self",
       "confidence": "strong",
-      "patterns": ["lifesteal", "life steal", "leech"]
+      "patterns": [
+        "lifesteal",
+        "life steal",
+        "leech"
+      ]
     },
-    "SHIELD": {
+    "SELF_SHIELD": {
       "scope": "self",
       "confidence": "strong",
-      "patterns": ["shield"]
+      "patterns": [
+        "shield"
+      ]
     },
-
     "REVIVE": {
       "scope": "any",
       "confidence": "strong",
-      "patterns": ["reviv\\w*", "resurrect\\w*", "return\\w* to (?:battle|life)", "brought back to life", "back to battle"]
+      "patterns": [
+        "reviv\\w*",
+        "resurrect\\w*",
+        "return\\w* to (?:battle|life)",
+        "brought back to life",
+        "back to battle"
+      ]
     },
     "SUMMON": {
       "scope": "any",
       "confidence": "medium",
-      "patterns": ["summon\\w*", "conjur\\w*", "creates? (?:a |two |\\d+ )?(?:minion|ingot|clone|spirit|sentry|turret|totem)", "surrounded by \\d"]
+      "patterns": [
+        "summon\\w* (?:a |an |the |two |\\d+ )?(?:minion|ingot|clone|spirit|sentry|turret|totem|puppet|projection|echo|figurine|scorpion|device|castor)",
+        "conjur\\w*",
+        "creates? (?:a |two |\\d+ )?(?:minion|ingot|clone|spirit|sentry|turret|totem|puppet|projection|echo|figurine|scorpion|device|castor)",
+        "surrounded by \\d"
+      ]
     },
     "SELF_SUSTAIN": {
       "scope": "self",
       "confidence": "medium",
-      "patterns": ["lifesteal", "life steal", "restore\\w* HP", "heal\\w* (?:himself|herself|itself|self)", "invincib", "recover\\w* HP"]
+      "patterns": [
+        "lifesteal",
+        "life steal",
+        "restore\\w* HP",
+        "heal\\w* (?:himself|herself|itself|self)",
+        "invincib",
+        "recover\\w* HP"
+      ]
     }
   }
 }

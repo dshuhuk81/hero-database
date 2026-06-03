@@ -126,7 +126,16 @@ function statRank(key: string, val: number): number | null {
 // Tag label display: SNAKE_CASE -> Title Case
 function tagLabel(tag: unknown): string {
   const s = String(tag ?? "");
-  return s.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  const acronyms = new Set(["ATK", "SPD", "HP", "DMG", "CC", "CDR", "AOE"]);
+  return s
+    .split("_")
+    .filter(Boolean)
+    .map((part) => {
+      if (acronyms.has(part)) return part;
+      const lower = part.toLowerCase();
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(" ");
 }
 
 function resolveSkillVideoSrc(video: unknown): string {

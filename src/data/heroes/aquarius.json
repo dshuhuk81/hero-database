@@ -75,10 +75,8 @@
     }
   ],
   "synergies": [
-    "SHIELD_TEAM",
-    "CROWD_CONTROL",
-    "SHIELD",
-    "DMG_RED"
+    "TEAM_SHIELD",
+    "ENEMY_CROWD_CONTROL"
   ],
   "baseAttackRate": 0.546,
   "bossUltimatesPer90s": 4,
@@ -118,50 +116,50 @@
     {
       "heroId": "cancer",
       "via": [
-        "DAMAGE_REDUCTION_TEAM",
-        "DEBUFF_CLEANSE_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM",
-        "CC_IMMUNITY_TEAM"
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_CC_IMMUNITY"
       ]
     },
     {
       "heroId": "dionysus",
       "via": [
-        "CC_IMMUNITY_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "DEBUFF_CLEANSE_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM"
+        "TEAM_CC_IMMUNITY",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD"
       ]
     },
     {
       "heroId": "meret",
       "via": [
-        "DAMAGE_REDUCTION_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM"
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD"
       ]
     },
     {
       "heroId": "tefnut",
       "via": [
-        "DEBUFF_CLEANSE_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM",
-        "DAMAGE_REDUCTION_TEAM"
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_DAMAGE_REDUCTION"
       ]
     },
     {
       "heroId": "athena",
       "via": [
-        "DAMAGE_REDUCTION_TEAM",
-        "HEAL_TEAM",
-        "SHIELD_TEAM",
-        "ENERGY_RESTORE_TEAM"
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_ENERGY_RESTORE"
       ]
     }
   ],

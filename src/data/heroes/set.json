@@ -99,18 +99,18 @@
     }
   },
   "synergies": [
-    "ATK_SPD_UP",
-    "BUFF_TEAM",
-    "SHIELD_TEAM",
-    "REMOVES_ARMOR",
-    "ATK_UP",
-    "LIFE_STEAL_UP",
-    "CROWD_CONTROL",
-    "AREA_DAMAGE_DEALER",
+    "TEAM_ATK_SPD_UP",
+    "TEAM_BUFF",
+    "TEAM_SHIELD",
+    "ENEMY_ARMOR_REDUCTION",
+    "SELF_ATK_UP",
+    "SELF_LIFESTEAL_UP",
+    "ENEMY_CROWD_CONTROL",
+    "PLAYSTYLE_AREA_DAMAGE",
     "SELF_SUSTAIN",
-    "SHIELD",
-    "ATK_SPEED",
-    "BASIC_ATTACK_SCALER"
+    "SELF_SHIELD",
+    "SELF_ATK_SPEED",
+    "PLAYSTYLE_BASIC_ATTACK_SCALER"
   ],
   "baseAttackRate": 0.875,
   "bossUltimatesPer90s": 4,
@@ -157,44 +157,44 @@
     {
       "heroId": "nezha",
       "via": [
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "hephaestus",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION"
       ]
     },
     {
       "heroId": "iris",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "cronus",
       "via": [
-        "CDR_TEAM",
-        "CROWD_CONTROL",
-        "BUFF_TEAM"
+        "TEAM_CDR",
+        "ENEMY_CROWD_CONTROL",
+        "TEAM_BUFF"
       ]
     },
     {
       "heroId": "hera",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "CROWD_CONTROL"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL"
       ]
     }
   ]

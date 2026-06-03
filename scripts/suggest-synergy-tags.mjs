@@ -27,14 +27,19 @@ const OUT_FILE = path.join(ROOT, "src/data/suggestions.json");
 const ALLY_RE = /\b(all(?:y|ies)|teammates?|friendly|team|party)\b/i;
 const ENEMY_RE = /\b(enem(?:y|ies)|target|foe|opponent)\b/i;
 const SELF_RE = /\b(himself|herself|itself|self)\b/i;
-const ANTIHEAL_RE = /(cannot be healed|healing (?:is )?reduced|reduce\w* healing|cannot receive (?:shields? or )?healing|prevents? healing)/i;
+const ANTIHEAL_RE = /(cannot be healed|healing (?:is )?reduced|healing reduction|healing effects? reduced|reduce\w* healing|cannot receive (?:shields? or )?healing|prevents? healing)/i;
 const NONORMALS_RE = /no longer performs normal attacks/i;
+const SHIELD_STAT_RE = /\bshield\b/i;
+const DODGE_IGNORE_RE = /\bignore\w* Dodge Rate\b/i;
+const SUPPORT_AREA_RE = /\ballies?\b/i;
+const VISUAL_SUMMON_RE = /\bsummon\w*\s+(?:a |an |the |two |2 |three |3 )?(?:vortex|flames?|butterfl(?:y|ies)|scale|whale|wave|waves|blizzard|ice spike|sword|phoenix)\b/i;
 // Detects sentences where "ally" is a trigger condition or scaling factor rather than
 // the recipient of the buff. Sentences matching this pattern are excluded from
 // team-scope detection: the effect goes to the hero (self), not to allies.
 // Covers: "when[ever] an ally falls", "until any ally falls/dies",
-//         "per [surviving] ally", "for each [surviving] ally".
-const ALLY_TRIGGER_RE = /(?:\bwhen(?:ever)?\s+(?:an?\s+|any\s+)?ally\b[^,;.]*\b(?:fall|die|los|kill|elim)\w*|\buntil\s+(?:any\s+)?ally\b|\bper\s+(?:surviving\s+)?ally\b|\bfor\s+each\s+(?:surviving\s+)?ally\b)/i;
+//         "per [surviving] ally", "for each/every [surviving] ally",
+//         "when gaining a buff from an ally", "ultimates cast by allies".
+const ALLY_TRIGGER_RE = /(?:\bwhen(?:ever)?\s+(?:an?\s+|any\s+)?ally\b[^,;.]*\b(?:fall|die|los|kill|elim)\w*|\buntil\s+(?:any\s+)?ally\b|\bper\s+(?:surviving\s+)?ally\b|\bfor\s+(?:each|every)\s+(?:surviving\s+|nearby\s+)?ally\b|\bfrom an ally\b|\bcast by allies\b|\bby allies\b)/i;
 
 export function loadRules() {
   const raw = JSON.parse(fs.readFileSync(RULES_FILE, "utf8"));
@@ -64,6 +69,8 @@ function heroSentences(hero) {
   }
   if (hero.relic?.description) parts.push(hero.relic.description);
   if (hero.relic?.upgrades) parts.push(...Object.values(hero.relic.upgrades).filter(Boolean));
+  if (hero.passive?.description) parts.push(hero.passive.description);
+  if (hero.passive?.upgrades) parts.push(...Object.values(hero.passive.upgrades).filter(Boolean));
   // Split at sentence boundaries AND at colon/semicolon clause boundaries.
   // Colon/semicolon splits keep each clause independently scoreable so that a
   // self-scaling suffix ("she gains X for each ally") cannot suppress detection
@@ -101,8 +108,12 @@ export function detectForHero(hero, rules) {
     const antiHeal = ANTIHEAL_RE.test(s);
     for (const [tag, def] of Object.entries(rules)) {
       if (hits[tag]) continue; // first evidence sentence wins
-      if (tag === "BASIC_ATTACK_SCALER" && noNormals) continue;
-      if ((tag === "HEAL" || tag === "HEAL_TEAM") && antiHeal) continue;
+      if (tag === "PLAYSTYLE_BASIC_ATTACK_SCALER" && noNormals) continue;
+      if ((tag === "SELF_HEAL" || tag === "TEAM_HEAL") && antiHeal) continue;
+      if ((tag === "TEAM_BUFF" || tag === "SELF_ATK_UP" || tag === "SELF_HP_UP") && SHIELD_STAT_RE.test(s)) continue;
+      if (tag === "SELF_DODGE" && DODGE_IGNORE_RE.test(s)) continue;
+      if (tag === "PLAYSTYLE_AREA_DAMAGE" && SUPPORT_AREA_RE.test(s) && !/\benem(?:y|ies)\b/i.test(s)) continue;
+      if (tag === "SUMMON" && VISUAL_SUMMON_RE.test(s)) continue;
       if (!def.patterns.some((re) => re.test(s))) continue;
       if (!scopeOk(def.scope, s, heroNameRe)) continue;
       hits[tag] = { confidence: def.confidence, evidence: s };

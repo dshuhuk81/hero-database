@@ -99,14 +99,14 @@
       }
     },
     "synergies": [
-      "ENERGY_RESTORE_TEAM",
-      "ATK_DOWN",
-      "CROWD_CONTROL",
-      "AREA_DAMAGE_DEALER",
-      "CC_RESISTANCE",
-      "DODGE_BUFF",
-      "ENERGY_RESTORE",
-      "HEAL"
+      "TEAM_ENERGY_RESTORE",
+      "ENEMY_ATK_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_CC_RESISTANCE",
+      "SELF_DODGE",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL"
     ],
     "baseAttackRate": 1.401,
     "bossUltimatesPer90s": 5,
@@ -168,55 +168,55 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
-          "CROWD_CONTROL",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "SHIELD_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_SHIELD",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -321,15 +321,15 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "ENERGY_DRAIN",
-      "REDUCES_ATTRIBUTES",
-      "AREA_DAMAGE_DEALER",
-      "ATK_UP",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "HIT_AVOID",
-      "LIFE_STEAL_UP",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ENERGY_DRAIN",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "SELF_HIT_AVOID",
+      "SELF_LIFESTEAL_UP",
       "SELF_SUSTAIN"
     ],
     "baseAttackRate": 0.73,
@@ -392,48 +392,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -515,10 +515,8 @@
       }
     ],
     "synergies": [
-      "SHIELD_TEAM",
-      "CROWD_CONTROL",
-      "SHIELD",
-      "DMG_RED"
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL"
     ],
     "baseAttackRate": 0.546,
     "bossUltimatesPer90s": 4,
@@ -558,50 +556,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ],
@@ -706,14 +704,14 @@
       }
     },
     "synergies": [
-      "AREA_DAMAGE_DEALER",
-      "ATK_UP",
-      "CC_RESISTANCE",
-      "HIT_AVOID",
-      "LIFE_STEAL_UP",
-      "SHIELD",
-      "REDUCES_ATTRIBUTES",
-      "REMOVES_ARMOR",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_CC_RESISTANCE",
+      "SELF_HIT_AVOID",
+      "SELF_LIFESTEAL_UP",
+      "SELF_SHIELD",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "ENEMY_ARMOR_REDUCTION",
       "SELF_SUSTAIN"
     ],
     "baseAttackRate": 0.59,
@@ -759,54 +757,54 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "REMOVES_ARMOR"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       }
     ]
@@ -888,12 +886,12 @@
       }
     ],
     "synergies": [
-      "ATK_SPD_DOWN",
-      "CROWD_CONTROL",
-      "ATK_UP",
-      "LIFE_STEAL_UP",
+      "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_ATK_UP",
+      "SELF_LIFESTEAL_UP",
       "SELF_SUSTAIN",
-      "AREA_DAMAGE_DEALER"
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 0.639,
     "bossUltimatesPer90s": 4,
@@ -923,45 +921,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -1066,11 +1064,10 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "CC_RESISTANCE",
-      "DODGE_BUFF",
-      "HIT_AVOID"
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_CC_RESISTANCE",
+      "SELF_DODGE"
     ],
     "baseAttackRate": 1.574,
     "bossUltimatesPer90s": 5,
@@ -1105,51 +1102,51 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "SHIELD_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_SHIELD",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -1254,20 +1251,17 @@
       }
     },
     "synergies": [
-      "ATK_SPD_UP",
-      "BUFF_TEAM",
-      "DAMAGE_REDUCTION_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "CROWD_CONTROL",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "GAIN_ARMOR",
-      "SHIELD",
-      "ATK_SPEED",
-      "HEAL",
-      "SELF_SUSTAIN",
-      "AREA_DAMAGE_DEALER"
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_ARMOR_UP",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP"
     ],
     "baseAttackRate": 0.787,
     "bossUltimatesPer90s": 5,
@@ -1324,55 +1318,55 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "REMOVES_ARMOR"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       }
     ]
@@ -1585,12 +1579,10 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "AREA_DAMAGE_DEALER",
-      "DMG_RED",
-      "DODGE_BUFF",
-      "HIT_AVOID"
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_DODGE",
+      "SELF_HIT_AVOID"
     ],
     "baseAttackRate": 1.64,
     "bossUltimatesPer90s": 6,
@@ -1652,51 +1644,51 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "SHIELD_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_SHIELD",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -1801,15 +1793,14 @@
       }
     },
     "synergies": [
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "ATK_UP",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "BUFF_TEAM",
-      "HIT_AVOID",
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "TEAM_BUFF",
+      "SELF_HIT_AVOID",
       "SELF_SUSTAIN",
-      "HEAL_EFFECT_UP"
+      "SUMMON"
     ],
     "baseAttackRate": 0.935,
     "bossUltimatesPer90s": 10,
@@ -1882,51 +1873,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -2031,18 +2022,12 @@
       }
     },
     "synergies": [
-      "DAMAGE_REDUCTION_TEAM",
-      "DEBUFF_CLEANSE_TEAM",
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "ATK_UP",
-      "HEAL",
-      "SELF_SUSTAIN",
-      "CC_IMMUNITY_TEAM",
-      "ENERGY_RESTORE",
-      "SHIELD",
-      "DMG_RED"
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_DEBUFF_CLEANSE",
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "TEAM_CC_IMMUNITY"
     ],
     "baseAttackRate": 0.503,
     "bossUltimatesPer90s": 4,
@@ -2105,48 +2090,48 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "mengpo",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -2208,7 +2193,7 @@
       }
     ],
     "synergies": [
-      "CROWD_CONTROL"
+      "ENEMY_CROWD_CONTROL"
     ],
     "virtueSets": [
       {
@@ -2236,45 +2221,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -2368,10 +2353,10 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
+      "ENEMY_CROWD_CONTROL",
       "ENEMY_VULNERABILITY",
-      "ATK_SPEED",
-      "HEAL"
+      "SELF_ATK_SPEED",
+      "SELF_HEAL"
     ],
     "baseAttackRate": 0.768,
     "bossUltimatesPer90s": 6,
@@ -2407,45 +2392,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -2559,16 +2544,14 @@
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/cronus_relic.png"
     },
     "synergies": [
-      "CDR_TEAM",
-      "ATK_SPD_DOWN",
-      "CROWD_CONTROL",
-      "BUFF_TEAM",
-      "ENERGY_DRAIN",
+      "TEAM_CDR",
+      "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ENERGY_DRAIN",
       "REVIVE",
-      "ATK_DOWN",
+      "ENEMY_ATK_DOWN",
       "SUMMON",
-      "AREA_DAMAGE_DEALER",
-      "ENERGY_RESTORE"
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "coreMechanic": {
       "summary": "Best support in game -- complete CC, complete support, full-map coverage. Full kit unlocked at base dupe. Delayed ultimate release requires precise timing control.",
@@ -2644,51 +2627,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -2792,15 +2775,13 @@
       }
     },
     "synergies": [
-      "SHIELD_TEAM",
-      "DAMAGE_REDUCTION_TEAM",
-      "CROWD_CONTROL",
-      "ENERGY_DRAIN",
-      "HEAL",
-      "CC_RESISTANCE",
-      "GAIN_ARMOR",
-      "DMG_RED",
-      "SHIELD"
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ENERGY_DRAIN",
+      "SELF_HEAL",
+      "SELF_CC_RESISTANCE",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_SHIELD"
     ],
     "baseAttackRate": 0.559,
     "bossUltimatesPer90s": 5,
@@ -2845,50 +2826,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -2993,14 +2974,14 @@
       }
     },
     "synergies": [
-      "ATK_SPD_UP",
-      "BUFF_TEAM",
-      "ENERGY_RESTORE_TEAM",
-      "REDUCES_ATTRIBUTES",
-      "REMOVES_ARMOR",
-      "AREA_DAMAGE_DEALER",
-      "ATK_SPEED",
-      "ENERGY_RESTORE"
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "TEAM_ENERGY_RESTORE",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "ENEMY_ARMOR_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_SPEED",
+      "SELF_ENERGY_RESTORE"
     ],
     "baseAttackRate": 0.901,
     "bossUltimatesPer90s": 5,
@@ -3045,48 +3026,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -3191,21 +3172,16 @@
       }
     },
     "synergies": [
-      "ATK_SPD_UP",
-      "CC_IMMUNITY_TEAM",
-      "CDR_TEAM",
-      "DAMAGE_REDUCTION_TEAM",
-      "DEBUFF_CLEANSE_TEAM",
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "ATK_UP",
-      "DMG_RED",
-      "HIT_AVOID",
-      "ATK_SPEED",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "SELF_SUSTAIN",
+      "TEAM_ATK_SPD_UP",
+      "TEAM_CC_IMMUNITY",
+      "TEAM_CDR",
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_DEBUFF_CLEANSE",
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_HIT_AVOID",
       "ENEMY_VULNERABILITY"
     ],
     "coreMechanic": {
@@ -3583,47 +3559,47 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "mengpo",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -3770,50 +3746,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ],
@@ -3917,11 +3893,11 @@
       }
     },
     "synergies": [
-      "REMOVES_ARMOR",
-      "BASIC_ATTACK_SCALER",
-      "HIT_AVOID",
+      "ENEMY_ARMOR_REDUCTION",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
+      "SELF_HIT_AVOID",
       "SUMMON",
-      "HP_UP"
+      "SELF_HP_UP"
     ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
@@ -3992,45 +3968,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -4135,10 +4111,10 @@
       }
     },
     "synergies": [
-      "REDUCES_ATTRIBUTES",
-      "AREA_DAMAGE_DEALER",
-      "ATK_UP",
-      "ENERGY_RESTORE"
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE"
     ],
     "baseAttackRate": 0.932,
     "bossUltimatesPer90s": 5,
@@ -4173,48 +4149,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -4318,16 +4294,12 @@
       }
     },
     "synergies": [
-      "DAMAGE_REDUCTION_TEAM",
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "CROWD_CONTROL",
-      "HEAL",
-      "HEAL_EFFECT_UP",
-      "SELF_SUSTAIN",
-      "CC_RESISTANCE",
-      "ENERGY_RESTORE",
-      "DMG_RED",
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_CC_RESISTANCE",
+      "SELF_ENERGY_RESTORE",
       "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.364,
@@ -4383,51 +4355,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -4531,15 +4503,15 @@
       }
     },
     "synergies": [
-      "ATK_SPD_DOWN",
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "SHIELD",
-      "AREA_DAMAGE_DEALER",
-      "HP_UP",
-      "ATK_DOWN"
+      "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_HP_UP",
+      "ENEMY_ATK_DOWN"
     ],
     "baseAttackRate": 0.571,
     "bossUltimatesPer90s": 4,
@@ -4574,51 +4546,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ],
@@ -4703,10 +4675,10 @@
       }
     ],
     "synergies": [
-      "CROWD_CONTROL",
-      "GAIN_ARMOR",
-      "HEAL",
-      "REDUCES_ATTRIBUTES",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_ARMOR_UP",
+      "SELF_HEAL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
       "SUMMON"
     ],
     "baseAttackRate": 0.591,
@@ -4755,50 +4727,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -5132,14 +5104,13 @@
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_relic.webp"
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "AREA_DAMAGE_DEALER",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "SUMMON",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
       "SELF_SUSTAIN",
-      "LIFE_STEAL_UP"
+      "SELF_LIFESTEAL_UP"
     ],
     "baseAttackRate": 1.749,
     "bossUltimatesPer90s": 4,
@@ -5208,48 +5179,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -5396,50 +5367,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -5544,12 +5515,12 @@
       }
     },
     "synergies": [
-      "ENERGY_DRAIN",
-      "AREA_DAMAGE_DEALER",
-      "ATK_UP",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "DMG_RED"
+      "ENEMY_ENERGY_DRAIN",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "SELF_DAMAGE_REDUCTION"
     ],
     "baseAttackRate": 0.714,
     "bossUltimatesPer90s": 4,
@@ -5594,51 +5565,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ],
@@ -5746,23 +5717,20 @@
       }
     },
     "synergies": [
-      "ATK_SPD_UP",
-      "BUFF_TEAM",
-      "DAMAGE_REDUCTION_TEAM",
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "ATK_DOWN",
-      "ATK_SPD_DOWN",
-      "CROWD_CONTROL",
-      "REMOVES_ARMOR",
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL",
+      "ENEMY_ATK_DOWN",
+      "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ARMOR_REDUCTION",
       "SUMMON",
-      "AREA_DAMAGE_DEALER",
-      "REDUCES_ATTRIBUTES",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "SELF_SUSTAIN",
-      "HEAL_EFFECT_UP",
-      "DMG_RED"
+      "PLAYSTYLE_AREA_DAMAGE",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_DAMAGE_REDUCTION"
     ],
     "virtueSets": [
       {
@@ -5843,51 +5811,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -5991,18 +5959,15 @@
       }
     },
     "synergies": [
-      "ATK_SPD_UP",
-      "BUFF_TEAM",
-      "CROWD_CONTROL",
-      "DMG_RED",
-      "ENERGY_DRAIN",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "HIT_AVOID",
-      "REDUCES_ATTRIBUTES",
-      "BASIC_ATTACK_SCALER",
-      "ATK_SPEED",
-      "ATK_UP"
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_DAMAGE_REDUCTION",
+      "ENEMY_ENERGY_DRAIN",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "SELF_HIT_AVOID",
+      "ENEMY_ATTRIBUTE_REDUCTION"
     ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
@@ -6091,51 +6056,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -6240,15 +6205,14 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "AREA_DAMAGE_DEALER",
-      "ATK_SPEED",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "SHIELD",
-      "HP_UP",
-      "HIT_AVOID"
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "SELF_SHIELD",
+      "SELF_HP_UP",
+      "SELF_HIT_AVOID"
     ],
     "baseAttackRate": 0.364,
     "bossUltimatesPer90s": 3,
@@ -6320,45 +6284,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -6465,16 +6429,16 @@
       }
     },
     "synergies": [
-      "BASIC_ATTACK_SCALER",
-      "ATK_UP",
-      "CC_RESISTANCE",
-      "DMG_RED",
-      "HEAL",
-      "LIFE_STEAL_UP",
-      "SHIELD",
-      "CROWD_CONTROL",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
+      "SELF_ATK_UP",
+      "SELF_CC_RESISTANCE",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_HEAL",
+      "SELF_LIFESTEAL_UP",
+      "SELF_SHIELD",
+      "ENEMY_CROWD_CONTROL",
       "SELF_SUSTAIN",
-      "AREA_DAMAGE_DEALER"
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 1.296,
     "bossUltimatesPer90s": 4,
@@ -6765,45 +6729,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -6907,15 +6871,15 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REMOVES_ARMOR",
-      "ATK_SPEED",
-      "ATK_UP",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "HEAL",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ARMOR_REDUCTION",
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
       "SELF_SUSTAIN",
-      "REDUCES_ATTRIBUTES"
+      "ENEMY_ATTRIBUTE_REDUCTION"
     ],
     "baseAttackRate": 0.937,
     "bossUltimatesPer90s": 6,
@@ -6960,48 +6924,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -7105,12 +7069,10 @@
       }
     },
     "synergies": [
-      "SUMMON",
-      "AREA_DAMAGE_DEALER",
-      "ATK_SPD_UP",
-      "ATK_SPEED",
-      "BUFF_TEAM",
-      "CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "ENEMY_CROWD_CONTROL",
       "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.708,
@@ -7163,50 +7125,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -7311,10 +7273,9 @@
       }
     },
     "synergies": [
-      "ATK_SPEED",
-      "ATK_UP",
-      "BASIC_ATTACK_SCALER",
-      "ATK_SPD_UP"
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER"
     ],
     "baseAttackRate": 2.91,
     "bossUltimatesPer90s": 3,
@@ -7359,45 +7320,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -7459,8 +7420,7 @@
       }
     ],
     "synergies": [
-      "HEAL_TEAM",
-      "GAIN_ARMOR"
+      "TEAM_HEAL"
     ],
     "virtueSets": [
       {
@@ -7498,50 +7458,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ],
@@ -7649,9 +7609,9 @@
     },
     "synergies": [
       "ENEMY_VULNERABILITY",
-      "BASIC_ATTACK_SCALER",
-      "ATK_UP",
-      "CC_RESISTANCE"
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
+      "SELF_ATK_UP",
+      "SELF_CC_RESISTANCE"
     ],
     "baseAttackRate": 1.012,
     "bossUltimatesPer90s": 4,
@@ -7719,45 +7679,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -7987,14 +7947,14 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
+      "ENEMY_CROWD_CONTROL",
       "ENEMY_VULNERABILITY",
-      "TAUNT",
-      "AREA_DAMAGE_DEALER",
-      "DMG_RED",
-      "SHIELD",
+      "ENEMY_TAUNT",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_SHIELD",
       "SUMMON",
-      "HIT_AVOID",
+      "SELF_HIT_AVOID",
       "SELF_SUSTAIN"
     ],
     "baseAttackRate": 1.592,
@@ -8261,45 +8221,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -8413,15 +8373,15 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "SHIELD",
-      "CC_RESISTANCE",
-      "HIT_AVOID",
-      "HP_UP"
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "SELF_SHIELD",
+      "SELF_CC_RESISTANCE",
+      "SELF_HIT_AVOID",
+      "SELF_HP_UP"
     ],
     "baseAttackRate": 0.376,
     "bossUltimatesPer90s": 4,
@@ -8479,51 +8439,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -8585,52 +8545,52 @@
       }
     ],
     "synergies": [
-      "CROWD_CONTROL",
-      "AREA_DAMAGE_DEALER"
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "synergyPartners": [
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -8713,15 +8673,14 @@
       }
     ],
     "synergies": [
-      "CROWD_CONTROL",
-      "REMOVES_ARMOR",
-      "AREA_DAMAGE_DEALER",
-      "ATK_SPEED",
-      "ATK_UP",
-      "GAIN_ARMOR",
-      "CC_RESISTANCE",
-      "BASIC_ATTACK_SCALER",
-      "REDUCES_ATTRIBUTES"
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ARMOR_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "SELF_CC_RESISTANCE",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
+      "ENEMY_ATTRIBUTE_REDUCTION"
     ],
     "baseAttackRate": 0.919,
     "bossUltimatesPer90s": 3,
@@ -8729,45 +8688,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -8849,12 +8808,12 @@
       }
     ],
     "synergies": [
-      "ATK_SPD_DOWN",
-      "CROWD_CONTROL",
-      "ATK_UP",
-      "SHIELD",
-      "AREA_DAMAGE_DEALER",
-      "ATK_DOWN",
+      "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_ATK_UP",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "ENEMY_ATK_DOWN",
       "SUMMON"
     ],
     "baseAttackRate": 0.874,
@@ -8885,45 +8844,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -9028,11 +8987,10 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "AREA_DAMAGE_DEALER",
-      "ATK_SPEED",
-      "HEAL"
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_SPEED"
     ],
     "baseAttackRate": 1.163,
     "bossUltimatesPer90s": 5,
@@ -9067,45 +9025,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -9208,18 +9166,18 @@
       }
     },
     "synergies": [
-      "BUFF_TEAM",
-      "DEBUFF_CLEANSE_TEAM",
-      "HEAL_TEAM",
-      "REDUCES_ATTRIBUTES",
-      "ENERGY_RESTORE",
-      "HIT_AVOID",
+      "TEAM_BUFF",
+      "TEAM_DEBUFF_CLEANSE",
+      "TEAM_HEAL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HIT_AVOID",
       "REVIVE",
-      "HEAL",
+      "SELF_HEAL",
       "SELF_SUSTAIN",
-      "ENERGY_RESTORE_TEAM",
-      "DMG_RED",
-      "ATK_UP"
+      "TEAM_ENERGY_RESTORE",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ATK_UP"
     ],
     "baseAttackRate": 0.706,
     "bossUltimatesPer90s": 4,
@@ -9305,55 +9263,55 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "REMOVES_ARMOR"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       }
     ]
@@ -9465,17 +9423,12 @@
     "baseAttackRate": 0.492,
     "bossUltimatesPer90s": 6,
     "synergies": [
-      "BUFF_TEAM",
-      "DAMAGE_REDUCTION_TEAM",
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "HP_UP",
-      "SHIELD",
-      "SELF_SUSTAIN",
-      "DMG_RED"
+      "TEAM_BUFF",
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "SELF_ENERGY_RESTORE",
+      "SELF_DAMAGE_REDUCTION"
     ],
     "coreMechanic": {
       "summary": "Diamond Support with protective life-sharing mechanics. Shields Heracles during ramp-up phase but can slow his energy recovery -- known tradeoff. Insufficient against high enemy burst. r1-10 enough for baseline utility; r30 for full protective output.",
@@ -9561,55 +9514,55 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "REMOVES_ARMOR"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -9714,18 +9667,16 @@
       }
     },
     "synergies": [
-      "DAMAGE_REDUCTION_TEAM",
-      "SHIELD_TEAM",
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "TAUNT",
-      "DMG_RED",
-      "GAIN_ARMOR",
-      "HEAL",
-      "HIT_AVOID",
-      "SHIELD",
-      "AREA_DAMAGE_DEALER",
-      "CC_RESISTANCE",
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "ENEMY_TAUNT",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_HEAL",
+      "SELF_HIT_AVOID",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_CC_RESISTANCE",
       "SUMMON"
     ],
     "baseAttackRate": 0.519,
@@ -9787,54 +9738,54 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "REMOVES_ARMOR"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       }
     ],
@@ -9940,12 +9891,12 @@
       }
     },
     "synergies": [
-      "REDUCES_ATTRIBUTES",
-      "ATK_UP",
-      "DODGE_BUFF",
-      "HIT_AVOID",
-      "SHIELD",
-      "AREA_DAMAGE_DEALER"
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_ATK_UP",
+      "SELF_DODGE",
+      "SELF_HIT_AVOID",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 1.164,
     "bossUltimatesPer90s": 6,
@@ -9980,51 +9931,51 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "SHIELD_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_SHIELD",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -10236,20 +10187,19 @@
       }
     },
     "synergies": [
-      "BUFF_TEAM",
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "AREA_DAMAGE_DEALER",
-      "ATK_SPEED",
-      "ATK_UP",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "LIFE_STEAL_UP",
-      "SHIELD",
-      "REMOVES_ARMOR",
-      "SELF_SUSTAIN",
-      "GAIN_ARMOR",
-      "ENEMY_VULNERABILITY"
+      "TEAM_BUFF",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "ENEMY_ARMOR_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_ARMOR_UP",
+      "SELF_LIFESTEAL_UP",
+      "SELF_SHIELD",
+      "SELF_SUSTAIN"
     ],
     "baseAttackRate": 0.732,
     "bossUltimatesPer90s": 5,
@@ -10720,46 +10670,46 @@
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -10864,18 +10814,15 @@
       }
     },
     "synergies": [
-      "BUFF_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "CROWD_CONTROL",
-      "TAUNT",
-      "AREA_DAMAGE_DEALER",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "SHIELD",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ENERGY_DRAIN",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_HEAL",
+      "SELF_SHIELD",
       "REVIVE",
-      "ATK_SPEED",
-      "DMG_RED"
+      "ENEMY_ATK_SPD_DOWN"
     ],
     "baseAttackRate": 1.908,
     "bossUltimatesPer90s": 6,
@@ -10943,45 +10890,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -11197,19 +11144,18 @@
       }
     },
     "synergies": [
-      "BUFF_TEAM",
-      "CC_IMMUNITY_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "CROWD_CONTROL",
-      "TAUNT",
-      "AREA_DAMAGE_DEALER",
-      "ENERGY_RESTORE",
+      "TEAM_BUFF",
+      "TEAM_CC_IMMUNITY",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_TAUNT",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ENERGY_RESTORE",
       "SUMMON",
-      "SHIELD",
-      "DMG_RED",
-      "BASIC_ATTACK_SCALER",
-      "HEAL"
+      "SELF_SHIELD",
+      "SELF_DAMAGE_REDUCTION",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER"
     ],
     "baseAttackRate": 1.715,
     "bossUltimatesPer90s": 4,
@@ -11594,51 +11540,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -11700,7 +11646,7 @@
       }
     ],
     "synergies": [
-      "AREA_DAMAGE_DEALER"
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "virtueSets": [
       {
@@ -11728,45 +11674,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -11873,14 +11819,13 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "ENERGY_DRAIN",
-      "REMOVES_ARMOR",
-      "ATK_UP",
-      "HIT_AVOID",
-      "AREA_DAMAGE_DEALER",
-      "DODGE_BUFF",
-      "SUMMON"
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ENERGY_DRAIN",
+      "ENEMY_ARMOR_REDUCTION",
+      "SELF_ATK_UP",
+      "SELF_HIT_AVOID",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_DODGE"
     ],
     "baseAttackRate": 2.129,
     "bossUltimatesPer90s": 6,
@@ -12213,51 +12158,51 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "SHIELD_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_SHIELD",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -12362,10 +12307,10 @@
       }
     },
     "synergies": [
-      "ATK_SPD_DOWN",
-      "CROWD_CONTROL",
-      "ENERGY_DRAIN",
-      "ENERGY_RESTORE",
+      "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ENERGY_DRAIN",
+      "SELF_ENERGY_RESTORE",
       "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.543,
@@ -12412,51 +12357,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -12561,18 +12506,18 @@
       }
     },
     "synergies": [
-      "ATK_SPEED",
-      "ATK_UP",
-      "ENERGY_RESTORE",
-      "HEAL",
-      "HIT_AVOID",
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
+      "SELF_HIT_AVOID",
       "REVIVE",
-      "HP_UP",
-      "AREA_DAMAGE_DEALER",
+      "SELF_HP_UP",
+      "PLAYSTYLE_AREA_DAMAGE",
       "SUMMON",
-      "BASIC_ATTACK_SCALER",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
       "SELF_SUSTAIN",
-      "HEAL_EFFECT_UP"
+      "SELF_HEAL_EFFECT_UP"
     ],
     "baseAttackRate": 4.956,
     "bossUltimatesPer90s": 6,
@@ -12608,45 +12553,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -12728,13 +12673,10 @@
       }
     ],
     "synergies": [
-      "AREA_DAMAGE_DEALER",
-      "HEAL_TEAM",
-      "REDUCES_ATTRIBUTES",
-      "SHIELD_TEAM",
-      "BUFF_TEAM",
-      "SHIELD",
-      "SUMMON"
+      "PLAYSTYLE_AREA_DAMAGE",
+      "TEAM_HEAL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "TEAM_SHIELD"
     ],
     "baseAttackRate": 0.523,
     "bossUltimatesPer90s": 4,
@@ -12772,45 +12714,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -12916,13 +12858,12 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "ATK_UP",
-      "ENERGY_RESTORE",
-      "SHIELD",
-      "SUMMON",
-      "AREA_DAMAGE_DEALER"
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 0.793,
     "bossUltimatesPer90s": 8,
@@ -13005,48 +12946,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -13152,15 +13093,14 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
+      "ENEMY_CROWD_CONTROL",
       "ENEMY_VULNERABILITY",
-      "REMOVES_ARMOR",
-      "TAUNT",
-      "DMG_RED",
-      "GAIN_ARMOR",
-      "SHIELD",
-      "AREA_DAMAGE_DEALER",
-      "HP_UP"
+      "ENEMY_ARMOR_REDUCTION",
+      "ENEMY_TAUNT",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ARMOR_UP",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 0.738,
     "bossUltimatesPer90s": 2,
@@ -13206,50 +13146,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -13311,7 +13251,7 @@
       }
     ],
     "synergies": [
-      "CROWD_CONTROL"
+      "ENEMY_CROWD_CONTROL"
     ],
     "newHero": false,
     "coreMechanic": {
@@ -13325,45 +13265,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -13446,11 +13386,11 @@
       }
     ],
     "synergies": [
-      "REMOVES_ARMOR",
-      "ATK_UP",
-      "LIFE_STEAL_UP",
+      "ENEMY_ARMOR_REDUCTION",
+      "SELF_ATK_UP",
+      "SELF_LIFESTEAL_UP",
       "SELF_SUSTAIN",
-      "AREA_DAMAGE_DEALER"
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 0.788,
     "bossUltimatesPer90s": 5,
@@ -13480,45 +13420,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -13600,12 +13540,10 @@
       }
     ],
     "synergies": [
-      "ATK_DOWN",
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "SHIELD",
-      "ATK_UP",
-      "AREA_DAMAGE_DEALER"
+      "ENEMY_ATK_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 0.479,
     "bossUltimatesPer90s": 6,
@@ -13635,45 +13573,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -13778,15 +13716,14 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "BASIC_ATTACK_SCALER",
-      "ATK_SPEED",
-      "ATK_UP",
-      "DMG_RED",
-      "LIFE_STEAL_UP",
-      "AREA_DAMAGE_DEALER",
-      "SELF_SUSTAIN",
-      "BUFF_TEAM"
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_LIFESTEAL_UP",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_SUSTAIN"
     ],
     "baseAttackRate": 1.782,
     "bossUltimatesPer90s": 5,
@@ -13821,45 +13758,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -13968,15 +13905,15 @@
     },
     "synergies": [
       "SUMMON",
-      "CROWD_CONTROL",
-      "AREA_DAMAGE_DEALER",
-      "ATK_UP",
-      "SHIELD",
-      "ATK_DOWN",
-      "HP_UP",
-      "HEAL",
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_SHIELD",
+      "ENEMY_ATK_DOWN",
+      "SELF_HP_UP",
+      "SELF_HEAL",
       "SELF_SUSTAIN",
-      "DMG_RED"
+      "SELF_DAMAGE_REDUCTION"
     ],
     "cn": {
       "captured": "2026-05-20",
@@ -14320,45 +14257,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -14464,18 +14401,18 @@
       }
     },
     "synergies": [
-      "ATK_SPD_UP",
-      "BUFF_TEAM",
-      "SHIELD_TEAM",
-      "REMOVES_ARMOR",
-      "ATK_UP",
-      "LIFE_STEAL_UP",
-      "CROWD_CONTROL",
-      "AREA_DAMAGE_DEALER",
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "TEAM_SHIELD",
+      "ENEMY_ARMOR_REDUCTION",
+      "SELF_ATK_UP",
+      "SELF_LIFESTEAL_UP",
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE",
       "SELF_SUSTAIN",
-      "SHIELD",
-      "ATK_SPEED",
-      "BASIC_ATTACK_SCALER"
+      "SELF_SHIELD",
+      "SELF_ATK_SPEED",
+      "PLAYSTYLE_BASIC_ATTACK_SCALER"
     ],
     "baseAttackRate": 0.875,
     "bossUltimatesPer90s": 4,
@@ -14522,44 +14459,44 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       },
       {
         "heroId": "hera",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -14665,13 +14602,12 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
+      "ENEMY_CROWD_CONTROL",
       "ENEMY_VULNERABILITY",
-      "AREA_DAMAGE_DEALER",
-      "ATK_UP",
-      "ENERGY_RESTORE",
-      "SUMMON",
-      "HIT_AVOID",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_UP",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HIT_AVOID",
       "SELF_SUSTAIN"
     ],
     "baseAttackRate": 1.351,
@@ -14741,48 +14677,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -14886,12 +14822,11 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "ATK_UP",
-      "SHIELD",
-      "AREA_DAMAGE_DEALER",
-      "SUMMON",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_ATK_UP",
+      "SELF_SHIELD",
+      "PLAYSTYLE_AREA_DAMAGE",
       "ENEMY_VULNERABILITY"
     ],
     "baseAttackRate": 0.828,
@@ -14927,45 +14862,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ]
@@ -15026,7 +14961,7 @@
       }
     ],
     "synergies": [
-      "HEAL"
+      "SELF_HEAL"
     ],
     "virtueSets": [
       {
@@ -15054,45 +14989,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -15177,11 +15112,11 @@
       }
     ],
     "synergies": [
-      "ATK_DOWN",
-      "TAUNT",
-      "GAIN_ARMOR",
-      "HEAL",
-      "SHIELD",
+      "ENEMY_ATK_DOWN",
+      "ENEMY_TAUNT",
+      "SELF_ARMOR_UP",
+      "SELF_HEAL",
+      "SELF_SHIELD",
       "ENEMY_VULNERABILITY",
       "SELF_SUSTAIN"
     ],
@@ -15213,50 +15148,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -15361,19 +15296,18 @@
       }
     },
     "synergies": [
-      "DEBUFF_CLEANSE_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "ATK_DOWN",
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "ENERGY_RESTORE",
-      "AREA_DAMAGE_DEALER",
-      "HEAL",
+      "TEAM_DEBUFF_CLEANSE",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "ENEMY_ATK_DOWN",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "PLAYSTYLE_AREA_DAMAGE",
       "SELF_SUSTAIN",
-      "SHIELD",
-      "DAMAGE_REDUCTION_TEAM",
-      "HIT_AVOID"
+      "SELF_SHIELD",
+      "TEAM_DAMAGE_REDUCTION",
+      "SELF_HIT_AVOID"
     ],
     "baseAttackRate": 0.64,
     "bossUltimatesPer90s": 5,
@@ -15424,50 +15358,50 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "mengpo",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ],
@@ -15530,52 +15464,52 @@
       }
     ],
     "synergies": [
-      "AREA_DAMAGE_DEALER",
-      "SHIELD"
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_SHIELD"
     ],
     "synergyPartners": [
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -15680,14 +15614,12 @@
       }
     },
     "synergies": [
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "CROWD_CONTROL",
-      "HEAL",
-      "SHIELD",
-      "SELF_SUSTAIN",
-      "ENERGY_RESTORE",
-      "HP_UP"
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_HEAL",
+      "SELF_SHIELD",
+      "SELF_SUSTAIN"
     ],
     "coreMechanic": {
       "summary": "Late-game back row protection with shields, knockback, and stun. CN: unique ally protection mechanic. Tech use only becomes relevant months into the future.",
@@ -15720,51 +15652,51 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -15826,51 +15758,51 @@
       }
     ],
     "synergies": [
-      "REDUCES_ATTRIBUTES"
+      "ENEMY_ATTRIBUTE_REDUCTION"
     ],
     "synergyPartners": [
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -15955,10 +15887,8 @@
       }
     ],
     "synergies": [
-      "SHIELD_TEAM",
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "SHIELD"
+      "TEAM_SHIELD",
+      "ENEMY_CROWD_CONTROL"
     ],
     "virtueSets": [
       {
@@ -15986,45 +15916,45 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       },
       {
         "heroId": "cronus",
         "via": [
-          "CDR_TEAM",
-          "CROWD_CONTROL",
-          "BUFF_TEAM"
+          "TEAM_CDR",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_BUFF"
         ]
       }
     ],
@@ -16129,11 +16059,11 @@
       }
     },
     "synergies": [
-      "CROWD_CONTROL",
-      "ATK_DOWN",
-      "REDUCES_ATTRIBUTES",
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATK_DOWN",
+      "ENEMY_ATTRIBUTE_REDUCTION",
       "ENEMY_VULNERABILITY",
-      "AREA_DAMAGE_DEALER"
+      "PLAYSTYLE_AREA_DAMAGE"
     ],
     "baseAttackRate": 0.626,
     "bossUltimatesPer90s": 4,
@@ -16197,50 +16127,50 @@
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "tefnut",
         "via": [
-          "DEBUFF_CLEANSE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "DAMAGE_REDUCTION_TEAM"
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
         ]
       }
     ]
@@ -16350,13 +16280,13 @@
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/yanluo_relic.webp"
     },
     "synergies": [
-      "ENERGY_RESTORE_TEAM",
-      "CROWD_CONTROL",
+      "TEAM_ENERGY_RESTORE",
+      "ENEMY_CROWD_CONTROL",
       "ENEMY_VULNERABILITY",
-      "ENERGY_DRAIN",
-      "DMG_RED",
-      "ENERGY_RESTORE",
-      "HEAL",
+      "ENEMY_ENERGY_DRAIN",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_ENERGY_RESTORE",
+      "SELF_HEAL",
       "SELF_SUSTAIN"
     ],
     "coreMechanic": {
@@ -16416,48 +16346,48 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "ENERGY_RESTORE_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "iris",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]
@@ -16562,14 +16492,9 @@
       }
     },
     "synergies": [
-      "BUFF_TEAM",
-      "ENERGY_RESTORE_TEAM",
-      "HEAL_TEAM",
-      "SHIELD_TEAM",
-      "ATK_UP",
-      "HEAL",
-      "SELF_SUSTAIN",
-      "ENERGY_RESTORE"
+      "TEAM_BUFF",
+      "TEAM_ENERGY_RESTORE",
+      "TEAM_HEAL"
     ],
     "baseAttackRate": 0.504,
     "bossUltimatesPer90s": 4,
@@ -16625,55 +16550,55 @@
       {
         "heroId": "dionysus",
         "via": [
-          "CC_IMMUNITY_TEAM",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_CC_IMMUNITY",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "cancer",
         "via": [
-          "DAMAGE_REDUCTION_TEAM",
-          "DEBUFF_CLEANSE_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM",
-          "CC_IMMUNITY_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
         ]
       },
       {
         "heroId": "meret",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "SHIELD_TEAM"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
         ]
       },
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "HEAL_TEAM",
-          "REMOVES_ARMOR"
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       }
     ]
@@ -16894,15 +16819,11 @@
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/zeus_relic.webp"
     },
     "synergies": [
-      "AREA_DAMAGE_DEALER",
-      "ATK_SPEED",
-      "ATK_UP",
-      "ENERGY_RESTORE",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_SPEED",
+      "SELF_ENERGY_RESTORE",
       "SUMMON",
-      "DODGE_BUFF",
-      "ATK_SPD_UP",
-      "BUFF_TEAM",
-      "BASIC_ATTACK_SCALER"
+      "PLAYSTYLE_BASIC_ATTACK_SCALER"
     ],
     "baseAttackRate": 1.164,
     "bossUltimatesPer90s": 5,
@@ -17276,55 +17197,55 @@
       {
         "heroId": "nezha",
         "via": [
-          "BUFF_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION",
           "ENEMY_VULNERABILITY",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "hephaestus",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "CROWD_CONTROL",
-          "REMOVES_ARMOR"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
         ]
       },
       {
         "heroId": "dionysus",
         "via": [
-          "ATK_SPD_UP",
-          "CDR_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "ENERGY_RESTORE_TEAM",
-          "SHIELD_TEAM",
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_SHIELD",
           "ENEMY_VULNERABILITY"
         ]
       },
       {
         "heroId": "athena",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "DAMAGE_REDUCTION_TEAM",
-          "SHIELD_TEAM",
-          "CROWD_CONTROL",
-          "ENERGY_RESTORE_TEAM"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_CROWD_CONTROL",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "set",
         "via": [
-          "ATK_SPD_UP",
-          "BUFF_TEAM",
-          "SHIELD_TEAM",
-          "REMOVES_ARMOR",
-          "CROWD_CONTROL"
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_SHIELD",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
         ]
       }
     ]

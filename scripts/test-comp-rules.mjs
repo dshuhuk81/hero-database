@@ -29,10 +29,10 @@ const dps = (id, over = {}) => ({
 });
 
 test("contribution universe = team + enemy-debuff only (no self-buffs)", () => {
-  assert.ok(rules.contributionUniverse.has("SHIELD_TEAM"), "team tag included");
-  assert.ok(rules.contributionUniverse.has("REMOVES_ARMOR"), "debuff tag included");
-  assert.ok(!rules.contributionUniverse.has("SHIELD"), "self SHIELD excluded");
-  assert.ok(!rules.contributionUniverse.has("ATK_UP"), "self ATK_UP excluded");
+  assert.ok(rules.contributionUniverse.has("TEAM_SHIELD"), "team tag included");
+  assert.ok(rules.contributionUniverse.has("ENEMY_ARMOR_REDUCTION"), "debuff tag included");
+  assert.ok(!rules.contributionUniverse.has("SELF_SHIELD"), "self SELF_SHIELD excluded");
+  assert.ok(!rules.contributionUniverse.has("SELF_ATK_UP"), "self SELF_ATK_UP excluded");
 });
 
 test("need->tag map references only real tags", () => {
@@ -46,8 +46,8 @@ test("partner counts team contribution, ignores self-buffs", () => {
   const target = dps("target");
   const heroes = [
     target,
-    dps("buffer", { synergies: ["BUFF_TEAM", "ATK_SPD_UP"] }), // team -> matches ATK_SCALER needs
-    dps("selfish", { synergies: ["ATK_UP", "SHIELD"] }), // self only -> no match
+    dps("buffer", { synergies: ["TEAM_BUFF", "TEAM_ATK_SPD_UP"] }), // team -> matches ATK_SCALER needs
+    dps("selfish", { synergies: ["SELF_ATK_UP", "SELF_SHIELD"] }), // self only -> no match
   ];
   const { partners } = rankPartners(target, heroes, virtueDrivers, rules);
   const ids = partners.map((p) => p.id);
@@ -56,11 +56,11 @@ test("partner counts team contribution, ignores self-buffs", () => {
 });
 
 test("self and unreleased excluded", () => {
-  const target = dps("target", { synergies: ["BUFF_TEAM"] });
+  const target = dps("target", { synergies: ["TEAM_BUFF"] });
   const heroes = [
     target,
-    dps("ok", { synergies: ["BUFF_TEAM"] }),
-    dps("unreleased", { synergies: ["BUFF_TEAM"], release: false }),
+    dps("ok", { synergies: ["TEAM_BUFF"] }),
+    dps("unreleased", { synergies: ["TEAM_BUFF"], release: false }),
   ];
   const { partners } = rankPartners(target, heroes, virtueDrivers, rules);
   const ids = partners.map((p) => p.id);
@@ -72,8 +72,8 @@ test("tie-break prefers higher overall rating", () => {
   const target = dps("target");
   const heroes = [
     target,
-    dps("low", { synergies: ["BUFF_TEAM"] }),
-    dps("high", { synergies: ["BUFF_TEAM"] }),
+    dps("low", { synergies: ["TEAM_BUFF"] }),
+    dps("high", { synergies: ["TEAM_BUFF"] }),
   ];
   const ratings = { low: { overall: "B" }, high: { overall: "S+" } };
   const { partners } = rankPartners(target, heroes, virtueDrivers, rules, ratings);

@@ -117,8 +117,8 @@ async function analyzeBossDPS() {
   console.log('');
   console.log('SOLUTION OPTIONS:');
   console.log('  A) Add skill keyword detection for "max HP" damage (HIGH value for boss)');
-  console.log('  B) Increase weight for ATK_SPEED self-buff in boss scenario (currently 15)');
-  console.log('  C) Increase weight for REMOVES_ARMOR tag (currently 22)');
+  console.log('  B) Increase weight for SELF_ATK_SPEED self-buff in boss scenario (currently 15)');
+  console.log('  C) Increase weight for ENEMY_ARMOR_REDUCTION tag (currently 22)');
   console.log('  D) Add bonus multiplier for heroes with high base ATK (234k+)');
   console.log('  E) Detect and reward "stacking" mechanics (compound multipliers)');
   console.log('='.repeat(90) + '\n');

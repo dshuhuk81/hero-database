@@ -98,20 +98,19 @@
     }
   },
   "synergies": [
-    "BUFF_TEAM",
-    "CROWD_CONTROL",
-    "REDUCES_ATTRIBUTES",
-    "AREA_DAMAGE_DEALER",
-    "ATK_SPEED",
-    "ATK_UP",
-    "DMG_RED",
-    "ENERGY_RESTORE",
-    "LIFE_STEAL_UP",
-    "SHIELD",
-    "REMOVES_ARMOR",
-    "SELF_SUSTAIN",
-    "GAIN_ARMOR",
-    "ENEMY_VULNERABILITY"
+    "TEAM_BUFF",
+    "ENEMY_CROWD_CONTROL",
+    "ENEMY_ATTRIBUTE_REDUCTION",
+    "ENEMY_ARMOR_REDUCTION",
+    "PLAYSTYLE_AREA_DAMAGE",
+    "SELF_ATK_SPEED",
+    "SELF_ATK_UP",
+    "SELF_DAMAGE_REDUCTION",
+    "SELF_ENERGY_RESTORE",
+    "SELF_ARMOR_UP",
+    "SELF_LIFESTEAL_UP",
+    "SELF_SHIELD",
+    "SELF_SUSTAIN"
   ],
   "baseAttackRate": 0.732,
   "bossUltimatesPer90s": 5,
@@ -582,46 +581,46 @@
     {
       "heroId": "hephaestus",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "ENERGY_RESTORE_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_ENERGY_RESTORE",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION"
       ]
     },
     {
       "heroId": "dionysus",
       "via": [
-        "ATK_SPD_UP",
-        "CDR_TEAM",
-        "ENERGY_RESTORE_TEAM",
+        "TEAM_ATK_SPD_UP",
+        "TEAM_CDR",
+        "TEAM_ENERGY_RESTORE",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "iris",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "set",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "REMOVES_ARMOR",
-        "CROWD_CONTROL"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_ARMOR_REDUCTION",
+        "ENEMY_CROWD_CONTROL"
       ]
     },
     {
       "heroId": "athena",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "CROWD_CONTROL"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL"
       ]
     }
   ]

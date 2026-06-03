@@ -99,14 +99,13 @@
     }
   },
   "synergies": [
-    "CROWD_CONTROL",
-    "ENERGY_DRAIN",
-    "REMOVES_ARMOR",
-    "ATK_UP",
-    "HIT_AVOID",
-    "AREA_DAMAGE_DEALER",
-    "DODGE_BUFF",
-    "SUMMON"
+    "ENEMY_CROWD_CONTROL",
+    "ENEMY_ENERGY_DRAIN",
+    "ENEMY_ARMOR_REDUCTION",
+    "SELF_ATK_UP",
+    "SELF_HIT_AVOID",
+    "PLAYSTYLE_AREA_DAMAGE",
+    "SELF_DODGE"
   ],
   "baseAttackRate": 2.129,
   "bossUltimatesPer90s": 6,
@@ -439,51 +438,51 @@
     {
       "heroId": "nezha",
       "via": [
-        "BUFF_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION",
         "ENEMY_VULNERABILITY",
-        "DAMAGE_REDUCTION_TEAM"
+        "TEAM_DAMAGE_REDUCTION"
       ]
     },
     {
       "heroId": "hephaestus",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "CROWD_CONTROL",
-        "REMOVES_ARMOR"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_DAMAGE_REDUCTION",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION"
       ]
     },
     {
       "heroId": "dionysus",
       "via": [
-        "ATK_SPD_UP",
-        "CDR_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "SHIELD_TEAM",
+        "TEAM_ATK_SPD_UP",
+        "TEAM_CDR",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_SHIELD",
         "ENEMY_VULNERABILITY"
       ]
     },
     {
       "heroId": "set",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "SHIELD_TEAM",
-        "REMOVES_ARMOR",
-        "CROWD_CONTROL"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_SHIELD",
+        "ENEMY_ARMOR_REDUCTION",
+        "ENEMY_CROWD_CONTROL"
       ]
     },
     {
       "heroId": "athena",
       "via": [
-        "ATK_SPD_UP",
-        "BUFF_TEAM",
-        "DAMAGE_REDUCTION_TEAM",
-        "SHIELD_TEAM",
-        "CROWD_CONTROL"
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_SHIELD",
+        "ENEMY_CROWD_CONTROL"
       ]
     }
   ]

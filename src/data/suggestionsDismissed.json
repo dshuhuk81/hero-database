@@ -1,13 +1,13 @@
 {
   "anubis": {
     "remove": [
-      "ENERGY_DRAIN",
-      "REDUCES_ATTRIBUTES"
+      "ENEMY_ENERGY_DRAIN",
+      "ENEMY_ATTRIBUTE_REDUCTION"
     ]
   },
   "ares": {
     "remove": [
-      "CC_RESISTANCE"
+      "SELF_CC_RESISTANCE"
     ]
   },
   "artemis": {
@@ -15,25 +15,25 @@
       "ENEMY_VULNERABILITY"
     ],
     "remove": [
-      "CROWD_CONTROL",
-      "REDUCES_ATTRIBUTES",
-      "HIT_AVOID"
+      "ENEMY_CROWD_CONTROL",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "SELF_HIT_AVOID"
     ]
   },
   "athena": {
     "remove": [
-      "BUFF_TEAM"
+      "TEAM_BUFF"
     ]
   },
   "caishen": {
     "add": [
-      "AREA_DAMAGE_DEALER",
+      "PLAYSTYLE_AREA_DAMAGE",
       "SUMMON"
     ]
   },
   "bastet": {
     "remove": [
-      "CROWD_CONTROL"
+      "ENEMY_CROWD_CONTROL"
     ]
   }
 }

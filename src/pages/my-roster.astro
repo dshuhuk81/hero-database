@@ -1,0 +1,317 @@
+---
+import Base from "../layouts/Base.astro";
+import allHeroesDb from "../data/all_heroes_db.json";
+
+const heroList = Object.values(allHeroesDb as Record<string, any>)
+  .map((h: any) => ({ id: h.id, name: h.name, image: h.image }))
+  .sort((a: any, b: any) => a.name.localeCompare(b.name));
+---
+
+<Base title="My Roster | Motto Immortal" description="My Motto Immortal hero roster.">
+
+<div class="page-wrapper">
+  <div class="main-content">
+
+    <div class="roster-header">
+      <div class="page-header">
+        <h1 class="page-title">My Roster</h1>
+        <p class="page-subtitle" id="rosterSubtitle">Loading...</p>
+      </div>
+      <div class="roster-actions" id="editActions">
+        <div class="roster-picker-wrap">
+          <input
+            type="text"
+            class="roster-picker-input"
+            id="heroSearch"
+            placeholder="Add hero..."
+            autocomplete="off"
+          />
+          <div class="roster-dropdown" id="heroDropdown" hidden></div>
+        </div>
+        <button class="btn btn-primary" id="shareBtn">Copy Share Link</button>
+        <button class="btn btn-ghost" id="clearBtn">Clear All</button>
+      </div>
+      <div class="roster-actions" id="viewActions" hidden>
+        <span class="roster-mode-badge is-view">Shared Roster</span>
+      </div>
+    </div>
+
+    <div id="viewInfo" hidden class="roster-view-info">
+      <div class="roster-view-title">Hero Roster</div>
+      <div class="roster-view-sub" id="viewHeroCount"></div>
+    </div>
+
+    <div class="roster-grid" id="rosterGrid">
+      <div class="roster-empty">No heroes added yet.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="roster-share-toast" id="shareToast">Link copied!</div>
+
+<script define:vars={{ heroList }}>
+  const EVOLUTIONS = ["None", "Divine I", "Divine II", "Divine III", "Divine IV", "Divine V"];
+  const STORAGE_KEY = "hero-roster-v1";
+
+  const heroes = heroList;
+  let roster = [];
+  let isViewMode = false;
+
+  function encodeRoster(data) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  }
+
+  function decodeRoster(str) {
+    try {
+      return JSON.parse(decodeURIComponent(escape(atob(str))));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function saveRoster() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(roster));
+  }
+
+  function loadRoster() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function heroById(id) {
+    return heroes.find(function(h) { return h.id === id; });
+  }
+
+  function applyBgImages(container) {
+    container.querySelectorAll(".roster-card-img[data-img]").forEach(function(el) {
+      el.style.backgroundImage = "url('" + el.dataset.img + "')";
+    });
+    container.querySelectorAll(".roster-dropdown-thumb[data-img]").forEach(function(el) {
+      el.style.backgroundImage = "url('" + el.dataset.img + "')";
+    });
+  }
+
+  function cardHtml(entry) {
+    var hero = heroById(entry.id);
+    if (!hero) return "";
+    var evo = entry.evolution || "None";
+    var evoBadgeClass = evo === "None" ? "roster-evolution-badge evo-none" : "roster-evolution-badge";
+
+    if (isViewMode) {
+      return '<div class="roster-card">'
+        + '<div class="roster-card-img" data-img="' + hero.image + '"></div>'
+        + '<div class="roster-card-body">'
+        + '<div class="roster-card-name">' + hero.name + '</div>'
+        + '<div><span class="' + evoBadgeClass + '">' + evo + '</span></div>'
+        + '<div class="roster-card-stats">'
+        + '<span class="roster-stat-label">Lv</span><span class="roster-stat-value">' + entry.level + '</span>'
+        + '<span class="roster-stat-label">Relic</span><span class="roster-stat-value">' + entry.relic + '</span>'
+        + '</div>'
+        + '</div>'
+        + '</div>';
+    }
+
+    var evoOptions = EVOLUTIONS.map(function(e) {
+      return '<option value="' + e + '"' + (e === evo ? ' selected' : '') + '>' + e + '</option>';
+    }).join("");
+
+    return '<div class="roster-card" data-hero-id="' + entry.id + '">'
+      + '<div class="roster-card-img" data-img="' + hero.image + '"></div>'
+      + '<button class="roster-remove-btn" data-remove="' + entry.id + '" title="Remove">x</button>'
+      + '<div class="roster-card-body">'
+      + '<div class="roster-card-name">' + hero.name + '</div>'
+      + '<div class="roster-card-inputs">'
+      + '<div class="roster-input-row">'
+      + '<span class="roster-input-label">Lv</span>'
+      + '<input class="roster-input" type="number" min="1" max="300" value="' + entry.level + '" data-field="level" data-hero="' + entry.id + '" />'
+      + '</div>'
+      + '<div class="roster-input-row">'
+      + '<span class="roster-input-label">Relic</span>'
+      + '<input class="roster-input" type="number" min="0" max="30" value="' + entry.relic + '" data-field="relic" data-hero="' + entry.id + '" />'
+      + '</div>'
+      + '<div class="roster-input-row">'
+      + '<span class="roster-input-label">Evo</span>'
+      + '<select class="roster-input" data-field="evolution" data-hero="' + entry.id + '">' + evoOptions + '</select>'
+      + '</div>'
+      + '</div>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function renderGrid() {
+    var grid = document.getElementById("rosterGrid");
+    if (roster.length === 0) {
+      grid.innerHTML = '<div class="roster-empty">No heroes added yet.</div>';
+      return;
+    }
+    grid.innerHTML = roster.map(cardHtml).join("");
+    applyBgImages(grid);
+
+    if (!isViewMode) {
+      grid.querySelectorAll("[data-remove]").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var id = btn.dataset.remove;
+          roster = roster.filter(function(e) { return e.id !== id; });
+          saveRoster();
+          renderGrid();
+          updateSubtitle();
+        });
+      });
+
+      grid.querySelectorAll("[data-field]").forEach(function(input) {
+        input.addEventListener("change", function() {
+          var id = input.dataset.hero;
+          var field = input.dataset.field;
+          var entry = roster.find(function(e) { return e.id === id; });
+          if (entry) {
+            if (field === "evolution") {
+              entry[field] = input.value;
+            } else {
+              entry[field] = parseInt(input.value, 10) || 0;
+            }
+            saveRoster();
+          }
+        });
+      });
+    }
+  }
+
+  function updateSubtitle() {
+    var el = document.getElementById("rosterSubtitle");
+    var n = roster.length;
+    el.textContent = n === 0 ? "No heroes added" : (n + " hero" + (n === 1 ? "" : "s"));
+  }
+
+  function buildDropdown(filter) {
+    var dropdown = document.getElementById("heroDropdown");
+    var addedIds = {};
+    roster.forEach(function(e) { addedIds[e.id] = true; });
+
+    var filtered = heroes.filter(function(h) {
+      return h.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+    }).slice(0, 20);
+
+    if (filtered.length === 0) {
+      dropdown.innerHTML = '<div class="roster-dropdown-item is-added">No matches</div>';
+    } else {
+      dropdown.innerHTML = filtered.map(function(h) {
+        var added = !!addedIds[h.id];
+        return '<div class="roster-dropdown-item' + (added ? ' is-added' : '') + '" data-pick="' + h.id + '">'
+          + '<div class="roster-dropdown-thumb" data-img="' + h.image + '"></div>'
+          + '<span>' + h.name + (added ? ' (added)' : '') + '</span>'
+          + '</div>';
+      }).join("");
+
+      applyBgImages(dropdown);
+
+      dropdown.querySelectorAll("[data-pick]").forEach(function(item) {
+        item.addEventListener("mousedown", function(e) {
+          e.preventDefault();
+          addHero(item.dataset.pick);
+        });
+      });
+    }
+
+    dropdown.hidden = false;
+  }
+
+  function addHero(id) {
+    if (roster.find(function(e) { return e.id === id; })) return;
+    roster.push({ id: id, level: 300, relic: 30, evolution: "None" });
+    saveRoster();
+    renderGrid();
+    updateSubtitle();
+    var search = document.getElementById("heroSearch");
+    var dropdown = document.getElementById("heroDropdown");
+    search.value = "";
+    dropdown.hidden = true;
+    search.focus();
+  }
+
+  function showToast(msg) {
+    var toast = document.getElementById("shareToast");
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(function() { toast.classList.remove("show"); }, 2500);
+  }
+
+  function initEditMode() {
+    roster = loadRoster();
+    renderGrid();
+    updateSubtitle();
+
+    var search = document.getElementById("heroSearch");
+    var dropdown = document.getElementById("heroDropdown");
+
+    search.addEventListener("input", function() {
+      var val = search.value.trim();
+      if (val) {
+        buildDropdown(val);
+      } else {
+        dropdown.hidden = true;
+      }
+    });
+
+    search.addEventListener("focus", function() {
+      buildDropdown(search.value.trim() || "");
+    });
+
+    search.addEventListener("blur", function() {
+      setTimeout(function() { dropdown.hidden = true; }, 160);
+    });
+
+    document.getElementById("shareBtn").addEventListener("click", function() {
+      if (roster.length === 0) { showToast("Add heroes first!"); return; }
+      var encoded = encodeRoster(roster);
+      var url = location.origin + location.pathname + "?r=" + encoded;
+      navigator.clipboard.writeText(url).then(function() {
+        showToast("Link copied to clipboard!");
+      }).catch(function() {
+        prompt("Copy this link:", url);
+      });
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", function() {
+      if (!confirm("Clear all heroes from roster?")) return;
+      roster = [];
+      saveRoster();
+      renderGrid();
+      updateSubtitle();
+    });
+  }
+
+  function initViewMode(encoded) {
+    isViewMode = true;
+    var decoded = decodeRoster(encoded);
+    if (!decoded || !Array.isArray(decoded)) {
+      document.getElementById("rosterGrid").innerHTML = '<div class="roster-empty">Invalid roster link.</div>';
+      document.getElementById("rosterSubtitle").textContent = "Invalid link";
+      return;
+    }
+    roster = decoded;
+
+    document.getElementById("editActions").hidden = true;
+    document.getElementById("viewActions").hidden = false;
+    document.getElementById("viewInfo").hidden = false;
+    var n = roster.length;
+    var countStr = n + " hero" + (n === 1 ? "" : "s");
+    document.getElementById("viewHeroCount").textContent = countStr;
+    document.getElementById("rosterSubtitle").textContent = countStr;
+
+    renderGrid();
+  }
+
+  var params = new URLSearchParams(location.search);
+  var rParam = params.get("r");
+  if (rParam) {
+    initViewMode(rParam);
+  } else {
+    initEditMode();
+  }
+</script>
+
+</Base>
