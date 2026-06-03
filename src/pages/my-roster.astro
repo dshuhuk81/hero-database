@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import allHeroesDb from "../data/all_heroes_db.json";
 
 const heroList = Object.values(allHeroesDb as Record<string, any>)
+  .filter((h: any) => h.release === true)
   .map((h: any) => ({ id: h.id, name: h.name, image: h.image }))
   .sort((a: any, b: any) => a.name.localeCompare(b.name));
 ---
@@ -29,18 +30,8 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
             value="300"
           />
         </div>
-        <div class="roster-picker-wrap">
-          <input
-            type="text"
-            class="roster-picker-input"
-            id="heroSearch"
-            placeholder="Add hero..."
-            autocomplete="off"
-          />
-          <div class="roster-dropdown" id="heroDropdown" hidden></div>
-        </div>
         <button class="btn btn-primary" id="shareBtn">Copy Share Link</button>
-        <button class="btn btn-ghost" id="clearBtn">Clear All</button>
+        <button class="btn btn-ghost" id="resetBtn">Reset to All Heroes</button>
       </div>
       <div class="roster-actions" id="viewActions" hidden>
         <span class="roster-mode-badge is-view">Shared Roster</span>
@@ -53,7 +44,7 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
     </div>
 
     <div class="roster-grid" id="rosterGrid">
-      <div class="roster-empty">No heroes added yet.</div>
+      <div class="roster-empty">Loading...</div>
     </div>
 
   </div>
@@ -73,11 +64,19 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
   const STORAGE_KEY = "hero-roster-v1";
 
   const heroes = heroList;
+
+  function defaultHeroEntry(id) {
+    return { id: id, relic: 30, evolution: "None" };
+  }
+
+  function allHeroesDefault() {
+    return { level: 300, heroes: heroes.map(function(h) { return defaultHeroEntry(h.id); }) };
+  }
+
   // rosterData shape: { level: number, heroes: [{id, relic, evolution}] }
   var rosterData = { level: 300, heroes: [] };
   var isViewMode = false;
 
-  // --- normalize old array format or new object format ---
   function normalizeRosterData(raw) {
     if (Array.isArray(raw)) {
       var lvl = (raw.length > 0 && raw[0].level) ? raw[0].level : 300;
@@ -91,7 +90,7 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
     if (raw && typeof raw === "object" && Array.isArray(raw.heroes)) {
       return raw;
     }
-    return { level: 300, heroes: [] };
+    return allHeroesDefault();
   }
 
   function encodeRoster(data) {
@@ -112,10 +111,12 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
 
   function loadRoster() {
     try {
-      var raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return allHeroesDefault();
+      var raw = JSON.parse(stored);
       return normalizeRosterData(raw);
     } catch (_) {
-      return { level: 300, heroes: [] };
+      return allHeroesDefault();
     }
   }
 
@@ -125,9 +126,6 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
 
   function applyBgImages(container) {
     container.querySelectorAll(".roster-card-img[data-img]").forEach(function(el) {
-      el.style.backgroundImage = "url('" + el.dataset.img + "')";
-    });
-    container.querySelectorAll(".roster-dropdown-thumb[data-img]").forEach(function(el) {
       el.style.backgroundImage = "url('" + el.dataset.img + "')";
     });
   }
@@ -177,7 +175,7 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
   function renderGrid() {
     var grid = document.getElementById("rosterGrid");
     if (rosterData.heroes.length === 0) {
-      grid.innerHTML = '<div class="roster-empty">No heroes added yet.</div>';
+      grid.innerHTML = '<div class="roster-empty">No heroes in roster.</div>';
       return;
     }
     grid.innerHTML = rosterData.heroes.map(cardHtml).join("");
@@ -215,53 +213,7 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
   function updateSubtitle() {
     var el = document.getElementById("rosterSubtitle");
     var n = rosterData.heroes.length;
-    el.textContent = n === 0 ? "No heroes added" : (n + " hero" + (n === 1 ? "" : "s") + " - Lv " + rosterData.level);
-  }
-
-  function buildDropdown(filter) {
-    var dropdown = document.getElementById("heroDropdown");
-    var addedIds = {};
-    rosterData.heroes.forEach(function(e) { addedIds[e.id] = true; });
-
-    var filtered = heroes.filter(function(h) {
-      return h.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-    }).slice(0, 20);
-
-    if (filtered.length === 0) {
-      dropdown.innerHTML = '<div class="roster-dropdown-item is-added">No matches</div>';
-    } else {
-      dropdown.innerHTML = filtered.map(function(h) {
-        var added = !!addedIds[h.id];
-        return '<div class="roster-dropdown-item' + (added ? ' is-added' : '') + '" data-pick="' + h.id + '">'
-          + '<div class="roster-dropdown-thumb" data-img="' + h.image + '"></div>'
-          + '<span>' + h.name + (added ? ' (added)' : '') + '</span>'
-          + '</div>';
-      }).join("");
-
-      applyBgImages(dropdown);
-
-      dropdown.querySelectorAll("[data-pick]").forEach(function(item) {
-        item.addEventListener("mousedown", function(e) {
-          e.preventDefault();
-          addHero(item.dataset.pick);
-        });
-      });
-    }
-
-    dropdown.hidden = false;
-  }
-
-  function addHero(id) {
-    if (rosterData.heroes.find(function(e) { return e.id === id; })) return;
-    rosterData.heroes.push({ id: id, relic: 30, evolution: "None" });
-    saveRoster();
-    renderGrid();
-    updateSubtitle();
-    var search = document.getElementById("heroSearch");
-    var dropdown = document.getElementById("heroDropdown");
-    search.value = "";
-    dropdown.hidden = true;
-    search.focus();
+    el.textContent = n + " hero" + (n === 1 ? "" : "s") + " - Lv " + rosterData.level;
   }
 
   function showToast(msg) {
@@ -286,28 +238,8 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
     renderGrid();
     updateSubtitle();
 
-    var search = document.getElementById("heroSearch");
-    var dropdown = document.getElementById("heroDropdown");
-
-    search.addEventListener("input", function() {
-      var val = search.value.trim();
-      if (val) {
-        buildDropdown(val);
-      } else {
-        dropdown.hidden = true;
-      }
-    });
-
-    search.addEventListener("focus", function() {
-      buildDropdown(search.value.trim() || "");
-    });
-
-    search.addEventListener("blur", function() {
-      setTimeout(function() { dropdown.hidden = true; }, 160);
-    });
-
     document.getElementById("shareBtn").addEventListener("click", function() {
-      if (rosterData.heroes.length === 0) { showToast("Add heroes first!"); return; }
+      if (rosterData.heroes.length === 0) { showToast("No heroes in roster!"); return; }
       var encoded = encodeRoster(rosterData);
       var url = location.origin + location.pathname + "?r=" + encoded;
       navigator.clipboard.writeText(url).then(function() {
@@ -317,9 +249,10 @@ const heroList = Object.values(allHeroesDb as Record<string, any>)
       });
     });
 
-    document.getElementById("clearBtn").addEventListener("click", function() {
-      if (!confirm("Clear all heroes from roster?")) return;
-      rosterData.heroes = [];
+    document.getElementById("resetBtn").addEventListener("click", function() {
+      if (!confirm("Reset to all " + heroes.length + " released heroes? Current data will be lost.")) return;
+      rosterData = allHeroesDefault();
+      document.getElementById("globalLevel").value = rosterData.level;
       saveRoster();
       renderGrid();
       updateSubtitle();
