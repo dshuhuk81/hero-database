@@ -106,6 +106,7 @@ const nameToKey = {
   'Artemis': 'artemis',
   'Demeter': 'demeter',
   'Freya': 'freya',
+  'Eris': 'eris',
   // Diamond
   'Meret': 'meret',
   'Hercules': 'heracles',
@@ -117,6 +118,7 @@ const nameToKey = {
   'Ares': 'ares',
   'Geb': 'geb',
   'Horus': 'horus',
+  'Serket': 'serket',
   // Spade
   'Skadi': 'skadi',
   'Poseidon': 'poseidon',
@@ -136,6 +138,7 @@ const nameToKey = {
   'Nuwa': 'nuwa',
   'Dionysus': 'dionysus',
   'Nyx': 'nyx',
+  'Hera': 'hera',
 };
 
 const root = path.join(__dirname, '..');
