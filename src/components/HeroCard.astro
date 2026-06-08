@@ -1,6 +1,7 @@
 ---
 const { hero } = Astro.props;
 const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 ---
 
 <a
@@ -9,13 +10,16 @@ const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 >
   <img
     class="hero-card-image"
-    src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp`}
+    src={`${R2_BASE}/heroes/cards/${hero.id}-360.webp`}
+    srcset={`${R2_BASE}/heroes/cards/${hero.id}-240.webp 240w, ${R2_BASE}/heroes/cards/${hero.id}-360.webp 360w, ${R2_BASE}/heroes/cards/${hero.id}-480.webp 480w, ${R2_BASE}/heroes/${hero.id}.webp 512w`}
+    sizes="(max-width: 600px) calc((100vw - 3rem) / 2), (max-width: 1200px) 220px, 260px"
     alt={`${hero.name} portrait`}
     width="512"
     height="512"
     loading="lazy"
     decoding="async"
     fetchpriority="low"
+    onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
   />
 
   {hero.newHero && (

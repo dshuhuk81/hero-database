@@ -6,6 +6,7 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import Filter from "../components/filter.astro";
 
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 
 /* Alphabetisch nach Name sortieren */
 
@@ -166,11 +167,16 @@ const sortedHeroes = [...heroes]
           >
             <td class="col-portrait">
               <a href={`/heroes/${hero.id}`} class="list-portrait-link">
-                <div
+                <img
                   class="list-portrait"
-                  style={`background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${hero.id}.webp)`}
-                  aria-hidden="true"
-                ></div>
+                  src={`${R2_BASE}/heroes/thumbs/${hero.id}-96.webp`}
+                  alt=""
+                  width="44"
+                  height="44"
+                  loading="lazy"
+                  decoding="async"
+                  onerror={`this.onerror=null;this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                />
               </a>
             </td>
             <td class="col-name">
@@ -576,8 +582,9 @@ const sortedHeroes = [...heroes]
 .list-portrait {
   width: 44px;
   height: 44px;
-  background-size: cover;
-  background-position: center top 30%;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
   border-radius: var(--radius-md);
   transition: transform var(--duration-normal) var(--ease-out);
 }

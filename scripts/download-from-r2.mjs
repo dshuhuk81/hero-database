@@ -7,6 +7,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const envPath = join(ROOT, ".env.r2");
 
+if (process.argv.includes("--help")) {
+  console.log(`
+Usage:
+  node scripts/download-from-r2.mjs [--prefix <key-prefix>] [--dest <dir>] [--skip-existing]
+  node scripts/download-from-r2.mjs --heroes-only --dest public --skip-existing
+
+Options:
+  --heroes-only    Shortcut for --prefix heroes/
+  --prefix         R2 key prefix to download, e.g. heroes/
+  --dest           Local destination directory. Defaults to r2-download/
+  --skip-existing  Do not download files that already exist locally
+`);
+  process.exit(0);
+}
+
 if (!existsSync(envPath)) {
   throw new Error("Missing .env.r2. Create it with R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, and R2_BUCKET.");
 }
@@ -18,20 +33,26 @@ const env = Object.fromEntries(
     .map((line) => line.split("=").map((part) => part.trim()))
 );
 
-const DEST = process.argv.includes("--dest")
-  ? process.argv[process.argv.indexOf("--dest") + 1]
-  : join(ROOT, "r2-download");
-const PREFIX = process.argv.includes("--prefix")
-  ? process.argv[process.argv.indexOf("--prefix") + 1]
-  : "";
-
-if (process.argv.includes("--dest") && (!DEST || DEST.startsWith("--"))) {
-  throw new Error("Missing value after --dest");
+function argValue(name, fallback = null) {
+  if (!process.argv.includes(name)) return fallback;
+  const value = process.argv[process.argv.indexOf(name) + 1];
+  if (!value || value.startsWith("--")) {
+    throw new Error(`Missing value after ${name}`);
+  }
+  return value;
 }
 
-if (process.argv.includes("--prefix") && (!PREFIX && PREFIX !== "")) {
-  throw new Error("Missing value after --prefix");
+function normalizePrefix(prefix) {
+  return prefix.replace(/^\/+/, "");
 }
+
+const DEST = argValue("--dest", join(ROOT, "r2-download"));
+const PREFIX = normalizePrefix(
+  process.argv.includes("--heroes-only")
+    ? "heroes/"
+    : argValue("--prefix", "")
+);
+const SKIP_EXISTING = process.argv.includes("--skip-existing");
 
 const client = new S3Client({
   region: "auto",
@@ -72,12 +93,16 @@ async function listAllKeys() {
 }
 
 async function downloadKey(key) {
+  const targetPath = join(DEST, key);
+  if (SKIP_EXISTING && existsSync(targetPath)) {
+    return { targetPath, skipped: true };
+  }
+
   const response = await client.send(new GetObjectCommand({ Bucket: BUCKET, Key: key }));
   const body = await response.Body.transformToByteArray();
-  const targetPath = join(DEST, key);
   ensureDir(dirname(targetPath));
   writeFileSync(targetPath, body);
-  return targetPath;
+  return { targetPath, skipped: false };
 }
 
 async function main() {
@@ -87,13 +112,19 @@ async function main() {
   console.log(`Found ${keys.length} objects in ${BUCKET}${PREFIX ? ` with prefix ${PREFIX}` : ""}`);
 
   let downloaded = 0;
+  let skipped = 0;
   for (const key of keys) {
-    await downloadKey(key);
-    downloaded += 1;
-    console.log(`  DOWNLOADED ${key}`);
+    const result = await downloadKey(key);
+    if (result.skipped) {
+      skipped += 1;
+      console.log(`  SKIP ${key} (exists)`);
+    } else {
+      downloaded += 1;
+      console.log(`  DOWNLOADED ${key}`);
+    }
   }
 
-  console.log(`Done. Downloaded ${downloaded} objects to ${DEST}`);
+  console.log(`Done. Downloaded ${downloaded} objects to ${DEST}${skipped ? `, skipped ${skipped}` : ""}`);
 }
 
 main().catch((error) => {

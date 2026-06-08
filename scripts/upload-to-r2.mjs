@@ -8,6 +8,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const FORCE = process.argv.includes("--force");
 const DRY_RUN = process.argv.includes("--dry-run");
+const PREFIX = process.argv.includes("--prefix")
+  ? process.argv[process.argv.indexOf("--prefix") + 1]?.replace(/^\/+/, "")
+  : "";
+
+if (process.argv.includes("--prefix") && (!PREFIX || PREFIX.startsWith("--"))) {
+  throw new Error("Missing value after --prefix");
+}
 
 // Load .env.r2
 const envPath = join(ROOT, ".env.r2");
@@ -100,8 +107,12 @@ async function uploadFile(filePath) {
 }
 
 async function main() {
-  const files = getAllFiles(PUBLIC_DIR);
-  console.log(`Found ${files.length} files to upload`);
+  const files = getAllFiles(PUBLIC_DIR).filter((filePath) => {
+    if (!PREFIX) return true;
+    const key = relative(PUBLIC_DIR, filePath).replace(/\\/g, "/");
+    return key.startsWith(PREFIX);
+  });
+  console.log(`Found ${files.length} files to upload${PREFIX ? ` with prefix ${PREFIX}` : ""}`);
   if (DRY_RUN) {
     console.log(`[DRY RUN] ${FORCE ? "Overwrite mode enabled" : "Existing remote files will be skipped"}`);
   } else if (FORCE) {

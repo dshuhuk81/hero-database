@@ -32,7 +32,11 @@
     "after:boss-import": "node scripts/merge-heroes-db.js",
     "upload-assets": "node scripts/upload-to-r2.mjs",
     "upload-assets:force": "node scripts/upload-to-r2.mjs --force",
-    "sync:r2-down": "node scripts/download-from-r2.mjs"
+    "upload-hero-variants": "node scripts/upload-to-r2.mjs --prefix heroes/cards/ && node scripts/upload-to-r2.mjs --prefix heroes/thumbs/",
+    "sync:r2-down": "node scripts/download-from-r2.mjs",
+    "sync:r2-heroes-down": "node scripts/download-from-r2.mjs --heroes-only --dest public --skip-existing",
+    "build:hero-variants": "node scripts/create-hero-image-variants.mjs",
+    "prepare-hero-variants": "npm run sync:r2-heroes-down && npm run build:hero-variants"
   },
   "engines": {
     "node": "20.x"
