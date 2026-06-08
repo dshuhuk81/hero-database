@@ -157,7 +157,6 @@ const dotSections = [
   ...(hasComps ? [{ id: "section-comps", label: "Compositions" }] : []),
   ...(heroInvest ? [{ id: "section-investment", label: "Investment" }] : []),
   ...(hasVirtues ? [{ id: "section-virtues", label: "Virtues" }] : []),
-  ...((hero as any)["content-creator"]?.length ? [{ id: "section-videos", label: "Videos" }] : []),
 ];
 ---
 
@@ -342,7 +341,7 @@ const dotSections = [
         {hero.skills && hero.skills.map((skill: any, i: number) => (
           <div class={`skill-panel${i === 0 ? " active" : ""}`} data-skill-panel={i} role="tabpanel">
             <div class="skill-panel-inner">
-              <div class={skill.video ? "skill-body skill-body--has-video" : "skill-body"}>
+              <div class="skill-body">
                 <div class="skill-text">
                   <div class="skill-panel-header">
                     <div class="skill-panel-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
@@ -365,18 +364,6 @@ const dotSections = [
                     </div>
                   )}
                 </div>
-                {skill.video && (
-                  <div class="skill-video-wrap">
-                    <video
-                      class="skill-video"
-                      data-video-src={resolveSkillVideoSrc(skill.video)}
-                      autoplay
-                      loop
-                      muted
-                      playsinline
-                    ></video>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -705,33 +692,6 @@ const dotSections = [
       </section>
     )}
 
-    <!-- ── SECTION 9: VIDEO GUIDES ── -->
-    {(hero as any)["content-creator"] && (hero as any)["content-creator"].length > 0 && (
-      <section class="content-section" id="section-videos">
-        <div class="section-label" data-i18n="detail_videos">Video Guides</div>
-        <div class="video-grid">
-          {(hero as any)["content-creator"].map((guide: { titel: string; autor: string; videoId: string }) => (
-            <div class="video-card">
-              <div class="video-wrapper">
-                <iframe
-                  src={`https://www.youtube.com/embed/${guide.videoId}`}
-                  title={guide.titel}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  style="border:none;"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allowfullscreen
-                  loading="lazy"
-                ></iframe>
-              </div>
-              <div class="video-info">
-                <h3 class="video-title">{guide.titel}</h3>
-                <p class="video-author">by {guide.autor}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
 
     <!-- Ad slot: hero detail bottom -->
     <div class="ad-slot-hero">
@@ -896,8 +856,8 @@ const dotSections = [
   pointer-events: auto;
 }
 .showcase-nav svg { width: 20px; height: 20px; }
-.showcase-nav.prev { left: 20px; }
-.showcase-nav.next { right: 20px; }
+.showcase-nav.prev { left: 88px; }
+.showcase-nav.next { right: 88px; }
 .showcase-nav:hover { background: rgba(30,30,40,0.85); border-color: var(--faction-a); color: var(--faction-a); transform: translateY(-50%) scale(1.08); }
 .showcase-nav.disabled { opacity: 0.2; pointer-events: none; }
 
@@ -1380,25 +1340,6 @@ const dotSections = [
 .skill-body {
   display: block;
 }
-.skill-body--has-video {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-6);
-  align-items: center;
-}
-
-.skill-video-wrap {
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: #000;
-  width: 100%;
-}
-.skill-video {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-md);
-}
 
 .skill-text {
   display: flex;
@@ -1844,35 +1785,6 @@ const dotSections = [
 }
 
 /* =============================================
-   SECTION 9: VIDEOS
-   ============================================= */
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-  gap: var(--space-7);
-}
-.video-card { display: flex; flex-direction: column; gap: var(--space-3); }
-.video-wrapper {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  background: rgba(0,0,0,0.3);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  border: 1px solid var(--border-faint);
-}
-.video-wrapper iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-.video-info { padding: var(--space-1) 0; }
-.video-title { font-size: 0.9rem; font-weight: var(--weight-bold); color: var(--text-bright); margin: 0 0 3px; line-height: 1.35; }
-.video-author { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
-
-/* =============================================
    RESPONSIVE
    ============================================= */
 @media (max-width: 1024px) {
@@ -1893,9 +1805,7 @@ const dotSections = [
   .stat-columns { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
   .scroll-content { padding: 0 var(--space-4) 80px; }
   .syn-links-grid { grid-template-columns: 1fr; }
-  .video-grid { grid-template-columns: 1fr; }
   .skill-panel-inner { padding: var(--space-4); }
-  .skill-body--has-video { grid-template-columns: 1fr; }
   .showcase-nav { width: 38px; height: 38px; }
   .showcase-nav.prev { left: 12px; }
   .showcase-nav.next { right: 12px; }
@@ -1916,20 +1826,6 @@ const dotSections = [
   const skillTabs = document.querySelectorAll('.skill-tab');
   const skillPanels = document.querySelectorAll('.skill-panel');
 
-  function loadPanelVideo(panel: Element | null) {
-    if (!panel) return;
-    const video = panel.querySelector<HTMLVideoElement>('.skill-video');
-    if (!video) return;
-    const src = video.getAttribute('data-video-src');
-    if (src && !video.src) {
-      video.src = src;
-      video.load();
-      video.play().catch(() => {});
-    } else if (video.src && video.paused) {
-      video.play().catch(() => {});
-    }
-  }
-
   skillTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const idx = tab.getAttribute('data-skill-tab');
@@ -1939,12 +1835,8 @@ const dotSections = [
       tab.setAttribute('aria-selected','true');
       const panel = document.querySelector(`.skill-panel[data-skill-panel="${idx}"]`);
       if (panel) panel.classList.add('active');
-      loadPanelVideo(panel);
     });
   });
-
-  // Load video for initially active panel (skill 1)
-  loadPanelVideo(document.querySelector('.skill-panel.active'));
 
   // Arrow key cycling through skill tabs
   document.addEventListener('keydown', (e) => {

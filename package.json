@@ -31,7 +31,8 @@
     "after:tags": "node scripts/test-hero-tags.js && node scripts/merge-heroes-db.js",
     "after:boss-import": "node scripts/merge-heroes-db.js",
     "upload-assets": "node scripts/upload-to-r2.mjs",
-    "upload-assets:force": "node scripts/upload-to-r2.mjs --force"
+    "upload-assets:force": "node scripts/upload-to-r2.mjs --force",
+    "sync:r2-down": "node scripts/download-from-r2.mjs"
   },
   "engines": {
     "node": "20.x"
