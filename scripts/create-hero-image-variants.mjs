@@ -11,7 +11,7 @@ const FORCE = process.argv.includes("--force");
 const DRY_RUN = process.argv.includes("--dry-run");
 
 const VARIANTS = [
-  { dir: "thumbs", suffix: "96", width: 96, quality: 72 },
+  { dir: "thumbs", suffix: "96", width: 96, height: 96, quality: 72 },
   { dir: "cards", suffix: "240", width: 240, quality: 74 },
   { dir: "cards", suffix: "360", width: 360, quality: 76 },
   { dir: "cards", suffix: "480", width: 480, quality: 78 },
@@ -45,13 +45,20 @@ async function createVariant(sourcePath, variant) {
 
   if (!DRY_RUN) {
     await sharp(sourcePath)
-      .resize({
-        width: variant.width,
-        height: variant.width,
-        fit: "cover",
-        position: "top",
-        withoutEnlargement: true,
-      })
+      .resize(
+        variant.height
+          ? {
+              width: variant.width,
+              height: variant.height,
+              fit: "cover",
+              position: "top",
+              withoutEnlargement: true,
+            }
+          : {
+              width: variant.width,
+              withoutEnlargement: true,
+            }
+      )
       .webp({
         quality: variant.quality,
         effort: 6,
