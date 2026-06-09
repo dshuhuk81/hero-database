@@ -1481,7 +1481,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
           <p>Combat is automatic by default, but it is not random. A handful of mechanics decide most fights.</p>
 
           <h3>Auto vs. Manual</h3>
-          <p>Battles play out on their own, and you can leave them on auto for the vast majority of content. For hard bosses it is often worth taking <strong>manual control of your ultimates</strong> so you fire them at the right moment instead of letting the AI waste them.</p>
+          <p>Battles play out on their own, and you can leave them on auto for the vast majority of content. Sometimes it can be useful taking <strong>manual control of your ultimates</strong> so you fire them at the right moment instead of letting the AI waste them.</p>
 
           <h3>Energy &amp; Ultimates</h3>
           <p>During a fight each hero fills an <strong>energy bar</strong>. When it is full they cast their <strong>ultimate</strong> - the big, fight-swinging ability. Faster energy means more ultimates, which is exactly why energy-support heroes (your "batteries") are so valuable: they let your carry ult more often than the enemy can.</p>
@@ -1869,13 +1869,16 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 <style is:global>
   /* - EARLY GAME STYLES - */
   .tips-page {
+    --tips-content-max: 1200px;
+    --tips-content-x: var(--space-8);
     padding-top: var(--space-6);
   }
 
   .tips-page .tips-subnav {
-    max-width: 900px;
+    box-sizing: border-box;
+    max-width: var(--tips-content-max);
     margin: var(--space-7) auto 0;
-    padding: 0 0 var(--space-3);
+    padding: 0 var(--tips-content-x) var(--space-3);
     border-bottom: 1px solid var(--border-faint);
     justify-content: flex-start;
     gap: var(--space-6);
@@ -1917,21 +1920,22 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   }
 
   .eg-main-content {
-    max-width: 900px;
+    max-width: var(--tips-content-max);
     margin: 0 auto;
-    padding: var(--space-7) 0 var(--space-20);
+    padding: var(--space-7) var(--tips-content-x) var(--space-20);
   }
 
   .tips-main-content {
-    max-width: 900px;
+    max-width: var(--tips-content-max);
     margin: 0 auto;
-    padding: var(--space-7) 0 var(--space-20);
+    padding: var(--space-7) var(--tips-content-x) var(--space-20);
   }
 
   .tips-meta {
-    max-width: 900px;
+    box-sizing: border-box;
+    max-width: var(--tips-content-max);
     margin: 0 auto;
-    padding: 0;
+    padding: 0 var(--tips-content-x);
   }
   .tips-last-updated {
     margin: 0 0 var(--space-3);
@@ -1948,18 +1952,19 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     position: sticky;
     top: var(--space-4);
     z-index: 20;
+    box-sizing: border-box;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-4);
-    padding: var(--space-4) 0 var(--space-4);
-    margin: 0 0 var(--space-7);
+    padding: var(--space-4);
+    
     border: 0;
     border-bottom: 1px solid var(--border-faint);
     border-radius: 0;
     background: rgba(6, 9, 18, 0.82);
     backdrop-filter: blur(10px);
-    padding-left: var(--space-4);
   }
 
   .tips-jump-label {
