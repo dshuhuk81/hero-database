@@ -2,9 +2,6 @@
 export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
-import shrineSetups from "../data/shrineSetups.json";
-const visibleSetups = ["Setup B"];
-const shrineSetupGroups = shrineSetups.filter((setup: any) => visibleSetups.includes(setup.label));
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes";
 
@@ -73,46 +70,32 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   <PageHero
     tag="Tips"
     headline="Tips"
-    subtitle="Beginner tips and shrine system breakdowns"
+    subtitle="Beginner tips and core game mechanics"
   />
 <div class="page-wrapper tips-page">
   <div class="tips-meta">
-    <p class="tips-last-updated">Last updated: 2026-05-05</p>
-  </div>
-  <!-- TAB BAR -->
-  <div class="main-tabs" role="tablist" aria-label="Tips tabs">
-    <button
-      id="main-tab-beginner"
-      class="main-tab is-active"
-      data-tab="beginner"
-      role="tab"
-      aria-controls="tab-beginner"
-      aria-selected="true"
-    >Beginner</button>
-    <button
-      id="main-tab-shrine"
-      class="main-tab"
-      data-tab="shrine"
-      role="tab"
-      aria-controls="tab-shrine"
-      aria-selected="false"
-      tabindex="-1"
-    >Shrine</button>
+    <p class="tips-last-updated">Last updated: 2026-06-09</p>
   </div>
 
-  <!-- ====================================================
-       TAB: BEGINNER (default)
-       ==================================================== -->
-  <div id="tab-beginner" class="main-tab-panel" role="tabpanel" tabindex="0" aria-labelledby="main-tab-beginner">
+  <div class="tips-content">
     <!-- SUB-TAB NAVIGATION -->
-    <div class="tips-subnav" role="tablist" aria-label="Beginner sections">
+    <div class="tips-subnav" role="tablist" aria-label="Tips sections">
+      <button
+        id="subtab-btn-mechanics"
+        class="tips-subnav-btn is-active"
+        data-subtab="mechanics"
+        role="tab"
+        aria-controls="subtab-mechanics"
+        aria-selected="true"
+      >Mechanics</button>
       <button
         id="subtab-btn-early"
-        class="tips-subnav-btn is-active"
+        class="tips-subnav-btn"
         data-subtab="early"
         role="tab"
         aria-controls="subtab-early"
-        aria-selected="true"
+        aria-selected="false"
+        tabindex="-1"
       >Early Game</button>
       <button
         id="subtab-btn-midlate"
@@ -132,19 +115,10 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
         aria-selected="false"
         tabindex="-1"
       >Team Building</button>
-      <button
-        id="subtab-btn-mechanics"
-        class="tips-subnav-btn"
-        data-subtab="mechanics"
-        role="tab"
-        aria-controls="subtab-mechanics"
-        aria-selected="false"
-        tabindex="-1"
-      >Mechanics</button>
     </div>
 
     <!-- SUB-TAB: EARLY GAME -->
-    <div id="subtab-early" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-early">
+    <div id="subtab-early" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-early" hidden>
       <main class="eg-main-content">
 
       <!-- JUMPBAR -->
@@ -1439,319 +1413,316 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     </div>
 
     <!-- SUB-TAB: MECHANICS -->
-    <div id="subtab-mechanics" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics" hidden>
+    <div id="subtab-mechanics" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics">
       <main class="eg-main-content">
-        <div class="eg-content-card eg-note-card">
-          <h2>Mechanics (Coming soon)</h2>
-          <p>
-            This section is still being written. For now, use the other tabs for the highest-impact basics:
-          </p>
-          <ul>
-            <li><strong>Early Game</strong>: Odyssey milestones, summons, and wishlist setup</li>
-            <li><strong>Mid-Late</strong>: relic breakpoints and account power systems</li>
-            <li><strong>Shrine</strong>: placements, seats, talismans, and example setup</li>
-          </ul>
+
+        <!-- JUMPBAR -->
+        <nav class="tips-jumpbar" aria-label="Mechanics sections">
+          <span class="tips-jump-label">On this page</span>
+          <a href="#section-what" class="tips-jump-link">What Is This Game</a>
+          <a href="#section-loop" class="tips-jump-link">Core Loop</a>
+          <a href="#section-combat" class="tips-jump-link">Combat Basics</a>
+          <a href="#section-roles" class="tips-jump-link">Roles</a>
+          <a href="#section-factions" class="tips-jump-link">Factions</a>
+          <a href="#section-ascension" class="tips-jump-link">Rarity &amp; Ascension</a>
+          <a href="#section-glossary" class="tips-jump-link">Key Terms</a>
+        </nav>
+
+        <!-- WHAT IS THIS GAME -->
+        <div id="section-what" class="eg-content-card">
+          <h2>What Is Motto Immortal?</h2>
+          <p>Motto Immortal is an <strong>idle (AFK) hero-collector RPG</strong>. You play the Wayfarer and assemble a roster of mythological deities - Greek, Egyptian, Norse and more - to push back the Shadow-Blight. You collect deities by summoning, build a team of five, and send them into battle.</p>
+          <p>The key word is <strong>idle</strong>: your account keeps earning gold, experience and gear even while the game is closed. Offline rewards bank up to roughly <strong>12 hours</strong>, so logging in once or twice a day to collect and re-invest is the core rhythm.</p>
+          <p>Battles run <strong>automatically</strong>. You almost never control a hero directly - your real job happens <em>before</em> the fight: which deities you bring, where you place them, and how you gear them. The other tabs cover those decisions; this tab explains the systems underneath them.</p>
         </div>
+
+        <!-- CORE LOOP -->
+        <div id="section-loop" class="eg-content-card">
+          <h2>The Core Loop</h2>
+          <p>Almost everything in the game feeds back into this cycle. Once it clicks, every other tab makes sense.</p>
+          <div class="eg-pillar-list">
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">1</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Push the Odyssey (campaign)</div>
+                <p>The story mode is the gatekeeper - clearing stages unlocks summoning, game modes and account systems. It is your main focus in the first days.</p>
+              </div>
+            </div>
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">2</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Summon deities</div>
+                <p>Spend summon currency to collect heroes and duplicate copies. Copies are not wasted - they upgrade the deity (see Ascension below).</p>
+              </div>
+            </div>
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">3</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Build &amp; gear your team</div>
+                <p>Level, ascend, gear and add relics to your core five. You are not building five equal heroes - you invest in 1-2 carries and support them.</p>
+              </div>
+            </div>
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">4</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Collect idle income</div>
+                <p>Offline gold, EXP and gear pile up (up to ~12h). Collect it, pour it back into your team, and push the next Odyssey wall.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tips-callout">
+            <p>A stronger team clears more Odyssey, which unlocks more systems and bigger idle income - which makes your team stronger again. When you feel stuck, you are almost always one account system behind, not one summon short.</p>
+          </div>
+        </div>
+
+        <!-- COMBAT BASICS -->
+        <div id="section-combat" class="eg-content-card">
+          <h2>Combat Basics</h2>
+          <p>Combat is automatic by default, but it is not random. A handful of mechanics decide most fights.</p>
+
+          <h3>Auto vs. Manual</h3>
+          <p>Battles play out on their own, and you can leave them on auto for the vast majority of content. For hard bosses it is often worth taking <strong>manual control of your ultimates</strong> so you fire them at the right moment instead of letting the AI waste them.</p>
+
+          <h3>Energy &amp; Ultimates</h3>
+          <p>During a fight each hero fills an <strong>energy bar</strong>. When it is full they cast their <strong>ultimate</strong> - the big, fight-swinging ability. Faster energy means more ultimates, which is exactly why energy-support heroes (your "batteries") are so valuable: they let your carry ult more often than the enemy can.</p>
+
+          <h3>The Open Battlefield</h3>
+          <p>Heroes do not stand still. They move, some teleport, and many knock enemies back or pull them in. Because the field is open, <strong>positioning matters</strong> - the standard formation is two frontliners and three backliners.</p>
+          <div class="comparison-box">
+            <div class="compare-section">
+              <h4>Frontline (2)</h4>
+              <p>Tanks and brawlers</p>
+              <ul>
+                <li>Soak damage and hold the enemy</li>
+                <li>Protect the squishy backline</li>
+                <li>Placed closest to the enemy</li>
+              </ul>
+            </div>
+            <div class="compare-section">
+              <h4>Backline (3)</h4>
+              <p>Damage dealers and supports</p>
+              <ul>
+                <li>Deal the damage, heal, buff</li>
+                <li>Fragile - die fast if exposed</li>
+                <li>Kept behind the frontline</li>
+              </ul>
+            </div>
+          </div>
+          <p>Put a ranged carry too far forward and they get focused and die before doing anything. Front-to-back placement is one of the easiest free wins in the game.</p>
+
+          <h3>AoE vs. Line, and Grouping</h3>
+          <p>Ultimates have shapes: some hit in a straight <strong>line</strong>, others cover a wide <strong>circular area (AoE)</strong>. If your team has a hero that pulls or groups enemies together, time your AoE ultimates to land while the enemies are bunched up for maximum damage.</p>
+          <div class="tips-callout">
+            <p>Crowd Control (CC) - stuns, taunts, freezes, knockbacks - is not just defense. Grouping and locking down enemies is what lets your carry's AoE ultimate hit the whole enemy team at once.</p>
+          </div>
+        </div>
+
+        <!-- ROLES -->
+        <div id="section-roles" class="eg-content-card">
+          <h2>Roles: Who Does What</h2>
+          <p>Every deity fills one of three roles. A working team needs a mix - not five damage dealers.</p>
+          <div class="mech-role-grid">
+            <div class="eg-role-col">
+              <div class="eg-role-label">Tank</div>
+              <p>Frontline. Absorbs damage and shields the backline so your fragile heroes survive. Often brings CC such as taunts and knockbacks.</p>
+            </div>
+            <div class="eg-role-col">
+              <div class="eg-role-label">DPS / Carry</div>
+              <p>Your damage. This is the hero you invest in most - gear, relics, ascension. You build the team <em>around</em> the carry, not the other way round.</p>
+            </div>
+            <div class="eg-role-col">
+              <div class="eg-role-label">Support</div>
+              <p>Keeps the carry alive and firing - heals, shields, buffs and energy. Includes "batteries" (energy) and "tempo" buffers (attack and move speed).</p>
+            </div>
+          </div>
+          <div class="core-rule-split">
+            <div class="core-rule-carry">
+              <div class="core-rule-label">1-2 Carries</div>
+              <p>Deal the damage. They get the gear, the relics, the investment.</p>
+            </div>
+            <div class="core-rule-support">
+              <div class="core-rule-label">3-4 Supports / Tanks</div>
+              <p>Exist to enable the carry - energy, buffs, protection, uptime.</p>
+            </div>
+          </div>
+          <p class="eg-footnote">Want the detail on support types? See <strong>Team Building &rarr; Energy vs. Tempo Support</strong>.</p>
+        </div>
+
+        <!-- FACTIONS -->
+        <div id="section-factions" class="eg-content-card">
+          <h2>Factions (Suits)</h2>
+          <p>Every deity belongs to a <strong>faction</strong>, shown as a card suit. The four core suits are <strong>Hearts</strong>, <strong>Diamonds</strong>, <strong>Spades</strong> and <strong>Clubs</strong>, plus the rare <strong>Starglint</strong> group.</p>
+          <p>Factions matter in three places:</p>
+          <ul>
+            <li><strong>Summoning:</strong> Faction summons and the Wish List are organised by suit, so you target the faction your carry belongs to.</li>
+            <li><strong>Synergy bonus:</strong> Stacking deities of the same faction grants your whole team a damage bonus (up to +35%, see below).</li>
+            <li><strong>Counters:</strong> Each suit is strong against one other suit.</li>
+          </ul>
+
+          <h3>Faction Synergy Bonus</h3>
+          <p>The more deities of the same faction you field, the bigger the team-wide damage bonus. This is the single biggest reason to build "mono" or near-mono teams.</p>
+          <div class="pinion-table">
+            <div class="pinion-row pinion-header">
+              <div class="pinion-type">Team Composition</div>
+              <div class="pinion-when">Damage Bonus</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">3 of the same faction</div>
+              <div class="pinion-when">+15%</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">3 + 2 (two factions, e.g. 3 Hearts + 2 Spades)</div>
+              <div class="pinion-when">+25%</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">4 of the same faction</div>
+              <div class="pinion-when">+30%</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">5 of the same faction</div>
+              <div class="pinion-when">+35%</div>
+            </div>
+          </div>
+          <div class="tips-callout">
+            <p><strong>Starglint is a wildcard.</strong> A Starglint deity counts as whichever faction helps your bonus most. Example: 3 Hearts + 1 Club + 1 Starglint counts as a 4-faction bonus (+30%); 3 Hearts + 2 Starglint counts as a full 5-faction bonus (+35%).</p>
+          </div>
+
+          <h3>Faction Counters</h3>
+          <p>Each core suit deals extra damage against the suit it counters. It forms a single loop - so against an unknown enemy team, the faction that counters them is always the next one along.</p>
+          <div class="mech-counter">
+            {[["Hearts","Spades"],["Spades","Diamonds"],["Diamonds","Clubs"],["Clubs","Hearts"]].map(([a, b]: [string, string]) => (
+              <div class="mech-counter-row">
+                <span class="mech-fac" style={`--fc:${FACTION_META[a].color}`}>
+                  <img src={FACTION_META[a].icon} alt={a} />{a}
+                </span>
+                <span class="mech-counter-arrow">beats</span>
+                <span class="mech-fac" style={`--fc:${FACTION_META[b].color}`}>
+                  <img src={FACTION_META[b].icon} alt={b} />{b}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p class="eg-footnote">The loop: Hearts &rarr; Spades &rarr; Diamonds &rarr; Clubs &rarr; back to Hearts. Starglint sits outside the counter loop.</p>
+
+          <p class="eg-footnote">Starglint is the rarest group with its own currency and summon pool - see <strong>Early Game &rarr; Starglint and Mindsea</strong>.</p>
+        </div>
+
+        <!-- RARITY & ASCENSION -->
+        <div id="section-ascension" class="eg-content-card">
+          <h2>Rarity &amp; Ascension</h2>
+          <p>You make a deity stronger in two ways: <strong>levelling</strong> (raising their level with EXP) and <strong>ascension</strong> (raising their <em>grade</em> by feeding duplicate copies).</p>
+          <h3>Copies &amp; Fodder</h3>
+          <p>Every extra copy of a deity you summon goes toward ascending them to the next grade. Lower-value duplicates used purely as ascension material are called <strong>fodder</strong>. Higher grades unlock more stats and, eventually, the deity's <strong>relic</strong> system.</p>
+          <div class="tips-callout">
+            <p>Key idea: copies are never wasted. A "duplicate" you would discard in other games is the main way you power up a hero here. Spend them deliberately - see <strong>Early Game &rarr; Ascension Tips</strong> for which deities to feed first.</p>
+          </div>
+          <h3>The Grade Ladder</h3>
+          <p>Ascension raises a deity up this ladder. Each step needs more copies, but also adds stats and unlocks systems. The two milestones to remember: <strong>Exalted</strong> unlocks the relic system, and <strong>Divine</strong> is the current top tier.</p>
+          <div class="mech-grade-ladder">
+            <span class="mech-grade-step">Epic</span>
+            <span class="mech-grade-step">Epic+</span>
+            <span class="mech-grade-step">Legendary</span>
+            <span class="mech-grade-step">Legendary+</span>
+            <span class="mech-grade-step">Mythic</span>
+            <span class="mech-grade-step is-key">Exalted</span>
+            <span class="mech-grade-step is-key">Exalted+</span>
+            <span class="mech-grade-step is-top">Divine</span>
+            <span class="mech-grade-step is-top">Divine 1</span>
+            <span class="mech-grade-step is-top">Divine 2</span>
+            <span class="mech-grade-step is-top">Divine 3</span>
+            <span class="mech-grade-step is-top">Divine 4</span>
+            <span class="mech-grade-step is-top">Divine 5</span>
+          </div>
+          <p class="eg-footnote">Gold = relics unlock here (Exalted / Exalted+). Violet = Divine tiers, the current ceiling (Divine 5 is the highest anyone has reached so far; higher tiers may follow).</p>
+        </div>
+
+        <!-- KEY TERMS -->
+        <div id="section-glossary" class="eg-content-card">
+          <h2>Key Terms</h2>
+          <p>The words that show up everywhere in this guide and in chat, in one place.</p>
+          <div class="pinion-table">
+            <div class="pinion-row pinion-header">
+              <div class="pinion-type">Term</div>
+              <div class="pinion-when">What it means</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Deity / Hero</div>
+              <div class="pinion-when">A collectible character (a god or goddess) you summon and build.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Faction / Suit</div>
+              <div class="pinion-when">The card-suit group a deity belongs to: Hearts, Diamonds, Spades, Clubs, Starglint.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Carry / DPS / DD</div>
+              <div class="pinion-when">Your main damage dealer - the hero you invest in most.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Support</div>
+              <div class="pinion-when">Heals, buffs, shields or grants energy; exists to enable the carry.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Tank</div>
+              <div class="pinion-when">Frontline hero that soaks damage and protects the backline.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">CC (Crowd Control)</div>
+              <div class="pinion-when">Effects that stun, taunt, freeze, pull or knock back enemies.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Energy</div>
+              <div class="pinion-when">The bar that fills during combat; a full bar lets a hero cast their ultimate.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Ultimate</div>
+              <div class="pinion-when">A hero's big, energy-gated signature ability.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Ascension</div>
+              <div class="pinion-when">Raising a deity's grade by feeding duplicate copies.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Fodder</div>
+              <div class="pinion-when">Spare copies used purely as ascension material.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Relic</div>
+              <div class="pinion-when">A per-deity upgrade system unlocked at higher grades; has "breakpoints" (see Mid-Late).</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Pity</div>
+              <div class="pinion-when">A summon guarantee: after a set number of pulls you are granted a deity.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Idle / AFK</div>
+              <div class="pinion-when">Offline progress; rewards bank up to ~12 hours while you are away.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Odyssey</div>
+              <div class="pinion-when">The campaign / story mode; clearing it gates most other features.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Shrine</div>
+              <div class="pinion-when">Account-wide buff and gear (artefact) system unlocked through Odyssey progress.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Beacon Tree</div>
+              <div class="pinion-when">Account-wide stat bonuses that apply to every hero in every mode.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Resonating Altar</div>
+              <div class="pinion-when">Place 5 heroes; every other hero is raised to the level of your 5th-strongest.</div>
+            </div>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
 
-  <!-- ====================================================
-       TAB: SHRINE
-       ==================================================== -->
-  <div id="tab-shrine" class="main-tab-panel" role="tabpanel" tabindex="0" aria-labelledby="main-tab-shrine" style="display:none" hidden>
-    <main class="shrine-main-content">
-      <div class="sh-tldr-box">
-        <h3 class="sh-tldr-title">TLDR - Quick Takeaways</h3>
-        <ul class="sh-tldr-list">
-          <li><strong>General Pray</strong> is a separate system from normal shrine prayers - don't overfocus on it early.</li>
-          <li><strong>Place gods strategically</strong> - some are filler for global buffs (speed, crit), others boost your main faction.</li>
-          <li><strong>Seats matter:</strong> each seat provides unique bonuses. Match gods to seats that amplify their strengths.</li>
-          <li><strong>Artefacts</strong> give additional stat boosts to placed gods. Upgrade them when resources allow.</li>
-          <li><strong>Talismans</strong> provide powerful passive effects. Prioritize ones that benefit your core team.</li>
-        </ul>
-      </div>
-
-      <!-- SHRINE TABLE OF CONTENTS -->
-      <div class="sh-toc-card">
-        <h3 class="sh-toc-title">On this page</h3>
-        <div class="sh-toc-grid">
-          <a href="#shrine-general" class="sh-toc-item">General Pray</a>
-          <a href="#shrine-placement" class="sh-toc-item">Slots &amp; Placement</a>
-          <a href="#shrine-artefacts" class="sh-toc-item">Artefacts</a>
-          <a href="#shrine-seats" class="sh-toc-item">Seats</a>
-          <a href="#shrine-talismans" class="sh-toc-item">Talismans</a>
-          <a href="#shrine-setups" class="sh-toc-item">Setups</a>
-        </div>
-      </div>
-
-      <!-- GENERAL PRAY -->
-      <section id="shrine-general">
-        <p class="text-align-center">This content and its information rely on the knowledge of <b>sp0nti</b> on the official discord.</p>
-        <div class="sh-content-card">
-          <h2>General Pray (Manual Pray)</h2>
-          <p>This is the manual finger-tapping pray feature, which later becomes the manual option (leftmost button at the bottom bar).</p>
-          <div class="sh-warning-box">
-            <h3>Important to Know:</h3>
-            <ul>
-              <li><strong>General Pray is NOT linked to the normal shrine prayers</strong></li>
-              <li>It has its own separate system to generate additional points</li>
-              <li>This mechanic becomes more relevant later in the game</li>
-              <li>Don't overfocus on it early - it's a supplementary system</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- SHRINE SLOTS & GOD PLACEMENT -->
-      <section id="shrine-placement">
-        <div class="sh-content-card">
-          <h2>Shrine Slots &amp; God Placement</h2>
-          <p>Each shrine slot provides different bonuses depending on which god you place there. Strategic positioning is crucial for maximizing your shrine's output.</p>
-          <h3>Positioning Strategy</h3>
-          <ul>
-            <li><strong>Filler Gods:</strong> Some gods are primarily used for their global buffs (speed, crit, crit damage)</li>
-            <li><strong>Early Game:</strong> It's completely fine to use a god just for one strong global stat</li>
-            <li><strong>Specialization:</strong> As you progress, optimize based on your main faction and team composition</li>
-          </ul>
-          <h3>Global Buffs vs. Faction Buffs</h3>
-          <div class="comparison-box">
-            <div class="compare-section">
-              <h4>Global Buffs</h4>
-              <p>Affect all gods in your shrine</p>
-              <ul>
-                <li>More valuable in early/mid game</li>
-                <li>Great for diverse team compositions</li>
-                <li>Speed, crit, and crit damage are preferred</li>
-              </ul>
-            </div>
-            <div class="compare-section">
-              <h4>Faction Buffs</h4>
-              <p>Affect only specific faction heroes</p>
-              <ul>
-                <li>Stronger once your lineup is specialized</li>
-                <li>Best for faction-focused builds</li>
-                <li>Scales better at high shrine levels</li>
-              </ul>
-            </div>
-          </div>
-          <h3>Shrine Levels &amp; Scaling</h3>
-          <p>Shrine bonuses scale heavily with levels. A "weaker" god with a strong global bonus can outperform a "better" god at low shrine levels.</p>
-          <div class="sh-tip-box">
-            <h4>When to Change Your Setup</h4>
-            <ul>
-              <li>When you unlock new gods with valuable global buffs</li>
-              <li>When your main faction shifts</li>
-              <li>When your shrine reaches higher levels where scaling becomes critical</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- ARTEFACTS -->
-      <section id="shrine-artefacts">
-        <div class="sh-content-card">
-          <h2>Artefacts (Equipment System)</h2>
-          <p>Artefacts are the equipment in Motto Immortal that can be equipped on your heroes. <strong>The Shrine is your main source for acquiring artefacts.</strong></p>
-          <div class="sh-warning-box">
-            <h3>Why This Matters:</h3>
-            <p>If you neglect the Shrine system:</p>
-            <ul>
-              <li>Your heroes will die much faster in combat</li>
-              <li>They will deal insufficient damage, especially in late game</li>
-            </ul>
-          </div>
-          <h3>How to Obtain Artefacts</h3>
-          <p>Each time you complete a Shrine stage, there's a chance to drop Artefacts. The quality and rarity of drops depend on your progression.</p>
-          <div class="sh-info-box">
-            <h4>Important Mechanics:</h4>
-            <ul>
-              <li><strong>Campaign Progress:</strong> Artefact rarity is directly tied to how far you've progressed in the campaign</li>
-              <li><strong>Red Flame:</strong> Required to upgrade the Shrine, obtained from campaign progression</li>
-              <li><strong>Shop Alternative:</strong> Depending on your progress, the Shop can also provide Red Flame</li>
-            </ul>
-          </div>
-          <h3>Rarity &amp; Drop Mechanics</h3>
-          <ul>
-            <li>Artefacts follow the same color-based rarity system as Talismans and Heroes</li>
-            <li>Drops are <strong>fully random</strong> - you cannot control which specific Artefact drops</li>
-            <li>You can only influence rarity by upgrading your Shrine and progressing in campaign</li>
-          </ul>
-          <div class="sh-progression-box">
-            <h4>Progression Formula</h4>
-            <p>The further you progress in the campaign + The higher your Shrine level = Rarer and stronger Artefacts</p>
-          </div>
-          <h3>Shrine Stages &amp; Rewards</h3>
-          <p>Shrine stages are typically structured as one long challenge stage followed by two shorter stages. Every time you log in, the game displays how many points you gained and how many Artefacts dropped.</p>
-          <h3>Equipping Artefacts</h3>
-          <p>You can equip Artefacts directly from the Artefact window. The game conveniently shows which faction benefits the most from each Artefact's bonus.</p>
-        </div>
-      </section>
-
-      <!-- SEATS -->
-      <section id="shrine-seats">
-        <div class="sh-content-card">
-          <h2>The Six Shrine Seats</h2>
-          <p>There are six seats in the Shrine, each with unique mechanics and strengths.</p>
-          <div class="seats-grid">
-            <div class="seat-card left-seat">
-              <div class="seat-header"><h3>Seat of Amplification</h3><span class="seat-position">Left Side - Top</span></div>
-              <p class="seat-specialty"><strong>Specialty:</strong> Very high critical damage bonus</p>
-              <div class="level-unlock">
-                <div class="upgrade-row"><span class="upgrade-label">Level 10</span><span class="upgrade-text">CRIT DMG +200%</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 500</span><span class="upgrade-text">Grant 5% of self CRIT DMG to other seats</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 2000</span><span class="upgrade-text">Grant 10% of self CRIT DMG to other seats</span></div>
-              </div>
-            </div>
-            <div class="seat-card left-seat">
-              <div class="seat-header"><h3>Seat of Celerity</h3><span class="seat-position">Left Side - Middle</span></div>
-              <p class="seat-specialty"><strong>Specialty:</strong> Highest prayer speed</p>
-              <div class="level-unlock">
-                <div class="upgrade-row"><span class="upgrade-label">Level 10</span><span class="upgrade-text">Prayer Speed +50</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 200</span><span class="upgrade-text">Every 2 prayers trigger 1 extra prayer</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 1500</span><span class="upgrade-text">Every prayer triggers 1 extra prayer</span></div>
-              </div>
-            </div>
-            <div class="seat-card left-seat">
-              <div class="seat-header"><h3>Seat of Devotion</h3><span class="seat-position">Left Side - Bottom</span></div>
-              <p class="seat-specialty"><strong>Specialty:</strong> Most balanced seat</p>
-              <div class="level-unlock">
-                <div class="upgrade-row"><span class="upgrade-label">Level 100</span><span class="upgrade-text">Effective Devotion for all seats +10%</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 500</span><span class="upgrade-text">Effective Devotion for all seats +20%</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 2000</span><span class="upgrade-text">Effective Devotion for all seats +30%</span></div>
-              </div>
-            </div>
-            <div class="seat-card right-seat">
-              <div class="seat-header"><h3>Seat of Eminence</h3><span class="seat-position">Right Side - Top</span></div>
-              <p class="seat-specialty"><strong>Specialty:</strong> High crit rate, crit damage, and devotion</p>
-              <div class="level-unlock">
-                <div class="upgrade-row"><span class="upgrade-label">Level 50</span><span class="upgrade-text">Prayer Bonus +50%</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 200</span><span class="upgrade-text">Effective Devotion +50%</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 2000</span><span class="upgrade-text">Effective Devotion +50%</span></div>
-              </div>
-            </div>
-            <div class="seat-card right-seat">
-              <div class="seat-header"><h3>Seat of Criticals</h3><span class="seat-position">Right Side - Middle</span></div>
-              <p class="seat-specialty"><strong>Specialty:</strong> Highest critical rate of all seats</p>
-              <div class="level-unlock">
-                <div class="upgrade-row"><span class="upgrade-label">Level 10</span><span class="upgrade-text">+25% Crit Rate</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 200</span><span class="upgrade-text">When CRITTING, there is a 50% chance to trigger another CRIT</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 1500</span><span class="upgrade-text">This seats prayers are guaranteed to CRIT</span></div>
-              </div>
-            </div>
-            <div class="seat-card right-seat">
-              <div class="seat-header"><h3>Seat of Might</h3><span class="seat-position">Right Side - Bottom</span></div>
-              <p class="seat-specialty"><strong>Specialty:</strong> Highest devotion value in the entire shrine</p>
-              <div class="level-unlock">
-                <div class="upgrade-row"><span class="upgrade-label">Level 500</span><span class="upgrade-text">All seats gain 1% of this slots Devotion</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 1000</span><span class="upgrade-text">+500% Devotion</span></div>
-                <div class="upgrade-row"><span class="upgrade-label">Level 2000</span><span class="upgrade-text">All seats gain 2% of this slots Devotion</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TALISMANS -->
-      <section id="shrine-talismans">
-        <div class="sh-content-card">
-          <h2>Talismans</h2>
-          <p>Talismans add another powerful layer to the shrine system, providing temporary buffs that can significantly boost your shrine's performance.</p>
-          <h3>How to Obtain Talismans</h3>
-          <ol>
-            <li>Choose <strong>Divination</strong> at the Oracle</li>
-            <li>Perform a fortune reading with your favorite god</li>
-            <li>Complete the divination (card reading)</li>
-            <li>Receive a Talisman as a reward</li>
-          </ol>
-          <div class="sh-info-box">
-            <p><strong>Note:</strong> After completing divination, the game prompts you to return to the shrine and use the Talisman. This is optional - you can save it for later.</p>
-          </div>
-          <h3>Talisman Effects</h3>
-          <div class="talisman-effects">
-            <ul>
-              <li>Increased seat click rate (Global Speed)</li>
-              <li>Increased base devotion</li>
-              <li>Increased effective devotion</li>
-              <li>Increased faith per second</li>
-              <li>Increased critical chance</li>
-              <li>Increased critical damage</li>
-            </ul>
-          </div>
-          <h3>Duration &amp; Rarity</h3>
-          <p><strong>Talismans are time-limited</strong> - their effects are not permanent. Duration depends on rarity, ranging from several hours to a full day or longer.</p>
-          <div class="sh-rarity-box">
-            <h4>Talisman Rarity Tiers (Lowest to Highest):</h4>
-            <div class="rarity-list">
-              <div class="rarity-item rarity-low">White / Grey / Blue (Matte)</div>
-              <div class="rarity-item rarity-mid">Purple</div>
-              <div class="rarity-item rarity-high">Yellow</div>
-              <div class="rarity-item rarity-epic">Red</div>
-              <div class="rarity-item rarity-legendary">Turquoise</div>
-              <div class="rarity-item rarity-mythic">Rainbow Shimmer (Highest)</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SHRINE SETUPS -->
-      <section id="shrine-setups">
-        <div class="sh-content-card">
-          <h2>Example Shrine Setup</h2>
-          <p>Strategic god placement maximizes shrine output. Here is one recommended configuration:</p>
-          <div class="shrine-setup-container">
-            {shrineSetupGroups.map((group: any, idx: number) => (
-              <div class="shrine-background-wrapper">
-                <div class="shrine-background">
-                  <div class="shrine-gods">
-                    {group.gods.map((setup: any) => (
-                      <div class="shrine-god-card" data-name={setup.name} aria-label={setup.name}>
-                        <img src={setup.image} alt={setup.name} class="god-image" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <canvas class="spark-overlay shrine-spark-canvas" data-shrine-id={idx} aria-hidden="true"></canvas>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
 </div>
 
   <script>
-    // - TAB SWITCHING
-    const mainTabs = document.querySelectorAll('.main-tab');
-    const mainPanels = document.querySelectorAll('.main-tab-panel');
-
-    function switchMainTab(tabId: string, opts: { updateHash?: boolean } = {}) {
-      const { updateHash = true } = opts;
-      mainTabs.forEach(t => {
-        const isActive = (t as HTMLElement).dataset.tab === tabId;
-        (t as HTMLElement).classList.toggle('is-active', isActive);
-        (t as HTMLElement).setAttribute('aria-selected', String(isActive));
-        (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
-      });
-      mainPanels.forEach(p => {
-        const isActive = (p as HTMLElement).id === 'tab-' + tabId;
-        (p as HTMLElement).style.display = isActive ? '' : 'none';
-        (p as HTMLElement).toggleAttribute('hidden', !isActive);
-      });
-      if (updateHash) history.replaceState(null, '', '#' + tabId);
-      if (tabId === 'shrine') startSparkles();
-      else stopSparkles();
-    }
-
-    mainTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const id = (tab as HTMLElement).dataset.tab;
-        if (id) switchMainTab(id);
-      });
-    });
-
     function setupRovingTabs(tabs: NodeListOf<Element>, getId: (el: Element) => string | undefined, activate: (id: string) => void) {
       const list = Array.from(tabs) as HTMLElement[];
       list.forEach((tabEl, idx) => {
@@ -1779,9 +1750,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       });
     }
 
-    setupRovingTabs(mainTabs, (el) => (el as HTMLElement).dataset.tab, (id) => switchMainTab(id));
-
-    // - HASH ROUTING (tabs + deep links)
+    // - HASH ROUTING (subtabs + deep links)
     function getHashId() {
       return decodeURIComponent((location.hash || '').replace('#', ''));
     }
@@ -1789,35 +1758,23 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     function showForTargetId(targetId: string) {
       if (!targetId) return false;
 
-      if (targetId === 'beginner' || targetId === 'shrine') {
-        switchMainTab(targetId);
+      if (['mechanics', 'early', 'midlate', 'teams'].includes(targetId)) {
+        switchSubTab(targetId);
         return true;
       }
 
       const target = document.getElementById(targetId);
       if (!target) return false;
 
-      const inShrine = !!target.closest('#tab-shrine');
-      const inBeginner = !!target.closest('#tab-beginner');
-
-      if (inShrine) {
-        switchMainTab('shrine', { updateHash: false });
-      } else if (inBeginner) {
-        switchMainTab('beginner', { updateHash: false });
-        const panel = target.closest('.tips-panel') as HTMLElement | null;
-        if (panel?.id?.startsWith('subtab-')) {
-          const subtabId = panel.id.replace('subtab-', '');
-          if (subtabId) switchSubTab(subtabId);
-        }
+      const panel = target.closest('.tips-panel') as HTMLElement | null;
+      if (panel?.id?.startsWith('subtab-')) {
+        const subtabId = panel.id.replace('subtab-', '');
+        if (subtabId) switchSubTab(subtabId);
       }
 
       target.scrollIntoView({ block: 'start' });
       return true;
     }
-
-    // Handle URL hash on load + on hash changes
-    showForTargetId(getHashId());
-    window.addEventListener('hashchange', () => showForTargetId(getHashId()));
 
     // Ensure in-page anchors open the right tab/subtab
     document.addEventListener('click', (e) => {
@@ -1833,7 +1790,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
       showForTargetId(targetId);
     });
 
-    // - SUB-TAB SWITCHING (Beginner tabs)
+    // - SECTION TAB SWITCHING
     const subTabs = document.querySelectorAll('.tips-subnav-btn');
     const subPanels = document.querySelectorAll('.tips-panel');
 
@@ -1859,6 +1816,10 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     });
 
     setupRovingTabs(subTabs, (el) => (el as HTMLElement).dataset.subtab, (id) => switchSubTab(id));
+
+    // Handle URL hash on load + on hash changes
+    showForTargetId(getHashId());
+    window.addEventListener('hashchange', () => showForTargetId(getHashId()));
 
     // - STICKY JUMPBARS + "YOU ARE HERE" HIGHLIGHT
     function setupJumpbars() {
@@ -1902,125 +1863,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
 
     setupJumpbars();
 
-    // - SHRINE SPARKS ANIMATION (pauses when not visible; respects reduced-motion)
-    const prefersReducedMotion = typeof window !== 'undefined'
-      && 'matchMedia' in window
-      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let sparklesInitialized = false;
-    const sparkleControllers: Array<{ start: () => void; stop: () => void }> = [];
-
-    function createSparkleController(canvas: HTMLCanvasElement) {
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return null;
-
-      function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
-      const resizeObserver = new ResizeObserver(() => resize());
-
-      function spawnSpark() {
-        const w = canvas.width, h = canvas.height;
-        return {
-          x: w * 0.35 + Math.random() * (w * 0.3),
-          y: h * 0.55 + Math.random() * (h * 0.4),
-          vx: (Math.random() - 0.5) * 0.6,
-          vy: -(0.6 + Math.random() * 1.4),
-          size: 1.2 + Math.random() * 3.5,
-          alpha: 0, life: 0,
-          lifeSpeed: 0.004 + Math.random() * 0.006,
-          twinkle: Math.random() * Math.PI * 2,
-          color: `hsl(${200 + Math.random() * 40}, 100%, ${75 + Math.random() * 25}%)`,
-        };
-      }
-
-      const sparks: any[] = [];
-      for (let i = 0; i < 60; i++) {
-        const s = spawnSpark();
-        (s as any).life = Math.random();
-        sparks.push(s);
-      }
-
-      function drawStar(x: number, y: number, size: number, alpha: number, color: string, twinkle: number, time: number) {
-        const shimmer = 0.7 + 0.3 * Math.sin(time * 6 + twinkle);
-        const a = alpha * shimmer;
-        if (a <= 0) return;
-        ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y);
-        const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 5);
-        glow.addColorStop(0, 'rgba(120,220,255,0.35)'); glow.addColorStop(1, 'rgba(30,100,255,0)');
-        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, 0, size * 5, 0, Math.PI * 2); ctx.fill();
-        const long = size * 4.5, short_ = size * 2.5, thin = size * 0.25;
-        function drawBeam(angle: number, len: number) {
-          ctx.save(); ctx.rotate(angle);
-          const grad = ctx.createLinearGradient(-len, 0, len, 0);
-          grad.addColorStop(0, 'rgba(255,255,255,0)'); grad.addColorStop(0.5, color); grad.addColorStop(1, 'rgba(255,255,255,0)');
-          ctx.fillStyle = grad; ctx.beginPath(); ctx.ellipse(0, 0, len, thin, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-        }
-        drawBeam(0, long); drawBeam(Math.PI / 2, long); drawBeam(Math.PI / 4, short_); drawBeam(-Math.PI / 4, short_);
-        const core = ctx.createRadialGradient(0, 0, 0, 0, 0, size);
-        core.addColorStop(0, 'white'); core.addColorStop(1, 'rgba(120,220,255,0)');
-        ctx.fillStyle = core; ctx.beginPath(); ctx.arc(0, 0, size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      }
-
-      let t = 0;
-      let rafId: number | null = null;
-
-      function tick() {
-        rafId = requestAnimationFrame(tick);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        t += 0.016;
-        for (const s of sparks) {
-          s.life += s.lifeSpeed;
-          s.alpha = s.life < 0.2 ? s.life / 0.2 : s.life < 0.75 ? 1 : 1 - (s.life - 0.75) / 0.25;
-          s.alpha = Math.max(0, Math.min(1, s.alpha));
-          s.x += s.vx + Math.sin(t * 1.5 + s.twinkle) * 0.15; s.y += s.vy;
-          drawStar(s.x, s.y, s.size, s.alpha, s.color, s.twinkle, t);
-          if (s.life >= 1) Object.assign(s, spawnSpark());
-        }
-      }
-
-      function start() {
-        if (rafId != null) return;
-        resize();
-        resizeObserver.observe(canvas);
-        rafId = requestAnimationFrame(tick);
-      }
-
-      function stop() {
-        if (rafId == null) return;
-        cancelAnimationFrame(rafId);
-        rafId = null;
-        resizeObserver.disconnect();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-
-      return { start, stop };
-    }
-
-    function initializeSparklesOnce() {
-      if (sparklesInitialized || prefersReducedMotion) return;
-      const canvases = document.querySelectorAll('.shrine-spark-canvas') as NodeListOf<HTMLCanvasElement>;
-      canvases.forEach((canvas) => {
-        const controller = createSparkleController(canvas);
-        if (controller) sparkleControllers.push(controller);
-      });
-      sparklesInitialized = true;
-    }
-
-    function startSparkles() {
-      initializeSparklesOnce();
-      if (prefersReducedMotion) return;
-      if (document.hidden) return;
-      sparkleControllers.forEach(c => c.start());
-    }
-
-    function stopSparkles() {
-      sparkleControllers.forEach(c => c.stop());
-    }
-
-    document.addEventListener('visibilitychange', () => {
-      const shrineActive = document.querySelector('.main-tab.is-active')?.getAttribute('data-tab') === 'shrine';
-      if (document.hidden || !shrineActive) stopSparkles();
-      else startSparkles();
-    });
-
   </script>
 </Base>
 
@@ -2028,29 +1870,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   /* - EARLY GAME STYLES - */
   .tips-page {
     padding-top: var(--space-6);
-  }
-
-  .tips-page .main-tabs {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 0 var(--space-4);
-    border-bottom: 1px solid rgba(250, 204, 21, 0.22);
-    opacity: 1;
-    justify-content: flex-start;
-    gap: var(--space-2);
-  }
-
-  .tips-page .main-tab {
-    border-radius: var(--radius-md);
-    border-color: transparent;
-    background: rgba(255, 255, 255, 0.04);
-    padding: var(--space-2) var(--space-4);
-    font-size: var(--text-sm);
-  }
-
-  .tips-page .main-tab.is-active {
-    border-color: rgba(250, 204, 21, 0.34);
-    background: rgba(250, 204, 21, 0.1);
   }
 
   .tips-page .tips-subnav {
@@ -2133,13 +1952,14 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-4);
-    padding: var(--space-3) 0 var(--space-4);
+    padding: var(--space-4) 0 var(--space-4);
     margin: 0 0 var(--space-7);
     border: 0;
     border-bottom: 1px solid var(--border-faint);
     border-radius: 0;
     background: rgba(6, 9, 18, 0.82);
     backdrop-filter: blur(10px);
+    padding-left: var(--space-4);
   }
 
   .tips-jump-label {
@@ -2572,121 +2392,9 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   .dd-card p { font-size: 0.88rem; margin: 0 0 var(--space-2); }
   .dd-tag { color: var(--text-muted) !important; font-size: 0.8rem !important; }
 
-  /* - SHRINE TAB STYLES - */
-  .shrine-main-content {
-    max-width: var(--page-max-width);
-    margin: 0 auto;
-    padding: var(--space-10) var(--space-6) var(--space-20);
-  }
-  .sh-tldr-box {
-    background: rgba(168,85,247,0.06); border: 1px solid rgba(168,85,247,0.3);
-    border-radius: var(--radius-md); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-6);
-  }
-  .sh-tldr-title { font-size: var(--text-base); font-weight: var(--weight-semibold); color: var(--accent-gold); margin-bottom: var(--space-3); }
-  .sh-tldr-list { padding-left: 18px; }
-  .sh-tldr-list li { color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--space-2); }
-
-  /* Shrine TOC */
-  .sh-toc-card {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid var(--border-faint);
-    border-radius: 0;
-    padding: 0 0 var(--space-5);
-    margin-bottom: var(--space-8);
-  }
-  .sh-toc-title {
-    font-size: 0.8rem;
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: rgba(250,204,21,0.7);
-    margin-bottom: var(--space-4);
-  }
-  .sh-toc-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3) var(--space-5);
-  }
-  .sh-toc-item {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid transparent;
-    border-radius: 0;
-    padding: 0 0 2px;
-    font-size: 0.85rem;
-    font-weight: var(--weight-semibold);
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: var(--transition-colors);
-  }
-  .sh-toc-item:hover { background: transparent; border-color: rgba(250,204,21,0.5); color: var(--accent-gold-light); }
-
-  /* Shrine sections */
-  #shrine-general, #shrine-placement, #shrine-artefacts,
-  #shrine-seats, #shrine-talismans, #shrine-setups {
-    scroll-margin-top: 80px;
-    margin-bottom: var(--space-4);
-  }
-
-  .sh-content-card { margin-bottom: var(--space-8); }
-  .sh-content-card h2 {
-    margin-top: var(--space-6); margin-bottom: var(--space-4); font-size: 1.6rem; color: var(--accent-gold);
-    border-bottom: 1px solid rgba(250,204,21,0.2); padding-bottom: var(--space-3);
-  }
-  .sh-content-card h3 { margin-top: var(--space-6); margin-bottom: var(--space-3); font-size: 1.2rem; color: #c4b5fd; }
-  .sh-content-card h4 { margin-top: var(--space-4); margin-bottom: var(--space-2); font-size: var(--text-base); color: var(--text-primary); }
-  .sh-content-card p { line-height: 1.8; margin-bottom: var(--space-4); color: var(--text-secondary); }
-  .sh-content-card ul, .sh-content-card ol { line-height: 1.8; margin-bottom: var(--space-4); color: var(--text-secondary); }
-  .sh-content-card li { margin-bottom: var(--space-3); }
-  .sh-content-card strong { color: var(--text-primary); }
-  .sh-warning-box {
-    background: rgba(251,146,60,0.1); padding: var(--space-5); margin: var(--space-5) 0; border-radius: var(--radius-md);
-    border-left: 3px solid rgba(251,146,60,0.4);
-  }
-  .sh-warning-box h3 { margin-top: 0; color: var(--accent-gold); font-size: var(--text-base); }
-  .sh-info-box { background: rgba(59,130,246,0.1); padding: var(--space-5); margin: var(--space-5) 0; border-radius: var(--radius-md); }
-  .sh-info-box h4 { margin-top: 0; color: var(--accent-gold); }
-  .sh-tip-box { background: rgba(74,222,128,0.07); padding: var(--space-5); margin: var(--space-5) 0; border-radius: var(--radius-md); }
-  .sh-tip-box h4 { margin-top: 0; color: #86efac; }
-  .sh-progression-box {
-    background: rgba(250,204,21,0.08); border: 1px solid rgba(250,204,21,0.3);
-    padding: var(--space-5); margin: var(--space-5) 0; border-radius: var(--radius-md); text-align: center;
-  }
-  .sh-progression-box h4 { margin-top: 0; color: var(--accent-gold); }
-  .sh-rarity-box { background: var(--bg-raised); padding: var(--space-5); border-radius: var(--radius-lg); margin: var(--space-5) 0; }
-  .sh-rarity-box h4 { margin-top: 0; color: var(--accent-gold); text-align: center; }
   .comparison-box { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin: var(--space-5) 0; }
   .compare-section { background: var(--chip-bg); padding: var(--space-5); border-radius: var(--radius-md); border: 1px solid rgba(168,85,247,0.25); }
   .compare-section h4 { margin-top: 0; color: var(--accent-gold); }
-  .seats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); margin-top: var(--space-5); }
-  .seat-card { background: var(--chip-bg); border: 1px solid rgba(168,85,247,0.35); border-radius: var(--radius-lg); padding: var(--space-5); transition: var(--transition-colors); }
-  .seat-card:hover { border-color: rgba(250,204,21,0.5); }
-  .seat-header { margin-bottom: var(--space-4); }
-  .seat-header h3 { margin: 0 0 var(--space-2) 0; color: var(--accent-gold); font-size: 1.2rem; }
-  .seat-position { font-size: var(--text-sm); color: var(--text-secondary); font-weight: var(--weight-medium); }
-  .seat-specialty { color: var(--text-primary); font-weight: var(--weight-medium); margin-bottom: var(--space-4); font-size: 0.9rem; }
-  .level-unlock { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-4); }
-  .upgrade-row { display: flex; align-items: flex-start; gap: var(--space-3); background: var(--bg-raised); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); }
-  .upgrade-label { background: rgba(74,222,128,0.2); color: #86efac; padding: 2px var(--space-2); border-radius: var(--radius-sm); font-weight: var(--weight-bold); font-size: 0.72rem; min-width: 60px; text-align: center; align-self: flex-start; white-space: nowrap; }
-  .upgrade-text { color: #86efac; font-size: 0.83rem; line-height: 1.4; }
-  .talisman-effects ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
-  .rarity-list { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4); }
-  .rarity-item { padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); font-weight: var(--weight-semibold); text-align: center; font-size: 0.9rem; }
-  .rarity-low { background: rgba(156,163,175,0.15); border: 1px solid rgba(156,163,175,0.5); color: var(--text-primary); }
-  .rarity-mid { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.5); color: var(--text-primary); }
-  .rarity-high { background: var(--accent-gold-dim); border: 1px solid rgba(250,204,21,0.5); color: var(--accent-gold); }
-  .rarity-epic { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.5); color: var(--text-primary); }
-  .rarity-legendary { background: rgba(20,184,166,0.15); border: 1px solid rgba(20,184,166,0.5); color: var(--text-primary); }
-  .rarity-mythic { background: rgba(250,204,21,0.2); border: 2px solid rgba(250,204,21,0.8); color: var(--accent-gold); font-size: 1.05em; box-shadow: 0 0 16px rgba(250,204,21,0.3); }
-  .shrine-setup-container { margin: var(--space-7) 0; display: flex; flex-direction: row; gap: var(--space-12); }
-  .shrine-background-wrapper { position: relative; display: inline-block; width: 100%; overflow: hidden; }
-  .shrine-background { display: flex; align-items: center; justify-content: center; background-image: url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/shrineBG.webp"); background-repeat: no-repeat; background-position: center; background-size: cover; border-radius: var(--radius-xl); width: 100%; height: 800px; }
-  .spark-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; border-radius: var(--radius-xl); }
-  .shrine-gods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; width: 400px; }
-  .shrine-god-card { display: flex; align-items: center; justify-content: center; transition: var(--transition-all); }
-  .god-image { width: 128px; height: 128px; display: block; border-radius: var(--radius-full); object-fit: cover; object-position: center 20%; border: 2px solid rgba(250,204,21,0.4); }
-  .text-align-center { display: block; width: 100%; text-align: center; margin: var(--space-6) 0 var(--space-7) 0; color: var(--text-secondary); }
 
   /* - PRIORITY MATRIX - */
   .eg-priority-matrix {
@@ -2772,6 +2480,47 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   .eg-role-list { padding-left: 18px; margin: 0 0 var(--space-4) 0; }
   .eg-role-list li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-2); }
 
+  /* - MECH ROLE GRID (3-up, reuses .eg-role-col) - */
+  .mech-role-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+  }
+
+  /* - MECH FACTION COUNTERS - */
+  .mech-counter { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-4) 0; }
+  .mech-counter-row { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+  .mech-fac {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: var(--weight-semibold);
+    color: var(--fc, var(--text-primary));
+    font-size: 0.9rem;
+  }
+  .mech-fac img { width: 18px; height: 18px; object-fit: contain; }
+  .mech-counter-arrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-muted);
+  }
+
+  /* - MECH GRADE LADDER - */
+  .mech-grade-ladder { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0; align-items: center; }
+  .mech-grade-step {
+    font-size: 0.8rem;
+    padding: 4px var(--space-3);
+    border-radius: var(--radius-full);
+    background: var(--chip-bg);
+    border: 1px solid var(--border-faint);
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .mech-grade-step.is-key { border-color: rgba(250,204,21,0.4); color: var(--accent-gold); background: rgba(250,204,21,0.08); }
+  .mech-grade-step.is-top { border-color: rgba(168,85,247,0.4); color: #c4b5fd; background: rgba(168,85,247,0.08); }
+
   /* - ELIXIR TIERS - */
   .eg-elixir-tiers {
     display: grid;
@@ -2828,10 +2577,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
   /* - RESPONSIVE - */
   @media (max-width: 768px) {
     .tips-page { padding-top: var(--space-5); }
-    .tips-page .main-tabs {
-      padding-left: 0;
-      padding-right: 0;
-    }
     .tips-page .tips-subnav {
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -2867,14 +2612,10 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     .hero-chip { width: 58px; }
     .hero-chip-portrait { width: 58px; height: 58px; }
     .hero-chip-name { max-width: 58px; }
-    .shrine-main-content { padding: var(--space-7) var(--space-4) 60px; }
     .comparison-box { grid-template-columns: 1fr; }
-    .talisman-effects ul { grid-template-columns: 1fr; }
-    .seats-grid { grid-template-columns: 1fr; }
-    .shrine-background { background-image: none; }
-    .sh-toc-grid { gap: var(--space-2); }
     .eg-priority-matrix { grid-template-columns: 1fr; }
     .eg-role-grid { grid-template-columns: 1fr; }
+    .mech-role-grid { grid-template-columns: 1fr; }
     .eg-elixir-tiers { grid-template-columns: 1fr; }
     .core-rule-split { grid-template-columns: 1fr; }
     .dd-split { grid-template-columns: 1fr; }
