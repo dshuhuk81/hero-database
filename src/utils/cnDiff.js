@@ -24,7 +24,9 @@
 //     skills: [
 //       { id, cnName, values: [ { label, field, global, cn, unit,
 //                                 change: "buff"|"nerf"|"diff"|"neutral",
-//                                 verified?: boolean } ], notes?: [] }
+//                                 verified?: boolean,
+//                                 movement?: { pct, direction, label } } ],
+//         notes?: [] }
 //     ]
 //   }
 
@@ -32,6 +34,38 @@ const CHANGE_KINDS = ["buff", "nerf", "diff", "neutral"];
 
 function isChangedRow(row) {
   return row && row.change && row.change !== "neutral";
+}
+
+function isFiniteNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function roundMovementPct(value) {
+  if (Math.abs(value) >= 10) return Math.round(value);
+  return Math.round(value * 10) / 10;
+}
+
+/**
+ * Calculate the numeric movement from the CN base to Global.
+ * Uses row.change for direction because lower numeric values can be either
+ * better or worse depending on the field (damage vs cooldown, etc.).
+ */
+export function getCnMovement(row) {
+  if (!row || (row.change !== "buff" && row.change !== "nerf")) return null;
+  if (!isFiniteNumber(row.global) || !isFiniteNumber(row.cn) || row.cn === 0) {
+    return null;
+  }
+
+  const rawPct = ((row.global - row.cn) / Math.abs(row.cn)) * 100;
+  const magnitude = roundMovementPct(Math.abs(rawPct));
+  if (!Number.isFinite(magnitude) || magnitude === 0) return null;
+
+  const signedPct = row.change === "buff" ? magnitude : -magnitude;
+  return {
+    pct: signedPct,
+    direction: row.change === "buff" ? "up" : "down",
+    label: `${signedPct > 0 ? "+" : ""}${signedPct}%`,
+  };
 }
 
 // Humanize a skill id when no Global name is found ("skill_1" -> "Skill 1").
@@ -66,7 +100,9 @@ export function getCnSummary(hero) {
   const totals = { buff: 0, nerf: 0, diff: 0, neutral: 0, changes: 0, total: 0 };
 
   const skills = cn.skills.map((skill) => {
-    const rows = Array.isArray(skill.values) ? skill.values : [];
+    const rows = Array.isArray(skill.values)
+      ? skill.values.map((row) => ({ ...row, movement: getCnMovement(row) }))
+      : [];
     let changeCount = 0;
     for (const row of rows) {
       totals.total += 1;

@@ -104,6 +104,297 @@
     "SELF_ATK_UP",
     "SELF_CC_RESISTANCE"
   ],
+  "cn": {
+    "captured": "2026-06-10",
+    "source": "CN client skill screenshots in src/data/cn/jingwei1-5.png",
+    "skills": [
+      {
+        "id": "skill_1",
+        "cnName": "飓风呼啸",
+        "values": [
+          {
+            "label": "whirlwind interval",
+            "field": "seconds",
+            "global": 1.5,
+            "cn": 1.5,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "base whirlwind dmg",
+            "field": "atkPct",
+            "global": 150,
+            "cn": 250,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "energy cost per whirlwind",
+            "field": "energy",
+            "global": 260,
+            "cn": 260,
+            "unit": "",
+            "change": "neutral"
+          },
+          {
+            "label": "whirlwind dmg Lv2",
+            "field": "atkPct",
+            "global": 175,
+            "cn": 270,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "whirlwind dmg Lv3",
+            "field": "atkPct",
+            "global": 200,
+            "cn": 300,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "low HP threshold Lv4",
+            "field": "pct",
+            "global": 50,
+            "cn": 50,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "low HP dmg bonus Lv4",
+            "field": "pct",
+            "global": 20,
+            "cn": 20,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "damage type",
+            "field": "damageType",
+            "global": "Magical",
+            "cn": "Magical",
+            "unit": "",
+            "change": "neutral"
+          }
+        ],
+        "notes": []
+      },
+      {
+        "id": "skill_2",
+        "cnName": "暴风羽刃",
+        "values": [
+          {
+            "label": "base dmg",
+            "field": "atkPct",
+            "global": 200,
+            "cn": 200,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "vulnerability base",
+            "field": "pct",
+            "global": 20,
+            "cn": 20,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "vulnerability duration",
+            "field": "seconds",
+            "global": 5,
+            "cn": 5,
+            "unit": "s",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg Lv2",
+            "field": "atkPct",
+            "global": 220,
+            "cn": 220,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "vulnerability Lv3",
+            "field": "pct",
+            "global": 30,
+            "cn": 30,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "dmg Lv4",
+            "field": "atkPct",
+            "global": 250,
+            "cn": 250,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "damage type",
+            "field": "damageType",
+            "global": "Magical",
+            "cn": "Magical",
+            "unit": "",
+            "change": "neutral"
+          }
+        ],
+        "notes": []
+      },
+      {
+        "id": "skill_3",
+        "cnName": "盛大登场",
+        "values": [
+          {
+            "label": "ally ultimates per stack",
+            "field": "count",
+            "global": 3,
+            "cn": 3,
+            "unit": "x",
+            "change": "neutral"
+          },
+          {
+            "label": "ATK per stack base",
+            "field": "pct",
+            "global": 10,
+            "cn": 10,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "max stacks",
+            "field": "count",
+            "global": 3,
+            "cn": 3,
+            "unit": "",
+            "change": "neutral"
+          },
+          {
+            "label": "ATK per stack Lv2",
+            "field": "pct",
+            "global": 12.5,
+            "cn": 12.5,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "ATK per stack Lv3",
+            "field": "pct",
+            "global": 15,
+            "cn": 15,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "crit rate at max stacks Lv4",
+            "field": "pct",
+            "global": 40,
+            "cn": 40,
+            "unit": "%",
+            "change": "neutral"
+          }
+        ],
+        "notes": []
+      },
+      {
+        "id": "skill_4",
+        "cnName": "敏锐感知",
+        "values": [
+          {
+            "label": "max distance base",
+            "field": "meters",
+            "global": 11,
+            "cn": 11,
+            "unit": "m",
+            "change": "neutral"
+          },
+          {
+            "label": "max bonus dmg base",
+            "field": "pct",
+            "global": 20,
+            "cn": 20,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "max bonus dmg Lv2",
+            "field": "pct",
+            "global": 24,
+            "cn": 24,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "max bonus dmg Lv3",
+            "field": "pct",
+            "global": 28,
+            "cn": 28,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "max distance Lv4",
+            "field": "meters",
+            "global": 9,
+            "cn": 9,
+            "unit": "m",
+            "change": "neutral"
+          }
+        ],
+        "notes": []
+      },
+      {
+        "id": "relic",
+        "cnName": "最后的轻羽",
+        "values": [
+          {
+            "label": "extra whirlwind dmg base",
+            "field": "pct",
+            "global": 60,
+            "cn": 60,
+            "unit": "%",
+            "change": "neutral"
+          },
+          {
+            "label": "super armor Lv2",
+            "field": "state",
+            "global": "during Howling Hurricane",
+            "cn": "during Howling Hurricane",
+            "unit": "",
+            "change": "neutral"
+          },
+          {
+            "label": "extra whirlwind dmg Lv3",
+            "field": "pct",
+            "global": 65,
+            "cn": 80,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "extra whirlwind dmg Lv4",
+            "field": "pct",
+            "global": 80,
+            "cn": 100,
+            "unit": "%",
+            "change": "nerf"
+          },
+          {
+            "label": "damage type",
+            "field": "damageType",
+            "global": "Magical",
+            "cn": "Magical",
+            "unit": "",
+            "change": "neutral"
+          }
+        ],
+        "notes": [
+          "CN wording says the second whirlwind deals only the listed percentage of damage. Global text says \"DMG bonus\", but the stored comparison follows the same percentage progression exposed by the skill text."
+        ]
+      }
+    ]
+  },
   "baseAttackRate": 1.012,
   "bossUltimatesPer90s": 4,
   "coreMechanic": {

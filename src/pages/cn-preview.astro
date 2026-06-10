@@ -139,6 +139,18 @@ const CHANGE_LABEL: Record<string, string> = {
                         <td class="cn-cell-cn cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
                         <td class="cn-cell-change">
                           <span class={`cn-tag cn-tag-${row.change}`}>{CHANGE_LABEL[row.change] || row.change}</span>
+                          {row.movement && (
+                            <span class={`cn-move cn-move-${row.movement.direction}`} title={`Global is ${row.movement.label} vs CN`}>
+                              <svg viewBox="0 0 24 24" aria-hidden="true">
+                                {row.movement.direction === "up" ? (
+                                  <><path d="M3 17l6-6 4 4 7-7"/><path d="M14 8h6v6"/></>
+                                ) : (
+                                  <><path d="M3 7l6 6 4-4 7 7"/><path d="M14 16h6v-6"/></>
+                                )}
+                              </svg>
+                              <span>{row.movement.label}</span>
+                            </span>
+                          )}
                           {row.verified === false && <span class="cn-tag cn-tag-unverified">Unconfirmed</span>}
                         </td>
                       </tr>

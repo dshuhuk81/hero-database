@@ -39,11 +39,11 @@ const pveLate = ratings?.pveLate || ratings?.pve || "";
   <div class="big-rating-tile big-rating-tile-split">
     <div class="pve-split-row">
       <span class={`pve-split-cell rating-tile-${tierClass(pveEarly)}`}>
-        <span class="big-rating-val pve-split-val">{pveEarly || "N/A"}</span>
+        <span class="big-rating-val">{pveEarly || "N/A"}</span>
       </span>
       <span class="pve-split-divider"></span>
       <span class={`pve-split-cell rating-tile-${tierClass(pveLate)}`}>
-        <span class="big-rating-val pve-split-val">{pveLate || "N/A"}</span>
+        <span class="big-rating-val">{pveLate || "N/A"}</span>
       </span>
     </div>
     <div class="pve-split-labels">
