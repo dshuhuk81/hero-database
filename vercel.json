@@ -6,6 +6,16 @@
   "outputDirectory": "dist",
   "redirects": [
     {
+      "source": "/heros",
+      "destination": "/heroes/",
+      "permanent": true
+    },
+    {
+      "source": "/heros/",
+      "destination": "/heroes/",
+      "permanent": true
+    },
+    {
       "source": "/heroes/cashien",
       "destination": "/heroes/caishen/",
       "permanent": true

@@ -32,7 +32,7 @@ const HERO_DIR = path.join(ROOT, "src/data/heroes");
 const COMP_RULES_FILE = path.join(ROOT, "src/data/compRules.json");
 const TAG_CATEGORIES_FILE = path.join(ROOT, "src/data/tagCategories.json");
 const HERO_RATINGS_FILE = path.join(ROOT, "src/data/ratings/hero-ratings.json");
-const OUT_FILE = path.join(ROOT, "src/data/suggestionsComps.json");
+const OUT_FILE = path.join(ROOT, "scripts/output/suggestionsComps.json");
 
 const PARTNER_COUNT = 5; // 5 enabler partners (the hero itself is not its own partner)
 // Ratings live in ratings/hero-ratings.json (vocab: S+ S A+ A B+ B C D), not raw hero JSON.

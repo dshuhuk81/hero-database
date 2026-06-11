@@ -45,7 +45,7 @@ const allNavEntries: NavEntry[] = [
   },
   {
     label: "Hero List",
-    href: "/heros",
+    href: "/heroes",
     group: "primary",
     teaser: true,
     description: "Browse all heroes with stats & ratings",

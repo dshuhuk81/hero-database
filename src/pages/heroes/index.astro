@@ -1,10 +1,10 @@
 ---
 export const prerender = true;
-import HeroCard from "../components/HeroCard.astro";
-import { heroes } from "../data/heroes/withRatings";
-import Base from "../layouts/Base.astro";
-import PageHero from "../components/PageHero.astro";
-import Filter from "../components/filter.astro";
+import HeroCard from "../../components/HeroCard.astro";
+import { heroes } from "../../data/heroes/withRatings";
+import Base from "../../layouts/Base.astro";
+import PageHero from "../../components/PageHero.astro";
+import Filter from "../../components/filter.astro";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 
@@ -51,16 +51,16 @@ const sortedHeroes = [...heroes]
 
 <div class="resultcontent">
   <div class="sort-bar">
-    <p id="heroCounter" class="hero-counter" data-i18n-counter>0 Heroes shown</p>
+    <p id="heroCounter" class="hero-counter">0 Heroes shown</p>
     <div class="sort-controls">
-      <label for="sortSelect" class="sort-label" data-i18n="heros_sort_by">Sort by</label>
+      <label for="sortSelect" class="sort-label">Sort by</label>
       <select id="sortSelect" class="sort-select">
-        <option value="name-asc" data-i18n="heros_sort_name_asc">Name (A-Z)</option>
-        <option value="name-desc" data-i18n="heros_sort_name_desc">Name (Z-A)</option>
-        <option value="rating-desc" data-i18n="heros_sort_rating_desc">Rating (best first)</option>
-        <option value="rating-asc" data-i18n="heros_sort_rating_asc">Rating (worst first)</option>
-        <option value="class" data-i18n="heros_sort_class">Class</option>
-        <option value="rarity-desc" data-i18n="heros_sort_rarity_desc">Rarity (highest first)</option>
+        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-desc">Name (Z-A)</option>
+        <option value="rating-desc">Rating (best first)</option>
+        <option value="rating-asc">Rating (worst first)</option>
+        <option value="class">Class</option>
+        <option value="rarity-desc">Rarity (highest first)</option>
       </select>
       <div class="view-toggle" role="group" aria-label="View mode">
         <button id="viewGrid" class="view-btn active" title="Gallery view" aria-label="Gallery view">

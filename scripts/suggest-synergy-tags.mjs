@@ -22,7 +22,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const HERO_DIR = path.join(ROOT, "src/data/heroes");
 const RULES_FILE = path.join(ROOT, "src/data/tagRules.json");
-const OUT_FILE = path.join(ROOT, "src/data/suggestions.json");
+const OUT_FILE = path.join(ROOT, "scripts/output/suggestions.json");
 
 const ALLY_RE = /\b(all(?:y|ies)|teammates?|friendly|team|party)\b/i;
 const ENEMY_RE = /\b(enem(?:y|ies)|target|foe|opponent)\b/i;

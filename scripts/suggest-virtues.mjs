@@ -24,7 +24,7 @@ const ROOT = path.join(__dirname, "..");
 const HERO_DIR = path.join(ROOT, "src/data/heroes");
 const RULES_FILE = path.join(ROOT, "src/data/virtueRules.json");
 const VIRTUES_FILE = path.join(ROOT, "src/data/virtues.json");
-const OUT_FILE = path.join(ROOT, "src/data/suggestionsVirtues.json");
+const OUT_FILE = path.join(ROOT, "scripts/output/suggestionsVirtues.json");
 
 export function loadRules() {
   const raw = JSON.parse(fs.readFileSync(RULES_FILE, "utf8"));

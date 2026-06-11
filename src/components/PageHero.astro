@@ -24,9 +24,9 @@ const bgStyle = bgImage
   <div class="page-hero-overlay">
   </div>
   <div class="page-hero-text">
-    {tag && <span class="page-hero-tag" data-i18n={id ? `${id}_tag` : undefined}>{tag}</span>}
-    <h1 class="page-hero-headline" id={id ? `${id}-headline` : undefined} data-i18n={id ? `${id}_headline` : undefined}>{headline}</h1>
-    {subtitle && <p class="page-hero-sub" id={id ? `${id}-sub` : undefined} data-i18n={id ? `${id}_sub` : undefined}>{subtitle}</p>}
+    {tag && <span class="page-hero-tag">{tag}</span>}
+    <h1 class="page-hero-headline" id={id ? `${id}-headline` : undefined}>{headline}</h1>
+    {subtitle && <p class="page-hero-sub" id={id ? `${id}-sub` : undefined}>{subtitle}</p>}
     {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
   </div>
 </section>

@@ -172,9 +172,9 @@ const dotSections = [
 
   <!-- ===================== STICKY THIN HEADER ===================== -->
   <header class="hero-page-header">
-    <a href="/heros" class="page-back">
+    <a href="/heroes" class="page-back">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      <span data-i18n="detail_back">Heroes</span>
+      <span>Heroes</span>
     </a>
     <span class="page-hero-name">{hero.name}</span>
     <div class="hero-page-header-right">
@@ -262,7 +262,7 @@ const dotSections = [
 
     <!-- ── SECTION 1: PROFILE ── -->
     <section class="content-section" id="section-profile">
-      <div class="section-label" data-i18n="detail_profile">Profile</div>
+      <div class="section-label">Profile</div>
 
       <div class="profile-grid">
         <!-- Description + Core Mechanic -->
@@ -310,7 +310,7 @@ const dotSections = [
 
     <!-- ── SECTION 2: SKILLS ── -->
     <section class="content-section" id="skills">
-      <div class="section-label" data-i18n="detail_skills">Skills &amp; Abilities</div>
+      <div class="section-label">Skills &amp; Abilities</div>
 
       <!-- Skill tab strip -->
       <div class="skill-tabs" role="tablist">
@@ -358,9 +358,9 @@ const dotSections = [
                   <p class="skill-panel-desc">{skill.description}</p>
                   {(skill.upgrades?.level2 || skill.upgrades?.level3 || skill.upgrades?.level4) && (
                     <div class="skill-upgrades">
-                      {skill.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv" data-i18n="detail_upgrade_lv2">Lv 2</span><span class="upgrade-text">{skill.upgrades.level2}</span></div>}
-                      {skill.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv" data-i18n="detail_upgrade_lv3">Lv 3</span><span class="upgrade-text">{skill.upgrades.level3}</span></div>}
-                      {skill.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv" data-i18n="detail_upgrade_lv4">Lv 4</span><span class="upgrade-text">{skill.upgrades.level4}</span></div>}
+                      {skill.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{skill.upgrades.level2}</span></div>}
+                      {skill.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{skill.upgrades.level3}</span></div>}
+                      {skill.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{skill.upgrades.level4}</span></div>}
                     </div>
                   )}
                 </div>
@@ -376,16 +376,16 @@ const dotSections = [
                 <div class="skill-panel-meta">
                   <h3 class="skill-panel-name">{hero.relic.name}</h3>
                   <div class="skill-panel-badges">
-                    <span class="skill-panel-type" data-i18n="detail_relic">Relic</span>
+                    <span class="skill-panel-type">Relic</span>
                   </div>
                 </div>
               </div>
               <p class="skill-panel-desc">{hero.relic.description}</p>
               {(hero.relic.upgrades?.level2 || hero.relic.upgrades?.level3 || hero.relic.upgrades?.level4) && (
                 <div class="skill-upgrades">
-                  {hero.relic.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv" data-i18n="detail_upgrade_lv2">Lv 2</span><span class="upgrade-text">{hero.relic.upgrades.level2}</span></div>}
-                  {hero.relic.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv" data-i18n="detail_upgrade_lv3">Lv 3</span><span class="upgrade-text">{hero.relic.upgrades.level3}</span></div>}
-                  {hero.relic.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv" data-i18n="detail_upgrade_lv4">Lv 4</span><span class="upgrade-text">{hero.relic.upgrades.level4}</span></div>}
+                  {hero.relic.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{hero.relic.upgrades.level2}</span></div>}
+                  {hero.relic.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{hero.relic.upgrades.level3}</span></div>}
+                  {hero.relic.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{hero.relic.upgrades.level4}</span></div>}
                 </div>
               )}
             </div>
@@ -463,19 +463,19 @@ const dotSections = [
 
     <!-- ── SECTION 3: RATINGS ── -->
     <section class="content-section" id="section-ratings">
-      <div class="section-label" data-i18n="detail_ratings">Meta Ratings</div>
+      <div class="section-label">Meta Ratings</div>
 
       <RatingTiles ratings={hero.ratings} />
     </section>
 
     <!-- ── SECTION 4: STATS ── -->
     <section class="content-section" id="section-stats">
-      <div class="section-label"><span data-i18n="detail_stats">Combat Statistics</span> <span class="section-sub">Lv. {hero.level} &middot; {hero.evolution}</span></div>
+      <div class="section-label"><span>Combat Statistics</span> <span class="section-sub">Lv. {hero.level} &middot; {hero.evolution}</span></div>
 
       <div class="stat-columns">
         <!-- Offensive -->
         <div class="stat-column">
-          <div class="stat-col-header offensive-hdr" data-i18n="detail_offensive">Offensive</div>
+          <div class="stat-col-header offensive-hdr">Offensive</div>
           {OFFENSIVE_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
             const rank = statRank(key, val);
@@ -498,7 +498,7 @@ const dotSections = [
 
         <!-- Defensive -->
         <div class="stat-column">
-          <div class="stat-col-header defensive-hdr" data-i18n="detail_defensive">Defensive</div>
+          <div class="stat-col-header defensive-hdr">Defensive</div>
           {DEFENSIVE_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
             const rank = statRank(key, val);
@@ -521,7 +521,7 @@ const dotSections = [
 
         <!-- Utility -->
         <div class="stat-column">
-          <div class="stat-col-header utility-hdr" data-i18n="detail_utility">Utility</div>
+          <div class="stat-col-header utility-hdr">Utility</div>
           {UTILITY_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
             const rank = statRank(key, val);
@@ -546,7 +546,7 @@ const dotSections = [
 
     <!-- ── SECTION 5: SYNERGIES ── -->
     <section class="content-section" id="section-synergies">
-      <div class="section-label" data-i18n="detail_synergies">Synergy Network</div>
+      <div class="section-label">Synergy Network</div>
 
       <!-- Hero synergy links -->
       {(hero as any).synergyLinks && (hero as any).synergyLinks.length > 0 && (
@@ -589,7 +589,7 @@ const dotSections = [
       <!-- Tag chips -->
       {hero.synergies && hero.synergies.length > 0 && (
         <div class="tag-cloud">
-          <div class="tag-cloud-label" data-i18n="detail_ability_tags">Ability Tags</div>
+          <div class="tag-cloud-label">Ability Tags</div>
           <div class="tag-chips">
             {hero.synergies.map((tag: string) => (
               <span class="tag-chip">{tagLabel(tag)}</span>
@@ -610,7 +610,7 @@ const dotSections = [
     <!-- ── SECTION 6: INVESTMENT GUIDE ── -->
     {heroInvest && (
       <section class="content-section" id="section-investment">
-        <div class="section-label" data-i18n="detail_investment">Investment Guide</div>
+        <div class="section-label">Investment Guide</div>
         <div class="investment-cards">
           <RelicInvestment
             relicRecommendation={heroInvest.relicRecommendation}
@@ -627,7 +627,7 @@ const dotSections = [
     <!-- __ SECTION 7: VIRTUES __ -->
     {hasVirtues && (
       <section class="content-section" id="section-virtues">
-        <div class="section-label" data-i18n="detail_virtues">Recommended Virtues</div>
+        <div class="section-label">Recommended Virtues</div>
         <div class="virtue-sets-row">
           {resolvedVirtueSets.map((vs) => {
             const setBonuses = vs.virtues.length > 0 ? (vs.virtues[0] as any).setBonuses : null;

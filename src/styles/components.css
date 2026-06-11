@@ -3325,3 +3325,9 @@ select.roster-input {
   }
 }
 .cn-notes strong { color: var(--text-secondary); }
+
+/* ===== Utilities ===== */
+.u-mt-3 { margin-top: var(--space-3); }
+.u-mt-10 { margin-top: var(--space-10); }
+.u-subheading { margin: 0 0 var(--space-2) 0; font-size: var(--text-base); font-weight: var(--weight-semibold); }
+.u-text-gold-dim { color: rgba(250, 204, 21, 0.35); }

@@ -67,7 +67,7 @@ function getPageInventory() {
     const aliases = {
       rankings: "/hero-stats",
       stats: "/hero-stats",
-      tierlist: "/heros",
+      tierlist: "/heroes",
       shrine: "/tips",
       "early-game": "/tips",
     };

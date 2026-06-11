@@ -344,7 +344,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
         <h2>Chronos Chamber</h2>
         <p>Unlocks after a total of 750 summons. Within the Chronos Chamber you can summon Starglint Deities using Star Tracer currency. You can specify which deity you want to summon.</p>
         <div class="tips-callout">
-          <h4 style="margin: 0 0 var(--space-2) 0; font-size: var(--text-base); font-weight: var(--weight-semibold);">Recommended Order</h4>
+          <h4 class="u-subheading">Recommended Order</h4>
           <p>Go for <strong>Nyx first</strong> - after that go for <strong>Zeus</strong> all the way. Zeus is the best damage-dealing hero for all modes, but needs Divine ascension and Relic Level 30 to be fully upgraded.</p>
         </div>
         <h3>Pity System</h3>
@@ -400,56 +400,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
         </div>
       </div>
 
-
-      <!-- WHEN STUCK -->
-      <div class="eg-content-card">
-        <h2>When You Feel Stuck</h2>
-        <p>Use this checklist when Odyssey progress stalls or you cannot beat the next stage.</p>
-        <div class="eg-stuck-list">
-          <div class="eg-stuck-step">
-            <div class="eg-stuck-step-num">1</div>
-            <div class="eg-stuck-step-body">
-              <div class="eg-stuck-step-title">Check Your Shrine</div>
-              <p>If Odyssey progress upgrades Shrine, go push Odyssey first. Some stages give you "Undying Flame" as reward to level up your shrine.</p>
-            </div>
-          </div>
-          <div class="eg-stuck-step">
-            <div class="eg-stuck-step-num">2</div>
-            <div class="eg-stuck-step-body">
-              <div class="eg-stuck-step-title">Check Beacon Tree</div>
-              <p>Weekly Torment Rift progress gives account-wide stats that never get wasted.</p>
-            </div>
-          </div>
-          <div class="eg-stuck-step">
-            <div class="eg-stuck-step-num">3</div>
-            <div class="eg-stuck-step-body">
-              <div class="eg-stuck-step-title">Check Carry Relic</div>
-              <p>Some heroes are weak before their breakpoint. Do not judge them too early.</p>
-            </div>
-          </div>
-          <div class="eg-stuck-step">
-            <div class="eg-stuck-step-num">4</div>
-            <div class="eg-stuck-step-body">
-              <div class="eg-stuck-step-title">Check Gear Placement</div>
-              <p>Your top two damage dealers should have priority gear. Do not spread it around.</p>
-            </div>
-          </div>
-          <div class="eg-stuck-step">
-            <div class="eg-stuck-step-num">5</div>
-            <div class="eg-stuck-step-body">
-              <div class="eg-stuck-step-title">Check Resonating Altar</div>
-              <p>You level five heroes to share their level with every hero on the Altar. If your Altar slots are empty you are missing account-wide level boosts.</p>
-            </div>
-          </div>
-          <div class="eg-stuck-step">
-            <div class="eg-stuck-step-num">6</div>
-            <div class="eg-stuck-step-body">
-              <div class="eg-stuck-step-title">Check Totems</div>
-              <p>Totems must be pulled and upgraded with duplicates. Even one upgraded Totem is worth the early investment. Use an Attack or Damage totem first. Also try different hero positions in a fight.</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- WISH LIST -->
       <div class="eg-content-card" id="wish-list">
@@ -1017,7 +967,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
               <li><strong>Caishen</strong> - instant 100 energy and sustained regen to nearby allies. Best-in-slot battery.</li>
               <li><strong>Diana</strong> - grants 15 Energy per second</li>
             </ul>
-            <div class="hero-chip-grid" style="margin-top: var(--space-3)">
+            <div class="hero-chip-grid u-mt-3">
               <a class="hero-pic chip-highlight" href="/heroes/caishen">
                 <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
                 <span class="hero-chip-name">Caishen</span>
@@ -1037,7 +987,7 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
               <li><strong>Athena</strong> - 40-60% ATK speed to all allies</li>
               <li><strong>Diana</strong> - Waxing Blessing fires at combat start with 40% ATK speed</li>
             </ul>
-            <div class="hero-chip-grid" style="margin-top: var(--space-3)">
+            <div class="hero-chip-grid u-mt-3">
               <a class="hero-pic chip-highlight" href="/heroes/dionysus">
                 <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/dionysus.webp')"></div>
                 <span class="hero-chip-name">Dionysus</span>
@@ -2548,35 +2498,6 @@ const FACTION_META: Record<string, { color: string; glow: string; dim: string; i
     margin-bottom: var(--space-2);
   }
   .eg-elixir-name { font-weight: var(--weight-semibold); color: var(--accent-gold); font-size: 0.9rem; }
-
-  /* - WHEN STUCK LIST - */
-  .eg-stuck-list { display: flex; flex-direction: column; gap: var(--space-3); margin: var(--space-4) 0; }
-  .eg-stuck-step {
-    display: flex;
-    gap: var(--space-4);
-    background: var(--chip-bg);
-    border: 1px solid var(--border-faint);
-    border-radius: var(--radius-md);
-    padding: var(--space-4) var(--space-5);
-    align-items: flex-start;
-  }
-  .eg-stuck-step-num {
-    width: 28px;
-    height: 28px;
-    border-radius: var(--radius-full);
-    background: rgba(168,85,247,0.15);
-    border: 1px solid rgba(168,85,247,0.4);
-    color: #c4b5fd;
-    font-weight: var(--weight-bold);
-    font-size: var(--text-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .eg-stuck-step-body { flex: 1; }
-  .eg-stuck-step-title { font-weight: var(--weight-semibold); color: var(--text-primary); margin-bottom: var(--space-2); font-size: var(--text-base); }
-  .eg-stuck-step p { margin: 0; font-size: 0.88rem; }
 
   /* - RESPONSIVE - */
   @media (max-width: 768px) {

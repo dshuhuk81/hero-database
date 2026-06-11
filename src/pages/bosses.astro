@@ -104,7 +104,7 @@ function bossSkillIcon(bossId, index) {
               <div class="boss-visual" style={`--boss-image: url(${boss.image})`}>
                 <div class="boss-visual-scrim"></div>
                 <div class="boss-identity">
-                  <p class="boss-kicker" data-i18n="bosses_encounter">Boss Encounter</p>
+                  <p class="boss-kicker">Boss Encounter</p>
                   <h2 class="boss-name">{boss.name}</h2>
                   <div class="boss-meta">
                     <span class="pill">{boss.mode}</span>
@@ -129,7 +129,7 @@ function bossSkillIcon(bossId, index) {
                 <!-- Key Mechanics (player-friendly tags) -->
                 {(boss.mechanicTags || []).length > 0 && (
                   <div class="panel-section">
-                    <h3 class="panel-heading" data-i18n="bosses_mechanics">Key Mechanics</h3>
+                    <h3 class="panel-heading">Key Mechanics</h3>
                     <div class="mechanic-tags">
                       {(boss.mechanicTags || []).map(tag => {
                         const info = MECHANIC_LABELS[tag as keyof typeof MECHANIC_LABELS];
@@ -143,7 +143,7 @@ function bossSkillIcon(bossId, index) {
 
                 <!-- Skills -->
                 <div class="panel-section">
-                  <h3 class="panel-heading" data-i18n="bosses_skills">Skills</h3>
+                  <h3 class="panel-heading">Skills</h3>
                   <div class="mechanic-list">
                     {boss.skills.map((sk, skillIndex) => (
                       <div class="mechanic-item">
@@ -168,7 +168,7 @@ function bossSkillIcon(bossId, index) {
                 <!-- Strategy Notes -->
                 {boss.strategyNotes && (
                   <div class="panel-section">
-                    <h3 class="panel-heading" data-i18n="bosses_strategy">Strategy Notes</h3>
+                    <h3 class="panel-heading">Strategy Notes</h3>
                     <p class="strategy-text">{boss.strategyNotes}</p>
                   </div>
                 )}
@@ -176,7 +176,7 @@ function bossSkillIcon(bossId, index) {
                 <!-- Recommended Comps -->
                 {(boss.recommendedComps || []).length > 0 && (
                   <div class="panel-section">
-                    <h3 class="panel-heading" data-i18n="bosses_comps">Recommended Comps</h3>
+                    <h3 class="panel-heading">Recommended Comps</h3>
                     <div class="comp-list">
                       {(boss.recommendedComps || []).map(comp => {
                         const heroComp = String(comp["hero-comp"] || "")
