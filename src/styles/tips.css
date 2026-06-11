@@ -89,6 +89,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-4);
+    margin-bottom: var(--space-6);
     padding: var(--space-4);
     
     border: 0;
@@ -117,6 +118,7 @@
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 0.85rem;
+    font-weight: var(--weight-medium);
     line-height: 1.2;
     transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
   }
@@ -299,14 +301,10 @@
     white-space: nowrap;
   }
 
-  /* - HERO PORTRAIT CARDS (tips-specific, larger 64px variant) - */
-  .hero-chip-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin: var(--space-2) 0;
-    align-items: flex-start;
-  }
+  /* - HERO PORTRAIT CARDS - */
+  /* .hero-chip-grid, .hero-chip-portrait, .hero-chip-name, .chip-divider,
+     .chip-flex-* and .comp-list base rules live in components.css (shared
+     with bosses/design-system). Only tips-specific rules below. */
   .hero-chip {
     display: flex;
     flex-direction: column;
@@ -317,15 +315,6 @@
     width: 64px;
     flex-shrink: 0;
   }
-  .hero-chip-portrait {
-    width: 64px;
-    height: 64px;
-    border-radius: var(--radius-md);
-    background-size: cover;
-    background-position: center top 25%;
-    border: 1px solid var(--border-subtle);
-    flex-shrink: 0;
-  }
   .hero-chip:hover .hero-chip-portrait {
     border-color: rgba(168,85,247,0.6);
     box-shadow: 0 0 10px rgba(168,85,247,0.3);
@@ -334,56 +323,7 @@
     border-color: rgba(168,85,247,0.5);
     box-shadow: 0 0 6px rgba(168,85,247,0.2);
   }
-  .hero-chip-name {
-    font-size: 0.67rem;
-    text-align: center;
-    color: var(--text-muted);
-    font-weight: var(--weight-medium);
-    line-height: 1.3;
-    max-width: 64px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .chip-divider {
-    display: flex;
-    align-items: center;
-    align-self: center;
-    color: var(--text-disabled);
-    font-size: 0.8rem;
-    font-style: italic;
-    padding: 0 2px;
-    margin-top: -10px;
-  }
-  .chip-flex-slot {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-1);
-    width: 64px;
-    flex-shrink: 0;
-  }
-  .chip-flex-img {
-    width: 64px;
-    height: 64px;
-    border-radius: var(--radius-md);
-    border: 1px dashed rgba(250,204,21,0.4);
-    background: rgba(250,204,21,0.04);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(250,204,21,0.4);
-    font-size: 1.2rem;
-  }
-  .chip-flex-label {
-    font-size: 0.67rem;
-    text-align: center;
-    color: var(--accent-gold);
-    font-weight: var(--weight-semibold);
-  }
-
   /* - TEAM COMP CARDS - */
-  .comp-list { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-5); }
   .comp-entry {
     background: var(--chip-bg);
     border: 1px solid rgba(168,85,247,0.2);
