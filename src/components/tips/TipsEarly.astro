@@ -1,0 +1,713 @@
+---
+import { WISHLIST_DATA, FACTION_META } from "./tipsData";
+---
+    <!-- SUB-TAB: EARLY GAME -->
+    <div id="subtab-early" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-early" hidden>
+      <main class="eg-main-content">
+
+      <!-- JUMPBAR -->
+      <nav class="tips-jumpbar" aria-label="Early Game sections">
+        <span class="tips-jump-label">On this page</span>
+        <a href="#section-f2p" class="tips-jump-link">F2P Guide</a>
+        <a href="#section-first" class="tips-jump-link">What to Do First</a>
+        <a href="#section-odyssey" class="tips-jump-link">Odyssey</a>
+        <a href="#section-summons" class="tips-jump-link">Summons</a>
+        <a href="#section-chronos" class="tips-jump-link">Chronos</a>
+        <a href="#section-mindsea" class="tips-jump-link">Mindsea</a>
+        <a href="#section-wishlist" class="tips-jump-link">Wishlist</a>
+      </nav>
+
+      <!-- F2P NOTE -->
+      <div id="section-f2p" class="tips-f2p-note">
+        <p>
+          This guide is written from a <strong>F2P and low-spender perspective</strong>.
+          If you are a whale or have heavily starred heroes, you can replace
+          the suggested heroes below with your own star picks.
+        </p>
+      </div>
+
+      <!-- WHAT SHOULD I DO FIRST -->
+      <div id="section-first" class="tips-section">
+        <h2>What Should I Do First?</h2>
+        <p>Focus on pushing Odyssey, Torment Rift and building your first team. Summon to get a good roster (1-2 damage dealers, 2 supports, 1-2 tanks).</p>
+        <div class="eg-priority-matrix">
+          <div class="eg-priority-col eg-priority-now">
+            <div class="eg-priority-col-title">Do Now</div>
+            <ul>
+              <li>Finish Tutorial</li>
+              <li>Push Odyssey until stuck</li>
+              <li>Claim all mail and login rewards</li>
+              <li>Set your Wish List (summon 30x to unlock)</li>
+              <li>Buy the daily 30% off regular summons</li>
+              <li>Spend early gems on roster building</li>
+              <li>Finish daily missions</li>
+              <li>Check official discord for codes</li>
+            </ul>
+          </div>
+          <div class="eg-priority-col eg-priority-soon">
+            <div class="eg-priority-col-title">Do Soon</div>
+            <ul>
+              <li>Push Odyssey</li>
+              <li>Build 1 team</li>
+              <li>Gear 2 DPS</li>
+              <li>Weekly Torment Rift</li>
+              <li>Carry relic breakpoints</li>
+              <li>Wish List cleanup</li>
+            </ul>
+          </div>
+          <div class="eg-priority-col eg-priority-ignore">
+            <div class="eg-priority-col-title">Ignore for Now</div>
+            <ul>
+              <li>Deep PvP pushes</li>
+              <li>Second team</li>
+              <li>Luxury shop buys</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ODYSSEY MILESTONES -->
+      <div id="section-odyssey" class="tips-section tips-anchor">
+        <h2>Odyssey (Campaign) Milestones</h2>
+        <p>Keep pushing to unlock stages and events. The two most impactful early targets are <strong>Stage 3-18</strong> (Shrine) and <strong>Stage 8-3</strong> (Beacon Tree).</p>
+        <div class="milestone-table">
+          <div class="milestone-row milestone-header">
+            <div class="milestone-chapter">Stage</div>
+            <div class="milestone-unlock">What It Unlocks</div>
+            <div class="milestone-why">Why It Matters</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">Prologue 4</div>
+            <div class="milestone-unlock">Godcall Grove</div>
+            <div class="milestone-why">Early summon feature</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">1-6</div>
+            <div class="milestone-unlock">AFK Mode &amp; Sanctum</div>
+            <div class="milestone-why">Passive resource generation begins</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">2-1</div>
+            <div class="milestone-unlock">Delusion's Den</div>
+            <div class="milestone-why">Extra PvE content and rewards</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">2-12</div>
+            <div class="milestone-unlock">Auto Attack &amp; Celestial Spire</div>
+            <div class="milestone-why">Auto-battle and tower mode unlock</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">3-9</div>
+            <div class="milestone-unlock">Mindsea (Guild)</div>
+            <div class="milestone-why">Guild features, social rewards</div>
+          </div>
+          <div class="milestone-row milestone-highlight">
+            <div class="milestone-chapter">3-18</div>
+            <div class="milestone-unlock">Shrine (Undying Flame)</div>
+            <div class="milestone-why">Account-wide stat bonuses start here - biggest early priority</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">4-8</div>
+            <div class="milestone-unlock">Grand Arena (PvP)</div>
+            <div class="milestone-why">PvP mode and its daily rewards</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">5-1</div>
+            <div class="milestone-unlock">Destined Constellation</div>
+            <div class="milestone-why">Allows Zodiac hero to exceed Level 140</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">5-4</div>
+            <div class="milestone-unlock">Resonating Altar</div>
+            <div class="milestone-why">Level up 5 heroes - others match lowest of the 5</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">5-18</div>
+            <div class="milestone-unlock">Bounty Pool</div>
+            <div class="milestone-why">Additional passive rewards</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">6-3</div>
+            <div class="milestone-unlock">Forgotten Labyrinth</div>
+            <div class="milestone-why">Extra PvE content</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">7-3</div>
+            <div class="milestone-unlock">Beacon of Honor</div>
+            <div class="milestone-why">Feeds into Beacon Tree upgrades</div>
+          </div>
+          <div class="milestone-row milestone-highlight">
+            <div class="milestone-chapter">8-3</div>
+            <div class="milestone-unlock">Beacon Tree</div>
+            <div class="milestone-why">Account-wide stat bonuses for every hero in every mode</div>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-chapter">19-3</div>
+            <div class="milestone-unlock">Totems</div>
+            <div class="milestone-why">Late-game power system</div>
+          </div>
+        </div>
+        <div class="tips-callout">
+          <p>Push to Stage 3-18 first to unlock the Shrine, then aim for Stage 8-3 to activate the Beacon Tree. Both give account-wide buffs that help every hero in every mode.</p>
+        </div>
+      </div>
+
+      <!-- NORMAL SUMMONS & WISHLIST -->
+      <div id="section-summons" class="tips-section">
+        <h2>Normal Summons and Wish List</h2>
+        <h3>Summoning Tips</h3>
+        <ul>
+          <li>The Wish List unlocks after 30 regular summons.</li>
+          <li>Once you have finished ascending one of the left-side deities on the wish list, swap them for one on the right.</li>
+          <li>Pity System: Guaranteed deity every 50 summons.</li>
+          <li>It is not recommended to spend Elysian Gems on regular summons - except for the first 1-2 days to get some units into your roster.</li>
+        </ul>
+        <h3>Shop Priority</h3>
+        <div class="pinion-table">
+          <div class="pinion-row pinion-header">
+            <div class="pinion-type">Item</div>
+            <div class="pinion-when">Action</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Regular Store - 30% off</div>
+            <div class="pinion-when">Buy every reset. Refresh up to 3x if needed.</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Reversion Shop</div>
+            <div class="pinion-when">Buy these for leveling your Beacon Tree when needed.</div>
+          </div>
+          <div class="pinion-row">
+            <div class="pinion-type">Random Gear</div>
+            <div class="pinion-when">Do not buy.</div>
+          </div>
+        </div>
+        <h3>One-Copy Wonders</h3>
+        <p>These are deities that can fulfill their role at Elite rarity in the Early Game. Get a copy early - most are supports. The order depends on which heroes you summon more of.</p>
+        <div class="hero-chip-grid">
+          <a class="hero-pic" href="/heroes/heracles">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
+            <span class="hero-chip-name">Heracles</span>
+          </a>
+          <a class="hero-pic" href="/heroes/cronus">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div>
+            <span class="hero-chip-name">Chronos</span>
+          </a>
+          <a class="hero-pic" href="/heroes/nuba">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
+            <span class="hero-chip-name">Nuba</span>
+          </a>
+          <a class="hero-pic" href="/heroes/nyx">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nyx.webp')"></div>
+            <span class="hero-chip-name">Nyx</span>
+          </a>
+        </div>
+        <p class="eg-footnote">Most support heroes also qualify as one-copy wonders. Focus on heroes you have the most copies of.</p>
+        <h3>Ascension Tips</h3>
+        <ul>
+          <li>Avoid using regular ascended-grade deities as fodder. Only use Zodiac deities as fodder.</li>
+          <li>Focus on building one hero per faction at a time to avoid spreading fodder too thin.</li>
+          <li>You can start building a deity once you have 2 Elite+ copies (Zodiacs) - that is enough to reach Mythic.</li>
+          <li>Some deities do not perform well until they reach Divine, so wait for four copies to ascend them right away.</li>
+          <li>Once a deity reaches Mythic, they no longer require fodder (only the deity itself).</li>
+          <li>Zodiac deities cap at Legendary+. Only ascend a Zodiac to Legendary if you have 2 extra copies to use as fodder.</li>
+        </ul>
+      </div>
+
+      <!-- FACTION SUMMONS -->
+      <div class="tips-section">
+        <h3>Faction Summons</h3>
+        <p>In the early phase your main carry and good supports are your primary targets. Spend your feathers on heroes you are missing or that you need to level up for progression.</p>
+        <p>Priority order: <strong>Carry &gt; Support &gt; Tank</strong></p>
+        <div class="tips-callout">
+          <p>The Wish List also applies to Faction summons. It is recommended to save faction feathers for the upcoming banner event - this happens every 2 weeks.</p>
+        </div>
+      </div>
+
+      <!-- CHRONOS CHAMBER -->
+      <div id="section-chronos" class="tips-section">
+        <h2>Chronos Chamber</h2>
+        <p>Unlocks after a total of 750 summons. Within the Chronos Chamber you can summon Starglint Deities using Star Tracer currency. You can specify which deity you want to summon.</p>
+        <div class="tips-callout">
+          <h4 class="u-subheading">Recommended Order</h4>
+          <p>Go for <strong>Nyx first</strong> - after that go for <strong>Zeus</strong> all the way. Zeus is the best damage-dealing hero for all modes, but needs Divine ascension and Relic Level 30 to be fully upgraded.</p>
+        </div>
+        <h3>Pity System</h3>
+        <ul>
+          <li>You will get the Starglint deity every 40 summons guaranteed.</li>
+          <li>After doing 30 summons you can switch to single pulls to save resources until getting the deity.</li>
+        </ul>
+      </div>
+
+      <!-- STARGLINT MINDSEA -->
+      <div id="section-mindsea" class="tips-section">
+        <h2>Starglint and Mindsea</h2>
+        <p>The Starglint faction has the most rare heroes. They can only be obtained through their special currency "Star Tracer", regular summons (0.2% drop chance) or in the Mindsea shop.</p>
+        <h3>Join a Mindsea as Early as Possible</h3>
+        <p>After completing Stage 3-9 you can join a Mindsea. Open the list and search for an open Mindsea with a high activity rate. Collect "Dream Conch" rewards within the Mindsea Currents of Thought. Then you can buy a Starglint deity in the Mindsea shop.</p>
+        <h3>Get One of These</h3>
+        <div class="hero-chip-grid">
+          <a class="hero-pic" href="/heroes/nyx">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nyx.webp')"></div>
+            <span class="hero-chip-name">Nyx</span>
+          </a>
+          <a class="hero-pic" href="/heroes/nuwa">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
+            <span class="hero-chip-name">Nuwa</span>
+          </a>
+          <a class="hero-pic" href="/heroes/amunra">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/amunra.webp')"></div>
+            <span class="hero-chip-name">Amun Ra</span>
+          </a>
+          <a class="hero-pic" href="/heroes/dionysus">
+            <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/dionysus.webp')"></div>
+            <span class="hero-chip-name">Dionysus</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- CORE RULE -->
+      <div class="eg-content-card eg-core-rule-card">
+        <h2>The Core Rule of the Game</h2>
+        <p>You are <strong>not</strong> building 5 equal heroes.</p>
+        <div class="core-rule-split">
+          <div class="core-rule-carry">
+            <div class="core-rule-label">1-2 Carries</div>
+            <p>Deal the damage. Get the gear, the relics, the investment.</p>
+          </div>
+          <div class="core-rule-support">
+            <div class="core-rule-label">3-4 Supports</div>
+            <p>Give the carry energy, buffs, and uptime. They exist to enable the carry.</p>
+          </div>
+        </div>
+        <div class="eg-team-example">
+          <p>Example: if Isis is your carry, you need supports to give her energy, healing and buffs to deal faster damage and use her ultimate more often than the enemy team does.</p>
+        </div>
+      </div>
+
+
+      <!-- WISH LIST -->
+      <div class="eg-content-card" id="wish-list">
+        <h2>Wish List - Your Free Early Picks</h2>
+        <p>The Wish List lets you influence which hero you pull in each faction. Pick wrong and your gold pinions feed the wrong hero. These are the recommended F2P picks per faction:</p>
+
+        <section class="wl-module" aria-label="Wishlist">
+
+          <div class="wl-header">
+            <div class="wl-header-ornament" aria-hidden="true">
+              <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="100" y1="0"  x2="100" y2="20" stroke="#d4af37" stroke-width="1.5" opacity="0.8"/>
+                <line x1="100" y1="0"  x2="85"  y2="22" stroke="#d4af37" stroke-width="1"   opacity="0.6"/>
+                <line x1="100" y1="0"  x2="72"  y2="28" stroke="#d4af37" stroke-width="0.8" opacity="0.45"/>
+                <line x1="100" y1="0"  x2="115" y2="22" stroke="#d4af37" stroke-width="1"   opacity="0.6"/>
+                <line x1="100" y1="0"  x2="128" y2="28" stroke="#d4af37" stroke-width="0.8" opacity="0.45"/>
+                <line x1="100" y1="0"  x2="60"  y2="36" stroke="#d4af37" stroke-width="0.6" opacity="0.3"/>
+                <line x1="100" y1="0"  x2="140" y2="36" stroke="#d4af37" stroke-width="0.6" opacity="0.3"/>
+                <line x1="100" y1="0"  x2="42"  y2="45" stroke="#d4af37" stroke-width="0.5" opacity="0.2"/>
+                <line x1="100" y1="0"  x2="158" y2="45" stroke="#d4af37" stroke-width="0.5" opacity="0.2"/>
+                <path d="M68 42 Q100 52 132 42" stroke="#d4af37" stroke-width="1" fill="none" opacity="0.5"/>
+                <polygon points="100,20 107,30 100,40 93,30" fill="#d4af37" opacity="0.9"/>
+                <polygon points="100,20 107,30 100,40 93,30" fill="none" stroke="#fde68a" stroke-width="0.5"/>
+              </svg>
+            </div>
+            <h3 class="wl-title">Wishlist</h3>
+            <p class="wl-subtitle">
+              Have a higher chance to get Deities in the Wishlist<br/>
+              while summoning Epic Deities.<br/>
+              <span class="wl-subtitle-note">(Does not change Epic Deities overall drop rate.)</span>
+            </p>
+          </div>
+
+          <div class="wl-body">
+            {Object.entries(WISHLIST_DATA).map(([faction, heroes]) => {
+              const meta = FACTION_META[faction];
+              return (
+                <div class="wl-faction" style={`--faction-color:${meta.color};--faction-glow:${meta.glow};--faction-dim:${meta.dim};`}>
+                  <div class="wl-divider" aria-hidden="true">
+                    <span class="wl-divider-line"></span>
+                    <div class="wl-faction-hex">
+                      <img src={meta.icon} alt={faction} class="wl-faction-icon" />
+                    </div>
+                    <span class="wl-divider-line"></span>
+                  </div>
+                  <div class="wl-card-row">
+                    {heroes.map((hero) => (
+                      <a class="wl-card" href={`/heroes/${hero.id}`} aria-label={hero.id}>
+   
+                        <div
+                          class="wl-card-portrait"
+                          style={`background-image:url('${hero.image}');`}
+                        ></div>
+                        <div class="wl-card-holo" aria-hidden="true"></div>
+                        <div class="wl-card-vignette" aria-hidden="true"></div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div class="wl-footer">
+            <small>Fengyi can be swapped with Wenshen later. Also Phoenix with Set.</small>
+          </div>
+
+        </section>
+      </div>
+
+      <!-- TEAM COMPOSITIONS -->
+      <div class="eg-content-card" id="team-comps">
+        <h2>Team Compositions</h2>
+        <p>These are solid starting compositions to build toward. Mix and match based on which heroes you have available.</p>
+        <p><strong>Note on Meret:</strong> She can function as a control-focused carry, not only as a support piece. In the comps below she appears in protective shells, but she is also viable as your primary damage dealer when properly invested.</p>
+        <div class="comp-list">
+
+          <div class="comp-card">
+            <div class="comp-title">Isis</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/isis">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/isis.webp')"></div>
+                <span class="hero-chip-name">Isis</span>
+              </a>
+              <span class="chip-divider">or</span>
+              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
+                <span class="hero-chip-name">Jingwei</span>
+              </a>
+              <a class="hero-pic" href="/heroes/caishen">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
+                <span class="hero-chip-name">Caishen</span>
+              </a>
+              <a class="hero-pic" href="/heroes/poseidon">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
+                <span class="hero-chip-name">Poseidon</span>
+              </a>
+            </div>
+            <p class="comp-note">A versatile early-mid comp. Poseidon anchors the frontline with early CC, Caishen accelerates energy rotation, and Isis or Jingwei delivers the damage payload.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Control + Debuff</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/momus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
+                <span class="hero-chip-name">Momus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/yuelao">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
+                <span class="hero-chip-name">Yuelao</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/hecate">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
+                <span class="hero-chip-name">Hecate</span>
+              </a>
+              <a class="hero-pic" href="/heroes/tefnut">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/tefnut.webp')"></div>
+                <span class="hero-chip-name">Tefnut</span>
+              </a>
+            </div>
+            <p class="comp-note">Momus taunts to protect the backline, Yuelao layers healing, and Tefnut supports Hecate's sustained magical damage output.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Heracles & Mengpo</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/heracles">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
+                <span class="hero-chip-name">Heracles</span>
+              </a>
+              <a class="hero-pic" href="/heroes/bastet">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
+                <span class="hero-chip-name">Bastet</span>
+              </a>
+              <a class="hero-pic" href="/heroes/phoenix">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
+                <span class="hero-chip-name">Phoenix</span>
+              </a>
+              <a class="hero-pic" href="/heroes/mengpo">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
+                <span class="hero-chip-name">Mengpo</span>
+              </a>
+            </div>
+            <p class="comp-note">Heracles soaks damage upfront while Bastet and Phoenix pressure high-value targets. Mengpo provides revival insurance for a second life on key heroes.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Clubs</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/nuba">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
+                <span class="hero-chip-name">Nuba</span>
+              </a>
+              <a class="hero-pic" href="/heroes/nuwa">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
+                <span class="hero-chip-name">Nuwa</span>
+              </a>
+              <a class="hero-pic" href="/heroes/anubis">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
+                <span class="hero-chip-name">Anubis</span>
+              </a>
+              <a class="hero-pic" href="/heroes/pan">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
+                <span class="hero-chip-name">Pan</span>
+              </a>
+              <div class="chip-flex-slot">
+                <div class="chip-flex-img">?</div>
+                <span class="chip-flex-label">Any DD</span>
+              </div>
+            </div>
+            <p class="comp-note">Nuba and Pan layer CC and debuffs while Anubis locks down priority targets. Nuwa adds legendary-tier support. Bring your strongest DD as the damage anchor.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Skadi CC</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/skadi">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
+                <span class="hero-chip-name">Skadi</span>
+              </a>
+              <a class="hero-pic" href="/heroes/khepri">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
+                <span class="hero-chip-name">Khepri</span>
+              </a>
+              <a class="hero-pic" href="/heroes/poseidon">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
+                <span class="hero-chip-name">Poseidon</span>
+              </a>
+              <a class="hero-pic" href="/heroes/iris">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/iris.webp')"></div>
+                <span class="hero-chip-name">Iris</span>
+              </a>
+              <div class="chip-flex-slot">
+                <div class="chip-flex-img">?</div>
+                <span class="chip-flex-label">Any hero</span>
+              </div>
+            </div>
+            <p class="comp-note">The classic Skadi control loop. Poseidon opens with AoE CC, Khepri dives the backline, and every controlled enemy triggers Skadi's passive for bonus damage and energy.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Diamonds</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/bastet">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
+                <span class="hero-chip-name">Bastet</span>
+              </a>
+              <a class="hero-pic" href="/heroes/heracles">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
+                <span class="hero-chip-name">Heracles</span>
+              </a>
+              <a class="hero-pic" href="/heroes/phoenix">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
+                <span class="hero-chip-name">Phoenix</span>
+              </a>
+              <a class="hero-pic" href="/heroes/set">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/set.webp')"></div>
+                <span class="hero-chip-name">Set</span>
+              </a>
+              <a class="hero-pic" href="/heroes/athena">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
+                <span class="hero-chip-name">Athena</span>
+              </a>
+              <span class="chip-divider">or</span>
+              <a class="hero-pic" href="/heroes/diana">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
+                <span class="hero-chip-name">Diana</span>
+              </a>
+            </div>
+            <p class="comp-note">Bastet and Heracles anchor the frontline. Set adds disruption, Phoenix targets high-value backline heroes, and Athena or Diana provides protection or healing depending on what you need.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Hladgunnr & Heracles</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/hladgunnr">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
+                <span class="hero-chip-name">Hladgunnr</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/hecate">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
+                <span class="hero-chip-name">Hecate</span>
+              </a>
+              <a class="hero-pic" href="/heroes/heracles">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
+                <span class="hero-chip-name">Heracles</span>
+              </a>
+              <a class="hero-pic" href="/heroes/jingwei">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
+                <span class="hero-chip-name">Jingwei</span>
+              </a>
+              <a class="hero-pic" href="/heroes/skadi">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
+                <span class="hero-chip-name">Skadi</span>
+              </a>
+            </div>
+            <p class="comp-note">A high-damage multi-warrior comp. Heracles and Hladgunnr split frontline duties, Jingwei and Hecate deliver consistent damage, and Skadi closes gaps on any CC-vulnerable target.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Nuba & Cronus</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/nuba">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
+                <span class="hero-chip-name">Nuba</span>
+              </a>
+              <a class="hero-pic" href="/heroes/caishen">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
+                <span class="hero-chip-name">Caishen</span>
+              </a>
+              <a class="hero-pic" href="/heroes/mengpo">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
+                <span class="hero-chip-name">Mengpo</span>
+              </a>
+              <a class="hero-pic" href="/heroes/cronus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div>
+                <span class="hero-chip-name">Chronos</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
+                <span class="hero-chip-name">Jingwei</span>
+              </a>
+            </div>
+            <p class="comp-note">Caishen accelerates Jingwei and Chronos into faster ultimate cycles. Nuba and Mengpo keep the frontline alive. A strong mid-game energy rotation comp.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Hecate</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic chip-highlight" href="/heroes/hecate">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
+                <span class="hero-chip-name">Hecate</span>
+              </a>
+              <a class="hero-pic" href="/heroes/momus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
+                <span class="hero-chip-name">Momus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/cancer">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cancer.webp')"></div>
+                <span class="hero-chip-name">Cancer</span>
+              </a>
+              <a class="hero-pic" href="/heroes/yuelao">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
+                <span class="hero-chip-name">Yuelao</span>
+              </a>
+              <a class="hero-pic" href="/heroes/meret">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
+                <span class="hero-chip-name">Meret</span>
+              </a>
+            </div>
+            <p class="comp-note">A heavy support shell for Hecate. Momus taunts, Cancer and Yuelao stack heals and shields, with Meret completing the protective core.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Skadi</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/khepri">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
+                <span class="hero-chip-name">Khepri</span>
+              </a>
+              <a class="hero-pic" href="/heroes/poseidon">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
+                <span class="hero-chip-name">Poseidon</span>
+              </a>
+              <a class="hero-pic" href="/heroes/pan">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
+                <span class="hero-chip-name">Pan</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/skadi">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
+                <span class="hero-chip-name">Skadi</span>
+              </a>
+              <a class="hero-pic" href="/heroes/nuwa">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
+                <span class="hero-chip-name">Nuwa</span>
+              </a>
+            </div>
+            <p class="comp-note">Skadi is your damage carry. Poseidon opens with AoE CC, Khepri disrupts the backline, and Pan and Nuwa provide layered support and control.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Hladgunnr & Clubs</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/capricorn">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/capricorn.webp')"></div>
+                <span class="hero-chip-name">Capricorn</span>
+              </a>
+              <a class="hero-pic" href="/heroes/wenshen">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp')"></div>
+                <span class="hero-chip-name">Wenshen</span>
+              </a>
+              <a class="hero-pic" href="/heroes/jormungandr">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jormungandr.webp')"></div>
+                <span class="hero-chip-name">Jormungandr</span>
+              </a>
+              <a class="hero-pic" href="/heroes/hladgunnr">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
+                <span class="hero-chip-name">Hladgunnr</span>
+              </a>
+              <a class="hero-pic" href="/heroes/anubis">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
+                <span class="hero-chip-name">Anubis</span>
+              </a>
+            </div>
+            <p class="comp-note">Capricorn and Wenshen provide sustained physical pressure. Jormungandr and Hladgunnr hold the frontline. Anubis locks down priority targets in the backline.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Hecate & Hephaestus</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/momus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
+                <span class="hero-chip-name">Momus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/meret">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
+                <span class="hero-chip-name">Meret</span>
+              </a>
+              <a class="hero-pic" href="/heroes/hephaestus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
+                <span class="hero-chip-name">Hephaestus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/yuelao">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
+                <span class="hero-chip-name">Yuelao</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/hecate">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
+                <span class="hero-chip-name">Hecate</span>
+              </a>
+            </div>
+            <p class="comp-note">Hephaestus synergizes with Momus in a heavy frontline shell. Yuelao and Meret stack support, with Hecate as the damage carry.</p>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-title">Warriors</div>
+            <div class="hero-chip-grid">
+              <a class="hero-pic" href="/heroes/prometheus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/prometheus.webp')"></div>
+                <span class="hero-chip-name">Prometheus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/hephaestus">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
+                <span class="hero-chip-name">Hephaestus</span>
+              </a>
+              <a class="hero-pic" href="/heroes/yuelao">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
+                <span class="hero-chip-name">Yuelao</span>
+              </a>
+              <a class="hero-pic" href="/heroes/diana">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
+                <span class="hero-chip-name">Diana</span>
+              </a>
+              <a class="hero-pic chip-highlight" href="/heroes/nezha">
+                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nezha.webp')"></div>
+                <span class="hero-chip-name">Nezha</span>
+              </a>
+            </div>
+            <p class="comp-note">Nezha acts as the spearhead. Prometheus and Hephaestus form a sturdy frontline while Yuelao and Diana keep everyone alive and in the fight.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+    </div>

@@ -1,0 +1,309 @@
+---
+import { FACTION_META } from "./tipsData";
+---
+    <!-- SUB-TAB: MECHANICS -->
+    <div id="subtab-mechanics" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics">
+      <main class="eg-main-content">
+
+        <!-- JUMPBAR -->
+        <nav class="tips-jumpbar" aria-label="Mechanics sections">
+          <span class="tips-jump-label">On this page</span>
+          <a href="#section-what" class="tips-jump-link">What Is This Game</a>
+          <a href="#section-loop" class="tips-jump-link">Core Loop</a>
+          <a href="#section-combat" class="tips-jump-link">Combat Basics</a>
+          <a href="#section-roles" class="tips-jump-link">Roles</a>
+          <a href="#section-factions" class="tips-jump-link">Factions</a>
+          <a href="#section-ascension" class="tips-jump-link">Rarity &amp; Ascension</a>
+          <a href="#section-glossary" class="tips-jump-link">Key Terms</a>
+        </nav>
+
+        <!-- WHAT IS THIS GAME -->
+        <div id="section-what" class="eg-content-card">
+          <h2>What Is Motto Immortal?</h2>
+          <p>Motto Immortal is an <strong>idle (AFK) hero-collector RPG</strong>. You play the Wayfarer and assemble a roster of mythological deities - Greek, Egyptian, Norse and more - to push back the Shadow-Blight. You collect deities by summoning, build a team of five, and send them into battle.</p>
+          <p>The key word is <strong>idle</strong>: your account keeps earning gold, experience and gear even while the game is closed. Offline rewards bank up to roughly <strong>12 hours</strong>, so logging in once or twice a day to collect and re-invest is the core rhythm.</p>
+          <p>Battles run <strong>automatically</strong>. You almost never control a hero directly - your real job happens <em>before</em> the fight: which deities you bring, where you place them, and how you gear them. The other tabs cover those decisions; this tab explains the systems underneath them.</p>
+        </div>
+
+        <!-- CORE LOOP -->
+        <div id="section-loop" class="eg-content-card">
+          <h2>The Core Loop</h2>
+          <p>Almost everything in the game feeds back into this cycle. Once it clicks, every other tab makes sense.</p>
+          <div class="eg-pillar-list">
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">1</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Push the Odyssey (campaign)</div>
+                <p>The story mode is the gatekeeper - clearing stages unlocks summoning, game modes and account systems. It is your main focus in the first days.</p>
+              </div>
+            </div>
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">2</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Summon deities</div>
+                <p>Spend summon currency to collect heroes and duplicate copies. Copies are not wasted - they upgrade the deity (see Ascension below).</p>
+              </div>
+            </div>
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">3</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Build &amp; gear your team</div>
+                <p>Level, ascend, gear and add relics to your core five. You are not building five equal heroes - you invest in 1-2 carries and support them.</p>
+              </div>
+            </div>
+            <div class="eg-pillar">
+              <div class="eg-pillar-num">4</div>
+              <div class="eg-pillar-body">
+                <div class="eg-pillar-title">Collect idle income</div>
+                <p>Offline gold, EXP and gear pile up (up to ~12h). Collect it, pour it back into your team, and push the next Odyssey wall.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tips-callout">
+            <p>A stronger team clears more Odyssey, which unlocks more systems and bigger idle income - which makes your team stronger again. When you feel stuck, you are almost always one account system behind, not one summon short.</p>
+          </div>
+        </div>
+
+        <!-- COMBAT BASICS -->
+        <div id="section-combat" class="eg-content-card">
+          <h2>Combat Basics</h2>
+          <p>Combat is automatic by default, but it is not random. A handful of mechanics decide most fights.</p>
+
+          <h3>Auto vs. Manual</h3>
+          <p>Battles play out on their own, and you can leave them on auto for the vast majority of content. Sometimes it can be useful taking <strong>manual control of your ultimates</strong> so you fire them at the right moment instead of letting the AI waste them.</p>
+
+          <h3>Energy &amp; Ultimates</h3>
+          <p>During a fight each hero fills an <strong>energy bar</strong>. When it is full they cast their <strong>ultimate</strong> - the big, fight-swinging ability. Faster energy means more ultimates, which is exactly why energy-support heroes (your "batteries") are so valuable: they let your carry ult more often than the enemy can.</p>
+
+          <h3>The Open Battlefield</h3>
+          <p>Heroes do not stand still. They move, some teleport, and many knock enemies back or pull them in. Because the field is open, <strong>positioning matters</strong> - the standard formation is two frontliners and three backliners.</p>
+          <div class="comparison-box">
+            <div class="compare-section">
+              <h4>Frontline (2)</h4>
+              <p>Tanks and brawlers</p>
+              <ul>
+                <li>Soak damage and hold the enemy</li>
+                <li>Protect the squishy backline</li>
+                <li>Placed closest to the enemy</li>
+              </ul>
+            </div>
+            <div class="compare-section">
+              <h4>Backline (3)</h4>
+              <p>Damage dealers and supports</p>
+              <ul>
+                <li>Deal the damage, heal, buff</li>
+                <li>Fragile - die fast if exposed</li>
+                <li>Kept behind the frontline</li>
+              </ul>
+            </div>
+          </div>
+          <p>Put a ranged carry too far forward and they get focused and die before doing anything. Front-to-back placement is one of the easiest free wins in the game.</p>
+
+          <h3>AoE vs. Line, and Grouping</h3>
+          <p>Ultimates have shapes: some hit in a straight <strong>line</strong>, others cover a wide <strong>circular area (AoE)</strong>. If your team has a hero that pulls or groups enemies together, time your AoE ultimates to land while the enemies are bunched up for maximum damage.</p>
+          <div class="tips-callout">
+            <p>Crowd Control (CC) - stuns, taunts, freezes, knockbacks - is not just defense. Grouping and locking down enemies is what lets your carry's AoE ultimate hit the whole enemy team at once.</p>
+          </div>
+        </div>
+
+        <!-- ROLES -->
+        <div id="section-roles" class="eg-content-card">
+          <h2>Roles: Who Does What</h2>
+          <p>Every deity fills one of three roles. A working team needs a mix - not five damage dealers.</p>
+          <div class="mech-role-grid">
+            <div class="eg-role-col">
+              <div class="eg-role-label">Tank</div>
+              <p>Frontline. Absorbs damage and shields the backline so your fragile heroes survive. Often brings CC such as taunts and knockbacks.</p>
+            </div>
+            <div class="eg-role-col">
+              <div class="eg-role-label">DPS / Carry</div>
+              <p>Your damage. This is the hero you invest in most - gear, relics, ascension. You build the team <em>around</em> the carry, not the other way round.</p>
+            </div>
+            <div class="eg-role-col">
+              <div class="eg-role-label">Support</div>
+              <p>Keeps the carry alive and firing - heals, shields, buffs and energy. Includes "batteries" (energy) and "tempo" buffers (attack and move speed).</p>
+            </div>
+          </div>
+          <div class="core-rule-split">
+            <div class="core-rule-carry">
+              <div class="core-rule-label">1-2 Carries</div>
+              <p>Deal the damage. They get the gear, the relics, the investment.</p>
+            </div>
+            <div class="core-rule-support">
+              <div class="core-rule-label">3-4 Supports / Tanks</div>
+              <p>Exist to enable the carry - energy, buffs, protection, uptime.</p>
+            </div>
+          </div>
+          <p class="eg-footnote">Want the detail on support types? See <strong>Team Building &rarr; Energy vs. Tempo Support</strong>.</p>
+        </div>
+
+        <!-- FACTIONS -->
+        <div id="section-factions" class="eg-content-card">
+          <h2>Factions (Suits)</h2>
+          <p>Every deity belongs to a <strong>faction</strong>, shown as a card suit. The four core suits are <strong>Hearts</strong>, <strong>Diamonds</strong>, <strong>Spades</strong> and <strong>Clubs</strong>, plus the rare <strong>Starglint</strong> group.</p>
+          <p>Factions matter in three places:</p>
+          <ul>
+            <li><strong>Summoning:</strong> Faction summons and the Wish List are organised by suit, so you target the faction your carry belongs to.</li>
+            <li><strong>Synergy bonus:</strong> Stacking deities of the same faction grants your whole team a damage bonus (up to +35%, see below).</li>
+            <li><strong>Counters:</strong> Each suit is strong against one other suit.</li>
+          </ul>
+
+          <h3>Faction Synergy Bonus</h3>
+          <p>The more deities of the same faction you field, the bigger the team-wide damage bonus. This is the single biggest reason to build "mono" or near-mono teams.</p>
+          <div class="pinion-table">
+            <div class="pinion-row pinion-header">
+              <div class="pinion-type">Team Composition</div>
+              <div class="pinion-when">Damage Bonus</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">3 of the same faction</div>
+              <div class="pinion-when">+15%</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">3 + 2 (two factions, e.g. 3 Hearts + 2 Spades)</div>
+              <div class="pinion-when">+25%</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">4 of the same faction</div>
+              <div class="pinion-when">+30%</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">5 of the same faction</div>
+              <div class="pinion-when">+35%</div>
+            </div>
+          </div>
+          <div class="tips-callout">
+            <p><strong>Starglint is a wildcard.</strong> A Starglint deity counts as whichever faction helps your bonus most. Example: 3 Hearts + 1 Club + 1 Starglint counts as a 4-faction bonus (+30%); 3 Hearts + 2 Starglint counts as a full 5-faction bonus (+35%).</p>
+          </div>
+
+          <h3>Faction Counters</h3>
+          <p>Each core suit deals extra damage against the suit it counters. It forms a single loop - so against an unknown enemy team, the faction that counters them is always the next one along.</p>
+          <div class="mech-counter">
+            {[["Hearts","Spades"],["Spades","Diamonds"],["Diamonds","Clubs"],["Clubs","Hearts"]].map(([a, b]: [string, string]) => (
+              <div class="mech-counter-row">
+                <span class="mech-fac" style={`--fc:${FACTION_META[a].color}`}>
+                  <img src={FACTION_META[a].icon} alt={a} />{a}
+                </span>
+                <span class="mech-counter-arrow">beats</span>
+                <span class="mech-fac" style={`--fc:${FACTION_META[b].color}`}>
+                  <img src={FACTION_META[b].icon} alt={b} />{b}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p class="eg-footnote">The loop: Hearts &rarr; Spades &rarr; Diamonds &rarr; Clubs &rarr; back to Hearts. Starglint sits outside the counter loop.</p>
+
+          <p class="eg-footnote">Starglint is the rarest group with its own currency and summon pool - see <strong>Early Game &rarr; Starglint and Mindsea</strong>.</p>
+        </div>
+
+        <!-- RARITY & ASCENSION -->
+        <div id="section-ascension" class="eg-content-card">
+          <h2>Rarity &amp; Ascension</h2>
+          <p>You make a deity stronger in two ways: <strong>levelling</strong> (raising their level with EXP) and <strong>ascension</strong> (raising their <em>grade</em> by feeding duplicate copies).</p>
+          <h3>Copies &amp; Fodder</h3>
+          <p>Every extra copy of a deity you summon goes toward ascending them to the next grade. Lower-value duplicates used purely as ascension material are called <strong>fodder</strong>. Higher grades unlock more stats and, eventually, the deity's <strong>relic</strong> system.</p>
+          <div class="tips-callout">
+            <p>Key idea: copies are never wasted. A "duplicate" you would discard in other games is the main way you power up a hero here. Spend them deliberately - see <strong>Early Game &rarr; Ascension Tips</strong> for which deities to feed first.</p>
+          </div>
+          <h3>The Grade Ladder</h3>
+          <p>Ascension raises a deity up this ladder. Each step needs more copies, but also adds stats and unlocks systems. The two milestones to remember: <strong>Exalted</strong> unlocks the relic system, and <strong>Divine</strong> is the current top tier.</p>
+          <div class="mech-grade-ladder">
+            <span class="mech-grade-step">Epic</span>
+            <span class="mech-grade-step">Epic+</span>
+            <span class="mech-grade-step">Legendary</span>
+            <span class="mech-grade-step">Legendary+</span>
+            <span class="mech-grade-step">Mythic</span>
+            <span class="mech-grade-step is-key">Exalted</span>
+            <span class="mech-grade-step is-key">Exalted+</span>
+            <span class="mech-grade-step is-top">Divine</span>
+            <span class="mech-grade-step is-top">Divine 1</span>
+            <span class="mech-grade-step is-top">Divine 2</span>
+            <span class="mech-grade-step is-top">Divine 3</span>
+            <span class="mech-grade-step is-top">Divine 4</span>
+            <span class="mech-grade-step is-top">Divine 5</span>
+          </div>
+          <p class="eg-footnote">Gold = relics unlock here (Exalted / Exalted+). Violet = Divine tiers, the current ceiling (Divine 5 is the highest anyone has reached so far; higher tiers may follow).</p>
+        </div>
+
+        <!-- KEY TERMS -->
+        <div id="section-glossary" class="eg-content-card">
+          <h2>Key Terms</h2>
+          <p>The words that show up everywhere in this guide and in chat, in one place.</p>
+          <div class="pinion-table">
+            <div class="pinion-row pinion-header">
+              <div class="pinion-type">Term</div>
+              <div class="pinion-when">What it means</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Deity / Hero</div>
+              <div class="pinion-when">A collectible character (a god or goddess) you summon and build.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Faction / Suit</div>
+              <div class="pinion-when">The card-suit group a deity belongs to: Hearts, Diamonds, Spades, Clubs, Starglint.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Carry / DPS / DD</div>
+              <div class="pinion-when">Your main damage dealer - the hero you invest in most.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Support</div>
+              <div class="pinion-when">Heals, buffs, shields or grants energy; exists to enable the carry.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Tank</div>
+              <div class="pinion-when">Frontline hero that soaks damage and protects the backline.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">CC (Crowd Control)</div>
+              <div class="pinion-when">Effects that stun, taunt, freeze, pull or knock back enemies.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Energy</div>
+              <div class="pinion-when">The bar that fills during combat; a full bar lets a hero cast their ultimate.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Ultimate</div>
+              <div class="pinion-when">A hero's big, energy-gated signature ability.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Ascension</div>
+              <div class="pinion-when">Raising a deity's grade by feeding duplicate copies.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Fodder</div>
+              <div class="pinion-when">Spare copies used purely as ascension material.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Relic</div>
+              <div class="pinion-when">A per-deity upgrade system unlocked at higher grades; has "breakpoints" (see Mid-Late).</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Pity</div>
+              <div class="pinion-when">A summon guarantee: after a set number of pulls you are granted a deity.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Idle / AFK</div>
+              <div class="pinion-when">Offline progress; rewards bank up to ~12 hours while you are away.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Odyssey</div>
+              <div class="pinion-when">The campaign / story mode; clearing it gates most other features.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Shrine</div>
+              <div class="pinion-when">Account-wide buff and gear (artefact) system unlocked through Odyssey progress.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Beacon Tree</div>
+              <div class="pinion-when">Account-wide stat bonuses that apply to every hero in every mode.</div>
+            </div>
+            <div class="pinion-row">
+              <div class="pinion-type">Resonating Altar</div>
+              <div class="pinion-when">Place 5 heroes; every other hero is raised to the level of your 5th-strongest.</div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
