@@ -55,10 +55,10 @@ const sortedHeroes = [...heroes]
     <div class="sort-controls">
       <label for="sortSelect" class="sort-label">Sort by</label>
       <select id="sortSelect" class="sort-select">
+        <option value="rating-desc" selected>Rating (best first)</option>
+        <option value="rating-asc">Rating (worst first)</option>
         <option value="name-asc">Name (A-Z)</option>
         <option value="name-desc">Name (Z-A)</option>
-        <option value="rating-desc">Rating (best first)</option>
-        <option value="rating-asc">Rating (worst first)</option>
         <option value="class">Class</option>
         <option value="rarity-desc">Rarity (highest first)</option>
       </select>
@@ -145,7 +145,6 @@ const sortedHeroes = [...heroes]
           <th class="col-rating col-sortable" data-col="overall">Overall <span class="sort-indicator"></span></th>
           <th class="col-rating col-sortable" data-col="pvp">PvP <span class="sort-indicator"></span></th>
           <th class="col-rating col-sortable" data-col="pve">PvE <span class="sort-indicator"></span></th>
-          <th class="col-tier col-sortable" data-col="tier">Tier <span class="sort-indicator"></span></th>
           <th class="col-class">Class</th>
           <th class="col-faction">Faction</th>
         </tr>
@@ -163,7 +162,6 @@ const sortedHeroes = [...heroes]
             data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
             data-pvp={hero.ratings?.pvp?.toLowerCase() || "n/a"}
             data-pve={hero.ratings?.pve?.toLowerCase() || "n/a"}
-            data-excel-tier={hero.metaSources?.excelTier || ""}
           >
             <td class="col-portrait">
               <a href={`/heroes/${hero.id}`} class="list-portrait-link">
@@ -199,12 +197,6 @@ const sortedHeroes = [...heroes]
             <td class="col-rating">
               {hero.ratings?.pve
                 ? <span class="list-badge" data-tier={hero.ratings.pve}>{hero.ratings.pve}</span>
-                : <span class="list-badge-empty">-</span>
-              }
-            </td>
-            <td class="col-tier">
-              {hero.metaSources?.excelTier
-                ? <span class="list-tier">{hero.metaSources.excelTier}</span>
                 : <span class="list-badge-empty">-</span>
               }
             </td>
@@ -555,18 +547,15 @@ const sortedHeroes = [...heroes]
 .col-name,
 .col-class,
 .col-faction,
-.col-rating,
-.col-tier {
-  width: calc((100% - 52px) / 7);
+.col-rating {
+  width: calc((100% - 52px) / 6);
 }
 
-.col-rating,
-.col-tier {
+.col-rating {
   text-align: center !important;
 }
 
-.hero-table .col-rating,
-.hero-table .col-tier {
+.hero-table .col-rating {
   text-align: center;
 }
 
@@ -632,21 +621,6 @@ const sortedHeroes = [...heroes]
   font-size: var(--text-sm);
 }
 
-.list-tier {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  height: 20px;
-  padding: 0 var(--space-2);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  border-radius: var(--radius-sm);
-  background: var(--chip-bg);
-  color: var(--text-secondary);
-  white-space: nowrap;
-}
-
 @media (max-width: 600px) {
   .col-class,
   .col-faction {
@@ -661,6 +635,8 @@ const sortedHeroes = [...heroes]
 </style>
 
 <script>
+import { RATING_ORDER } from "../../utils/ratingScale";
+
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput") as HTMLInputElement;
   const resetButton = document.getElementById("resetFilters");
@@ -680,7 +656,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const rarityChips = document.querySelectorAll(".rarity-chip");
   const tagChips = document.querySelectorAll(".tag-chip");
 
-  const RATING_ORDER: Record<string, number> = { sss: 7, ss: 6, s: 5, a: 4, b: 3, c: 2, d: 1, "n/a": 0 };
   const RARITY_ORDER: Record<string, number> = { legendary: 3, epic: 2, common: 1 };
 
   let activeTag: string | null = null;
@@ -746,14 +721,10 @@ document.addEventListener("DOMContentLoaded", () => {
     listRows.forEach(row => {
       row.style.display = matchesFilters(row) ? "" : "none";
     });
-    const lang = localStorage.getItem('lang') || 'en';
-    const suffix = lang === 'ru' ? ' Героев показано' : ' Heroes shown';
-    heroCounter!.textContent = `${visible}${suffix}`;
+    heroCounter!.textContent = `${visible} Heroes shown`;
   }
 
   // ---- Sorting ----
-
-  const TIER_ORDER: Record<string, number> = { "T0": 1, "T0.5": 2, "T1": 3, "T2": 4, "T10": 5, "": 9 };
 
   const ratingVal  = (el: HTMLElement) => RATING_ORDER[el.dataset.rating || ""] ?? 0;
   const rarityVal  = (el: HTMLElement) => RARITY_ORDER[el.dataset.rarity || ""] ?? 0;
@@ -828,12 +799,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           case "pve": {
             const d = (RATING_ORDER[a.dataset.pve || ""] ?? 0) - (RATING_ORDER[b.dataset.pve || ""] ?? 0);
-            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
-          }
-          case "tier": {
-            const ta = TIER_ORDER[a.dataset.excelTier || ""] ?? 9;
-            const tb = TIER_ORDER[b.dataset.excelTier || ""] ?? 9;
-            const d = ta - tb;
             return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
           }
           default: return 0;
@@ -913,11 +878,30 @@ document.addEventListener("DOMContentLoaded", () => {
     activeTag = null;
     document.querySelectorAll(".chip.active, .role-chip.active").forEach(c => c.classList.remove("active"));
     tagChips.forEach(x => x.classList.remove("active"));
-    sortSelect.value = "name-asc";
+    sortSelect.value = "rating-desc";
     sortHeroes();
     applyFilters();
   });
 
+  // ---- Search clear button ----
+
+  const searchClear = document.getElementById("searchClear") as HTMLButtonElement | null;
+
+  function syncSearchClear() {
+    searchClear?.classList.toggle("visible", searchInput.value.trim().length > 0);
+  }
+
+  searchClear?.addEventListener("click", () => {
+    searchInput.value = "";
+    // fires all registered input listeners (filtering, clear toggle, fab badge)
+    searchInput.dispatchEvent(new Event("input"));
+    searchInput.focus();
+  });
+  searchInput.addEventListener("input", syncSearchClear);
+  syncSearchClear();
+
+  // Initial order: server renders alphabetically, default select is rating-desc
+  sortHeroes();
   applyFilters();
 
   // ---- Mobile filter overlay ----
