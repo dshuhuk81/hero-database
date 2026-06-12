@@ -13,11 +13,13 @@
  * Usage:
  *   node scripts/suggest-virtues.mjs            # write suggestionsVirtues.json + print
  *   node scripts/suggest-virtues.mjs --report   # print only, no write
+ *   node scripts/suggest-virtues.mjs yaoji      # only process Yaoji
  */
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { filterHeroesByQuery, getHeroQuery } from "./hero-cli-filter.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -62,7 +64,11 @@ function loadHeroes() {
   return fs
     .readdirSync(HERO_DIR)
     .filter((f) => f.endsWith(".json") && !f.startsWith("_") && f !== "index.js")
-    .map((f) => JSON.parse(fs.readFileSync(path.join(HERO_DIR, f), "utf8")));
+    .map((f) => ({
+      ...JSON.parse(fs.readFileSync(path.join(HERO_DIR, f), "utf8")),
+      fileName: f,
+      fileBaseName: path.basename(f, ".json"),
+    }));
 }
 
 function heroSentences(hero) {
@@ -135,9 +141,11 @@ export function recommendForHero(hero, drivers, setMeta) {
 
 function main() {
   const reportOnly = process.argv.includes("--report");
+  const heroQuery = getHeroQuery();
   const drivers = loadRules();
   const setMeta = loadSetMeta();
-  const heroes = loadHeroes().sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  const heroes = filterHeroesByQuery(loadHeroes(), heroQuery)
+    .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 
   const out = [];
   let totalAdd = 0;
@@ -158,7 +166,7 @@ function main() {
     });
   }
 
-  const summary = { heroes: heroes.length, suggestedAdd: totalAdd, addByConfidence: addByConf };
+  const summary = { heroes: heroes.length, heroFilter: heroQuery || null, suggestedAdd: totalAdd, addByConfidence: addByConf };
 
   if (!reportOnly) {
     fs.writeFileSync(
@@ -168,6 +176,7 @@ function main() {
   }
 
   console.log("\n=== VIRTUE-SET SUGGESTION ENGINE ===");
+  if (heroQuery) console.log(`filter: ${heroQuery}`);
   console.log(`heroes: ${summary.heroes} | suggestedAdd: ${summary.suggestedAdd}`, summary.addByConfidence);
   console.log("\n--- per hero (heroes with suggestions) ---");
   for (const h of out) {

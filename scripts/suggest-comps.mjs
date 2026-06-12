@@ -19,11 +19,13 @@
  * Usage:
  *   node scripts/suggest-comps.mjs            # write suggestionsComps.json + print
  *   node scripts/suggest-comps.mjs --report   # print only, no write
+ *   node scripts/suggest-comps.mjs yaoji      # only process Yaoji as the target hero
  */
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { filterHeroesByQuery, getHeroQuery } from "./hero-cli-filter.mjs";
 import { loadRules as loadVirtueDrivers, detectDrivers } from "./suggest-virtues.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -60,7 +62,11 @@ function loadHeroes() {
   return fs
     .readdirSync(HERO_DIR)
     .filter((f) => f.endsWith(".json") && !f.startsWith("_") && f !== "index.js")
-    .map((f) => JSON.parse(fs.readFileSync(path.join(HERO_DIR, f), "utf8")));
+    .map((f) => ({
+      ...JSON.parse(fs.readFileSync(path.join(HERO_DIR, f), "utf8")),
+      fileName: f,
+      fileBaseName: path.basename(f, ".json"),
+    }));
 }
 
 function neededTagsFor(hero, virtueDrivers, needTags) {
@@ -105,14 +111,16 @@ export function rankPartners(target, heroes, virtueDrivers, rules, ratings = {})
 
 function main() {
   const reportOnly = process.argv.includes("--report");
+  const heroQuery = getHeroQuery();
   const virtueDrivers = loadVirtueDrivers();
   const rules = loadCompRules();
   const ratings = loadRatings();
   const heroes = loadHeroes().sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  const targetHeroes = filterHeroesByQuery(heroes, heroQuery);
 
   const out = [];
   let total = 0;
-  for (const hero of heroes) {
+  for (const hero of targetHeroes) {
     if (Array.isArray(hero.synergyPartners) && hero.synergyPartners.length) continue; // already curated
     const { needed, partners } = rankPartners(hero, heroes, virtueDrivers, rules, ratings);
     if (partners.length < PARTNER_COUNT) continue; // only suggest a full set
@@ -127,7 +135,7 @@ function main() {
     });
   }
 
-  const summary = { heroes: heroes.length, suggested: total };
+  const summary = { heroes: targetHeroes.length, heroFilter: heroQuery || null, suggested: total };
   if (!reportOnly) {
     fs.writeFileSync(
       OUT_FILE,
@@ -136,6 +144,7 @@ function main() {
   }
 
   console.log("\n=== SYNERGY-PARTNER (BOOSTERS) SUGGESTION ENGINE ===");
+  if (heroQuery) console.log(`filter: ${heroQuery}`);
   console.log(`heroes: ${summary.heroes} | partner sets suggested: ${summary.suggested}`);
   console.log("\n--- sample ---");
   for (const h of out.slice(0, 12)) {

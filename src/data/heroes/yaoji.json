@@ -1,0 +1,210 @@
+{
+  "id": "yaoji",
+  "name": "Yaoji",
+  "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yaoji.webp",
+  "release": false,
+  "newHero": false,
+  "faction": "Clubs",
+  "role": "Arcane",
+  "class": "Support",
+  "rarity": "Legendary",
+  "description": "",
+  "evolution": "Divine V",
+  "level": 300,
+  "stats": {
+    "might": 632000,
+    "hp": 1644803,
+    "atk": 226617,
+    "armor": 34627,
+    "magicRes": 34627,
+    "dodgeRate": 6,
+    "hitBonus": 0,
+    "critRate": 4,
+    "critRes": 6,
+    "critDmgBonus": 0,
+    "critDmgRed": 0,
+    "energy": 0,
+    "cooldownHaste": 0,
+    "atkSpdBonus": 0,
+    "pDmgBonus": 0,
+    "pDmgRed": 0,
+    "mDmgBonus": 0,
+    "mDmgRed": 0,
+    "healEff": 0,
+    "rechargeEff": 0,
+    "lifestealEff": 0,
+    "reflectEff": 0,
+    "effectRes": 0,
+    "effectHit": 0,
+    "controlRes": 0,
+    "controlBonus": 0,
+    "normalSkillPWR": 0,
+    "ultimatePWR": 0
+  },
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Wushan Cloud Rain",
+      "description": "Yaoji summons Wushan Cloud Rain, expanding the Cloud Mist Domain to the entire battlefield for 8s. Upon cast, immediately applies 1 stack of Withering Mark to enemies within the domain, then applies 1 additional stack every 2s. Withering Mark: Each stack increases the target's DMG taken by 3% and deals 25% of Yaoji's ATK as DMG every second. Max 10 stacks. Lasts 30s. This ultimate can only be cast while attached. If Yaoji is not attached when casting, she immediately attaches to the frontmost allied unit, then casts the ultimate.",
+      "upgrades": {
+        "level2": "Withering Mark's damage per second increases to 40%.",
+        "level3": "Duration increases to 10s.",
+        "level4": "Each Withering Mark stack increases enemy DMG taken by 5%."
+      },
+      "damageType": "Magic",
+      "isUltimate": true
+    },
+    {
+      "id": "skill_2",
+      "name": "Cloudbound Possession",
+      "description": "Passive: At the start of battle, Yaoji attaches to the frontmost ally and becomes untargetable. While attached, forms a Cloud Mist Domain with a 4-meter radius centered on the host. Attachment lasts 12s. After leaving the host, Yaoji takes 50% reduced DMG for 5s. Active: Deals 150% ATK as DMG to all enemies within the Cloud Mist Domain and applies 1 stack of Withering Mark.",
+      "upgrades": {
+        "level2": "Active DMG increases to 180% ATK.",
+        "level3": "Active DMG increases to 210% ATK.",
+        "level4": "Active cooldown is reduced by 30%."
+      },
+      "damageType": "Magic"
+    },
+    {
+      "id": "skill_3",
+      "name": "Mist Isle Domain",
+      "description": "Passive: Enemies within the Cloud Mist Domain have their ATK reduced by 15% and healing received reduced by 30%.",
+      "upgrades": {
+        "level2": "Enemies within the Cloud Mist Domain have their ATK reduced by 20%.",
+        "level3": "Enemies within the Cloud Mist Domain have their healing received reduced by 60%.",
+        "level4": "Enemies within the Cloud Mist Domain have their ATK reduced by 25%."
+      }
+    },
+    {
+      "id": "skill_4",
+      "name": "Cloud Veil Protection",
+      "description": "Allows the host to take 30% reduced DMG for the next 5s and recover 3% of Max HP every second. This skill can only be cast while attached.",
+      "upgrades": {
+        "level2": "DMG taken is reduced by 40% for the next 5s.",
+        "level3": "Recovers 5% of Max HP every second.",
+        "level4": "Duration increases to 6s."
+      }
+    }
+  ],
+  "relic": {
+    "name": "Falling Blossoms",
+    "description": "When an enemy first reaches 10 stacks of Withering Mark, inflicts Wither on the target. Wither: Loses 3% of Max HP every second, ATK SPD reduced by 30%, ATK reduced by 30%. Lasts 5s.",
+    "upgrades": {
+      "level2": "Each time the host loses 40% of Max HP, immediately triggers an additional Cloudbound Possession against enemies within the Cloud Mist Domain.",
+      "level3": "When an enemy first reaches 10 stacks of Withering Mark, Wither becomes stronger: loses 5% of Max HP every second, ATK SPD reduced by 50%, ATK reduced by 50%. Lasts 5s.",
+      "level4": "Each time the host loses 30% of Max HP, immediately triggers an additional Cloudbound Possession against enemies within the Cloud Mist Domain."
+    }
+  },
+  "synergies": [
+    "PLAYSTYLE_AREA_DAMAGE",
+    "ENEMY_VULNERABILITY",
+    "SELF_HIT_AVOID",
+    "ENEMY_ATK_DOWN"
+  ],
+  "baseAttackRate": 0,
+  "bossUltimatesPer90s": 0,
+  "coreMechanic": {
+    "summary": "",
+    "depthRating": "",
+    "commonlyMisunderstood": false
+  },
+  "strengths": [
+  ],
+  "weaknesses": [
+  ],
+  "virtueSets": [
+    {
+      "label": "Grace",
+      "comment": "",
+      "virtues": [
+        "grace_1",
+        "grace_2",
+        "grace_3",
+        "grace_4"
+      ]
+    },
+    {
+      "label": "Sacrifice",
+      "comment": "",
+      "virtues": [
+        "sacrifice_1",
+        "sacrifice_2",
+        "sacrifice_3",
+        "sacrifice_4"
+      ]
+    },
+    {
+      "label": "Stoic",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4"
+      ]
+    },
+    {
+      "label": "Defiance",
+      "comment": "",
+      "virtues": [
+        "defiance_1",
+        "defiance_2",
+        "defiance_3",
+        "defiance_4"
+      ]
+    }
+  ],
+  "detailComps": [
+   
+  ],
+  "synergyPartners": [
+    {
+      "heroId": "cancer",
+      "via": [
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_CC_IMMUNITY"
+      ]
+    },
+    {
+      "heroId": "dionysus",
+      "via": [
+        "TEAM_CC_IMMUNITY",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD"
+      ]
+    },
+    {
+      "heroId": "tefnut",
+      "via": [
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_DAMAGE_REDUCTION"
+      ]
+    },
+    {
+      "heroId": "mengpo",
+      "via": [
+        "TEAM_DEBUFF_CLEANSE",
+        "TEAM_HEAL",
+        "TEAM_ENERGY_RESTORE"
+      ]
+    },
+    {
+      "heroId": "meret",
+      "via": [
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_HEAL",
+        "TEAM_SHIELD"
+      ]
+    }
+  ],
+  "imgY": "5%"
+}

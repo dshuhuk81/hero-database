@@ -12,11 +12,13 @@
  * Usage:
  *   node scripts/suggest-synergy-tags.mjs            # write suggestions.json + print diff
  *   node scripts/suggest-synergy-tags.mjs --report   # print diff only, no write
+ *   node scripts/suggest-synergy-tags.mjs yaoji      # only process Yaoji
  */
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { filterHeroesByQuery, getHeroQuery } from "./hero-cli-filter.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -58,7 +60,11 @@ function loadHeroes() {
   return fs
     .readdirSync(HERO_DIR)
     .filter((f) => f.endsWith(".json") && !f.startsWith("_") && f !== "index.js")
-    .map((f) => JSON.parse(fs.readFileSync(path.join(HERO_DIR, f), "utf8")));
+    .map((f) => ({
+      ...JSON.parse(fs.readFileSync(path.join(HERO_DIR, f), "utf8")),
+      fileName: f,
+      fileBaseName: path.basename(f, ".json"),
+    }));
 }
 
 function heroSentences(hero) {
@@ -124,8 +130,10 @@ export function detectForHero(hero, rules) {
 
 function main() {
   const reportOnly = process.argv.includes("--report");
+  const heroQuery = getHeroQuery();
   const rules = loadRules();
-  const heroes = loadHeroes().sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  const heroes = filterHeroesByQuery(loadHeroes(), heroQuery)
+    .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 
   const out = [];
   let totalAdd = 0;
@@ -173,6 +181,7 @@ function main() {
 
   const summary = {
     heroes: heroes.length,
+    heroFilter: heroQuery || null,
     manualTags: manualTotal,
     engineMatched: matchedTotal,
     confirmed: agree,
@@ -192,6 +201,7 @@ function main() {
 
   // ---- console diff report ----
   console.log("\n=== SYNERGY TAG SUGGESTION ENGINE ===");
+  if (heroQuery) console.log(`filter: ${heroQuery}`);
   console.log(`heroes: ${summary.heroes}`);
   console.log(`manual tags: ${summary.manualTags} | engine matched: ${summary.engineMatched} | confirmed (overlap): ${summary.confirmed}`);
   console.log(`precision vs manual: ${(summary.precisionVsManual * 100).toFixed(1)}%  (matched tags that are already manual)`);
