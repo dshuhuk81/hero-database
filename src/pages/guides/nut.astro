@@ -19,7 +19,7 @@ const skills = [
     badge: "Skill 1 - Ultimate",
     isUlt: true,
     description:
-      "Nut ascends to gather stellar power for 5s, charing up to 500 energy. Once charging is complete or interrupted, deals 500% ATK as AoE Dmg to targets in a dense area and clears all energy. For every Energy accumulated, her DMG multiplier increases by 2%.",
+      "Nut ascends to gather stellar power for 5s, charging up to 500 Energy. Once charging is complete or interrupted, deals 500% ATK as AoE DMG to targets in a dense area and clears all Energy. For every Energy accumulated, her DMG multiplier increases by 2%.",
     upgrades: [
       { level: "Lv 2", text: "During charging state, gains 50% Dodge Rate" },
       { level: "Lv 3", text: "Each 1 energy accumulated increases damage by 3%" },
@@ -31,11 +31,11 @@ const skills = [
     name: "Stardust Volley",
     badge: "Skill 2",
     description:
-      "Summons 3 small star cores and fires them sequentially at a dense enemy Area, dealing DMG equal to 80% ATK to enemies within range.",
+      "Summons 3 small star cores and fires them sequentially at a dense enemy AoE, dealing DMG equal to 80% ATK to enemies within range.",
     upgrades: [
-      { level: "Lv 2", text: "Damage increased to 100%." },
-      { level: "Lv 3", text: "Additionally reduces target's Magic Defense by 200%." },
-      { level: "Lv 4", text: "Damage increased to 200%." },
+      { level: "Lv 2", text: "Increases DMG dealt to 100% ATK." },
+      { level: "Lv 3", text: "Also reduces the targets' M-RES by 20%." },
+      { level: "Lv 4", text: "Increases DMG dealt to 120% ATK." },
     ],
   },
   {
@@ -43,7 +43,7 @@ const skills = [
     name: "Starcore Aegis",
     badge: "Skill 3",
     description:
-      "At the start of the battle, Nut summons a star core to protect herself, gaining a Shield equal to 20% of her max HP, and enters a continous casting state. During this time, she gains 140 Energy per sec and a small star core rotating around her. Each small star core provides Nut with 20% ATK.",
+      "At the start of battle, Nut summons a star core to protect herself, gaining a Shield equal to 20% of her max HP, and enters a continuous casting state. During this time, she gains 140 Energy per sec and a small star core rotating around her. Each small star core provides Nut with 20% ATK.",
     upgrades: [
       { level: "Lv 2", text: "Shield increased to 30% of max HP." },
       { level: "Lv 3", text: "Self gains 200 energy per second." },
@@ -70,16 +70,16 @@ const relic = {
   levelBadge: "Level 30",
   description: "Nut restores 30 Energy per sec during the charge-up.",
   upgrades: [
-    { level: "Lv 2", text: "When released, self enters 3 seconds of un-targetable state." },
-    { level: "Lv 3", text: "In charging state, recovers 60 energy per second." },
-    { level: "Lv 4", text: "Maximum energy limit increased to 1,000." },
+    { level: "Lv 2", text: "[Astral Repulse] When cast, also becomes untargetable for 3s." },
+    { level: "Lv 3", text: "[Celestial Starfall] Nut restores 60 Energy per sec during the charge-up." },
+    { level: "Lv 4", text: "[Celestial Starfall] Energy Limit increases to 1,000." },
   ],
 };
 
 const strengths = [
   "Self-sufficient energy: ult-ready in ~2.5-3s of peace - no battery hero required",
   "Interruption only discounts her ult; full denial is nearly impossible",
-  "Passive team-wide ATK amplification from second zero",
+  "Self-ramping ATK: every orbiting core adds +30% ATK to her own detonation - not a team buff",
   "Layered escape chain: shield - knockback - dodge - untargetable",
   "Can make a difference even with high difference in BP or level",
 ];
