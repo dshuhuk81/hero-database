@@ -1,0 +1,591 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
+const SKILL_ASSET_BASE = `${R2_BASE}/skills`;
+const VIRTUE_ASSET_BASE = `${R2_BASE}/images/virtues`;
+
+const heroImage = (id: string) => `${HERO_ASSET_BASE}/${id}.webp`;
+const nutSkillImage = (id: string) => `${SKILL_ASSET_BASE}/nut_${id}.webp`;
+const virtueImage = (assetId: string, suffix: string) => `${VIRTUE_ASSET_BASE}/${assetId}${suffix}.png`;
+
+const skills = [
+  {
+    id: "skill_1",
+    name: "Celestial Starfall",
+    badge: "Skill 1 - Ultimate",
+    isUlt: true,
+    description:
+      "Nut ascends to gather stellar power for 5s, charing up to 500 energy. Once charging is complete or interrupted, deals 500% ATK as AoE Dmg to targets in a dense area and clears all energy. For every Energy accumulated, her DMG multiplier increases by 2%.",
+    upgrades: [
+      { level: "Lv 2", text: "During charging state, gains 50% Dodge Rate" },
+      { level: "Lv 3", text: "Each 1 energy accumulated increases damage by 3%" },
+      { level: "Lv 4", text: "Each 1 energy accumulated increases damage by 4%" },
+    ],
+  },
+  {
+    id: "skill_2",
+    name: "Stardust Volley",
+    badge: "Skill 2",
+    description:
+      "Summons 3 small star cores and fires them sequentially at a dense enemy Area, dealing DMG equal to 80% ATK to enemies within range.",
+    upgrades: [
+      { level: "Lv 2", text: "Damage increased to 100%." },
+      { level: "Lv 3", text: "Additionally reduces target's Magic Defense by 200%." },
+      { level: "Lv 4", text: "Damage increased to 200%." },
+    ],
+  },
+  {
+    id: "skill_3",
+    name: "Starcore Aegis",
+    badge: "Skill 3",
+    description:
+      "At the start of the battle, Nut summons a star core to protect herself, gaining a Shield equal to 20% of her max HP, and enters a continous casting state. During this time, she gains 140 Energy per sec and a small star core rotating around her. Each small star core provides Nut with 20% ATK.",
+    upgrades: [
+      { level: "Lv 2", text: "Shield increased to 30% of max HP." },
+      { level: "Lv 3", text: "Self gains 200 energy per second." },
+      { level: "Lv 4", text: "Each small star core provides 30% ATK." },
+    ],
+  },
+  {
+    id: "skill_4",
+    name: "Astral Repulse",
+    badge: "Skill 4",
+    description:
+      "Passive: When any enemy unit approaches Nut, deals DMG equal to 100% ATK to the surrounding area and knocks back units. CD: 20s.",
+    upgrades: [
+      { level: "Lv 2", text: "CD reduced to 18 seconds." },
+      { level: "Lv 3", text: "CD reduced to 16 seconds." },
+      { level: "Lv 4", text: "CD reduced to 14 seconds." },
+    ],
+  },
+];
+
+const relic = {
+  name: "Celestial Covenant",
+  badge: "Relic",
+  levelBadge: "Level 30",
+  description: "Nut restores 30 Energy per sec during the charge-up.",
+  upgrades: [
+    { level: "Lv 2", text: "When released, self enters 3 seconds of un-targetable state." },
+    { level: "Lv 3", text: "In charging state, recovers 60 energy per second." },
+    { level: "Lv 4", text: "Maximum energy limit increased to 1,000." },
+  ],
+};
+
+const strengths = [
+  "Self-sufficient energy: ult-ready in ~2.5-3s of peace - no battery hero required",
+  "Interruption only discounts her ult; full denial is nearly impossible",
+  "Passive team-wide ATK amplification from second zero",
+  "Layered escape chain: shield - knockback - dodge - untargetable",
+  "Can make a difference even with high difference in BP or level",
+];
+
+const weaknesses = [
+  "Zero team utility - her ramp buffs only herself; if the bomb never lands, she contributed nothing",
+  "Hard CC before the charge state is her real kill window",
+  "Beware of ATK-locking Assassins or divers that could target her easily cause of her ATK-ramping",
+  "Knockback answers one diver per 14s - double-dive walks through it",
+  "Weak against a solo boss - her damage is mediocre cause of her cycle",
+  "Ceiling is relic-gated: untargetable at R10, 1,000-cap at R30 - long investment curve",
+];
+
+const synergies = [
+  { id: "poseidon", name: "Poseidon", note: "CC + M-Res Shred" },
+  { id: "tefnut", name: "Tefnut", note: "Cleanse, 50% AoE DR" },
+  { id: "momus", name: "Momus", note: "CC + Shield" },
+  { id: "caishen", name: "Caishen", note: "Energy" },
+  { id: "cronus", name: "Cronus", note: "CC stalls" },
+  { id: "cancer", name: "Cancer", note: "Super-armor + energy" },
+  { id: "hecate", name: "Hecate", note: "CC & Reduced Attributes" },
+];
+
+const counters = [
+  { id: "nyx", name: "Nyx", note: "Silence, Stun - anti-channeler toolkit" },
+  { id: "anubis", name: "Anubis", note: "Untargetable dive ignores her knockback" },
+  { id: "wenshen", name: "Wen-Shen", note: "Petrify / stun chains" },
+  { id: "cronus", name: "Cronus", note: "CC - denies the ramp" },
+  { id: "horus", name: "Horus", note: "Assassin" },
+  { id: "bastet", name: "Bastet", note: "High ATK locker" },
+];
+
+const virtues = [
+  {
+    name: "Oblivion",
+    rarity: "Legendary",
+    rarityClass: "guide-virtue-rarity--legendary",
+    assetId: "oblivionI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "Armor +30%, M-RES +30% at start" },
+      { label: "4-Piece", text: "CC immunity for 8s at combat start" },
+    ],
+    note: "Eight seconds covers her entire first cycle (~2.5s bank + 5s charge) - it deletes her only true kill window. Mandatory in PvP.",
+  },
+  {
+    name: "Fervor",
+    rarity: "Legendary",
+    rarityClass: "guide-virtue-rarity--legendary",
+    assetId: "fervorI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "Energy Regen +10%" },
+      { label: "4-Piece", text: "On Ultimate use, +10% ATK (max 4 stacks = +40% ATK)" },
+    ],
+    note: "Amplifies her 200/s engine and snowballs across cycles - the long-fight and boss-timer pick.",
+  },
+  {
+    name: "Insight",
+    rarity: "Epic",
+    rarityClass: "guide-virtue-rarity--epic",
+    assetId: "insightI",
+    assetSuffix: "_elite",
+    bonuses: [
+      { label: "2-Piece", text: "CRIT Rate +10%" },
+      { label: "4-Piece", text: "+30% CRIT Rate before first dealing damage" },
+    ],
+    note: "She deals no damage while channeling - so the bonus may ride into her first Starfall.",
+  },
+];
+
+const combatPhases = [
+  {
+    icon: "shield",
+    time: "0s",
+    name: "Aegis",
+    desc: "Shield = <strong>30% max HP</strong>. Channeling begins: <strong>200 energy/s</strong>, each orbiting core stacks <strong>+30% ATK</strong> on Nut herself.",
+  },
+  {
+    icon: "arrows",
+    time: "2.5s",
+    name: "Banked",
+    desc: "500 energy reached. Divers eat a <strong>knockback</strong> (100% ATK, 14s CD).",
+  },
+  {
+    icon: "orb",
+    time: "Ultimate",
+    name: "Ascent",
+    desc: "5s charge with <strong>50% Dodge</strong>. Interruption is not denial - it just releases early.",
+  },
+  {
+    icon: "star",
+    time: "Release",
+    name: "Starfall",
+    desc: "Large AoE, up to <strong>2,500% ATK</strong>. All energy consumed.",
+  },
+  {
+    icon: "ghost",
+    time: "+3s",
+    name: "Vanish",
+    desc: "<strong>Untargetable 3s</strong> after release. Cycle restarts (Relic upgrade).",
+  },
+];
+---
+
+<Base
+  title="Nut Guide - Goddess of the Sky | Motto Immortal"
+  description="Complete hero guide for Nut: kit analysis, Starfall calculator, skill breakdown, synergies, counters, gear stats, and virtues."
+>
+  <!-- BANNER -->
+  <div class="guide-banner">
+    <div
+      class="guide-banner-bg"
+      style={`background-image: url('${heroImage("nut")}');`}
+    ></div>
+    <div class="guide-banner-overlay"></div>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Nut</h1>
+      <p class="guide-hero-subtitle">Goddess of the Sky.</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge">
+          <img
+            class="guide-badge-icon"
+            src={`${R2_BASE}/icons/factions/spades.webp`}
+            alt="Spades"
+          />
+          Spades
+        </span>
+        <span class="guide-badge">
+          <img
+            class="guide-badge-icon"
+            src={`${R2_BASE}/icons/classes/mage.webp`}
+            alt="Mage"
+          />
+          Mage
+        </span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="guide-body">
+
+    <!-- QUICK OVERVIEW -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Quick Overview</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Portrait of <em>Nuke</em> or ... Nut</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Role</div>
+            <div class="guide-overview-value">Charge Burst Mage</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Best in</div>
+            <div class="guide-overview-value">Odyssey, Spire, PvP, AoE Bosses, Wave fights</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Needs</div>
+            <div class="guide-overview-value">ATK invest, Relic 10 (30+)</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Avoid</div>
+            <div class="guide-overview-value">Dive-heavy heroes, assassins</div>
+          </div>
+        </div>
+        <p class="guide-quick-verdict">
+          A wind-up artillery Mage built around one detonation. Leave her alone for ~10 seconds
+          and she deletes the battlefield — interrupt her early and she still hits, just for less.
+          PvE monster, PvP matchup roulette. You should summon for her no matter where you're at
+          in the game.
+        </p>
+        <div class="guide-rating-row">
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">PvP</span>
+            <span class="rating-badge" data-tier="A+">A+</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">PvE</span>
+            <span class="rating-badge" data-tier="S">S</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">F2P</span>
+            <span class="rating-badge" data-tier="S">S</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">Late</span>
+            <span class="rating-badge" data-tier="S">S</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW SHE PLAYS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">How She Plays</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">One combat cycle, five phases</h3>
+        <p class="guide-card-subheading">Nut's kit is a sequence, not a toolkit. Each phase exists to protect the next one.</p>
+        <div class="guide-cycle-phases">
+          {combatPhases.map((phase) => (
+            <div class="guide-cycle-phase">
+              <div class="guide-cycle-icon-wrap">
+                {phase.icon === "shield" && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 3L4 7v6c0 4.4 3.4 8.5 8 9.5 4.6-1 8-5.1 8-9.5V7L12 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                )}
+                {phase.icon === "arrows" && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M7 16l-4-4 4-4M17 8l4 4-4 4M14 5l-4 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                )}
+                {phase.icon === "orb" && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.5"/>
+                    <path d="M4 12h2M18 12h2M12 4v2M12 18v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                )}
+                {phase.icon === "star" && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  </svg>
+                )}
+                {phase.icon === "ghost" && (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 3C8.1 3 5 6.1 5 10v11l3-2 2 2 2-2 2 2 2-2 3 2V10c0-3.9-3.1-7-7-7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <circle cx="9" cy="11" r="1" fill="currentColor"/>
+                    <circle cx="15" cy="11" r="1" fill="currentColor"/>
+                  </svg>
+                )}
+              </div>
+              <div class="guide-cycle-time">{phase.time}</div>
+              <div class="guide-cycle-name">{phase.name}</div>
+              <p class="guide-cycle-desc" set:html={phase.desc}></p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- THE MATH -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">The Math</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Starfall calculator</h3>
+        <p class="guide-card-subheading">Her entire identity is one equation.</p>
+        <div class="guide-math-tiers">
+          <div>
+            <div class="guide-math-number">500% ATK</div>
+            <div class="guide-math-formula">500 base + 4% &times; 0 energy</div>
+          </div>
+          <div>
+            <div class="guide-math-number">2,500% ATK</div>
+            <div class="guide-math-formula">500 base + 4% &times; 500 energy</div>
+          </div>
+          <div>
+            <div class="guide-math-number">4,500% ATK</div>
+            <div class="guide-math-formula">500 base + 4% &times; 1,000 energy</div>
+          </div>
+        </div>
+        <div class="guide-math-bar"></div>
+        <div class="guide-math-bar-labels">
+          <span>0 - interrupted instantly</span>
+          <span>500 Energy - cap w/o relic</span>
+          <span>1,000 Energy</span>
+        </div>
+        <p class="guide-math-note">
+          The ult charge accumulates max 500 energy, but her pool caps at <strong>1,000</strong> (Skill 1 L4).
+          If release damage reads the full pool, ceiling jumps to <strong>4,500% ATK</strong> — that single
+          ruling decides whether she's strong or a balance patch waiting to happen.
+        </p>
+        <div class="guide-math-stats">
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">11s</div>
+            <div class="guide-math-stat-label">Battle start &rarr; detonation</div>
+          </div>
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">4.6-4.8M</div>
+            <div class="guide-math-stat-label">ult hits per target*</div>
+          </div>
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">15.6M</div>
+            <div class="guide-math-stat-label">crit spike on detonation*</div>
+          </div>
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">MVP</div>
+            <div class="guide-math-stat-label">5-kill streak, fight over - easy.</div>
+          </div>
+        </div>
+        <p class="guide-math-footnote">
+          *example stats for Nut at LvL 240, Exalted+, Relic Lvl. 2 - ATK: 116.443, CRIT% 17%, CRIT DMG 0%
+        </p>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Skills</h2>
+      <div class="guide-skills-grid">
+        {skills.map((skill) => (
+          <div class="guide-skill-card">
+            <div class="guide-skill-header">
+              <div
+                class="guide-skill-icon"
+                style={`background-image: url('${nutSkillImage(skill.id)}');`}
+                role="img"
+                aria-label={skill.name}
+              ></div>
+              <div class="guide-skill-meta">
+                <div class="guide-skill-name">{skill.name}</div>
+                <span class={`guide-skill-badge${skill.isUlt ? " guide-skill-badge--ult" : ""}`}>
+                  {skill.badge}
+                </span>
+              </div>
+            </div>
+            <p class="guide-skill-desc">{skill.description}</p>
+            <div class="guide-skill-upgrades">
+              {skill.upgrades.map((u) => (
+                <div class="guide-upgrade">
+                  <span class="guide-upgrade-chip">{u.level}</span>
+                  <span class="guide-upgrade-text">{u.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <!-- Relic -->
+      <div class="guide-skill-card guide-skill-card--relic">
+        <div>
+          <div class="guide-skill-header">
+            <div
+              class="guide-skill-icon"
+              style={`background-image: url('${nutSkillImage("relic")}');`}
+              role="img"
+              aria-label={relic.name}
+            ></div>
+            <div class="guide-skill-meta">
+              <div class="guide-skill-name">{relic.name}</div>
+              <div class="guide-relic-badges">
+                <span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span>
+                <span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="guide-skill-desc">{relic.description}</p>
+          <div class="guide-skill-upgrades guide-skill-upgrades--relic">
+            {relic.upgrades.map((u) => (
+              <div class="guide-upgrade guide-upgrade--relic">
+                <span class="guide-upgrade-chip">{u.level}</span>
+                <span class="guide-upgrade-text">{u.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRENGTHS & WEAKNESSES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Strength &amp; Weaknesses</h2>
+      <StrengthWeakness strengths={strengths} weaknesses={weaknesses} />
+    </section>
+
+    <!-- SYNERGIES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Synergies</h2>
+      <div class="guide-hero-grid">
+        {synergies.map((hero) => (
+          <div class="guide-hero-card">
+            <div
+              class="guide-hero-portrait"
+              style={`background-image: url('${heroImage(hero.id)}');`}
+              role="img"
+              aria-label={hero.name}
+            ></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- SHUT DOWN BY -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Shut Down By</h2>
+      <div class="guide-hero-grid">
+        {counters.map((hero) => (
+          <div class="guide-hero-card">
+            <div
+              class="guide-hero-portrait"
+              style={`background-image: url('${heroImage(hero.id)}');`}
+              role="img"
+              aria-label={hero.name}
+            ></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- GEAR & STATS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Gear &amp; Stats</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Build one giant hit</h3>
+        <p class="guide-card-subheading">Every line of her kit - filler, knockback, ult, team buff - scales on Attack.</p>
+        <div class="guide-stat-chain">
+          <span class="guide-stat-pill guide-stat-pill--primary">ATK %</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">Crit DMG</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">Crit %</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Control Res</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Energy / Haste</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">HP% / Shield</span>
+        </div>
+        <div class="guide-callout">
+          Crit is disproportionately valuable: her output is one enormous hit, and a crit on the
+          detonation is the difference between 4.7M and 15.6M in observed play. Defensive stat
+          investment is mostly wasted - her survivability is mechanical, not statistical.
+        </div>
+      </div>
+    </section>
+
+    <!-- VIRTUES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Virtues</h2>
+      <div class="guide-virtue-grid">
+        {virtues.map((v) => (
+          <div class="guide-virtue-card">
+            <div class="guide-virtue-header">
+              <div
+                class="guide-virtue-icon"
+                style={`background-image: url('${virtueImage(v.assetId, v.assetSuffix)}');`}
+                role="img"
+                aria-label={v.name}
+              ></div>
+              <div>
+                <div class="guide-virtue-name">{v.name}</div>
+                <span class={`guide-virtue-rarity ${v.rarityClass}`}>{v.rarity}</span>
+              </div>
+            </div>
+            <div class="guide-virtue-bonuses">
+              {v.bonuses.map((b) => (
+                <div class="guide-virtue-bonus">
+                  <div class="guide-virtue-bonus-label">{b.label}</div>
+                  <div class="guide-virtue-bonus-text">{b.text}</div>
+                </div>
+              ))}
+            </div>
+            <p class="guide-virtue-note">{v.note}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- VERDICT -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Verdict</h2>
+      <div class="guide-verdict-box">
+        <h3 class="guide-verdict-heading">Balanced Mage, or playable astronomical event?</h3>
+        <p class="guide-verdict-text">
+          At the 2,500% ceiling she's a strong, honest wind-up carry with real counterplay — and
+          now both halves are on film: she ends fights with one 5-kill sky-deletion when protected,
+          and loses in 20 seconds to a double-assassin dive when she isn't. Her damage profile is
+          pure AoE alpha-strike. The 4,500% ceiling exists but lives behind Relic 30. Verdict: a
+          matchup-defined, comp-dependent astronomical event — bring the stall package or don't
+          bring her, and never bring her to a boss.
+        </p>
+      </div>
+      <div class="guide-tier-legend">
+        <p class="guide-tier-legend-heading">* Tier Definitions</p>
+        <div class="guide-tier-legend-grid">
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--s">S</span>
+            <span class="guide-tier-desc">Meta-defining. Warps team-building and counter-picks around her presence.</span>
+          </div>
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--a">A</span>
+            <span class="guide-tier-desc">Strong &amp; reliable. Competitive in most contexts, clear strengths, manageable weaknesses.</span>
+          </div>
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--b">B</span>
+            <span class="guide-tier-desc">Situational. Excellent in specific niches, outperformed elsewhere.</span>
+          </div>
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--c">C</span>
+            <span class="guide-tier-desc">Serviceable. Useful early or in narrow comps, outclassed at high investment.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal.vercel.app</p>
+</Base>

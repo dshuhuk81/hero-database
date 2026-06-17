@@ -1,4 +1,13 @@
 {
+ "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": ["-y", "figma-mcp"],
+      "env": {
+        "FIGMA_API_TOKEN": "REDACTED_FIGMA_TOKEN"
+      }
+    }
+  },
   "permissions": {
     "allow": [
       "Bash(git add:*)",
