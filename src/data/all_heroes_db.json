@@ -11296,7 +11296,14 @@
         "level4": "[Celestial Starfall] Energy Limit increases to 1,000."
       }
     },
-    "synergies": [],
+    "synergies": [
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_DODGE",
+      "SELF_SHIELD",
+      "SELF_ENERGY_RESTORE",
+      "ENEMY_CROWD_CONTROL",
+      "SELF_HIT_AVOID"
+    ],
     "baseAttackRate": 1.504,
     "bossUltimatesPer90s": 4,
     "coreMechanic": {
@@ -11304,9 +11311,60 @@
       "depthRating": "",
       "commonlyMisunderstood": false
     },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Fervor",
+        "comment": "",
+        "virtues": [
+          "fervor_1",
+          "fervor_2"
+        ]
+      },
+      {
+        "label": "Gnosis",
+        "comment": "",
+        "virtues": [
+          "gnosis_1",
+          "gnosis_2"
+        ]
+      }
+    ],
     "newHero": false,
-    "strengths": [],
-    "weaknesses": []
+    "strengths": [
+      "Self-sufficient energy: ult-ready in ~2.5-3s of peace - no battery hero required",
+      "Interruption only discounts her ult; full denial is nearly impossible",
+      "Self-ramping ATK: every orbiting core adds +30% ATK to her own detonation - not a team buff",
+      "Layered escape chain: shield - knockback - dodge - untargetable",
+      "Can make a difference even with high difference in BP or level"
+    ],
+    "weaknesses": [
+      "Zero team utility - her ramp buffs only herself; if the bomb never lands, she contributed nothing",
+      "Hard CC before the charge state is her real kill window",
+      "Beware of ATK-locking Assassins or divers that could target her easily cause of her ATK-ramping",
+      "Knockback answers one diver per 14s - double-dive walks through it",
+      "Weak against a solo boss - her damage is mediocre cause of her cycle",
+      "Ceiling is relic-gated: untargetable at R10, 1,000-cap at R30 - long investment curve"
+    ]
   },
   "nuwa": {
     "id": "nuwa",
