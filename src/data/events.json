@@ -1,129 +1,65 @@
 {
   "campaigns": [
     {
-      "id": "eris-campaign",
-      "name": "Eris Campaign",
-      "hero": "eris",
-      "description": "Complete PVE campaign stages using Eris and allies",
+      "id": "nut-campaign",
+      "name": "Nut Campaign",
+      "hero": "nut",
+      "description": "Complete PVE campaign stages for the Timed Challenge.",
       "stages": [
         {
           "id": 1,
-          "name": "1. Internal Strife",
+          "name": "1. Scattered Sparkles",
           "composition": {
-            "front": ["", ""],
-            "back": ["", "eris", ""]
+            "front": ["aries", "taurus"],
+            "back": ["cancer", "nut", "libra"]
           }
         },
         {
           "id": 2,
-          "name": "2. Your Heart's Desire",
+          "name": "2. Cosmic Rift",
           "composition": {
-            "front": ["", ""],
-            "back": ["", "eris", ""]
+            "front": ["taurus", "cancer"],
+            "back": ["sagitarrius", "libra", "nut"]
           }
         },
         {
           "id": 3,
-          "name": "3. Battle of Interrogation",
+          "name": "3. Ancient Stars",
           "composition": {
-            "front": ["", ""],
-            "back": ["", "eris", ""]
+            "front": ["prometheus", "caishen"],
+            "back": ["nut", "hephaestus", "mengpo"]
           }
         },
         {
           "id": 4,
-          "name": "4. Safeguard's Flip Side",
+          "name": "4. A Wondrous and Desolate Planet",
           "composition": {
-            "front": ["demeter", "nuba"],
-            "back": ["diana", "eris", "wenshen"]
+           "front": ["prometheus", "ulldr"],
+            "back": ["nut", "caishen", "yanluo"]
           }
         },
         {
           "id": 5,
-          "name": "5. Who Would Serve",
+          "name": "5. A Swig of Oblivion",
           "composition": {
-            "front": ["serket", "nuwa"],
-            "back": ["", "eris", ""]
+           "front": ["prometheus", "ulldr"],
+            "back": ["nut", "caishen", "hephaestus"]
           }
         },
         {
           "id": 6,
-          "name": "6. Shadow of the Forest",
+          "name": "6. These things perhaps are poetry ",
           "composition": {
-            "front": ["momus", "poseidon"],
-            "back": ["skadi", "medusa", "eris"]
+           "front": ["prometheus", "ulldr"],
+            "back": ["caishen", "nut", "hephaestus"]
           }
         },
         {
           "id": 7,
-          "name": "7. Widening Crack",
+          "name": "7. With their Eyes ",
           "composition": {
-            "front": ["prometheus", "anubis"],
-            "back": ["mengpo", "wenshen", "eris"]
-          }
-        },
-        {
-          "id": 8,
-          "name": "8. A Faltering Team",
-          "composition": {
-            "front": ["caishen", "nuwa"],
-            "back": ["eris", "cronus", "dionysus"]
-          }
-        }
-      ]
-    },
-    {
-      "id": "hera-campaign",
-      "name": "Hera Campaign",
-      "hero": "hera",
-      "description": "Complete PVE campaign stages using Hera and allies",
-      "stages": [
-        {
-          "id": 1,
-          "name": "1. Upon the Golden Throne",
-          "composition": {
-            "front": ["taurus", "aquarius"],
-            "back": ["hera", "", ""]
-          }
-        },
-        {
-          "id": 2,
-          "name": "2. Which God Stirred the Dust",
-          "composition": {
-            "front": ["hera", "isis"],
-            "back": ["taurus", "cancer", "prometheus"]
-          }
-        },
-        {
-          "id": 3,
-          "name": "3. From Solitary Fight to Shared Glory",
-          "composition": {
-            "front": ["caishen", "yuelao"],
-            "back": ["prometheus", "yanluo", "libra"]
-          }
-        },
-        {
-          "id": 4,
-          "name": "4. Nectar for the Toast",
-          "composition": {
-            "front": ["momus", "hera"],
-            "back": ["medusa", "hela", "poseidon"]
-          }
-        },
-        {
-          "id": 5,
-          "name": "5. Joy of the Revel",
-          "composition": {
-            "front": ["poseidon", "momus"],
-            "back": ["khepri", "iris", "hera"]
-          }
-        },
-        {
-          "id": 6,
-          "name": "6. One More Cup",
-          "composition": {
-            "front": ["momus", "poseidon"],
-            "back": ["skadi", "anubis", "hera"]
+            "front": ["momus", "khepri"],
+            "back": ["poseidon", "skadi", "pan"]
           }
         }
       ]
