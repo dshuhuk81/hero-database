@@ -155,7 +155,7 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
                 height="360"
                 decoding="async"
                 fetchpriority={i === 0 ? "high" : "low"}
-                onerror={`this.onerror=null;this.srcset='';this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')}`}
+                onerror={`this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')};this.srcset='';this.src='${heroImg(hero.id)}'`}
               />
               <div class="spotlight-img-fade"></div>
             </div>
@@ -231,7 +231,7 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
               height="44"
               loading="lazy"
               decoding="async"
-              onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\\'tl-portrait tl-portrait-missing\\'>?</div>')}`}
+              onerror={`this.onerror=()=>{this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\\'tl-portrait tl-portrait-missing\\'>?</div>')};this.src='${heroImg(hero.id)}'`}
             />
             <div class="tl-info">
               <span class="tl-name">{hero.displayName}</span>
@@ -266,7 +266,7 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
                 height="44"
                 loading="lazy"
                 decoding="async"
-                onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'}`}
+                onerror={`this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'};this.src='${heroImg(hero.id)}'`}
               />
             <div class="tl-info">
               <span class="tl-name">{hero.displayName}</span>
@@ -302,7 +302,7 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
                     height="44"
                     loading="lazy"
                     decoding="async"
-                    onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'}`}
+                    onerror={`this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'};this.src='${heroImg(hero.id)}'`}
                   />
                   <div class="tl-info">
                     <span class="tl-name">{hero.displayName}</span>
@@ -328,7 +328,7 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
                     height="44"
                     loading="lazy"
                     decoding="async"
-                    onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'}`}
+                    onerror={`this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'};this.src='${heroImg(hero.id)}'`}
                   />
                   <div class="tl-info">
                     <span class="tl-name">{hero.displayName}</span>
