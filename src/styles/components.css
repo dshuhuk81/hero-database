@@ -2476,6 +2476,242 @@
   font-weight: var(--weight-bold);
 }
 
+/* -- Board mechanic map -- */
+.guide-board-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.guide-board-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.guide-board-lane,
+.guide-mini-system {
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  padding: var(--space-5);
+}
+
+.guide-board-lane-label {
+  width: fit-content;
+  padding: 2px 8px;
+  border: 1px solid var(--guide-accent-line);
+  border-radius: var(--radius-full);
+  color: var(--guide-accent);
+  background: var(--guide-accent-dim);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+
+.guide-board-lane-title {
+  margin: 0 0 var(--space-2);
+  color: var(--text-bright);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+}
+
+.guide-board-lane-copy {
+  margin: 0 0 var(--space-4);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.guide-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.guide-mode-card {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  padding: var(--space-4);
+}
+
+.guide-mode-card--black {
+  border-color: color-mix(in srgb, var(--accent-gold) 35%, var(--border-subtle));
+}
+
+.guide-mode-card--white {
+  border-color: color-mix(in srgb, var(--guide-accent) 38%, var(--border-subtle));
+}
+
+.guide-mode-name {
+  color: var(--text-bright);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+}
+
+.guide-mode-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--space-2);
+  align-items: start;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+}
+
+.guide-mode-row span {
+  color: var(--text-disabled);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+}
+
+.guide-mode-row strong {
+  color: var(--text-secondary);
+  font-weight: var(--weight-semibold);
+}
+
+.guide-mode-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.guide-mode-job {
+  margin-top: auto;
+  color: var(--accent-gold);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.guide-rulebook {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.8fr) repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+
+.guide-rulebook-head,
+.guide-rulebook-label,
+.guide-rulebook-cell {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-faint);
+  border-right: 1px solid var(--border-faint);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.guide-rulebook-head:nth-child(3n),
+.guide-rulebook-cell:nth-child(3n) {
+  border-right: 0;
+}
+
+.guide-rulebook > :nth-last-child(-n + 3) {
+  border-bottom: 0;
+}
+
+.guide-rulebook-head {
+  color: var(--guide-accent);
+  background: var(--guide-accent-dim);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.guide-rulebook-label {
+  color: var(--text-disabled);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+}
+
+.guide-rulebook-cell {
+  color: var(--text-secondary);
+}
+
+.guide-mini-systems {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: var(--space-5);
+}
+
+.guide-branch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.guide-branch-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  padding: var(--space-4);
+}
+
+.guide-branch-condition {
+  color: var(--text-bright);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  line-height: 1.35;
+  margin-bottom: var(--space-2);
+}
+
+.guide-branch-result {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+}
+
+.guide-branch-value {
+  color: var(--accent-gold);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  margin-top: var(--space-3);
+}
+
+.guide-taiji-track {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.guide-taiji-step {
+  position: relative;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.35;
+  text-align: center;
+}
+
+.guide-taiji-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: calc(var(--space-2) * -1);
+  top: 50%;
+  width: var(--space-2);
+  height: 1px;
+  background: var(--guide-accent-line);
+}
+
 /* -- Math section -- */
 .guide-math-tiers {
   display: grid;
@@ -2559,6 +2795,174 @@
   color: var(--text-disabled);
   margin-top: var(--space-4);
   font-style: italic;
+}
+
+.guide-damage-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.guide-damage-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: var(--space-5);
+}
+
+.guide-damage-panel {
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  padding: var(--space-5);
+}
+
+.guide-damage-panel--black {
+  border-color: color-mix(in srgb, var(--accent-gold) 28%, var(--border-faint));
+}
+
+.guide-damage-panel--white {
+  border-color: color-mix(in srgb, var(--guide-accent) 30%, var(--border-faint));
+}
+
+.guide-damage-title {
+  margin: 0 0 var(--space-4);
+  color: var(--text-bright);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+}
+
+.guide-formula-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.guide-formula-row {
+  display: grid;
+  grid-template-columns: minmax(76px, auto) 24px 1fr;
+  gap: var(--space-3);
+  align-items: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  padding: var(--space-3) var(--space-4);
+}
+
+.guide-formula-row--hero {
+  border-color: color-mix(in srgb, var(--accent-gold) 38%, var(--border-subtle));
+  background: color-mix(in srgb, var(--accent-gold) 8%, var(--bg-surface));
+}
+
+.guide-formula-value {
+  color: var(--accent-gold);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-black);
+  line-height: 1;
+}
+
+.guide-formula-sign {
+  color: var(--text-disabled);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  text-align: center;
+}
+
+.guide-formula-label {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.35;
+}
+
+.guide-damage-total {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--guide-accent-dim);
+  border: 1px solid var(--guide-accent-line);
+}
+
+.guide-damage-total span {
+  color: var(--accent-gold);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: var(--weight-black);
+  line-height: 1;
+}
+
+.guide-damage-total strong {
+  color: var(--text-bright);
+  font-size: var(--text-sm);
+}
+
+.guide-damage-copy {
+  margin: var(--space-4) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.guide-damage-copy strong {
+  color: var(--guide-accent);
+  font-weight: var(--weight-bold);
+}
+
+.guide-ruling-box {
+  margin-top: var(--space-4);
+  border-left: 3px solid var(--accent-gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--guide-legendary-dim);
+  padding: var(--space-3) var(--space-4);
+}
+
+.guide-ruling-box span {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--accent-gold);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.guide-ruling-box p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+.guide-target-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.guide-target-card {
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  padding: var(--space-4);
+}
+
+.guide-target-name {
+  color: var(--text-bright);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-2);
+}
+
+.guide-target-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+.guide-math-stats--compact {
+  margin-top: 0;
 }
 
 /* -- Skill cards -- */
@@ -2959,6 +3363,11 @@
 
 @media (max-width: 768px) {
   .guide-cycle-phases { grid-template-columns: repeat(3, 1fr); }
+  .guide-board-grid,
+  .guide-damage-layout,
+  .guide-mini-systems { grid-template-columns: 1fr; }
+  .guide-taiji-track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .guide-taiji-step:not(:last-child)::after { display: none; }
   .guide-math-tiers { grid-template-columns: repeat(3, 1fr); }
   .guide-math-stats { grid-template-columns: repeat(2, 1fr); }
   .guide-skills-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2973,6 +3382,21 @@
 
 @media (max-width: 480px) {
   .guide-cycle-phases { grid-template-columns: repeat(2, 1fr); }
+  .guide-mode-grid,
+  .guide-target-grid,
+  .guide-branch-grid { grid-template-columns: 1fr; }
+  .guide-formula-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+  .guide-formula-sign {
+    display: none;
+  }
+  .guide-rulebook {
+    grid-template-columns: minmax(96px, 0.8fr) repeat(2, minmax(150px, 1fr));
+    overflow-x: auto;
+  }
+  .guide-taiji-track { grid-template-columns: 1fr; }
   .guide-skills-grid { grid-template-columns: 1fr; }
 }
 

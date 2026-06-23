@@ -7999,15 +7999,17 @@
     "role": "Nimble",
     "class": "Archer",
     "rarity": "Legendary",
-    "description": "",
+    "description": "Goddess of Strategy. All beings play as stones; each strike from wit alone.",
     "evolution": "Divine V",
     "level": 300,
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
     "stats": {
       "might": 632000,
       "hp": 1842179,
       "atk": 231186,
       "armor": 25970,
-      "magicRes": 31704,
+      "magicRes": 31741,
       "dodgeRate": 6,
       "hitBonus": 0,
       "critRate": 10,
@@ -8035,83 +8037,163 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "",
-        "description": "",
+        "name": "Outplay the Heavens",
+        "description": "Passive: Xuannv's normal attacks have two stances; she starts each battle in the White Stance. Black Stance: attacks the default target for 100% DMG, and each attack grants +20% ATK, stacking up to 3 times. White Stance: attacks change to strike the weakest enemy for 100% DMG. Active: Xuannv reads the board and makes her next move. If allies are equal to or outnumber enemies, she switches to the Black Stance and gains +100% ATK SPD for 8s. If allies are outnumbered by enemies, she switches to the White Stance and gains +100% ATK SPD for 8s.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "On activation, also deals 500% ATK damage to all enemies.",
+          "level3": "While in the Black Stance, gains 160% ATK SPD.",
+          "level4": "While in the White Stance, gains an extra 50% normal-attack damage."
         },
-        "damageType": "",
+        "damageType": "Physical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "",
-        "description": "",
+        "name": "Clumsy Move Controls",
+        "description": "Fires 3 stones at the nearest enemies (if there are fewer targets than stones, the same target is hit multiple times). Each hit deals 100% DMG and resolves an effect based on the energy gap between the two sides: if the target's current energy is lower than Xuannv's, she restores 50 energy; if the target's energy is equal to or higher than hers, the target loses 50 energy.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "If the target has less energy, Xuannv restores 70 energy instead.",
+          "level3": "If the target has equal or more energy, the target loses 70 energy instead.",
+          "level4": "If the target has equal or more energy, the target loses 100 energy instead."
         },
-        "damageType": ""
+        "damageType": "Physical"
       },
       {
         "id": "skill_3",
-        "name": "",
-        "description": "",
+        "name": "Switch & Strike",
+        "description": "After combat starts, the frontmost ally is designated the White Stone and the backmost ally the Black Stone. The White Stone converts into a Black Stone once it enters the enemy backline; the Black Stone converts into a White Stone when an enemy is within 3 meters. Each unit can convert only once. Black Stone: deals 30% more damage. White Stone: takes 30% less damage.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Black Stone deals 40% more damage.",
+          "level3": "When a unit converts from one state to the other, it gains a shield equal to 500% ATK.",
+          "level4": "White Stone takes 40% less damage."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "",
-        "description": "",
+        "name": "Step Into the Game",
+        "description": "When Xuannv is attacked, she summons a Taiji Formation for 3s that reduces all incoming damage by 50% and accumulates the reduced portion. When it expires, she fires a Taiji projectile at the nearest enemy dealing damage equal to the accumulated amount. 30s cooldown.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Cooldown reduced to 25s.",
+          "level3": "Cooldown reduced to 20s.",
+          "level4": "Returns 80% of the damage to the nearest enemy."
         },
-        "damageType": ""
+        "damageType": "Physical"
       }
     ],
     "relic": {
-      "name": "Vortex of Grace",
-      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "name": "Void Feint",
+      "description": "Enhances Xuannv's stances and can also trigger Step Into the Game. Black Stance: every attack deals extra damage equal to 200% ATK + 6% of the target's max HP (capped at 500% of Xuannv's ATK). White Stance: the first 3 normal attacks after first entering the stance deal extra damage equal to 200% ATK + 30% of the target's lost HP (capped at 500% of Xuannv's ATK).",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "When Step Into the Game is on cooldown and Xuannv takes damage, 50% chance to trigger Step Into the Game (this effect has a 30s cooldown).",
+        "level3": "The trigger chance becomes 100%.",
+        "level4": "Black Stance: extra damage becomes 300% ATK + 10% of the target's max HP (capped at 800% ATK). White Stance: the first 3 attacks deal 400% ATK + 60% of the target's lost HP (capped at 1000% ATK)."
       }
     },
-    "synergies": [],
-    "baseAttackRate": 0,
-    "bossUltimatesPer90s": 0,
+    "virtueSets": [
+      {
+        "label": "Primary DPS",
+        "comment": "Desire 4pc ramps ATK over time, Wildness 4pc stacks ATK every 5s - both reward her sustained basic attack style.",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4",
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Crit Build",
+        "comment": "Insight 4pc grants +30% CRIT Rate before first hit, amplifying burst in both stances.",
+        "virtues": [
+          "insight_1",
+          "insight_2",
+          "insight_3",
+          "insight_4"
+        ]
+      }
+    ],
+    "synergyPartners": [
+      {
+        "heroId": "hephaestus",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
+        ]
+      },
+      {
+        "heroId": "dionysus",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_VULNERABILITY"
+        ]
+      },
+      {
+        "heroId": "iris",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_VULNERABILITY"
+        ]
+      },
+      {
+        "heroId": "set",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
+        ]
+      },
+      {
+        "heroId": "diana",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_ENERGY_RESTORE",
+          "ENEMY_ARMOR_REDUCTION"
+        ]
+      }
+    ],
+    "synergies": [
+      "PLAYSTYLE_BASIC_ATTACK_SCALER",
+      "TEAM_ATK_SPD_UP",
+      "TEAM_BUFF",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_ATK_SPEED",
+      "SELF_ATK_UP",
+      "ENEMY_ENERGY_DRAIN",
+      "SELF_SHIELD"
+    ],
     "coreMechanic": {
-      "summary": "",
-      "depthRating": "",
-      "commonlyMisunderstood": false
+      "summary": "Stance-dancing Physical carry. Her ultimate flips between a Black Stance (hits the default target, ramps +20% ATK per hit up to 3 stacks) and a White Stance (hits the weakest enemy, execute-flavored), and it picks the stance automatically from the ally-versus-enemy unit count. The Void Feint Relic is the real damage engine, adding per-hit %ATK + %target-HP riders that scale with the active stance. Step Into the Game converts incoming hits into a delayed Taiji reflect, while Clumsy Move Controls drains or refunds energy based on the energy gap.",
+      "depthRating": "High",
+      "commonlyMisunderstood": true
     },
     "strengths": [
-      "Flexible dual-stance system adapts to board state automatically - Execute for ramp, Yield for cleanup",
-      "Energy manipulation via Tactical Interception adds genuine disruption value beyond raw damage, especially in boss and PvE content",
-      "Enter the Game converts enemy aggression into counter-damage, punishing sustained multi-hit patterns",
-      "Scales strongly in longer PvE fights where mode cycling, energy drain compounding, and Relic bonuses all have time to stack",
-      "High relevance in Clubs Tower (梅花塔) and push content - CN community explicitly notes she reduces difficulty there",
-      "Relic offers clear functional breakpoints: immediate damage at Lv1, reliable defensive loop at Lv3",
-      "CN reports suggest she can exceed comparable carries in specific high-damage ranking setups"
+      "Automatic stance switching adapts to the board on every ultimate - Black Stance ramps ATK for sustained single-target, White Stance pivots to the weakest enemy for cleanup",
+      "Void Feint Relic is the true damage engine: per-hit %ATK + %target-HP riders (up to 300% ATK + 10% max HP in Black, 400% ATK + 60% lost HP in White at Lv4) push her far above her base ATK",
+      "White Stance pairs %lost-HP damage with weakest-target selection, giving strong execute pressure to finish low units and bosses in their final phase",
+      "Step Into the Game turns incoming damage into a delayed Taiji reflect, rewarding her for being attacked and punishing multi-hit enemies",
+      "Clumsy Move Controls adds real energy disruption - draining up to 100 energy from higher-energy targets while refunding her own, delaying enemy ultimates",
+      "Switch & Strike buffs two designated allies (front White Stone, back Black Stone) with bonus damage / damage reduction plus a 500% ATK shield on conversion, so she supports while carrying"
     ],
     "weaknesses": [
-      "Heavily position-dependent - White/Black piece designation requires intentional team construction; cannot be blind-slotted",
-      "Team-dependent as a carry; CN community notes she requires significant investment and teammate support as a solo carry",
-      "Enter the Game is bypassed by hard one-shot burst before the Taiji Formation activates",
-      "Stance switch logic is automated by unit count - in a losing fight she may enter Yield mode when Execute pressure is more needed",
-      "PvP ceiling less established than PvE; CN sources focus primarily on tower and boss content",
-      "Underperforms early game without proper positioning and team support in place"
+      "Stance is chosen by unit count, not player intent - in a losing fight with fewer allies she locks into White Stance even when the Black ramp would deal more",
+      "Black Stance ramp (max 3 stacks, +60% ATK) needs time on the same target; she is weak in the opening seconds before stacks and Relic riders build",
+      "Switch & Strike is heavily positioning-dependent - the front/back designations require intentional team construction and cannot be blind-slotted",
+      "Step Into the Game can be skipped by a single hard one-shot before the 3s Taiji Formation resolves",
+      "All damage is Physical, so enemy Armor and physical damage reduction hit her full kit; she has no magic or true component to bypass it",
+      "Energy drain and reflect value scale with fight length; in very short fights she underdelivers versus pure burst carries"
     ]
   },
   "jormungandr": {

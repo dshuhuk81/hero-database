@@ -1,0 +1,757 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
+const SKILL_ASSET_BASE = `${R2_BASE}/skills`;
+const VIRTUE_ASSET_BASE = `${R2_BASE}/images/virtues`;
+
+const heroImage = (id: string) => `${HERO_ASSET_BASE}/${id}.webp`;
+const skillImage = (id: string) => `${SKILL_ASSET_BASE}/jiutianxuannv_${id}.webp`;
+const virtueImage = (assetId: string, suffix: string) => `${VIRTUE_ASSET_BASE}/${assetId}${suffix}.png`;
+
+const skills = [
+  {
+    id: "skill_1",
+    name: "Outplay the Heavens",
+    badge: "Skill 1 - Ultimate",
+    isUlt: true,
+    description:
+      "Passive: Xuannv's Normal Attacks have two stances, starting the battle in the White Stance. Black Stance: attacks the default target for 100% DMG and gains +20% ATK per attack, max 3 stacks. White Stance: attacks the weakest enemy for 100% DMG. Active: reads the board and picks the next move - if allies are equal to or outnumber enemies she enters the Black Stance, otherwise she enters the White Stance. Either way she gains +100% ATK SPD for 8s.",
+    upgrades: [
+      { level: "Lv 2", text: "On activation, also deals 500% ATK to all enemies." },
+      { level: "Lv 3", text: "While in the Black Stance, gains 160% ATK SPD." },
+      { level: "Lv 4", text: "While in the White Stance, gains +50% Normal Attack DMG." },
+    ],
+  },
+  {
+    id: "skill_2",
+    name: "Clumsy Move Controls",
+    badge: "Skill 2",
+    description:
+      "Fires 3 stones at the nearest enemies (if there are fewer targets than stones, the same target is hit again), each dealing 100% DMG. Per hit, compares Energy: if the target has less Energy than Xuannv, she restores 50 Energy; if the target has equal or more Energy, the target loses 50 Energy.",
+    upgrades: [
+      { level: "Lv 2", text: "Energy restored to self increased to 70." },
+      { level: "Lv 3", text: "Energy drained from the target increased to 70." },
+      { level: "Lv 4", text: "Energy drained from the target increased to 100." },
+    ],
+  },
+  {
+    id: "skill_3",
+    name: "Switch & Strike",
+    badge: "Skill 3",
+    description:
+      "At combat start, the frontmost ally is designated the White Stone and the backmost ally the Black Stone. The White Stone converts to a Black Stone once it reaches the enemy backline; the Black Stone converts to a White Stone when an enemy comes within 3m. Each unit converts only once. Black Stone: deals 30% more DMG. White Stone: takes 30% less DMG.",
+    upgrades: [
+      { level: "Lv 2", text: "Black Stone now deals 40% more DMG." },
+      { level: "Lv 3", text: "On any conversion, that unit gains a shield equal to 500% ATK." },
+      { level: "Lv 4", text: "White Stone now takes 40% less DMG." },
+    ],
+  },
+  {
+    id: "skill_4",
+    name: "Step Into the Game",
+    badge: "Skill 4",
+    description:
+      "When attacked, Xuannv summons a Taiji Formation for 3s, reducing all incoming DMG by 50% and banking the reduced amount. When it expires she fires a Taiji projectile at the nearest enemy dealing the banked DMG. CD: 30s.",
+    upgrades: [
+      { level: "Lv 2", text: "CD reduced to 25s." },
+      { level: "Lv 3", text: "CD reduced to 20s." },
+      { level: "Lv 4", text: "Returns 80% of the damage to the nearest enemy." },
+    ],
+  },
+];
+
+const relic = {
+  name: "Void Feint",
+  badge: "Relic",
+  levelBadge: "Level 30",
+  description:
+    "Enhances both stances. Black Stance: every attack deals extra DMG equal to 200% ATK + 6% of the target's max HP (capped at 500% ATK). White Stance: the first 3 Normal Attacks after entering the stance deal extra DMG equal to 200% ATK + 30% of the target's lost HP (capped at 500% ATK).",
+  upgrades: [
+    { level: "Lv 2", text: "[Step Into the Game] When on CD and Xuannv is hit, 50% chance to re-trigger it (30s internal CD)." },
+    { level: "Lv 3", text: "[Step Into the Game] Re-trigger chance raised to 100%." },
+    { level: "Lv 4", text: "Black extra DMG becomes 300% ATK + 10% max HP (cap 800% ATK); White becomes 400% ATK + 60% lost HP (cap 1000% ATK)." },
+  ],
+};
+
+const strengths = [
+  "Stance switching adapts to the board automatically - Black ramps ATK for sustained single-target, White pivots to the weakest enemy for cleanup",
+  "Void Feint Relic is the real damage engine: per-hit %ATK + %target-HP riders push her far above her base ATK, especially against high-HP bosses where the cap is always hit",
+  "White Stance pairs %lost-HP damage with weakest-target selection for genuine execute pressure",
+  "Step Into the Game turns incoming hits into a delayed reflect, and the Relic adds a second charge so it procs noticeably more often when she is being focused",
+  "Clumsy Move Controls drains up to 100 Energy from higher-energy enemies while refunding her own - real ultimate denial on top of damage",
+  "Switch & Strike supports the team: front ally gets damage reduction, back ally gets bonus damage, plus a 500% ATK shield on conversion",
+];
+
+const weaknesses = [
+  "Stance is chosen by unit count, not by you - in a losing fight she locks into White even when the Black ramp would deal more",
+  "Black ramp (max 3 stacks, +60% ATK) needs time on one target; she is weak in the opening seconds before stacks and Relic riders build",
+  "Switch & Strike is positioning-dependent - the front/back designations need an intentional team and cannot be blind-slotted",
+  "Step Into the Game can be skipped by a single hard one-shot before the 3s formation resolves",
+  "Her entire kit is Physical, so enemy Armor and physical damage reduction hit everything she does - no magic or true component to bypass it",
+  "Drain and reflect value scale with fight length; in very short fights she underdelivers versus pure burst carries",
+];
+
+const synergies = [
+  { id: "poseidon", name: "Poseidon", note: "Armor shred + CC - amplifies her Physical riders" },
+  { id: "nezha", name: "Nezha", note: "Armor shred for the whole team" },
+  { id: "caishen", name: "Caishen", note: "Energy battery - more ultimate flips" },
+  { id: "jormungandr", name: "Jormungandr", note: "Taunt frontline = the durable White Stone" },
+  { id: "diana", name: "Diana", note: "Defense-down + Energy, Clubs partner" },
+  { id: "cancer", name: "Cancer", note: "Super-armor + Energy uptime" },
+];
+
+const counters = [
+  { id: "nyx", name: "Nyx", note: "Silence + stun - denies her ultimate and ramp" },
+  { id: "mengpo", name: "Mengpo", note: "Silence + Energy denial" },
+  { id: "capricorn", name: "Capricorn", note: "Burst Assassin - one-shots before Taiji resolves" },
+  { id: "anubis", name: "Anubis", note: "Untargetable dive sidesteps the reflect timing" },
+  { id: "demeter", name: "Demeter", note: "High-Armor tank walls her all-Physical kit" },
+  { id: "wenshen", name: "Wen-Shen", note: "Petrify / stun chains lock the ramp" },
+];
+
+const virtues = [
+  {
+    name: "Fervor",
+    rarity: "Legendary",
+    rarityClass: "guide-virtue-rarity--legendary",
+    assetId: "fervorI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "Energy Regen +10%" },
+      { label: "4-Piece", text: "On Ultimate use, +10% ATK (max 4 stacks = +40% ATK)" },
+    ],
+    note: "She spams her ultimate to flip stances and refresh ATK SPD - every cast feeds this stack. Best long-fight and boss pick.",
+  },
+  {
+    name: "Insight",
+    rarity: "Epic",
+    rarityClass: "guide-virtue-rarity--epic",
+    assetId: "insightI",
+    assetSuffix: "_elite",
+    bonuses: [
+      { label: "2-Piece", text: "CRIT Rate +10%" },
+      { label: "4-Piece", text: "+30% CRIT Rate before first dealing damage" },
+    ],
+    note: "Her whole kit scales on ATK and crits the per-hit riders - crit is the cleanest damage multiplier she has.",
+  },
+  {
+    name: "Oblivion",
+    rarity: "Legendary",
+    rarityClass: "guide-virtue-rarity--legendary",
+    assetId: "oblivionI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "Armor +30%, M-RES +30% at start" },
+      { label: "4-Piece", text: "CC immunity for 8s at combat start" },
+    ],
+    note: "Protects the opening ramp window in PvP, where CC before her stacks build is her real kill window.",
+  },
+];
+
+const stanceModes = [
+  {
+    tone: "black",
+    name: "Black Stance",
+    trigger: "Allies >= enemies",
+    target: "Default target",
+    payload: "+20% ATK per attack, max 3 stacks. Relic adds max-HP damage.",
+    job: "Grind the board down",
+  },
+  {
+    tone: "white",
+    name: "White Stance",
+    trigger: "Allies fewer than enemies",
+    target: "Weakest enemy",
+    payload: "+50% Normal Attack DMG at Lv4. Relic adds lost-HP execute damage.",
+    job: "Pick off loose pieces",
+  },
+];
+
+const stoneModes = [
+  {
+    tone: "white",
+    name: "White Stone",
+    owner: "Frontmost ally",
+    flip: "Turns Black after reaching the enemy backline",
+    payoff: "-30/40% damage taken, then a 500% ATK shield on conversion.",
+  },
+  {
+    tone: "black",
+    name: "Black Stone",
+    owner: "Backmost ally",
+    flip: "Turns White when an enemy comes within 3m",
+    payoff: "+30/40% damage dealt, then a 500% ATK shield on conversion.",
+  },
+];
+
+const comparisonRows = [
+  {
+    label: "Affects",
+    stance: "Xuannv's own attacks",
+    stones: "Two allies on your board",
+  },
+  {
+    label: "Chosen by",
+    stance: "Unit count when ultimate casts",
+    stones: "Frontmost and backmost ally at combat start",
+  },
+  {
+    label: "Can change when",
+    stance: "Every ultimate rechecks the count",
+    stones: "Each marked ally converts once by position",
+  },
+  {
+    label: "Black means",
+    stance: "Default-target ramp and max-HP rider",
+    stones: "Bonus damage for the marked ally",
+  },
+  {
+    label: "White means",
+    stance: "Weakest-target execute pressure",
+    stones: "Damage reduction for the marked ally",
+  },
+];
+
+const energyBranches = [
+  {
+    condition: "Target has less Energy",
+    result: "Xuannv restores Energy",
+    value: "50 / 70",
+  },
+  {
+    condition: "Target has equal or more Energy",
+    result: "Target loses Energy",
+    value: "50 / 70 / 100",
+  },
+];
+
+const taijiSteps = [
+  "Gets hit",
+  "3s Taiji Formation",
+  "Banks reduced damage",
+  "Fires the stored hit back",
+  "Cooldown / Relic re-trigger",
+];
+---
+
+<Base
+  title="Xuannv Guide - Goddess of Strategy | Motto Immortal"
+  description="Complete hero guide for Jiutian Xuannv: dual-stance mechanics, Relic damage engine, skill breakdown, synergies, counters, gear stats, and virtues."
+>
+  <!-- BANNER -->
+  <div class="guide-banner">
+    <div
+      class="guide-banner-bg"
+      style={`background-image: url('${heroImage("jiutianxuannv")}');`}
+    ></div>
+    <div class="guide-banner-overlay"></div>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Xuannv</h1>
+      <p class="guide-hero-subtitle">Goddess of Strategy.</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge">
+          <img
+            class="guide-badge-icon"
+            src={`${R2_BASE}/icons/factions/clubs.webp`}
+            alt="Clubs"
+          />
+          Clubs
+        </span>
+        <span class="guide-badge">
+          <img
+            class="guide-badge-icon"
+            src={`${R2_BASE}/icons/classes/archer.webp`}
+            alt="Archer"
+          />
+          Archer
+        </span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="guide-body">
+
+    <!-- QUICK OVERVIEW -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Quick Overview</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">The board, played from both sides</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Role</div>
+            <div class="guide-overview-value">Dual-Stance Physical Carry</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Best in</div>
+            <div class="guide-overview-value">Bosses, Clubs Tower, push content, long fights</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Needs</div>
+            <div class="guide-overview-value">ATK invest, Relic, deliberate positioning</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Avoid</div>
+            <div class="guide-overview-value">Heavy CC / silence, high-Armor walls</div>
+          </div>
+        </div>
+        <p class="guide-quick-verdict">
+          A two-state carry built around a single idea: play Black to grind a target down, play White
+          to execute the weakest one. The stance is chosen for you by unit count, so she is strongest
+          where your team stays alive and she stays in Black - bosses and push content. Her damage is
+          not in the 100% base hits, it is in the Relic riders bolted onto every attack.
+        </p>
+        <div class="guide-rating-row">
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">PvP</span>
+            <span class="rating-badge" data-tier="A">A</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">PvE</span>
+            <span class="rating-badge" data-tier="S">S</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">F2P</span>
+            <span class="rating-badge" data-tier="B">B</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">Late</span>
+            <span class="rating-badge" data-tier="A+">A+</span>
+          </div>
+        </div>
+        <p class="guide-math-footnote">
+          Preliminary ratings based on CN data - Xuannv is unreleased on Global and numbers may shift.
+        </p>
+      </div>
+    </section>
+
+    <!-- LORE -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Lore</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">The Mysterious Lady of the Ninth Heaven</h3>
+        <p class="guide-quick-verdict">
+          Jiutian Xuannv - the Dark or Mysterious Lady of the Ninth Heaven - is a Taoist warrior goddess of
+          strategy and martial arts. In myth she descends to teach the Yellow Emperor the art of war, handing
+          him the tactics that finally defeat the war god Chiyou. She is the goddess who both takes life and
+          gives life: classically shown with a sword in one hand and a healing gourd in the other, a woman's
+          head on a serpent's body. That duality is her whole kit - the Black and White stones of a Go board,
+          one stance to grind a foe down, one to mend and outplay - strategy made into a fighting style.
+        </p>
+      </div>
+    </section>
+
+    <!-- HOW SHE PLAYS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">How She Plays</h2>
+      <div class="guide-card guide-board-card">
+        <h3 class="guide-card-heading">Read the board, then move the stones</h3>
+        <p class="guide-card-subheading">Xuannv is not a rotation hero. She runs four little games at once: her own stance, two ally stones, an energy check, and a delayed Taiji counter.</p>
+
+        <div class="guide-board-grid">
+          <div class="guide-board-lane">
+            <div class="guide-board-lane-label">Her Ultimate</div>
+            <h4 class="guide-board-lane-title">Xuannv's stance</h4>
+            <p class="guide-board-lane-copy">Outplay the Heavens reads the unit count each time she casts. This changes only how Xuannv attacks.</p>
+            <div class="guide-mode-grid">
+              {stanceModes.map((mode) => (
+                <div class={`guide-mode-card guide-mode-card--${mode.tone}`}>
+                  <div class="guide-mode-name">{mode.name}</div>
+                  <div class="guide-mode-row">
+                    <span>Trigger</span>
+                    <strong>{mode.trigger}</strong>
+                  </div>
+                  <div class="guide-mode-row">
+                    <span>Target</span>
+                    <strong>{mode.target}</strong>
+                  </div>
+                  <p>{mode.payload}</p>
+                  <div class="guide-mode-job">{mode.job}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="guide-board-lane">
+            <div class="guide-board-lane-label">Skill 3</div>
+            <h4 class="guide-board-lane-title">Ally stones</h4>
+            <p class="guide-board-lane-copy">Switch & Strike marks two allies at combat start. The colors look related to her stance, but this is a separate board.</p>
+            <div class="guide-mode-grid">
+              {stoneModes.map((mode) => (
+                <div class={`guide-mode-card guide-mode-card--${mode.tone}`}>
+                  <div class="guide-mode-name">{mode.name}</div>
+                  <div class="guide-mode-row">
+                    <span>Starts on</span>
+                    <strong>{mode.owner}</strong>
+                  </div>
+                  <div class="guide-mode-row">
+                    <span>Flip rule</span>
+                    <strong>{mode.flip}</strong>
+                  </div>
+                  <p>{mode.payoff}</p>
+                  <div class="guide-mode-job">One conversion per ally</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-callout">
+          Positioning rule: put Xuannv in the <strong>backline</strong>. Switch & Strike makes the backmost
+          ally the Black Stone (bonus damage), and her ultimate wants <strong>allies to outnumber enemies</strong>
+          to stay in Black. If a diver reaches her, the Black Stone flips to White Stone and she gains the
+          damage reduction plus a 500% ATK shield instead - the kit protects its own carry.
+        </div>
+      </div>
+
+      <div class="guide-card guide-board-card">
+        <h3 class="guide-card-heading">Same colors, different rules</h3>
+        <p class="guide-card-subheading">This is the trap in her kit: Black/White can mean Xuannv's stance or an ally's stone state. Same board colors, two different rulebooks.</p>
+        <div class="guide-rulebook">
+          <div class="guide-rulebook-head"></div>
+          <div class="guide-rulebook-head">Her stance</div>
+          <div class="guide-rulebook-head">Ally stones</div>
+          {comparisonRows.map((row) => (
+            <>
+              <div class="guide-rulebook-label">{row.label}</div>
+              <div class="guide-rulebook-cell">{row.stance}</div>
+              <div class="guide-rulebook-cell">{row.stones}</div>
+            </>
+          ))}
+        </div>
+
+        <div class="guide-mini-systems">
+          <div class="guide-mini-system">
+            <div class="guide-board-lane-label">Skill 2</div>
+            <h4 class="guide-board-lane-title">Energy stones</h4>
+            <p class="guide-board-lane-copy">Clumsy Move Controls does not care about Black or White. It throws three stones, then checks Energy on each hit.</p>
+            <div class="guide-branch-grid">
+              {energyBranches.map((branch) => (
+                <div class="guide-branch-card">
+                  <div class="guide-branch-condition">{branch.condition}</div>
+                  <div class="guide-branch-result">{branch.result}</div>
+                  <div class="guide-branch-value">{branch.value} Energy</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="guide-mini-system">
+            <div class="guide-board-lane-label">Skill 4 + Relic</div>
+            <h4 class="guide-board-lane-title">Taiji counter-clock</h4>
+            <p class="guide-board-lane-copy">Step Into the Game is the only true clock: it opens a 3s bank window, fires back, then waits for cooldown or Relic re-trigger.</p>
+            <div class="guide-taiji-track">
+              {taijiSteps.map((step) => (
+                <div class="guide-taiji-step">{step}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-callout">
+          Quick rule: her <strong>stance</strong> asks "how many pieces are still on the board?" Her
+          <strong> stones</strong> ask "where did those pieces move?" Energy and Taiji are separate side games.
+        </div>
+      </div>
+    </section>
+
+    <!-- THE MATH -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">The Math</h2>
+      <div class="guide-card guide-damage-card">
+        <h3 class="guide-card-heading">Her autos are the nuke</h3>
+        <p class="guide-card-subheading">Xuannv does not wait for one giant cast. At Relic Lv4, her damage is a repeated Normal Attack packet with the Relic rider doing most of the work.</p>
+
+        <div class="guide-damage-layout">
+          <div class="guide-damage-panel guide-damage-panel--black">
+            <div class="guide-board-lane-label">Black Stance</div>
+            <h4 class="guide-damage-title">One capped boss hit</h4>
+            <div class="guide-formula-stack">
+              <div class="guide-formula-row">
+                <span class="guide-formula-value">100%</span>
+                <span class="guide-formula-sign">+</span>
+                <span class="guide-formula-label">base Normal Attack</span>
+              </div>
+              <div class="guide-formula-row">
+                <span class="guide-formula-value">60%</span>
+                <span class="guide-formula-sign">+</span>
+                <span class="guide-formula-label">max ramp from 3 Black hits</span>
+              </div>
+              <div class="guide-formula-row guide-formula-row--hero">
+                <span class="guide-formula-value">800%</span>
+                <span class="guide-formula-sign">=</span>
+                <span class="guide-formula-label">Relic rider capped by ATK</span>
+              </div>
+            </div>
+            <div class="guide-damage-total">
+              <span>~960% ATK</span>
+              <strong>per boosted Normal Attack</strong>
+            </div>
+            <p class="guide-damage-copy">The base hit is just the little stone. The Relic rider is the board flip.</p>
+          </div>
+
+          <div class="guide-damage-panel guide-damage-panel--white">
+            <div class="guide-board-lane-label">White Stance</div>
+            <h4 class="guide-damage-title">Three execute cuts</h4>
+            <p class="guide-damage-copy">White drops the ramp and aims at the weakest enemy. The first 3 attacks after entering deal <strong>400% ATK + 60% lost HP</strong>, capped at <strong>1,000% ATK</strong> each.</p>
+            <div class="guide-ruling-box">
+              <span>Unconfirmed ruling</span>
+              <p>CN text reads "first time entering White." If those 3 hits re-arm on every White entry, stance flipping becomes her ceiling. If not, White is a one-time execute window.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-target-grid">
+          <div class="guide-target-card">
+            <div class="guide-target-name">Boss / Bruiser</div>
+            <p>The %HP rider blows past the cap, so the cap becomes the real damage number. This is her favorite board.</p>
+          </div>
+          <div class="guide-target-card">
+            <div class="guide-target-name">Squishy</div>
+            <p>The %HP rider may not reach the cap, so the extra damage scales down. Armor also matters because the whole kit is Physical.</p>
+          </div>
+        </div>
+
+        <div class="guide-math-stats guide-math-stats--compact">
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">+60%</div>
+            <div class="guide-math-stat-label">max Black ramp (3 stacks)</div>
+          </div>
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">800%</div>
+            <div class="guide-math-stat-label">Black per-hit Relic cap</div>
+          </div>
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">1,000%</div>
+            <div class="guide-math-stat-label">White per-hit Relic cap</div>
+          </div>
+          <div class="guide-math-stat">
+            <div class="guide-math-stat-value">Physical</div>
+            <div class="guide-math-stat-label">whole kit - Armor matters</div>
+          </div>
+        </div>
+        <p class="guide-math-footnote">
+          Values from CN client Lv4 skills + Lv4 Relic. Global is unreleased - exact caps and the re-arm ruling may change.
+        </p>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Skills</h2>
+      <div class="guide-skills-grid">
+        {skills.map((skill) => (
+          <div class="guide-skill-card">
+            <div class="guide-skill-header">
+              <div
+                class="guide-skill-icon"
+                style={`background-image: url('${skillImage(skill.id)}');`}
+                role="img"
+                aria-label={skill.name}
+              ></div>
+              <div class="guide-skill-meta">
+                <div class="guide-skill-name">{skill.name}</div>
+                <span class={`guide-skill-badge${skill.isUlt ? " guide-skill-badge--ult" : ""}`}>
+                  {skill.badge}
+                </span>
+              </div>
+            </div>
+            <p class="guide-skill-desc">{skill.description}</p>
+            <div class="guide-skill-upgrades">
+              {skill.upgrades.map((u) => (
+                <div class="guide-upgrade">
+                  <span class="guide-upgrade-chip">{u.level}</span>
+                  <span class="guide-upgrade-text">{u.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <!-- Relic -->
+      <div class="guide-skill-card guide-skill-card--relic">
+        <div>
+          <div class="guide-skill-header">
+            <div
+              class="guide-skill-icon"
+              style={`background-image: url('${skillImage("relic")}');`}
+              role="img"
+              aria-label={relic.name}
+            ></div>
+            <div class="guide-skill-meta">
+              <div class="guide-skill-name">{relic.name}</div>
+              <div class="guide-relic-badges">
+                <span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span>
+                <span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="guide-skill-desc">{relic.description}</p>
+          <div class="guide-skill-upgrades guide-skill-upgrades--relic">
+            {relic.upgrades.map((u) => (
+              <div class="guide-upgrade guide-upgrade--relic">
+                <span class="guide-upgrade-chip">{u.level}</span>
+                <span class="guide-upgrade-text">{u.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRENGTHS & WEAKNESSES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Strength &amp; Weaknesses</h2>
+      <StrengthWeakness strengths={strengths} weaknesses={weaknesses} />
+    </section>
+
+    <!-- SYNERGIES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Synergies</h2>
+      <div class="guide-hero-grid">
+        {synergies.map((hero) => (
+          <div class="guide-hero-card">
+            <div
+              class="guide-hero-portrait"
+              style={`background-image: url('${heroImage(hero.id)}');`}
+              role="img"
+              aria-label={hero.name}
+            ></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- SHUT DOWN BY -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Shut Down By</h2>
+      <div class="guide-hero-grid">
+        {counters.map((hero) => (
+          <div class="guide-hero-card">
+            <div
+              class="guide-hero-portrait"
+              style={`background-image: url('${heroImage(hero.id)}');`}
+              role="img"
+              aria-label={hero.name}
+            ></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- GEAR & STATS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Gear &amp; Stats</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Stack Attack, then crit</h3>
+        <p class="guide-card-subheading">Every rider in her kit is a multiple of ATK, and they all crit. The %HP riders are capped to ATK, so raising ATK raises the cap too.</p>
+        <div class="guide-stat-chain">
+          <span class="guide-stat-pill guide-stat-pill--primary">ATK %</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">Crit DMG</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">Crit %</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Attack Speed</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Energy / Haste</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">HP% / Armor</span>
+        </div>
+        <div class="guide-callout">
+          Attack Speed is unusually good on her: every attack carries a full Relic rider, so more attacks
+          per second is a direct damage multiplier, and her ultimate already hands out +100% ATK SPD. Defensive
+          stats are mostly covered by Step Into the Game and the Switch & Strike shield - lean offensive.
+          Remember her damage is all Physical, so enemy Armor is the stat that hurts her most.
+        </div>
+      </div>
+    </section>
+
+    <!-- VIRTUES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Virtues</h2>
+      <div class="guide-virtue-grid">
+        {virtues.map((v) => (
+          <div class="guide-virtue-card">
+            <div class="guide-virtue-header">
+              <div
+                class="guide-virtue-icon"
+                style={`background-image: url('${virtueImage(v.assetId, v.assetSuffix)}');`}
+                role="img"
+                aria-label={v.name}
+              ></div>
+              <div>
+                <div class="guide-virtue-name">{v.name}</div>
+                <span class={`guide-virtue-rarity ${v.rarityClass}`}>{v.rarity}</span>
+              </div>
+            </div>
+            <div class="guide-virtue-bonuses">
+              {v.bonuses.map((b) => (
+                <div class="guide-virtue-bonus">
+                  <div class="guide-virtue-bonus-label">{b.label}</div>
+                  <div class="guide-virtue-bonus-text">{b.text}</div>
+                </div>
+              ))}
+            </div>
+            <p class="guide-virtue-note">{v.note}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- VERDICT -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Verdict</h2>
+      <div class="guide-verdict-box">
+        <h3 class="guide-verdict-heading">A carry who plays both colors</h3>
+        <p class="guide-verdict-text">
+          Xuannv is a thinking-player's carry. The headline is the dual stance, but the engine is the Relic:
+          her base 100% hits are filler, and the per-hit %ATK + %HP riders are where the damage lives - which
+          is why she eats bosses, where those riders sit pinned at the cap on every single attack. Black is her
+          grind, White is her execute, and if White's three empowered hits re-arm on every entry (untested - the CN
+          text hints they may fire only once), chaining stance flips becomes her highest line. The catches are real:
+          the stance is decided by unit count rather than by you, her whole
+          kit is Physical so Armor stacks wall her, and Switch & Strike only pays off with deliberate positioning.
+          Build her offensive, slot her in the backline, and bring Armor shred. PvE monster, especially in Clubs
+          Tower and push content; a more matchup-dependent pick in PvP.
+        </p>
+      </div>
+      <div class="guide-tier-legend">
+        <p class="guide-tier-legend-heading">* Tier Definitions</p>
+        <div class="guide-tier-legend-grid">
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--s">S</span>
+            <span class="guide-tier-desc">Meta-defining. Warps team-building and counter-picks around her presence.</span>
+          </div>
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--a">A</span>
+            <span class="guide-tier-desc">Strong &amp; reliable. Competitive in most contexts, clear strengths, manageable weaknesses.</span>
+          </div>
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--b">B</span>
+            <span class="guide-tier-desc">Situational. Excellent in specific niches, outperformed elsewhere.</span>
+          </div>
+          <div class="guide-tier-entry">
+            <span class="guide-tier-letter guide-tier-letter--c">C</span>
+            <span class="guide-tier-desc">Serviceable. Useful early or in narrow comps, outclassed at high investment.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal.vercel.app</p>
+</Base>
