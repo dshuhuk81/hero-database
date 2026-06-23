@@ -45,9 +45,26 @@ const heroPageIds = new Set((heroPages as any[]).map((h) => h.id));
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_PLACEHOLDER = `${R2_BASE}/heroes/placeholder.png`;
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+const SPOTLIGHT_IMAGE_SIZES = "(max-width: 400px) calc(100vw - 40px), (max-width: 600px) calc((100vw - 56px) / 2), 220px";
 
 function heroImg(id: string): string {
   return `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
+}
+
+function heroCardImg(id: string, width = 360): string {
+  return `${R2_BASE}/heroes/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`;
+}
+
+function heroCardSrcset(id: string): string {
+  const encodedId = encodeURIComponent(id);
+  return [240, 360, 480]
+    .map((width) => `${R2_BASE}/heroes/cards/${encodedId}-${width}.webp?v=${HERO_IMAGE_VERSION} ${width}w`)
+    .join(", ");
+}
+
+function heroThumbImg(id: string): string {
+  return `${R2_BASE}/heroes/thumbs/${encodeURIComponent(id)}-96.webp?v=${HERO_IMAGE_VERSION}`;
 }
 
 const iconUrl = (type: string, value: string) =>
@@ -130,9 +147,15 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
             <div class="spotlight-img-wrap">
               <img
                 class="spotlight-img"
-                src={heroImg(hero.id)}
+                src={heroCardImg(hero.id)}
+                srcset={heroCardSrcset(hero.id)}
+                sizes={SPOTLIGHT_IMAGE_SIZES}
                 alt={hero.displayName}
-                onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')`}
+                width="360"
+                height="360"
+                decoding="async"
+                fetchpriority={i === 0 ? "high" : "low"}
+                onerror={`this.onerror=null;this.srcset='';this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')}`}
               />
               <div class="spotlight-img-fade"></div>
             </div>
@@ -200,7 +223,16 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
         {released.map((hero) => (
           <a href={`/heroes/${hero.id}`} class="timeline-row released-row">
             <div class="tl-order">{hero.order}</div>
-            <img class="tl-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'tl-portrait tl-portrait-missing\'>?</div>')" />
+            <img
+              class="tl-portrait"
+              src={heroThumbImg(hero.id)}
+              alt={hero.displayName}
+              width="44"
+              height="44"
+              loading="lazy"
+              decoding="async"
+              onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\\'tl-portrait tl-portrait-missing\\'>?</div>')}`}
+            />
             <div class="tl-info">
               <span class="tl-name">{hero.displayName}</span>
               <span class="tl-sub">
@@ -226,7 +258,16 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
 	        {comingSoon.map((hero) => (
 	          <a href={`/heroes/${hero.id}`} class="timeline-row soon-row">
 	            <div class="tl-order">{hero.order}</div>
-	            <img class="tl-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
+	            <img
+                class="tl-portrait"
+                src={heroThumbImg(hero.id)}
+                alt={hero.displayName}
+                width="44"
+                height="44"
+                loading="lazy"
+                decoding="async"
+                onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'}`}
+              />
             <div class="tl-info">
               <span class="tl-name">{hero.displayName}</span>
               <span class="tl-sub">
@@ -253,7 +294,16 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
               hero.hasDetailPage ? (
                 <a href={`/heroes/${hero.id}`} class="timeline-row future-row">
                   <div class="tl-order">{hero.order}</div>
-                  <img class="tl-portrait future-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
+                  <img
+                    class="tl-portrait future-portrait"
+                    src={heroThumbImg(hero.id)}
+                    alt={hero.displayName}
+                    width="44"
+                    height="44"
+                    loading="lazy"
+                    decoding="async"
+                    onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'}`}
+                  />
                   <div class="tl-info">
                     <span class="tl-name">{hero.displayName}</span>
                     <span class="tl-sub">
@@ -270,7 +320,16 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
               ) : (
                 <div class="timeline-row future-row is-disabled" aria-disabled="true" title="No hero detail page yet">
                   <div class="tl-order">{hero.order}</div>
-                  <img class="tl-portrait future-portrait" src={heroImg(hero.id)} alt={hero.displayName} onerror={`this.onerror=null;this.src='${HERO_PLACEHOLDER}'`} />
+                  <img
+                    class="tl-portrait future-portrait"
+                    src={heroThumbImg(hero.id)}
+                    alt={hero.displayName}
+                    width="44"
+                    height="44"
+                    loading="lazy"
+                    decoding="async"
+                    onerror={`this.onerror=null;this.src='${heroImg(hero.id)}';this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}'}`}
+                  />
                   <div class="tl-info">
                     <span class="tl-name">{hero.displayName}</span>
                     <span class="tl-sub">
