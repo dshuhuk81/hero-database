@@ -668,8 +668,8 @@ const dotSections = [
                         {virtueStats.length > 0 && (
                           <div class="virtue-stats-list">
                             {virtueStats.map((s: { key: string; base: number; bonus: number }) => {
-                              if (!s.base) return null;
                               const label = STAT_LABELS[s.key] ?? s.key;
+                              if (!s.base && !s.bonus) return <div class="virtue-stat">{label}</div>;
                               const val = s.bonus > 0
                                 ? `${s.base.toLocaleString()} + ${s.bonus.toLocaleString()}`
                                 : s.base.toLocaleString();

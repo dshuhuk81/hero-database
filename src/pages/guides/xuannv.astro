@@ -55,11 +55,11 @@ const skills = [
     name: "Step Into the Game",
     badge: "Skill 4",
     description:
-      "When attacked, Xuannv summons a Taiji Formation for 3s, reducing all incoming DMG by 50% and banking the reduced amount. When it expires she fires a Taiji projectile at the nearest enemy dealing the banked DMG. CD: 30s.",
+      "When attacked, Xuannv summons a Taiji Circle for 3s, reducing all incoming DMG by 50% and banking the reduced amount. When it expires she fires Taiji projectiles at the nearest enemy dealing the banked DMG. CD: 30s.",
     upgrades: [
       { level: "Lv 2", text: "CD reduced to 25s." },
       { level: "Lv 3", text: "CD reduced to 20s." },
-      { level: "Lv 4", text: "Returns 80% of the damage to the nearest enemy." },
+      { level: "Lv 4", text: "Incoming DMG reduction raised to 80% (from 50%)." },
     ],
   },
 ];
@@ -231,7 +231,7 @@ const energyBranches = [
 
 const taijiSteps = [
   "Gets hit",
-  "3s Taiji Formation",
+  "3s Taiji Circle",
   "Banks reduced damage",
   "Fires the stored hit back",
   "Cooldown / Relic re-trigger",
@@ -310,7 +310,7 @@ const taijiSteps = [
         <div class="guide-rating-row">
           <div class="guide-rating-cell">
             <span class="guide-rating-category">PvP</span>
-            <span class="rating-badge" data-tier="A">A</span>
+            <span class="rating-badge" data-tier="A-">A-</span>
           </div>
           <div class="guide-rating-cell">
             <span class="guide-rating-category">PvE</span>
@@ -318,15 +318,15 @@ const taijiSteps = [
           </div>
           <div class="guide-rating-cell">
             <span class="guide-rating-category">F2P</span>
-            <span class="rating-badge" data-tier="B">B</span>
+            <span class="rating-badge" data-tier="A+">A+</span>
           </div>
           <div class="guide-rating-cell">
             <span class="guide-rating-category">Late</span>
-            <span class="rating-badge" data-tier="A+">A+</span>
+            <span class="rating-badge" data-tier="S-">S-</span>
           </div>
         </div>
         <p class="guide-math-footnote">
-          Preliminary ratings based on CN data - Xuannv is unreleased on Global and numbers may shift.
+          Ratings reflect her Global release kit.
         </p>
       </div>
     </section>
@@ -501,8 +501,8 @@ const taijiSteps = [
             <h4 class="guide-damage-title">Three execute cuts</h4>
             <p class="guide-damage-copy">White drops the ramp and aims at the weakest enemy. The first 3 attacks after entering deal <strong>400% ATK + 60% lost HP</strong>, capped at <strong>1,000% ATK</strong> each.</p>
             <div class="guide-ruling-box">
-              <span>Unconfirmed ruling</span>
-              <p>CN text reads "first time entering White." If those 3 hits re-arm on every White entry, stance flipping becomes her ceiling. If not, White is a one-time execute window.</p>
+              <span>Confirmed</span>
+              <p>The 3 empowered hits re-arm on every White entry, so chaining stance flips is her highest damage line.</p>
             </div>
           </div>
         </div>
@@ -537,7 +537,7 @@ const taijiSteps = [
           </div>
         </div>
         <p class="guide-math-footnote">
-          Values from CN client Lv4 skills + Lv4 Relic. Global is unreleased - exact caps and the re-arm ruling may change.
+          Values from her Global release Lv4 skills + Lv4 Relic.
         </p>
       </div>
     </section>
@@ -720,8 +720,8 @@ const taijiSteps = [
           Xuannv is a thinking-player's carry. The headline is the dual stance, but the engine is the Relic:
           her base 100% hits are filler, and the per-hit %ATK + %HP riders are where the damage lives - which
           is why she eats bosses, where those riders sit pinned at the cap on every single attack. Black is her
-          grind, White is her execute, and if White's three empowered hits re-arm on every entry (untested - the CN
-          text hints they may fire only once), chaining stance flips becomes her highest line. The catches are real:
+          grind, White is her execute, and because White's three empowered hits re-arm on every entry, chaining
+          stance flips is her highest damage line. The catches are real:
           the stance is decided by unit count rather than by you, her whole
           kit is Physical so Armor stacks wall her, and Switch & Strike only pays off with deliberate positioning.
           Build her offensive, slot her in the backline, and bring Armor shred. PvE monster, especially in Clubs

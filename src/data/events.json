@@ -1,65 +1,73 @@
 {
   "campaigns": [
     {
-      "id": "nut-campaign",
-      "name": "Nut Campaign",
-      "hero": "nut",
+      "id": "xuannv-campaign",
+      "name": "Xuannv Campaign",
+      "hero": "xuannv",
       "description": "Complete PVE campaign stages for the Timed Challenge.",
       "stages": [
         {
           "id": 1,
-          "name": "1. Scattered Sparkles",
+          "name": "1. Heavenly Questions",
           "composition": {
-            "front": ["aries", "taurus"],
-            "back": ["cancer", "nut", "libra"]
+            "front": ["aquarius", ""],
+            "back": ["", "", "xuannv"]
           }
         },
         {
           "id": 2,
-          "name": "2. Cosmic Rift",
+          "name": "2. Blinding Obsession",
           "composition": {
-            "front": ["taurus", "cancer"],
-            "back": ["sagitarrius", "libra", "nut"]
+            "front": ["aquarius", "taurus"],
+            "back": ["scorpio", "cancer", "xuannv"]
           }
         },
         {
           "id": 3,
-          "name": "3. Ancient Stars",
+          "name": "3. Philosophy of the Grid",
           "composition": {
-            "front": ["prometheus", "caishen"],
-            "back": ["nut", "hephaestus", "mengpo"]
+            "front": ["aquarius", "taurus"],
+            "back": ["scorpio", "xuannv", "cancer"]
           }
         },
         {
           "id": 4,
-          "name": "4. A Wondrous and Desolate Planet",
+          "name": "4. Stars in the Palm",
           "composition": {
-           "front": ["prometheus", "ullr"],
-            "back": ["nut", "caishen", "yanluo"]
+            "front": ["anubis", "yuelao"],
+            "back": ["caishen", "pan", "xuannv"]
           }
         },
         {
           "id": 5,
-          "name": "5. A Swig of Oblivion",
+          "name": "5. Tempered Arts",
           "composition": {
-           "front": ["prometheus", "ullr"],
-            "back": ["nut", "caishen", "hephaestus"]
+            "front": ["", ""],
+            "back": ["", "", "xuannv"]
           }
         },
         {
           "id": 6,
-          "name": "6. These things perhaps are poetry ",
+          "name": "6. Undecided Move ",
           "composition": {
-           "front": ["prometheus", "ullr"],
-            "back": ["caishen", "nut", "hephaestus"]
+            "front": ["", ""],
+            "back": ["", "", "xuannv"]
           }
         },
         {
           "id": 7,
-          "name": "7. With their Eyes ",
+          "name": "7. The very first move",
           "composition": {
-            "front": ["momus", "khepri"],
-            "back": ["poseidon", "skadi", "pan"]
+            "front": ["", ""],
+            "back": ["", "", "xuannv"]
+          }
+        },
+        {
+          "id": 8,
+          "name": "8. One Step Ahead",
+          "composition": {
+            "front": ["", ""],
+            "back": ["", "", "xuannv"]
           }
         }
       ]

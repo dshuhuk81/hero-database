@@ -1,8 +1,8 @@
 {
-  "id": "jiutianxuannv",
-  "name": "Jiutian Xuannv",
+  "id": "xuannv",
+  "name": "Xuannv",
   "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jiutianxuannv.webp",
-  "release": false,
+  "release": true,
   "faction": "Clubs",
   "role": "Nimble",
   "class": "Archer",
@@ -46,11 +46,11 @@
     {
       "id": "skill_1",
       "name": "Outplay the Heavens",
-      "description": "Passive: Xuannv's normal attacks have two stances; she starts each battle in the White Stance. Black Stance: attacks the default target for 100% DMG, and each attack grants +20% ATK, stacking up to 3 times. White Stance: attacks change to strike the weakest enemy for 100% DMG. Active: Xuannv reads the board and makes her next move. If allies are equal to or outnumber enemies, she switches to the Black Stance and gains +100% ATK SPD for 8s. If allies are outnumbered by enemies, she switches to the White Stance and gains +100% ATK SPD for 8s.",
+      "description": "Passive: Xuannv's normal attacks have two states; she starts each battle in the [Play as White] state. [Play as Black]: attacks the default target for 100% DMG, and each attack grants +20% ATK, stacking up to 3 times. [Play as White]: attacks change to strike the weakest enemy for 100% DMG. Active: Xuannv reads the board and makes her next move. If allies are equal to or outnumber enemies, she switches to the [Play as Black] state and gains +100% ATK SPD for 8s. If allies are outnumbered by enemies, she switches to the [Play as White] state and gains +100% ATK SPD for 8s.",
       "upgrades": {
         "level2": "On activation, also deals 500% ATK damage to all enemies.",
-        "level3": "While in the Black Stance, gains 160% ATK SPD.",
-        "level4": "While in the White Stance, gains an extra 50% normal-attack damage."
+        "level3": "While in the [Play as Black] state, gains 160% ATK SPD.",
+        "level4": "While in the [Play as White] state, gains an extra 50% normal-attack damage."
       },
       "damageType": "Physical",
       "isUltimate": true
@@ -80,33 +80,38 @@
     {
       "id": "skill_4",
       "name": "Step Into the Game",
-      "description": "When Xuannv is attacked, she summons a Taiji Formation for 3s that reduces all incoming damage by 50% and accumulates the reduced portion. When it expires, she fires a Taiji projectile at the nearest enemy dealing damage equal to the accumulated amount. 30s cooldown.",
+      "description": "When Xuannv is attacked, she summons a Taiji Circle for 3s that reduces all incoming damage by 50% and accumulates the reduced portion. When it expires, she fires Taiji projectiles at the nearest enemy dealing damage equal to the accumulated amount. 30s cooldown.",
       "upgrades": {
         "level2": "Cooldown reduced to 25s.",
         "level3": "Cooldown reduced to 20s.",
-        "level4": "Returns 80% of the damage to the nearest enemy."
+        "level4": "Reduces incoming damage by 80% instead of 50%."
       },
       "damageType": "Physical"
     }
   ],
   "relic": {
     "name": "Void Feint",
-    "description": "Enhances Xuannv's stances and can also trigger Step Into the Game. Black Stance: every attack deals extra damage equal to 200% ATK + 6% of the target's max HP (capped at 500% of Xuannv's ATK). White Stance: the first 3 normal attacks after first entering the stance deal extra damage equal to 200% ATK + 30% of the target's lost HP (capped at 500% of Xuannv's ATK).",
+    "description": "Enhances Xuannv's states and can also trigger Step Into the Game. [Play as Black]: every attack deals extra damage equal to 200% ATK + 6% of the target's max HP (capped at 500% of Xuannv's ATK). [Play as White]: the first 3 normal attacks after entering the state deal extra damage equal to 200% ATK + 30% of the target's lost HP (capped at 500% of Xuannv's ATK).",
     "upgrades": {
       "level2": "When Step Into the Game is on cooldown and Xuannv takes damage, 50% chance to trigger Step Into the Game (this effect has a 30s cooldown).",
       "level3": "The trigger chance becomes 100%.",
-      "level4": "Black Stance: extra damage becomes 300% ATK + 10% of the target's max HP (capped at 800% ATK). White Stance: the first 3 attacks deal 400% ATK + 60% of the target's lost HP (capped at 1000% ATK)."
+      "level4": "[Play as Black]: extra damage becomes 300% ATK + 10% of the target's max HP (capped at 800% ATK). [Play as White]: the first 3 attacks deal 400% ATK + 60% of the target's lost HP (capped at 1000% ATK)."
     }
   },
   "virtueSets": [
     {
-      "label": "Primary DPS",
-      "comment": "Desire 4pc ramps ATK over time, Wildness 4pc stacks ATK every 5s - both reward her sustained basic attack style.",
-      "virtues": ["desire_1", "desire_2", "desire_3", "desire_4", "wildness_1", "wildness_2", "wildness_3", "wildness_4"]
+      "label": "Desire",
+      "comment": "4pc ramps ATK passively after 15s - rewards long fights and boss content.",
+      "virtues": ["desire_1", "desire_2", "desire_3", "desire_4"]
     },
     {
-      "label": "Crit Build",
-      "comment": "Insight 4pc grants +30% CRIT Rate before first hit, amplifying burst in both stances.",
+      "label": "Wildness",
+      "comment": "4pc stacks +5% ATK every 5s up to 10 stacks - best sustained damage over a long fight.",
+      "virtues": ["wildness_1", "wildness_2", "wildness_3", "wildness_4"]
+    },
+    {
+      "label": "Insight",
+      "comment": "4pc grants +30% CRIT Rate before first hit, amplifying burst in both stances.",
       "virtues": ["insight_1", "insight_2", "insight_3", "insight_4"]
     }
   ],
