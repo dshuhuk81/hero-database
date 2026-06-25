@@ -27,7 +27,7 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
       </div>
 
       <!-- WHAT SHOULD I DO FIRST -->
-      <div id="section-first" class="tips-section">
+      <div id="section-first" class="eg-content-card tips-anchor">
         <h2>What Should I Do First?</h2>
         <p>Focus on pushing Odyssey, Torment Rift and building your first team. Summon to get a good roster (1-2 damage dealers, 2 supports, 1-2 tanks).</p>
         <div class="eg-priority-matrix">
@@ -67,7 +67,7 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
       </div>
 
       <!-- ODYSSEY MILESTONES -->
-      <div id="section-odyssey" class="tips-section tips-anchor">
+      <div id="section-odyssey" class="eg-content-card tips-anchor">
         <h2>Odyssey (Campaign) Milestones</h2>
         <p>Keep pushing to unlock stages and events. The two most impactful early targets are <strong>Stage 3-18</strong> (Shrine) and <strong>Stage 8-3</strong> (Beacon Tree).</p>
         <div class="milestone-table">
@@ -153,15 +153,170 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
       </div>
 
       <!-- NORMAL SUMMONS & WISHLIST -->
-      <div id="section-summons" class="tips-section">
+      <div id="section-summons" class="eg-content-card tips-anchor">
         <h2>Normal Summons and Wish List</h2>
         <h3>Summoning Tips</h3>
         <ul>
           <li>The Wish List unlocks after 30 regular summons.</li>
           <li>Once you have finished ascending one of the left-side deities on the wish list, swap them for one on the right.</li>
-          <li>Pity System: Guaranteed deity every 50 summons.</li>
+          <li>Standard Pity: an Epic deity is guaranteed by pull 50. The counter resets when an Epic appears and is separate from other summon types.</li>
           <li>It is not recommended to spend Elysian Gems on regular summons - except for the first 1-2 days to get some units into your roster.</li>
         </ul>
+
+        <h3>Summon Probabilities</h3>
+        <p>This breakdown shows how likely you are to pull one specific target hero. The base rates come from the summon tooltips shown in the game.</p>
+
+        <div class="summon-rate-table summon-rate-table-base" role="table" aria-label="Base Epic summon rates">
+          <div class="summon-rate-row summon-rate-header" role="row">
+            <div role="columnheader">Summon</div>
+            <div role="columnheader">Epic total</div>
+            <div role="columnheader">Wishlist</div>
+            <div role="columnheader">Celestial</div>
+            <div role="columnheader">No Wishlist</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Summon">Amity</div>
+            <div role="cell" data-label="Epic total">3%</div>
+            <div role="cell" data-label="Wishlist">—</div>
+            <div role="cell" data-label="Celestial">—</div>
+            <div role="cell" data-label="No Wishlist">—</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Summon">Standard</div>
+            <div role="cell" data-label="Epic total">5%</div>
+            <div role="cell" data-label="Wishlist">4.6%</div>
+            <div role="cell" data-label="Celestial">0.2%</div>
+            <div role="cell" data-label="No Wishlist">0.2%</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Summon">Suit</div>
+            <div role="cell" data-label="Epic total">7.8%</div>
+            <div role="cell" data-label="Wishlist">7.5%</div>
+            <div role="cell" data-label="Celestial">—</div>
+            <div role="cell" data-label="No Wishlist">0.3%</div>
+          </div>
+        </div>
+
+        <div class="summon-formula-note">
+          <p><strong>Standard Wishlist:</strong> 4 factions × 4 slots = 16 heroes sharing 4.6%, or about 0.29% per hero.</p>
+          <p><strong>Suit Wishlist:</strong> 4 faction-specific heroes sharing 7.5%, or 1.875% per hero.</p>
+        </div>
+
+        <h4 class="summon-subheading">Chance per Pull</h4>
+        <div class="summon-rate-table summon-rate-table-target" role="table" aria-label="Chance per pull for a target hero">
+          <div class="summon-rate-row summon-rate-header" role="row">
+            <div role="columnheader">Target</div>
+            <div role="columnheader">Chance per pull</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Target">Amity: any Epic</div>
+            <div role="cell" data-label="Chance per pull">3.0%</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Target">Standard: Wishlist hero, no Rate Up</div>
+            <div role="cell" data-label="Chance per pull">0.29%</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Target">Standard: Wishlist hero + Rate Up</div>
+            <div role="cell" data-label="Chance per pull">2.0%</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Target">Suit: Wishlist hero, no Rate Up</div>
+            <div role="cell" data-label="Chance per pull">1.875%</div>
+          </div>
+          <div class="summon-rate-row summon-rate-best" role="row">
+            <div role="cell" data-label="Target">Suit: Wishlist hero + Rate Up</div>
+            <div role="cell" data-label="Chance per pull">3.6%</div>
+          </div>
+        </div>
+
+        <h4 class="summon-subheading">What 100 Pulls Look Like</h4>
+        <div class="summon-outcome-grid">
+          <article class="summon-outcome-card">
+            <div class="summon-outcome-title">Amity</div>
+            <div class="summon-outcome-rate">3% for any Epic</div>
+            <ul>
+              <li><strong>Expected:</strong> 3 Epics</li>
+              <li><strong>Normal range:</strong> 1–5 Epics for 87% of players</li>
+              <li><strong>No Epic:</strong> 4.8%</li>
+            </ul>
+          </article>
+          <article class="summon-outcome-card summon-outcome-weak">
+            <div class="summon-outcome-title">Standard without Rate Up</div>
+            <div class="summon-outcome-rate">0.29% for one Wishlist hero</div>
+            <ul>
+              <li><strong>Expected:</strong> 0.29 copies</li>
+              <li><strong>No target copy:</strong> 75%</li>
+              <li><strong>At least one copy:</strong> only 25%</li>
+            </ul>
+          </article>
+          <article class="summon-outcome-card">
+            <div class="summon-outcome-title">Standard + Rate Up</div>
+            <div class="summon-outcome-rate">2.0% for the target hero</div>
+            <ul>
+              <li><strong>Expected:</strong> 2 copies</li>
+              <li><strong>Normal range:</strong> 0–4 copies for 95% of players</li>
+              <li><strong>No target copy:</strong> 13.3%</li>
+            </ul>
+          </article>
+          <article class="summon-outcome-card">
+            <div class="summon-outcome-title">Suit without Rate Up</div>
+            <div class="summon-outcome-rate">1.875% for one Wishlist hero</div>
+            <ul>
+              <li><strong>Expected:</strong> 1–2 copies</li>
+              <li><strong>Normal range:</strong> 0–4 copies for 96% of players</li>
+              <li><strong>No target copy:</strong> 15%</li>
+            </ul>
+          </article>
+          <article class="summon-outcome-card summon-outcome-best">
+            <div class="summon-outcome-title">Suit + Rate Up</div>
+            <div class="summon-outcome-rate">3.6% for the target hero</div>
+            <ul>
+              <li><strong>Expected:</strong> 3–4 copies</li>
+              <li><strong>Normal range:</strong> 1–6 copies for 90% of players</li>
+              <li><strong>At least one copy:</strong> 97.4%</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="tips-callout summon-clarification">
+          <p><strong>What does “no target copy” mean?</strong> It does not mean that all 100 pulls give you nothing. It means that none of those pulls contains the one specific hero you are targeting. Every other hero pulled is irrelevant to this calculation.</p>
+        </div>
+
+        <h4 class="summon-subheading">Why Rate Up Helps Standard More</h4>
+        <p>Standard spreads its 4.6% Wishlist chance across 16 heroes, so one hero starts at only about 0.29%. Suit summons split 7.5% between only 4 heroes and therefore already start at 1.875% per hero.</p>
+        <div class="summon-rate-table summon-rate-table-boost" role="table" aria-label="Rate Up boost comparison">
+          <div class="summon-rate-row summon-rate-header" role="row">
+            <div role="columnheader">Summon</div>
+            <div role="columnheader">Without Rate Up</div>
+            <div role="columnheader">With Rate Up</div>
+            <div role="columnheader">Relative boost</div>
+          </div>
+          <div class="summon-rate-row" role="row">
+            <div role="cell" data-label="Summon">Standard</div>
+            <div role="cell" data-label="Without Rate Up">0.29%</div>
+            <div role="cell" data-label="With Rate Up">2.0%</div>
+            <div role="cell" data-label="Relative boost">6.96×</div>
+          </div>
+          <div class="summon-rate-row summon-rate-best" role="row">
+            <div role="cell" data-label="Summon">Suit</div>
+            <div role="cell" data-label="Without Rate Up">1.875%</div>
+            <div role="cell" data-label="With Rate Up">3.6%</div>
+            <div role="cell" data-label="Relative boost">1.92×</div>
+          </div>
+        </div>
+        <p class="eg-footnote">Rate Up gives Standard the larger relative improvement because its starting chance is so low. Suit + Rate Up still has the better absolute target chance: 3.6% instead of 2.0%.</p>
+
+        <div class="summon-summary">
+          <h4>Best Strategy for a Specific New Hero</h4>
+          <ol>
+            <li>Wait for Rate Up.</li>
+            <li>Put the hero on the Wishlist for the matching Suit.</li>
+            <li>Use Suit summons during Rate Up: 100 pulls yield 3–4 copies on average, with a 97.4% chance of at least one copy.</li>
+            <li>Avoid Standard summons without Rate Up when targeting one hero: the chance of missing that hero after 100 pulls is about 75%.</li>
+          </ol>
+        </div>
+
         <h3>Shop Priority</h3>
         <div class="pinion-table">
           <div class="pinion-row pinion-header">
@@ -214,17 +369,18 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
       </div>
 
       <!-- FACTION SUMMONS -->
-      <div class="tips-section">
-        <h3>Faction Summons</h3>
+      <div class="eg-content-card">
+        <h2>Faction Summons</h2>
         <p>In the early phase your main carry and good supports are your primary targets. Spend your feathers on heroes you are missing or that you need to level up for progression.</p>
         <p>Priority order: <strong>Carry &gt; Support &gt; Tank</strong></p>
+        <p>Suit Pity guarantees an Epic deity by pull 20. Its counter resets when a Suit Epic appears and does not transfer to Standard summons or another summon type.</p>
         <div class="tips-callout">
           <p>The Wish List also applies to Faction summons. It is recommended to save faction feathers for the upcoming banner event - this happens every 2 weeks.</p>
         </div>
       </div>
 
       <!-- CHRONOS CHAMBER -->
-      <div id="section-chronos" class="tips-section">
+      <div id="section-chronos" class="eg-content-card tips-anchor">
         <h2>Chronos Chamber</h2>
         <p>Unlocks after a total of 750 summons. Within the Chronos Chamber you can summon Starglint Deities using Star Tracer currency. You can specify which deity you want to summon.</p>
         <div class="tips-callout">
@@ -239,7 +395,7 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
       </div>
 
       <!-- STARGLINT MINDSEA -->
-      <div id="section-mindsea" class="tips-section">
+      <div id="section-mindsea" class="eg-content-card tips-anchor">
         <h2>Starglint and Mindsea</h2>
         <p>The Starglint faction has the most rare heroes. They can only be obtained through their special currency "Star Tracer", regular summons (0.2% drop chance) or in the Mindsea shop.</p>
         <h3>Join a Mindsea as Early as Possible</h3>

@@ -1,0 +1,675 @@
+---
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import allHeroes from "../data/all_heroes_db.json";
+import { FACTION_META } from "../components/tips/tipsData";
+import "../styles/summon-calculator.css";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+const REGULAR_FACTIONS = ["Hearts", "Diamonds", "Spades", "Clubs"];
+
+const heroes = Object.values(allHeroes as Record<string, any>)
+  .filter((hero: any) =>
+    hero?.id &&
+    hero?.name &&
+    hero?.rarity === "Legendary" &&
+    REGULAR_FACTIONS.includes(hero?.faction)
+  )
+  .sort((a: any, b: any) => {
+    if (a.release !== b.release) return a.release === false ? 1 : -1;
+    return a.name.localeCompare(b.name);
+  });
+
+const initialHero = heroes.find((hero: any) => hero.id === "caishen") ?? heroes[0];
+const initialFaction = FACTION_META[initialHero.faction];
+
+const heroImage = (id: string) => `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
+const heroThumb = (id: string) =>
+  `${R2_BASE}/heroes/thumbs/${encodeURIComponent(id)}-96.webp?v=${HERO_IMAGE_VERSION}`;
+const heroCard = (id: string, width = 240) =>
+  `${R2_BASE}/heroes/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`;
+const heroCardSrcset = (id: string) =>
+  [240, 360, 480]
+    .map((width) => `${heroCard(id, width)} ${width}w`)
+    .join(", ");
+---
+
+<Base
+  title="Summon Calculator | Motto Immortal"
+  description="Calculate expected target copies, Epic pulls and summon probabilities for Amity, Standard and Suit summons."
+>
+  <PageHero
+    id="summon-calculator"
+    tag="Summoning Tools"
+    headline="Summon Calculator"
+    subtitle="Turn your saved resources into a clear picture of your odds before you pull."
+  />
+
+  <main class="page-wrapper sc-page">
+    <section class="sc-intro" aria-labelledby="sc-intro-title">
+      <div>
+        <span class="section-label">Plan your summons</span>
+        <h2 id="sc-intro-title">How far can your resources take you?</h2>
+        <p>Select a target hero, enter your summon resources and compare your expected copies with the real chance of walking away without that hero.</p>
+      </div>
+      <div class="sc-method-badge">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19H2"/>
+        </svg>
+        Exact probability model
+      </div>
+    </section>
+
+    <div class="sc-workspace">
+      <section class="sc-config" aria-labelledby="sc-config-title">
+        <div class="sc-panel-heading">
+          <span class="sc-step">01</span>
+          <div>
+            <p class="sc-eyebrow">Target setup</p>
+            <h2 id="sc-config-title">Build your summon plan</h2>
+          </div>
+        </div>
+
+        <div class="sc-field-group">
+          <div class="sc-field-heading">
+            <div>
+              <span class="sc-field-label">Target hero</span>
+              <span class="sc-field-help">Legendary heroes from the four regular factions</span>
+            </div>
+            <span class="sc-status-chip">Wishlist slot reserved</span>
+          </div>
+
+          <button
+            class="sc-hero-trigger"
+            id="heroTrigger"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="heroDialog"
+            style={`--hero-accent:${initialFaction.color};--hero-dim:${initialFaction.dim}`}
+          >
+            <span class="sc-selected-portrait">
+              <img
+                id="selectedHeroImage"
+                src={heroThumb(initialHero.id)}
+                alt=""
+                width="96"
+                height="96"
+                decoding="async"
+                onerror={`this.onerror=null;this.src='${heroImage(initialHero.id)}'`}
+              />
+            </span>
+            <span class="sc-selected-copy">
+              <strong id="selectedHeroName">{initialHero.name}</strong>
+              <span>
+                <img id="selectedFactionIcon" src={initialFaction.icon} alt="" />
+                <span id="selectedHeroFaction">{initialHero.faction}</span>
+                <span aria-hidden="true">·</span>
+                <span id="selectedHeroClass">{initialHero.class}</span>
+              </span>
+            </span>
+            <span class="sc-change-label">
+              Change
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="sc-field-group">
+          <div class="sc-field-heading">
+            <div>
+              <span class="sc-field-label">Saved resources</span>
+              <span class="sc-field-help">Enter the number of pulls you can make</span>
+            </div>
+            <button class="sc-reset" id="resetCalculator" type="button">Reset</button>
+          </div>
+
+          <div class="sc-resource-list">
+            <div class="sc-resource-card">
+              <span class="sc-resource-icon sc-resource-icon-amity" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8a5.5 5.5 0 0 0 1-8.8Z"/></svg>
+              </span>
+              <span class="sc-resource-copy">
+                <strong>Amity</strong>
+                <small>3% chance for any Epic</small>
+              </span>
+              <span class="sc-number-control">
+                <button type="button" data-step="-10" data-target="amityPulls" aria-label="Remove 10 Amity summons">−</button>
+                <input id="amityPulls" inputmode="numeric" type="number" min="0" max="9999" step="1" value="0" aria-label="Number of Amity summons" />
+                <button type="button" data-step="10" data-target="amityPulls" aria-label="Add 10 Amity summons">+</button>
+              </span>
+            </div>
+
+            <div class="sc-resource-card">
+              <span class="sc-resource-icon sc-resource-icon-standard" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="m12 2 2.6 6.2L21 9l-4.8 4.3 1.4 6.5L12 16.5l-5.6 3.3 1.4-6.5L3 9l6.4-.8L12 2Z"/></svg>
+              </span>
+              <span class="sc-resource-copy">
+                <strong>Standard</strong>
+                <small id="standardRateLabel">0.29% for your target</small>
+              </span>
+              <span class="sc-number-control">
+                <button type="button" data-step="-10" data-target="standardPulls" aria-label="Remove 10 Standard summons">−</button>
+                <input id="standardPulls" inputmode="numeric" type="number" min="0" max="9999" step="1" value="100" aria-label="Number of Standard summons" />
+                <button type="button" data-step="10" data-target="standardPulls" aria-label="Add 10 Standard summons">+</button>
+              </span>
+            </div>
+
+            <div class="sc-resource-card sc-resource-card-suit" id="suitResourceCard" style={`--hero-accent:${initialFaction.color};--hero-dim:${initialFaction.dim}`}>
+              <span class="sc-resource-icon" aria-hidden="true">
+                <img id="suitFactionIcon" src={initialFaction.icon} alt="" />
+              </span>
+              <span class="sc-resource-copy">
+                <strong><span id="suitFactionName">{initialHero.faction}</span> Suit</strong>
+                <small id="suitRateLabel">1.875% for your target</small>
+              </span>
+              <span class="sc-number-control">
+                <button type="button" data-step="-10" data-target="suitPulls" aria-label="Remove 10 Suit summons">−</button>
+                <input id="suitPulls" inputmode="numeric" type="number" min="0" max="9999" step="1" value="100" aria-label="Number of matching Suit summons" />
+                <button type="button" data-step="10" data-target="suitPulls" aria-label="Add 10 Suit summons">+</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sc-field-group sc-rate-up-group">
+          <div class="sc-rate-up-copy">
+            <span class="sc-rate-up-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m13 2-9 12h8l-1 8 9-12h-8l1-8Z"/></svg>
+            </span>
+            <div>
+              <span class="sc-field-label">Rate Up active</span>
+              <span class="sc-field-help">Applies the featured target rate to Standard and matching Suit pulls</span>
+            </div>
+          </div>
+          <label class="sc-switch">
+            <input id="rateUp" type="checkbox" />
+            <span class="sc-switch-track"><span class="sc-switch-thumb"></span></span>
+            <span class="sc-switch-text">Off</span>
+          </label>
+        </div>
+
+        <div class="sc-assumption">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+          <p><strong>Pity is included.</strong> Standard guarantees an Epic by pull 50 and Suit by pull 20. Each banner has its own counter, which resets whenever that banner produces an Epic and does not transfer.</p>
+        </div>
+      </section>
+
+      <section class="sc-results" aria-labelledby="sc-results-title" aria-live="polite">
+        <div class="sc-panel-heading">
+          <span class="sc-step">02</span>
+          <div>
+            <p class="sc-eyebrow">Probability forecast</p>
+            <h2 id="sc-results-title">Your expected outcome</h2>
+          </div>
+          <span class="sc-total-pulls"><strong id="totalPulls">200</strong> total pulls</span>
+        </div>
+
+        <div class="sc-hero-result" id="heroResult" style={`--hero-accent:${initialFaction.color};--hero-dim:${initialFaction.dim}`}>
+          <div class="sc-result-portrait">
+            <img
+              id="resultHeroImage"
+              src={heroCard(initialHero.id)}
+              srcset={heroCardSrcset(initialHero.id)}
+              sizes="104px"
+              alt={initialHero.name}
+              width="240"
+              decoding="async"
+              onerror={`this.onerror=null;this.srcset='';this.src='${heroImage(initialHero.id)}'`}
+            />
+            <span class="sc-result-faction"><img id="resultFactionIcon" src={initialFaction.icon} alt={initialHero.faction} /></span>
+          </div>
+          <div class="sc-result-main">
+            <span class="sc-result-kicker">Expected target copies</span>
+            <div class="sc-expected-row">
+              <strong id="expectedCopies">2.16</strong>
+              <span>copies of <b id="resultHeroName">{initialHero.name}</b></span>
+            </div>
+            <p id="resultSummary">Across Standard and matching Suit summons.</p>
+          </div>
+          <div class="sc-chance-ring" id="chanceRing" style="--chance:89">
+            <div>
+              <strong id="atLeastOneRing">89%</strong>
+              <span>at least one</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sc-metric-grid">
+          <article class="sc-metric sc-metric-positive">
+            <span class="sc-metric-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+            </span>
+            <div>
+              <span>Chance of target</span>
+              <strong id="atLeastOne">88.8%</strong>
+              <small>one or more copies</small>
+            </div>
+          </article>
+          <article class="sc-metric sc-metric-risk">
+            <span class="sc-metric-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.5 2.4 17.2A2 2 0 0 0 4.1 20h15.8a2 2 0 0 0 1.7-2.8L13.7 3.5a2 2 0 0 0-3.4 0Z"/></svg>
+            </span>
+            <div>
+              <span>Miss risk</span>
+              <strong id="zeroCopies">11.2%</strong>
+              <small>no target copy</small>
+            </div>
+          </article>
+          <article class="sc-metric">
+            <span class="sc-metric-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7L21 9.6l-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg>
+            </span>
+            <div>
+              <span>All Epics expected</span>
+              <strong id="expectedEpics">12.8</strong>
+              <small>from every summon type</small>
+            </div>
+          </article>
+        </div>
+
+        <article class="sc-distribution">
+          <div class="sc-block-heading">
+            <div>
+              <span class="sc-field-label">Target copy distribution</span>
+              <span class="sc-field-help">How often each outcome occurs across players with the same resources</span>
+            </div>
+            <span class="sc-formula-chip">Standard + Suit</span>
+          </div>
+          <div class="sc-bars" id="distributionBars"></div>
+        </article>
+
+        <article class="sc-recommendation" id="recommendationCard">
+          <span class="sc-recommendation-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2Z"/><path d="M9 22h6"/><path d="M9 18h6"/></svg>
+          </span>
+          <div>
+            <span class="sc-recommendation-label">Plan insight</span>
+            <strong id="recommendationTitle">Suit pulls do most of the work</strong>
+            <p id="recommendationText">Your matching Suit summons have a much stronger target rate than Standard summons without Rate Up.</p>
+          </div>
+        </article>
+
+        <details class="sc-method">
+          <summary>
+            <span>Rates and calculation assumptions</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="sc-method-body">
+            <div><span>Amity</span><strong>3% any Epic</strong></div>
+            <div><span>Standard target</span><strong id="methodStandardRate">0.29%</strong></div>
+            <div><span>Suit target</span><strong id="methodSuitRate">1.875%</strong></div>
+            <div><span>Standard pity</span><strong>Epic by pull 50</strong></div>
+            <div><span>Suit pity</span><strong>Epic by pull 20</strong></div>
+            <p>The forecast starts both pity counters at zero. A natural Epic resets only its own banner counter. On a guaranteed Epic pull, the selected hero keeps its normal share of that banner's Epic pool. “No target copy” only means that the selected hero does not appear.</p>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <dialog class="sc-dialog" id="heroDialog" aria-labelledby="heroDialogTitle">
+    <div class="sc-dialog-shell">
+      <header class="sc-dialog-header">
+        <div>
+          <span class="section-label">Target hero</span>
+          <h2 id="heroDialogTitle">Choose who you are summoning for</h2>
+          <p>The selected hero is treated as your active Wishlist and Rate Up target.</p>
+        </div>
+        <button class="sc-dialog-close" id="closeHeroDialog" type="button" aria-label="Close hero selector">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </header>
+
+      <div class="sc-dialog-tools">
+        <label class="sc-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="heroSearch" type="search" placeholder="Search heroes..." autocomplete="off" />
+        </label>
+        <div class="sc-faction-filters" role="group" aria-label="Filter by faction">
+          <button class="is-active" type="button" data-faction="all">All</button>
+          {REGULAR_FACTIONS.map((faction) => (
+            <button type="button" data-faction={faction}>
+              <img src={FACTION_META[faction].icon} alt="" />
+              {faction}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="sc-hero-grid" id="heroGrid">
+        {heroes.map((hero: any) => {
+          const faction = FACTION_META[hero.faction];
+          return (
+            <button
+              type="button"
+              class={`sc-hero-option ${hero.id === initialHero.id ? "is-selected" : ""}`}
+              data-id={hero.id}
+              data-name={hero.name}
+              data-faction={hero.faction}
+              data-class={hero.class ?? ""}
+              data-thumb={heroThumb(hero.id)}
+              data-card={heroCard(hero.id)}
+              data-card-srcset={heroCardSrcset(hero.id)}
+              data-original={heroImage(hero.id)}
+              data-faction-icon={faction.icon}
+              data-faction-color={faction.color}
+              data-faction-dim={faction.dim}
+              style={`--hero-accent:${faction.color};--hero-dim:${faction.dim}`}
+            >
+              <span class="sc-option-image">
+                <img
+                  src={heroThumb(hero.id)}
+                  alt=""
+                  width="96"
+                  height="96"
+                  loading="lazy"
+                  decoding="async"
+                  onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
+                />
+                {hero.release === false && <span class="sc-upcoming">Upcoming</span>}
+              </span>
+              <span class="sc-option-copy">
+                <strong>{hero.name}</strong>
+                <span><img src={faction.icon} alt="" />{hero.faction}</span>
+              </span>
+              <span class="sc-option-check">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      <p class="sc-empty-state" id="heroEmptyState" hidden>No matching heroes found.</p>
+    </div>
+  </dialog>
+
+  <script is:inline>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const inputs = {
+        amity: $("amityPulls"),
+        standard: $("standardPulls"),
+        suit: $("suitPulls"),
+        rateUp: $("rateUp"),
+      };
+
+      const heroDialog = $("heroDialog");
+      const heroTrigger = $("heroTrigger");
+      const heroOptions = Array.from(document.querySelectorAll(".sc-hero-option"));
+      const factionButtons = Array.from(document.querySelectorAll(".sc-faction-filters [data-faction]"));
+      const searchInput = $("heroSearch");
+      let activeFaction = "all";
+      let selectedHero = {
+        id: heroTrigger?.querySelector("img")?.getAttribute("src")?.split("/").pop()?.replace(".webp", "") || "",
+        name: $("selectedHeroName")?.textContent || "",
+        faction: $("selectedHeroFaction")?.textContent || "",
+      };
+
+      function clampInput(input) {
+        const value = Math.max(0, Math.min(9999, Number.parseInt(input.value || "0", 10) || 0));
+        input.value = String(value);
+        return value;
+      }
+
+      function bannerForecast(pulls, targetRate, epicRate, pityLimit, maxCopies = 6) {
+        let pityStates = Array(pityLimit).fill(0);
+        pityStates[0] = 1;
+        let targetStates = Array.from(
+          { length: pityLimit },
+          () => Array(maxCopies + 1).fill(0),
+        );
+        targetStates[0][0] = 1;
+        let expectedCopies = 0;
+        let expectedEpics = 0;
+
+        for (let pull = 0; pull < pulls; pull += 1) {
+          const nextPityStates = Array(pityLimit).fill(0);
+          const nextTargetStates = Array.from(
+            { length: pityLimit },
+            () => Array(maxCopies + 1).fill(0),
+          );
+
+          for (let pity = 0; pity < pityLimit; pity += 1) {
+            const pityMass = pityStates[pity];
+            const hardPity = pity === pityLimit - 1;
+            const epicProbability = hardPity ? 1 : epicRate;
+            const targetProbability = hardPity ? targetRate / epicRate : targetRate;
+            const otherEpicProbability = epicProbability - targetProbability;
+            const noEpicProbability = 1 - epicProbability;
+
+            expectedCopies += pityMass * targetProbability;
+            expectedEpics += pityMass * epicProbability;
+            nextPityStates[0] += pityMass * epicProbability;
+            if (!hardPity) nextPityStates[pity + 1] += pityMass * noEpicProbability;
+
+            for (let copies = 0; copies <= maxCopies; copies += 1) {
+              const mass = targetStates[pity][copies];
+              if (!mass) continue;
+              nextTargetStates[0][copies] += mass * otherEpicProbability;
+              if (copies < maxCopies) {
+                nextTargetStates[0][copies + 1] += mass * targetProbability;
+              }
+              if (!hardPity) {
+                nextTargetStates[pity + 1][copies] += mass * noEpicProbability;
+              }
+            }
+          }
+
+          pityStates = nextPityStates;
+          targetStates = nextTargetStates;
+        }
+
+        const distribution = Array(maxCopies + 1).fill(0);
+        targetStates.forEach((state) => {
+          state.forEach((probability, copies) => {
+            distribution[copies] += probability;
+          });
+        });
+
+        return { distribution, expectedCopies, expectedEpics };
+      }
+
+      function combineDistributions(groups, maxK) {
+        let distribution = Array(maxK + 1).fill(0);
+        distribution[0] = 1;
+        groups.forEach((terms) => {
+          const next = Array(maxK + 1).fill(0);
+          for (let total = 0; total <= maxK; total += 1) {
+            for (let copies = 0; copies <= total; copies += 1) {
+              next[total] += distribution[total - copies] * terms[copies];
+            }
+          }
+          distribution = next;
+        });
+        return distribution;
+      }
+
+      function formatPercent(value, digits = 1) {
+        if (value > 0 && value < 0.001) return "<0.1%";
+        return `${value.toFixed(digits)}%`;
+      }
+
+      function renderDistribution(standardForecast, suitForecast) {
+        const exact = combineDistributions([
+          standardForecast.distribution,
+          suitForecast.distribution,
+        ], 6);
+        const sum = exact.reduce((total, value) => total + value, 0);
+        const values = [...exact, Math.max(0, 1 - sum)];
+        const max = Math.max(...values, 0.0001);
+        $("distributionBars").innerHTML = values.map((probability, index) => {
+          const percent = probability * 100;
+          const label = index === 7 ? "7+" : String(index);
+          const width = Math.max(2, (probability / max) * 100);
+          return `
+            <div class="sc-bar-row">
+              <span class="sc-bar-label">${label}</span>
+              <span class="sc-bar-track"><span class="sc-bar-fill" style="width:${width}%"></span></span>
+              <strong>${formatPercent(percent)}</strong>
+            </div>
+          `;
+        }).join("");
+      }
+
+      function updateRecommendation(amity, standard, suit, rateUp, chance) {
+        let title = "Add your saved resources";
+        let text = "Enter your summon counts to see the chance of pulling your selected target.";
+        if (standard + suit > 0 && !rateUp) {
+          title = "Waiting for Rate Up is the strongest upgrade";
+          text = "Rate Up raises the Standard target rate by 6.96× and the matching Suit target rate by 1.92×.";
+        }
+        if (rateUp && suit > 0) {
+          title = "Matching Suit + Rate Up is your best route";
+          text = `Your plan has a ${formatPercent(chance)} chance of at least one ${selectedHero.name}. Suit pulls carry the strongest 3.6% target rate.`;
+        } else if (rateUp && standard > 0) {
+          title = "Rate Up makes Standard pulls viable";
+          text = "Your Standard target chance rises from about 0.29% to 2.0% per pull. Matching Suit pulls would still be stronger.";
+        } else if (suit > 0) {
+          title = "Suit pulls do most of the work";
+          text = "Matching Suit summons have a much stronger target rate than Standard summons without Rate Up.";
+        } else if (standard > 0) {
+          title = "Standard targeting is very weak without Rate Up";
+          text = "Your Wishlist is split across 16 heroes. Consider saving these pulls for the target hero's Rate Up.";
+        } else if (amity > 0) {
+          title = "Amity builds your roster, not a specific target";
+          text = "Amity contributes expected Epics, but its tooltip does not provide enough information to calculate one selected hero.";
+        }
+        $("recommendationTitle").textContent = title;
+        $("recommendationText").textContent = text;
+      }
+
+      function updateCalculator() {
+        const amity = clampInput(inputs.amity);
+        const standard = clampInput(inputs.standard);
+        const suit = clampInput(inputs.suit);
+        const rateUp = inputs.rateUp.checked;
+        const standardRate = rateUp ? 0.02 : 0.046 / 16;
+        const suitRate = rateUp ? 0.036 : 0.075 / 4;
+        const standardForecast = bannerForecast(standard, standardRate, 0.05, 50);
+        const suitForecast = bannerForecast(suit, suitRate, 0.078, 20);
+        const expectedCopies = standardForecast.expectedCopies + suitForecast.expectedCopies;
+        const zeroChance = standardForecast.distribution[0] * suitForecast.distribution[0];
+        const atLeastOne = (1 - zeroChance) * 100;
+        const expectedEpics = amity * 0.03 + standardForecast.expectedEpics + suitForecast.expectedEpics;
+        const total = amity + standard + suit;
+
+        $("standardRateLabel").textContent = `${rateUp ? "2.0%" : "0.29%"} for your target`;
+        $("suitRateLabel").textContent = `${rateUp ? "3.6%" : "1.875%"} for your target`;
+        $("methodStandardRate").textContent = rateUp ? "2.0%" : "0.29%";
+        $("methodSuitRate").textContent = rateUp ? "3.6%" : "1.875%";
+        document.querySelector(".sc-switch-text").textContent = rateUp ? "On" : "Off";
+        $("totalPulls").textContent = total.toLocaleString("en-US");
+        $("expectedCopies").textContent = expectedCopies.toFixed(2);
+        $("atLeastOne").textContent = formatPercent(atLeastOne);
+        $("atLeastOneRing").textContent = formatPercent(atLeastOne, 0);
+        $("zeroCopies").textContent = formatPercent(zeroChance * 100);
+        $("expectedEpics").textContent = expectedEpics.toFixed(1);
+        $("chanceRing").style.setProperty("--chance", Math.max(0, Math.min(100, atLeastOne)).toFixed(2));
+        $("resultSummary").textContent = standard + suit > 0
+          ? `Across ${standard.toLocaleString("en-US")} Standard and ${suit.toLocaleString("en-US")} matching ${selectedHero.faction} Suit pulls.`
+          : "Amity pulls are not included in target-hero probability.";
+
+        renderDistribution(standardForecast, suitForecast);
+        updateRecommendation(amity, standard, suit, rateUp, atLeastOne);
+      }
+
+      function selectHero(option) {
+        selectedHero = {
+          id: option.dataset.id,
+          name: option.dataset.name,
+          faction: option.dataset.faction,
+        };
+        const thumb = option.dataset.thumb;
+        const card = option.dataset.card;
+        const cardSrcset = option.dataset.cardSrcset;
+        const original = option.dataset.original;
+        const factionIcon = option.dataset.factionIcon;
+        const accent = option.dataset.factionColor;
+        const dim = option.dataset.factionDim;
+        const heroClass = option.dataset.class;
+
+        ["heroTrigger", "heroResult", "suitResourceCard"].forEach((id) => {
+          $(id).style.setProperty("--hero-accent", accent);
+          $(id).style.setProperty("--hero-dim", dim);
+        });
+        const selectedImage = $("selectedHeroImage");
+        selectedImage.onerror = () => {
+          selectedImage.onerror = null;
+          selectedImage.src = original;
+        };
+        selectedImage.src = thumb;
+        $("selectedHeroName").textContent = selectedHero.name;
+        $("selectedHeroFaction").textContent = selectedHero.faction;
+        $("selectedHeroClass").textContent = heroClass;
+        $("selectedFactionIcon").src = factionIcon;
+        $("suitFactionIcon").src = factionIcon;
+        $("suitFactionName").textContent = selectedHero.faction;
+        const resultImage = $("resultHeroImage");
+        resultImage.onerror = () => {
+          resultImage.onerror = null;
+          resultImage.srcset = "";
+          resultImage.src = original;
+        };
+        resultImage.srcset = cardSrcset;
+        resultImage.src = card;
+        resultImage.alt = selectedHero.name;
+        $("resultFactionIcon").src = factionIcon;
+        $("resultFactionIcon").alt = selectedHero.faction;
+        $("resultHeroName").textContent = selectedHero.name;
+        heroOptions.forEach((hero) => hero.classList.toggle("is-selected", hero === option));
+        heroDialog.close();
+        updateCalculator();
+      }
+
+      function filterHeroes() {
+        const query = (searchInput.value || "").trim().toLowerCase();
+        let visible = 0;
+        heroOptions.forEach((option) => {
+          const matchesText = option.dataset.name.toLowerCase().includes(query);
+          const matchesFaction = activeFaction === "all" || option.dataset.faction === activeFaction;
+          const show = matchesText && matchesFaction;
+          option.hidden = !show;
+          if (show) visible += 1;
+        });
+        $("heroEmptyState").hidden = visible !== 0;
+      }
+
+      heroTrigger?.addEventListener("click", () => {
+        heroDialog.showModal();
+        requestAnimationFrame(() => searchInput.focus());
+      });
+      $("closeHeroDialog")?.addEventListener("click", () => heroDialog.close());
+      heroDialog?.addEventListener("click", (event) => {
+        if (event.target === heroDialog) heroDialog.close();
+      });
+      heroOptions.forEach((option) => option.addEventListener("click", () => selectHero(option)));
+      searchInput?.addEventListener("input", filterHeroes);
+      factionButtons.forEach((button) => button.addEventListener("click", () => {
+        activeFaction = button.dataset.faction;
+        factionButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+        filterHeroes();
+      }));
+
+      Object.values(inputs).forEach((input) => input?.addEventListener("input", updateCalculator));
+      document.querySelectorAll("[data-step]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const input = $(button.dataset.target);
+          input.value = String(Math.max(0, (Number.parseInt(input.value || "0", 10) || 0) + Number(button.dataset.step)));
+          updateCalculator();
+        });
+      });
+      $("resetCalculator")?.addEventListener("click", () => {
+        inputs.amity.value = "0";
+        inputs.standard.value = "0";
+        inputs.suit.value = "0";
+        inputs.rateUp.checked = false;
+        updateCalculator();
+      });
+
+      updateCalculator();
+    })();
+  </script>
+</Base>
