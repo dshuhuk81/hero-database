@@ -253,6 +253,18 @@
   height: 16px;
 }
 
+.sc-owned-copies {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  background: var(--surface-tint);
+}
+
 .sc-reset {
   border: 0;
   background: transparent;
@@ -690,6 +702,7 @@
 }
 
 .sc-distribution,
+.sc-divination,
 .sc-recommendation,
 .sc-method {
   margin: 0 var(--space-6) var(--space-5);
@@ -700,6 +713,255 @@
 
 .sc-distribution {
   padding: var(--space-5);
+}
+
+.sc-divination {
+  padding: var(--space-5);
+  border-color: var(--rarity-legendary-border);
+  background:
+    radial-gradient(circle at 90% 0%, var(--rarity-legendary-glow), transparent 34%),
+    var(--surface-tint);
+}
+
+.sc-divination-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.sc-divination-rank {
+  min-width: 0;
+}
+
+.sc-divination-rank span,
+.sc-divination-rank strong,
+.sc-divination-rank small {
+  display: block;
+}
+
+.sc-divination-rank span,
+.sc-divination-chance span {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.sc-divination-rank strong {
+  margin: 2px 0;
+  color: var(--accent-gold-light);
+  font-size: var(--text-xl);
+}
+
+.sc-divination-rank small {
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+}
+
+.sc-divination-chance {
+  min-width: 132px;
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--border-faint);
+  text-align: right;
+}
+
+.sc-divination-chance strong {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--text-bright);
+  font-size: var(--text-2xl);
+}
+
+.sc-divination-progress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.sc-divination-progress-copy span,
+.sc-divination-progress-copy strong {
+  display: block;
+}
+
+.sc-divination-progress-copy span {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.sc-divination-progress-copy strong {
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-normal);
+}
+
+.sc-divination-track {
+  grid-column: 1 / -1;
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: var(--border-faint);
+}
+
+.sc-divination-track span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-gold));
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.sc-next-chance {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--accent-gold-light);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.sc-divination-ladder {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(78px, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.sc-divination-step {
+  --step-color: var(--text-disabled);
+  --step-dot: var(--step-color);
+  --step-border: var(--border-faint);
+  --step-bg: var(--bg-surface);
+  position: relative;
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+  opacity: 0.36;
+  filter: saturate(0.15);
+  transition: var(--transition-colors), var(--transition-opacity), var(--transition-transform);
+}
+
+.sc-divination-step strong,
+.sc-divination-step small {
+  display: block;
+}
+
+.sc-divination-step strong {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sc-divination-step small {
+  margin-top: var(--space-1);
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.sc-divination-dot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--text-disabled);
+}
+
+.sc-divination-step[data-tier="Epic+"] {
+  --step-color: var(--accent-gold);
+  --step-border: color-mix(in srgb, var(--accent-gold) 48%, var(--border-faint));
+  --step-bg: color-mix(in srgb, var(--accent-gold) 9%, var(--bg-surface));
+}
+
+.sc-divination-step[data-tier^="Legendary"] {
+  --step-color: var(--tier-splus-from);
+  --step-border: color-mix(in srgb, var(--tier-splus-from) 48%, var(--border-faint));
+  --step-bg: color-mix(in srgb, var(--tier-splus-from) 9%, var(--bg-surface));
+}
+
+.sc-divination-step[data-tier^="Exalted"] {
+  --step-color: var(--tier-c-from);
+  --step-border: color-mix(in srgb, var(--tier-c-from) 48%, var(--border-faint));
+  --step-bg: color-mix(in srgb, var(--tier-c-from) 9%, var(--bg-surface));
+}
+
+.sc-divination-step[data-tier="Mythic"] {
+  --step-color: var(--tier-b-from);
+  --step-border: color-mix(in srgb, var(--tier-b-from) 48%, var(--border-faint));
+  --step-bg: color-mix(in srgb, var(--tier-b-from) 9%, var(--bg-surface));
+}
+
+.sc-divination-step[data-tier^="Divine"] {
+  --step-color: var(--accent-purple);
+  --step-dot: linear-gradient(135deg, var(--accent-purple), var(--tier-b-from));
+  --step-border: color-mix(in srgb, var(--accent-purple) 52%, var(--tier-b-from));
+  --step-bg: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent-purple) 11%, var(--bg-surface)),
+    color-mix(in srgb, var(--tier-b-from) 8%, var(--bg-surface))
+  );
+}
+
+.sc-divination-step.is-reached {
+  border-color: var(--step-border);
+  background: var(--step-bg);
+  opacity: 0.78;
+  filter: saturate(0.75);
+}
+
+.sc-divination-step.is-reached .sc-divination-dot {
+  background: var(--step-dot);
+}
+
+.sc-divination-step.is-current {
+  z-index: 1;
+  border-color: var(--step-color);
+  background: var(--step-bg);
+  opacity: 1;
+  filter: saturate(1);
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--step-color) 35%, transparent),
+              0 8px 22px color-mix(in srgb, var(--step-color) 18%, transparent);
+}
+
+.sc-divination-step.is-current strong {
+  color: var(--step-color);
+}
+
+.sc-divination-step.is-current .sc-divination-dot {
+  background: var(--step-dot);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--step-color) 70%, transparent);
+}
+
+.sc-divination-current-label {
+  display: none;
+  margin-top: var(--space-2);
+  color: var(--step-color);
+  font-size: 8px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+}
+
+.sc-divination-step.is-current .sc-divination-current-label {
+  display: block;
+}
+
+.sc-divination-note {
+  margin: var(--space-4) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
 }
 
 .sc-formula-chip {
@@ -1245,6 +1507,7 @@
 
   .sc-hero-result,
   .sc-metric-grid,
+  .sc-divination,
   .sc-distribution,
   .sc-recommendation,
   .sc-method {
@@ -1259,6 +1522,40 @@
 
   .sc-expected-row {
     display: block;
+  }
+
+  .sc-owned-copies {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sc-owned-copies .sc-number-control {
+    grid-column: auto;
+  }
+
+  .sc-divination-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sc-divination-chance {
+    width: 100%;
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid var(--border-faint);
+    border-left: 0;
+    text-align: left;
+  }
+
+  .sc-divination-ladder {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    scroll-snap-type: x proximity;
+  }
+
+  .sc-divination-step {
+    min-width: 96px;
+    scroll-snap-align: start;
   }
 
   .sc-expected-row > strong {

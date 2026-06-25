@@ -115,6 +115,18 @@ const heroCardSrcset = (id: string) =>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </span>
           </button>
+
+          <div class="sc-owned-copies">
+            <div>
+              <span class="sc-field-label">Copies already owned</span>
+              <span class="sc-field-help">Included in the Divination forecast, not in summon odds</span>
+            </div>
+            <span class="sc-number-control">
+              <button type="button" data-step="-1" data-target="ownedCopies" aria-label="Remove one owned copy">−</button>
+              <input id="ownedCopies" inputmode="numeric" type="number" min="0" max="99" step="1" value="0" aria-label="Copies of the target hero already owned" />
+              <button type="button" data-step="1" data-target="ownedCopies" aria-label="Add one owned copy">+</button>
+            </span>
+          </div>
         </div>
 
         <div class="sc-field-group">
@@ -270,6 +282,67 @@ const heroCardSrcset = (id: string) =>
           </article>
         </div>
 
+        <article class="sc-divination" id="divinationForecast">
+          <div class="sc-block-heading">
+            <div>
+              <span class="sc-field-label">Divination forecast</span>
+              <span class="sc-field-help">Based on owned cards plus the expected copies from this summon plan</span>
+            </div>
+            <span class="sc-formula-chip"><strong id="expectedTotalCopies">2.58</strong>&nbsp;total cards</span>
+          </div>
+
+          <div class="sc-divination-summary">
+            <div class="sc-divination-rank">
+              <div>
+                <span>Highest expected Divination</span>
+                <strong id="expectedDivination">Legendary</strong>
+                <small id="expectedDivinationRequirement">Requires 2 total hero cards</small>
+              </div>
+            </div>
+            <div class="sc-divination-chance">
+              <span id="divinationChanceLabel">Chance to reach Legendary</span>
+              <strong id="divinationChance">73.7%</strong>
+            </div>
+          </div>
+
+          <div class="sc-divination-progress">
+            <div class="sc-divination-progress-copy">
+              <span id="nextDivinationLabel">Next: Legendary+ at 4 cards</span>
+              <strong id="cardsToNext">1.42 expected cards remaining</strong>
+            </div>
+            <div class="sc-divination-track">
+              <span id="divinationProgressFill"></span>
+            </div>
+            <span class="sc-next-chance" id="nextDivinationChance">29.8% chance</span>
+          </div>
+
+          <div class="sc-divination-ladder" aria-label="Divination card requirements">
+            {[
+              ["Epic+", 2],
+              ["Legendary", 2],
+              ["Legendary+", 4],
+              ["Exalted", 4],
+              ["Exalted+", 6],
+              ["Mythic", 6],
+              ["Divine", 10],
+              ["Divine 1", 12],
+              ["Divine 2", 14],
+              ["Divine 3", 18],
+              ["Divine 4", 22],
+              ["Divine 5", 30],
+            ].map(([tier, cards]) => (
+              <div class="sc-divination-step" data-tier={tier} data-cards={cards}>
+                <span class="sc-divination-dot"></span>
+                <strong>{tier}</strong>
+                <small>{cards} cards</small>
+                <span class="sc-divination-current-label">Expected</span>
+              </div>
+            ))}
+          </div>
+
+          <p class="sc-divination-note">Card counts are cumulative. When two tiers require the same number, the higher step uses other fodder but no additional copy of this hero.</p>
+        </article>
+
         <article class="sc-distribution">
           <div class="sc-block-heading">
             <div>
@@ -393,8 +466,26 @@ const heroCardSrcset = (id: string) =>
         amity: $("amityPulls"),
         standard: $("standardPulls"),
         suit: $("suitPulls"),
+        owned: $("ownedCopies"),
         rateUp: $("rateUp"),
       };
+
+      const divinationMilestones = [
+        { tier: "No copy", cards: 0 },
+        { tier: "Epic", cards: 1 },
+        { tier: "Epic+", cards: 2 },
+        { tier: "Legendary", cards: 2 },
+        { tier: "Legendary+", cards: 4 },
+        { tier: "Exalted", cards: 4 },
+        { tier: "Exalted+", cards: 6 },
+        { tier: "Mythic", cards: 6 },
+        { tier: "Divine", cards: 10 },
+        { tier: "Divine 1", cards: 12 },
+        { tier: "Divine 2", cards: 14 },
+        { tier: "Divine 3", cards: 18 },
+        { tier: "Divine 4", cards: 22 },
+        { tier: "Divine 5", cards: 30 },
+      ];
 
       const heroDialog = $("heroDialog");
       const heroTrigger = $("heroTrigger");
@@ -414,7 +505,7 @@ const heroCardSrcset = (id: string) =>
         return value;
       }
 
-      function bannerForecast(pulls, targetRate, epicRate, pityLimit, maxCopies = 6) {
+      function bannerForecast(pulls, targetRate, epicRate, pityLimit, maxCopies = 30) {
         let pityStates = Array(pityLimit).fill(0);
         pityStates[0] = 1;
         let targetStates = Array.from(
@@ -514,6 +605,63 @@ const heroCardSrcset = (id: string) =>
         }).join("");
       }
 
+      function probabilityAtLeast(distribution, copies) {
+        if (copies <= 0) return 1;
+        return Math.max(0, 1 - distribution.slice(0, copies).reduce((total, value) => total + value, 0));
+      }
+
+      function updateDivination(ownedCopies, expectedPulledCopies, combinedDistribution) {
+        const expectedTotal = ownedCopies + expectedPulledCopies;
+        const current = divinationMilestones.reduce(
+          (highest, milestone) => milestone.cards <= expectedTotal ? milestone : highest,
+          divinationMilestones[0],
+        );
+        const currentIndex = divinationMilestones.lastIndexOf(current);
+        const next = divinationMilestones
+          .slice(currentIndex + 1)
+          .find((milestone) => milestone.cards > current.cards);
+        const chanceMilestone = current.cards === 0 ? divinationMilestones[1] : current;
+        const currentNeededFromPulls = Math.max(0, chanceMilestone.cards - ownedCopies);
+        const currentChance = probabilityAtLeast(combinedDistribution, currentNeededFromPulls) * 100;
+
+        $("expectedTotalCopies").textContent = expectedTotal.toFixed(2);
+        $("expectedDivination").textContent = current.tier;
+        $("expectedDivinationRequirement").textContent = current.cards === 0
+          ? "No target card expected from the current plan"
+          : current.cards === 1
+          ? "Base Epic hero card"
+          : `Requires ${current.cards} total hero cards`;
+        $("divinationChanceLabel").textContent = current.cards === 0
+          ? "Chance to obtain the first copy"
+          : `Chance to reach ${current.tier}`;
+        $("divinationChance").textContent = formatPercent(currentChance);
+
+        if (next) {
+          const remaining = Math.max(0, next.cards - expectedTotal);
+          const nextNeededFromPulls = Math.max(0, next.cards - ownedCopies);
+          const nextChance = probabilityAtLeast(combinedDistribution, nextNeededFromPulls) * 100;
+          const progressBase = current.cards;
+          const progressRange = Math.max(1, next.cards - progressBase);
+          const progress = Math.max(0, Math.min(1, (expectedTotal - progressBase) / progressRange)) * 100;
+          $("nextDivinationLabel").textContent = `Next: ${next.tier} at ${next.cards} cards`;
+          $("cardsToNext").textContent = `${remaining.toFixed(2)} expected cards remaining`;
+          $("nextDivinationChance").textContent = `${formatPercent(nextChance)} chance`;
+          $("divinationProgressFill").style.width = `${progress}%`;
+        } else {
+          $("nextDivinationLabel").textContent = "Maximum Divination reached";
+          $("cardsToNext").textContent = "Divine 5 is the current ceiling";
+          $("nextDivinationChance").textContent = formatPercent(currentChance);
+          $("divinationProgressFill").style.width = "100%";
+        }
+
+        document.querySelectorAll(".sc-divination-step").forEach((step) => {
+          const cards = Number(step.dataset.cards);
+          const tier = step.dataset.tier;
+          step.classList.toggle("is-reached", cards <= expectedTotal);
+          step.classList.toggle("is-current", tier === current.tier);
+        });
+      }
+
       function updateRecommendation(amity, standard, suit, rateUp, chance) {
         let title = "Add your saved resources";
         let text = "Enter your summon counts to see the chance of pulling your selected target.";
@@ -545,11 +693,16 @@ const heroCardSrcset = (id: string) =>
         const amity = clampInput(inputs.amity);
         const standard = clampInput(inputs.standard);
         const suit = clampInput(inputs.suit);
+        const owned = clampInput(inputs.owned);
         const rateUp = inputs.rateUp.checked;
         const standardRate = rateUp ? 0.02 : 0.046 / 16;
         const suitRate = rateUp ? 0.036 : 0.075 / 4;
         const standardForecast = bannerForecast(standard, standardRate, 0.05, 50);
         const suitForecast = bannerForecast(suit, suitRate, 0.078, 20);
+        const fullDistribution = combineDistributions([
+          standardForecast.distribution,
+          suitForecast.distribution,
+        ], 30);
         const expectedCopies = standardForecast.expectedCopies + suitForecast.expectedCopies;
         const zeroChance = standardForecast.distribution[0] * suitForecast.distribution[0];
         const atLeastOne = (1 - zeroChance) * 100;
@@ -573,6 +726,7 @@ const heroCardSrcset = (id: string) =>
           : "Amity pulls are not included in target-hero probability.";
 
         renderDistribution(standardForecast, suitForecast);
+        updateDivination(owned, expectedCopies, fullDistribution);
         updateRecommendation(amity, standard, suit, rateUp, atLeastOne);
       }
 
@@ -665,6 +819,7 @@ const heroCardSrcset = (id: string) =>
         inputs.amity.value = "0";
         inputs.standard.value = "0";
         inputs.suit.value = "0";
+        inputs.owned.value = "0";
         inputs.rateUp.checked = false;
         updateCalculator();
       });
