@@ -11,8 +11,8 @@
   "description": "Goddess of Strategy. All beings play as stones; each strike from wit alone.",
   "evolution": "Divine V",
   "level": 300,
-  "baseAttackRate": 0,
-  "bossUltimatesPer90s": 0,
+  "baseAttackRate": 0.983,
+  "bossUltimatesPer90s": 7,
   "stats": {
     "might": 632000,
     "hp": 1842179,
@@ -103,25 +103,81 @@
     {
       "label": "Desire",
       "comment": "4pc ramps ATK passively after 15s - rewards long fights and boss content.",
-      "virtues": ["desire_1", "desire_2", "desire_3", "desire_4"]
+      "virtues": [
+        "desire_1",
+        "desire_2",
+        "desire_3",
+        "desire_4"
+      ]
     },
     {
       "label": "Wildness",
       "comment": "4pc stacks +5% ATK every 5s up to 10 stacks - best sustained damage over a long fight.",
-      "virtues": ["wildness_1", "wildness_2", "wildness_3", "wildness_4"]
+      "virtues": [
+        "wildness_1",
+        "wildness_2",
+        "wildness_3",
+        "wildness_4"
+      ]
     },
     {
       "label": "Insight",
       "comment": "4pc grants +30% CRIT Rate before first hit, amplifying burst in both stances.",
-      "virtues": ["insight_1", "insight_2", "insight_3", "insight_4"]
+      "virtues": [
+        "insight_1",
+        "insight_2",
+        "insight_3",
+        "insight_4"
+      ]
     }
   ],
   "synergyPartners": [
-    { "heroId": "hephaestus", "via": ["TEAM_ATK_SPD_UP", "TEAM_BUFF", "TEAM_ENERGY_RESTORE", "ENEMY_CROWD_CONTROL", "ENEMY_ARMOR_REDUCTION"] },
-    { "heroId": "dionysus", "via": ["TEAM_ATK_SPD_UP", "TEAM_CDR", "TEAM_ENERGY_RESTORE", "ENEMY_VULNERABILITY"] },
-    { "heroId": "iris", "via": ["TEAM_ATK_SPD_UP", "TEAM_BUFF", "ENEMY_CROWD_CONTROL", "ENEMY_VULNERABILITY"] },
-    { "heroId": "set", "via": ["TEAM_ATK_SPD_UP", "TEAM_BUFF", "ENEMY_ARMOR_REDUCTION", "ENEMY_CROWD_CONTROL"] },
-    { "heroId": "diana", "via": ["TEAM_ATK_SPD_UP", "TEAM_BUFF", "TEAM_ENERGY_RESTORE", "ENEMY_ARMOR_REDUCTION"] }
+    {
+      "heroId": "hephaestus",
+      "via": [
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_ENERGY_RESTORE",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION"
+      ]
+    },
+    {
+      "heroId": "dionysus",
+      "via": [
+        "TEAM_ATK_SPD_UP",
+        "TEAM_CDR",
+        "TEAM_ENERGY_RESTORE",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "iris",
+      "via": [
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_VULNERABILITY"
+      ]
+    },
+    {
+      "heroId": "set",
+      "via": [
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "ENEMY_ARMOR_REDUCTION",
+        "ENEMY_CROWD_CONTROL"
+      ]
+    },
+    {
+      "heroId": "diana",
+      "via": [
+        "TEAM_ATK_SPD_UP",
+        "TEAM_BUFF",
+        "TEAM_ENERGY_RESTORE",
+        "ENEMY_ARMOR_REDUCTION"
+      ]
+    }
   ],
   "synergies": [
     "PLAYSTYLE_BASIC_ATTACK_SCALER",
