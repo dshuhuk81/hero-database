@@ -15,13 +15,11 @@ const heroes = Object.values(allHeroes as Record<string, any>)
   .filter((hero: any) =>
     hero?.id &&
     hero?.name &&
+    hero?.release !== false &&
     hero?.rarity === "Legendary" &&
     REGULAR_FACTIONS.includes(hero?.faction)
   )
-  .sort((a: any, b: any) => {
-    if (a.release !== b.release) return a.release === false ? 1 : -1;
-    return a.name.localeCompare(b.name);
-  });
+  .sort((a: any, b: any) => a.name.localeCompare(b.name));
 
 const initialHero = heroes.find((hero: any) => hero.id === "caishen") ?? heroes[0];
 const initialFaction = FACTION_META[initialHero.faction];
@@ -442,7 +440,6 @@ const heroCardSrcset = (id: string) =>
                   decoding="async"
                   onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
                 />
-                {hero.release === false && <span class="sc-upcoming">Upcoming</span>}
               </span>
               <span class="sc-option-copy">
                 <strong>{hero.name}</strong>

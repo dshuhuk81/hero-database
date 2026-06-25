@@ -1308,19 +1308,6 @@
   background: var(--bg-raised);
 }
 
-.sc-upcoming {
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
-  padding: 2px 4px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-overlay);
-  color: var(--accent-gold);
-  font-size: 8px;
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-}
-
 .sc-option-copy {
   min-width: 0;
 }
