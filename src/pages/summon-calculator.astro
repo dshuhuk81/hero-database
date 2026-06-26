@@ -125,6 +125,37 @@ const heroCardSrcset = (id: string) =>
               <button type="button" data-step="1" data-target="ownedCopies" aria-label="Add one owned copy">+</button>
             </span>
           </div>
+
+          <div class="sc-pity-counters">
+            <div class="sc-pity-heading">
+              <span class="sc-field-label">Current pity</span>
+              <span class="sc-field-help">Draws remaining until the next guaranteed Epic on each banner</span>
+            </div>
+            <div class="sc-pity-grid">
+              <div class="sc-pity-card">
+                <span>
+                  <strong>Standard</strong>
+                  <small>0 means start fresh</small>
+                </span>
+                <span class="sc-number-control">
+                  <button type="button" data-step="-1" data-target="standardPity" aria-label="Remove one Standard pity draw">−</button>
+                  <input id="standardPity" inputmode="numeric" type="number" min="0" max="50" step="1" value="0" aria-label="Draws until Standard pity" />
+                  <button type="button" data-step="1" data-target="standardPity" aria-label="Add one Standard pity draw">+</button>
+                </span>
+              </div>
+              <div class="sc-pity-card">
+                <span>
+                  <strong>Suit</strong>
+                  <small>0 means start fresh</small>
+                </span>
+                <span class="sc-number-control">
+                  <button type="button" data-step="-1" data-target="suitPity" aria-label="Remove one Suit pity draw">−</button>
+                  <input id="suitPity" inputmode="numeric" type="number" min="0" max="20" step="1" value="0" aria-label="Draws until Suit pity" />
+                  <button type="button" data-step="1" data-target="suitPity" aria-label="Add one Suit pity draw">+</button>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="sc-field-group">
@@ -374,7 +405,7 @@ const heroCardSrcset = (id: string) =>
             <div><span>Suit target</span><strong id="methodSuitRate">1.875%</strong></div>
             <div><span>Standard pity</span><strong>Epic by pull 50</strong></div>
             <div><span>Suit pity</span><strong>Epic by pull 20</strong></div>
-            <p>The forecast starts both pity counters at zero. A natural Epic resets only its own banner counter. On a guaranteed Epic pull, the selected hero keeps its normal share of that banner's Epic pool. “No target copy” only means that the selected hero does not appear.</p>
+            <p>The forecast uses the current pity counters entered in the plan. A natural Epic resets only its own banner counter. On a guaranteed Epic pull, the selected hero keeps its normal share of that banner's Epic pool. “No target copy” only means that the selected hero does not appear.</p>
           </div>
         </details>
       </section>
@@ -464,6 +495,8 @@ const heroCardSrcset = (id: string) =>
         standard: $("standardPulls"),
         suit: $("suitPulls"),
         owned: $("ownedCopies"),
+        standardPity: $("standardPity"),
+        suitPity: $("suitPity"),
         rateUp: $("rateUp"),
       };
 
@@ -497,19 +530,27 @@ const heroCardSrcset = (id: string) =>
       };
 
       function clampInput(input) {
-        const value = Math.max(0, Math.min(9999, Number.parseInt(input.value || "0", 10) || 0));
+        const max = Number.parseInt(input.max || "9999", 10) || 9999;
+        const min = Number.parseInt(input.min || "0", 10) || 0;
+        const value = Math.max(min, Math.min(max, Number.parseInt(input.value || "0", 10) || 0));
         input.value = String(value);
         return value;
       }
 
-      function bannerForecast(pulls, targetRate, epicRate, pityLimit, maxCopies = 30) {
+      function pityRemainingToState(drawsRemaining, pityLimit) {
+        if (!drawsRemaining) return 0;
+        return Math.max(0, Math.min(pityLimit - 1, pityLimit - drawsRemaining));
+      }
+
+      function bannerForecast(pulls, targetRate, epicRate, pityLimit, initialPityState = 0, maxCopies = 30) {
         let pityStates = Array(pityLimit).fill(0);
-        pityStates[0] = 1;
+        const initialState = Math.max(0, Math.min(pityLimit - 1, initialPityState));
+        pityStates[initialState] = 1;
         let targetStates = Array.from(
           { length: pityLimit },
           () => Array(maxCopies + 1).fill(0),
         );
-        targetStates[0][0] = 1;
+        targetStates[initialState][0] = 1;
         let expectedCopies = 0;
         let expectedEpics = 0;
 
@@ -691,11 +732,13 @@ const heroCardSrcset = (id: string) =>
         const standard = clampInput(inputs.standard);
         const suit = clampInput(inputs.suit);
         const owned = clampInput(inputs.owned);
+        const standardPity = clampInput(inputs.standardPity);
+        const suitPity = clampInput(inputs.suitPity);
         const rateUp = inputs.rateUp.checked;
         const standardRate = rateUp ? 0.02 : 0.046 / 16;
         const suitRate = rateUp ? 0.036 : 0.075 / 4;
-        const standardForecast = bannerForecast(standard, standardRate, 0.05, 50);
-        const suitForecast = bannerForecast(suit, suitRate, 0.078, 20);
+        const standardForecast = bannerForecast(standard, standardRate, 0.05, 50, pityRemainingToState(standardPity, 50));
+        const suitForecast = bannerForecast(suit, suitRate, 0.078, 20, pityRemainingToState(suitPity, 20));
         const fullDistribution = combineDistributions([
           standardForecast.distribution,
           suitForecast.distribution,
@@ -817,6 +860,8 @@ const heroCardSrcset = (id: string) =>
         inputs.standard.value = "0";
         inputs.suit.value = "0";
         inputs.owned.value = "0";
+        inputs.standardPity.value = "0";
+        inputs.suitPity.value = "0";
         inputs.rateUp.checked = false;
         updateCalculator();
       });
