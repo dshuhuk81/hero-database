@@ -17,6 +17,10 @@ const translations: TranslationTree = {
     more: { en: "More", de: "Mehr", es: "Más", ru: "Ещё" },
     support: { en: "Support", de: "Unterstützen", es: "Apoyar", ru: "Поддержать" },
     dismiss: { en: "Dismiss", de: "Schließen", es: "Cerrar", ru: "Закрыть" },
+    compositions: { en: "Compositions", de: "Kombinationen", es: "Composiciones", ru: "Составы" },
+    noCompositions: { en: "No compositions available for this mode.", de: "Für diesen Modus sind keine Kombinationen verfügbar.", es: "No hay composiciones disponibles para este modo.", ru: "Для этого режима нет доступных составов." },
+    currentHero: { en: "Current hero", de: "Aktueller Held", es: "Héroe actual", ru: "Текущий герой" },
+    totem: { en: "Totem", de: "Totem", es: "Tótem", ru: "Тотем" },
   },
   events: {
     metaTitle: { en: "Event Guide | Motto Immortal", de: "Event-Guide | Motto Immortal", es: "Guía de eventos | Motto Immortal", ru: "Гайд по событиям | Motto Immortal" },
@@ -29,6 +33,18 @@ const translations: TranslationTree = {
     tag: { en: "PvE", de: "PvE", es: "PvE", ru: "PvE" },
     headline: { en: "Event Guide", de: "Event-Guide", es: "Guía de eventos", ru: "Гайд по событиям" },
     subtitle: { en: "Campaign stages & event team compositions", de: "Kampagnenstufen & Event-Teamzusammenstellungen", es: "Etapas de campaña y composiciones de equipo de eventos", ru: "Этапы кампании и составы команд для событий" },
+  },
+  totems: {
+    metaTitle: { en: "Totems | Motto Immortal", de: "Totems | Motto Immortal", es: "Tótems | Motto Immortal", ru: "Тотемы | Motto Immortal" },
+    metaDescription: {
+      en: "All totems with effects, archetypes, and ratings for Motto Immortal.",
+      de: "Alle Totems mit Effekten, Archetypen und Bewertungen für Motto Immortal.",
+      es: "Todos los tótems con efectos, arquetipos y valoraciones para Motto Immortal.",
+      ru: "Все тотемы с эффектами, архетипами и рейтингами для Motto Immortal.",
+    },
+    tag: { en: "Equipment", de: "Ausrüstung", es: "Equipo", ru: "Снаряжение" },
+    headline: { en: "Totems", de: "Totems", es: "Tótems", ru: "Тотемы" },
+    subtitle: { en: "All totems with effects & ratings", de: "Alle Totems mit Effekten und Bewertungen", es: "Todos los tótems con efectos y valoraciones", ru: "Все тотемы с эффектами и рейтингами" },
   },
   footer: {
     claim: { en: "Motto Immortal\nHero Database by Frieren", de: "Motto Immortal\nHelden-Datenbank von Frieren", es: "Motto Immortal\nBase de datos de héroes por Frieren", ru: "Motto Immortal\nБаза героев от Frieren" },

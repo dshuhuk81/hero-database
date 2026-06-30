@@ -277,7 +277,7 @@
       "files": [
         {
           "path": "src/data/events.json",
-          "shape": "object with campaigns array",
+          "shape": "object with campaigns array and localized strings",
           "recordCount": 7,
           "ids": [
             "hephaestus-campaign",
@@ -292,7 +292,8 @@
             "campaign names",
             "featured hero",
             "stage names",
-            "front and back row compositions"
+            "front and back row compositions",
+            "localized campaign copy"
           ]
         },
         {
@@ -321,13 +322,14 @@
         },
         {
           "path": "src/data/totems.json",
-          "shape": "object with version, slotType, description, totem_archetypes, and totems",
+          "shape": "object with version, slotType, description, totem_archetypes, and localized totems",
           "recordCount": 14,
           "contains": [
             "totem archetypes",
             "totem names",
             "team slot metadata",
-            "totem effects"
+            "totem effects",
+            "localized totem copy"
           ]
         },
         {

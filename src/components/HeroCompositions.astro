@@ -1,9 +1,13 @@
 ---
 import { getHeroById } from "../data/heroes";
 import totemData from "../data/totems.json";
+import { getLocaleFromPathname, type Locale } from "../i18n/config";
+import { pickLang } from "../i18n/helpers";
+import { t } from "../i18n/ui";
 
 const { heroId } = Astro.props;
 const mode = Astro.props.mode ?? "general";
+const locale: Locale = Astro.props.locale ?? getLocaleFromPathname(Astro.url.pathname);
 
 const heroData = getHeroById(heroId);
 const comps = (heroData?.teamComps as Record<string, any[]>)?.[mode] ?? [];
@@ -12,7 +16,7 @@ const totemById: Record<string, any> = Object.fromEntries(
   (totemData?.totems ?? []).map((t: any) => [t.id, t])
 );
 
-function totemName(id: string): string { return totemById[id]?.name ?? id; }
+function totemName(id: string): string { return pickLang(totemById[id]?.name, locale) || id; }
 function totemImg(id: string): string { return totemById[id]?.image ?? ""; }
 
 function hero(hid: string) { return getHeroById(hid); }
@@ -27,11 +31,11 @@ function heroImg(hid: string): string {
 
 <section class="comp-card">
   <div class="top">
-    <h3>Compositions</h3>
+    <h3>{t(locale, "common", "compositions")}</h3>
   </div>
 
   {comps.length === 0 ? (
-    <p>No compositions available for this mode.</p>
+    <p>{t(locale, "common", "noCompositions")}</p>
   ) : (
     <div class="comp-list">
       {comps.map((c, idx) => (
@@ -70,7 +74,7 @@ function heroImg(hid: string): string {
                           <div class="hero-image-wrapper">
                             <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />
                             {isCurrentHero && (
-                              <div class="current-hero-badge" title="Current hero">
+                              <div class="current-hero-badge" title={t(locale, "common", "currentHero")}>
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                   <path d="M8 0L9.796 5.528H15.708L10.956 8.944L12.752 14.472L8 11.056L3.248 14.472L5.044 8.944L0.292 5.528H6.204L8 0Z" fill="currentColor"/>
                                 </svg>
@@ -108,7 +112,7 @@ function heroImg(hid: string): string {
 
           {Array.isArray(c.totems) && c.totems.length > 0 && (
             <div class="curated-totems">
-              <span class="totem-label">Totem:</span>
+              <span class="totem-label">{t(locale, "common", "totem")}:</span>
               {c.totems.map((tid) => (
                 <span class="totem-chip" title={totemName(tid)}>
                   {totemImg(tid) && (

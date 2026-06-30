@@ -17,7 +17,7 @@ export const localeNames: Record<Locale, string> = {
   ru: "Русский",
 };
 
-const localizedRoutes = new Set(["/events"]);
+const localizedRoutes = new Set(["/events", "/totems"]);
 
 export function isLocale(value: string | undefined): value is Locale {
   return Boolean(value && locales.includes(value as Locale));
