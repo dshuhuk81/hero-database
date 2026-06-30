@@ -1,4 +1,7 @@
 ---
+import { getLocaleFromPathname, type Locale } from "../i18n/config";
+import { t } from "../i18n/ui";
+
 interface Props {
   tag?: string;
   headline: string;
@@ -6,9 +9,10 @@ interface Props {
   bgImage?: string;
   id?: string;
   pageUpdate?: { formatted: string; version: string } | null;
+  locale?: Locale;
 }
 
-const { tag, headline, subtitle, bgImage, id, pageUpdate } = Astro.props;
+const { tag, headline, subtitle, bgImage, id, pageUpdate, locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props;
 const bgStyle = bgImage
   ? `background-image: url(${bgImage}); background-size: cover; background-position: center top;`
   : `background: linear-gradient(135deg, rgba(120,90,200,0.18), rgba(7,6,12,0.95));`;
@@ -27,7 +31,7 @@ const bgStyle = bgImage
     {tag && <span class="page-hero-tag">{tag}</span>}
     <h1 class="page-hero-headline" id={id ? `${id}-headline` : undefined}>{headline}</h1>
     {subtitle && <p class="page-hero-sub" id={id ? `${id}-sub` : undefined}>{subtitle}</p>}
-    {pageUpdate && <p class="page-updated">Last updated: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
+    {pageUpdate && <p class="page-updated">{t(locale, "common", "lastUpdated")}: {pageUpdate.formatted} (v{pageUpdate.version})</p>}
   </div>
 </section>
 

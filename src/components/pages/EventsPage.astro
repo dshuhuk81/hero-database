@@ -1,0 +1,216 @@
+---
+export const prerender = true;
+
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import Accordion from "../Accordion.astro";
+import "../../styles/compositions.css";
+import "../../styles/events.css";
+import "../../styles/components.css";
+import { getPageUpdate } from "../../utils/getPageUpdate";
+import allHeroes from "../../data/all_heroes_db.json";
+import eventsData from "../../data/events.json";
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { pickLang } from "../../i18n/helpers";
+import { t } from "../../i18n/ui";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const pageUpdate = getPageUpdate("events");
+const frontLabel = t(locale, "common", "front");
+const backLabel = t(locale, "common", "back");
+
+function getHero(heroId: string) {
+  const rawId = String(heroId || "");
+  const lowerId = rawId.toLowerCase();
+  const compactId = lowerId.replace(/[\s_-]+/g, "");
+  return allHeroes[lowerId as keyof typeof allHeroes]
+    ?? allHeroes[compactId as keyof typeof allHeroes]
+    ?? allHeroes[rawId as keyof typeof allHeroes];
+}
+
+function campaignFactionIcon(faction: string) {
+  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${String(faction || "").toLowerCase()}.webp`;
+}
+
+const campaigns = eventsData.campaigns.map((campaign) => {
+  const campaignHero = getHero(campaign.hero);
+
+  return {
+    ...campaign,
+    displayName: pickLang(campaign.name, locale),
+    displayDescription: pickLang(campaign.description, locale),
+    heroId: campaignHero?.id ?? campaign.hero,
+    stages: campaign.stages.map((stage) => ({
+      ...stage,
+      displayName: pickLang(stage.name, locale),
+      frontHeroes: stage.composition.front.map(id => getHero(id)).filter(Boolean),
+      backHeroes: stage.composition.back.map(id => getHero(id)).filter(Boolean),
+    })),
+  };
+});
+---
+
+<Base title={t(locale, "events", "metaTitle")} description={t(locale, "events", "metaDescription")} locale={locale}>
+<PageHero
+  tag={t(locale, "events", "tag")}
+  headline={t(locale, "events", "headline")}
+  subtitle={t(locale, "events", "subtitle")}
+  pageUpdate={pageUpdate}
+  locale={locale}
+/>
+
+<div class="event-accordion-nav">
+  <Accordion
+    instanceId="events"
+    items={campaigns.map((campaign) => ({
+      id: campaign.id,
+      label: campaign.displayName,
+      image: getHero(campaign.hero)?.image ?? "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg.jpg",
+    }))}
+  />
+</div>
+
+<div class="page-wrapper">
+  <div class="content-wrapper">
+
+    <!-- Campaign slides -->
+    <main class="events-main">
+      {campaigns.map((campaign, index) => (
+        <div class={`event-slide ${index === 0 ? "is-active" : ""}`} id={campaign.id} data-event-slide>
+          <!-- STAGES LIST -->
+          <div class="stages-container">
+            {campaign.stages.map((stage) => (
+              <div class="stage-card">
+                <div class="stage-header">
+                  <h3 class="stage-title">{stage.displayName}</h3>
+                </div>
+
+                <!-- TEAM COMPOSITION -->
+                <div class="formation-grid">
+                  <!-- SINGLE ROW: 2 FRONT + 3 BACK -->
+                  <div class="formation-row full-team">
+                    {/* Front heroes */}
+                    {stage.frontHeroes.map((hero) => (
+                      <a class="hero-card" href={`/heroes/${hero.id}`}>
+                        <div class="position-badge front">{frontLabel}</div>
+                        <div class="hero-card-inner">
+                          <div class="hero-image-wrapper">
+                            <img
+                              src={hero.image}
+                              alt={hero.name}
+                              class="hero-image"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                          <div class="hero-info">
+                            <h4 class="hero-name">{hero.name}</h4>
+                            <div class="hero-meta">
+                              <img
+                                src={campaignFactionIcon(hero.faction)}
+                                alt={hero.faction}
+                                class="faction-icon-small"
+                                title={hero.faction}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+                    {/* Fill empty front slots if less than 2 */}
+                    {Array.from({ length: 2 - stage.frontHeroes.length }).map(() => (
+                      <div class="hero-card-slot empty"></div>
+                    ))}
+
+                    {/* Back heroes */}
+                    {stage.backHeroes.map((hero) => (
+                      <a class="hero-card" href={`/heroes/${hero.id}`}>
+                        <div class="position-badge back">{backLabel}</div>
+                        <div class="hero-card-inner">
+                          <div class="hero-image-wrapper">
+                            <img
+                              src={hero.image}
+                              alt={hero.name}
+                              class="hero-image"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                          <div class="hero-info">
+                            <h4 class="hero-name">{hero.name}</h4>
+                            <div class="hero-meta">
+                              <img
+                                src={campaignFactionIcon(hero.faction)}
+                                alt={hero.faction}
+                                class="faction-icon-small"
+                                title={hero.faction}
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+                    {/* Fill empty back slots if less than 3 */}
+                    {Array.from({ length: 3 - stage.backHeroes.length }).map(() => (
+                      <div class="hero-card-slot empty"></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </main>
+
+  </div>
+</div>
+
+</Base>
+
+<style>
+  .event-accordion-nav {
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .event-accordion-nav {
+      height: 160px;
+    }
+  }
+</style>
+
+<script>
+  const campaignTabs = Array.from(document.querySelectorAll('[data-accordion-instance="events"] [data-accordion-tab]'));
+  const campaignSlides = Array.from(document.querySelectorAll('[data-event-slide]'));
+  let currentIndex = 0;
+
+  function updateCampaign(index) {
+    if (!campaignSlides.length) return;
+
+    currentIndex = (index + campaignSlides.length) % campaignSlides.length;
+    campaignTabs.forEach((tab, tabIndex) => tab.classList.toggle('is-active', tabIndex === currentIndex));
+    campaignSlides.forEach((slide, slideIndex) => slide.classList.toggle('is-active', slideIndex === currentIndex));
+  }
+
+  if (campaignSlides.length) updateCampaign(0);
+
+  campaignTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => updateCampaign(index));
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "ArrowLeft") updateCampaign(currentIndex - 1);
+    if (event.key === "ArrowRight") updateCampaign(currentIndex + 1);
+  });
+</script>

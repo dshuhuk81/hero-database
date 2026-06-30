@@ -1,23 +1,14 @@
 ---
 // src/components/Footer.astro
-interface Feature {
-  icon: string;
-  label: string;
-    url: string;  
-}
+import { getLocaleFromPathname } from "../i18n/config";
+import { interpolate } from "../i18n/helpers";
+import { t } from "../i18n/ui";
 
-const features: Feature[] = [
-  { 
-    icon: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/footer/channels4_profile.jpg", 
-    label: "GPH Youtube",
-    url: "https://www.youtube.com/@gameplayhorizon"  // Dein YouTube-Link    
-    },
-  { 
-    icon: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/footer/protip85.jpg", 
-    label: "Prototip85 Youtube",
-    url: "https://www.youtube.com/@prototip85"  // Dein Discord-Link},
-    }
-];
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const footerClaim = t(locale, "footer", "claim").split("\n");
+const copyright = interpolate(t(locale, "footer", "copyright"), {
+  year: new Date().getFullYear(),
+});
 ---
 <head>
   <meta charset="utf-8" />
@@ -26,29 +17,17 @@ const features: Feature[] = [
   <div class="footer-content">
     <!-- CLAIM -->
     <div class="footer-titles">
-        <h2 class="footer-claim">Motto Immortal<br>Hero Database by Frieren</h2>
-</span>
+      <h2 class="footer-claim">{footerClaim[0]}<br />{footerClaim[1]}</h2>
     </div>
-    <!-- FEATURES 
-    <div class="footer-features">
-      {features.map(feature => (
-        <a href={feature.url} target="_blank" rel="noopener noreferrer" class="footer-link">
-          <div class="feature-icon">
-            <img style="border-radius: 999px" src={feature.icon} alt={feature.label} />
-          </div>
-          <span>{feature.label}</span>
-        </a>
-      ))}
-    </div>-->
 
     <!-- LINKS -->
     <div class="footer-links">
-        <a href="/privacy" class="footer-link">Privacy Policy</a>
+      <a href="/privacy" class="footer-link">{t(locale, "footer", "privacyPolicy")}</a>
     </div>
 
     <!-- COPYRIGHT -->
     <p class="footer-copyright">
-      {new Date().getFullYear()} Motto Immortal @GOAT Games. All rights reserved.
+      {copyright}
     </p>
   </div>
 </footer>
@@ -86,42 +65,6 @@ const features: Feature[] = [
     margin: 0 0 16px;
     color: #fff;
     text-align: center;
-  }
-
-  /* FEATURES */
-  .footer-features {
-    display: flex;
-    justify-content: center;
-    gap: 64px;
-    margin-bottom: 48px;
-    flex-wrap: wrap;
-  }
-
-  /* ICON CIRCLE */
-  .feature-icon {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .feature-icon:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(250, 204, 21, 0.5);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(250, 204, 21, 0.2);
-  }
-
-  .feature-icon img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
   }
 
   /* LINKS */
@@ -162,20 +105,6 @@ const features: Feature[] = [
     .footer-claim {
       font-size: 1.5rem;
       margin-bottom: 32px;
-    }
-
-    .footer-features {
-      gap: 32px;
-    }
-
-    .feature-icon {
-      width: 80px;
-      height: 80px;
-    }
-
-    .feature-icon img {
-      width: 48px;
-      height: 48px;
     }
   }
 </style>

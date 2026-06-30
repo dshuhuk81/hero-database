@@ -2,13 +2,28 @@
   "campaigns": [
     {
       "id": "xuannv-campaign",
-      "name": "Xuannv Campaign",
+      "name": {
+        "en": "Xuannv Campaign",
+        "de": "Xuannv Kampagne",
+        "es": "",
+        "ru": ""
+      },
       "hero": "xuannv",
-      "description": "Complete PVE campaign stages for the Timed Challenge.",
+      "description": {
+        "en": "Complete PVE campaign stages for the Timed Challenge.",
+        "de": "Komplette Übersicht aller Kämpfe.",
+        "es": "",
+        "ru": ""
+      },
       "stages": [
         {
           "id": 1,
-          "name": "1. Heavenly Questions",
+          "name": {
+            "en": "1. Heavenly Questions",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["aquarius", ""],
             "back": ["", "", "xuannv"]
@@ -16,7 +31,12 @@
         },
         {
           "id": 2,
-          "name": "2. Blinding Obsession",
+          "name": {
+            "en": "2. Blinding Obsession",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["aquarius", "taurus"],
             "back": ["scorpio", "cancer", "xuannv"]
@@ -24,7 +44,12 @@
         },
         {
           "id": 3,
-          "name": "3. Philosophy of the Grid",
+          "name": {
+            "en": "3. Philosophy of the Grid",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["aquarius", "taurus"],
             "back": ["scorpio", "xuannv", "cancer"]
@@ -32,7 +57,12 @@
         },
         {
           "id": 4,
-          "name": "4. Stars in the Palm",
+          "name": {
+            "en": "4. Stars in the Palm",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["anubis", "yuelao"],
             "back": ["caishen", "pan", "xuannv"]
@@ -40,7 +70,12 @@
         },
         {
           "id": 5,
-          "name": "5. Tempered Arts",
+          "name": {
+            "en": "5. Tempered Arts",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["yanluo", "prometheus"],
             "back": ["hephaestus", "xuannv", "mengpo"]
@@ -48,7 +83,12 @@
         },
         {
           "id": 6,
-          "name": "6. Undecided Move ",
+          "name": {
+            "en": "6. Undecided Move ",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["geb", "bastet"],
             "back": ["meret", "xuannv", "set"]
@@ -56,7 +96,12 @@
         },
         {
           "id": 7,
-          "name": "7. The very first move",
+          "name": {
+            "en": "7. The very first move",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["anubis", "demeter"],
             "back": ["xuannv", "wenshen", "pan"]
@@ -64,7 +109,12 @@
         },
         {
           "id": 8,
-          "name": "8. One Step Ahead",
+          "name": {
+            "en": "8. One Step Ahead",
+            "de": "",
+            "es": "",
+            "ru": ""
+          },
           "composition": {
             "front": ["poseidon", "anubis"],
             "back": ["skadi", "wenshen", "xuannv"]

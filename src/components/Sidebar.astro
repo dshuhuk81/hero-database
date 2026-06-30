@@ -3,13 +3,16 @@
 // Do NOT define nav items here - add/edit/remove them in that file and both
 // this sidebar and the index.astro teaser grid update automatically.
 import { navEntries, defaultMaintenanceTooltip, type NavEntry } from "../data/nav";
+import { getLocaleFromPathname, localizePath, stripLocaleFromPathname } from "../i18n/config";
+import { navLabel, t } from "../i18n/ui";
 
 // Mobile bottom bar: first 4 items + "More"
 const mobileItems = navEntries.slice(0, 4);
 const mobileOverflowItems = navEntries.filter(i => !mobileItems.includes(i));
 
 const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
-const currentPath = normalize(Astro.url.pathname);
+const locale = getLocaleFromPathname(Astro.url.pathname);
+const currentPath = normalize(stripLocaleFromPathname(Astro.url.pathname));
 const isActive = (href: string) => normalize(href) === currentPath;
 
 const primaryItems = navEntries.filter(i => i.group === "primary");
@@ -27,6 +30,14 @@ function isMaintenance(item: NavEntry) {
 function getTooltip(item: NavEntry) {
   return item.status?.tooltip ?? defaultMaintenanceTooltip;
 }
+
+function getHref(item: NavEntry) {
+  return localizePath(item.href, locale);
+}
+
+function getLabel(item: NavEntry) {
+  return navLabel(item.href, item.label, locale);
+}
 ---
 
 <!-- Desktop Rail -->
@@ -34,7 +45,8 @@ function getTooltip(item: NavEntry) {
   <nav class="rail-nav">
     {primaryItems.map((item) => {
       const disabled = isMaintenance(item);
-      const tooltip = disabled ? getTooltip(item) : item.label;
+      const label = getLabel(item);
+      const tooltip = disabled ? getTooltip(item) : label;
       const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
       const itemContent = (
         <>
@@ -50,7 +62,7 @@ function getTooltip(item: NavEntry) {
           {itemContent}
         </span>
       ) : (
-        <a href={item.href} class={itemClass} data-tooltip={tooltip}>
+        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
           {itemContent}
         </a>
       );
@@ -60,7 +72,8 @@ function getTooltip(item: NavEntry) {
 
     {contentItems.map((item) => {
       const disabled = isMaintenance(item);
-      const tooltip = disabled ? getTooltip(item) : item.label;
+      const label = getLabel(item);
+      const tooltip = disabled ? getTooltip(item) : label;
       const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
       const itemContent = (
         <>
@@ -76,7 +89,7 @@ function getTooltip(item: NavEntry) {
           {itemContent}
         </span>
       ) : (
-        <a href={item.href} class={itemClass} data-tooltip={tooltip}>
+        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
           {itemContent}
         </a>
       );
@@ -86,7 +99,8 @@ function getTooltip(item: NavEntry) {
 
     {metaItems.map((item) => {
       const disabled = isMaintenance(item);
-      const tooltip = disabled ? getTooltip(item) : item.label;
+      const label = getLabel(item);
+      const tooltip = disabled ? getTooltip(item) : label;
       const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
       const itemContent = (
         <>
@@ -102,7 +116,7 @@ function getTooltip(item: NavEntry) {
           {itemContent}
         </span>
       ) : (
-        <a href={item.href} class={itemClass} data-tooltip={tooltip}>
+        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
           {itemContent}
         </a>
       );
@@ -112,7 +126,7 @@ function getTooltip(item: NavEntry) {
 
   <div class="rail-support-wrap">
     <div class="rail-divider" />
-    <a href="/#support" class="rail-item rail-support" data-tooltip="Support">
+    <a href="/#support" class="rail-item rail-support" data-tooltip={t(locale, "common", "support")}>
       <div class="rail-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -126,6 +140,7 @@ function getTooltip(item: NavEntry) {
 <nav class="mobile-bar">
   {mobileItems.map((item) => {
     const disabled = isMaintenance(item);
+    const label = getLabel(item);
     const tooltip = getTooltip(item);
     const itemClass = `mobile-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
     const itemContent = (
@@ -133,7 +148,7 @@ function getTooltip(item: NavEntry) {
         <div class="mobile-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
         </div>
-        <span class="mobile-label">{item.label}</span>
+        <span class="mobile-label">{label}</span>
       </>
     );
 
@@ -142,7 +157,7 @@ function getTooltip(item: NavEntry) {
         {itemContent}
       </span>
     ) : (
-      <a href={item.href} class={itemClass}>
+      <a href={getHref(item)} class={itemClass}>
         {itemContent}
       </a>
     );
@@ -153,7 +168,7 @@ function getTooltip(item: NavEntry) {
         <circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/>
       </svg>
     </div>
-    <span class="mobile-label">More</span>
+    <span class="mobile-label">{t(locale, "common", "more")}</span>
   </button>
 </nav>
 
@@ -163,9 +178,9 @@ function getTooltip(item: NavEntry) {
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
     </svg>
-    <span>Support</span>
+    <span>{t(locale, "common", "support")}</span>
   </a>
-  <button class="float-donate-close" id="floatDonateClose" aria-label="Dismiss" tabindex="-1">
+  <button class="float-donate-close" id="floatDonateClose" aria-label={t(locale, "common", "dismiss")} tabindex="-1">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
       <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
     </svg>
@@ -178,6 +193,7 @@ function getTooltip(item: NavEntry) {
     <div class="more-sheet-handle"></div>
     {mobileOverflowItems.map((item) => {
       const disabled = isMaintenance(item);
+      const label = getLabel(item);
       const tooltip = getTooltip(item);
       const itemClass = `more-sheet-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
       const itemContent = (
@@ -185,7 +201,7 @@ function getTooltip(item: NavEntry) {
           <div class="more-sheet-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
           </div>
-          <span class="more-sheet-label">{item.label}</span>
+          <span class="more-sheet-label">{label}</span>
         </>
       );
 
@@ -194,7 +210,7 @@ function getTooltip(item: NavEntry) {
           {itemContent}
         </span>
       ) : (
-        <a href={item.href} class={itemClass}>
+        <a href={getHref(item)} class={itemClass}>
           {itemContent}
         </a>
       );
@@ -206,7 +222,7 @@ function getTooltip(item: NavEntry) {
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </div>
-      <span class="more-sheet-label">Support the project</span>
+      <span class="more-sheet-label">{t(locale, "footer", "supportProject")}</span>
     </a>
   </div>
 </div>
