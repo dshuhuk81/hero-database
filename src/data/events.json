@@ -1,20 +1,22 @@
 {
   "campaigns": [
-    {
-      "id": "xuannv-campaign",
-      "name": {
-        "en": "Xuannv Campaign",
-        "de": "Xuannv Kampagne",
-        "es": "",
-        "ru": ""
-      },
-      "hero": "xuannv",
-      "description": {
-        "en": "Complete PVE campaign stages for the Timed Challenge.",
-        "de": "Komplette Übersicht aller Kämpfe.",
-        "es": "",
-        "ru": ""
-      },
+  {
+    "id": "xuannv-campaign",
+    "name": {
+      "en": "Xuannv Campaign",
+      "de": "Xuannv-Kampagne",
+      "es": "Campaña de Xuannv",
+      "ru": "Кампания Сюаньнюй"
+    },
+    "hero": "xuannv",
+    "description": {
+      "en": "Complete PVE campaign stages for the Timed Challenge.",
+      "de": "Schließe PvE-Kampagnenstufen für die Zeit-Herausforderung ab.",
+      "es": "Completa las fases de la campaña PvE para el Desafío por Tiempo Limitado.",
+      "ru": "Пройдите этапы PvE-кампании для испытания с ограничением по времени."
+    }
+  }
+]
       "stages": [
         {
           "id": 1,
