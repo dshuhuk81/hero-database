@@ -1,30 +1,28 @@
 {
   "campaigns": [
-  {
-    "id": "xuannv-campaign",
-    "name": {
-      "en": "Xuannv Campaign",
-      "de": "Xuannv-Kampagne",
-      "es": "Campaña de Xuannv",
-      "ru": "Кампания Сюаньнюй"
-    },
-    "hero": "xuannv",
-    "description": {
-      "en": "Complete PVE campaign stages for the Timed Challenge.",
-      "de": "Schließe PvE-Kampagnenstufen für die Zeit-Herausforderung ab.",
-      "es": "Completa las fases de la campaña PvE para el Desafío por Tiempo Limitado.",
-      "ru": "Пройдите этапы PvE-кампании для испытания с ограничением по времени."
-    }
-  }
-],
+    {
+      "id": "xuannv-campaign",
+      "name": {
+        "en": "Xuannv Campaign",
+        "de": "Xuannv-Kampagne",
+        "es": "Campaña de Xuannv",
+        "ru": "Кампания Сюаньнюй"
+      },
+      "hero": "xuannv",
+      "description": {
+        "en": "Complete PVE campaign stages for the Timed Challenge.",
+        "de": "Schließe die PvE-Kampagnenstufen für die Zeit-Herausforderung ab.",
+        "es": "Completa las fases de campaña PvE para el desafío por tiempo limitado.",
+        "ru": "Пройдите этапы PvE-кампании для испытания с ограничением по времени."
+      },
       "stages": [
         {
           "id": 1,
           "name": {
             "en": "1. Heavenly Questions",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "1. Himmlische Fragen",
+            "es": "1. Preguntas celestiales",
+            "ru": "1. Небесные вопросы"
           },
           "composition": {
             "front": ["aquarius", ""],
@@ -35,9 +33,9 @@
           "id": 2,
           "name": {
             "en": "2. Blinding Obsession",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "2. Blindes Verlangen",
+            "es": "2. Obsesión cegadora",
+            "ru": "2. Ослепляющая одержимость"
           },
           "composition": {
             "front": ["aquarius", "taurus"],
@@ -48,9 +46,9 @@
           "id": 3,
           "name": {
             "en": "3. Philosophy of the Grid",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "3. Philosophie des Rasters",
+            "es": "3. Filosofía de la cuadrícula",
+            "ru": "3. Философия сетки"
           },
           "composition": {
             "front": ["aquarius", "taurus"],
@@ -61,9 +59,9 @@
           "id": 4,
           "name": {
             "en": "4. Stars in the Palm",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "4. Sterne in der Handfläche",
+            "es": "4. Estrellas en la palma",
+            "ru": "4. Звёзды на ладони"
           },
           "composition": {
             "front": ["anubis", "yuelao"],
@@ -74,9 +72,9 @@
           "id": 5,
           "name": {
             "en": "5. Tempered Arts",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "5. Gehärtete Künste",
+            "es": "5. Artes templadas",
+            "ru": "5. Закалённое искусство"
           },
           "composition": {
             "front": ["yanluo", "prometheus"],
@@ -87,9 +85,9 @@
           "id": 6,
           "name": {
             "en": "6. Undecided Move ",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "6. Unentschlossener Zug",
+            "es": "6. Movimiento indeciso",
+            "ru": "6. Неопределённый ход"
           },
           "composition": {
             "front": ["geb", "bastet"],
@@ -100,9 +98,9 @@
           "id": 7,
           "name": {
             "en": "7. The very first move",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "7. Der allererste Zug",
+            "es": "7. El primer movimiento",
+            "ru": "7. Самый первый ход"
           },
           "composition": {
             "front": ["anubis", "demeter"],
@@ -113,9 +111,9 @@
           "id": 8,
           "name": {
             "en": "8. One Step Ahead",
-            "de": "",
-            "es": "",
-            "ru": ""
+            "de": "8. Ein Schritt voraus",
+            "es": "8. Un paso adelante",
+            "ru": "8. На шаг впереди"
           },
           "composition": {
             "front": ["poseidon", "anubis"],
