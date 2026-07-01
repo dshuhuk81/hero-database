@@ -31,7 +31,7 @@ const showSwitcher = isLocalizedRoute(Astro.url.pathname);
 <style is:global>
   .language-switcher {
     position: fixed;
-    z-index: 110;
+    z-index: var(--z-nav);
     top: var(--space-4);
     right: var(--space-4);
     display: inline-flex;
