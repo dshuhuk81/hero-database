@@ -23,6 +23,14 @@ const translations: TranslationTree = {
     noCompositions: { en: "No compositions available for this mode.", de: "Für diesen Modus sind keine Kombinationen verfügbar.", es: "No hay composiciones disponibles para este modo.", ru: "Для этого режима нет доступных составов." },
     currentHero: { en: "Current hero", de: "Aktueller Held", es: "Héroe actual", ru: "Текущий герой" },
     totem: { en: "Totem", de: "Totem", es: "Tótem", ru: "Тотем" },
+    strengths: { en: "Strengths", de: "Stärken", es: "Fortalezas", ru: "Сильные стороны" },
+    weaknesses: { en: "Weaknesses", de: "Schwächen", es: "Debilidades", ru: "Слабые стороны" },
+    noStrengths: { en: "No strengths listed yet.", de: "Noch keine Stärken eingetragen.", es: "Todavía no hay fortalezas listadas.", ru: "Пока не указаны сильные стороны." },
+    noWeaknesses: { en: "No weaknesses listed yet.", de: "Noch keine Schwächen eingetragen.", es: "Todavía no hay debilidades listadas.", ru: "Пока не указаны слабые стороны." },
+    relicInvestment: { en: "Relic Investment", de: "Relikt-Investition", es: "Inversión de reliquia", ru: "Вложение в реликвию" },
+    f2pInvestment: { en: "F2P Investment", de: "F2P-Investition", es: "Inversión F2P", ru: "F2P-вложение" },
+    recommendation: { en: "Recommendation", de: "Empfehlung", es: "Recomendación", ru: "Рекомендация" },
+    usedIn: { en: "Used In", de: "Verwendet in", es: "Usado en", ru: "Используется в" },
   },
   home: {
     metaTitle: {

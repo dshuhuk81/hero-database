@@ -1,10 +1,14 @@
 ---
+import { getLocaleFromPathname, type Locale } from "../i18n/config";
+import { t } from "../i18n/ui";
+
 interface Props {
   strengths?: string[];
   weaknesses?: string[];
+  locale?: Locale;
 }
 
-const { strengths = [], weaknesses = [] } = Astro.props;
+const { strengths = [], weaknesses = [], locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props as Props;
 ---
 
 <div class="sw-grid">
@@ -13,7 +17,7 @@ const { strengths = [], weaknesses = [] } = Astro.props;
       <svg class="sw-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M8 2l1.5 4.5H14l-3.75 2.75 1.5 4.5L8 11l-3.75 2.75 1.5-4.5L2 6.5h4.5L8 2z" fill="currentColor"/>
       </svg>
-      Strengths
+      {t(locale, "common", "strengths")}
     </div>
     <div class="sw-body">
       {strengths.length > 0 ? (
@@ -23,7 +27,7 @@ const { strengths = [], weaknesses = [] } = Astro.props;
           ))}
         </ul>
       ) : (
-        <p class="sw-empty">No strengths listed yet.</p>
+        <p class="sw-empty">{t(locale, "common", "noStrengths")}</p>
       )}
     </div>
   </div>
@@ -34,7 +38,7 @@ const { strengths = [], weaknesses = [] } = Astro.props;
         <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
         <path d="M8 5v4M8 10.5v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
-      Weaknesses
+      {t(locale, "common", "weaknesses")}
     </div>
     <div class="sw-body">
       {weaknesses.length > 0 ? (
@@ -44,7 +48,7 @@ const { strengths = [], weaknesses = [] } = Astro.props;
           ))}
         </ul>
       ) : (
-        <p class="sw-empty">No weaknesses listed yet.</p>
+        <p class="sw-empty">{t(locale, "common", "noWeaknesses")}</p>
       )}
     </div>
   </div>

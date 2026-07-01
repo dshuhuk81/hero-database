@@ -19,6 +19,10 @@ export const localeNames: Record<Locale, string> = {
 
 const localizedRoutes = new Set(["/", "/events", "/tips", "/totems"]);
 
+function isLocalizedHeroDetailRoute(pathname: string): boolean {
+  return /^\/heroes\/[^/]+$/.test(pathname);
+}
+
 export function isLocale(value: string | undefined): value is Locale {
   return Boolean(value && locales.includes(value as Locale));
 }
@@ -56,7 +60,7 @@ export function stripLocaleFromPathname(pathname: string): string {
 export function isLocalizedRoute(pathname: string): boolean {
   const { pathOnly } = splitPath(stripLocaleFromPathname(pathname));
   const normalized = pathOnly.replace(/\/+$/, "") || "/";
-  return localizedRoutes.has(normalized);
+  return localizedRoutes.has(normalized) || isLocalizedHeroDetailRoute(normalized);
 }
 
 export function localizePath(pathname: string, locale: Locale): string {
@@ -64,7 +68,7 @@ export function localizePath(pathname: string, locale: Locale): string {
   const { pathOnly, query, hash } = splitPath(stripped);
   const normalized = pathOnly.replace(/\/+$/, "") || "/";
 
-  if (!localizedRoutes.has(normalized)) {
+  if (!localizedRoutes.has(normalized) && !isLocalizedHeroDetailRoute(normalized)) {
     return stripped;
   }
 

@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import { heroes, getHeroById, statMaxima } from "../../data/heroes/withRatings";
+import { localizeHeroData } from "../../data/heroes/localize";
 import Base from "../../layouts/Base.astro";
 import HeroCompositions from '../../components/HeroCompositions.astro';
 import StrengthWeakness from '../../components/StrengthWeakness.astro';
@@ -9,6 +10,7 @@ import F2pInvestment from '../../components/F2pInvestment.astro';
 import RatingTiles from '../../components/RatingTiles.astro';
 import allVirtues from "../../data/virtues.json";
 import allInvest from "../../data/ratings/invest.json";
+import { getLocaleFromPathname, type Locale } from "../../i18n/config";
 import { getCnSummary, formatCnValue } from "../../utils/cnDiff.js";
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -19,12 +21,19 @@ export function getStaticPaths() {
     }));
 }
 
-const { id } = Astro.params;
-const hero = getHeroById(id);
+interface Props {
+  id?: string;
+  locale?: Locale;
+}
+
+const { id: propId, locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props as Props;
+const routeId = propId ?? Astro.params.id;
+const baseHero = getHeroById(routeId);
+const hero = localizeHeroData(baseHero as any, locale);
 // Prev/next must only walk heroes that actually have a page (same filter as
 // getStaticPaths), otherwise arrows 404 in production next to unreleased heroes.
 const navHeroes = heroes.filter((entry) => import.meta.env.DEV || (entry as any).release !== false);
-const heroIndex = navHeroes.findIndex((entry) => entry.id === id);
+const heroIndex = navHeroes.findIndex((entry) => entry.id === routeId);
 const heroTeamComps = (hero as any)?.teamComps;
 const hasComps = heroTeamComps && Object.values(heroTeamComps).some((arr) => Array.isArray(arr) && arr.length > 0);
 const heroStrengths: string[] = (hero as any).strengths ?? [];
@@ -40,7 +49,7 @@ const resolvedVirtueSets = heroVirtueSets.map((vs) => ({
     .filter(Boolean),
 }));
 const hasVirtues = resolvedVirtueSets.length > 0;
-const heroInvest = (allInvest as any)[id] ?? null;
+const heroInvest = (allInvest as any)[routeId] ?? null;
 const cnSummary = getCnSummary(hero as any);
 const prevHero = heroIndex > 0 ? navHeroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < navHeroes.length - 1 ? navHeroes[heroIndex + 1] : null;
@@ -65,7 +74,7 @@ function virtueAssetUrl(name: string, rarity?: string): string {
 }
 
 if (!hero) {
-  throw new Error(`Hero with id "${id}" not found`);
+  throw new Error(`Hero with id "${routeId}" not found`);
 }
 
 const PERCENT_STATS = new Set([
@@ -166,6 +175,7 @@ const dotSections = [
 <Base
   title={hero ? `${hero.name} - Stats, Skills & Tier List | Motto Immortal` : "Hero | Motto Immortal"}
   description={hero ? `${hero.name} is a ${hero.class} (${hero.role}) hero in Motto Immortal. View stats, skills, ratings (${hero.ratings?.overall ?? ""}), team comps and synergies.` : undefined}
+  locale={locale}
 >
 <div
   class="hero-page"
@@ -606,7 +616,7 @@ const dotSections = [
     {(heroStrengths.length > 0 || heroWeaknesses.length > 0) && (
       <section class="content-section" id="section-strengths">
         <div class="section-label">Strengths &amp; Weaknesses</div>
-        <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} />
+        <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} locale={locale} />
       </section>
     )}
 
@@ -619,9 +629,11 @@ const dotSections = [
             relicRecommendation={heroInvest.relicRecommendation}
             usedIn={heroInvest.usedIn}
             explanation={heroInvest.explanation}
+            locale={locale}
           /> 
           <F2pInvestment 
-            f2pInvestment={heroInvest.f2pInvestment} 
+            f2pInvestment={heroInvest.f2pInvestment}
+            locale={locale}
           />
         </div>
       </section>
