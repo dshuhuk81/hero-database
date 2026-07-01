@@ -3,6 +3,7 @@ import { pickLang, type LocalizedString } from "./helpers";
 
 type TranslationTree = {
   common: Record<string, LocalizedString>;
+  home: Record<string, LocalizedString>;
   events: Record<string, LocalizedString>;
   footer: Record<string, LocalizedString>;
   language: Record<string, LocalizedString>;
@@ -21,6 +22,36 @@ const translations: TranslationTree = {
     noCompositions: { en: "No compositions available for this mode.", de: "Für diesen Modus sind keine Kombinationen verfügbar.", es: "No hay composiciones disponibles para este modo.", ru: "Для этого режима нет доступных составов." },
     currentHero: { en: "Current hero", de: "Aktueller Held", es: "Héroe actual", ru: "Текущий герой" },
     totem: { en: "Totem", de: "Totem", es: "Tótem", ru: "Тотем" },
+  },
+  home: {
+    metaTitle: {
+      en: "Motto Immortal Database | Hero Stats, Tier Lists & Guides",
+      de: "Motto Immortal Datenbank | Heldenwerte, Tierlisten & Guides",
+      es: "Base de datos de Motto Immortal | Estadísticas, listas de niveles y guías",
+      ru: "База данных Motto Immortal | Статы героев, тир-листы и гайды",
+    },
+    metaDescription: {
+      en: "The complete database for Motto Immortal. Hero stats, skills, tier lists, team comps, boss guides and more. All 89 heroes covered.",
+      de: "Die komplette Datenbank für Motto Immortal. Heldenwerte, Fähigkeiten, Tierlisten, Teamzusammenstellungen, Boss-Guides und mehr. Alle 89 Helden abgedeckt.",
+      es: "La base de datos completa de Motto Immortal. Estadísticas, habilidades, listas de niveles, composiciones de equipo, guías de jefes y más. Los 89 héroes están cubiertos.",
+      ru: "Полная база данных по Motto Immortal. Характеристики, навыки, тир-листы, составы команд, гайды по боссам и многое другое. Охвачены все 89 героев.",
+    },
+    heroHeadline: { en: "Motto Immortal", de: "Motto Immortal", es: "Motto Immortal", ru: "Motto Immortal" },
+    exploreHeadline: { en: "Explore the Database", de: "Datenbank erkunden", es: "Explora la base de datos", ru: "Изучите базу данных" },
+    keepFreeHeadline: { en: "Keep this free", de: "Das hier kostenlos halten", es: "Mantener esto gratis", ru: "Сохранить это бесплатным" },
+    supportDescription: {
+      en: "Motto Immortal DB is built and maintained solo - no paywalls, no sponsorships. Hosting and infrastructure cost real money every month. If this tool has saved you time or helped you build a better team, a small contribution goes a long way.",
+      de: "Die Motto Immortal DB wird solo gebaut und gepflegt - ohne Paywall, ohne Sponsoring. Hosting und Infrastruktur kosten jeden Monat echtes Geld. Wenn dir dieses Tool Zeit gespart oder geholfen hat, ein besseres Team zu bauen, hilft schon ein kleiner Beitrag sehr.",
+      es: "Motto Immortal DB se construye y mantiene en solitario: sin muros de pago ni patrocinios. El alojamiento y la infraestructura cuestan dinero real cada mes. Si esta herramienta te ha ahorrado tiempo o te ha ayudado a formar un mejor equipo, una pequeña aportación ayuda mucho.",
+      ru: "Motto Immortal DB создаётся и поддерживается в одиночку — без платного доступа и без спонсоров. Хостинг и инфраструктура стоят реальных денег каждый месяц. Если этот инструмент сэкономил вам время или помог собрать более сильную команду, небольшая поддержка действительно помогает.",
+    },
+    supportBullet1: { en: "Vercel hosting & serverless functions", de: "Vercel-Hosting und serverlose Funktionen", es: "Hosting en Vercel y funciones sin servidor", ru: "Хостинг Vercel и serverless-функции" },
+    supportBullet2: { en: "Domain & CDN costs", de: "Domain- und CDN-Kosten", es: "Costes de dominio y CDN", ru: "Расходы на домен и CDN" },
+    supportBullet3: { en: "Time spent on data, updates & new features", de: "Zeit für Daten, Updates und neue Funktionen", es: "Tiempo dedicado a datos, actualizaciones y nuevas funciones", ru: "Время на данные, обновления и новые функции" },
+    supportKofi: { en: "Support on Ko-fi", de: "Auf Ko-fi unterstützen", es: "Apoyar en Ko-fi", ru: "Поддержать на Ko-fi" },
+    supportPaypal: { en: "Donate via PayPal", de: "Per PayPal spenden", es: "Donar por PayPal", ru: "Пожертвовать через PayPal" },
+    supportAlt: { en: "No budget? Sharing this site with your guild or alliance helps just as much.", de: "Kein Budget? Wenn du die Seite mit deiner Gilde oder Allianz teilst, hilft das genauso.", es: "¿Sin presupuesto? Compartir este sitio con tu gremio o alianza ayuda igual de mucho.", ru: "Нет бюджета? Поделиться этим сайтом с вашей гильдией или альянсом помогает не меньше." },
+    supportersLabel: { en: "Thank you for your donation!", de: "Danke für deine Spende!", es: "¡Gracias por tu donación!", ru: "Спасибо за ваше пожертвование!" },
   },
   events: {
     metaTitle: { en: "Event Guide | Motto Immortal", de: "Event-Guide | Motto Immortal", es: "Guía de eventos | Motto Immortal", ru: "Гайд по событиям | Motto Immortal" },

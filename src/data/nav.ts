@@ -14,6 +14,8 @@
 //  - `badge` is rendered ONLY on the index teaser, never on the sidebar.
 //  - `icon` is the inner SVG markup (24x24 viewBox, stroke-based, Lucide-style).
 
+import { type LocalizedString } from "../i18n/helpers";
+
 export interface NavEntry {
   /** Display label. Teaser headline + sidebar tooltip/mobile text. */
   label: string;
@@ -25,9 +27,9 @@ export interface NavEntry {
   /** Show this entry as a card on the index.astro teaser grid. */
   teaser?: boolean;
   /** Teaser card sub-text. Only used when `teaser` is true. */
-  description?: string;
+  description?: LocalizedString;
   /** Teaser-only badge. Never shown on the sidebar. */
-  badge?: { text: string; color?: string };
+  badge?: { text: LocalizedString; color?: string };
   /** Marks the destination as under maintenance (disables the link). */
   status?: { type: "maintenance"; tooltip?: string };
   /** Keep internal tooling visible during local development only. */
@@ -48,8 +50,13 @@ const allNavEntries: NavEntry[] = [
     href: "/heroes",
     group: "primary",
     teaser: true,
-    description: "Browse all heroes with stats & ratings",
-    badge: { text: "Updated", color: "var(--accent-purple)" },
+    description: {
+      en: "Browse all heroes with stats & ratings",
+      de: "Alle Helden mit Werten und Bewertungen durchsuchen",
+      es: "Explora todos los héroes con estadísticas y valoraciones",
+      ru: "Просматривайте всех героев с характеристиками и рейтингами",
+    },
+    badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено" }, color: "var(--accent-purple)" },
     icon: `<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19.5 6.5L21 3l-3.5 1.5"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6"/><path d="M8 16l-4 4"/><path d="M4.5 6.5L3 3l3.5 1.5"/>`,
   },
   {
@@ -57,7 +64,12 @@ const allNavEntries: NavEntry[] = [
     href: "/hero-stats",
     group: "primary",
     teaser: true,
-    description: "Compare all heroes with their stats",
+    description: {
+      en: "Compare all heroes with their stats",
+      de: "Alle Helden mit ihren Werten vergleichen",
+      es: "Compara a todos los héroes con sus estadísticas",
+      ru: "Сравните всех героев по характеристикам",
+    },
     icon: `<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>`,
   },
   {
@@ -65,7 +77,12 @@ const allNavEntries: NavEntry[] = [
     href: "/cn-preview",
     group: "primary",
     teaser: true,
-    description: "Compare Global hero skills against the Chinese base version",
+    description: {
+      en: "Compare Global hero skills against the Chinese base version",
+      de: "Vergleiche die globalen Heldenfähigkeiten mit der chinesischen Basisversion",
+      es: "Compara las habilidades de los héroes globales con la versión base china",
+      ru: "Сравните навыки глобальных героев с китайской базовой версией",
+    },
     icon: `<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M8 7h4"/><path d="M10 5v4"/><path d="M15.5 15h.01"/><path d="M17.5 17h.01"/><path d="M14.5 18.5h.01"/>`,
   },
   {
@@ -73,7 +90,12 @@ const allNavEntries: NavEntry[] = [
     href: "/virtues",
     group: "content",
     teaser: true,
-    description: "New deity upgrade pieces - sets, rarities & farming guide",
+    description: {
+      en: "New deity upgrade pieces - sets, rarities & farming guide",
+      de: "Neue Aufstiegsstücke für Gottheiten - Sets, Seltenheiten und Farm-Guide",
+      es: "Nuevas piezas de mejora divina: conjuntos, rarezas y guía de farmeo",
+      ru: "Новые материалы улучшения божеств: наборы, редкости и гайд по фарму",
+    },
     icon: `<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/>`,
   },
   {
@@ -81,7 +103,12 @@ const allNavEntries: NavEntry[] = [
     href: "/delusions-den",
     group: "content",
     teaser: true,
-    description: "Recommended teams and strategy for each stage",
+    description: {
+      en: "Recommended teams and strategy for each stage",
+      de: "Empfohlene Teams und Strategien für jede Stufe",
+      es: "Equipos recomendados y estrategias para cada etapa",
+      ru: "Рекомендованные команды и стратегия для каждого этапа",
+    },
     icon: `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`,
   },
   {
@@ -89,8 +116,13 @@ const allNavEntries: NavEntry[] = [
     href: "/tips",
     group: "content",
     teaser: true,
-    description: "Beginner tips & shrine system breakdowns",
-    badge: { text: "Updated", color: "var(--accent-purple)" },
+    description: {
+      en: "Beginner tips & shrine system breakdowns",
+      de: "Anfängertipps und Aufschlüsselung des Schreinsystems",
+      es: "Consejos para principiantes y desglose del sistema de santuario",
+      ru: "Советы для новичков и разбор системы святилищ",
+    },
+    badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено" }, color: "var(--accent-purple)" },
     icon: `<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
   },
   {
@@ -98,7 +130,12 @@ const allNavEntries: NavEntry[] = [
     href: "/bosses",
     group: "content",
     teaser: true,
-    description: "Boss counters & recommended team comps",
+    description: {
+      en: "Boss counters & recommended team comps",
+      de: "Boss-Gegner und empfohlene Teamzusammenstellungen",
+      es: "Jefes y composiciones de equipo recomendadas",
+      ru: "Боссы и рекомендуемые составы команд",
+    },
     icon: `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
   },
   {
@@ -106,9 +143,14 @@ const allNavEntries: NavEntry[] = [
     href: "/events",
     group: "content",
     teaser: true,
-    description: "Campaign stages & event team guides",
+    description: {
+      en: "Campaign stages & event team guides",
+      de: "Kampagnenstufen und Event-Teamguides",
+      es: "Etapas de campaña y guías de equipos para eventos",
+      ru: "Этапы кампании и гайды по командам для событий",
+    },
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
-      badge: { text: "Updated", color: "var(--accent-purple)" },
+      badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено" }, color: "var(--accent-purple)" },
 
   },
   {
@@ -116,7 +158,12 @@ const allNavEntries: NavEntry[] = [
     href: "/totems",
     group: "content",
     teaser: true,
-    description: "All totems with effects, tags & ratings",
+    description: {
+      en: "All totems with effects, tags & ratings",
+      de: "Alle Totems mit Effekten, Tags und Bewertungen",
+      es: "Todos los tótems con efectos, etiquetas y valoraciones",
+      ru: "Все тотемы с эффектами, тегами и рейтингами",
+    },
     icon: `<path d="M12 2L8 6v3l-2 2v4l2 2v3l4 2 4-2v-3l2-2v-4l-2-2V6z"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/>`,
   },
   {
@@ -124,7 +171,12 @@ const allNavEntries: NavEntry[] = [
     href: "/summon-calendar",
     group: "content",
     teaser: true,
-    description: "Possible guesses on upcoming releases - based on CN data.",
+    description: {
+      en: "Possible guesses on upcoming releases - based on CN data.",
+      de: "Mögliche Vorhersagen zu kommenden Veröffentlichungen - basierend auf CN-Daten.",
+      es: "Posibles predicciones de próximos lanzamientos, basadas en datos de CN.",
+      ru: "Возможные прогнозы будущих релизов на основе данных CN.",
+    },
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1" fill="currentColor" stroke="none"/>`,
   },
   {
@@ -132,8 +184,13 @@ const allNavEntries: NavEntry[] = [
     href: "/summon-calculator",
     group: "content",
     teaser: true,
-    description: "Calculate target odds and expected copies from your saved summons",
-    badge: { text: "New", color: "var(--accent-new)" },
+    description: {
+      en: "Calculate target odds and expected copies from your saved summons",
+      de: "Berechne Zielwahrscheinlichkeiten und erwartete Kopien aus deinen gespeicherten Beschwörungen",
+      es: "Calcula las probabilidades objetivo y las copias esperadas a partir de tus invocaciones guardadas",
+      ru: "Рассчитайте шансы на цель и ожидаемое число копий на основе ваших сохранённых призывов",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое" }, color: "var(--accent-new)" },
     icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="12" y1="15" x2="12" y2="15"/><path d="M15 14l2 2 3-4"/>`,
   },
   {
