@@ -41,6 +41,10 @@ Die Hero-Detailseiten sollen ihre Texte je nach Sprache aus externen Uebersetzun
 - `src/data/ratings/invest.json` enthaelt lokalisierte Investitionshinweise fuer Zeus.
 - Der Language Switcher bleibt ueber den Sticky-Elementen sichtbar.
 
+- Die fehlenden Hero-Overlays wurden fuer alle noch nicht abgedeckten Helden als Name-Overlays angelegt.
+  - 72 neue `src/data/heroes/i18n/*.json`-Dateien wurden per Generator erzeugt.
+  - Der Generator liegt unter `scripts/generate-hero-name-overlays.mjs`.
+
 ## Verifikation
 
 - JSON-Checks fuer die neuen Overlay-Dateien laufen sauber.
@@ -49,3 +53,15 @@ Die Hero-Detailseiten sollen ihre Texte je nach Sprache aus externen Uebersetzun
 ## Stand
 
 Die Heldenseiten liefern jetzt bereits fuer die lokalisierten Overlays echte deutsche, spanische und russische Texte. Weitere Helden koennen im gleichen Muster nachgezogen werden, ohne die Seitenstruktur erneut umbauen zu muessen.
+
+## Genereller Uebersetzungsansatz
+
+1. Basis bleibt immer die englische Hero-JSON in `src/data/heroes/*.json`.
+2. Pro Held kommen Uebersetzungen in `src/data/heroes/i18n/<hero-id>.json` dazu.
+3. Die Overlay-Schicht in `src/data/heroes/localize.ts` legt nur die vorhandenen Werte auf die Basisdaten und faellt bei fehlenden Feldern automatisch auf Englisch zurueck.
+4. Damit koennen wir Heldentexte stufenweise pflegen:
+   - zuerst Name und UI-sichtbare Kernwerte,
+   - dann Description, Skills, Relic und Core Mechanic,
+   - danach Synergy Links, Virtue Sets und restliche Detailfelder.
+5. Fuer neue oder noch unbearbeitete Helden reicht es, eine Overlay-Datei anzulegen, statt die Astro-Seiten selbst zu duplizieren oder umzubauen.
+6. Der Generator `scripts/generate-hero-name-overlays.mjs` kann fehlende Heldendateien als Startpunkt seed-en, damit keine Hero-Route ohne Overlay bleibt.
