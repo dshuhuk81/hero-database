@@ -53,6 +53,21 @@ const translations: TranslationTree = {
     supportPaypal: { en: "Donate via PayPal", de: "Per PayPal spenden", es: "Donar por PayPal", ru: "Пожертвовать через PayPal" },
     supportAlt: { en: "No budget? Sharing this site with your guild or alliance helps just as much.", de: "Kein Budget? Wenn du die Seite mit deiner Gilde oder Allianz teilst, hilft das genauso.", es: "¿Sin presupuesto? Compartir este sitio con tu gremio o alianza ayuda igual de mucho.", ru: "Нет бюджета? Поделиться этим сайтом с вашей гильдией или альянсом помогает не меньше." },
     supportersLabel: { en: "Thank you for your donation!", de: "Danke für deine Spende!", es: "¡Gracias por tu donación!", ru: "Спасибо за ваше пожертвование!" },
+    languageNoticeEyebrow: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое" },
+    languageNoticeTitle: {
+      en: "Motto Immortal DB now speaks more languages",
+      de: "Motto Immortal DB gibt es jetzt in mehreren Sprachen",
+      es: "Motto Immortal DB ahora está disponible en varios idiomas",
+      ru: "Motto Immortal DB теперь доступна на нескольких языках",
+    },
+    languageNoticeBody: {
+      en: "You can switch between English, German, Spanish and Russian with the language selector. If you spot translation issues or missing text, please contact me directly on Discord.",
+      de: "Du kannst oben zwischen Englisch, Deutsch, Spanisch und Russisch wechseln. Wenn dir Übersetzungsfehler oder fehlende Texte auffallen, melde dich gern direkt bei mir auf Discord.",
+      es: "Puedes cambiar entre inglés, alemán, español y ruso con el selector de idioma. Si ves errores de traducción o textos faltantes, contáctame directamente por Discord.",
+      ru: "Теперь можно переключаться между английским, немецким, испанским и русским через выбор языка. Если заметите ошибки перевода или пропущенный текст, напишите мне напрямую в Discord.",
+    },
+    languageNoticeDiscord: { en: "Discord: ds_frieren", de: "Discord: ds_frieren", es: "Discord: ds_frieren", ru: "Discord: ds_frieren" },
+    languageNoticeDismiss: { en: "Got it", de: "Alles klar", es: "Entendido", ru: "Понятно" },
   },
   events: {
     metaTitle: { en: "Event Guide | Motto Immortal", de: "Event-Guide | Motto Immortal", es: "Guía de eventos | Motto Immortal", ru: "Гайд по событиям | Motto Immortal" },
