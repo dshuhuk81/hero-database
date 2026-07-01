@@ -1,7 +1,8 @@
 ---
 import { getHeroById } from "../data/heroes";
+import { localizeHeroData } from "../data/heroes/localize";
 import totemData from "../data/totems.json";
-import { getLocaleFromPathname, type Locale } from "../i18n/config";
+import { getLocaleFromPathname, localizePath, type Locale } from "../i18n/config";
 import { pickLang } from "../i18n/helpers";
 import { t } from "../i18n/ui";
 
@@ -9,7 +10,7 @@ const { heroId } = Astro.props;
 const mode = Astro.props.mode ?? "general";
 const locale: Locale = Astro.props.locale ?? getLocaleFromPathname(Astro.url.pathname);
 
-const heroData = getHeroById(heroId);
+const heroData = localizeHeroData(getHeroById(heroId) as any, locale);
 const comps = (heroData?.teamComps as Record<string, any[]>)?.[mode] ?? [];
 
 const totemById: Record<string, any> = Object.fromEntries(
@@ -19,7 +20,7 @@ const totemById: Record<string, any> = Object.fromEntries(
 function totemName(id: string): string { return pickLang(totemById[id]?.name, locale) || id; }
 function totemImg(id: string): string { return totemById[id]?.image ?? ""; }
 
-function hero(hid: string) { return getHeroById(hid); }
+function hero(hid: string) { return localizeHeroData(getHeroById(hid) as any, locale); }
 function heroName(hid: string): string { return hero(hid)?.name ?? hid; }
 function heroImg(hid: string): string {
   const img = hero(hid)?.image;
@@ -42,10 +43,10 @@ function heroImg(hid: string): string {
         <article class="comp">
           <div class="header">
             <strong>
-              {c.label || `Team #${idx + 1}`}
+              {c.label || `${t(locale, "hero", "teamNumber")}${idx + 1}`}
             </strong>
             {c.stars != null && (
-              <span class="curated-stars" title={`CN community rating: ${c.stars}/5`}>
+              <span class="curated-stars" title={`${t(locale, "hero", "cnCommunityRating")}: ${c.stars}/5`}>
                 {Array.from({ length: c.stars }).map(() => "*").join("")}/5
               </span>
             )}
@@ -53,7 +54,7 @@ function heroImg(hid: string): string {
 
           {c.targets && (
             <div class="bonus">
-              <span class="pill curated-pill">vs: {c.targets}</span>
+              <span class="pill curated-pill">{t(locale, "hero", "vs")}: {c.targets}</span>
             </div>
           )}
 
@@ -69,7 +70,7 @@ function heroImg(hid: string): string {
                     const isCurrentHero = h.id === heroId;
 
                     return (
-                      <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={`/heroes/${hid}`}>
+                      <a class={`hero-card ${isCurrentHero ? 'current-hero' : ''}`} href={localizePath(`/heroes/${hid}`, locale)}>
                         <div class="hero-card-inner">
                           <div class="hero-image-wrapper">
                             <img src={heroImg(hid)} alt={heroName(hid)} class="hero-image" loading="lazy" decoding="async" />

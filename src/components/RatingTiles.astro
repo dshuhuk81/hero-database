@@ -1,4 +1,7 @@
 ---
+import { getLocaleFromPathname, type Locale } from "../i18n/config";
+import { t } from "../i18n/ui";
+
 type Ratings = {
   overall?: string | null;
   pvp?: string | null;
@@ -9,12 +12,13 @@ type Ratings = {
 
 interface Props {
   ratings?: Ratings | null;
+  locale?: Locale;
 }
 
-const { ratings = {} } = Astro.props;
+const { ratings = {}, locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props as Props;
 const singleCategories = [
-  { key: "overall", label: "Overall" },
-  { key: "pvp", label: "PvP" },
+  { key: "overall", label: t(locale, "hero", "overall") },
+  { key: "pvp", label: t(locale, "hero", "pvp") },
 ] as const;
 
 function tierClass(value: string) {
@@ -47,8 +51,8 @@ const pveLate = ratings?.pveLate || ratings?.pve || "";
       </span>
     </div>
     <div class="pve-split-labels">
-      <span class="big-rating-label">PvE Early</span>
-      <span class="big-rating-label">PvE Late</span>
+      <span class="big-rating-label">{t(locale, "hero", "pveEarly")}</span>
+      <span class="big-rating-label">{t(locale, "hero", "pveLate")}</span>
     </div>
   </div>
 </div>

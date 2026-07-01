@@ -1,14 +1,16 @@
 ---
 import { getLocaleFromPathname, type Locale } from "../i18n/config";
+import { pickLang, type LocalizedString } from "../i18n/helpers";
 import { t } from "../i18n/ui";
 
 interface Props {
-  relicRecommendation: string;
-  usedIn: string;
-  explanation: string;
+  relicRecommendation: LocalizedString;
+  usedIn: LocalizedString;
+  explanation: LocalizedString;
   locale?: Locale;
 }
 const { relicRecommendation, usedIn, explanation, locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props as Props;
+const pick = (value: LocalizedString) => pickLang(value, locale);
 ---
 
 <div class="relic-invest-card">
@@ -16,13 +18,13 @@ const { relicRecommendation, usedIn, explanation, locale = getLocaleFromPathname
   <div class="ri-body">
     <div class="ri-row">
       <span class="ri-label">{t(locale, "common", "recommendation")}</span>
-      <span class="ri-value ri-value--highlight">{relicRecommendation}</span>
+      <span class="ri-value ri-value--highlight">{pick(relicRecommendation)}</span>
     </div>
     <div class="ri-row">
       <span class="ri-label">{t(locale, "common", "usedIn")}</span>
-      <span class="ri-value">{usedIn}</span>
+      <span class="ri-value">{pick(usedIn)}</span>
     </div>
-    <p class="ri-explanation">{explanation}</p>
+    <p class="ri-explanation">{pick(explanation)}</p>
   </div>
 </div>
 

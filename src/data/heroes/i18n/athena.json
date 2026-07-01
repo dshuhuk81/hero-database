@@ -1,0 +1,205 @@
+{
+  "name": {
+    "de": "Athene",
+    "es": "Atenea",
+    "ru": "Афина"
+  },
+  "description": {
+    "de": "Athene, Göttin der Weisheit und des gerechten Krieges, verkörpert Vernunft und Strategie. Sie herrscht über Wissen und Handwerk, und ihre Macht reicht vom Werkzeugbau bis zur Befehlsführung auf dem Schlachtfeld.",
+    "es": "Atenea, diosa de la sabiduría y de la guerra justa, encarna la razón y la estrategia. Rige el conocimiento y la artesanía, y su poder abarca desde la fabricación de herramientas hasta el mando en el campo de batalla.",
+    "ru": "Афина, богиня мудрости и справедливой войны, воплощает разум и стратегию. Она властвует над знанием и ремеслом, а её сила простирается от создания орудий до командования на поле боя."
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Ägide des Heiligenscheins",
+        "es": "Égida del halo",
+        "ru": "Эгида сияния"
+      },
+      "description": {
+        "de": "Zu Kampfbeginn erschafft Athene um sich herum eine Aura, die den von Verbündeten innerhalb erlittenen DMG um 10% verringert. Beim ersten Wirken wächst die Aura auf mittlere Größe und gewährt Verbündeten darin einen Schild in Höhe von 200% von Athenes ATK, während sie die Aura dauerhaft verstärkt: Für jeden Verbündeten innerhalb der Aura erhält sie 5% DMG RED und ATK. Beim zweiten Wirken erhalten alle Verbündeten innerhalb der Aura zusätzlich 40% ATK SPD.",
+        "es": "Al comenzar el combate, Atenea crea un aura a su alrededor que reduce en un 10% el DMG recibido por los aliados dentro de ella. En el primer lanzamiento, el aura crece hasta un tamaño medio y otorga a los aliados dentro un escudo equivalente al 200% del ATK de Atenea, mientras fortalece permanentemente el aura: por cada aliado dentro del aura, ella obtiene un 5% de DMG RED y ATK. En el segundo lanzamiento, todos los aliados dentro del aura ganan además un 40% de ATK SPD.",
+        "ru": "В начале боя Афина создаёт вокруг себя ауру, снижающую получаемый союзниками внутри неё DMG на 10%. При первом применении аура увеличивается до среднего размера и даёт союзникам внутри щит в размере 200% ATK Афины, а сама аура навсегда усиливается: за каждого союзника внутри ауры она получает по 5% DMG RED и ATK. При втором применении все союзники внутри ауры дополнительно получают 40% ATK SPD."
+      },
+      "upgrades": {
+        "level2": {
+        "de": "Beim ersten Wirken erhält sie für jeden Verbündeten innerhalb der Aura 7,5% DMG RED und ATK.",
+          "es": "En el primer lanzamiento, obtiene un 7,5% de DMG RED y ATK por cada aliado dentro del aura.",
+          "ru": "При первом применении она получает по 7,5% DMG RED и ATK за каждого союзника внутри ауры."
+        },
+        "level3": {
+          "de": "Erhöht die Schildstärke auf 240%.",
+          "es": "Aumenta la fuerza del escudo al 240%.",
+          "ru": "Увеличивает прочность щита до 240%."
+        },
+        "level4": {
+          "de": "Beim zweiten Wirken erhalten alle Verbündeten innerhalb der Aura 60% ATK SPD.",
+          "es": "En el segundo lanzamiento, todos los aliados dentro del aura ganan un 60% de ATK SPD.",
+          "ru": "При втором применении все союзники внутри ауры получают 60% ATK SPD."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Göttlicher Hieb",
+        "es": "Golpe divino",
+        "ru": "Божественный удар"
+      },
+      "description": {
+        "de": "Schwingt die Ägide und fügt dem Ziel DMG in Höhe von 250% ATK zu und betäubt es für 1,5 s.",
+        "es": "Balancea la égida e inflige al objetivo un DMG equivalente al 250% del ATK y lo aturde durante 1,5 s.",
+        "ru": "Размахивает Эгидой, нанося цели DMG в размере 250% ATK и оглушая её на 1,5 с."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Sie erhält außerdem einen Schild in Höhe von 150% ATK.",
+          "es": "Además, obtiene un escudo equivalente al 150% del ATK.",
+          "ru": "Кроме того, она получает щит в размере 150% ATK."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten DMG auf 270%.",
+          "es": "Aumenta el DMG infligido al 270%.",
+          "ru": "Увеличивает наносимый DMG до 270%."
+        },
+        "level4": {
+          "de": "Die Schildstärke erhöht sich auf 200% ATK.",
+          "es": "La fuerza del escudo aumenta al 200% del ATK.",
+          "ru": "Прочность щита увеличивается до 200% ATK."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Segen des Heiligenscheins",
+        "es": "Bendición del halo",
+        "ru": "Благословение сияния"
+      },
+      "description": {
+        "de": "Athene segnet den Verbündeten mit dem höchsten ATK und erhöht dessen ATK SPD um 25%.",
+        "es": "Atenea bendice al aliado con mayor ATK y aumenta su ATK SPD en un 25%.",
+        "ru": "Афина благословляет союзника с самым высоким ATK, увеличивая его ATK SPD на 25%."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht ATK SPD auf 35%.",
+          "es": "Aumenta el ATK SPD al 35%.",
+          "ru": "Увеличивает ATK SPD до 35%."
+        },
+        "level3": {
+          "de": "Erhöht CRIT Rate zusätzlich um 10%.",
+          "es": "Aumenta la CRIT Rate en 10% adicional.",
+          "ru": "Дополнительно увеличивает CRIT Rate на 10%."
+        },
+        "level4": {
+          "de": "Erhöht ATK SPD auf 45%. (Freigeschaltet auf Lv. 261)",
+          "es": "Aumenta el ATK SPD al 45%. (Se desbloquea en Nv. 261)",
+          "ru": "Увеличивает ATK SPD до 45%. (Открывается на ур. 261)"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Handauflegung",
+        "es": "Imposición de manos",
+        "ru": "Возложение рук"
+      },
+      "description": {
+        "de": "Überschüttet den schwächsten Verbündeten und die Verbündeten in der Nähe mit heiligem Licht, heilt sie um 200% ATK als HP und erhöht ihre M-RES 8 s lang um 20%.",
+        "es": "Baña al aliado más débil y a los cercanos con luz sagrada, curándolos por un valor equivalente al 200% del ATK como HP y aumentando su M-RES en un 20% durante 8 s.",
+        "ru": "Озаряет святом светом самого слабого союзника и ближайших к нему союзников, леча их на 200% ATK в виде HP и повышая их M-RES на 20% на 8 с."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt HP in Höhe von 220% ATK wieder her.",
+          "es": "Restaura HP equivalente al 220% del ATK.",
+          "ru": "Восстанавливает HP в размере 220% ATK."
+        },
+        "level3": {
+          "de": "Erhöht die Dauer des M-RES-Buffs auf 12 s.",
+          "es": "Aumenta la duración del aumento de M-RES a 12 s.",
+          "ru": "Увеличивает длительность усиления M-RES до 12 с."
+        },
+        "level4": {
+          "de": "Stellt HP in Höhe von 240% ATK wieder her. (Freigeschaltet auf Lv. 281)",
+          "es": "Restaura HP equivalente al 240% del ATK. (Se desbloquea en Nv. 281)",
+          "ru": "Восстанавливает HP в размере 240% ATK. (Открывается на ур. 281)"
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Gesegnete Reinigung",
+      "es": "Purificación bendita",
+      "ru": "Благословенное очищение"
+    },
+    "description": {
+      "de": "Wenn Aegis des Heiligenscheins im Kampf 3-mal gewirkt wurde, fügt sie allen Gegnern im Wirkungsbereich 8 s lang pro Sekunde True DMG in Höhe von 5% der max. HP (bis zu 200% ATK) zu.",
+      "es": "Cuando Égida del halo se lanza 3 veces en una batalla, inflige a todos los enemigos dentro del alcance un True DMG equivalente al 5% de la HP máxima (hasta un 200% del ATK) por segundo durante 8 s.",
+      "ru": "Когда Эгида сияния применяется 3 раза в бою, она наносит всем врагам в радиусе действия True DMG в размере 5% макс. HP (до 200% ATK) в секунду в течение 8 с."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Für jeden überlebenden Verbündeten (außer Dienern) innerhalb der Aura erhält Athene 25% Armor, 25% M-RES und 10% Energy Regen. (Freigeschaltet auf Relic-Lv. 10)",
+        "es": "Por cada aliado sobreviviente (excepto esbirros) dentro del aura, Atenea obtiene 25% de Armor, 25% de M-RES y 10% de Energy Regen. (Se desbloquea en Relic Nv. 10)",
+        "ru": "За каждого выжившего союзника (кроме прислужников) внутри ауры Афина получает 25% Armor, 25% M-RES и 10% Energy Regen. (Открывается на ур. реликвии 10)"
+      },
+      "level3": {
+        "de": "Athene erhält zu Kampfbeginn den verstärkten Ersteinsatz von Aegis des Heiligenscheins. (Freigeschaltet auf Relic-Lv. 20)",
+        "es": "Atenea obtiene al inicio del combate el efecto mejorado de primer lanzamiento de Égida del halo. (Se desbloquea en Relic Nv. 20)",
+        "ru": "В начале боя Афина получает усиленный эффект первого применения Эгиды сияния. (Открывается на ур. реликвии 20)"
+      },
+      "level4": {
+        "de": "Athene erhält 50% DMG RED, wenn sich mindestens 3 Verbündete innerhalb ihrer Aura befinden. (Freigeschaltet auf Relic-Lv. 30)",
+        "es": "Atenea obtiene un 50% de DMG RED cuando hay al menos 3 aliados dentro de su aura. (Se desbloquea en Relic Nv. 30)",
+        "ru": "Афина получает 50% DMG RED, если внутри её ауры находятся как минимум 3 союзника. (Открывается на ур. реликвии 30)"
+      }
+    }
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Starker ATK-SPD-Buff, der das Zeus-Judgment-Fenster vorbereitet. Der Kern des Kits ist vielseitig, aber die Hauptrolle ist die eines Zeus-Verstärkers. Nur bis r20 mit Divine Zeus investieren.",
+      "es": "Buff de ATK SPD potente que prepara la ventana de Juicio de Zeus. El kit es versátil, pero su función principal es potenciar a Zeus. Solo merece inversión hasta r20 con Zeus Divino.",
+      "ru": "Сильный бафф ATK SPD, который подготавливает окно Judgment у Зевса. Набор умений универсален, но его главная роль - усиливать Зевса. Вкладываться стоит только до r20 вместе с Divine Zeus."
+    }
+  },
+  "synergyLinks": [
+    {
+      "description": {
+        "de": "Der ATK-SPD-Buff verstärkt den Schaden im Judgment-Fenster direkt.",
+        "es": "El buff de ATK SPD amplifica directamente el daño de la ventana de Juicio.",
+        "ru": "Бафф ATK SPD напрямую усиливает урон в окне Judgment."
+      }
+    },
+    {
+      "description": {
+        "de": "ATK-Buff und Link-Kette - Athene trifft stärker und überlebt länger.",
+        "es": "Buff de ATK y cadena de enlace: Atenea golpea más fuerte y sobrevive más tiempo.",
+        "ru": "Бафф ATK и цепочка связей - Афина бьёт сильнее и живёт дольше."
+      }
+    }
+  ],
+  "virtueSets": [
+    {
+      "label": {
+        "de": "Einsicht",
+        "es": "Perspicacia",
+        "ru": "Проницательность"
+      }
+    },
+    {
+      "label": {
+        "de": "Anmut",
+        "es": "Gracia",
+        "ru": "Изящество"
+      }
+    },
+    {
+      "label": {
+        "de": "Stoisch",
+        "es": "Estoico",
+        "ru": "Стоицизм"
+      }
+    }
+  ]
+}

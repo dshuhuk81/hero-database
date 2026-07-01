@@ -1,12 +1,14 @@
 ---
 import { getLocaleFromPathname, type Locale } from "../i18n/config";
+import { pickLang, type LocalizedString } from "../i18n/helpers";
 import { t } from "../i18n/ui";
 
 interface Props {
-  f2pInvestment: string;
+  f2pInvestment: LocalizedString;
   locale?: Locale;
 }
 const { f2pInvestment, locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props as Props;
+const pick = (value: LocalizedString) => pickLang(value, locale);
 ---
 
 <div class="f2p-invest-card">
@@ -14,7 +16,7 @@ const { f2pInvestment, locale = getLocaleFromPathname(Astro.url.pathname) } = As
   <div class="fi-body">
     <div class="fi-row">
       <span class="fi-label">{t(locale, "common", "recommendation")}</span>
-      <span class="fi-value">{f2pInvestment}</span>
+      <span class="fi-value">{pick(f2pInvestment)}</span>
     </div>
   </div>
 </div>

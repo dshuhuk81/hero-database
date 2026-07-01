@@ -1,0 +1,198 @@
+{
+  "name": {
+    "de": "Herakles",
+    "es": "Hércules",
+    "ru": "Геракл"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Gezeichnete Wut",
+        "es": "Furia cicatrizada",
+        "ru": "Израненная ярость"
+      },
+      "description": {
+        "de": "Herakles speichert allen erlittenen DMG, bis zu maximal 80% seiner max. HP. Beim Auslösen fügt er Gegnern innerhalb von 3 Metern DMG in Höhe von 20% seiner max. HP plus 100% des gespeicherten DMG zu.",
+        "es": "Hércules acumula todo el DMG recibido, hasta un máximo del 80% de su HP máxima. Al liberarlo, inflige a los enemigos en un radio de 3 metros un DMG equivalente al 20% de su HP máxima más el 100% del DMG acumulado.",
+        "ru": "Геракл накапливает весь полученный DMG, максимум до 80% своей макс. HP. При высвобождении он наносит врагам в радиусе 3 метров DMG, равный 20% его макс. HP плюс 100% накопленного DMG."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Gewährt beim Wirken einen Schild in Höhe von 30% des gespeicherten DMG.",
+          "es": "Al activarse, otorga un escudo equivalente al 30% del DMG acumulado.",
+          "ru": "При применении даёт щит в размере 30% накопленного DMG."
+        },
+        "level3": {
+          "de": "Verursacht 125% des gespeicherten DMG.",
+          "es": "Inflige el 125% del DMG acumulado.",
+          "ru": "Наносит 125% накопленного DMG."
+        },
+        "level4": {
+          "de": "Gewährt beim Wirken einen Schild in Höhe von 50% des gespeicherten DMG. (Freigeschaltet auf Lv. 221)",
+          "es": "Al activarse, otorga un escudo equivalente al 50% del DMG acumulado. (Se desbloquea en Nv. 221)",
+          "ru": "При применении даёт щит в размере 50% накопленного DMG. (Открывается на ур. 221)"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Weltzertrümmerer",
+        "es": "Destructor del mundo",
+        "ru": "Мироразрушитель"
+      },
+      "description": {
+        "de": "Unterdrückt einen Gegner, hebt ihn auf und schleudert ihn in einen Bereich mit dicht gedrängten Gegnern, wodurch Gegner innerhalb von 3 Metern AoE-DMG in Höhe von 10% der max. HP des unterdrückten Ziels (bis zu 20% seiner max. HP) erleiden.",
+        "es": "Suprime a un enemigo, lo levanta y lo arroja a una zona con enemigos agrupados, infligiendo a los enemigos en un radio de 3 metros un DMG de área equivalente al 10% de la HP máxima del objetivo suprimido (hasta el 20% de su HP máxima).",
+        "ru": "Подавляет врага, поднимает его и швыряет в область с плотной группой противников, нанося врагам в радиусе 3 метров AoE DMG в размере 10% макс. HP подавленной цели (до 20% его макс. HP)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht DMG in Höhe von 15% der max. HP des Ziels, bis zu 30% von Herakles' max. HP.",
+          "es": "Inflige DMG equivalente al 15% de la HP máxima del objetivo, hasta el 30% de la HP máxima de Hércules.",
+          "ru": "Наносит DMG в размере 15% макс. HP цели, до 30% макс. HP Геракла."
+        },
+        "level3": {
+          "de": "Wirft außerdem getroffene Einheiten um. (Freigeschaltet auf Lv. 161)",
+          "es": "Además derriba a las unidades golpeadas. (Se desbloquea en Nv. 161)",
+          "ru": "Также сбивает поражённые юниты с ног. (Открывается на ур. 161)"
+        },
+        "level4": {
+          "de": "Verursacht DMG in Höhe von 20% der max. HP des Ziels, bis zu 40% von Herakles' max. HP. (Freigeschaltet auf Lv. 241)",
+          "es": "Inflige DMG equivalente al 20% de la HP máxima del objetivo, hasta el 40% de la HP máxima de Hércules. (Se desbloquea en Nv. 241)",
+          "ru": "Наносит DMG в размере 20% макс. HP цели, до 40% макс. HP Геракла. (Открывается на ур. 241)"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wilder Schlag",
+        "es": "Golpe salvaje",
+        "ru": "Дикий удар"
+      },
+      "description": {
+        "de": "Nach kurzer Aufladung schlägt er auf den Boden und verursacht Gegnern in einem Kegel DMG in Höhe von 200% ATK und wirft sie um.",
+        "es": "Tras una breve carga, golpea el suelo e inflige a los enemigos en un cono un DMG equivalente al 200% del ATK y los derriba.",
+        "ru": "После короткой подготовки он ударяет по земле, нанося врагам в конусе DMG в размере 200% ATK и сбивая их с ног."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält einen Schild in Höhe von 10% der max. HP.",
+          "es": "Obtiene un escudo equivalente al 10% de la HP máxima.",
+          "ru": "Получает щит в размере 10% макс. HP."
+        },
+        "level3": {
+          "de": "Verursacht zusätzlichen DMG in Höhe von 10% seiner max. HP. (Freigeschaltet auf Lv. 201)",
+          "es": "Inflige DMG adicional equivalente al 10% de su HP máxima. (Se desbloquea en Nv. 201)",
+          "ru": "Наносит дополнительный DMG в размере 10% его макс. HP. (Открывается на ур. 201)"
+        },
+        "level4": {
+          "de": "Stellt für jeden getroffenen Gegner 5% der max. HP wieder her. (Freigeschaltet auf Lv. 281)",
+          "es": "Restaura un 5% de la HP máxima por cada enemigo golpeado. (Se desbloquea en Nv. 281)",
+          "ru": "Восстанавливает 5% макс. HP за каждого поражённого врага. (Открывается на ур. 281)"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Aufstieg zur Gottheit",
+        "es": "Ascenso a la divinidad",
+        "ru": "Вознесение к божеству"
+      },
+      "description": {
+        "de": "Beim Betreten des Schlachtfeldes erhöht Herakles seine max. HP um 10% und wandelt jede Sekunde 5% seines ATK in 2,5% max. HP um.",
+        "es": "Al entrar en el campo de batalla, Hércules aumenta su HP máxima en un 10% y convierte cada segundo el 5% de su ATK en un 2,5% de HP máxima.",
+        "ru": "При входе на поле боя Геракл увеличивает свою макс. HP на 10% и каждую секунду преобразует 5% своего ATK в 2,5% макс. HP."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält einen Schild in Höhe von 20% der max. HP, wenn ATK auf 0 fällt.",
+          "es": "Obtiene un escudo equivalente al 20% de la HP máxima cuando el ATK cae a 0.",
+          "ru": "Получает щит в размере 20% макс. HP, когда ATK падает до 0."
+        },
+        "level3": {
+          "de": "Erhöht die max. HP auf 15%. (Freigeschaltet auf Lv. 181)",
+          "es": "Aumenta la HP máxima al 15%. (Se desbloquea en Nv. 181)",
+          "ru": "Увеличивает макс. HP до 15%. (Открывается на ур. 181)"
+        },
+        "level4": {
+          "de": "Wandelt jede Sekunde 5% des ATK in 5% der max. HP um. (Freigeschaltet auf Lv. 261)",
+          "es": "Convierte cada segundo el 5% del ATK en un 5% de la HP máxima. (Se desbloquea en Nv. 261)",
+          "ru": "Каждую секунду преобразует 5% ATK в 5% макс. HP. (Открывается на ур. 261)"
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Trotziges Brüllen",
+      "es": "Rugido desafiante",
+      "ru": "Бросающий вызов рёв"
+    },
+    "description": {
+      "de": "Bevor er fällt, wird er immun gegen tödlichen DMG und stellt sofort 50% seiner max. HP wieder her. Für die nächsten 5 s verringert er den erlittenen DMG um 50%. Kann nur einmal pro Kampf auslösen.",
+      "es": "Antes de caer, se vuelve inmune al DMG letal y restaura de inmediato el 50% de su HP máxima. Durante los siguientes 5 s, reduce el DMG recibido en un 50%. Solo puede activarse una vez por batalla.",
+      "ru": "Перед падением он становится невосприимчив к смертельному DMG и мгновенно восстанавливает 50% своей макс. HP. В течение следующих 5 с он снижает получаемый DMG на 50%. Может сработать только один раз за бой."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Stellt 100% der max. HP wieder her. (Freigeschaltet auf Relic-Lv. 10)",
+        "es": "Restaura el 100% de la HP máxima. (Se desbloquea en Relic Nv. 10)",
+        "ru": "Восстанавливает 100% макс. HP. (Открывается на ур. реликвии 10)"
+      },
+      "level3": {
+        "de": "Stellt die Energie bei Auslösung vollständig wieder her. (Freigeschaltet auf Relic-Lv. 20)",
+        "es": "Restaura toda la Energía al activarse. (Se desbloquea en Relic Nv. 20)",
+        "ru": "Полностью восстанавливает Энергию при срабатывании. (Открывается на ур. реликвии 20)"
+      },
+      "level4": {
+        "de": "Verringert den erlittenen DMG 5 s lang um 100%. (Freigeschaltet auf Relic-Lv. 30)",
+        "es": "Reduce el DMG recibido en un 100% durante 5 s. (Se desbloquea en Relic Nv. 30)",
+        "ru": "Снижает получаемый DMG на 100% в течение 5 с. (Открывается на ур. реликвии 30)"
+      }
+    }
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Hard Carry: Sammeln, dann zwei Schadensspitzen auslösen. Der zweite Burst trifft, bevor sich der Gegner erholen kann. CN und Excel sind für T0 vollständig abgestimmt. Nicht gegen Pan einsetzen, da Energiestörung beide Bursts kontert.",
+      "es": "Carry principal: agrupa enemigos y luego lanza un patrón de dos picos de daño. El segundo estallido llega antes de que el enemigo pueda recuperarse. CN y Excel están totalmente alineados para T0. Evítalo contra Pan, porque el drenaje de Energía contrarresta ambos estallidos.",
+      "ru": "Hard carry: сначала собирает врагов вместе, затем выдаёт два пика урона. Второй взрыв приходит раньше, чем враг успевает восстановиться. CN и Excel полностью согласованы для T0. Не использовать против Пана: выжигание энергии контрит оба взрыва."
+    }
+  },
+  "virtueSets": [
+    {
+      "label": {
+        "de": "Stoisch",
+        "es": "Estoico",
+        "ru": "Стоицизм"
+      }
+    },
+    {
+      "label": {
+        "de": "Opfer",
+        "es": "Sacrificio",
+        "ru": "Жертвенность"
+      }
+    },
+    {
+      "label": {
+        "de": "Trotz",
+        "es": "Desafío",
+        "ru": "Сопротивление"
+      }
+    },
+    {
+      "label": {
+        "de": "Begierde",
+        "es": "Deseo",
+        "ru": "Желание"
+      }
+    },
+    {
+      "label": {
+        "de": "Wildheit",
+        "es": "Salvajismo",
+        "ru": "Дикость"
+      }
+    }
+  ]
+}

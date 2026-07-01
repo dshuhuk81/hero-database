@@ -10,7 +10,8 @@ import F2pInvestment from '../../components/F2pInvestment.astro';
 import RatingTiles from '../../components/RatingTiles.astro';
 import allVirtues from "../../data/virtues.json";
 import allInvest from "../../data/ratings/invest.json";
-import { getLocaleFromPathname, type Locale } from "../../i18n/config";
+import { getLocaleFromPathname, localizePath, type Locale } from "../../i18n/config";
+import { t } from "../../i18n/ui";
 import { getCnSummary, formatCnValue } from "../../utils/cnDiff.js";
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -84,20 +85,6 @@ const PERCENT_STATS = new Set([
   "controlRes", "controlBonus", "normalSkillPWR", "ultimatePWR"
 ]);
 
-const STAT_LABELS: Record<string, string> = {
-  might: "Might", hp: "HP", atk: "ATK", armor: "Armor", magicRes: "M-Res",
-  dodgeRate: "Dodge", hitBonus: "Hit", critRate: "Crit Rate", critRes: "Crit RES",
-  critDmgBonus: "Crit DMG", critDmgRed: "Crit Red", energy: "Energy",
-  cooldownHaste: "Cooldown Haste", atkSpdBonus: "ATK SPD Bonus",
-  pDmgBonus: "Physical DMG Bonus", pDmgRed: "Physical DMG Reduction",
-  mDmgBonus: "Magical DMG Bonus", mDmgRed: "Magical DMG Reduction",
-  healEff: "Heal Efficiency", rechargeEff: "Recharge Efficiency",
-  lifestealEff: "Lifesteal Efficiency", reflectEff: "Reflect Efficiency",
-  effectRes: "Effect Resistance", effectHit: "Effect Hit",
-  controlRes: "Control Resistance", controlBonus: "Control Bonus",
-  normalSkillPWR: "Normal Skill PWR", ultimatePWR: "Ultimate PWR"
-};
-
 // Stat grouping
 const OFFENSIVE_STATS = ["atk", "critRate", "critDmgBonus", "atkSpdBonus", "pDmgBonus", "mDmgBonus", "normalSkillPWR", "ultimatePWR"];
 const DEFENSIVE_STATS = ["hp", "armor", "magicRes", "dodgeRate", "critRes", "critDmgRed", "pDmgRed", "mDmgRed", "controlRes"];
@@ -158,23 +145,36 @@ function resolveSkillVideoSrc(video: unknown): string {
   return `/skills/${value}`;
 }
 
+function heroHref(id: string): string {
+  return localizePath(`/heroes/${id}`, locale);
+}
+
+function statLabel(key: string): string {
+  return t(locale, "hero", key);
+}
+
+function localizedHeroName(id: string): string {
+  const targetHero = localizeHeroData(getHeroById(id) as any, locale);
+  return targetHero?.name ?? id;
+}
+
 // Dot nav sections
 const dotSections = [
-  { id: "section-profile",    label: "Profile" },
-  { id: "skills",             label: "Skills" },
-  ...(cnSummary && cnSummary.hasChanges ? [{ id: "section-cn", label: "CN vs Global" }] : []),
-  { id: "section-ratings",    label: "Ratings" },
-  { id: "section-stats",      label: "Stats" },
-  { id: "section-synergies",  label: "Synergies" },
-  ...(hasComps ? [{ id: "section-comps", label: "Compositions" }] : []),
-  ...(heroInvest ? [{ id: "section-investment", label: "Investment" }] : []),
-  ...(hasVirtues ? [{ id: "section-virtues", label: "Virtues" }] : []),
+  { id: "section-profile",    label: t(locale, "hero", "profile") },
+  { id: "skills",             label: t(locale, "hero", "skillsAbilities") },
+  ...(cnSummary && cnSummary.hasChanges ? [{ id: "section-cn", label: t(locale, "hero", "cnVsGlobal") }] : []),
+  { id: "section-ratings",    label: t(locale, "hero", "metaRatings") },
+  { id: "section-stats",      label: t(locale, "hero", "combatStatistics") },
+  { id: "section-synergies",  label: t(locale, "hero", "synergyNetwork") },
+  ...(hasComps ? [{ id: "section-comps", label: t(locale, "common", "compositions") }] : []),
+  ...(heroInvest ? [{ id: "section-investment", label: t(locale, "hero", "investmentGuide") }] : []),
+  ...(hasVirtues ? [{ id: "section-virtues", label: t(locale, "hero", "recommendedVirtues") }] : []),
 ];
 ---
 
 <Base
-  title={hero ? `${hero.name} - Stats, Skills & Tier List | Motto Immortal` : "Hero | Motto Immortal"}
-  description={hero ? `${hero.name} is a ${hero.class} (${hero.role}) hero in Motto Immortal. View stats, skills, ratings (${hero.ratings?.overall ?? ""}), team comps and synergies.` : undefined}
+  title={hero ? t(locale, "hero", "metaTitle").replaceAll("{name}", hero.name) : "Hero | Motto Immortal"}
+  description={hero ? t(locale, "hero", "metaDescription").replaceAll("{name}", hero.name).replaceAll("{class}", String(hero.class ?? "")).replaceAll("{role}", String(hero.role ?? "")) : undefined}
   locale={locale}
 >
 <div
@@ -187,7 +187,7 @@ const dotSections = [
   <header class="hero-page-header">
     <a href="/heroes" class="page-back">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      <span>Heroes</span>
+      <span>{t(locale, "hero", "backToHeroes")}</span>
     </a>
     <span class="page-hero-name">{hero.name}</span>
     <div class="hero-page-header-right">
@@ -198,7 +198,7 @@ const dotSections = [
   </header>
 
   <!-- ===================== CINEMATIC SHOWCASE ===================== -->
-  <section class="showcase" aria-label="Hero showcase">
+  <section class="showcase" aria-label={hero.name}>
     <div class="showcase-bg"></div>
     <div
       class="showcase-art"
@@ -210,7 +210,7 @@ const dotSections = [
 
     <!-- Prev / Next arrows on image -->
     {prevHero ? (
-      <a class="showcase-nav prev" href={`/heroes/${prevHero.id}`} aria-label={`Previous: ${prevHero.name}`} title={prevHero.name}>
+      <a class="showcase-nav prev" href={heroHref(prevHero.id)} aria-label={`${t(locale, "hero", "previousHero")}: ${localizedHeroName(prevHero.id)}`} title={localizedHeroName(prevHero.id)}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </a>
     ) : (
@@ -219,7 +219,7 @@ const dotSections = [
       </span>
     )}
     {nextHero ? (
-      <a class="showcase-nav next" href={`/heroes/${nextHero.id}`} aria-label={`Next: ${nextHero.name}`} title={nextHero.name}>
+      <a class="showcase-nav next" href={heroHref(nextHero.id)} aria-label={`${t(locale, "hero", "nextHero")}: ${localizedHeroName(nextHero.id)}`} title={localizedHeroName(nextHero.id)}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
       </a>
     ) : (
@@ -261,7 +261,7 @@ const dotSections = [
   </section>
 
   <!-- ===================== FLOATING DOT NAV (desktop) ===================== -->
-  <nav class="dot-nav" aria-label="Page sections">
+    <nav class="dot-nav" aria-label="Page sections">
     {dotSections.map((s) => (
       <a class="dot-nav-item" href={`#${s.id}`} data-section={s.id} title={s.label} aria-label={s.label}>
         <span class="dot"></span>
@@ -275,7 +275,7 @@ const dotSections = [
 
     <!-- ── SECTION 1: PROFILE ── -->
     <section class="content-section" id="section-profile">
-      <div class="section-label">Profile</div>
+      <div class="section-label">{t(locale, "hero", "profile")}</div>
 
       <div class="profile-grid">
         <!-- Description + Core Mechanic -->
@@ -286,9 +286,9 @@ const dotSections = [
           {(hero as any).coreMechanic && (
             <div class="mechanic-card">
               <div class="mechanic-header">
-                <span class="mechanic-title">Core Mechanic</span>
+                <span class="mechanic-title">{t(locale, "hero", "coreMechanic")}</span>
                 <span class={`depth-badge depth-${(hero as any).coreMechanic.depthRating}`}>
-                  {(hero as any).coreMechanic.depthRating} depth
+                  {(hero as any).coreMechanic.depthRating} {t(locale, "hero", "depth")}
                 </span>
               </div>
               <p class="mechanic-summary">{(hero as any).coreMechanic.summary}</p>
@@ -298,18 +298,18 @@ const dotSections = [
 
         <!-- Key stats at a glance -->
         <div class="profile-right">
-          <div class="key-stats-label">At a Glance  <span class="key-stats-sub">(Lv. {hero.level}, {hero.evolution})</span></div>
+          <div class="key-stats-label">{t(locale, "hero", "atAGlance")}  <span class="key-stats-sub">(Lv. {hero.level}, {hero.evolution})</span></div>
           <div class="key-stats-grid">
             {KEY_STATS.map(key => {
               const val = Number((hero.stats as any)[key] ?? 0);
               const rank = statRank(key, val);
               return (
                 <div class="key-stat-block">
-                  <div class="key-stat-topline">
-                    <span class="key-stat-value">{formatStatVal(key, val)}</span>
-                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                <div class="key-stat-topline">
+                  <span class="key-stat-value">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
                   </div>
-                  <span class="key-stat-label">{STAT_LABELS[key]}</span>
+                <span class="key-stat-label">{statLabel(key)}</span>
                   <div class="key-stat-bar">
                     <div class="key-stat-bar-fill" style={`width:${statBarWidth(key, val)}%`}></div>
                   </div>
@@ -323,7 +323,7 @@ const dotSections = [
 
     <!-- ── SECTION 2: SKILLS ── -->
     <section class="content-section" id="skills">
-      <div class="section-label">Skills &amp; Abilities</div>
+      <div class="section-label">{t(locale, "hero", "skillsAbilities")}</div>
 
       <!-- Skill tab strip -->
       <div class="skill-tabs" role="tablist">
@@ -335,7 +335,7 @@ const dotSections = [
             aria-selected={i === 0 ? "true" : "false"}
           >
             <div class="skill-tab-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
-            <span class="skill-tab-label">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
+            <span class="skill-tab-label">{skill.isUltimate ? t(locale, "hero", "ultimate") : `${t(locale, "hero", "skill")} ${i+1}`}</span>
             {skill.damageType && (
               <span class={`dmg-type-chip dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
             )}
@@ -344,7 +344,7 @@ const dotSections = [
         {hero.relic && (
           <button class="skill-tab is-relic" data-skill-tab="relic" role="tab" aria-selected="false">
             <div class="skill-tab-icon" style={`background-image:url(${hero.relic.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_relic.webp`})`}></div>
-            <span class="skill-tab-label">Relic</span>
+            <span class="skill-tab-label">{t(locale, "hero", "relic")}</span>
           </button>
         )}
       </div>
@@ -361,7 +361,7 @@ const dotSections = [
                     <div class="skill-panel-meta">
                       <h3 class="skill-panel-name">{skill.name}</h3>
                       <div class="skill-panel-badges">
-                        <span class="skill-panel-type">{skill.isUltimate ? "Ultimate" : `Skill ${i+1}`}</span>
+                        <span class="skill-panel-type">{skill.isUltimate ? t(locale, "hero", "ultimate") : `${t(locale, "hero", "skill")} ${i+1}`}</span>
                         {skill.damageType && (
                           <span class={`dmg-badge dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
                         )}
@@ -389,7 +389,7 @@ const dotSections = [
                 <div class="skill-panel-meta">
                   <h3 class="skill-panel-name">{hero.relic.name}</h3>
                   <div class="skill-panel-badges">
-                    <span class="skill-panel-type">Relic</span>
+                    <span class="skill-panel-type">{t(locale, "hero", "relic")}</span>
                   </div>
                 </div>
               </div>
@@ -411,26 +411,26 @@ const dotSections = [
     {cnSummary && cnSummary.hasChanges && (
       <section class="content-section" id="section-cn">
         <div class="section-label">
-          <span>CN vs Global</span>
-          {cnSummary.captured && <span class="section-sub">CN snapshot {cnSummary.captured}</span>}
+          <span>{t(locale, "hero", "cnVsGlobal")}</span>
+          {cnSummary.captured && <span class="section-sub">{t(locale, "hero", "cnSnapshot")} {cnSummary.captured}</span>}
         </div>
 
         <div class="cn-detail-summary">
-          {cnSummary.totals.buff > 0 && <span class="cn-badge cn-badge-buff">{cnSummary.totals.buff} Buff</span>}
-          {cnSummary.totals.nerf > 0 && <span class="cn-badge cn-badge-nerf">{cnSummary.totals.nerf} Nerf</span>}
-          {cnSummary.totals.diff > 0 && <span class="cn-badge cn-badge-diff">{cnSummary.totals.diff} Diff</span>}
-          <a href="/cn-preview" class="cn-detail-link">All heroes &rarr;</a>
+          {cnSummary.totals.buff > 0 && <span class="cn-badge cn-badge-buff">{cnSummary.totals.buff} {t(locale, "hero", "buff")}</span>}
+          {cnSummary.totals.nerf > 0 && <span class="cn-badge cn-badge-nerf">{cnSummary.totals.nerf} {t(locale, "hero", "nerf")}</span>}
+          {cnSummary.totals.diff > 0 && <span class="cn-badge cn-badge-diff">{cnSummary.totals.diff} {t(locale, "hero", "different")}</span>}
+          <a href="/cn-preview" class="cn-detail-link">{t(locale, "hero", "allHeroes")} &rarr;</a>
         </div>
 
         <div class="cn-table-wrap">
           <table class="cn-table">
             <thead>
               <tr>
-                <th>Skill</th>
-                <th>Value</th>
-                <th>Global</th>
-                <th>CN</th>
-                <th>Change</th>
+                <th>{t(locale, "hero", "tableSkill")}</th>
+                <th>{t(locale, "hero", "tableValue")}</th>
+                <th>{t(locale, "hero", "tableGlobal")}</th>
+                <th>{t(locale, "hero", "tableCn")}</th>
+                <th>{t(locale, "hero", "tableChange")}</th>
               </tr>
             </thead>
             <tbody>
@@ -442,9 +442,9 @@ const dotSections = [
                     <td class="cn-td-global">{formatCnValue(row.global, row.unit)}</td>
                     <td class="cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
                     <td>
-                      <span class={`cn-tag cn-tag-${row.change}`}>{row.change === "buff" ? "Buff" : row.change === "nerf" ? "Nerf" : "Different"}</span>
+                      <span class={`cn-tag cn-tag-${row.change}`}>{row.change === "buff" ? t(locale, "hero", "buff") : row.change === "nerf" ? t(locale, "hero", "nerf") : t(locale, "hero", "different")}</span>
                       {row.movement && (
-                        <span class={`cn-move cn-move-${row.movement.direction}`} title={`Global is ${row.movement.label} vs CN`}>
+                        <span class={`cn-move cn-move-${row.movement.direction}`} title={`${t(locale, "hero", "globalIs")} ${row.movement.label} vs CN`}>
                           <svg viewBox="0 0 24 24" aria-hidden="true">
                             {row.movement.direction === "up" ? (
                               <><path d="M3 17l6-6 4 4 7-7"/><path d="M14 8h6v6"/></>
@@ -455,7 +455,7 @@ const dotSections = [
                           <span>{row.movement.label}</span>
                         </span>
                       )}
-                      {row.verified === false && <span class="cn-tag cn-tag-unverified">Unconfirmed</span>}
+                      {row.verified === false && <span class="cn-tag cn-tag-unverified">{t(locale, "hero", "unconfirmed")}</span>}
                     </td>
                   </tr>
                 ))
@@ -476,29 +476,29 @@ const dotSections = [
 
     <!-- ── SECTION 3: RATINGS ── -->
     <section class="content-section" id="section-ratings">
-      <div class="section-label">Meta Ratings</div>
+      <div class="section-label">{t(locale, "hero", "metaRatings")}</div>
 
-      <RatingTiles ratings={hero.ratings} />
+      <RatingTiles ratings={hero.ratings} locale={locale} />
     </section>
 
     <!-- ── SECTION 4: STATS ── -->
     <section class="content-section" id="section-stats">
-      <div class="section-label"><span>Combat Statistics</span> <span class="section-sub">Lv. {hero.level} &middot; {hero.evolution}</span></div>
+      <div class="section-label"><span>{t(locale, "hero", "combatStatistics")}</span> <span class="section-sub">Lv. {hero.level} &middot; {hero.evolution}</span></div>
 
       <div class="stat-columns">
         <!-- Offensive -->
         <div class="stat-column">
-          <div class="stat-col-header offensive-hdr">Offensive</div>
+          <div class="stat-col-header offensive-hdr">{t(locale, "hero", "offensive")}</div>
           {OFFENSIVE_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
             const rank = statRank(key, val);
             return (
               <div class="stat-entry">
-                <span class="stat-entry-label">{STAT_LABELS[key]}</span>
+                <span class="stat-entry-label">{statLabel(key)}</span>
                 <div class="stat-entry-right">
                   <div class="stat-entry-meta">
                     <span class="stat-entry-val">{formatStatVal(key, val)}</span>
-                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
                   </div>
                   <div class="stat-entry-bar">
                     <div class="stat-entry-fill offensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
@@ -511,17 +511,17 @@ const dotSections = [
 
         <!-- Defensive -->
         <div class="stat-column">
-          <div class="stat-col-header defensive-hdr">Defensive</div>
+          <div class="stat-col-header defensive-hdr">{t(locale, "hero", "defensive")}</div>
           {DEFENSIVE_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
             const rank = statRank(key, val);
             return (
               <div class="stat-entry">
-                <span class="stat-entry-label">{STAT_LABELS[key]}</span>
+                <span class="stat-entry-label">{statLabel(key)}</span>
                 <div class="stat-entry-right">
                   <div class="stat-entry-meta">
                     <span class="stat-entry-val">{formatStatVal(key, val)}</span>
-                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
                   </div>
                   <div class="stat-entry-bar">
                     <div class="stat-entry-fill defensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
@@ -534,17 +534,17 @@ const dotSections = [
 
         <!-- Utility -->
         <div class="stat-column">
-          <div class="stat-col-header utility-hdr">Utility</div>
+          <div class="stat-col-header utility-hdr">{t(locale, "hero", "utility")}</div>
           {UTILITY_STATS.map(key => {
             const val = Number((hero.stats as any)[key] ?? 0);
             const rank = statRank(key, val);
             return (
               <div class="stat-entry">
-                <span class="stat-entry-label">{STAT_LABELS[key]}</span>
+                <span class="stat-entry-label">{statLabel(key)}</span>
                 <div class="stat-entry-right">
                   <div class="stat-entry-meta">
                     <span class="stat-entry-val">{formatStatVal(key, val)}</span>
-                    {rank && <span class="stat-rank">Rank {rank}</span>}
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
                   </div>
                   <div class="stat-entry-bar">
                     <div class="stat-entry-fill utility-fill" style={`width:${statBarWidth(key, val)}%`}></div>
@@ -559,17 +559,17 @@ const dotSections = [
 
     <!-- ── SECTION 5: SYNERGIES ── -->
     <section class="content-section" id="section-synergies">
-      <div class="section-label">Synergy Network</div>
+      <div class="section-label">{t(locale, "hero", "synergyNetwork")}</div>
 
       <!-- Hero synergy links -->
       {(hero as any).synergyLinks && (hero as any).synergyLinks.length > 0 && (
         <div class="syn-links-grid">
           {(hero as any).synergyLinks.map((link: { heroId: string; type: string; description: string }) => (
-            <a href={`/heroes/${link.heroId}`} class={`syn-link-card syn-${link.type}`}>
+            <a href={heroHref(link.heroId)} class={`syn-link-card syn-${link.type}`}>
               <div class="syn-link-portrait" style={`background-image:url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${link.heroId}.webp)`} role="img" aria-label={link.heroId}></div>
               <div class="syn-link-body">
                 <div class="syn-link-row">
-                  <span class="syn-link-name">{link.heroId}</span>
+                  <span class="syn-link-name">{localizedHeroName(link.heroId)}</span>
                   <span class={`syn-link-badge syn-badge-${link.type}`}>{link.type}</span>
                 </div>
                 <p class="syn-link-desc">{link.description}</p>
@@ -581,17 +581,17 @@ const dotSections = [
 
       <!-- Boosted By: heroes whose kit synergizes with / buffs this hero -->
       {(hero as any).synergyPartners && (hero as any).synergyPartners.length > 0 && (
-        <div class="syn-partners-block">
-          <div class="tag-cloud-label">Boosted By</div>
+            <div class="syn-partners-block">
+          <div class="tag-cloud-label">{t(locale, "hero", "boostedBy")}</div>
           <div class="syn-links-grid">
             {(hero as any).synergyPartners.map((p: { heroId: string; via: string[] }) => (
-              <a href={`/heroes/${p.heroId}`} class="syn-link-card syn-synergy">
+              <a href={heroHref(p.heroId)} class="syn-link-card syn-synergy">
                 <div class="syn-link-portrait" style={`background-image:url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${p.heroId}.webp)`} role="img" aria-label={p.heroId}></div>
                 <div class="syn-link-body">
                   <div class="syn-link-row">
-                    <span class="syn-link-name">{p.heroId}</span>
+                  <span class="syn-link-name">{localizedHeroName(p.heroId)}</span>
                   </div>
-                  <p class="syn-link-desc">boosts via {(p.via || []).map((t) => tagLabel(t)).join(", ")}</p>
+                  <p class="syn-link-desc">{t(locale, "hero", "boostsVia")} {(p.via || []).map((t) => tagLabel(t)).join(", ")}</p>
                 </div>
               </a>
             ))}
@@ -602,7 +602,7 @@ const dotSections = [
       <!-- Tag chips -->
       {hero.synergies && hero.synergies.length > 0 && (
         <div class="tag-cloud">
-          <div class="tag-cloud-label">Ability Tags</div>
+          <div class="tag-cloud-label">{t(locale, "hero", "abilityTags")}</div>
           <div class="tag-chips">
             {hero.synergies.map((tag: string) => (
               <span class="tag-chip">{tagLabel(tag)}</span>
@@ -612,10 +612,18 @@ const dotSections = [
       )}
     </section>
 
+    <!-- ── SECTION 5a: COMPOSITIONS ── -->
+    {hasComps && (
+      <section class="content-section" id="section-comps">
+        <div class="section-label">{t(locale, "common", "compositions")}</div>
+        <HeroCompositions heroId={routeId} locale={locale} />
+      </section>
+    )}
+
     <!-- __ SECTION 5b: STRENGTHS & WEAKNESSES __ -->
     {(heroStrengths.length > 0 || heroWeaknesses.length > 0) && (
       <section class="content-section" id="section-strengths">
-        <div class="section-label">Strengths &amp; Weaknesses</div>
+        <div class="section-label">{t(locale, "hero", "strengthsWeaknesses")}</div>
         <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} locale={locale} />
       </section>
     )}
@@ -623,7 +631,7 @@ const dotSections = [
     <!-- ── SECTION 6: INVESTMENT GUIDE ── -->
     {heroInvest && (
       <section class="content-section" id="section-investment">
-        <div class="section-label">Investment Guide</div>
+        <div class="section-label">{t(locale, "hero", "investmentGuide")}</div>
         <div class="investment-cards">
           <RelicInvestment
             relicRecommendation={heroInvest.relicRecommendation}
@@ -642,7 +650,7 @@ const dotSections = [
     <!-- __ SECTION 7: VIRTUES __ -->
     {hasVirtues && (
       <section class="content-section" id="section-virtues">
-        <div class="section-label">Recommended Virtues</div>
+        <div class="section-label">{t(locale, "hero", "recommendedVirtues")}</div>
         <div class="virtue-sets-row">
           {resolvedVirtueSets.map((vs) => {
             const setBonuses = vs.virtues.length > 0 ? (vs.virtues[0] as any).setBonuses : null;
@@ -650,7 +658,7 @@ const dotSections = [
               <div class="virtue-set-column">
                 <div class="virtue-set-header">
                   <span class="virtue-set-title">{vs.label}</span>
-                  <span class="virtue-set-count">{vs.virtues.length}-Piece</span>
+                  <span class="virtue-set-count">{vs.virtues.length} {t(locale, "hero", "piece")}</span>
                 </div>
                 <div class="virtue-pieces">
                   {vs.virtues.map((v: any) => {
@@ -667,20 +675,20 @@ const dotSections = [
                               decoding="async"
                             />
                           ) : (
-                            <div class="virtue-card-media virtue-card-media--missing" aria-hidden="true">
-                              <span>No asset</span>
+                              <div class="virtue-card-media virtue-card-media--missing" aria-hidden="true">
+                              <span>{t(locale, "hero", "noAsset")}</span>
                             </div>
                           )}
                         </div>
                         <div class="virtue-header">
                           <span class="virtue-name">{v.name}</span>
-                          {v.type === "singular" && <span class="virtue-singular-badge">Singular</span>}
+                          {v.type === "singular" && <span class="virtue-singular-badge">{t(locale, "hero", "singular")}</span>}
                         </div>
                         {v.bp > 0 && <div class="virtue-bp">BP +{v.bp.toLocaleString()}</div>}
                         {virtueStats.length > 0 && (
                           <div class="virtue-stats-list">
                             {virtueStats.map((s: { key: string; base: number; bonus: number }) => {
-                              const label = STAT_LABELS[s.key] ?? s.key;
+                              const label = statLabel(s.key);
                               if (!s.base && !s.bonus) return <div class="virtue-stat">{label}</div>;
                               const val = s.bonus > 0
                                 ? `${s.base.toLocaleString()} + ${s.bonus.toLocaleString()}`
@@ -697,13 +705,13 @@ const dotSections = [
                   <div class="virtue-bonuses">
                     {setBonuses["2"] && (
                       <div class="virtue-bonus-row">
-                        <span class="virtue-bonus-label">2-Piece</span>
+                        <span class="virtue-bonus-label">2 {t(locale, "hero", "piece")}</span>
                         <span class="virtue-bonus-text">{setBonuses["2"]}</span>
                       </div>
                     )}
                     {setBonuses["4"] && vs.virtues.length >= 4 && (
                       <div class="virtue-bonus-row">
-                        <span class="virtue-bonus-label">4-Piece</span>
+                        <span class="virtue-bonus-label">4 {t(locale, "hero", "piece")}</span>
                         <span class="virtue-bonus-text">{setBonuses["4"]}</span>
                       </div>
                     )}
