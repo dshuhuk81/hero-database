@@ -7,211 +7,175 @@ import TipsEarly from "../components/tips/TipsEarly.astro";
 import TipsMidLate from "../components/tips/TipsMidLate.astro";
 import TipsTeams from "../components/tips/TipsTeams.astro";
 import "../styles/tips.css";
+import { defaultLocale, type Locale } from "../i18n/config";
+import { t } from "../i18n/ui";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props as Props;
 ---
 
-<Base title="Tips | Motto Immortal">
-
+<Base title={t(locale, "tips", "metaTitle")} description={t(locale, "tips", "metaDescription")} locale={locale}>
   <PageHero
-    tag="Tips"
-    headline="Tips"
-    subtitle="Beginner tips and core game mechanics"
+    tag={t(locale, "tips", "tag")}
+    headline={t(locale, "tips", "headline")}
+    subtitle={t(locale, "tips", "subtitle")}
+    locale={locale}
   />
-<div class="page-wrapper tips-page">
-  <div class="tips-meta">
-    <p class="tips-last-updated">Last updated: 2026-06-25</p>
-  </div>
-
-  <div class="tips-content">
-    <!-- SUB-TAB NAVIGATION -->
-    <div class="tips-subnav" role="tablist" aria-label="Tips sections">
-      <button
-        id="subtab-btn-mechanics"
-        class="tips-subnav-btn is-active"
-        data-subtab="mechanics"
-        role="tab"
-        aria-controls="subtab-mechanics"
-        aria-selected="true"
-      >Mechanics</button>
-      <button
-        id="subtab-btn-early"
-        class="tips-subnav-btn"
-        data-subtab="early"
-        role="tab"
-        aria-controls="subtab-early"
-        aria-selected="false"
-        tabindex="-1"
-      >Early Game</button>
-      <button
-        id="subtab-btn-midlate"
-        class="tips-subnav-btn"
-        data-subtab="midlate"
-        role="tab"
-        aria-controls="subtab-midlate"
-        aria-selected="false"
-        tabindex="-1"
-      >Mid-Late</button>
-      <button
-        id="subtab-btn-teams"
-        class="tips-subnav-btn"
-        data-subtab="teams"
-        role="tab"
-        aria-controls="subtab-teams"
-        aria-selected="false"
-        tabindex="-1"
-      >Team Building</button>
+  <div class="page-wrapper tips-page">
+    <div class="tips-meta">
+      <p class="tips-last-updated">{t(locale, "tips", "lastUpdated")}: 2026-06-25</p>
     </div>
 
-    <TipsEarly />
+    <div class="tips-content">
+      <div class="tips-subnav" role="tablist" aria-label={t(locale, "tips", "headline")}>
+        <button id="subtab-btn-mechanics" class="tips-subnav-btn is-active" data-subtab="mechanics" role="tab" aria-controls="subtab-mechanics" aria-selected="true">{t(locale, "tips", "subnavMechanics")}</button>
+        <button id="subtab-btn-early" class="tips-subnav-btn" data-subtab="early" role="tab" aria-controls="subtab-early" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavEarly")}</button>
+        <button id="subtab-btn-midlate" class="tips-subnav-btn" data-subtab="midlate" role="tab" aria-controls="subtab-midlate" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavMidLate")}</button>
+        <button id="subtab-btn-teams" class="tips-subnav-btn" data-subtab="teams" role="tab" aria-controls="subtab-teams" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavTeams")}</button>
+      </div>
 
-    <TipsMidLate />
+      <TipsEarly locale={locale} />
+      <TipsMidLate locale={locale} />
+      <TipsTeams locale={locale} />
+      <TipsMechanics locale={locale} />
+    </div>
 
-    <TipsTeams />
+    <script>
+      function setupRovingTabs(tabs: NodeListOf<Element>, getId: (el: Element) => string | undefined, activate: (id: string) => void) {
+        const list = Array.from(tabs) as HTMLElement[];
+        list.forEach((tabEl, idx) => {
+          tabEl.addEventListener('keydown', (e: KeyboardEvent) => {
+            const key = e.key;
+            const horizontalNext = key === 'ArrowRight' || key === 'ArrowDown';
+            const horizontalPrev = key === 'ArrowLeft' || key === 'ArrowUp';
+            if (horizontalNext || horizontalPrev || key === 'Home' || key === 'End') {
+              e.preventDefault();
+              const nextIdx = key === 'Home'
+                ? 0
+                : key === 'End'
+                  ? list.length - 1
+                  : (idx + (horizontalNext ? 1 : -1) + list.length) % list.length;
+              list[nextIdx]?.focus();
+              return;
+            }
 
-    <TipsMechanics />
-  </div>
-
-</div>
-
-  <script>
-    function setupRovingTabs(tabs: NodeListOf<Element>, getId: (el: Element) => string | undefined, activate: (id: string) => void) {
-      const list = Array.from(tabs) as HTMLElement[];
-      list.forEach((tabEl, idx) => {
-        tabEl.addEventListener('keydown', (e: KeyboardEvent) => {
-          const key = e.key;
-          const horizontalNext = key === 'ArrowRight' || key === 'ArrowDown';
-          const horizontalPrev = key === 'ArrowLeft' || key === 'ArrowUp';
-          if (horizontalNext || horizontalPrev || key === 'Home' || key === 'End') {
-            e.preventDefault();
-            const nextIdx = key === 'Home'
-              ? 0
-              : key === 'End'
-                ? list.length - 1
-                : (idx + (horizontalNext ? 1 : -1) + list.length) % list.length;
-            list[nextIdx]?.focus();
-            return;
-          }
-
-          if (key === 'Enter' || key === ' ') {
-            e.preventDefault();
-            const id = getId(tabEl);
-            if (id) activate(id);
-          }
+            if (key === 'Enter' || key === ' ') {
+              e.preventDefault();
+              const id = getId(tabEl);
+              if (id) activate(id);
+            }
+          });
         });
-      });
-    }
+      }
 
-    // - HASH ROUTING (subtabs + deep links)
-    function getHashId() {
-      return decodeURIComponent((location.hash || '').replace('#', ''));
-    }
+      function getHashId() {
+        return decodeURIComponent((location.hash || '').replace('#', ''));
+      }
 
-    function showForTargetId(targetId: string) {
-      if (!targetId) return false;
+      function showForTargetId(targetId: string) {
+        if (!targetId) return false;
 
-      if (['mechanics', 'early', 'midlate', 'teams'].includes(targetId)) {
-        switchSubTab(targetId);
+        if (['mechanics', 'early', 'midlate', 'teams'].includes(targetId)) {
+          switchSubTab(targetId);
+          return true;
+        }
+
+        const target = document.getElementById(targetId);
+        if (!target) return false;
+
+        const panel = target.closest('.tips-panel') as HTMLElement | null;
+        if (panel?.id?.startsWith('subtab-')) {
+          const subtabId = panel.id.replace('subtab-', '');
+          if (subtabId) switchSubTab(subtabId);
+        }
+
+        target.scrollIntoView({ block: 'start' });
         return true;
       }
 
-      const target = document.getElementById(targetId);
-      if (!target) return false;
+      document.addEventListener('click', (e) => {
+        const a = (e.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+        if (!a) return;
+        const href = a.getAttribute('href');
+        if (!href) return;
+        const targetId = decodeURIComponent(href.replace('#', ''));
+        if (!targetId) return;
+        if (!document.getElementById(targetId)) return;
+        e.preventDefault();
+        history.replaceState(null, '', '#' + targetId);
+        showForTargetId(targetId);
+      });
 
-      const panel = target.closest('.tips-panel') as HTMLElement | null;
-      if (panel?.id?.startsWith('subtab-')) {
-        const subtabId = panel.id.replace('subtab-', '');
-        if (subtabId) switchSubTab(subtabId);
+      const subTabs = document.querySelectorAll('.tips-subnav-btn');
+      const subPanels = document.querySelectorAll('.tips-panel');
+
+      function switchSubTab(subtabId: string) {
+        subTabs.forEach(t => {
+          const isActive = (t as HTMLElement).dataset.subtab === subtabId;
+          (t as HTMLElement).classList.toggle('is-active', isActive);
+          (t as HTMLElement).setAttribute('aria-selected', String(isActive));
+          (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
+        });
+        subPanels.forEach(p => {
+          const shouldShow = (p as HTMLElement).id === 'subtab-' + subtabId;
+          (p as HTMLElement).classList.toggle('is-active', shouldShow);
+          (p as HTMLElement).toggleAttribute('hidden', !shouldShow);
+        });
       }
 
-      target.scrollIntoView({ block: 'start' });
-      return true;
-    }
-
-    // Ensure in-page anchors open the right tab/subtab
-    document.addEventListener('click', (e) => {
-      const a = (e.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
-      if (!a) return;
-      const href = a.getAttribute('href');
-      if (!href) return;
-      const targetId = decodeURIComponent(href.replace('#', ''));
-      if (!targetId) return;
-      if (!document.getElementById(targetId)) return;
-      e.preventDefault();
-      history.replaceState(null, '', '#' + targetId);
-      showForTargetId(targetId);
-    });
-
-    // - SECTION TAB SWITCHING
-    const subTabs = document.querySelectorAll('.tips-subnav-btn');
-    const subPanels = document.querySelectorAll('.tips-panel');
-
-    function switchSubTab(subtabId: string) {
-      subTabs.forEach(t => {
-        const isActive = (t as HTMLElement).dataset.subtab === subtabId;
-        (t as HTMLElement).classList.toggle('is-active', isActive);
-        (t as HTMLElement).setAttribute('aria-selected', String(isActive));
-        (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
+      subTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const id = (tab as HTMLElement).dataset.subtab;
+          if (id) switchSubTab(id);
+        });
       });
-      subPanels.forEach(p => {
-        const shouldShow = (p as HTMLElement).id === 'subtab-' + subtabId;
-        (p as HTMLElement).classList.toggle('is-active', shouldShow);
-        (p as HTMLElement).toggleAttribute('hidden', !shouldShow);
-      });
-    }
 
-    subTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const id = (tab as HTMLElement).dataset.subtab;
-        if (id) switchSubTab(id);
-      });
-    });
+      setupRovingTabs(subTabs, (el) => (el as HTMLElement).dataset.subtab, (id) => switchSubTab(id));
+      showForTargetId(getHashId());
+      window.addEventListener('hashchange', () => showForTargetId(getHashId()));
 
-    setupRovingTabs(subTabs, (el) => (el as HTMLElement).dataset.subtab, (id) => switchSubTab(id));
+      function setupJumpbars() {
+        const jumpbars = document.querySelectorAll('.tips-jumpbar');
+        jumpbars.forEach((jumpbar) => {
+          const links = Array.from(jumpbar.querySelectorAll('a[href^="#"]')) as HTMLAnchorElement[];
+          const targets = links
+            .map((a) => decodeURIComponent((a.getAttribute('href') || '').replace('#', '')))
+            .map((id) => ({ id, el: id ? document.getElementById(id) : null }))
+            .filter((t) => t.el);
 
-    // Handle URL hash on load + on hash changes
-    showForTargetId(getHashId());
-    window.addEventListener('hashchange', () => showForTargetId(getHashId()));
+          if (!targets.length) return;
 
-    // - STICKY JUMPBARS + "YOU ARE HERE" HIGHLIGHT
-    function setupJumpbars() {
-      const jumpbars = document.querySelectorAll('.tips-jumpbar');
-      jumpbars.forEach((jumpbar) => {
-        const links = Array.from(jumpbar.querySelectorAll('a[href^="#"]')) as HTMLAnchorElement[];
-        const targets = links
-          .map((a) => decodeURIComponent((a.getAttribute('href') || '').replace('#', '')))
-          .map((id) => ({ id, el: id ? document.getElementById(id) : null }))
-          .filter((t) => t.el);
+          const panel = (jumpbar as HTMLElement).closest('.tips-panel');
+          let activeId: string | null = null;
 
-        if (!targets.length) return;
+          function setActive(id: string) {
+            if (activeId === id) return;
+            activeId = id;
+            links.forEach((a) => {
+              const linkId = decodeURIComponent((a.getAttribute('href') || '').replace('#', ''));
+              a.classList.toggle('is-active', linkId === id);
+            });
+          }
 
-        const panel = (jumpbar as HTMLElement).closest('.tips-panel');
-        let activeId: string | null = null;
+          const observer = new IntersectionObserver((entries) => {
+            if (panel && !panel.classList.contains('is-active')) return;
+            const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top));
+            const best = visible[0]?.target as HTMLElement | undefined;
+            if (best?.id) setActive(best.id);
+          }, { root: null, rootMargin: '-20% 0px -75% 0px', threshold: [0, 0.1, 0.25] });
 
-        function setActive(id: string) {
-          if (activeId === id) return;
-          activeId = id;
-          links.forEach((a) => {
-            const linkId = decodeURIComponent((a.getAttribute('href') || '').replace('#', ''));
-            a.classList.toggle('is-active', linkId === id);
-          });
-        }
+          targets.forEach((t) => observer.observe(t.el as Element));
+          const initial = targets.find((t) => t.id === getHashId())?.id || targets[0].id;
+          if (initial) setActive(initial);
+        });
+      }
 
-        const observer = new IntersectionObserver((entries) => {
-          if (panel && !panel.classList.contains('is-active')) return;
-          const visible = entries
-            .filter((e) => e.isIntersecting)
-            .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top));
-          const best = visible[0]?.target as HTMLElement | undefined;
-          if (best?.id) setActive(best.id);
-        }, { root: null, rootMargin: '-20% 0px -75% 0px', threshold: [0, 0.1, 0.25] });
-
-        targets.forEach((t) => observer.observe(t.el as Element));
-        // Set initial state
-        const initial = targets.find((t) => t.id === getHashId())?.id || targets[0].id;
-        if (initial) setActive(initial);
-      });
-    }
-
-    setupJumpbars();
-
-  </script>
+      setupJumpbars();
+    </script>
+  </div>
 </Base>

@@ -1,419 +1,266 @@
-    <!-- SUB-TAB: TEAM BUILDING -->
-    <div id="subtab-teams" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-teams" hidden>
-    <main class="tips-main-content">
+---
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { pickLang, type LocalizedString } from "../../i18n/helpers";
 
-      <!-- TEAM BUILDING JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Team Building sections">
-        <span class="tips-jump-label">On this page</span>
-        <a href="#section-support" class="tips-jump-link">Support Heroes</a>
-        <a href="#section-compositions" class="tips-jump-link">Team Compositions</a>
-      </nav>
+interface Props {
+  locale?: Locale;
+}
 
-      <!-- SUPPORT HEROES -->
-      <div id="section-support" class="eg-content-card tips-anchor">
-        <h2>Support Heroes</h2>
-        <p>Understanding the difference between Energy Support and Tempo Support helps you build better team synergies and choose the right support for your carry.</p>
+const { locale = defaultLocale } = Astro.props as Props;
 
-        <h3>Energy Support vs Tempo Support</h3>
-        <div class="tips-support-comparison">
-          <div class="tips-support-card">
-            <div class="tips-support-label">Energy Support</div>
-            <p class="tips-support-desc">Provides energy generation and battery effects to sustain your carry's ultimate casts.</p>
-            <ul>
-              <li><strong>Caishen</strong> - instant 100 energy and sustained regen to nearby allies. Best-in-slot battery.</li>
-              <li><strong>Diana</strong> - grants 15 Energy per second</li>
-            </ul>
-            <div class="hero-chip-grid u-mt-3">
-              <a class="hero-pic chip-highlight" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-            </div>
+const c = {
+  jumpLabel: { en: "On this page", de: "Auf dieser Seite", es: "En esta página", ru: "На этой странице" },
+  jumpSupport: { en: "Support Heroes", de: "Support-Helden", es: "Héroes de support", ru: "Герои поддержки" },
+  jumpComps: { en: "Team Compositions", de: "Team-Zusammenstellungen", es: "Composiciones de equipo", ru: "Составы команд" },
+  supportTitle: { en: "Support Heroes", de: "Support-Helden", es: "Héroes de support", ru: "Герои поддержки" },
+  supportIntro: { en: "Understanding the difference between Energy Support and Tempo Support helps you build better team synergies and choose the right support for your carry.", de: "Der Unterschied zwischen Energie-Support und Tempo-Support zu verstehen, hilft dir, bessere Team-Synergien zu bauen und den richtigen Support für deinen Carry zu wählen.", es: "Entender la diferencia entre Energy Support y Tempo Support te ayuda a construir mejores sinergias de equipo y a elegir el support adecuado para tu carry.", ru: "Понимание разницы между Energy Support и Tempo Support помогает строить лучшие синергии команды и выбирать правильного саппорта для керри." },
+  energyVsTempo: { en: "Energy Support vs Tempo Support", de: "Energy Support vs Tempo Support", es: "Energy Support vs Tempo Support", ru: "Energy Support против Tempo Support" },
+  energyLabel: { en: "Energy Support", de: "Energie-Support", es: "Energy Support", ru: "Energy Support" },
+  energyDesc: { en: "Provides energy generation and battery effects to sustain your carry's ultimate casts.", de: "Gibt Energieerzeugung und Batterieeffekte, um die Ultimates deines Carries zu ermöglichen.", es: "Proporciona generación de energía y efectos de batería para sostener las ultimates de tu carry.", ru: "Обеспечивает генерацию энергии и эффекты батарейки, чтобы поддерживать ульты керри." },
+  energyCaishen: { en: "Caishen - instant 100 energy and sustained regen to nearby allies. Best-in-slot battery.", de: "Caishen - sofort 100 Energie und anhaltende Regeneration für Verbündete in der Nähe. Beste Batterie im Slot.", es: "Caishen: 100 de energía instantáneos y regeneración sostenida para aliados cercanos. La mejor batería del juego.", ru: "Цайшэнь — мгновенно 100 энергии и постоянная регенерация ближайшим союзникам. Лучший источник энергии в слоте." },
+  energyDiana: { en: "Diana - grants 15 Energy per second", de: "Diana - gibt 15 Energie pro Sekunde", es: "Diana: otorga 15 de energía por segundo", ru: "Диана — даёт 15 энергии в секунду" },
+  tempoLabel: { en: "Tempo Support", de: "Tempo-Support", es: "Tempo Support", ru: "Tempo Support" },
+  tempoDesc: { en: "Provides attack speed and movement speed buffs to accelerate your team's rotation and positioning.", de: "Gibt Angriffs- und Bewegungsgeschwindigkeits-Buffs, um Rotation und Positionierung deines Teams zu beschleunigen.", es: "Proporciona buffs de velocidad de ataque y movimiento para acelerar la rotación y la posición de tu equipo.", ru: "Даёт бафы скорости атаки и передвижения, ускоряя ротацию и позиционирование команды." },
+  tempoDio: { en: "Dionysus (Starglint) - Frenzy gives 50% ATK speed and 50% move speed to all allies. Strongest tempo tool in the game.", de: "Dionysus (Starglint) - Frenzy gibt allen Verbündeten 50 % ATK-Speed und 50 % Bewegungsgeschwindigkeit. Stärkstes Tempo-Tool im Spiel.", es: "Dionysus (Starglint) - Frenzy da 50% de velocidad de ATK y 50% de velocidad de movimiento a todos los aliados. La herramienta de tempo más fuerte del juego.", ru: "Дионис (Starglint) — Frenzy даёт всем союзникам 50% скорости атаки и 50% скорости передвижения. Самый сильный инструмент темпа в игре." },
+  tempoAthena: { en: "Athena - 40-60% ATK speed to all allies", de: "Athena - 40-60 % ATK-Speed für alle Verbündeten", es: "Athena - 40-60% de velocidad de ATK para todos los aliados", ru: "Афина — 40-60% скорости атаки всем союзникам" },
+  tempoDiana: { en: "Diana - Waxing Blessing fires at combat start with 40% ATK speed", de: "Diana - Waxing Blessing löst zu Kampfbeginn mit 40 % ATK-Speed aus", es: "Diana - Waxing Blessing se activa al inicio del combate con 40% de velocidad de ATK", ru: "Диана — Waxing Blessing срабатывает в начале боя с 40% скоростью атаки" },
+  compsTitle: { en: "Team Compositions", de: "Team-Zusammenstellungen", es: "Composiciones de equipo", ru: "Составы команд" },
+  compsIntro: { en: "These are solid starting compositions to build toward. Mix and match based on which heroes you have available.", de: "Das sind solide Start-Zusammenstellungen, auf die du hinarbeiten kannst. Misch und kombiniere je nachdem, welche Helden du zur Verfügung hast.", es: "Estas son composiciones iniciales sólidas hacia las que construir. Mezcla y combina según los héroes que tengas disponibles.", ru: "Это крепкие стартовые составы, к которым можно стремиться. Комбинируй их в зависимости от доступных героев." },
+  meretNote: { en: "Note on Meret: She can function as a control-focused carry, not only as a support piece. In the comps below she appears in protective shells, but she is also viable as your primary damage dealer when properly invested.", de: "Hinweis zu Meret: Sie kann auch als kontrollorientierter Carry funktionieren, nicht nur als Support. In den Comp-Beispielen unten ist sie in Schutz-Shells eingebaut, kann aber mit genug Investition auch dein primärer Schadensdealer sein.", es: "Nota sobre Meret: también puede funcionar como un carry centrado en control, no solo como pieza de support. En las composiciones de abajo aparece en núcleos protectores, pero también es viable como tu principal fuente de daño si está bien invertida.", ru: "Примечание о Мерет: она может работать не только как саппорт, но и как керри, ориентированный на контроль. В приведённых составах она выступает в защитных оболочках, но при достаточной инвестиции может быть и вашим основным источником урона." },
+  orText: { en: "or", de: "oder", es: "o", ru: "или" },
+  anyDd: { en: "Any DD", de: "Beliebiger DD", es: "Cualquier DD", ru: "Любой DD" },
+  anyHero: { en: "Any hero", de: "Beliebiger Held", es: "Cualquier héroe", ru: "Любой герой" },
+  comp1Title: { en: "Isis", de: "Isis", es: "Isis", ru: "Исида" },
+  comp1Note: { en: "A versatile early-mid comp. Poseidon anchors the frontline with early CC, Caishen accelerates energy rotation, and Isis or Jingwei delivers the damage payload.", de: "Eine vielseitige Früh-/Mittelspiel-Comp. Poseidon hält die Frontline mit frühem CC, Caishen beschleunigt die Energierotation, und Isis oder Jingwei liefert den Schadensoutput.", es: "Una composición versátil de inicio y mitad de partida. Poseidón ancla la primera línea con CC temprano, Caishen acelera la rotación de energía e Isis o Jingwei aporta el daño.", ru: "Универсальный состав ранней/средней стадии. Посейдон держит переднюю линию ранним CC, Цайшэнь ускоряет ротацию энергии, а Исида или Цзинвэй дают основной урон." },
+  comp2Title: { en: "Control + Debuff", de: "Kontrolle + Debuff", es: "Control + Debuff", ru: "Контроль + дебафф" },
+  comp2Note: { en: "Momus taunts to protect the backline, Yuelao layers healing, and Tefnut supports Hecate's sustained magical damage output.", de: "Momus provoziert und schützt die Backline, Yuelao stapelt Heilung, und Tefnut unterstützt Hecates anhaltenden magischen Schaden.", es: "Momus provoca para proteger la retaguardia, Yuelao suma curación y Tefnut apoya el daño mágico sostenido de Hecate.", ru: "Момус провоцирует, защищая заднюю линию, Юэлао накидывает лечение, а Тефнут поддерживает стабильный магический урон Гекаты." },
+  comp3Title: { en: "Heracles & Mengpo", de: "Heracles & Mengpo", es: "Heracles y Mengpo", ru: "Геракл и Мэнпо" },
+  comp3Note: { en: "Heracles soaks damage upfront while Bastet and Phoenix pressure high-value targets. Mengpo provides revival insurance for a second life on key heroes.", de: "Heracles fängt vorne Schaden ab, während Bastet und Phoenix wertvolle Ziele unter Druck setzen. Mengpo gibt wichtige Helden mit einer zweiten Lebensschicht ab.", es: "Heracles absorbe el daño al frente mientras Bastet y Phoenix presionan objetivos de alto valor. Mengpo aporta un seguro de resurrección para dar una segunda vida a héroes clave.", ru: "Геракл впитывает урон спереди, а Бастет и Феникс давят на ценные цели. Мэнпо даёт страховку на вторую жизнь ключевым героям." },
+  comp4Title: { en: "Clubs", de: "Clubs", es: "Clubs", ru: "Clubs" },
+  comp4Note: { en: "Nuba and Pan layer CC and debuffs while Anubis locks down priority targets. Nuwa adds legendary-tier support. Bring your strongest DD as the damage anchor.", de: "Nuba und Pan stapeln CC und Debuffs, während Anubis Prioritätsziele festsetzt. Nuwa bringt Support auf Legendary-Niveau. Bring deinen stärksten DD als Schadensanker mit.", es: "Nuba y Pan apilan CC y debuffs mientras Anubis inmoviliza objetivos prioritarios. Nuwa añade support de nivel legendario. Lleva a tu DD más fuerte como ancla de daño.", ru: "Нуба и Пань накладывают CC и дебаффы, а Анубис фиксирует приоритетные цели. Нюйва добавляет поддержку легендарного уровня. Возьми своего сильнейшего DD как якорь урона." },
+  comp5Title: { en: "Skadi CC", de: "Skadi CC", es: "Skadi CC", ru: "Skadi CC" },
+  comp5Note: { en: "The classic Skadi control loop. Poseidon opens with AoE CC, Khepri dives the backline, and every controlled enemy triggers Skadi's passive for bonus damage and energy.", de: "Der klassische Skadi-Control-Loop. Poseidon eröffnet mit AoE-CC, Khepri springt in die Backline, und jeder kontrollierte Gegner löst Skadis Passiv für Bonus-Schaden und Energie aus.", es: "El clásico bucle de control de Skadi. Poseidón abre con CC en área, Kepri se lanza a la retaguardia y cada enemigo controlado activa el pasivo de Skadi para daño y energía extra.", ru: "Классический цикл контроля Skadi. Посейдон открывает бой AoE-CC, Кепри врывается в заднюю линию, и каждый контролируемый враг триггерит пассивку Скади для бонусного урона и энергии." },
+  comp6Title: { en: "Diamonds", de: "Diamonds", es: "Diamonds", ru: "Diamonds" },
+  comp6Note: { en: "Bastet and Heracles anchor the frontline. Set adds disruption, Phoenix targets high-value backline heroes, and Athena or Diana provides protection or healing depending on what you need.", de: "Bastet und Heracles halten die Frontline. Set sorgt für Störung, Phoenix zielt auf wertvolle Backline-Helden, und Athena oder Diana liefert je nach Bedarf Schutz oder Heilung.", es: "Bastet y Heracles anclan la primera línea. Set aporta disrupción, Phoenix apunta a héroes valiosos de la retaguardia y Athena o Diana ofrece protección o curación según necesites.", ru: "Бастет и Геракл держат переднюю линию. Сет добавляет хаос, Феникс охотится на ценных героев задней линии, а Афина или Диана дают защиту или лечение в зависимости от нужды." },
+  comp7Title: { en: "Hladgunnr & Heracles", de: "Hladgunnr & Heracles", es: "Hladgunnr y Heracles", ru: "Хладгуннр и Геракл" },
+  comp7Note: { en: "A high-damage multi-warrior comp. Heracles and Hladgunnr split frontline duties, Jingwei and Hecate deliver consistent damage, and Skadi closes gaps on any CC-vulnerable target.", de: "Eine schadensstarke Multi-Warrior-Comp. Heracles und Hladgunnr teilen sich die Frontline-Aufgaben, Jingwei und Hecate liefern konstanten Schaden, und Skadi schließt Lücken bei allen CC-anfälligen Zielen.", es: "Una composición de varios guerreros de alto daño. Heracles y Hladgunnr se reparten las tareas de primera línea, Jingwei y Hecate aportan daño constante y Skadi remata objetivos vulnerables al CC.", ru: "Сильный состав из нескольких воинов. Геракл и Хладгуннр делят задачи передней линии, Цзинвэй и Геката наносят стабильный урон, а Скади добивает цели, уязвимые к CC." },
+  comp8Title: { en: "Nuba & Cronus", de: "Nuba & Chronos", es: "Nuba y Cronos", ru: "Нуба и Хронос" },
+  comp8Note: { en: "Caishen accelerates Jingwei and Chronos into faster ultimate cycles. Nuba and Mengpo keep the frontline alive. A strong mid-game energy rotation comp.", de: "Caishen beschleunigt Jingwei und Chronos in schnellere Ultimate-Zyklen. Nuba und Mengpo halten die Frontline am Leben. Eine starke Mittelspiel-Comp für Energierotation.", es: "Caishen acelera a Jingwei y Chronos hacia ciclos de ultimate más rápidos. Nuba y Mengpo mantienen viva la primera línea. Una sólida composición de rotación de energía para mitad de partida.", ru: "Цайшэнь ускоряет Цзинвэй и Хроноса к более быстрым циклам ульт. Нуба и Мэнпо удерживают переднюю линию живой. Сильный mid-game состав на ротацию энергии." },
+  comp9Title: { en: "Hecate", de: "Hecate", es: "Hecate", ru: "Геката" },
+  comp9Note: { en: "A heavy support shell for Hecate. Momus taunts, Cancer and Yuelao stack heals and shields, with Meret completing the protective core.", de: "Eine starke Support-Hülle für Hecate. Momus provoziert, Cancer und Yuelao stapeln Heilung und Schilde, und Meret vervollständigt den Schutzkern.", es: "Una carcasa de support pesada para Hecate. Momus provoca, Cancer y Yuelao acumulan curas y escudos, y Meret completa el núcleo protector.", ru: "Тяжёлая саппорт-оболочка для Гекаты. Момус провоцирует, Рак и Юэлао накидывают лечение и щиты, а Мерет завершает защитное ядро." },
+  comp10Title: { en: "Skadi", de: "Skadi", es: "Skadi", ru: "Skadi" },
+  comp10Note: { en: "Skadi is your damage carry. Poseidon opens with AoE CC, Khepri disrupts the backline, and Pan and Nuwa provide layered support and control.", de: "Skadi ist dein Schadens-Carry. Poseidon eröffnet mit AoE-CC, Khepri stört die Backline, und Pan und Nuwa liefern gestaffelten Support und Kontrolle.", es: "Skadi es tu carry de daño. Poseidón abre con CC en área, Kepri altera la retaguardia y Pan y Nuwa aportan soporte y control en capas.", ru: "Скади — твой керри урона. Посейдон открывает AoE-CC, Кепри мешает задней линии, а Пань и Нюйва дают многослойную поддержку и контроль." },
+  comp11Title: { en: "Hladgunnr & Clubs", de: "Hladgunnr & Clubs", es: "Hladgunnr y Clubs", ru: "Хладгуннр и Clubs" },
+  comp11Note: { en: "Capricorn and Wenshen provide sustained physical pressure. Jormungandr and Hladgunnr hold the frontline. Anubis locks down priority targets in the backline.", de: "Capricorn und Wenshen liefern anhaltenden physischen Druck. Jormungandr und Hladgunnr halten die Frontline. Anubis fixiert Prioritätsziele in der Backline.", es: "Capricorn y Wenshen ejercen presión física sostenida. Jormungandr y Hladgunnr sostienen la primera línea. Anubis inmoviliza objetivos prioritarios en la retaguardia.", ru: "Козерог и Вэньшэнь дают постоянное физическое давление. Йормунгандр и Хладгуннр держат переднюю линию. Анубис фиксирует приоритетные цели в задней линии." },
+  comp12Title: { en: "Hecate & Hephaestus", de: "Hecate & Hephaestus", es: "Hecate y Hefesto", ru: "Геката и Гефест" },
+  comp12Note: { en: "Hephaestus synergizes with Momus in a heavy frontline shell. Yuelao and Meret stack support, with Hecate as the damage carry.", de: "Hephaestus synerget mit Momus in einer schweren Frontline-Shell. Yuelao und Meret stapeln Support, während Hecate der Schadens-Carry ist.", es: "Hefesto sinergiza con Momus en una sólida línea frontal. Yuelao y Meret acumulan support, con Hecate como carry de daño.", ru: "Гефест синергирует с Момусом в тяжёлой передней оболочке. Юэлао и Мерет накапливают поддержку, а Геката выступает керри урона." },
+  comp13Title: { en: "Warriors", de: "Krieger", es: "Guerreros", ru: "Воины" },
+  comp13Note: { en: "Nezha acts as the spearhead. Prometheus and Hephaestus form a sturdy frontline while Yuelao and Diana keep everyone alive and in the fight.", de: "Nezha ist die Speerspitze. Prometheus und Hephaestus bilden eine robuste Frontline, während Yuelao und Diana alle am Leben und im Kampf halten.", es: "Nezha actúa como la punta de lanza. Prometeo y Hefesto forman una primera línea sólida mientras Yuelao y Diana mantienen a todos vivos y peleando.", ru: "Нэчжа выступает наконечником копья. Прометей и Гефест образуют прочную переднюю линию, а Юэлао и Диана держат всех живыми и в бою." },
+} satisfies Record<string, LocalizedString>;
+---
+<div id="subtab-teams" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-teams" hidden>
+  <main class="tips-main-content">
+    <nav class="tips-jumpbar" aria-label={pickLang(c.jumpLabel, locale)}>
+      <span class="tips-jump-label">{pickLang(c.jumpLabel, locale)}</span>
+      <a href="#section-support" class="tips-jump-link">{pickLang(c.jumpSupport, locale)}</a>
+      <a href="#section-compositions" class="tips-jump-link">{pickLang(c.jumpComps, locale)}</a>
+    </nav>
+
+    <div id="section-support" class="eg-content-card tips-anchor">
+      <h2>{pickLang(c.supportTitle, locale)}</h2>
+      <p>{pickLang(c.supportIntro, locale)}</p>
+      <h3>{pickLang(c.energyVsTempo, locale)}</h3>
+      <div class="tips-support-comparison">
+        <div class="tips-support-card">
+          <div class="tips-support-label">{pickLang(c.energyLabel, locale)}</div>
+          <p class="tips-support-desc">{pickLang(c.energyDesc, locale)}</p>
+          <ul>
+            <li>{pickLang(c.energyCaishen, locale)}</li>
+            <li>{pickLang(c.energyDiana, locale)}</li>
+          </ul>
+          <div class="hero-chip-grid u-mt-3">
+            <a class="hero-pic chip-highlight" href="/heroes/caishen"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div><span class="hero-chip-name">Caishen</span></a>
+            <a class="hero-pic" href="/heroes/diana"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div><span class="hero-chip-name">Diana</span></a>
           </div>
-
-          <div class="tips-support-card">
-            <div class="tips-support-label">Tempo Support</div>
-            <p class="tips-support-desc">Provides attack speed and movement speed buffs to accelerate your team's rotation and positioning.</p>
-            <ul>
-              <li><strong>Dionysus (Starglint)</strong> - Frenzy gives 50% ATK speed and 50% move speed to all allies. Strongest tempo tool in the game.</li>
-              <li><strong>Athena</strong> - 40-60% ATK speed to all allies</li>
-              <li><strong>Diana</strong> - Waxing Blessing fires at combat start with 40% ATK speed</li>
-            </ul>
-            <div class="hero-chip-grid u-mt-3">
-              <a class="hero-pic chip-highlight" href="/heroes/dionysus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/dionysus.webp')"></div>
-                <span class="hero-chip-name">Dionysus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/athena">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
-                <span class="hero-chip-name">Athena</span>
-              </a>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-            </div>
+        </div>
+        <div class="tips-support-card">
+          <div class="tips-support-label">{pickLang(c.tempoLabel, locale)}</div>
+          <p class="tips-support-desc">{pickLang(c.tempoDesc, locale)}</p>
+          <ul>
+            <li>{pickLang(c.tempoDio, locale)}</li>
+            <li>{pickLang(c.tempoAthena, locale)}</li>
+            <li>{pickLang(c.tempoDiana, locale)}</li>
+          </ul>
+          <div class="hero-chip-grid u-mt-3">
+            <a class="hero-pic chip-highlight" href="/heroes/dionysus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/dionysus.webp')"></div><span class="hero-chip-name">Dionysus</span></a>
+            <a class="hero-pic" href="/heroes/athena"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div><span class="hero-chip-name">Athena</span></a>
+            <a class="hero-pic" href="/heroes/diana"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div><span class="hero-chip-name">Diana</span></a>
           </div>
         </div>
       </div>
-
-      <!-- TEAM COMPOSITIONS -->
-      <div id="section-compositions" class="eg-content-card tips-anchor">
-        <h2>Team Compositions</h2>
-        <p>These are solid starting compositions to build toward. Mix and match based on which heroes you have available.</p>
-        <p><strong>Note on Meret:</strong> She can function as a control-focused carry, not only as a support piece. In the comps below she appears in protective shells, but she is also viable as your primary damage dealer when properly invested.</p>
-
-        <div class="comp-list">
-          <div class="comp-card">
-            <div class="comp-title">Isis</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/isis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/isis.webp')"></div>
-                <span class="hero-chip-name">Isis</span>
-              </a>
-              <span class="chip-divider">or</span>
-              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-              <a class="hero-pic" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-            </div>
-            <p class="comp-note">A versatile early-mid comp. Poseidon anchors the frontline with early CC, Caishen accelerates energy rotation, and Isis or Jingwei delivers the damage payload.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Control + Debuff</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/tefnut">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/tefnut.webp')"></div>
-                <span class="hero-chip-name">Tefnut</span>
-              </a>
-            </div>
-            <p class="comp-note">Momus taunts to protect the backline, Yuelao layers healing, and Tefnut supports Hecate's sustained magical damage output.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Heracles & Mengpo</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/bastet">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
-                <span class="hero-chip-name">Bastet</span>
-              </a>
-              <a class="hero-pic" href="/heroes/phoenix">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
-                <span class="hero-chip-name">Phoenix</span>
-              </a>
-              <a class="hero-pic" href="/heroes/mengpo">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
-                <span class="hero-chip-name">Mengpo</span>
-              </a>
-            </div>
-            <p class="comp-note">Heracles soaks damage upfront while Bastet and Phoenix pressure high-value targets. Mengpo provides revival insurance for a second life on key heroes.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Clubs</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/nuba">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
-                <span class="hero-chip-name">Nuba</span>
-              </a>
-              <a class="hero-pic" href="/heroes/nuwa">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
-                <span class="hero-chip-name">Nuwa</span>
-              </a>
-              <a class="hero-pic" href="/heroes/anubis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
-                <span class="hero-chip-name">Anubis</span>
-              </a>
-              <a class="hero-pic" href="/heroes/pan">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
-                <span class="hero-chip-name">Pan</span>
-              </a>
-              <div class="chip-flex-slot">
-                <div class="chip-flex-img">?</div>
-                <span class="chip-flex-label">Any DD</span>
-              </div>
-            </div>
-            <p class="comp-note">Nuba and Pan layer CC and debuffs while Anubis locks down priority targets. Nuwa adds legendary-tier support. Bring your strongest DD as the damage anchor.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Skadi CC</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-              <a class="hero-pic" href="/heroes/khepri">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
-                <span class="hero-chip-name">Khepri</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-              <a class="hero-pic" href="/heroes/iris">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/iris.webp')"></div>
-                <span class="hero-chip-name">Iris</span>
-              </a>
-              <div class="chip-flex-slot">
-                <div class="chip-flex-img">?</div>
-                <span class="chip-flex-label">Any hero</span>
-              </div>
-            </div>
-            <p class="comp-note">The classic Skadi control loop. Poseidon opens with AoE CC, Khepri dives the backline, and every controlled enemy triggers Skadi's passive for bonus damage and energy.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Diamonds</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/bastet">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
-                <span class="hero-chip-name">Bastet</span>
-              </a>
-              <a class="hero-pic" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/phoenix">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
-                <span class="hero-chip-name">Phoenix</span>
-              </a>
-              <a class="hero-pic" href="/heroes/set">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/set.webp')"></div>
-                <span class="hero-chip-name">Set</span>
-              </a>
-              <a class="hero-pic" href="/heroes/athena">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
-                <span class="hero-chip-name">Athena</span>
-              </a>
-              <span class="chip-divider">or</span>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-            </div>
-            <p class="comp-note">Bastet and Heracles anchor the frontline. Set adds disruption, Phoenix targets high-value backline heroes, and Athena or Diana provides protection or healing depending on what you need.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hladgunnr & Heracles</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/hladgunnr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
-                <span class="hero-chip-name">Hladgunnr</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-              <a class="hero-pic" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-            </div>
-            <p class="comp-note">A high-damage multi-warrior comp. Heracles and Hladgunnr split frontline duties, Jingwei and Hecate deliver consistent damage, and Skadi closes gaps on any CC-vulnerable target.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Nuba & Cronus</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/nuba">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
-                <span class="hero-chip-name">Nuba</span>
-              </a>
-              <a class="hero-pic" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/mengpo">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
-                <span class="hero-chip-name">Mengpo</span>
-              </a>
-              <a class="hero-pic" href="/heroes/cronus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div>
-                <span class="hero-chip-name">Chronos</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-            </div>
-            <p class="comp-note">Caishen accelerates Jingwei and Chronos into faster ultimate cycles. Nuba and Mengpo keep the frontline alive. A strong mid-game energy rotation comp.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hecate</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/cancer">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cancer.webp')"></div>
-                <span class="hero-chip-name">Cancer</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic" href="/heroes/meret">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
-                <span class="hero-chip-name">Meret</span>
-              </a>
-            </div>
-            <p class="comp-note">A heavy support shell for Hecate. Momus taunts, Cancer and Yuelao stack heals and shields, with Meret completing the protective core.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Skadi</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/khepri">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
-                <span class="hero-chip-name">Khepri</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-              <a class="hero-pic" href="/heroes/pan">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
-                <span class="hero-chip-name">Pan</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-              <a class="hero-pic" href="/heroes/nuwa">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
-                <span class="hero-chip-name">Nuwa</span>
-              </a>
-            </div>
-            <p class="comp-note">Skadi is your damage carry. Poseidon opens with AoE CC, Khepri disrupts the backline, and Pan and Nuwa provide layered support and control.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hladgunnr & Clubs</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/capricorn">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/capricorn.webp')"></div>
-                <span class="hero-chip-name">Capricorn</span>
-              </a>
-              <a class="hero-pic" href="/heroes/wenshen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp')"></div>
-                <span class="hero-chip-name">Wenshen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/jormungandr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jormungandr.webp')"></div>
-                <span class="hero-chip-name">Jormungandr</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hladgunnr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
-                <span class="hero-chip-name">Hladgunnr</span>
-              </a>
-              <a class="hero-pic" href="/heroes/anubis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
-                <span class="hero-chip-name">Anubis</span>
-              </a>
-            </div>
-            <p class="comp-note">Capricorn and Wenshen provide sustained physical pressure. Jormungandr and Hladgunnr hold the frontline. Anubis locks down priority targets in the backline.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hecate & Hephaestus</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/meret">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
-                <span class="hero-chip-name">Meret</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hephaestus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
-                <span class="hero-chip-name">Hephaestus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-            </div>
-            <p class="comp-note">Hephaestus synergizes with Momus in a heavy frontline shell. Yuelao and Meret stack support, with Hecate as the damage carry.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Warriors</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/prometheus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/prometheus.webp')"></div>
-                <span class="hero-chip-name">Prometheus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hephaestus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
-                <span class="hero-chip-name">Hephaestus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/nezha">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nezha.webp')"></div>
-                <span class="hero-chip-name">Nezha</span>
-              </a>
-            </div>
-            <p class="comp-note">Nezha acts as the spearhead. Prometheus and Hephaestus form a sturdy frontline while Yuelao and Diana keep everyone alive and in the fight.</p>
-          </div>
-        </div>
-      </div>
-
-    </main>
     </div>
+
+    <div id="section-compositions" class="eg-content-card tips-anchor">
+      <h2>{pickLang(c.compsTitle, locale)}</h2>
+      <p>{pickLang(c.compsIntro, locale)}</p>
+      <p><strong>{pickLang(c.meretNote, locale)}</strong></p>
+      <div class="comp-list">
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp1Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic chip-highlight" href="/heroes/isis"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/isis.webp')"></div><span class="hero-chip-name">Isis</span></a>
+            <span class="chip-divider">{pickLang(c.orText, locale)}</span>
+            <a class="hero-pic chip-highlight" href="/heroes/jingwei"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div><span class="hero-chip-name">Jingwei</span></a>
+            <a class="hero-pic" href="/heroes/caishen"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div><span class="hero-chip-name">Caishen</span></a>
+            <a class="hero-pic" href="/heroes/poseidon"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div><span class="hero-chip-name">Poseidon</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp1Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp2Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/momus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div><span class="hero-chip-name">Momus</span></a>
+            <a class="hero-pic" href="/heroes/yuelao"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div><span class="hero-chip-name">Yuelao</span></a>
+            <a class="hero-pic chip-highlight" href="/heroes/hecate"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div><span class="hero-chip-name">Hecate</span></a>
+            <a class="hero-pic" href="/heroes/tefnut"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/tefnut.webp')"></div><span class="hero-chip-name">Tefnut</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp2Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp3Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic chip-highlight" href="/heroes/heracles"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div><span class="hero-chip-name">Heracles</span></a>
+            <a class="hero-pic" href="/heroes/bastet"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div><span class="hero-chip-name">Bastet</span></a>
+            <a class="hero-pic" href="/heroes/phoenix"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div><span class="hero-chip-name">Phoenix</span></a>
+            <a class="hero-pic" href="/heroes/mengpo"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div><span class="hero-chip-name">Mengpo</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp3Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp4Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/nuba"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div><span class="hero-chip-name">Nuba</span></a>
+            <a class="hero-pic" href="/heroes/nuwa"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div><span class="hero-chip-name">Nuwa</span></a>
+            <a class="hero-pic" href="/heroes/anubis"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div><span class="hero-chip-name">Anubis</span></a>
+            <a class="hero-pic" href="/heroes/pan"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div><span class="hero-chip-name">Pan</span></a>
+            <div class="chip-flex-slot"><div class="chip-flex-img">?</div><span class="chip-flex-label">{pickLang(c.anyDd, locale)}</span></div>
+          </div>
+          <p class="comp-note">{pickLang(c.comp4Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp5Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic chip-highlight" href="/heroes/skadi"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div><span class="hero-chip-name">Skadi</span></a>
+            <a class="hero-pic" href="/heroes/khepri"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div><span class="hero-chip-name">Khepri</span></a>
+            <a class="hero-pic" href="/heroes/poseidon"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div><span class="hero-chip-name">Poseidon</span></a>
+            <a class="hero-pic" href="/heroes/iris"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/iris.webp')"></div><span class="hero-chip-name">Iris</span></a>
+            <div class="chip-flex-slot"><div class="chip-flex-img">?</div><span class="chip-flex-label">{pickLang(c.anyHero, locale)}</span></div>
+          </div>
+          <p class="comp-note">{pickLang(c.comp5Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp6Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/bastet"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div><span class="hero-chip-name">Bastet</span></a>
+            <a class="hero-pic" href="/heroes/heracles"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div><span class="hero-chip-name">Heracles</span></a>
+            <a class="hero-pic" href="/heroes/phoenix"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div><span class="hero-chip-name">Phoenix</span></a>
+            <a class="hero-pic" href="/heroes/set"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/set.webp')"></div><span class="hero-chip-name">Set</span></a>
+            <a class="hero-pic" href="/heroes/athena"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div><span class="hero-chip-name">Athena</span></a>
+            <span class="chip-divider">{pickLang(c.orText, locale)}</span>
+            <a class="hero-pic" href="/heroes/diana"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div><span class="hero-chip-name">Diana</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp6Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp7Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/hladgunnr"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div><span class="hero-chip-name">Hladgunnr</span></a>
+            <a class="hero-pic chip-highlight" href="/heroes/hecate"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div><span class="hero-chip-name">Hecate</span></a>
+            <a class="hero-pic" href="/heroes/heracles"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div><span class="hero-chip-name">Heracles</span></a>
+            <a class="hero-pic" href="/heroes/jingwei"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div><span class="hero-chip-name">Jingwei</span></a>
+            <a class="hero-pic" href="/heroes/skadi"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div><span class="hero-chip-name">Skadi</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp7Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp8Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/nuba"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div><span class="hero-chip-name">Nuba</span></a>
+            <a class="hero-pic" href="/heroes/caishen"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div><span class="hero-chip-name">Caishen</span></a>
+            <a class="hero-pic" href="/heroes/mengpo"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div><span class="hero-chip-name">Mengpo</span></a>
+            <a class="hero-pic" href="/heroes/cronus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div><span class="hero-chip-name">Chronos</span></a>
+            <a class="hero-pic chip-highlight" href="/heroes/jingwei"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div><span class="hero-chip-name">Jingwei</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp8Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp9Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic chip-highlight" href="/heroes/hecate"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div><span class="hero-chip-name">Hecate</span></a>
+            <a class="hero-pic" href="/heroes/momus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div><span class="hero-chip-name">Momus</span></a>
+            <a class="hero-pic" href="/heroes/cancer"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cancer.webp')"></div><span class="hero-chip-name">Cancer</span></a>
+            <a class="hero-pic" href="/heroes/yuelao"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div><span class="hero-chip-name">Yuelao</span></a>
+            <a class="hero-pic" href="/heroes/meret"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div><span class="hero-chip-name">Meret</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp9Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp10Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/khepri"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div><span class="hero-chip-name">Khepri</span></a>
+            <a class="hero-pic" href="/heroes/poseidon"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div><span class="hero-chip-name">Poseidon</span></a>
+            <a class="hero-pic" href="/heroes/pan"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div><span class="hero-chip-name">Pan</span></a>
+            <a class="hero-pic chip-highlight" href="/heroes/skadi"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div><span class="hero-chip-name">Skadi</span></a>
+            <a class="hero-pic" href="/heroes/nuwa"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div><span class="hero-chip-name">Nuwa</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp10Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp11Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/capricorn"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/capricorn.webp')"></div><span class="hero-chip-name">Capricorn</span></a>
+            <a class="hero-pic" href="/heroes/wenshen"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp')"></div><span class="hero-chip-name">Wenshen</span></a>
+            <a class="hero-pic" href="/heroes/jormungandr"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jormungandr.webp')"></div><span class="hero-chip-name">Jormungandr</span></a>
+            <a class="hero-pic" href="/heroes/hladgunnr"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div><span class="hero-chip-name">Hladgunnr</span></a>
+            <a class="hero-pic" href="/heroes/anubis"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div><span class="hero-chip-name">Anubis</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp11Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp12Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/momus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div><span class="hero-chip-name">Momus</span></a>
+            <a class="hero-pic" href="/heroes/meret"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div><span class="hero-chip-name">Meret</span></a>
+            <a class="hero-pic" href="/heroes/hephaestus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div><span class="hero-chip-name">Hephaestus</span></a>
+            <a class="hero-pic" href="/heroes/yuelao"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div><span class="hero-chip-name">Yuelao</span></a>
+            <a class="hero-pic chip-highlight" href="/heroes/hecate"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div><span class="hero-chip-name">Hecate</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp12Note, locale)}</p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-title">{pickLang(c.comp13Title, locale)}</div>
+          <div class="hero-chip-grid">
+            <a class="hero-pic" href="/heroes/prometheus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/prometheus.webp')"></div><span class="hero-chip-name">Prometheus</span></a>
+            <a class="hero-pic" href="/heroes/hephaestus"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div><span class="hero-chip-name">Hephaestus</span></a>
+            <a class="hero-pic" href="/heroes/yuelao"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div><span class="hero-chip-name">Yuelao</span></a>
+            <a class="hero-pic" href="/heroes/diana"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div><span class="hero-chip-name">Diana</span></a>
+            <a class="hero-pic chip-highlight" href="/heroes/nezha"><div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nezha.webp')"></div><span class="hero-chip-name">Nezha</span></a>
+          </div>
+          <p class="comp-note">{pickLang(c.comp13Note, locale)}</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

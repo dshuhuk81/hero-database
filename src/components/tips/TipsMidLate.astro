@@ -1,113 +1,200 @@
-    <!-- SUB-TAB: MID-LATE -->
-    <div id="subtab-midlate" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-midlate" hidden>
-    <main class="tips-main-content">
+---
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { pickLang, type LocalizedString } from "../../i18n/helpers";
 
-      <!-- MID-LATE JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Mid-Late sections">
-        <span class="tips-jump-label">On this page</span>
-        <a href="#section-relic" class="tips-jump-link">Relic Breakpoints</a>
-        <a href="#section-deity-swap" class="tips-jump-link">Deity Swap</a>
-        <a href="#section-when-stuck" class="tips-jump-link">When Stuck</a>
-      </nav>
+interface Props {
+  locale?: Locale;
+}
 
-      <!-- RELIC BREAKPOINTS -->
-      <div id="section-relic" class="eg-content-card tips-anchor">
-        <h2>Relic Breakpoints</h2>
-        <p>Do not judge these deities too early - they might not seem strong at the start but gain value through their relic level.</p>
-        <h3>Key Breakpoints</h3>
-        <div class="tips-callout">
-          <p><strong>Hecate:</strong> starts feeling like a carry when her relic reaches Level 10. Below this she underperforms.</p>
-          <p><strong>Poseidon:</strong> strong impact at Relic Level 10. Not worth a frontline slot before this.</p>
-          <p><strong>Phoenix:</strong> higher relic levels unlock her infinite revive mechanic - the main reason to use her in Torment Rift.</p>
-        </div>
-        <h3>Relic Elixir Tiers</h3>
-        <p>Start collecting the Genesis Elixir first to unlock relics and bring some to Level 10. Relics are not a priority in the beginning since you need your deity to be Exalted(+) or higher to unlock them.</p>
-        <div class="tips-elixir-grid">
-          <div class="tips-elixir-card">
-            <div class="tips-elixir-range">Relic Level 1-10</div>
-            <div class="tips-elixir-name">Genesis Elixir</div>
-          </div>
-          <div class="tips-elixir-card">
-            <div class="tips-elixir-range">Relic Level 10-30</div>
-            <div class="tips-elixir-name">Apotheosis Elixir</div>
-          </div>
-          <div class="tips-elixir-card">
-            <div class="tips-elixir-range">Relic Level 30+</div>
-            <div class="tips-elixir-name">Eternity Elixir</div>
-          </div>
-        </div>
-        <h3>Priority Order</h3>
-        <ol>
-          <li><strong>PvE core carries first:</strong> your main damage dealers (e.g. Isis to Relic 20).</li>
-          <li><strong>Key timing relics second:</strong> heroes whose relic changes the opening seconds (e.g. Poseidon at Relic 10).</li>
-          <li><strong>Premium endgame investments last:</strong> level 30+ is expensive - only when income supports it.</li>
-        </ol>
+const { locale = defaultLocale } = Astro.props as Props;
+
+const c = {
+  jumpLabel: { en: "On this page", de: "Auf dieser Seite", es: "En esta página", ru: "На этой странице" },
+  jumpRelic: { en: "Relic Breakpoints", de: "Relikt-Schwellen", es: "Umbrales de reliquia", ru: "Пороговые уровни реликвий" },
+  jumpSwap: { en: "Deity Swap", de: "Göttertausch", es: "Intercambio de deidad", ru: "Смена божества" },
+  jumpStuck: { en: "When Stuck", de: "Wenn du feststeckst", es: "Cuando te atascas", ru: "Если застрял" },
+  relicTitle: { en: "Relic Breakpoints", de: "Relikt-Schwellen", es: "Umbrales de reliquia", ru: "Пороговые уровни реликвий" },
+  relicIntro: {
+    en: "Do not judge these deities too early - they might not seem strong at the start but gain value through their relic level.",
+    de: "Beurteile diese Götter nicht zu früh - am Anfang wirken sie vielleicht schwach, gewinnen aber mit ihrem Relikt-Level an Wert.",
+    es: "No juzgues a estas deidades demasiado pronto: al principio quizá no parezcan fuertes, pero ganan valor a través de su nivel de reliquia.",
+    ru: "Не оценивайте этих богов слишком рано: сначала они могут казаться слабыми, но раскрываются за счёт уровня реликвии.",
+  },
+  keyBreakpoints: { en: "Key Breakpoints", de: "Wichtige Schwellen", es: "Puntos clave", ru: "Ключевые пороги" },
+  hecate: {
+    en: "Hecate starts feeling like a carry when her relic reaches Level 10. Below this she underperforms.",
+    de: "Hecate fühlt sich ab Relikt-Level 10 wie ein Carry an. Darunter bleibt sie hinter den Erwartungen.",
+    es: "Hecate empieza a sentirse como una carry cuando su reliquia llega al nivel 10. Por debajo de eso rinde peor.",
+    ru: "Геката начинает ощущаться как керри, когда её реликвия достигает 10 уровня. Ниже этого она недотягивает.",
+  },
+  poseidon: {
+    en: "Poseidon: strong impact at Relic Level 10. Not worth a frontline slot before this.",
+    de: "Poseidon: starker Effekt ab Relikt-Level 10. Vorher keinen Frontline-Slot wert.",
+    es: "Poseidón: impacto fuerte en el nivel 10 de reliquia. Antes de eso no merece un hueco en la primera línea.",
+    ru: "Посейдон: сильный эффект на 10 уровне реликвии. До этого не стоит ставить его на переднюю линию.",
+  },
+  phoenix: {
+    en: "Phoenix: higher relic levels unlock her infinite revive mechanic - the main reason to use her in Torment Rift.",
+    de: "Phoenix: Höhere Relikt-Level schalten ihre endlose Wiederbelebungs-Mechanik frei - der Hauptgrund, sie im Torment Rift zu nutzen.",
+    es: "Fénix: los niveles altos de reliquia desbloquean su mecánica de resurrección infinita, la razón principal para usarla en Torment Rift.",
+    ru: "Феникс: более высокие уровни реликвии открывают механику бесконечного воскрешения — главную причину брать её в Torment Rift.",
+  },
+  elixirTiers: { en: "Relic Elixir Tiers", de: "Relikt-Elixierstufen", es: "Niveles de elixires de reliquia", ru: "Уровни эликсиров реликвий" },
+  elixirIntro: {
+    en: "Start collecting the Genesis Elixir first to unlock relics and bring some to Level 10. Relics are not a priority in the beginning since you need your deity to be Exalted(+) or higher to unlock them.",
+    de: "Sammle zuerst das Genesis-Elixier, um Relikte freizuschalten und einige auf Level 10 zu bringen. Relikte sind am Anfang keine Priorität, da dein Gott dafür Exalted(+) oder höher sein muss.",
+    es: "Empieza recogiendo primero el Elixir Génesis para desbloquear reliquias y llevar algunas al nivel 10. Las reliquias no son una prioridad al principio, ya que tu deidad debe ser Exalted(+) o superior para desbloquearlas.",
+    ru: "Сначала собирайте Эликсир Генезиса, чтобы открыть реликвии и довести некоторые до 10 уровня. В начале реликвии не в приоритете, так как для их открытия божество должно быть Exalted(+) или выше.",
+  },
+  lvl1: { en: "Relic Level 1-10", de: "Relikt-Level 1-10", es: "Nivel de reliquia 1-10", ru: "Уровень реликвии 1-10" },
+  lvl10: { en: "Relic Level 10-30", de: "Relikt-Level 10-30", es: "Nivel de reliquia 10-30", ru: "Уровень реликвии 10-30" },
+  lvl30: { en: "Relic Level 30+", de: "Relikt-Level 30+", es: "Nivel de reliquia 30+", ru: "Nivel de reliquia 30+" },
+  orderTitle: { en: "Priority Order", de: "Prioritäten", es: "Orden de prioridad", ru: "Порядок приоритета" },
+  prio1: { en: "PvE core carries first:", de: "PvE-Hauptcarries zuerst:", es: "Primero los carries principales de PvE:", ru: "Сначала основные PvE-керри:" },
+  prio1Body: { en: "your main damage dealers (e.g. Isis to Relic 20).", de: "deine Hauptschadensquellen (z. B. Isis bis Relikt 20).", es: "tus principales fuentes de daño (p. ej. Isis hasta reliquia 20).", ru: "ваши основные источники урона (например, Исида до реликвии 20)." },
+  prio2: { en: "Key timing relics second:", de: "Wichtige Timing-Relikte als Nächstes:", es: "Después las reliquias de momento clave:", ru: "Затем реликвии, меняющие тайминг:" },
+  prio2Body: { en: "heroes whose relic changes the opening seconds (e.g. Poseidon at Relic 10).", de: "Helden, deren Relikt die ersten Sekunden verändert (z. B. Poseidon auf Relikt 10).", es: "héroes cuya reliquia cambia los primeros segundos (p. ej. Poseidón en reliquia 10).", ru: "герои, чья реликвия меняет первые секунды боя (например, Посейдон на реликвии 10)." },
+  prio3: { en: "Premium endgame investments last:", de: "Premium-Endgame-Investitionen zuletzt:", es: "Las inversiones premium de late game al final:", ru: "Премиум-инвестиции на поздней стадии — в конце:" },
+  prio3Body: { en: "level 30+ is expensive - only when income supports it.", de: "Level 30+ ist teuer - nur wenn dein Einkommen das trägt.", es: "el nivel 30+ es caro; solo cuando tus ingresos lo permitan.", ru: "30+ уровень дорогой — только когда доход это позволяет." },
+  swapTitle: { en: "Deity Swap Event", de: "Göttertausch-Event", es: "Evento de intercambio de deidad", ru: "Событие смены божества" },
+  swapIntro: {
+    en: "The Deity Swap Event lets you transfer all investment from one hero - stats, awakening, everything - onto a different hero. It is one of the biggest safety nets for early mistakes.",
+    de: "Das Göttertausch-Event erlaubt dir, die komplette Investition eines Helden - Werte, Erwachen, alles - auf einen anderen Helden zu übertragen. Es ist eines der größten Sicherheitsnetze für frühe Fehler.",
+    es: "El Evento de Intercambio de Deidad te permite transferir toda la inversión de un héroe - estadísticas, despertar, todo - a otro héroe. Es una de las mayores redes de seguridad para errores tempranos.",
+    ru: "Событие смены божества позволяет перенести всю инвестицию с одного героя — статы, пробуждение, всё — на другого героя. Это одна из лучших страховок от ранних ошибок.",
+  },
+  rushTitle: { en: "Do Not Rush It", de: "Nicht überstürzen", es: "No lo apresures", ru: "Не спеши" },
+  rushBody: {
+    en: "Wait until you have enough game knowledge to know which hero you want to swap into. Swapping into another bad pick wastes the event entirely.",
+    de: "Warte, bis du genug Spielwissen hast, um zu wissen, in welchen Helden du wechseln willst. In einen weiteren schlechten Pick zu tauschen verschwendet das Event komplett.",
+    es: "Espera hasta tener suficiente conocimiento del juego para saber a qué héroe quieres cambiar. Cambiar a otra mala elección desperdicia por completo el evento.",
+    ru: "Подожди, пока не накопишь достаточно знаний, чтобы понимать, на какого героя хочешь перейти. Поменяться на ещё один плохой выбор полностью сотрёт пользу события.",
+  },
+  swapTargets: { en: "Good Swap Targets", de: "Gute Tauschziele", es: "Buenos objetivos de intercambio", ru: "Хорошие цели для обмена" },
+  swapOut: { en: "Swap out:", de: "Tausche aus:", es: "Sustituye:", ru: "Менять из:" },
+  swapOutBody: { en: "wrong early carry, duplicate role, old investment you no longer use.", de: "falscher früher Carry, doppelte Rolle, alte Investition, die du nicht mehr nutzt.", es: "carry temprano incorrecto, rol duplicado, inversión vieja que ya no usas.", ru: "неправильный ранний керри, дублирующая роль, старая инвестиция, которую ты уже не используешь." },
+  swapInto: { en: "Swap into:", de: "Tausche ein:", es: "Cambiar a:", ru: "Менять в:" },
+  swapIntoBody: { en: "Hecate, Fengyi, Caishen, Yuelao, Demeter, or any other carry your account is built around now.", de: "Hecate, Fengyi, Caishen, Yuelao, Demeter oder jeder andere Carry, um den dein Account aktuell gebaut ist.", es: "Hecate, Fengyi, Caishen, Yuelao, Demeter o cualquier otro carry en torno al que esté construido tu cuenta ahora.", ru: "Геката, Фэнъи, Цайшэнь, Юэлао, Деметра или любой другой керри, вокруг которого сейчас строится твой аккаунт.",
+  },
+  stuckTitle: { en: "When You Feel Stuck", de: "Wenn du feststeckst", es: "Cuando te sientas atascado", ru: "Когда чувствуешь, что застрял" },
+  stuckIntro: { en: "Use this checklist when Odyssey progress stalls or you cannot beat the next stage.", de: "Nutze diese Checkliste, wenn der Odyssey-Fortschritt stockt oder du die nächste Stufe nicht schaffst.", es: "Usa esta lista cuando el progreso de Odyssey se estanque o no puedas superar la siguiente etapa.", ru: "Используйте этот чек-лист, когда прогресс в Odyssey застопорился или не удаётся пройти следующий этап." },
+  step1: { en: "Check Your Shrine", de: "Schrein prüfen", es: "Revisa tu santuario", ru: "Проверь святилище" },
+  step1Body: { en: "If Odyssey progress upgrades Shrine, go push Odyssey first. Some stages give you \"Undying Flame\" as reward to level up your shrine.", de: "Wenn Odyssey den Schrein verbessert, pushe zuerst Odyssey. Manche Stufen geben dir als Belohnung \"Undying Flame\", um den Schrein zu leveln.", es: "Si el progreso de Odyssey mejora el Santuario, avanza Odyssey primero. Algunas etapas te dan \"Undying Flame\" como recompensa para subir tu santuario.", ru: "Если прогресс в Odyssey улучшает Святилище, сначала продвигай Odyssey. Некоторые этапы дают \"Undying Flame\" в награду для прокачки святилища." },
+  step2: { en: "Check Beacon Tree", de: "Leuchtbaum prüfen", es: "Revisa el Árbol Faro", ru: "Проверь Древо маяка" },
+  step2Body: { en: "Weekly Torment Rift progress gives account-wide stats that never get wasted.", de: "Wöchentlicher Torment-Rift-Fortschritt gibt accountweite Werte, die nie verschwendet sind.", es: "El progreso semanal de Torment Rift da estadísticas para toda la cuenta que nunca se desperdician.", ru: "Еженедельный прогресс Torment Rift даёт бонусы на весь аккаунт, которые никогда не пропадают зря." },
+  step3: { en: "Check Carry Relic", de: "Carry-Relikt prüfen", es: "Revisa la reliquia del carry", ru: "Проверь реликвию керри" },
+  step3Body: { en: "Some heroes are weak before their breakpoint. Do not judge them too early.", de: "Manche Helden sind vor ihrer Schwelle schwach. Beurteile sie nicht zu früh.", es: "Algunos héroes son débiles antes de su punto de ruptura. No los juzgues demasiado pronto.", ru: "Некоторые герои слабы до своего порога. Не суди их слишком рано." },
+  step4: { en: "Check Gear Placement", de: "Ausrüstung prüfen", es: "Revisa la distribución del equipo", ru: "Проверь размещение экипировки" },
+  step4Body: { en: "Your top two damage dealers should have priority gear. Do not spread it around.", de: "Deine beiden besten Schadensquellen sollten Prioritätsausrüstung tragen. Verteile sie nicht wahllos.", es: "Tus dos principales distribuidores de daño deben tener el equipo prioritario. No lo repartas demasiado.", ru: "У двух главных дд должна быть приоритетная экипировка. Не размазывай её по всем." },
+  step5: { en: "Check Resonating Altar", de: "Resonierender Altar prüfen", es: "Revisa el Altar Resonante", ru: "Проверь Резонирующий алтарь" },
+  step5Body: { en: "You level five heroes to share their level with every hero on the Altar. If your Altar slots are empty you are missing account-wide level boosts.", de: "Du levelst fünf Helden, damit ihr Level auf alle Helden auf dem Altar übertragen wird. Wenn deine Altar-Slots leer sind, fehlen dir accountweite Level-Boni.", es: "Subes a cinco héroes para compartir su nivel con todos los héroes del Altar. Si tus huecos del Altar están vacíos, te faltan mejoras de nivel para toda la cuenta.", ru: "Ты повышаешь уровень пяти героев, чтобы их уровень делился со всеми героями на Алтаре. Если слоты Алтаря пусты, ты теряешь бонусы к уровню на весь аккаунт." },
+  step6: { en: "Check Totems", de: "Totems prüfen", es: "Revisa los tótems", ru: "Проверь тотемы" },
+  step6Body: { en: "Totems must be pulled and upgraded with duplicates. Even one upgraded Totem is worth the early investment. Use an Attack or Damage totem first. Also try different hero positions in a fight.", de: "Totems müssen gezogen und mit Duplikaten verbessert werden. Schon ein einziger aufgewerteter Totem lohnt die frühe Investition. Nutze zuerst einen Attack- oder Damage-Totem. Probiere außerdem verschiedene Heldenpositionen im Kampf aus.", es: "Los tótems deben invocarse y mejorarse con duplicados. Incluso un solo tótem mejorado merece la inversión temprana. Usa primero un tótem de Ataque o Daño. También prueba distintas posiciones de héroe en combate.", ru: "Тотемы нужно вытаскивать и улучшать дубликатами. Даже один улучшенный тотем стоит ранних вложений. Сначала используй тотем атаки или урона. Также попробуй разные позиции героев в бою." },
+} satisfies Record<string, LocalizedString>;
+---
+<div id="subtab-midlate" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-midlate" hidden>
+  <main class="tips-main-content">
+    <nav class="tips-jumpbar" aria-label={pickLang(c.jumpLabel, locale)}>
+      <span class="tips-jump-label">{pickLang(c.jumpLabel, locale)}</span>
+      <a href="#section-relic" class="tips-jump-link">{pickLang(c.jumpRelic, locale)}</a>
+      <a href="#section-deity-swap" class="tips-jump-link">{pickLang(c.jumpSwap, locale)}</a>
+      <a href="#section-when-stuck" class="tips-jump-link">{pickLang(c.jumpStuck, locale)}</a>
+    </nav>
+
+    <div id="section-relic" class="eg-content-card tips-anchor">
+      <h2>{pickLang(c.relicTitle, locale)}</h2>
+      <p>{pickLang(c.relicIntro, locale)}</p>
+      <h3>{pickLang(c.keyBreakpoints, locale)}</h3>
+      <div class="tips-callout">
+        <p><strong>Hecate:</strong> {pickLang(c.hecate, locale)}</p>
+        <p><strong>Poseidon:</strong> {pickLang(c.poseidon, locale)}</p>
+        <p><strong>Phoenix:</strong> {pickLang(c.phoenix, locale)}</p>
       </div>
-
-      <!-- DEITY SWAP -->
-      <div id="section-deity-swap" class="eg-content-card tips-anchor">
-        <h2>Deity Swap Event</h2>
-        <p>The Deity Swap Event lets you transfer all investment from one hero - stats, awakening, everything - onto a different hero. It is one of the biggest safety nets for early mistakes.</p>
-        <div class="tips-warning-box">
-          <h3>Do Not Rush It</h3>
-          <p>Wait until you have enough game knowledge to know which hero you want to swap into. Swapping into another bad pick wastes the event entirely.</p>
+      <h3>{pickLang(c.elixirTiers, locale)}</h3>
+      <p>{pickLang(c.elixirIntro, locale)}</p>
+      <div class="tips-elixir-grid">
+        <div class="tips-elixir-card">
+          <div class="tips-elixir-range">{pickLang(c.lvl1, locale)}</div>
+          <div class="tips-elixir-name">Genesis Elixir</div>
         </div>
-        <h3>Good Swap Targets</h3>
-        <ul>
-          <li><strong>Swap out:</strong> wrong early carry, duplicate role, old investment you no longer use.</li>
-          <li><strong>Swap into:</strong> Hecate, Fengyi, Caishen, Yuelao, Demeter, or any other carry your account is built around now.</li>
-        </ul>
-      </div>
-
-      <!-- WHEN YOU FEEL STUCK -->
-      <div id="section-when-stuck" class="eg-content-card tips-anchor">
-        <h2>When You Feel Stuck</h2>
-        <p>Use this checklist when Odyssey progress stalls or you cannot beat the next stage.</p>
-        <div class="tips-step-list">
-          <div class="tips-step">
-            <div class="tips-step-num">1</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Your Shrine</div>
-              <p>If Odyssey progress upgrades Shrine, go push Odyssey first. Some stages give you "Undying Flame" as reward to level up your shrine.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">2</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Beacon Tree</div>
-              <p>Weekly Torment Rift progress gives account-wide stats that never get wasted.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">3</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Carry Relic</div>
-              <p>Some heroes are weak before their breakpoint. Do not judge them too early.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">4</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Gear Placement</div>
-              <p>Your top two damage dealers should have priority gear. Do not spread it around.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">5</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Resonating Altar</div>
-              <p>You level five heroes to share their level with every hero on the Altar. If your Altar slots are empty you are missing account-wide level boosts.</p>
-            </div>
-          </div>
-          <div class="tips-step">
-            <div class="tips-step-num">6</div>
-            <div class="tips-step-body">
-              <div class="tips-step-title">Check Totems</div>
-              <p>Totems must be pulled and upgraded with duplicates. Even one upgraded Totem is worth the early investment. Use an Attack or Damage totem first. Also try different hero positions in a fight.</p>
-            </div>
-          </div>
+        <div class="tips-elixir-card">
+          <div class="tips-elixir-range">{pickLang(c.lvl10, locale)}</div>
+          <div class="tips-elixir-name">Apotheosis Elixir</div>
+        </div>
+        <div class="tips-elixir-card">
+          <div class="tips-elixir-range">{pickLang(c.lvl30, locale)}</div>
+          <div class="tips-elixir-name">Eternity Elixir</div>
         </div>
       </div>
-
-    </main>
+      <h3>{pickLang(c.orderTitle, locale)}</h3>
+      <ol>
+        <li><strong>{pickLang(c.prio1, locale)}</strong> {pickLang(c.prio1Body, locale)}</li>
+        <li><strong>{pickLang(c.prio2, locale)}</strong> {pickLang(c.prio2Body, locale)}</li>
+        <li><strong>{pickLang(c.prio3, locale)}</strong> {pickLang(c.prio3Body, locale)}</li>
+      </ol>
     </div>
+
+    <div id="section-deity-swap" class="eg-content-card tips-anchor">
+      <h2>{pickLang(c.swapTitle, locale)}</h2>
+      <p>{pickLang(c.swapIntro, locale)}</p>
+      <div class="tips-warning-box">
+        <h3>{pickLang(c.rushTitle, locale)}</h3>
+        <p>{pickLang(c.rushBody, locale)}</p>
+      </div>
+      <h3>{pickLang(c.swapTargets, locale)}</h3>
+      <ul>
+        <li><strong>{pickLang(c.swapOut, locale)}</strong> {pickLang(c.swapOutBody, locale)}</li>
+        <li><strong>{pickLang(c.swapInto, locale)}</strong> {pickLang(c.swapIntoBody, locale)}</li>
+      </ul>
+    </div>
+
+    <div id="section-when-stuck" class="eg-content-card tips-anchor">
+      <h2>{pickLang(c.stuckTitle, locale)}</h2>
+      <p>{pickLang(c.stuckIntro, locale)}</p>
+      <div class="tips-step-list">
+        <div class="tips-step">
+          <div class="tips-step-num">1</div>
+          <div class="tips-step-body">
+            <div class="tips-step-title">{pickLang(c.step1, locale)}</div>
+            <p>{pickLang(c.step1Body, locale)}</p>
+          </div>
+        </div>
+        <div class="tips-step">
+          <div class="tips-step-num">2</div>
+          <div class="tips-step-body">
+            <div class="tips-step-title">{pickLang(c.step2, locale)}</div>
+            <p>{pickLang(c.step2Body, locale)}</p>
+          </div>
+        </div>
+        <div class="tips-step">
+          <div class="tips-step-num">3</div>
+          <div class="tips-step-body">
+            <div class="tips-step-title">{pickLang(c.step3, locale)}</div>
+            <p>{pickLang(c.step3Body, locale)}</p>
+          </div>
+        </div>
+        <div class="tips-step">
+          <div class="tips-step-num">4</div>
+          <div class="tips-step-body">
+            <div class="tips-step-title">{pickLang(c.step4, locale)}</div>
+            <p>{pickLang(c.step4Body, locale)}</p>
+          </div>
+        </div>
+        <div class="tips-step">
+          <div class="tips-step-num">5</div>
+          <div class="tips-step-body">
+            <div class="tips-step-title">{pickLang(c.step5, locale)}</div>
+            <p>{pickLang(c.step5Body, locale)}</p>
+          </div>
+        </div>
+        <div class="tips-step">
+          <div class="tips-step-num">6</div>
+          <div class="tips-step-body">
+            <div class="tips-step-title">{pickLang(c.step6, locale)}</div>
+            <p>{pickLang(c.step6Body, locale)}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

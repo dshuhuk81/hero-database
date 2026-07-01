@@ -5,6 +5,7 @@ type TranslationTree = {
   common: Record<string, LocalizedString>;
   home: Record<string, LocalizedString>;
   events: Record<string, LocalizedString>;
+  tips: Record<string, LocalizedString>;
   footer: Record<string, LocalizedString>;
   language: Record<string, LocalizedString>;
   nav: Record<string, LocalizedString>;
@@ -64,6 +65,23 @@ const translations: TranslationTree = {
     tag: { en: "PvE", de: "PvE", es: "PvE", ru: "PvE" },
     headline: { en: "Event Guide", de: "Event-Guide", es: "Guía de eventos", ru: "Гайд по событиям" },
     subtitle: { en: "Campaign stages & event team compositions", de: "Kampagnenstufen & Event-Teamzusammenstellungen", es: "Etapas de campaña y composiciones de equipo de eventos", ru: "Этапы кампании и составы команд для событий" },
+  },
+  tips: {
+    metaTitle: { en: "Tips | Motto Immortal", de: "Tipps | Motto Immortal", es: "Consejos | Motto Immortal", ru: "Советы | Motto Immortal" },
+    metaDescription: {
+      en: "Beginner tips and core game mechanics for Motto Immortal.",
+      de: "Anfängertipps und grundlegende Spielmechaniken für Motto Immortal.",
+      es: "Consejos para principiantes y mecánicas básicas de juego para Motto Immortal.",
+      ru: "Советы для новичков и базовые механики игры Motto Immortal.",
+    },
+    tag: { en: "Guide", de: "Guide", es: "Guía", ru: "Гайд" },
+    headline: { en: "Tips", de: "Tipps", es: "Consejos", ru: "Советы" },
+    subtitle: { en: "Beginner tips and core game mechanics", de: "Anfängertipps und grundlegende Spielmechaniken", es: "Consejos para principiantes y mecánicas básicas del juego", ru: "Советы для новичков и базовые механики игры" },
+    lastUpdated: { en: "Last updated", de: "Zuletzt aktualisiert", es: "Última actualización", ru: "Última actualización" },
+    subnavMechanics: { en: "Mechanics", de: "Mechaniken", es: "Mecánicas", ru: "Механики" },
+    subnavEarly: { en: "Early Game", de: "Frühes Spiel", es: "Inicio", ru: "Начало игры" },
+    subnavMidLate: { en: "Mid-Late", de: "Mittelspät", es: "Media y final", ru: "Середина и поздняя игра" },
+    subnavTeams: { en: "Team Building", de: "Teambuilding", es: "Construcción de equipo", ru: "Сборка команды" },
   },
   totems: {
     metaTitle: { en: "Totems | Motto Immortal", de: "Totems | Motto Immortal", es: "Tótems | Motto Immortal", ru: "Тотемы | Motto Immortal" },

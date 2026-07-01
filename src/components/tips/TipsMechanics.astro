@@ -1,309 +1,360 @@
 ---
 import { FACTION_META } from "./tipsData";
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { pickLang, type LocalizedString } from "../../i18n/helpers";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props as Props;
+
+const c = {
+  jumpLabel: { en: "On this page", de: "Auf dieser Seite", es: "En esta página", ru: "На этой странице" },
+  jumpWhat: { en: "What Is This Game", de: "Was ist dieses Spiel?", es: "Qué es este juego", ru: "Что это за игра" },
+  jumpLoop: { en: "Core Loop", de: "Kern-Loop", es: "Bucle principal", ru: "Основной цикл" },
+  jumpCombat: { en: "Combat Basics", de: "Kampfbasis", es: "Conceptos básicos de combate", ru: "Основы боя" },
+  jumpRoles: { en: "Roles", de: "Rollen", es: "Roles", ru: "Роли" },
+  jumpFactions: { en: "Factions", de: "Fraktionen", es: "Facciones", ru: "Фракции" },
+  jumpAscension: { en: "Rarity & Ascension", de: "Seltenheit & Aufstieg", es: "Rareza y ascensión", ru: "Редкость и возвышение" },
+  jumpGlossary: { en: "Key Terms", de: "Wichtige Begriffe", es: "Términos clave", ru: "Ключевые términos".replace("términos", "термины") },
+  whatTitle: { en: "What Is Motto Immortal?", de: "Was ist Motto Immortal?", es: "¿Qué es Motto Immortal?", ru: "Что такое Motto Immortal?" },
+  whatP1: {
+    en: "Motto Immortal is an idle (AFK) hero-collector RPG. You play the Wayfarer and assemble a roster of mythological deities - Greek, Egyptian, Norse and more - to push back the Shadow-Blight. You collect deities by summoning, build a team of five, and send them into battle.",
+    de: "Motto Immortal ist ein Idle-(AFK)-RPG mit Helden-Sammlung. Du spielst den Wayfarer und stellst dir aus mythologischen Gottheiten - griechisch, ägyptisch, nordisch und mehr - ein Team zusammen, um die Shadow-Blight zurückzudrängen. Du sammelst Gottheiten per Beschwörung, baust ein Team aus fünf Helden und schickst sie in den Kampf.",
+    es: "Motto Immortal es un RPG idle (AFK) de colección de héroes. Juegas como el Caminante y reúnes un plantel de deidades mitológicas - griegas, egipcias, nórdicas y más - para hacer retroceder la Shadow-Blight. Obtienes deidades mediante invocaciones, formas un equipo de cinco y los envías a la batalla.",
+    ru: "Motto Immortal — это idle (AFK) RPG с коллекционированием героев. Вы играете за Странника и собираете список мифологических божеств — греческих, египетских, скандинавских и других — чтобы оттеснить Shadow-Blight. Вы получаете божеств через призывы, собираете команду из пяти и отправляете их в бой.",
+  },
+  whatP2: {
+    en: "The key word is idle: your account keeps earning gold, experience and gear even while the game is closed. Offline rewards bank up to roughly 12 hours, so logging in once or twice a day to collect and re-invest is the core rhythm.",
+    de: "Das Schlüsselwort ist Idle: Dein Account verdient Gold, Erfahrung und Ausrüstung auch dann, wenn das Spiel geschlossen ist. Offline-Belohnungen sammeln sich bis zu etwa 12 Stunden an, daher ist es der Kernrhythmus, ein- oder zweimal täglich einzuloggen, alles abzuholen und wieder zu investieren.",
+    es: "La palabra clave es idle: tu cuenta sigue generando oro, experiencia y equipo incluso con el juego cerrado. Las recompensas offline se acumulan hasta unas 12 horas, así que entrar una o dos veces al día para recoger y reinvertir es el ritmo central.",
+    ru: "Ключевое слово — idle: ваш аккаунт продолжает зарабатывать золото, опыт и экипировку даже когда игра закрыта. Награды офлайн копятся примерно до 12 часов, поэтому заходить один-два раза в день, чтобы собрать и снова вложить ресурсы, — это основной ритм.",
+  },
+  whatP3: {
+    en: "Battles run automatically. You almost never control a hero directly - your real job happens before the fight: which deities you bring, where you place them, and how you gear them. The other tabs cover those decisions; this tab explains the systems underneath them.",
+    de: "Kämpfe laufen automatisch ab. Du steuerst einen Helden fast nie direkt - deine eigentliche Arbeit passiert vor dem Kampf: welche Gottheiten du mitnimmst, wo du sie platzierst und wie du sie ausrüstest. Die anderen Tabs decken diese Entscheidungen ab; dieser Tab erklärt die Systeme dahinter.",
+    es: "Los combates se desarrollan automáticamente. Casi nunca controlas un héroe directamente: tu trabajo real ocurre antes de la pelea: qué deidades llevas, dónde las colocas y cómo las equipas. Las otras pestañas cubren esas decisiones; esta pestaña explica los sistemas que hay debajo.",
+    ru: "Бои идут автоматически. Вы почти никогда не управляете героем напрямую — настоящая работа происходит до боя: каких божеств брать, где их ставить и как их экипировать. Остальные вкладки покрывают эти решения; эта вкладка объясняет системы под ними.",
+  },
+  loopTitle: { en: "The Core Loop", de: "Der Kern-Loop", es: "El bucle principal", ru: "Основной цикл" },
+  loopIntro: { en: "Almost everything in the game feeds back into this cycle. Once it clicks, every other tab makes sense.", de: "Fast alles im Spiel führt in diesen Kreislauf zurück. Wenn er klickt, ergibt jede andere Tabelle Sinn.", es: "Casi todo en el juego vuelve a este ciclo. Cuando lo entiendes, el resto de pestañas cobra sentido.", ru: "Почти всё в игре замыкается на этом цикле. Как только он понятен, остальные вкладки тоже становятся яснее." },
+  loop1: { en: "Push the Odyssey (campaign)", de: "Odyssey vorantreiben (Kampagne)", es: "Avanza en Odyssey (campaña)", ru: "Продвигай Odyssey (кампанию)" },
+  loop1Body: { en: "The story mode is the gatekeeper - clearing stages unlocks summoning, game modes and account systems. It is your main focus in the first days.", de: "Der Story-Modus ist der Türsteher - das Abschließen von Stufen schaltet Beschwörungen, Spielmodi und Account-Systeme frei. In den ersten Tagen ist das dein Hauptfokus.", es: "El modo historia es la puerta de entrada: superar etapas desbloquea invocaciones, modos de juego y sistemas de cuenta. Es tu enfoque principal en los primeros días.", ru: "Сюжетный режим — это ворота: прохождение этапов открывает призывы, режимы игры и системы аккаунта. В первые дни это твой главный фокус." },
+  loop2: { en: "Summon deities", de: "Gottheiten beschwören", es: "Invoca deidades", ru: "Призывай божеств" },
+  loop2Body: { en: "Spend summon currency to collect heroes and duplicate copies. Copies are not wasted - they upgrade the deity (see Ascension below).", de: "Gib Beschwörungswährung aus, um Helden und Duplikate zu sammeln. Kopien sind nicht verschwendet - sie verbessern die Gottheit (siehe Aufstieg unten).", es: "Gasta moneda de invocación para obtener héroes y copias duplicadas. Las copias no se desperdician: mejoran a la deidad (ver Ascensión más abajo).", ru: "Трать валюту призыва, чтобы собирать героев и дубликаты. Копии не пропадают зря — они улучшают божество (см. Возвышение ниже)." },
+  loop3: { en: "Build & gear your team", de: "Team bauen & ausrüsten", es: "Construye y equipa tu equipo", ru: "Собирай и экипируй команду" },
+  loop3Body: { en: "Level, ascend, gear and add relics to your core five. You are not building five equal heroes - you invest in 1-2 carries and support them.", de: "Level, Aufstieg, Ausrüstung und Relikte für deine fünf Kernhelden. Du baust nicht fünf gleich starke Helden - du investierst in 1-2 Carries und unterstützt sie.", es: "Sube de nivel, asciende, equipa y añade reliquias a tus cinco principales. No estás construyendo cinco héroes iguales: inviertes en 1-2 carries y los apoyas.", ru: "Качай, возвышай, экипируй и добавляй реликвии к своей основной пятёрке. Ты не строишь пять равных героев — ты вкладываешься в 1-2 керри и поддерживаешь их." },
+  loop4: { en: "Collect idle income", de: "Idle-Einkommen sammeln", es: "Recoge ingresos idle", ru: "Собирай idle-доход" },
+  loop4Body: { en: "Offline gold, EXP and gear pile up (up to ~12h). Collect it, pour it back into your team, and push the next Odyssey wall.", de: "Offline-Gold, EXP und Ausrüstung stapeln sich (bis zu ~12h). Sammle es ein, stecke es wieder in dein Team und drücke die nächste Odyssey-Wand.", es: "El oro, la EXP y el equipo offline se acumulan (hasta ~12h). Recógelos, reinviértelos en tu equipo y empuja el siguiente muro de Odyssey.", ru: "Оффлайн-золото, EXP и экипировка накапливаются (до ~12 часов). Собирай их, вкладывай обратно в команду и пробивай следующую стену Odyssey." },
+  loopCallout: { en: "A stronger team clears more Odyssey, which unlocks more systems and bigger idle income - which makes your team stronger again. When you feel stuck, you are almost always one account system behind, not one summon short.", de: "Ein stärkeres Team schafft mehr Odyssey, schaltet mehr Systeme und mehr Idle-Einkommen frei - und macht dein Team wieder stärker. Wenn du festhängst, fehlt dir fast immer ein Accounts-System, nicht eine Beschwörung.", es: "Un equipo más fuerte supera más Odyssey, desbloquea más sistemas y más ingresos idle, lo que vuelve a hacer más fuerte a tu equipo. Cuando te atascas, casi siempre te falta un sistema de la cuenta, no una invocación.", ru: "Сильная команда проходит больше Odyssey, открывает больше систем и больше idle-дохода — и снова делает команду сильнее. Если ты застрял, тебе почти всегда не хватает системы аккаунта, а не одного призыва." },
+  combatTitle: { en: "Combat Basics", de: "Kampfbasis", es: "Conceptos básicos de combate", ru: "Основы боя" },
+  combatIntro: { en: "Combat is automatic by default, but it is not random. A handful of mechanics decide most fights.", de: "Kämpfe laufen standardmäßig automatisch ab, aber sie sind nicht zufällig. Eine Handvoll Mechaniken entscheidet die meisten Kämpfe.", es: "El combate es automático por defecto, pero no es aleatorio. Un puñado de mecánicas decide la mayoría de las peleas.", ru: "По умолчанию бой автоматический, но не случайный. Несколько механик решают исход большинства сражений." },
+  autoTitle: { en: "Auto vs. Manual", de: "Auto vs. manuell", es: "Automático vs. manual", ru: "Авто против ручного" },
+  autoBody: { en: "Battles play out on their own, and you can leave them on auto for the vast majority of content. Sometimes it can be useful taking manual control of your ultimates so you fire them at the right moment instead of letting the AI waste them.", de: "Kämpfe laufen von selbst ab, und du kannst sie für den Großteil des Contents auf Auto lassen. Manchmal ist es nützlich, deine Ultimates manuell zu steuern, damit du sie im richtigen Moment zündest, statt die KI sie verschwenden zu lassen.", es: "Las batallas se desarrollan solas y puedes dejarlas en automático para la gran mayoría del contenido. A veces conviene controlar manualmente tus ultimates para lanzarlos en el momento adecuado en lugar de dejar que la IA los desperdicie.", ru: "Бои идут сами по себе, и для большей части контента можно оставить авто. Иногда полезно вручную нажимать ульты в нужный момент, вместо того чтобы ИИ их тратил впустую." },
+  energyTitle: { en: "Energy & Ultimates", de: "Energie & Ultimates", es: "Energía y ultimates", ru: "Энергия и ульты" },
+  energyBody: { en: "During a fight each hero fills an energy bar. When it is full they cast their ultimate - the big, fight-swinging ability. Faster energy means more ultimates, which is exactly why energy-support heroes (your batteries) are so valuable: they let your carry ult more often than the enemy can.", de: "Im Kampf füllt jeder Held eine Energieleiste. Wenn sie voll ist, wirkt er seine Ultimate - die große Fähigkeit, die den Kampf kippen kann. Mehr Energie bedeutet mehr Ultimates, und genau deshalb sind Energie-Supports (deine Batterien) so wertvoll: Sie lassen deinen Carry häufiger ulten als der Gegner.", es: "Durante la pelea cada héroe llena una barra de energía. Cuando está llena, lanza su ultimate, la gran habilidad que puede cambiar el combate. Más energía significa más ultimates, y por eso los supports de energía (tus baterías) son tan valiosos: permiten que tu carry use su ultimate más veces que el enemigo.", ru: "Во время боя у каждого героя заполняется шкала энергии. Когда она полна, он использует ульту — большую способность, способную перевернуть бой. Больше энергии означает больше ульт, поэтому энерго-саппорты (твои батарейки) так ценны: они позволяют керри ультовать чаще, чем это может враг." },
+  battlefieldTitle: { en: "The Open Battlefield", de: "Das offene Schlachtfeld", es: "El campo de batalla abierto", ru: "Открытое поле боя" },
+  battlefieldBody: { en: "Heroes do not stand still. They move, some teleport, and many knock enemies back or pull them in. Because the field is open, positioning matters - the standard formation is two frontliners and three backliners.", de: "Helden stehen nicht still. Sie bewegen sich, einige teleportieren, und viele stoßen Gegner zurück oder ziehen sie heran. Weil das Feld offen ist, zählt Positionierung - die Standardformation sind zwei Frontliner und drei Backliner.", es: "Los héroes no se quedan quietos. Se mueven, algunos se teletransportan y muchos empujan o atraen enemigos. Como el campo es abierto, la colocación importa: la formación estándar es dos en primera línea y tres en retaguardia.", ru: "Герои не стоят на месте. Они двигаются, некоторые телепортируются, многие отбрасывают или притягивают врагов. Поскольку поле открытое, позиционирование важно — стандартная формация это два фронтлайнера и три бэклайнера." },
+  frontlineTitle: { en: "Frontline (2)", de: "Frontline (2)", es: "Primera línea (2)", ru: "Передняя линия (2)" },
+  frontlineSub: { en: "Tanks and brawlers", de: "Tanks und Nahkämpfer", es: "Tanques y luchadores", ru: "Танки и бойцы" },
+  frontline1: { en: "Soak damage and hold the enemy", de: "Schaden einstecken und den Gegner halten", es: "Absorber daño y frenar al enemigo", ru: "Впитывают урон и удерживают врага" },
+  frontline2: { en: "Protect the squishy backline", de: "Die zerbrechliche Backline schützen", es: "Protegen la retaguardia frágil", ru: "Защищают хрупкую заднюю линию" },
+  frontline3: { en: "Placed closest to the enemy", de: "Am nächsten am Gegner platziert", es: "Se colocan más cerca del enemigo", ru: "Ставятся ближе всего к врагу" },
+  backlineTitle: { en: "Backline (3)", de: "Backline (3)", es: "Retaguardia (3)", ru: "Задняя линия (3)" },
+  backlineSub: { en: "Damage dealers and supports", de: "Schadensausteiler und Supports", es: "Distribuidores de daño y supports", ru: "Дамагеры и саппорты" },
+  backline1: { en: "Deal the damage, heal, buff", de: "Machen den Schaden, heilen, buffen", es: "Hacen el daño, curan y aplican buffs", ru: "Наносят урон, лечат и бафают" },
+  backline2: { en: "Fragile - die fast if exposed", de: "Zerbrechlich - sterben schnell, wenn sie offen stehen", es: "Frágiles: mueren rápido si quedan expuestos", ru: "Хрупкие — быстро умирают, если открыты" },
+  backline3: { en: "Kept behind the frontline", de: "Hinter der Frontline gehalten", es: "Se mantienen detrás de la primera línea", ru: "Держатся позади передней линии" },
+  battlefieldCallout: { en: "Crowd Control (CC) - stuns, taunts, freezes, knockbacks - is not just defense. Grouping and locking down enemies is what lets your carry's AoE ultimate hit the whole enemy team at once.", de: "Crowd Control (CC) - Stuns, Taunts, Freezes, Knockbacks - ist nicht nur Verteidigung. Gegner zusammenzuhalten und festzusetzen ist das, was die AoE-Ultimate deines Carries auf das ganze gegnerische Team treffen lässt.", es: "El control de masas (CC) - aturdimientos, provocaciones, congelaciones, empujes - no es solo defensa. Agrupar y fijar a los enemigos es lo que permite que el ultimate en área de tu carry golpee a todo el equipo rival a la vez.", ru: "Контроль толпы (CC) — оглушения, таунты, заморозки, отталкивания — это не только защита. Собирать врагов в кучу и удерживать их на месте — вот что позволяет AoE-ульте керри попасть сразу по всей вражеской команде." },
+  rolesTitle: { en: "Roles: Who Does What", de: "Rollen: Wer macht was?", es: "Roles: quién hace qué", ru: "Роли: кто что делает" },
+  rolesIntro: { en: "Every deity fills one of three roles. A working team needs a mix - not five damage dealers.", de: "Jede Gottheit erfüllt eine von drei Rollen. Ein funktionierendes Team braucht eine Mischung - nicht fünf Schadensausteiler.", es: "Cada deidad cumple uno de tres roles. Un equipo funcional necesita mezcla, no cinco personajes de daño.", ru: "Каждое божество выполняет одну из трёх ролей. Рабочей команде нужен баланс — а не пять дамагеров." },
+  tankLabel: { en: "Tank", de: "Tank", es: "Tanque", ru: "Танк" },
+  tankBody: { en: "Frontline. Absorbs damage and shields the backline so your fragile heroes survive. Often brings CC such as taunts and knockbacks.", de: "Frontline. Nimmt Schaden auf und schützt die Backline, damit deine fragilen Helden überleben. Bringt oft CC wie Taunts und Knockbacks mit.", es: "Primera línea. Absorbe daño y protege la retaguardia para que tus héroes frágiles sobrevivan. Suele aportar CC como provocaciones y empujes.", ru: "Передняя линия. Вбирает урон и защищает заднюю линию, чтобы хрупкие герои выжили. Часто приносит CC вроде таунтов и отталкиваний." },
+  dpsLabel: { en: "DPS / Carry", de: "DPS / Carry", es: "DPS / carry", ru: "DPS / керри" },
+  dpsBody: { en: "Your damage. This is the hero you invest in most - gear, relics, ascension. You build the team around the carry, not the other way round.", de: "Dein Schaden. Das ist der Held, in den du am meisten investierst - Ausrüstung, Relikte, Aufstieg. Du baust das Team um den Carry herum, nicht umgekehrt.", es: "Tu daño. Este es el héroe en el que más inviertes: equipo, reliquias, ascensión. Construyes el equipo alrededor del carry, no al revés.", ru: "Твой урон. Это герой, в которого ты вкладываешь больше всего — экипировка, реликвии, возвышение. Команду строят вокруг керри, а не наоборот." },
+  supportLabel: { en: "Support", de: "Support", es: "Soporte", ru: "Саппорт" },
+  supportBody: { en: "Keeps the carry alive and firing - heals, shields, buffs and energy. Includes batteries (energy) and tempo buffers (attack and move speed).", de: "Hält den Carry am Leben und im Angriff - Heilung, Schilde, Buffs und Energie. Dazu gehören Batterien (Energie) und Tempo-Buffs (Angriffs- und Bewegungsgeschwindigkeit).", es: "Mantiene vivo y activo al carry: curas, escudos, buffs y energía. Incluye baterías (energía) y buffers de tempo (velocidad de ataque y de movimiento).", ru: "Держит керри живым и активным — лечение, щиты, бафы и энергия. Сюда входят батарейки (энергия) и темп-бустеры (скорость атаки и передвижения)." },
+  carryCount: { en: "1-2 Carries", de: "1-2 Carries", es: "1-2 carries", ru: "1-2 керри" },
+  carryCountBody: { en: "Deal the damage. They get the gear, the relics, the investment.", de: "Machen den Schaden. Sie bekommen Ausrüstung, Relikte und Investitionen.", es: "Hacen el daño. Ellos reciben el equipo, las reliquias y la inversión.", ru: "Наносят урон. Им достаются экипировка, реликвии и вложения." },
+  supportCount: { en: "3-4 Supports / Tanks", de: "3-4 Supports / Tanks", es: "3-4 supports / tanques", ru: "3-4 саппорта / танка" },
+  supportCountBody: { en: "Exist to enable the carry - energy, buffs, protection, uptime.", de: "Sind dazu da, den Carry zu ermöglichen - Energie, Buffs, Schutz, Uptime.", es: "Existen para habilitar al carry: energía, buffs, protección y uptime.", ru: "Существуют, чтобы усиливать керри — энергия, бафы, защита и uptime." },
+  footnoteSupport: { en: "Want the detail on support types? See Team Building -> Energy vs. Tempo Support.", de: "Willst du Details zu Support-Typen? Siehe Teambuilding -> Energie vs. Tempo-Support.", es: "¿Quieres más detalle sobre los tipos de support? Mira Construcción de equipo -> Energy vs. Tempo Support.", ru: "Нужны подробности по типам саппортов? См. Сборка команды -> Energy vs. Tempo Support." },
+  factionsTitle: { en: "Factions (Suits)", de: "Fraktionen (Farben)", es: "Facciones (palos)", ru: "Фракции (масти)" },
+  factionsIntro: { en: "Every deity belongs to a faction, shown as a card suit. The four core suits are Hearts, Diamonds, Spades and Clubs, plus the rare Starglint group.", de: "Jede Gottheit gehört zu einer Fraktion, dargestellt als Kartenfarbe. Die vier Kernfarben sind Hearts, Diamonds, Spades und Clubs, plus die seltene Gruppe Starglint.", es: "Cada deidad pertenece a una facción, mostrada como un palo de cartas. Los cuatro palos principales son Hearts, Diamonds, Spades y Clubs, más el raro grupo Starglint.", ru: "Каждое божество принадлежит к фракции, отображаемой мастью карты. Четыре основные масти — Hearts, Diamonds, Spades и Clubs, плюс редкая группа Starglint." },
+  factionsMatter: { en: "Factions matter in three places:", de: "Fraktionen sind an drei Stellen wichtig:", es: "Las facciones importan en tres lugares:", ru: "Фракции важны в трёх местах:" },
+  summonMatter: { en: "Summoning:", de: "Beschwörung:", es: "Invocación:", ru: "Призывы:" },
+  summonMatterBody: { en: "Faction summons and the Wish List are organised by suit, so you target the faction your carry belongs to.", de: "Fraktionsbeschwörungen und Wish List sind nach Farbe organisiert, also zielst du auf die Fraktion deines Carries.", es: "Las invocaciones de facción y la Wish List están organizadas por palo, así que apuntas a la facción a la que pertenece tu carry.", ru: "Призывы фракций и Wish List организованы по мастям, так что ты целишься в фракцию своего керри." },
+  synergyMatter: { en: "Synergy bonus:", de: "Synergiebonus:", es: "Bonificación de sinergia:", ru: "Бонус синергии:" },
+  synergyMatterBody: { en: "Stacking deities of the same faction grants your whole team a damage bonus (up to +35%, see below).", de: "Mehr Gottheiten derselben Fraktion geben deinem ganzen Team einen Schadensbonus (bis zu +35 %, siehe unten).", es: "Apilar deidades de la misma facción otorga a todo el equipo un bono de daño (hasta +35%, ver abajo).", ru: "Набор божеств одной фракции даёт всей команде бонус к урону (до +35%, см. ниже)." },
+  countersMatter: { en: "Counters:", de: "Konter:", es: "Contrarrestes:", ru: "Контр-эффекты:" },
+  countersMatterBody: { en: "Each suit is strong against one other suit.", de: "Jede Farbe ist stark gegen eine andere Farbe.", es: "Cada palo es fuerte contra otro palo.", ru: "Каждая масть сильна против одной другой масти." },
+  factionBonusTitle: { en: "Faction Synergy Bonus", de: "Fraktions-Synergiebonus", es: "Bonificación de sinergia de facción", ru: "Бонус синергии фракции" },
+  factionBonusIntro: { en: "The more deities of the same faction you field, the bigger the team-wide damage bonus. This is the single biggest reason to build mono or near-mono teams.", de: "Je mehr Gottheiten derselben Fraktion du einsetzt, desto größer wird der teamweite Schadensbonus. Das ist der mit Abstand größte Grund für Mono- oder Fast-Mono-Teams.", es: "Cuantas más deidades de la misma facción pongas en campo, mayor será la bonificación de daño para todo el equipo. Esa es la razón principal para construir equipos mono o casi mono.", ru: "Чем больше божеств одной фракции ты выставляешь, тем больше командный бонус к урону. Это главная причина собирать моно- или почти моно-команды." },
+  factionTableTeam: { en: "Team Composition", de: "Team-Zusammensetzung", es: "Composición del equipo", ru: "Состав команды" },
+  factionTableBonus: { en: "Damage Bonus", de: "Schadensbonus", es: "Bonificación de daño", ru: "Бонус к урону" },
+  sameFaction3: { en: "3 of the same faction", de: "3 derselben Fraktion", es: "3 de la misma facción", ru: "3 одной фракции" },
+  sameFaction3Body: { en: "+15%", de: "+15 %", es: "+15%", ru: "+15%" },
+  sameFaction32: { en: "3 + 2 (two factions, e.g. 3 Hearts + 2 Spades)", de: "3 + 2 (zwei Fraktionen, z. B. 3 Hearts + 2 Spades)", es: "3 + 2 (dos facciones, p. ej. 3 Hearts + 2 Spades)", ru: "3 + 2 (две фракции, например 3 Hearts + 2 Spades)" },
+  sameFaction32Body: { en: "+25%", de: "+25 %", es: "+25%", ru: "+25%" },
+  sameFaction4: { en: "4 of the same faction", de: "4 derselben Fraktion", es: "4 de la misma facción", ru: "4 одной фракции" },
+  sameFaction4Body: { en: "+30%", de: "+30 %", es: "+30%", ru: "+30%" },
+  sameFaction5: { en: "5 of the same faction", de: "5 derselben Fraktion", es: "5 de la misma facción", ru: "5 de la misma facción".replace("mismo", "misma") },
+  sameFaction5Body: { en: "+35%", de: "+35 %", es: "+35%", ru: "+35%" },
+  starglintCallout: { en: "Starglint is a wildcard. A Starglint deity counts as whichever faction helps your bonus most. Example: 3 Hearts + 1 Club + 1 Starglint counts as a 4-faction bonus (+30%); 3 Hearts + 2 Starglint counts as a full 5-faction bonus (+35%).", de: "Starglint ist ein Joker. Eine Starglint-Gottheit zählt als die Fraktion, die deinem Bonus am meisten hilft. Beispiel: 3 Hearts + 1 Club + 1 Starglint zählt als 4-Fraktionen-Bonus (+30 %); 3 Hearts + 2 Starglint zählt als voller 5-Fraktionen-Bonus (+35 %).", es: "Starglint es un comodín. Una deidad Starglint cuenta como la facción que más te ayude con la bonificación. Ejemplo: 3 Hearts + 1 Club + 1 Starglint cuenta como bonificación de 4 facciones (+30%); 3 Hearts + 2 Starglint cuenta como bonificación completa de 5 facciones (+35%).", ru: "Starglint — это джокер. Божество Starglint считается той фракцией, которая сильнее всего помогает бонусу. Пример: 3 Hearts + 1 Club + 1 Starglint считается как бонус 4 фракций (+30%); 3 Hearts + 2 Starglint считается как полный бонус 5 фракций (+35%)." },
+  factionCounterTitle: { en: "Faction Counters", de: "Fraktions-Konter", es: "Contrarrestes de facción", ru: "Контр-фракции" },
+  factionCounterIntro: { en: "Each core suit deals extra damage against the suit it counters. It forms a single loop - so against an unknown enemy team, the faction that counters them is always the next one along.", de: "Jede Kernfarbe verursacht extra Schaden gegen die Farbe, die sie kontert. Daraus entsteht ein geschlossener Kreis - gegen ein unbekanntes Gegnerteam ist die konternde Fraktion also immer die nächste im Kreis.", es: "Cada palo principal inflige daño extra contra el palo que contrarresta. Forma un único bucle, así que contra un equipo enemigo desconocido, la facción que lo contrarresta es siempre la siguiente en la cadena.", ru: "Каждая основная масть наносит дополнительный урон против той, которую контрит. Это образует один цикл — против неизвестной команды врага контрящая фракция всегда будет следующей в цепочке." },
+  counterLoop: { en: "The loop: Hearts -> Spades -> Diamonds -> Clubs -> back to Hearts. Starglint sits outside the counter loop.", de: "Der Kreis: Hearts -> Spades -> Diamonds -> Clubs -> zurück zu Hearts. Starglint steht außerhalb des Konter-Kreises.", es: "El bucle: Hearts -> Spades -> Diamonds -> Clubs -> de vuelta a Hearts. Starglint queda fuera del bucle de contrarrestes.", ru: "Цикл: Hearts -> Spades -> Diamonds -> Clubs -> обратно к Hearts. Starglint находится вне этого цикла." },
+  starglintNote: { en: "Starglint is the rarest group with its own currency and summon pool - see Early Game -> Starglint and Mindsea.", de: "Starglint ist die seltenste Gruppe mit eigener Währung und eigenem Beschwörungspool - siehe Frühes Spiel -> Starglint und Mindsea.", es: "Starglint es el grupo más raro, con su propia moneda y su propio pool de invocación; mira Inicio -> Starglint y Mindsea.", ru: "Starglint — самая редкая группа со своей валютой и пулом призыва — см. Начало игры -> Starglint и Mindsea." },
+  ascensionTitle: { en: "Rarity & Ascension", de: "Seltenheit & Aufstieg", es: "Rareza y ascensión", ru: "Редкость и возвышение" },
+  ascensionIntro: { en: "You make a deity stronger in two ways: levelling (raising their level with EXP) and ascension (raising their grade by feeding duplicate copies).", de: "Du machst eine Gottheit auf zwei Arten stärker: durch Leveln (mit EXP) und durch Aufstieg (Rang erhöhen, indem du Duplikate fütterst).", es: "Haces más fuerte a una deidad de dos maneras: subiendo de nivel (con EXP) y mediante la ascensión (subiendo su grado alimentándola con copias duplicadas).", ru: "Ты усиливаешь божество двумя способами: прокачкой уровня (EXP) и возвышением (повышением ранга за счёт дубликатов)." },
+  copiesTitle: { en: "Copies & Fodder", de: "Kopien & Futter", es: "Copias y material", ru: "Копии и расходники" },
+  copiesIntro: { en: "Every extra copy of a deity you summon goes toward ascending them to the next grade. Lower-value duplicates used purely as ascension material are called fodder. Higher grades unlock more stats and, eventually, the deity's relic system.", de: "Jede zusätzliche Kopie einer Gottheit, die du beschwörst, fließt in ihren Aufstieg zum nächsten Rang. Weniger wertvolle Duplikate, die nur als Aufstiegsmaterial dienen, nennt man Futter. Höhere Ränge schalten mehr Werte und schließlich das Relikt-System der Gottheit frei.", es: "Cada copia extra de una deidad que invocas contribuye a ascenderla al siguiente grado. Las copias de menor valor usadas solo como material de ascensión se llaman material. Los grados más altos desbloquean más estadísticas y, finalmente, el sistema de reliquias de la deidad.", ru: "Каждая дополнительная копия божества идёт на его повышение до следующего ранга. Дубликаты низкой ценности, используемые только как материал возвышения, называются расходниками. Более высокие ранги открывают больше статов и, в итоге, систему реликвий божества." },
+  copiesCallout: { en: "Key idea: copies are never wasted. A duplicate you would discard in other games is the main way you power up a hero here. Spend them deliberately - see Early Game -> Ascension Tips for which deities to feed first.", de: "Wichtig: Kopien sind nie verschwendet. Ein Duplikat, das du in anderen Spielen wegwerfen würdest, ist hier der wichtigste Weg, einen Helden zu stärken. Setze sie bewusst ein - siehe Frühes Spiel -> Aufstiegstipps, welche Gottheiten zuerst gefüttert werden sollten.", es: "Idea clave: las copias nunca se desperdician. Un duplicado que tirarías en otros juegos es aquí la principal forma de potenciar a un héroe. Gástalas con cuidado; mira Inicio -> Consejos de ascensión para saber a qué deidades alimentar primero.", ru: "Ключевая мысль: копии никогда не пропадают зря. Дубликат, который в других играх ты бы выбросил, здесь — основной способ усилить героя. Используй их осознанно — см. Начало игры -> Советы по возвышению, каких божеств кормить первыми." },
+  gradeTitle: { en: "The Grade Ladder", de: "Die Rangleiter", es: "La escalera de grados", ru: "Лестница рангов" },
+  gradeIntro: { en: "Ascension raises a deity up this ladder. Each step needs more copies, but also adds stats and unlocks systems. The two milestones to remember: Exalted unlocks the relic system, and Divine is the current top tier.", de: "Der Aufstieg bringt eine Gottheit diese Leiter hinauf. Jeder Schritt braucht mehr Kopien, erhöht aber auch Werte und schaltet Systeme frei. Die zwei wichtigen Meilensteine: Exalted schaltet das Relikt-System frei, und Divine ist derzeit die höchste Stufe.", es: "La ascensión hace subir a una deidad por esta escalera. Cada paso requiere más copias, pero también añade estadísticas y desbloquea sistemas. Los dos hitos a recordar: Exalted desbloquea el sistema de reliquias y Divine es el nivel más alto actual.", ru: "Возвышение поднимает божество по этой лестнице. Каждый шаг требует больше копий, но также повышает статы и открывает системы. Два важных рубежа: Exalted открывает систему реликвий, а Divine — текущий верхний уровень." },
+  gradeGold: { en: "Gold = relics unlock here (Exalted / Exalted+). Violet = Divine tiers, the current ceiling (Divine 5 is the highest anyone has reached so far; higher tiers may follow).", de: "Gold = Hier werden Relikte freigeschaltet (Exalted / Exalted+). Violett = Divine-Stufen, die aktuelle Obergrenze (Divine 5 ist bisher die höchste erreichte Stufe; höhere Stufen können folgen).", es: "Gold = aquí se desbloquean las reliquias (Exalted / Exalted+). Violeta = niveles Divine, el tope actual (Divine 5 es el más alto alcanzado hasta ahora; podrían llegar niveles superiores).", ru: "Gold = здесь открываются реликвии (Exalted / Exalted+). Violet = уровни Divine, текущий потолок (Divine 5 — самый высокий достигнутый уровень; дальше могут появиться новые)." },
+} satisfies Record<string, LocalizedString>;
 ---
-    <!-- SUB-TAB: MECHANICS -->
-    <div id="subtab-mechanics" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics">
-      <main class="eg-main-content">
+<div id="subtab-mechanics" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics">
+  <main class="eg-main-content">
+    <nav class="tips-jumpbar" aria-label={pickLang(c.jumpLabel, locale)}>
+      <span class="tips-jump-label">{pickLang(c.jumpLabel, locale)}</span>
+      <a href="#section-what" class="tips-jump-link">{pickLang(c.jumpWhat, locale)}</a>
+      <a href="#section-loop" class="tips-jump-link">{pickLang(c.jumpLoop, locale)}</a>
+      <a href="#section-combat" class="tips-jump-link">{pickLang(c.jumpCombat, locale)}</a>
+      <a href="#section-roles" class="tips-jump-link">{pickLang(c.jumpRoles, locale)}</a>
+      <a href="#section-factions" class="tips-jump-link">{pickLang(c.jumpFactions, locale)}</a>
+      <a href="#section-ascension" class="tips-jump-link">{pickLang(c.jumpAscension, locale)}</a>
+      <a href="#section-glossary" class="tips-jump-link">{pickLang(c.jumpGlossary, locale)}</a>
+    </nav>
 
-        <!-- JUMPBAR -->
-        <nav class="tips-jumpbar" aria-label="Mechanics sections">
-          <span class="tips-jump-label">On this page</span>
-          <a href="#section-what" class="tips-jump-link">What Is This Game</a>
-          <a href="#section-loop" class="tips-jump-link">Core Loop</a>
-          <a href="#section-combat" class="tips-jump-link">Combat Basics</a>
-          <a href="#section-roles" class="tips-jump-link">Roles</a>
-          <a href="#section-factions" class="tips-jump-link">Factions</a>
-          <a href="#section-ascension" class="tips-jump-link">Rarity &amp; Ascension</a>
-          <a href="#section-glossary" class="tips-jump-link">Key Terms</a>
-        </nav>
-
-        <!-- WHAT IS THIS GAME -->
-        <div id="section-what" class="eg-content-card">
-          <h2>What Is Motto Immortal?</h2>
-          <p>Motto Immortal is an <strong>idle (AFK) hero-collector RPG</strong>. You play the Wayfarer and assemble a roster of mythological deities - Greek, Egyptian, Norse and more - to push back the Shadow-Blight. You collect deities by summoning, build a team of five, and send them into battle.</p>
-          <p>The key word is <strong>idle</strong>: your account keeps earning gold, experience and gear even while the game is closed. Offline rewards bank up to roughly <strong>12 hours</strong>, so logging in once or twice a day to collect and re-invest is the core rhythm.</p>
-          <p>Battles run <strong>automatically</strong>. You almost never control a hero directly - your real job happens <em>before</em> the fight: which deities you bring, where you place them, and how you gear them. The other tabs cover those decisions; this tab explains the systems underneath them.</p>
-        </div>
-
-        <!-- CORE LOOP -->
-        <div id="section-loop" class="eg-content-card">
-          <h2>The Core Loop</h2>
-          <p>Almost everything in the game feeds back into this cycle. Once it clicks, every other tab makes sense.</p>
-          <div class="eg-pillar-list">
-            <div class="eg-pillar">
-              <div class="eg-pillar-num">1</div>
-              <div class="eg-pillar-body">
-                <div class="eg-pillar-title">Push the Odyssey (campaign)</div>
-                <p>The story mode is the gatekeeper - clearing stages unlocks summoning, game modes and account systems. It is your main focus in the first days.</p>
-              </div>
-            </div>
-            <div class="eg-pillar">
-              <div class="eg-pillar-num">2</div>
-              <div class="eg-pillar-body">
-                <div class="eg-pillar-title">Summon deities</div>
-                <p>Spend summon currency to collect heroes and duplicate copies. Copies are not wasted - they upgrade the deity (see Ascension below).</p>
-              </div>
-            </div>
-            <div class="eg-pillar">
-              <div class="eg-pillar-num">3</div>
-              <div class="eg-pillar-body">
-                <div class="eg-pillar-title">Build &amp; gear your team</div>
-                <p>Level, ascend, gear and add relics to your core five. You are not building five equal heroes - you invest in 1-2 carries and support them.</p>
-              </div>
-            </div>
-            <div class="eg-pillar">
-              <div class="eg-pillar-num">4</div>
-              <div class="eg-pillar-body">
-                <div class="eg-pillar-title">Collect idle income</div>
-                <p>Offline gold, EXP and gear pile up (up to ~12h). Collect it, pour it back into your team, and push the next Odyssey wall.</p>
-              </div>
-            </div>
-          </div>
-          <div class="tips-callout">
-            <p>A stronger team clears more Odyssey, which unlocks more systems and bigger idle income - which makes your team stronger again. When you feel stuck, you are almost always one account system behind, not one summon short.</p>
-          </div>
-        </div>
-
-        <!-- COMBAT BASICS -->
-        <div id="section-combat" class="eg-content-card">
-          <h2>Combat Basics</h2>
-          <p>Combat is automatic by default, but it is not random. A handful of mechanics decide most fights.</p>
-
-          <h3>Auto vs. Manual</h3>
-          <p>Battles play out on their own, and you can leave them on auto for the vast majority of content. Sometimes it can be useful taking <strong>manual control of your ultimates</strong> so you fire them at the right moment instead of letting the AI waste them.</p>
-
-          <h3>Energy &amp; Ultimates</h3>
-          <p>During a fight each hero fills an <strong>energy bar</strong>. When it is full they cast their <strong>ultimate</strong> - the big, fight-swinging ability. Faster energy means more ultimates, which is exactly why energy-support heroes (your "batteries") are so valuable: they let your carry ult more often than the enemy can.</p>
-
-          <h3>The Open Battlefield</h3>
-          <p>Heroes do not stand still. They move, some teleport, and many knock enemies back or pull them in. Because the field is open, <strong>positioning matters</strong> - the standard formation is two frontliners and three backliners.</p>
-          <div class="comparison-box">
-            <div class="compare-section">
-              <h4>Frontline (2)</h4>
-              <p>Tanks and brawlers</p>
-              <ul>
-                <li>Soak damage and hold the enemy</li>
-                <li>Protect the squishy backline</li>
-                <li>Placed closest to the enemy</li>
-              </ul>
-            </div>
-            <div class="compare-section">
-              <h4>Backline (3)</h4>
-              <p>Damage dealers and supports</p>
-              <ul>
-                <li>Deal the damage, heal, buff</li>
-                <li>Fragile - die fast if exposed</li>
-                <li>Kept behind the frontline</li>
-              </ul>
-            </div>
-          </div>
-          <p>Put a ranged carry too far forward and they get focused and die before doing anything. Front-to-back placement is one of the easiest free wins in the game.</p>
-
-          <h3>AoE vs. Line, and Grouping</h3>
-          <p>Ultimates have shapes: some hit in a straight <strong>line</strong>, others cover a wide <strong>circular area (AoE)</strong>. If your team has a hero that pulls or groups enemies together, time your AoE ultimates to land while the enemies are bunched up for maximum damage.</p>
-          <div class="tips-callout">
-            <p>Crowd Control (CC) - stuns, taunts, freezes, knockbacks - is not just defense. Grouping and locking down enemies is what lets your carry's AoE ultimate hit the whole enemy team at once.</p>
-          </div>
-        </div>
-
-        <!-- ROLES -->
-        <div id="section-roles" class="eg-content-card">
-          <h2>Roles: Who Does What</h2>
-          <p>Every deity fills one of three roles. A working team needs a mix - not five damage dealers.</p>
-          <div class="mech-role-grid">
-            <div class="eg-role-col">
-              <div class="eg-role-label">Tank</div>
-              <p>Frontline. Absorbs damage and shields the backline so your fragile heroes survive. Often brings CC such as taunts and knockbacks.</p>
-            </div>
-            <div class="eg-role-col">
-              <div class="eg-role-label">DPS / Carry</div>
-              <p>Your damage. This is the hero you invest in most - gear, relics, ascension. You build the team <em>around</em> the carry, not the other way round.</p>
-            </div>
-            <div class="eg-role-col">
-              <div class="eg-role-label">Support</div>
-              <p>Keeps the carry alive and firing - heals, shields, buffs and energy. Includes "batteries" (energy) and "tempo" buffers (attack and move speed).</p>
-            </div>
-          </div>
-          <div class="core-rule-split">
-            <div class="core-rule-carry">
-              <div class="core-rule-label">1-2 Carries</div>
-              <p>Deal the damage. They get the gear, the relics, the investment.</p>
-            </div>
-            <div class="core-rule-support">
-              <div class="core-rule-label">3-4 Supports / Tanks</div>
-              <p>Exist to enable the carry - energy, buffs, protection, uptime.</p>
-            </div>
-          </div>
-          <p class="eg-footnote">Want the detail on support types? See <strong>Team Building &rarr; Energy vs. Tempo Support</strong>.</p>
-        </div>
-
-        <!-- FACTIONS -->
-        <div id="section-factions" class="eg-content-card">
-          <h2>Factions (Suits)</h2>
-          <p>Every deity belongs to a <strong>faction</strong>, shown as a card suit. The four core suits are <strong>Hearts</strong>, <strong>Diamonds</strong>, <strong>Spades</strong> and <strong>Clubs</strong>, plus the rare <strong>Starglint</strong> group.</p>
-          <p>Factions matter in three places:</p>
-          <ul>
-            <li><strong>Summoning:</strong> Faction summons and the Wish List are organised by suit, so you target the faction your carry belongs to.</li>
-            <li><strong>Synergy bonus:</strong> Stacking deities of the same faction grants your whole team a damage bonus (up to +35%, see below).</li>
-            <li><strong>Counters:</strong> Each suit is strong against one other suit.</li>
-          </ul>
-
-          <h3>Faction Synergy Bonus</h3>
-          <p>The more deities of the same faction you field, the bigger the team-wide damage bonus. This is the single biggest reason to build "mono" or near-mono teams.</p>
-          <div class="pinion-table">
-            <div class="pinion-row pinion-header">
-              <div class="pinion-type">Team Composition</div>
-              <div class="pinion-when">Damage Bonus</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">3 of the same faction</div>
-              <div class="pinion-when">+15%</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">3 + 2 (two factions, e.g. 3 Hearts + 2 Spades)</div>
-              <div class="pinion-when">+25%</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">4 of the same faction</div>
-              <div class="pinion-when">+30%</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">5 of the same faction</div>
-              <div class="pinion-when">+35%</div>
-            </div>
-          </div>
-          <div class="tips-callout">
-            <p><strong>Starglint is a wildcard.</strong> A Starglint deity counts as whichever faction helps your bonus most. Example: 3 Hearts + 1 Club + 1 Starglint counts as a 4-faction bonus (+30%); 3 Hearts + 2 Starglint counts as a full 5-faction bonus (+35%).</p>
-          </div>
-
-          <h3>Faction Counters</h3>
-          <p>Each core suit deals extra damage against the suit it counters. It forms a single loop - so against an unknown enemy team, the faction that counters them is always the next one along.</p>
-          <div class="mech-counter">
-            {[["Hearts","Spades"],["Spades","Diamonds"],["Diamonds","Clubs"],["Clubs","Hearts"]].map(([a, b]: [string, string]) => (
-              <div class="mech-counter-row">
-                <span class="mech-fac" style={`--fc:${FACTION_META[a].color}`}>
-                  <img src={FACTION_META[a].icon} alt={a} />{a}
-                </span>
-                <span class="mech-counter-arrow">beats</span>
-                <span class="mech-fac" style={`--fc:${FACTION_META[b].color}`}>
-                  <img src={FACTION_META[b].icon} alt={b} />{b}
-                </span>
-              </div>
-            ))}
-          </div>
-          <p class="eg-footnote">The loop: Hearts &rarr; Spades &rarr; Diamonds &rarr; Clubs &rarr; back to Hearts. Starglint sits outside the counter loop.</p>
-
-          <p class="eg-footnote">Starglint is the rarest group with its own currency and summon pool - see <strong>Early Game &rarr; Starglint and Mindsea</strong>.</p>
-        </div>
-
-        <!-- RARITY & ASCENSION -->
-        <div id="section-ascension" class="eg-content-card">
-          <h2>Rarity &amp; Ascension</h2>
-          <p>You make a deity stronger in two ways: <strong>levelling</strong> (raising their level with EXP) and <strong>ascension</strong> (raising their <em>grade</em> by feeding duplicate copies).</p>
-          <h3>Copies &amp; Fodder</h3>
-          <p>Every extra copy of a deity you summon goes toward ascending them to the next grade. Lower-value duplicates used purely as ascension material are called <strong>fodder</strong>. Higher grades unlock more stats and, eventually, the deity's <strong>relic</strong> system.</p>
-          <div class="tips-callout">
-            <p>Key idea: copies are never wasted. A "duplicate" you would discard in other games is the main way you power up a hero here. Spend them deliberately - see <strong>Early Game &rarr; Ascension Tips</strong> for which deities to feed first.</p>
-          </div>
-          <h3>The Grade Ladder</h3>
-          <p>Ascension raises a deity up this ladder. Each step needs more copies, but also adds stats and unlocks systems. The two milestones to remember: <strong>Exalted</strong> unlocks the relic system, and <strong>Divine</strong> is the current top tier.</p>
-          <div class="mech-grade-ladder">
-            <span class="mech-grade-step">Epic</span>
-            <span class="mech-grade-step">Epic+</span>
-            <span class="mech-grade-step">Legendary</span>
-            <span class="mech-grade-step">Legendary+</span>
-            <span class="mech-grade-step">Mythic</span>
-            <span class="mech-grade-step is-key">Exalted</span>
-            <span class="mech-grade-step is-key">Exalted+</span>
-            <span class="mech-grade-step is-top">Divine</span>
-            <span class="mech-grade-step is-top">Divine 1</span>
-            <span class="mech-grade-step is-top">Divine 2</span>
-            <span class="mech-grade-step is-top">Divine 3</span>
-            <span class="mech-grade-step is-top">Divine 4</span>
-            <span class="mech-grade-step is-top">Divine 5</span>
-          </div>
-          <p class="eg-footnote">Gold = relics unlock here (Exalted / Exalted+). Violet = Divine tiers, the current ceiling (Divine 5 is the highest anyone has reached so far; higher tiers may follow).</p>
-        </div>
-
-        <!-- KEY TERMS -->
-        <div id="section-glossary" class="eg-content-card">
-          <h2>Key Terms</h2>
-          <p>The words that show up everywhere in this guide and in chat, in one place.</p>
-          <div class="pinion-table">
-            <div class="pinion-row pinion-header">
-              <div class="pinion-type">Term</div>
-              <div class="pinion-when">What it means</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Deity / Hero</div>
-              <div class="pinion-when">A collectible character (a god or goddess) you summon and build.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Faction / Suit</div>
-              <div class="pinion-when">The card-suit group a deity belongs to: Hearts, Diamonds, Spades, Clubs, Starglint.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Carry / DPS / DD</div>
-              <div class="pinion-when">Your main damage dealer - the hero you invest in most.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Support</div>
-              <div class="pinion-when">Heals, buffs, shields or grants energy; exists to enable the carry.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Tank</div>
-              <div class="pinion-when">Frontline hero that soaks damage and protects the backline.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">CC (Crowd Control)</div>
-              <div class="pinion-when">Effects that stun, taunt, freeze, pull or knock back enemies.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Energy</div>
-              <div class="pinion-when">The bar that fills during combat; a full bar lets a hero cast their ultimate.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Ultimate</div>
-              <div class="pinion-when">A hero's big, energy-gated signature ability.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Ascension</div>
-              <div class="pinion-when">Raising a deity's grade by feeding duplicate copies.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Fodder</div>
-              <div class="pinion-when">Spare copies used purely as ascension material.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Relic</div>
-              <div class="pinion-when">A per-deity upgrade system unlocked at higher grades; has "breakpoints" (see Mid-Late).</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Pity</div>
-              <div class="pinion-when">A summon guarantee: after a set number of pulls you are granted a deity.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Idle / AFK</div>
-              <div class="pinion-when">Offline progress; rewards bank up to ~12 hours while you are away.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Odyssey</div>
-              <div class="pinion-when">The campaign / story mode; clearing it gates most other features.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Shrine</div>
-              <div class="pinion-when">Account-wide buff and gear (artefact) system unlocked through Odyssey progress.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Beacon Tree</div>
-              <div class="pinion-when">Account-wide stat bonuses that apply to every hero in every mode.</div>
-            </div>
-            <div class="pinion-row">
-              <div class="pinion-type">Resonating Altar</div>
-              <div class="pinion-when">Place 5 heroes; every other hero is raised to the level of your 5th-strongest.</div>
-            </div>
-          </div>
-        </div>
-
-      </main>
+    <div id="section-what" class="eg-content-card">
+      <h2>{pickLang(c.whatTitle, locale)}</h2>
+      <p>{pickLang(c.whatP1, locale)}</p>
+      <p>{pickLang(c.whatP2, locale)}</p>
+      <p>{pickLang(c.whatP3, locale)}</p>
     </div>
+
+    <div id="section-loop" class="eg-content-card">
+      <h2>{pickLang(c.loopTitle, locale)}</h2>
+      <p>{pickLang(c.loopIntro, locale)}</p>
+      <div class="eg-pillar-list">
+        <div class="eg-pillar">
+          <div class="eg-pillar-num">1</div>
+          <div class="eg-pillar-body">
+            <div class="eg-pillar-title">{pickLang(c.loop1, locale)}</div>
+            <p>{pickLang(c.loop1Body, locale)}</p>
+          </div>
+        </div>
+        <div class="eg-pillar">
+          <div class="eg-pillar-num">2</div>
+          <div class="eg-pillar-body">
+            <div class="eg-pillar-title">{pickLang(c.loop2, locale)}</div>
+            <p>{pickLang(c.loop2Body, locale)}</p>
+          </div>
+        </div>
+        <div class="eg-pillar">
+          <div class="eg-pillar-num">3</div>
+          <div class="eg-pillar-body">
+            <div class="eg-pillar-title">{pickLang(c.loop3, locale)}</div>
+            <p>{pickLang(c.loop3Body, locale)}</p>
+          </div>
+        </div>
+        <div class="eg-pillar">
+          <div class="eg-pillar-num">4</div>
+          <div class="eg-pillar-body">
+            <div class="eg-pillar-title">{pickLang(c.loop4, locale)}</div>
+            <p>{pickLang(c.loop4Body, locale)}</p>
+          </div>
+        </div>
+      </div>
+      <div class="tips-callout">
+        <p>{pickLang(c.loopCallout, locale)}</p>
+      </div>
+    </div>
+
+    <div id="section-combat" class="eg-content-card">
+      <h2>{pickLang(c.combatTitle, locale)}</h2>
+      <p>{pickLang(c.combatIntro, locale)}</p>
+      <h3>{pickLang(c.autoTitle, locale)}</h3>
+      <p>{pickLang(c.autoBody, locale)}</p>
+      <h3>{pickLang(c.energyTitle, locale)}</h3>
+      <p>{pickLang(c.energyBody, locale)}</p>
+      <h3>{pickLang(c.battlefieldTitle, locale)}</h3>
+      <p>{pickLang(c.battlefieldBody, locale)}</p>
+      <div class="comparison-box">
+        <div class="compare-section">
+          <h4>{pickLang(c.frontlineTitle, locale)}</h4>
+          <p>{pickLang(c.frontlineSub, locale)}</p>
+          <ul>
+            <li>{pickLang(c.frontline1, locale)}</li>
+            <li>{pickLang(c.frontline2, locale)}</li>
+            <li>{pickLang(c.frontline3, locale)}</li>
+          </ul>
+        </div>
+        <div class="compare-section">
+          <h4>{pickLang(c.backlineTitle, locale)}</h4>
+          <p>{pickLang(c.backlineSub, locale)}</p>
+          <ul>
+            <li>{pickLang(c.backline1, locale)}</li>
+            <li>{pickLang(c.backline2, locale)}</li>
+            <li>{pickLang(c.backline3, locale)}</li>
+          </ul>
+        </div>
+      </div>
+      <p>{pickLang(c.battlefieldBody, locale)}</p>
+      <h3>{pickLang(c.battlefieldTitle, locale)}: AoE vs. Line, and Grouping</h3>
+      <p>Ultimates have shapes: some hit in a straight line, others cover a wide circular area (AoE). If your team has a hero that pulls or groups enemies together, time your AoE ultimates to land while the enemies are bunched up for maximum damage.</p>
+      <div class="tips-callout">
+        <p>{pickLang(c.battlefieldCallout, locale)}</p>
+      </div>
+    </div>
+
+    <div id="section-roles" class="eg-content-card">
+      <h2>{pickLang(c.rolesTitle, locale)}</h2>
+      <p>{pickLang(c.rolesIntro, locale)}</p>
+      <div class="mech-role-grid">
+        <div class="eg-role-col">
+          <div class="eg-role-label">{pickLang(c.tankLabel, locale)}</div>
+          <p>{pickLang(c.tankBody, locale)}</p>
+        </div>
+        <div class="eg-role-col">
+          <div class="eg-role-label">{pickLang(c.dpsLabel, locale)}</div>
+          <p>{pickLang(c.dpsBody, locale)}</p>
+        </div>
+        <div class="eg-role-col">
+          <div class="eg-role-label">{pickLang(c.supportLabel, locale)}</div>
+          <p>{pickLang(c.supportBody, locale)}</p>
+        </div>
+      </div>
+      <div class="core-rule-split">
+        <div class="core-rule-carry">
+          <div class="core-rule-label">{pickLang(c.carryCount, locale)}</div>
+          <p>{pickLang(c.carryCountBody, locale)}</p>
+        </div>
+        <div class="core-rule-support">
+          <div class="core-rule-label">{pickLang(c.supportCount, locale)}</div>
+          <p>{pickLang(c.supportCountBody, locale)}</p>
+        </div>
+      </div>
+      <p class="eg-footnote">{pickLang(c.footnoteSupport, locale)}</p>
+    </div>
+
+    <div id="section-factions" class="eg-content-card">
+      <h2>{pickLang(c.factionsTitle, locale)}</h2>
+      <p>{pickLang(c.factionsIntro, locale)}</p>
+      <p>{pickLang(c.factionsMatter, locale)}</p>
+      <ul>
+        <li><strong>{pickLang(c.summonMatter, locale)}</strong> {pickLang(c.summonMatterBody, locale)}</li>
+        <li><strong>{pickLang(c.synergyMatter, locale)}</strong> {pickLang(c.synergyMatterBody, locale)}</li>
+        <li><strong>{pickLang(c.countersMatter, locale)}</strong> {pickLang(c.countersMatterBody, locale)}</li>
+      </ul>
+
+      <h3>{pickLang(c.factionBonusTitle, locale)}</h3>
+      <p>{pickLang(c.factionBonusIntro, locale)}</p>
+      <div class="pinion-table">
+        <div class="pinion-row pinion-header">
+          <div class="pinion-type">{pickLang(c.factionTableTeam, locale)}</div>
+          <div class="pinion-when">{pickLang(c.factionTableBonus, locale)}</div>
+        </div>
+        <div class="pinion-row">
+          <div class="pinion-type">{pickLang(c.sameFaction3, locale)}</div>
+          <div class="pinion-when">{pickLang(c.sameFaction3Body, locale)}</div>
+        </div>
+        <div class="pinion-row">
+          <div class="pinion-type">{pickLang(c.sameFaction32, locale)}</div>
+          <div class="pinion-when">{pickLang(c.sameFaction32Body, locale)}</div>
+        </div>
+        <div class="pinion-row">
+          <div class="pinion-type">{pickLang(c.sameFaction4, locale)}</div>
+          <div class="pinion-when">{pickLang(c.sameFaction4Body, locale)}</div>
+        </div>
+        <div class="pinion-row">
+          <div class="pinion-type">{pickLang(c.sameFaction5, locale)}</div>
+          <div class="pinion-when">{pickLang(c.sameFaction5Body, locale)}</div>
+        </div>
+      </div>
+      <div class="tips-callout">
+        <p>{pickLang(c.starglintCallout, locale)}</p>
+      </div>
+
+      <h3>{pickLang(c.factionCounterTitle, locale)}</h3>
+      <p>{pickLang(c.factionCounterIntro, locale)}</p>
+      <div class="mech-counter">
+        {["Hearts", "Spades", "Diamonds", "Clubs"].map((a, i, arr) => {
+          const b = arr[(i + 1) % arr.length];
+          return (
+            <div class="mech-counter-row">
+              <span class="mech-fac" style={`--fc:${FACTION_META[a].color}`}>
+                <img src={FACTION_META[a].icon} alt={a} />{a}
+              </span>
+              <span class="mech-counter-arrow">{locale === "de" ? "schlägt" : locale === "es" ? "vence" : locale === "ru" ? "побеждает" : "beats"}</span>
+              <span class="mech-fac" style={`--fc:${FACTION_META[b].color}`}>
+                <img src={FACTION_META[b].icon} alt={b} />{b}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      <p class="eg-footnote">{pickLang(c.counterLoop, locale)}</p>
+      <p class="eg-footnote">{pickLang(c.starglintNote, locale)}</p>
+    </div>
+
+    <div id="section-ascension" class="eg-content-card">
+      <h2>{pickLang(c.ascensionTitle, locale)}</h2>
+      <p>{pickLang(c.ascensionIntro, locale)}</p>
+      <h3>{pickLang(c.copiesTitle, locale)}</h3>
+      <p>{pickLang(c.copiesIntro, locale)}</p>
+      <div class="tips-callout">
+        <p>{pickLang(c.copiesCallout, locale)}</p>
+      </div>
+      <h3>{pickLang(c.gradeTitle, locale)}</h3>
+      <p>{pickLang(c.gradeIntro, locale)}</p>
+      <div class="mech-grade-ladder">
+        <span class="mech-grade-step">Epic</span>
+        <span class="mech-grade-step">Epic+</span>
+        <span class="mech-grade-step">Legendary</span>
+        <span class="mech-grade-step">Legendary+</span>
+        <span class="mech-grade-step">Mythic</span>
+        <span class="mech-grade-step is-key">Exalted</span>
+        <span class="mech-grade-step is-key">Exalted+</span>
+        <span class="mech-grade-step is-top">Divine</span>
+        <span class="mech-grade-step is-top">Divine 1</span>
+        <span class="mech-grade-step is-top">Divine 2</span>
+        <span class="mech-grade-step is-top">Divine 3</span>
+        <span class="mech-grade-step is-top">Divine 4</span>
+        <span class="mech-grade-step is-top">Divine 5</span>
+      </div>
+      <p class="eg-footnote">{pickLang(c.gradeGold, locale)}</p>
+    </div>
+
+    <div id="section-glossary" class="eg-content-card">
+      <h2>{locale === "de" ? "Wichtige Begriffe" : locale === "es" ? "Términos clave" : locale === "ru" ? "Ключевые термины" : "Key Terms"}</h2>
+      <p>{locale === "de" ? "Die Wörter, die in diesem Guide und im Chat überall auftauchen, an einem Ort." : locale === "es" ? "Las palabras que aparecen por todas partes en esta guía y en el chat, reunidas en un solo lugar." : locale === "ru" ? "Слова, которые встречаются в этом гайде и в чате, собраны в одном месте." : "The words that show up everywhere in this guide and in chat, in one place."}</p>
+      <div class="pinion-table">
+        <div class="pinion-row pinion-header">
+          <div class="pinion-type">{locale === "de" ? "Begriff" : locale === "es" ? "Término" : locale === "ru" ? "Термин" : "Term"}</div>
+          <div class="pinion-when">{locale === "de" ? "Bedeutung" : locale === "es" ? "Qué significa" : locale === "ru" ? "Что это значит" : "What it means"}</div>
+        </div>
+        <div class="pinion-row"><div class="pinion-type">Deity / Hero</div><div class="pinion-when">{locale === "de" ? "Eine sammelbare Figur (ein Gott oder eine Göttin), die du beschwörst und aufbaust." : locale === "es" ? "Un personaje coleccionable (un dios o diosa) que invocas y desarrollas." : locale === "ru" ? "Коллекционируемый персонаж (бог или богиня), которого ты призываешь и развиваешь." : "A collectible character (a god or goddess) you summon and build."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Faction / Suit</div><div class="pinion-when">{locale === "de" ? "Die Kartenfarben-Fraktion einer Gottheit: Hearts, Diamonds, Spades, Clubs, Starglint." : locale === "es" ? "La facción en forma de palo de cartas a la que pertenece una deidad: Hearts, Diamonds, Spades, Clubs, Starglint." : locale === "ru" ? "Фракция-масть, к которой принадлежит божество: Hearts, Diamonds, Spades, Clubs, Starglint." : "The card-suit group a deity belongs to: Hearts, Diamonds, Spades, Clubs, Starglint."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Carry / DPS / DD</div><div class="pinion-when">{locale === "de" ? "Dein Hauptschadensdealer - der Held, in den du am meisten investierst." : locale === "es" ? "Tu principal causante de daño: el héroe en el que más inviertes." : locale === "ru" ? "Твой главный источник урона — герой, в которого ты вкладываешься больше всего." : "Your main damage dealer - the hero you invest in most."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Support</div><div class="pinion-when">{locale === "de" ? "Heilt, bufft, schützt oder gibt Energie; existiert, um den Carry zu ermöglichen." : locale === "es" ? "Cura, buffea, protege o da energía; existe para habilitar al carry." : locale === "ru" ? "Лечит, бафает, защищает или даёт энергию; существует, чтобы усиливать керри." : "Heals, buffs, shields or grants energy; exists to enable the carry."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Tank</div><div class="pinion-when">{locale === "de" ? "Frontline-Held, der Schaden aufnimmt und die Backline schützt." : locale === "es" ? "Héroe de primera línea que absorbe daño y protege la retaguardia." : locale === "ru" ? "Герой передней линии, который впитывает урон и защищает заднюю линию." : "Frontline hero that soaks damage and protects the backline."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">CC (Crowd Control)</div><div class="pinion-when">{locale === "de" ? "Effekte, die Gegner stunnen, provozieren, einfrieren, ziehen oder zurückstoßen." : locale === "es" ? "Efectos que aturden, provocan, congelan, atraen o empujan a los enemigos." : locale === "ru" ? "Эффекты, которые оглушают, провоцируют, замораживают, притягивают или отталкивают врагов." : "Effects that stun, taunt, freeze, pull or knock back enemies."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Energy</div><div class="pinion-when">{locale === "de" ? "Die Leiste, die sich im Kampf füllt; eine volle Leiste lässt einen Helden seine Ultimate wirken." : locale === "es" ? "La barra que se llena durante el combate; una barra llena permite lanzar la ultimate." : locale === "ru" ? "Шкала, которая заполняется в бою; полная шкала позволяет использовать ульту." : "The bar that fills during combat; a full bar lets a hero cast their ultimate."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Ultimate</div><div class="pinion-when">{locale === "de" ? "Die große, energiegebundene Signaturfähigkeit eines Helden." : locale === "es" ? "La gran habilidad característica de un héroe, vinculada a la energía." : locale === "ru" ? "Большая фирменная способность героя, завязанная на энергии." : "A hero's big, energy-gated signature ability."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Ascension</div><div class="pinion-when">{locale === "de" ? "Den Rang einer Gottheit erhöhen, indem du Duplikate fütterst." : locale === "es" ? "Subir el grado de una deidad alimentándola con copias duplicadas." : locale === "ru" ? "Повышение ранга божества за счёт кормления дубликатами." : "Raising a deity's grade by feeding duplicate copies."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Fodder</div><div class="pinion-when">{locale === "de" ? "Überschüssige Kopien, die nur als Aufstiegsmaterial dienen." : locale === "es" ? "Copias sobrantes usadas solo como material de ascensión." : locale === "ru" ? "Лишние копии, используемые только как материал возвышения." : "Spare copies used purely as ascension material."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Relic</div><div class="pinion-when">{locale === "de" ? "Ein deitiespezifisches Upgrade-System, das bei höheren Rängen freigeschaltet wird; hat Schwellen (siehe Mid-Late)." : locale === "es" ? "Un sistema de mejora específico de cada deidad que se desbloquea con grados altos; tiene puntos de ruptura (ver Mid-Late)." : locale === "ru" ? "Система улучшений, уникальная для каждого божества, которая открывается на высоких рангах; имеет пороги (см. Mid-Late)." : "A per-deity upgrade system unlocked at higher grades; has breakpoints (see Mid-Late)."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Pity</div><div class="pinion-when">{locale === "de" ? "Eine Beschwörungs-Garantie: Nach einer festgelegten Zahl an Ziehungen bekommst du eine Gottheit." : locale === "es" ? "Una garantía de invocación: tras un número fijo de tiradas recibes una deidad." : locale === "ru" ? "Гарантия призыва: после заданного числа попыток ты получаешь божество." : "A summon guarantee: after a set number of pulls you are granted a deity."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Idle / AFK</div><div class="pinion-when">{locale === "de" ? "Offline-Fortschritt; Belohnungen sammeln sich bis zu ~12 Stunden an, während du weg bist." : locale === "es" ? "Progreso offline; las recompensas se acumulan hasta unas 12 horas mientras estás fuera." : locale === "ru" ? "Прогресс в офлайне; награды копятся примерно до 12 часов, пока ты отсутствуешь." : "Offline progress; rewards bank up to ~12 hours while you are away."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Odyssey</div><div class="pinion-when">{locale === "de" ? "Der Kampagnen-/Story-Modus; sein Fortschritt schaltet die meisten anderen Features frei." : locale === "es" ? "El modo campaña/historia; avanzar en él desbloquea la mayoría de las demás funciones." : locale === "ru" ? "Кампания/сюжетный режим; его прохождение открывает большинство остальных функций." : "The campaign / story mode; clearing it gates most other features."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Shrine</div><div class="pinion-when">{locale === "de" ? "Accountweiter Buff- und Ausrüstungs-(Artefakt-)Bereich, freigeschaltet über Odyssey-Fortschritt." : locale === "es" ? "Sistema de buff y equipo (artefacto) para toda la cuenta, desbloqueado mediante el progreso en Odyssey." : locale === "ru" ? "Система усилений и экипировки (артефактов) для всего аккаунта, открывается через прогресс Odyssey." : "Account-wide buff and gear (artefact) system unlocked through Odyssey progress."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Beacon Tree</div><div class="pinion-when">{locale === "de" ? "Accountweite Werteboni, die für jeden Helden in jedem Modus gelten." : locale === "es" ? "Bonificaciones de estadísticas para toda la cuenta que se aplican a todos los héroes en todos los modos." : locale === "ru" ? "Бонусы к статам на весь аккаунт, применяемые к каждому герою в любом режиме." : "Account-wide stat bonuses that apply to every hero in every mode."}</div></div>
+        <div class="pinion-row"><div class="pinion-type">Resonating Altar</div><div class="pinion-when">{locale === "de" ? "Stelle 5 Helden auf; alle anderen Helden werden auf das Level deiner 5 stärksten angehoben." : locale === "es" ? "Coloca 5 héroes; todos los demás se elevan al nivel de tus 5 más fuertes." : locale === "ru" ? "Поставь 5 героев; все остальные поднимаются до уровня твоих 5 сильнейших." : "Place 5 heroes; every other hero is raised to the level of your 5th-strongest."}</div></div>
+      </div>
+    </div>
+  </main>
+</div>

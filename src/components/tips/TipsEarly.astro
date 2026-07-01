@@ -1,66 +1,219 @@
 ---
 import { WISHLIST_DATA, FACTION_META } from "./tipsData";
+import TipsTeams from "./TipsTeams.astro";
+import { defaultLocale, type Locale } from "../../i18n/config";
+import { pickLang, type LocalizedString } from "../../i18n/helpers";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = defaultLocale } = Astro.props as Props;
+
+const c = {
+  jumpLabel: { en: "On this page", de: "Auf dieser Seite", es: "En esta página", ru: "На этой странице" },
+  jumpF2p: { en: "F2P Guide", de: "F2P-Guide", es: "Guía F2P", ru: "Гайд для F2P" },
+  jumpFirst: { en: "What to Do First", de: "Was zuerst tun", es: "Qué hacer primero", ru: "Что делать сначала" },
+  jumpOdyssey: { en: "Odyssey", de: "Odyssey", es: "Odyssey", ru: "Odyssey" },
+  jumpSummons: { en: "Summons", de: "Beschwörungen", es: "Invocaciones", ru: "Призывы" },
+  jumpChronos: { en: "Chronos", de: "Chronos", es: "Chronos", ru: "Хронос" },
+  jumpMindsea: { en: "Mindsea", de: "Mindsea", es: "Mindsea", ru: "Mindsea" },
+  jumpWishlist: { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List" },
+  f2pNote: { en: "This guide is written from a F2P and low-spender perspective. If you are a whale or have heavily starred heroes, you can replace the suggested heroes below with your own star picks.", de: "Dieser Guide ist aus F2P- und Low-Spender-Sicht geschrieben. Wenn du ein Whale bist oder stark aufgewertete Helden hast, kannst du die vorgeschlagenen Helden unten durch deine eigenen Stern-Auswahlen ersetzen.", es: "Esta guía está escrita desde una perspectiva F2P y de bajo gasto. Si eres un whale o tienes héroes muy estrelados, puedes sustituir los héroes sugeridos por tus propias elecciones.", ru: "Этот гайд написан с точки зрения F2P и низких трат. Если ты whale или у тебя сильно прокачанные герои, можешь заменить предложенных героев на своих звёздных кандидатов." },
+  firstTitle: { en: "What Should I Do First?", de: "Was sollte ich zuerst tun?", es: "¿Qué debo hacer primero?", ru: "Что делать сначала?" },
+  firstIntro: { en: "Focus on pushing Odyssey, Torment Rift and building your first team. Summon to get a good roster (1-2 damage dealers, 2 supports, 1-2 tanks).", de: "Konzentriere dich darauf, Odyssey und Torment Rift voranzutreiben und dein erstes Team aufzubauen. Beschwöre, um ein gutes Roster zu bekommen (1-2 Schadensausteiler, 2 Supports, 1-2 Tanks).", es: "Concéntrate en avanzar Odyssey, Torment Rift y construir tu primer equipo. Invoca para conseguir un buen plantel (1-2 causantes de daño, 2 supports, 1-2 tanques).", ru: "Сосредоточься на продвижении Odyssey, Torment Rift и сборке первой команды. Призывай, чтобы собрать хороший ростер (1-2 дамагера, 2 саппорта, 1-2 танка)." },
+  doNow: { en: "Do Now", de: "Jetzt tun", es: "Haz ahora", ru: "Сделать сейчас" },
+  doSoon: { en: "Do Soon", de: "Bald tun", es: "Haz pronto", ru: "Сделать вскоре" },
+  ignoreNow: { en: "Ignore for Now", de: "Vorerst ignorieren", es: "Ignorar por ahora", ru: "Пока игнорировать" },
+  finishTutorial: { en: "Finish Tutorial", de: "Tutorial abschließen", es: "Termina el tutorial", ru: "Заверши обучение" },
+  pushUntilStuck: { en: "Push Odyssey until stuck", de: "Odyssey vorantreiben bis du festhängst", es: "Avanza en Odyssey hasta atascarte", ru: "Продвигай Odyssey, пока не упрёшься" },
+  claimMail: { en: "Claim all mail and login rewards", de: "Alle Post und Login-Belohnungen abholen", es: "Reclama todo el correo y las recompensas de inicio de sesión", ru: "Забери всю почту и награды за вход" },
+  setWishlist: { en: "Set your Wish List (summon 30x to unlock)", de: "Wish List setzen (30x beschwören zum Freischalten)", es: "Configura tu Wish List (se desbloquea al invocar 30 veces)", ru: "Настрой Wish List (открывается после 30 призывов)" },
+  buySummons: { en: "Buy the daily 30% off regular summons", de: "Tägliche normale Beschwörungen mit 30 % Rabatt kaufen", es: "Compra las invocaciones normales diarias con 30% de descuento", ru: "Покупай ежедневные обычные призывы со скидкой 30%" },
+  spendGems: { en: "Spend early gems on roster building", de: "Frühe Juwelen in den Aufbau des Rosters investieren", es: "Gasta las gemas tempranas en construir tu plantel", ru: "Трать ранние гемы на сбор ростера" },
+  finishDailies: { en: "Finish daily missions", de: "Tägliche Missionen abschließen", es: "Completa las misiones diarias", ru: "Закрывай ежедневные задания" },
+  checkDiscord: { en: "Check official discord for codes", de: "Offiziellen Discord nach Codes prüfen", es: "Revisa el Discord oficial por códigos", ru: "Проверь официальный Discord на коды" },
+  buildTeam: { en: "Build 1 team", de: "1 Team bauen", es: "Construye 1 equipo", ru: "Собери 1 команду" },
+  gear2dps: { en: "Gear 2 DPS", de: "2 DPS ausrüsten", es: "Equipa a 2 DPS", ru: "Экипируй 2 DPS" },
+  weeklyRift: { en: "Weekly Torment Rift", de: "Wöchentlicher Torment Rift", es: "Torment Rift semanal", ru: "Еженедельный Torment Rift" },
+  carryBreakpoints: { en: "Carry relic breakpoints", de: "Relikt-Schwellen für Carries", es: "Puntos de ruptura de reliquia del carry", ru: "Пороги реликвий керри" },
+  wishlistCleanup: { en: "Wish List cleanup", de: "Wish List aufräumen", es: "Limpieza de la Wish List", ru: "Чистка Wish List" },
+  deepPvp: { en: "Deep PvP pushes", de: "Tiefes PvP pushen", es: "Empujes profundos de PvP", ru: "Глубокий пуш PvP" },
+  secondTeam: { en: "Second team", de: "Zweites Team", es: "Segundo equipo", ru: "Вторая команда" },
+  luxuryBuys: { en: "Luxury shop buys", de: "Luxus-Shop-Käufe", es: "Compras de la tienda de lujo", ru: "Покупки в люкс-магазине" },
+  odysseyTitle: { en: "Odyssey (Campaign) Milestones", de: "Odyssey-(Kampagnen-)Meilensteine", es: "Hitos de Odyssey (campaña)", ru: "Вехи Odyssey (кампания)" },
+  odysseyIntro: { en: "Keep pushing to unlock stages and events. The two most impactful early targets are Stage 3-18 (Shrine) and Stage 8-3 (Beacon Tree).", de: "Bleib dran, um Stufen und Events freizuschalten. Die zwei wichtigsten frühen Ziele sind Stage 3-18 (Shrine) und Stage 8-3 (Beacon Tree).", es: "Sigue avanzando para desbloquear etapas y eventos. Los dos objetivos iniciales más importantes son Stage 3-18 (Santuario) y Stage 8-3 (Beacon Tree).", ru: "Продолжай продвигаться, чтобы открывать этапы и события. Две самые важные ранние цели — Stage 3-18 (Shrine) и Stage 8-3 (Beacon Tree)." },
+  stageLabel: { en: "Stage", de: "Stufe", es: "Etapa", ru: "Этап" },
+  unlockLabel: { en: "What It Unlocks", de: "Was es freischaltet", es: "Qué desbloquea", ru: "Что открывает" },
+  whyLabel: { en: "Why It Matters", de: "Warum es wichtig ist", es: "Por qué importa", ru: "Почему это важно" },
+  odysseyCallout: { en: "Push to Stage 3-18 first to unlock the Shrine, then aim for Stage 8-3 to activate the Beacon Tree. Both give account-wide buffs that help every hero in every mode.", de: "Arbeite dich zuerst bis Stage 3-18 vor, um den Shrine freizuschalten, und dann bis Stage 8-3, um den Beacon Tree zu aktivieren. Beide geben accountweite Buffs, die jedem Helden in jedem Modus helfen.", es: "Avanza primero hasta Stage 3-18 para desbloquear el Santuario y luego apunta a Stage 8-3 para activar el Beacon Tree. Ambos dan buffs para toda la cuenta que ayudan a todos los héroes en todos los modos.", ru: "Сначала дойди до Stage 3-18, чтобы открыть Shrine, затем стремись к Stage 8-3, чтобы активировать Beacon Tree. Оба дают бафы на весь аккаунт, которые помогают каждому герою в любом режиме." },
+  summonsTitle: { en: "Normal Summons and Wish List", de: "Normale Beschwörungen und Wish List", es: "Invocaciones normales y Wish List", ru: "Обычные призывы и Wish List" },
+  summoningTips: { en: "Summoning Tips", de: "Beschwörungstipps", es: "Consejos de invocación", ru: "Советы по призыву" },
+  wishUnlock: { en: "The Wish List unlocks after 30 regular summons.", de: "Die Wish List schaltet sich nach 30 normalen Beschwörungen frei.", es: "La Wish List se desbloquea tras 30 invocaciones normales.", ru: "Wish List открывается после 30 обычных призывов." },
+  wishSwap: { en: "Once you have finished ascending one of the left-side deities on the wish list, swap them for one on the right.", de: "Sobald du eine der linken Gottheiten auf der Wish List fertig aufgestiegen hast, tausche sie gegen eine rechts aus.", es: "Cuando termines de ascender a una de las deidades del lado izquierdo en la Wish List, cámbiala por una de la derecha.", ru: "Когда закончишь возвышать одного из левых богов в Wish List, замени его на кого-то справа." },
+  standardPity: { en: "Standard Pity: an Epic deity is guaranteed by pull 50. The counter resets when an Epic appears and is separate from other summon types.", de: "Standard-Pity: Eine Epic-Gottheit ist bis Pull 50 garantiert. Der Zähler setzt sich zurück, wenn ein Epic erscheint, und ist von anderen Beschwörungsarten getrennt.", es: "Pity estándar: se garantiza una deidad Épica antes de la tirada 50. El contador se reinicia cuando aparece una Épica y es independiente de otros tipos de invocación.", ru: "Стандартный pity: Epic-божество гарантируется к 50-му призыву. Счётчик сбрасывается, когда выпадает Epic, и не связан с другими типами призывов." },
+  gemsTip: { en: "It is not recommended to spend Elysian Gems on regular summons - except for the first 1-2 days to get some units into your roster.", de: "Es wird nicht empfohlen, Elysian Gems für normale Beschwörungen auszugeben - außer in den ersten 1-2 Tagen, um ein paar Einheiten ins Roster zu bekommen.", es: "No se recomienda gastar Gemas Elíseas en invocaciones normales, salvo durante los primeros 1-2 días para conseguir algunas unidades en tu plantel.", ru: "Не рекомендуется тратить Elysian Gems на обычные призывы — кроме первых 1-2 дней, чтобы набрать немного юнитов в ростер." },
+  summonProbTitle: { en: "Summon Probabilities", de: "Beschwörungswahrscheinlichkeiten", es: "Probabilidades de invocación", ru: "Вероятности призыва" },
+  summonProbIntro: { en: "This breakdown shows how likely you are to pull one specific target hero. The base rates come from the summon tooltips shown in the game.", de: "Diese Aufschlüsselung zeigt, wie wahrscheinlich es ist, genau einen bestimmten Zielhelden zu ziehen. Die Basisraten stammen aus den Beschwörungs-Tooltips im Spiel.", es: "Este desglose muestra la probabilidad de obtener exactamente un héroe objetivo específico. Las tasas base provienen de los tooltips de invocación del juego.", ru: "Этот разбор показывает, насколько вероятно получить конкретного целевого героя. Базовые шансы взяты из подсказок призыва в игре." },
+  summonTableSummon: { en: "Summon", de: "Beschwörung", es: "Invocación", ru: "Призыв" },
+  summonTableEpicTotal: { en: "Epic total", de: "Epic gesamt", es: "Épica total", ru: "Epic всего" },
+  summonTableWishlist: { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List" },
+  summonTableCelestial: { en: "Celestial", de: "Celestial", es: "Celestial", ru: "Celestial" },
+  summonTableNoWishlist: { en: "No Wishlist", de: "Ohne Wish List", es: "Sin lista", ru: "Без Wish List" },
+  standardWishlistNote: { en: "Standard Wishlist: 4 factions x 4 slots = 16 heroes sharing 4.6%, or about 0.29% per hero.", de: "Standard Wish List: 4 Fraktionen x 4 Plätze = 16 Helden teilen sich 4,6 %, also etwa 0,29 % pro Held.", es: "Lista de deseos estándar: 4 facciones x 4 huecos = 16 héroes compartiendo 4,6%, o alrededor de 0,29% por héroe.", ru: "Стандартный Wish List: 4 фракции x 4 слота = 16 героев делят 4,6%, или около 0,29% на героя." },
+  suitWishlistNote: { en: "Suit Wishlist: 4 faction-specific heroes sharing 7.5%, or 1.875% per hero.", de: "Suit Wish List: 4 fraktionsspezifische Helden teilen sich 7,5 %, also 1,875 % pro Held.", es: "Lista de deseos de traje: 4 héroes específicos de la facción comparten 7,5%, o 1,875% por héroe.", ru: "Suit Wish List: 4 героя одной фракции делят 7,5%, или 1,875% на героя." },
+  chancePerPullTitle: { en: "Chance per Pull", de: "Chance pro Pull", es: "Probabilidad por tirada", ru: "Шанс за призыв" },
+  targetLabel: { en: "Target", de: "Ziel", es: "Objetivo", ru: "Цель" },
+  chancePerPullLabel: { en: "Chance per pull", de: "Chance pro Pull", es: "Probabilidad por tirada", ru: "Шанс за призыв" },
+  targetAmity: { en: "Amity: any Epic", de: "Amity: irgendein Epic", es: "Amity: cualquier Épica", ru: "Amity: любой Epic" },
+  targetStandardNoRateUp: { en: "Standard: Wishlist hero, no Rate Up", de: "Standard: Wish-List-Held, ohne Rate Up", es: "Estándar: héroe de la lista, sin Rate Up", ru: "Стандарт: герой Wish List, без Rate Up" },
+  targetStandardRateUp: { en: "Standard: Wishlist hero + Rate Up", de: "Standard: Wish-List-Held + Rate Up", es: "Estándar: héroe de la lista + Rate Up", ru: "Стандарт: герой Wish List + Rate Up" },
+  targetSuitNoRateUp: { en: "Suit: Wishlist hero, no Rate Up", de: "Suit: Wish-List-Held, ohne Rate Up", es: "Traje: héroe de la lista, sin Rate Up", ru: "Suit: герой Wish List, без Rate Up" },
+  targetSuitRateUp: { en: "Suit: Wishlist hero + Rate Up", de: "Suit: Wish-List-Held + Rate Up", es: "Traje: héroe de la lista + Rate Up", ru: "Suit: герой Wish List + Rate Up" },
+  what100Title: { en: "What 100 Pulls Look Like", de: "So sehen 100 Pulls aus", es: "Cómo se ven 100 tiradas", ru: "Как выглядят 100 призывов" },
+  amityCardTitle: { en: "Amity", de: "Amity", es: "Amity", ru: "Amity" },
+  amityCardRate: { en: "3% for any Epic", de: "3 % für irgendein Epic", es: "3% por cualquier Épica", ru: "3% за любой Epic" },
+  amityExpected: { en: "Expected: 3 Epics", de: "Erwartet: 3 Epics", es: "Esperado: 3 Épicas", ru: "Ожидается: 3 Epic" },
+  amityNormalRange: { en: "Normal range: 1-5 Epics for 87% of players", de: "Normalbereich: 1-5 Epics für 87 % der Spieler", es: "Rango normal: 1-5 Épicas para el 87% de los jugadores", ru: "Обычный диапазон: 1-5 Epic у 87% игроков" },
+  amityNoEpic: { en: "No Epic: 4.8%", de: "Kein Epic: 4,8 %", es: "Sin Épica: 4,8%", ru: "Без Epic: 4,8%" },
+  standardNoRateTitle: { en: "Standard without Rate Up", de: "Standard ohne Rate Up", es: "Estándar sin Rate Up", ru: "Стандарт без Rate Up" },
+  standardNoRateRate: { en: "0.29% for one Wishlist hero", de: "0,29 % für einen Wish-List-Helden", es: "0,29% para un héroe de la lista", ru: "0,29% на одного героя Wish List" },
+  standardNoRateExpected: { en: "Expected: 0.29 copies", de: "Erwartet: 0,29 Kopien", es: "Esperado: 0,29 copias", ru: "Ожидается: 0,29 копии" },
+  standardNoRateMiss: { en: "No target copy: 75%", de: "Keine Zielkopie: 75 %", es: "Sin copia objetivo: 75%", ru: "Без нужной копии: 75%" },
+  standardNoRateAtLeast: { en: "At least one copy: only 25%", de: "Mindestens eine Kopie: nur 25 %", es: "Al menos una copia: solo 25%", ru: "Хотя бы одна копия: только 25%" },
+  standardRateTitle: { en: "Standard + Rate Up", de: "Standard + Rate Up", es: "Estándar + Rate Up", ru: "Стандарт + Rate Up" },
+  standardRateRate: { en: "2.0% for the target hero", de: "2,0 % für den Zielhelden", es: "2,0% para el héroe objetivo", ru: "2,0% на целевого героя" },
+  standardRateExpected: { en: "Expected: 2 copies", de: "Erwartet: 2 Kopien", es: "Esperado: 2 copias", ru: "Ожидается: 2 копии" },
+  standardRateNormal: { en: "Normal range: 0-4 copies for 95% of players", de: "Normalbereich: 0-4 Kopien für 95 % der Spieler", es: "Rango normal: 0-4 copias para el 95% de los jugadores", ru: "Обычный диапазон: 0-4 копии у 95% игроков" },
+  standardRateMiss: { en: "No target copy: 13.3%", de: "Keine Zielkopie: 13,3 %", es: "Sin copia objetivo: 13,3%", ru: "Без нужной копии: 13,3%" },
+  suitNoRateTitle: { en: "Suit without Rate Up", de: "Suit ohne Rate Up", es: "Traje sin Rate Up", ru: "Suit без Rate Up" },
+  suitNoRateRate: { en: "1.875% for one Wishlist hero", de: "1,875 % für einen Wish-List-Helden", es: "1,875% para un héroe de la lista", ru: "1,875% на одного героя Wish List" },
+  suitNoRateExpected: { en: "Expected: 1-2 copies", de: "Erwartet: 1-2 Kopien", es: "Esperado: 1-2 copias", ru: "Ожидается: 1-2 копии" },
+  suitNoRateNormal: { en: "Normal range: 0-4 copies for 96% of players", de: "Normalbereich: 0-4 Kopien für 96 % der Spieler", es: "Rango normal: 0-4 copias para el 96% de los jugadores", ru: "Обычный диапазон: 0-4 копии у 96% игроков" },
+  suitNoRateMiss: { en: "No target copy: 15%", de: "Keine Zielkopie: 15 %", es: "Sin copia objetivo: 15%", ru: "Без нужной копии: 15%" },
+  suitRateTitle: { en: "Suit + Rate Up", de: "Suit + Rate Up", es: "Traje + Rate Up", ru: "Suit + Rate Up" },
+  suitRateRate: { en: "3.6% for the target hero", de: "3,6 % für den Zielhelden", es: "3,6% para el héroe objetivo", ru: "3,6% на целевого героя" },
+  suitRateExpected: { en: "Expected: 3-4 copies", de: "Erwartet: 3-4 Kopien", es: "Esperado: 3-4 copias", ru: "Ожидается: 3-4 копии" },
+  suitRateNormal: { en: "Normal range: 1-6 copies for 90% of players", de: "Normalbereich: 1-6 Kopien für 90 % der Spieler", es: "Rango normal: 1-6 copias para el 90% de los jugadores", ru: "Обычный диапазон: 1-6 копий у 90% игроков" },
+  suitRateAtLeast: { en: "At least one copy: 97.4%", de: "Mindestens eine Kopie: 97,4 %", es: "Al menos una copia: 97,4%", ru: "Хотя бы одна копия: 97,4%" },
+  noTargetTitle: { en: "What does “no target copy” mean?", de: "Was bedeutet „keine Zielkopie“?", es: "¿Qué significa “sin copia objetivo”?", ru: "Что значит «без нужной копии»?" },
+  noTargetBody: { en: "It does not mean that all 100 pulls give you nothing. It means that none of those pulls contains the one specific hero you are targeting. Every other hero pulled is irrelevant to this calculation.", de: "Das bedeutet nicht, dass dir alle 100 Pulls nichts geben. Es bedeutet, dass keiner dieser Pulls den einen bestimmten Helden enthält, auf den du zielst. Jeder andere gezogene Held ist für diese Rechnung egal.", es: "No significa que las 100 tiradas no te den nada. Significa que ninguna de esas tiradas contiene al héroe específico que estás buscando. Cualquier otro héroe obtenido no cuenta para este cálculo.", ru: "Это не значит, что все 100 призывов дадут ничего. Это значит, что ни один из них не содержит именно того героя, которого ты ищешь. Любой другой герой в расчёт не идёт." },
+  whyRateUpTitle: { en: "Why Rate Up Helps Standard More", de: "Warum Rate Up Standard stärker hilft", es: "Por qué Rate Up ayuda más a Estándar", ru: "Почему Rate Up сильнее помогает стандарту" },
+  whyRateUpBody: { en: "Standard spreads its 4.6% Wishlist chance across 16 heroes, so one hero starts at only about 0.29%. Suit summons split 7.5% between only 4 heroes and therefore already start at 1.875% per hero.", de: "Standard verteilt seine 4,6 %-Wish-List-Chance auf 16 Helden, daher startet ein Held nur bei etwa 0,29 %. Suit-Beschwörungen teilen 7,5 % auf nur 4 Helden auf und starten daher schon bei 1,875 % pro Held.", es: "Estándar reparte su 4,6% de probabilidad de la lista entre 16 héroes, así que un héroe empieza con solo alrededor de 0,29%. Las invocaciones de traje dividen el 7,5% entre solo 4 héroes y por eso ya empiezan en 1,875% por héroe.", ru: "Стандарт делит шанс Wish List 4,6% между 16 героями, поэтому один герой стартует лишь с ~0,29%. Призывы Suit делят 7,5% только между 4 героями и потому стартуют с 1,875% на героя." },
+  boostSummon: { en: "Summon", de: "Beschwörung", es: "Invocación", ru: "Призыв" },
+  withoutRateUp: { en: "Without Rate Up", de: "Ohne Rate Up", es: "Sin Rate Up", ru: "Без Rate Up" },
+  withRateUp: { en: "With Rate Up", de: "Mit Rate Up", es: "Con Rate Up", ru: "С Rate Up" },
+  relativeBoost: { en: "Relative boost", de: "Relative Verstärkung", es: "Mejora relativa", ru: "Относительный буст" },
+  rateUpFootnote: { en: "Rate Up gives Standard the larger relative improvement because its starting chance is so low. Suit + Rate Up still has the better absolute target chance: 3.6% instead of 2.0%.", de: "Rate Up bringt bei Standard die größere relative Verbesserung, weil die Ausgangschance so niedrig ist. Suit + Rate Up hat trotzdem die bessere absolute Zielchance: 3,6 % statt 2,0 %.", es: "Rate Up da a Estándar una mejora relativa mayor porque su probabilidad inicial es muy baja. Aun así, Traje + Rate Up sigue teniendo la mejor probabilidad absoluta: 3,6% en lugar de 2,0%.", ru: "Rate Up даёт стандарту больший относительный прирост, потому что начальный шанс очень низкий. Но Suit + Rate Up всё равно даёт лучший абсолютный шанс: 3,6% вместо 2,0%." },
+  bestStrategyTitle: { en: "Best Strategy for a Specific New Hero", de: "Beste Strategie für einen bestimmten neuen Helden", es: "Mejor estrategia para un héroe nuevo concreto", ru: "Лучшая стратегия для конкретного нового героя" },
+  bestStrategy1: { en: "Wait for Rate Up.", de: "Warte auf Rate Up.", es: "Espera al Rate Up.", ru: "Жди Rate Up." },
+  bestStrategy2: { en: "Put the hero on the Wishlist for the matching Suit.", de: "Setze den Helden auf die Wish List für den passenden Suit.", es: "Pon al héroe en la lista para el traje correspondiente.", ru: "Поставь героя в Wish List для подходящего Suit." },
+  bestStrategy3: { en: "Use Suit summons during Rate Up: 100 pulls yield 3-4 copies on average, with a 97.4% chance of at least one copy.", de: "Nutze Suit-Beschwörungen während Rate Up: 100 Pulls ergeben im Schnitt 3-4 Kopien, mit 97,4 % Chance auf mindestens eine Kopie.", es: "Usa invocaciones de traje durante Rate Up: 100 tiradas dan 3-4 copias de media, con un 97,4% de probabilidad de obtener al menos una copia.", ru: "Используй Suit-призывы во время Rate Up: 100 призывов в среднем дают 3-4 копии, с шансом 97,4% получить хотя бы одну." },
+  bestStrategy4: { en: "Avoid Standard summons without Rate Up when targeting one hero: the chance of missing that hero after 100 pulls is about 75%.", de: "Vermeide Standard-Beschwörungen ohne Rate Up, wenn du auf einen Helden zielst: Die Chance, diesen Helden nach 100 Pulls zu verpassen, liegt bei etwa 75 %.", es: "Evita las invocaciones estándar sin Rate Up cuando busques un héroe: la probabilidad de no conseguirlo tras 100 tiradas es de aproximadamente 75%.", ru: "Избегай стандартных призывов без Rate Up, если целишься в одного героя: шанс не получить его после 100 призывов около 75%." },
+  shopPriorityTitle: { en: "Shop Priority", de: "Shop-Priorität", es: "Prioridad de tienda", ru: "Приоритет магазина" },
+  shopItem: { en: "Item", de: "Gegenstand", es: "Objeto", ru: "Предмет" },
+  shopAction: { en: "Action", de: "Aktion", es: "Acción", ru: "Действие" },
+  regularStore: { en: "Regular Store - 30% off", de: "Normale Laden - 30 % Rabatt", es: "Tienda normal - 30% de descuento", ru: "Обычный магазин - скидка 30%" },
+  reversionShop: { en: "Reversion Shop", de: "Reversion-Shop", es: "Tienda de Reversión", ru: "Магазин Reversion" },
+  randomGear: { en: "Random Gear", de: "Zufalls-Equipment", es: "Equipo aleatorio", ru: "Случайный экип" },
+  oneCopyTitle: { en: "One-Copy Wonders", de: "Ein-Kopie-Wunder", es: "Maravillas de una copia", ru: "Чудеса одной копии" },
+  oneCopyIntro: { en: "These are deities that can fulfill their role at Elite rarity in the Early Game. Get a copy early - most are supports. The order depends on which heroes you summon more of.", de: "Das sind Gottheiten, die ihre Rolle im Early Game schon auf Elite-Rarität erfüllen können. Hol dir früh eine Kopie - die meisten sind Supports. Die Reihenfolge hängt davon ab, welche Helden du häufiger ziehst.", es: "Estas son deidades que pueden cumplir su función en rareza Élite en la fase temprana. Consigue una copia pronto: la mayoría son supports. El orden depende de qué héroes obtengas más.", ru: "Это божества, которые могут выполнять свою роль на редкости Elite уже в ранней игре. Получи копию пораньше - большинство из них саппорты. Порядок зависит от того, кого ты чаще призываешь." },
+  oneCopyNote: { en: "Most support heroes also qualify as one-copy wonders. Focus on heroes you have the most copies of.", de: "Die meisten Support-Helden zählen ebenfalls dazu. Konzentriere dich auf Helden, von denen du die meisten Kopien hast.", es: "La mayoría de los héroes de support también cuentan como maravillas de una copia. Céntrate en los héroes de los que tengas más copias.", ru: "Большинство саппортов тоже сюда подходят. Делай упор на тех героев, копий которых у тебя больше всего." },
+  ascensionTipsTitle: { en: "Ascension Tips", de: "Aufstiegs-Tipps", es: "Consejos de ascensión", ru: "Советы по возвышению" },
+  ascension1: { en: "Avoid using regular ascended-grade deities as fodder. Only use Zodiac deities as fodder.", de: "Verwende gewöhnliche Ascended-Gottheiten nicht als Futter. Nutze nur Zodiac-Gottheiten als Futter.", es: "Evita usar deidades ascendidas normales como material. Usa solo deidades Zodiac como material.", ru: "Не используй обычных божеств ascended-уровня как корм. Используй только Zodiac-божеств как корм." },
+  ascension2: { en: "Focus on building one hero per faction at a time to avoid spreading fodder too thin.", de: "Konzentriere dich darauf, pro Fraktion jeweils nur einen Helden zu bauen, damit sich das Futter nicht zu sehr verteilt.", es: "Céntrate en construir un héroe por facción a la vez para no repartir el material demasiado.", ru: "Сосредоточься на одном герое на фракцию, чтобы не распылять корм слишком сильно." },
+  ascension3: { en: "You can start building a deity once you have 2 Elite+ copies (Zodiacs) - that is enough to reach Mythic.", de: "Du kannst mit dem Aufbau einer Gottheit beginnen, sobald du 2 Elite+-Kopien (Zodiacs) hast - das reicht bis Mythic.", es: "Puedes empezar a construir una deidad cuando tengas 2 copias Élite+ (Zodiacs): eso basta para llegar a Mythic.", ru: "Можно начинать собирать божество, когда у тебя есть 2 копии Elite+ (Zodiac) - этого хватит, чтобы дойти до Mythic." },
+  ascension4: { en: "Some deities do not perform well until they reach Divine, so wait for four copies to ascend them right away.", de: "Einige Gottheiten funktionieren erst ab Divine wirklich gut, also warte auf vier Kopien, um sie direkt weiter aufzusteigen.", es: "Algunas deidades no rinden bien hasta llegar a Divine, así que espera cuatro copias para ascenderlas de una vez.", ru: "Некоторые божества плохо работают до Divine, так что жди четырёх копий, чтобы сразу поднять их дальше." },
+  ascension5: { en: "Once a deity reaches Mythic, they no longer require fodder (only the deity itself).", de: "Sobald eine Gottheit Mythic erreicht, braucht sie kein Futter mehr (nur noch die Gottheit selbst).", es: "Una vez que una deidad llega a Mythic, ya no necesita material (solo la propia deidad).", ru: "После Mythic божеству больше не нужен корм (только само божество)." },
+  ascension6: { en: "Zodiac deities cap at Legendary+. Only ascend a Zodiac to Legendary if you have 2 extra copies to use as fodder.", de: "Zodiac-Gottheiten enden bei Legendary+. Steige einen Zodiac nur bis Legendary auf, wenn du 2 zusätzliche Kopien als Futter hast.", es: "Las deidades Zodiac llegan hasta Legendary+. Solo asciende un Zodiac a Legendary si tienes 2 copias extra para usar como material.", ru: "Zodiac-божества упираются в Legendary+. Поднимай Zodiac до Legendary только если у тебя есть 2 лишние копии на корм." },
+  factionSummonsTitle: { en: "Faction Summons", de: "Fraktions-Beschwörungen", es: "Invocaciones de facción", ru: "Призывы фракции" },
+  factionSummonsIntro: { en: "In the early phase your main carry and good supports are your primary targets. Spend your feathers on heroes you are missing or that you need to level up for progression.", de: "In der frühen Phase sind dein Haupt-Carry und gute Supports deine wichtigsten Ziele. Gib deine Federn für Helden aus, die dir fehlen oder die du für den Fortschritt hochleveln musst.", es: "En la fase temprana tu carry principal y buenos supports son tus objetivos principales. Gasta tus plumas en héroes que te faltan o que necesitas subir para progresar.", ru: "В ранней фазе твой главный керри и хорошие саппорты — основные цели. Трать перья на тех героев, которых тебе не хватает или кого нужно прокачать для прогресса." },
+  factionSummonsPriority: { en: "Priority order: Carry > Support > Tank", de: "Priorität: Carry > Support > Tank", es: "Orden de prioridad: Carry > Support > Tank", ru: "Приоритет: Carry > Support > Tank" },
+  factionSummonsPity: { en: "Suit Pity guarantees an Epic deity by pull 20. Its counter resets when a Suit Epic appears and does not transfer to Standard summons or another summon type.", de: "Suit-Pity garantiert eine Epic-Gottheit bis Pull 20. Der Zähler setzt sich zurück, wenn ein Suit-Epic erscheint, und wird nicht auf Standard- oder andere Beschwörungsarten übertragen.", es: "El pity de traje garantiza una deidad Épica antes de la tirada 20. El contador se reinicia cuando aparece una Épica de traje y no se transfiere a invocaciones estándar ni a otro tipo.", ru: "Suit pity гарантирует Epic-божество к 20-му призыву. Счётчик сбрасывается, когда выпадает Suit Epic, и не переносится на стандартные или другие типы." },
+  factionSummonsCallout: { en: "The Wish List also applies to Faction summons. It is recommended to save faction feathers for the upcoming banner event - this happens every 2 weeks.", de: "Die Wish List gilt auch für Fraktions-Beschwörungen. Es wird empfohlen, Fraktionsfedern für das kommende Banner-Event aufzuheben - das passiert alle 2 Wochen.", es: "La Wish List también se aplica a las invocaciones de facción. Se recomienda guardar plumas de facción para el próximo evento de banner, que ocurre cada 2 semanas.", ru: "Wish List действует и на призывы фракции. Рекомендуется копить фракционные перья к следующему баннер-ивенту - он бывает каждые 2 недели." },
+  chronosTitle: { en: "Chronos Chamber", de: "Chronos-Kammer", es: "Cámara de Chronos", ru: "Камера Хроноса" },
+  chronosIntro: { en: "Unlocks after a total of 750 summons. Within the Chronos Chamber you can summon Starglint Deities using Star Tracer currency. You can specify which deity you want to summon.", de: "Schaltet sich nach insgesamt 750 Beschwörungen frei. In der Chronos-Kammer kannst du Starglint-Gottheiten mit der Währung Star Tracer beschwören. Du kannst auswählen, welche Gottheit du beschwören willst.", es: "Se desbloquea tras un total de 750 invocaciones. Dentro de la Cámara de Chronos puedes invocar deidades Starglint usando la moneda Star Tracer. Puedes especificar qué deidad quieres invocar.", ru: "Открывается после 750 призывов в сумме. В Камере Хроноса можно призывать Starglint-божеств за валюту Star Tracer. Ты можешь выбрать, какого бога призывать." },
+  chronosRecommendationTitle: { en: "Recommended Order", de: "Empfohlene Reihenfolge", es: "Orden recomendado", ru: "Рекомендуемый порядок" },
+  chronosRecommendationBody: { en: "Go for Nyx first - after that go for Zeus all the way. Zeus is the best damage-dealing hero for all modes, but needs Divine ascension and Relic Level 30 to be fully upgraded.", de: "Nimm zuerst Nyx - danach dann durchgehend Zeus. Zeus ist in allen Modi der beste Schadensheld, braucht aber Divine-Aufstieg und Relic Level 30, um voll ausgebaut zu sein.", es: "Ve primero por Nyx y después sigue con Zeus hasta el final. Zeus es el mejor héroe de daño para todos los modos, pero necesita ascensión Divine y Reliquia nivel 30 para estar totalmente mejorado.", ru: "Сначала бери Nyx, а потом целенаправленно Zeus. Зевс — лучший дамагер для всех режимов, но ему нужны Divine-возвышение и Relic Level 30 для полного раскрытия." },
+  chronosPityTitle: { en: "Pity System", de: "Pity-System", es: "Sistema de pity", ru: "Система pity" },
+  chronosPity1: { en: "You will get the Starglint deity every 40 summons guaranteed.", de: "Alle 40 Beschwörungen erhältst du garantiert eine Starglint-Gottheit.", es: "Obtendrás garantizada una deidad Starglint cada 40 invocaciones.", ru: "Каждые 40 призывов ты гарантированно получаешь Starglint-божество." },
+  chronosPity2: { en: "After doing 30 summons you can switch to single pulls to save resources until getting the deity.", de: "Nach 30 Beschwörungen kannst du auf Einzelpulls wechseln, um Ressourcen zu sparen, bis du die Gottheit bekommst.", es: "Después de 30 invocaciones puedes cambiar a tiradas individuales para ahorrar recursos hasta obtener la deidad.", ru: "После 30 призывов можно переключиться на одиночные, чтобы экономить ресурсы, пока не выпадет божество." },
+  starglintTitle: { en: "Starglint and Mindsea", de: "Starglint und Mindsea", es: "Starglint y Mindsea", ru: "Starglint и Mindsea" },
+  starglintIntro: { en: "The Starglint faction has the most rare heroes. They can only be obtained through their special currency \"Star Tracer\", regular summons (0.2% drop chance) or in the Mindsea shop.", de: "Die Starglint-Fraktion hat die seltensten Helden. Sie sind nur über die Spezialwährung \"Star Tracer\", normale Beschwörungen (0,2 % Dropchance) oder im Mindsea-Shop erhältlich.", es: "La facción Starglint tiene los héroes más raros. Solo se pueden obtener mediante su moneda especial \"Star Tracer\", invocaciones normales (0,2% de probabilidad) o en la tienda de Mindsea.", ru: "Во фракции Starglint самые редкие герои. Их можно получить только за специальную валюту \"Star Tracer\", из обычных призывов (0,2% шанс) или в магазине Mindsea." },
+  mindseaJoinTitle: { en: "Join a Mindsea as Early as Possible", de: "Tritt so früh wie möglich einer Mindsea bei", es: "Únete a una Mindsea lo antes posible", ru: "Вступи в Mindsea как можно раньше" },
+  mindseaJoinBody: { en: "After completing Stage 3-9 you can join a Mindsea. Open the list and search for an open Mindsea with a high activity rate. Collect \"Dream Conch\" rewards within the Mindsea Currents of Thought. Then you can buy a Starglint deity in the Mindsea shop.", de: "Nach Abschluss von Stage 3-9 kannst du einer Mindsea beitreten. Öffne die Liste und suche nach einer offenen Mindsea mit hoher Aktivität. Sammle \"Dream Conch\"-Belohnungen in den Mindsea Currents of Thought. Danach kannst du eine Starglint-Gottheit im Mindsea-Shop kaufen.", es: "Tras completar la etapa 3-9 puedes unirte a una Mindsea. Abre la lista y busca una Mindsea abierta con una alta tasa de actividad. Recoge recompensas \"Dream Conch\" dentro de Mindsea Currents of Thought. Luego puedes comprar una deidad Starglint en la tienda de Mindsea.", ru: "После прохождения Stage 3-9 можно вступить в Mindsea. Открой список и ищи открытую Mindsea с высокой активностью. Собирай награды \"Dream Conch\" в Mindsea Currents of Thought. Затем можно купить Starglint-божество в магазине Mindsea." },
+  starglintPicksTitle: { en: "Get One of These", de: "Hol dir einen davon", es: "Consigue uno de estos", ru: "Возьми одного из этих" },
+  coreRuleTitle: { en: "The Core Rule of the Game", de: "Die Grundregel des Spiels", es: "La regla básica del juego", ru: "Базовое правило игры" },
+  coreRuleBody: { en: "You are not building 5 equal heroes.", de: "Du baust nicht 5 gleich starke Helden.", es: "No estás construyendo 5 héroes iguales.", ru: "Ты не собираешь 5 равных героев." },
+  carryLabel: { en: "1-2 Carries", de: "1-2 Carries", es: "1-2 carries", ru: "1-2 керри" },
+  carryDesc: { en: "Deal the damage. Get the gear, the relics, the investment.", de: "Sie machen den Schaden. Sie bekommen das Gear, die Relikte und die Investition.", es: "Hacen el daño. Reciben el equipo, las reliquias y la inversión.", ru: "Они наносят урон. Им достаются экипировка, реликвии и инвестиции." },
+  supportLabel: { en: "3-4 Supports", de: "3-4 Supports", es: "3-4 supports", ru: "3-4 саппорта" },
+  supportDesc: { en: "Give the carry energy, buffs, and uptime. They exist to enable the carry.", de: "Sie geben dem Carry Energie, Buffs und Uptime. Sie sind dafür da, den Carry zu ermöglichen.", es: "Dan energía, buffs y presencia al carry. Existen para habilitar al carry.", ru: "Они дают керри энергию, бафы и время действия. Их задача - раскрывать керри." },
+  coreExample: { en: "Example: if Isis is your carry, you need supports to give her energy, healing and buffs to deal faster damage and use her ultimate more often than the enemy team does.", de: "Beispiel: Wenn Isis dein Carry ist, brauchst du Supports, die ihr Energie, Heilung und Buffs geben, damit sie schneller Schaden macht und ihre Ultimate öfter einsetzen kann als das Gegnerteam.", es: "Ejemplo: si Isis es tu carry, necesitas supports que le den energía, curación y buffs para infligir daño más rápido y usar su ultimate más veces que el equipo enemigo.", ru: "Пример: если Исида твой керри, нужны саппорты, которые дают ей энергию, лечение и бафы, чтобы она наносила урон быстрее и чаще ультила, чем команда противника." },
+  wishListTitle: { en: "Wish List - Your Free Early Picks", de: "Wish List - Deine kostenlosen frühen Picks", es: "Wish List - tus picks gratuitos iniciales", ru: "Wish List - твои бесплатные ранние выборы" },
+  wishListIntro: { en: "The Wish List lets you influence which hero you pull in each faction. Pick wrong and your gold pinions feed the wrong hero. These are the recommended F2P picks per faction:", de: "Mit der Wish List kannst du beeinflussen, welchen Helden du pro Fraktion ziehst. Wählst du falsch, füttern deine goldenen Federn den falschen Helden. Das sind die empfohlenen F2P-Picks pro Fraktion:", es: "La Wish List te permite influir en qué héroe obtienes en cada facción. Si eliges mal, tus plumas doradas alimentan al héroe equivocado. Estas son las opciones F2P recomendadas por facción:", ru: "Wish List позволяет влиять на то, какого героя ты получишь в каждой фракции. Выберешь неправильно - золотые перья уйдут не тому герою. Вот рекомендованные F2P-выборы по фракциям:" },
+  wishListHeaderTitle: { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List" },
+  wishListHeaderSubtitle: { en: "Have a higher chance to get Deities in the Wishlist while summoning Epic Deities.", de: "Du hast eine höhere Chance, Gottheiten aus der Wish List zu bekommen, während du Epic-Gottheiten beschwörst.", es: "Tienes más probabilidad de obtener deidades en la lista mientras invocas deidades Épicas.", ru: "У тебя выше шанс получить божеств из Wish List при призыве Epic-божеств." },
+  wishListHeaderNote: { en: "Does not change Epic Deities overall drop rate.", de: "Ändert nicht die Gesamt-Dropchance für Epic-Gottheiten.", es: "No cambia la tasa global de aparición de deidades Épicas.", ru: "Не меняет общий шанс выпадения Epic-божеств." },
+  wishListFooter: { en: "Fengyi can be swapped with Wenshen later. Also Phoenix with Set.", de: "Fengyi kann später gegen Wenshen getauscht werden. Ebenso Phoenix gegen Set.", es: "Fengyi puede cambiarse más adelante por Wenshen. También Phoenix por Set.", ru: "Фэнъи позже можно заменить на Вэньшэня. А также Феникса на Сета." },
+} satisfies Record<string, LocalizedString>;
 ---
     <!-- SUB-TAB: EARLY GAME -->
     <div id="subtab-early" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-early" hidden>
       <main class="eg-main-content">
 
       <!-- JUMPBAR -->
-      <nav class="tips-jumpbar" aria-label="Early Game sections">
-        <span class="tips-jump-label">On this page</span>
-        <a href="#section-f2p" class="tips-jump-link">F2P Guide</a>
-        <a href="#section-first" class="tips-jump-link">What to Do First</a>
-        <a href="#section-odyssey" class="tips-jump-link">Odyssey</a>
-        <a href="#section-summons" class="tips-jump-link">Summons</a>
-        <a href="#section-chronos" class="tips-jump-link">Chronos</a>
-        <a href="#section-mindsea" class="tips-jump-link">Mindsea</a>
-        <a href="#section-wishlist" class="tips-jump-link">Wishlist</a>
+      <nav class="tips-jumpbar" aria-label={pickLang(c.jumpLabel, locale)}>
+        <span class="tips-jump-label">{pickLang(c.jumpLabel, locale)}</span>
+        <a href="#section-f2p" class="tips-jump-link">{pickLang(c.jumpF2p, locale)}</a>
+        <a href="#section-first" class="tips-jump-link">{pickLang(c.jumpFirst, locale)}</a>
+        <a href="#section-odyssey" class="tips-jump-link">{pickLang(c.jumpOdyssey, locale)}</a>
+        <a href="#section-summons" class="tips-jump-link">{pickLang(c.jumpSummons, locale)}</a>
+        <a href="#section-chronos" class="tips-jump-link">{pickLang(c.jumpChronos, locale)}</a>
+        <a href="#section-mindsea" class="tips-jump-link">{pickLang(c.jumpMindsea, locale)}</a>
+        <a href="#section-wishlist" class="tips-jump-link">{pickLang(c.jumpWishlist, locale)}</a>
       </nav>
 
       <!-- F2P NOTE -->
       <div id="section-f2p" class="tips-f2p-note">
-        <p>
-          This guide is written from a <strong>F2P and low-spender perspective</strong>.
-          If you are a whale or have heavily starred heroes, you can replace
-          the suggested heroes below with your own star picks.
-        </p>
+        <p>{pickLang(c.f2pNote, locale)}</p>
       </div>
 
       <!-- WHAT SHOULD I DO FIRST -->
       <div id="section-first" class="eg-content-card tips-anchor">
-        <h2>What Should I Do First?</h2>
-        <p>Focus on pushing Odyssey, Torment Rift and building your first team. Summon to get a good roster (1-2 damage dealers, 2 supports, 1-2 tanks).</p>
+        <h2>{pickLang(c.firstTitle, locale)}</h2>
+        <p>{pickLang(c.firstIntro, locale)}</p>
         <div class="eg-priority-matrix">
           <div class="eg-priority-col eg-priority-now">
-            <div class="eg-priority-col-title">Do Now</div>
+            <div class="eg-priority-col-title">{pickLang(c.doNow, locale)}</div>
             <ul>
-              <li>Finish Tutorial</li>
-              <li>Push Odyssey until stuck</li>
-              <li>Claim all mail and login rewards</li>
-              <li>Set your Wish List (summon 30x to unlock)</li>
-              <li>Buy the daily 30% off regular summons</li>
-              <li>Spend early gems on roster building</li>
-              <li>Finish daily missions</li>
-              <li>Check official discord for codes</li>
+              <li>{pickLang(c.finishTutorial, locale)}</li>
+              <li>{pickLang(c.pushUntilStuck, locale)}</li>
+              <li>{pickLang(c.claimMail, locale)}</li>
+              <li>{pickLang(c.setWishlist, locale)}</li>
+              <li>{pickLang(c.buySummons, locale)}</li>
+              <li>{pickLang(c.spendGems, locale)}</li>
+              <li>{pickLang(c.finishDailies, locale)}</li>
+              <li>{pickLang(c.checkDiscord, locale)}</li>
             </ul>
           </div>
           <div class="eg-priority-col eg-priority-soon">
-            <div class="eg-priority-col-title">Do Soon</div>
+            <div class="eg-priority-col-title">{pickLang(c.doSoon, locale)}</div>
             <ul>
-              <li>Push Odyssey</li>
-              <li>Build 1 team</li>
-              <li>Gear 2 DPS</li>
-              <li>Weekly Torment Rift</li>
-              <li>Carry relic breakpoints</li>
-              <li>Wish List cleanup</li>
+              <li>{pickLang(c.pushUntilStuck, locale)}</li>
+              <li>{pickLang(c.buildTeam, locale)}</li>
+              <li>{pickLang(c.gear2dps, locale)}</li>
+              <li>{pickLang(c.weeklyRift, locale)}</li>
+              <li>{pickLang(c.carryBreakpoints, locale)}</li>
+              <li>{pickLang(c.wishlistCleanup, locale)}</li>
             </ul>
           </div>
           <div class="eg-priority-col eg-priority-ignore">
-            <div class="eg-priority-col-title">Ignore for Now</div>
+            <div class="eg-priority-col-title">{pickLang(c.ignoreNow, locale)}</div>
             <ul>
-              <li>Deep PvP pushes</li>
-              <li>Second team</li>
-              <li>Luxury shop buys</li>
+              <li>{pickLang(c.deepPvp, locale)}</li>
+              <li>{pickLang(c.secondTeam, locale)}</li>
+              <li>{pickLang(c.luxuryBuys, locale)}</li>
             </ul>
           </div>
         </div>
@@ -68,276 +221,268 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
 
       <!-- ODYSSEY MILESTONES -->
       <div id="section-odyssey" class="eg-content-card tips-anchor">
-        <h2>Odyssey (Campaign) Milestones</h2>
-        <p>Keep pushing to unlock stages and events. The two most impactful early targets are <strong>Stage 3-18</strong> (Shrine) and <strong>Stage 8-3</strong> (Beacon Tree).</p>
+        <h2>{pickLang(c.odysseyTitle, locale)}</h2>
+        <p>{pickLang(c.odysseyIntro, locale)}</p>
         <div class="milestone-table">
           <div class="milestone-row milestone-header">
-            <div class="milestone-chapter">Stage</div>
-            <div class="milestone-unlock">What It Unlocks</div>
-            <div class="milestone-why">Why It Matters</div>
+            <div class="milestone-chapter">{pickLang(c.stageLabel, locale)}</div>
+            <div class="milestone-unlock">{pickLang(c.unlockLabel, locale)}</div>
+            <div class="milestone-why">{pickLang(c.whyLabel, locale)}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">Prologue 4</div>
             <div class="milestone-unlock">Godcall Grove</div>
-            <div class="milestone-why">Early summon feature</div>
+            <div class="milestone-why">{locale === "de" ? "Frühe Beschwörungsfunktion" : locale === "es" ? "Función de invocación temprana" : locale === "ru" ? "Ранняя функция призыва" : "Early summon feature"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">1-6</div>
             <div class="milestone-unlock">AFK Mode &amp; Sanctum</div>
-            <div class="milestone-why">Passive resource generation begins</div>
+            <div class="milestone-why">{locale === "de" ? "Passive Ressourcengenerierung beginnt" : locale === "es" ? "Comienza la generación pasiva de recursos" : locale === "ru" ? "Начинается пассивная генерация ресурсов" : "Passive resource generation begins"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">2-1</div>
             <div class="milestone-unlock">Delusion's Den</div>
-            <div class="milestone-why">Extra PvE content and rewards</div>
+            <div class="milestone-why">{locale === "de" ? "Zusätzlicher PvE-Inhalt und Belohnungen" : locale === "es" ? "Contenido PvE extra y recompensas" : locale === "ru" ? "Дополнительный PvE-контент и награды" : "Extra PvE content and rewards"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">2-12</div>
             <div class="milestone-unlock">Auto Attack &amp; Celestial Spire</div>
-            <div class="milestone-why">Auto-battle and tower mode unlock</div>
+            <div class="milestone-why">{locale === "de" ? "Auto-Kampf und Turmmodus werden freigeschaltet" : locale === "es" ? "Se desbloquean el combate automático y el modo torre" : locale === "ru" ? "Открываются автобой и режим башни" : "Auto-battle and tower mode unlock"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">3-9</div>
             <div class="milestone-unlock">Mindsea (Guild)</div>
-            <div class="milestone-why">Guild features, social rewards</div>
+            <div class="milestone-why">{locale === "de" ? "Gildenfunktionen, soziale Belohnungen" : locale === "es" ? "Funciones de gremio, recompensas sociales" : locale === "ru" ? "Гильдейские функции, социальные награды" : "Guild features, social rewards"}</div>
           </div>
           <div class="milestone-row milestone-highlight">
             <div class="milestone-chapter">3-18</div>
             <div class="milestone-unlock">Shrine (Undying Flame)</div>
-            <div class="milestone-why">Account-wide stat bonuses start here - biggest early priority</div>
+            <div class="milestone-why">{locale === "de" ? "Hier beginnen accountweite Werteboni - wichtigste frühe Priorität" : locale === "es" ? "Aquí comienzan las bonificaciones de estadísticas para toda la cuenta: la mayor prioridad temprana" : locale === "ru" ? "Здесь начинаются бонусы к статам на весь аккаунт — главный ранний приоритет" : "Account-wide stat bonuses start here - biggest early priority"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">4-8</div>
             <div class="milestone-unlock">Grand Arena (PvP)</div>
-            <div class="milestone-why">PvP mode and its daily rewards</div>
+            <div class="milestone-why">{locale === "de" ? "PvP-Modus und seine täglichen Belohnungen" : locale === "es" ? "Modo PvP y sus recompensas diarias" : locale === "ru" ? "PvP-режим и его ежедневные награды" : "PvP mode and its daily rewards"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">5-1</div>
             <div class="milestone-unlock">Destined Constellation</div>
-            <div class="milestone-why">Allows Zodiac hero to exceed Level 140</div>
+            <div class="milestone-why">{locale === "de" ? "Erlaubt Zodiac-Helden, Level 140 zu überschreiten" : locale === "es" ? "Permite que el héroe Zodiac supere el nivel 140" : locale === "ru" ? "Позволяет герою Zodiac превысить уровень 140" : "Allows Zodiac hero to exceed Level 140"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">5-4</div>
             <div class="milestone-unlock">Resonating Altar</div>
-            <div class="milestone-why">Level up 5 heroes - others match lowest of the 5</div>
+            <div class="milestone-why">{locale === "de" ? "Levele 5 Helden - die anderen passen sich dem niedrigsten der 5 an" : locale === "es" ? "Sube 5 héroes de nivel: los demás igualan al más bajo de los 5" : locale === "ru" ? "Прокачай 5 героев — остальные выравниваются по самому низкому из 5" : "Level up 5 heroes - others match lowest of the 5"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">5-18</div>
             <div class="milestone-unlock">Bounty Pool</div>
-            <div class="milestone-why">Additional passive rewards</div>
+            <div class="milestone-why">{locale === "de" ? "Zusätzliche passive Belohnungen" : locale === "es" ? "Recompensas pasivas adicionales" : locale === "ru" ? "Дополнительные пассивные награды" : "Additional passive rewards"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">6-3</div>
             <div class="milestone-unlock">Forgotten Labyrinth</div>
-            <div class="milestone-why">Extra PvE content</div>
+            <div class="milestone-why">{locale === "de" ? "Zusätzlicher PvE-Inhalt" : locale === "es" ? "Contenido PvE extra" : locale === "ru" ? "Дополнительный PvE-контент" : "Extra PvE content"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">7-3</div>
             <div class="milestone-unlock">Beacon of Honor</div>
-            <div class="milestone-why">Feeds into Beacon Tree upgrades</div>
+            <div class="milestone-why">{locale === "de" ? "Fließt in Beacon-Tree-Upgrades ein" : locale === "es" ? "Sirve para mejorar el Beacon Tree" : locale === "ru" ? "Идёт на улучшения Beacon Tree" : "Feeds into Beacon Tree upgrades"}</div>
           </div>
           <div class="milestone-row milestone-highlight">
             <div class="milestone-chapter">8-3</div>
             <div class="milestone-unlock">Beacon Tree</div>
-            <div class="milestone-why">Account-wide stat bonuses for every hero in every mode</div>
+            <div class="milestone-why">{locale === "de" ? "Accountweite Werteboni für jeden Helden in jedem Modus" : locale === "es" ? "Bonificaciones de estadísticas para toda la cuenta para cada héroe en todos los modos" : locale === "ru" ? "Бонусы к статам на весь аккаунт для каждого героя в любом режиме" : "Account-wide stat bonuses for every hero in every mode"}</div>
           </div>
           <div class="milestone-row">
             <div class="milestone-chapter">19-3</div>
             <div class="milestone-unlock">Totems</div>
-            <div class="milestone-why">Late-game power system</div>
+            <div class="milestone-why">{locale === "de" ? "Endgame-Powersystem" : locale === "es" ? "Sistema de poder de late game" : locale === "ru" ? "Система силы поздней игры" : "Late-game power system"}</div>
           </div>
         </div>
         <div class="tips-callout">
-          <p>Push to Stage 3-18 first to unlock the Shrine, then aim for Stage 8-3 to activate the Beacon Tree. Both give account-wide buffs that help every hero in every mode.</p>
+          <p>{pickLang(c.odysseyCallout, locale)}</p>
         </div>
       </div>
 
       <!-- NORMAL SUMMONS & WISHLIST -->
       <div id="section-summons" class="eg-content-card tips-anchor">
-        <h2>Normal Summons and Wish List</h2>
-        <h3>Summoning Tips</h3>
+        <h2>{pickLang(c.summonsTitle, locale)}</h2>
+        <h3>{pickLang(c.summoningTips, locale)}</h3>
         <ul>
-          <li>The Wish List unlocks after 30 regular summons.</li>
-          <li>Once you have finished ascending one of the left-side deities on the wish list, swap them for one on the right.</li>
-          <li>Standard Pity: an Epic deity is guaranteed by pull 50. The counter resets when an Epic appears and is separate from other summon types.</li>
-          <li>It is not recommended to spend Elysian Gems on regular summons - except for the first 1-2 days to get some units into your roster.</li>
+          <li>{pickLang(c.wishUnlock, locale)}</li>
+          <li>{pickLang(c.wishSwap, locale)}</li>
+          <li>{pickLang(c.standardPity, locale)}</li>
+          <li>{pickLang(c.gemsTip, locale)}</li>
         </ul>
 
-        <h3>Summon Probabilities</h3>
-        <p>This breakdown shows how likely you are to pull one specific target hero. The base rates come from the summon tooltips shown in the game.</p>
-
-        <div class="summon-rate-table summon-rate-table-base" role="table" aria-label="Base Epic summon rates">
+        <h3>{pickLang(c.summonProbTitle, locale)}</h3>
+        <p>{pickLang(c.summonProbIntro, locale)}</p>
+        <div class="summon-rate-table summon-rate-table-base" role="table" aria-label={pickLang(c.summonProbTitle, locale)}>
           <div class="summon-rate-row summon-rate-header" role="row">
-            <div role="columnheader">Summon</div>
-            <div role="columnheader">Epic total</div>
-            <div role="columnheader">Wishlist</div>
-            <div role="columnheader">Celestial</div>
-            <div role="columnheader">No Wishlist</div>
+            <div role="columnheader">{pickLang(c.summonTableSummon, locale)}</div>
+            <div role="columnheader">{pickLang(c.summonTableEpicTotal, locale)}</div>
+            <div role="columnheader">{pickLang(c.summonTableWishlist, locale)}</div>
+            <div role="columnheader">{pickLang(c.summonTableCelestial, locale)}</div>
+            <div role="columnheader">{pickLang(c.summonTableNoWishlist, locale)}</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Summon">Amity</div>
-            <div role="cell" data-label="Epic total">3%</div>
-            <div role="cell" data-label="Wishlist">—</div>
-            <div role="cell" data-label="Celestial">—</div>
-            <div role="cell" data-label="No Wishlist">—</div>
+            <div role="cell" data-label={pickLang(c.summonTableSummon, locale)}>Amity</div>
+            <div role="cell" data-label={pickLang(c.summonTableEpicTotal, locale)}>3%</div>
+            <div role="cell" data-label={pickLang(c.summonTableWishlist, locale)}>—</div>
+            <div role="cell" data-label={pickLang(c.summonTableCelestial, locale)}>—</div>
+            <div role="cell" data-label={pickLang(c.summonTableNoWishlist, locale)}>—</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Summon">Standard</div>
-            <div role="cell" data-label="Epic total">5%</div>
-            <div role="cell" data-label="Wishlist">4.6%</div>
-            <div role="cell" data-label="Celestial">0.2%</div>
-            <div role="cell" data-label="No Wishlist">0.2%</div>
+            <div role="cell" data-label={pickLang(c.summonTableSummon, locale)}>Standard</div>
+            <div role="cell" data-label={pickLang(c.summonTableEpicTotal, locale)}>5%</div>
+            <div role="cell" data-label={pickLang(c.summonTableWishlist, locale)}>4.6%</div>
+            <div role="cell" data-label={pickLang(c.summonTableCelestial, locale)}>0.2%</div>
+            <div role="cell" data-label={pickLang(c.summonTableNoWishlist, locale)}>0.2%</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Summon">Suit</div>
-            <div role="cell" data-label="Epic total">7.8%</div>
-            <div role="cell" data-label="Wishlist">7.5%</div>
-            <div role="cell" data-label="Celestial">—</div>
-            <div role="cell" data-label="No Wishlist">0.3%</div>
+            <div role="cell" data-label={pickLang(c.summonTableSummon, locale)}>Suit</div>
+            <div role="cell" data-label={pickLang(c.summonTableEpicTotal, locale)}>7.8%</div>
+            <div role="cell" data-label={pickLang(c.summonTableWishlist, locale)}>7.5%</div>
+            <div role="cell" data-label={pickLang(c.summonTableCelestial, locale)}>—</div>
+            <div role="cell" data-label={pickLang(c.summonTableNoWishlist, locale)}>0.3%</div>
           </div>
         </div>
-
         <div class="summon-formula-note">
-          <p><strong>Standard Wishlist:</strong> 4 factions × 4 slots = 16 heroes sharing 4.6%, or about 0.29% per hero.</p>
-          <p><strong>Suit Wishlist:</strong> 4 faction-specific heroes sharing 7.5%, or 1.875% per hero.</p>
+          <p><strong>{locale === "de" ? "Standard-Wish-List" : locale === "es" ? "Lista estándar" : locale === "ru" ? "Стандартный Wish List" : "Standard Wishlist"}:</strong>{locale === "de" ? " 4 Fraktionen × 4 Plätze = 16 Helden teilen sich 4,6 %, also etwa 0,29 % pro Held." : locale === "es" ? " 4 facciones × 4 espacios = 16 héroes compartiendo 4,6%, o alrededor de 0,29% por héroe." : locale === "ru" ? " 4 фракции × 4 слота = 16 героев делят 4,6%, или около 0,29% на героя." : " 4 factions × 4 slots = 16 heroes sharing 4.6%, or about 0.29% per hero."}</p>
+          <p><strong>{locale === "de" ? "Suit-Wish-List" : locale === "es" ? "Lista de traje" : locale === "ru" ? "Suit Wish List" : "Suit Wishlist"}:</strong>{locale === "de" ? " 4 fraktionsspezifische Helden teilen sich 7,5 %, also 1,875 % pro Held." : locale === "es" ? " 4 héroes específicos de la facción comparten 7,5%, o 1,875% por héroe." : locale === "ru" ? " 4 героя одной фракции делят 7,5%, или 1,875% на героя." : " 4 faction-specific heroes sharing 7.5%, or 1.875% per hero."}</p>
         </div>
-
-        <h4 class="summon-subheading">Chance per Pull</h4>
-        <div class="summon-rate-table summon-rate-table-target" role="table" aria-label="Chance per pull for a target hero">
+        <h4 class="summon-subheading">{pickLang(c.chancePerPullTitle, locale)}</h4>
+        <div class="summon-rate-table summon-rate-table-target" role="table" aria-label={pickLang(c.chancePerPullTitle, locale)}>
           <div class="summon-rate-row summon-rate-header" role="row">
-            <div role="columnheader">Target</div>
-            <div role="columnheader">Chance per pull</div>
+            <div role="columnheader">{pickLang(c.targetLabel, locale)}</div>
+            <div role="columnheader">{pickLang(c.chancePerPullLabel, locale)}</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Target">Amity: any Epic</div>
-            <div role="cell" data-label="Chance per pull">3.0%</div>
+            <div role="cell" data-label={pickLang(c.targetLabel, locale)}>{pickLang(c.targetAmity, locale)}</div>
+            <div role="cell" data-label={pickLang(c.chancePerPullLabel, locale)}>3.0%</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Target">Standard: Wishlist hero, no Rate Up</div>
-            <div role="cell" data-label="Chance per pull">0.29%</div>
+            <div role="cell" data-label={pickLang(c.targetLabel, locale)}>{pickLang(c.targetStandardNoRateUp, locale)}</div>
+            <div role="cell" data-label={pickLang(c.chancePerPullLabel, locale)}>0.29%</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Target">Standard: Wishlist hero + Rate Up</div>
-            <div role="cell" data-label="Chance per pull">2.0%</div>
+            <div role="cell" data-label={pickLang(c.targetLabel, locale)}>{pickLang(c.targetStandardRateUp, locale)}</div>
+            <div role="cell" data-label={pickLang(c.chancePerPullLabel, locale)}>2.0%</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Target">Suit: Wishlist hero, no Rate Up</div>
-            <div role="cell" data-label="Chance per pull">1.875%</div>
+            <div role="cell" data-label={pickLang(c.targetLabel, locale)}>{pickLang(c.targetSuitNoRateUp, locale)}</div>
+            <div role="cell" data-label={pickLang(c.chancePerPullLabel, locale)}>1.875%</div>
           </div>
           <div class="summon-rate-row summon-rate-best" role="row">
-            <div role="cell" data-label="Target">Suit: Wishlist hero + Rate Up</div>
-            <div role="cell" data-label="Chance per pull">3.6%</div>
+            <div role="cell" data-label={pickLang(c.targetLabel, locale)}>{pickLang(c.targetSuitRateUp, locale)}</div>
+            <div role="cell" data-label={pickLang(c.chancePerPullLabel, locale)}>3.6%</div>
           </div>
         </div>
-
-        <h4 class="summon-subheading">What 100 Pulls Look Like</h4>
+        <h4 class="summon-subheading">{pickLang(c.what100Title, locale)}</h4>
         <div class="summon-outcome-grid">
           <article class="summon-outcome-card">
-            <div class="summon-outcome-title">Amity</div>
-            <div class="summon-outcome-rate">3% for any Epic</div>
+            <div class="summon-outcome-title">{pickLang(c.amityCardTitle, locale)}</div>
+            <div class="summon-outcome-rate">{pickLang(c.amityCardRate, locale)}</div>
             <ul>
-              <li><strong>Expected:</strong> 3 Epics</li>
-              <li><strong>Normal range:</strong> 1–5 Epics for 87% of players</li>
-              <li><strong>No Epic:</strong> 4.8%</li>
+              <li><strong>{locale === "de" ? "Erwartet" : locale === "es" ? "Esperado" : locale === "ru" ? "Ожидается" : "Expected"}:</strong>{locale === "de" ? " 3 Epics" : locale === "es" ? " 3 Épicas" : locale === "ru" ? " 3 Epic" : " 3 Epics"}</li>
+              <li><strong>{locale === "de" ? "Normalbereich" : locale === "es" ? "Rango normal" : locale === "ru" ? "Обычный диапазон" : "Normal range"}:</strong>{locale === "de" ? " 1-5 Epics für 87 % der Spieler" : locale === "es" ? " 1-5 Épicas para el 87% de los jugadores" : locale === "ru" ? " 1-5 Epic у 87% игроков" : " 1-5 Epics for 87% of players"}</li>
+              <li><strong>{locale === "de" ? "Kein Epic" : locale === "es" ? "Sin Épica" : locale === "ru" ? "Без Epic" : "No Epic"}:</strong> 4.8%</li>
             </ul>
           </article>
           <article class="summon-outcome-card summon-outcome-weak">
-            <div class="summon-outcome-title">Standard without Rate Up</div>
-            <div class="summon-outcome-rate">0.29% for one Wishlist hero</div>
+            <div class="summon-outcome-title">{pickLang(c.standardNoRateTitle, locale)}</div>
+            <div class="summon-outcome-rate">{pickLang(c.standardNoRateRate, locale)}</div>
             <ul>
-              <li><strong>Expected:</strong> 0.29 copies</li>
-              <li><strong>No target copy:</strong> 75%</li>
-              <li><strong>At least one copy:</strong> only 25%</li>
+              <li><strong>{locale === "de" ? "Erwartet" : locale === "es" ? "Esperado" : locale === "ru" ? "Ожидается" : "Expected"}:</strong>{locale === "de" ? " 0,29 Kopien" : locale === "es" ? " 0,29 copias" : locale === "ru" ? " 0,29 копии" : " 0.29 copies"}</li>
+              <li><strong>{locale === "de" ? "Keine Zielkopie" : locale === "es" ? "Sin copia objetivo" : locale === "ru" ? "Без нужной копии" : "No target copy"}:</strong> 75%</li>
+              <li><strong>{locale === "de" ? "Mindestens eine Kopie" : locale === "es" ? "Al menos una copia" : locale === "ru" ? "Хотя бы одна копия" : "At least one copy"}:</strong>{locale === "de" ? " nur 25%" : locale === "es" ? " solo 25%" : locale === "ru" ? " только 25%" : " only 25%"}</li>
             </ul>
           </article>
           <article class="summon-outcome-card">
-            <div class="summon-outcome-title">Standard + Rate Up</div>
-            <div class="summon-outcome-rate">2.0% for the target hero</div>
+            <div class="summon-outcome-title">{pickLang(c.standardRateTitle, locale)}</div>
+            <div class="summon-outcome-rate">{pickLang(c.standardRateRate, locale)}</div>
             <ul>
-              <li><strong>Expected:</strong> 2 copies</li>
-              <li><strong>Normal range:</strong> 0–4 copies for 95% of players</li>
-              <li><strong>No target copy:</strong> 13.3%</li>
+              <li><strong>{locale === "de" ? "Erwartet" : locale === "es" ? "Esperado" : locale === "ru" ? "Ожидается" : "Expected"}:</strong>{locale === "de" ? " 2 Kopien" : locale === "es" ? " 2 copias" : locale === "ru" ? " 2 копии" : " 2 copies"}</li>
+              <li><strong>{locale === "de" ? "Normalbereich" : locale === "es" ? "Rango normal" : locale === "ru" ? "Обычный диапазон" : "Normal range"}:</strong>{locale === "de" ? " 0-4 Kopien für 95 % der Spieler" : locale === "es" ? " 0-4 copias para el 95% de los jugadores" : locale === "ru" ? " 0-4 копии у 95% игроков" : " 0-4 copies for 95% of players"}</li>
+              <li><strong>{locale === "de" ? "Keine Zielkopie" : locale === "es" ? "Sin copia objetivo" : locale === "ru" ? "Без нужной копии" : "No target copy"}:</strong>{locale === "de" ? " 13,3 %" : locale === "es" ? " 13,3%" : locale === "ru" ? " 13,3%" : " 13.3%"}</li>
             </ul>
           </article>
           <article class="summon-outcome-card">
-            <div class="summon-outcome-title">Suit without Rate Up</div>
-            <div class="summon-outcome-rate">1.875% for one Wishlist hero</div>
+            <div class="summon-outcome-title">{pickLang(c.suitNoRateTitle, locale)}</div>
+            <div class="summon-outcome-rate">{pickLang(c.suitNoRateRate, locale)}</div>
             <ul>
-              <li><strong>Expected:</strong> 1–2 copies</li>
-              <li><strong>Normal range:</strong> 0–4 copies for 96% of players</li>
-              <li><strong>No target copy:</strong> 15%</li>
+              <li><strong>{locale === "de" ? "Erwartet" : locale === "es" ? "Esperado" : locale === "ru" ? "Ожидается" : "Expected"}:</strong>{locale === "de" ? " 1-2 Kopien" : locale === "es" ? " 1-2 copias" : locale === "ru" ? " 1-2 копии" : " 1-2 copies"}</li>
+              <li><strong>{locale === "de" ? "Normalbereich" : locale === "es" ? "Rango normal" : locale === "ru" ? "Обычный диапазон" : "Normal range"}:</strong>{locale === "de" ? " 0-4 Kopien für 96 % der Spieler" : locale === "es" ? " 0-4 copias para el 96% de los jugadores" : locale === "ru" ? " 0-4 копии у 96% игроков" : " 0-4 copies for 96% of players"}</li>
+              <li><strong>{locale === "de" ? "Keine Zielkopie" : locale === "es" ? "Sin copia objetivo" : locale === "ru" ? "Без нужной копии" : "No target copy"}:</strong>{locale === "de" ? " 15 %" : locale === "es" ? " 15%" : locale === "ru" ? " 15%" : " 15%"}</li>
             </ul>
           </article>
           <article class="summon-outcome-card summon-outcome-best">
-            <div class="summon-outcome-title">Suit + Rate Up</div>
-            <div class="summon-outcome-rate">3.6% for the target hero</div>
+            <div class="summon-outcome-title">{pickLang(c.suitRateTitle, locale)}</div>
+            <div class="summon-outcome-rate">{pickLang(c.suitRateRate, locale)}</div>
             <ul>
-              <li><strong>Expected:</strong> 3–4 copies</li>
-              <li><strong>Normal range:</strong> 1–6 copies for 90% of players</li>
-              <li><strong>At least one copy:</strong> 97.4%</li>
+              <li><strong>{locale === "de" ? "Erwartet" : locale === "es" ? "Esperado" : locale === "ru" ? "Ожидается" : "Expected"}:</strong>{locale === "de" ? " 3-4 Kopien" : locale === "es" ? " 3-4 copias" : locale === "ru" ? " 3-4 копии" : " 3-4 copies"}</li>
+              <li><strong>{locale === "de" ? "Normalbereich" : locale === "es" ? "Rango normal" : locale === "ru" ? "Обычный диапазон" : "Normal range"}:</strong>{locale === "de" ? " 1-6 Kopien für 90 % der Spieler" : locale === "es" ? " 1-6 copias para el 90% de los jugadores" : locale === "ru" ? " 1-6 копий у 90% игроков" : " 1-6 copies for 90% of players"}</li>
+              <li><strong>{locale === "de" ? "Mindestens eine Kopie" : locale === "es" ? "Al menos una copia" : locale === "ru" ? "Хотя бы одна копия" : "At least one copy"}:</strong>{locale === "de" ? " 97,4 %" : locale === "es" ? " 97,4%" : locale === "ru" ? " 97,4%" : " 97.4%"}</li>
             </ul>
           </article>
         </div>
-
         <div class="tips-callout summon-clarification">
-          <p><strong>What does “no target copy” mean?</strong> It does not mean that all 100 pulls give you nothing. It means that none of those pulls contains the one specific hero you are targeting. Every other hero pulled is irrelevant to this calculation.</p>
+          <p><strong>{pickLang(c.noTargetTitle, locale)}</strong> {pickLang(c.noTargetBody, locale)}</p>
         </div>
-
-        <h4 class="summon-subheading">Why Rate Up Helps Standard More</h4>
-        <p>Standard spreads its 4.6% Wishlist chance across 16 heroes, so one hero starts at only about 0.29%. Suit summons split 7.5% between only 4 heroes and therefore already start at 1.875% per hero.</p>
-        <div class="summon-rate-table summon-rate-table-boost" role="table" aria-label="Rate Up boost comparison">
+        <h4 class="summon-subheading">{pickLang(c.whyRateUpTitle, locale)}</h4>
+        <p>{pickLang(c.whyRateUpBody, locale)}</p>
+        <div class="summon-rate-table summon-rate-table-boost" role="table" aria-label={pickLang(c.whyRateUpTitle, locale)}>
           <div class="summon-rate-row summon-rate-header" role="row">
-            <div role="columnheader">Summon</div>
-            <div role="columnheader">Without Rate Up</div>
-            <div role="columnheader">With Rate Up</div>
-            <div role="columnheader">Relative boost</div>
+            <div role="columnheader">{pickLang(c.boostSummon, locale)}</div>
+            <div role="columnheader">{pickLang(c.withoutRateUp, locale)}</div>
+            <div role="columnheader">{pickLang(c.withRateUp, locale)}</div>
+            <div role="columnheader">{pickLang(c.relativeBoost, locale)}</div>
           </div>
           <div class="summon-rate-row" role="row">
-            <div role="cell" data-label="Summon">Standard</div>
-            <div role="cell" data-label="Without Rate Up">0.29%</div>
-            <div role="cell" data-label="With Rate Up">2.0%</div>
-            <div role="cell" data-label="Relative boost">6.96×</div>
+            <div role="cell" data-label={pickLang(c.boostSummon, locale)}>Standard</div>
+            <div role="cell" data-label={pickLang(c.withoutRateUp, locale)}>0.29%</div>
+            <div role="cell" data-label={pickLang(c.withRateUp, locale)}>2.0%</div>
+            <div role="cell" data-label={pickLang(c.relativeBoost, locale)}>6.96×</div>
           </div>
           <div class="summon-rate-row summon-rate-best" role="row">
-            <div role="cell" data-label="Summon">Suit</div>
-            <div role="cell" data-label="Without Rate Up">1.875%</div>
-            <div role="cell" data-label="With Rate Up">3.6%</div>
-            <div role="cell" data-label="Relative boost">1.92×</div>
+            <div role="cell" data-label={pickLang(c.boostSummon, locale)}>Suit</div>
+            <div role="cell" data-label={pickLang(c.withoutRateUp, locale)}>1.875%</div>
+            <div role="cell" data-label={pickLang(c.withRateUp, locale)}>3.6%</div>
+            <div role="cell" data-label={pickLang(c.relativeBoost, locale)}>1.92×</div>
           </div>
         </div>
-        <p class="eg-footnote">Rate Up gives Standard the larger relative improvement because its starting chance is so low. Suit + Rate Up still has the better absolute target chance: 3.6% instead of 2.0%.</p>
-
+        <p class="eg-footnote">{pickLang(c.rateUpFootnote, locale)}</p>
         <div class="summon-summary">
-          <h4>Best Strategy for a Specific New Hero</h4>
+          <h4>{pickLang(c.bestStrategyTitle, locale)}</h4>
           <ol>
-            <li>Wait for Rate Up.</li>
-            <li>Put the hero on the Wishlist for the matching Suit.</li>
-            <li>Use Suit summons during Rate Up: 100 pulls yield 3–4 copies on average, with a 97.4% chance of at least one copy.</li>
-            <li>Avoid Standard summons without Rate Up when targeting one hero: the chance of missing that hero after 100 pulls is about 75%.</li>
+            <li>{pickLang(c.bestStrategy1, locale)}</li>
+            <li>{pickLang(c.bestStrategy2, locale)}</li>
+            <li>{pickLang(c.bestStrategy3, locale)}</li>
+            <li>{pickLang(c.bestStrategy4, locale)}</li>
           </ol>
         </div>
-
-        <h3>Shop Priority</h3>
+        <h3>{pickLang(c.shopPriorityTitle, locale)}</h3>
         <div class="pinion-table">
           <div class="pinion-row pinion-header">
-            <div class="pinion-type">Item</div>
-            <div class="pinion-when">Action</div>
+            <div class="pinion-type">{pickLang(c.shopItem, locale)}</div>
+            <div class="pinion-when">{pickLang(c.shopAction, locale)}</div>
           </div>
           <div class="pinion-row">
-            <div class="pinion-type">Regular Store - 30% off</div>
-            <div class="pinion-when">Buy every reset. Refresh up to 3x if needed.</div>
+            <div class="pinion-type">{pickLang(c.regularStore, locale)}</div>
+            <div class="pinion-when">{locale === "de" ? "Bei jedem Reset kaufen. Bei Bedarf bis zu 3x auffrischen." : locale === "es" ? "Compra en cada reinicio. Actualiza hasta 3 veces si hace falta." : locale === "ru" ? "Покупай каждый сброс. При необходимости обновляй до 3 раз." : "Buy every reset. Refresh up to 3x if needed."}</div>
           </div>
           <div class="pinion-row">
-            <div class="pinion-type">Reversion Shop</div>
-            <div class="pinion-when">Buy these for leveling your Beacon Tree when needed.</div>
+            <div class="pinion-type">{pickLang(c.reversionShop, locale)}</div>
+            <div class="pinion-when">{locale === "de" ? "Kaufe diese, wenn du deinen Beacon Tree leveln musst." : locale === "es" ? "Compra esto cuando necesites subir tu Beacon Tree." : locale === "ru" ? "Покупай это, когда нужно качать Beacon Tree." : "Buy these for leveling your Beacon Tree when needed."}</div>
           </div>
           <div class="pinion-row">
-            <div class="pinion-type">Random Gear</div>
-            <div class="pinion-when">Do not buy.</div>
+            <div class="pinion-type">{pickLang(c.randomGear, locale)}</div>
+            <div class="pinion-when">{locale === "de" ? "Nicht kaufen." : locale === "es" ? "No lo compres." : locale === "ru" ? "Не покупай." : "Do not buy."}</div>
           </div>
         </div>
-        <h3>One-Copy Wonders</h3>
-        <p>These are deities that can fulfill their role at Elite rarity in the Early Game. Get a copy early - most are supports. The order depends on which heroes you summon more of.</p>
+        <h3>{pickLang(c.oneCopyTitle, locale)}</h3>
+        <p>{pickLang(c.oneCopyIntro, locale)}</p>
         <div class="hero-chip-grid">
           <a class="hero-pic" href="/heroes/heracles">
             <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
@@ -356,51 +501,48 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
             <span class="hero-chip-name">Nyx</span>
           </a>
         </div>
-        <p class="eg-footnote">Most support heroes also qualify as one-copy wonders. Focus on heroes you have the most copies of.</p>
-        <h3>Ascension Tips</h3>
+        <p class="eg-footnote">{pickLang(c.oneCopyNote, locale)}</p>
+        <h3>{pickLang(c.ascensionTipsTitle, locale)}</h3>
         <ul>
-          <li>Avoid using regular ascended-grade deities as fodder. Only use Zodiac deities as fodder.</li>
-          <li>Focus on building one hero per faction at a time to avoid spreading fodder too thin.</li>
-          <li>You can start building a deity once you have 2 Elite+ copies (Zodiacs) - that is enough to reach Mythic.</li>
-          <li>Some deities do not perform well until they reach Divine, so wait for four copies to ascend them right away.</li>
-          <li>Once a deity reaches Mythic, they no longer require fodder (only the deity itself).</li>
-          <li>Zodiac deities cap at Legendary+. Only ascend a Zodiac to Legendary if you have 2 extra copies to use as fodder.</li>
+          <li>{pickLang(c.ascension1, locale)}</li>
+          <li>{pickLang(c.ascension2, locale)}</li>
+          <li>{pickLang(c.ascension3, locale)}</li>
+          <li>{pickLang(c.ascension4, locale)}</li>
+          <li>{pickLang(c.ascension5, locale)}</li>
+          <li>{pickLang(c.ascension6, locale)}</li>
         </ul>
       </div>
 
-      <!-- FACTION SUMMONS -->
       <div class="eg-content-card">
-        <h2>Faction Summons</h2>
-        <p>In the early phase your main carry and good supports are your primary targets. Spend your feathers on heroes you are missing or that you need to level up for progression.</p>
-        <p>Priority order: <strong>Carry &gt; Support &gt; Tank</strong></p>
-        <p>Suit Pity guarantees an Epic deity by pull 20. Its counter resets when a Suit Epic appears and does not transfer to Standard summons or another summon type.</p>
+        <h2>{pickLang(c.factionSummonsTitle, locale)}</h2>
+        <p>{pickLang(c.factionSummonsIntro, locale)}</p>
+        <p>{pickLang(c.factionSummonsPriority, locale)}</p>
+        <p>{pickLang(c.factionSummonsPity, locale)}</p>
         <div class="tips-callout">
-          <p>The Wish List also applies to Faction summons. It is recommended to save faction feathers for the upcoming banner event - this happens every 2 weeks.</p>
+          <p>{pickLang(c.factionSummonsCallout, locale)}</p>
         </div>
       </div>
 
-      <!-- CHRONOS CHAMBER -->
       <div id="section-chronos" class="eg-content-card tips-anchor">
-        <h2>Chronos Chamber</h2>
-        <p>Unlocks after a total of 750 summons. Within the Chronos Chamber you can summon Starglint Deities using Star Tracer currency. You can specify which deity you want to summon.</p>
+        <h2>{pickLang(c.chronosTitle, locale)}</h2>
+        <p>{pickLang(c.chronosIntro, locale)}</p>
         <div class="tips-callout">
-          <h4 class="u-subheading">Recommended Order</h4>
-          <p>Go for <strong>Nyx first</strong> - after that go for <strong>Zeus</strong> all the way. Zeus is the best damage-dealing hero for all modes, but needs Divine ascension and Relic Level 30 to be fully upgraded.</p>
+          <h4 class="u-subheading">{pickLang(c.chronosRecommendationTitle, locale)}</h4>
+          <p>{pickLang(c.chronosRecommendationBody, locale)}</p>
         </div>
-        <h3>Pity System</h3>
+        <h3>{pickLang(c.chronosPityTitle, locale)}</h3>
         <ul>
-          <li>You will get the Starglint deity every 40 summons guaranteed.</li>
-          <li>After doing 30 summons you can switch to single pulls to save resources until getting the deity.</li>
+          <li>{pickLang(c.chronosPity1, locale)}</li>
+          <li>{pickLang(c.chronosPity2, locale)}</li>
         </ul>
       </div>
 
-      <!-- STARGLINT MINDSEA -->
       <div id="section-mindsea" class="eg-content-card tips-anchor">
-        <h2>Starglint and Mindsea</h2>
-        <p>The Starglint faction has the most rare heroes. They can only be obtained through their special currency "Star Tracer", regular summons (0.2% drop chance) or in the Mindsea shop.</p>
-        <h3>Join a Mindsea as Early as Possible</h3>
-        <p>After completing Stage 3-9 you can join a Mindsea. Open the list and search for an open Mindsea with a high activity rate. Collect "Dream Conch" rewards within the Mindsea Currents of Thought. Then you can buy a Starglint deity in the Mindsea shop.</p>
-        <h3>Get One of These</h3>
+        <h2>{pickLang(c.starglintTitle, locale)}</h2>
+        <p>{pickLang(c.starglintIntro, locale)}</p>
+        <h3>{pickLang(c.mindseaJoinTitle, locale)}</h3>
+        <p>{pickLang(c.mindseaJoinBody, locale)}</p>
+        <h3>{pickLang(c.starglintPicksTitle, locale)}</h3>
         <div class="hero-chip-grid">
           <a class="hero-pic" href="/heroes/nyx">
             <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nyx.webp')"></div>
@@ -421,33 +563,30 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
         </div>
       </div>
 
-      <!-- CORE RULE -->
       <div class="eg-content-card eg-core-rule-card">
-        <h2>The Core Rule of the Game</h2>
-        <p>You are <strong>not</strong> building 5 equal heroes.</p>
+        <h2>{pickLang(c.coreRuleTitle, locale)}</h2>
+        <p>{pickLang(c.coreRuleBody, locale)}</p>
         <div class="core-rule-split">
           <div class="core-rule-carry">
-            <div class="core-rule-label">1-2 Carries</div>
-            <p>Deal the damage. Get the gear, the relics, the investment.</p>
+            <div class="core-rule-label">{pickLang(c.carryLabel, locale)}</div>
+            <p>{pickLang(c.carryDesc, locale)}</p>
           </div>
           <div class="core-rule-support">
-            <div class="core-rule-label">3-4 Supports</div>
-            <p>Give the carry energy, buffs, and uptime. They exist to enable the carry.</p>
+            <div class="core-rule-label">{pickLang(c.supportLabel, locale)}</div>
+            <p>{pickLang(c.supportDesc, locale)}</p>
           </div>
         </div>
         <div class="eg-team-example">
-          <p>Example: if Isis is your carry, you need supports to give her energy, healing and buffs to deal faster damage and use her ultimate more often than the enemy team does.</p>
+          <p>{pickLang(c.coreExample, locale)}</p>
         </div>
       </div>
 
 
-      <!-- WISH LIST -->
       <div class="eg-content-card" id="wish-list">
-        <h2>Wish List - Your Free Early Picks</h2>
-        <p>The Wish List lets you influence which hero you pull in each faction. Pick wrong and your gold pinions feed the wrong hero. These are the recommended F2P picks per faction:</p>
+        <h2>{pickLang(c.wishListTitle, locale)}</h2>
+        <p>{pickLang(c.wishListIntro, locale)}</p>
 
-        <section class="wl-module" aria-label="Wishlist">
-
+        <section class="wl-module" aria-label={pickLang(c.wishListHeaderTitle, locale)}>
           <div class="wl-header">
             <div class="wl-header-ornament" aria-hidden="true">
               <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -465,11 +604,10 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
                 <polygon points="100,20 107,30 100,40 93,30" fill="none" stroke="#fde68a" stroke-width="0.5"/>
               </svg>
             </div>
-            <h3 class="wl-title">Wishlist</h3>
+            <h3 class="wl-title">{pickLang(c.wishListHeaderTitle, locale)}</h3>
             <p class="wl-subtitle">
-              Have a higher chance to get Deities in the Wishlist<br/>
-              while summoning Epic Deities.<br/>
-              <span class="wl-subtitle-note">(Does not change Epic Deities overall drop rate.)</span>
+              {pickLang(c.wishListHeaderSubtitle, locale)}<br/>
+              <span class="wl-subtitle-note">({pickLang(c.wishListHeaderNote, locale)})</span>
             </p>
           </div>
 
@@ -488,11 +626,7 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
                   <div class="wl-card-row">
                     {heroes.map((hero) => (
                       <a class="wl-card" href={`/heroes/${hero.id}`} aria-label={hero.id}>
-   
-                        <div
-                          class="wl-card-portrait"
-                          style={`background-image:url('${hero.image}');`}
-                        ></div>
+                        <div class="wl-card-portrait" style={`background-image:url('${hero.image}');`}></div>
                         <div class="wl-card-holo" aria-hidden="true"></div>
                         <div class="wl-card-vignette" aria-hidden="true"></div>
                       </a>
@@ -504,366 +638,12 @@ import { WISHLIST_DATA, FACTION_META } from "./tipsData";
           </div>
 
           <div class="wl-footer">
-            <small>Fengyi can be swapped with Wenshen later. Also Phoenix with Set.</small>
+            <small>{pickLang(c.wishListFooter, locale)}</small>
           </div>
-
         </section>
       </div>
 
-      <!-- TEAM COMPOSITIONS -->
-      <div class="eg-content-card" id="team-comps">
-        <h2>Team Compositions</h2>
-        <p>These are solid starting compositions to build toward. Mix and match based on which heroes you have available.</p>
-        <p><strong>Note on Meret:</strong> She can function as a control-focused carry, not only as a support piece. In the comps below she appears in protective shells, but she is also viable as your primary damage dealer when properly invested.</p>
-        <div class="comp-list">
 
-          <div class="comp-card">
-            <div class="comp-title">Isis</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/isis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/isis.webp')"></div>
-                <span class="hero-chip-name">Isis</span>
-              </a>
-              <span class="chip-divider">or</span>
-              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-              <a class="hero-pic" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-            </div>
-            <p class="comp-note">A versatile early-mid comp. Poseidon anchors the frontline with early CC, Caishen accelerates energy rotation, and Isis or Jingwei delivers the damage payload.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Control + Debuff</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/tefnut">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/tefnut.webp')"></div>
-                <span class="hero-chip-name">Tefnut</span>
-              </a>
-            </div>
-            <p class="comp-note">Momus taunts to protect the backline, Yuelao layers healing, and Tefnut supports Hecate's sustained magical damage output.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Heracles & Mengpo</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/bastet">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
-                <span class="hero-chip-name">Bastet</span>
-              </a>
-              <a class="hero-pic" href="/heroes/phoenix">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
-                <span class="hero-chip-name">Phoenix</span>
-              </a>
-              <a class="hero-pic" href="/heroes/mengpo">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
-                <span class="hero-chip-name">Mengpo</span>
-              </a>
-            </div>
-            <p class="comp-note">Heracles soaks damage upfront while Bastet and Phoenix pressure high-value targets. Mengpo provides revival insurance for a second life on key heroes.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Clubs</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/nuba">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
-                <span class="hero-chip-name">Nuba</span>
-              </a>
-              <a class="hero-pic" href="/heroes/nuwa">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
-                <span class="hero-chip-name">Nuwa</span>
-              </a>
-              <a class="hero-pic" href="/heroes/anubis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
-                <span class="hero-chip-name">Anubis</span>
-              </a>
-              <a class="hero-pic" href="/heroes/pan">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
-                <span class="hero-chip-name">Pan</span>
-              </a>
-              <div class="chip-flex-slot">
-                <div class="chip-flex-img">?</div>
-                <span class="chip-flex-label">Any DD</span>
-              </div>
-            </div>
-            <p class="comp-note">Nuba and Pan layer CC and debuffs while Anubis locks down priority targets. Nuwa adds legendary-tier support. Bring your strongest DD as the damage anchor.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Skadi CC</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-              <a class="hero-pic" href="/heroes/khepri">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
-                <span class="hero-chip-name">Khepri</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-              <a class="hero-pic" href="/heroes/iris">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/iris.webp')"></div>
-                <span class="hero-chip-name">Iris</span>
-              </a>
-              <div class="chip-flex-slot">
-                <div class="chip-flex-img">?</div>
-                <span class="chip-flex-label">Any hero</span>
-              </div>
-            </div>
-            <p class="comp-note">The classic Skadi control loop. Poseidon opens with AoE CC, Khepri dives the backline, and every controlled enemy triggers Skadi's passive for bonus damage and energy.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Diamonds</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/bastet">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/bastet.webp')"></div>
-                <span class="hero-chip-name">Bastet</span>
-              </a>
-              <a class="hero-pic" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/phoenix">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/phoenix.webp')"></div>
-                <span class="hero-chip-name">Phoenix</span>
-              </a>
-              <a class="hero-pic" href="/heroes/set">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/set.webp')"></div>
-                <span class="hero-chip-name">Set</span>
-              </a>
-              <a class="hero-pic" href="/heroes/athena">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/athena.webp')"></div>
-                <span class="hero-chip-name">Athena</span>
-              </a>
-              <span class="chip-divider">or</span>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-            </div>
-            <p class="comp-note">Bastet and Heracles anchor the frontline. Set adds disruption, Phoenix targets high-value backline heroes, and Athena or Diana provides protection or healing depending on what you need.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hladgunnr & Heracles</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/hladgunnr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
-                <span class="hero-chip-name">Hladgunnr</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/heracles">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heracles.webp')"></div>
-                <span class="hero-chip-name">Heracles</span>
-              </a>
-              <a class="hero-pic" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-              <a class="hero-pic" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-            </div>
-            <p class="comp-note">A high-damage multi-warrior comp. Heracles and Hladgunnr split frontline duties, Jingwei and Hecate deliver consistent damage, and Skadi closes gaps on any CC-vulnerable target.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Nuba & Cronus</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/nuba">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuba.webp')"></div>
-                <span class="hero-chip-name">Nuba</span>
-              </a>
-              <a class="hero-pic" href="/heroes/caishen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/caishen.webp')"></div>
-                <span class="hero-chip-name">Caishen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/mengpo">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mengpo.webp')"></div>
-                <span class="hero-chip-name">Mengpo</span>
-              </a>
-              <a class="hero-pic" href="/heroes/cronus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cronus.webp')"></div>
-                <span class="hero-chip-name">Chronos</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/jingwei">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jingwei.webp')"></div>
-                <span class="hero-chip-name">Jingwei</span>
-              </a>
-            </div>
-            <p class="comp-note">Caishen accelerates Jingwei and Chronos into faster ultimate cycles. Nuba and Mengpo keep the frontline alive. A strong mid-game energy rotation comp.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hecate</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/cancer">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cancer.webp')"></div>
-                <span class="hero-chip-name">Cancer</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic" href="/heroes/meret">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
-                <span class="hero-chip-name">Meret</span>
-              </a>
-            </div>
-            <p class="comp-note">A heavy support shell for Hecate. Momus taunts, Cancer and Yuelao stack heals and shields, with Meret completing the protective core.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Skadi</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/khepri">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/khepri.webp')"></div>
-                <span class="hero-chip-name">Khepri</span>
-              </a>
-              <a class="hero-pic" href="/heroes/poseidon">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/poseidon.webp')"></div>
-                <span class="hero-chip-name">Poseidon</span>
-              </a>
-              <a class="hero-pic" href="/heroes/pan">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/pan.webp')"></div>
-                <span class="hero-chip-name">Pan</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/skadi">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/skadi.webp')"></div>
-                <span class="hero-chip-name">Skadi</span>
-              </a>
-              <a class="hero-pic" href="/heroes/nuwa">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nuwa.webp')"></div>
-                <span class="hero-chip-name">Nuwa</span>
-              </a>
-            </div>
-            <p class="comp-note">Skadi is your damage carry. Poseidon opens with AoE CC, Khepri disrupts the backline, and Pan and Nuwa provide layered support and control.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hladgunnr & Clubs</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/capricorn">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/capricorn.webp')"></div>
-                <span class="hero-chip-name">Capricorn</span>
-              </a>
-              <a class="hero-pic" href="/heroes/wenshen">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/wenshen.webp')"></div>
-                <span class="hero-chip-name">Wenshen</span>
-              </a>
-              <a class="hero-pic" href="/heroes/jormungandr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/jormungandr.webp')"></div>
-                <span class="hero-chip-name">Jormungandr</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hladgunnr">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hladgunnr.webp')"></div>
-                <span class="hero-chip-name">Hladgunnr</span>
-              </a>
-              <a class="hero-pic" href="/heroes/anubis">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/anubis.webp')"></div>
-                <span class="hero-chip-name">Anubis</span>
-              </a>
-            </div>
-            <p class="comp-note">Capricorn and Wenshen provide sustained physical pressure. Jormungandr and Hladgunnr hold the frontline. Anubis locks down priority targets in the backline.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Hecate & Hephaestus</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/momus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/momus.webp')"></div>
-                <span class="hero-chip-name">Momus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/meret">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/meret.webp')"></div>
-                <span class="hero-chip-name">Meret</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hephaestus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
-                <span class="hero-chip-name">Hephaestus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/hecate">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hecate.webp')"></div>
-                <span class="hero-chip-name">Hecate</span>
-              </a>
-            </div>
-            <p class="comp-note">Hephaestus synergizes with Momus in a heavy frontline shell. Yuelao and Meret stack support, with Hecate as the damage carry.</p>
-          </div>
-
-          <div class="comp-card">
-            <div class="comp-title">Warriors</div>
-            <div class="hero-chip-grid">
-              <a class="hero-pic" href="/heroes/prometheus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/prometheus.webp')"></div>
-                <span class="hero-chip-name">Prometheus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/hephaestus">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hephaestus.webp')"></div>
-                <span class="hero-chip-name">Hephaestus</span>
-              </a>
-              <a class="hero-pic" href="/heroes/yuelao">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/yuelao.webp')"></div>
-                <span class="hero-chip-name">Yuelao</span>
-              </a>
-              <a class="hero-pic" href="/heroes/diana">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/diana.webp')"></div>
-                <span class="hero-chip-name">Diana</span>
-              </a>
-              <a class="hero-pic chip-highlight" href="/heroes/nezha">
-                <div class="hero-chip-portrait" style="background-image:url('https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nezha.webp')"></div>
-                <span class="hero-chip-name">Nezha</span>
-              </a>
-            </div>
-            <p class="comp-note">Nezha acts as the spearhead. Prometheus and Hephaestus form a sturdy frontline while Yuelao and Diana keep everyone alive and in the fight.</p>
-          </div>
-
-        </div>
-      </div>
-
+      <TipsTeams locale={locale} />
     </main>
     </div>
