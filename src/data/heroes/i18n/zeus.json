@@ -6,7 +6,7 @@
     "ru": "Зевс"
   },
   "description": {
-    "de": "Zeus, König der Götter und Sterblichen, herrscht uber Himmel, Donner und Gerechtigkeit. Hoch uber den Wolken, mit dem Blitz in der Hand, lässt er seinen Blick über die Welt schweifen, und alle Wesen beugen sich vor seiner Macht.",
+    "de": "Zeus, König der Götter und Sterblichen, herrscht über Himmel, Donner und Gerechtigkeit. Hoch über den Wolken, mit dem Blitz in der Hand, lässt er seinen Blick über die Welt schweifen, und alle Wesen beugen sich vor seiner Macht.",
     "en": "Zeus, king of gods and mortals, rules over the sky, thunder, and justice. High among the clouds with Lightning Bolt in hand, he casts his gaze across the world, and all beings bow beneath his might.",
     "es": "Zeus, rey de dioses y mortales, gobierna el cielo, el trueno y la justicia. Muy por encima de las nubes, con el Rayo en la mano, extiende su mirada sobre el mundo, y todos los seres se inclinan ante su poder.",
     "ru": "Зевс, царь богов и смертных, властвует над небом, громом и справедливостью. Высоко над облаками, с молнией в руке, он простирает свой взор над миром, и все существа склоняются перед его мощью."
@@ -20,130 +20,130 @@
         "ru": "Всемогущий громовой удар"
       },
       "description": {
-        "de": "Zeus beschwört seine Echos und lässt Blitzschläge herabregnen, die alle Einheiten 3 Mal treffen und jeweils DMG in Höhe von 120% von ATK verursachen.",
+        "de": "Zeus beschwört seinen Donner-Avatar. Ein Donnerspeer fällt herab und fügt allen Einheiten 120% ANG-SCH 3-mal zu.",
         "en": "Zeus summons his Echoes and rains down thunderbolts, striking all units 3 times, each dealing DMG equal to 120% of ATK.",
-        "es": "Zeus invoca sus Ecos y hace llover rayos, golpeando a todas las unidades 3 veces, cada uno infligiendo DMG equivalente al 120% de ATK.",
+        "es": "Zeus invoca a sus ecos y desata una lluvia de rayos, lo que golpea a todas las unidades 3 veces, cada una infligiendo un daño equivalente al 120 % de su ATQ.",
         "ru": "Зевс призывает свои Эхо и обрушивает молнии, поражая все юниты 3 раза, каждый удар наносит DMG, равный 120% ATK."
       },
       "upgrades": {
         "level2": {
-          "de": "Erhoeht den verursachten DMG auf 160%.",
+          "de": "Erhöht den verursachten SCH um 160 %.",
           "en": "Increases DMG dealt to 160%.",
-          "es": "Aumenta el DMG infligido al 160%.",
+          "es": "Aumenta el daño infligido en 160 %.",
           "ru": "Увеличивает наносимый DMG до 160%."
         },
         "level3": {
-          "de": "Erhaelt 500 Energy beim Betreten des Kampfes.",
+          "de": "Erhält beim Eintritt 500 Energie.",
           "en": "Gains 500 Energy on entry.",
-          "es": "Gana 500 de Energy al entrar.",
+          "es": "Obtiene 500 de Energía al entrar.",
           "ru": "Получает 500 Energy при входе в бой."
         },
         "level4": {
-          "de": "Erhoeht den verursachten DMG auf 200%.",
+          "de": "Erhöht den verursachten SCH um 200 %.",
           "en": "Increases DMG dealt to 200%.",
-          "es": "Aumenta el DMG infligido al 200%.",
+          "es": "Aumenta el daño infligido en 200 %.",
           "ru": "Увеличивает наносимый DMG до 200%."
         }
       }
     },
     {
       "name": {
-        "de": "Oberstes Urteil",
+        "de": "Höchstes Urteil",
         "en": "Supreme Judgment",
         "es": "Juicio supremo",
         "ru": "Верховный приговор"
       },
       "description": {
-        "de": "Zeus richtet über das aktuelle Ziel und verursacht DMG in Höhe von 270% von ATK plus 8% der aktuellen HP des Ziels (bis zu 100% von Zeus' aktuellem ATK).",
-        "en": "Zeus judges the current target, dealing DMG equal to 270% of ATK plus 8% of the target's current HP (up to 100% of Zeus's current ATK).",
-        "es": "Zeus juzga al objetivo actual e inflige DMG equivalente al 270% de ATK más el 8% de la HP actual del objetivo (hasta el 100% del ATK actual de Zeus).",
+        "de": "Zeus richtet über das aktuelle Ziel und verursacht SCH in Höhe von 270 % ANG +8 % der aktuellen LP des Ziels (bis zu 100 % von Zeus' aktuellem ANG).",
+        "en": "Zeus judges the current target, dealing DMG equal to 270% of ATK plus 8% of the target’s current HP (up to 100% of Zeus’s current ATK).",
+        "es": "Zeus juzga al objetivo actual, lo que inflige un daño equivalente al 270 % de su ATQ + un 8 % de los PS actuales del objetivo (hasta un 100 % del ATQ actual de Zeus).",
         "ru": "Зевс судит текущую цель, нанося DMG, равный 270% ATK плюс 8% от текущего HP цели (до 100% текущего ATK Зевса)."
       },
       "upgrades": {
         "level2": {
-          "de": "Erhoeht den verursachten DMG auf 300% von ATK.",
+          "de": "Erhöht den verursachten SCH auf 300 %.",
           "en": "Increases DMG dealt to 300% of ATK.",
-          "es": "Aumenta el DMG infligido al 300% de ATK.",
+          "es": "Aumenta el daño infligido a 300 %.",
           "ru": "Увеличивает наносимый DMG до 300% ATK."
         },
         "level3": {
-          "de": "Diese Fähigkeit ignoriert Ausweichen.",
+          "de": "Diese Fähigkeit ignoriert Ausweichrate.",
           "en": "This skill ignores Dodge Rate.",
-          "es": "Esta habilidad ignora la Dodge Rate.",
+          "es": "Esta habilidad ignora la Prob. de evasión.",
           "ru": "Этот навык игнорирует Dodge Rate."
         },
         "level4": {
-          "de": "Verursacht DMG in Höhe von 12% der aktuellen HP des Ziels (bis zu 150% von Zeus' aktuellem ATK).",
-          "en": "Deals DMG equal to 12% of the target's current HP (up to 150% of Zeus's current ATK).",
-          "es": "Inflige DMG equivalente al 12% de la HP actual del objetivo (hasta el 150% del ATK actual de Zeus).",
+          "de": "Verursacht SCH in Höhe von 12 % der aktuellen LP des Ziels (bis zu 150 % von Zeus' aktuellem ANG).",
+          "en": "Deals DMG equal to 12% of the target’s current HP (up to 150% of Zeus’s current ATK).",
+          "es": "Inflige un daño equivalente al 12 % de los PS actuales del objetivo (hasta un 150 % del ATQ actual de Zeus).",
           "ru": "Наносит DMG, равный 12% текущего HP цели (до 150% текущего ATK Зевса)."
         }
       }
     },
     {
       "name": {
-        "de": "Allmächtige Ankunft",
+        "de": "Allmächtiger Advent",
         "en": "Almighty Advent",
         "es": "Advenimiento todopoderoso",
         "ru": "Всемогущее явление"
       },
       "description": {
-        "de": "Beschwoert ein Echo, das 35% von Zeus' max. HP und 75% seines ATK uebernimmt und 15s lang besteht. Wenn ein einzelner Treffer DMG verursacht, der 20% seiner max. HP uebersteigt, erschafft Zeus ein Echo und blinkt zum sichersten Verbündeten (Passiv). Dieser Effekt hat eine Abklingzeit von 20s.",
-        "en": "Summons an Echo that inherits 35% of Zeus's max HP and 75% of his ATK, lasting 15s. If a single hit deals DMG exceeding 20% of his max HP, Zeus creates an Echo and blinks to the safest ally (Passive). This effect has a 20s cooldown.",
-        "es": "Invoca un Eco que hereda el 35% de la HP máxima de Zeus y el 75% de su ATK, con una duración de 15s. Si un solo golpe inflige DMG superior al 20% de su HP máxima, Zeus crea un Eco y se desplaza al aliado mas seguro (Pasiva). Este efecto tiene un enfriamiento de 20s.",
+        "de": "Beschwört ein Echo, das 35 % seiner max. LP und 75 % seines ANG erbt. Dies hält 15 Sek. an.\n(Passiv) Wenn ein einzelner Treffer SCH verursacht, der 20 % seiner max. LP übersteigt, erschafft er ein Echo und teleportiert sich zum sichersten Verbündeten. Dieser Effekt hat eine Abklingzeit von 20 Sek.",
+        "en": "Summons an Echo that inherits 35% of Zeus’s max HP and 75% of his ATK, lasting 15s. If a single hit deals DMG exceeding 20% of his max HP, Zeus creates an Echo and blinks to the safest ally (Passive). This effect has a 20s cooldown.",
+        "es": "Invoca un Eco que hereda el 35 % de sus PS máximos y el 75 % de su ATQ, y dura 15s.\nSi un solo golpe inflige un Daño que supera el 20 % de sus PS máximos, crea un Eco y se teletransporta hacia el aliado más seguro (Pasiva). Este efecto tiene un TdE de 20s.",
         "ru": "Призывает Эхо, которое наследует 35% макс. HP Зевса и 75% его ATK, и действует 15с. Если один удар наносит DMG, превышающий 20% его макс. HP, Зевс создаёт Эхо и перемещается к самому безопасному союзнику (Пассивно). Этот эффект имеет 20с перезарядки."
       },
       "upgrades": {
         "level2": {
-          "de": "Echos erben 50% von Zeus' max. HP.",
-          "en": "Echoes inherit 50% of Zeus's max HP.",
-          "es": "Los Ecos heredan el 50% de la HP máxima de Zeus.",
+          "de": "Geerbte max. LP werden auf 50% erhöht.",
+          "en": "Echoes inherit 50% of Zeus’s max HP.",
+          "es": "Los ecos heredan el 50 % de su PS.",
           "ru": "Эхо наследуют 50% макс. HP Зевса."
         },
         "level3": {
-          "de": "Echos erben den Effekt von Überlastung entfesseln.",
+          "de": "Echos erben die Entfesselung der Überladung.",
           "en": "Echoes inherit the Overload Unleash effect.",
-          "es": "Los Ecos heredan el efecto de Liberación de sobrecarga.",
+          "es": "Los ecos heredan el efecto Liberación de sobrecarga.",
           "ru": "Эхо наследуют эффект 'Освобождение перегрузки'."
         },
         "level4": {
-          "de": "Echos erben 100% von Zeus' ATK.",
-          "en": "Echoes inherit 100% of Zeus's ATK.",
-          "es": "Los Ecos heredan el 100% del ATK de Zeus.",
+          "de": "Erbt 100% seines eigenen ANG.",
+          "en": "Echoes inherit 100% of Zeus’s ATK.",
+          "es": "Los ecos heredan el 100 % de su ATQ.",
           "ru": "Эхо наследуют 100% ATK Зевса."
         }
       }
     },
     {
       "name": {
-        "de": "Überlastung entfesseln",
+        "de": "Entfesselung der Überladung",
         "en": "Overload Unleash",
-        "es": "Sobrecarga desatada",
+        "es": "Liberación de sobrecarga",
         "ru": "Освобождение перегрузки"
       },
       "description": {
-        "de": "Erhöht ATK-Geschwindigkeit um 8% und Ultimate DMG um 2%, wenn Zeus von einem Verbündeten einen Buff erhält. Dieser Effekt kann bis zu 10 Mal gestapelt werden. Bei maximalen Stapeln erhaelt Zeus Thundercrack und verursacht 30% mehr DMG.",
+        "de": "Beim Erhalt eines Buffs von einem Verbündeten erhält er 8% ANG-Tempo und 2% Ultimativen SCH. Dieser Effekt stapelt sich bis zu 10-mal. Bei maximalen Stapeln wird SCH, der im Elementarzustand verursacht wird, um 30% erhöht.",
         "en": "Increases ATK SPD by 8% and Ultimate DMG by 2% when gaining a buff from an ally. This effect can stack up to 10 times. At max stacks, Zeus gains Thundercrack, dealing 30% increased DMG.",
-        "es": "Aumenta la ATK SPD en 8% y el Ultimate DMG en 2% al recibir un buff de un aliado. Este efecto se puede acumular hasta 10 veces. Al alcanzar el máximo, Zeus obtiene Thundercrack e inflige un 30% mas de DMG.",
+        "es": "Aumenta la VEL de ATQ en un  8 % y el daño de la Habilidad definitiva en un 2 % al obtener una mejora de un aliado. Este efecto se puede acumular hasta 10 veces. Con el máximo de acumulaciones, obtiene Trueno, lo que inflige un 30 % de daño aumentado.",
         "ru": "Увеличивает ATK SPD на 8% и Ultimate DMG на 2% при получении баффа от союзника. Этот эффект может складываться до 10 раз. При максимальных стаках Зевс получает Thundercrack и наносит на 30% больше DMG."
       },
       "upgrades": {
         "level2": {
-          "de": "Erhoeht ATK-Geschwindigkeit auf 12% und Ultimate DMG auf 3%.",
+          "de": "Erhöht eigenes ANG-Tempo um 12% und Ultimativen SCH um 3%.",
           "en": "Increases ATK SPD by 12% and Ultimate DMG by 3%.",
-          "es": "Aumenta la ATK SPD al 12% y el Ultimate DMG al 3%.",
+          "es": "Aumenta la VEL de ATQ en un 12 % y el daño de la Habilidad definitiva en un 3 %.",
           "ru": "Увеличивает ATK SPD до 12% и Ultimate DMG до 3%."
         },
         "level3": {
-          "de": "Loest Thundercrack bereits bei 8 Stapeln aus.",
+          "de": "Wird bei Erreichen von 8 Stapeln Donnerkrachen ausgelöst.",
           "en": "Triggers Thundercrack upon reaching 8 stacks.",
-          "es": "Activa Thundercrack al alcanzar 8 acumulaciones.",
+          "es": "Activa Estruendo de trueno al alcanzar 8 acumulaciones.",
           "ru": "Активирует Thundercrack при достижении 8 стаков."
         },
         "level4": {
-          "de": "Erhoeht den verursachten DMG um 50%.",
+          "de": "Erhöht den verursachten SCH um 50 %.",
           "en": "Increases DMG dealt by 50%.",
-          "es": "Aumenta el DMG infligido en 50%.",
+          "es": "Aumenta el daño infligido en 50 %.",
           "ru": "Увеличивает наносимый DMG на 50%."
         }
       }
@@ -157,28 +157,28 @@
       "ru": "Божественный импульс"
     },
     "description": {
-      "de": "Wenn Zeus Almighty Thunderstrike wirkt, setzen alle Echos auf dem Feld sie ebenfalls ein und verursachen 70% des urspruenglichen DMG.",
+      "de": "Wenn Zeus Allmächtiger Donnerschlag wirkt, wirken ihn auch alle Echos auf dem Feld und verursachen 70 % des ursprünglichen SCH.",
       "en": "When Zeus casts Almighty Thunderstrike, all Echoes on the field also cast it, dealing 70% of the original DMG.",
-      "es": "Cuando Zeus lanza Trueno todopoderoso, todos los Ecos en el campo también lo lanzan, infligiendo el 70% del DMG original.",
+      "es": "Cuando Zeus lanza Trueno todopoderoso, todos los ecos en el campo también lo lanzan, lo que inflige el 70 % del daño original.",
       "ru": "Когда Зевс применяет Всемогущий громовой удар, все Эхо на поле также используют его, нанося 70% от исходного DMG."
     },
     "upgrades": {
       "level2": {
-        "de": "Nach jedem Normalangriff löst der naechste Angriff Supreme Judgment aus. Erhoeht den DMG von Supreme Judgment um 20%.",
+        "de": "Nach jedem normalen Angriff löst der nächste Angriff [Urteil] aus, wodurch sein SCH um 20% erhöht wird.",
         "en": "After each Normal Attack, the next attack triggers Supreme Judgment. Increases Supreme Judgment DMG by 20%.",
-        "es": "Tras cada Ataque normal, el siguiente ataque activa Juicio supremo. Aumenta el DMG de Juicio supremo en 20%.",
+        "es": "Después de cada Ataque normal, el siguiente ataque activa Juicio supremo. Aumenta el daño infligido por Juicio supremo en un 20 %.",
         "ru": "После каждой обычной атаки следующая атака активирует Верховный приговор. Увеличивает DMG Верховного приговора на 20%."
       },
       "level3": {
-        "de": "Wenn Zeus Almighty Thunderstrike wirkt, setzen alle Echos sie ebenfalls ein und verursachen 100% des urspruenglichen DMG.",
+        "de": "Wenn Zeus Allmächtiger Donnerschlag wirkt, wirken ihn auch alle Echos auf dem Feld und verursachen 100 % des ursprünglichen SCH.",
         "en": "When Zeus casts Almighty Thunderstrike, all Echoes also cast it, dealing 100% of the original DMG.",
-        "es": "Cuando Zeus lanza Trueno todopoderoso, todos los Ecos también lo lanzan, infligiendo el 100% del DMG original.",
+        "es": "Cuando Zeus lanza Trueno todopoderoso, todos los ecos en el campo también lo lanzan, lo que inflige el 100 % del daño original.",
         "ru": "Когда Зевс применяет Всемогущий громовой удар, все Эхо также используют его, нанося 100% от исходного DMG."
       },
       "level4": {
-        "de": "Echos koennen auch Divine Pulse und Supreme Judgment ausloesen.",
+        "de": "Echos können auch Göttlichen Puls und Höchstes Urteil auslösen.",
         "en": "Echoes can also trigger Divine Pulse and Supreme Judgment.",
-        "es": "Los Ecos también pueden activar Pulso divino y Juicio supremo.",
+        "es": "Los ecos también pueden activar Pulso divino y Juicio supremo.",
         "ru": "Эхо также могут активировать Божественный импульс и Верховный приговор."
       }
     }
@@ -202,7 +202,7 @@
     },
     {
       "description": {
-        "de": "ATK-Buff und Link-Kette - Zeus trifft härter und ueberlebt laenger.",
+        "de": "ATK-Buff und Link-Kette - Zeus trifft härter und überlebt länger.",
         "en": "ATK buff and link chain -- Zeus hits harder and survives longer.",
         "es": "Buff de ATK y cadena de enlace: Zeus golpea más fuerte y sobrevive más tiempo.",
         "ru": "Бафф ATK и цепочка связи - Зевс бьёт сильнее и живёт дольше."
@@ -210,7 +210,7 @@
     },
     {
       "description": {
-        "de": "Maximale Energiekreisläufe fuer garantierte Judgment-Uptime.",
+        "de": "Maximale Energiekreisläufe für garantierte Judgment-Uptime.",
         "en": "Maximum energy cycling for guaranteed Judgment uptime.",
         "es": "Ciclo de energía máximo para asegurar la disponibilidad de Juicio.",
         "ru": "Максимальный цикл энергии для гарантированного uptime Judgment."
@@ -218,7 +218,7 @@
     },
     {
       "description": {
-        "de": "Der Schadensbuff des Supports vervollstaendigt das Meta-Support-Setup fuer das Endgame.",
+        "de": "Der Schadensbuff des Supports vervollstaendigt das Meta-Support-Setup für das Endgame.",
         "en": "Damage-boost support completes the endgame meta support stack.",
         "es": "El soporte de aumento de daño completa la pila meta de soporte del endgame.",
         "ru": "Поддержка с усилением урона завершает мета-набор саппортов для эндгейма."
@@ -226,7 +226,7 @@
     },
     {
       "description": {
-        "de": "Dianas Armor-Debuff und Zeus' Judgment erzeugen unverhaeltnismaessigen Burst.",
+        "de": "Dianas Armor-Debuff und Zeus' Judgment erzeugen unverhältnismaessigen Burst.",
         "en": "Diana armor debuff plus Zeus Judgment creates disproportionate burst.",
         "es": "El debuff de armadura de Diana junto con Juicio de Zeus crea un burst desproporcionado.",
         "ru": "Дебафф брони Дианы вместе с Judgment Зевса создаёт непропорциональный взрывной урон."

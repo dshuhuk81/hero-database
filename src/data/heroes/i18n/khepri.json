@@ -3,5 +3,96 @@
     "de": "Khepri",
     "es": "Khepri",
     "ru": "Khepri"
+  },
+  "skills": [
+    {},
+    {},
+    {
+      "name": {
+        "de": "Sandsturm-Zermalmer",
+        "en": "Sandstorm Crush",
+        "es": "Aplastamiento arenoso"
+      },
+      "description": {
+        "de": "Khepri befiehlt einem Skarabäus, auf den Boden zu schmettern, was umliegenden Einheiten SCH in Höhe von 200 % ANG zufügt. Er erhält einen Schild in Höhe von 60 % ANG × (1 + Anzahl der getroffenen Einheiten).",
+        "en": "Khepri commands a scarab to slam the ground, dealing DMG equal to 200% of ATK to surrounding units. He gains a shield equal to 60% of ATK × (1 + number of units hit).",
+        "es": "Khepri ordena a un escarabajo que golpee el suelo, lo que inflige un Daño del 200 % de ATQ a las unidades circundantes. Obtiene un escudo equivalente al 60 % de ATQ × (1 + número de unidades golpeadas)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Schildstärke erhöht sich auf 75 % ANG.",
+          "en": "Shield Strength increases to 75% ATK. (Unlocks at Lv.121)",
+          "es": "La fuerza del Escudo aumenta a 75 % de ATQ."
+        },
+        "level3": {
+          "de": "Verringert die Trefferrate des Ziels für 6 Sek. um 20 %.",
+          "en": "Reduces the target's Hit Rate by 20% for 6s. (Unlocks at Lv.201)",
+          "es": "Reduce la Tasa de aciertos del objetivo en un 20 % durante 6s."
+        },
+        "level4": {
+          "de": "Jede getroffene Einheit gewährt 10 % zusätzliche Trefferraten-RED für 6 Sek.",
+          "en": "Each unit hit grants an extra 10% Hit Rate RED, lasting 6s. (Unlocks at Lv.281)",
+          "es": "Cada unidad golpeada otorga un 10 % extra de Reduc. de Tasa de aciertos, con una duración de 6s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Segen des Skarabäus",
+        "en": "Scarab's Blessing",
+        "es": "Bendición del escarabajo"
+      },
+      "description": {
+        "de": "Khepri versteckt sich im Skarabäus und kann nicht handeln. Der Einsatz der Fähigkeit gewährt ihm für 5 Sek. einen Schild in Höhe von 300 % ANG und 10 % SCH-RED. Er erhält während der Fähigkeit Super-Rüstung.",
+        "en": "Khepri hides himself inside the scarab and cannot act. Casting the skill grants him a shield equal to 300% of ATK and 10% DMG RED for 5s. He gains Super Armor during the skill.",
+        "es": "Khepri se esconde dentro del escarabajo y no puede actuar. Lanzar la habilidad le otorga un escudo equivalente al 300 % de ATQ y un 10 % de Reduc. de daño durante 5s. Obtiene Superarmadura durante la habilidad."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhalte 30% SCH-Reduktion.",
+          "en": "Gains 30% DMG RED. (Unlocks at Lv.81)",
+          "es": "Obtiene un 30 % de Reduc. de daño."
+        },
+        "level3": {
+          "de": "Die Schildstärke erhöht sich auf 350 % ANG.",
+          "en": "Shield Strength increases to 350% ATK. (Unlocks at Lv.181)",
+          "es": "La fuerza del Escudo aumenta a 350 % de ATQ."
+        },
+        "level4": {
+          "de": "Stellt zusätzlich 6% der max. LP pro Sekunde für die Dauer wieder her.",
+          "en": "Also restores 6% of max HP per sec for the duration. (Unlocks at Lv.261)",
+          "es": "También restaura un 6 % de los PS máximos por segundo mientras dure el efecto."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Wacht des Skarabäus",
+      "en": "Scarab's Watch",
+      "es": "Vigilancia del escarabajo"
+    },
+    "description": {
+      "de": "Erhöht die SCH-Red. von Segen des Skarabäus auf 60 %.",
+      "en": "Increases DMG RED of Scarab's Blessing to 60%.",
+      "es": "Aumenta la RED de daño de la Bendición del escarabajo a 60 %."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Bevor er fällt, wird er immun gegen den SCH und löst Segen des Skarabäus aus.",
+        "en": "Before falling, becomes immune to the DMG and triggers Scarab's Blessing. (Unlock at Relic Lv.10)",
+        "es": "Antes de caer, se vuelve inmune al Daño y activa Bendición del escarabajo."
+      },
+      "level3": {
+        "de": "Erhöht die SCH-Red. von Segen des Skarabäus auf 100 %.",
+        "en": "Increases DMG RED of Scarab's Blessing to 100%. (Unlock at Relic Lv.20)",
+        "es": "Aumenta la RED de daño de la Bendición del escarabajo a 100 %."
+      },
+      "level4": {
+        "de": "[Skarabäus' Segen] Die während der Dauer wiederhergestellte max. LP wird auf 10% erhöht.",
+        "en": "Increases the max HP restored during Scarab's Blessing to 10%. (Unlock at Relic Lv.30)",
+        "es": "Aumenta los PS máximos restaurados durante Bendición del escarabajo al 10 %."
+      }
+    }
   }
 }

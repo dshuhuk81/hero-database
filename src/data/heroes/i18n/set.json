@@ -3,5 +3,147 @@
     "de": "Seth",
     "es": "Set",
     "ru": "Сет"
+  },
+  "skills": [
+    {
+      "name": {
+        "es": "Torbellino de las arenas",
+        "en": "Frenzied Sand Whirl"
+      },
+      "description": {
+        "es": "Set blande su lanza e inflige Daño a los objetivos frente a él mientras avanza. Repite este movimiento tres veces. Los dos primeros golpes infligen un daño equivalente al 100 % de su ATQ y repele ligeramente a los enemigos. El tercer golpe inflige un Daño equivalente al 320 % de su ATQ.",
+        "en": "Set swings his spear, dealing DMG to targets in front of him while dashing forward. He repeats this move three times. The first two strikes deal DMG equal to 100% of ATK and slightly knock back enemies. The third strike deals DMG equal to 320% of ATK."
+      },
+      "upgrades": {
+        "level2": {
+          "es": "aumenta la bonificación del tercer ataque al 350 %.",
+          "en": "Increases the third attack's bonus to 350% of ATK."
+        },
+        "level3": {
+          "es": "El tercer ataque siempre acierta.",
+          "en": "The third attack is guaranteed to hit."
+        },
+        "level4": {
+          "es": "aumenta la bonificación del tercer ataque al 380 %.",
+          "en": "Increases the third attack's bonus to 380% of ATK."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Sandbegräbnis",
+        "en": "Sand Burial",
+        "es": "Sepultura de arena"
+      },
+      "description": {
+        "de": "Set schwingt seine Waffe und fügt gegnerischen Einheiten in seiner Umgebung 240% ANG-SCH zu.",
+        "en": "Set swings his weapon, dealing DMG equal to 240% of ATK to nearby enemies.",
+        "es": "Set blande su arma e inflige un Daño equivalente al 240 % de su ATQ a los enemigos cercanos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Reduziert die Rüstung getroffener Ziele für 5 Sek. um 15 %.",
+          "en": "Reduces hit targets’ Armor by 15% for 5s.",
+          "es": "reduce la armadura de los objetivos golpeados un 15 % durante 5 s."
+        },
+        "level3": {
+          "de": "Erhöht den SCH-Bonus auf 270 %.",
+          "en": "Increases the DMG bonus to 270% of ATK.",
+          "es": "Aumenta la bonificación de daño al 270 %."
+        },
+        "level4": {
+          "de": "Reduziert die Rüstung getroffener Ziele für 5 Sek. um 30 %.",
+          "en": "Reduces hit targets’ Armor by 30% for 5s.",
+          "es": "Reduce la Armadura de los objetivos golpeados en un 30 % durante 5s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Blutrausch der Dünen",
+        "en": "Dunes’ Bloodrage",
+        "es": "Furia sangrienta de las dunas"
+      },
+      "description": {
+        "de": "Gewährt allen Verbündeten auf dem Schlachtfeld 15 % Lebensraub.",
+        "en": "Grants all allies on the battlefield 15% Lifesteal.",
+        "es": "Otorga a todos los aliados en el campo de batalla un 15 % de Robo de vida."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den ANG aller Verbündeten um 15 %.",
+          "en": "Increases all allies’ ATK by 15%.",
+          "es": "Aumenta el ATQ de todos los aliados un 15 %."
+        },
+        "level3": {
+          "de": "Erhöht den Lebensraub auf 25 %.",
+          "en": "Increases Lifesteal to 25%.",
+          "es": "Aumenta el Robo de vida al 25 %."
+        },
+        "level4": {
+          "de": "Verbündete um Seth herum erhalten zusätzlich 15 % Lebensraub.",
+          "en": "Allies around Set gain an additional 15% Lifesteal.",
+          "es": "Los aliados alrededor de Set obtienen un 15 % de Robo de vida adicional."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Chamsins Schutz",
+        "en": "Khamsin’s Shelter",
+        "es": "Refugio del jamsin"
+      },
+      "description": {
+        "de": "Seth springt hinter den verwundbarsten Verbündeten und gewährt sich selbst und diesem Verbündeten einen Schild in Höhe von 240 % ANG für 8 Sek.",
+        "en": "Set leaps behind the most vulnerable ally, granting himself and that ally a shield equal to 240% of ATK for 8s.",
+        "es": "Set salta detrás del aliado más vulnerable, otorgándose a sí mismo y a ese aliado un escudo equivalente al 240 % de su ATQ durante 8s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den Schildbonus auf 270 %.",
+          "en": "Increases the shield bonus to 270% of ATK.",
+          "es": "aumenta la bonificación del escudo al 270 %."
+        },
+        "level3": {
+          "de": "Er und dieser Verbündete erhalten 30 % ANG-GES für 8 Sek.",
+          "en": "Set and that ally gain 30% ATK SPD for 8s.",
+          "es": "Él y ese aliado obtienen un 30 % de VEL de ATQ durante 8s."
+        },
+        "level4": {
+          "de": "Erhöht den Schildbonus auf 300 %.",
+          "en": "Increases the shield bonus to 300% of ATK.",
+          "es": "aumenta la bonificación del escudo al 300 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Tanz des Sandes",
+      "en": "Dance of the Sands",
+      "es": "Danza de las arenas"
+    },
+    "description": {
+      "de": "Jeder Einsatz von Sandbegräbnis erhöht den SCH des nächsten Sandbegräbnisses um 10 %, bis zu 5-mal stapelbar.",
+      "en": "Each Sand Burial cast increases the DMG of the next Sand Burial by 10%, stacking up to 5 times.",
+      "es": "Cada lanzamiento de Sepultura de arena aumenta el Daño de la siguiente Sepultura de arena un 10 %, acumulable hasta 5 veces."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Der Effekt von Blutrausch der Dünen bleibt aktiv, nachdem Seth gefallen ist.",
+        "en": "The effect of Dunes’ Bloodrage remains active after Set falls.",
+        "es": "El efecto de Furia sangrienta de las dunas permanece activo después de que Set caiga."
+      },
+      "level3": {
+        "de": "Jeder Normalangriff hat eine Chance von 30 %, Sandbegräbnis auszulösen. Wenn die LP auf 50 %/20 % fallen, erhöht sich die Auslösechance auf 50 %/100 %.",
+        "en": "Each Normal Attack has a 30% chance to trigger Sand Burial. When HP drops to 50%/20%, the trigger chance is increased to 50%/100%.",
+        "es": "Cada Ataque normal tiene una probabilidad del 30 % de activar Sepultura de arena. Cuando los PS bajan al 50 %/20 %, la probabilidad de activación aumenta al 50 %/100 %."
+      },
+      "level4": {
+        "de": "Jedes Mal, wenn [Sand des Begräbnisses] gewirkt wird, erhöht sich sein SCH um 20%. Stapelt sich bis zu 5-mal.",
+        "en": "Each Sand Burial cast increases the DMG of the next Sand Burial by 20%, stacking up to 5 times.",
+        "es": "Cada lanzamiento de Sepultura de arena aumenta el Daño de la siguiente Sepultura de arena un 20 %, acumulable hasta 5 veces."
+      }
+    }
   }
 }

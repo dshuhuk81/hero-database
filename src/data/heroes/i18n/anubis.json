@@ -3,5 +3,152 @@
     "de": "Anubis",
     "es": "Anubis",
     "ru": "Anubis"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Urteil des Federfalls",
+        "en": "Featherfall Judgment",
+        "es": "Juicio de la pluma"
+      },
+      "description": {
+        "de": "Anubis entzieht dem schwächsten Gegner die Seele, betäubt ihn für 2 Sek. und verursacht 450 % ANG als SCH. Wird das Ziel besiegt, wenn die Fähigkeit endet, stellt Anubis 600 Energie wieder her.",
+        "en": "Anubis drains the soul of the weakest enemy, stunning them for 2s and dealing DMG equal to 450% of ATK. If the target is defeated when the skill ends, Anubis restores 600 Energy.",
+        "es": "Anubis drena el alma del enemigo más débil, lo aturde durante 2 s e inflige un 450 % de ATQ como daño. Si el objetivo es derrotado cuando termina la habilidad, Anubis restaura 600 de energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht verursachten SCH auf 500 % ANG.",
+          "en": "Increases DMG dealt to 500% ATK.",
+          "es": "aumenta el daño infligido al 500 % de ATQ"
+        },
+        "level3": {
+          "de": "Wenn das Ziel besiegt wird, erhöht sich Anubis' ANG um 20% bis zum Ende des Kampfes.",
+          "en": "Increases Anubis's ATK by 20% upon defeating a target. This boost lasts until the battle ends.",
+          "es": "Aumenta el ATQ de Anubis en un 20 % al derrotar a un objetivo. Esta mejora dura hasta que termina la batalla."
+        },
+        "level4": {
+          "de": "Nach dem Besiegen des Ziels stellt Anubis 25% seiner max. LP wieder her.",
+          "en": "After defeating a target, Anubis restores 25% of his max HP.",
+          "es": "Después de derrotar a un objetivo, Anubis restaura el 25 % de sus PS máx."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Unterwelt-Seelenwanderer",
+        "en": "Underworld Soulfarer",
+        "es": "Guía del Inframundo"
+      },
+      "description": {
+        "de": "Das erste Mal, wenn die LP eines Feindes in einem Kampf unter 80% fallen, verschwindet Anubis und erscheint hinter ihm, verursacht 240% ANG-SCH und betäubt ihn für 2 Sekunden.",
+        "en": "The first time an enemy's HP drops below 80% in a battle, Anubis fades into the void. He then appears behind that enemy, deals DMG equal to 240% of ATK, and stuns the target for 2s.",
+        "es": "La primera vez que los PS de un enemigo caen por debajo del 80 % en una batalla, Anubis se desvanece en el vacío. Luego, aparece detrás de ese enemigo, inflige un Daño equivalente al 240 % de su ATQ y aturde al objetivo durante 2s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Beim Verursachen von SCH stiehlt 150 Energie vom Ziel.",
+          "en": "When dealing DMG, steals 150 Energy from the target.",
+          "es": "Al infligir Daño, roba 150 de Energía del objetivo."
+        },
+        "level3": {
+          "de": "Betäuben hält jetzt 3 Sek. an.",
+          "en": "Stun now lasts for 3s.",
+          "es": "El aturdimiento ahora dura 3s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 300 % ANG.",
+          "en": "Increases DMG dealt to 300% ATK.",
+          "es": "Aumenta el daño infligido a 300 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Mythischer Balsamierer",
+        "en": "Mythic Embalmer",
+        "es": "Embalsamador mítico"
+      },
+      "description": {
+        "de": "Jedes Mal, wenn Anubis insgesamt 50 % seiner max. LP verliert, wird er für 3 Sek. immun gegen SCH und kann nicht anvisiert werden. Dieser Effekt kann nur einmal alle 10 Sek. ausgelöst werden.",
+        "en": "Each time Anubis loses a total of 50% of his max HP, he becomes immune to DMG and untargetable for 3s. This effect can only trigger once every 10s.",
+        "es": "Cada vez que Anubis pierde un total del 50 % de sus PS máx., se vuelve inmune al daño e inalcanzable durante 3 s. Este efecto solo se puede activar una vez cada 10 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Wenn ausgelöst, erhöht sich Anubis' ANG um 20% bis zum Ende des Kampfes.",
+          "en": "Increases Anubis's ATK by 20% until the battle ends when triggered.",
+          "es": "Aumenta el ATQ de Anubis en un 20 % hasta que termina la batalla cuando se activa."
+        },
+        "level3": {
+          "de": "Erhöht den Lebensraub beim Auslösen um 20 % bis zum Ende des Kampfes.",
+          "en": "Increases Lifesteal by 20% until the battle ends when triggered.",
+          "es": "Aumenta el Robo de vida en un 20 % hasta que termina la batalla cuando se activa."
+        },
+        "level4": {
+          "de": "Wenn ausgelöst, erhöht sich ANG um 30% und Lebensraub um 30%.",
+          "en": "Increases ATK by 30% and grants 30% Lifesteal when triggered. (Unlocks at Lv.261)",
+          "es": "Aumenta el ATQ en un 30 % y otorga un 30 % de Robo de vida cuando se activa."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Was-Zepter-Schatten",
+        "en": "Shadowy Was-Scepter",
+        "es": "Cetro was sombrío"
+      },
+      "description": {
+        "de": "Schwingt sein Zepter, um Feinde in der Nähe anzugreifen, verursacht SCH in Höhe von 210 % ANG und verringert ihre Heilungseffekte für 5 Sek. um 50 %.",
+        "en": "Spins his scepter to attack nearby enemies, dealing DMG equal to 210% of ATK and reducing their healing effects by 50% for 5s.",
+        "es": "Gira su cetro para atacar a los enemigos cercanos, lo que inflige un Daño equivalente al 210 % de su ATQ y reduce sus efectos de sanación en un 50 % durante 5 ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 235 % ANG.",
+          "en": "Increases DMG dealt to 235% ATK.",
+          "es": "Aumenta el daño infligido a 235 % de ATQ."
+        },
+        "level3": {
+          "de": "Erhöht die Heilungsreduktion auf 80 %.",
+          "en": "Increases healing reduction to 80%.",
+          "es": "Aumenta la reducción de sanación al 80 %."
+        },
+        "level4": {
+          "de": "Verursachter SCH erhöht sich auf 260 % ANG.",
+          "en": "DMG dealt increases to 260% ATK. (Unlocks at Lv.281)",
+          "es": "el daño infligido aumenta al 260 % de ATQ."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Grabbeschützer",
+      "en": "Tomb Protector",
+      "es": "Protector de tumbas"
+    },
+    "description": {
+      "de": "Erhöht den durch Urteil des Federfalls verursachten SCH bei Gegnern mit weniger als 50 % LP um 30 %.",
+      "en": "Increases DMG dealt by Featherfall Judgment by 30% to enemies with less than 50% HP.",
+      "es": "Aumenta un 30 % el daño infligido por Juicio de la pluma a los enemigos con menos del 50 % de PS."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "[Urteil der Toten] Gegner können keine LP regenerieren, während diese Fähigkeit aktiv ist.",
+        "en": "Enemies cannot receive healing during Featherfall Judgment. (Unlock at Relic Lv.10)",
+        "es": "Los enemigos no pueden recibir sanación durante el Juicio de la pluma."
+      },
+      "level3": {
+        "de": "[Urteil der Toten] Nach dem Verursachen von SCH, wenn die LP des Ziels unter 5% liegen, wird es sofort besiegt.",
+        "en": "If an enemy drops below 5% HP after taking DMG from Featherfall Judgment, it executes that enemy. (Unlock at Relic Lv.20)",
+        "es": "Si un enemigo cae por debajo del 5 % de PS después de recibir Daño del Juicio de la pluma, lo ejecuta."
+      },
+      "level4": {
+        "de": "Erhöht den durch Urteil des Federfalls verursachten SCH bei Gegnern mit weniger als 50 % LP um 50 %.",
+        "en": "Increases DMG dealt by Featherfall Judgment by 50% to enemies with less than 50% HP. (Unlock at Relic Lv.30)",
+        "es": "Aumenta un 50 % el daño infligido por Juicio de la pluma a los enemigos con menos del 50 % de PS."
+      }
+    }
   }
 }

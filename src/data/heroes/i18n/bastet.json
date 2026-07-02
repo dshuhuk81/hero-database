@@ -3,5 +3,152 @@
     "de": "Bastet",
     "es": "Bastet",
     "ru": "Bastet"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Niltanz",
+        "en": "Nile Dance",
+        "es": "Danza del Nilo"
+      },
+      "description": {
+        "de": "Bastet springt anmutig zur Position des Feindes mit dem höchsten ANG. Jedes Mal, wenn sie landet, fügt sie Feinden um sie herum SCH in Höhe von 160 % ANG zu.",
+        "en": "Bastet gracefully leaps toward the position of the enemy with the highest ATK, dealing DMG equal to 160% of ATK to enemies around her each time she lands.",
+        "es": "Bastet salta con elegancia hacia la posición del enemigo con el ATQ más alto. Inflige un Daño equivalente al 160 % de su ATQ a los enemigos a su alrededor cada vez que aterriza."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH pro Treffer auf 180 % ANG.",
+          "en": "Increases DMG per hit to 180% of ATK.",
+          "es": "aumenta el daño por golpe al 180 % de ATQ."
+        },
+        "level3": {
+          "de": "Erhöht den SCH pro Instanz auf 200 % ANG.",
+          "en": "Increases DMG per instance to 200% of ATK.",
+          "es": "aumenta el daño por instancia al 200 % de ATQ."
+        },
+        "level4": {
+          "de": "Entfernt während der Fähigkeit die Abklingzeit von Katzenhafter Agilität.",
+          "en": "Removes the cooldown of Feline Agility during the skill.",
+          "es": "Elimina la TdE de Agilidad felina durante la habilidad."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Bastets Drehung",
+        "en": "Bastet’s Spin",
+        "es": "Giro de Bastet"
+      },
+      "description": {
+        "de": "Bastet dreht sich anmutig und schlägt 3-mal auf nahe Feinde ein. Dabei fügt sie den umstehenden Feinden pro Schlag SCH in Höhe von 100 % ANG zu und verringert ihre Trefferrate für 5 Sek. um 15 %.",
+        "en": "Bastet spins her body and strikes nearby enemies 3 times, dealing DMG equal to 100% of ATK per strike and reducing their Hit Rate by 15% for 5s.",
+        "es": "Bastet gira su cuerpo con elegancia y golpea a los enemigos cercanos 3 veces, infligiendo un Daño equivalente al 100 % de su ATQ por golpe a los enemigos circundantes y reduciendo su Tasa de aciertos un 15 % durante 5s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH pro Treffer auf 110 % ANG.",
+          "en": "Increases DMG per hit to 110% of ATK.",
+          "es": "aumenta el daño por golpe al 110 % de ATQ."
+        },
+        "level3": {
+          "de": "Verringert die Trefferrate getroffener Feinde um 20 %.",
+          "en": "Reduces the Hit Rate of hit enemies by 20%.",
+          "es": "Reduce la Tasa de aciertos de los enemigos golpeados un 20 %."
+        },
+        "level4": {
+          "de": "Erhöht den SCH pro Treffer auf 120 % ANG.",
+          "en": "Increases DMG per hit to 120% of ATK.",
+          "es": "Aumenta el daño por golpe a 120 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Fellknäuel",
+        "en": "Furball",
+        "es": "Bola de pelos"
+      },
+      "description": {
+        "de": "Erzeugt Kugeln, die sie für 15 Sek. umkreisen und nahen Feinden pro Sek. SCH in Höhe von 42 % ANG zufügen.",
+        "en": "Creates orbs that orbit Bastet for 15s, dealing DMG equal to 42% of ATK per second to nearby enemies.",
+        "es": "Crea orbes que la orbitan durante 15s e infligen un Daño equivalente al 42 % de su ATQ por segundo a los enemigos cercanos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 50 %.",
+          "en": "Increases DMG dealt to 50% of ATK.",
+          "es": "Aumenta el daño infligido a 50 %."
+        },
+        "level3": {
+          "de": "Die Dauer wird auf 30 Sek. verlängert.",
+          "en": "Duration extends to 30s.",
+          "es": "La duración se extiende a 30 s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 60 %.",
+          "en": "Increases DMG dealt to 60% of ATK.",
+          "es": "Aumenta el Daño infligido al 60 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Katzenhafte Agilität",
+        "en": "Feline Agility",
+        "es": "Agilidad felina"
+      },
+      "description": {
+        "de": "Wenn Bastet einen einzelnen Treffer erleidet, der SCH von mehr als 10 % ihrer max. LP zufügt, wird sie immun gegen den SCH und erhält für 6 Sek. eine Ausweichrate von 30 %. Kann bis zu einmal alle 15 Sek. ausgelöst werden.",
+        "en": "When Bastet takes a single hit dealing DMG exceeding 10% of her max HP, she becomes immune to the DMG and gains 30% Dodge Rate for 6s. Can trigger once every 15s.",
+        "es": "Cuando Bastet recibe un solo golpe que inflige un Daño superior al 10 % de sus PS máximos, se vuelve inmune al Daño y obtiene un 30 % de Prob. de evasión durante 6s. Se puede activar como máximo una vez cada 15s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Ausweichbonus hält 8 Sek. an.",
+          "en": "Dodge bonus lasts for 8s.",
+          "es": "la bonificación de evasión dura 8 s."
+        },
+        "level3": {
+          "de": "Erhält eine Ausweichrate von 50 %.",
+          "en": "Gains a 50% Dodge Rate.",
+          "es": "Obtiene un 50 % de Prob. de evasión."
+        },
+        "level4": {
+          "de": "Ausweichbonus hält 10 Sek. an.",
+          "en": "Dodge bonus lasts for 10s.",
+          "es": "la bonificación de evasión dura 10 s."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Katzenhafte Schnelligkeit",
+      "en": "Feline Celerity",
+      "es": "Celeridad felina"
+    },
+    "description": {
+      "de": "Erhält 25 % Ausweichrate, wenn die LP unter 50 % fallen.",
+      "en": "Gains 25% Dodge Rate when HP drops below 50%.",
+      "es": "Obtiene 25 % de prob. de evasión cuando los PS bajan del 50 %."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Verursacht beim Ausweichen eines Treffers 100 % ANG als SCH beim Angreifer.",
+        "en": "When dodging a hit, deals 100% ATK as DMG to the attacker.",
+        "es": "Al evadir un golpe, inflige un 100 % de ATQ como daño al atacante."
+      },
+      "level3": {
+        "de": "Erhält 35 % Ausweichrate, wenn die LP unter 50 % fallen.",
+        "en": "Gains 35% Dodge Rate when HP drops below 50%.",
+        "es": "Obtiene 35 % de prob. de evasión cuando los PS bajan del 50 %."
+      },
+      "level4": {
+        "de": "Verursacht beim Ausweichen eines Treffers 200 % ANG als SCH beim Angreifer.",
+        "en": "When dodging a hit, deals 200% ATK as DMG to the attacker.",
+        "es": "Al evadir un golpe, inflige un 200 % de ATQ como daño al atacante."
+      }
+    }
   }
 }

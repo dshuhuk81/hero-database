@@ -3,5 +3,142 @@
     "de": "Meret",
     "es": "Meret",
     "ru": "Meret"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Lobpreis aller Himmel",
+        "en": "All Heavens in Praise",
+        "es": "Alabanza celestial"
+      },
+      "description": {
+        "de": "Beim passiven Betreten des Schlachtfelds verteilt Meret drei Noten. Die Sonnennote wird der verbündeten Einheit mit den höchsten max. LP gegeben. Die Mondnote wird der verbündeten Einheit mit dem höchsten ANG gegeben. Die Sternennote wird Meret selbst gegeben.\nAktiv: Meret aktiviert alle Noten und gewährt je nach Typ Buffs.\nSonnennote: Gewährt einen Schild in Höhe von 30 % der max. LP des Ziels.\nMondnote: ANG +30 % für 8 Sek.\nSternennote: Stellt 200 Energie wieder her.",
+        "en": "Passive: Upon entering battle, Meret distributes three Notes - Sun Note to the ally with the highest Max HP, Moon Note to the ally with the highest ATK, and Star Note to herself. Active: Activates all Notes. Sun grants a shield equal to 30% of Max HP. Moon grants +30% ATK for 8 seconds. Star restores 200 Energy.",
+        "es": "Al entrar pasivamente al campo de batalla, Meret distribuye tres Notas. La Nota Solar se le da a la unidad aliada con los PS máx. más altos. La Nota Lunar se le da a la unidad aliada con el ATQ más alto. La Nota Estelar se la da a la propia Meret.\nActiva: Meret activa todas las Notas y otorga mejoras según su tipo.\nNota Solar: Otorga un escudo equivalente al 30 % de los PS máx. del objetivo.\nNota Lunar: ATQ +30 % durante 8 segundos.\nNota Estelar: Restaura 200 de Energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der Schild der Sonnennote wird auf 50 % der max. LP erhöht.",
+          "en": "Sun Note shield is increased to 50% of Max HP.",
+          "es": "El escudo de la Nota Solar aumenta hasta un 50 % de los PS máx."
+        },
+        "level3": {
+          "de": "Die Mondnote gewährt zusätzlich +30 % ANG und +30 % KRIT-Rate für 8 Sek.",
+          "en": "Moon Note also grants +30% ATK and +30% CRIT Rate for 8 seconds.",
+          "es": "La Nota Lunar también otorga +30 % de ATQ y +30 % de Tasa de crít. durante 8 segundos."
+        },
+        "level4": {
+          "de": "Die Sternennote stellt 300 Energie wieder her.",
+          "en": "Star Note restores 300 Energy.",
+          "es": "La Nota Estelar restaura 300 de Energía."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Universelle Resonanz",
+        "en": "Universal Resonance",
+        "es": "Resonancia universal"
+      },
+      "description": {
+        "de": "Einheiten, die die Sonnen-, Mond- und Sternennoten tragen, teilen den erlittenen SCH und erhalten zusätzliche Effekte. (Wenn SCH geteilt wird, erleidet das Hauptziel 60 % des SCH. Die restlichen 40 % werden gleichmäßig auf die anderen Notenträger aufgeteilt.)\nSonnennote: Erhöht die max. LP des Ziels um 10 %.\nMondnote: Erhöht den verursachten SCH des Ziels um 20 %.\nSternennote: Erhöht die Energieaufladung um 10 %.",
+        "en": "Marked allies share damage taken. The main target takes 60% of incoming damage, and the remaining 40% is split among other Note holders. Additional effects: Sun grants +10% Max HP, Moon grants +20% damage dealt, Star grants +10% Energy regeneration.",
+        "es": "Las unidades que portan las Notas Solar, Lunar y Estelar comparten el daño recibido y obtienen efectos adicionales. (Cuando se comparte el daño, el objetivo principal recibe el 60 % del daño. El 40 % restante se divide equitativamente entre los otros portadores de Notas).\nNota Solar: Aumenta los PS máx. del objetivo un 10 %.\nNota Lunar: Aumenta el daño infligido del objetivo un 20 %.\nNota Estelar: Aumenta la Recarga de energía un 10 %."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Sonnennote erhöht die max. LP um 15 %.",
+          "en": "Sun Note increases Max HP by 15%.",
+          "es": "La Nota Solar aumenta los PS máx. un 15 %."
+        },
+        "level3": {
+          "de": "Die Mondnote erhöht den verursachten SCH um 30 %.",
+          "en": "Moon Note increases damage dealt by 30%.",
+          "es": "La Nota Lunar aumenta el daño infligido un 30 %."
+        },
+        "level4": {
+          "de": "Die Sternennote erhöht die Energieaufladung um 15 %.",
+          "en": "Star Note increases Energy regeneration by 15%.",
+          "es": "La Nota Estelar aumenta la Recarga de energía un 15 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Schreitender Sand",
+        "en": "Sands in Stride",
+        "es": "Paso entre las arenas"
+      },
+      "description": {
+        "de": "Heilt die verwundbarste verbündete Einheit 5 Sek. lang pro Sek. um 60 % ANG.",
+        "en": "Heals the most vulnerable ally, restoring HP equal to 60% of ATK per second for 5 seconds.",
+        "es": "Sana a la unidad aliada más vulnerable por segundo un 60 % del ATQ durante 5 segundos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 70 % ANG pro Sek. wieder her.",
+          "en": "Restores HP equal to 70% of ATK per second.",
+          "es": "Restaura PS equivalentes a un 70 % del ATQ por segundo."
+        },
+        "level3": {
+          "de": "Wenn das Ziel ein Notenträger ist, wird es zusätzlich pro Sek. um 3 % der max. LP geheilt.",
+          "en": "If the target has a Note, it also heals for an additional 3% of their Max HP each second.",
+          "es": "Si el objetivo es un portador de Nota, también sana un 3 % adicional de los PS máx. por segundo."
+        },
+        "level4": {
+          "de": "Die Dauer wird auf 7 Sek. verlängert.",
+          "en": "Duration extends to 7 seconds.",
+          "es": "La duración se extiende a 7 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Der Vorhang fällt nie",
+        "en": "The Curtain Never Falls",
+        "es": "El telón nunca cae"
+      },
+      "description": {
+        "de": "Passiv: Wenn die LP einer verbündeten Einheit unter 50 % fallen, heilt Meret sie um 25 % der max. LP dieser Einheit. Dieser Effekt kann einmal pro Einheit ausgelöst werden.",
+        "en": "Passively, when an ally drops below 50% HP, Meret heals them for 25% of their Max HP. Can trigger once per unit.",
+        "es": "Pasivamente, cuando los PS de cualquier unidad aliada caen por debajo del 50 %, Meret los sana con un 25 % de los PS máx. de esa unidad. Este efecto se puede activar una vez por unidad."
+      },
+      "upgrades": {
+        "level4": {
+          "de": "Jede Einheit hat eine unabhängige Abklingzeit von 20 Sek.",
+          "en": "Each unit has an independend Cooldown of 20 seconds.",
+          "es": "Cada unidad tiene un TdE independiente de 20 segundos."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Endloses Echo",
+      "en": "Endless Echo",
+      "es": "Eco sin fin"
+    },
+    "description": {
+      "de": "Wenn ein verbündeter Notenträger tödlichen SCH erleiden würde, wird er immun gegen Tod und erhält einen Schild in Höhe von 300 % ANG. Abklingzeit: 15 Sek.",
+      "en": "When a Note-bearing ally would die, prevents their death and grants them a shield equal to 300% of ATK. 15-second cooldown.",
+      "es": "Cuando un portador de Nota aliado está a punto de recibir daño letal, se vuelve inmune a la muerte y obtiene un escudo equivalente al 300 % del ATQ. TdE de 15 s."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Für jede Note auf dem Schlachtfeld, erhält 15 % SCH-RED.",
+        "en": "For each Note on the field, gains 15% DMG Reduction.",
+        "es": "Por cada Nota en el campo de batalla, obtiene un 15 % de Reduc. de daño."
+      },
+      "level3": {
+        "de": "Wenn ein verbündeter Notenträger tödlichen SCH erleiden würde, wird er immun gegen Tod und erhält einen Schild in Höhe von 400 % ANG. Abklingzeit: 15 Sek.",
+        "en": "When a Note unit is about to die, they become immunie to death and gain a shield equal to 400% of ATK. 15s Cooldown.",
+        "es": "Cuando un portador de Nota aliado está a punto de recibir daño letal, se vuelve inmune a la muerte y obtiene un escudo equivalente al 400 % del ATQ. TdE de 15 s."
+      },
+      "level4": {
+        "de": "Für jede Note auf dem Schlachtfeld, erhält 27 % SCH-RED.",
+        "en": "For each Note on the battlefield, gains 27% DMG Reduction.",
+        "es": "Por cada Nota en el campo de batalla, obtiene un 27 % de Reduc. de daño."
+      }
+    }
   }
 }

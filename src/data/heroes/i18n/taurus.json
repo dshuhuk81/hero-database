@@ -3,5 +3,84 @@
     "de": "Stier",
     "es": "Tauro",
     "ru": "Телец"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Suchst du Streit?",
+        "en": "Asking For A Fight?",
+        "es": "¿Buscas pelea?"
+      },
+      "description": {
+        "de": "Löst Erdspaltung nach vorne aus, fügt Feinden 210% ANG-SCH zu und reduziert den ANG der getroffenen Feinde um 20% für 10 Sekunden.",
+        "en": "Casts Earthsplitter forward, dealing DMG equal to 210% of ATK to enemies and reducing their ATK by 20% for 10s.",
+        "es": "Lanza Hendedor de la tierra hacia adelante, lo que inflige un Daño equivalente al 210 % del ATQ a los enemigos y reduce su ATQ en un 20 % durante 10s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursachter SCH erhöht sich auf 230 % ANG.",
+          "en": "DMG dealt increases to 230% ATK.",
+          "es": "el daño infligido aumenta al 230 % de ATQ."
+        },
+        "level3": {
+          "de": "Verringert den ANG des Feindes um 30 %.",
+          "en": "Reduces enemy ATK by 30%.",
+          "es": "Reduce el ATQ enemigo en un 30 %."
+        },
+        "level4": {
+          "de": "Verursachter SCH erhöht sich auf 260 % ANG.",
+          "en": "DMG dealt increases to 260% ATK.",
+          "es": "el daño infligido aumenta al 260 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Alter Ochse steht!",
+        "en": "Old Ox Stands!",
+        "es": "¡El viejo buey resiste!"
+      },
+      "description": {
+        "de": "Verspottet einen Feind für 3 Sekunden und stellt sofort LP in Höhe von 270% ANG wieder her. Diese Fähigkeit priorisiert Feinde, die den schwächsten Verbündeten angreifen.",
+        "en": "Taunts an enemy for 3s and restores HP equal to 270% of ATK. This skill prioritizes enemies who are attacking the most vulnerable ally.",
+        "es": "Provoca a un enemigo durante 3s y restaura PS equivalentes al 270 % del ATQ. Esta habilidad prioriza a los enemigos que atacan al aliado más vulnerable."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 300 % des ANG wieder her.",
+          "en": "Restores HP equal to 300% ATK.",
+          "es": "Restaura PS equivalentes a un 300 % del ATQ."
+        },
+        "level3": {
+          "de": "Erhöht Rüstung und M-RES für 3 Sek. um 50 %.",
+          "en": "Increases Armor and M-RES by 50% for 3s.",
+          "es": "Aumenta la Armadura y la RES M en un 50 % durante 3s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Stellt euch mir, ihr Würmer!",
+        "en": "Face Me, Worms!",
+        "es": "¡Enfréntenme, gusanos!"
+      },
+      "description": {
+        "de": "Stier verspottet umliegende Feinde für 3 Sekunden, schwingt dann eine Axt und fügt ihnen 360% ANG-SCH zu. Stellt 10% der max. LP für jeden getroffenen Feind wieder her.",
+        "en": "Taurus taunts surrounding enemies for 3s and swings his axe to deal DMG equal to 360% of his ATK to them, restoring 10% of his max HP for each enemy hit.",
+        "es": "Tauro provoca a los enemigos circundantes durante 3s y blande su hacha para infligirles un Daño equivalente al 360 % de su ATQ, lo que restaura un 10 % de sus PS máximos por cada enemigo golpeado."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Gewährt beim Einsatz einen Schild in Höhe von 25 % der max. LP.",
+          "en": "Grants a shield equal to 25% of max HP upon casting.",
+          "es": "Otorga un escudo equivalente al 25 % de los PS máximos al lanzar la habilidad."
+        },
+        "level3": {
+          "de": "SCH erhöht sich auf 400 % des ANG.",
+          "en": "DMG increases to 400% ATK.",
+          "es": "El daño aumenta a un 400 % del ATQ."
+        }
+      }
+    }
+  ]
 }

@@ -3,5 +3,152 @@
     "de": "Serket",
     "es": "Serket",
     "ru": "Serket"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Sandgeborener Schwarm",
+        "en": "Sandborn Swarm",
+        "es": "Enjambre de arena"
+      },
+      "description": {
+        "de": "Serket taucht in den Sand und beschwört 3 Skorpione um sich herum. Die Skorpione erben 100 % ihrer Basisattribute, erleiden 200 % SCH und halten 10 Sek. lang.",
+        "en": "Serket dives into the sand and summons 3 scorpions around her. The scorpions inherit 100% of her basic stats, take 200% DMG, and last for 10s.",
+        "es": "Serket se sumerge en la arena e invoca 3 escorpiones a su alrededor. Los escorpiones heredan el 100 % de sus estadísticas básicas, reciben un 200 % de Daño y duran 10 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Dauer auf 15 Sek. verlängert.",
+          "en": "Duration extends to 15s.",
+          "es": "La duración se extiende a 15 s."
+        },
+        "level3": {
+          "de": "Beschworene Skorpione erleiden 180 % SCH.",
+          "en": "Summoned scorpions take 180% DMG.",
+          "es": "Los escorpiones invocados reciben un 180 % de Daño."
+        },
+        "level4": {
+          "de": "Beschworene Skorpione können ebenfalls Lauernder Stachel einsetzen.",
+          "en": "Summoned scorpions can also use Lurking Sting.",
+          "es": "Los escorpiones invocados también pueden usar Aguijón acechante."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Lauernder Stachel",
+        "en": "Lurking Sting",
+        "es": "Aguijón acechante"
+      },
+      "description": {
+        "de": "Serket visiert den am weitesten entfernten Feind an und gräbt sich vorwärts, wobei sie Feinden auf ihrem Weg 150 % ANG als SCH zufügt und beim Auftauchen umstehende Feinde zu Boden wirft.",
+        "en": "Serket locks onto the farthest enemy and burrows to tunnel forward, dealing 150% ATK as DMG to enemies in her path and knocking down surrounding enemies upon emerging.",
+        "es": "Serket fija al enemigo más lejano y se entierra para avanzar, infligiendo un Daño equivalente al 150 % de su ATQ a los enemigos en su camino y derribando a los enemigos cercanos al emerger."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 200 % ANG.",
+          "en": "Increases DMG dealt to 200% ATK.",
+          "es": "Aumenta el daño infligido a 200 % de ATQ."
+        },
+        "level3": {
+          "de": "Erhält beim Auftauchen einen Schild in Höhe von 200 % ANG.",
+          "en": "Gains a shield equal to 200% ATK upon emerging.",
+          "es": "Obtiene un escudo equivalente al 200 % de su ATQ al emerger."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 250 % ANG.",
+          "en": "Increases DMG dealt to 250% ATK.",
+          "es": "Aumenta el daño infligido a 250 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Giftexplosion",
+        "en": "Venom Burst",
+        "es": "Explosión de veneno"
+      },
+      "description": {
+        "de": "Wenn ein beschworener Skorpion fällt oder verschwindet, zerstört er sich selbst, fügt Feinden in einem Radius von 3 Metern SCH in Höhe von 200 % ANG zu und verringert ihren ANG 10 Sek. lang um 10 %.",
+        "en": "When a summoned scorpion falls or disappears, it self-destructs, dealing DMG equal to 200% ATK to enemies within a 3-meter radius and reducing their ATK by 10% for 10s.",
+        "es": "Cuando un escorpión invocado cae o desaparece, se autodestruye, infligiendo un Daño equivalente al 200 % de su ATQ a los enemigos en un radio de 3 metros y reduciendo su ATQ en un 10 % durante 10 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 240 % ANG.",
+          "en": "Increases DMG dealt to 240% ATK.",
+          "es": "Aumenta el daño infligido a 240 % de ATQ."
+        },
+        "level3": {
+          "de": "Verringert den ANG von Feinden um 15 %.",
+          "en": "Reduces enemies' ATK by 15%.",
+          "es": "Reduce el ATQ de los enemigos en un 15 %."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 280 % ANG.",
+          "en": "Increases DMG dealt to 280% ATK.",
+          "es": "Aumenta el daño infligido a 280 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Sand-Wiedergeburt",
+        "en": "Sand Rebirth",
+        "es": "Renacimiento de arena"
+      },
+      "description": {
+        "de": "Wenn ihre LP zum ersten Mal unter 40 % fallen, taucht Serket sofort für 3 Sek. in den Sand und erhöht ihre max. LP dauerhaft um 30 %. Während sie eingegraben ist, stellt sie pro Sek. LP in Höhe von 60 % ANG wieder her (Passiv).",
+        "en": "When her HP drops below 40% for the first time, Serket immediately dives into the sand for 3s and permanently increases her max HP by 30%. While burrowing, she restores HP equal to 60% ATK per sec (Passive).",
+        "es": "Cuando sus PS bajan del 40 % por primera vez, Serket se sumerge inmediatamente en la arena durante 3 s y aumenta permanentemente sus PS máximos en un 30 %. Mientras está enterrada, restaura PS equivalentes al 60 % de su ATQ por segundo (Pasiva)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt während des Eingrabens pro Sek. LP in Höhe von 80 % ANG wieder her.",
+          "en": "Restores HP equal to 80% ATK per sec while burrowing.",
+          "es": "Restaura PS equivalentes al 80 % de su ATQ por segundo mientras está enterrada."
+        },
+        "level3": {
+          "de": "Wenn ihre LP zum ersten Mal unter 40 % fallen, taucht Serket sofort für 3 Sek. in den Sand und erhöht ihre max. LP dauerhaft um 40 %.",
+          "en": "When her HP drops below 40% for the first time, Serket immediately dives into the sand for 3s and permanently increases her max HP by 40%.",
+          "es": "Cuando sus PS bajan del 40 % por primera vez, Serket se sumerge inmediatamente en la arena durante 3 s y aumenta permanentemente sus PS máximos en un 40 %."
+        },
+        "level4": {
+          "de": "Stellt während des Eingrabens pro Sek. LP in Höhe von 100 % ANG wieder her.",
+          "en": "Restores HP equal to 100% ATK per sec while burrowing.",
+          "es": "Restaura PS equivalentes al 100 % de su ATQ por segundo mientras está enterrada."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Giftige Domäne",
+      "en": "Venomous Domain",
+      "es": "Dominio venenoso"
+    },
+    "description": {
+      "de": "Serket fügt umstehenden Feinden pro Sek. SCH in Höhe von 80 % ANG zu.",
+      "en": "Serket deals DMG equal to 80% ATK to surrounding enemies per sec.",
+      "es": "Serket inflige un Daño equivalente al 80 % de su ATQ a los enemigos cercanos por segundo."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Wenn sie durch einen einzelnen Treffer SCH erleidet, der 20 % der max. LP übersteigt, wird dieser SCH annulliert und sie erleidet für die nächsten 3 Sek. 50 % weniger SCH. CD: 15 Sek.",
+        "en": "When taking DMG exceeding 20% of max HP from a single hit, nullifies that DMG and takes 50% less DMG for the next 3s. CD: 15s.",
+        "es": "Al recibir Daño de un solo golpe que exceda el 20 % de sus PS máximos, anula ese Daño y recibe un 50 % menos de Daño durante los siguientes 3 s. TdE: 15 s."
+      },
+      "level3": {
+        "de": "Jeder beschworene Skorpion fügt umstehenden Feinden pro Sek. SCH in Höhe von 80 % ANG zu.",
+        "en": "Each summoned scorpion deals DMG equal to 80% ATK to surrounding enemies per sec.",
+        "es": "Cada escorpión invocado inflige un Daño equivalente al 80 % de su ATQ a los enemigos cercanos por segundo."
+      },
+      "level4": {
+        "de": "Wenn beschworene Skorpione durch einen einzelnen Treffer SCH erleiden, der 20 % ihrer max. LP übersteigt, wird dieser SCH annulliert und sie erleiden für die nächsten 3 Sek. 50 % weniger SCH. CD: 15 Sek.",
+        "en": "When taking DMG exceeding 20% of its max HP from a single hit, summoned scorpions nullify that DMG and take 50% less DMG for the next 3s. CD: 15s.",
+        "es": "Al recibir Daño de un solo golpe que exceda el 20 % de sus PS máximos, los escorpiones invocados anulan ese Daño y reciben un 50 % menos de Daño durante los siguientes 3 s. TdE: 15 s."
+      }
+    }
   }
 }

@@ -3,5 +3,124 @@
     "de": "Momos",
     "es": "Momos",
     "ru": "Момос"
+  },
+  "skills": [
+    {},
+    {
+      "name": {
+        "de": "Kommt doch her!",
+        "en": "Come at Me!",
+        "es": "¡Ven por mí!"
+      },
+      "description": {
+        "de": "Momos springt in die Mitte des Bereichs mit den meisten Feinden und verspottet Feind in der Nähe für 5 Sek.",
+        "en": "Momus leaps into the center of the most enemy-clustered area, taunting nearby enemies for 5s.",
+        "es": "Momo salta al centro del área con más enemigos y provoca a los enemigos cercanos durante 5s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält 25 % SCH-Reduktion während des Ultimativs.",
+          "en": "Gains 25% DMG RED during the Ultimate.",
+          "es": "Obtiene un 25 % de RED de daño durante la habilidad definitiva."
+        },
+        "level3": {
+          "de": "Erhält Super-Rüstung während der Ultimativen Fähigkeit.",
+          "en": "Gains Super Armor during the Ultimate.",
+          "es": "Obtiene Superarmadura durante la Habilidad definitiva."
+        },
+        "level4": {
+          "de": "Erhält 50 % SCH-RED während des Ultimativs.",
+          "en": "Gains 50% DMG RED during the Ultimate.",
+          "es": "Obtiene un 50 % de RED de daño durante la habilidad definitiva."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Süßer Schmerz",
+        "en": "Sweet Pain",
+        "es": "Dulce dolor"
+      },
+      "description": {
+        "de": "Jedes Mal, wenn Momos SCH in Höhe von 20 % seiner max. LP erleidet, startet er einen Gegenangriff in einem kleinen Bereich, der SCH in Höhe von 200 % ANG verursacht. Dieser Effekt kann mehrmals ausgelöst werden.",
+        "en": "Whenever taking 20% max HP as DMG, Momus launches a counterattack in a small area, dealing DMG equal to 200% of ATK. This effect can trigger multiple times.",
+        "es": "Cada vez que recibe un Daño equivalente al 20 % de sus PS máximos, Momo lanza un contraataque en un área pequeña que inflige un Daño del 200 % de ATQ. Este efecto puede activarse varias veces."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 230 %.",
+          "en": "Increases DMG dealt to 230%.",
+          "es": "Aumenta el daño infligido a 230 %."
+        },
+        "level3": {
+          "de": "Stellt für jede getroffene feindliche Einheit LP in Höhe von 50 % ANG wieder her (bis zu 250 % ANG).",
+          "en": "For each enemy unit hit, restores HP equal to 50% of ATK (up to 250% of ATK).",
+          "es": "Por cada unidad enemiga golpeada, restaura PS equivalentes al 50 % de ATQ (hasta un 250 % de ATQ )."
+        },
+        "level4": {
+          "de": "Erforderlicher LP-SCH zum Auslösen reduziert auf 15%.",
+          "en": "Reduces the DMG taken required to trigger the effect to 15% of max HP.",
+          "es": "Reduce el Daño recibido necesario para activar el efecto al 15 % de los PS máximos."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Bombenparty",
+        "en": "Bomb Party",
+        "es": "Fiesta de bombas"
+      },
+      "description": {
+        "de": "Momos zündet eine Springbombe, die SCH in Höhe von 200 % ANG verursacht und Feinde in der Nähe zu Boden wirft.",
+        "en": "Momus detonates a bouncing bomb, dealing DMG equal to 200% of ATK and knocking down nearby enemies.",
+        "es": "Momo detona una bomba rebotadora que inflige un Daño del 200 % de ATQ y derriba a los enemigos cercanos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 230 %.",
+          "en": "Increases DMG dealt to 230%.",
+          "es": "Aumenta el daño infligido a 230 %."
+        },
+        "level3": {
+          "de": "Die KRIT-Rate getroffener Einheiten wird zusätzlich für 6 Sek. um 25 % verringert.",
+          "en": "Hit units also have their CRIT Rate reduced by 25% for 6s.",
+          "es": "La Tasa de crít. de las unidades golpeadas también se reduce en un 25 % durante 6s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 260 %.",
+          "en": "Increases DMG dealt to 260%. (Unlocks at Lv.261)",
+          "es": "Aumenta el Daño infligido al 260 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Phantompuppe",
+      "en": "Phantom Puppet",
+      "es": "Marioneta fantasma"
+    },
+    "description": {
+      "de": "Wenn Momos' LP zum ersten Mal unter 50 % fallen, wird er unsichtbar und beschwört ein Echo von sich selbst (Passiv). Das Echo erbt 50 % seines ANG für 10 Sek. Momos kehrt zurück, wenn das Echo fällt.",
+      "en": "When Momus's HP drops below 50% for the first time, he becomes invisible and summons an Echo of himself (Passive). The Echo inherits 50% of his ATK and lasts 10s. Momus returns when the Echo falls.",
+      "es": "Cuando los PS de Momo bajan del 50 % por primera vez, se vuelve invisible e invoca un eco de sí mismo (Pasiva). El eco hereda el 50 % de su ATQ y dura 10s. Momo regresa cuando el eco cae."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Wird dies während der Ultimativen Fähigkeit ausgelöst, wird er unsichtbar und beschwört ein Echo, das den Spott der Ultimativen Fähigkeit fortsetzt.",
+        "en": "If it's triggered during the Ultimate, he stealthes and summons an Echo to continue the Ultimate's taunt.",
+        "es": "Si se activa durante la Habilidad definitiva, entra en sigilo e invoca un eco para continuar la provocación de la Habilidad definitiva."
+      },
+      "level3": {
+        "de": "Das Echo erbt auch Momos' Süßen Schmerz.",
+        "en": "The Echo also inherits Momus's Sweet Pain.",
+        "es": "El eco también hereda el Dulce dolor de Momo."
+      },
+      "level4": {
+        "de": "Erhält 1 weitere Anwendung, mit einer Abklingzeit von 10 Sek. zwischen zwei Anwendungen.",
+        "en": "Gains 1 more use, with a 10s CD between two uses. (Unlocks at Lv.281)",
+        "es": "Obtiene 1 uso más, con un TdE de 10s entre dos usos."
+      }
+    }
   }
 }

@@ -3,5 +3,142 @@
     "de": "Demeter",
     "es": "Deméter",
     "ru": "Деметра"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Die Kraft der Erde",
+        "en": "The Earth’s Vigor",
+        "es": "Vigor de la Tierra"
+      },
+      "description": {
+        "de": "Demeter wurzelt sich selbst, fesselt Feind um sie herum für 3 Sek. und verursacht jede Sek. SCH in Höhe von 100 % ANG. Jeder Feind stellt für sie pro Sek. LP in Höhe von 90 % ANG wieder her. Demeter erhält für die Dauer Super-Rüstung.",
+        "en": "Demeter roots herself, restraining enemies around her for 3s, dealing DMG equal to 100% of ATK every second. Each enemy restores HP equal to 90% of ATK to her per second. Demeter gains Super Armor for the duration.",
+        "es": "Deméter se arraiga, inmovilizando a los enemigos a su alrededor durante 3s e infligiendo un Daño equivalente al 100 % de su ATQ cada segundo. Cada enemigo le restaura una cantidad de PS equivalente al 90 % de su ATQ por segundo. Deméter obtiene Superarmadura mientras dure el efecto."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH pro Sekunde auf 110 % ANG.",
+          "en": "Increases DMG per second to 110% of ATK.",
+          "es": "Aumenta el daño por segundo a 110 % de ATQ."
+        },
+        "level3": {
+          "de": "Pro Sekunde wiederhergestellte LP von jedem Gegner erhöht auf 100% ANG.",
+          "en": "Each enemy restores HP equal to 100% of her ATK per second.",
+          "es": "Cada enemigo le restaura a Deméter una cantidad de PS equivalente al 100 % de su ATQ cada segundo."
+        },
+        "level4": {
+          "de": "Erhöht den SCH pro Sekunde auf 120 % ANG.",
+          "en": "Increases DMG per second to 120% of ATK.",
+          "es": "Aumenta el daño por segundo a 120 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wuchernde Dornen",
+        "en": "Sprawling Thorns",
+        "es": "Espinas trepadoras"
+      },
+      "description": {
+        "de": "Demeter verwendet Ranken, um den entferntesten Gegner zu binden, fügt 270% ANG als SCH zu und entzieht ihm 100 Energie.",
+        "en": "Demeter controls vines to restrain the farthest enemy, dealing DMG equal to 270% of ATK and draining 100 Energy from them.",
+        "es": "Deméter controla enredaderas para inmovilizar al enemigo más lejano, lo que inflige un Daño equivalente al 270 % de su ATQ y le drena 100 de Energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 300 % ANG.",
+          "en": "Increases DMG dealt to 300% of ATK.",
+          "es": "Aumenta el daño infligido a 300 % de ATQ."
+        },
+        "level3": {
+          "de": "Entzieht jetzt 150 Energie.",
+          "en": "Energy drained increases to 150.",
+          "es": "Ahora drena 150 de Energía."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 330 % ANG.",
+          "en": "Increases DMG dealt to 330% of ATK.",
+          "es": "Aumenta el daño infligido a 330 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "es": "Regreso de la doncella",
+        "en": "Return of the Maiden"
+      },
+      "description": {
+        "es": "Restaura un 2 % de PS cada 0,2s durante 3s cuando sus PS bajan del 50 %. Se puede usar una vez por batalla.",
+        "en": "Restores 2% HP every 0.2s for 3s when Demeter’s HP drops below 50%. Can be triggered once per battle."
+      },
+      "upgrades": {
+        "level2": {
+          "es": "Restaura un 3 % de PS cada 0,2s.",
+          "en": "Restores 3% HP every 0.2s."
+        },
+        "level3": {
+          "es": "La duración se extiende a 4 s.",
+          "en": "Duration extends to 4s."
+        },
+        "level4": {
+          "es": "Se puede activar dos veces por batalla y una vez cada 6s.",
+          "en": "Can trigger twice per battle and once every 6s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Segen der Ernte",
+        "en": "Harvest’s Blessing",
+        "es": "Bendición de la cosecha"
+      },
+      "description": {
+        "de": "Demeter gewährt sich selbst und dem verwundbarsten Verbündeten einen Schild in Höhe von 200 % ANG. Der Schild dauert bis zu 10 Sek.",
+        "en": "Demeter grants a shield equal to 200% of ATK to herself and the most vulnerable ally. The shield lasts up to 10s.",
+        "es": "Deméter se otorga un escudo equivalente al 200 % de su ATQ a sí misma y al aliado más vulnerable. El escudo dura hasta 10s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Schildstärke erhöht sich auf 220 % ANG.",
+          "en": "Shield strength increases to 220% of ATK.",
+          "es": "La fuerza del Escudo aumenta a 220 % de ATQ."
+        },
+        "level3": {
+          "de": "Erhöht die M-RES um 50 %, wenn der Schild aktiv ist.",
+          "en": "Increases M-RES by 50% while the shield is active.",
+          "es": "Aumenta la RES M en un 50 % cuando el escudo está activo."
+        },
+        "level4": {
+          "de": "Die Schildstärke erhöht sich auf 250 % ANG.",
+          "en": "Shield strength increases to 250% of ATK.",
+          "es": "La fuerza del Escudo aumenta a 250 % de ATQ."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "es": "Abundancia de las estaciones",
+      "en": "Four Seasons’ Bounty"
+    },
+    "description": {
+      "es": "Deméter tiene 3 acumulaciones de Abundancia al entrar en batalla. Cada acumulación reduce el Daño recibido en un 15 %. Por cada 30 % de PS máx. perdidos, Deméter pierde una acumulación de Abundancia. Cuando los PS de Deméter se restauran a cierto nivel, recupera acumulaciones de Abundancia.",
+      "en": "Demeter enters battle with 3 stacks of Abundance. Each stack reduces DMG taken by 15%. For every 30% of max HP lost, one stack is consumed. Stacks are regained when her HP is restored to a certain level."
+    },
+    "upgrades": {
+      "level2": {
+        "es": "Cuando Deméter tiene 3 acumulaciones de Abundancia, es inmune al Control de masas.",
+        "en": "When Demeter has 3 stacks of Abundance, she is immune to Crowd Control."
+      },
+      "level3": {
+        "es": "Cada acumulación de Abundancia reduce el Daño recibido en un 17,5 %.",
+        "en": "Each stack of Abundance reduces DMG taken by 17.5%."
+      },
+      "level4": {
+        "es": "Cada acumulación de Abundancia reduce el Daño recibido en un 20 %.",
+        "en": "Each stack of Abundance reduces DMG taken by 20%."
+      }
+    }
   }
 }

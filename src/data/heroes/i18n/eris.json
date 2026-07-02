@@ -3,5 +3,152 @@
     "de": "Eris",
     "es": "Eris",
     "ru": "Eris"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Ankunft der Marionette",
+        "en": "Puppet's Advent",
+        "es": "Advenimiento de la marioneta"
+      },
+      "description": {
+        "de": "Eris schießt auf den schwächsten Gegner und verursacht 200 % ANG als SCH. Befiehlt allen Puppen, das Feuer zu synchronisieren, um pro Schuss zusätzlichen SCH in Höhe von 300 % ihres ANG zu verursachen.",
+        "en": "Eris unleashes a shot at the weakest enemy, dealing 200% ATK as DMG. Commands all puppets to synchronize fire for additional DMG equal to 300% of their ATK per shot.",
+        "es": "Eris lanza un disparo al enemigo más débil, lo que inflige un 200 % de ATQ como daño. Ordena a todas las marionetas que sincronicen su fuego para infligir daño adicional equivalente al 300 % de su ATQ por disparo."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Eris' Schuss verursacht 300 % ANG als SCH.",
+          "en": "Eris's shot deals 300% ATK as DMG.",
+          "es": "El disparo de Eris inflige un 300 % de ATQ como daño."
+        },
+        "level3": {
+          "de": "Jeder Puppenschuss verursacht Bonus-SCH in Höhe von 7,5 % der verlorenen LP des Ziels (bis zu 600 % des ANG der Puppe).",
+          "en": "Each Puppet shot deals bonus DMG equal to 7.5% of the target's lost HP (up to 600% of the puppets ATK).",
+          "es": "Cada disparo de marioneta inflige daño adicional equivalente al 7,5 % de los PS perdidos del objetivo (hasta un 600 % del ATQ de la marioneta)."
+        },
+        "level4": {
+          "de": "Eris' Schuss verursacht Bonus-SCH in Höhe von 15 % der max. LP des Ziels (bis zu 500 % von Eris' ANG).",
+          "en": "Eris's shot deals bonus DMG equal to 15% of the target's max HP (up to 500% of Eris's ATK).",
+          "es": "El disparo de Eris inflige daño adicional equivalente al 15 % de los PS máximos del objetivo (hasta un 500 % del ATQ de Eris)."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Geheime Fäden",
+        "en": "Secret Strands",
+        "es": "Hilos secretos"
+      },
+      "description": {
+        "de": "Feuert einen Schuss ab, der 100 % SCH verursacht und für 30 Sek. eine Puppe beschwört.\\nPuppe: Erbt 20 % von Eris' ANG und max. LP. Puppen können sich nicht bewegen oder unabhängig agieren; stattdessen unterstützen sie Eris' Normalangriffe unabhängig von der Entfernung und verursachen 100 % ihres ANG als SCH. Max. 3 Puppen.",
+        "en": "Unleashes a shot to deal 100% DMG to the target and summons a Puppet for 30s. Puppets: Inherit 20% of Eris's ATK and Max HP. Puppets cannot move or act independently; instead they assist Eris's Normal Attacks regardless of distance, dealing 100% of their ATK as DMG. Max 3 Puppets.",
+        "es": "Lanza un disparo para infligir un 100 % de daño e invocar una marioneta durante 30 s.\nMarioneta: hereda el 20 % del ATQ y los PS máximos de Eris. Las marionetas no pueden moverse ni actuar de forma independiente; en su lugar, asisten en los ataques normales de Eris sin importar la distancia, infligiendo un 100 % de su ATQ como daño. Máximo 3 marionetas."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Puppe: Erbt 30 % von Eris' ANG und max. LP.",
+          "en": "Puppet: Inherits 30% of Eris's ATK and Max HP.",
+          "es": "Marioneta: hereda el 30 % del ATQ y los PS máximos de Eris."
+        },
+        "level3": {
+          "de": "Jeder Normalangriff von Eris reduziert die CD dieser Fähigkeit um 0,5 Sek.",
+          "en": "Each of Eris's Normal Attack reduces this skill's CD by 0.5s.",
+          "es": "Cada ataque normal de Eris reduce el TdE de esta habilidad en 0,5 s."
+        },
+        "level4": {
+          "de": "Puppe: Erbt 60 % von Eris' ANG und 30 % max. LP.",
+          "en": "Puppet: Inherits 60% of Eris's ATK and 30% of Max HP.",
+          "es": "Marioneta: hereda el 60 % del ATQ y el 30 % de los PS máximos de Eris."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Requiem der Fäden",
+        "en": "Requiem of Strings",
+        "es": "Réquiem de los hilos"
+      },
+      "description": {
+        "de": "Bei der Niederlage eines beliebigen nicht-Puppen-Verbündeten (einschließlich Gottheiten und regulärer Diener) wird 1 Puppe an dessen Position beschworen (Passiv). Max. 3 Puppen, die jeweils 25 Sek. andauern.\\nPuppe: Erbt 60 % von Eris' ANG und 30 % max. LP.",
+        "en": "Upon the defeat of any non-puppet ally (including Deitys and Minions), summons 1 puppet at their position (Passive). Max 3 puppets, each lasting 25s. Puppet: inherits 60% of Eris's ATK and 30% max HP.",
+        "es": "Tras la derrota de cualquier aliado que no sea una marioneta (incluidas las deidades y los súbditos normales), invoca 1 marioneta en su posición (Pasiva). Máximo 3 marionetas, cada una dura 25 s.\nMarioneta: hereda el 60 % del ATQ y el 30 % de los PS máximos de Eris."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Max. 5 Puppen.",
+          "en": "Max 5 puppets.",
+          "es": "Máximo 5 marionetas."
+        },
+        "level3": {
+          "de": "Max. 7 Puppen.",
+          "en": "Max 7 puppets.",
+          "es": "Máximo 7 marionetas."
+        },
+        "level4": {
+          "de": "Die Dauer der Puppe wird auf 35 Sek. verlängert.",
+          "en": "Puppet duration extends to 35s.",
+          "es": "La duración de la marioneta se extiende a 35 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Marionettenopfer",
+        "en": "Puppet Sacrifice",
+        "es": "Sacrificio de marioneta"
+      },
+      "description": {
+        "de": "Wenn Eris tödlichen SCH erleidet, wird sie für 3 Sek. unantastbar. CD: 30 Sek.",
+        "en": "Upon taking Lethal DMG, Eris becomes untargetable for 3s. CD: 30s.",
+        "es": "Al recibir daño letal, Eris se vuelve inalcanzable durante 3 s. TdE: 30 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Dauer wird auf 6 Sek. verlängert.",
+          "en": "Duration extends to 6s.",
+          "es": "La duración se extiende a 6 s."
+        },
+        "level3": {
+          "de": "CD wird auf 25 Sek. verringert.",
+          "en": "CD decreases to 25s.",
+          "es": "El TdE se reduce a 25 s."
+        },
+        "level4": {
+          "de": "Wenn Eris einen Kill erzielt, wird die CD dieser Fähigkeit um 7,5 Sek. reduziert.",
+          "en": "When Eris secures a kill, this skill's CD is reduced by 7.5s.",
+          "es": "Cuando Eris consigue una eliminación, el TdE de esta habilidad se reduce en 7,5 s."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Fluch der Marionetten",
+      "en": "Curse of Puppets",
+      "es": "Maldición de las marionetas"
+    },
+    "description": {
+      "de": "Eris markiert einen Gegner und ignoriert 30 % der VTD des Ziels, wenn sie und ihre Puppen SCH verursachen (Passiv).",
+      "en": "Eris marks an enemy, ignoring 30% of the target's DEF when she and her puppets deal DMG (passive).",
+      "es": "Eris marca a un enemigo e ignora el 30 % de la DEF del objetivo cuando ella y sus marionetas infligen daño (Pasiva)."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Ignoriert 60 % der VTD des Ziels.",
+        "en": "Ignores 60% of the target's DEF.",
+        "es": "Ignora el 60 % de la DEF del objetivo."
+      },
+      "level3": {
+        "de": "Beschwört Puppen bei der Niederlage gegnerischer Gottheiten.",
+        "en": "Summons puppets upon the defeat an enemy Deitys.",
+        "es": "Invoca marionetas tras la derrota de las deidades enemigas."
+      },
+      "level4": {
+        "de": "Ignoriert 90 % der VTD des Ziels.",
+        "en": "Ignores 90% of the target's DEF.",
+        "es": "Ignora el 90 % de la DEF del objetivo."
+      }
+    }
   }
 }

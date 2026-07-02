@@ -3,5 +3,152 @@
     "de": "Nuba",
     "es": "Nuba",
     "ru": "Нуба"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Seelensiphon",
+        "en": "Siphon of Souls",
+        "es": "Sifón de almas"
+      },
+      "description": {
+        "de": "Passiv: Belegt zu Kampfbeginn die 3 am weitesten entfernten Feind mit dem Karmesinroten Verderbensmal. Alle 2,5 Sek. verursacht das Karmesinrote Verderbensmal bei seinem Wirt SCH in Höhe von 15 % seiner aktuellen LP (begrenzt auf 240 % ANG) und zerstört 50 Energie. Wenn ein Feind mit dem Karmesinroten Verderbensmal fällt, verschwindet das Mal nicht. Stattdessen entzieht es dem Ziel die Essenz und verwandelt sich am Standort des Ziels in eine Quelle des Dürreteufels.\nBei Aktivierung: Belegt den nächsten Feind mit dem Karmesinroten Verderbensmal, macht ihn für 3 Sek. kampfunfähig, verursacht SCH in Höhe von 400 % ANG und absorbiert 200 Energie.",
+        "en": "Passively, at the start of battle, inflicts Crimson Doom Mark on the 3 farthest enemies. Every 2.5s, Crimson Doom Mark deals DMG equal to 15% of their current HP, capped at 240% of ATK, and destroys 50 Energy. When an enemy with Crimson Doom Mark falls, the mark does not disappear. Instead, it drains the target's essence and transforms into a Source of the Drought Devil at the target's location. Upon activation, inflicts Crimson Doom Mark on the nearest enemy, disabling them for 3 seconds, dealing 400% of ATK DMG, and absorbing 200 Energy.",
+        "es": "Pasivamente, al inicio de la batalla, inflige la Marca de perdición carmesí a los 3 enemigos más alejados. Cada 2,5 s, la Marca de perdición carmesí inflige daño a su portador equivalente al 15 % de sus PS actuales, con un límite del 240 % del ATQ, y destruye 50 de Energía. Cuando un enemigo con la Marca de perdición carmesí cae, la marca no desaparece. En su lugar, drena la esencia del objetivo y se transforma en una Fuente del Demonio de la Sequía en la ubicación del objetivo.\nAl activarse, inflige la Marca de perdición carmesí al enemigo más cercano, lo incapacita durante 3 segundos, inflige un 400 % de ATQ como daño y absorbe 200 de Energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Aktiver SCH erhöht sich auf 440 % ANG.",
+          "en": "Active DMG increases to 440% ATK.",
+          "es": "El daño de la activa aumenta a un 440 % del ATQ."
+        },
+        "level3": {
+          "de": "Die durch die aktive Fähigkeit absorbierte Energie wird auf 300 erhöht.",
+          "en": "Energy absorbed by the Active is increased to 300.",
+          "es": "La Energía absorbida por la activa aumenta a 300."
+        },
+        "level4": {
+          "de": "Aktiver SCH erhöht sich auf 480 % ANG.",
+          "en": "Active DMG increases to 480% ATK.",
+          "es": "El daño de la activa aumenta a un 480 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Höllischer Seelenbrecher",
+        "en": "Infernal Soulbreaker",
+        "es": "Rompealmas infernal"
+      },
+      "description": {
+        "de": "Fügt dem nächsten Feind SCH in Höhe von 100 % ANG zu und unterbricht ihn. Wenn das Ziel das Karmesinrote Verderbensmal hat, verursacht dies stattdessen SCH in Höhe von 300 % ANG und betäubt das Ziel für 2 Sek.",
+        "en": "Deal 100% of ATK DMG to the nearest enemy and interrupt them. If the target has Crimson Doom Mark, this instead deals 300% of ATK DMG and stuns the target for 2s.",
+        "es": "Inflige un 100 % de ATQ como daño al enemigo más cercano y lo interrumpe. Si el objetivo tiene la Marca de perdición carmesí, inflige en su lugar un 300 % de ATQ como daño y aturde al objetivo durante 2 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 120 % ANG und 320 % ANG.",
+          "en": "Increases DMG dealt to 120% of ATK and 320% of ATK.",
+          "es": "Aumenta el Daño infligido al 120 % del ATQ y al 320 % del ATQ."
+        },
+        "level3": {
+          "de": "Wenn das Ziel das Karmesinrote Verderbensmal hat, wird die Betäubungsdauer auf 3 Sek. erhöht.",
+          "en": "If the target has Crimson Doom Mark, the Stun duration is increased to 3 seconds.",
+          "es": "Si el objetivo tiene la Marca de perdición carmesí, la duración del Aturdimiento aumenta a 3 segundos."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 150 % ANG und 350 % ANG.",
+          "en": "Increases DMG dealt to 150% of ATK and 350% of ATK.",
+          "es": "Aumenta el Daño infligido al 150 % del ATQ y al 350 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Ritus der Asche",
+        "en": "Rite of Ashes",
+        "es": "Rito de las cenizas"
+      },
+      "description": {
+        "de": "Passiv: Heilt um 50 % des von Nvba und dem Karmesinroten Verderbensmal verursachten SCH. Wandelt alle über die max. LP hinaus wiederhergestellten LP in einen Schild um. Dieser Schild kann 100 % der max. LP von Nvba nicht überschreiten.",
+        "en": "Passively, heals for 50% of the DMG dealt by Nuba and Crimson Doom Mark. Converts any HP restored beyond Max HP into a shield. This shield cannot exceed 100% of Nuba's Max HP.",
+        "es": "Pasivamente, sana un 50 % del Daño infligido por Nvba y la Marca de perdición carmesí. Convierte cualquier PS restaurado por encima de los PS máx. en un escudo. Este escudo no puede exceder el 100 % de los PS máx. de Nvba."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die LP-Wiederherstellung durch den von Nvba und dem Karmesinroten Verderbensmal verursachten SCH wird auf 70 % erhöht.",
+          "en": "HP restored from DMG dealt by Nuba and Crimson Doom Mark is increased to 70%.",
+          "es": "Los PS restaurados del Daño infligido por Nvba y la Marca de perdición carmesí aumentan a un 70 %."
+        },
+        "level3": {
+          "de": "Die Schildobergrenze wird auf 200 % der max. LP von Nvba erhöht.",
+          "en": "The shield cap is increased to 200% of Nuba's Max HP.",
+          "es": "El límite del escudo aumenta al 200 % de los PS máx. de Nvba."
+        },
+        "level4": {
+          "de": "Die LP-Wiederherstellung durch den von Nvba und dem Karmesinroten Verderbensmal verursachten SCH wird auf 100 % erhöht.",
+          "en": "HP restored from DMG dealt by Nuba and Crimson Doom Mark is increased to 100%.",
+          "es": "Los PS restaurados del Daño infligido por Nvba y la Marca de perdición carmesí aumentan a un 100 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Aufstieg der Dürre",
+        "en": "Rise of the Drought",
+        "es": "Ascenso de la sequía"
+      },
+      "description": {
+        "de": "Wenn Nvba fällt, verbraucht sie eine Quelle des Dürreteufels, um an ihrem aktuellen Standort wiederbelebt zu werden, und stellt 30 % ihrer max. LP wieder her.",
+        "en": "When Nuba falls, she consumes one Source of the Drought Devil to revive at her current location, restoring 30% of her Max HP.",
+        "es": "Cuando Nvba cae, consume una Fuente del Demonio de la Sequía para revivir en su ubicación actual, restaurando un 30 % de sus PS máx."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die wiederhergestellten LP auf 40 %.",
+          "en": "Increases HP restored to 40%.",
+          "es": "Aumenta los PS restaurados a un 40 %."
+        },
+        "level3": {
+          "de": "Für jede Sek., die die Quelle des Dürreteufels existiert hat, stellt Nvba bei der Wiederbelebung zusätzlich 5 % der max. LP wieder her.",
+          "en": "For each second the Source of the Drought Devil has existed, Nuba restores an additional 5% of Max HP upon revival.",
+          "es": "Por cada segundo que la Fuente del Demonio de la Sequía haya existido, Nvba restaura un 5 % adicional de sus PS máx. al revivir."
+        },
+        "level4": {
+          "de": "Erhöht die wiederhergestellten LP auf 50 %.",
+          "en": "Increases HP restored to 50%.",
+          "es": "Aumenta los PS restaurados a un 50 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Fluch des Verfalls",
+      "en": "Curse of Decay",
+      "es": "Maldición de la decadencia"
+    },
+    "description": {
+      "de": "Feinde, die mit dem Karmesinroten Verderbensmal befallen sind, verursachen 25 % weniger SCH. Jedes Mal, wenn Nvba ihre Ultimative Fähigkeit einsetzt, verlieren alle mit dem Karmesinroten Verderbensmal befallenen Feinde permanent 15 % ANG-GES, bis zu 4-mal stapelbar.",
+      "en": "Enemies infested with Crimson Doom Mark deal 25% less DMG. Each time Nuba casts her Ultimate, all enemies infested with Crimson Doom Mark permanently lose 15% ATK SPD, stacking up to 4 times.",
+      "es": "Los enemigos con la Marca de perdición carmesí infligen un 25 % menos de daño. Cada vez que Nvba lanza su Habilidad definitiva, todos los enemigos con la Marca de perdición carmesí pierden permanentemente un 15 % de VEL de ATQ, acumulable hasta 4 veces."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Für jedes Karmesinrote Verderbensmal auf dem Schlachtfeld erhält Nvba 15 % SCH-RED. Dieser Effekt ist stapelbar.",
+        "en": "For each Crimson Doom Mark on the battlefield, Nuba gains 15% DMG RED. This effect stacks.",
+        "es": "Por cada Marca de perdición carmesí en el campo de batalla, Nvba obtiene un 15 % de Reduc. de daño. Este efecto se acumula."
+      },
+      "level3": {
+        "de": "Das Karmesinrote Verderbensmal verursacht alle 1,5 Sek. SCH und zerstört Energie.",
+        "en": "Crimson Doom Mark deals DMG and destroys energy once every 1.5 seconds.",
+        "es": "La Marca de perdición carmesí inflige daño y destruye energía una vez cada 1,5 segundos."
+      },
+      "level4": {
+        "de": "Bei der Wiederbelebung durch den Verbrauch einer Quelle des Dürreteufels behält Nvba die Energie, die sie vor ihrem Fall hatte.",
+        "en": "When reviving by consuming a Source of the Drought Devil, Nuba retains the Energy she had before she fell.",
+        "es": "Al revivir consumiendo una Fuente del Demonio de la Sequía, Nvba conserva la Energía que tenía antes de caer."
+      }
+    }
   }
 }

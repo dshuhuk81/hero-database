@@ -3,5 +3,152 @@
     "de": "Hera",
     "es": "Hera",
     "ru": "Hera"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Dominanzrausch",
+        "en": "Dominance Spree",
+        "es": "Racha de Dominio"
+      },
+      "description": {
+        "de": "Hera entfesselt eine Welle der Bezauberung auf den am weitesten entfernten Feind (Bezauberung: Betroffene Einheiten greifen ihre eigenen Verbündeten an). Getroffene Feinde verursachen 3 Sek. lang 40 % erhöhten Normalangriff-SCH.",
+        "en": "Hera releases a wave of Charm toward the farthest enemy (Charm: Afflicted units attack their own allies). Enemies hit deal 40% increased Normal Attack DMG for 3s.",
+        "es": "Hera lanza una oleada de Encanto hacia el enemigo más lejano (Encanto: las unidades afectadas atacan a sus propios aliados). Los enemigos golpeados infligen un 40 % más de Daño de Ataque normal durante 3 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Getroffene Feinde verursachen 60 % erhöhten Normalangriff-SCH.",
+          "en": "Enemies hit deal 60% increased Normal Attack DMG.",
+          "es": "Los enemigos golpeados infligen un 60 % más de Daño de Ataque normal."
+        },
+        "level3": {
+          "de": "Die Dauer wird auf 4 Sek. verlängert.",
+          "en": "Duration extends to 4s.",
+          "es": "La duración se extiende a 4 s."
+        },
+        "level4": {
+          "de": "Getroffene Feinde verursachen 80 % erhöhten Normalangriff-SCH.",
+          "en": "Enemies hit deal 80% increased Normal Attack DMG.",
+          "es": "Los enemigos golpeados infligen un 80 % más de Daño de Ataque normal."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Kronenverleihung",
+        "en": "Crown Bestowal",
+        "es": "Otorgamiento de Corona"
+      },
+      "description": {
+        "de": "Hera krönt den Verbündeten mit dem höchsten ANG und gewährt ihm 3 Sek. lang +30 % ANG und +100 % ANG-GES.",
+        "en": "Hera crowns the ally with the highest ATK, granting +30% ATK and +100% ATK SPD for 3s.",
+        "es": "Hera corona al aliado con el ATQ más alto, otorgándole un +30 % de ATQ y un +100 % de VEL de ATQ durante 3 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht ANG um 50 %.",
+          "en": "Increases ATK by 50%.",
+          "es": "Aumenta el ATQ en un 50 %."
+        },
+        "level3": {
+          "de": "Die Dauer wird auf 4 Sek. verlängert.",
+          "en": "Duration extends to 4s.",
+          "es": "La duración se extiende a 4 s."
+        },
+        "level4": {
+          "de": "Erhöht die ANG-GES um 150 %.",
+          "en": "Increases ATK SPD by 150%.",
+          "es": "Aumenta la VEL de ATQ en un 150 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Souveräne Domäne",
+        "en": "Sovereign Domain",
+        "es": "Dominio soberano"
+      },
+      "description": {
+        "de": "Bei Kampfbeginn erschafft Hera eine Souveräne Domäne in der Hälfte der Verbündeten. Solange sie sich in der Domäne befindet, erhält sie alle 5 Sek. 2,5 % Energieaufladung und 5 % SCH-RED. Maximal 6-mal stapelbar. Wenn ein Feind die Domäne zum ersten Mal betritt, wird er 2 Sek. lang unterdrückt.",
+        "en": "At combat start, Hera creates a Sovereign Domain in the ally half. While in the domain, she gains 2.5% Energy Regen and 5% DMG RED every 5s. Max at 6 stacks. When an enemy enters the domain for the first time, they are suppressed for 2s.",
+        "es": "Al inicio del combate, Hera crea un Dominio Soberano en la mitad del campo aliada. Mientras está en el dominio, obtiene un 2,5 % de Recarga de energía y un 5 % de Reduc. de daño cada 5 s. Se acumula hasta 6 veces. Cuando un enemigo entra en el dominio por primera vez, es suprimido durante 2 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Hera erhält alle 5 Sek. 7 % SCH-RED.",
+          "en": "Hera gains 7% DMG RED every 5s.",
+          "es": "Hera obtiene un 7 % de Reduc. de daño cada 5 s."
+        },
+        "level3": {
+          "de": "Wenn ein Feind die Domäne zum ersten Mal betritt, wird er 3 Sek. lang unterdrückt.",
+          "en": "When an enemy enters the domain for the first time, they are suppressed for 3s.",
+          "es": "Cuando un enemigo entra en el dominio por primera vez, es suprimido durante 3 s."
+        },
+        "level4": {
+          "de": "Wenn sie tödlichen SCH erleidet, zieht Hera die Domäne zurück, wird 2,5 Sek. lang immun gegen SCH und stellt 30 % ihrer max. LP wieder her.",
+          "en": "Upon taking Lethal DMG, Hera retracts the domain, becoming immune to DMG for 2.5s and restores 30% of her max HP.",
+          "es": "Al recibir Daño letal, Hera retrae el dominio, se vuelve inmune al Daño durante 2,5 s y restaura un 30 % de sus PS máximos."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Fatale Besessenheit",
+        "en": "Fatal Obsession",
+        "es": "Obsesión fatal"
+      },
+      "description": {
+        "de": "Belegt den Feind mit dem höchsten DPS 3 Sek. lang mit [Besessenheit], wodurch seine Angriffe deaktiviert, seine BEW-GES reduziert und er zu Hera gezogen wird. Das Ziel erleidet pro Sekunde SCH in Höhe von 100 % von Heras ANG, der in Heras LP umgewandelt wird.",
+        "en": "Inflicts [Obsession] on the enemy with the highest DPS for 3s, disabling their attacks, reducing their Move SPD, and pulling them to Hera. The target takes 100% of Hera's ATK as DMG per sec, which converts into Hera's HP.",
+        "es": "Inflige [Obsesión] al enemigo con el DPS más alto durante 3 s, lo que deshabilita sus ataques, reduce su VEL de mov. y lo atrae hacia Hera. El objetivo recibe un 100 % del ATQ de Hera como Daño por segundo, que se convierte en los PS de Hera."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Das Ziel erleidet pro Sekunde SCH in Höhe von 120 % von Heras ANG.",
+          "en": "The target takes 120% of Hera's ATK as DMG per sec.",
+          "es": "El objetivo recibe un 120 % del ATQ de Hera como Daño por segundo."
+        },
+        "level3": {
+          "de": "Die Dauer wird auf 5 Sek. verlängert.",
+          "en": "Duration extends to 5s.",
+          "es": "La duración se extiende a 5 s."
+        },
+        "level4": {
+          "de": "Das Ziel erleidet pro Sekunde SCH in Höhe von 150 % von Heras ANG.",
+          "en": "The target takes 150% of Hera's ATK as DMG per sec.",
+          "es": "El objetivo recibe un 150 % del ATQ de Hera como Daño por segundo."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Brandmal der Verlockung",
+      "en": "Allure Brand",
+      "es": "Marca de seducción"
+    },
+    "description": {
+      "de": "Die Effekt-RES von Feinden, die von Heras Bezauberung und Besessenheit kontrolliert wurden, wird um 30 % reduziert.",
+      "en": "Enemies that have been controlled by Hera's Charm and Obsession have their Effect RES reduced by 30%.",
+      "es": "A los enemigos que han sido controlados por el Encanto y la Obsesión de Hera se les reduce su RES a efectos en un 30 %."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Von Hera bezauberte Feinde erhalten außerdem einmalig eine Kronenverleihung.",
+        "en": "Enemies Charmed by Hera also receive one instance of Crown Bestowal.",
+        "es": "Los enemigos Encantados por Hera también reciben una instancia de Otorgamiento de Corona."
+      },
+      "level3": {
+        "de": "Von Hera bezauberte Feinde können für die Dauer keine Energie gewinnen.",
+        "en": "Enemies Charmed by Hera cannot gain Energy for the duration.",
+        "es": "Los enemigos Encantados por Hera no pueden obtener Energía mientras dure el efecto."
+      },
+      "level4": {
+        "de": "Kills von Feinden, die von Hera bezaubert wurden, verlängern die Dauer der Bezauberung um 5 Sek.",
+        "en": "Kills conducted by enemies Charmed by Hera extend the duration of Charm by 5s.",
+        "es": "Los asesinatos realizados por enemigos Encantados por Hera extienden la duración del Encanto en 5 s."
+      }
+    }
   }
 }

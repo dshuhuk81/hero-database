@@ -3,5 +3,152 @@
     "de": "Wen-Shen",
     "es": "Wen-Shen",
     "ru": "Wen-Shen"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Stern des Unheils",
+        "en": "Star of Ill Omen",
+        "es": "Estrella de mal agüero"
+      },
+      "description": {
+        "de": "Verhext den nächsten Feind, macht ihn für 4 Sek. kampfunfähig und verursacht dabei SCH in Höhe von 80 % ANG pro Sek.",
+        "en": "Jinxes the nearest enemy, disabling them for 4s while dealing DMG equal to 80% of ATK per sec.",
+        "es": "Maldice al enemigo más cercano, incapacitándolo durante 4s mientras inflige un Daño equivalente al 80 % de ATQ por segundo."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Dauer wird auf 5 Sek. verlängert.",
+          "en": "Duration extends to 5s.",
+          "es": "La duración se extiende a 5 s."
+        },
+        "level3": {
+          "de": "Erhöht den SCH pro Sekunde auf 100 % ANG.",
+          "en": "Increases DMG per sec to 100% ATK.",
+          "es": "Aumenta el daño por segundo a 100 % de ATQ."
+        },
+        "level4": {
+          "de": "Die Dauer wird auf 6 Sek. verlängert.",
+          "en": "Duration extends to 6s.",
+          "es": "La duración se extiende a 6 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Dualitätsumkehr",
+        "en": "Duality Inversion",
+        "es": "Inversión de dualidad"
+      },
+      "description": {
+        "de": "Verflucht den Feind in der symmetrischen Position und fügt ihm SCH in Höhe von 50% seiner max. LP zu (bis zu 1000% des ANG des Zaubernden). Der Fluch wird langsam über 5 Sekunden entfernt, wodurch die verlorenen LP wiederhergestellt werden.",
+        "en": "Curses the symmetrically opposite enemy, dealing DMG equal to 50% of their max HP (up to 1000% of Wenshen’s ATK). The curse is slowly lifted over 5s, restoring the lost HP.",
+        "es": "Maldice al enemigo simétricamente opuesto, infligiendo un Daño equivalente al 50 % de sus PS máximos (hasta un 1000 % del ATQ de Wenshen). La maldición se levanta lentamente durante 5s, restaurando los PS perdidos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Solange das Ziel verflucht ist, ist die erhaltene Heilung um 30 % verringert.",
+          "en": "While cursed, the target receives 30% reduced healing.",
+          "es": "Mientras está bajo la maldición, el objetivo recibe un 30 % menos de sanación."
+        },
+        "level3": {
+          "de": "Der Fluch wird langsam über die nächsten 8 Sekunden entfernt, wodurch die verlorenen LP wiederhergestellt werden.",
+          "en": "The curse is slowly lifted over 8s, restoring the lost HP.",
+          "es": "La maldición se levanta lentamente durante 8s, restaurando los PS perdidos."
+        },
+        "level4": {
+          "de": "Solange das Ziel verflucht ist, ist die erhaltene Heilung um 60 % verringert.",
+          "en": "While cursed, the target receives 60% reduced healing.",
+          "es": "Mientras está bajo la maldición, el objetivo recibe un 60 % menos de sanación."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Unheilsgeplagt",
+        "en": "Calamity-Ridden",
+        "es": "Plagado de calamidades"
+      },
+      "description": {
+        "de": "Der Feind, der Wenshen besiegt, wird permanent Verhext (Passiv). Verhext: Hat eine Chance von 50 %, beim Angriff für 2,5 Sek. betäubt, verängstigt oder versteinert zu werden; hat eine Chance von 50 %, bei Bewegung niedergeschlagen zu werden. Verhext kann nur einmal alle 4 Sek. ausgelöst werden.",
+        "en": "The enemy defeating Wenshen becomes permanently Jinxed (Passive). Jinxed: Has a 50% chance to be stunned, terrified, or petrified for 2.5s when attacking; has a 50% chance to be knocked down when moving. Jinxed can only trigger once every 4s.",
+        "es": "El enemigo que derrote a Wenshen recibe una Maldición permanente (Pasiva). Maldición: tiene un 50 % de probabilidad de ser aturdido, aterrorizado o petrificado durante 2,5s al atacar; tiene un 50 % de probabilidad de ser derribado al moverse. La Maldición solo puede activarse una vez cada 4s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erleidet außerdem SCH in Höhe von 50% des ANG des Seuchengottes pro Sekunde.",
+          "en": "Enemies also take DMG equal to 50% of her ATK per sec.",
+          "es": "Los enemigos también reciben un Daño equivalente al 50 % de su ATQ por segundo."
+        },
+        "level3": {
+          "de": "Einheiten im „Pech“-Zustand haben eine 50%-ige Chance, 100 Energie zu verlieren und 20% mehr SCH für die nächsten 3 Sekunden zu erleiden, wenn sie eine Fähigkeit einsetzen.",
+          "en": "Jinxed enemies deal 20% reduced DMG.",
+          "es": "Los enemigos con Maldición infligen un 20 % menos de Daño."
+        },
+        "level4": {
+          "de": "Die Chance auf „Pech“-Effekte wird auf 60% erhöht.",
+          "en": "Increases the chance of triggering a Jinxed effect to 60%.",
+          "es": "Aumenta la probabilidad de activar el efecto de Maldición al 60 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Verfluchter Boden",
+        "en": "Cursed Ground",
+        "es": "Tierra maldita"
+      },
+      "description": {
+        "de": "Wenshen erschafft eine Aura des Unglücks in einem Radius von 3 Metern um sich, die den ANG von Feinden darin um 20 % verringert (Passiv). Sie fliegt auf den Feind mit dem höchsten ANG zu und verursacht SCH in Höhe von 180 % ANG (Aktiv).",
+        "en": "Wenshen creates an Aura of Misfortune within a 3-meter radius around her, reducing the ATK of enemies inside by 20% (Passive). She flies toward the enemy with the highest ATK, dealing DMG equal to 180% of ATK (Active).",
+        "es": "Wenshen crea un Aura de infortunio en un radio de 3 metros a su alrededor, que reduce el ATQ de los enemigos en su interior en un 20 % (Pasiva). Vuela hacia el enemigo con el ATQ más alto, infligiendo un Daño equivalente al 180 % de su ATQ (Activa)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Pechaura verringert außerdem die VTD der Feinde in ihrem Bereich um 20%.",
+          "en": "Enemies inside the Aura of Misfortune have their DEF reduced by 20%.",
+          "es": "La DEF de los enemigos dentro del Aura de infortunio se reduce en un 20 %."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 200 % ANG.",
+          "en": "Increases DMG dealt to 200% ATK.",
+          "es": "Aumenta el daño infligido a 200 % de ATQ."
+        },
+        "level4": {
+          "de": "Wenshens Aura des Unglücks verbleibt an Ort und Stelle, wenn sie besiegt wird.",
+          "en": "Wenshen’s Aura of Misfortune lingers on the spot when she is defeated.",
+          "es": "El Aura de infortunio de Wenshen permanece en el lugar cuando es derrotada."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Ursprung der Pestilenz",
+      "en": "Origin of Pestilence",
+      "es": "Origen de la pestilencia"
+    },
+    "description": {
+      "de": "Wenn ein verhexter Feind besiegt wird, verbreitet es sich auf den 1 nächsten Feind und verursacht beim neuen Ziel SCH in Höhe von 200 % ANG.",
+      "en": "When a Jinxed enemy is defeated, it spreads to 1 nearest enemy, dealing DMG equal to 200% of ATK to the new target.",
+      "es": "Cuando un enemigo con Maldición es derrotado, esta se distribuye a 1 enemigo más cercano, infligiendo un Daño equivalente al 200 % de ATQ al nuevo objetivo."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Bei Ausbreitung erhöht sich der SCH auf 260 % ANG.",
+        "en": "Upon spreading, increases DMG to 260% ATK.",
+        "es": "Al propagarse, aumenta el daño a 260 % de ATQ."
+      },
+      "level3": {
+        "de": "Feinde, die von Dualitätsumkehr verflucht wurden, sind permanent verhext.",
+        "en": "Enemies cursed by Duality Inversion are permanently Jinxed.",
+        "es": "Los enemigos maldecidos por Inversión de dualidad reciben una Maldición permanente."
+      },
+      "level4": {
+        "de": "Das Ziel erleidet 20% erhöhten SCH, während es verhext ist.",
+        "en": "The target takes 20% increased DMG while Jinxed.",
+        "es": "El objetivo recibe un 20 % más de Daño mientras tiene Maldición."
+      }
+    }
   }
 }

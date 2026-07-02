@@ -3,5 +3,123 @@
     "de": "Surtr",
     "es": "Surtr",
     "ru": "Surtr"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Verbrennen zu Asche",
+        "en": "Burn to Ashes",
+        "es": "Reducción a cenizas"
+      },
+      "description": {
+        "de": "Formt eine riesige flammende Klinge, visiert den entferntesten Gegner an und schlägt heftig in dessen Richtung, wobei 300% ANG-SCH an alle Gegner in einem rechteckigen Bereich verursacht wird. Wenn die aktuellen LP des Ziels über 70% liegen, wird SCH um 25% erhöht.",
+        "en": "Channels fire to forge a giant flaming greatsword, locks the farthest enemy, and slashes in their direction, dealing DMG equal to 300% of ATK to all enemies in a rectangle. If the target's current HP is above 70%, the DMG is increased by 25%.",
+        "es": "Canaliza fuego para forjar un espadón llameante gigante, fija al enemigo más lejano y ataca en su dirección, lo que inflige un Daño equivalente al 300 % de su ATQ a todos los enemigos en un rectángulo. Si los PS actuales del objetivo superan el 70 %, el Daño aumenta en un 25 %."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 330 %.",
+          "en": "Increases DMG dealt to 330%.",
+          "es": "Aumenta el daño infligido a 330 %."
+        },
+        "level3": {
+          "de": "SCH gegen Gegner mit LP über 50% wird um 35% erhöht.",
+          "en": "Deals 35% increased DMG to enemies with HP above 50%.",
+          "es": "Inflige un 35 % más de Daño a los enemigos con PS superiores al 50 %."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 360 %.",
+          "en": "Increases DMG dealt to 360%.",
+          "es": "Aumenta el Daño infligido al 360 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Feurige Geißel",
+        "en": "Fiery Scourge",
+        "es": "Azote ígneo"
+      },
+      "description": {
+        "de": "Hält den nächsten Feind für 3 Sek. in einem flammenden Käfig fest, wodurch er zwar angreifen kann, aber pro Sek. SCH in Höhe von 100 % ANG erleidet.",
+        "en": "Roots the nearest enemy in a flaming cage for 3s, allowing attacks but dealing DMG equal to 100% of ATK per sec to them.",
+        "es": "Inmoviliza al enemigo más cercano en una jaula llameante durante 3s, lo que le permite atacar pero le inflige un Daño equivalente al 100 % de su ATQ por segundo."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht 110 % ANG als SCH pro Sek.",
+          "en": "Deals 110% ATK as DMG per sec.",
+          "es": "Inflige un 110 % de ATQ como daño por segundo."
+        },
+        "level3": {
+          "de": "Eingesperrte Gegner erleiden 15% mehr Magie-SCH.",
+          "en": "Rooted enemies take 15% increased M-DMG.",
+          "es": "Los enemigos inmovilizados reciben un 15 % más de Daño mágico."
+        },
+        "level4": {
+          "de": "Verursacht 120 % ANG als SCH pro Sek.",
+          "en": "Deals 120% ATK as DMG per sec. (Unlocks at Lv.261)",
+          "es": "Inflige un 120 % de ATQ como daño por segundo."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Unstillbare Flamme",
+        "en": "Unquenchable Flame",
+        "es": "Llama inextinguible"
+      },
+      "description": {
+        "de": "Surtr erhält einen Schild in Höhe von 240% seines ANG-Wertes nach jeweils 3 gewirkten Fähigkeiten.",
+        "en": "Surtr gains a shield equal to 240% ATK for every 3 skills cast.",
+        "es": "Surt obtiene un escudo equivalente al 240 % de su ATQ por cada 3 habilidades lanzadas."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Surtur erhält alle 3 eingesetzten Fähigkeiten einen Schild in Höhe von 270 % ANG.",
+          "en": "Surtr gains a shield equal to 270% ATK for every 3 skills cast.",
+          "es": "Surt obtiene un escudo equivalente al 270 % de ATQ por cada 3 habilidades lanzadas."
+        },
+        "level3": {
+          "de": "Surturs ANG wird um 20 % erhöht, wenn sie einen Schild hat.",
+          "en": "Surtr's ATK is increased by 20% when he is shielded.",
+          "es": "El ATQ de Surt aumenta en un 20 % cuando tiene un escudo."
+        },
+        "level4": {
+          "de": "Surtur erhält alle 3 eingesetzten Fähigkeiten einen Schild in Höhe von 300 % ANG.",
+          "en": "Surtr gains a shield equal to 300% ATK for every 3 skills cast. (Unlocks at Lv.281)",
+          "es": "Surt obtiene un escudo equivalente al 300 % de ATQ por cada 3 habilidades lanzadas."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Himmelsinferno",
+        "en": "Skyward Inferno",
+        "es": "Infierno ascendente"
+      },
+      "description": {
+        "de": "Beschwört ein flammendes Schwert, das den Zaubernden umkreist, und visiert dann das nächste Ziel an, wobei 300% ANG-SCH verursacht wird.",
+        "en": "Summons a blazing sword to orbit her and then locks the nearest target to deal DMG equal to 300% of her ATK.",
+        "es": "Invoca una espada llameante para que la orbite y luego fija al objetivo más cercano para infligir un Daño equivalente al 300 % de su ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht 320 % ANG als SCH.",
+          "en": "Deals 320% ATK as DMG.",
+          "es": "Inflige un 320 % de ATQ como daño."
+        },
+        "level3": {
+          "de": "Verringert die erhaltene Heilung getroffener Feinde für 6 Sek. um 50 %.",
+          "en": "Reduces healing received by hit enemies by 50% for 6s.",
+          "es": "Reduce la sanación recibida por los enemigos golpeados en un 50 % durante 6s."
+        },
+        "level4": {
+          "de": "Verursacht 350 % ANG als SCH.",
+          "en": "Deals 350% ATK as DMG.",
+          "es": "Inflige un 350 % de ATQ como daño."
+        }
+      }
+    }
+  ]
 }

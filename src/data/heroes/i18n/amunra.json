@@ -3,5 +3,152 @@
     "de": "Amun-Ra",
     "es": "Amón-Ra",
     "ru": "Амон-Ра"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Atons Strahlen",
+        "en": "Aten's Radiance",
+        "es": "Radiancia de Atón"
+      },
+      "description": {
+        "de": "Amun-Ra entfesselt Sonnenenergie und steigt auf, wodurch er Superrüstung erhält. Jede Sekunde entfesselt er ein Sonnenschwert, das dem nächsten Feind und den Feinden in seiner Umgebung 100% ANG-SCH zufügt. Diese Fähigkeit verbraucht bei Aktivierung nicht die gesamte Energie, sondern entzieht stattdessen 200 Energie pro Sekunde.",
+        "en": "Amun-Ra releases solar energy and rises into air, gaining Super Armor. He fires a solar blade to strike the nearest enemy and nearby targets, dealing DMG equal to 100% of ATK. When cast, it does not drain Energy but consumes 200 Energy per sec.",
+        "es": "Amón-Ra libera energía solar y se eleva en el aire, obteniendo Superarmadura. Lanza una cuchilla solar para golpear al enemigo más cercano y a los objetivos cercanos, infligiendo un daño equivalente al 100 % de su ATQ. Al activarse, la habilidad no vacía la Energía, sino que la consume de forma continua, gastando 200 de Energía por segundo."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Heilt um 100% des durch das Sonnenschwert verursachten SCH.",
+          "en": "Solar blades heal Amun-Ra for 100% of the DMG dealt.",
+          "es": "Las cuchillas solares curan a Amón-Ra un 100 % del daño infligido."
+        },
+        "level3": {
+          "de": "Erhöht den SCH des Sonnenschwerts auf 140% ANG.",
+          "en": "Increases the DMG of solar blades to 140% ATK.",
+          "es": "Aumenta el daño de las cuchillas solares a 140 % de ATQ."
+        },
+        "level4": {
+          "de": "Verringert das Angriffsintervall der Solarklingen auf 0,7 Sek.",
+          "en": "Reduces the attack interval of solar blades to 0.7s.",
+          "es": "Reduce el intervalo de ataque de las cuchillas solares a 0,7 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Blendende Sonnenscheibe",
+        "en": "Blinding Sun-Disk",
+        "es": "Disco solar cegador"
+      },
+      "description": {
+        "de": "Amun-Ra erschafft eine Sonnenaura in einem kleinen Bereich um sich herum, die 6 Sekunden anhält. Sie fügt Feinden innerhalb des Bereichs pro Sekunde 100% ANG-SCH zu und reduziert deren ANG um 20%.",
+        "en": "Amun-Ra creates a Solar Aura near himself for 6s, dealing DMG equal to 100% of ATK per sec to enemies inside and reducing their ATK by 20%.",
+        "es": "Amón-Ra crea un Aura solar cerca de sí mismo durante 6 s, lo que inflige un daño equivalente al 100 % de ATQ por segundo a los enemigos que se encuentren dentro y reduce su ATQ un 20 %."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die ANG-Reduktion für Feinde innerhalb der Sonnenaura auf 30%.",
+          "en": "Enemies inside Solar Aura have their ATK reduced by 30%.",
+          "es": "A los enemigos dentro del Aura solar se les reduce su ATQ en un 30 %."
+        },
+        "level3": {
+          "de": "Erhöht den SCH pro Instanz auf 125 % ANG.",
+          "en": "Increases DMG per instance to 125% ATK.",
+          "es": "aumenta el daño por instancia al 125 % de ATQ."
+        },
+        "level4": {
+          "de": "Verlängert die Dauer der Solaraura auf 8 Sek.",
+          "en": "Extends the duration of Solar Aura to 8s.",
+          "es": "Extiende la duración del Aura solar a 8 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Glanz von Ra",
+        "en": "Glare of Ra",
+        "es": "Resplandor de Ra"
+      },
+      "description": {
+        "de": "Amun-Ra erhält zu Kampfbeginn 100 % Ausweichrate für 8 Sek.",
+        "en": "Amun-Ra gains 100% Dodge Rate for 8s at combat start.",
+        "es": "Al inicio del combate, Amón-Ra obtiene un 100 % de Prob. de evasión durante 8 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Tritt bei jedem Einsatz des Ultimativs erneut in diesen Zustand ein.",
+          "en": "Re-enters this state each time he casts the Ultimate.",
+          "es": "Vuelve a entrar en este estado cada vez que lanza la Habilidad definitiva."
+        },
+        "level3": {
+          "de": "Das Ausweichen eines Angriffs stellt während der Wirkungsdauer 50 Energie für Amun-Ra wieder her. Dies kann nur einmal pro Sek. ausgelöst werden.",
+          "en": "Dodging an attack restores 50 Energy to Amun-Ra for the duration. This can only trigger once per sec.",
+          "es": "Esquivar un ataque restaura 50 de Energía a Amón-Ra mientras dure. Esto solo se puede activar una vez por segundo."
+        },
+        "level4": {
+          "de": "Erhält für die Wirkungsdauer zusätzlich 50 % Effekt-RES.",
+          "en": "Additionally gains 50% Effect RES for the duration. (Unlocks at Lv.261)",
+          "es": "Además, obtiene un 50 % de RES a efectos mientras dure."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Die Dämmerung auf Benben",
+        "en": "The Dawn on Benben",
+        "es": "Amanecer en Benben"
+      },
+      "description": {
+        "de": "Zu Beginn des Kampfes erhöht sich die M-RES und Rüstung aller Verbündeten um 50% für 15 Sekunden. Amun-Ra tritt außerdem in einen beschleunigten Energieerholungszustand ein, der seine natürliche Energieerholungsgeschwindigkeit um 50% erhöht. Dieser Zustand endet sofort, wenn ein Verbündeter besiegt wird.",
+        "en": "Increases all allies' M-RES and Armor by 50% for 15s at combat start. Amun-Ra gains Energy Regen boost, increasing his Energy Regen by 50%, until any ally falls.",
+        "es": "Al inicio del combate, aumenta la RES M y la Armadura de todos los aliados un 50 % durante 15 s. Amón-Ra obtiene un aumento de Recarga de energía, lo que aumenta su Recarga de energía un 50 %, hasta que cualquier aliado sea derrotado."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Wenn der Boost der Energieaufladung abläuft, stellen alle Verbündeten sofort 200 Energie wieder her.",
+          "en": "When the Energy Regen boost expires, all allies instantly restore 200 Energy.",
+          "es": "Cuando expira el aumento de Recarga de energía, todos los aliados restauran instantáneamente 200 de Energía."
+        },
+        "level3": {
+          "de": "Erhöht den M-RES- und Rüstungsbonus auf 75%.",
+          "en": "Increases his M-RES & Armor to 75%.",
+          "es": "Aumenta su RES-M y Armadura a un 75 %."
+        },
+        "level4": {
+          "de": "Erhöht seine Energieaufladung auf 80 %.",
+          "en": "Increases his Energy Regen to 80%. (Unlocks at Lv.281)",
+          "es": "Aumenta su Recarga de energía a un 80 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Sonnengeblendet",
+      "en": "Sun-Blinded",
+      "es": "Cegado por el sol"
+    },
+    "description": {
+      "de": "Die Blendende Sonnenscheibe bleibt nach dem Einsatz permanent. Ihre Reichweite vergrößert sich während Atons Strahlen moderat. Feinde im Bereich der Blendenden Sonnenscheibe werden für 1 Sek. betäubt, wenn sie sich 4 Sek. darin aufhalten.",
+      "en": "Blinding Sun-Disk remains permanently when cast, and its range moderately expands during Aten's Radiance. Enemies within range of Blinding Sun-Disk for 4s are stunned for 1s.",
+      "es": "El Disco solar cegador permanece de forma permanente cuando se lanza, y su alcance se expande moderadamente durante Radiancia de Atón. Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 1 s."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Feinde, die sich 4 Sek. im Bereich der Blendenden Sonnenscheibe aufhalten, werden für 1,5 Sek. betäubt.",
+        "en": "Enemies within range of Blinding Sun-Disk for 4s are stunned for 1.5s. (Unlock at Relic Lv.10)",
+        "es": "Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 1.5 s."
+      },
+      "level3": {
+        "de": "Feinde, die sich 4 Sek. im Bereich der Blendenden Sonnenscheibe aufhalten, werden für 2 Sek. betäubt.",
+        "en": "Enemies within range of Blinding Sun-Disk for 4s are stunned for 2s. (Unlock at Relic Lv.20)",
+        "es": "Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 2 s."
+      },
+      "level4": {
+        "de": "Die verbesserte Blendende Sonnenscheibe erzeugt während Atons Strahlen ein schwarzes Loch, das langsam alle Feinde auf dem Schlachtfeld zu Amun-Ra zieht.",
+        "en": "The enhanced Blinding Sun-Disk creates a black hole during Aten's Radiance, slowly pulling all enemies on the battlefield toward Amun-Ra. (Unlock at Relic Lv.30)",
+        "es": "El Disco solar cegador mejorado crea un agujero negro durante Radiancia de Atón, atrayendo lentamente a todos los enemigos del campo de batalla hacia Amón-Ra."
+      }
+    }
   }
 }

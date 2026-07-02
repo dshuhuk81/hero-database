@@ -3,5 +3,33 @@
     "de": "Fische",
     "es": "Piscis",
     "ru": "Рыбы"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Schutz der Sirene",
+        "en": "Siren's Ward",
+        "es": "Resguardo de sirena"
+      },
+      "description": {
+        "de": "Gewährt dem schwächsten Verbündeten für 8 Sek. einen Schild, der SCH in Höhe von 250 % des ANG absorbiert.",
+        "en": "Grants a shield to the weakest ally, absorbing DMG equal to 250% ATK for 8s.",
+        "es": "Otorga un escudo al aliado más débil, que absorbe daño equivalente a un 250 % del ATQ durante 8 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Schildstärke erhöht sich auf 300 % ANG.",
+          "en": "Shield Strength increases to 300% ATK. (Unlocks at Lv.81)",
+          "es": "La fuerza del Escudo aumenta a 300 % de ATQ."
+        },
+        "level3": {
+          "de": "Heilt den Verbündeten zusätzlich um LP in Höhe von 200 % des ANG.",
+          "en": "Additionally heals the ally for HP equal to 200% ATK. (Unlocks at Lv.141)",
+          "es": "Además, sana al aliado por una cantidad de PS equivalente a un 200 % del ATQ."
+        }
+      }
+    },
+    {},
+    {}
+  ]
 }

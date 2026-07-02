@@ -3,5 +3,84 @@
     "de": "Schütze",
     "es": "Sagitario",
     "ru": "Стрелец"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Aurora-Pfeil",
+        "en": "Aurora Arrow",
+        "es": "Flecha de aurora"
+      },
+      "description": {
+        "de": "Verursacht 240% ANG-SCH am Ziel und erhöht ANG um 15% für 7 Sekunden.",
+        "en": "Deals DMG equal to 240% of ATK to the target and increases ATK by 15% for 7s.",
+        "es": "Inflige un Daño equivalente al 240 % de su ATQ al objetivo y aumenta su ATQ en un 15 % durante 7s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Gewährt für die Dauer 10 % Lebensraub.",
+          "en": "Grants 10% Lifesteal for the duration. (Unlocks at Lv.21)",
+          "es": "Otorga un 10 % de Robo de vida mientras dure el efecto."
+        },
+        "level3": {
+          "de": "Erhöht ANG-Boost auf 20 %.",
+          "en": "Increases ATK by 20%. (Unlocks at Lv.121)",
+          "es": "Aumenta el ATQ en un 20 %."
+        },
+        "level4": {
+          "de": "Die Dauer wird auf 10 Sek. verlängert.",
+          "en": "Duration extends to 10s. (Unlocks at Lv.161)",
+          "es": "La duración se extiende a 10 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Bogenschützen-Instinkt",
+        "en": "Archer's Instinct",
+        "es": "Instinto de arquero"
+      },
+      "description": {
+        "de": "Erhöht den SCH gegen Gegner mit weniger als 50% LP um 20%.",
+        "en": "Increases DMG dealt to enemies with HP below 50% by 20%.",
+        "es": "Aumenta el Daño infligido a los enemigos con PS por debajo del 50 % en un 20 %."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Gesamt-SCH erhöht sich auf 25 %.",
+          "en": "Total DMG increases to 25%. (Unlocks at Lv.81)",
+          "es": "el daño total aumenta al 25 %."
+        },
+        "level3": {
+          "de": "Gesamt-SCH erhöht sich auf 30 %.",
+          "en": "Total DMG increases to 30%. (Unlocks at Lv.141)",
+          "es": "el daño total aumenta al 30 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Durchdringender Ansturm",
+        "en": "Piercing Rush",
+        "es": "Embestida penetrante"
+      },
+      "description": {
+        "de": "Stürmt auf das aktuelle Ziel zu und fügt den Feinden auf dem Weg SCH in Höhe von 220 % ANG zu. Kehrt nach einer kurzen Verzögerung zurück und fügt den Feinden auf dem Weg erneut SCH in Höhe von 220 % ANG zu.",
+        "en": "Charges toward the current target, dealing DMG equal to 220% of ATK to enemies along the path. After a brief delay, returns to deal DMG equal to 220% of ATK again to enemies along the path.",
+        "es": "Carga hacia el objetivo actual e inflige un Daño equivalente al 220 % de su ATQ a los enemigos en su camino. Tras una breve pausa, regresa para volver a infligir un Daño equivalente al 220 % de su ATQ a los enemigos en su camino."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verringert die Rüstung getroffener Ziele für 5 Sek. um 20 %.",
+          "en": "Reduces hit targets' Armor by 20% for 5s. (Unlocks at Lv.41)",
+          "es": "Reduce la Armadura de los objetivos golpeados en un 20 % durante 5s."
+        },
+        "level3": {
+          "de": "SCH erhöht auf 250%.",
+          "en": "Increases DMG dealt to 250%. (Unlocks at Lv.101)",
+          "es": "Aumenta el daño infligido a 250 %."
+        }
+      }
+    }
+  ]
 }

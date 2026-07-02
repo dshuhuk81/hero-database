@@ -3,5 +3,147 @@
     "de": "Medusa",
     "es": "Medusa",
     "ru": "Medusa"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Versteinernder Blick",
+        "en": "Petrifying Gaze",
+        "es": "Mirada petrificante"
+      },
+      "description": {
+        "de": "Medusa feuert einen versteinernden Strahl ab, der Feinden in einem Rechteck SCH in Höhe von 320 % ANG zufügt und sie für 3 Sek. versteinert. Die Heilungseffekte versteinerter Einheiten sind um 80 % verringert.",
+        "en": "Medusa fires a petrifying beam, dealing DMG equal to 320% of ATK to enemies in a rectangle and petrifying them for 3s. Petrified units have their healing effects reduced by 80%.",
+        "es": "Medusa dispara un rayo petrificador que inflige un Daño equivalente al 320 % de su ATQ a los enemigos en un área rectangular y los petrifica durante 3s. Los efectos de sanación de las unidades petrificadas se reducen en un 80 %."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 360 % ANG.",
+          "en": "Increases DMG dealt to 340% of ATK.",
+          "es": "Aumenta el daño infligido a 360 % de ATQ."
+        },
+        "level3": {
+          "de": "Wenn das Ziel eine 'Schlangenkuss-Markierung' hat, füge zusätzlichen 10% SCH zu.",
+          "en": "If the target has Serpent Kiss, it deals an additional 10% DMG.",
+          "es": "Si el objetivo tiene Beso de serpiente, inflige un 10 % de Daño adicional."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Arkane Schlange",
+        "en": "Arcane Serpent",
+        "es": "Serpiente arcana"
+      },
+      "description": {
+        "de": "Medusa schießt eine kleine Schlange auf den nächsten Feind ohne Schlangenkuss, fügt ihm SCH in Höhe von 200 % ANG zu und belegt ihn mit Schlangenkuss. Die Schlange prallt dann auf alle anderen Feinde mit Schlangenkuss ab (Schlangenkuss: Verringert die M-RES des Ziels für 12 Sek. um 30 %).",
+        "en": "Medusa shoots a small snake at the nearest enemy without Serpent Kiss, dealing DMG equal to 200% of ATK and inflicting Serpent Kiss. It then bounces to all other enemies with Serpent Kiss (Serpent Kiss reduces the target’s M-RES by 30% for 12s).",
+        "es": "Medusa lanza una pequeña serpiente al enemigo más cercano que no tenga Beso de serpiente, infligiéndole un Daño equivalente al 200 % de su ATQ y aplicándole Beso de serpiente. Luego rebota hacia todos los demás enemigos con Beso de serpiente (Beso de serpiente: reduce la RES M. del objetivo en un 30 % durante 12s)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 220 % ANG.",
+          "en": "Increases DMG dealt to 220% of ATK.",
+          "es": "Aumenta el daño infligido a 220 % de ATQ."
+        },
+        "level3": {
+          "de": "Jeder Abpraller fügt 5% mehr SCH zu.",
+          "en": "Increases DMG per bounce by 5%.",
+          "es": "Aumenta el Daño por rebote en un 5 %."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 250 % ANG.",
+          "en": "Increases DMG dealt to 250% of ATK.",
+          "es": "Aumenta el daño infligido a 250 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Schlangenhaar",
+        "en": "Snake Hair",
+        "es": "Cabello de serpiente"
+      },
+      "description": {
+        "de": "Nach jeweils 2 Angriffen setzt Medusa Arkane Schlange ein.",
+        "en": "After every 2 attacks, Medusa casts Arcane Serpent.",
+        "es": "Después de cada 2 ataques, Medusa lanza Serpiente arcana."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Jeder Schlangenkuss auf dem Feld erhöht Medusas ANG-GES um 10 %.",
+          "en": "Each Serpent Kiss on the field increases Medusa’s ATK SPD by 10%.",
+          "es": "Cada Beso de serpiente en el campo aumenta la VEL de ATQ de Medusa en un 10 %."
+        },
+        "level3": {
+          "de": "Sie markiert zu Kampfbeginn den Feind auf der gegenüberliegenden Position.",
+          "en": "She marks the enemy in the opposite position when the battle starts.",
+          "es": "Marca al enemigo en la posición opuesta cuando comienza la batalla."
+        },
+        "level4": {
+          "de": "Jeder Schlangenkuss auf dem Feld erhöht Medusas ANG-GES um 20 %.",
+          "en": "Each Serpent Kiss on the field increases Medusa’s ATK SPD by 20%.",
+          "es": "Cada Beso de serpiente en el campo aumenta la VEL de ATQ de Medusa en un 20 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Schlangenkuss",
+        "en": "Serpent Kiss",
+        "es": "Beso de serpiente"
+      },
+      "description": {
+        "de": "Medusa greift den nächsten Feind an, fügt ihm SCH in Höhe von 200 % ANG zu und belegt ihn mit Schlangenkuss (Schlangenkuss: Verringert die M-RES des Ziels für 12 Sek. um 30 %).",
+        "en": "Medusa attacks the nearest enemy, dealing DMG equal to 200% of ATK and inflicting Serpent Kiss, reducing the target’s M-RES by 30% for 12s.",
+        "es": "Medusa ataca al enemigo más cercano, infligiéndole un Daño equivalente al 200 % de su ATQ y aplicándole Beso de serpiente (Beso de serpiente: reduce la RES M del objetivo en un 30 % durante 12s)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 220 % ANG.",
+          "en": "Increases DMG dealt to 220% of ATK.",
+          "es": "Aumenta el daño infligido a 220 % de ATQ."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 250 % ANG.",
+          "en": "Increases DMG dealt to 250% of ATK.",
+          "es": "Aumenta el daño infligido a 250 % de ATQ."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 280 % ANG.",
+          "en": "Increases DMG dealt to 280% of ATK.",
+          "es": "Aumenta el daño infligido a 280 % de ATQ."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Bis ins Mark",
+      "en": "To the Marrow",
+      "es": "Hasta la médula"
+    },
+    "description": {
+      "de": "Wenn Medusa einem Feind mit Schlangenkuss SCH zufügt, löst sie eine auf das Ziel zentrierte Explosion aus, die SCH in Höhe von 80 % ihres ANG in einem kleinen Bereich verursacht. Dieser Effekt hat eine Abklingzeit von 5 Sek. für jede Einheit.",
+      "en": "When Medusa deals DMG to an enemy with Serpent Kiss, she triggers an explosion centered on the target, dealing DMG equal to 80% of her ATK in a small area. This effect has a 5s cooldown for each unit.",
+      "es": "Cuando Medusa inflige Daño a un enemigo con Beso de serpiente, provoca una explosión centrada en el objetivo que inflige un Daño equivalente al 80 % de su ATQ en un área pequeña. Este efecto tiene un TdE de 5s para cada unidad."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Verursacht 100 % ANG als AoE-SCH.",
+        "en": "Deals 100% ATK as AoE DMG.",
+        "es": "Inflige 100 % de ATQ como daño de AdE."
+      },
+      "level3": {
+        "de": "Wenn ein Gegner mit 'Schlangenkuss-Marke' stirbt, greift eine kleine Schlange den nächsten Gegner an, verursacht 150% ANG-SCH und wendet 'Schlangenkuss-Marke' an.",
+        "en": "When an enemy with Serpent Kiss falls, a small snake flies to the nearest enemy, dealing DMG equal to 150% of ATK and inflicting Serpent Kiss.",
+        "es": "Cuando un enemigo con Beso de serpiente cae, una pequeña serpiente vuela hacia el enemigo más cercano, infligiendo un Daño equivalente al 150 % de su ATQ y aplicando Beso de serpiente."
+      },
+      "level4": {
+        "de": "Verursacht 120 % ANG als AoE-SCH.",
+        "en": "Deals 120% ATK as AoE DMG.",
+        "es": "Inflige 120 % de ATQ como daño de AdE."
+      }
+    }
   }
 }

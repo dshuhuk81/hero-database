@@ -3,5 +3,147 @@
     "de": "Fengyi",
     "es": "Fengyi",
     "ru": "Fengyi"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Aufsteigender Sturm",
+        "en": "Great Rising Gale",
+        "es": "Gran vendaval ascendente"
+      },
+      "description": {
+        "de": "Feng Yi kanalisiert alle Wirbelwinde und verursacht 280% ANG-SCH an Zielen in einem großen Bereich. Verbraucht alle Wirbelwinde, wobei jeder zusätzlichen 15% ANG-SCH verursacht.",
+        "en": "Fengyi channels all whirlwinds, dealing DMG equal to 280% of ATK to targets in a large area and consuming all her whirlwinds. Each whirlwind deals 15% of ATK as extra DMG.",
+        "es": "Fengyi canaliza todos los torbellinos, lo que inflige un Daño equivalente al 280 % de su ATQ a los objetivos en un área grande y consume todos sus torbellinos. Cada torbellino inflige un 15 % de su ATQ como Daño adicional."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Jeder Wirbelwind verursacht zusätzlich 30% ANG-SCH.",
+          "en": "Each whirlwind deals 30% of ATK as extra DMG.",
+          "es": "Cada torbellino inflige un 30 % de su ATQ como Daño adicional."
+        },
+        "level3": {
+          "de": "Der ANG-Bonus erhöht sich auf 320 %.",
+          "en": "ATK bonus increases to 320%.",
+          "es": "La bonificación de ATQ aumenta a 320 %."
+        },
+        "level4": {
+          "de": "Stellt 30 Energie für jeden Wirbelwind wieder her, den sie beim Einsatz einer Fähigkeit besitzt.",
+          "en": "Restores 30 Energy for each whirlwind she has when casting a skill.",
+          "es": "Restaura 30 de Energía por cada torbellino que tenga al lanzar una habilidad."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wehende Ärmel",
+        "en": "Billowing Sleeves",
+        "es": "Mangas ondulantes"
+      },
+      "description": {
+        "de": "Feng Yi schleudert einen Tornado aus ihren Ärmeln auf das nächste Ziel und verursacht 200% ANG-SCH an allen Feinden in einer Linie.",
+        "en": "Fengyi swings her sleeves, firing a tornado at the nearest target and dealing DMG equal to 200% of ATK to all enemies in a straight line.",
+        "es": "Fengyi agita sus mangas, lanzando un tornado al objetivo más cercano e inflige un Daño equivalente al 200 % de su ATQ a todos los enemigos en línea recta."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der ANG-Bonus erhöht sich auf 220 %.",
+          "en": "ATK bonus increases to 220%.",
+          "es": "La bonificación de ATQ aumenta a 220 %."
+        },
+        "level3": {
+          "de": "Verringert die M-RES getroffener Einheiten um 20 %.",
+          "en": "Reduces the M-RES of hit units by 20%.",
+          "es": "Reduce la RES M de las unidades golpeadas en un 20 %."
+        },
+        "level4": {
+          "de": "Der ANG-Bonus erhöht sich auf 250 %.",
+          "en": "ATK bonus increases to 250%. (Unlocks at Lv.281)",
+          "es": "La bonificación de ATQ aumenta a 250 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Schlummernde Brise",
+        "en": "Slumbering Breeze",
+        "es": "Brisa durmiente"
+      },
+      "description": {
+        "de": "Fengyi erhält beim Eintritt in den Kampf 2 Wirbelwinde. Jeder Wirbelwind gewährt Fengyi 15 % ANG.",
+        "en": "Fengyi gains 2 whirlwinds upon entering battle. Each whirlwind grants Fengyi 15% ATK.",
+        "es": "Fengyi obtiene 2 torbellinos al entrar en combate. Cada torbellino le otorga a Fengyi un 15 % de ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den ANG-Bonus jedes Wirbelsturms auf 20 %.",
+          "en": "Increases every whirlwind's ATK bonus to 20%.",
+          "es": "Aumenta la bonificación de ATQ de cada torbellino a 20 %."
+        },
+        "level3": {
+          "de": "Fengyi erhält beim Eintritt in den Kampf 3 Wirbelwinde.",
+          "en": "Fengyi gains 3 whirlwinds upon entering battle.",
+          "es": "Fengyi obtiene 3 torbellinos al entrar en combate."
+        },
+        "level4": {
+          "de": "Erhöht den ANG-Bonus jedes Wirbelsturms auf 25 %.",
+          "en": "Increases every whirlwind's ATK bonus to 25%. (Unlocks at Lv.261)",
+          "es": "Aumenta la bonificación de ATQ de cada torbellino a 25 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "es": "Pétalos a la deriva",
+        "en": "Drifting Petals"
+      },
+      "description": {
+        "es": "La primera vez que los PS de una Deidad enemiga caen por debajo del 80 %, Fengyi inflige un Daño equivalente al 150 % de su ATQ a esa Deidad y obtiene un torbellino.\nFengyi puede tener un máximo de 4 torbellinos a la vez.",
+        "en": "The first time an enemy Deity's HP drops below 80%, Fengyi deals DMG equal to 150% of ATK to that Deity and gains a whirlwind. Fengyi can have a maximum of 4 whirlwinds at once."
+      },
+      "upgrades": {
+        "level2": {
+          "es": "La bonificación de ATQ aumenta a 165 %.",
+          "en": "ATK bonus increases to 165%."
+        },
+        "level3": {
+          "es": "Torbellinos máximos +2.",
+          "en": "Maximum whirlwinds +2."
+        },
+        "level4": {
+          "es": "La bonificación de ATQ aumenta a 180 %.",
+          "en": "ATK bonus increases to 180%."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Strudel der Anmut",
+      "en": "Vortex of Grace",
+      "es": "Vórtice de gracia"
+    },
+    "description": {
+      "de": "Entfesselt Aufsteigender Sturm, um 1 Wirbelsturm zu erschaffen.",
+      "en": "Releases Great Rising Gale to create 1 whirlwind.",
+      "es": "Lanza Gran vendaval ascendente para crear 1 torbellino."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Entfesselt Aufsteigender Sturm, um 2 Wirbelstürme zu erschaffen.",
+        "en": "Releases Great Rising Gale to create 2 whirlwinds.",
+        "es": "Lanza Gran vendaval ascendente para crear 2 torbellinos."
+      },
+      "level3": {
+        "de": "Stellt 50 Energie wieder her, wenn Fengyi einen Wirbelwind erhält.",
+        "en": "Restores 50 Energy when Fengyi gains a whirlwind. (Unlock at Relic Lv.20)",
+        "es": "Restaura 50 de Energía cuando Fengyi obtiene un torbellino."
+      },
+      "level4": {
+        "de": "Entfesselt Aufsteigender Sturm, um 3 Wirbelstürme zu erschaffen.",
+        "en": "Releases Great Rising Gale to create 3 whirlwinds. (Unlock at Relic Lv.30)",
+        "es": "Lanza Gran vendaval ascendente para crear 3 torbellinos."
+      }
+    }
   }
 }

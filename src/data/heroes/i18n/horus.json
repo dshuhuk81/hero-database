@@ -3,5 +3,152 @@
     "de": "Horus",
     "es": "Horus",
     "ru": "Horus"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Auge um Auge",
+        "en": "Eye for an Eye",
+        "es": "Ojo por ojo"
+      },
+      "description": {
+        "de": "Wenn Horus im Zustand [Rache] angegriffen wird, hat er eine Chance von 30 %, Rasende Klinge zu wirken. Dieser Effekt wird alle 12 Sek. einmal ausgelöst.",
+        "en": "When attacked in the [Revenge] state, Horus has a 30% chance to cast Frenzied Blade. This effect triggers once every 12s.",
+        "es": "Cuando es atacado en el estado [Venganza], Horus tiene un 30 % de probabilidad de lanzar Hoja frenética. Este efecto se activa una vez cada 12 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "[Frenzied Blade] stellt LP in Höhe von 25% des verursachten SCH wieder her.",
+          "en": "Restores HP equal to 25% of the DMG dealt by Frenzied Blade. (Unlock at Relic Lv.10)",
+          "es": "Restaura PS equivalentes al 25 % del Daño infligido por Hoja frenética."
+        },
+        "level3": {
+          "de": "Wenn Horus im Zustand [Rache] angegriffen wird, hat er eine Chance von 30 %, Rasende Klinge zu wirken. Dieser Effekt wird alle 8 Sek. einmal ausgelöst.",
+          "en": "When attacked in the [Revenge] state, Horus has a 30% chance to cast Frenzied Blade. This effect triggers once every 8s. (Unlock at Relic Lv.20)",
+          "es": "Cuando es atacado en el estado [Venganza], Horus tiene un 30 % de probabilidad de lanzar Hoja frenética. Este efecto se activa una vez cada 8 s."
+        },
+        "level4": {
+          "de": "Wenn Horus im Zustand [Rache] angegriffen wird, hat er eine Chance von 30 %, Rasende Klinge zu wirken. Dieser Effekt wird alle 4 Sek. einmal ausgelöst.",
+          "en": "When attacked in the [Revenge] state, Horus has a 30% chance to cast Frenzied Blade. This effect triggers once every 4s. (Unlock at Relic Lv.30)",
+          "es": "Cuando es atacado en el estado [Venganza], Horus tiene un 30 % de probabilidad de lanzar Hoja frenética. Este efecto se activa una vez cada 4 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Rachsüchtiges Blutbad",
+        "en": "Vengeful Bloodbath",
+        "es": "Baño de sangre vengativo"
+      },
+      "description": {
+        "de": "Horus markiert den Feind mit dem höchsten ANG und fügt ihm SCH in Höhe von 300 % ANG zu. Dann tritt er für 10 Sek. in den Zustand [Rache] ein, konzentriert sich auf dieses Ziel, verwandelt seine Angriffe in mächtige Schläge, erhöht die KRIT-Rate um 100 % und erleidet für die Dauer 20 % weniger SCH.",
+        "en": "Horus marks the enemy with the highest ATK, dealing DMG equal to 300% of ATK to them. He then enters the [Revenge] state for 10s, focusing on that target, transforming his attacks into powerful strikes, increasing CRIT Rate by 100%, and taking 20% reduced DMG for the duration.",
+        "es": "Horus marca al enemigo con el ATQ más alto, infligiéndole un Daño equivalente al 300 % de su ATQ. Luego, entra en el estado de [Venganza] durante 10s, concentrándose en ese objetivo, transformando sus ataques en golpes poderosos y aumentando su Tasa de crít. un 100 %. Recibe un 20 % menos de daño mientras dure el efecto."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den ANG um 20 % im Zustand [Rache].",
+          "en": "Increases ATK by 20% while in the [Revenge] state.",
+          "es": "Aumenta el ATQ en un 20 % mientras está en el estado [Venganza]."
+        },
+        "level3": {
+          "de": "Verringert den erlittenen SCH während des Zustands [Rache] um 30 %.",
+          "en": "Reduces DMG taken during the [Revenge] state by 30%.",
+          "es": "Reduce un 30 % el Daño recibido durante el estado de [Venganza]."
+        },
+        "level4": {
+          "de": "Erhöht den ANG um 40 % im Zustand [Rache].",
+          "en": "Increases ATK by 40% while in the [Revenge] state.",
+          "es": "Aumenta el ATQ en un 40 % mientras está en el estado [Venganza]."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Rasende Klinge",
+        "en": "Frenzied Blade",
+        "es": "Hoja frenética"
+      },
+      "description": {
+        "de": "Horus fügt dem nächsten Feind und den umstehenden Feinden SCH in Höhe von 200 % ANG zu. Im Zustand [Rache] fügt er den umstehenden Feinden SCH in Höhe von 200 % ANG zu und verringert ihre Rüstung für 8 Sek. um 20 %.",
+        "en": "Horus deals DMG equal to 200% of ATK to the nearest enemy and those around it. In the [Revenge] state, he deals DMG equal to 200% of ATK to surrounding enemies and reduces their Armor by 20% for 8s.",
+        "es": "Horus inflige un Daño equivalente al 200 % de su ATQ al enemigo más cercano y a los que lo rodean. En el estado de [Venganza], inflige un daño equivalente al 200 % de su ATQ a los enemigos cercanos y reduce su Armadura un 20 % durante 8s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 220 %.",
+          "en": "Increases DMG dealt to 220%.",
+          "es": "Aumenta el daño infligido a 220 %."
+        },
+        "level3": {
+          "de": "Verringert die Rüstung um 30 %, wenn er sich im Zustand [Rache] befindet.",
+          "en": "Reduces Armor by 30% when he is in the [Revenge] state.",
+          "es": "Reduce la Armadura un 30 % cuando está en el estado de [Venganza]."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 250 %.",
+          "en": "Increases DMG dealt to 250%.",
+          "es": "Aumenta el Daño infligido al 250 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wut des Raubvogels",
+        "en": "Raptor’s Rage",
+        "es": "Furia de ave rapaz"
+      },
+      "description": {
+        "de": "Horus erhöht die ANG-GES während des Kampfes um 15 % und zusätzlich um 40 %, wenn er sich im Zustand [Rache] befindet.",
+        "en": "Horus increases ATK SPD by 15% during battle and an additional 40% when he is in the [Revenge] state.",
+        "es": "Horus aumenta su VEL de ATQ un 15 % durante la batalla y un 40 % adicional cuando está en el estado de [Venganza]."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der ANG-GES-Bonus wird auf 20% erhöht, und KRIT-SCH wird um 20% gesteigert.",
+          "en": "Increases ATK SPD to 20% and CRIT DMG by 20%.",
+          "es": "Aumenta la VEL de ATQ al 20 % y el Daño crít. un 20 %."
+        },
+        "level3": {
+          "de": "Die ANG-GES wird um 55 % erhöht, wenn er sich im Zustand [Rache] befindet.",
+          "en": "ATK SPD is increased by 55% when he is in the [Revenge] state.",
+          "es": "La VEL de ATQ aumenta un 55 % cuando está en el estado de [Venganza]."
+        },
+        "level4": {
+          "de": "Erhöht ANG-GES auf 25% und KRIT-SCH auf 40%.",
+          "en": "ATK SPD is increased to 25% and CRIT DMG is increased to 40%. (Unlocks at Lv.261)",
+          "es": "La VEL de ATQ aumenta al 25 % y el Daño crít. aumenta al 40 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Vergeltendes Warten",
+      "en": "Retributive Wait",
+      "es": "Espera retributiva"
+    },
+    "description": {
+      "de": "Wenn Horus' LP unter 50 % fallen, zieht er sich für 5 Sek. vom Schlachtfeld zurück und stellt 50 Energie pro Sek. wieder her. Er kehrt zu seiner Ausgangsposition zurück, wenn er wiederkommt. Dieser Effekt kann nur einmal pro Kampf ausgelöst werden.",
+      "en": "When Horus's HP drops below 50%, he retreats from the battlefield for 5s, restoring 50 Energy per sec. He returns to his starting position when he comes back. This effect can only trigger once per battle.",
+      "es": "Cuando los PS de Horus bajan del 50 %, se retira del campo de batalla durante 5s y restaura 50 de Energía por segundo. Vuelve a su posición inicial al regresar. Este efecto solo se puede activar una vez por batalla."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Während des Rückzugs regeneriert er LP in Höhe von 50% seines ANG pro Sekunde.",
+        "en": "Restores HP equal to 50% of ATK per sec while retreating.",
+        "es": "Restaura PS equivalentes al 50 % de su ATQ por segundo mientras se retira."
+      },
+      "level3": {
+        "de": "Stellt während des Rückzugs 60 Energie pro Sek. wieder her.",
+        "en": "Restores 60 Energy per sec while retreating.",
+        "es": "Restaura 60 de Energía por segundo mientras se retira."
+      },
+      "level4": {
+        "de": "Kann zweimal pro Kampf und einmal alle 6 Sek. ausgelöst werden.",
+        "en": "It can trigger twice per battle and once every 6s. (Unlocks at Lv.281)",
+        "es": "Se puede activar dos veces por batalla y una vez cada 6s."
+      }
+    }
   }
 }

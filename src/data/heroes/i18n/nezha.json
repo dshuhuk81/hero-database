@@ -3,5 +3,142 @@
     "de": "Nezha",
     "es": "Nezha",
     "ru": "Nezha"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Erblühender Feuerlotus",
+        "en": "Blossoming Fire Lotus",
+        "es": "Loto de fuego floreciente"
+      },
+      "description": {
+        "de": "Nezha fügt Feinden im Umkreis von 3 Metern SCH in Höhe von 200 % ANG zu. Tritt in den Zustand [Verkörperter Lotus] ein, erhält 15 % Lebensraub, verbessert andere Fähigkeiten und fügt Feinden im Umkreis von 3 Metern pro Sek. SCH in Höhe von 90 % ANG zu.",
+        "en": "Nezha deals 200% ATK as DMG to enemies within 3 meters. Enters the [Lotus Embodied] state, gaining 15% Lifesteal, enhancing other skills, and dealing 90% ATK as DMG per sec to enemies within 3 meters.",
+        "es": "Nezha inflige un 200 % de ATQ como daño a los enemigos en un radio de 3 metros. Entra en el estado [Loto encarnado], obtiene un 15 % de Robo de vida, mejora otras habilidades e inflige un 90 % de ATQ como daño por segundo a los enemigos en un radio de 3 metros."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verkörperter Lotus verringert die Rüstung von Feinden in der Nähe für 2 Sek. um 10 %. Dieser Effekt ist stapelbar.",
+          "en": "Lotus Embodied reduces the Armor of nearby enemies by 10% for 2s. This effect can stack.",
+          "es": "Loto encarnado reduce la Armadura de los enemigos cercanos en un 10 % durante 2 s. Este efecto se puede acumular."
+        },
+        "level3": {
+          "de": "Erhöht erhaltenen Lebensraub auf 30 %.",
+          "en": "Increases Lifesteal gained to 30%.",
+          "es": "aumenta el robo de vida obtenido al 30 %."
+        },
+        "level4": {
+          "de": "Die Dauer von Verkörperter Lotus wird auf 15 Sek. verlängert.",
+          "en": "The duration of Lotus Embodied extends to 15s.",
+          "es": "La duración de Loto encarnado se extiende a 15 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Lotusschutz",
+        "en": "Lotus Ward",
+        "es": "Resguardo del loto"
+      },
+      "description": {
+        "de": "Passiv: Segnet zu Kampfbeginn zwei Verbündete in der Vorderreihe mit Seelenfeuer. Erhöht bis zum Ende des Kampfes ihren ANG um 10 % und Rüstung & M-RES um 30 %. Fällt einer von ihnen, holt Nezha das Seelenfeuer zurück.",
+        "en": "Blesses two frontline allies with Soul Fire at combat start (Passive), increasing ATK by 10% and Armor & M-RES by 30% until the battle ends. When any of them falls, Nezha retrieves Soul Fire.",
+        "es": "Bendice a dos aliados de la vanguardia con Fuego del alma al inicio del combate (Pasiva), lo que aumenta su ATQ en un 10 % y su Armadura y RES M en un 30 % hasta que termine la batalla. Cuando uno de ellos cae, Nezha recupera Fuego del alma."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der Effekt der Flammenlotus wird auf 15% ATK und 40% Rüstung sowie M-RES erhöht.",
+          "en": "Soul Fire now grants 20% ATK and 40% Armor & M-RES.",
+          "es": "Fuego del alma ahora otorga 20 % de ATQ, 40 % de Armadura y RES-M."
+        },
+        "level3": {
+          "de": "Beim Zurückholen einer Flammenlotus erhält Nezha zusätzlich einen Schild in Höhe von 200% des ANG.",
+          "en": "Gains a shield equal to 200% of ATK when retrieving Soul Fire.",
+          "es": "Obtiene un escudo equivalente al 200 % de su ATQ al recuperar Fuego del alma."
+        },
+        "level4": {
+          "de": "Der Effekt der Flammenlotus wird auf 20% ANG und 50% Rüstung sowie M-RES erhöht.",
+          "en": "Soul Fire now grants 30% ATK and 50% Armor & M-RES.",
+          "es": "Fuego del alma ahora otorga 30 % de ATQ, 50 % de Armadura y RES-M."
+        }
+      }
+    },
+    {
+      "name": {
+        "es": "Carga de viento y fuego",
+        "en": "Windfire Charge"
+      },
+      "description": {
+        "es": "Carga hacia el enemigo con el ATQ más alto, lo que inflige un daño equivalente al 80 % de su ATQ al objetivo y a todos los enemigos en el camino. Mientras está en el estado [Loto encarnado], inflige un daño equivalente al 120 % de su ATQ al objetivo y a los enemigos en el camino y los derriba.",
+        "en": "Charges towards the enemy with the highest ATK, dealing DMG equal to 80% of ATK to the target and all enemies along the path. While in the [Lotus Embodied] state, deals DMG equal to 120% of ATK to the target and enemies along the path and knocks them down."
+      },
+      "upgrades": {
+        "level2": {
+          "es": "Aumenta el daño infligido al 100 % del ATQ. El daño aumenta al 140 % del ATQ en el estado [Loto encarnado].",
+          "en": "Increases DMG dealt to 100% ATK. DMG is increased to 140% ATK in the [Lotus Embodied] state."
+        },
+        "level3": {
+          "es": "Aumenta el ATQ en un 25 % mientras está en Loto encarnado.",
+          "en": "Increases ATK by 25% while in Lotus Embodied."
+        },
+        "level4": {
+          "es": "Aumenta la VEL de ATQ en un 25 % durante 10 s cuando termina la habilidad.",
+          "en": "Increases ATK SPD by 25% for 10s when the skill ends."
+        }
+      }
+    },
+    {
+      "name": {
+        "es": "Anillo armilar",
+        "en": "Armillary Coil"
+      },
+      "description": {
+        "es": "Lanza la Faja cósmica para atraer a los 2 enemigos más cercanos en un radio de 1 metro y barre con la Lanza de punta de fuego para infligir un daño equivalente al 100 % de su ATQ. Inflige un daño equivalente al 160 % de su ATQ y derriba a los enemigos mientras está en el estado [Loto encarnado].",
+        "en": "Whips Cosmic Sash to pull 2 nearest enemies within 1 meter and sweeps with Fire-Tipped Spear to deal DMG equal to 100% of ATK. He deals DMG equal to 160% of ATK and knocks down enemies while in the [Lotus Embodied] state."
+      },
+      "upgrades": {
+        "level2": {
+          "es": "Aumenta el daño infligido al 120 % del ATQ. El daño aumenta al 180 % del ATQ en el estado [Loto encarnado].",
+          "en": "Increases DMG dealt to 120% ATK. DMG is increased to 180% ATK in the [Lotus Embodied] state."
+        },
+        "level3": {
+          "es": "Los enemigos golpeados por Nezha en el estado [Loto encarnado] reciben un 20 % más de daño de él durante 8 s.",
+          "en": "Enemies hit by Nezha in the [Lotus Embodied] state take 20% more DMG from him for 8s."
+        },
+        "level4": {
+          "es": "Ahora puede atraer hasta a 3 enemigos.",
+          "en": "He can now pull up to 3 enemies."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Wut der Wiedergeburt",
+      "en": "Rage of Reincarnation",
+      "es": "Furia de la reencarnación"
+    },
+    "description": {
+      "de": "Jedes Mal, wenn ein Verbündeter (Diener ausgenommen) im Kampf fällt, stellt Nezha 150 Energie wieder her, erhöht den verursachten SCH um 15% und reduziert den erlittenen SCH um 10% für 25 Sekunden. Dieser Effekt ist bis zu 5-mal stapelbar.",
+      "en": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 15%, and reduces DMG taken by 10% for 25s. This effect can stack up to 5 times.",
+      "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 15% y reduce el daño recibido en un 10% durante 25 s. Este efecto se puede acumular hasta 5 veces."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Jedes Mal, wenn ein Verbündeter (Diener ausgenommen) im Kampf fällt, stellt Nezha 150 Energie wieder her, erhöht den verursachten SCH um 30% und reduziert den erlittenen SCH um 10% für 25 Sekunden. Dieser Effekt ist bis zu 5-mal stapelbar.",
+        "en": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 30%, and reduces DMG taken by 10% for 25s. This effect can stack up to 5 times.",
+        "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 30% y reduce el daño recibido en un 10% durante 25 s. Este efecto se puede acumular hasta 5 veces."
+      },
+      "level3": {
+        "de": "Jedes Mal, wenn ein Verbündeter (Diener ausgenommen) im Kampf fällt, stellt Nezha 150 Energie wieder her, erhöht den verursachten SCH um 30% und reduziert den erlittenen SCH um 25% für 25 Sekunden. Dieser Effekt ist bis zu 5-mal stapelbar.",
+        "en": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 30%, and reduces DMG taken by 25% for 25s. This effect can stack up to 5 times.",
+        "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 30% y reduce el daño recibido en un 25% durante 25 s. Este efecto se puede acumular hasta 5 veces."
+      },
+      "level4": {
+        "de": "Erhält zu Kampfbeginn 300 Bonus-Energie und erhöht die Energieaufladung um 30 %.",
+        "en": "Gains 300 bonus Energy and increases Energy Regen by 30% at combat start.",
+        "es": "Obtiene 300 de Energía adicional y aumenta la Recarga de energía en un 30 % al inicio del combate."
+      }
+    }
   }
 }

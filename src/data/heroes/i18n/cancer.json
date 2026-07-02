@@ -3,5 +3,62 @@
     "de": "Krebs",
     "es": "Cáncer",
     "ru": "Рак"
-  }
+  },
+  "skills": [
+    {},
+    {
+      "name": {
+        "de": "Nähren",
+        "en": "Nourish",
+        "es": "Nutrición"
+      },
+      "description": {
+        "de": "Heilt den schwächsten Verbündeten und stellt LP in Höhe von 250% ANG wieder her.",
+        "en": "Restores HP equal to 250% ATK to the weakest ally.",
+        "es": "Restaura PS equivalentes al 250 % del ATQ al aliado más vulnerable."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die Heilung auf 270 %.",
+          "en": "Healing increases to 270%.",
+          "es": "La curación aumenta al 270 %."
+        },
+        "level3": {
+          "de": "Heilt jetzt 2 Verbündete.",
+          "en": "Now heals 2 allies.",
+          "es": "Ahora sana a 2 aliados."
+        },
+        "level4": {
+          "de": "Erhöht die Heilung auf 300 %.",
+          "en": "Healing increases to 300%.",
+          "es": "La curación aumenta al 300 %."
+        }
+      }
+    },
+    {},
+    {
+      "name": {
+        "de": "Unterschlupf",
+        "en": "Shelter",
+        "es": "Refugio"
+      },
+      "description": {
+        "de": "Erhöht die SCH-RED des nächsten Verbündeten in der Vorderreihe während des Kampfes um 15 %.",
+        "en": "Increases DMG RED of the nearest frontline ally by 15% during battle.",
+        "es": "Aumenta la Reduc. de daño del aliado de la vanguardia más cercano en un 15 % durante la batalla."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH-RED auf 20 %.",
+          "en": "Increases DMG RED to 20%.",
+          "es": "aumenta la Reduc. de daño al 20 %."
+        },
+        "level3": {
+          "de": "Erhöht die M-RES dieser Einheit zusätzlich um 50 %.",
+          "en": "Increases that unit's M-RES by an additional 50%.",
+          "es": "Aumenta la RES M de esa unidad en un 50 % adicional."
+        }
+      }
+    }
+  ]
 }

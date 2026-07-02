@@ -3,5 +3,84 @@
     "de": "Wassermann",
     "es": "Acuario",
     "ru": "Водолей"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Weisheit des Stroms",
+        "en": "Stream's Wisdom",
+        "es": "Sabiduría del arroyo"
+      },
+      "description": {
+        "de": "Wassermann gewährt allen Verbündeten für 6 Sek. einen Schild, der SCH in Höhe von 240 % des ANG absorbiert.",
+        "en": "Aquarius grants all allies a shield that absorbs DMG equal to 240% of ATK for 6s.",
+        "es": "Acuario otorga a todos los aliados un escudo que absorbe daño equivalente a un 240 % del ATQ durante 6 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Schildstärke erhöht sich auf 270 % ANG.",
+          "en": "Shield Strength increases to 270% ATK.",
+          "es": "La fuerza del Escudo aumenta a 270 % de ATQ."
+        },
+        "level3": {
+          "de": "Die Schildstärke erhöht sich auf 300 % ANG.",
+          "en": "Shield Strength increases to 300% ATK.",
+          "es": "La fuerza del Escudo aumenta a 300 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Woge",
+        "en": "Surge",
+        "es": "Oleada"
+      },
+      "description": {
+        "de": "Wassermann visiert den nächsten Gegner an und entfesselt dann einen Sturzbach unter dem Ziel, der SCH in Höhe von 270 % des ANG verursacht und ihn zu Boden wirft.",
+        "en": "Aquarius locks onto the nearest enemy and then unleashes a torrent below the target, dealing 270% ATK as DMG and knocking them down.",
+        "es": "Acuario fija al enemigo más cercano y desata un torrente debajo del objetivo, lo que inflige un 270 % de ATQ como daño y lo derriba."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "SCH erhöht sich auf 290 % des ANG.",
+          "en": "DMG increases to 290% ATK.",
+          "es": "El daño aumenta a un 290 % del ATQ."
+        },
+        "level3": {
+          "de": "Aquarius' M-RES wird nach dem Einsatz der Fähigkeit um 100% für 10 Sekunden erhöht.",
+          "en": "Increases Aquarius's M-RES by 100% for 10s after casting the skill.",
+          "es": "Aumenta la RES M de Acuario en un 100 % durante 10s después de lanzar la habilidad."
+        },
+        "level4": {
+          "de": "SCH erhöht sich auf 320 % des ANG.",
+          "en": "DMG increases to 320% ATK.",
+          "es": "El daño aumenta a un 320 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Welle",
+        "en": "Wavelet",
+        "es": "Ondícula"
+      },
+      "description": {
+        "de": "Wassermann wirkt einen 6-Sek.-Schild auf den schwächsten Verbündeten, der SCH in Höhe von 200 % des ANG absorbiert.",
+        "en": "Aquarius applies a 6s shield to the weakest ally, absorbing DMG equal to 200% of ATK.",
+        "es": "Acuario aplica un escudo de 6 s al aliado más débil, que absorbe daño equivalente a un 200 % del ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Schildstärke erhöht sich auf 220 % ANG.",
+          "en": "Shield Strength increases to 220% ATK.",
+          "es": "La fuerza del Escudo aumenta a 220 % de ATQ."
+        },
+        "level3": {
+          "de": "Die beschützte Einheit erleidet für die nächsten 5 Sek. 20 % weniger SCH.",
+          "en": "The shielded unit takes 20% less DMG for the next 5s.",
+          "es": "La unidad con escudo recibe un 20 % menos de daño durante los siguientes 5 s."
+        }
+      }
+    }
+  ]
 }

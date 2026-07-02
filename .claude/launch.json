@@ -8,10 +8,22 @@
       "port": 4321
     },
     {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 4321
+    },
+    {
       "name": "static-root",
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4322"],
       "port": 4322
+    },
+    {
+      "name": "static-android",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4323", "-d", "/Users/daschultheiss/android"],
+      "port": 4323
     },
     {
       "name": "family-board",

@@ -3,5 +3,152 @@
     "de": "Skadi",
     "es": "Skadi",
     "ru": "Skadi"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Treibender Strudel",
+        "en": "Drifting Vortex",
+        "es": "Vórtice errante"
+      },
+      "description": {
+        "de": "Erschafft einen Eiswirbel, der sich für 8 Sek. ununterbrochen über das Schlachtfeld bewegt und dabei feindliche Gottheiten (Diener ausgenommen) anvisiert.\nSolange er aktiv ist, fügt der Eiswirbel Feinden in der Nähe alle 0,5 Sek. SCH in Höhe von 36 % ANG zu. Wenn er einen Feind mit Massenkontrolle durchquert, fügt er stattdessen SCH in Höhe von 60 % ANG zu.",
+        "en": "Create an Ice Vortex that continuously moves around the battlefield while targeting enemy Deity units (excluding minions) for 8 seconds. While active, the Ice Vortex deals 36% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 60% ATK as DMG.",
+        "es": "Crea un Vórtice de hielo que se mueve continuamente por el campo de batalla mientras apunta a las unidades de Deidad enemigas (excluyendo súbditos) durante 8 segundos.\nMientras está activo, el Vórtice de hielo inflige un 36 % de ATQ como daño a los enemigos cercanos cada 0,5 segundos. Si pasa a través de un enemigo que está bajo Control de masas, inflige en su lugar un 60 % de ATQ como daño."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Solange er aktiv ist, fügt der Eiswirbel Feinden in der Nähe alle 0,5 Sek. SCH in Höhe von 48 % ANG zu. Wenn er einen Feind mit Massenkontrolle durchquert, fügt er stattdessen SCH in Höhe von 80 % ANG zu.",
+          "en": "While active, the Ice Vortex deals 48% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 80% ATK as DMG.",
+          "es": "Mientras está activo, el Vórtice de hielo inflige un 48 % de ATQ como daño a los enemigos cercanos cada 0,5 segundos. Si pasa a través de un enemigo que está bajo Control de masas, inflige en su lugar un 80 % de ATQ como daño."
+        },
+        "level3": {
+          "de": "Jeder aufeinanderfolgende Treffer des Eiswirbels auf dasselbe Ziel erhöht den SCH, den das Ziel durch Eissturm erleidet, um 12 %, bis zu 15-mal stapelbar.",
+          "en": "Ice Vortex's each consecutive hit on the same target increases the DMG that target takes from Ice Storm by 12%, stacking up to 15 times.",
+          "es": "Cada golpe consecutivo del Vórtice de hielo en el mismo objetivo aumenta el daño que ese objetivo recibe de Tormenta de hielo en un 12 %, acumulándose hasta 15 veces."
+        },
+        "level4": {
+          "de": "Solange er aktiv ist, fügt der Eiswirbel Feinden in der Nähe alle 0,5 Sek. SCH in Höhe von 60 % ANG zu. Wenn er einen Feind mit Massenkontrolle durchquert, fügt er stattdessen SCH in Höhe von 100 % ANG zu.",
+          "en": "While active, the Ice Vortex deals 60% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 100% ATK as DMG.",
+          "es": "Mientras está activo, el Vórtice de hielo inflige un 60 % de ATQ como daño a los enemigos cercanos cada 0,5 segundos. Si pasa a través de un enemigo que está bajo Control de masas, inflige en su lugar un 100 % de ATQ como daño."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Ring des Schneesturms",
+        "en": "Ring of Blizzard",
+        "es": "Anillo de ventisca"
+      },
+      "description": {
+        "de": "Beschwöre einen Blizzard mit einem Radius von 3 Metern in einem Bereich mit vielen Feinden. Der Blizzard fügt 3 Sek. lang alle 0,5 Sek. SCH in Höhe von 40 % ANG zu und fügt dann Feinden, die nach 3 Sek. im Gebiet verbleiben, SCH in Höhe von 100 % ANG zu.",
+        "en": "Summon a Blizzard with 3-meter radius in a densely packed area. The blizzard deals 40% ATK as DMG every 0.5 seconds for 3 seconds, then deals 100% ATK as DMG to enemies that remain within the area after 3 seconds.",
+        "es": "Invoca una Ventisca con un radio de 3 metros en un área densamente poblada. La ventisca inflige un 40 % de ATQ como daño cada 0,5 segundos durante 3 segundos, y luego inflige un 100 % de ATQ como daño a los enemigos que permanezcan dentro del área después de 3 segundos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Fügt alle 0,5 Sek. SCH in Höhe von 60 % ANG zu.",
+          "en": "Deals 60% ATK as DMG every 0.5 seconds.",
+          "es": "Inflige un 60 % de ATQ como daño cada 0.5 segundos."
+        },
+        "level3": {
+          "de": "Fügt alle 0,5 Sek. SCH in Höhe von 80 % ANG zu.",
+          "en": "Deals 80% ATK as DMG every 0.5 seconds.",
+          "es": "Inflige un 80 % de ATQ como daño cada 0.5 segundos."
+        },
+        "level4": {
+          "de": "Feinde, die nach 3 Sek. im Gebiet verbleiben, werden für 3 Sek. eingefroren.",
+          "en": "Enemies that remain within the area after 3 seconds are Frozen for 3 seconds.",
+          "es": "Los enemigos que permanezcan dentro del área después de 3 segundos quedan Congelados durante 3 segundos."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Eisgefängnis",
+        "en": "Ice Prison",
+        "es": "Prisión de hielo"
+      },
+      "description": {
+        "de": "Friere das aktuelle Ziel für 2 Sek. ein und füge ihm SCH in Höhe von 240 % ANG zu.",
+        "en": "Freeze the current target for 2 seconds and deal 240% ATK as DMG.",
+        "es": "Congela al objetivo actual durante 2 segundos e inflige un 240 % de ATQ como daño."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Fügt außerdem Einheiten um das Ziel herum pro Sek. SCH in Höhe von 80 % ANG zu.",
+          "en": "Also deals 80% ATK as DMG per second to units around the target.",
+          "es": "También inflige un 80 % de ATQ como daño por segundo a las unidades alrededor del objetivo."
+        },
+        "level3": {
+          "de": "Verursacht SCH in Höhe von 270 % ANG.",
+          "en": "Deals 270% ATK as DMG.",
+          "es": "Inflige un 270 % de ATQ como daño."
+        },
+        "level4": {
+          "de": "Die Dauer wird auf 3 Sek. verlängert.",
+          "en": "Duration extends to 3s.",
+          "es": "La duración se extiende a 3 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Reich des Frosts",
+        "en": "Realm of Frost",
+        "es": "Reino de escarcha"
+      },
+      "description": {
+        "de": "Wenn eine feindliche Einheit von einer Massenkontrolle betroffen ist, beschwört Skadi einen Eisstachel, der dem Ziel SCH in Höhe von 60 % ANG zufügt.",
+        "en": "When an enemy unit is affected by a Crowd Control effect, Skadi summons an Ice Spike to deal 60% ATK as DMG to the target.",
+        "es": "Cuando una unidad enemiga es afectada por un efecto de Control de masas, Skadi invoca un Pico de hielo para infligir un 60 % de ATQ como daño al objetivo."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 80 %.",
+          "en": "Increases DMG dealt to 80%.",
+          "es": "Aumenta el daño infligido a 80 %."
+        },
+        "level3": {
+          "de": "Und stellt 30 Energie wieder her.",
+          "en": "And restores 30 Energy.",
+          "es": "Y restaura 30 de Energía."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 100 %.",
+          "en": "Increases DMG dealt to 100%.",
+          "es": "Aumenta el Daño infligido al 100 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Eisgeschmiedete Adern",
+      "en": "Iceforged Veins",
+      "es": "Venas forjadas en hielo"
+    },
+    "description": {
+      "de": "Das Auslösen von [Reich des Frosts] gewährt 8 % ANG für 3 Sek. Bis zu 10-mal stapelbar.",
+      "en": "Triggering Realm of Frost grants 8% ATK for 3s. Stacks up to 10 times.",
+      "es": "Activar [Reino de escarcha] otorga un 8 % de ATQ durante 3 s. Se acumula hasta 10 veces."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Wenn Skadi kurz davor ist zu fallen, friert sie sich für 3 Sek. selbst ein, wird unbesiegbar und stellt pro Sek. 20 % ihrer max. LP wieder her. Dies kann einmal pro Kampf ausgelöst werden.",
+        "en": "When Skadi is about to fall, she freezes herself for 3s, becoming invincible and restoring 20% of her max HP per sec. This can be triggered once per battle.",
+        "es": "Cuando Skadi está a punto de caer, se congela durante 3 s, se vuelve invencible y restaura un 20 % de sus PS máx. por seg. Esto se puede activar una vez por batalla."
+      },
+      "level3": {
+        "de": "Das Auslösen von [Reich des Frosts] gewährt 12 % ANG für 3 Sek. Bis zu 10-mal stapelbar.",
+        "en": "Triggering Realm of Frost grants 12% ATK for 3s. Stacks up to 10 times.",
+        "es": "Activar [Reino de escarcha] otorga un 12 % de ATQ durante 3 s. Se acumula hasta 10 veces."
+      },
+      "level4": {
+        "de": "Das Auslösen von [Reich des Frosts] gewährt 12 % ANG für 8 Sek. Bis zu 10-mal stapelbar.",
+        "en": "Triggering Realm of Frost grants 12% ATK for 8s. Stacks up to 10 times.",
+        "es": "Activar Reino de Escarcha otorga un 12 % de ATQ durante 8 s. Se acumula hasta 10 veces."
+      }
+    }
   }
 }

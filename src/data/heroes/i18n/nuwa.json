@@ -3,5 +3,152 @@
     "de": "Nüwa",
     "es": "Nüwa",
     "ru": "Нюйва"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Gesetz der Schöpfung",
+        "en": "Law of Creation",
+        "es": "Ley de la creación"
+      },
+      "description": {
+        "de": "Zu Kampfbeginn wird eine Bollwerk-Figur beschworen, die auf den nächsten Feind zustürmt, ihm SCH in Höhe von 270 % ANG zufügt und ihn für 2 Sek. betäubt. Die Bollwerk-Figur erbt 200 % ihrer max. LP und 100 % ihres ANG (Aktiv). Beschwört sofort eine Bollwerk-Figur und errichtet eine Barriere in Höhe von 1600 % ANG für 6 Sek. Solange die Barriere besteht, erleidet sie SCH für Verbündete hinter ihr. Wenn bereits eine Bollwerk-Figur existiert, stellt sie die LP der Bollwerk-Figur vollständig wieder her und errichtet die Barriere.",
+        "en": "At combat start, summons a Bulwark Figurine that charges the nearest enemy, dealing DMG equal to 270% of ATK and stunning them for 2s. The Bulwark Figurine inherits 200% of her max HP and 100% of her ATK. Activating the skill deploys a barrier equal to 1600% of ATK for 6s that absorbs damage for allies behind it. If a Bulwark Figurine already exists, its HP is fully restored and the barrier is redeployed.",
+        "es": "Al inicio del combate, invoca una Estatuilla de baluarte que carga contra el enemigo más cercano, infligiéndole un Daño equivalente al 270 % de su ATQ y aturdiéndolo durante 2s. La Estatuilla de baluarte hereda el 200 % de sus PS máximos y el 100 % de su ATQ. Invoca de inmediato una Estatuilla de baluarte y despliega una barrera equivalente al 1600 % de su ATQ durante 6s (Activa). Mientras la barrera esté activa, recibe el Daño por los aliados que estén detrás de ella. Si ya existe una Estatuilla de baluarte, restaura por completo los PS de la Estatuilla de baluarte y despliega la barrera."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der Schild absorbiert SCH in Höhe von 2200 % des ANG.",
+          "en": "The shield absorbs DMG equal to 2200% of ATK.",
+          "es": "El escudo absorbe un daño equivalente al 2200 % de ATQ."
+        },
+        "level3": {
+          "de": "Der Schild absorbiert SCH in Höhe von 3000 % des ANG.",
+          "en": "The shield absorbs DMG equal to 3000% of ATK.",
+          "es": "El escudo absorbe un daño equivalente al 3000 % de ATQ."
+        },
+        "level4": {
+          "de": "Der Tank-Golem erleidet 20% weniger SCH, solange die Verteidigungsbarriere aktiv ist.",
+          "en": "While the barrier is active, the Bulwark Figurine takes 20% reduced DMG.",
+          "es": "Mientras la barrera está activa, la Estatuilla de baluarte recibe un 20 % de daño reducido."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Göttliche Umarmung",
+        "en": "Divine Embrace",
+        "es": "Abrazo divino"
+      },
+      "description": {
+        "de": "Gewährt einem Verbündeten an der Vorderreihe und allen Verbündeten im Umkreis von 3 Metern einen Schild in Höhe von 240 % ANG. Solange der Schild aktiv ist, blockiert er einen eingehenden Massenkontrolle-Effekt.",
+        "en": "Grants a shield equal to 240% of ATK to a frontline ally and all allies within 3 meters. While the shield is active, it blocks one incoming Crowd Control effect.",
+        "es": "Otorga un escudo equivalente al 240 % del ATQ a un aliado de la vanguardia y a todos los aliados en un radio de 3 metros. Mientras el escudo esté activo, bloquea un efecto de Control de masas entrante."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Schildstärke erhöht sich auf 270 % ANG.",
+          "en": "Shield strength increases to 270% of ATK.",
+          "es": "La fuerza del Escudo aumenta a 270 % de ATQ."
+        },
+        "level3": {
+          "de": "Nüwa erhält beim Einsatz der Fähigkeit einen Schild.",
+          "en": "Nuwa gains a shield when casting the skill.",
+          "es": "Nuwa obtiene un escudo al lanzar la habilidad."
+        },
+        "level4": {
+          "de": "Reduziert den erlittenen SCH um 50%, solange der Schild aktiv ist.",
+          "en": "Takes 50% less DMG while shielded.",
+          "es": "Recibe un 50 % menos de daño mientras tiene un escudo."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Kinder aus Lehm",
+        "en": "Children of the Clay",
+        "es": "Hijos de la arcilla"
+      },
+      "description": {
+        "de": "Beschwört einen Großaxt-Golem, der 150% LP und 120% ANG übernimmt. Solange er auf dem Feld ist, greift der Großaxt-Golem kontinuierlich den entferntesten Feind an und rammt ihn, wobei er 300% ANG-SCH verursacht und ihn für 1 Sekunde betäubt. Wenn der Großaxt-Golem bereits auf dem Feld ist, wird er beim Wirken sofort vollständig geheilt und springt in den Bereich mit den meisten Feinden, wobei er 300% seines eigenen ANG als SCH an Feinden in diesem Bereich verursacht und sie zu Boden wirft.",
+        "en": "Summons a Greataxe Figurine inheriting 150% of her max HP and 120% of her ATK. It attacks the farthest enemy, dealing DMG equal to 300% of ATK and stunning them for 1s. If a Greataxe Figurine already exists, it is fully healed and leaps into enemy clusters, dealing 300% ATK DMG and knocking enemies down.",
+        "es": "Invoca una Estatuilla de gran hacha que hereda el 150 % de sus PS máximos y el 120 % de su ATQ. Golpea continuamente al enemigo más lejano, infligiendo un daño equivalente al 300 % de ATQ y aturdiéndolo durante 1 s. Si ya existe una Estatuilla de Gran Hacha, le restaura todos los PS y la hace saltar a la zona con más enemigos, infligiendo un daño equivalente al 300 % de ATQ y derribando a los enemigos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die Betäubungsdauer der Großaxt-Figur auf 1,5 Sek.",
+          "en": "Increases Greataxe Figurine stun duration to 1.5s.",
+          "es": "Aumenta la duración del aturdimiento de la Estatuilla de gran hacha a 1,5 s."
+        },
+        "level3": {
+          "de": "Springt hoch und verspottet bei der Landung Feinde in Reichweite für 5 Sek. und erhält für die Dauer 100 % Rüstung.",
+          "en": "Leaps high and lands, taunting enemies within range for 5s and gaining 100% Armor for the duration.",
+          "es": "Salta alto y aterriza, provocando a los enemigos en el área de efecto durante 5s y obteniendo un 100 % de Armadura mientras dure."
+        },
+        "level4": {
+          "de": "Der Ramm-SCH wird auf 330% ANG erhöht, und der SCH durch den Aufprall im Bereich mit den meisten Feinden wird auf 330% ANG erhöht.",
+          "en": "Increases smash DMG and clustered area DMG to 330% of ATK.",
+          "es": "Aumenta el daño de aplastamiento al 330 % del ATQ y el daño de aplastamiento al área con más enemigos al 330 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Himmelsrettung",
+        "en": "Sky Salvation",
+        "es": "Salvación celestial"
+      },
+      "description": {
+        "de": "Beschwört einen Unterstützungs-Golem, der 100% LP und 150% ANG übernimmt. Solange er auf dem Feld ist, heilt er den schwächsten Verbündeten alle 2,5 Sekunden um 100% ANG-LP. Wenn der Unterstützungs-Golem bereits auf dem Feld ist, wird er beim Wirken sofort vollständig geheilt und heilt den schwächsten Verbündeten um 300% ANG-LP.",
+        "en": "Summons a Support Figurine inheriting 100% of her max HP and 150% of her ATK. It heals the most vulnerable ally for 100% ATK every 2.5s. If a Support Figurine already exists, it is fully healed and instead heals the most vulnerable ally for 300% ATK.",
+        "es": "Invoca una estatuilla de Apoyo, que hereda el 100 % de sus PS máximos y el 150 % de su ATQ. La estatuilla de Apoyo cura al aliado más vulnerable un 100 % de su ATQ cada 2,5 s. Si ya existe una estatuilla de Apoyo, restaura por completo los PS de la estatuilla de Apoyo y hace que cure al aliado más vulnerable un 300 % de su ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Beim aktiven Wirken gewährt er verschiedene Buffs basierend auf der Position der Formation des Ziels. Verbündete in der vorderen Reihe erhalten zusätzlich 10% Ausweichen, während Verbündete in der hinteren Reihe zusätzlich 10% SCH-Verstärkung erhalten. Hält 10 Sekunden an.",
+          "en": "Grants buffs based on ally position: frontline allies gain 10% Dodge Rate, backline allies gain 10% DMG bonus for 10s.",
+          "es": "Otorga diferentes mejoras según la posición del objetivo (Activa). Los aliados de la vanguardia obtienen un 10 % de Prob. de evasión, y los aliados de la retaguardia obtienen una Bonif. de daño del 10 %, con una duración de 10 s."
+        },
+        "level3": {
+          "de": "Die Heilung durch den Normalangriff des Unterstützungs-Golems wird auf 110% ANG erhöht.",
+          "en": "Support Figurine now heals for 110% ATK with each Normal Attack.",
+          "es": "La estatuilla de Apoyo ahora cura un 110 % de su ATQ con cada Ataque normal."
+        },
+        "level4": {
+          "de": "Wenn sich eine Bollwerk-Figur auf dem Schlachtfeld befindet, heilt sie diese alle 2,5 Sek.",
+          "en": "When a Bulwark Figurine is on the battlefield, she heals it every 2.5s.",
+          "es": "Cuando una Estatuilla de baluarte está en el campo de batalla, la cura cada 2,5 s."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Urgeist",
+      "en": "Primordial Spirit",
+      "es": "Espíritu primordial"
+    },
+    "description": {
+      "de": "Der Einsatz ihrer Ultimativen Fähigkeit löst sofort einmal Kinder aus Lehm und Himmelsrettung aus.",
+      "en": "Casting her Ultimate instantly triggers Children of the Clay and Sky Salvation once.",
+      "es": "Lanzar su Habilidad definitiva activa al instante Hijos de la arcilla y Salvación celestial una vez."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Für jede Tonfigur auf dem Feld erhält Nuwa zusätzlich 30% SCH-Reduktion.",
+        "en": "Nuwa gains an additional 30% DMG Reduction for each Figurine on the battlefield.",
+        "es": "Nuwa obtiene un 30 % adicional de Reduc. de daño por cada estatuilla en el campo de batalla."
+      },
+      "level3": {
+        "de": "Nüwa erhält 100 Energie für jede besiegte Figur.",
+        "en": "Nuwa gains 100 Energy for each Figurine defeated.",
+        "es": "Nuwa obtiene 100 de Energía por cada estatuilla derrotada."
+      },
+      "level4": {
+        "de": "Immer wenn ein Verbündeter einen Diener beschwört, segnet Nüwa ihn mit Göttliche Umarmung und gewährt ihm einen Schild.",
+        "en": "Whenever an ally summons a minion, Nuwa blesses it with Divine Embrace, granting it a shield.",
+        "es": "Cada vez que un aliado invoca a un súbdito, Nuwa lo bendice con Abrazo divino y le otorga un escudo."
+      }
+    }
   }
 }

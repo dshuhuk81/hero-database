@@ -3,5 +3,152 @@
     "de": "Geb",
     "es": "Geb",
     "ru": "Geb"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Unaufhaltsam",
+        "en": "Unstoppable",
+        "es": "Imparable"
+      },
+      "description": {
+        "de": "Geb tritt in den Zustand [Felsbrock] ein und erhält einen Schild in Höhe von 30 % der max. LP. Er rollt dann vorwärts, stößt Feinde vor sich kontinuierlich zurück und fügt SCH in Höhe von 100 % ANG zu.",
+        "en": "Geb enters the [Boulder] state, gaining a shield equal to 30% of his max HP. He then rolls forward, continuously knocking back enemies in front and dealing DMG equal to 100% of ATK.",
+        "es": "Geb entra en el estado de [Roca], obtiene un escudo equivalente al 30 % de sus PS máximos. Luego, rueda hacia adelante, repeliendo continuamente a los enemigos que tiene en frente e infligiendo un Daño equivalente al 100 % de su ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH pro Treffer auf 115 % ANG.",
+          "en": "Increases DMG per hit to 115% of ATK.",
+          "es": "Aumenta el daño por golpe a un 115 %."
+        },
+        "level3": {
+          "de": "Erhöht die Schildstärke auf 40 % der max. LP.",
+          "en": "Increases shield strength to 40% of max HP.",
+          "es": "Aumenta la fuerza del escudo al 40 % de los PS máximos."
+        },
+        "level4": {
+          "de": "Erhöht den SCH pro Treffer auf 130 % ANG.",
+          "en": "Increases DMG per hit to 130% of ATK.",
+          "es": "Aumenta el daño por golpe a un 130 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Steinrüstung",
+        "en": "Stone Armor",
+        "es": "Armadura de piedra"
+      },
+      "description": {
+        "de": "Geb gewährt sich selbst einen Schild in Höhe von 15 % der max. LP für 6 Sek.",
+        "en": "Geb grants himself a shield equal to 15% of max HP, lasting up to 6s.",
+        "es": "Geb se otorga un escudo equivalente al 15 % de sus PS máximos, con una duración de hasta 6s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Schildstärke erhöht sich auf 20 % der max. LP.",
+          "en": "Shield strength increases to 20% of max HP.",
+          "es": "la fuerza del escudo aumenta al 20 % de los PS máx."
+        },
+        "level3": {
+          "de": "Erleidet 10 % weniger SCH, solange er einen Schild hat.",
+          "en": "Takes 10% less DMG while shielded.",
+          "es": "Recibe un 10 % menos de daño mientras tiene un escudo."
+        },
+        "level4": {
+          "de": "Schildstärke erhöht sich auf 25 % der max. LP.",
+          "en": "Shield strength increases to 25% of max HP.",
+          "es": "la fuerza del escudo aumenta al 25 % de los PS máx."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Herz der Erde",
+        "en": "Heart of the Earth",
+        "es": "Corazón de la tierra"
+      },
+      "description": {
+        "de": "Geb hat einen felsigen Skin. Je näher ein Feind an Geb ist, desto weniger SCH fügt er ihm zu, mit einer max. Reduktion von 30 %.",
+        "en": "Geb has rocky skin. The closer an enemy is to Geb, the less DMG they deal to him, with a maximum reduction of 30%.",
+        "es": "Geb tiene la piel rocosa. Cuanto más cerca esté un enemigo de Geb, menos Daño le infligirá, con una reducción máxima del 30 %."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verringert bis zu 37,5 % SCH.",
+          "en": "Reduces up to 37.5% DMG.",
+          "es": "Reduce hasta un 37,5 % de Daño."
+        },
+        "level3": {
+          "de": "Maximale SCH-Reduktion erhöht auf 45%.",
+          "en": "Reduces up to 45% DMG.",
+          "es": "Reduce hasta un 45 % de Daño."
+        },
+        "level4": {
+          "de": "Verringert zusätzlich die ANG-GES nahegelegener Feinde um 25%.",
+          "en": "Reduces the ATK SPD of nearby enemies by 25%.",
+          "es": "Reduce la VEL de ATQ de los enemigos cercanos un 25 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Zorn der Natur",
+        "en": "Nature’s Wrath",
+        "es": "Ira de la naturaleza"
+      },
+      "description": {
+        "de": "Geb schlägt 3-mal auf nahe Feinde ein, wobei jeder Treffer SCH in Höhe von 100 % ANG verursacht. Der letzte Treffer wirft die Feinde zu Boden.",
+        "en": "Geb strikes nearby enemies 3 times, each hit dealing DMG equal to 100% of ATK. The last hit knocks down enemies.",
+        "es": "Geb golpea a los enemigos cercanos 3 veces, y cada golpe inflige un Daño equivalente al 100 % de su ATQ. El último golpe derriba a los enemigos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 110 %.",
+          "en": "Increases DMG dealt to 110% of ATK.",
+          "es": "Aumenta el daño infligido a 110 %."
+        },
+        "level3": {
+          "de": "Verringert die Trefferrate getroffener Feinde für 5 Sek. um 30 %.",
+          "en": "Reduces the Hit Rate of hit enemies by 30% for 5s.",
+          "es": "Reduce la Tasa de aciertos de los enemigos golpeados un 30 % durante 5s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 120 %.",
+          "en": "Increases DMG dealt to 120% of ATK.",
+          "es": "Aumenta el Daño infligido al 120 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Erderschütterer",
+      "en": "Earthshaker",
+      "es": "Sacudetierra"
+    },
+    "description": {
+      "de": "Während er geschützt ist, fügt Geb dem Angreifer SCH in Höhe von 5% seiner max. LP zu, wenn er SCH erleidet.",
+      "en": "When shielded, Geb deals DMG equal to 5% of his max HP to the attacker each time he takes DMG.",
+      "es": "Cuando tiene un escudo, Geb inflige un daño equivalente al 5 % de sus PS máximos al atacante cada vez que recibe Daño."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Geb erhält zu Kampfbeginn einen Schild in Höhe von 30 % der max. LP.",
+        "en": "Geb gains a shield equal to 30% of max HP at combat start.",
+        "es": "Geb obtiene un escudo equivalente al 30 % de los PS máx. al inicio del combate."
+      },
+      "level3": {
+        "de": "Erhält zu Kampfbeginn 300 Energie.",
+        "en": "Gains 300 Energy when the battle starts.",
+        "es": "Obtiene 300 de Energía cuando comienza la batalla."
+      },
+      "level4": {
+        "de": "Geb erhält zu Kampfbeginn einen Schild in Höhe von 50 % der max. LP.",
+        "en": "Geb gains a shield equal to 50% of max HP at combat start.",
+        "es": "Geb obtiene un escudo equivalente al 50 % de los PS máx. al inicio del combate."
+      }
+    }
   }
 }

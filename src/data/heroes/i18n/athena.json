@@ -12,59 +12,69 @@
   "skills": [
     {
       "name": {
-        "de": "Ägide des Heiligenscheins",
+        "de": "Aegis des Heiligenscheins",
         "es": "Égida del halo",
-        "ru": "Эгида сияния"
+        "ru": "Эгида сияния",
+        "en": "Aegis of Halo"
       },
       "description": {
-        "de": "Zu Kampfbeginn erschafft Athene um sich herum eine Aura, die den von Verbündeten innerhalb erlittenen DMG um 10% verringert. Beim ersten Wirken wächst die Aura auf mittlere Größe und gewährt Verbündeten darin einen Schild in Höhe von 200% von Athenes ATK, während sie die Aura dauerhaft verstärkt: Für jeden Verbündeten innerhalb der Aura erhält sie 5% DMG RED und ATK. Beim zweiten Wirken erhalten alle Verbündeten innerhalb der Aura zusätzlich 40% ATK SPD.",
-        "es": "Al comenzar el combate, Atenea crea un aura a su alrededor que reduce en un 10% el DMG recibido por los aliados dentro de ella. En el primer lanzamiento, el aura crece hasta un tamaño medio y otorga a los aliados dentro un escudo equivalente al 200% del ATK de Atenea, mientras fortalece permanentemente el aura: por cada aliado dentro del aura, ella obtiene un 5% de DMG RED y ATK. En el segundo lanzamiento, todos los aliados dentro del aura ganan además un 40% de ATK SPD.",
-        "ru": "В начале боя Афина создаёт вокруг себя ауру, снижающую получаемый союзниками внутри неё DMG на 10%. При первом применении аура увеличивается до среднего размера и даёт союзникам внутри щит в размере 200% ATK Афины, а сама аура навсегда усиливается: за каждого союзника внутри ауры она получает по 5% DMG RED и ATK. При втором применении все союзники внутри ауры дополнительно получают 40% ATK SPD."
+        "de": "Zu Kampfbeginn erschafft Athene eine Aura in ihrer Nähe, die den von Verbündeten darin erlittenen SCH um 10% verringert.\nBeim ersten Einsatz wird die Aura mittelgroß und gewährt Verbündeten darin einen Schild in Höhe von 200 % von Athenes ANG, während die Aura permanent verstärkt wird: Sie erhält 5 % SCH-RED & ANG für jeden Verbündeten in der Aura. Beim zweiten Einsatz erhalten alle Verbündeten in der Aura zusätzlich 40 % ANG-GES.",
+        "es": "Al inicio del combate, Atenea crea un aura cerca de ella que reduce el daño que reciben los aliados en su interior un 10 %.\nEn el primer lanzamiento, el aura crece a tamaño mediano y otorga a los aliados en su interior un escudo equivalente al 200 % del ATQ de Atenea, a la vez que mejora el aura permanentemente: obtiene un 5 % de Reduc. de daño y ATQ por cada aliado dentro del aura. En el segundo lanzamiento, todos los aliados dentro del aura obtienen un 40 % adicional de VEL de ATQ.",
+        "ru": "В начале боя Афина создаёт вокруг себя ауру, снижающую получаемый союзниками внутри неё DMG на 10%. При первом применении аура увеличивается до среднего размера и даёт союзникам внутри щит в размере 200% ATK Афины, а сама аура навсегда усиливается: за каждого союзника внутри ауры она получает по 5% DMG RED и ATK. При втором применении все союзники внутри ауры дополнительно получают 40% ATK SPD.",
+        "en": "At combat start, Athena creates an aura near herself, reducing DMG taken by allies within by 10%. On the first cast, the aura grows to medium size, granting allies inside a shield equal to 200% of Athena's ATK while permanently enhancing the aura: she gains 5% DMG RED & ATK for each ally within the aura. On the second cast, all allies within the aura gain an additional 40% ATK SPD."
       },
       "upgrades": {
         "level2": {
-        "de": "Beim ersten Wirken erhält sie für jeden Verbündeten innerhalb der Aura 7,5% DMG RED und ATK.",
-          "es": "En el primer lanzamiento, obtiene un 7,5% de DMG RED y ATK por cada aliado dentro del aura.",
-          "ru": "При первом применении она получает по 7,5% DMG RED и ATK за каждого союзника внутри ауры."
+          "de": "Beim ersten Einsatz erhält sie 7,5 % SCH-RED & ANG für jeden Verbündeten in der Aura.",
+          "es": "En el primer lanzamiento, obtiene un 7,5 % de Reduc. de daño y ATQ por cada aliado dentro del aura.",
+          "ru": "При первом применении она получает по 7,5% DMG RED и ATK за каждого союзника внутри ауры.",
+          "en": "On the first cast, she gains 7.5% DMG RED & ATK for each ally within the aura."
         },
         "level3": {
-          "de": "Erhöht die Schildstärke auf 240%.",
-          "es": "Aumenta la fuerza del escudo al 240%.",
-          "ru": "Увеличивает прочность щита до 240%."
+          "de": "Erhöht die Schildstärke auf 240 %.",
+          "es": "Aumenta la fuerza del escudo al 240 %.",
+          "ru": "Увеличивает прочность щита до 240%.",
+          "en": "Increases the shield strength to 240%."
         },
         "level4": {
-          "de": "Beim zweiten Wirken erhalten alle Verbündeten innerhalb der Aura 60% ATK SPD.",
-          "es": "En el segundo lanzamiento, todos los aliados dentro del aura ganan un 60% de ATK SPD.",
-          "ru": "При втором применении все союзники внутри ауры получают 60% ATK SPD."
+          "de": "Beim zweiten Einsatz erhalten alle verbündeten Einheiten innerhalb der Aura zusätzlich 60% ANG-GES.",
+          "es": "En el segundo lanzamiento, todos los aliados dentro del aura obtienen un 60 % de VEL de ATQ.",
+          "ru": "При втором применении все союзники внутри ауры получают 60% ATK SPD.",
+          "en": "On the second cast, all allies within the aura gain 60% ATK SPD."
         }
       }
     },
     {
       "name": {
-        "de": "Göttlicher Hieb",
+        "de": "Göttlicher Schlag",
         "es": "Golpe divino",
-        "ru": "Божественный удар"
+        "ru": "Божественный удар",
+        "en": "Divine Strike"
       },
       "description": {
-        "de": "Schwingt die Ägide und fügt dem Ziel DMG in Höhe von 250% ATK zu und betäubt es für 1,5 s.",
-        "es": "Balancea la égida e inflige al objetivo un DMG equivalente al 250% del ATK y lo aturde durante 1,5 s.",
-        "ru": "Размахивает Эгидой, нанося цели DMG в размере 250% ATK и оглушая её на 1,5 с."
+        "de": "Schwingt den Schild, um dem Ziel 250% SCH zuzufügen und es für 1,5 Sekunden zu betäuben.",
+        "es": "Blande la Égida para infligir un Daño equivalente al 250 % de su ATQ al objetivo y aturdirlo durante 1,5s.",
+        "ru": "Размахивает Эгидой, нанося цели DMG в размере 250% ATK и оглушая её на 1,5 с.",
+        "en": "Swings the Aegis to deal DMG equal to 250% of ATK to the target and stun them for 1.5s."
       },
       "upgrades": {
         "level2": {
-          "de": "Sie erhält außerdem einen Schild in Höhe von 150% ATK.",
-          "es": "Además, obtiene un escudo equivalente al 150% del ATK.",
-          "ru": "Кроме того, она получает щит в размере 150% ATK."
+          "de": "Erhält außerdem einen Schild in Höhe von 150% der ANG.",
+          "es": "También obtiene un escudo equivalente al 150 % de su ATQ.",
+          "ru": "Кроме того, она получает щит в размере 150% ATK.",
+          "en": "She also gains a shield equal to 150% of ATK."
         },
         "level3": {
-          "de": "Erhöht den verursachten DMG auf 270%.",
-          "es": "Aumenta el DMG infligido al 270%.",
-          "ru": "Увеличивает наносимый DMG до 270%."
+          "de": "Erhöht den verursachten SCH auf 270 %.",
+          "es": "Aumenta el daño infligido a 270 %.",
+          "ru": "Увеличивает наносимый DMG до 270%.",
+          "en": "Increases DMG dealt to 270%."
         },
         "level4": {
-          "de": "Die Schildstärke erhöht sich auf 200% ATK.",
-          "es": "La fuerza del escudo aumenta al 200% del ATK.",
-          "ru": "Прочность щита увеличивается до 200% ATK."
+          "de": "Die Schildstärke erhöht sich auf 200 % ANG.",
+          "es": "La fuerza del Escudo aumenta a 200 % de ATQ.",
+          "ru": "Прочность щита увеличивается до 200% ATK.",
+          "en": "Shield Strength increases to 200% ATK."
         }
       }
     },
@@ -72,28 +82,33 @@
       "name": {
         "de": "Segen des Heiligenscheins",
         "es": "Bendición del halo",
-        "ru": "Благословение сияния"
+        "ru": "Благословение сияния",
+        "en": "Blessing of Halo"
       },
       "description": {
-        "de": "Athene segnet den Verbündeten mit dem höchsten ATK und erhöht dessen ATK SPD um 25%.",
-        "es": "Atenea bendice al aliado con mayor ATK y aumenta su ATK SPD en un 25%.",
-        "ru": "Афина благословляет союзника с самым высоким ATK, увеличивая его ATK SPD на 25%."
+        "de": "Solange Athena auf dem Feld ist, segnet sie die verbündete Einheit mit dem höchsten ANG und erhöht deren ANG-GES um 25%.",
+        "es": "Atenea bendice al aliado con el ATQ más alto, aumentando su VEL de ATQ un 25 %.",
+        "ru": "Афина благословляет союзника с самым высоким ATK, увеличивая его ATK SPD на 25%.",
+        "en": "Athena blesses the ally with the highest ATK, increasing their ATK SPD by 25%."
       },
       "upgrades": {
         "level2": {
-          "de": "Erhöht ATK SPD auf 35%.",
-          "es": "Aumenta el ATK SPD al 35%.",
-          "ru": "Увеличивает ATK SPD до 35%."
+          "de": "Erhöht ANG-GES auf 35 %.",
+          "es": "aumenta la VEL de ATQ al 35 %.",
+          "ru": "Увеличивает ATK SPD до 35%.",
+          "en": "Increases ATK SPD to 35%."
         },
         "level3": {
-          "de": "Erhöht CRIT Rate zusätzlich um 10%.",
-          "es": "Aumenta la CRIT Rate en 10% adicional.",
-          "ru": "Дополнительно увеличивает CRIT Rate на 10%."
+          "de": "Erhöht die KRIT-Rate zusätzlich um 10 %.",
+          "es": "Aumenta la Tasa de crít. en un 10 % adicional.",
+          "ru": "Дополнительно увеличивает CRIT Rate на 10%.",
+          "en": "Increases CRIT Rate by an additional 10%."
         },
         "level4": {
-          "de": "Erhöht ATK SPD auf 45%. (Freigeschaltet auf Lv. 261)",
-          "es": "Aumenta el ATK SPD al 45%. (Se desbloquea en Nv. 261)",
-          "ru": "Увеличивает ATK SPD до 45%. (Открывается на ур. 261)"
+          "de": "Erhöht ANG-GES auf 45 %.",
+          "es": "Aumenta la VEL de ATQ a un 45 %.",
+          "ru": "Увеличивает ATK SPD до 45%. (Открывается на ур. 261)",
+          "en": "Increases ATK SPD to 45%. (Unlocks at Lv.261)"
         }
       }
     },
@@ -101,58 +116,68 @@
       "name": {
         "de": "Handauflegung",
         "es": "Imposición de manos",
-        "ru": "Возложение рук"
+        "ru": "Возложение рук",
+        "en": "Lay on Hands"
       },
       "description": {
-        "de": "Überschüttet den schwächsten Verbündeten und die Verbündeten in der Nähe mit heiligem Licht, heilt sie um 200% ATK als HP und erhöht ihre M-RES 8 s lang um 20%.",
-        "es": "Baña al aliado más débil y a los cercanos con luz sagrada, curándolos por un valor equivalente al 200% del ATK como HP y aumentando su M-RES en un 20% durante 8 s.",
-        "ru": "Озаряет святом светом самого слабого союзника и ближайших к нему союзников, леча их на 200% ATK в виде HP и повышая их M-RES на 20% на 8 с."
+        "de": "Wählt die schwächste verbündete Einheit aus und überschüttet sie und umliegende Verbündete mit Heiligem Licht, heilt sie um 200% der ATK und erhöht ihre M-RES um 20% für die nächsten 8 Sekunden.",
+        "es": "Baña con luz sagrada al aliado más débil y a los cercanos, sanándolos un 200 % de ATQ como PS y aumentando su RES M un 20 % durante 8s.",
+        "ru": "Озаряет святом светом самого слабого союзника и ближайших к нему союзников, леча их на 200% ATK в виде HP и повышая их M-RES на 20% на 8 с.",
+        "en": "Showers the weakest ally and those nearby with sacred light, healing them for 200% ATK as HP and increasing their M-RES by 20% for 8s."
       },
       "upgrades": {
         "level2": {
-          "de": "Stellt HP in Höhe von 220% ATK wieder her.",
-          "es": "Restaura HP equivalente al 220% del ATK.",
-          "ru": "Восстанавливает HP в размере 220% ATK."
+          "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
+          "es": "Restaura PS equivalentes a un 220 % del ATQ.",
+          "ru": "Восстанавливает HP в размере 220% ATK.",
+          "en": "Restores HP equal to 220% ATK."
         },
         "level3": {
-          "de": "Erhöht die Dauer des M-RES-Buffs auf 12 s.",
-          "es": "Aumenta la duración del aumento de M-RES a 12 s.",
-          "ru": "Увеличивает длительность усиления M-RES до 12 с."
+          "de": "Erhöht die Dauer des M-RES-Boosts um 12 Sek.",
+          "es": "Aumenta la duración de la mejora de RES M a 12s.",
+          "ru": "Увеличивает длительность усиления M-RES до 12 с.",
+          "en": "Increases the duration of M-RES boost by 12s."
         },
         "level4": {
-          "de": "Stellt HP in Höhe von 240% ATK wieder her. (Freigeschaltet auf Lv. 281)",
-          "es": "Restaura HP equivalente al 240% del ATK. (Se desbloquea en Nv. 281)",
-          "ru": "Восстанавливает HP в размере 240% ATK. (Открывается на ур. 281)"
+          "de": "Stellt LP in Höhe von 240 % des ANG wieder her.",
+          "es": "Restaura PS equivalentes a un 240 % del ATQ.",
+          "ru": "Восстанавливает HP в размере 240% ATK. (Открывается на ур. 281)",
+          "en": "Restores HP equal to 240% ATK. (Unlocks at Lv.281)"
         }
       }
     }
   ],
   "relic": {
     "name": {
-      "de": "Gesegnete Reinigung",
-      "es": "Purificación bendita",
-      "ru": "Благословенное очищение"
+      "de": "Geheiligte Waschung",
+      "es": "Ablución aureolada",
+      "ru": "Благословенное очищение",
+      "en": "Haloed Ablution"
     },
     "description": {
-      "de": "Wenn Aegis des Heiligenscheins im Kampf 3-mal gewirkt wurde, fügt sie allen Gegnern im Wirkungsbereich 8 s lang pro Sekunde True DMG in Höhe von 5% der max. HP (bis zu 200% ATK) zu.",
-      "es": "Cuando Égida del halo se lanza 3 veces en una batalla, inflige a todos los enemigos dentro del alcance un True DMG equivalente al 5% de la HP máxima (hasta un 200% del ATK) por segundo durante 8 s.",
-      "ru": "Когда Эгида сияния применяется 3 раза в бою, она наносит всем врагам в радиусе действия True DMG в размере 5% макс. HP (до 200% ATK) в секунду в течение 8 с."
+      "de": "Nach 3 Einsätzen von Aegis des Heiligenscheins: Verursacht 8 Sek. lang 5 % max. LP (bis zu 200 % ANG) als Wahrer SCH pro Sek. bei Gegnern in Reichweite.",
+      "es": "Tras lanzar Égida del halo 3 veces en una batalla, inflige un 5 % de los PS máx. (hasta un 200 % de ATQ) como daño verdadero por segundo a los enemigos en el alcance durante 8 s.",
+      "ru": "Когда Эгида сияния применяется 3 раза в бою, она наносит всем врагам в радиусе действия True DMG в размере 5% макс. HP (до 200% ATK) в секунду в течение 8 с.",
+      "en": "Upon casting Aegis of Halo 3 times in a battle, deals 5% max HP (up to 200% ATK) as True DMG per sec to enemies within range for 8s."
     },
     "upgrades": {
       "level2": {
-        "de": "Für jeden überlebenden Verbündeten (außer Dienern) innerhalb der Aura erhält Athene 25% Armor, 25% M-RES und 10% Energy Regen. (Freigeschaltet auf Relic-Lv. 10)",
-        "es": "Por cada aliado sobreviviente (excepto esbirros) dentro del aura, Atenea obtiene 25% de Armor, 25% de M-RES y 10% de Energy Regen. (Se desbloquea en Relic Nv. 10)",
-        "ru": "За каждого выжившего союзника (кроме прислужников) внутри ауры Афина получает 25% Armor, 25% M-RES и 10% Energy Regen. (Открывается на ур. реликвии 10)"
+        "de": "Für jeden überlebenden Verbündeten (Diener ausgenommen) in der Aura erhält Athene 25 % Rüstung, 25 % M-RES und 10 % Energieaufladung.",
+        "es": "Por cada aliado sobreviviente (excluyendo súbditos) dentro del aura, Atenea obtiene un 25 % de Armadura, un 25 % de RES M y un 10 % de Recarga de energía.",
+        "ru": "За каждого выжившего союзника (кроме прислужников) внутри ауры Афина получает 25% Armor, 25% M-RES и 10% Energy Regen. (Открывается на ур. реликвии 10)",
+        "en": "For each surviving ally (excluding minions) within the aura, Athena gains 25% Armor, 25% M-RES, and 10% Energy Regen. (Unlock at Relic Lv.10)"
       },
       "level3": {
-        "de": "Athene erhält zu Kampfbeginn den verstärkten Ersteinsatz von Aegis des Heiligenscheins. (Freigeschaltet auf Relic-Lv. 20)",
-        "es": "Atenea obtiene al inicio del combate el efecto mejorado de primer lanzamiento de Égida del halo. (Se desbloquea en Relic Nv. 20)",
-        "ru": "В начале боя Афина получает усиленный эффект первого применения Эгиды сияния. (Открывается на ур. реликвии 20)"
+        "de": "Athene erhält zu Kampfbeginn den verbesserten Effekt des ersten Einsatzes von Aegis des Heiligenscheins.",
+        "es": "Atenea obtiene el efecto mejorado del primer lanzamiento de Égida del halo al inicio del combate.",
+        "ru": "В начале боя Афина получает усиленный эффект первого применения Эгиды сияния. (Открывается на ур. реликвии 20)",
+        "en": "Athena gains the enhanced first-cast effect of Aegis of Halo at combat start. (Unlock at Relic Lv.20)"
       },
       "level4": {
-        "de": "Athene erhält 50% DMG RED, wenn sich mindestens 3 Verbündete innerhalb ihrer Aura befinden. (Freigeschaltet auf Relic-Lv. 30)",
-        "es": "Atenea obtiene un 50% de DMG RED cuando hay al menos 3 aliados dentro de su aura. (Se desbloquea en Relic Nv. 30)",
-        "ru": "Афина получает 50% DMG RED, если внутри её ауры находятся как минимум 3 союзника. (Открывается на ур. реликвии 30)"
+        "de": "Athene erhält 50 % SCH-RED, wenn sich mindestens 3 Verbündete in ihrer Aura befinden.",
+        "es": "Atenea obtiene un 50 % de Reduc. de daño cuando hay al menos 3 aliados dentro de su aura.",
+        "ru": "Афина получает 50% DMG RED, если внутри её ауры находятся как минимум 3 союзника. (Открывается на ур. реликвии 30)",
+        "en": "Athena gains 50% DMG RED when there are at least 3 allies within her aura. (Unlock at Relic Lv.30)"
       }
     }
   },

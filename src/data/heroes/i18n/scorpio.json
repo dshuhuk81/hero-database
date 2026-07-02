@@ -3,5 +3,84 @@
     "de": "Skorpion",
     "es": "Escorpio",
     "ru": "Скорпион"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Verstohlener Skorpion",
+        "en": "Stealthy Scorpion",
+        "es": "Escorpio sigiloso"
+      },
+      "description": {
+        "de": "Skorpion erhält einen Schild, der SCH bis zu einer Höhe von 300 % des ANG absorbiert.",
+        "en": "Scorpio gains a shield that absorbs DMG up to 300% ATK.",
+        "es": "Escorpio obtiene un escudo que absorbe daño hasta un 300 % del ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Reduziert den ANG von Gegnern in der Nähe für 6 Sek. um 20 %, wenn der Schild bricht.",
+          "en": "Reduces nearby enemies' ATK by 20% for 6s when the shield breaks. (Unlocks at Lv.81)",
+          "es": "Reduce el ATQ de los enemigos cercanos en un 20 % durante 6 s cuando el escudo se rompe."
+        },
+        "level3": {
+          "de": "Die Schildstärke erhöht sich auf 330 % ANG.",
+          "en": "Shield Strength increases to 330% ATK. (Unlocks at Lv.141)",
+          "es": "La fuerza del Escudo aumenta a 330 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Schwanzstich",
+        "en": "Tail Sting",
+        "es": "Aguijón de cola"
+      },
+      "description": {
+        "de": "Skorpion schlägt auf den nächsten Gegner ein, verursacht dreimal SCH in Höhe von 100 % des ANG, gefolgt von einem mächtigen Stoß, der SCH in Höhe von 210 % des ANG verursacht.",
+        "en": "Scorpio slashes the nearest enemy, dealing three instances of DMG equal to 100% ATK, followed by a powerful thrust that deals 210% ATK as DMG.",
+        "es": "Escorpio acuchilla al enemigo más cercano, lo que inflige tres instancias de daño equivalentes a un 100 % del ATQ, seguido de una estocada potente que inflige un 210 % de ATQ como daño."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den Stoß-SCH auf 250 % des ANG.",
+          "en": "Increases the thrust DMG to 250% ATK. (Unlocks at Lv.41)",
+          "es": "Aumenta el daño de la estocada a un 250 % del ATQ."
+        },
+        "level3": {
+          "de": "Erhöht den Stoß-SCH auf 300 % des ANG.",
+          "en": "Increases the thrust DMG to 300% ATK. (Unlocks at Lv.101)",
+          "es": "Aumenta el daño de la estocada a un 300 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Präventivschlag",
+        "en": "Preemptive Strike",
+        "es": "Ataque preventivo"
+      },
+      "description": {
+        "de": "Bei Kampfbeginn teleportiert sich Skorpion an die symmetrische Position hinter einem Gegner, verursacht SCH in Höhe von 220 % des ANG und betäubt ihn für 2 Sek. Diese Fähigkeit schlägt fehl, wenn sich an dieser Position kein Gegner befindet.",
+        "en": "At combat start, Scorpio blinks to the symmetric position behind an enemy, dealing 220% ATK as DMG and stunning them for 2s. This skill fails if no enemy is at that position.",
+        "es": "Al inicio del combate, Escorpio se teletransporta a la posición simétrica detrás de un enemigo, lo que inflige un 220 % de ATQ como daño y lo aturde durante 2 s. Esta habilidad falla si no hay ningún enemigo en esa posición."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 250 % ANG.",
+          "en": "Increases DMG dealt to 250% ATK. (Unlocks at Lv.21)",
+          "es": "Aumenta el daño infligido a 250 % de ATQ."
+        },
+        "level3": {
+          "de": "Betäuben hält 3 s an.",
+          "en": "Stuns last for 3s. (Unlocks at Lv.121)",
+          "es": "Los aturdimientos duran 3 s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 280 % ANG.",
+          "en": "Increases DMG dealt to 280% ATK. (Unlocks at Lv.161)",
+          "es": "Aumenta el daño infligido a 280 % de ATQ."
+        }
+      }
+    }
+  ]
 }

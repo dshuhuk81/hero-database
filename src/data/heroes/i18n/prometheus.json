@@ -3,5 +3,152 @@
     "de": "Prometheus",
     "es": "Prometheus",
     "ru": "Prometheus"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Fesseln des Trotzes",
+        "en": "Fetters of Defiance",
+        "es": "Grilletes de desafío"
+      },
+      "description": {
+        "de": "Prometheus tritt in den Zustand [Gebunden] ein, fügt Feinden in der Nähe SCH in Höhe von 250 % ANG zu und erhält einen Schild in Höhe von 30 % der max. LP. Er fügt außerdem allen Feinden vor ihm alle 2 Sek. SCH in Höhe von 100 % seines ANG zu und ist immun gegen Niederschlag. Der Zustand [Gebunden] verbraucht 150 Energie pro Sek.",
+        "en": "Prometheus enters the [Bound] state, dealing DMG equal to 250% of ATK to surrounding enemies and gaining a shield equal to 30% of max HP. He also deals DMG equal to 100% of his ATK to all enemies in front of him every 2s and is immune to knockdown. The [Bound] state consumes 150 Energy per second.",
+        "es": "Prometeo entra en el estado [Unión], inflige un Daño equivalente al 250 % de su ATQ a los enemigos cercanos y obtiene un escudo equivalente al 30 % de sus PS máximos. También inflige un Daño equivalente al 100 % de su ATQ a todos los enemigos frente a él cada 2s y es inmune a los derribos. El estado [Unión] consume 150 de energía por segundo."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält einen Schild in Höhe von 40 % der max. LP.",
+          "en": "Gains a shield equal to 40% of max HP.",
+          "es": "Obtiene un escudo equivalente al 40 % de los PS máximos."
+        },
+        "level3": {
+          "de": "Erhöht Rüstung und M-RES für die Dauer um 30 %.",
+          "en": "Increases Armor and M-RES by 30% for the duration.",
+          "es": "Aumenta la armadura y la RES M en un 30 % mientras dure el efecto."
+        },
+        "level4": {
+          "de": "Erhält einen Schild in Höhe von 50 % der max. LP.",
+          "en": "Gains a shield equal to 50% of max HP.",
+          "es": "Obtiene un escudo equivalente al 50 % de los PS máximos."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Last der Schuld",
+        "en": "Burden of Guilt",
+        "es": "Carga de culpa"
+      },
+      "description": {
+        "de": "Zielt auf den gesündesten Gegner und absorbiert 15% seiner aktuellen LP (bis zu einem Maximum von 300% der eigenen ANG).",
+        "en": "Targets the healthiest enemy, absorbing 15% of their current HP (up to 300% of his ATK).",
+        "es": "Apunta al enemigo con más salud y absorbe un 15 % de sus PS actuales (hasta un 300 % de su ATQ)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Absorbiert 18 % der aktuellen LP (bis zu 400 % ANG).",
+          "en": "Absorbs 18% of current HP (up to 400% of ATK).",
+          "es": "Absorbe el 18 % de los PS actuales (hasta un 400 % de ATQ)."
+        },
+        "level3": {
+          "de": "Das Ziel erleidet bis zum Ende des Kampfes 10% mehr SCH.",
+          "en": "Increases DMG taken by the target by 10% until the battle ends.",
+          "es": "Aumenta el Daño recibido por el objetivo en un 10 % hasta que termine la batalla."
+        },
+        "level4": {
+          "de": "Absorbiert 25 % der aktuellen LP (bis zu 500 % ANG).",
+          "en": "Absorbs 25% of current HP (up to 500% of ATK).",
+          "es": "Absorbe el 25 % de los PS actuales (hasta un 500 % de ATQ)."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Diebstahl der Glut",
+        "en": "Theft of Embers",
+        "es": "Robo de ascuas"
+      },
+      "description": {
+        "de": "Prometheus stürmt auf den nächsten Feind zu, fügt ihm SCH in Höhe von 150 % seines ANG zu und stößt ihn 2 Meter zurück. Im Zustand [Gebunden] fügt er allen Feinden vor ihm SCH in Höhe von 150 % seines ANG zu und stößt sie 2 Meter zurück.",
+        "en": "Prometheus charges into the nearest enemy, dealing DMG equal to 150% of his ATK and knocking them back 2 meters. When in the [Bound] state, he also deals DMG equal to 150% of his ATK and knocks back all enemies in front of him 2 meters.",
+        "es": "Prometeo carga contra el enemigo más cercano, inflige un Daño equivalente al 150 % de su ATQ y lo empuja 2 metros. Inflige un daño equivalente al 150 % de su ATQ y empuja 2 metros a todos los enemigos frente a él cuando está en el estado [Unión]."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 200 %.",
+          "en": "Increases DMG dealt to 200%.",
+          "es": "Aumenta el daño infligido a 200 %."
+        },
+        "level3": {
+          "de": "Verringert die Rüstung und M-RES getroffener Feinde für 6 Sek. um 15 %.",
+          "en": "Hit enemies have their Armor and M-RES reduced by 15% for 6s.",
+          "es": "La armadura y la RES M de los enemigos golpeados se reducen en un 15 % durante 6s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 250 %.",
+          "en": "Increases DMG dealt to 250%.",
+          "es": "Aumenta el Daño infligido al 250 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Titanen-Entschlossenheit",
+        "en": "Titan’s Resolve",
+        "es": "Resolución del titán"
+      },
+      "description": {
+        "de": "Prometheus ist immer immun gegen Rückstoßeffekte (erleidet stattdessen Niederschlag) und verringert den erlittenen SCH um 10 %. Im Zustand [Gebunden] wird der erlittene SCH um 20 % verringert.",
+        "en": "Prometheus is always immune to knockback effects (takes knockdown instead) and reduces DMG taken by 10%. He reduces DMG taken by 20% when in the [Bound] state.",
+        "es": "Prometeo siempre es inmune a los efectos de empuje (en su lugar, sufre derribos) y reduce el daño recibido en un 10 %. Reduce el Daño recibido en un 20 % cuando está en el estado [Unión]."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die SCH-RED auf 12,5 % und im Zustand [Gebunden] auf 25 %.",
+          "en": "Increases DMG RED to 12.5%, and to 25% when in the [Bound] state.",
+          "es": "Aumenta la Reduc. de daño a un 12,5 % y a un 25 % cuando está en el estado [Unión]."
+        },
+        "level3": {
+          "de": "Erhält zusätzlich 15 % Effekt-RES. Im Zustand [Gebunden] 30 % Effekt-RES.",
+          "en": "Additionally gains 15% Effect RES. Gains 30% Effect RES when in the [Bound] state.",
+          "es": "Además, obtiene un 15 % de RES a efectos. Obtiene un 30 % de RES a efectos cuando está en el estado [Unión]."
+        },
+        "level4": {
+          "de": "Erhöht die SCH-RED auf 15 % und im Zustand [Gebunden] auf 30 %.",
+          "en": "Increases DMG RED to 15%, and to 30% when in the [Bound] state.",
+          "es": "Aumenta la Reduc. de daño a un 15 % y a un 30 % cuando está en el estado [Unión]."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Entfesselter Titan",
+      "en": "Titan Unbound",
+      "es": "Titán desencadenado"
+    },
+    "description": {
+      "de": "Nach seiner Niederlage hinterlässt Prometheus ein Foltergerät an seiner Stelle. Es kann nicht angreifen oder sich bewegen und übernimmt 200% von Prometheus' max. LP.",
+      "en": "Upon defeat, Prometheus leaves shackles on the battlefield. Shackles cannot attack or move, but inherit 200% of Prometheus's max HP.",
+      "es": "Al ser derrotado, Prometeo deja los grilletes en el campo de batalla. Los grilletes no pueden atacar ni moverse, pero heredan el 200 % de los PS máximos de Prometeo."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Die Fesseln verspotten beim Erscheinen Feinde in einem Radius von 5 Metern für 3 Sek.",
+        "en": "The shackles taunt enemies within a 5-meter radius for 3s upon spawning.",
+        "es": "Los grilletes provocan a los enemigos en un radio de 5 metros durante 3s al aparecer."
+      },
+      "level3": {
+        "de": "Fesseln erben 300 % der max. LP von Prometheus.",
+        "en": "Shackles inherit 300% of Prometheus's max HP.",
+        "es": "Los Grilletes heredan el 300 % de los PS máximos de Prometeo."
+      },
+      "level4": {
+        "de": "Fesseln erben 400 % der max. LP von Prometheus.",
+        "en": "Shackles inherit 400% of Prometheus's max HP.",
+        "es": "Los Grilletes heredan el 400 % de los PS máximos de Prometeo."
+      }
+    }
   }
 }

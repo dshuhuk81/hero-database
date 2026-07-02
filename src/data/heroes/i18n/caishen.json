@@ -4,5 +4,152 @@
     "en": "Caishen",
     "es": "Caishen",
     "ru": "Цайшэнь"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Goldene Verjüngung",
+        "en": "Golden Rejuvenation",
+        "es": "Rejuvenecimiento dorado"
+      },
+      "description": {
+        "de": "Fügt einem Ziel SCH in Höhe von 270 % ANG zu und stellt bei sich selbst 200 Energie wieder her.",
+        "en": "Deals DMG equal to 270% of ATK to a target and restores 200 Energy to himself.",
+        "es": "Inflige un Daño equivalente al 270 % de su ATQ a un objetivo y se restaura 200 de Energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den ANG-Bonus auf 300 %.",
+          "en": "Increases ATK bonus to 300%.",
+          "es": "aumenta la bonificación de ATQ al 300 %."
+        },
+        "level3": {
+          "de": "Stellt bei sich selbst 300 Energie wieder her.",
+          "en": "Restores 300 Energy to himself.",
+          "es": "Se restaura 300 de Energía."
+        },
+        "level4": {
+          "de": "Erhöht den ANG-Bonus auf 330 %.",
+          "en": "Increases ATK bonus to 330%. (Unlocks at Lv.281)",
+          "es": "aumenta la bonificación de ATQ al 330 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Schwimmen im Geld",
+        "en": "Rollin' in Riches",
+        "es": "Mares de abundancia"
+      },
+      "description": {
+        "de": "Caishen stellt bei Verbündeten in einem großen Bereich um ihn herum 100 Energie wieder her und dann für die nächsten 10 Sek. 25 Energie pro Sek.",
+        "en": "Caishen restores 100 Energy to allies in a large area around him and then restores 25 Energy per sec to them for the next 10s.",
+        "es": "Caishen restaura 100 de Energía a los aliados en una gran área a su alrededor y luego les restaura 25 de Energía por segundo durante los siguientes 10s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die Energieaufladung auf 30.",
+          "en": "Increases Energy Regen to 30.",
+          "es": "Aumenta la Recarga de energía a 30."
+        },
+        "level3": {
+          "de": "Erhöht außerdem den ANG von Verbündeten in Reichweite für 5 Sek. um 15 %.",
+          "en": "Also increases ATK of allies within range by 15% for 5s.",
+          "es": "También aumenta el ATQ de los aliados dentro del alcance en un 15 % durante 5s."
+        },
+        "level4": {
+          "de": "Erhöht die Energieaufladung auf 35.",
+          "en": "Increases Energy Regen to 35.",
+          "es": "Aumenta la Recarga de energía a 35."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Leuchtender Glücksstern",
+        "en": "Lucky Star Alight",
+        "es": "Estrella de la suerte encendida"
+      },
+      "description": {
+        "de": "Negiert tödlichen SCH und wird für 2 Sekunden unverwundbar. Kann nur einmal ausgelöst werden.",
+        "en": "Before falling, becomes immune to the DMG and invincible for 2s. It can only trigger once.",
+        "es": "Antes de caer, se vuelve inmune al Daño e invencible durante 2s. Solo se puede activar una vez."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt zusätzlich LP in Höhe von 200 % ANG wieder her.",
+          "en": "Additionally restores HP equal to 200% ATK.",
+          "es": "Restaura adicionalmente una cantidad de PS equivalente al 200 % de ATQ."
+        },
+        "level3": {
+          "de": "Stellt zusätzlich LP in Höhe von 300 % ANG wieder her.",
+          "en": "Additionally restores HP equal to 300% ATK.",
+          "es": "Restaura adicionalmente una cantidad de PS equivalente al 300 % de ATQ."
+        },
+        "level4": {
+          "de": "Der Effekt wird jetzt zweimal ausgelöst.",
+          "en": "The effect now trigger twice. (Unlocks at Lv.261)",
+          "es": "El efecto ahora se activa dos veces."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Endloses Vermögen",
+        "en": "Endless Fortune",
+        "es": "Fortuna interminable"
+      },
+      "description": {
+        "de": "Caishen ist beim Eintritt in den Kampf von 2 Goldbarren umgeben. Wenn die LP eines nahen Verbündeten unter 50 % fallen, wird ein Barren verbraucht, um bei diesem Verbündeten 25 % der max. LP wiederherzustellen. Die Verwendung eines Goldbarrens hat eine Abklingzeit von 8 Sek. für jede Gottheit. Caishen kann max. 3 Goldbarren haben.\nSobald alle Goldbarren verbraucht sind, werden sie automatisch wieder vollständig aufgefüllt. Dieser Effekt hat eine Abklingzeit von 20 Sek.",
+        "en": "Caishen is surrounded by 2 Golden Ingots upon entering battle. When a nearby ally's HP drops below 50%, an Ingot is consumed to restore 25% max HP to that ally. Using a Golden Ingot has an 8s CD for each Deity. Caishen can have a maximum of 3 Golden Ingots. Once all Golden Ingots are used, they are automatically replenished to full. This effect has a 20s CD.",
+        "es": "Caishen está rodeado por 2 Lingotes de oro al entrar en batalla. Cuando los PS de un aliado cercano caen por debajo del 50 %, se consume un Lingote para restaurar el 25 % de los PS máximos de ese aliado. Usar un Lingote de oro tiene un TdE de 8s para cada Deidad. Caishen puede tener un máximo de 3 Lingotes de oro.\nUna vez que se usan todos los Lingotes de oro, se reponen automáticamente al máximo. Este efecto tiene un TdE de 20s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den Heilungseffekt auf 27 %.",
+          "en": "Increases healing effect to 27%.",
+          "es": "Aumenta el efecto de sanación a 27 %."
+        },
+        "level3": {
+          "de": "Goldbarren +1 zu Kampfbeginn.",
+          "en": "Golden Ingots +1 at combat start.",
+          "es": "Lingotes de oro +1 al inicio del combate."
+        },
+        "level4": {
+          "de": "Erhöht den Heilungseffekt auf 30 %.",
+          "en": "Increases healing effect to 30%.",
+          "es": "Aumenta el efecto de sanación a 30 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Glückshebel",
+      "en": "Fortune Leverage",
+      "es": "Apalancamiento de la fortuna"
+    },
+    "description": {
+      "de": "Wenn ein Verbündeter zum ersten Mal 700 Energie erreicht, erhält er 300 Energie.",
+      "en": "The first time an ally reaches 700 Energy, grants them 300 Energy.",
+      "es": "La primera vez que un aliado alcanza 700 de Energía, le otorga 300 de Energía."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Wenn ein Verbündeter zum ersten Mal 650 Energie erreicht, erhält er 350 Energie.",
+        "en": "The first time an ally reaches 650 Energy, grants them 350 Energy.",
+        "es": "La primera vez que un aliado alcanza 650 de Energía, le otorga 350 de Energía."
+      },
+      "level3": {
+        "de": "Dieser Effekt kann wiederholt mit einer Abklingzeit von 15 Sek. ausgelöst werden.",
+        "en": "This effect can trigger repeatedly with a 15s CD. (Unlock at Relic Lv.20)",
+        "es": "Este efecto puede activarse repetidamente con un TdE de 15s."
+      },
+      "level4": {
+        "de": "Wenn ein Verbündeter zum ersten Mal 600 Energie erreicht, erhält er 400 Energie.",
+        "en": "The first time an ally reaches 600 Energy, grants them 400 Energy. (Unlock at Relic Lv.30)",
+        "es": "La primera vez que un aliado alcanza 600 de Energía, le otorga 400 de Energía."
+      }
+    }
   }
 }

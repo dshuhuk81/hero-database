@@ -3,5 +3,95 @@
     "de": "Hekate",
     "es": "Hécate",
     "ru": "Геката"
-  }
+  },
+  "skills": [
+    {},
+    {
+      "name": {
+        "de": "Die dunkle Hälfte der Welt",
+        "en": "The World's Dark Half",
+        "es": "Oscuridad del mundo"
+      },
+      "description": {
+        "de": "Hekate beschwört Unterweltflammen, um alle Feinde anzugreifen, und fügt ihnen 10 Sek. lang alle 2 Sek. SCH in Höhe von 100 % ANG zu. Wenn die Fähigkeit endet, stellt sie LP in Höhe von 50 % des verursachten SCH wieder her. Wird die Ultimative Fähigkeit erneut eingesetzt, bevor die vorherige endet, stellt sie sofort LP basierend auf dem bisher verursachten SCH wieder her und setzt den SCH-Timer zurück.",
+        "en": "Hecate summons nether flames to attack all enemies, dealing DMG equal to 100% of ATK every 2s for 10s. She restores HP equal to 50% of the DMG dealt when the skill ends. If the Ultimate is cast again before the previous one ends, it immediately restores HP based on the DMG dealt so far and resets the DMG timer.",
+        "es": "Hécate invoca llamas del inframundo para atacar a todos los enemigos, infligiendo un Daño equivalente al 100 % de su ATQ cada 2s durante 10s. Restaura una cantidad de PS equivalente al 50 % del Daño infligido cuando la habilidad termina. Si la Habilidad definitiva se lanza de nuevo antes de que termine la anterior, restaura inmediatamente los PS en función del daño infligido hasta el momento y reinicia el temporizador de daño."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH pro Sekunde auf 120 % ANG.",
+          "en": "Increases DMG per sec to 120% ATK.",
+          "es": "Aumenta el daño por segundo a 120 % de ATQ."
+        },
+        "level3": {
+          "de": "Stellt sofort bei Verursachen von SCH LP in Höhe von 50 % SCH wieder her.",
+          "en": "Restores HP equal to 50% of the DMG immediately upon dealing DMG.",
+          "es": "Restaura una cantidad de PS equivalente al 50 % del Daño inmediatamente después de infligir Daño."
+        },
+        "level4": {
+          "de": "Erhöht den SCH pro Sekunde auf 150 % ANG.",
+          "en": "Increases DMG per sec to 150% ATK.",
+          "es": "Aumenta el daño por segundo a 150 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Seelenentzug",
+        "en": "Soul Drain",
+        "es": "Drenaje anímico"
+      },
+      "description": {
+        "de": "Hekate fügt dem nächsten Feind kontinuierlich alle 0,5 Sek. SCH in Höhe von 50 % ANG zu und erhält 2,5 Sek. lang 50 % Lebensraub.",
+        "en": "Hecate continuously deals DMG equal to 50% of ATK to the nearest enemy every 0.5s and gains 50% Lifesteal for 2.5s.",
+        "es": "Hécate inflige continuamente un Daño equivalente al 50 % de su ATQ al enemigo más cercano cada 0.5s y obtiene un 50 % de Robo de vida durante 2.5s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den Lebensraub auf 100 %.",
+          "en": "Increases Lifesteal to 100%.",
+          "es": "Aumenta el Robo de vida al 100 %."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH alle 0,5 s um 75 % ANG.",
+          "en": "Increases DMG dealt to 75% ATK every 0.5s.",
+          "es": "Aumenta el daño infligido en 75 % de ATQ cada 0.5 s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH alle 0,5 s auf 90 % ANG.",
+          "en": "Increases DMG dealt to 90% ATK every 0.5s.",
+          "es": "Aumenta el daño infligido a 90 % de ATQ cada 0.5 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Trivias Klinge",
+        "en": "Trivia's Edge",
+        "es": "Filo de Trivia"
+      },
+      "description": {
+        "de": "Hekate fügt einem Feind SCH in Höhe von 220 % ANG zu und betäubt ihn für 2 Sek., wobei das Ziel auf der gegenüberliegenden Position priorisiert wird.",
+        "en": "Hecate deals DMG equal to 220% of ATK to one enemy and stuns them for 2s, prioritizing the opposite target.",
+        "es": "Hécate inflige un Daño equivalente al 220 % de su ATQ a un enemigo y lo aturde durante 2s, dando prioridad al objetivo opuesto."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 240 % ANG.",
+          "en": "Increases DMG dealt to 240% ATK.",
+          "es": "Aumenta el daño infligido a 240 % de ATQ."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 260 % ANG.",
+          "en": "Increases DMG dealt to 260% ATK.",
+          "es": "Aumenta el daño infligido a 260 % de ATQ."
+        },
+        "level4": {
+          "de": "Zugefügter SCH wird auf 280% des ANG erhöht und die Betäubungsdauer wird auf 3 Sekunden erhöht.",
+          "en": "Increases DMG dealt to 280% ATK and stun duration to 3s. (Unlocks at Lv.281)",
+          "es": "Aumenta el Daño infligido al 280 % de su ATQ y la duración del aturdimiento a 3s."
+        }
+      }
+    }
+  ]
 }

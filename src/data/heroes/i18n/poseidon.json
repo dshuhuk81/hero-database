@@ -3,5 +3,119 @@
     "de": "Poseidon",
     "es": "Poseidon",
     "ru": "Poseidon"
+  },
+  "skills": [
+    {},
+    {
+      "name": {
+        "de": "Monsterwelle",
+        "en": "Rogue Wave",
+        "es": "Ola de rebeldía"
+      },
+      "description": {
+        "de": "Poseidon hebt seinen Dreizack und beschwört zwei Wellen auf beiden Seiten des Schlachtfelds. Feinde im Bereich werden 2 Meter zurückgestoßen und erleiden SCH in Höhe von 200% seines ANG.",
+        "en": "Poseidon raises his trident, summoning two tidal waves on both sides of the battlefield. Enemies within range are pushed 2 meters and take DMG equal to 200% of his ATK.",
+        "es": "Poseidón levanta su tridente e invoca dos marejadas a ambos lados del campo de batalla. Los enemigos dentro del alcance son empujados 2 metros y reciben un Daño equivalente al 200 % de su ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Wenn die beiden Wellen in der Mitte zusammenstoßen, entsteht eine massive Welle, die Feinde in der Mitte zu Boden wirft und zusätzlichen SCH in Höhe von 100% ANG verursacht.",
+          "en": "When the two tidal waves meet in the middle, they create a violent swell, knocking down enemies at the center and dealing additional DMG equal to 100% of ATK.",
+          "es": "Cuando las dos marejadas se encuentran en el centro, crean una violenta oleada que derriba a los enemigos en el centro e inflige un Daño adicional equivalente al 100 % de su ATQ."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 220 %.",
+          "en": "Increases DMG dealt to 220%.",
+          "es": "Aumenta el daño infligido a 220 %."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 250 %.",
+          "en": "Increases DMG dealt to 250%.",
+          "es": "Aumenta el Daño infligido al 250 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wasserhose",
+        "en": "Waterspout",
+        "es": "Tromba marina"
+      },
+      "description": {
+        "de": "Poseidon stößt seinen Dreizack zu den Füßen des aktuellen Ziels, wodurch eine Welle aus dem Boden hervorbricht, die Feinden in einem kleinen Bereich SCH in Höhe von 200% seines ANG zufügt und sie zu Boden wirft.",
+        "en": "Poseidon drives his trident into the ground under the current target, triggering a tidal wave that deals DMG equal to 200% of ATK to enemies in a small area and knocking them down.",
+        "es": "Poseidón clava su tridente en el suelo bajo el objetivo actual, provocando una marejada que inflige un Daño equivalente al 200 % de su ATQ a los enemigos en un área pequeña y los derriba."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 220 %.",
+          "en": "Increases DMG dealt to 220%.",
+          "es": "Aumenta el daño infligido a 220 %."
+        },
+        "level3": {
+          "de": "Verringert außerdem die M-RES des Ziels um 20 %.",
+          "en": "Also reduces the target's M-RES by 20%.",
+          "es": "También reduce la RES M del objetivo en un 20 %."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 240 %.",
+          "en": "Increases DMG dealt to 240%.",
+          "es": "Aumenta el Daño infligido al 240 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "es": "Tridente de la marea",
+        "en": "Tidal Trident"
+      },
+      "description": {
+        "es": "Después de cada dos ataques, Poseidón carga su tridente. El siguiente ataque inflige un Daño equivalente al 200 % de su ATQ al objetivo y restaura 100 de energía para sí mismo.",
+        "en": "After every two attacks, Poseidon charges his trident. The next attack deals DMG equal to 200% of ATK to the target and restores 100 Energy to himself."
+      },
+      "upgrades": {
+        "level2": {
+          "es": "Aumenta el daño infligido a 230 %.",
+          "en": "Increases DMG dealt to 230%."
+        },
+        "level3": {
+          "es": "Aumenta la energía restaurada a 150.",
+          "en": "Increases Energy restored to 150."
+        },
+        "level4": {
+          "es": "Le otorga un escudo equivalente al 200 % de su ATQ.",
+          "en": "Grants him a shield equal to 200% of ATK. (Unlocks at Lv.261)"
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Gezeiten-Aegis",
+      "en": "Tidal Aegis",
+      "es": "Égida de la marea"
+    },
+    "description": {
+      "de": "Poseidon sammelt die Energie des Ozeans und erhält für 5 Sek. einen Schild in Höhe von 270 % seines ANG.",
+      "en": "Poseidon gathers the ocean energy, gaining a shield equal to 270% of ATK for 5s.",
+      "es": "Poseidón reúne la energía del océano y obtiene un escudo equivalente al 270 % de su ATQ durante 5s."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Die Schildstärke erhöht sich auf 300 %.",
+        "en": "Shield Strength increases to 300%.",
+        "es": "La fuerza del Escudo aumenta a 300 %."
+      },
+      "level3": {
+        "de": "Solange der Schild aktiv ist, wird sein ANG ebenfalls um 10% erhöht.",
+        "en": "Increases ATK by 10% while the shield is active.",
+        "es": "Aumenta el ATQ en un 10 % mientras el escudo está activo."
+      },
+      "level4": {
+        "de": "Die Schildstärke erhöht sich auf 330 %.",
+        "en": "Shield Strength increases to 330%. (Unlocks at Lv.281)",
+        "es": "La fuerza del Escudo aumenta a 330 %."
+      }
+    }
   }
 }

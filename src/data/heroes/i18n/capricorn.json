@@ -3,5 +3,84 @@
     "de": "Steinbock",
     "es": "Capricornio",
     "ru": "Козерог"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Schwarmblaster",
+        "en": "Swarpblaster",
+        "es": "Explosión de enjambre"
+      },
+      "description": {
+        "de": "Steinbock wechselt zu Kampfbeginn die Position mit dem symmetrisch gegenüberliegenden Feind und entzieht ihm 50 % seiner max. LP, die über 5 Sek. hinweg langsam wiederhergestellt werden.",
+        "en": "Capricorn swaps positions with the symmetrically opposite enemy at combat start and drains 50% of their max HP, which is slowly restored over 5s.",
+        "es": "Capricornio intercambia posiciones con el enemigo simétricamente opuesto al inicio del combate y drena el 50 % de sus PS máximos, que se restauran lentamente durante 5s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Während der Dauer erleidet der Feind 10% mehr SCH.",
+          "en": "The target takes 10% increased DMG during the effect.",
+          "es": "El objetivo recibe un 10 % más de Daño durante el efecto."
+        },
+        "level3": {
+          "de": "Die verlorenen LP werden langsam über die nächsten 8 Sekunden wiederhergestellt.",
+          "en": "The lost HP is slowly restored over 8s.",
+          "es": "Los PS perdidos se restauran lentamente durante 8s."
+        },
+        "level4": {
+          "de": "Während der Dauer erhöht sich der erlittene SCH des Feindes auf 20%.",
+          "en": "The target takes 20% increased DMG during the effect.",
+          "es": "El objetivo recibe un 20 % más de Daño durante el efecto."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Klingentanz",
+        "en": "Blade Dance",
+        "es": "Danza de filos"
+      },
+      "description": {
+        "de": "Capricorn vereint ihre Doppelklingen und tanzt, wobei sie 4 Treffer mit 100% ANG SCH an Feinden in einem kleinen Bereich um sich herum verursacht. Für jeden getroffenen Feind stellen sie LP in Höhe von 20% ihres ANG wieder her.",
+        "en": "Capricorn combines her blades and dances, dealing DMG equal to 100% of ATK 4 times to surrounding enemies. She restores HP equal to 20% of ATK for each enemy hit.",
+        "es": "Capricornio combina sus espadas y baila, infligiendo un Daño equivalente al 100 % de su ATQ 4 veces a los enemigos circundantes. Restaura una cantidad de PS equivalente al 20 % de su ATQ por cada enemigo golpeado."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der pro Treffer verursachte SCH erhöht sich auf 115 % ANG.",
+          "en": "DMG dealt per hit increases to 115% ATK.",
+          "es": "El daño infligido por golpe aumenta a 115 % de ATQ."
+        },
+        "level3": {
+          "de": "Der pro Treffer verursachte SCH erhöht sich auf 130 % ANG.",
+          "en": "DMG dealt per hit increases to 130% ATK.",
+          "es": "El daño infligido por golpe aumenta a 130 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Seelenbindung",
+        "en": "Soulbind",
+        "es": "Vínculo de alma"
+      },
+      "description": {
+        "de": "Capricorn betäubt einen Feind für 5 Sekunden und verursacht 50% ANG als SCH pro Sekunde.",
+        "en": "Capricorn stuns an enemy for 5s, dealing DMG equal to 50% of ATK to them per sec.",
+        "es": "Capricornio aturde a un enemigo durante 5s, infligiéndole un Daño equivalente al 50 % de su ATQ por segundo."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der pro Sek. verursachte SCH erhöht sich auf 60 % ANG",
+          "en": "DMG dealt per sec increases to 60% ATK.",
+          "es": "El daño infligido por segundo aumenta a 60 % de ATQ"
+        },
+        "level3": {
+          "de": "Erhöht die eigene ANG-GESW um 20% für 5 Sekunden nach dem Einsatz.",
+          "en": "When cast, it increases her ATK SPD by 20% for the next 5s.",
+          "es": "Al lanzarlo, aumenta su VEL de ATQ en un 20 % durante los próximos 5s."
+        }
+      }
+    }
+  ]
 }

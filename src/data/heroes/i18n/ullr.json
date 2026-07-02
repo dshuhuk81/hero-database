@@ -3,5 +3,150 @@
     "de": "Ullr",
     "es": "Ullr",
     "ru": "Ullr"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Der ultimative Schneeball",
+        "en": "The Ultimate Snowball",
+        "es": "Bola de nieve definitiva"
+      },
+      "description": {
+        "de": "Ullr friert den nächsten Feind sofort in einen riesigen Schneeball ein, lädt auf und führt dann einen mächtigen geladenen Angriff aus, der SCH in Höhe von 500 % seines ANG verursacht und das Ziel 10 Meter wegschleudert.",
+        "en": "Ullr instantly freezes the nearest enemy into a giant snowball, charges up, and then delivers a powerful charged attack, dealing DMG equal to 500% of his ATK and launching them 10 meters away.",
+        "es": "Ullr congela instantáneamente al enemigo más cercano en una bola de nieve gigante, carga y luego lanza un potente ataque cargado, que inflige un Daño equivalente al 500 % de su ATQ y lo lanza a 10 metros de distancia."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH des Geladenen Angriffs auf 520 % ANG.",
+          "en": "Increases DMG of Charged Attack to 520% ATK.",
+          "es": "Aumenta el daño del ataque cargado al 520 % de ATQ."
+        },
+        "level3": {
+          "de": "Weggeschleuderte Ziele werden bei der Landung für 2 Sek. betäubt.",
+          "en": "Targets launched will be stunned for 2s upon landing.",
+          "es": "Los objetivos lanzados quedarán aturdidos durante 2s al aterrizar."
+        },
+        "level4": {
+          "de": "Erhöht den SCH des Geladenen Angriffs auf 550 % ANG.",
+          "en": "Increases DMG of Charged Attack to 550% ATK.",
+          "es": "Aumenta el daño del ataque cargado al 550 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Fessel des Schmerzes",
+        "en": "Shackle of Pain",
+        "es": "Grillete de dolor"
+      },
+      "description": {
+        "de": "Fesselt den nächsten Gegner mit Ketten und verursacht 100% ANG SCH 4 Mal.",
+        "en": "Shackles the nearest enemy with chains, then deals DMG equal to 100% of ATK to them 4 times.",
+        "es": "Encadena al enemigo más cercano y luego le inflige un Daño equivalente al 100 % de su ATQ 4 veces."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH pro Instanz auf 110 % ANG.\nLevel 3: Wenn das Ziel besiegt wird, während die Fähigkeit aktiv ist, werden 20% der max. LP wiederhergestellt.",
+          "en": "Increases DMG per instance to 110% ATK.",
+          "es": "aumenta el daño por instancia al 110 % de ATQ."
+        },
+        "level4": {
+          "de": "Erhöht den SCH pro Instanz auf 120 % ANG.",
+          "en": "Increases DMG per instance to 120% ATK.",
+          "es": "aumenta el daño por instancia al 120 % de ATQ."
+        },
+        "level3": {
+          "es": "Restaura un 20 % de los PS máximos si el objetivo es derrotado mientras la habilidad está activa.",
+          "en": "Restores 20% of max HP if the target is defeated while the skill is active."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Absoluter Nullpunkt",
+        "en": "Absolute Zero",
+        "es": "Cero absoluto"
+      },
+      "description": {
+        "de": "Ullr erschafft eine Frostkette mit dem nächsten Verbündeten in der Hinterreihe, die für den gesamten Kampf bestehen bleibt. 10 % SCH, den die verbundene Einheit erleidet, wird auf Ullr umgeleitet. Wenn die LP des Verbündeten unter 30 % fallen, teleportiert sich Ullr sofort vor ihn, hüllt ihn für 3 Sek. in einen Schneeball ein und stellt pro Sek. LP in Höhe von 250 % seines ANG wieder her. Dieser Effekt kann nur einmal pro Kampf ausgelöst werden.",
+        "en": "Ullr creates a Frost Chain with the nearest backline ally for the entire battle. 10% of the DMG taken by the linked unit is redirected to Ullr. When the ally's HP falls below 30%, Ullr instantly blinks in front of them, encasing them in a snowball for 3s and restoring HP equal to 250% of his ATK to them per sec. This effect can only trigger once per battle.",
+        "es": "Ullr crea una Cadena de escarcha con el aliado de la retaguardia más cercano durante toda la batalla. Un 10 % del Daño recibido por la unidad vinculada se redirige a Ullr. Cuando los PS del aliado caen por debajo del 30 %, Ullr se teletransporta instantáneamente frente a él, lo envuelve en una bola de nieve durante 3s y le restaura PS equivalentes al 250 % de su ATQ por segundo. Este efecto solo puede activarse una vez por batalla."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 300 % des ANG pro Sek. wieder her.",
+          "en": "Restores HP equal to 300% ATK per sec.",
+          "es": "Restaura PS equivalentes a un 300 % del ATQ por segundo."
+        },
+        "level3": {
+          "de": "Stellt 80 Energie pro Sek. wieder her.\nLevel 4: Ullr nimmt 20% des SCH auf, der der verbundenen Einheit zugefügt wird.",
+          "en": "Restores 80 Energy per sec.",
+          "es": "Restaura 80 de Energía por segundo."
+        },
+        "level4": {
+          "es": "Un 20 % del Daño recibido por las unidades vinculadas se redirige a Ullr.",
+          "en": "20% of the DMG taken by linked units is redirected to Ullr."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Blutbeflecktes Band",
+        "en": "Bloodstained Bond",
+        "es": "Vínculo ensangrentado"
+      },
+      "description": {
+        "de": "Alle 15 Sek. verbraucht Ullr 20 % seiner aktuellen LP, um einen Schild zu erhalten, der 25 % seiner max. LP entspricht und 10 Sek. lang anhält.",
+        "en": "Every 15s, Ullr consumes 20% of his current HP to grant himself a shield equal to 25% of his max HP for 10s.",
+        "es": "Cada 15s, Ullr consume un 20 % de sus PS actuales para obtener un escudo equivalente al 25 % de sus PS máximos durante 10s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Schildstärke erhöht sich auf 30 % der max. LP.",
+          "en": "Shield Strength increases to 30% of max HP.",
+          "es": "la fuerza del escudo aumenta al 30 % de los PS máx."
+        },
+        "level3": {
+          "de": "Solange der Schild aktiv ist, werden pro Sek. 5 % der max. LP wiederhergestellt.",
+          "en": "Restores 5% of max HP per sec when the shield is active.",
+          "es": "Restaura un 5 % de los PS máximos por segundo cuando el escudo está activo."
+        },
+        "level4": {
+          "de": "Schildstärke erhöht sich auf 35 % der max. LP.",
+          "en": "Shield Strength increases to 35% of max HP.",
+          "es": "la fuerza del escudo aumenta al 35 % de los PS máx."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Tödlicher Nervenkitzel",
+      "en": "Deadly Thrill",
+      "es": "Emoción mortal"
+    },
+    "description": {
+      "de": "Verringert die Abklingzeit von Fessel des Schmerzes von 15 auf 10 Sek.",
+      "en": "Reduces Shackle of Pain's CD from 15s to 10s.",
+      "es": "Reduce el TdE de Grillete de dolor de 15 a 10 s."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Fessel des Schmerzes leitet 20 % des erlittenen SCH auf gefesselte Feinde um.",
+        "en": "Shackle of Pain redirects 20% DMG taken to restrained enemies.",
+        "es": "Grillete de dolor redirige el 20 % del daño recibido a los enemigos inmovilizados."
+      },
+      "level3": {
+        "de": "Verringert die Abklingzeit von Fessel des Schmerzes auf 7 Sek.",
+        "en": "Reduces Shackle of Pain's CD to 7s.",
+        "es": "Reduce el TdE de Grillete de dolor a 7 s."
+      },
+      "level4": {
+        "de": "Fessel des Schmerzes leitet 40 % des erlittenen SCH auf gefesselte Gegner um.",
+        "en": "Shackle of Pain redirects 40% DMG taken to restrained enemies.",
+        "es": "Grillete de dolor redirige el 40 % del daño recibido a los enemigos inmovilizados."
+      }
+    }
   }
 }

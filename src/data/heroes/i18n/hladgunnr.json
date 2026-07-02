@@ -3,5 +3,152 @@
     "de": "Hladgunnr",
     "es": "Hladgunnr",
     "ru": "Hladgunnr"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Leuchtender Federsturm",
+        "en": "Luminous Feather Lunge",
+        "es": "Embestida de pluma luminosa"
+      },
+      "description": {
+        "de": "Horadricuna bewegt sich zurück und stürmt dann nach vorne, um dem Ziel 270% SCH zuzufügen und es zurückzustoßen.",
+        "en": "Hladgunnr dashes backward, then charges forward, dealing DMG equal to 270% of her ATK to the target and knocking them back.",
+        "es": "Hladgunnr se desplaza hacia atrás y luego carga hacia adelante, lo que inflige un Daño equivalente al 270 % de su ATQ al objetivo y lo repele."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 300 %.",
+          "en": "Increases DMG dealt to 300%.",
+          "es": "Aumenta el daño infligido a 300 %."
+        },
+        "level3": {
+          "de": "Gewährt außerdem einen Schild in Höhe von 300% des ANG.",
+          "en": "Also grants herself a shield equal to 300% of her ATK.",
+          "es": "También obtiene un escudo equivalente al 300 % de su ATQ."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 330 %.",
+          "en": "Increases DMG dealt to 330%. (Unlocks at Lv.281)",
+          "es": "Aumenta el Daño infligido al 330 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Heilige Meditation",
+        "en": "Sacred Meditation",
+        "es": "Meditación sagrada"
+      },
+      "description": {
+        "de": "Hladgunnr tritt beim Eintritt in den Kampf in den Zustand [Schlummer] ein. Sie ist handlungsunfähig, stellt aber 10 Sek. lang pro Sek. LP in Höhe von 100 % ANG wieder her. Der Einsatz ihres Ultimativs bricht den Zustand [Schlummer] ab, gewährt ihr einen Schild in Höhe von 500 % ANG und macht sie für die Dauer der Fähigkeit immun gegen Massenkontrolle. Danach verursachen ihre Normalangriffe SCH in Höhe von 200 % ANG.",
+        "en": "Hladgunnr enters the [Slumber] state upon entering battle. She is disabled but restores HP equal to 100% of ATK per sec for 10s. Casting her Ultimate cancels the [Slumber] state, grants her a shield equal to 500% of ATK, and makes her immune to Crowd Control for the skill's duration. After that, her Normal Attacks deal DMG equal to 200% of ATK.",
+        "es": "Hladgunnr entra en estado de [Letargo] al entrar en batalla. Queda incapacitada, pero restaura PS equivalentes al 100 % de su ATQ por segundo durante 10s. Lanzar su Habilidad definitiva cancela el estado de [Letargo], le otorga un escudo equivalente al 500 % de su ATQ y la hace inmune al Control de masas mientras dure la habilidad. Después de eso, sus Ataques normales infligen un Daño equivalente al 200 % de su ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält im Zustand [Schlummer] 40 % SCH-Reduktion.",
+          "en": "Gains 40% DMG RED while in the [Slumber] state.",
+          "es": "Obtiene un 40 % de Reduc. de daño en el estado de [Letargo]."
+        },
+        "level3": {
+          "de": "Dieser Effekt wird ein weiteres Mal ausgelöst, wenn Hladgunnr kurz davor ist, besiegt zu werden.",
+          "en": "This effect triggers one extra time when Hladgunnr is about to fall.",
+          "es": "Este efecto se activa una vez más cuando Hladgunnr está a punto de caer."
+        },
+        "level4": {
+          "de": "Erhält im Zustand [Schlummer] 60 % SCH-Reduktion.",
+          "en": "Gains 60% DMG RED while in the [Slumber] state.",
+          "es": "Obtiene un 60 % de Reduc. de daño en el estado de [Letargo]."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Leuchtende Aegis",
+        "en": "Luminous Aegis",
+        "es": "Égida luminosa"
+      },
+      "description": {
+        "de": "Jedes Ultimativ von Hladgunnr gewährt 20 % ANG. Max. 4 Stapel.",
+        "en": "Hladgunnr's every Ultimate grants 20% ATK. Max at 4 stacks.",
+        "es": "Cada Habilidad definitiva de Hladgunnr otorga un 20 % de ATQ. Se acumula hasta 4 veces."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Hladgunnr erhält für das erste Auslösen 20 % SCH-RED.",
+          "en": "Hladgunnr gains 20% DMG RED for the first release.",
+          "es": "Hladgunnr obtiene un 20 % de Reduc. de daño en el primer lanzamiento."
+        },
+        "level3": {
+          "de": "Erhält für das erste Auslösen 25 % SCH-RED.",
+          "en": "Gains 25% DMG RED for the first release.",
+          "es": "Obtiene un 25 % de Reduc. de daño en el primer lanzamiento."
+        },
+        "level4": {
+          "de": "Erhält für das erste Auslösen 30 % SCH-RED.",
+          "en": "Gains 30% DMG RED for the first release.",
+          "es": "Obtiene un 30 % de Reduc. de daño en el primer lanzamiento."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Domäne des Urteils",
+        "en": "Domain of Verdict",
+        "es": "Dominio del veredicto"
+      },
+      "description": {
+        "de": "Hladgunnr erschafft eine Aura um sich, die Feinden in der Nähe SCH in Höhe von 400 % ihres ANG zufügt und ihren Lebensraub um 50 % sowie ihre ANG-GES um 100 % für 10 Sek. erhöht.",
+        "en": "Hladgunnr creates a halo around herself, dealing DMG equal to 400% of her ATK to nearby enemies and increasing her Lifesteal by 50% and ATK DPS by 100% for 10s.",
+        "es": "Hladgunnr crea un halo a su alrededor, lo que inflige un Daño equivalente al 400 % de su ATQ a los enemigos cercanos y aumenta su Robo de vida en un 50 % y su VEL de ATQ en un 100 % durante 10s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 440 %.",
+          "en": "Increases DMG dealt to 440%.",
+          "es": "Aumenta el daño infligido a 440 %."
+        },
+        "level3": {
+          "de": "Wenn ihre Ultimative Fähigkeit Heilige Meditation abbricht, übernimmt sie die verbleibenden Buffs.",
+          "en": "When her Ultimate cancels Sacred Meditation, she inherits the remaining buffs from it.",
+          "es": "Cuando su Habilidad definitiva cancela Meditación sagrada, hereda las mejoras restantes de esta."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 480 %.",
+          "en": "Increases DMG dealt to 480%.",
+          "es": "Aumenta el Daño infligido al 480 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Leuchtendes Urteil",
+      "en": "Luminous Verdict",
+      "es": "Veredicto luminoso"
+    },
+    "description": {
+      "de": "Leuchtende Aegis erhält einen zusätzlichen Aufwertungseffekt: Nachdem Hladgunnr ihre Ultimative Fähigkeit 3-mal eingesetzt hat, werden 10 % des von Hladgunnr verursachten SCH in Wahren SCH umgewandelt.",
+      "en": "Luminous Aegis gains an additional upgrade effect: After Hladgunnr casts her Ultimate 3 times, 10% of the DMG dealt by Hladgunnr is converted to True DMG.",
+      "es": "Égida luminosa obtiene un efecto de mejora adicional: después de que Hladgunnr lance su Habilidad definitiva 3 veces, un 10 % del Daño infligido por Hladgunnr se convierte en Daño verdadero."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Verringert die Anzahl der zur Verbesserung von Leuchtender Aegis erforderlichen Wirkungen um eins.",
+        "en": "Reduces the number of casts required to upgrade Luminous Aegis by one.",
+        "es": "Reduce en uno el número de lanzamientos necesarios para mejorar Égida luminosa."
+      },
+      "level3": {
+        "de": "30 % des von Hladgunnr verursachten SCH werden in Wahren SCH umgewandelt.",
+        "en": "30% of the DMG dealt by Hladgunnr is converted to True DMG.",
+        "es": "Un 30 % del daño infligido por Hladgunnr se convierte en Daño verdadero."
+      },
+      "level4": {
+        "de": "Hladgunnr erhält nach jedem Einsatz ihrer Ultimativen Fähigkeit für 6 Sek. Super-Rüstung.",
+        "en": "Hladgunnr gains Super Armor for 6s after each cast of her Ultimate. (Unlock at Relic Lv.30)",
+        "es": "Hladgunnr obtiene Superarmadura durante 6s después de cada lanzamiento de su Habilidad definitiva."
+      }
+    }
   }
 }

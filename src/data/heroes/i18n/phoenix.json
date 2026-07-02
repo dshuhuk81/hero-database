@@ -3,5 +3,152 @@
     "de": "Phönix",
     "es": "Fénix",
     "ru": "Феникс"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Flammende Wiedergeburt",
+        "en": "Flaming Rebirth",
+        "es": "Renacimiento llameante"
+      },
+      "description": {
+        "de": "Wenn Phönix fällt, setzt sie Auferstehung aus der Asche ein. Wenn sie die einzige verbleibende Einheit ist und unter dem Effekt von Auferstehung aus der Asche steht, ist der Kampf verloren (kann nur einmal pro Kampf ausgelöst werden).\n(Auferstehung aus der Asche: Wird nicht anvisierbar, stellt pro Sek. 15 % der max. LP wieder her und wird bei vollen LP wiederbelebt.)",
+        "en": "When Phoenix falls, she casts Rise From Ashes. If she is the only remaining unit and under Rise From Ashes, the battle is lost (can only trigger once per battle). (Rise From Ashes: Becomes untargetable, restores 15% of max HP per sec, revives when HP is fully restored.)",
+        "es": "Cuando Fénix cae, lanza Resurgir de las cenizas. Si es la única unidad que queda y está bajo el efecto de Resurgir de las cenizas, la batalla se pierde (solo se puede activar una vez por batalla).\n(Resurgir de las cenizas: Se vuelve inalcanzable, restaura un 15 % de los PS máx. por segundo y revive cuando los PS se restauran por completo)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Behält bei der Wiederbelebung ihre Energie.",
+          "en": "Keeps her Energy upon revival. (Unlocks at Relic Lv.10)",
+          "es": "Conserva su Energía al revivir."
+        },
+        "level3": {
+          "de": "Auferstehung aus der Asche kann jetzt unbegrenzt oft ausgelöst werden. Wenn sie die einzige verbleibende Einheit ist und unter dem Effekt von Auferstehung aus der Asche steht, ist der Kampf verloren.",
+          "en": "Rise From Ashes can now trigger unlimited times. If she is the only remaining unit and under Rise From Ashes, the battle is lost. (Unlocks at Relic Lv.20)",
+          "es": "Resurgir de las cenizas ahora puede activarse un número ilimitado de veces. Si es la única unidad que queda y está bajo el efecto de Resurgir de las cenizas, la batalla se pierde."
+        },
+        "level4": {
+          "de": "Wenn Phönix zum ersten Mal Auferstehung aus der Asche einsetzt, erhält sie 50 % max. LP.",
+          "en": "When Phoenix casts Rise From Ashes for the first time, she gains 50% max HP. (Unlocks at Relic Lv.30)",
+          "es": "Cuando Fénix lanza Resurgir de las cenizas por primera vez, obtiene un 50 % de PS máx."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Asche zu ewiger Flamme",
+        "en": "Ashes to Everflame",
+        "es": "Cenizas a la llama eterna"
+      },
+      "description": {
+        "de": "Phönix zielt auf die entfernteste Einheit, opfert 50 % ihrer max. LP, um einen Phönix zu beschwören, der das Ziel trifft. Fügt dem Ziel und allen Einheiten auf dem Weg SCH in Höhe von 240 % ihres ANG + 100 % der geopferten LP zu.",
+        "en": "Phoenix targets the farthest unit, sacrificing 50% of her max HP to summon a phoenix that strikes the target, dealing DMG equal to 240% of her ATK + 100% of sacrificed HP to the target and all units along the path.",
+        "es": "Fénix apunta a la unidad más lejana, sacrifica el 50 % de sus PS máx. para invocar un fénix que golpea al objetivo, infligiendo un Daño equivalente a su 240 % de ATQ + el 100 % de los PS sacrificados al objetivo y a todas las unidades en el camino."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den ANG-Bonus auf 270 %.",
+          "en": "Increases ATK bonus to 270%.",
+          "es": "aumenta la bonificación de ATQ al 270 %."
+        },
+        "level3": {
+          "de": "Erhöht die Umwandlungsrate geopferter LP auf 120 %.",
+          "en": "Increases the conversion ratio of sacrificed HP to 120%.",
+          "es": "Aumenta la tasa de conversión de los PS sacrificados al 120 %."
+        },
+        "level4": {
+          "de": "Erhöht den ANG-Bonus auf 300 %.",
+          "en": "Increases ATK bonus to 300%.",
+          "es": "aumenta la bonificación de ATQ al 300 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Lodernde Feder",
+        "en": "Blazing Feather",
+        "es": "Pluma ardiente"
+      },
+      "description": {
+        "de": "Jeder Normalangriff von Phönix verbraucht 10 % ihrer aktuellen LP, verursacht SCH in Höhe von 100 % ANG und belegt das Ziel mit einem Stapel Seelenbrand.\n(Seelenbrand: Verursacht 10 Sek. lang alle 2 Sek. SCH in Höhe von 75 % ANG, bis zu 10-mal stapelbar.)",
+        "en": "Each Phoenix's Normal Attack consumes 10% of her current HP, dealing DMG equal to 100% of ATK and inflicting a stack of Soul Burn on the target. (Soul Burn: Deals DMG equal to 75% of ATK every 2s for 10s, stacking up to 10 times.)",
+        "es": "Cada Ataque normal de Fénix consume un 10 % de sus PS actuales, infligiendo un Daño equivalente al 100 % de su ATQ e infligiendo una acumulación de Quemadura anímica al objetivo.\n(Quemadura anímica: Inflige un Daño equivalente al 75 % del ATQ cada 2s durante 10s, acumulable hasta 10 veces)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den ANG-Bonus von Seelenbrand auf 85 %.",
+          "en": "Increases the ATK bonus of Soul Burn to 85%.",
+          "es": "aumenta la bonificación de ATQ de Quemadura anímica al 85 %."
+        },
+        "level3": {
+          "de": "Einheiten mit Seelenbrand explodieren beim Tod und fügen den nahen Feinden SCH in Höhe von 50 % von Phönix' ANG × Anzahl der Seelenbrand-Stapel zu.",
+          "en": "Units with Soul Burn explode when falling, dealing DMG equal to 50% Phoenix's ATK × Soul Burn stacks to nearby enemies.",
+          "es": "Las unidades con Quemadura anímica explotan al caer, infligiendo un Daño equivalente al 50 % del ATQ de Fénix × acumulaciones de Quemadura anímica a los enemigos cercanos."
+        },
+        "level4": {
+          "de": "Erhöht den ANG-Bonus von Seelenbrand auf 100 %.",
+          "en": "Increases the ATK bonus of Soul Burn to 100%.",
+          "es": "aumenta la bonificación de ATQ de Quemadura anímica al 100 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Auferstehung aus der Asche",
+        "en": "Rise From Ashes",
+        "es": "Resurgir de las cenizas"
+      },
+      "description": {
+        "de": "Phönix erhält 5 % ANG-GES für je 10 % verlorene max. LP, bis zu 10-mal stapelbar.",
+        "en": "Phoenix gains 5% ATK SPD for every 10% of max HP lost, stacking up to 10 times.",
+        "es": "Fénix obtiene un 5 % de VEL de ATQ por cada 10 % de PS máx. perdidos, acumulable hasta 10 veces."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält 7,5% ANG-GES.",
+          "en": "Gains 7.5% ATK SPD.",
+          "es": "Obtiene un 7.5 % de VEL de ATQ."
+        },
+        "level3": {
+          "de": "Erhält zusätzlich 50 Energie.",
+          "en": "Gains an additional 50 Energy.",
+          "es": "Obtiene 50 de Energía adicional."
+        },
+        "level4": {
+          "de": "Erhält 10% ANG-GES.",
+          "en": "Gains 10% ATK SPD. (Unlocks at Lv.261)",
+          "es": "Obtiene un 10 % de VEL de ATQ."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Sengende Heilung",
+      "en": "Scorching Remedy",
+      "es": "Remedio abrasador"
+    },
+    "description": {
+      "de": "Phönix stellt über 10 Sek. LP in Höhe von 200 % ANG + 25 % der verlorenen LP wieder her.",
+      "en": "Phoenix restores HP equal to 200% of ATK + 25% of lost HP over 10s.",
+      "es": "Fénix restaura PS equivalentes al 200 % de su ATQ + un 25 % de los PS perdidos durante 10s."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
+        "en": "Restores HP equal to 220% ATK.",
+        "es": "Restaura PS equivalentes a un 220 % del ATQ."
+      },
+      "level3": {
+        "de": "Dieser Heilungseffekt wird um 30% erhöht, wenn die LP unter 50% liegen.",
+        "en": "The healing effect is increased to 30% when her HP drops below 50%.",
+        "es": "El efecto de sanación aumenta al 30 % cuando sus PS bajan del 50 %."
+      },
+      "level4": {
+        "de": "Stellt LP in Höhe von 250 % des ANG wieder her.",
+        "en": "Restores HP equal to 250% ATK. (Unlocks at Lv.281)",
+        "es": "Restaura PS equivalentes a un 250 % del ATQ."
+      }
+    }
   }
 }

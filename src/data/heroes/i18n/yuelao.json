@@ -4,5 +4,152 @@
     "en": "Yuelao",
     "es": "Yuelao",
     "ru": "Юэлао"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Schicksalhafte Zuneigung",
+        "en": "Fated Affection",
+        "es": "Afecto predestinado"
+      },
+      "description": {
+        "de": "Yue Lao heilt Verbündete nacheinander, wobei jede Heilung LP in Höhe von 140% des ANG wiederherstellt. Dies wird 6-mal wiederholt. Wenn eine verbundene Einheit geheilt wird, erhält die andere verbundene Einheit ebenfalls diese Heilung.",
+        "en": "Yuelao heals several allies in sequence, each heal restoring HP equal to 140% of ATK, repeating 6 times. If a linked unit is healed, the other linked unit also receives the healing.",
+        "es": "Yuelao sana a varios aliados en secuencia, cada curación restaura PS equivalentes al 140 % de su ATQ, repitiéndose 6 veces. Si se cura una unidad vinculada, la otra unidad vinculada también recibe la sanación."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Jede Heilung stellt LP in Höhe von 160% des ANG wieder her.",
+          "en": "Each heal restores HP equal to 160% of ATK.",
+          "es": "Cada sanación restaura PS equivalentes al 160 % de su ATQ."
+        },
+        "level3": {
+          "de": "Geheilte Verbündete erhalten für 5 Sek. eine um 20 % erhöhte KRIT-Rate. Dieser Effekt kann auf demselben Ziel nicht gestapelt werden.",
+          "en": "Allies healed gain 20% increased CRIT Rate for 5s. This effect cannot stack on the same target.",
+          "es": "Los aliados sanados obtienen un 20 % más de Tasa de crít. durante 5s. Este efecto no se puede acumular en el mismo objetivo."
+        },
+        "level4": {
+          "de": "Heilt jetzt 8-mal.",
+          "en": "It now heals 8 times.",
+          "es": "Ahora sana 8 veces."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Roter Faden des Schicksals",
+        "en": "Red Thread of Fate",
+        "es": "Hilo rojo del destino"
+      },
+      "description": {
+        "de": "Yuelao verbindet den Verbündeten mit dem höchsten ANG und den Verbündeten mit den höchsten LP mit einem roten Faden, wodurch sie 10 % ihres ANG, ihrer LP, ihrer Rüstung und ihrer M-RES teilen. Die Abklingzeit dieser Fähigkeit wird zurückgesetzt, wenn keine gültigen Ziele vorhanden sind.",
+        "en": "Yuelao links the ally with the highest ATK and the ally with the highest HP with a red thread, making them share 10% of their ATK, HP, Armor, and M-RES. This skill refunds its CD if no valid targets exist.",
+        "es": "Yuelao vincula con un hilo rojo al aliado con el ATQ más alto y al aliado con los PS más altos, haciendo que compartan un 10 % de su ATQ, PS, armadura y RES M Esta habilidad reembolsa su TdE si no existen objetivos válidos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die geteilten Attribute auf 12,5 %.",
+          "en": "Increases the shared attributes to 12.5%.",
+          "es": "Aumenta los atributos compartidos a un 12,5 %."
+        },
+        "level3": {
+          "de": "Wenn ein verbundener Verbündeter fällt, überträgt er 50 % seiner verbleibenden Energie auf den anderen.",
+          "en": "If one linked ally falls, they transfer 50% of their remaining Energy to the other.",
+          "es": "Si un aliado vinculado cae, transfiere un 50 % de su energía restante al otro."
+        },
+        "level4": {
+          "de": "Erhöht die geteilten Attribute auf 15 %.",
+          "en": "Increases the shared attributes to 15%.",
+          "es": "Aumenta los atributos compartidos a un 15 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Band des Schicksalspaares",
+        "en": "Bond of Fated Pair",
+        "es": "Vínculo de los predestinados"
+      },
+      "description": {
+        "de": "Yue Lao erhöht den ANG des Verbündeten mit dem höchsten ANG um 15% für 8 Sekunden und stellt 150 Energie wieder her. Wenn das Ziel verbunden ist, erhält der andere verbundene Verbündete dieselben Buffs.",
+        "en": "Yuelao increases the ATK of the ally with the highest ATK by 15% for 8s and restores 150 Energy to them. If that ally is linked, Yuelao will also increase the ATK of the other linked ally and restore their Energy.",
+        "es": "Yuelao aumenta el ATQ del aliado con el ATQ más alto en un 15 % durante 8s y le restaura 150 de energía. Si ese aliado está vinculado, Yuelao también aumentará el ATQ del otro aliado vinculado y restaurará su energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den ANG-Bonus auf 20 %.",
+          "en": "Increases ATK bonus to 20%.",
+          "es": "aumenta la bonificación de ATQ al 20 %."
+        },
+        "level3": {
+          "de": "Die Energieaufladung erhöht sich auf 180.",
+          "en": "Energy Regen increases to 180.",
+          "es": "La Recarga de energía aumenta a 180."
+        },
+        "level4": {
+          "de": "Erhöht den ANG-Bonus auf 25 %.",
+          "en": "Increases ATK bonus to 25%. (Unlocks at Lv.261)",
+          "es": "aumenta la bonificación de ATQ al 25 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Laternen des Schicksals",
+        "en": "Lanterns of Destiny",
+        "es": "Faroles del destino"
+      },
+      "description": {
+        "de": "Yue Lao stellt LP in Höhe von 200% des ANG für den schwächsten Verbündeten wieder her. Wenn dieser Verbündete verbunden ist, wird der andere verbundene Verbündete ebenfalls um denselben Betrag geheilt.",
+        "en": "Yuelao restores HP equal to 200% of ATK to the most vulnerable ally. If that ally is linked, Yuelao will also restore HP to the other linked ally.",
+        "es": "Yuelao restaura una cantidad de PS equivalente al 200 % de su ATQ al aliado más vulnerable. Si ese aliado está vinculado, Yuelao también le restaurará PS al otro aliado vinculado."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
+          "en": "Restores HP equal to 220% ATK.",
+          "es": "Restaura PS equivalentes a un 220 % del ATQ."
+        },
+        "level3": {
+          "de": "Erhöht die KRIT-RES der Verbündeten für 6 Sek. um 30 %.",
+          "en": "Increases the allies' CRIT RES by 30% for 6s.",
+          "es": "Aumenta la RES a crít. de los aliados en un 30 % durante 6s."
+        },
+        "level4": {
+          "de": "Stellt LP in Höhe von 250 % des ANG wieder her.",
+          "en": "Restores HP equal to 250% ATK. (Unlocks at Lv.281)",
+          "es": "Restaura PS equivalentes a un 250 % del ATQ."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Schicksalsgebunden",
+      "en": "Fate Bound",
+      "es": "Atado por el destino"
+    },
+    "description": {
+      "de": "Die verbundene Einheit mit den höchsten LP nimmt 20% des SCH auf, der für die verbundene Einheit mit dem höchsten ANG bestimmt ist. Wenn die verbundene Einheit mit dem höchsten ANG SCH verursacht, heilt sie die verbundene Einheit mit den höchsten LP um 20% des verursachten SCHs.",
+      "en": "The linked unit with the highest max HP will take 20% of the DMG dealt to the linked unit with the highest ATK. The linked unit with the highest ATK restores HP equal to 20% of the DMG dealt to the unit with the highest HP when dealing DMG.",
+      "es": "La unidad vinculada con los PS máximos más altos recibirá un 20 % del daño infligido a la unidad vinculada con el ATQ más alto. La unidad vinculada con el ATQ más alto restaura PS equivalentes al 20 % del Daño infligido a la unidad con los PS más altos al infligir Daño."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Wenn beide verbundenen Einheiten dasselbe Ziel angreifen, verursachen sie zusätzlichen 15% SCH.",
+        "en": "When both linked units attack the same target, they deal an additional 15% DMG.",
+        "es": "Cuando ambas unidades vinculadas atacan al mismo objetivo, infligen un 15 % de Daño adicional."
+      },
+      "level3": {
+        "de": "Die verbündete Einheit mit den höchsten LP nimmt 30% des SCH auf, der für die verbündete Einheit mit den höchsten ANG bestimmt war.",
+        "en": "The ally with the highest HP takes 30% of the DMG dealt to the ally with the highest ATK. (Unlock at Relic Lv.20)",
+        "es": "El aliado con los PS más altos recibe un 30 % del Daño infligido al aliado con el ATQ más alto."
+      },
+      "level4": {
+        "de": "Wenn die verbündete Einheit mit den höchsten ANG SCH verursacht, heilt sie die verbündete Einheit mit den höchsten LP um 30% des verursachten SCHs.",
+        "en": "The ally with the highest ATK restores HP equal to 30% of the DMG they deal to the ally with the highest HP. (Unlock at Relic Lv.30)",
+        "es": "El aliado con el ATQ más alto restaura una cantidad de PS equivalente al 30 % del Daño que inflige al aliado con los PS más altos."
+      }
+    }
   }
 }

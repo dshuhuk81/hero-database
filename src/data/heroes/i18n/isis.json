@@ -3,5 +3,152 @@
     "de": "Isis",
     "es": "Isis",
     "ru": "Isis"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Allwissender Pfeil",
+        "en": "Omniscient Arrow",
+        "es": "Flecha omnisciente"
+      },
+      "description": {
+        "de": "Nach jeweils 2 Normalangriffen wird Isis' nächster Angriff zu einem Allwissenden Pfeil, der SCH in Höhe von 160% ANG plus Bonus-SCH in Höhe von 10% der max. LP des Ziels zufügt (bis zu 300 % ihres ANG).",
+        "en": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
+        "es": "Después de cada 2 Ataques normales, el siguiente ataque de Isis se convierte en una Flecha omnisciente, que inflige un Daño equivalente al 160 % de su ATQ más un Daño adicional equivalente al 10 % de los PS máximos del objetivo (hasta un 300 % de su ATQ)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Allwissender Pfeil wird garantiert zu Kampfbeginn ausgelöst.",
+          "en": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
+          "es": "Se garantiza la activación de la Flecha omnisciente al comenzar la batalla."
+        },
+        "level3": {
+          "de": "Der Bonus-SCH wird auf 12 % der max. LP des Ziels erhöht (bis zu 400 % ihres ANG).",
+          "en": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
+          "es": "El Daño adicional aumenta a un 12 % de los PS máximos del objetivo (hasta un 400 % de su ATQ)."
+        },
+        "level4": {
+          "de": "Der Pfeil verursacht 200% ANG-SCH.",
+          "en": "The arrow will deal DMG equal to 200% of ATK.",
+          "es": "La flecha infligirá un Daño equivalente al 200 % de su ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Allmacht",
+        "en": "Omnipotence",
+        "es": "Omnipotencia"
+      },
+      "description": {
+        "de": "Isis kanalisiert ihre Macht und tritt kurzzeitig in den Zustand [Allwissend] ein. Ihre ANG-GES wird um 100 % erhöht und ihre Angriffsreichweite wird unendlich, aber sie verliert alle 0.2 Sek. 45 Energie, während sie in diesem Zustand ist.",
+        "en": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
+        "es": "Isis canaliza su poder y entra brevemente en el estado [Omnisciente]. Su VEL de ATQ aumenta en un 100 % y su alcance de ataque se vuelve infinito, pero pierde 45 de Energía cada 0,2s mientras está en este estado."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Während die Fähigkeit aktiv ist, wird jeder Normalangriff zu einem Pfeil der Allwissenheit.",
+          "en": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
+          "es": "Cada Ataque normal se convierte en una Flecha omnisciente mientras dure la habilidad."
+        },
+        "level3": {
+          "de": "Erhöht die ANG-GES auf 150 %.",
+          "en": "Increases ATK SPD to 150%.",
+          "es": "Aumenta la VEL de ATQ a un 150 %."
+        },
+        "level4": {
+          "de": "Verringert den Energieverlust auf 40.",
+          "en": "Reduces Energy lost to 40.",
+          "es": "Reduce la Energía perdida a 40."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Göttin der List",
+        "en": "The Cunning Goddess",
+        "es": "Diosa de la astucia"
+      },
+      "description": {
+        "de": "Wenn sich keine Feind im Umkreis von 3 Metern um Isis befinden, wird ihr ANG um 30 % erhöht. Sie verliert diesen Bonus, wenn sich ein Feind in einem Umkreis von 3 Metern um sie befindet.",
+        "en": "When no enemies are within 3 meters of Isis, her ATK is increased by 30%. She loses this bonus when an enemy is within 3 meters of her.",
+        "es": "Cuando no hay enemigos a menos de 3 metros de Isis, su ATQ aumenta en un 30 %. Pierde esta bonificación cuando un enemigo se encuentra a menos de 3 metros de ella."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht Isis’ Rüstungs-PEN um 10 %, solange der ANG-Bonus anhält.",
+          "en": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
+          "es": "Aumenta la PEN de Armadura de Isis en un 10 % mientras dure la bonificación de ATQ."
+        },
+        "level3": {
+          "de": "Erhöht den ANG-Bonus auf 36 %.",
+          "en": "Increases ATK bonus to 36%.",
+          "es": "aumenta la bonificación de ATQ al 36 %."
+        },
+        "level4": {
+          "de": "Erhöht Isis’ Rüstungs-PEN um 20 %, solange der ANG-Bonus anhält.",
+          "en": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts.",
+          "es": "Aumenta la PEN de Armadura de Isis en un 20 % mientras dure la bonificación de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Aufruf des wahren Namens",
+        "en": "True Name Invocation",
+        "es": "Invocación del nombre verdadero"
+      },
+      "description": {
+        "de": "Für je 5 von Verbündeten eingesetzte Ultimative Fähigkeiten erhält Isis 20 % erhöhte ANG-GES, bis zu 4-mal stapelbar.",
+        "en": "For every 5 Ultimates cast by allies, Isis gains 20% increased ATK SPD, stacking up to 4 times.",
+        "es": "Por cada 5 Habilidades definitivas lanzadas por los aliados, Isis obtiene un 20 % de aumento de VEL de ATQ, acumulable hasta 4 veces."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht jeden Stapel des ANG-GES-Bonus auf 25%.",
+          "en": "Increases each stack of ATK SPD bonus to 25%.",
+          "es": "Aumenta cada acumulación de la bonificación de VEL de ATQ a 25 %."
+        },
+        "level3": {
+          "de": "Erhält zu Kampfbeginn 1 zusätzlichen Stapel ANG-GES-Buffs.",
+          "en": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
+          "es": "Obtiene 1 acumulación adicional de la mejora de VEL de ATQ al comenzar la batalla."
+        },
+        "level4": {
+          "de": "Erhöht jeden Stapel des ANG-GES-Bonus auf 30%.",
+          "en": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)",
+          "es": "Aumenta cada acumulación de la bonificación de VEL de ATQ a 30 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Makelloses Mantra",
+      "en": "Pristine Mantra",
+      "es": "Mantra prístino"
+    },
+    "description": {
+      "de": "Verringert die für den Aufruf des wahren Namens erforderliche Auslöseanzahl auf 3. Die Stapel gewähren Isis zusätzliche Effekte:\nJeder Stapel erhöht Isis' Trefferrate um 20 %.",
+      "en": "Reduces the trigger count required for True Name Invocation to 3. Its stacks grant Isis additional effects: Each stack increases Isis's Hit Rate by 20%.",
+      "es": "Reduce el número de activaciones necesarias para la Invocación del nombre verdadero a 3. Sus acumulaciones otorgan a Isis efectos adicionales:\nCada acumulación aumenta la Tasa de aciertos de Isis en un 20 %."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Erhöht die KRIT-Rate bei 3 Stapeln um 30 %.",
+        "en": "Increases CRIT Rate by 30% at 3 stacks.",
+        "es": "Aumenta la Tasa de crít. en un 30 % con 3 acumulaciones."
+      },
+      "level3": {
+        "de": "Bis zu 6-mal stapelbar.",
+        "en": "Stacks up to 6 times.",
+        "es": "Se acumula hasta 6 veces."
+      },
+      "level4": {
+        "de": "Jeder Stapel erhöht die Trefferrate um 30 %.",
+        "en": "Each stack increases Hit Rate by 30%. (Unlock at Relic Lv.30)",
+        "es": "Cada acumulación aumenta la Tasa de aciertos en un 30 %."
+      }
+    }
   }
 }

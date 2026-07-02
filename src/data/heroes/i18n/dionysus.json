@@ -4,5 +4,123 @@
     "en": "Dionysus",
     "es": "Dioniso",
     "ru": "Дионис"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Toast der Götter",
+        "en": "Toast of the Gods",
+        "es": "Brindis de los dioses"
+      },
+      "description": {
+        "de": "Alle verbündeten Einheiten treten für 5 Sekunden in einen Zustand der Ausgelassenheit ein (Ausgelassenheit: ANG-GESW +50%, Energie-Regenerations-GESW +30%, Fähigkeitsabklingzeit -30%, BEW-GESW +50%, ANG +20%).",
+        "en": "Grants all allies the [Frenzy] state for 5s: ATK SPD +50%, Energy Regen +30%, Skill CD -30%, Move SPD +50%, ATK +20%.",
+        "es": "Otorga a todos los aliados el estado de [Frenesí] durante 5 s: VEL de ATQ +50 %, Recarga de energía +30 %, TdE de Habilidad -30 %, VEL de mov. +50 %, ATQ +20 %"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Während der Ausgelassenheit erhöht sich die ANG-GESW auf 60% und die Energie-Regenerations-GESW auf 35%.",
+          "en": "While in the [Frenzy] state, increases ATK SPD to 60% and Energy Regen to 35%.",
+          "es": "Mientras está en estado de [Frenesí], aumenta la VEL de ATQ a un 60 % y la Recarga de energía a un 35 %."
+        },
+        "level3": {
+          "de": "Die Dauer wird auf 7 Sek. verlängert.",
+          "en": "Duration extends to 7s.",
+          "es": "La duración se extiende a 7 s."
+        },
+        "level4": {
+          "de": "Die Verwendung dieser Fähigkeit entfernt außerdem alle Debuffs von einem Verbündeten und macht ihn für 2 Sek. immun gegen Massenkontrolle.",
+          "en": "Using this skill also removes all debuffs from an ally and makes them immune to Crowd Control for 2s.",
+          "es": "Usar esta habilidad también elimina todos los efectos negativos de un aliado y lo hace inmune al Control de masas durante 2 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Vintage-Vivace",
+        "en": "Vintage Vivace",
+        "es": "Vivacidad vintage"
+      },
+      "description": {
+        "de": "Dionysos führt keine Normalangriffe mehr aus, sondern streift über das Schlachtfeld und stößt alle 2,5 Sekunden an, um dem schwächsten Verbündeten LP in Höhe von 120% seines ANG wiederherzustellen.",
+        "en": "Dionysus no longer performs Normal Attacks. Instead, she wanders the battlefield and raises a toast every 2.5s, restoring HP equal to 120% of ATK to the most vulnerable ally.",
+        "es": "Dionisio ya no realiza Ataques normales. En su lugar, deambula por el campo de batalla y hace un brindis cada 2,5 s, restaurando una cantidad de PS equivalente al 120 % de ATQ al aliado más vulnerable."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 160 % des ANG wieder her.",
+          "en": "Restores HP equal to 160% of ATK.",
+          "es": "Restaura PS equivalentes a un 160 % del ATQ."
+        },
+        "level3": {
+          "de": "Die geheilte Einheit erhält zusätzlich 30% SCH-Reduktion.",
+          "en": "The healed unit also gains 30% DMG RED.",
+          "es": "La unidad curada también obtiene un 30 % de Reduc. de daño."
+        },
+        "level4": {
+          "de": "Stellt LP in Höhe von 200 % des ANG wieder her.",
+          "en": "Restores HP equal to 200% of ATK.",
+          "es": "Restaura PS equivalentes a un 200 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Bachantischer Segen",
+        "en": "Bacchic Blessing",
+        "es": "Bendición báquica"
+      },
+      "description": {
+        "de": "Dionysos veranstaltet eine Weinfeier für alle anderen Verbündeten. Für jede einzigartige Klasse in deinem Team erhalten alle Verbündeten 15% auf P&M-RES-Werte für 15 Sekunden.",
+        "en": "Dionysus raises a toast, increasing all allies' P&M-RES by 15% for 15s for each unique ally class on the battlefield.",
+        "es": "Dionisio hace un brindis, lo que aumenta la RES F y M de todos los aliados un 15 % durante 15 s por cada clase de aliado única en el campo de batalla."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der Bonus auf P&M-RES-Werte für alle Verbündeten erhöht sich auf 20%.",
+          "en": "Increases all allies' P&M-RES by 20%.",
+          "es": "Aumenta la RES F y M de todos los aliados un 20 %."
+        },
+        "level3": {
+          "de": "Für jede einzigartige Klasse in deinem Team erhalten alle Verbündeten zusätzlich einen Schild in Höhe von 50% seines ANG.",
+          "en": "For each unique ally class on the battlefield, grants all allies a shield equal to 50% of her ATK.",
+          "es": "Por cada clase de aliado única en el campo de batalla, otorga a todos los aliados un escudo equivalente al 50 % de su ATQ."
+        },
+        "level4": {
+          "de": "Die Dauer wird auf 20 Sek. verlängert.",
+          "en": "Duration extends to 20s.",
+          "es": "La duración se extiende a 20 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Trunkenes Phantasma",
+        "en": "Drunken Phantasm",
+        "es": "Fantasma ebrio"
+      },
+      "description": {
+        "de": "Wenn Dionysos SCH von umliegenden Feinden erleidet, reduziert er den erlittenen SCH um 50% und teleportiert sich hinter den sichersten Verbündeten. Dieser Effekt kann höchstens einmal alle 8 Sekunden ausgelöst werden.",
+        "en": "When Dionysus takes DMG from a nearby enemy, she reduces the DMG taken by 50% and blinks behind the safest ally. This can only trigger once every 8s.",
+        "es": "Cuando Dionisio recibe daño de un enemigo cercano, reduce el daño recibido en un 50 % y realiza un Destello detrás del aliado más seguro. Esto solo se puede activar una vez cada 8 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der erlittene SCH wird um 70% reduziert.",
+          "en": "Reduces 70% of the next DMG taken.",
+          "es": "Reduce el siguiente daño recibido en un 70 %."
+        },
+        "level3": {
+          "de": "Dieser Effekt kann nur einmal alle 6 Sek. ausgelöst werden.",
+          "en": "This effect can only trigger once every 6s.",
+          "es": "Este efecto solo se puede activar una vez cada 6 s."
+        },
+        "level4": {
+          "de": "Wird gegen diesen SCH immun.",
+          "en": "Becomes immune to the next DMG taken.",
+          "es": "Se vuelve inmune al siguiente daño recibido."
+        }
+      }
+    }
+  ]
 }

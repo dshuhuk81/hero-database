@@ -3,5 +3,152 @@
     "de": "Kronos",
     "es": "Crono",
     "ru": "Кронос"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Zeitstrudel",
+        "en": "Temporal Vortex",
+        "es": "Vórtice temporal"
+      },
+      "description": {
+        "de": "Beschwört einen Zeitstrudel, der allen feindlichen Einheiten SCH in Höhe von 280 % ANG zufügt und ihre ANG-GES sowie BEW-GES für 5 Sek. um 100 % verringert.",
+        "en": "Summons a Temporal Vortex that deals 280% ATK DMG to all enemy units, reducing their ATK SPD and Move SPD by 100% for 5s.",
+        "es": "Invoca un Vórtice temporal que inflige un 280 % de daño de ATQ a todas las unidades enemigas, y reduce su VEL de ATQ y VEL de mov. en un 100 % durante 5 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht zusätzlich die Abklingzeit aktiver Fähigkeiten von Feinden im Bereich um 5 Sek.",
+          "en": "Also increases enemy active skill CD by 5 seconds for enemies within the area.",
+          "es": "También aumenta el TdE de la habilidad activa de los enemigos dentro del área en 5 segundos."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 360 %.",
+          "en": "Increases DMG dealt to 360% ATK.",
+          "es": "Aumenta el daño infligido a 360 %."
+        },
+        "level4": {
+          "de": "Betroffene Feinde können während der Effektdauer keine Energie auf natürliche Weise regenerieren.",
+          "en": "Affected enemies cannot regenerate Energy naturally during the effect duration.",
+          "es": "Los enemigos afectados no pueden regenerar Energía de forma natural mientras dure el efecto."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Zeitriss",
+        "en": "Temporal Rift",
+        "es": "Grieta temporal"
+      },
+      "description": {
+        "de": "Kronos teleportiert den nächsten Feind zur Position des am weitesten entfernten Feindes, fügt beiden Zielen SCH in Höhe von 180 % ANG zu und betäubt sie für 2 Sek.",
+        "en": "Cronus teleports the nearest enemy to the position of the farthest enemy, dealing 180% ATK DMG to both targets and Stunning them for 2 seconds.",
+        "es": "Cronos teletransporta al enemigo más cercano a la posición del enemigo más lejano, inflige un 180 % de daño de ATQ a ambos objetivos y los aturde durante 2 segundos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 200 %.",
+          "en": "Increases DMG dealt to 200% ATK.",
+          "es": "Aumenta el daño infligido a 200 %."
+        },
+        "level3": {
+          "de": "Jedes Mal, wenn eine verbündete Einheit eine aktive Fähigkeit einsetzt, wird die Abklingzeit dieser Fähigkeit um 0,5 Sek. verringert.",
+          "en": "Each time an allied unit casts an Active Skill, the CD of this skill is reduced by 0.5 seconds.",
+          "es": "Cada vez que una unidad aliada lanza una Habilidad activa, el TdE de esta habilidad se reduce en 0,5 segundos."
+        },
+        "level4": {
+          "de": "Die Betäubungsdauer wird auf 3 Sek. erhöht.",
+          "en": "Stun duration is increased to 3s.",
+          "es": "La duración del aturdimiento aumenta a 3 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Zurückgespulte Überreste",
+        "en": "Rewinding Remains",
+        "es": "Regreso del remanente"
+      },
+      "description": {
+        "de": "Passiv: Wenn eine verbündete Einheit kurz davor ist zu fallen, spult Kronos diese Einheit in ihren optimalen Zustand der letzten 5 Sek. zurück. Nach dem Zurückspulen werden ANG und ANG-GES des Ziels für 2 Sek. um 90 % verringert. Diese Fähigkeit hat eine Abklingzeit von 18 Sek.",
+        "en": "When an allied unit is about to fall, Cronus rewinds that unit to its optimal state from the past 5 seconds. After the rewind, the target's ATK and ATK SPD are reduced by 90% for 2s. This skill has 18s CD.",
+        "es": "Pasiva: Cuando una unidad aliada está a punto de caer, Cronos rebobina a esa unidad a su estado óptimo de los últimos 5 segundos. Después del rebobinado, el ATQ y la VEL de ATQ del objetivo se reducen en un 90 % durante 2 s. Esta habilidad tiene 18 s de TdE."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verringert die Abklingzeit auf 15 Sek.",
+          "en": "Reduces the CD to 15s.",
+          "es": "Reduce el TdE a 15 s."
+        },
+        "level3": {
+          "de": "Wenn Kronos kurz davor ist zu fallen, wird dieser Effekt einmal kostenlos auf ihn selbst ausgelöst.",
+          "en": "When Cronus is about to fall, this effect triggers once for free on himself.",
+          "es": "Cuando Cronos está a punto de caer, este efecto se activa una vez gratis en sí mismo."
+        },
+        "level4": {
+          "de": "Verringert die Abklingzeit auf 12 Sek.",
+          "en": "Reduces the CD to 12s.",
+          "es": "Reduce el TdE a 12 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Echo der Kausalität",
+        "en": "Echo of Causality",
+        "es": "Eco de la causalidad"
+      },
+      "description": {
+        "de": "Passiv: Markiert zu Kampfbeginn die verbündete Einheit mit der höchsten Abklingzeitreduktion als [Zeitreisender].\nAktiv: Wenn der [Zeitreisende] eine aktive Fähigkeit (ausgenommen Ultimative Fähigkeiten und Einsatzfähigkeiten) einsetzt, wird diese Fähigkeit sofort erneut eingesetzt. Dieser Effekt hat eine Abklingzeit von 20 Sek.",
+        "en": "At the start of battle, mark the allied unit with the highest CD Reduction as [Time Traveler]. When the Time Traveler casts an Active Skill (excluding Ultimate and Entry Skill), that skill is cast again immediately. This effect has 20s CD.",
+        "es": "Pasiva: Al inicio de la batalla, marca a la unidad aliada con la mayor reducción de TdE como [Viajero del Tiempo].\nActiva: Cuando el [Viajero del Tiempo] lanza una Habilidad activa, excluyendo la Habilidad definitiva y la Habilidad de entrada, esa habilidad se lanza de nuevo inmediatamente. Este efecto tiene 20 s de TdE."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verringert die Abklingzeit der Fähigkeit auf 18 Sek.",
+          "en": "Reduces the skill CD to 18s.",
+          "es": "Reduce el TdE de la habilidad a 18 s."
+        },
+        "level3": {
+          "de": "Verringert zu Kampfbeginn die anfängliche Abklingzeit aller verbündeten Einheiten um 5 Sek.",
+          "en": "At the start of battle, reduce the initial CD of all allied units by 5s.",
+          "es": "Al inicio de la batalla, reduce el TdE inicial de todas las unidades aliadas en 5 s."
+        },
+        "level4": {
+          "de": "Verringert die Abklingzeit der Fähigkeit auf 15 Sek.",
+          "en": "Reduces the skill CD to 15s.",
+          "es": "Reduce el TdE de la habilidad a 15 s."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Fähre der Zeit",
+      "en": "Doctrine of Time",
+      "es": "Transbordador del tiempo"
+    },
+    "description": {
+      "de": "Alle 15 Sek. projiziert Kronos zyklisch ein durchscheinendes Echo eines Teammitglieds für 6 Sek. in den Kampf. Projektionspriorität: Zuerst [Zeitreisender], dann verbündete Einheiten vom höchsten zum niedrigsten ANG. Die Projektion erbt 50 % von Kronos' ANG und max. LP sowie alle Fähigkeiten der projizierten Einheit. Die Charakter- und Fähigkeitslevels der projizierten Einheit skalieren mit Kronos' Level.",
+      "en": "Every 15 seconds, Cronus cyclically projects a Translucent Echo of a teammate into the battle for 6 seconds. Projection priority: Time Traveler first, then allied units from highest to lowest ATK. The Projection inherits 50% of Cronus's ATK and Max HP, and all skills of the projected unit. The projected unit's character and skill levels scale with Cronus's level.",
+      "es": "Cada 15 segundos, Cronos proyecta cíclicamente un Eco translúcido de un compañero de equipo en la batalla durante 6 segundos. La prioridad de proyección es la siguiente: primero el [Viajero del Tiempo], luego las unidades aliadas de mayor a menor ATQ. La proyección hereda el 50 % del ATQ y los PS máx. de Cronos, y todas las habilidades de la unidad proyectada. Los niveles de personaje y habilidad de la unidad proyectada escalan con el nivel de Cronos."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Beim Betreten des Schlachtfelds setzt das durchscheinende Echo alle Fähigkeitsabklingzeiten zurück.",
+        "en": "Upon entering the battlefield, the Translucent Echo refreshes all skill CDs. [Relic Lv.10]",
+        "es": "Al entrar en el campo de batalla, el Eco translúcido reinicia todos los TdE de las habilidades."
+      },
+      "level3": {
+        "de": "Die Dauer des durchscheinenden Echos wird auf 10 Sek. erhöht.",
+        "en": "Translucent Echo duration is increased to 10s. [Relic Lv.20]",
+        "es": "La duración del Eco translúcido aumenta a 10 s."
+      },
+      "level4": {
+        "de": "Das durchscheinende Echo erhält beim Eintritt in den Kampf 1000 Energie.",
+        "en": "Translucent Echo gains 1000 Energy upon entering battle.",
+        "es": "El Eco translúcido obtiene 1000 de Energía al entrar en batalla."
+      }
+    }
   }
 }

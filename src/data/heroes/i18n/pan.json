@@ -3,5 +3,152 @@
     "de": "Pan",
     "es": "Pan",
     "ru": "Pan"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Panisches Flüstern",
+        "en": "Panic Whispers",
+        "es": "Susurros de pánico"
+      },
+      "description": {
+        "de": "Pan greift den Gegner mit der höchsten Energie an, verursacht 4 Treffer mit 50% ANG-SCH und leert dessen gesamte Energie.",
+        "en": "Pan attacks the enemy with the highest current Energy, dealing DMG equal to 50% of ATK 4 times and draining all their Energy.",
+        "es": "Pan ataca al enemigo con la mayor Energía actual, lo que inflige un Daño equivalente al 50 % de su ATQ 4 veces y drena toda su Energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Beim Einsatz verursacht er 5 % mehr SCH für jede 100 Energie des Ziels.",
+          "en": "When cast, it deals 5% more DMG for every 100 Energy the target has.",
+          "es": "Al lanzarlo, inflige un 5 % más de Daño por cada 100 de Energía que tenga el objetivo."
+        },
+        "level3": {
+          "de": "Erhöht den SCH pro Treffer auf 60 % ANG.",
+          "en": "Increases DMG per hit to 60% ATK.",
+          "es": "Aumenta el daño por golpe a 60 % de ATQ."
+        },
+        "level4": {
+          "de": "Beim Einsatz verursacht er 10 % mehr SCH für jede 100 Energie des Ziels.",
+          "en": "When cast, it deals 10% more DMG for every 100 Energy the target has.",
+          "es": "Al lanzarlo, inflige un 10 % más de Daño por cada 100 de Energía que tenga el objetivo."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Panflöte",
+        "en": "Pandean Pipes",
+        "es": "Flauta de pan"
+      },
+      "description": {
+        "de": "Versetzt den entferntesten Gegner für 4 Sekunden in Schlaf. (Schlaf: Ziel ist handlungsunfähig. Der Effekt wird entfernt, wenn das Ziel durch einen einzelnen SCH über 10% seiner max. LP getroffen wird).",
+        "en": "Targets the farthest enemy and dazes them for 4s (Daze: Enemies cannot move but are awakened when taking DMG exceeding 10% of their max HP in a single hit).",
+        "es": "Apunta al enemigo más lejano y lo aturde durante 4s (Aturdimiento: los enemigos no pueden moverse, pero se despiertan al recibir un Daño que exceda el 10 % de sus PS máx. en un solo golpe)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die Dauer der Benommenheit auf 7 Sek.",
+          "en": "Increases the duration of Daze to 7s.",
+          "es": "Aumenta la duración del Aturdimiento a 7s."
+        },
+        "level3": {
+          "de": "Feinde können keine Energie regenerieren, wenn sie benommen sind.",
+          "en": "Enemies cannot regen Energy when dazed.",
+          "es": "Los enemigos no pueden regenerar Energía cuando están aturdidos."
+        },
+        "level4": {
+          "de": "Wenn ein Gegner durch einen Angriff aus dem Schlaf geweckt wird, verursacht der Weckangriff 1,5-fachen SCH.",
+          "en": "If a dazed enemy Deity is awakened by an attack, the attack deals 1.5 times the DMG.",
+          "es": "Si una Deidad enemiga aturdida es despertada por un ataque, el ataque inflige 1,5 veces el Daño."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Ländliches Murmeln",
+        "en": "Rustic Murmur",
+        "es": "Murmullo rústico"
+      },
+      "description": {
+        "de": "Immer wenn die Energie eines Feindes 99 % übersteigt, bringt Pan diesen Feind für 3 Sek. zum Schweigen. Dieser Effekt kann nur einmal alle 15 Sek. ausgelöst werden.",
+        "en": "Whenever an enemy's Energy exceeds 99%, Pan silences that enemy for 3s. This effect can only trigger once every 15s.",
+        "es": "Cada vez que la Energía de un enemigo supera el 99 %, Pan silencia a ese enemigo durante 3s. Este efecto solo puede activarse una vez cada 15s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die Dauer des Schweigens auf 5 Sek.",
+          "en": "Increases the silence duration to 5s.",
+          "es": "Aumenta la duración del silencio a 5s."
+        },
+        "level3": {
+          "de": "Dieser Effekt kann nur einmal alle 10 Sek. ausgelöst werden.",
+          "en": "This effect can only trigger once every 10s.",
+          "es": "Este efecto solo se puede activar una vez cada 10 s."
+        },
+        "level4": {
+          "de": "Wenn der Effekt ausgelöst wird, stellt Pan 100 Energie wieder her.",
+          "en": "When the effect is triggered, Pan restores 100 Energy.",
+          "es": "Cuando se activa el efecto, Pan restaura 100 de Energía."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Schrecken des Hirten",
+        "en": "Shepard's Dread",
+        "es": "Pavor del pastor"
+      },
+      "description": {
+        "de": "Greift den nächsten Feind an, fügt ihm und den umliegenden Feinden SCH in Höhe von 200 % ANG zu und belegt sie für 4 Sek. mit Terror. (Terror: Verringert die BEW-GES um 90 % und lässt Feind fliehen).",
+        "en": "Targets the nearest enemy, dealing DMG equal to 200% of ATK to them and surrounding enemies, and inflicts Terror on them for 4s (Terror: Reduces Move SPD by 90% and causes enemies to flee).",
+        "es": "Apunta al enemigo más cercano, inflige un Daño equivalente al 200 % de su ATQ a él y a los enemigos circundantes, y les inflige Terror durante 4s (Terror: reduce la VEL de mov. en un 90 % y hace que los enemigos huyan)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "SCH erhöht sich auf 220 % des ANG.",
+          "en": "DMG increases to 220% of ATK.",
+          "es": "El daño aumenta a un 220 % del ATQ."
+        },
+        "level3": {
+          "de": "Die Dauer wird auf 7 Sek. verlängert.",
+          "en": "Duration extends to 7s.",
+          "es": "La duración se extiende a 7 s."
+        },
+        "level4": {
+          "de": "Die ANG-GES des Feindes wird für 4 Sek. nach Ende von Terror um 40 % verringert.",
+          "en": "TThe enemy's ATK SPD is reduced by 40% within 4s after Terror ends.",
+          "es": "La VEL de ATQ del enemigo se reduce en un 40 % durante los 4s posteriores al final del Terror."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Band der Ziege",
+      "en": "The Goat's Bond",
+      "es": "Vínculo de la cabra"
+    },
+    "description": {
+      "de": "Jeder von Pan angewendete Debuff verursacht SCH in Höhe von 60 % seines ANG pro Sek. am Träger.",
+      "en": "Any debuff applied by Pan deals 60% of his ATK as DMG per sec to its bearer.",
+      "es": "Cualquier desventaja aplicada por Pan inflige un 60 % de su ATQ como Daño por segundo al portador."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Jeder von Pan angewendete Debuff verursacht SCH in Höhe von 80 % seines ANG pro Sek. am Träger.",
+        "en": "Any debuff applied by Pan deals 80% of his ATK as DMG per sec to the bearer.",
+        "es": "Cualquier desventaja aplicada por Pan inflige un 80 % de su ATQ como Daño por segundo al portador."
+      },
+      "level3": {
+        "de": "Für jeden Debuff auf dem Ziel wird der verursachte SCH an diesem Ziel um 50 % erhöht, bis zu 4-mal stapelbar.",
+        "en": "For each debuff on the target, DMG dealt to that target is increased by 50% stacking up to 4 times.",
+        "es": "Por cada desventaja en el objetivo, el Daño infligido a ese objetivo aumenta en un 50 %, acumulándose hasta 4 veces."
+      },
+      "level4": {
+        "de": "Jeder von Pan angewendete Debuff verursacht SCH in Höhe von 100 % seines ANG pro Sek. am Träger.",
+        "en": "Any debuff applied by Pan deals 100% of his ATK as DMG per sec to the bearer.",
+        "es": "Cualquier desventaja aplicada por Pan inflige un 100 % de su ATQ como Daño por segundo al portador."
+      }
+    }
   }
 }

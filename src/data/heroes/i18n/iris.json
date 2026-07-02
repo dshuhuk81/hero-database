@@ -3,5 +3,152 @@
     "de": "Iris",
     "es": "Iris",
     "ru": "Iris"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Volle Blüte",
+        "en": "Full Bloom",
+        "es": "Plena floración"
+      },
+      "description": {
+        "de": "Iris beschwört einen Geisterschmetterling in einem Bereich mit vielen Feinden, der SCH in Höhe von 150 % ANG verursacht. Dann schlägt er alle 2 Sek. mit den Flügeln, fügt Feinden in Reichweite SCH in Höhe von 150 % ANG zu und erhöht ihren erlittenen SCH für 8 Sek. um 10 %.",
+        "en": "Iris summons a spirit butterfly in an enemy-clustered area, dealing DMG equal to 150% of ATK. Then, it flaps its wings every 2s, dealing DMG equal to 150% of ATK to enemies within range and increasing their DMG taken by 10% for 8s.",
+        "es": "Iris invoca una mariposa espiritual en un área concurrida de enemigos que inflige un Daño del 150 % de ATQ. Después, aletea cada 2s para infligir un Daño del 150 % de ATQ a los enemigos en el alcance y aumentar el daño que reciben en un 10 % durante 8s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die BEW-GES von Feinden in Reichweite wird um 50 % verringert.",
+          "en": "Enemies within range have their Move SPD reduced by 50%.",
+          "es": "La VEL de mov. de los enemigos en el alcance se reduce en un 50 %."
+        },
+        "level3": {
+          "de": "SCH pro Treffer auf 180% ANG-SCH erhöht.",
+          "en": "Increases DMG per hit to 180% ATK.",
+          "es": "Aumenta el daño por golpe a 180 % de ATQ."
+        },
+        "level4": {
+          "de": "SCH, den Feinde im Bereich erleiden, wird auf 30% erhöht.",
+          "en": "Increases DMG dealt to enemies within range by 30%.",
+          "es": "Aumenta el Daño infligido a los enemigos en el alcance en un 30 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Regenbogenschritt",
+        "en": "Rainbow Step",
+        "es": "Paso arcoíris"
+      },
+      "description": {
+        "de": "Wenn Iris SCH erleidet, teleportiert sie sich hinter einen zufälligen Verbündeten und erhöht die ANG-GES der nahen Verbündeten um 20% für 10 Sekunden. Dieser Effekt kann nur alle 15 Sekunden ausgelöst werden.",
+        "en": "When taking DMG, Iris transforms into a rainbow and blinks behind a random ally, increasing nearby allies' ATK SPD by 20% for 10s. This effect can only trigger once every 15s.",
+        "es": "Al recibir Daño, Iris se transforma en un arcoíris y se teletransporta detrás de un aliado al azar, lo que aumenta la VEL de ATQ de los aliados cercanos en un 20 % durante 10s. Este efecto solo puede activarse una vez cada 15s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Dieser Effekt wird alle 13 Sek. einmal ausgelöst.",
+          "en": "This effect triggers once every 13s.",
+          "es": "Este efecto se activa una vez cada 13 s."
+        },
+        "level3": {
+          "de": "ANG-GES-Bonus der Verbündeten auf 30% erhöht.",
+          "en": "Increases allies' ATK SPD to 30%.",
+          "es": "Aumenta la VEL de ATQ de los aliados al 30 %."
+        },
+        "level4": {
+          "de": "Dieser Effekt wird alle 10 Sek. einmal ausgelöst.",
+          "en": "This effect triggers once every 10s.",
+          "es": "Este efecto se activa una vez cada 10 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Traumlandschaft",
+        "en": "Dreamscape",
+        "es": "Paisaje onírico"
+      },
+      "description": {
+        "de": "Beschwört einen Schmetterlingsphantom über dem nächsten Feind. Nach 4 Sekunden verursacht es 100% ANG-SCH am Ziel und an nahegelegenen Feinden in einem kleinen Bereich und betäubt sie für 3 Sekunden.",
+        "en": "Summons a spectral butterfly, which slowly illuminates, above the nearest enemy. After 4s, it deals DMG equal to 100% of ATK to that enemy and nearby targets, and stuns them for 3s.",
+        "es": "Invoca una mariposa espectral que se ilumina lentamente sobre el enemigo más cercano. Tras 4s, inflige un Daño del 100 % de ATQ a ese enemigo y a los objetivos cercanos, y los aturde durante 3s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 120 %.",
+          "en": "Increases DMG dealt to 120%.",
+          "es": "Aumenta el daño infligido a 120 %."
+        },
+        "level3": {
+          "de": "Betäuben hält 5 s an.",
+          "en": "Stuns last for 5s.",
+          "es": "Los aturdimientos duran 5 s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 150 %.",
+          "en": "Increases DMG dealt to 150%.",
+          "es": "Aumenta el Daño infligido al 150 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Prismen-Bogen",
+        "en": "Prism Arc",
+        "es": "Arco prismático"
+      },
+      "description": {
+        "de": "Verursacht 250% ANG-SCH an einem zufälligen Feind und bringt das Ziel für 3 Sekunden zum Schweigen.",
+        "en": "Deals DMG equal to 250% of ATK to a random enemy and silences the target for 3s.",
+        "es": "Inflige un Daño del 250 % de ATQ a un enemigo al azar y silencia al objetivo durante 3s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 270 %.",
+          "en": "Increases DMG dealt to 270%.",
+          "es": "Aumenta el daño infligido a 270 %."
+        },
+        "level3": {
+          "de": "Erhöht die Dauer des Schweigens auf 5 Sek.",
+          "en": "Increases the silence duration to 5s.",
+          "es": "Aumenta la duración del silencio a 5s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH um 300 %.",
+          "en": "Increases DMG dealt by 300%.",
+          "es": "Aumenta el daño infligido en 300 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Noch eine Zugabe",
+      "en": "Another Encore",
+      "es": "Otra vez"
+    },
+    "description": {
+      "de": "Der Einsatz von Traumlandschaft zielt auf die 2 nächsten Feinde.",
+      "en": "Casting Dreamscape targets the 2 nearest enemies.",
+      "es": "Al lanzar Paisaje onírico, apunta a los 2 enemigos más cercanos."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Wenn sich 2 Gegner mit Traumlandschaft nähern, explodiert die Illusion und verursacht 200 % ANG als Bonus-SCH.",
+        "en": "When 2 enemies with Dreamscape get near, the mirage explodes, dealing 200% ATK as bonus DMG.",
+        "es": "Cuando 2 enemigos con Paisaje onírico se acercan, el espejismo explota e inflige 200 % de ATQ como daño adicional."
+      },
+      "level3": {
+        "de": "Wenn sich 2 Gegner mit Traumlandschaft nähern, explodiert die Illusion und verursacht 240 % ANG als Bonus-SCH.",
+        "en": "When 2 enemies with Dreamscape get near, the mirage explodes, dealing 240% ATK as bonus DMG.",
+        "es": "Cuando 2 enemigos con Paisaje onírico se acercan, el espejismo explota e inflige 240 % de ATQ como daño adicional."
+      },
+      "level4": {
+        "de": "Wenn sich 2 Gegner mit Traumlandschaft nähern, explodiert die Illusion und verursacht 280 % ANG als Bonus-SCH.",
+        "en": "When 2 enemies with Dreamscape get near, the mirage explodes, dealing 280% ATK as bonus DMG.",
+        "es": "Cuando 2 enemigos con Paisaje onírico se acercan, el espejismo explota e inflige 280 % de ATQ como daño adicional."
+      }
+    }
   }
 }

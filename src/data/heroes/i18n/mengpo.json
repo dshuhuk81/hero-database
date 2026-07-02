@@ -3,5 +3,152 @@
     "de": "Meng Po",
     "es": "Meng Po",
     "ru": "Мэн По"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Ufer des Samsara",
+        "en": "Samsara's Shore",
+        "es": "Orilla del samsara"
+      },
+      "description": {
+        "de": "Verbraucht bei vorhandenen Samsara-Stapeln einen Stapel, um einen gefallenen Verbündeten wiederzubeleben und 50 % seiner max. LP wiederherzustellen (Passiv).\nGewährt sich selbst einen Stapel Samsara (Aktiv).",
+        "en": "While having Samsara stacks, consumes one stack to revive a fallen ally and restore 50% of their max HP (Passive). Grants herself one stack of Samsara (Active).",
+        "es": "Mientras tenga acumulaciones de Samsara, consume una acumulación para revivir a un aliado caído y restaurarle un 50 % de sus PS máximos (Pasiva).\nSe otorga una acumulación de Samsara (Activa)."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "ANG-Erhöhung auf 25% gesteigert.",
+          "en": "Revived units restore 80% of their max HP.",
+          "es": "Las unidades revividas restauran un 80 % de sus PS máximos."
+        },
+        "level3": {
+          "de": "Wiederhergestellte LP auf 80% erhöht.",
+          "en": "Increases the maximum stacks of Samsara to 2.",
+          "es": "Aumenta las acumulaciones máximas de Samsara a 2."
+        },
+        "level4": {
+          "de": "Dauer auf 5 Sekunden erhöht.",
+          "en": "Revived units restore 100% of their max HP.",
+          "es": "Las unidades revividas restauran un 100 % de sus PS máximos."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Stein der drei Schicksale",
+        "en": "Stone of Three Fates",
+        "es": "Piedra de los tres destinos"
+      },
+      "description": {
+        "de": "Passiv: Wenn ein Verbündeter kontrolliert wird, werden ihm sofort LP in Höhe von 200 % ihres ANG wiederhergestellt und seine Debuffs entfernt. Abklingzeit: 20 Sek.",
+        "en": "Passive: When an ally is controlled, immediately restores HP equal to 200% of her ATK to them and removes their debuffs. CD: 20s.",
+        "es": "Pasiva: Cuando un aliado es controlado, le restaura inmediatamente PS equivalentes al 200 % de su ATQ y elimina sus desventajas. TdE: 20s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
+          "en": "Restores HP equal to 220% ATK.",
+          "es": "Restaura PS equivalentes a un 220 % del ATQ."
+        },
+        "level3": {
+          "de": "Verringert die Abklingzeit auf 15 Sek.",
+          "en": "Reduces the CD to 15s.",
+          "es": "Reduce el TdE a 15s."
+        },
+        "level4": {
+          "de": "Stellt LP in Höhe von 250 % des ANG wieder her.",
+          "en": "Restores HP equal to 250% ATK.",
+          "es": "Restaura PS equivalentes a un 250 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wasser des Vergessens",
+        "en": "Waters of Oblivion",
+        "es": "Aguas del olvido"
+      },
+      "description": {
+        "de": "Fügt dem Feind, der den Verbündeten in der Hinterreihe am nächsten ist, SCH in Höhe von 270 % ANG zu und belegt ihn mit Fluss des Vergessens, wodurch er sich für 3 Sek. in Richtung seiner Ausgangsposition bewegt.",
+        "en": "Deals DMG equal to 270% of ATK to the enemy closest to backline allies and inflicts River of Oblivion, moving toward the initial position for 3s.",
+        "es": "Inflige un Daño equivalente al 270 % de su ATQ al enemigo más cercano a los aliados de la retaguardia y le aplica Río del Olvido, lo que lo mueve hacia la posición inicial durante 3s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Fluss des Vergessens verringert außerdem die KRIT-Rate des Ziels um 30 %.",
+          "en": "River of Oblivion also reduces the target's CRIT Rate by 30%.",
+          "es": "Río del Olvido también reduce la Tasa de crít. del objetivo en un 30 %."
+        },
+        "level3": {
+          "de": "Die Dauer wird auf 5 Sek. verlängert.",
+          "en": "Duration extends to 5s.",
+          "es": "La duración se extiende a 5 s."
+        },
+        "level4": {
+          "de": "Verursacht 300 % ANG als SCH.",
+          "en": "Deals 300% ATK as DMG.",
+          "es": "Inflige un 300 % de ATQ como daño."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Lycorisblüte",
+        "en": "Lycoris Bloom",
+        "es": "Flor de lycoris"
+      },
+      "description": {
+        "de": "Stärkt den Verbündeten mit der höchsten Energie, erhöht seinen ANG um 15 % und stellt für ihn 5 Sek. lang 50 Energie pro Sek. wieder her.",
+        "en": "Buffs the ally with the highest Energy, increasing their ATK by 15% and restoring 50 Energy per sec to them for 5s.",
+        "es": "Mejora al aliado con la mayor Energía, lo que aumenta su ATQ en un 15 % y le restaura 50 de Energía por segundo durante 5s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Gewährt 20 % SCH-RED.",
+          "en": "Grants 20% DMG RED.",
+          "es": "Otorga un 20 % de Reduc. de daño."
+        },
+        "level3": {
+          "de": "ANG-Boost auf 30% erhöht.",
+          "en": "Increases ATK by 30%.",
+          "es": "Aumenta el ATQ en un 30 %."
+        },
+        "level4": {
+          "de": "Stellt 80 Energie pro Sek. wieder her.",
+          "en": "Restores 80 Energy per sec.",
+          "es": "Restaura 80 de Energía por segundo."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Keine Rückkehr",
+      "en": "No Return",
+      "es": "Sin retorno"
+    },
+    "description": {
+      "de": "Wenn sich 5 oder mehr überlebende Verbündete (Diener ausgenommen) auf dem Schlachtfeld befinden, durchschreitet Mengpo die Grenze zwischen Leben und Tod und wird nicht anvisierbar.",
+      "en": "When there are 5 or more surviving allies (excluding minions) on the battlefield, Mengpo traverses the boundary between life and death, making herself untargetable.",
+      "es": "Cuando hay 5 o más aliados supervivientes (excluyendo súbditos) en el campo de batalla, Mengpo atraviesa el límite entre la vida y la muerte, lo que la vuelve inalcanzable."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Eine durch Samsara wiederbelebte Einheit erhält 200 Energie.",
+        "en": "A unit revived by Samsara gains 200 Energy.",
+        "es": "Una unidad revivida por Samsara obtiene 200 de Energía."
+      },
+      "level3": {
+        "de": "Stellt jedes Mal, wenn ein Verbündeter fällt, 200 Energie wieder her.",
+        "en": "Restores 200 Energy whenever an ally falls.",
+        "es": "Restaura 200 de Energía cada vez que un aliado cae."
+      },
+      "level4": {
+        "de": "Wenn sich 4 oder mehr überlebende Verbündete (Diener ausgenommen) auf dem Schlachtfeld befinden, durchschreitet Mengpo die Grenze zwischen Leben und Tod und wird nicht anvisierbar.",
+        "en": "When there are 4 or more surviving allies (excluding minions) on the battlefield, Mengpo becomes untargetable.",
+        "es": "Cuando hay 4 o más aliados supervivientes (excluyendo súbditos) en el campo de batalla, Mengpo atraviesa el límite entre la vida y la muerte, lo que la vuelve inalcanzable."
+      }
+    }
   }
 }

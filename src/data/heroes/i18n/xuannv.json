@@ -3,5 +3,152 @@
     "de": "Xuannv",
     "es": "Xuannv",
     "ru": "Сюаньнюй"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Himmelslist",
+        "en": "Outplay the Heavens",
+        "es": "Superar a los Cielos"
+      },
+      "description": {
+        "de": "Passiv: Xuannü führt Normalangriffe in zwei Zuständen aus und beginnt den Kampf im Zustand [Spiel als Weiß].\n[Spiel als Schwarz]: Greift Standardziele an und verursacht 100 % SCH. Jeder Angriff erhöht den ANG um 20 % (max. 3 Stapel).\n[Spiel als Weiß]: Greift das schwächste Ziel an und verursacht 100 % SCH.\nAktiv: Xuannü macht basierend auf ihrer Analyse einen Zug.\nWenn Gegner auf dem Feld in der Überzahl sind, tritt sie in den Zustand [Spiel als Schwarz] ein und erhält 8 Sek. lang 100 % zusätzliche ANG-GES.\nWenn Gegner in der Überzahl sind, tritt sie in den Zustand [Spiel als Weiß] ein und erhält 8 Sek. lang 100 % zusätzliche ANG-GES.",
+        "en": "Passive: Xuannv's normal attacks have two states; she starts each battle in the [Play as White] state. [Play as Black]: attacks the default target for 100% DMG, and each attack grants +20% ATK, stacking up to 3 times. [Play as White]: attacks change to strike the weakest enemy for 100% DMG. Active: Xuannv reads the board and makes her next move. If allies are equal to or outnumber enemies, she switches to the [Play as Black] state and gains +100% ATK SPD for 8s. If allies are outnumbered by enemies, she switches to the [Play as White] state and gains +100% ATK SPD for 8s.",
+        "es": "Pasiva: Xuannv realiza Ataques Normales en dos estados y comienza la batalla en el estado [Jugar con Blancas].\n[Jugar con Negras]: Ataca a los objetivos predeterminados e inflige un 100 % de Daño. Cada ataque aumenta el ATQ en un 20 %, acumulable hasta 3 veces.\n[Jugar con Blancas]: Ataca al objetivo más débil e inflige un 100 % de Daño.\nActiva: Xuannv realiza una jugada basada en su análisis.\nSi la cantidad de enemigos en el campo es mayor que la de los aliados, cambia al estado [Jugar con Negras] y obtiene un 100 % adicional de VEL de ATQ durante 8 s.\nSi la cantidad de enemigos es mayor que la de los aliados, cambia al estado [Jugar con Blancas] y obtiene un 100 % adicional de VEL de ATQ durante 8 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verursacht bei allen Gegnern 500 % ANG als SCH.",
+          "en": "On activation, also deals 500% ATK damage to all enemies.",
+          "es": "Inflige un 500 % de ATQ como Daño a todos los enemigos."
+        },
+        "level3": {
+          "de": "Erhält im Zustand [Spiel als Schwarz] 160 % ANG-GES.",
+          "en": "While in the [Play as Black] state, gains 160% ATK SPD.",
+          "es": "Obtiene un 160 % de VEL de ATQ en el estado [Jugar con Negras]."
+        },
+        "level4": {
+          "de": "Erhält im Zustand [Spiel als Weiß] 50 % zusätzlichen Normalangriff-SCH.",
+          "en": "While in the [Play as White] state, gains an extra 50% normal-attack damage.",
+          "es": "Obtiene un 50 % adicional de Daño de Ataque Normal en el estado [Jugar con Blancas]."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Ungeschickte Bewegungskontrolle",
+        "en": "Clumsy Move Controls",
+        "es": "Torpeza Ingeniosa"
+      },
+      "description": {
+        "de": "Feuert 3 Steine auf die nächsten Gegner. Wenn es weniger Gegner als Steine gibt, kann dasselbe Ziel mehrmals getroffen werden. Jeder Treffer verursacht 100 % SCH und löst basierend auf dem Energieunterschied einen Effekt aus:\nWenn das Ziel weniger Energie hat, stellt Xuannü 50 Energie wieder her.\nWenn das Ziel gleich viel oder mehr Energie hat, verliert es 50 Energie.",
+        "en": "Fires 3 stones at the nearest enemies (if there are fewer targets than stones, the same target is hit multiple times). Each hit deals 100% DMG and resolves an effect based on the energy gap between the two sides: if the target's current energy is lower than Xuannv's, she restores 50 energy; if the target's energy is equal to or higher than hers, the target loses 50 energy.",
+        "es": "Lanza 3 piedras contra los enemigos más cercanos. Si hay menos enemigos que golpes, el mismo objetivo puede ser golpeado varias veces. Cada golpe inflige un 100 % de Daño y activa un efecto según la diferencia de Energía:\nSi el objetivo tiene menos Energía, Xuannv recupera 50 de Energía.\nSi el objetivo tiene igual o más Energía, pierde 50 de Energía."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Wenn das Ziel weniger Energie hat, stellt Xuannü 70 Energie wieder her.",
+          "en": "If the target has less energy, Xuannv restores 70 energy instead.",
+          "es": "Si el objetivo tiene menos Energía, Xuannv recupera 70 de Energía."
+        },
+        "level3": {
+          "de": "Wenn das Ziel gleich viel oder mehr Energie hat, verliert es 70 Energie.",
+          "en": "If the target has equal or more energy, the target loses 70 energy instead.",
+          "es": "Si el objetivo tiene igual o más Energía, pierde 70 de energía."
+        },
+        "level4": {
+          "de": "Wenn das Ziel gleich viel oder mehr Energie hat, verliert es 100 Energie.",
+          "en": "If the target has equal or more energy, the target loses 100 energy instead.",
+          "es": "Si el objetivo tiene igual o más Energía, pierde 100 de energía."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wechselschlag",
+        "en": "Switch & Strike",
+        "es": "Cambiar y Atacar"
+      },
+      "description": {
+        "de": "Nach Kampfbeginn wird der vorderste Verbündete zum Weißen Stein und der hinterste Verbündete zum Schwarzen Stein bestimmt. Der Weiße Stein wird zum Schwarzen Stein, wenn er die hintere Reihe des Gegners betritt; der Schwarze Stein wird zum Weißen Stein, wenn sich ein Gegner in einem Umkreis von 3 Metern befindet. Jede Einheit kann sich nur einmal umwandeln.\nSchwarzer Stein: Verursacht 30 % mehr SCH.\nWeißer Stein: Erleidet 30 % weniger SCH.",
+        "en": "After combat starts, the frontmost ally is designated the White Stone and the backmost ally the Black Stone. The White Stone converts into a Black Stone once it enters the enemy backline; the Black Stone converts into a White Stone when an enemy is within 3 meters. Each unit can convert only once. Black Stone: deals 30% more damage. White Stone: takes 30% less damage.",
+        "es": "Tras el inicio del combate, se designa al aliado en la vanguardia como Piedra Blanca y al aliado en la retaguardia como Piedra Negra. La Piedra Blanca se convierte en Piedra Negra al entrar en la retaguardia enemiga; la Piedra Negra se convierte en Piedra Blanca cuando hay enemigos a 3 metros a su alrededor. Este efecto solo puede activarse una vez por unidad.\nPiedra Negra: Inflige un 30 % más de Daño.\nPiedra Blanca: Recibe un 30 % menos de Daño."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Schwarzer Stein: Verursacht 40 % mehr SCH.",
+          "en": "Black Stone deals 40% more damage.",
+          "es": "Piedra Negra: Inflige un 40 % más de Daño."
+        },
+        "level3": {
+          "de": "Bei der Umwandlung erhält die Einheit einen Schild in Höhe von 500 % des ANG.",
+          "en": "When a unit converts from one state to the other, it gains a shield equal to 500% ATK.",
+          "es": "Al cambiar de un estado a otro, la unidad obtiene un Escudo equivalente al 500 % del ATQ."
+        },
+        "level4": {
+          "de": "Weißer Stein: Erleidet 40 % weniger SCH.",
+          "en": "White Stone takes 40% less damage.",
+          "es": "Piedra Blanca: Recibe un 40 % menos de Daño."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Eintritt ins Spiel",
+        "en": "Step Into the Game",
+        "es": "Entrar en el Juego"
+      },
+      "description": {
+        "de": "Wenn sie angegriffen wird, erschafft Xuannü einen Taiji-Kreis, der den erlittenen SCH 3 Sek. lang um 50 % reduziert. Wenn der Kreis abläuft, feuert sie Taiji-Projektile auf den nächsten Gegner ab, die SCH in Höhe des angesammelten Betrags ihres reduzierten SCH verursachen. CD: 30 Sek.",
+        "en": "When Xuannv is attacked, she summons a Taiji Circle for 3s that reduces all incoming damage by 50% and accumulates the reduced portion. When it expires, she fires Taiji projectiles at the nearest enemy dealing damage equal to the accumulated amount. 30s cooldown.",
+        "es": "Cuando recibe un ataque, Xuannv crea un Círculo de Taiji que reduce el daño recibido en un 50 % durante 3 s. Cuando el círculo expira, lanza proyectiles de Taiji contra el enemigo más cercano, que infligen un Daño equivalente a la cantidad de Daño reducido acumulado. TdE: 30 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verringert die Abklingzeit auf 25 Sek.",
+          "en": "Cooldown reduced to 25s.",
+          "es": "Reduce el TdE a 25 s."
+        },
+        "level3": {
+          "de": "Verringert die Abklingzeit auf 20 Sek.",
+          "en": "Cooldown reduced to 20s.",
+          "es": "Reduce el TdE a 20 s."
+        },
+        "level4": {
+          "de": "Reduziert erlittenen SCH um 80 %.",
+          "en": "Reduces incoming damage by 80% instead of 50%.",
+          "es": "Reduce el daño recibido en un 80 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Leerenfinte",
+      "en": "Void Feint",
+      "es": "Finta del Vacío"
+    },
+    "description": {
+      "de": "Verstärkt Xuannüs Zustände.\n[Spiel als Schwarz]: Jeder Angriff verursacht zusätzlichen SCH in Höhe von 200 % ANG + 6 % der max. LP des Ziels (bis zu 500 % von Xuannüs ANG).\n[Spiel als Weiß]: Die ersten 3 Normalangriffe nach dem Eintreten in den Zustand verursachen SCH in Höhe von 200 % ANG + 30 % der verlorenen LP des Ziels (bis zu 500 % von Xuannüs ANG).",
+      "en": "Enhances Xuannv's states and can also trigger Step Into the Game. [Play as Black]: every attack deals extra damage equal to 200% ATK + 6% of the target's max HP (capped at 500% of Xuannv's ATK). [Play as White]: the first 3 normal attacks after entering the state deal extra damage equal to 200% ATK + 30% of the target's lost HP (capped at 500% of Xuannv's ATK).",
+      "es": "Mejora los estados de Xuannv.\n[Jugar con Negras]: Cada ataque inflige Daño adicional equivalente al 200 % de ATQ + el 6 % de los PS máx. del objetivo (hasta un 500 % del ATQ de Xuannv).\n[Jugar con Blancas]: Los primeros 3 Ataques Normales tras entrar en los estados infligen un Daño equivalente al 200 % de ATQ + el 30 % de los PS perdidos del objetivo (hasta un 500 % del ATQ de Xuannv)."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Wenn SCH erlitten wird, während [Eintritt ins Spiel] abklingt, besteht eine Chance von 50 %, [Eintritt ins Spiel] auszulösen. CD: 30 Sek.",
+        "en": "When Step Into the Game is on cooldown and Xuannv takes damage, 50% chance to trigger Step Into the Game (this effect has a 30s cooldown).",
+        "es": "Si recibe Daño mientras [Entrar en el juego] está en tiempo de espera, tiene un 50 % de probabilidad de activar [Entrar en el juego]. TdE: 30 s."
+      },
+      "level3": {
+        "de": "Wenn SCH erlitten wird, während [Eintritt ins Spiel] abklingt, besteht eine Chance von 100 %, [Eintritt ins Spiel] auszulösen. CD: 30 Sek.",
+        "en": "The trigger chance becomes 100%.",
+        "es": "Si recibe Daño mientras [Entrar en el juego] está en tiempo de espera, tiene un 100 % de probabilidad de activar [Entrar en el juego]. TdE: 30 s."
+      },
+      "level4": {
+        "de": "Verstärkt Xuannüs Zustände.\n[Spiel als Schwarz]: Jeder Angriff verursacht zusätzlichen SCH in Höhe von 300 % ANG + 10 % der max. LP des Ziels (bis zu 800 % von Xuannüs ANG).\n[Spiel als Weiß]: Die ersten 3 Normalangriffe nach Eintritt in die Zustände verursachen SCH in Höhe von 400 % ANG + 60 % der verlorenen LP des Ziels (bis zu 1.000 % von Xuannüs ANG).",
+        "en": "[Play as Black]: extra damage becomes 300% ATK + 10% of the target's max HP (capped at 800% ATK). [Play as White]: the first 3 attacks deal 400% ATK + 60% of the target's lost HP (capped at 1000% ATK).",
+        "es": "Mejora los estados de Xuannv.\n[Jugar con Negras]: Cada ataque inflige Daño adicional equivalente al 300 % de ATQ + el 10 % de los PS máx. del objetivo (hasta un 800 % del ATQ de Xuannv).\n[Jugar con Blancas]: Los primeros 3 Ataques Normales tras entrar en los estados infligen un Daño equivalente al 400 % de ATQ + el 60 % de los PS perdidos del objetivo (hasta un 1.000 % del ATQ de Xuannv)."
+      }
+    }
   }
 }

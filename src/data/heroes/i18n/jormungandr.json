@@ -3,5 +3,152 @@
     "de": "Jörmungandr",
     "es": "Jörmungandr",
     "ru": "Ёрмунганд"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Giftspritzer",
+        "en": "Venom Spray",
+        "es": "Rociada de veneno"
+      },
+      "description": {
+        "de": "Beschwört beim Eintritt in den Kampf einen Giftnebel um sich, der Einheiten in der Nähe jede Sek. SCH in Höhe von 70 % ANG zufügt.",
+        "en": "Upon entering battle, summons a poison mist around Jormungandr, dealing damage equal to 70% of ATK every second to nearby enemies.",
+        "es": "Invoca una niebla venenosa a su alrededor al entrar en batalla, lo que inflige un Daño equivalente al 70 % de su ATQ cada segundo a las unidades cercanas."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Beim Tod hinterlässt sie für 10 Sekunden eine Giftlache, die den doppelten SCH des giftigen Nebels pro Sekunde verursacht.",
+          "en": "Leaves a poison pool when falling. The poison pool lasts 10s and deals damage every second equal to twice the poison mist damage. (Unlock at Relic Lv.10)",
+          "es": "El personaje deja un charco de veneno al caer. El charco de veneno dura 10s e inflige un Daño cada segundo equivalente al doble del daño de la niebla venenosa."
+        },
+        "level3": {
+          "de": "Verursacht 85 % ANG als SCH pro Sek.",
+          "en": "Damage per second increased to 85% of ATK. (Unlock at Relic Lv.20)",
+          "es": "Inflige un 85 % de ATQ como daño por segundo."
+        },
+        "level4": {
+          "de": "Verursacht 100 % ANG als SCH pro Sek.",
+          "en": "Damage per second increased to 100% of ATK. (Unlock at Relic Lv.30)",
+          "es": "Inflige un 100 % de ATQ como daño por segundo."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Nagen der Schlange",
+        "en": "Serpent’s Gnawing",
+        "es": "Mordiscos de serpiente"
+      },
+      "description": {
+        "de": "Jormungandr springt in die Luft und entfesselt einen Schwarm Schlangen, die 5 Mal zuschlagen. Jeder Schlag verursacht 100% ANG-SCH.",
+        "en": "Jormungandr leaps into the air and rains down a swarm of snakes 5 times, each hit dealing damage equal to 100% of ATK.",
+        "es": "Jörmungandr salta por los aires y hace llover un enjambre de serpientes 5 veces, lo que inflige un Daño equivalente al 100 % de su ATQ cada vez."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Wird für die Dauer der Fähigkeit unbesiegbar.",
+          "en": "Becomes invincible for the skill’s duration.",
+          "es": "Se vuelve invencible mientras dure la habilidad."
+        },
+        "level3": {
+          "de": "Erhöht den SCH pro Instanz auf 110 % ANG.",
+          "en": "Damage per hit increased to 110% of ATK.",
+          "es": "aumenta el daño por instancia al 110 % de ATQ."
+        },
+        "level4": {
+          "de": "Erhöht den SCH pro Instanz auf 120 % ANG.",
+          "en": "Damage per hit increased to 120% of ATK.",
+          "es": "aumenta el daño por instancia al 120 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Annäherung der Schlange",
+        "en": "Serpent’s Approach",
+        "es": "Acercamiento de serpiente"
+      },
+      "description": {
+        "de": "Jormungandr schlängelt sich vorwärts und fügt Gegnern auf seinem Weg 200% ANG-SCH zu.",
+        "en": "Jormungandr slides forward, dealing damage equal to 200% of ATK to enemies along the path.",
+        "es": "Jörmungandr se desliza hacia adelante, lo que inflige un Daño equivalente al 200 % de su ATQ a los enemigos en su camino."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält einen Schild in Höhe von 250 % ANG für 6 Sek.",
+          "en": "Gains a shield equal to 250% of ATK for 6s.",
+          "es": "obtiene un escudo equivalente al 250 % de ATQ durante 6 s."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 220 % ANG.",
+          "en": "Damage increased to 220% of ATK.",
+          "es": "Aumenta el daño infligido a 220 % de ATQ."
+        },
+        "level4": {
+          "de": "Erhält einen Schild in Höhe von 300 % ANG für 6 Sek.",
+          "en": "Gains a shield equal to 300% of ATK for 6s.",
+          "es": "obtiene un escudo equivalente al 300 % de ATQ durante 6 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Häutung der Schlange",
+        "en": "Serpent’s Molt",
+        "es": "Muda de serpiente"
+      },
+      "description": {
+        "de": "Wenn Jörmungandr tödlichen SCH erleidet, tritt er in den Zustand [Rache] ein. Er überlebt für weitere 5 Sek. und speichert 60 % allen SCH, den er im Zustand [Rache] erleidet. Er fügt allen Feinden in der Nähe den gespeicherten SCH als Wahren SCH zu, wenn der Zustand abläuft.",
+        "en": "Upon taking lethal damage, Jormungandr enters the Revenge state, survives for 5s, and stores 60% of all damage taken. When Revenge expires, stored damage is dealt as True Damage to nearby enemies.",
+        "es": "Al recibir daño letal, Jörmungandr entra en el estado de [Venganza]. Sobrevive durante otros 5s y acumula el 60 % de todo el Daño recibido durante el estado de [Venganza]. Inflige el daño acumulado como Daño verdadero a todos los enemigos cercanos cuando el estado expira."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Reflektiert 70 % des erlittenen SCH.",
+          "en": "Reflects 70% of damage taken.",
+          "es": "refleja el 70 % del daño recibido."
+        },
+        "level3": {
+          "de": "Reflektiert 80 % des erlittenen SCH.",
+          "en": "Reflects 80% of damage taken.",
+          "es": "refleja el 80 % del daño recibido."
+        },
+        "level4": {
+          "de": "Reflektiert 100 % des erlittenen SCH.",
+          "en": "Reflects 100% of damage taken. (Unlocks at Lv.261)",
+          "es": "refleja el 100 % del daño recibido."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Lockung der Schlange",
+      "en": "Serpent’s Lure",
+      "es": "Señuelo de serpiente"
+    },
+    "description": {
+      "de": "Jormungandr entfesselt einen Schwarm Schlangen auf umliegende Gegner, fügt ihnen 200% ANG-SCH zu und zieht sie in einem Radius von 1 Meter zu Jormungandr.",
+      "en": "Jormungandr releases a swarm of snakes, dealing damage equal to 200% of ATK to nearby enemies and pulling them within a 1-meter range.",
+      "es": "Jörmungandr libera un enjambre de serpientes, lo que inflige un Daño equivalente al 200 % de su ATQ a los enemigos cercanos y los atrae a un rango de 1 metro de él."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Verspottet getroffene Feinde für 3 Sek.",
+        "en": "Enemies hit are taunted for 3s.",
+        "es": "Provoca a los enemigos golpeados durante 3s."
+      },
+      "level3": {
+        "de": "Erhöht den verursachten SCH auf 220 % ANG.",
+        "en": "Damage increased to 220% of ATK.",
+        "es": "Aumenta el daño infligido a 220 % de ATQ."
+      },
+      "level4": {
+        "de": "Gezogene Feinde erleiden in den nächsten 3 Sek. 10 % mehr SCH.",
+        "en": "Pulled enemies take 10% increased damage for the next 3s. (Unlocks at Lv.281)",
+        "es": "Los enemigos atraídos reciben un 10 % de Daño aumentado durante los siguientes 3s."
+      }
+    }
   }
 }

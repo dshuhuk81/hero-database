@@ -3,5 +3,61 @@
     "de": "Löwe",
     "es": "Leo",
     "ru": "Лев"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Wundklaue",
+        "en": "Gash Claw",
+        "es": "Garra lacerante"
+      },
+      "description": {
+        "de": "Führt 3 Hiebe auf ein einzelnes Ziel aus. Die ersten 2 Treffer verursachen je 80 % ANG als SCH, der letzte 150 % ANG als SCH. Im [Löwenherz]-Zustand wird AoE-SCH in einem Kegel verursacht.",
+        "en": "Performs 3 slashes to a single target. The first 2 hits deal 80% ATK as DMG each, and the last one deals 150% ATK as DMG. While in the [Lionheart] states, deals AoE DMG in a cone.",
+        "es": "Realiza 3 tajos a un solo objetivo. Los 2 primeros golpes infligen un 80 % de ATQ como daño cada uno, y el último inflige un 150 % de ATQ como daño. En el estado [Corazón de Leo], inflige daño de AdE en un cono."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH der ersten 2 Treffer auf 100 % ANG.",
+          "en": "Increases DMG of the first 2 hits to 100% ATK. (Unlocks at Lv.81)",
+          "es": "aumenta el daño de los 2 primeros golpes al 100 % de ATQ."
+        },
+        "level3": {
+          "de": "Erhöht den SCH des letzten Treffers auf 180 % des ANG.",
+          "en": "Increases the last hit's DMG to 180% ATK. (Unlocks at Lv.141)",
+          "es": "Aumenta el daño del último golpe a un 180 % del ATQ."
+        }
+      }
+    },
+    {},
+    {
+      "name": {
+        "de": "Schwäche-Schlag",
+        "en": "Weakness Strike",
+        "es": "Golpe a la debilidad"
+      },
+      "description": {
+        "de": "Unterbricht das Ziel, verursacht 250 % ANG als SCH und reduziert seine Rüstung 5 Sek. lang um 25 %.",
+        "en": "Interrupts the target, dealing 250% ATK as DMG and reducing their Armor by 25% for 5s.",
+        "es": "Interrumpe al objetivo, inflige un 250 % de ATQ como daño y reduce su armadura un 25 % durante 5 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 270 % ANG.",
+          "en": "Increases DMG dealt to 270% ATK. (Unlocks at Lv.21)",
+          "es": "Aumenta el daño infligido a 270 % de ATQ."
+        },
+        "level3": {
+          "de": "Reduziert die Rüstung um 40 %.",
+          "en": "Reduces Armor by 40%. (Unlocks at Lv.121)",
+          "es": "Reduce la armadura en un 40 %."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 300 % ANG.",
+          "en": "Increases DMG dealt to 300% ATK. (Unlocks at Lv.161)",
+          "es": "Aumenta el daño infligido a 300 % de ATQ."
+        }
+      }
+    }
+  ]
 }

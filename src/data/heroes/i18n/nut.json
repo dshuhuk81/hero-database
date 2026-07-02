@@ -3,5 +3,152 @@
     "de": "Nut",
     "es": "Nut",
     "ru": "Нут"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Himmlischer Sternenfall",
+        "en": "Celestial Starfall",
+        "es": "Caída Celestial Estelar"
+      },
+      "description": {
+        "de": "Nut steigt auf, um für 5 Sek. Sternenmacht zu sammeln und bis zu 500 Energie aufzuladen. Sobald das Aufladen abgeschlossen oder unterbrochen ist, fügt sie Zielen in einem dicht besetzten Bereich AoE-SCH in Höhe von 500 % ANG zu und verbraucht die gesamte Energie. Für jede angesammelte Energie erhöht sich ihr Schadensmultiplikator um 2 %.",
+        "en": "Nut ascends to gather stellar power for 5s, charging up to 500 Energy. Once charging is complete or interrupted, deals 500% ATK as AoE DMG to targets in a dense area and clears all Energy. For every Energy accumulated, her DMG multiplier increases by 2%.",
+        "es": "Nut asciende para reunir poder estelar durante 5 s, cargando hasta 500 de Energía. Cuando la carga termina o es interrumpida, inflige 500 % de ATQ como Daño de AdE a los objetivos en un área densa y consume toda la Energía. Por cada punto de Energía acumulado, su multiplicador de Daño aumenta un 2 %."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Nut erhält während des Aufladens eine Ausweichrate von 50 %.",
+          "en": "Nut gains 50% Dodge Rate during the charge-up.",
+          "es": "Nut obtiene un 50 % de Prob. de Evasión durante la carga."
+        },
+        "level3": {
+          "de": "Für jede angesammelte Energie erhöht sich der Schadensmultiplikator um 3 %.",
+          "en": "For every Energy accumulated, the DMG multiplier increases by 3%.",
+          "es": "Por cada punto de Energía acumulado, el multiplicador de Daño aumenta un 3 %."
+        },
+        "level4": {
+          "de": "Für jede angesammelte Energie erhöht sich der Schadensmultiplikator um 4 %.",
+          "en": "For every Energy accumulated, the DMG multiplier increases by 4%.",
+          "es": "Por cada punto de Energía acumulado, el multiplicador de Daño aumenta un 4 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Sternenstaubsalve",
+        "en": "Stardust Volley",
+        "es": "Descarga de Polvo Estelar"
+      },
+      "description": {
+        "de": "Beschwört 3 kleine Sternenkerne und feuert sie nacheinander auf einen AoE-Bereich mit hoher Gegnerdichte, wobei Gegner in Reichweite SCH in Höhe von 80 % ANG erleiden.",
+        "en": "Summons 3 small star cores and fires them sequentially at a dense enemy AoE, dealing DMG equal to 80% ATK to enemies within range.",
+        "es": "Invoca 3 pequeños núcleos estelares y los dispara secuencialmente a un AdE enemigo denso, infligiendo Daño equivalente al 80 % de ATQ a los enemigos dentro del alcance."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den verursachten SCH auf 100 % ANG.",
+          "en": "Increases DMG dealt to 100% ATK.",
+          "es": "Aumenta el Daño infligido a 100 % de ATQ."
+        },
+        "level3": {
+          "de": "Verringert außerdem die M-RES der Ziele um 20 %.",
+          "en": "Also reduces the targets' M-RES by 20%.",
+          "es": "También reduce la RES M de los objetivos en un 20 %."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 120 % des ANG.",
+          "en": "Increases DMG dealt to 120% ATK.",
+          "es": "Aumenta el Daño infligido a 120 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Sternenkern-Ägis",
+        "en": "Starcore Aegis",
+        "es": "Égida del Núcleo Estelar"
+      },
+      "description": {
+        "de": "Zu Beginn des Kampfes beschwört Nut einen Sternenkern, um sich zu schützen, erhält einen Schild in Höhe von 20 % ihrer max. LP und tritt in einen Zustand kontinuierlichen Wirkens ein. Während dieser Zeit erhält sie 140 Energie pro Sek. und einen kleinen Sternenkern, der um sie rotiert. Jeder kleine Sternenkern gewährt Nut 20 % ANG.",
+        "en": "At the start of battle, Nut summons a star core to protect herself, gaining a Shield equal to 20% of her max HP, and enters a continuous casting state. During this time, she gains 140 Energy per sec and a small star core rotating around her. Each small star core provides Nut with 20% ATK.",
+        "es": "Al inicio de la batalla, Nut invoca un núcleo estelar para protegerse, obtiene un Escudo equivalente al 20 % de sus PS máximos y entra en un estado de lanzamiento continuo. Durante este tiempo, obtiene 140 de Energía por segundo y un pequeño núcleo estelar orbita a su alrededor. Cada pequeño núcleo estelar le otorga a Nut un 20 % de ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält einen Schild in Höhe von 30 % ihrer max. LP.",
+          "en": "Gains a Shield equal to 30% of her max HP.",
+          "es": "Obtiene un Escudo equivalente al 30 % de sus PS máx."
+        },
+        "level3": {
+          "de": "Erhält 200 Energie pro Sek.",
+          "en": "Gains 200 Energy per sec.",
+          "es": "Obtiene 200 de Energía por segundo."
+        },
+        "level4": {
+          "de": "Jeder kleine Sternenkern gewährt Nut 30 % ANG.",
+          "en": "Each small star core provides Nut with 30% ATK.",
+          "es": "Cada pequeño núcleo estelar le otorga a Nut un 30 % de ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Astrale Abwehr",
+        "en": "Astral Repulse",
+        "es": "Repulsión Astral"
+      },
+      "description": {
+        "de": "Passiv: Wenn sich eine feindliche Einheit Nut nähert, verursacht sie im umliegenden Bereich SCH in Höhe von 100 % des ANG und stößt getroffene Einheiten zurück. CD: 20 Sek.",
+        "en": "Passive: When any enemy unit approaches Nut, deals DMG equal to 100% ATK to the surrounding area and knocks back hit units. CD: 20s.",
+        "es": "Pasiva: Cuando cualquier unidad enemiga se acerca a Nut, inflige Daño equivalente al 100 % de ATQ al área circundante y repele a las unidades alcanzadas. TdE: 20 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verringert die Abklingzeit auf 18 Sek.",
+          "en": "Reduces the CD to 18s.",
+          "es": "Reduce el TdE a 18 s."
+        },
+        "level3": {
+          "de": "Verringert die Abklingzeit auf 16 Sek.",
+          "en": "Reduces the CD to 16s.",
+          "es": "Reduce el TdE a 16 s."
+        },
+        "level4": {
+          "de": "Verringert die Abklingzeit auf 14 Sek.",
+          "en": "Reduces the CD to 14s.",
+          "es": "Reduce el TdE a 14 s."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Himmlischer Pakt",
+      "en": "Celestial Covenant",
+      "es": "Pacto Celestial"
+    },
+    "description": {
+      "de": "[Himmlischer Sternenfall] Nut stellt während des Aufladens 30 Energie pro Sek. wieder her.",
+      "en": "[Celestial Starfall] Nut restores 30 Energy per sec during the charge-up.",
+      "es": "[Caída Celestial Estelar] Nut restaura 30 de Energía por segundo durante la carga."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "[Astrale Abwehr] Beim Wirken wird sie außerdem für 3 Sek. unanvisierbar.",
+        "en": "[Astral Repulse] When cast, also becomes untargetable for 3s.",
+        "es": "[Repulsión Astral] Al lanzarse, también se vuelve inalcanzable durante 3 s."
+      },
+      "level3": {
+        "de": "[Himmlischer Sternenfall] Nut stellt während des Aufladens 60 Energie pro Sek. wieder her.",
+        "en": "[Celestial Starfall] Nut restores 60 Energy per sec during the charge-up.",
+        "es": "[Caída Celestial Estelar] Nut restaura 60 de Energía por segundo durante la carga."
+      },
+      "level4": {
+        "de": "[Himmlischer Sternenfall] Das Energielimit erhöht sich auf 1.000.",
+        "en": "[Celestial Starfall] Energy Limit increases to 1,000.",
+        "es": "[Caída Celestial Estelar] El Límite de Energía aumenta a 1.000."
+      }
+    }
   }
 }

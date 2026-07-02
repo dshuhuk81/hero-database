@@ -3,5 +3,84 @@
     "de": "Jungfrau",
     "es": "Virgo",
     "ru": "Дева"
-  }
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Logos-Unterstützung",
+        "en": "Logos Support",
+        "es": "Apoyo del logos"
+      },
+      "description": {
+        "de": "Jungfrau gewährt dem vordersten Verbündeten einen Schild in Höhe von 200% ANG für 5 Sekunden. Während der Schild aktiv ist, verursacht er 60% ANG SCH pro Sekunde an umliegenden Feinden.",
+        "en": "Virgo grants a shield equal to 200% of her ATK to the frontmost ally for 5s. While active, the shield deals DMG equal to 60% of her ATK per sec to surrounding enemies.",
+        "es": "Virgo otorga un escudo equivalente al 200 % de su ATQ al aliado de la vanguardia durante 5s. Mientras está activo, el escudo inflige un Daño equivalente al 60 % de su ATQ por segundo a los enemigos circundantes."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die Schildstärke erhöht sich auf 220 %.",
+          "en": "Shield Strength increases to 220%.",
+          "es": "La fuerza del Escudo aumenta a 220 %."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH pro Sek. um 75 %, wenn der Schild aktiv ist.",
+          "en": "Increases the DMG dealt per sec by 75% when the shield is active.",
+          "es": "Aumenta el Daño infligido por segundo en un 75 % cuando el escudo está activo."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wissenschaftliches Feld",
+        "en": "Scientific Field",
+        "es": "Campo científico"
+      },
+      "description": {
+        "de": "Jungfrau betäubt einen Feind für 4 Sekunden und verursacht 450% ANG als SCH.",
+        "en": "Virgo stuns an enemy for 4s and deals DMG equal to 450% of ATK.",
+        "es": "Virgo aturde a un enemigo durante 4s e inflige un Daño equivalente al 450 % de su ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "SCH erhöht sich auf 500 % des ANG.",
+          "en": "DMG increases to 500% ATK.",
+          "es": "El daño aumenta a un 500 % del ATQ."
+        },
+        "level3": {
+          "de": "SCH erhöht sich auf 550 % des ANG.",
+          "en": "DMG increases to 550% ATK.",
+          "es": "El daño aumenta a un 550 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Goldenes Dreieck",
+        "en": "Golden Triangle",
+        "es": "Triángulo dorado"
+      },
+      "description": {
+        "de": "Verursacht 210% ANG SCH an einem Feind und umliegenden Zielen.",
+        "en": "Deals DMG equal to 210% of ATK to an enemy and those around it.",
+        "es": "Inflige un Daño equivalente al 210 % de su ATQ a un enemigo y a los que lo rodean."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "SCH erhöht sich auf 230 % des ANG.",
+          "en": "DMG increases to 230% ATK.",
+          "es": "El daño aumenta a un 230 % del ATQ."
+        },
+        "level3": {
+          "de": "Feinde, die SCH erleiden, erhalten 50% weniger Heilung für 5 Sekunden.",
+          "en": "Reduces healing received by hit enemies by 50% for 5s.",
+          "es": "Reduce la sanación recibida por los enemigos golpeados en un 50 % durante 5s."
+        },
+        "level4": {
+          "de": "SCH erhöht sich auf 260 % des ANG.",
+          "en": "DMG increases to 260% ATK.",
+          "es": "El daño aumenta a un 260 % del ATQ."
+        }
+      }
+    }
+  ]
 }

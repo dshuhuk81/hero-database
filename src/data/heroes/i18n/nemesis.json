@@ -3,5 +3,152 @@
     "de": "Nemesis",
     "es": "Nemesis",
     "ru": "Nemesis"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Luftriss",
+        "en": "Air Rend",
+        "es": "Desgarre aéreo"
+      },
+      "description": {
+        "de": "Sprintet auf den am weitesten entfernten Feind zu und fügt Feinden auf dem Weg SCH in Höhe von 200 % ANG zu. Erhält am Ende der Fähigkeit einen Schild in Höhe von 200 % ANG.",
+        "en": "Dashes towards the farthest enemy and deals DMG equal to 200% of ATK to enemies along the path. Gains a shield equal to 200% of ATK when the skill ends.",
+        "es": "Corre hacia el enemigo más lejano e inflige un Daño equivalente al 200 % de ATQ a los enemigos en el camino. Al terminar la habilidad, obtiene un escudo equivalente al 200 % de ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der ANG-Bonus erhöht sich auf 220 %.",
+          "en": "ATK bonus increases to 220%.",
+          "es": "La bonificación de ATQ aumenta a 220 %."
+        },
+        "level3": {
+          "de": "Das Besiegen eines Feindes setzt die Abklingzeit der Fähigkeit zurück.",
+          "en": "Defeating an enemy resets the skill's CD.",
+          "es": "Derrotar a un enemigo reinicia el TdE de la habilidad."
+        },
+        "level4": {
+          "de": "Erhöht den Schildbonus auf 250 %.",
+          "en": "Increases the shield bonus to 250%.",
+          "es": "Aumenta la bonificación de escudo al 250 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Klingenwalzer",
+        "en": "Blade Waltz",
+        "es": "Vals de cuchillas"
+      },
+      "description": {
+        "de": "Zielt auf den am weitesten entfernten Feind und sprintet 4-mal. Jeder Sprint priorisiert neue Ziele und fügt Feinden auf dem Weg SCH in Höhe von 160 % ANG zu. Sie ist während der Fähigkeit nicht anvisierbar.",
+        "en": "Targets the farthest enemy and dashes 4 times. Each dash prioritizes new targets, dealing DMG equal to 160% of ATK to enemies along the path. She is untargetable during the skill.",
+        "es": "Apunta al enemigo más lejano y se abalanza 4 veces. Cada embestida prioriza nuevos objetivos, infligiendo un Daño equivalente al 160 % de su ATQ a los enemigos en su camino. No puede ser seleccionada como objetivo durante la habilidad."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Die M-RES getroffener Feinde wird für 5 Sek. um 10 % verringert, bis zu 5-mal stapelbar.",
+          "en": "Hit enemies have their M-RER reduced by 10% for 5s, stacking up to 5 times.",
+          "es": "La Reduc. M de los enemigos golpeados se reduce un 10 % durante 5s, acumulándose hasta 5 veces."
+        },
+        "level3": {
+          "de": "Der ANG-Bonus erhöht sich auf 170 %.",
+          "en": "ATK bonus increases to 170%.",
+          "es": "La bonificación de ATQ aumenta a 170 %."
+        },
+        "level4": {
+          "de": "Der ANG-Bonus erhöht sich auf 180 %.",
+          "en": "ATK bonus increases to 180%.",
+          "es": "La bonificación de ATQ aumenta a 180 %."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Tanz des Duellanten",
+        "en": "Duelist's Dance",
+        "es": "Danza del duelista"
+      },
+      "description": {
+        "de": "Nachdem sie 10-mal SCH verursacht hat, wird sie verstärkt und erhält für 6 Sek. 30 % erhöhten ANG. Diese Fähigkeit hat eine Abklingzeit von 12 Sek.",
+        "en": "After dealing DMG 10 times, becomes empowered, gaining 30% increased ATK for 6s. This skill has a 12s CD.",
+        "es": "Tras infligir daño 10 veces, se potencia y obtiene un 30 % de aumento de ATQ durante 6 s. Esta habilidad tiene un TdE de 12 s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die Ausweichrate für die Dauer um 50 %.",
+          "en": "Increases Dodge Rate by 50% for the duration.",
+          "es": "Aumenta la Prob. de evasión en un 50 % mientras dure el efecto."
+        },
+        "level3": {
+          "de": "Erhöht den ANG-Bonus auf 50 %.",
+          "en": "Increases the ATK bonus to 50%.",
+          "es": "Aumenta la bonificación de ATQ al 50 %."
+        },
+        "level4": {
+          "de": "Die Dauer wird auf 8 Sek. verlängert.",
+          "en": "Duration extends to 8s. (Unlocks at Lv.261)",
+          "es": "La duración se extiende a 8 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Tödliche Stöße",
+        "en": "Fatal Thrusts",
+        "es": "Estocadas fatales"
+      },
+      "description": {
+        "de": "Führt 4 aufeinanderfolgende Stöße in einem Rechteck aus, die jeweils SCH in Höhe von 80 % ANG verursachen.",
+        "en": "Performs 4 consecutive thrusts in a rectangle, each dealing DMG equal to 80% of ATK.",
+        "es": "Realiza 4 estocadas consecutivas en un área rectangular. Cada una inflige un Daño equivalente al 80 % de ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der ANG-Bonus erhöht sich auf 90 %.",
+          "en": "ATK bonus increases to 90%.",
+          "es": "La bonificación de ATQ aumenta a 90 %."
+        },
+        "level3": {
+          "de": "Verringert die erhaltene Heilung von getroffenen Feinden um 50 %.",
+          "en": "Reduces healing received by hit enemies by 50%.",
+          "es": "Reduce la sanación que reciben los enemigos golpeados en un 50 %."
+        },
+        "level4": {
+          "de": "Der ANG-Bonus erhöht sich auf 100 %.",
+          "en": "ATK bonus increases to 100%. (Unlocks at Lv.281)",
+          "es": "La bonificación de ATQ aumenta a 100 %."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Blitzlicht",
+      "en": "Lightning Flash",
+      "es": "Destello de relámpago"
+    },
+    "description": {
+      "de": "Erhöht die Ausweichrate während Tanz des Duellanten auf 75 %.",
+      "en": "Increases Dodge Rate to 75% during Duelist's Dance.",
+      "es": "Aumenta la Prob. de evasión a 75 % durante la Danza del duelista."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Führt während des Ultimativs 1 weiteres Blinzeln aus.",
+        "en": "Performs 1 more Blink during Ultimate.",
+        "es": "Realiza 1 Destello más durante la Habilidad definitiva."
+      },
+      "level3": {
+        "de": "Erhöht die Ausweichrate während Tanz des Duellanten auf 100 %.",
+        "en": "Increases Dodge Rate to 100% during Duelist's Dance. (Unlock at Relic Lv.20)",
+        "es": "Aumenta la Prob. de evasión a 100 % durante la Danza del duelista."
+      },
+      "level4": {
+        "de": "Führt während des Ultimativs 2 weitere Blinzeln aus.",
+        "en": "Performs 2 more Blinks during Ultimate. (Unlock at Relic Lv.30)",
+        "es": "Realiza 2 Destellos más durante la Habilidad definitiva."
+      }
+    }
   }
 }

@@ -3,5 +3,152 @@
     "de": "Tefnut",
     "es": "Tefnut",
     "ru": "Tefnut"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Wohltuender Regen",
+        "en": "Soothing Rain",
+        "es": "Lluvia relajante"
+      },
+      "description": {
+        "de": "Erschafft einen Regenvorhang in einem 3-Meter-Radius um den Verbündeten, der von den meisten Feinden angegriffen wird. Verbündete in diesem Bereich stellen pro Sek. LP in Höhe von 150 % ANG für 6 Sek. wieder her.",
+        "en": "Creates a rain curtain within a 3-meter area around the ally being attacked by the most enemies. Allies within the area restore HP equal to 150% of ATK per second for 6s.",
+        "es": "Crea una cortina de lluvia en un radio de 3 metros alrededor del aliado que está siendo atacado por más enemigos. Los aliados dentro del área restauran PS equivalentes al 150 % de ATQ por segundo durante 6s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 175 % des ANG pro Sek. wieder her.",
+          "en": "Restores HP equal to 175% of ATK per second.",
+          "es": "Restaura PS equivalentes a un 175 % del ATQ por segundo."
+        },
+        "level3": {
+          "de": "Verringert den ANG von Gegnern im Bereich um 30%.",
+          "en": "Enemies inside the area have their ATK reduced by 30%.",
+          "es": "El ATQ de los enemigos dentro del área se reduce en un 30 %."
+        },
+        "level4": {
+          "de": "Stellt LP in Höhe von 200 % des ANG pro Sek. wieder her.",
+          "en": "Restores HP equal to 200% of ATK per second.",
+          "es": "Restaura PS equivalentes a un 200 % del ATQ por segundo."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Seelentherapie",
+        "en": "Spirit Therapy",
+        "es": "Terapia espiritual"
+      },
+      "description": {
+        "de": "Heilt den vordersten Verbündeten um LP in Höhe von 200% des ANG. Für die nächsten 5 Sekunden stellen sie LP in Höhe von 50% des ANG wieder her, jedes Mal, wenn sie angegriffen werden.",
+        "en": "Restores HP equal to 200% of ATK to the frontmost ally, then restores HP equal to 50% of ATK each time they are attacked for the next 5s.",
+        "es": "Restaura PS equivalentes al 200 % de ATQ al aliado en la vanguardia y luego restaura PS equivalentes al 50 % de ATQ cada vez que es atacado durante los siguientes 5s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
+          "en": "Restores HP equal to 220% of ATK.",
+          "es": "Restaura PS equivalentes a un 220 % del ATQ."
+        },
+        "level3": {
+          "de": "Wiederhergestellte LP pro ANG erhöht auf 75% des ANG.",
+          "en": "Restores HP equal to 75% of ATK when attacked.",
+          "es": "Restaura PS equivalentes al 75 % de ATQ al ser atacado."
+        },
+        "level4": {
+          "de": "Stellt LP in Höhe von 250 % des ANG wieder her.",
+          "en": "Restores HP equal to 250% of ATK.",
+          "es": "Restaura PS equivalentes a un 250 % del ATQ."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Lebensbarriere",
+        "en": "Life Barrier",
+        "es": "Barrera de vida"
+      },
+      "description": {
+        "de": "Wenn die LP eines Verbündeten unter 30 % fallen, erhält er sofort einen Schild in Höhe von 250 % ANG (Passiv). Dieser Effekt kann nur einmal alle 12 Sek. ausgelöst werden.",
+        "en": "When an ally's HP drops below 30%, instantly grants them a shield equal to 250% of ATK (Passive). This effect can only trigger once every 12s.",
+        "es": "Cuando los PS de un aliado bajan del 30 %, le otorga al instante un escudo equivalente al 250 % de ATQ (Pasiva). Este efecto solo puede activarse una vez cada 12s."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Wenn der Schild abläuft, wird Gegnern im Umkreis von 3 Metern SCH in Höhe von 150 % des ANG zugefügt.",
+          "en": "When the shield expires, deals DMG equal to 150% of ATK to enemies within 3 meters.",
+          "es": "Cuando el escudo expira, inflige un 150 % de ATQ como daño a los enemigos en un radio de 3 metros."
+        },
+        "level3": {
+          "de": "Die Schildstärke erhöht sich auf 300 % ANG.",
+          "en": "Shield strength increases to 300% of ATK.",
+          "es": "La fuerza del Escudo aumenta a 300 % de ATQ."
+        },
+        "level4": {
+          "de": "Wenn der Schild abläuft, wird Gegnern im Umkreis von 3 Metern SCH in Höhe von 180 % des ANG zugefügt.",
+          "en": "When the shield expires, deals DMG equal to 180% of ATK to enemies within 3 meters.",
+          "es": "Cuando el escudo expira, inflige un 180 % de ATQ como daño a los enemigos en un radio de 3 metros."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Regenrausch",
+        "en": "Rainrush",
+        "es": "Ráfaga de lluvia"
+      },
+      "description": {
+        "de": "Tefnut entfesselt eine Wasserwelle, die Gegnern SCH in Höhe von 180% des ANG zufügt und sie zurückstößt.",
+        "en": "Tefnut releases splashes, dealing DMG equal to 180% of ATK and knocking back enemies.",
+        "es": "Tefnut libera salpicaduras que infligen un Daño del 180 % de ATQ y derriban a los enemigos."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Tefnut erhält 50 Energie für jeden Feind, der von den Wasserwellen getroffen wird (dieser Effekt kann bis zu 5-mal pro Einsatz ausgelöst werden).",
+          "en": "Tefnut gains 50 Energy for each enemy hit by the splashes (can trigger up to 5 times per cast).",
+          "es": "Tefnut obtiene 50 de Energía por cada enemigo golpeado por las salpicaduras (este efecto puede activarse hasta 5 veces por lanzamiento)."
+        },
+        "level3": {
+          "de": "Die M-RES getroffener Feinde wird für 6 Sek. um 20 % verringert.",
+          "en": "Hit enemies have their M-RES reduced by 20% for 6s.",
+          "es": "La RES M de los enemigos golpeados se reduce en un 20 % durante 6s."
+        },
+        "level4": {
+          "de": "Erhöht den verursachten SCH auf 220 % ANG.",
+          "en": "Increases DMG dealt to 220% of ATK.",
+          "es": "Aumenta el daño infligido a 220 % de ATQ."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Der zweite Regen",
+      "en": "The Second Rain",
+      "es": "Segunda lluvia"
+    },
+    "description": {
+      "de": "Der Einsatz vom Wohltuenden Regen löst eine zusätzliche Seelentherapie aus.",
+      "en": "Casting Soothing Rain triggers an additional Spirit Therapy.",
+      "es": "Lanzar Lluvia relajante activa una Terapia espiritual adicional."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Verbündete im Bereich vom [Wohltuenden Regen] erleiden 50 % weniger SCH.",
+        "en": "Allies within Soothing Rain's range take 50% less DMG.",
+        "es": "Los aliados dentro del alcance de Lluvia relajante reciben un 50 % menos de Daño."
+      },
+      "level3": {
+        "de": "Wenn Tefnut tödlichen Schaden erleidet, wird sie gegen diesen Schaden immun und erhält einen Schild der Lebensbarriere. Dieser Effekt kann nur einmal pro Kampf ausgelöst werden.",
+        "en": "Upon taking lethal DMG, Tefnut becomes immune to that DMG and gains a Life Barrier shield. This effect can only trigger once per battle.",
+        "es": "Al recibir Daño letal, Tefnut se vuelve inmune a ese daño y obtiene el escudo de Barrera de vida. Este efecto solo puede activarse una vez por batalla."
+      },
+      "level4": {
+        "de": "Entfernt während des Wohltuenden Regens alle 2 Sek. einen Debuff von Verbündeten in Reichweite.",
+        "en": "Dispels one debuff from allies within range every 2s during Soothing Rain.",
+        "es": "Disipa una desventaja de los aliados en el alcance cada 2s durante Lluvia relajante."
+      }
+    }
   }
 }

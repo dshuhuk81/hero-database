@@ -4,5 +4,124 @@
     "en": "Diana",
     "es": "Diana",
     "ru": "Диана"
+  },
+  "skills": [
+    {
+      "name": {
+        "de": "Lunare Erleuchtung",
+        "en": "Lunar Illumination",
+        "es": "Iluminación lunar"
+      },
+      "description": {
+        "de": "Feuert eine Mondlicht-Schockwelle in einer geraden Linie ab, die Gegnern auf ihrem Weg 260% ANG-SCH zufügt.",
+        "en": "Launches a Moonlight Shockwave in a straight line, dealing DMG equal to 260% of ATK to enemies along the path.",
+        "es": "Lanza una Onda de choque lunar en línea recta, lo que inflige un Daño equivalente al 260 % de su ATQ a los enemigos en su camino."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Verringert die Rüstung getroffener Gegner um 20 % für 5 Sek.",
+          "en": "Reduces the Armor of hit enemies by 20% for 5s.",
+          "es": "Reduce la Armadura de los enemigos golpeados en un 20 % durante 5 s."
+        },
+        "level3": {
+          "de": "Erhöht den verursachten SCH auf 285 % ANG.",
+          "en": "Increases DMG dealt to 285% of ATK.",
+          "es": "Aumenta el daño infligido a 285 % de ATQ."
+        },
+        "level4": {
+          "de": "Verringert die Rüstung getroffener Gegner um 20 % für 10 Sek.",
+          "en": "Reduces the Armor of hit enemies by 20% for 10s.",
+          "es": "Reduce la Armadura de los enemigos golpeados en un 20 % durante 10 s."
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Segen des Vollmonds",
+        "en": "Waxing Blessing",
+        "es": "Bendición creciente"
+      },
+      "description": {
+        "de": "Erhöht die ANG-GES um 40 % und die BEW-GES um 20 % für alle Verbündeten für 7 Sek. und gewinnt für die Dauer 15 Energie pro Sek. Wird zu Kampfbeginn sofort eingesetzt.",
+        "en": "Increases ATK SPD by 40% and Move SPD by 20% for all allies for 7s, and grants 15 Energy per second for the duration. Casts immediately at combat start.",
+        "es": "Aumenta la VEL de ATQ en un 40 % y la VEL de mov. en un 20 % para todos los aliados durante 7s, y obtiene 15 de Energía por segundo mientras dure. Se lanza inmediatamente al inicio del combate."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht die ANG-GES um 50 %.",
+          "en": "Increases ATK SPD to 50%.",
+          "es": "Aumenta la VEL de ATQ en un 50 %."
+        },
+        "level3": {
+          "de": "Erhöht die pro Sek. gewonnene Energie auf 20.",
+          "en": "Increases Energy gained per second to 20.",
+          "es": "Aumenta la Energía obtenida por segundo a 20."
+        },
+        "level4": {
+          "de": "Die Dauer wird auf 10 Sek. verlängert.",
+          "en": "Extends the duration to 10s.",
+          "es": "La duración se extiende a 10 s."
+        }
+      }
+    },
+    {},
+    {
+      "name": {
+        "de": "Mondlicht-Hinterhalt",
+        "en": "Moonlit Ambush",
+        "es": "Emboscada lunar"
+      },
+      "description": {
+        "de": "Diana greift 3 Mal in schneller Folge an. Die ersten 2 ANG verursachen 50% ANG-SCH, und der 3. ANG verursacht 150% ANG-SCH.",
+        "en": "Diana launches 3 quick attacks. The first 2 attacks deal DMG equal to 50% of ATK, and the 3rd attack deals DMG equal to 150% of ATK.",
+        "es": "Diana lanza 3 ataques rápidos, los primeros 2 ataques infligen un Daño equivalente al 50 % de su ATQ, y el 3er ataque inflige un Daño equivalente al 150 % de su ATQ."
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhöht den SCH des letzten Treffers auf 170 % des ANG.",
+          "en": "Increases the last hit’s DMG to 170% of ATK.",
+          "es": "Aumenta el daño del último golpe a un 170 % del ATQ."
+        },
+        "level3": {
+          "de": "Der letzte Treffer ist garantiert ein KRIT-Treffer.",
+          "en": "The final hit is guaranteed to be a CRIT Hit.",
+          "es": "Se garantiza que el golpe final sea un golpe Crít."
+        },
+        "level4": {
+          "de": "Erhöht den SCH des letzten Treffers auf 200 % des ANG.",
+          "en": "Increases the last hit’s DMG to 200% of ATK.",
+          "es": "Aumenta el daño del último golpe a un 200 % del ATQ."
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "de": "Selenes Segen",
+      "en": "Selene’s Boon",
+      "es": "Don de Selene"
+    },
+    "description": {
+      "de": "Segnet den Verbündeten mit dem höchsten ANG mit Mondlicht. Wenn der Verbündete SCH verursacht, erleidet das Ziel zusätzlichen SCH in Höhe von 100 % von Dianas ANG. Dieser Effekt wird einmal pro Sek. ausgelöst.",
+      "en": "Blesses the ally with the highest ATK with moonlight. When the ally deals DMG, they deal extra DMG equal to 100% of Diana’s ATK to the target. Triggers once per second.",
+      "es": "Bendice con luz de luna al aliado con el ATQ más alto. Cuando el aliado inflige daño, inflige un daño extra equivalente al 100 % del ATQ de Diana al objetivo. Este efecto se activa una vez por segundo."
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Der ANG- und Bewegungstempo-Bonus des ersten Einsatzes von [Mondphase] in jedem Kampf wird verdoppelt.",
+        "en": "The first time Waxing Blessing is cast in battle, ATK SPD and Move SPD bonuses are doubled.",
+        "es": "La primera vez que se lanza Bendición creciente en una batalla, las bonificaciones de VEL de ATQ y VEL de mov. se duplican."
+      },
+      "level3": {
+        "de": "Wenn entweder Diana oder der mit Mondlicht gesegnete Verbündete eine Ultimative Fähigkeit einsetzt, stellt der andere 100 Energie wieder her.",
+        "en": "When either Diana or the moonlight-blessed ally casts an Ultimate, the other restores 100 Energy.",
+        "es": "Cuando Diana o el aliado bendecido con la luz de la luna lanzan una Habilidad definitiva, el otro restaura 100 de Energía."
+      },
+      "level4": {
+        "de": "Segnet den Verbündeten mit dem höchsten ANG mit Mondlicht. Wenn der Verbündete SCH verursacht, erleidet das Ziel zusätzlichen SCH in Höhe von 150 % von Dianas ANG. Dieser Effekt wird einmal pro Sek. ausgelöst.",
+        "en": "Extra DMG dealt is increased to 150% of Diana’s ATK.",
+        "es": "Bendice con luz de luna al aliado con el ATQ más alto. Cuando el aliado inflige daño, inflige un daño extra equivalente al 150 % del ATQ de Diana al objetivo. Este efecto se activa una vez por segundo."
+      }
+    }
   }
 }
