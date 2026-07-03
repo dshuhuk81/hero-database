@@ -23,6 +23,19 @@ const pageUpdate = getPageUpdate("events");
 const frontLabel = t(locale, "common", "front");
 const backLabel = t(locale, "common", "back");
 
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+
+function heroCardSrc(heroId: string, width: number) {
+  return `${R2_BASE}/heroes/cards/${encodeURIComponent(heroId)}-${width}.webp?v=${HERO_IMAGE_VERSION}`;
+}
+
+function heroCardSrcset(heroId: string) {
+  return [240, 360]
+    .map((width) => `${heroCardSrc(heroId, width)} ${width}w`)
+    .join(", ");
+}
+
 function getHero(heroId: string) {
   const rawId = String(heroId || "");
   const lowerId = rawId.toLowerCase();
@@ -69,7 +82,7 @@ const campaigns = eventsData.campaigns.map((campaign) => {
     items={campaigns.map((campaign) => ({
       id: campaign.id,
       label: campaign.displayName,
-      image: getHero(campaign.hero)?.image ?? "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg.jpg",
+      image: getHero(campaign.hero) ? heroCardSrc(getHero(campaign.hero).id, 480) : `${R2_BASE}/bg.jpg`,
     }))}
   />
 </div>
@@ -100,11 +113,14 @@ const campaigns = eventsData.campaigns.map((campaign) => {
                         <div class="hero-card-inner">
                           <div class="hero-image-wrapper">
                             <img
-                              src={hero.image}
+                              src={heroCardSrc(hero.id, 240)}
+                              srcset={heroCardSrcset(hero.id)}
+                              sizes="(max-width: 768px) 20vw, 220px"
                               alt={hero.name}
                               class="hero-image"
                               loading="lazy"
                               decoding="async"
+                              onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
                             />
                           </div>
                           <div class="hero-info">
@@ -135,11 +151,14 @@ const campaigns = eventsData.campaigns.map((campaign) => {
                         <div class="hero-card-inner">
                           <div class="hero-image-wrapper">
                             <img
-                              src={hero.image}
+                              src={heroCardSrc(hero.id, 240)}
+                              srcset={heroCardSrcset(hero.id)}
+                              sizes="(max-width: 768px) 20vw, 220px"
                               alt={hero.name}
                               class="hero-image"
                               loading="lazy"
                               decoding="async"
+                              onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
                             />
                           </div>
                           <div class="hero-info">
