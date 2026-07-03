@@ -2,7 +2,6 @@
 import Sidebar from '../components/Sidebar.astro';
 import Footer from '../components/Footer.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
-import Analytics from '@vercel/analytics/astro';
 import { getAlternateLinks, getLocaleFromPathname, type Locale } from '../i18n/config';
 
 interface Props {
@@ -56,7 +55,6 @@ const defaultAlternate = alternateLinks.find((entry) => entry.locale === "en");
   <title>{title}</title>
   <!-- Google AdSense -->
   <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1272647850363446" crossorigin="anonymous"></script>
-  <Analytics />
   <slot name="head" />
 </head>
 <body>
