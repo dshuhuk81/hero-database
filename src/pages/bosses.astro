@@ -1,12 +1,10 @@
 ---
 export const prerender = true;
 import bosses from "../data/bosses.json";
-import { getHeroById } from "../data/heroes";
+import { heroes, getHeroById } from "../data/heroes";
 import Base from "../layouts/Base.astro";
-import Accordion from "../components/Accordion.astro";
 import PageHero from "../components/PageHero.astro";
-import "../styles/compositions.css";
-import "../styles/events.css";
+import "../styles/components.css";
 import { getPageUpdate } from "../utils/getPageUpdate";
 const pageUpdate = getPageUpdate("bosses");
 
@@ -17,7 +15,7 @@ const MECHANIC_LABELS = {
   "DAMAGE_REDUCTION_PHASE": { label: "Damage Reduction", tip: "Boss takes heavily reduced damage during certain phases" },
   "TARGETS_TOP_DPS": { label: "Targets Top DPS", tip: "Boss focuses attacks on your highest damage dealer" },
   "DOT_ON_TOP_DPS": { label: "DoT on DPS", tip: "Applies damage over time to your top damage dealer" },
-  "PERCENT_HP_DAMAGE": { label: "% HP Damage", tip: "Deals damage based on max HP -- shields help" },
+  "PERCENT_HP_DAMAGE": { label: "% HP Damage", tip: "Deals damage based on max HP - shields help" },
   "RAMPING_AURA": { label: "Ramps Over Time", tip: "Boss gets stronger the longer the fight lasts" },
   "ATK_SPEED_GLOBAL": { label: "ATK Speed Buff", tip: "Increases attack speed for all units on the field" },
   "CHARGE_ATTACK": { label: "Charge Attack", tip: "Boss charges through your team for burst damage" },
@@ -32,8 +30,8 @@ const MECHANIC_LABELS = {
   "SHARED_DAMAGE": { label: "Shared Damage", tip: "Damage to minions also hurts the boss" },
   "ATK_SPEED_BUFF": { label: "ATK Speed Buff", tip: "Buffs minion attack speed significantly" },
   "RESOURCE_SCALING": { label: "Stat Scaling", tip: "Minions inherit and scale from boss stats" },
-  "NO_DAMAGE": { label: "No Damage", tip: "Boss deals zero damage -- pure mechanic fight" },
-  "PERMANENT_FREEZE": { label: "Permanent Freeze", tip: "Freezes heroes permanently -- cannot be removed" },
+  "NO_DAMAGE": { label: "No Damage", tip: "Boss deals zero damage - pure mechanic fight" },
+  "PERMANENT_FREEZE": { label: "Permanent Freeze", tip: "Freezes heroes permanently - cannot be removed" },
   "WIPE_CONDITION": { label: "Wipe Condition", tip: "All heroes frozen = instant loss" },
   "RANDOM_TARGET_DOT": { label: "Random Target DoT", tip: "Damages random heroes over time" },
   "ROOT": { label: "Root", tip: "Roots a hero in place, preventing movement" },
@@ -43,29 +41,165 @@ const MECHANIC_LABELS = {
   "HEAL_REDUCTION": { label: "Heal Reduction", tip: "Reduces healing received by your heroes" },
 };
 
-function heroName(id) { return getHeroById(id)?.name ?? id; }
-function heroImage(id) {
-  const img = getHeroById(id)?.image;
-  if (!img) return "";
-  if (img.startsWith("http://") || img.startsWith("https://")) return img;
-  return img.startsWith("/") ? img : `/${img}`;
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+
+function heroCardSrc(heroId: string, width: number) {
+  return `${R2_BASE}/heroes/cards/${encodeURIComponent(heroId)}-${width}.webp?v=${HERO_IMAGE_VERSION}`;
 }
-function factionIcon(faction) {
-  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${String(faction || "").toLowerCase()}.webp`;
+
+function heroCardSrcset(heroId: string) {
+  return [240, 360]
+    .map((width) => `${heroCardSrc(heroId, width)} ${width}w`)
+    .join(", ");
 }
-function classIcon(heroClass) {
-  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${String(heroClass || "").toLowerCase()}.webp`;
+
+function factionIcon(faction: string) {
+  return `${R2_BASE}/icons/factions/${String(faction || "").toLowerCase()}.webp`;
+}
+
+function classIcon(heroClass: string) {
+  return `${R2_BASE}/icons/classes/${String(heroClass || "").toLowerCase()}.webp`;
 }
 
 const BOSS_SKILL_ICON_ALIAS = {
   isthar_vi: "ishtar",
   typhoon: "typhon"
 };
-function bossSkillIcon(bossId, index) {
-  const key = BOSS_SKILL_ICON_ALIAS[bossId] || bossId;
-  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/${key}_skill_${index + 1}.png`;
+
+function bossSkillIcon(bossId: string, index: number) {
+  const key = BOSS_SKILL_ICON_ALIAS[bossId as keyof typeof BOSS_SKILL_ICON_ALIAS] || bossId;
+  return `${R2_BASE}/bosses/${key}_skill_${index + 1}.png`;
 }
 
+function compHeroes(comp: Record<string, any>) {
+  return compHeroIds(comp).map((id: string) => getHeroById(id)).filter(Boolean);
+}
+
+function compHeroIds(comp: Record<string, any>) {
+  const ids = String(comp["hero-comp"] || "")
+    .split(",")
+    .map((entry: string) => entry.trim())
+    .filter(Boolean);
+  return ids.length ? ids : (comp.heroes ?? []);
+}
+
+function normalizeHeroName(value: string) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+const heroNameToId = new Map<string, string>();
+heroes.forEach((hero) => {
+  heroNameToId.set(normalizeHeroName(hero.id), hero.id);
+  heroNameToId.set(normalizeHeroName(hero.name), hero.id);
+});
+
+function heroIdFromName(value: string) {
+  return heroNameToId.get(normalizeHeroName(value));
+}
+
+function parseSubstitutesFromText(text = "") {
+  const substitutions: Array<{ targetId: string; substituteId: string }> = [];
+  const source = text.trim();
+  if (!source) return substitutions;
+
+  const explicitList = source.match(/substitutes if missing:\s*(.+)$/i)?.[1] || "";
+  explicitList
+    .replace(/\.$/, "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .forEach((entry) => {
+      const match = entry.match(/^(.+?)\s+for\s+(.+)$/i);
+      const substituteId = match ? heroIdFromName(match[1]) : null;
+      const targetId = match ? heroIdFromName(match[2]) : null;
+      if (substituteId && targetId) substitutions.push({ targetId, substituteId });
+    });
+
+  Array.from(source.matchAll(/replace\s+([a-z0-9\s'-]+?)\s+with\s+([a-z0-9\s'-]+?)(?=\s+if|\.|,|$)/gi))
+    .forEach((match) => {
+      const targetId = heroIdFromName(match[1]);
+      const substituteId = heroIdFromName(match[2]);
+      if (targetId && substituteId) substitutions.push({ targetId, substituteId });
+    });
+
+  return substitutions;
+}
+
+function cleanCompReason(reason = "") {
+  return reason.replace(/\s*Substitutes if missing:.*$/i, "").trim();
+}
+
+function noteHasParsedSubstitution(note = "") {
+  return parseSubstitutesFromText(note).length > 0;
+}
+
+function buildSubstituteSlots(main: Record<string, any>, alternatives: Array<Record<string, any>>) {
+  const mainIds = compHeroIds(main);
+  const substitutions = new Map<string, Map<string, string>>();
+
+  function addSubstitute(targetId: string, substituteId: string, source: string) {
+    if (!targetId || !substituteId || targetId === substituteId || !mainIds.includes(targetId)) return;
+    if (mainIds.includes(substituteId)) return;
+    if (!substitutions.has(targetId)) substitutions.set(targetId, new Map());
+    const slot = substitutions.get(targetId);
+    if (slot && !slot.has(substituteId)) slot.set(substituteId, source);
+  }
+
+  alternatives.forEach((alt) => {
+    const altIds = compHeroIds(alt);
+    altIds.forEach((substituteId: string, index: number) => {
+      const targetId = mainIds[index];
+      addSubstitute(targetId, substituteId, alt.label || "Alternative");
+    });
+  });
+
+  [main.reason, ...(main.notes || [])].forEach((text) => {
+    parseSubstitutesFromText(text).forEach(({ targetId, substituteId }) => {
+      addSubstitute(targetId, substituteId, "If missing");
+    });
+  });
+
+  alternatives.forEach((alt) => {
+    [alt.reason, ...(alt.notes || [])].forEach((text) => {
+      parseSubstitutesFromText(text).forEach(({ targetId, substituteId }) => {
+        addSubstitute(targetId, substituteId, alt.label || "Alternative");
+      });
+    });
+  });
+
+  return mainIds
+    .map((targetId: string) => ({
+      target: getHeroById(targetId),
+      substitutes: Array.from(substitutions.get(targetId)?.entries() || [])
+        .map(([substituteId, source]) => ({ hero: getHeroById(substituteId), source }))
+        .filter((entry) => entry.hero),
+    }))
+    .filter((slot) => slot.target && slot.substitutes.length > 0);
+}
+
+const bossViews = bosses.bosses.map((boss) => {
+  const comps = boss.recommendedComps || [];
+  const [main, ...alts] = comps;
+  const mainReason = main ? cleanCompReason(main.reason || "") : "";
+  const mainNotes = (main?.notes || []).filter((note: string) => !noteHasParsedSubstitution(note));
+  return {
+    ...boss,
+    mainComp: main
+      ? { label: main.label || "Recommended", reason: mainReason, heroes: compHeroes(main) }
+      : null,
+    altComps: alts.map((comp) => ({
+      label: comp.label || "Alternative",
+      reason: comp.reason || "",
+      heroes: compHeroes(comp),
+      notes: comp.notes || [],
+    })),
+    mainNotes,
+    substituteSlots: main ? buildSubstituteSlots(main, alts) : [],
+  };
+});
 ---
 
 <Base title="PvE Content | Motto Immortal">
@@ -77,181 +211,247 @@ function bossSkillIcon(bossId, index) {
   pageUpdate={pageUpdate}
 />
 
-<!-- Boss accordion navigation -->
-<div class="boss-accordion-nav">
-  <Accordion
-    instanceId="bosses"
-    items={bosses.bosses.map(boss => ({
-      id: boss.id,
-      label: boss.name,
-      image: boss.image,
-    }))}
-  />
-</div>
-
 <div class="page-wrapper">
   <div class="content-wrapper">
 
-    <section class="boss-page">
+    <nav class="boss-tabs" aria-label="Boss selection">
+      {bossViews.map((boss, index) => (
+        <button
+          type="button"
+          class={`boss-nav-button ${index === 0 ? "is-active" : ""}`}
+          data-boss-tab
+          aria-controls={boss.id}
+          aria-selected={index === 0 ? "true" : "false"}
+        >
+          <span class="boss-nav-thumb" aria-hidden="true">
+            {boss.image ? (
+              <img src={boss.image} alt="" loading="lazy" decoding="async" />
+            ) : (
+              <span>{boss.name.slice(0, 1)}</span>
+            )}
+          </span>
+          <span class="boss-nav-copy">
+            <span class="boss-nav-name">{boss.name}</span>
+            <span class="boss-nav-mode">{boss.mode}</span>
+          </span>
+        </button>
+      ))}
+    </nav>
 
-        <!-- Slides -->
-        <div class="boss-slides" data-boss-slides>
-          {bosses.bosses.map((boss, index) => (
-            <article class="boss-slide" data-boss-slide data-index={index}>
+    <main class="boss-main">
+      {bossViews.map((boss, index) => (
+        <article
+          class={`boss-slide ${index === 0 ? "is-active" : ""}`}
+          id={boss.id}
+          data-boss-slide
+          hidden={index !== 0}
+        >
 
-              <!-- LEFT: cinematic visual column -->
-              <div class="boss-visual" style={`--boss-image: url(${boss.image})`}>
-                <div class="boss-visual-scrim"></div>
-                <div class="boss-identity">
-                  <p class="boss-kicker">Boss Encounter</p>
-                  <h2 class="boss-name">{boss.name}</h2>
-                  <div class="boss-meta">
-                    <span class="pill">{boss.mode}</span>
-                    <span class="pill pill-icon">
-                      <img class="meta-icon" src={factionIcon(boss.faction)} alt={boss.faction} />
-                      {boss.faction}
-                    </span>
-                    <span class="pill pill-icon">
-                      <img class="meta-icon" src={classIcon(boss.class)} alt={boss.class} />
-                      {boss.class}
-                    </span>
-                    <span class="pill">BP {boss.battlepower}</span>
-                  </div>
-                  {boss.summary && <p class="boss-summary">{boss.summary}</p>}
-                </div>
+          <section class="boss-encounter" style={boss.image ? `--boss-image: url(${boss.image})` : undefined}>
+            <div class="boss-portrait">
+              {boss.image ? (
+                <img src={boss.image} alt={boss.name} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+              ) : (
+                <div class="boss-portrait-placeholder" aria-hidden="true">{boss.name.slice(0, 1)}</div>
+              )}
+            </div>
 
+            <div class="boss-brief">
+              <p class="boss-kicker">Boss Encounter</p>
+              <h2 class="boss-name">{boss.name}</h2>
+
+              <div class="boss-facts" aria-label={`${boss.name} overview`}>
+                <span class="boss-fact">
+                  <span class="boss-fact-label">Mode</span>
+                  <span class="boss-fact-value">{boss.mode}</span>
+                </span>
+                <span class="boss-fact">
+                  <span class="boss-fact-label">Faction</span>
+                  <span class="boss-fact-value">
+                    <img src={factionIcon(boss.faction)} alt="" loading="lazy" decoding="async" />
+                    {boss.faction}
+                  </span>
+                </span>
+                <span class="boss-fact">
+                  <span class="boss-fact-label">Class</span>
+                  <span class="boss-fact-value">
+                    <img src={classIcon(boss.class)} alt="" loading="lazy" decoding="async" />
+                    {boss.class}
+                  </span>
+                </span>
+                <span class="boss-fact">
+                  <span class="boss-fact-label">Power</span>
+                  <span class="boss-fact-value">BP {boss.battlepower}</span>
+                </span>
               </div>
 
-              <!-- RIGHT: info panel -->
-              <div class="boss-panel">
+              {boss.summary && <p class="boss-summary">{boss.summary}</p>}
 
-                <!-- Key Mechanics (player-friendly tags) -->
-                {(boss.mechanicTags || []).length > 0 && (
-                  <div class="panel-section">
-                    <h3 class="panel-heading">Key Mechanics</h3>
-                    <div class="mechanic-tags">
-                      {(boss.mechanicTags || []).map(tag => {
-                        const info = MECHANIC_LABELS[tag as keyof typeof MECHANIC_LABELS];
-                        return info ? (
-                          <span class="mechanic-pill" title={info.tip}>{info.label}</span>
-                        ) : null;
-                      })}
-                    </div>
+              {(boss.mechanicTags || []).length > 0 && (
+                <div class="boss-tags" aria-label={`${boss.name} key mechanics`}>
+                  {(boss.mechanicTags || []).map(tag => {
+                    const info = MECHANIC_LABELS[tag as keyof typeof MECHANIC_LABELS];
+                    return info ? (
+                      <span class="boss-tag" title={info.tip}>{info.label}</span>
+                    ) : null;
+                  })}
+                </div>
+              )}
+            </div>
+          </section>
+
+          <div class="boss-content-grid">
+            {boss.mainComp && (
+              <section class="boss-team-panel" aria-labelledby={`${boss.id}-team-title`}>
+                <div class="boss-section-header">
+                  <div>
+                    <p class="boss-section-kicker">Recommended Team</p>
+                    <h3 id={`${boss.id}-team-title`}>{boss.mainComp.label}</h3>
                   </div>
-                )}
+                  <span class="boss-section-count">{boss.mainComp.heroes.length} heroes</span>
+                </div>
 
-                <!-- Skills -->
-                <div class="panel-section">
-                  <h3 class="panel-heading">Skills</h3>
-                  <div class="mechanic-list">
-                    {boss.skills.map((sk, skillIndex) => (
-                      <div class="mechanic-item">
+                <div class="boss-team-row">
+                  {boss.mainComp.heroes.map((hero) => (
+                    <a class="boss-team-hero" href={`/heroes/${hero.id}`}>
+                      <span class="boss-team-image">
                         <img
-                          class="skill-icon"
-                          src={bossSkillIcon(boss.id, skillIndex)}
-                          alt={`${boss.name} ${sk.name}`}
+                          src={heroCardSrc(hero.id, 240)}
+                          srcset={heroCardSrcset(hero.id)}
+                          sizes="(max-width: 720px) 28vw, 128px"
+                          alt={hero.name}
                           loading="lazy"
+                          decoding="async"
+                          onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
                         />
-                        <div class="mechanic-body">
-                          <span class="mechanic-title">
-                            {sk.name}
-                            <span class="mechanic-type">{sk.type}</span>
-                          </span>
-                          <p class="mechanic-desc">{sk.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                      </span>
+                      <span class="boss-team-copy">
+                        <span class="boss-team-name">{hero.name}</span>
+                        <span class="boss-team-meta">
+                          <img
+                            src={factionIcon(hero.faction)}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          {hero.faction}
+                        </span>
+                      </span>
+                    </a>
+                  ))}
                 </div>
 
-                <!-- Strategy Notes -->
-                {boss.strategyNotes && (
-                  <div class="panel-section">
-                    <h3 class="panel-heading">Strategy Notes</h3>
-                    <p class="strategy-text">{boss.strategyNotes}</p>
-                  </div>
+                {boss.mainComp.reason && <p class="boss-comp-reason">{boss.mainComp.reason}</p>}
+
+                {boss.mainNotes.length > 0 && (
+                  <ul class="boss-comp-notes">
+                    {boss.mainNotes.map((note) => <li>{note}</li>)}
+                  </ul>
                 )}
 
-                <!-- Recommended Comps -->
-                {(boss.recommendedComps || []).length > 0 && (
-                  <div class="panel-section">
-                    <h3 class="panel-heading">Recommended Comps</h3>
-                    <div class="comp-list">
-                      {(boss.recommendedComps || []).map(comp => {
-                        const heroComp = String(comp["hero-comp"] || "")
-                          .split(",")
-                          .map(e => e.trim())
-                          .filter(Boolean);
-                        const resolvedHeroes = heroComp.length ? heroComp : (comp.heroes ?? []);
-                        return (
-                          <div class="comp-entry">
-                            <div class="comp-entry-header">
-                              <span class="comp-label">{comp.label}</span>
-                              {comp.reason && <p class="comp-reason">{comp.reason}</p>}
-                            </div>
-                            <div class="comp-hero-row">
-                              {resolvedHeroes.map(id => (
-                                <a href={`/heroes/${id}`} class="hero-chip">
-                                  <img src={heroImage(id)} alt={heroName(id)} />
-                                  <span class="hero-chip-name">{heroName(id)}</span>
-                                </a>
-                              ))}
-                            </div>
-                            {comp.notes?.length > 0 && (
-                              <ul class="comp-notes">
-                                {comp.notes.map(n => <li>{n}</li>)}
-                              </ul>
-                            )}
+                {boss.substituteSlots.length > 0 && (
+                  <div class="boss-substitutes">
+                    <h4 class="boss-substitutes-heading">Substitutes</h4>
+                    <div class="boss-substitute-grid">
+                      {boss.substituteSlots.map((slot) => (
+                        <div class="boss-substitute-slot">
+                          <div class="boss-substitute-target">
+                            <span class="boss-substitute-target-label">For</span>
+                            <a href={`/heroes/${slot.target.id}`}>{slot.target.name}</a>
                           </div>
-                        );
-                      })}
+                          <div class="boss-substitute-options">
+                            {slot.substitutes.map(({ hero, source }) => (
+                              <a class="boss-substitute-hero" href={`/heroes/${hero.id}`}>
+                                <img
+                                  src={heroCardSrc(hero.id, 240)}
+                                  srcset={heroCardSrcset(hero.id)}
+                                  sizes="56px"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                                />
+                                <span>
+                                  <span class="boss-substitute-name">{hero.name}</span>
+                                  <span class="boss-substitute-source">{source}</span>
+                                </span>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
+              </section>
+            )}
 
+            <section class="boss-guide-panel" aria-labelledby={`${boss.id}-guide-title`}>
+              <div class="boss-section-header">
+                <div>
+                  <p class="boss-section-kicker">Fight Guide</p>
+                  <h3 id={`${boss.id}-guide-title`}>Plan and skills</h3>
+                </div>
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
+
+              {boss.strategyNotes && (
+                <div class="boss-strategy">
+                  <p class="boss-strategy-label">Strategy Notes</p>
+                  <p>{boss.strategyNotes}</p>
+                </div>
+              )}
+
+              <div class="boss-skills">
+                {boss.skills.map((sk, skillIndex) => (
+                  <details class="boss-skill">
+                    <summary class="boss-skill-summary">
+                      <img
+                        class="boss-skill-icon"
+                        src={bossSkillIcon(boss.id, skillIndex)}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span class="boss-skill-copy">
+                        <span class="boss-skill-name">{sk.name}</span>
+                        <span class="boss-skill-type">{sk.type}</span>
+                      </span>
+                      <span class="boss-skill-chevron" aria-hidden="true"></span>
+                    </summary>
+                    <p class="boss-skill-desc">{sk.description}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          </div>
+
+        </article>
+      ))}
+    </main>
 
   </div>
 </div>
 
 </Base>
 
-
-<style>
-  /* ── BOSS ACCORDION NAVIGATION ── */
-  .boss-accordion-nav {
-    height: 200px;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  @media (max-width: 768px) {
-    .boss-accordion-nav {
-      height: 160px;
-    }
-  }
-
-  @media (max-width: 400px) {
-    .boss-accordion-nav {
-      height: 160px;
-    }
-  }
-</style>
-
 <!-- Boss tab switching script -->
 <script>
   const slides = Array.from(document.querySelectorAll("[data-boss-slide]"));
-  const bossTabs = Array.from(document.querySelectorAll('[data-accordion-instance="bosses"] [data-accordion-tab]'));
+  const bossTabs = Array.from(document.querySelectorAll("[data-boss-tab]"));
   let currentIndex = 0;
 
   function updateSlides(index: number) {
     currentIndex = (index + slides.length) % slides.length;
-    slides.forEach((s, i) => s.classList.toggle("is-active", i === currentIndex));
-    bossTabs.forEach((t, i) => t.classList.toggle("is-active", i === currentIndex));
+    slides.forEach((s, i) => {
+      const active = i === currentIndex;
+      s.classList.toggle("is-active", active);
+      s.toggleAttribute("hidden", !active);
+    });
+    bossTabs.forEach((t, i) => {
+      const active = i === currentIndex;
+      t.classList.toggle("is-active", active);
+      t.setAttribute("aria-selected", String(active));
+    });
   }
 
   if (slides.length) updateSlides(0);
@@ -265,4 +465,3 @@ function bossSkillIcon(bossId, index) {
     if (e.key === "ArrowRight") updateSlides(currentIndex + 1);
   });
 </script>
-

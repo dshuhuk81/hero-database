@@ -1,9 +1,9 @@
 {
   "version": "1.3",
   "autoRules": {
-  "goal": "safe",
-  "notes": "Pick a comp that can survive silences..."
-    },
+    "goal": "safe",
+    "notes": "Pick a comp that can survive silences..."
+  },
   "bosses": [
     {
       "id": "baphomet",
@@ -34,68 +34,71 @@
           "type": "Skill",
           "name": "Abyssal Sin Retribution",
           "description": "Baphomet enters a defensive stance, reducing DMG taken by 66.6% and dealing DMG equal to 66.6% of ATK per sec to all targets. Energy is not deducted right away; instead loses 66.6% Energy when taking non-Ultimate DMG. Ends when Energy is depleted.",
-          "mechanics": ["Huge DR window", "Non-ultimate damage drains boss energy"],
-          "mechanicTags": ["DAMAGE_REDUCTION_PHASE", "ENERGY_INTERACTION_NON_ULT_DAMAGE"]
+          "mechanics": [
+            "Huge DR window",
+            "Non-ultimate damage drains boss energy"
+          ],
+          "mechanicTags": [
+            "DAMAGE_REDUCTION_PHASE",
+            "ENERGY_INTERACTION_NON_ULT_DAMAGE"
+          ]
         },
         {
           "id": "skill_2",
           "type": "Skill",
           "name": "Abyssal Annihilation Rush",
           "description": "Upon entering, lays down a pentacle, increasing ATK SPD of all units and dealing % max HP damage + draining Energy every 3s. Boosts the pentacle every 25s (stacks up to 3).",
-          "mechanics": ["Persistent zone", "Energy drain", "Ramps over time"],
-          "mechanicTags": ["ENERGY_DRAIN", "PERCENT_HP_DAMAGE", "RAMPING_AURA", "ATK_SPEED_GLOBAL"]
+          "mechanics": [
+            "Persistent zone",
+            "Energy drain",
+            "Ramps over time"
+          ],
+          "mechanicTags": [
+            "ENERGY_DRAIN",
+            "PERCENT_HP_DAMAGE",
+            "RAMPING_AURA",
+            "ATK_SPEED_GLOBAL"
+          ]
         },
         {
           "id": "skill_3",
           "type": "Skill",
           "name": "Corrupt Gift of Silence",
           "description": "Infuses demonic power into the unit currently dealing the highest DMG. Target gains ATK SPD, but takes DMG per sec and is silenced for 10s.",
-          "mechanics": ["Targets top DPS", "Silence", "Self-damage tradeoff"],
-          "mechanicTags": ["TARGETS_TOP_DPS", "SILENCE", "DOT_ON_TOP_DPS", "ATK_SPEED_BUFF_TO_TARGET"]
+          "mechanics": [
+            "Targets top DPS",
+            "Silence",
+            "Self-damage tradeoff"
+          ],
+          "mechanicTags": [
+            "TARGETS_TOP_DPS",
+            "SILENCE",
+            "DOT_ON_TOP_DPS",
+            "ATK_SPEED_BUFF_TO_TARGET"
+          ]
         }
       ],
       "recommendedComps": [
         {
           "id": "baphomet_meta_1",
-          "label": "Meta - Tefnut Core",
-          "hero-comp": "dionysus, yuelao, tefnut, caishen, isis",
-          "heroes": ["dionysus", "yuelao", "tefnut", "caishen", "isis"],
-          "reason": "Highest damage output in the rankings - top 3 comps all use Tefnut (2.68B, 2.02B, 1.67B). Tefnut provides sustained single-target pressure ideal against Baphomet's defensive stance.",
+          "label": "Meta Comp",
+          "hero-comp": "dionysus, meret, cronus, nemesis, zeus",
+          "heroes": [
+            "dionysus",
+            "meret",
+            "cronus",
+            "nemesis",
+            "zeus"
+          ],
+          "reason": "",
           "notes": [
-            "Tefnut is the highest-ceiling DPS flex pick for this boss",
-            "Caishen + Dionysus + Yuelao + Isis are core - do not replace",
+            "Substitutes if missing: Yuelao for Nemesis, Isis for Zeus.",
             "Prioritize Energy Regen; Baphomet's pentacle drains energy every 3s"
           ],
-          "source": "community"
-        },
-        {
-          "id": "baphomet_meta_2",
-          "label": "Meta - Meret Variant",
-          "hero-comp": "dionysus, yuelao, meret, caishen, isis",
-          "heroes": ["dionysus", "yuelao", "meret", "caishen", "isis"],
-          "reason": "Most frequently seen comp overall (5/23), reaching up to 2.2B damage. Meret is more accessible than Tefnut and still performs well in the mid-to-high range.",
-          "notes": [
-            "Choose this if Tefnut is unavailable or underinvested",
-            "Meret provides reliable damage without relying on warrior sustain"
-          ],
-          "source": "community"
-        },
-        {
-          "id": "baphomet_beginner",
-          "label": "Beginner",
-          "hero-comp": "dionysus, yuelao, nuba, caishen, isis",
-          "heroes": ["dionysus", "yuelao", "nuba", "caishen", "isis"],
-          "reason": "Accessible comp for players without Tefnut or Meret well-invested. Nuba works in the flex slot and the core four heroes are widely available at lower evolution levels.",
-          "notes": [
-            "Nuba relic level 20 recommended if possible",
-            "Isis relic level 20 recommended",
-            "Core four (Dionysus, Yuelao, Caishen, Isis) are mandatory"
-          ],
-          "source": "community"
+          "source": "manual"
         }
       ]
     },
-
     {
       "id": "spirit_of_night_hag",
       "name": "Spirit of Night Hag",
@@ -122,83 +125,115 @@
           "type": "Skill",
           "name": "Haunting Nightmare",
           "description": "Summons a spectral horse to charge through all enemies dealing massive DMG.",
-          "mechanics": ["Charge burst", "Teamwide threat"],
-          "mechanicTags": ["CHARGE_ATTACK", "AOE_BURST"]
+          "mechanics": [
+            "Charge burst",
+            "Teamwide threat"
+          ],
+          "mechanicTags": [
+            "CHARGE_ATTACK",
+            "AOE_BURST"
+          ]
         },
         {
           "id": "skill_2",
           "type": "Skill",
           "name": "Soulflame",
           "description": "Breathes flames, dealing massive DMG to enemies ahead.",
-          "mechanics": ["Frontal damage / cone pressure"],
-          "mechanicTags": ["FRONTAL_DAMAGE"]
+          "mechanics": [
+            "Frontal damage / cone pressure"
+          ],
+          "mechanicTags": [
+            "FRONTAL_DAMAGE"
+          ]
         }
       ],
       "recommendedComps": [
         {
           "id": "demonic_horse_manual",
           "label": "Recommended",
-          "hero-comp": "tefnut, isis, caishen, yuelao, dionysus",
-          "heroes": ["tefnut", "isis", "caishen", "yuelao", "dionysus"],
+          "hero-comp": "yuelao, meret, caishen, dionysus, xuannv",
+          "heroes": [
+            "yuelao",
+            "meret",
+            "caishen",
+            "dionysus",
+            "xuannv"
+          ],
+          "reason": "Substitutes if missing: Hephaestus for Yuelao, Nuwa for Dionysus, Isis for Xuannv.",
+          "notes": [],
+          "source": "manual"
+        }
+      ]
+    },
+    {
+      "id": "epica",
+      "name": "Epica",
+      "mode": "Grim Surge",
+      "battlepower": "4500M",
+      "faction": "Spades",
+      "class": "Tank",
+      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/epica.webp",
+      "summary": "Control-heavy boss: repeated random-target damage + long root cage with knockback, scaling via Berserk.",
+      "strategyNotes": "Shield/heal random targets during channel windows. The root from Resentment Cage cannot be removed (it is a cage, not a standard debuff). Position backline carefully to avoid knockback disruption. Fast burst to prevent Berserk scaling.",
+      "mechanics": [
+        "Repeated random-target damage over time (8s channel)",
+        "Roots a random enemy for 10s + knocks back nearby units",
+        "Berserk: losing HP increases DEF and ATK"
+      ],
+      "mechanicTags": [
+        "RANDOM_TARGET_DOT",
+        "ROOT",
+        "KNOCKBACK",
+        "BERSERK_SCALING"
+      ],
+      "skills": [
+        {
+          "id": "skill_1",
+          "type": "Skill",
+          "name": "Death Blossom",
+          "description": "Epica summons souls, dealing DMG equal to 40% of ATK to 2 random enemies every 0.5s for 8s.",
+          "mechanics": [
+            "Random-target sustained damage"
+          ],
+          "mechanicTags": [
+            "RANDOM_TARGET_DOT"
+          ]
+        },
+        {
+          "id": "skill_2",
+          "type": "Skill",
+          "name": "Resentment Cage",
+          "description": "Roots a random enemy for 10s and knocks back all units around it. Deals DMG equal to 100% of ATK per sec to the rooted unit.",
+          "mechanics": [
+            "Hard CC (root) + displacement",
+            "High single-target DoT on rooted unit"
+          ],
+          "mechanicTags": [
+            "ROOT",
+            "KNOCKBACK",
+            "SINGLE_TARGET_DOT",
+            "RANDOM_TARGET"
+          ]
+        }
+      ],
+      "recommendedComps": [
+        {
+          "id": "epica_manual",
+          "label": "Recommended",
+          "hero-comp": "isis, tefnut, yuelao, caishen, dionysus",
+          "heroes": [
+            "isis",
+            "tefnut",
+            "yuelao",
+            "caishen",
+            "dionysus"
+          ],
           "reason": "",
           "notes": [],
           "source": "auto"
         }
       ]
     },
-
-      {
-        "id": "epica",
-        "name": "Epica",
-        "mode": "Grim Surge",
-        "battlepower": "4500M",
-        "faction": "Spades",
-        "class": "Tank",
-        "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bosses/epica.webp",
-        "summary": "Control-heavy boss: repeated random-target damage + long root cage with knockback, scaling via Berserk.",
-        "strategyNotes": "Shield/heal random targets during channel windows. The root from Resentment Cage cannot be removed (it is a cage, not a standard debuff). Position backline carefully to avoid knockback disruption. Fast burst to prevent Berserk scaling.",
-        "mechanics": [
-          "Repeated random-target damage over time (8s channel)",
-          "Roots a random enemy for 10s + knocks back nearby units",
-          "Berserk: losing HP increases DEF and ATK"
-        ],
-        "mechanicTags": [
-          "RANDOM_TARGET_DOT",
-          "ROOT",
-          "KNOCKBACK",
-          "BERSERK_SCALING"
-        ],
-        "skills": [
-          {
-            "id": "skill_1",
-            "type": "Skill",
-            "name": "Death Blossom",
-            "description": "Epica summons souls, dealing DMG equal to 40% of ATK to 2 random enemies every 0.5s for 8s.",
-            "mechanics": ["Random-target sustained damage"],
-            "mechanicTags": ["RANDOM_TARGET_DOT"]
-          },
-          {
-            "id": "skill_2",
-            "type": "Skill",
-            "name": "Resentment Cage",
-            "description": "Roots a random enemy for 10s and knocks back all units around it. Deals DMG equal to 100% of ATK per sec to the rooted unit.",
-            "mechanics": ["Hard CC (root) + displacement", "High single-target DoT on rooted unit"],
-            "mechanicTags": ["ROOT", "KNOCKBACK", "SINGLE_TARGET_DOT", "RANDOM_TARGET"]
-          }
-        ],
-        "recommendedComps": [
-          {
-            "id": "epica_manual",
-            "label": "Recommended",
-            "hero-comp": "isis, tefnut, yuelao, caishen, dionysus",
-            "heroes": ["isis", "tefnut", "yuelao", "caishen", "dionysus"],
-            "reason": "",
-            "notes": [],
-            "source": "auto"
-          }
-        ]
-      },
-
     {
       "id": "lilith",
       "name": "Lilith",
@@ -229,24 +264,48 @@
           "type": "Skill",
           "name": "End of All",
           "description": "Lilith enhances her children, increasing their size and ATK SPD by 200%.",
-          "mechanics": ["Global ATK SPD buff on all children", "Increases child outgoing damage"],
-          "mechanicTags": ["ATK_SPEED_BUFF", "GLOBAL_BUFF"]
+          "mechanics": [
+            "Global ATK SPD buff on all children",
+            "Increases child outgoing damage"
+          ],
+          "mechanicTags": [
+            "ATK_SPEED_BUFF",
+            "GLOBAL_BUFF"
+          ]
         },
         {
           "id": "skill_2",
           "type": "Skill",
           "name": "Garden of Flesh",
           "description": "When Lilith enters battle, she summons her children around her. They inherit 100% of her base ATK and max HP equal to 600% of her base ATK. Lilith herself is untargetable, but she takes DMG whenever her children take DMG.",
-          "mechanics": ["Initial summons", "Damage redirect mechanic", "Boss untargetable", "Children scale off boss stats"],
-          "mechanicTags": ["SUMMONS", "MAIN_UNTARGETABLE", "SHARED_DAMAGE", "RESOURCE_SCALING"]
+          "mechanics": [
+            "Initial summons",
+            "Damage redirect mechanic",
+            "Boss untargetable",
+            "Children scale off boss stats"
+          ],
+          "mechanicTags": [
+            "SUMMONS",
+            "MAIN_UNTARGETABLE",
+            "SHARED_DAMAGE",
+            "RESOURCE_SCALING"
+          ]
         },
         {
           "id": "skill_3",
           "type": "Skill",
           "name": "Flesh Growth",
           "description": "When all of Lilith's children fall, Lilith summons them again. They inherit 60% of her current ATK and max HP equal to 600% of her current ATK.",
-          "mechanics": ["Respawn mechanic", "Scaling shifts to current ATK", "Children get weaker but represent multiple threat axes"],
-          "mechanicTags": ["SUMMONS", "RESOURCE_SCALING", "RAMPING_AURA"]
+          "mechanics": [
+            "Respawn mechanic",
+            "Scaling shifts to current ATK",
+            "Children get weaker but represent multiple threat axes"
+          ],
+          "mechanicTags": [
+            "SUMMONS",
+            "RESOURCE_SCALING",
+            "RAMPING_AURA"
+          ]
         }
       ],
       "recommendedComps": [
@@ -254,7 +313,13 @@
           "id": "lilith_meta_1",
           "label": "Meta - Cronus Core",
           "hero-comp": "dionysus, hephaestus, caishen, cronus, nut",
-          "heroes": ["dionysus", "hephaestus", "caishen", "cronus", "nut"],
+          "heroes": [
+            "dionysus",
+            "hephaestus",
+            "caishen",
+            "cronus",
+            "nut"
+          ],
           "reason": "Most frequent comp in top rankings (7/30 exact matches, dominant in top 14). Zeus clears children with AoE, Cronus adds burst windows to prevent Lilith scaling, Yuelao links both for shared stats.",
           "notes": [
             "You can replace Nut with Zeus if he is better build."
@@ -265,7 +330,13 @@
           "id": "lilith_beginner",
           "label": "Beginner",
           "hero-comp": "dionysus, yuelao, caishen, hladgunnr, isis",
-          "heroes": ["dionysus", "yuelao", "caishen", "hladgunnr", "isis"],
+          "heroes": [
+            "dionysus",
+            "yuelao",
+            "caishen",
+            "hladgunnr",
+            "isis"
+          ],
           "reason": "Viable comp without Zeus or Cronus (whale-heavy heroes). Hladgunnr provides reliable AoE DPS against Lilith children. Isis adds sustain alongside the quad-support backbone.",
           "notes": [
             "Hladgunnr is the budget AoE DPS alternative to Zeus",
@@ -303,32 +374,54 @@
           "type": "Skill",
           "name": "Divine Canopy",
           "description": "Opens a giant umbrella barrier at combat start. Units outside the barrier deal 80% less DMG to Isthar.",
-          "mechanics": ["Large barrier zone", "Damage reduction for units outside"],
-          "mechanicTags": ["DAMAGE_REDUCTION_PHASE"]
+          "mechanics": [
+            "Large barrier zone",
+            "Damage reduction for units outside"
+          ],
+          "mechanicTags": [
+            "DAMAGE_REDUCTION_PHASE"
+          ]
         },
         {
           "id": "skill_2",
           "type": "Skill",
           "name": "Divine Banishment",
           "description": "Knocks back surrounding enemies. Units with a shield are immune to knockback.",
-          "mechanics": ["AoE knockback", "Shielded units resist"],
-          "mechanicTags": ["KNOCKBACK"]
+          "mechanics": [
+            "AoE knockback",
+            "Shielded units resist"
+          ],
+          "mechanicTags": [
+            "KNOCKBACK"
+          ]
         },
         {
           "id": "skill_3",
           "type": "Skill",
           "name": "Goblet of Libation",
           "description": "Casts Sacred Downpour on all units, dealing burst DMG to all targets. Enemies with a shield can negate the DMG by losing their shield.",
-          "mechanics": ["Battlefield-wide burst", "Shields can negate damage"],
-          "mechanicTags": ["AOE_BURST"]
+          "mechanics": [
+            "Battlefield-wide burst",
+            "Shields can negate damage"
+          ],
+          "mechanicTags": [
+            "AOE_BURST"
+          ]
         },
         {
           "id": "skill_4",
           "type": "Skill",
           "name": "Sacred Ablution",
           "description": "Casts Sacred Ablution on all units, dealing massive DMG and reducing ATK SPD & Move SPD. Units inside the giant umbrella barrier take reduced DMG.",
-          "mechanics": ["Battlefield-wide burst", "ATK SPD/Move SPD slow", "Damage reduction inside barrier"],
-          "mechanicTags": ["AOE_BURST", "DAMAGE_REDUCTION_PHASE"]
+          "mechanics": [
+            "Battlefield-wide burst",
+            "ATK SPD/Move SPD slow",
+            "Damage reduction inside barrier"
+          ],
+          "mechanicTags": [
+            "AOE_BURST",
+            "DAMAGE_REDUCTION_PHASE"
+          ]
         }
       ],
       "recommendedComps": [
@@ -336,23 +429,35 @@
           "id": "isthar_vi_1",
           "label": "",
           "hero-comp": "nuba, nezha, caishen, isis, dionysus",
-          "heroes": ["nuba", "nezha", "caishen", "isis", "dionysus"],
+          "heroes": [
+            "nuba",
+            "nezha",
+            "caishen",
+            "isis",
+            "dionysus"
+          ],
           "reason": "",
           "notes": [],
           "source": "auto"
         },
-           {
+        {
           "id": "isthar_vi_2",
           "label": "",
           "hero-comp": "nuba, zeus, caishen, nuwa, dionysus",
-          "heroes": ["nuba", "zeus", "caishen", "nuwa", "dionysus"],
+          "heroes": [
+            "nuba",
+            "zeus",
+            "caishen",
+            "nuwa",
+            "dionysus"
+          ],
           "reason": "",
           "notes": [],
           "source": "auto"
         }
       ]
     },
-    { 
+    {
       "id": "jackfrost",
       "name": "Jack Frost",
       "mode": "Olds God's Return",
@@ -363,10 +468,10 @@
       "summary": "Zero-damage boss that progressively freezes your team and ends the battle if all units are frozen — survival and freeze immunity are the only win conditions.",
       "strategyNotes": "Jack Frost deals no damage, so healers are unnecessary. The freeze cannot be blocked or removed by any means, so prevention is critical over reaction. Until there is no other mechanic or change use best burst DPS heroes you have.",
       "mechanics": [
-          "Jack Frost deals no damage passively at any point",
-          "Targets a disliked unit and permanently freezes them as a snowman — unremovable",
-          "If all units on the field are frozen, Jack Frost leaves and the battle ends (loss)"
-        ],
+        "Jack Frost deals no damage passively at any point",
+        "Targets a disliked unit and permanently freezes them as a snowman — unremovable",
+        "If all units on the field are frozen, Jack Frost leaves and the battle ends (loss)"
+      ],
       "mechanicTags": [
         "NO_DAMAGE",
         "PERMANENT_FREEZE",
@@ -378,24 +483,38 @@
           "type": "Skill",
           "name": "Tag, You're It!",
           "description": "Passively, Jack Frost is merely playing around with the deities and deals no DMG.",
-          "mechanics": ["Boss deals zero damage throughout the entire fight"],
-          "mechanicTags": ["NO_DAMAGE"]
+          "mechanics": [
+            "Boss deals zero damage throughout the entire fight"
+          ],
+          "mechanicTags": [
+            "NO_DAMAGE"
+          ]
         },
         {
           "id": "skill_2",
           "type": "Skill",
           "name": "Freeze!",
           "description": "Jack Frost turns a unit he dislikes into a snowman. That unit cannot take actions. This effect cannot be blocked or removed by any means.",
-          "mechanics": ["Single target permanent freeze", "Freeze is irremovable and unblockable"],
-          "mechanicTags": ["PERMANENT_FREEZE", "UNDISPELLABLE"]
+          "mechanics": [
+            "Single target permanent freeze",
+            "Freeze is irremovable and unblockable"
+          ],
+          "mechanicTags": [
+            "PERMANENT_FREEZE",
+            "UNDISPELLABLE"
+          ]
         },
         {
           "id": "skill_3",
           "type": "Skill",
           "name": "So So Boring",
           "description": "When all deities on the field are frozen, Jack Frost grows bored and dejected, then leaves the battlefield. The battle ends.",
-          "mechanics": ["Instant battle-end loss condition if all units are frozen"],
-          "mechanicTags": ["WIPE_CONDITION"]
+          "mechanics": [
+            "Instant battle-end loss condition if all units are frozen"
+          ],
+          "mechanicTags": [
+            "WIPE_CONDITION"
+          ]
         }
       ],
       "recommendedComps": [
@@ -403,15 +522,20 @@
           "id": "jackfrost_auto",
           "label": "Recommended",
           "hero-comp": "nezha, hladgunnr, caishen, zeus, dionysus",
-          "heroes": ["nezha", "hladgunnr", "caishen", "zeus", "dionysus"],
+          "heroes": [
+            "nezha",
+            "hladgunnr",
+            "caishen",
+            "zeus",
+            "dionysus"
+          ],
           "reason": "",
           "notes": [],
           "source": "auto"
         }
       ]
-      },
-
-    { 
+    },
+    {
       "id": "typhoon",
       "name": "Typhoon",
       "mode": "Olds God's Return",
@@ -422,14 +546,14 @@
       "summary": "Multi-part physical boss with fixed backline targeting, petrify mechanics, and opposing damage vulnerabilities. Splits damage across 3 independent heads (center, left, right) with the left head vulnerable to ranged attacks and the right vulnerable to melee, forcing mixed team compositions. Applies healing reduction to frontline units and threatens center backline with guaranteed petrification after repeated attacks.",
       "strategyNotes": "Position your strongest hero away from center backline to avoid focused petrification. Build a balanced team with both melee and ranged damage dealers to exploit head vulnerabilities. Tanks should absorb the AoE knockback and ultimate. Healing is less effective on frontline due to 50% heal reduction - use Dionysus ultimate to cleanse the heal reduction debuff. Focus fire on one head at a time or spread damage based on your team's melee/ranged ratio.",
       "mechanics": [
-          "Always targets center backline unit with normal attacks",
-          "Petrifies targeted unit for 2s after 5 consecutive attacks",
-          "Multi-part boss: 3 heads (center + left + right) with independent HP",
-          "Left head: +25% ranged DMG taken, -25% melee DMG taken",
-          "Right head: +25% melee DMG taken, -25% ranged DMG taken",
-          "AoE knockback zones with healing reduction debuff",
-          "Full-team knockdown ultimate"
-        ],
+        "Always targets center backline unit with normal attacks",
+        "Petrifies targeted unit for 2s after 5 consecutive attacks",
+        "Multi-part boss: 3 heads (center + left + right) with independent HP",
+        "Left head: +25% ranged DMG taken, -25% melee DMG taken",
+        "Right head: +25% melee DMG taken, -25% ranged DMG taken",
+        "AoE knockback zones with healing reduction debuff",
+        "Full-team knockdown ultimate"
+      ],
       "mechanicTags": [
         "FIXED_TARGET_BACKLINE",
         "PETRIFY",
@@ -444,32 +568,63 @@
           "type": "Passive",
           "name": "Petrifying Gaze",
           "description": "Base Typhon's Normal Attacks always target the center backline enemy in the starting formation until they are defeated. After 5 consecutive attacks on the same target, he petrifies them for 2s.",
-          "mechanics": ["Fixed-target normal attacks", "Petrify CC after 5 hits on same target"],
-          "mechanicTags": ["FIXED_TARGET", "PETRIFY", "NORMAL_ATTACK_MODIFIER"]
+          "mechanics": [
+            "Fixed-target normal attacks",
+            "Petrify CC after 5 hits on same target"
+          ],
+          "mechanicTags": [
+            "FIXED_TARGET",
+            "PETRIFY",
+            "NORMAL_ATTACK_MODIFIER"
+          ]
         },
         {
           "id": "skill_2",
           "type": "Skill",
           "name": "Tempest's Lash",
           "description": "Repelling Gust: Summons a storm, dealing 200% ATK as DMG to enemies within range and knocking them back 3 meters. Thunder Rage: Summons a thundercloud, dealing 100% DMG per sec to the farthest unit in front and reducing their healing received by 50% for 3s.",
-          "mechanics": ["AoE knockback", "Single-target DoT on farthest unit", "Healing reduction debuff"],
-          "mechanicTags": ["AOE_DAMAGE", "KNOCKBACK", "SINGLE_TARGET_DOT", "HEAL_REDUCTION"]
+          "mechanics": [
+            "AoE knockback",
+            "Single-target DoT on farthest unit",
+            "Healing reduction debuff"
+          ],
+          "mechanicTags": [
+            "AOE_DAMAGE",
+            "KNOCKBACK",
+            "SINGLE_TARGET_DOT",
+            "HEAL_REDUCTION"
+          ]
         },
         {
           "id": "skill_3",
           "type": "Passive",
           "name": "Crown of Storms",
           "description": "Typhon gains 2 extra heads, each taking DMG independently. Repelling Gust: The left head carries the force of hurricane. It takes 25% increased DMG from ranged attacks, but 25% reduced DMG from melee attacks. Thunder Rage: The right head holds the might of thunder. It takes 25% increased DMG from melee attacks, but 25% reduced DMG from ranged attacks.",
-          "mechanics": ["Multi-part boss mechanic (3 heads)", "Left head: ranged vulnerability, melee resistance", "Right head: melee vulnerability, ranged resistance"],
-          "mechanicTags": ["MULTI_PART", "DMG_VULNERABILITY", "DMG_RESISTANCE", "INDEPENDENT_TARGETING"]
+          "mechanics": [
+            "Multi-part boss mechanic (3 heads)",
+            "Left head: ranged vulnerability, melee resistance",
+            "Right head: melee vulnerability, ranged resistance"
+          ],
+          "mechanicTags": [
+            "MULTI_PART",
+            "DMG_VULNERABILITY",
+            "DMG_RESISTANCE",
+            "INDEPENDENT_TARGETING"
+          ]
         },
         {
           "id": "skill_4",
           "type": "Ultimate",
           "name": "Heaven's Endgame",
           "description": "Typhon charges up, summoning a storm and thundercloud. He then swings his arms, dealing 360% DMG to all enemies and knocking them down.",
-          "mechanics": ["Full AoE damage", "Knockdown on all enemies"],
-          "mechanicTags": ["AOE_DAMAGE", "KNOCKDOWN"]
+          "mechanics": [
+            "Full AoE damage",
+            "Knockdown on all enemies"
+          ],
+          "mechanicTags": [
+            "AOE_DAMAGE",
+            "KNOCKDOWN"
+          ]
         }
       ],
       "recommendedComps": [
@@ -477,7 +632,13 @@
           "id": "typhoon_balanced",
           "label": "Balanced Mixed Damage",
           "hero-comp": "ares, hladgunnr, isis, caishen, dionysus",
-          "heroes": ["ares", "hladgunnr", "isis", "caishen", "dionysus"],
+          "heroes": [
+            "ares",
+            "hladgunnr",
+            "isis",
+            "caishen",
+            "dionysus"
+          ],
           "reason": "Balanced composition exploiting both head vulnerabilities. Ares (melee) targets right head for +25% damage, while Hladgunnr and Isis (ranged) exploit left head weakness. Dionysus provides shields to mitigate heal reduction, and Caishen sustains energy for consistent rotations.",
           "notes": [
             "Position Ares or tank in center backline to absorb petrification",
@@ -491,7 +652,13 @@
           "id": "typhoon_ranged",
           "label": "Ranged Focus",
           "hero-comp": "cancer, hladgunnr, isis, zeus, dionysus",
-          "heroes": ["cancer", "hladgunnr", "isis", "zeus", "dionysus"],
+          "heroes": [
+            "cancer",
+            "hladgunnr",
+            "isis",
+            "zeus",
+            "dionysus"
+          ],
           "reason": "Triple ranged DPS composition to maximize left head vulnerability (+25% damage to all main damage dealers). Cancer tanks center backline petrification while ranged DPS stays safe. Dionysus provides shields and energy sustain.",
           "notes": [
             "Position Cancer in center backline to tank petrification",
@@ -505,7 +672,13 @@
           "id": "typhoon_sustain",
           "label": "Sustained Pressure",
           "hero-comp": "tefnut, hladgunnr, caishen, yuelao, dionysus",
-          "heroes": ["tefnut", "hladgunnr", "caishen", "yuelao", "dionysus"],
+          "heroes": [
+            "tefnut",
+            "hladgunnr",
+            "caishen",
+            "yuelao",
+            "dionysus"
+          ],
           "reason": "Hybrid warrior-tank in Tefnut provides melee damage against right head while surviving center backline focus. Hladgunnr exploits left head. Double support (Caishen + Yuelao) ensures energy sustain and linking buffs for prolonged multi-part fight.",
           "notes": [
             "Tefnut can survive center backline petrification + normal attacks",
@@ -546,24 +719,41 @@
           "type": "Skill",
           "name": "Evil-Purging Stomp",
           "description": "Leaps across the battlefield, dealing 100% ATK as DMG and knocking down targets hit. Upon returning, deals 100% ATK as DMG and knocks back units hit.",
-          "mechanics": ["AoE knockdown on leap", "AoE knockback on return"],
-          "mechanicTags": ["AOE_BURST", "KNOCKDOWN", "KNOCKBACK"]
+          "mechanics": [
+            "AoE knockdown on leap",
+            "AoE knockback on return"
+          ],
+          "mechanicTags": [
+            "AOE_BURST",
+            "KNOCKDOWN",
+            "KNOCKBACK"
+          ]
         },
         {
           "id": "skill_2",
           "type": "Skill",
           "name": "Purging Fireworks",
           "description": "Each time an ally on the field casts an Ultimate, a firework is lit. After 30 fireworks are lit, the Nian Beast will flee, ending the battle.",
-          "mechanics": ["30 Ultimate casts ends the battle (win condition)", "Incentivizes maximum Ultimate frequency"],
-          "mechanicTags": ["ULTIMATE_TRIGGER", "WIPE_CONDITION"]
+          "mechanics": [
+            "30 Ultimate casts ends the battle (win condition)",
+            "Incentivizes maximum Ultimate frequency"
+          ],
+          "mechanicTags": [
+            "ULTIMATE_TRIGGER",
+            "WIPE_CONDITION"
+          ]
         },
         {
           "id": "skill_3",
           "type": "Skill",
           "name": "Waning Might",
           "description": "The Nian Beast weakens as the night passes, taking 10% increased DMG for every 5s in battle.",
-          "mechanics": ["Stacking DMG vulnerability over time (favors player the longer the fight goes)"],
-          "mechanicTags": ["RAMPING_VULNERABILITY"]
+          "mechanics": [
+            "Stacking DMG vulnerability over time (favors player the longer the fight goes)"
+          ],
+          "mechanicTags": [
+            "RAMPING_VULNERABILITY"
+          ]
         }
       ],
       "recommendedComps": [
@@ -571,7 +761,13 @@
           "id": "nian_beast_1",
           "label": "Team A",
           "hero-comp": "zeus, meret, yuelao, caishen, dionysus",
-          "heroes": ["zeus", "meret", "yuelao", "caishen", "dionysus"],
+          "heroes": [
+            "zeus",
+            "meret",
+            "yuelao",
+            "caishen",
+            "dionysus"
+          ],
           "reason": "Only Eastern Deities can be used. Prioritize heroes with short Ultimate cooldowns to reach 30 fireworks quickly.",
           "notes": [
             "Only Eastern Deities are eligible for this fight",
@@ -580,14 +776,19 @@
           ],
           "source": "auto"
         },
-         {
+        {
           "id": "nian_beast_2",
           "label": "Team B",
           "hero-comp": "yuelao, caishen, isis, meret, cronus",
-          "heroes": ["yuelao", "caishen", "isis", "meret", "cronus"],
-          "reason": "",
-          "notes": [
+          "heroes": [
+            "yuelao",
+            "caishen",
+            "isis",
+            "meret",
+            "cronus"
           ],
+          "reason": "",
+          "notes": [],
           "source": "auto"
         }
       ]

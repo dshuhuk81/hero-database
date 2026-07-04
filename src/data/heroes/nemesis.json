@@ -185,5 +185,38 @@
         "ENEMY_CROWD_CONTROL"
       ]
     }
-  ]
+  ],
+  "cn": {
+    "captured": "2026-07-04",
+    "source": "CN client extracted skill text",
+    "skills": [
+      {
+        "id": "skill_3",
+        "cnName": "决斗之舞",
+        "values": [
+          {
+            "label": "Empowered ATK bonus",
+            "field": "pct",
+            "global": 30,
+            "cn": 15,
+            "unit": "%",
+            "change": "buff",
+            "verified": false
+          },
+          {
+            "label": "Empowered ATK bonus (Lv.3)",
+            "field": "pct",
+            "global": 50,
+            "cn": 25,
+            "unit": "%",
+            "change": "buff",
+            "verified": false
+          }
+        ],
+        "notes": [
+          "Auto-detected from CN client capture 2026-07-04; not yet in-game confirmed. 10-hit trigger, 6s duration and 12s CD all match CN; only the empowered ATK bonus differs (Global 30% vs CN 15%), so Global is stronger here."
+        ]
+      }
+    ]
+  }
 }
