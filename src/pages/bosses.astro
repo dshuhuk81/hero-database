@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import bosses from "../data/bosses.json";
-import { getHeroById } from "../data/heroes";
+import { heroes, getHeroById } from "../data/heroes";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import "../styles/components.css";
@@ -73,21 +73,122 @@ function bossSkillIcon(bossId: string, index: number) {
 }
 
 function compHeroes(comp: Record<string, any>) {
+  return compHeroIds(comp).map((id: string) => getHeroById(id)).filter(Boolean);
+}
+
+function compHeroIds(comp: Record<string, any>) {
   const ids = String(comp["hero-comp"] || "")
     .split(",")
     .map((entry: string) => entry.trim())
     .filter(Boolean);
-  const resolved = ids.length ? ids : (comp.heroes ?? []);
-  return resolved.map((id: string) => getHeroById(id)).filter(Boolean);
+  return ids.length ? ids : (comp.heroes ?? []);
+}
+
+function normalizeHeroName(value: string) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+const heroNameToId = new Map<string, string>();
+heroes.forEach((hero) => {
+  heroNameToId.set(normalizeHeroName(hero.id), hero.id);
+  heroNameToId.set(normalizeHeroName(hero.name), hero.id);
+});
+
+function heroIdFromName(value: string) {
+  return heroNameToId.get(normalizeHeroName(value));
+}
+
+function parseSubstitutesFromText(text = "") {
+  const substitutions: Array<{ targetId: string; substituteId: string }> = [];
+  const source = text.trim();
+  if (!source) return substitutions;
+
+  const explicitList = source.match(/substitutes if missing:\s*(.+)$/i)?.[1] || "";
+  explicitList
+    .replace(/\.$/, "")
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .forEach((entry) => {
+      const match = entry.match(/^(.+?)\s+for\s+(.+)$/i);
+      const substituteId = match ? heroIdFromName(match[1]) : null;
+      const targetId = match ? heroIdFromName(match[2]) : null;
+      if (substituteId && targetId) substitutions.push({ targetId, substituteId });
+    });
+
+  Array.from(source.matchAll(/replace\s+([a-z0-9\s'-]+?)\s+with\s+([a-z0-9\s'-]+?)(?=\s+if|\.|,|$)/gi))
+    .forEach((match) => {
+      const targetId = heroIdFromName(match[1]);
+      const substituteId = heroIdFromName(match[2]);
+      if (targetId && substituteId) substitutions.push({ targetId, substituteId });
+    });
+
+  return substitutions;
+}
+
+function cleanCompReason(reason = "") {
+  return reason.replace(/\s*Substitutes if missing:.*$/i, "").trim();
+}
+
+function noteHasParsedSubstitution(note = "") {
+  return parseSubstitutesFromText(note).length > 0;
+}
+
+function buildSubstituteSlots(main: Record<string, any>, alternatives: Array<Record<string, any>>) {
+  const mainIds = compHeroIds(main);
+  const substitutions = new Map<string, Map<string, string>>();
+
+  function addSubstitute(targetId: string, substituteId: string, source: string) {
+    if (!targetId || !substituteId || targetId === substituteId || !mainIds.includes(targetId)) return;
+    if (mainIds.includes(substituteId)) return;
+    if (!substitutions.has(targetId)) substitutions.set(targetId, new Map());
+    const slot = substitutions.get(targetId);
+    if (slot && !slot.has(substituteId)) slot.set(substituteId, source);
+  }
+
+  alternatives.forEach((alt) => {
+    const altIds = compHeroIds(alt);
+    altIds.forEach((substituteId: string, index: number) => {
+      const targetId = mainIds[index];
+      addSubstitute(targetId, substituteId, alt.label || "Alternative");
+    });
+  });
+
+  [main.reason, ...(main.notes || [])].forEach((text) => {
+    parseSubstitutesFromText(text).forEach(({ targetId, substituteId }) => {
+      addSubstitute(targetId, substituteId, "If missing");
+    });
+  });
+
+  alternatives.forEach((alt) => {
+    [alt.reason, ...(alt.notes || [])].forEach((text) => {
+      parseSubstitutesFromText(text).forEach(({ targetId, substituteId }) => {
+        addSubstitute(targetId, substituteId, alt.label || "Alternative");
+      });
+    });
+  });
+
+  return mainIds
+    .map((targetId: string) => ({
+      target: getHeroById(targetId),
+      substitutes: Array.from(substitutions.get(targetId)?.entries() || [])
+        .map(([substituteId, source]) => ({ hero: getHeroById(substituteId), source }))
+        .filter((entry) => entry.hero),
+    }))
+    .filter((slot) => slot.target && slot.substitutes.length > 0);
 }
 
 const bossViews = bosses.bosses.map((boss) => {
   const comps = boss.recommendedComps || [];
   const [main, ...alts] = comps;
+  const mainReason = main ? cleanCompReason(main.reason || "") : "";
+  const mainNotes = (main?.notes || []).filter((note: string) => !noteHasParsedSubstitution(note));
   return {
     ...boss,
     mainComp: main
-      ? { label: main.label || "Recommended", reason: main.reason || "", heroes: compHeroes(main) }
+      ? { label: main.label || "Recommended", reason: mainReason, heroes: compHeroes(main) }
       : null,
     altComps: alts.map((comp) => ({
       label: comp.label || "Alternative",
@@ -95,7 +196,8 @@ const bossViews = bosses.bosses.map((boss) => {
       heroes: compHeroes(comp),
       notes: comp.notes || [],
     })),
-    mainNotes: main?.notes || [],
+    mainNotes,
+    substituteSlots: main ? buildSubstituteSlots(main, alts) : [],
   };
 });
 ---
@@ -247,22 +349,35 @@ const bossViews = bosses.bosses.map((boss) => {
                   </ul>
                 )}
 
-                {boss.altComps.length > 0 && (
-                  <div class="boss-alts">
-                    <h4 class="boss-alts-heading">Alternatives</h4>
-                    <div class="boss-alt-list">
-                      {boss.altComps.map((alt) => (
-                        <div class="boss-alt">
-                          <div class="boss-alt-topline">
-                            <span class="boss-alt-label">{alt.label}</span>
-                            <span class="boss-alt-count">{alt.heroes.length} heroes</span>
+                {boss.substituteSlots.length > 0 && (
+                  <div class="boss-substitutes">
+                    <h4 class="boss-substitutes-heading">Substitutes</h4>
+                    <div class="boss-substitute-grid">
+                      {boss.substituteSlots.map((slot) => (
+                        <div class="boss-substitute-slot">
+                          <div class="boss-substitute-target">
+                            <span class="boss-substitute-target-label">For</span>
+                            <a href={`/heroes/${slot.target.id}`}>{slot.target.name}</a>
                           </div>
-                          <p class="boss-alt-heroes">
-                            {alt.heroes.map((hero, heroIndex) => (
-                              <Fragment>{heroIndex > 0 && ", "}<a href={`/heroes/${hero.id}`}>{hero.name}</a></Fragment>
+                          <div class="boss-substitute-options">
+                            {slot.substitutes.map(({ hero, source }) => (
+                              <a class="boss-substitute-hero" href={`/heroes/${hero.id}`}>
+                                <img
+                                  src={heroCardSrc(hero.id, 240)}
+                                  srcset={heroCardSrcset(hero.id)}
+                                  sizes="56px"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                                />
+                                <span>
+                                  <span class="boss-substitute-name">{hero.name}</span>
+                                  <span class="boss-substitute-source">{source}</span>
+                                </span>
+                              </a>
                             ))}
-                          </p>
-                          {alt.reason && <p class="boss-alt-reason">{alt.reason}</p>}
+                          </div>
                         </div>
                       ))}
                     </div>
