@@ -199,14 +199,24 @@ const { locale = defaultLocale } = Astro.props as Props;
         dialog.showModal();
       };
 
+      const dismissNotice = () => {
+        rememberDismissed();
+        if (dialog.open) {
+          dialog.close("dismiss");
+        }
+      };
+
       dialog.addEventListener("close", rememberDismissed, { once: true });
       dialog.addEventListener("click", (event) => {
         if (event.target === dialog) {
-          dialog.close("dismiss");
+          dismissNotice();
         }
       });
       dialog.querySelectorAll("[data-language-notice-close]").forEach((button) => {
-        button.addEventListener("click", rememberDismissed);
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          dismissNotice();
+        });
       });
 
       window.setTimeout(openNotice, 650);
