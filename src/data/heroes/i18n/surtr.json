@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 330 %.",
           "en": "Increases DMG dealt to 330%.",
-          "es": "Aumenta el daño infligido a 330 %."
+          "es": "Aumenta el daño infligido a 330 %.",
+          "zh": "造成的伤害提升至330%。"
         },
         "level3": {
           "de": "SCH gegen Gegner mit LP über 50% wird um 35% erhöht.",
           "en": "Deals 35% increased DMG to enemies with HP above 50%.",
-          "es": "Inflige un 35 % más de Daño a los enemigos con PS superiores al 50 %."
+          "es": "Inflige un 35 % más de Daño a los enemigos con PS superiores al 50 %.",
+          "zh": "对生命值高于50%的敌人造成的伤害提升35%。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 360 %.",
           "en": "Increases DMG dealt to 360%.",
-          "es": "Aumenta el Daño infligido al 360 %."
+          "es": "Aumenta el Daño infligido al 360 %.",
+          "zh": "造成的伤害提升至360%。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Verursacht 110 % ANG als SCH pro Sek.",
           "en": "Deals 110% ATK as DMG per sec.",
-          "es": "Inflige un 110 % de ATQ como daño por segundo."
+          "es": "Inflige un 110 % de ATQ como daño por segundo.",
+          "zh": "每秒造成相当于攻击力110%的伤害。"
         },
         "level3": {
           "de": "Eingesperrte Gegner erleiden 15% mehr Magie-SCH.",
           "en": "Rooted enemies take 15% increased M-DMG.",
-          "es": "Los enemigos inmovilizados reciben un 15 % más de Daño mágico."
+          "es": "Los enemigos inmovilizados reciben un 15 % más de Daño mágico.",
+          "zh": "被定身的敌人受到的魔法伤害提升15%。"
         },
         "level4": {
           "de": "Verursacht 120 % ANG als SCH pro Sek.",
           "en": "Deals 120% ATK as DMG per sec. (Unlocks at Lv.261)",
-          "es": "Inflige un 120 % de ATQ como daño por segundo."
+          "es": "Inflige un 120 % de ATQ como daño por segundo.",
+          "zh": "每秒造成相当于攻击力120%的伤害。（261级解锁）"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Surtur erhält alle 3 eingesetzten Fähigkeiten einen Schild in Höhe von 270 % ANG.",
           "en": "Surtr gains a shield equal to 270% ATK for every 3 skills cast.",
-          "es": "Surt obtiene un escudo equivalente al 270 % de ATQ por cada 3 habilidades lanzadas."
+          "es": "Surt obtiene un escudo equivalente al 270 % de ATQ por cada 3 habilidades lanzadas.",
+          "zh": "苏尔特尔每施放3次技能，获得相当于攻击力270%的护盾。"
         },
         "level3": {
           "de": "Surturs ANG wird um 20 % erhöht, wenn sie einen Schild hat.",
           "en": "Surtr's ATK is increased by 20% when he is shielded.",
-          "es": "El ATQ de Surt aumenta en un 20 % cuando tiene un escudo."
+          "es": "El ATQ de Surt aumenta en un 20 % cuando tiene un escudo.",
+          "zh": "拥有护盾时，苏尔特尔的攻击力提升20%。"
         },
         "level4": {
           "de": "Surtur erhält alle 3 eingesetzten Fähigkeiten einen Schild in Höhe von 300 % ANG.",
           "en": "Surtr gains a shield equal to 300% ATK for every 3 skills cast. (Unlocks at Lv.281)",
-          "es": "Surt obtiene un escudo equivalente al 300 % de ATQ por cada 3 habilidades lanzadas."
+          "es": "Surt obtiene un escudo equivalente al 300 % de ATQ por cada 3 habilidades lanzadas.",
+          "zh": "苏尔特尔每施放3次技能，获得相当于攻击力300%的护盾。（281级解锁）"
         }
       }
     },
@@ -117,19 +126,46 @@
         "level2": {
           "de": "Verursacht 320 % ANG als SCH.",
           "en": "Deals 320% ATK as DMG.",
-          "es": "Inflige un 320 % de ATQ como daño."
+          "es": "Inflige un 320 % de ATQ como daño.",
+          "zh": "造成相当于攻击力320%的伤害。"
         },
         "level3": {
           "de": "Verringert die erhaltene Heilung getroffener Feinde für 6 Sek. um 50 %.",
           "en": "Reduces healing received by hit enemies by 50% for 6s.",
-          "es": "Reduce la sanación recibida por los enemigos golpeados en un 50 % durante 6s."
+          "es": "Reduce la sanación recibida por los enemigos golpeados en un 50 % durante 6s.",
+          "zh": "被命中敌人受到的治疗降低50%，持续6秒。"
         },
         "level4": {
           "de": "Verursacht 350 % ANG als SCH.",
           "en": "Deals 350% ATK as DMG.",
-          "es": "Inflige un 350 % de ATQ como daño."
+          "es": "Inflige un 350 % de ATQ como daño.",
+          "zh": "造成相当于攻击力350%的伤害。"
         }
       }
     }
-  ]
+  ],
+  "relic": {
+    "name": {
+      "en": "Soul Scorch",
+      "zh": "灼魂"
+    },
+    "description": {
+      "en": "After Surtr casts his Ultimate, Skyward Inferno will also attack the 2 nearest enemies until the battle ends. (Unlock at Relic Lv.1)",
+      "zh": "苏尔特尔施放大招后，冲天炼狱还会攻击最近的2名敌人，直到战斗结束。（圣物1级解锁）"
+    },
+    "upgrades": {
+      "level2": {
+        "en": "Surtr's Ultimate grants Skyward Inferno CD exemption for 6s. (Unlock at Relic Lv.10)",
+        "zh": "苏尔特尔的大招使冲天炼狱免除冷却6秒。（圣物10级解锁）"
+      },
+      "level3": {
+        "en": "Increases the casting speed of Skyward Inferno by 50%. (Unlock at Relic Lv.20)",
+        "zh": "冲天炼狱的施放速度提升50%。（圣物20级解锁）"
+      },
+      "level4": {
+        "en": "Surtr's Ultimate grants Skyward Inferno CD exemption for 10s. (Unlock at Relic Lv.30)",
+        "zh": "苏尔特尔的大招使冲天炼狱免除冷却10秒。（圣物30级解锁）"
+      }
+    }
+  }
 }

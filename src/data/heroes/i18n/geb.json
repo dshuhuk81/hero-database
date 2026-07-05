@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Treffer auf 115 % ANG.",
           "en": "Increases DMG per hit to 115% of ATK.",
-          "es": "Aumenta el daño por golpe a un 115 %."
+          "es": "Aumenta el daño por golpe a un 115 %.",
+          "zh": "每次伤害提升至115%攻击力。"
         },
         "level3": {
           "de": "Erhöht die Schildstärke auf 40 % der max. LP.",
           "en": "Increases shield strength to 40% of max HP.",
-          "es": "Aumenta la fuerza del escudo al 40 % de los PS máximos."
+          "es": "Aumenta la fuerza del escudo al 40 % de los PS máximos.",
+          "zh": "护盾强度提升至最大生命值的40%。"
         },
         "level4": {
           "de": "Erhöht den SCH pro Treffer auf 130 % ANG.",
           "en": "Increases DMG per hit to 130% of ATK.",
-          "es": "Aumenta el daño por golpe a un 130 %."
+          "es": "Aumenta el daño por golpe a un 130 %.",
+          "zh": "每次伤害提升至130%攻击力。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Schildstärke erhöht sich auf 20 % der max. LP.",
           "en": "Shield strength increases to 20% of max HP.",
-          "es": "la fuerza del escudo aumenta al 20 % de los PS máx."
+          "es": "la fuerza del escudo aumenta al 20 % de los PS máx.",
+          "zh": "护盾强度提升至最大生命值的20%。"
         },
         "level3": {
           "de": "Erleidet 10 % weniger SCH, solange er einen Schild hat.",
           "en": "Takes 10% less DMG while shielded.",
-          "es": "Recibe un 10 % menos de daño mientras tiene un escudo."
+          "es": "Recibe un 10 % menos de daño mientras tiene un escudo.",
+          "zh": "护盾存在期间受到的伤害降低10%。"
         },
         "level4": {
           "de": "Schildstärke erhöht sich auf 25 % der max. LP.",
           "en": "Shield strength increases to 25% of max HP.",
-          "es": "la fuerza del escudo aumenta al 25 % de los PS máx."
+          "es": "la fuerza del escudo aumenta al 25 % de los PS máx.",
+          "zh": "护盾强度提升至最大生命值的25%。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Verringert bis zu 37,5 % SCH.",
           "en": "Reduces up to 37.5% DMG.",
-          "es": "Reduce hasta un 37,5 % de Daño."
+          "es": "Reduce hasta un 37,5 % de Daño.",
+          "zh": "伤害最多降低37.5%。"
         },
         "level3": {
           "de": "Maximale SCH-Reduktion erhöht auf 45%.",
           "en": "Reduces up to 45% DMG.",
-          "es": "Reduce hasta un 45 % de Daño."
+          "es": "Reduce hasta un 45 % de Daño.",
+          "zh": "伤害最多降低45%。"
         },
         "level4": {
           "de": "Verringert zusätzlich die ANG-GES nahegelegener Feinde um 25%.",
           "en": "Reduces the ATK SPD of nearby enemies by 25%.",
-          "es": "Reduce la VEL de ATQ de los enemigos cercanos un 25 %."
+          "es": "Reduce la VEL de ATQ de los enemigos cercanos un 25 %.",
+          "zh": "附近敌人的攻速降低25%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 110 %.",
           "en": "Increases DMG dealt to 110% of ATK.",
-          "es": "Aumenta el daño infligido a 110 %."
+          "es": "Aumenta el daño infligido a 110 %.",
+          "zh": "造成的伤害提升至110%攻击力。"
         },
         "level3": {
           "de": "Verringert die Trefferrate getroffener Feinde für 5 Sek. um 30 %.",
           "en": "Reduces the Hit Rate of hit enemies by 30% for 5s.",
-          "es": "Reduce la Tasa de aciertos de los enemigos golpeados un 30 % durante 5s."
+          "es": "Reduce la Tasa de aciertos de los enemigos golpeados un 30 % durante 5s.",
+          "zh": "被命中敌人的命中率降低30%，持续5秒。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 120 %.",
           "en": "Increases DMG dealt to 120% of ATK.",
-          "es": "Aumenta el Daño infligido al 120 %."
+          "es": "Aumenta el Daño infligido al 120 %.",
+          "zh": "造成的伤害提升至120%攻击力。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Erderschütterer",
       "en": "Earthshaker",
-      "es": "Sacudetierra"
+      "es": "Sacudetierra",
+      "zh": "撼地者"
     },
     "description": {
       "de": "Während er geschützt ist, fügt Geb dem Angreifer SCH in Höhe von 5% seiner max. LP zu, wenn er SCH erleidet.",
       "en": "When shielded, Geb deals DMG equal to 5% of his max HP to the attacker each time he takes DMG.",
-      "es": "Cuando tiene un escudo, Geb inflige un daño equivalente al 5 % de sus PS máximos al atacante cada vez que recibe Daño."
+      "es": "Cuando tiene un escudo, Geb inflige un daño equivalente al 5 % de sus PS máximos al atacante cada vez que recibe Daño.",
+      "zh": "拥有护盾时，盖布每次受到伤害都会对攻击者造成相当于其最大生命值5%的伤害。"
     },
     "upgrades": {
       "level2": {
         "de": "Geb erhält zu Kampfbeginn einen Schild in Höhe von 30 % der max. LP.",
         "en": "Geb gains a shield equal to 30% of max HP at combat start.",
-        "es": "Geb obtiene un escudo equivalente al 30 % de los PS máx. al inicio del combate."
+        "es": "Geb obtiene un escudo equivalente al 30 % de los PS máx. al inicio del combate.",
+        "zh": "战斗开始时，盖布获得相当于最大生命值30%的护盾。"
       },
       "level3": {
         "de": "Erhält zu Kampfbeginn 300 Energie.",
         "en": "Gains 300 Energy when the battle starts.",
-        "es": "Obtiene 300 de Energía cuando comienza la batalla."
+        "es": "Obtiene 300 de Energía cuando comienza la batalla.",
+        "zh": "战斗开始时获得300点能量。"
       },
       "level4": {
         "de": "Geb erhält zu Kampfbeginn einen Schild in Höhe von 50 % der max. LP.",
         "en": "Geb gains a shield equal to 50% of max HP at combat start.",
-        "es": "Geb obtiene un escudo equivalente al 50 % de los PS máx. al inicio del combate."
+        "es": "Geb obtiene un escudo equivalente al 50 % de los PS máx. al inicio del combate.",
+        "zh": "战斗开始时，盖布获得相当于最大生命值50%的护盾。"
       }
     }
   }

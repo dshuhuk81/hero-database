@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Sekunde auf 110 % ANG.",
           "en": "Increases DMG per sec to 110% ATK.",
-          "es": "Aumenta el daño por segundo a 110 % de ATQ."
+          "es": "Aumenta el daño por segundo a 110 % de ATQ.",
+          "zh": "每秒伤害提升至110%攻击力。"
         },
         "level3": {
           "de": "Erhält einen Schild in Höhe von 200% des ANG, wenn die Ultimative endet.",
           "en": "Gains a shield equal to 200% of ATK when the Ultimate ends.",
-          "es": "Obtiene un escudo equivalente al 200 % de su ATQ cuando termina la Habilidad definitiva."
+          "es": "Obtiene un escudo equivalente al 200 % de su ATQ cuando termina la Habilidad definitiva.",
+          "zh": "大招结束时获得相当于攻击力200%的护盾。"
         },
         "level4": {
           "de": "SCH pro Sekunde erhöht sich auf 120%.",
           "en": "Increases DMG per sec to 120%.",
-          "es": "Aumenta el Daño por segundo al 120 %."
+          "es": "Aumenta el Daño por segundo al 120 %.",
+          "zh": "每秒伤害提升至120%。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Reduziert die Rüstung um 20 %.",
           "en": "Reduces Armor by 20%.",
-          "es": "Reduce la armadura en un 20 %."
+          "es": "Reduce la armadura en un 20 %.",
+          "zh": "护甲降低20%。"
         },
         "level3": {
           "de": "Verringert die Rüstung für 8 Sek.",
           "en": "Reduces Armor for 8s.",
-          "es": "Reduce la Armadura durante 8s."
+          "es": "Reduce la Armadura durante 8s.",
+          "zh": "护甲降低效果持续8秒。"
         },
         "level4": {
           "de": "Reduziert die Rüstung um 25 %.",
           "en": "Reduces Armor by 25%.",
-          "es": "Reduce la armadura en un 25 %."
+          "es": "Reduce la armadura en un 25 %.",
+          "zh": "护甲降低25%。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht den Lebensraub bei Auslösung dauerhaft um 20 %.",
           "en": "Permanently increases Lifesteal by 20% upon triggering.",
-          "es": "Aumenta permanentemente el robo de vida en un 20 % al activarse."
+          "es": "Aumenta permanentemente el robo de vida en un 20 % al activarse.",
+          "zh": "触发时永久提升20%吸血。"
         },
         "level3": {
           "de": "Erhöht die Dauer auf 7 Sek.",
           "en": "Increases the duration to 7s.",
-          "es": "Aumenta la duración a 7s."
+          "es": "Aumenta la duración a 7s.",
+          "zh": "持续时间延长至7秒。"
         },
         "level4": {
           "de": "Erhöht den Lebensraub bei Auslösung dauerhaft um 30 %.",
           "en": "Permanently increases Lifesteal by 30% upon triggering.",
-          "es": "Aumenta permanentemente el robo de vida en un 30 % al activarse."
+          "es": "Aumenta permanentemente el robo de vida en un 30 % al activarse.",
+          "zh": "触发时永久提升30%吸血。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht den ANG um bis zu 105 %.",
           "en": "Increases ATK by up to 105%.",
-          "es": "Aumenta el ATQ hasta en un 105 %."
+          "es": "Aumenta el ATQ hasta en un 105 %.",
+          "zh": "攻击力最多提升105%。"
         },
         "level3": {
           "de": "Erhält außerdem bis zu 30 % KRIT-Rate.",
           "en": "Also gains up to 30% CRIT Rate.",
-          "es": "También obtiene hasta un 30 % de Tasa de crít."
+          "es": "También obtiene hasta un 30 % de Tasa de crít.",
+          "zh": "额外获得最多30%暴击率。"
         },
         "level4": {
           "de": "Erhöht den ANG um bis zu 120 %.",
           "en": "Increases ATK by up to 120%.",
-          "es": "Aumenta el ATQ hasta en un 120 %."
+          "es": "Aumenta el ATQ hasta en un 120 %.",
+          "zh": "攻击力最多提升120%。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Himmlische Dämmerung",
       "en": "Celestial Dusk",
-      "es": "Crepúsculo celestial"
+      "es": "Crepúsculo celestial",
+      "zh": "天界黄昏"
     },
     "description": {
       "de": "Solange [Kampfsturm] aktiv ist, erleidet Ares 80% weniger SCH.",
       "en": "During Battlefield Storm, Ares takes 80% reduced DMG.",
-      "es": "Durante Batalla tempestuosa, Ares recibe un 80 % menos de Daño."
+      "es": "Durante Batalla tempestuosa, Ares recibe un 80 % menos de Daño.",
+      "zh": "战场风暴期间，阿瑞斯受到的伤害降低80%。"
     },
     "upgrades": {
       "level2": {
         "de": "Während Schlachtfeldsturm aktiv ist, erhält Ares beim Besiegen eines Gegners einen Schild in Höhe von 200 % des ANG.",
         "en": "While Battlefield Storm is active, Ares gains a shield equal to 200% ATK upon defeating an enemy. (Unlock at Relic Lv.10)",
-        "es": "Mientras Batalla tempestuosa está activa, Ares obtiene un escudo equivalente a un 200 % del ATQ al derrotar a un enemigo."
+        "es": "Mientras Batalla tempestuosa está activa, Ares obtiene un escudo equivalente a un 200 % del ATQ al derrotar a un enemigo.",
+        "zh": "战场风暴期间，阿瑞斯每击败一名敌人获得相当于攻击力200%的护盾。（圣物10级解锁）"
       },
       "level3": {
         "de": "Während Schlachtfeldsturm ist Ares immun gegen jeglichen SCH, und dies beeinträchtigt nicht die Dauer anderer Immunitätsfähigkeiten.",
         "en": "During Battlefield Storm, Ares is immune to all DMG, and this does not affect the duration of other immunity skills. (Unlock at Relic Lv.20)",
-        "es": "Durante Batalla tempestuosa, Ares es inmune a todo el Daño, y esto no afecta la duración de otras habilidades de inmunidad."
+        "es": "Durante Batalla tempestuosa, Ares es inmune a todo el Daño, y esto no afecta la duración de otras habilidades de inmunidad.",
+        "zh": "战场风暴期间，阿瑞斯免疫所有伤害，且不影响其他免疫技能的持续时间。（圣物20级解锁）"
       },
       "level4": {
         "de": "Während Schlachtfeldsturm aktiv ist, erhält Ares beim Besiegen eines Gegners einen Schild in Höhe von 240 % des ANG.",
         "en": "While Battlefield Storm is active, Ares gains a shield equal to 240% ATK upon defeating an enemy. (Unlock at Relic Lv.30)",
-        "es": "Mientras Batalla tempestuosa está activa, Ares obtiene un escudo equivalente a un 240 % del ATQ al derrotar a un enemigo."
+        "es": "Mientras Batalla tempestuosa está activa, Ares obtiene un escudo equivalente a un 240 % del ATQ al derrotar a un enemigo.",
+        "zh": "战场风暴期间，阿瑞斯每击败一名敌人获得相当于攻击力240%的护盾。（圣物30级解锁）"
       }
     }
   }

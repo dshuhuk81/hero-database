@@ -24,17 +24,20 @@
         "level2": {
           "de": "ANG-Erhöhung auf 25% gesteigert.",
           "en": "Revived units restore 80% of their max HP.",
-          "es": "Las unidades revividas restauran un 80 % de sus PS máximos."
+          "es": "Las unidades revividas restauran un 80 % de sus PS máximos.",
+          "zh": "被复活的单位恢复80%最大生命值。"
         },
         "level3": {
           "de": "Wiederhergestellte LP auf 80% erhöht.",
           "en": "Increases the maximum stacks of Samsara to 2.",
-          "es": "Aumenta las acumulaciones máximas de Samsara a 2."
+          "es": "Aumenta las acumulaciones máximas de Samsara a 2.",
+          "zh": "轮回的最大层数提升至2层。"
         },
         "level4": {
           "de": "Dauer auf 5 Sekunden erhöht.",
           "en": "Revived units restore 100% of their max HP.",
-          "es": "Las unidades revividas restauran un 100 % de sus PS máximos."
+          "es": "Las unidades revividas restauran un 100 % de sus PS máximos.",
+          "zh": "被复活的单位恢复100%最大生命值。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
           "en": "Restores HP equal to 220% ATK.",
-          "es": "Restaura PS equivalentes a un 220 % del ATQ."
+          "es": "Restaura PS equivalentes a un 220 % del ATQ.",
+          "zh": "恢复相当于攻击力220%的生命值。"
         },
         "level3": {
           "de": "Verringert die Abklingzeit auf 15 Sek.",
           "en": "Reduces the CD to 15s.",
-          "es": "Reduce el TdE a 15s."
+          "es": "Reduce el TdE a 15s.",
+          "zh": "冷却时间缩短至15秒。"
         },
         "level4": {
           "de": "Stellt LP in Höhe von 250 % des ANG wieder her.",
           "en": "Restores HP equal to 250% ATK.",
-          "es": "Restaura PS equivalentes a un 250 % del ATQ."
+          "es": "Restaura PS equivalentes a un 250 % del ATQ.",
+          "zh": "恢复相当于攻击力250%的生命值。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Fluss des Vergessens verringert außerdem die KRIT-Rate des Ziels um 30 %.",
           "en": "River of Oblivion also reduces the target's CRIT Rate by 30%.",
-          "es": "Río del Olvido también reduce la Tasa de crít. del objetivo en un 30 %."
+          "es": "Río del Olvido también reduce la Tasa de crít. del objetivo en un 30 %.",
+          "zh": "忘川还使目标的暴击率降低30%。"
         },
         "level3": {
           "de": "Die Dauer wird auf 5 Sek. verlängert.",
           "en": "Duration extends to 5s.",
-          "es": "La duración se extiende a 5 s."
+          "es": "La duración se extiende a 5 s.",
+          "zh": "持续时间延长至5秒。"
         },
         "level4": {
           "de": "Verursacht 300 % ANG als SCH.",
           "en": "Deals 300% ATK as DMG.",
-          "es": "Inflige un 300 % de ATQ como daño."
+          "es": "Inflige un 300 % de ATQ como daño.",
+          "zh": "造成相当于攻击力300%的伤害。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Gewährt 20 % SCH-RED.",
           "en": "Grants 20% DMG RED.",
-          "es": "Otorga un 20 % de Reduc. de daño."
+          "es": "Otorga un 20 % de Reduc. de daño.",
+          "zh": "提供20%减伤。"
         },
         "level3": {
           "de": "ANG-Boost auf 30% erhöht.",
           "en": "Increases ATK by 30%.",
-          "es": "Aumenta el ATQ en un 30 %."
+          "es": "Aumenta el ATQ en un 30 %.",
+          "zh": "攻击力提升30%。"
         },
         "level4": {
           "de": "Stellt 80 Energie pro Sek. wieder her.",
           "en": "Restores 80 Energy per sec.",
-          "es": "Restaura 80 de Energía por segundo."
+          "es": "Restaura 80 de Energía por segundo.",
+          "zh": "每秒恢复80点能量。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Keine Rückkehr",
       "en": "No Return",
-      "es": "Sin retorno"
+      "es": "Sin retorno",
+      "zh": "不归"
     },
     "description": {
       "de": "Wenn sich 5 oder mehr überlebende Verbündete (Diener ausgenommen) auf dem Schlachtfeld befinden, durchschreitet Mengpo die Grenze zwischen Leben und Tod und wird nicht anvisierbar.",
       "en": "When there are 5 or more surviving allies (excluding minions) on the battlefield, Mengpo traverses the boundary between life and death, making herself untargetable.",
-      "es": "Cuando hay 5 o más aliados supervivientes (excluyendo súbditos) en el campo de batalla, Mengpo atraviesa el límite entre la vida y la muerte, lo que la vuelve inalcanzable."
+      "es": "Cuando hay 5 o más aliados supervivientes (excluyendo súbditos) en el campo de batalla, Mengpo atraviesa el límite entre la vida y la muerte, lo que la vuelve inalcanzable.",
+      "zh": "当战场上有5名或更多存活友方（不含随从）时，孟婆游走于生死边界，使自己不可被选中。"
     },
     "upgrades": {
       "level2": {
         "de": "Eine durch Samsara wiederbelebte Einheit erhält 200 Energie.",
         "en": "A unit revived by Samsara gains 200 Energy.",
-        "es": "Una unidad revivida por Samsara obtiene 200 de Energía."
+        "es": "Una unidad revivida por Samsara obtiene 200 de Energía.",
+        "zh": "被轮回复活的单位获得200点能量。"
       },
       "level3": {
         "de": "Stellt jedes Mal, wenn ein Verbündeter fällt, 200 Energie wieder her.",
         "en": "Restores 200 Energy whenever an ally falls.",
-        "es": "Restaura 200 de Energía cada vez que un aliado cae."
+        "es": "Restaura 200 de Energía cada vez que un aliado cae.",
+        "zh": "每当有友方倒下时恢复200点能量。"
       },
       "level4": {
         "de": "Wenn sich 4 oder mehr überlebende Verbündete (Diener ausgenommen) auf dem Schlachtfeld befinden, durchschreitet Mengpo die Grenze zwischen Leben und Tod und wird nicht anvisierbar.",
         "en": "When there are 4 or more surviving allies (excluding minions) on the battlefield, Mengpo becomes untargetable.",
-        "es": "Cuando hay 4 o más aliados supervivientes (excluyendo súbditos) en el campo de batalla, Mengpo atraviesa el límite entre la vida y la muerte, lo que la vuelve inalcanzable."
+        "es": "Cuando hay 4 o más aliados supervivientes (excluyendo súbditos) en el campo de batalla, Mengpo atraviesa el límite entre la vida y la muerte, lo que la vuelve inalcanzable.",
+        "zh": "当战场上有4名或更多存活友方（不含随从）时，孟婆即不可被选中。"
       }
     }
   }

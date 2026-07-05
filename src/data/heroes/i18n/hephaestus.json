@@ -24,17 +24,20 @@
         "level2": {
           "de": "Verbündete im AoE des aktivierten Geräts stellen pro Sekunde 20 Energie und LP in Höhe von 60 % des ANG wieder her.",
           "en": "Allies in the activated device's AoE restore 20 Energy and HP equal to 60% ATK per sec.",
-          "es": "Los aliados en el AdE del dispositivo activado restauran 20 de Energía y PS equivalentes al 60 % del ATQ por segundo."
+          "es": "Los aliados en el AdE del dispositivo activado restauran 20 de Energía y PS equivalentes al 60 % del ATQ por segundo.",
+          "zh": "已激活装置范围内的友方每秒恢复20点能量与相当于攻击力60%的生命值。"
         },
         "level3": {
           "de": "Feinde im AoE des aktivierten Geräts erhalten -20 % ANG und -30 % ANG-GES.",
           "en": "Enemies in the activated device's AoE gain -20% ATK and -30% ATK SPD.",
-          "es": "Los enemigos en el AdE del dispositivo activado obtienen -20 % de ATQ y -30 % de VEL de ATQ."
+          "es": "Los enemigos en el AdE del dispositivo activado obtienen -20 % de ATQ y -30 % de VEL de ATQ.",
+          "zh": "已激活装置范围内的敌人攻击力-20%、攻速-30%。"
         },
         "level4": {
           "de": "Wenn alle Geräte aktiviert sind, wird der von Feinden verursachte SCH um 40 % verringert und alle Verbündeten erhalten einen SCH-Bonus von 50 % und 80 % ANG-GES.",
           "en": "If all devices are activated, decreases DMG dealt by enemies by 40%, and grants all allies 50% DMG bonus and 80% ATK SPD.",
-          "es": "Si todos los dispositivos están activados, reduce el Daño infligido por los enemigos en un 40 % y otorga a todos los aliados un 50 % de bonificación de Daño y un 80 % de VEL de ATQ."
+          "es": "Si todos los dispositivos están activados, reduce el Daño infligido por los enemigos en un 40 % y otorga a todos los aliados un 50 % de bonificación de Daño y un 80 % de VEL de ATQ.",
+          "zh": "若所有装置均被激活，敌方造成的伤害降低40%，且所有友方获得50%伤害加成与80%攻速。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Reduziert Rüstung und M-RES um 30 %.",
           "en": "Reduces Armor and M-RES by 30%.",
-          "es": "Reduce la Armadura y la RES mágica en un 30 %."
+          "es": "Reduce la Armadura y la RES mágica en un 30 %.",
+          "zh": "护甲与魔抗降低30%。"
         },
         "level3": {
           "de": "Die Dauer wird für jedes aktivierte Gerät auf dem Feld um 1 s verlängert.",
           "en": "Duration extends by 1s for each activated device on the field.",
-          "es": "La duración se extiende 1 s por cada dispositivo activado en el campo."
+          "es": "La duración se extiende 1 s por cada dispositivo activado en el campo.",
+          "zh": "场上每有一台已激活的装置，持续时间延长1秒。"
         },
         "level4": {
           "de": "Reduziert Rüstung und M-RES um 50 %.",
           "en": "Reduces Armor and M-RES by 50%.",
-          "es": "Reduce la Armadura y la RES mágica en un 50 %."
+          "es": "Reduce la Armadura y la RES mágica en un 50 %.",
+          "zh": "护甲与魔抗降低50%。"
         }
       }
     },
@@ -77,6 +83,20 @@
       "description": {
         "en": "Hephaestus's Energy Regen +20% (Passive).",
         "zh": "赫菲斯托斯的能量恢复+20%（被动）。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Hephaestus's Energy Regen +30%.",
+          "zh": "赫菲斯托斯的能量恢复+30%。"
+        },
+        "level3": {
+          "en": "Hephaestus's Energy Regen +40%.",
+          "zh": "赫菲斯托斯的能量恢复+40%。"
+        },
+        "level4": {
+          "en": "Hephaestus gains 200 initial Energy on entry.",
+          "zh": "赫菲斯托斯入场时获得200点初始能量。"
+        }
       }
     },
     {
@@ -96,17 +116,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 170 % des ANG wieder her.",
           "en": "Restores HP equal to 170% ATK.",
-          "es": "Restaura PS equivalentes a un 170 % del ATQ."
+          "es": "Restaura PS equivalentes a un 170 % del ATQ.",
+          "zh": "恢复相当于攻击力170%的生命值。"
         },
         "level3": {
           "de": "Für jedes aktivierte Gerät auf dem Feld wird der erlittene SCH um weitere 7,5 % reduziert.",
           "en": "For each activated device on the field, further reduces incoming DMG by 7.5%.",
-          "es": "Por cada dispositivo activado en el campo, reduce aún más el daño recibido en un 7,5 %."
+          "es": "Por cada dispositivo activado en el campo, reduce aún más el daño recibido en un 7,5 %.",
+          "zh": "场上每有一台已激活的装置，额外降低7.5%受到的伤害。"
         },
         "level4": {
           "de": "Die Heilung wird auf LP in Höhe von 200 % des ANG erhöht.",
           "en": "Healing is increased to HP equal to 200% of ATK.",
-          "es": "La sanación aumenta a una cantidad de PS equivalente al 200 % de su ATQ."
+          "es": "La sanación aumenta a una cantidad de PS equivalente al 200 % de su ATQ.",
+          "zh": "治疗量提升至相当于攻击力200%的生命值。"
         }
       }
     }
@@ -115,28 +138,33 @@
     "name": {
       "de": "Unsterbliche Schmiede",
       "en": "Undying Forge",
-      "es": "Forja inmortal"
+      "es": "Forja inmortal",
+      "zh": "不灭熔炉"
     },
     "description": {
       "de": "Bei Kampfbeginn platziert Hephaistos eine Schmiedebank vor sich. Wenn er sich wegbewegt, teleportiert sie ihn zurück und fügt ihm Überladung zu, wodurch er für 5 s handlungsunfähig wird. In der Nähe der Bank tritt Hephaistos in den Zustand [Hingabe] ein, wodurch er unendliche Angriffsreichweite und 30 % SCH-RED erhält.",
       "en": "At combat start, Hephaestus places a forging bench before him. When he moves away, it teleports him back and inflicts Overload, disabling him for 5s. Hephaestus enters the [Dedicated] state near the bench, gaining infinite attack range and 30% DMG RED.",
-      "es": "Al inicio del combate, Hefesto coloca un banco de forja frente a él. Cuando se aleja, lo teletransporta de vuelta y le inflige Sobrecarga, lo que lo deshabilita durante 5 s. Hefesto entra en el estado [Dedicado] cerca del banco, lo que le otorga un alcance de ataque infinito y un 30 % de Reduc. de daño."
+      "es": "Al inicio del combate, Hefesto coloca un banco de forja frente a él. Cuando se aleja, lo teletransporta de vuelta y le inflige Sobrecarga, lo que lo deshabilita durante 5 s. Hefesto entra en el estado [Dedicado] cerca del banco, lo que le otorga un alcance de ataque infinito y un 30 % de Reduc. de daño.",
+      "zh": "战斗开始时，赫菲斯托斯在身前放置一张锻造台。当他离开时，锻造台会将他传送回来并施加过载，使其无法行动5秒。赫菲斯托斯在锻造台附近进入【专注】状态，获得无限攻击距离与30%减伤。"
     },
     "upgrades": {
       "level2": {
         "de": "Im Zustand [Hingabe] ist die CD von Einsicht des Handwerkers und Geschmolzene Aegis um 50 % reduziert.",
         "en": "In the [Dedicated] state, the CD of Artisan's Insight and Molten Aegis -50%.",
-        "es": "En el estado [Dedicado], el TdE de Perspicacia del artesano y Égida fundida se reduce un 50 %."
+        "es": "En el estado [Dedicado], el TdE de Perspicacia del artesano y Égida fundida se reduce un 50 %.",
+        "zh": "处于【专注】状态时，工匠慧眼与熔火圣盾的冷却时间-50%。"
       },
       "level3": {
         "de": "Im Zustand [Hingabe] ist die maximale Energie von Hephaistos um 30 % reduziert.",
         "en": "In the [Dedicated] state, Hephaestus's max Energy -30%.",
-        "es": "En el estado [Dedicado], la Energía máxima de Hefesto se reduce un 30 %."
+        "es": "En el estado [Dedicado], la Energía máxima de Hefesto se reduce un 30 %.",
+        "zh": "处于【专注】状态时，赫菲斯托斯的能量上限-30%。"
       },
       "level4": {
         "de": "Im Zustand [Hingabe] erleidet Hephaistos 60 % weniger SCH.",
         "en": "In the [Dedicated] state, Hephaestus takes 60% less DMG.",
-        "es": "En el estado [Dedicado], Hefesto recibe un 60 % menos de Daño."
+        "es": "En el estado [Dedicado], Hefesto recibe un 60 % menos de Daño.",
+        "zh": "处于【专注】状态时，赫菲斯托斯受到的伤害降低60%。"
       }
     }
   }

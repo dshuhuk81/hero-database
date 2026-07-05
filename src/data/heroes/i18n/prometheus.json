@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhält einen Schild in Höhe von 40 % der max. LP.",
           "en": "Gains a shield equal to 40% of max HP.",
-          "es": "Obtiene un escudo equivalente al 40 % de los PS máximos."
+          "es": "Obtiene un escudo equivalente al 40 % de los PS máximos.",
+          "zh": "获得相当于最大生命值40%的护盾。"
         },
         "level3": {
           "de": "Erhöht Rüstung und M-RES für die Dauer um 30 %.",
           "en": "Increases Armor and M-RES by 30% for the duration.",
-          "es": "Aumenta la armadura y la RES M en un 30 % mientras dure el efecto."
+          "es": "Aumenta la armadura y la RES M en un 30 % mientras dure el efecto.",
+          "zh": "持续期间护甲与魔抗提升30%。"
         },
         "level4": {
           "de": "Erhält einen Schild in Höhe von 50 % der max. LP.",
           "en": "Gains a shield equal to 50% of max HP.",
-          "es": "Obtiene un escudo equivalente al 50 % de los PS máximos."
+          "es": "Obtiene un escudo equivalente al 50 % de los PS máximos.",
+          "zh": "获得相当于最大生命值50%的护盾。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Absorbiert 18 % der aktuellen LP (bis zu 400 % ANG).",
           "en": "Absorbs 18% of current HP (up to 400% of ATK).",
-          "es": "Absorbe el 18 % de los PS actuales (hasta un 400 % de ATQ)."
+          "es": "Absorbe el 18 % de los PS actuales (hasta un 400 % de ATQ).",
+          "zh": "吸取18%当前生命值（上限为攻击力的400%）。"
         },
         "level3": {
           "de": "Das Ziel erleidet bis zum Ende des Kampfes 10% mehr SCH.",
           "en": "Increases DMG taken by the target by 10% until the battle ends.",
-          "es": "Aumenta el Daño recibido por el objetivo en un 10 % hasta que termine la batalla."
+          "es": "Aumenta el Daño recibido por el objetivo en un 10 % hasta que termine la batalla.",
+          "zh": "目标受到的伤害提升10%，持续到战斗结束。"
         },
         "level4": {
           "de": "Absorbiert 25 % der aktuellen LP (bis zu 500 % ANG).",
           "en": "Absorbs 25% of current HP (up to 500% of ATK).",
-          "es": "Absorbe el 25 % de los PS actuales (hasta un 500 % de ATQ)."
+          "es": "Absorbe el 25 % de los PS actuales (hasta un 500 % de ATQ).",
+          "zh": "吸取25%当前生命值（上限为攻击力的500%）。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 200 %.",
           "en": "Increases DMG dealt to 200%.",
-          "es": "Aumenta el daño infligido a 200 %."
+          "es": "Aumenta el daño infligido a 200 %.",
+          "zh": "造成的伤害提升至200%。"
         },
         "level3": {
           "de": "Verringert die Rüstung und M-RES getroffener Feinde für 6 Sek. um 15 %.",
           "en": "Hit enemies have their Armor and M-RES reduced by 15% for 6s.",
-          "es": "La armadura y la RES M de los enemigos golpeados se reducen en un 15 % durante 6s."
+          "es": "La armadura y la RES M de los enemigos golpeados se reducen en un 15 % durante 6s.",
+          "zh": "被命中敌人的护甲与魔抗降低15%，持续6秒。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 250 %.",
           "en": "Increases DMG dealt to 250%.",
-          "es": "Aumenta el Daño infligido al 250 %."
+          "es": "Aumenta el Daño infligido al 250 %.",
+          "zh": "造成的伤害提升至250%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht die SCH-RED auf 12,5 % und im Zustand [Gebunden] auf 25 %.",
           "en": "Increases DMG RED to 12.5%, and to 25% when in the [Bound] state.",
-          "es": "Aumenta la Reduc. de daño a un 12,5 % y a un 25 % cuando está en el estado [Unión]."
+          "es": "Aumenta la Reduc. de daño a un 12,5 % y a un 25 % cuando está en el estado [Unión].",
+          "zh": "减伤提升至12.5%，处于【束缚】状态时提升至25%。"
         },
         "level3": {
           "de": "Erhält zusätzlich 15 % Effekt-RES. Im Zustand [Gebunden] 30 % Effekt-RES.",
           "en": "Additionally gains 15% Effect RES. Gains 30% Effect RES when in the [Bound] state.",
-          "es": "Además, obtiene un 15 % de RES a efectos. Obtiene un 30 % de RES a efectos cuando está en el estado [Unión]."
+          "es": "Además, obtiene un 15 % de RES a efectos. Obtiene un 30 % de RES a efectos cuando está en el estado [Unión].",
+          "zh": "额外获得15%效果抵抗。处于【束缚】状态时获得30%效果抵抗。"
         },
         "level4": {
           "de": "Erhöht die SCH-RED auf 15 % und im Zustand [Gebunden] auf 30 %.",
           "en": "Increases DMG RED to 15%, and to 30% when in the [Bound] state.",
-          "es": "Aumenta la Reduc. de daño a un 15 % y a un 30 % cuando está en el estado [Unión]."
+          "es": "Aumenta la Reduc. de daño a un 15 % y a un 30 % cuando está en el estado [Unión].",
+          "zh": "减伤提升至15%，处于【束缚】状态时提升至30%。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Entfesselter Titan",
       "en": "Titan Unbound",
-      "es": "Titán desencadenado"
+      "es": "Titán desencadenado",
+      "zh": "泰坦解缚"
     },
     "description": {
       "de": "Nach seiner Niederlage hinterlässt Prometheus ein Foltergerät an seiner Stelle. Es kann nicht angreifen oder sich bewegen und übernimmt 200% von Prometheus' max. LP.",
       "en": "Upon defeat, Prometheus leaves shackles on the battlefield. Shackles cannot attack or move, but inherit 200% of Prometheus's max HP.",
-      "es": "Al ser derrotado, Prometeo deja los grilletes en el campo de batalla. Los grilletes no pueden atacar ni moverse, pero heredan el 200 % de los PS máximos de Prometeo."
+      "es": "Al ser derrotado, Prometeo deja los grilletes en el campo de batalla. Los grilletes no pueden atacar ni moverse, pero heredan el 200 % de los PS máximos de Prometeo.",
+      "zh": "普罗米修斯被击败后，在战场上留下枷锁。枷锁无法攻击或移动，但继承普罗米修斯200%的最大生命值。"
     },
     "upgrades": {
       "level2": {
         "de": "Die Fesseln verspotten beim Erscheinen Feinde in einem Radius von 5 Metern für 3 Sek.",
         "en": "The shackles taunt enemies within a 5-meter radius for 3s upon spawning.",
-        "es": "Los grilletes provocan a los enemigos en un radio de 5 metros durante 3s al aparecer."
+        "es": "Los grilletes provocan a los enemigos en un radio de 5 metros durante 3s al aparecer.",
+        "zh": "枷锁出现时，嘲讽5米半径内的敌人3秒。"
       },
       "level3": {
         "de": "Fesseln erben 300 % der max. LP von Prometheus.",
         "en": "Shackles inherit 300% of Prometheus's max HP.",
-        "es": "Los Grilletes heredan el 300 % de los PS máximos de Prometeo."
+        "es": "Los Grilletes heredan el 300 % de los PS máximos de Prometeo.",
+        "zh": "枷锁继承普罗米修斯300%的最大生命值。"
       },
       "level4": {
         "de": "Fesseln erben 400 % der max. LP von Prometheus.",
         "en": "Shackles inherit 400% of Prometheus's max HP.",
-        "es": "Los Grilletes heredan el 400 % de los PS máximos de Prometeo."
+        "es": "Los Grilletes heredan el 400 % de los PS máximos de Prometeo.",
+        "zh": "枷锁继承普罗米修斯400%的最大生命值。"
       }
     }
   }

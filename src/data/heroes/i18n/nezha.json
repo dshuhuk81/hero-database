@@ -24,17 +24,20 @@
         "level2": {
           "de": "Verkörperter Lotus verringert die Rüstung von Feinden in der Nähe für 2 Sek. um 10 %. Dieser Effekt ist stapelbar.",
           "en": "Lotus Embodied reduces the Armor of nearby enemies by 10% for 2s. This effect can stack.",
-          "es": "Loto encarnado reduce la Armadura de los enemigos cercanos en un 10 % durante 2 s. Este efecto se puede acumular."
+          "es": "Loto encarnado reduce la Armadura de los enemigos cercanos en un 10 % durante 2 s. Este efecto se puede acumular.",
+          "zh": "莲花化身使附近敌人的护甲降低10%，持续2秒。该效果可叠加。"
         },
         "level3": {
           "de": "Erhöht erhaltenen Lebensraub auf 30 %.",
           "en": "Increases Lifesteal gained to 30%.",
-          "es": "aumenta el robo de vida obtenido al 30 %."
+          "es": "aumenta el robo de vida obtenido al 30 %.",
+          "zh": "获得的吸血提升至30%。"
         },
         "level4": {
           "de": "Die Dauer von Verkörperter Lotus wird auf 15 Sek. verlängert.",
           "en": "The duration of Lotus Embodied extends to 15s.",
-          "es": "La duración de Loto encarnado se extiende a 15 s."
+          "es": "La duración de Loto encarnado se extiende a 15 s.",
+          "zh": "莲花化身的持续时间延长至15秒。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Der Effekt der Flammenlotus wird auf 15% ATK und 40% Rüstung sowie M-RES erhöht.",
           "en": "Soul Fire now grants 20% ATK and 40% Armor & M-RES.",
-          "es": "Fuego del alma ahora otorga 20 % de ATQ, 40 % de Armadura y RES-M."
+          "es": "Fuego del alma ahora otorga 20 % de ATQ, 40 % de Armadura y RES-M.",
+          "zh": "魂火现在提供20%攻击力与40%护甲和魔抗。"
         },
         "level3": {
           "de": "Beim Zurückholen einer Flammenlotus erhält Nezha zusätzlich einen Schild in Höhe von 200% des ANG.",
           "en": "Gains a shield equal to 200% of ATK when retrieving Soul Fire.",
-          "es": "Obtiene un escudo equivalente al 200 % de su ATQ al recuperar Fuego del alma."
+          "es": "Obtiene un escudo equivalente al 200 % de su ATQ al recuperar Fuego del alma.",
+          "zh": "收回魂火时获得相当于攻击力200%的护盾。"
         },
         "level4": {
           "de": "Der Effekt der Flammenlotus wird auf 20% ANG und 50% Rüstung sowie M-RES erhöht.",
           "en": "Soul Fire now grants 30% ATK and 50% Armor & M-RES.",
-          "es": "Fuego del alma ahora otorga 30 % de ATQ, 50 % de Armadura y RES-M."
+          "es": "Fuego del alma ahora otorga 30 % de ATQ, 50 % de Armadura y RES-M.",
+          "zh": "魂火现在提供30%攻击力与50%护甲和魔抗。"
         }
       }
     },
@@ -83,15 +89,18 @@
       "upgrades": {
         "level2": {
           "es": "Aumenta el daño infligido al 100 % del ATQ. El daño aumenta al 140 % del ATQ en el estado [Loto encarnado].",
-          "en": "Increases DMG dealt to 100% ATK. DMG is increased to 140% ATK in the [Lotus Embodied] state."
+          "en": "Increases DMG dealt to 100% ATK. DMG is increased to 140% ATK in the [Lotus Embodied] state.",
+          "zh": "造成的伤害提升至100%攻击力。处于【莲花化身】状态时提升至140%攻击力。"
         },
         "level3": {
           "es": "Aumenta el ATQ en un 25 % mientras está en Loto encarnado.",
-          "en": "Increases ATK by 25% while in Lotus Embodied."
+          "en": "Increases ATK by 25% while in Lotus Embodied.",
+          "zh": "处于莲花化身状态时攻击力提升25%。"
         },
         "level4": {
           "es": "Aumenta la VEL de ATQ en un 25 % durante 10 s cuando termina la habilidad.",
-          "en": "Increases ATK SPD by 25% for 10s when the skill ends."
+          "en": "Increases ATK SPD by 25% for 10s when the skill ends.",
+          "zh": "技能结束时攻速提升25%，持续10秒。"
         }
       }
     },
@@ -109,15 +118,18 @@
       "upgrades": {
         "level2": {
           "es": "Aumenta el daño infligido al 120 % del ATQ. El daño aumenta al 180 % del ATQ en el estado [Loto encarnado].",
-          "en": "Increases DMG dealt to 120% ATK. DMG is increased to 180% ATK in the [Lotus Embodied] state."
+          "en": "Increases DMG dealt to 120% ATK. DMG is increased to 180% ATK in the [Lotus Embodied] state.",
+          "zh": "造成的伤害提升至120%攻击力。处于【莲花化身】状态时提升至180%攻击力。"
         },
         "level3": {
           "es": "Los enemigos golpeados por Nezha en el estado [Loto encarnado] reciben un 20 % más de daño de él durante 8 s.",
-          "en": "Enemies hit by Nezha in the [Lotus Embodied] state take 20% more DMG from him for 8s."
+          "en": "Enemies hit by Nezha in the [Lotus Embodied] state take 20% more DMG from him for 8s.",
+          "zh": "处于【莲花化身】状态时被哪吒命中的敌人，受到他的伤害提升20%，持续8秒。"
         },
         "level4": {
           "es": "Ahora puede atraer hasta a 3 enemigos.",
-          "en": "He can now pull up to 3 enemies."
+          "en": "He can now pull up to 3 enemies.",
+          "zh": "现在最多可拉近3名敌人。"
         }
       }
     }
@@ -126,28 +138,33 @@
     "name": {
       "de": "Wut der Wiedergeburt",
       "en": "Rage of Reincarnation",
-      "es": "Furia de la reencarnación"
+      "es": "Furia de la reencarnación",
+      "zh": "涅槃之怒"
     },
     "description": {
       "de": "Jedes Mal, wenn ein Verbündeter (Diener ausgenommen) im Kampf fällt, stellt Nezha 150 Energie wieder her, erhöht den verursachten SCH um 15% und reduziert den erlittenen SCH um 10% für 25 Sekunden. Dieser Effekt ist bis zu 5-mal stapelbar.",
       "en": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 15%, and reduces DMG taken by 10% for 25s. This effect can stack up to 5 times.",
-      "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 15% y reduce el daño recibido en un 10% durante 25 s. Este efecto se puede acumular hasta 5 veces."
+      "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 15% y reduce el daño recibido en un 10% durante 25 s. Este efecto se puede acumular hasta 5 veces.",
+      "zh": "每当有友方（不含随从）在战斗中倒下时，哪吒恢复150点能量，造成的伤害提升15%，受到的伤害降低10%，持续25秒。该效果最多叠加5次。"
     },
     "upgrades": {
       "level2": {
         "de": "Jedes Mal, wenn ein Verbündeter (Diener ausgenommen) im Kampf fällt, stellt Nezha 150 Energie wieder her, erhöht den verursachten SCH um 30% und reduziert den erlittenen SCH um 10% für 25 Sekunden. Dieser Effekt ist bis zu 5-mal stapelbar.",
         "en": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 30%, and reduces DMG taken by 10% for 25s. This effect can stack up to 5 times.",
-        "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 30% y reduce el daño recibido en un 10% durante 25 s. Este efecto se puede acumular hasta 5 veces."
+        "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 30% y reduce el daño recibido en un 10% durante 25 s. Este efecto se puede acumular hasta 5 veces.",
+        "zh": "每当有友方（不含随从）在战斗中倒下时，哪吒恢复150点能量，造成的伤害提升30%，受到的伤害降低10%，持续25秒。该效果最多叠加5次。"
       },
       "level3": {
         "de": "Jedes Mal, wenn ein Verbündeter (Diener ausgenommen) im Kampf fällt, stellt Nezha 150 Energie wieder her, erhöht den verursachten SCH um 30% und reduziert den erlittenen SCH um 25% für 25 Sekunden. Dieser Effekt ist bis zu 5-mal stapelbar.",
         "en": "Whenever an ally (excluding minions) falls in battle, Nezha restores 150 Energy, increases DMG dealt by 30%, and reduces DMG taken by 25% for 25s. This effect can stack up to 5 times.",
-        "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 30% y reduce el daño recibido en un 25% durante 25 s. Este efecto se puede acumular hasta 5 veces."
+        "es": "Cada vez que un aliado (excluyendo súbditos) cae en batalla, Nezha restaura 150 de Energía, aumenta el daño infligido en un 30% y reduce el daño recibido en un 25% durante 25 s. Este efecto se puede acumular hasta 5 veces.",
+        "zh": "每当有友方（不含随从）在战斗中倒下时，哪吒恢复150点能量，造成的伤害提升30%，受到的伤害降低25%，持续25秒。该效果最多叠加5次。"
       },
       "level4": {
         "de": "Erhält zu Kampfbeginn 300 Bonus-Energie und erhöht die Energieaufladung um 30 %.",
         "en": "Gains 300 bonus Energy and increases Energy Regen by 30% at combat start.",
-        "es": "Obtiene 300 de Energía adicional y aumenta la Recarga de energía en un 30 % al inicio del combate."
+        "es": "Obtiene 300 de Energía adicional y aumenta la Recarga de energía en un 30 % al inicio del combate.",
+        "zh": "战斗开始时获得300点额外能量，能量恢复提升30%。"
       }
     }
   }

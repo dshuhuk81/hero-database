@@ -24,17 +24,20 @@
         "level2": {
           "de": "Beim Einsatz verursacht er 5 % mehr SCH für jede 100 Energie des Ziels.",
           "en": "When cast, it deals 5% more DMG for every 100 Energy the target has.",
-          "es": "Al lanzarlo, inflige un 5 % más de Daño por cada 100 de Energía que tenga el objetivo."
+          "es": "Al lanzarlo, inflige un 5 % más de Daño por cada 100 de Energía que tenga el objetivo.",
+          "zh": "施放时，目标每拥有100点能量，伤害提升5%。"
         },
         "level3": {
           "de": "Erhöht den SCH pro Treffer auf 60 % ANG.",
           "en": "Increases DMG per hit to 60% ATK.",
-          "es": "Aumenta el daño por golpe a 60 % de ATQ."
+          "es": "Aumenta el daño por golpe a 60 % de ATQ.",
+          "zh": "每次伤害提升至60%攻击力。"
         },
         "level4": {
           "de": "Beim Einsatz verursacht er 10 % mehr SCH für jede 100 Energie des Ziels.",
           "en": "When cast, it deals 10% more DMG for every 100 Energy the target has.",
-          "es": "Al lanzarlo, inflige un 10 % más de Daño por cada 100 de Energía que tenga el objetivo."
+          "es": "Al lanzarlo, inflige un 10 % más de Daño por cada 100 de Energía que tenga el objetivo.",
+          "zh": "施放时，目标每拥有100点能量，伤害提升10%。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht die Dauer der Benommenheit auf 7 Sek.",
           "en": "Increases the duration of Daze to 7s.",
-          "es": "Aumenta la duración del Aturdimiento a 7s."
+          "es": "Aumenta la duración del Aturdimiento a 7s.",
+          "zh": "恍惚的持续时间延长至7秒。"
         },
         "level3": {
           "de": "Feinde können keine Energie regenerieren, wenn sie benommen sind.",
           "en": "Enemies cannot regen Energy when dazed.",
-          "es": "Los enemigos no pueden regenerar Energía cuando están aturdidos."
+          "es": "Los enemigos no pueden regenerar Energía cuando están aturdidos.",
+          "zh": "恍惚期间敌人无法恢复能量。"
         },
         "level4": {
           "de": "Wenn ein Gegner durch einen Angriff aus dem Schlaf geweckt wird, verursacht der Weckangriff 1,5-fachen SCH.",
           "en": "If a dazed enemy Deity is awakened by an attack, the attack deals 1.5 times the DMG.",
-          "es": "Si una Deidad enemiga aturdida es despertada por un ataque, el ataque inflige 1,5 veces el Daño."
+          "es": "Si una Deidad enemiga aturdida es despertada por un ataque, el ataque inflige 1,5 veces el Daño.",
+          "zh": "若恍惚中的敌方神祇被攻击唤醒，该次攻击造成1.5倍伤害。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht die Dauer des Schweigens auf 5 Sek.",
           "en": "Increases the silence duration to 5s.",
-          "es": "Aumenta la duración del silencio a 5s."
+          "es": "Aumenta la duración del silencio a 5s.",
+          "zh": "沉默时间延长至5秒。"
         },
         "level3": {
           "de": "Dieser Effekt kann nur einmal alle 10 Sek. ausgelöst werden.",
           "en": "This effect can only trigger once every 10s.",
-          "es": "Este efecto solo se puede activar una vez cada 10 s."
+          "es": "Este efecto solo se puede activar una vez cada 10 s.",
+          "zh": "该效果每10秒即可触发一次。"
         },
         "level4": {
           "de": "Wenn der Effekt ausgelöst wird, stellt Pan 100 Energie wieder her.",
           "en": "When the effect is triggered, Pan restores 100 Energy.",
-          "es": "Cuando se activa el efecto, Pan restaura 100 de Energía."
+          "es": "Cuando se activa el efecto, Pan restaura 100 de Energía.",
+          "zh": "效果触发时，潘恢复100点能量。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "SCH erhöht sich auf 220 % des ANG.",
           "en": "DMG increases to 220% of ATK.",
-          "es": "El daño aumenta a un 220 % del ATQ."
+          "es": "El daño aumenta a un 220 % del ATQ.",
+          "zh": "伤害提升至220%攻击力。"
         },
         "level3": {
           "de": "Die Dauer wird auf 7 Sek. verlängert.",
           "en": "Duration extends to 7s.",
-          "es": "La duración se extiende a 7 s."
+          "es": "La duración se extiende a 7 s.",
+          "zh": "持续时间延长至7秒。"
         },
         "level4": {
           "de": "Die ANG-GES des Feindes wird für 4 Sek. nach Ende von Terror um 40 % verringert.",
           "en": "TThe enemy's ATK SPD is reduced by 40% within 4s after Terror ends.",
-          "es": "La VEL de ATQ del enemigo se reduce en un 40 % durante los 4s posteriores al final del Terror."
+          "es": "La VEL de ATQ del enemigo se reduce en un 40 % durante los 4s posteriores al final del Terror.",
+          "zh": "恐惧结束后4秒内，敌人的攻速降低40%。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Band der Ziege",
       "en": "The Goat's Bond",
-      "es": "Vínculo de la cabra"
+      "es": "Vínculo de la cabra",
+      "zh": "山羊之契"
     },
     "description": {
       "de": "Jeder von Pan angewendete Debuff verursacht SCH in Höhe von 60 % seines ANG pro Sek. am Träger.",
       "en": "Any debuff applied by Pan deals 60% of his ATK as DMG per sec to its bearer.",
-      "es": "Cualquier desventaja aplicada por Pan inflige un 60 % de su ATQ como Daño por segundo al portador."
+      "es": "Cualquier desventaja aplicada por Pan inflige un 60 % de su ATQ como Daño por segundo al portador.",
+      "zh": "潘施加的任何减益效果，每秒对其承受者造成相当于他攻击力60%的伤害。"
     },
     "upgrades": {
       "level2": {
         "de": "Jeder von Pan angewendete Debuff verursacht SCH in Höhe von 80 % seines ANG pro Sek. am Träger.",
         "en": "Any debuff applied by Pan deals 80% of his ATK as DMG per sec to the bearer.",
-        "es": "Cualquier desventaja aplicada por Pan inflige un 80 % de su ATQ como Daño por segundo al portador."
+        "es": "Cualquier desventaja aplicada por Pan inflige un 80 % de su ATQ como Daño por segundo al portador.",
+        "zh": "潘施加的任何减益效果，每秒对承受者造成相当于他攻击力80%的伤害。"
       },
       "level3": {
         "de": "Für jeden Debuff auf dem Ziel wird der verursachte SCH an diesem Ziel um 50 % erhöht, bis zu 4-mal stapelbar.",
         "en": "For each debuff on the target, DMG dealt to that target is increased by 50% stacking up to 4 times.",
-        "es": "Por cada desventaja en el objetivo, el Daño infligido a ese objetivo aumenta en un 50 %, acumulándose hasta 4 veces."
+        "es": "Por cada desventaja en el objetivo, el Daño infligido a ese objetivo aumenta en un 50 %, acumulándose hasta 4 veces.",
+        "zh": "目标每有一个减益效果，对该目标造成的伤害提升50%，最多叠加4次。"
       },
       "level4": {
         "de": "Jeder von Pan angewendete Debuff verursacht SCH in Höhe von 100 % seines ANG pro Sek. am Träger.",
         "en": "Any debuff applied by Pan deals 100% of his ATK as DMG per sec to the bearer.",
-        "es": "Cualquier desventaja aplicada por Pan inflige un 100 % de su ATQ como Daño por segundo al portador."
+        "es": "Cualquier desventaja aplicada por Pan inflige un 100 % de su ATQ como Daño por segundo al portador.",
+        "zh": "潘施加的任何减益效果，每秒对承受者造成相当于他攻击力100%的伤害。"
       }
     }
   }

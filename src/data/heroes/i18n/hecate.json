@@ -15,6 +15,20 @@
       "description": {
         "en": "Gains 200 Energy upon entering battle.",
         "zh": "进入战斗时获得200点能量。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "She steals 2% max HP and 2% ATK from all enemies when casting her Ultimate, up to 100% of her ATK and HP. She grows in size with each steal. (Unlock at Relic Lv.10)",
+          "zh": "施放大招时，从所有敌人处各窃取2%最大生命值与2%攻击力，上限为她攻击力与生命值的100%。每次窃取都会使她的体型变大。（圣物10级解锁）"
+        },
+        "level3": {
+          "en": "Plunders 3% of the max HP and ATK. (Unlock at Relic Lv.20)",
+          "zh": "掠夺3%的最大生命值与攻击力。（圣物20级解锁）"
+        },
+        "level4": {
+          "en": "Plunders 4% of the max HP and ATK. (Unlock at Relic Lv.30)",
+          "zh": "掠夺4%的最大生命值与攻击力。（圣物30级解锁）"
+        }
       }
     },
     {
@@ -34,17 +48,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Sekunde auf 120 % ANG.",
           "en": "Increases DMG per sec to 120% ATK.",
-          "es": "Aumenta el daño por segundo a 120 % de ATQ."
+          "es": "Aumenta el daño por segundo a 120 % de ATQ.",
+          "zh": "每秒伤害提升至120%攻击力。"
         },
         "level3": {
           "de": "Stellt sofort bei Verursachen von SCH LP in Höhe von 50 % SCH wieder her.",
           "en": "Restores HP equal to 50% of the DMG immediately upon dealing DMG.",
-          "es": "Restaura una cantidad de PS equivalente al 50 % del Daño inmediatamente después de infligir Daño."
+          "es": "Restaura una cantidad de PS equivalente al 50 % del Daño inmediatamente después de infligir Daño.",
+          "zh": "造成伤害时立即恢复相当于该伤害50%的生命值。"
         },
         "level4": {
           "de": "Erhöht den SCH pro Sekunde auf 150 % ANG.",
           "en": "Increases DMG per sec to 150% ATK.",
-          "es": "Aumenta el daño por segundo a 150 % de ATQ."
+          "es": "Aumenta el daño por segundo a 150 % de ATQ.",
+          "zh": "每秒伤害提升至150%攻击力。"
         }
       }
     },
@@ -65,17 +82,20 @@
         "level2": {
           "de": "Erhöht den Lebensraub auf 100 %.",
           "en": "Increases Lifesteal to 100%.",
-          "es": "Aumenta el Robo de vida al 100 %."
+          "es": "Aumenta el Robo de vida al 100 %.",
+          "zh": "吸血提升至100%。"
         },
         "level3": {
           "de": "Erhöht den verursachten SCH alle 0,5 s um 75 % ANG.",
           "en": "Increases DMG dealt to 75% ATK every 0.5s.",
-          "es": "Aumenta el daño infligido en 75 % de ATQ cada 0.5 s."
+          "es": "Aumenta el daño infligido en 75 % de ATQ cada 0.5 s.",
+          "zh": "每0.5秒造成的伤害提升至75%攻击力。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH alle 0,5 s auf 90 % ANG.",
           "en": "Increases DMG dealt to 90% ATK every 0.5s.",
-          "es": "Aumenta el daño infligido a 90 % de ATQ cada 0.5 s."
+          "es": "Aumenta el daño infligido a 90 % de ATQ cada 0.5 s.",
+          "zh": "每0.5秒造成的伤害提升至90%攻击力。"
         }
       }
     },
@@ -96,19 +116,46 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 240 % ANG.",
           "en": "Increases DMG dealt to 240% ATK.",
-          "es": "Aumenta el daño infligido a 240 % de ATQ."
+          "es": "Aumenta el daño infligido a 240 % de ATQ.",
+          "zh": "造成的伤害提升至240%攻击力。"
         },
         "level3": {
           "de": "Erhöht den verursachten SCH auf 260 % ANG.",
           "en": "Increases DMG dealt to 260% ATK.",
-          "es": "Aumenta el daño infligido a 260 % de ATQ."
+          "es": "Aumenta el daño infligido a 260 % de ATQ.",
+          "zh": "造成的伤害提升至260%攻击力。"
         },
         "level4": {
           "de": "Zugefügter SCH wird auf 280% des ANG erhöht und die Betäubungsdauer wird auf 3 Sekunden erhöht.",
           "en": "Increases DMG dealt to 280% ATK and stun duration to 3s. (Unlocks at Lv.281)",
-          "es": "Aumenta el Daño infligido al 280 % de su ATQ y la duración del aturdimiento a 3s."
+          "es": "Aumenta el Daño infligido al 280 % de su ATQ y la duración del aturdimiento a 3s.",
+          "zh": "造成的伤害提升至280%攻击力，眩晕时间延长至3秒。（281级解锁）"
         }
       }
     }
-  ]
+  ],
+  "relic": {
+    "name": {
+      "en": "Fall to Shadow!",
+      "zh": "堕入暗影！"
+    },
+    "description": {
+      "en": "Enhances Fall to Shadow!, enabling HP and ATK plunder when casting the Ultimate.",
+      "zh": "强化堕入暗影！，施放大招时可掠夺生命值与攻击力。"
+    },
+    "upgrades": {
+      "level2": {
+        "en": "Unlocks HP & ATK steal at 2%. (Relic Lv.10)",
+        "zh": "解锁2%的生命值与攻击力窃取。（圣物10级解锁）"
+      },
+      "level3": {
+        "en": "Increases plunder to 3%. (Relic Lv.20)",
+        "zh": "掠夺提升至3%。（圣物20级解锁）"
+      },
+      "level4": {
+        "en": "Increases plunder to 4%. (Relic Lv.30)",
+        "zh": "掠夺提升至4%。（圣物30级解锁）"
+      }
+    }
+  }
 }

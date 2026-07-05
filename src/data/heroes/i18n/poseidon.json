@@ -15,6 +15,20 @@
       "description": {
         "en": "Gains 200 Energy upon entering battle. (Unlock at Relic Lv.1)",
         "zh": "进入战斗时获得200点能量。（圣物1级解锁）"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Poseidon casts Rogue Wave upon entering battle, but it deals 50% reduced DMG. (Unlock at Relic Lv.10)",
+          "zh": "波塞冬进入战斗时施放惊涛骇浪，但伤害降低50%。（圣物10级解锁）"
+        },
+        "level3": {
+          "en": "Now deals 80% of DMG. (Unlock at Relic Lv.20)",
+          "zh": "伤害提升至80%。（圣物20级解锁）"
+        },
+        "level4": {
+          "en": "Casting Rogue Wave resets the CD of Waterspout. (Unlock at Relic Lv.30)",
+          "zh": "施放惊涛骇浪时重置水龙卷的冷却时间。（圣物30级解锁）"
+        }
       }
     },
     {
@@ -34,17 +48,20 @@
         "level2": {
           "de": "Wenn die beiden Wellen in der Mitte zusammenstoßen, entsteht eine massive Welle, die Feinde in der Mitte zu Boden wirft und zusätzlichen SCH in Höhe von 100% ANG verursacht.",
           "en": "When the two tidal waves meet in the middle, they create a violent swell, knocking down enemies at the center and dealing additional DMG equal to 100% of ATK.",
-          "es": "Cuando las dos marejadas se encuentran en el centro, crean una violenta oleada que derriba a los enemigos en el centro e inflige un Daño adicional equivalente al 100 % de su ATQ."
+          "es": "Cuando las dos marejadas se encuentran en el centro, crean una violenta oleada que derriba a los enemigos en el centro e inflige un Daño adicional equivalente al 100 % de su ATQ.",
+          "zh": "两道潮汐在中间相遇时掀起巨浪，击倒中心的敌人并额外造成相当于攻击力100%的伤害。"
         },
         "level3": {
           "de": "Erhöht den verursachten SCH auf 220 %.",
           "en": "Increases DMG dealt to 220%.",
-          "es": "Aumenta el daño infligido a 220 %."
+          "es": "Aumenta el daño infligido a 220 %.",
+          "zh": "造成的伤害提升至220%。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 250 %.",
           "en": "Increases DMG dealt to 250%.",
-          "es": "Aumenta el Daño infligido al 250 %."
+          "es": "Aumenta el Daño infligido al 250 %.",
+          "zh": "造成的伤害提升至250%。"
         }
       }
     },
@@ -65,17 +82,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 220 %.",
           "en": "Increases DMG dealt to 220%.",
-          "es": "Aumenta el daño infligido a 220 %."
+          "es": "Aumenta el daño infligido a 220 %.",
+          "zh": "造成的伤害提升至220%。"
         },
         "level3": {
           "de": "Verringert außerdem die M-RES des Ziels um 20 %.",
           "en": "Also reduces the target's M-RES by 20%.",
-          "es": "También reduce la RES M del objetivo en un 20 %."
+          "es": "También reduce la RES M del objetivo en un 20 %.",
+          "zh": "还使目标的魔抗降低20%。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 240 %.",
           "en": "Increases DMG dealt to 240%.",
-          "es": "Aumenta el Daño infligido al 240 %."
+          "es": "Aumenta el Daño infligido al 240 %.",
+          "zh": "造成的伤害提升至240%。"
         }
       }
     },
@@ -93,15 +113,18 @@
       "upgrades": {
         "level2": {
           "es": "Aumenta el daño infligido a 230 %.",
-          "en": "Increases DMG dealt to 230%."
+          "en": "Increases DMG dealt to 230%.",
+          "zh": "造成的伤害提升至230%。"
         },
         "level3": {
           "es": "Aumenta la energía restaurada a 150.",
-          "en": "Increases Energy restored to 150."
+          "en": "Increases Energy restored to 150.",
+          "zh": "恢复的能量提升至150点。"
         },
         "level4": {
           "es": "Le otorga un escudo equivalente al 200 % de su ATQ.",
-          "en": "Grants him a shield equal to 200% of ATK. (Unlocks at Lv.261)"
+          "en": "Grants him a shield equal to 200% of ATK. (Unlocks at Lv.261)",
+          "zh": "为自己提供相当于攻击力200%的护盾。（261级解锁）"
         }
       }
     }
@@ -110,28 +133,33 @@
     "name": {
       "de": "Gezeiten-Aegis",
       "en": "Tidal Aegis",
-      "es": "Égida de la marea"
+      "es": "Égida de la marea",
+      "zh": "潮汐圣盾"
     },
     "description": {
       "de": "Poseidon sammelt die Energie des Ozeans und erhält für 5 Sek. einen Schild in Höhe von 270 % seines ANG.",
       "en": "Poseidon gathers the ocean energy, gaining a shield equal to 270% of ATK for 5s.",
-      "es": "Poseidón reúne la energía del océano y obtiene un escudo equivalente al 270 % de su ATQ durante 5s."
+      "es": "Poseidón reúne la energía del océano y obtiene un escudo equivalente al 270 % de su ATQ durante 5s.",
+      "zh": "波塞冬汇聚海洋之力，获得相当于攻击力270%的护盾，持续5秒。"
     },
     "upgrades": {
       "level2": {
         "de": "Die Schildstärke erhöht sich auf 300 %.",
         "en": "Shield Strength increases to 300%.",
-        "es": "La fuerza del Escudo aumenta a 300 %."
+        "es": "La fuerza del Escudo aumenta a 300 %.",
+        "zh": "护盾强度提升至300%。"
       },
       "level3": {
         "de": "Solange der Schild aktiv ist, wird sein ANG ebenfalls um 10% erhöht.",
         "en": "Increases ATK by 10% while the shield is active.",
-        "es": "Aumenta el ATQ en un 10 % mientras el escudo está activo."
+        "es": "Aumenta el ATQ en un 10 % mientras el escudo está activo.",
+        "zh": "护盾存在期间攻击力提升10%。"
       },
       "level4": {
         "de": "Die Schildstärke erhöht sich auf 330 %.",
         "en": "Shield Strength increases to 330%. (Unlocks at Lv.281)",
-        "es": "La fuerza del Escudo aumenta a 330 %."
+        "es": "La fuerza del Escudo aumenta a 330 %.",
+        "zh": "护盾强度提升至330%。（281级解锁）"
       }
     }
   }

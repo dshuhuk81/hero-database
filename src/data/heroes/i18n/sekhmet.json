@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den SCH des letzten Treffers auf 150 % des ANG.",
           "en": "Increases the last hit's DMG to 150% of ATK.",
-          "es": "Aumenta el daño del último golpe a un 150 % del ATQ."
+          "es": "Aumenta el daño del último golpe a un 150 % del ATQ.",
+          "zh": "最后一击的伤害提升至150%攻击力。"
         },
         "level3": {
           "de": "SCH der ersten 2 Treffer wird auf 90% ANG erhöht.",
           "en": "Increases DMG of the first 2 hits to 90% of ATK.",
-          "es": "Aumenta el Daño de los primeros 2 golpes al 90 % de su ATQ."
+          "es": "Aumenta el Daño de los primeros 2 golpes al 90 % de su ATQ.",
+          "zh": "前2次攻击的伤害提升至90%攻击力。"
         },
         "level4": {
           "de": "SCH des letzten Treffers wird auf 180% ANG erhöht.",
           "en": "Increases the last hit's DMG to 180% of ATK.",
-          "es": "Aumenta el Daño del último golpe al 180 % de su ATQ."
+          "es": "Aumenta el Daño del último golpe al 180 % de su ATQ.",
+          "zh": "最后一击的伤害提升至180%攻击力。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "SCH des letzten Schlags wird auf 500% erhöht.",
           "en": "Increases the last hit's DMG to 500% of ATK.",
-          "es": "Aumenta el Daño del último golpe al 500 %."
+          "es": "Aumenta el Daño del último golpe al 500 %.",
+          "zh": "最后一击的伤害提升至500%攻击力。"
         },
         "level3": {
           "de": "Der erlittene SCH wird während der Dauer der Fähigkeit um 50% reduziert.",
           "en": "Takes 50% reduced DMG during the skill.",
-          "es": "Recibe un 50 % de Daño reducido durante la habilidad."
+          "es": "Recibe un 50 % de Daño reducido durante la habilidad.",
+          "zh": "技能期间受到的伤害降低50%。"
         },
         "level4": {
           "de": "Der letzte Treffer verursacht zusätzlichen SCH in Höhe von 10 % der verlorenen LP des Ziels (bis zu 250 % ihres ANG).",
           "en": "The last hit deals extra DMG equal to 10% of the target's lost HP (up to 250% of her ATK).",
-          "es": "El último golpe inflige un Daño extra equivalente al 10 % de los PS perdidos del objetivo (hasta un 250 % de su ATQ)."
+          "es": "El último golpe inflige un Daño extra equivalente al 10 % de los PS perdidos del objetivo (hasta un 250 % de su ATQ).",
+          "zh": "最后一击额外造成相当于目标已损失生命值10%的伤害（上限为她攻击力的250%）。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Alle 5 Stapel erhöhen zusätzlich die ANG-GES um 10%.",
           "en": "Every 5 stacks grant an extra 10% ATK SPD.",
-          "es": "Cada 5 acumulaciones otorgan un 10 % extra de VEL de ATQ."
+          "es": "Cada 5 acumulaciones otorgan un 10 % extra de VEL de ATQ.",
+          "zh": "每5层额外提供10%攻速。"
         },
         "level3": {
           "de": "Jeder Stapel erhöht den eigenen ANG um 7,5%.",
           "en": "Each stack increases her ATK by 7.5%.",
-          "es": "Cada acumulación aumenta su ATQ un 7,5 %."
+          "es": "Cada acumulación aumenta su ATQ un 7,5 %.",
+          "zh": "每层使她的攻击力提升7.5%。"
         },
         "level4": {
           "de": "Bei max. Stapeln betäuben Normalangriffe das Ziel zusätzlich für 0,5 Sek.",
           "en": "At maximum stacks, Normal Attacks also stun the target for 0.5s.",
-          "es": "Con el máximo de acumulaciones, los Ataques normales también aturden al objetivo durante 0,5s."
+          "es": "Con el máximo de acumulaciones, los Ataques normales también aturden al objetivo durante 0,5s.",
+          "zh": "叠满时，普通攻击还会眩晕目标0.5秒。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Während des Duells wird SCH, der dem Duellgegner zugefügt wird, um 10% erhöht.",
           "en": "Increases DMG dealt to the duel target by 10% during the duel.",
-          "es": "Aumenta un 10 % el Daño infligido al objetivo del duelo durante el mismo."
+          "es": "Aumenta un 10 % el Daño infligido al objetivo del duelo durante el mismo.",
+          "zh": "决斗期间，对决斗目标造成的伤害提升10%。"
         },
         "level3": {
           "de": "Erhöht ihren Lebensraub während des Duells um 20 %.",
           "en": "Increases her Lifesteal by 20% during the duel.",
-          "es": "Aumenta su Robo de vida un 20 % durante el duelo."
+          "es": "Aumenta su Robo de vida un 20 % durante el duelo.",
+          "zh": "决斗期间，她的吸血提升20%。"
         },
         "level4": {
           "de": "Die Dauer wird auf 10 Sek. verlängert.",
           "en": "Duration extends to 10s.",
-          "es": "La duración se extiende a 10 s."
+          "es": "La duración se extiende a 10 s.",
+          "zh": "持续时间延长至10秒。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Band von Leben und Tod",
       "en": "Bond of Life and Death",
-      "es": "Vínculo de vida y muerte"
+      "es": "Vínculo de vida y muerte",
+      "zh": "生死之契"
     },
     "description": {
       "de": "Wenn Brüllende Wut vollständig gestapelt ist, verursachen Normalangriffe zusätzlichen SCH in Höhe von 10 % der max. LP des Ziels (bis zu 200 % ihres ANG).",
       "en": "When Roaring Fury is fully stacked, Normal Attacks deal extra DMG equal to 10% of the target's max HP (up to 200% of her ATK).",
-      "es": "Cuando Furia rugiente está al máximo de acumulaciones, los Ataques normales infligen un Daño extra equivalente al 10 % de los PS máximos del objetivo (hasta un 200 % de su ATQ)."
+      "es": "Cuando Furia rugiente está al máximo de acumulaciones, los Ataques normales infligen un Daño extra equivalente al 10 % de los PS máximos del objetivo (hasta un 200 % de su ATQ).",
+      "zh": "咆哮之怒叠满时，普通攻击额外造成相当于目标最大生命值10%的伤害（上限为她攻击力的200%）。"
     },
     "upgrades": {
       "level2": {
         "de": "Der Effekt von [Lust auf einen Kampf?] wird verstärkt, sodass der Gegner keine SCH-Reduktion mehr erhält.",
         "en": "Enhances You Challenge Me?: The target cannot gain DMG RED.",
-        "es": "Mejora el efecto de ¿Me desafías?: El objetivo no puede obtener Reduc. de daño."
+        "es": "Mejora el efecto de ¿Me desafías?: El objetivo no puede obtener Reduc. de daño.",
+        "zh": "强化你敢挑战我？：目标无法获得减伤。"
       },
       "level3": {
         "de": "Forderst du mich heraus?: Erhöht die max. LP und den ANG während des Duells für jeden Verbündeten in der Nähe um 6 %.",
         "en": "You Challenge Me?: Increases the max HP and ATK by 6% during the duel for every nearby ally.",
-        "es": "¿Me desafías?: Aumenta los PS máx. y el ATQ en un 6 % durante el duelo por cada aliado cercano."
+        "es": "¿Me desafías?: Aumenta los PS máx. y el ATQ en un 6 % durante el duelo por cada aliado cercano.",
+        "zh": "你敢挑战我？：决斗期间，附近每有一名友方，最大生命值与攻击力提升6%。"
       },
       "level4": {
         "de": "Forderst du mich heraus?: Erhöht die max. LP und den ANG während des Duells für jeden Verbündeten in der Nähe um 8 %.",
         "en": "You Challenge Me?: Increases the max HP and ATK by 8% during the duel for every nearby ally.",
-        "es": "¿Me desafías?: Aumenta los PS máx. y el ATQ en un 8 % durante el duelo por cada aliado cercano."
+        "es": "¿Me desafías?: Aumenta los PS máx. y el ATQ en un 8 % durante el duelo por cada aliado cercano.",
+        "zh": "你敢挑战我？：决斗期间，附近每有一名友方，最大生命值与攻击力提升8%。"
       }
     }
   }

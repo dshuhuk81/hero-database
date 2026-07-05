@@ -24,17 +24,20 @@
         "level2": {
           "de": "Jede Heilung stellt LP in Höhe von 160% des ANG wieder her.",
           "en": "Each heal restores HP equal to 160% of ATK.",
-          "es": "Cada sanación restaura PS equivalentes al 160 % de su ATQ."
+          "es": "Cada sanación restaura PS equivalentes al 160 % de su ATQ.",
+          "zh": "每次治疗恢复相当于攻击力160%的生命值。"
         },
         "level3": {
           "de": "Geheilte Verbündete erhalten für 5 Sek. eine um 20 % erhöhte KRIT-Rate. Dieser Effekt kann auf demselben Ziel nicht gestapelt werden.",
           "en": "Allies healed gain 20% increased CRIT Rate for 5s. This effect cannot stack on the same target.",
-          "es": "Los aliados sanados obtienen un 20 % más de Tasa de crít. durante 5s. Este efecto no se puede acumular en el mismo objetivo."
+          "es": "Los aliados sanados obtienen un 20 % más de Tasa de crít. durante 5s. Este efecto no se puede acumular en el mismo objetivo.",
+          "zh": "被治疗的友方暴击率提升20%，持续5秒。该效果不能在同一目标上叠加。"
         },
         "level4": {
           "de": "Heilt jetzt 8-mal.",
           "en": "It now heals 8 times.",
-          "es": "Ahora sana 8 veces."
+          "es": "Ahora sana 8 veces.",
+          "zh": "改为治疗8次。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht die geteilten Attribute auf 12,5 %.",
           "en": "Increases the shared attributes to 12.5%.",
-          "es": "Aumenta los atributos compartidos a un 12,5 %."
+          "es": "Aumenta los atributos compartidos a un 12,5 %.",
+          "zh": "共享的属性提升至12.5%。"
         },
         "level3": {
           "de": "Wenn ein verbundener Verbündeter fällt, überträgt er 50 % seiner verbleibenden Energie auf den anderen.",
           "en": "If one linked ally falls, they transfer 50% of their remaining Energy to the other.",
-          "es": "Si un aliado vinculado cae, transfiere un 50 % de su energía restante al otro."
+          "es": "Si un aliado vinculado cae, transfiere un 50 % de su energía restante al otro.",
+          "zh": "若一名被红线牵连的友方倒下，其将剩余能量的50%转移给另一方。"
         },
         "level4": {
           "de": "Erhöht die geteilten Attribute auf 15 %.",
           "en": "Increases the shared attributes to 15%.",
-          "es": "Aumenta los atributos compartidos a un 15 %."
+          "es": "Aumenta los atributos compartidos a un 15 %.",
+          "zh": "共享的属性提升至15%。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht den ANG-Bonus auf 20 %.",
           "en": "Increases ATK bonus to 20%.",
-          "es": "aumenta la bonificación de ATQ al 20 %."
+          "es": "aumenta la bonificación de ATQ al 20 %.",
+          "zh": "攻击力加成提升至20%。"
         },
         "level3": {
           "de": "Die Energieaufladung erhöht sich auf 180.",
           "en": "Energy Regen increases to 180.",
-          "es": "La Recarga de energía aumenta a 180."
+          "es": "La Recarga de energía aumenta a 180.",
+          "zh": "能量恢复提升至180点。"
         },
         "level4": {
           "de": "Erhöht den ANG-Bonus auf 25 %.",
           "en": "Increases ATK bonus to 25%. (Unlocks at Lv.261)",
-          "es": "aumenta la bonificación de ATQ al 25 %."
+          "es": "aumenta la bonificación de ATQ al 25 %.",
+          "zh": "攻击力加成提升至25%。（261级解锁）"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
           "en": "Restores HP equal to 220% ATK.",
-          "es": "Restaura PS equivalentes a un 220 % del ATQ."
+          "es": "Restaura PS equivalentes a un 220 % del ATQ.",
+          "zh": "恢复相当于攻击力220%的生命值。"
         },
         "level3": {
           "de": "Erhöht die KRIT-RES der Verbündeten für 6 Sek. um 30 %.",
           "en": "Increases the allies' CRIT RES by 30% for 6s.",
-          "es": "Aumenta la RES a crít. de los aliados en un 30 % durante 6s."
+          "es": "Aumenta la RES a crít. de los aliados en un 30 % durante 6s.",
+          "zh": "该友方的暴击抵抗提升30%，持续6秒。"
         },
         "level4": {
           "de": "Stellt LP in Höhe von 250 % des ANG wieder her.",
           "en": "Restores HP equal to 250% ATK. (Unlocks at Lv.281)",
-          "es": "Restaura PS equivalentes a un 250 % del ATQ."
+          "es": "Restaura PS equivalentes a un 250 % del ATQ.",
+          "zh": "恢复相当于攻击力250%的生命值。（281级解锁）"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Schicksalsgebunden",
       "en": "Fate Bound",
-      "es": "Atado por el destino"
+      "es": "Atado por el destino",
+      "zh": "姻缘相系"
     },
     "description": {
       "de": "Die verbundene Einheit mit den höchsten LP nimmt 20% des SCH auf, der für die verbundene Einheit mit dem höchsten ANG bestimmt ist. Wenn die verbundene Einheit mit dem höchsten ANG SCH verursacht, heilt sie die verbundene Einheit mit den höchsten LP um 20% des verursachten SCHs.",
       "en": "The linked unit with the highest max HP will take 20% of the DMG dealt to the linked unit with the highest ATK. The linked unit with the highest ATK restores HP equal to 20% of the DMG dealt to the unit with the highest HP when dealing DMG.",
-      "es": "La unidad vinculada con los PS máximos más altos recibirá un 20 % del daño infligido a la unidad vinculada con el ATQ más alto. La unidad vinculada con el ATQ más alto restaura PS equivalentes al 20 % del Daño infligido a la unidad con los PS más altos al infligir Daño."
+      "es": "La unidad vinculada con los PS máximos más altos recibirá un 20 % del daño infligido a la unidad vinculada con el ATQ más alto. La unidad vinculada con el ATQ más alto restaura PS equivalentes al 20 % del Daño infligido a la unidad con los PS más altos al infligir Daño.",
+      "zh": "被红线牵连的单位中，最大生命值最高者将承受攻击力最高者所受伤害的20%。攻击力最高者造成伤害时，恢复相当于对生命值最高者所造成伤害20%的生命值。"
     },
     "upgrades": {
       "level2": {
         "de": "Wenn beide verbundenen Einheiten dasselbe Ziel angreifen, verursachen sie zusätzlichen 15% SCH.",
         "en": "When both linked units attack the same target, they deal an additional 15% DMG.",
-        "es": "Cuando ambas unidades vinculadas atacan al mismo objetivo, infligen un 15 % de Daño adicional."
+        "es": "Cuando ambas unidades vinculadas atacan al mismo objetivo, infligen un 15 % de Daño adicional.",
+        "zh": "当两名被牵连的单位攻击同一目标时，额外造成15%伤害。"
       },
       "level3": {
         "de": "Die verbündete Einheit mit den höchsten LP nimmt 30% des SCH auf, der für die verbündete Einheit mit den höchsten ANG bestimmt war.",
         "en": "The ally with the highest HP takes 30% of the DMG dealt to the ally with the highest ATK. (Unlock at Relic Lv.20)",
-        "es": "El aliado con los PS más altos recibe un 30 % del Daño infligido al aliado con el ATQ más alto."
+        "es": "El aliado con los PS más altos recibe un 30 % del Daño infligido al aliado con el ATQ más alto.",
+        "zh": "生命值最高的友方承受攻击力最高友方所受伤害的30%。（圣物20级解锁）"
       },
       "level4": {
         "de": "Wenn die verbündete Einheit mit den höchsten ANG SCH verursacht, heilt sie die verbündete Einheit mit den höchsten LP um 30% des verursachten SCHs.",
         "en": "The ally with the highest ATK restores HP equal to 30% of the DMG they deal to the ally with the highest HP. (Unlock at Relic Lv.30)",
-        "es": "El aliado con el ATQ más alto restaura una cantidad de PS equivalente al 30 % del Daño que inflige al aliado con los PS más altos."
+        "es": "El aliado con el ATQ más alto restaura una cantidad de PS equivalente al 30 % del Daño que inflige al aliado con los PS más altos.",
+        "zh": "攻击力最高的友方造成伤害时，恢复相当于其对生命值最高友方所造成伤害30%的生命值。（圣物30级解锁）"
       }
     }
   }

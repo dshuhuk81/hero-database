@@ -24,17 +24,20 @@
         "level2": {
           "de": "Dauer auf 15 Sek. verlängert.",
           "en": "Duration extends to 15s.",
-          "es": "La duración se extiende a 15 s."
+          "es": "La duración se extiende a 15 s.",
+          "zh": "持续时间延长至15秒。"
         },
         "level3": {
           "de": "Beschworene Skorpione erleiden 180 % SCH.",
           "en": "Summoned scorpions take 180% DMG.",
-          "es": "Los escorpiones invocados reciben un 180 % de Daño."
+          "es": "Los escorpiones invocados reciben un 180 % de Daño.",
+          "zh": "召唤的蝎子受到180%伤害。"
         },
         "level4": {
           "de": "Beschworene Skorpione können ebenfalls Lauernder Stachel einsetzen.",
           "en": "Summoned scorpions can also use Lurking Sting.",
-          "es": "Los escorpiones invocados también pueden usar Aguijón acechante."
+          "es": "Los escorpiones invocados también pueden usar Aguijón acechante.",
+          "zh": "召唤的蝎子也可以使用潜伏毒刺。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 200 % ANG.",
           "en": "Increases DMG dealt to 200% ATK.",
-          "es": "Aumenta el daño infligido a 200 % de ATQ."
+          "es": "Aumenta el daño infligido a 200 % de ATQ.",
+          "zh": "造成的伤害提升至200%攻击力。"
         },
         "level3": {
           "de": "Erhält beim Auftauchen einen Schild in Höhe von 200 % ANG.",
           "en": "Gains a shield equal to 200% ATK upon emerging.",
-          "es": "Obtiene un escudo equivalente al 200 % de su ATQ al emerger."
+          "es": "Obtiene un escudo equivalente al 200 % de su ATQ al emerger.",
+          "zh": "钻出时获得相当于攻击力200%的护盾。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 250 % ANG.",
           "en": "Increases DMG dealt to 250% ATK.",
-          "es": "Aumenta el daño infligido a 250 % de ATQ."
+          "es": "Aumenta el daño infligido a 250 % de ATQ.",
+          "zh": "造成的伤害提升至250%攻击力。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 240 % ANG.",
           "en": "Increases DMG dealt to 240% ATK.",
-          "es": "Aumenta el daño infligido a 240 % de ATQ."
+          "es": "Aumenta el daño infligido a 240 % de ATQ.",
+          "zh": "造成的伤害提升至240%攻击力。"
         },
         "level3": {
           "de": "Verringert den ANG von Feinden um 15 %.",
           "en": "Reduces enemies' ATK by 15%.",
-          "es": "Reduce el ATQ de los enemigos en un 15 %."
+          "es": "Reduce el ATQ de los enemigos en un 15 %.",
+          "zh": "敌人的攻击力降低15%。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 280 % ANG.",
           "en": "Increases DMG dealt to 280% ATK.",
-          "es": "Aumenta el daño infligido a 280 % de ATQ."
+          "es": "Aumenta el daño infligido a 280 % de ATQ.",
+          "zh": "造成的伤害提升至280%攻击力。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Stellt während des Eingrabens pro Sek. LP in Höhe von 80 % ANG wieder her.",
           "en": "Restores HP equal to 80% ATK per sec while burrowing.",
-          "es": "Restaura PS equivalentes al 80 % de su ATQ por segundo mientras está enterrada."
+          "es": "Restaura PS equivalentes al 80 % de su ATQ por segundo mientras está enterrada.",
+          "zh": "潜地期间每秒恢复相当于攻击力80%的生命值。"
         },
         "level3": {
           "de": "Wenn ihre LP zum ersten Mal unter 40 % fallen, taucht Serket sofort für 3 Sek. in den Sand und erhöht ihre max. LP dauerhaft um 40 %.",
           "en": "When her HP drops below 40% for the first time, Serket immediately dives into the sand for 3s and permanently increases her max HP by 40%.",
-          "es": "Cuando sus PS bajan del 40 % por primera vez, Serket se sumerge inmediatamente en la arena durante 3 s y aumenta permanentemente sus PS máximos en un 40 %."
+          "es": "Cuando sus PS bajan del 40 % por primera vez, Serket se sumerge inmediatamente en la arena durante 3 s y aumenta permanentemente sus PS máximos en un 40 %.",
+          "zh": "当她的生命值首次低于40%时，塞尔凯特立即潜入沙中3秒，并永久提升40%最大生命值。"
         },
         "level4": {
           "de": "Stellt während des Eingrabens pro Sek. LP in Höhe von 100 % ANG wieder her.",
           "en": "Restores HP equal to 100% ATK per sec while burrowing.",
-          "es": "Restaura PS equivalentes al 100 % de su ATQ por segundo mientras está enterrada."
+          "es": "Restaura PS equivalentes al 100 % de su ATQ por segundo mientras está enterrada.",
+          "zh": "潜地期间每秒恢复相当于攻击力100%的生命值。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Giftige Domäne",
       "en": "Venomous Domain",
-      "es": "Dominio venenoso"
+      "es": "Dominio venenoso",
+      "zh": "剧毒领域"
     },
     "description": {
       "de": "Serket fügt umstehenden Feinden pro Sek. SCH in Höhe von 80 % ANG zu.",
       "en": "Serket deals DMG equal to 80% ATK to surrounding enemies per sec.",
-      "es": "Serket inflige un Daño equivalente al 80 % de su ATQ a los enemigos cercanos por segundo."
+      "es": "Serket inflige un Daño equivalente al 80 % de su ATQ a los enemigos cercanos por segundo.",
+      "zh": "塞尔凯特每秒对周围敌人造成相当于攻击力80%的伤害。"
     },
     "upgrades": {
       "level2": {
         "de": "Wenn sie durch einen einzelnen Treffer SCH erleidet, der 20 % der max. LP übersteigt, wird dieser SCH annulliert und sie erleidet für die nächsten 3 Sek. 50 % weniger SCH. CD: 15 Sek.",
         "en": "When taking DMG exceeding 20% of max HP from a single hit, nullifies that DMG and takes 50% less DMG for the next 3s. CD: 15s.",
-        "es": "Al recibir Daño de un solo golpe que exceda el 20 % de sus PS máximos, anula ese Daño y recibe un 50 % menos de Daño durante los siguientes 3 s. TdE: 15 s."
+        "es": "Al recibir Daño de un solo golpe que exceda el 20 % de sus PS máximos, anula ese Daño y recibe un 50 % menos de Daño durante los siguientes 3 s. TdE: 15 s.",
+        "zh": "单次受到超过最大生命值20%的伤害时，免除该伤害并在接下来3秒内受到的伤害降低50%。冷却：15秒。"
       },
       "level3": {
         "de": "Jeder beschworene Skorpion fügt umstehenden Feinden pro Sek. SCH in Höhe von 80 % ANG zu.",
         "en": "Each summoned scorpion deals DMG equal to 80% ATK to surrounding enemies per sec.",
-        "es": "Cada escorpión invocado inflige un Daño equivalente al 80 % de su ATQ a los enemigos cercanos por segundo."
+        "es": "Cada escorpión invocado inflige un Daño equivalente al 80 % de su ATQ a los enemigos cercanos por segundo.",
+        "zh": "每只召唤的蝎子每秒对周围敌人造成相当于攻击力80%的伤害。"
       },
       "level4": {
         "de": "Wenn beschworene Skorpione durch einen einzelnen Treffer SCH erleiden, der 20 % ihrer max. LP übersteigt, wird dieser SCH annulliert und sie erleiden für die nächsten 3 Sek. 50 % weniger SCH. CD: 15 Sek.",
         "en": "When taking DMG exceeding 20% of its max HP from a single hit, summoned scorpions nullify that DMG and take 50% less DMG for the next 3s. CD: 15s.",
-        "es": "Al recibir Daño de un solo golpe que exceda el 20 % de sus PS máximos, los escorpiones invocados anulan ese Daño y reciben un 50 % menos de Daño durante los siguientes 3 s. TdE: 15 s."
+        "es": "Al recibir Daño de un solo golpe que exceda el 20 % de sus PS máximos, los escorpiones invocados anulan ese Daño y reciben un 50 % menos de Daño durante los siguientes 3 s. TdE: 15 s.",
+        "zh": "召唤的蝎子单次受到超过其最大生命值20%的伤害时，免除该伤害并在接下来3秒内受到的伤害降低50%。冷却：15秒。"
       }
     }
   }

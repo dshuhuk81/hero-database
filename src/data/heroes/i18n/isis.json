@@ -24,17 +24,20 @@
         "level2": {
           "de": "Allwissender Pfeil wird garantiert zu Kampfbeginn ausgelöst.",
           "en": "Omniscient Arrow is guaranteed to trigger when the battle starts.",
-          "es": "Se garantiza la activación de la Flecha omnisciente al comenzar la batalla."
+          "es": "Se garantiza la activación de la Flecha omnisciente al comenzar la batalla.",
+          "zh": "战斗开始时必定触发全知之箭。"
         },
         "level3": {
           "de": "Der Bonus-SCH wird auf 12 % der max. LP des Ziels erhöht (bis zu 400 % ihres ANG).",
           "en": "The bonus DMG is increased to 12% of the target's max HP (up to 400% of her ATK).",
-          "es": "El Daño adicional aumenta a un 12 % de los PS máximos del objetivo (hasta un 400 % de su ATQ)."
+          "es": "El Daño adicional aumenta a un 12 % de los PS máximos del objetivo (hasta un 400 % de su ATQ).",
+          "zh": "额外伤害提升至目标最大生命值的12%（上限为她攻击力的400%）。"
         },
         "level4": {
           "de": "Der Pfeil verursacht 200% ANG-SCH.",
           "en": "The arrow will deal DMG equal to 200% of ATK.",
-          "es": "La flecha infligirá un Daño equivalente al 200 % de su ATQ."
+          "es": "La flecha infligirá un Daño equivalente al 200 % de su ATQ.",
+          "zh": "全知之箭造成相当于攻击力200%的伤害。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Während die Fähigkeit aktiv ist, wird jeder Normalangriff zu einem Pfeil der Allwissenheit.",
           "en": "Every Normal Attack becomes an Omniscient Arrow for the duration of the skill.",
-          "es": "Cada Ataque normal se convierte en una Flecha omnisciente mientras dure la habilidad."
+          "es": "Cada Ataque normal se convierte en una Flecha omnisciente mientras dure la habilidad.",
+          "zh": "技能持续期间，每次普通攻击都变为全知之箭。"
         },
         "level3": {
           "de": "Erhöht die ANG-GES auf 150 %.",
           "en": "Increases ATK SPD to 150%.",
-          "es": "Aumenta la VEL de ATQ a un 150 %."
+          "es": "Aumenta la VEL de ATQ a un 150 %.",
+          "zh": "攻速提升至150%。"
         },
         "level4": {
           "de": "Verringert den Energieverlust auf 40.",
           "en": "Reduces Energy lost to 40.",
-          "es": "Reduce la Energía perdida a 40."
+          "es": "Reduce la Energía perdida a 40.",
+          "zh": "能量损耗降低至40点。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht Isis’ Rüstungs-PEN um 10 %, solange der ANG-Bonus anhält.",
           "en": "Increases Isis's Armor PEN by 10% while ATK bonus lasts.",
-          "es": "Aumenta la PEN de Armadura de Isis en un 10 % mientras dure la bonificación de ATQ."
+          "es": "Aumenta la PEN de Armadura de Isis en un 10 % mientras dure la bonificación de ATQ.",
+          "zh": "攻击力加成期间，伊西斯的护甲穿透提升10%。"
         },
         "level3": {
           "de": "Erhöht den ANG-Bonus auf 36 %.",
           "en": "Increases ATK bonus to 36%.",
-          "es": "aumenta la bonificación de ATQ al 36 %."
+          "es": "aumenta la bonificación de ATQ al 36 %.",
+          "zh": "攻击力加成提升至36%。"
         },
         "level4": {
           "de": "Erhöht Isis’ Rüstungs-PEN um 20 %, solange der ANG-Bonus anhält.",
           "en": "Increases Isis's Armor PEN by 20% while the ATK bonus lasts.",
-          "es": "Aumenta la PEN de Armadura de Isis en un 20 % mientras dure la bonificación de ATQ."
+          "es": "Aumenta la PEN de Armadura de Isis en un 20 % mientras dure la bonificación de ATQ.",
+          "zh": "攻击力加成期间，伊西斯的护甲穿透提升20%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht jeden Stapel des ANG-GES-Bonus auf 25%.",
           "en": "Increases each stack of ATK SPD bonus to 25%.",
-          "es": "Aumenta cada acumulación de la bonificación de VEL de ATQ a 25 %."
+          "es": "Aumenta cada acumulación de la bonificación de VEL de ATQ a 25 %.",
+          "zh": "每层攻速加成提升至25%。"
         },
         "level3": {
           "de": "Erhält zu Kampfbeginn 1 zusätzlichen Stapel ANG-GES-Buffs.",
           "en": "Gains 1 extra stack of ATK SPD buff when the battle starts.",
-          "es": "Obtiene 1 acumulación adicional de la mejora de VEL de ATQ al comenzar la batalla."
+          "es": "Obtiene 1 acumulación adicional de la mejora de VEL de ATQ al comenzar la batalla.",
+          "zh": "战斗开始时额外获得1层攻速增益。"
         },
         "level4": {
           "de": "Erhöht jeden Stapel des ANG-GES-Bonus auf 30%.",
           "en": "Increases each stack of ATK SPD bonus to 30%. (Unlocks at Lv.281)",
-          "es": "Aumenta cada acumulación de la bonificación de VEL de ATQ a 30 %."
+          "es": "Aumenta cada acumulación de la bonificación de VEL de ATQ a 30 %.",
+          "zh": "每层攻速加成提升至30%。（281级解锁）"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Makelloses Mantra",
       "en": "Pristine Mantra",
-      "es": "Mantra prístino"
+      "es": "Mantra prístino",
+      "zh": "纯净真言"
     },
     "description": {
       "de": "Verringert die für den Aufruf des wahren Namens erforderliche Auslöseanzahl auf 3. Die Stapel gewähren Isis zusätzliche Effekte:\nJeder Stapel erhöht Isis' Trefferrate um 20 %.",
       "en": "Reduces the trigger count required for True Name Invocation to 3. Its stacks grant Isis additional effects: Each stack increases Isis's Hit Rate by 20%.",
-      "es": "Reduce el número de activaciones necesarias para la Invocación del nombre verdadero a 3. Sus acumulaciones otorgan a Isis efectos adicionales:\nCada acumulación aumenta la Tasa de aciertos de Isis en un 20 %."
+      "es": "Reduce el número de activaciones necesarias para la Invocación del nombre verdadero a 3. Sus acumulaciones otorgan a Isis efectos adicionales:\nCada acumulación aumenta la Tasa de aciertos de Isis en un 20 %.",
+      "zh": "真名咒唤所需的触发次数降低至3次。其层数为伊西斯提供额外效果：每层使伊西斯的命中率提升20%。"
     },
     "upgrades": {
       "level2": {
         "de": "Erhöht die KRIT-Rate bei 3 Stapeln um 30 %.",
         "en": "Increases CRIT Rate by 30% at 3 stacks.",
-        "es": "Aumenta la Tasa de crít. en un 30 % con 3 acumulaciones."
+        "es": "Aumenta la Tasa de crít. en un 30 % con 3 acumulaciones.",
+        "zh": "达到3层时暴击率提升30%。"
       },
       "level3": {
         "de": "Bis zu 6-mal stapelbar.",
         "en": "Stacks up to 6 times.",
-        "es": "Se acumula hasta 6 veces."
+        "es": "Se acumula hasta 6 veces.",
+        "zh": "最多叠加6层。"
       },
       "level4": {
         "de": "Jeder Stapel erhöht die Trefferrate um 30 %.",
         "en": "Each stack increases Hit Rate by 30%. (Unlock at Relic Lv.30)",
-        "es": "Cada acumulación aumenta la Tasa de aciertos en un 30 %."
+        "es": "Cada acumulación aumenta la Tasa de aciertos en un 30 %.",
+        "zh": "每层使命中率提升30%。（圣物30级解锁）"
       }
     }
   }

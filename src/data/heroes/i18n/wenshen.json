@@ -24,17 +24,20 @@
         "level2": {
           "de": "Die Dauer wird auf 5 Sek. verlängert.",
           "en": "Duration extends to 5s.",
-          "es": "La duración se extiende a 5 s."
+          "es": "La duración se extiende a 5 s.",
+          "zh": "持续时间延长至5秒。"
         },
         "level3": {
           "de": "Erhöht den SCH pro Sekunde auf 100 % ANG.",
           "en": "Increases DMG per sec to 100% ATK.",
-          "es": "Aumenta el daño por segundo a 100 % de ATQ."
+          "es": "Aumenta el daño por segundo a 100 % de ATQ.",
+          "zh": "每秒伤害提升至100%攻击力。"
         },
         "level4": {
           "de": "Die Dauer wird auf 6 Sek. verlängert.",
           "en": "Duration extends to 6s.",
-          "es": "La duración se extiende a 6 s."
+          "es": "La duración se extiende a 6 s.",
+          "zh": "持续时间延长至6秒。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Solange das Ziel verflucht ist, ist die erhaltene Heilung um 30 % verringert.",
           "en": "While cursed, the target receives 30% reduced healing.",
-          "es": "Mientras está bajo la maldición, el objetivo recibe un 30 % menos de sanación."
+          "es": "Mientras está bajo la maldición, el objetivo recibe un 30 % menos de sanación.",
+          "zh": "被诅咒期间，目标受到的治疗降低30%。"
         },
         "level3": {
           "de": "Der Fluch wird langsam über die nächsten 8 Sekunden entfernt, wodurch die verlorenen LP wiederhergestellt werden.",
           "en": "The curse is slowly lifted over 8s, restoring the lost HP.",
-          "es": "La maldición se levanta lentamente durante 8s, restaurando los PS perdidos."
+          "es": "La maldición se levanta lentamente durante 8s, restaurando los PS perdidos.",
+          "zh": "诅咒在8秒内缓慢解除，返还损失的生命值。"
         },
         "level4": {
           "de": "Solange das Ziel verflucht ist, ist die erhaltene Heilung um 60 % verringert.",
           "en": "While cursed, the target receives 60% reduced healing.",
-          "es": "Mientras está bajo la maldición, el objetivo recibe un 60 % menos de sanación."
+          "es": "Mientras está bajo la maldición, el objetivo recibe un 60 % menos de sanación.",
+          "zh": "被诅咒期间，目标受到的治疗降低60%。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erleidet außerdem SCH in Höhe von 50% des ANG des Seuchengottes pro Sekunde.",
           "en": "Enemies also take DMG equal to 50% of her ATK per sec.",
-          "es": "Los enemigos también reciben un Daño equivalente al 50 % de su ATQ por segundo."
+          "es": "Los enemigos también reciben un Daño equivalente al 50 % de su ATQ por segundo.",
+          "zh": "敌人每秒还受到相当于她攻击力50%的伤害。"
         },
         "level3": {
           "de": "Einheiten im „Pech“-Zustand haben eine 50%-ige Chance, 100 Energie zu verlieren und 20% mehr SCH für die nächsten 3 Sekunden zu erleiden, wenn sie eine Fähigkeit einsetzen.",
           "en": "Jinxed enemies deal 20% reduced DMG.",
-          "es": "Los enemigos con Maldición infligen un 20 % menos de Daño."
+          "es": "Los enemigos con Maldición infligen un 20 % menos de Daño.",
+          "zh": "被厄运缠身的敌人造成的伤害降低20%。"
         },
         "level4": {
           "de": "Die Chance auf „Pech“-Effekte wird auf 60% erhöht.",
           "en": "Increases the chance of triggering a Jinxed effect to 60%.",
-          "es": "Aumenta la probabilidad de activar el efecto de Maldición al 60 %."
+          "es": "Aumenta la probabilidad de activar el efecto de Maldición al 60 %.",
+          "zh": "厄运效果的触发几率提升至60%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Die Pechaura verringert außerdem die VTD der Feinde in ihrem Bereich um 20%.",
           "en": "Enemies inside the Aura of Misfortune have their DEF reduced by 20%.",
-          "es": "La DEF de los enemigos dentro del Aura de infortunio se reduce en un 20 %."
+          "es": "La DEF de los enemigos dentro del Aura de infortunio se reduce en un 20 %.",
+          "zh": "厄运光环内敌人的防御降低20%。"
         },
         "level3": {
           "de": "Erhöht den verursachten SCH auf 200 % ANG.",
           "en": "Increases DMG dealt to 200% ATK.",
-          "es": "Aumenta el daño infligido a 200 % de ATQ."
+          "es": "Aumenta el daño infligido a 200 % de ATQ.",
+          "zh": "造成的伤害提升至200%攻击力。"
         },
         "level4": {
           "de": "Wenshens Aura des Unglücks verbleibt an Ort und Stelle, wenn sie besiegt wird.",
           "en": "Wenshen’s Aura of Misfortune lingers on the spot when she is defeated.",
-          "es": "El Aura de infortunio de Wenshen permanece en el lugar cuando es derrotada."
+          "es": "El Aura de infortunio de Wenshen permanece en el lugar cuando es derrotada.",
+          "zh": "瘟神被击败时，厄运光环停留在原地。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Ursprung der Pestilenz",
       "en": "Origin of Pestilence",
-      "es": "Origen de la pestilencia"
+      "es": "Origen de la pestilencia",
+      "zh": "瘟疫之源"
     },
     "description": {
       "de": "Wenn ein verhexter Feind besiegt wird, verbreitet es sich auf den 1 nächsten Feind und verursacht beim neuen Ziel SCH in Höhe von 200 % ANG.",
       "en": "When a Jinxed enemy is defeated, it spreads to 1 nearest enemy, dealing DMG equal to 200% of ATK to the new target.",
-      "es": "Cuando un enemigo con Maldición es derrotado, esta se distribuye a 1 enemigo más cercano, infligiendo un Daño equivalente al 200 % de ATQ al nuevo objetivo."
+      "es": "Cuando un enemigo con Maldición es derrotado, esta se distribuye a 1 enemigo más cercano, infligiendo un Daño equivalente al 200 % de ATQ al nuevo objetivo.",
+      "zh": "被厄运缠身的敌人被击败时，厄运扩散至最近的1名敌人，并对新目标造成相当于攻击力200%的伤害。"
     },
     "upgrades": {
       "level2": {
         "de": "Bei Ausbreitung erhöht sich der SCH auf 260 % ANG.",
         "en": "Upon spreading, increases DMG to 260% ATK.",
-        "es": "Al propagarse, aumenta el daño a 260 % de ATQ."
+        "es": "Al propagarse, aumenta el daño a 260 % de ATQ.",
+        "zh": "扩散时，伤害提升至260%攻击力。"
       },
       "level3": {
         "de": "Feinde, die von Dualitätsumkehr verflucht wurden, sind permanent verhext.",
         "en": "Enemies cursed by Duality Inversion are permanently Jinxed.",
-        "es": "Los enemigos maldecidos por Inversión de dualidad reciben una Maldición permanente."
+        "es": "Los enemigos maldecidos por Inversión de dualidad reciben una Maldición permanente.",
+        "zh": "被阴阳逆转诅咒的敌人将被永久附上厄运。"
       },
       "level4": {
         "de": "Das Ziel erleidet 20% erhöhten SCH, während es verhext ist.",
         "en": "The target takes 20% increased DMG while Jinxed.",
-        "es": "El objetivo recibe un 20 % más de Daño mientras tiene Maldición."
+        "es": "El objetivo recibe un 20 % más de Daño mientras tiene Maldición.",
+        "zh": "被厄运缠身期间，目标受到的伤害提升20%。"
       }
     }
   }

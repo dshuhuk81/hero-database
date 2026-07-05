@@ -24,17 +24,20 @@
         "level2": {
           "de": "Getroffene Feinde verursachen 60 % erhöhten Normalangriff-SCH.",
           "en": "Enemies hit deal 60% increased Normal Attack DMG.",
-          "es": "Los enemigos golpeados infligen un 60 % más de Daño de Ataque normal."
+          "es": "Los enemigos golpeados infligen un 60 % más de Daño de Ataque normal.",
+          "zh": "被命中的敌人普攻伤害提升60%。"
         },
         "level3": {
           "de": "Die Dauer wird auf 4 Sek. verlängert.",
           "en": "Duration extends to 4s.",
-          "es": "La duración se extiende a 4 s."
+          "es": "La duración se extiende a 4 s.",
+          "zh": "持续时间延长至4秒。"
         },
         "level4": {
           "de": "Getroffene Feinde verursachen 80 % erhöhten Normalangriff-SCH.",
           "en": "Enemies hit deal 80% increased Normal Attack DMG.",
-          "es": "Los enemigos golpeados infligen un 80 % más de Daño de Ataque normal."
+          "es": "Los enemigos golpeados infligen un 80 % más de Daño de Ataque normal.",
+          "zh": "被命中的敌人普攻伤害提升80%。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht ANG um 50 %.",
           "en": "Increases ATK by 50%.",
-          "es": "Aumenta el ATQ en un 50 %."
+          "es": "Aumenta el ATQ en un 50 %.",
+          "zh": "攻击力提升50%。"
         },
         "level3": {
           "de": "Die Dauer wird auf 4 Sek. verlängert.",
           "en": "Duration extends to 4s.",
-          "es": "La duración se extiende a 4 s."
+          "es": "La duración se extiende a 4 s.",
+          "zh": "持续时间延长至4秒。"
         },
         "level4": {
           "de": "Erhöht die ANG-GES um 150 %.",
           "en": "Increases ATK SPD by 150%.",
-          "es": "Aumenta la VEL de ATQ en un 150 %."
+          "es": "Aumenta la VEL de ATQ en un 150 %.",
+          "zh": "攻速提升150%。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Hera erhält alle 5 Sek. 7 % SCH-RED.",
           "en": "Hera gains 7% DMG RED every 5s.",
-          "es": "Hera obtiene un 7 % de Reduc. de daño cada 5 s."
+          "es": "Hera obtiene un 7 % de Reduc. de daño cada 5 s.",
+          "zh": "赫拉每5秒获得7%减伤。"
         },
         "level3": {
           "de": "Wenn ein Feind die Domäne zum ersten Mal betritt, wird er 3 Sek. lang unterdrückt.",
           "en": "When an enemy enters the domain for the first time, they are suppressed for 3s.",
-          "es": "Cuando un enemigo entra en el dominio por primera vez, es suprimido durante 3 s."
+          "es": "Cuando un enemigo entra en el dominio por primera vez, es suprimido durante 3 s.",
+          "zh": "敌人首次进入领域时被压制3秒。"
         },
         "level4": {
           "de": "Wenn sie tödlichen SCH erleidet, zieht Hera die Domäne zurück, wird 2,5 Sek. lang immun gegen SCH und stellt 30 % ihrer max. LP wieder her.",
           "en": "Upon taking Lethal DMG, Hera retracts the domain, becoming immune to DMG for 2.5s and restores 30% of her max HP.",
-          "es": "Al recibir Daño letal, Hera retrae el dominio, se vuelve inmune al Daño durante 2,5 s y restaura un 30 % de sus PS máximos."
+          "es": "Al recibir Daño letal, Hera retrae el dominio, se vuelve inmune al Daño durante 2,5 s y restaura un 30 % de sus PS máximos.",
+          "zh": "受到致命伤害时，赫拉收回领域，免疫伤害2.5秒并恢复30%最大生命值。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Das Ziel erleidet pro Sekunde SCH in Höhe von 120 % von Heras ANG.",
           "en": "The target takes 120% of Hera's ATK as DMG per sec.",
-          "es": "El objetivo recibe un 120 % del ATQ de Hera como Daño por segundo."
+          "es": "El objetivo recibe un 120 % del ATQ de Hera como Daño por segundo.",
+          "zh": "目标每秒受到相当于赫拉攻击力120%的伤害。"
         },
         "level3": {
           "de": "Die Dauer wird auf 5 Sek. verlängert.",
           "en": "Duration extends to 5s.",
-          "es": "La duración se extiende a 5 s."
+          "es": "La duración se extiende a 5 s.",
+          "zh": "持续时间延长至5秒。"
         },
         "level4": {
           "de": "Das Ziel erleidet pro Sekunde SCH in Höhe von 150 % von Heras ANG.",
           "en": "The target takes 150% of Hera's ATK as DMG per sec.",
-          "es": "El objetivo recibe un 150 % del ATQ de Hera como Daño por segundo."
+          "es": "El objetivo recibe un 150 % del ATQ de Hera como Daño por segundo.",
+          "zh": "目标每秒受到相当于赫拉攻击力150%的伤害。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Brandmal der Verlockung",
       "en": "Allure Brand",
-      "es": "Marca de seducción"
+      "es": "Marca de seducción",
+      "zh": "魅惑烙印"
     },
     "description": {
       "de": "Die Effekt-RES von Feinden, die von Heras Bezauberung und Besessenheit kontrolliert wurden, wird um 30 % reduziert.",
       "en": "Enemies that have been controlled by Hera's Charm and Obsession have their Effect RES reduced by 30%.",
-      "es": "A los enemigos que han sido controlados por el Encanto y la Obsesión de Hera se les reduce su RES a efectos en un 30 %."
+      "es": "A los enemigos que han sido controlados por el Encanto y la Obsesión de Hera se les reduce su RES a efectos en un 30 %.",
+      "zh": "曾被赫拉的魅惑或痴迷控制的敌人，效果抵抗降低30%。"
     },
     "upgrades": {
       "level2": {
         "de": "Von Hera bezauberte Feinde erhalten außerdem einmalig eine Kronenverleihung.",
         "en": "Enemies Charmed by Hera also receive one instance of Crown Bestowal.",
-        "es": "Los enemigos Encantados por Hera también reciben una instancia de Otorgamiento de Corona."
+        "es": "Los enemigos Encantados por Hera también reciben una instancia de Otorgamiento de Corona.",
+        "zh": "被赫拉魅惑的敌人还会获得一次加冕之礼。"
       },
       "level3": {
         "de": "Von Hera bezauberte Feinde können für die Dauer keine Energie gewinnen.",
         "en": "Enemies Charmed by Hera cannot gain Energy for the duration.",
-        "es": "Los enemigos Encantados por Hera no pueden obtener Energía mientras dure el efecto."
+        "es": "Los enemigos Encantados por Hera no pueden obtener Energía mientras dure el efecto.",
+        "zh": "被赫拉魅惑的敌人在持续期间无法获得能量。"
       },
       "level4": {
         "de": "Kills von Feinden, die von Hera bezaubert wurden, verlängern die Dauer der Bezauberung um 5 Sek.",
         "en": "Kills conducted by enemies Charmed by Hera extend the duration of Charm by 5s.",
-        "es": "Los asesinatos realizados por enemigos Encantados por Hera extienden la duración del Encanto en 5 s."
+        "es": "Los asesinatos realizados por enemigos Encantados por Hera extienden la duración del Encanto en 5 s.",
+        "zh": "被赫拉魅惑的敌人完成击杀时，魅惑的持续时间延长5秒。"
       }
     }
   }

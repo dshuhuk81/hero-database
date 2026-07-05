@@ -15,6 +15,20 @@
       "description": {
         "en": "After using a skill, Momus grants himself a shield equal to 50% of ATK. (Unlock at Relic Lv.1)",
         "zh": "使用技能后，摩墨斯为自己提供相当于攻击力50%的护盾。（圣物1级解锁）"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "When gaining a shield, grants a shield with equal strength to the nearest ally. (Unlock at Relic Lv.10)",
+          "zh": "获得护盾时，为最近的友方提供等量护盾。（圣物10级解锁）"
+        },
+        "level3": {
+          "en": "Shield strength increases to 75% ATK. (Unlock at Relic Lv.20)",
+          "zh": "护盾强度提升至75%攻击力。（圣物20级解锁）"
+        },
+        "level4": {
+          "en": "Shield strength increases to 100% ATK. (Unlock at Relic Lv.30)",
+          "zh": "护盾强度提升至100%攻击力。（圣物30级解锁）"
+        }
       }
     },
     {
@@ -34,17 +48,20 @@
         "level2": {
           "de": "Erhält 25 % SCH-Reduktion während des Ultimativs.",
           "en": "Gains 25% DMG RED during the Ultimate.",
-          "es": "Obtiene un 25 % de RED de daño durante la habilidad definitiva."
+          "es": "Obtiene un 25 % de RED de daño durante la habilidad definitiva.",
+          "zh": "大招期间获得25%减伤。"
         },
         "level3": {
           "de": "Erhält Super-Rüstung während der Ultimativen Fähigkeit.",
           "en": "Gains Super Armor during the Ultimate.",
-          "es": "Obtiene Superarmadura durante la Habilidad definitiva."
+          "es": "Obtiene Superarmadura durante la Habilidad definitiva.",
+          "zh": "大招期间获得霸体。"
         },
         "level4": {
           "de": "Erhält 50 % SCH-RED während des Ultimativs.",
           "en": "Gains 50% DMG RED during the Ultimate.",
-          "es": "Obtiene un 50 % de RED de daño durante la habilidad definitiva."
+          "es": "Obtiene un 50 % de RED de daño durante la habilidad definitiva.",
+          "zh": "大招期间获得50%减伤。"
         }
       }
     },
@@ -65,17 +82,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 230 %.",
           "en": "Increases DMG dealt to 230%.",
-          "es": "Aumenta el daño infligido a 230 %."
+          "es": "Aumenta el daño infligido a 230 %.",
+          "zh": "造成的伤害提升至230%。"
         },
         "level3": {
           "de": "Stellt für jede getroffene feindliche Einheit LP in Höhe von 50 % ANG wieder her (bis zu 250 % ANG).",
           "en": "For each enemy unit hit, restores HP equal to 50% of ATK (up to 250% of ATK).",
-          "es": "Por cada unidad enemiga golpeada, restaura PS equivalentes al 50 % de ATQ (hasta un 250 % de ATQ )."
+          "es": "Por cada unidad enemiga golpeada, restaura PS equivalentes al 50 % de ATQ (hasta un 250 % de ATQ ).",
+          "zh": "每命中一个敌方单位，恢复相当于攻击力50%的生命值（上限为攻击力的250%）。"
         },
         "level4": {
           "de": "Erforderlicher LP-SCH zum Auslösen reduziert auf 15%.",
           "en": "Reduces the DMG taken required to trigger the effect to 15% of max HP.",
-          "es": "Reduce el Daño recibido necesario para activar el efecto al 15 % de los PS máximos."
+          "es": "Reduce el Daño recibido necesario para activar el efecto al 15 % de los PS máximos.",
+          "zh": "触发所需的受到伤害降低至最大生命值的15%。"
         }
       }
     },
@@ -96,17 +116,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 230 %.",
           "en": "Increases DMG dealt to 230%.",
-          "es": "Aumenta el daño infligido a 230 %."
+          "es": "Aumenta el daño infligido a 230 %.",
+          "zh": "造成的伤害提升至230%。"
         },
         "level3": {
           "de": "Die KRIT-Rate getroffener Einheiten wird zusätzlich für 6 Sek. um 25 % verringert.",
           "en": "Hit units also have their CRIT Rate reduced by 25% for 6s.",
-          "es": "La Tasa de crít. de las unidades golpeadas también se reduce en un 25 % durante 6s."
+          "es": "La Tasa de crít. de las unidades golpeadas también se reduce en un 25 % durante 6s.",
+          "zh": "被命中单位的暴击率还降低25%，持续6秒。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 260 %.",
           "en": "Increases DMG dealt to 260%. (Unlocks at Lv.261)",
-          "es": "Aumenta el Daño infligido al 260 %."
+          "es": "Aumenta el Daño infligido al 260 %.",
+          "zh": "造成的伤害提升至260%。（261级解锁）"
         }
       }
     }
@@ -115,28 +138,33 @@
     "name": {
       "de": "Phantompuppe",
       "en": "Phantom Puppet",
-      "es": "Marioneta fantasma"
+      "es": "Marioneta fantasma",
+      "zh": "幻影傀儡"
     },
     "description": {
       "de": "Wenn Momos' LP zum ersten Mal unter 50 % fallen, wird er unsichtbar und beschwört ein Echo von sich selbst (Passiv). Das Echo erbt 50 % seines ANG für 10 Sek. Momos kehrt zurück, wenn das Echo fällt.",
       "en": "When Momus's HP drops below 50% for the first time, he becomes invisible and summons an Echo of himself (Passive). The Echo inherits 50% of his ATK and lasts 10s. Momus returns when the Echo falls.",
-      "es": "Cuando los PS de Momo bajan del 50 % por primera vez, se vuelve invisible e invoca un eco de sí mismo (Pasiva). El eco hereda el 50 % de su ATQ y dura 10s. Momo regresa cuando el eco cae."
+      "es": "Cuando los PS de Momo bajan del 50 % por primera vez, se vuelve invisible e invoca un eco de sí mismo (Pasiva). El eco hereda el 50 % de su ATQ y dura 10s. Momo regresa cuando el eco cae.",
+      "zh": "当摩墨斯的生命值首次低于50%时，他进入隐身并召唤一个自己的幻影（被动）。幻影继承他50%的攻击力，持续10秒。幻影倒下时摩墨斯归来。"
     },
     "upgrades": {
       "level2": {
         "de": "Wird dies während der Ultimativen Fähigkeit ausgelöst, wird er unsichtbar und beschwört ein Echo, das den Spott der Ultimativen Fähigkeit fortsetzt.",
         "en": "If it's triggered during the Ultimate, he stealthes and summons an Echo to continue the Ultimate's taunt.",
-        "es": "Si se activa durante la Habilidad definitiva, entra en sigilo e invoca un eco para continuar la provocación de la Habilidad definitiva."
+        "es": "Si se activa durante la Habilidad definitiva, entra en sigilo e invoca un eco para continuar la provocación de la Habilidad definitiva.",
+        "zh": "若在大招期间触发，他隐身并召唤幻影继续大招的嘲讽。"
       },
       "level3": {
         "de": "Das Echo erbt auch Momos' Süßen Schmerz.",
         "en": "The Echo also inherits Momus's Sweet Pain.",
-        "es": "El eco también hereda el Dulce dolor de Momo."
+        "es": "El eco también hereda el Dulce dolor de Momo.",
+        "zh": "幻影还继承摩墨斯的甜蜜苦痛。"
       },
       "level4": {
         "de": "Erhält 1 weitere Anwendung, mit einer Abklingzeit von 10 Sek. zwischen zwei Anwendungen.",
         "en": "Gains 1 more use, with a 10s CD between two uses. (Unlocks at Lv.281)",
-        "es": "Obtiene 1 uso más, con un TdE de 10s entre dos usos."
+        "es": "Obtiene 1 uso más, con un TdE de 10s entre dos usos.",
+        "zh": "获得1次额外使用机会，两次使用之间有10秒冷却。（281级解锁）"
       }
     }
   }

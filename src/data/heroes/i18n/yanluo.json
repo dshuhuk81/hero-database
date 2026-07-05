@@ -24,17 +24,20 @@
         "level2": {
           "de": "Verursacht SCH in Höhe von 230 % seines ANG und 230 % des ANG des Ziels.",
           "en": "Deals DMG equal to 230% of Yanluo’s ATK and 230% of the target’s ATK.",
-          "es": "Inflige un daño equivalente al 230 % de su ATQ y al 230 % del ATQ del objetivo."
+          "es": "Inflige un daño equivalente al 230 % de su ATQ y al 230 % del ATQ del objetivo.",
+          "zh": "造成相当于阎罗攻击力230%+目标攻击力230%的伤害。"
         },
         "level3": {
           "de": "Erhält 400 Energie, wenn ein Ziel besiegt wird.",
           "en": "Gains 400 Energy upon defeating a target.",
-          "es": "Obtiene 400 de Energía al derrotar a un objetivo."
+          "es": "Obtiene 400 de Energía al derrotar a un objetivo.",
+          "zh": "击败目标后获得400点能量。"
         },
         "level4": {
           "de": "Verursacht SCH in Höhe von 260 % seines ANG und 260 % des ANG des Ziels.",
           "en": "Deals DMG equal to 260% of Yanluo’s ATK and 260% of the target’s ATK.",
-          "es": "Inflige un daño equivalente al 260 % de su ATQ y al 260 % del ATQ del objetivo."
+          "es": "Inflige un daño equivalente al 260 % de su ATQ y al 260 % del ATQ del objetivo.",
+          "zh": "造成相当于阎罗攻击力260%+目标攻击力260%的伤害。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 120 % ANG.",
           "en": "Increases DMG dealt to 120% of ATK.",
-          "es": "Aumenta el daño infligido a 120 % de ATQ."
+          "es": "Aumenta el daño infligido a 120 % de ATQ.",
+          "zh": "造成的伤害提升至120%攻击力。"
         },
         "level3": {
           "de": "Gezogene Feinde erleiden in den nächsten 10 Sek. 10 % mehr SCH.",
           "en": "Pulled enemies take 10% increased DMG for the next 10s.",
-          "es": "Los enemigos atraídos reciben un 10 % de Daño aumentado durante los siguientes 10s."
+          "es": "Los enemigos atraídos reciben un 10 % de Daño aumentado durante los siguientes 10s.",
+          "zh": "被拉近的敌人在接下来10秒内受到的伤害提升10%。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 140 % ANG.",
           "en": "Increases DMG dealt to 140% of ATK.",
-          "es": "Aumenta el daño infligido a 140 % de ATQ."
+          "es": "Aumenta el daño infligido a 140 % de ATQ.",
+          "zh": "造成的伤害提升至140%攻击力。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Yanluo stellt pro Sek. LP in Höhe von 50 % ANG wieder her.",
           "en": "Yanluo restores HP equal to 50% of ATK per second.",
-          "es": "Yanluo restaura PS equivalentes al 50 % de su ATQ por segundo."
+          "es": "Yanluo restaura PS equivalentes al 50 % de su ATQ por segundo.",
+          "zh": "阎罗每秒恢复相当于攻击力50%的生命值。"
         },
         "level3": {
           "de": "Der pro Sek. verursachte SCH erhöht sich auf 65 % ANG.",
           "en": "DMG dealt per second increases to 65% of ATK.",
-          "es": "El daño infligido por segundo aumenta a 65 % de ATQ."
+          "es": "El daño infligido por segundo aumenta a 65 % de ATQ.",
+          "zh": "每秒伤害提升至65%攻击力。"
         },
         "level4": {
           "de": "Während des Effekts erleidet Yama 30% weniger SCH.",
           "en": "Yanluo takes 30% reduced DMG for the duration.",
-          "es": "Yanluo recibe un 30 % de Daño reducido mientras dure el efecto."
+          "es": "Yanluo recibe un 30 % de Daño reducido mientras dure el efecto.",
+          "zh": "持续期间阎罗受到的伤害降低30%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Dieser Effekt wird bis zu 5-mal alle 10 Sek. ausgelöst.",
           "en": "This effect triggers up to 5 times every 10s.",
-          "es": "Este efecto se activa hasta 5 veces cada 10s."
+          "es": "Este efecto se activa hasta 5 veces cada 10s.",
+          "zh": "该效果每10秒最多触发5次。"
         },
         "level3": {
           "de": "Erhöht die entzogene Energie auf 60.",
           "en": "Increases the Energy drained to 60.",
-          "es": "Aumenta la Energía drenada a 60."
+          "es": "Aumenta la Energía drenada a 60.",
+          "zh": "抽取的能量提升至60点。"
         },
         "level4": {
           "de": "Erhöht die entzogene Energie auf 70.",
           "en": "Increases the Energy drained to 70.",
-          "es": "Aumenta la Energía drenada a 70."
+          "es": "Aumenta la Energía drenada a 70.",
+          "zh": "抽取的能量提升至70点。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Urteil der Unterwelt",
       "en": "Underworld Judgment",
-      "es": "Juicio del Inframundo"
+      "es": "Juicio del Inframundo",
+      "zh": "冥府审判"
     },
     "description": {
       "de": "Der Einsatz von Seelenräuber markiert das Ziel. Markierte Feinde stellen bei anderen Verbündeten 150 Energie wieder her, wenn sie besiegt werden.",
       "en": "Casting Soul Reaver marks the target. Marked enemies grant 150 Energy to other allies when defeated.",
-      "es": "Lanzar Segador de almas marca al objetivo. Los enemigos marcados restauran 150 de Energía a otros aliados al ser derrotados."
+      "es": "Lanzar Segador de almas marca al objetivo. Los enemigos marcados restauran 150 de Energía a otros aliados al ser derrotados.",
+      "zh": "施放夺魂锁链时标记目标。被标记的敌人被击败时，为其他友方提供150点能量。"
     },
     "upgrades": {
       "level2": {
         "de": "Wenn ein Verbündeter einen markierten Feind besiegt, wird der ANG des Angreifers um 20% erhöht.",
         "en": "When an ally kills a marked enemy, the killer's ATK is increased by 20%.",
-        "es": "Cuando un aliado derrota a un enemigo marcado, el ATQ de ese aliado aumenta en un 20 %."
+        "es": "Cuando un aliado derrota a un enemigo marcado, el ATQ de ese aliado aumenta en un 20 %.",
+        "zh": "友方击杀被标记的敌人时，击杀者的攻击力提升20%。"
       },
       "level3": {
         "de": "Bei markierten Feinden wird die erhaltene Heilung um 50 % und die Energieaufladung um 50 % verringert.",
         "en": "Marked enemies have their healing received reduced by 50% and Energy Regeneration reduced by 50%.",
-        "es": "La sanación recibida por los enemigos marcados se reduce en un 50 % y su Recarga de energía se reduce en un 50 %."
+        "es": "La sanación recibida por los enemigos marcados se reduce en un 50 % y su Recarga de energía se reduce en un 50 %.",
+        "zh": "被标记敌人受到的治疗降低50%，能量恢复降低50%。"
       },
       "level4": {
         "de": "Markierte Feinde stellen bei anderen Verbündeten 200 Energie wieder her, wenn sie besiegt werden.",
         "en": "Marked enemies grant 200 Energy to other allies when defeated.",
-        "es": "Los enemigos marcados restauran 200 de Energía a otros aliados al ser derrotados."
+        "es": "Los enemigos marcados restauran 200 de Energía a otros aliados al ser derrotados.",
+        "zh": "被标记的敌人被击败时，为其他友方提供200点能量。"
       }
     }
   }

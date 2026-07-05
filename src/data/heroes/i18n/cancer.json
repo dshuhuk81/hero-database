@@ -15,6 +15,20 @@
       "description": {
         "en": "Heals surrounding allies 3 times, each restoring HP equal to 100% of Cancer's ATK + 70 and removing 1 debuff.",
         "zh": "治疗周围友方3次，每次恢复相当于巨蟹座攻击力100%+70的生命值，并移除1个减益效果。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "The unit receiving the final heal gains 15% increased ATK for 5s.",
+          "zh": "获得最后一次治疗的单位攻击力提升15%，持续5秒。"
+        },
+        "level3": {
+          "en": "Restores HP equal to 120% ATK per heal.",
+          "zh": "每次治疗恢复相当于攻击力120%的生命值。"
+        },
+        "level4": {
+          "en": "The ATK buff now lasts 10s.",
+          "zh": "攻击力增益持续10秒。"
+        }
       }
     },
     {
@@ -34,17 +48,20 @@
         "level2": {
           "de": "Erhöht die Heilung auf 270 %.",
           "en": "Healing increases to 270%.",
-          "es": "La curación aumenta al 270 %."
+          "es": "La curación aumenta al 270 %.",
+          "zh": "治疗量提升至270%。"
         },
         "level3": {
           "de": "Heilt jetzt 2 Verbündete.",
           "en": "Now heals 2 allies.",
-          "es": "Ahora sana a 2 aliados."
+          "es": "Ahora sana a 2 aliados.",
+          "zh": "改为治疗2名友方。"
         },
         "level4": {
           "de": "Erhöht die Heilung auf 300 %.",
           "en": "Healing increases to 300%.",
-          "es": "La curación aumenta al 300 %."
+          "es": "La curación aumenta al 300 %.",
+          "zh": "治疗量提升至300%。"
         }
       }
     },
@@ -56,6 +73,20 @@
       "description": {
         "en": "When an ally drops below 30% HP, they gain Super Armor for 6s and a shield equal to 300% of ATK. It can trigger only once per battle.",
         "zh": "当友方生命值低于30%时，其获得霸体与相当于攻击力300%的护盾，持续6秒。每场战斗只能触发一次。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Immediately restores 100 Energy when triggered.",
+          "zh": "触发时立即恢复100点能量。"
+        },
+        "level3": {
+          "en": "Shield Strength increases to 400% ATK.",
+          "zh": "护盾强度提升至400%攻击力。"
+        },
+        "level4": {
+          "en": "Immediately restores 200 Energy when triggered. (Unlocks at Lv.261)",
+          "zh": "触发时立即恢复200点能量。（261级解锁）"
+        }
       }
     },
     {
@@ -75,14 +106,44 @@
         "level2": {
           "de": "Erhöht den SCH-RED auf 20 %.",
           "en": "Increases DMG RED to 20%.",
-          "es": "aumenta la Reduc. de daño al 20 %."
+          "es": "aumenta la Reduc. de daño al 20 %.",
+          "zh": "减伤提升至20%。"
         },
         "level3": {
           "de": "Erhöht die M-RES dieser Einheit zusätzlich um 50 %.",
           "en": "Increases that unit's M-RES by an additional 50%.",
-          "es": "Aumenta la RES M de esa unidad en un 50 % adicional."
+          "es": "Aumenta la RES M de esa unidad en un 50 % adicional.",
+          "zh": "该单位的魔抗额外提升50%。"
+        },
+        "level4": {
+          "en": "Gains 30% Effect RES. (Unlocks at Lv.281)",
+          "zh": "获得30%效果抵抗。（281级解锁）"
         }
       }
     }
-  ]
+  ],
+  "relic": {
+    "name": {
+      "en": "Vanguard Crab",
+      "zh": "先锋巨蟹"
+    },
+    "description": {
+      "en": "Additionally grants the nearest frontline ally Crab Shell once at combat start.",
+      "zh": "战斗开始时，额外为最近的前排友方提供一次蟹壳庇护。"
+    },
+    "upgrades": {
+      "level2": {
+        "en": "Crab Shell increases the target's Armor and M-RES by 25%. (Unlock at Relic Lv.10)",
+        "zh": "蟹壳庇护使目标的护甲与魔抗提升25%。（圣物10级解锁）"
+      },
+      "level3": {
+        "en": "Additionally grants all frontline allies Crab Shell once at combat start. (Unlock at Relic Lv.20)",
+        "zh": "战斗开始时，额外为所有前排友方提供一次蟹壳庇护。（圣物20级解锁）"
+      },
+      "level4": {
+        "en": "Crab Shell increases the target's Armor and M-RES by 50%. (Unlock at Relic Lv.30)",
+        "zh": "蟹壳庇护使目标的护甲与魔抗提升50%。（圣物30级解锁）"
+      }
+    }
+  }
 }
