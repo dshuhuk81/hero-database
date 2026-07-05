@@ -2,19 +2,23 @@
   "name": {
     "de": "Meret",
     "es": "Meret",
-    "ru": "Meret"
+    "ru": "Meret",
+    "en": "Meret",
+    "zh": "梅里特"
   },
   "skills": [
     {
       "name": {
         "de": "Lobpreis aller Himmel",
         "en": "All Heavens in Praise",
-        "es": "Alabanza celestial"
+        "es": "Alabanza celestial",
+        "zh": "诸天颂赞"
       },
       "description": {
         "de": "Beim passiven Betreten des Schlachtfelds verteilt Meret drei Noten. Die Sonnennote wird der verbündeten Einheit mit den höchsten max. LP gegeben. Die Mondnote wird der verbündeten Einheit mit dem höchsten ANG gegeben. Die Sternennote wird Meret selbst gegeben.\nAktiv: Meret aktiviert alle Noten und gewährt je nach Typ Buffs.\nSonnennote: Gewährt einen Schild in Höhe von 30 % der max. LP des Ziels.\nMondnote: ANG +30 % für 8 Sek.\nSternennote: Stellt 200 Energie wieder her.",
         "en": "Passive: Upon entering battle, Meret distributes three Notes - Sun Note to the ally with the highest Max HP, Moon Note to the ally with the highest ATK, and Star Note to herself. Active: Activates all Notes. Sun grants a shield equal to 30% of Max HP. Moon grants +30% ATK for 8 seconds. Star restores 200 Energy.",
-        "es": "Al entrar pasivamente al campo de batalla, Meret distribuye tres Notas. La Nota Solar se le da a la unidad aliada con los PS máx. más altos. La Nota Lunar se le da a la unidad aliada con el ATQ más alto. La Nota Estelar se la da a la propia Meret.\nActiva: Meret activa todas las Notas y otorga mejoras según su tipo.\nNota Solar: Otorga un escudo equivalente al 30 % de los PS máx. del objetivo.\nNota Lunar: ATQ +30 % durante 8 segundos.\nNota Estelar: Restaura 200 de Energía."
+        "es": "Al entrar pasivamente al campo de batalla, Meret distribuye tres Notas. La Nota Solar se le da a la unidad aliada con los PS máx. más altos. La Nota Lunar se le da a la unidad aliada con el ATQ más alto. La Nota Estelar se la da a la propia Meret.\nActiva: Meret activa todas las Notas y otorga mejoras según su tipo.\nNota Solar: Otorga un escudo equivalente al 30 % de los PS máx. del objetivo.\nNota Lunar: ATQ +30 % durante 8 segundos.\nNota Estelar: Restaura 200 de Energía.",
+        "zh": "被动：进入战斗时，梅里特分发三个音符——太阳音符给最大生命值最高的友方，月亮音符给攻击力最高的友方，星辰音符给自己。主动：激活所有音符。太阳提供相当于最大生命值30%的护盾；月亮提供+30%攻击力，持续8秒；星辰恢复200点能量。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Universelle Resonanz",
         "en": "Universal Resonance",
-        "es": "Resonancia universal"
+        "es": "Resonancia universal",
+        "zh": "万象共鸣"
       },
       "description": {
         "de": "Einheiten, die die Sonnen-, Mond- und Sternennoten tragen, teilen den erlittenen SCH und erhalten zusätzliche Effekte. (Wenn SCH geteilt wird, erleidet das Hauptziel 60 % des SCH. Die restlichen 40 % werden gleichmäßig auf die anderen Notenträger aufgeteilt.)\nSonnennote: Erhöht die max. LP des Ziels um 10 %.\nMondnote: Erhöht den verursachten SCH des Ziels um 20 %.\nSternennote: Erhöht die Energieaufladung um 10 %.",
         "en": "Marked allies share damage taken. The main target takes 60% of incoming damage, and the remaining 40% is split among other Note holders. Additional effects: Sun grants +10% Max HP, Moon grants +20% damage dealt, Star grants +10% Energy regeneration.",
-        "es": "Las unidades que portan las Notas Solar, Lunar y Estelar comparten el daño recibido y obtienen efectos adicionales. (Cuando se comparte el daño, el objetivo principal recibe el 60 % del daño. El 40 % restante se divide equitativamente entre los otros portadores de Notas).\nNota Solar: Aumenta los PS máx. del objetivo un 10 %.\nNota Lunar: Aumenta el daño infligido del objetivo un 20 %.\nNota Estelar: Aumenta la Recarga de energía un 10 %."
+        "es": "Las unidades que portan las Notas Solar, Lunar y Estelar comparten el daño recibido y obtienen efectos adicionales. (Cuando se comparte el daño, el objetivo principal recibe el 60 % del daño. El 40 % restante se divide equitativamente entre los otros portadores de Notas).\nNota Solar: Aumenta los PS máx. del objetivo un 10 %.\nNota Lunar: Aumenta el daño infligido del objetivo un 20 %.\nNota Estelar: Aumenta la Recarga de energía un 10 %.",
+        "zh": "被标记的友方共享受到的伤害。主要目标承受60%的伤害，其余40%由其他音符持有者分摊。额外效果：太阳+10%最大生命值，月亮+20%造成的伤害，星辰+10%能量恢复。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Schreitender Sand",
         "en": "Sands in Stride",
-        "es": "Paso entre las arenas"
+        "es": "Paso entre las arenas",
+        "zh": "流沙漫步"
       },
       "description": {
         "de": "Heilt die verwundbarste verbündete Einheit 5 Sek. lang pro Sek. um 60 % ANG.",
         "en": "Heals the most vulnerable ally, restoring HP equal to 60% of ATK per second for 5 seconds.",
-        "es": "Sana a la unidad aliada más vulnerable por segundo un 60 % del ATQ durante 5 segundos."
+        "es": "Sana a la unidad aliada más vulnerable por segundo un 60 % del ATQ durante 5 segundos.",
+        "zh": "治疗最脆弱的友方，每秒恢复相当于攻击力60%的生命值，持续5秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Der Vorhang fällt nie",
         "en": "The Curtain Never Falls",
-        "es": "El telón nunca cae"
+        "es": "El telón nunca cae",
+        "zh": "幕布不落"
       },
       "description": {
         "de": "Passiv: Wenn die LP einer verbündeten Einheit unter 50 % fallen, heilt Meret sie um 25 % der max. LP dieser Einheit. Dieser Effekt kann einmal pro Einheit ausgelöst werden.",
         "en": "Passively, when an ally drops below 50% HP, Meret heals them for 25% of their Max HP. Can trigger once per unit.",
-        "es": "Pasivamente, cuando los PS de cualquier unidad aliada caen por debajo del 50 %, Meret los sana con un 25 % de los PS máx. de esa unidad. Este efecto se puede activar una vez por unidad."
+        "es": "Pasivamente, cuando los PS de cualquier unidad aliada caen por debajo del 50 %, Meret los sana con un 25 % de los PS máx. de esa unidad. Este efecto se puede activar una vez por unidad.",
+        "zh": "被动：当友方生命值低于50%时，梅里特为其恢复25%最大生命值。每个单位可触发一次。"
       },
       "upgrades": {
         "level4": {

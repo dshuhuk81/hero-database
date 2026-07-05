@@ -2,6 +2,50 @@
   "name": {
     "de": "Yaoji",
     "es": "Yaoji",
-    "ru": "Yaoji"
-  }
+    "ru": "Yaoji",
+    "en": "Yaoji",
+    "zh": "瑶姬"
+  },
+  "skills": [
+    {
+      "name": {
+        "en": "Wushan Cloud Rain",
+        "zh": "巫山云雨"
+      },
+      "description": {
+        "en": "Yaoji summons Wushan Cloud Rain, expanding the Cloud Mist Domain to the entire battlefield for 8s. Upon cast, immediately applies 1 stack of Withering Mark to enemies within the domain, then applies 1 additional stack every 2s. Withering Mark: Each stack increases the target's DMG taken by 3% and deals 25% of Yaoji's ATK as DMG every second. Max 10 stacks. Lasts 30s. This ultimate can only be cast while attached. If Yaoji is not attached when casting, she immediately attaches to the frontmost allied unit, then casts the ultimate.",
+        "zh": "瑶姬召唤巫山云雨，将云雾领域扩展至整个战场，持续8秒。施放时立即对领域内的敌人施加1层凋零印记，随后每2秒额外施加1层。凋零印记：每层使目标受到的伤害提升3%，并每秒造成相当于瑶姬攻击力25%的伤害。最多10层，持续30秒。该大招只能在附身状态下施放。若施放时瑶姬未附身，她会立即附身于最前方的友方单位，然后施放大招。"
+      }
+    },
+    {
+      "name": {
+        "en": "Cloudbound Possession",
+        "zh": "云缚附身"
+      },
+      "description": {
+        "en": "Passive: At the start of battle, Yaoji attaches to the frontmost ally and becomes untargetable. While attached, forms a Cloud Mist Domain with a 4-meter radius centered on the host. Attachment lasts 12s. After leaving the host, Yaoji takes 50% reduced DMG for 5s. Active: Deals 150% ATK as DMG to all enemies within the Cloud Mist Domain and applies 1 stack of Withering Mark.",
+        "zh": "被动：战斗开始时，瑶姬附身于最前方的友方并进入不可被选中状态。附身期间，以宿主为中心形成半径4米的云雾领域。附身持续12秒。离开宿主后，瑶姬受到的伤害降低50%，持续5秒。主动：对云雾领域内的所有敌人造成相当于攻击力150%的伤害并施加1层凋零印记。"
+      }
+    },
+    {
+      "name": {
+        "en": "Mist Isle Domain",
+        "zh": "雾屿领域"
+      },
+      "description": {
+        "en": "Passive: Enemies within the Cloud Mist Domain have their ATK reduced by 15% and healing received reduced by 30%.",
+        "zh": "被动：云雾领域内的敌人攻击力降低15%，受到的治疗降低30%。"
+      }
+    },
+    {
+      "name": {
+        "en": "Cloud Veil Protection",
+        "zh": "云幕守护"
+      },
+      "description": {
+        "en": "Allows the host to take 30% reduced DMG for the next 5s and recover 3% of Max HP every second. This skill can only be cast while attached.",
+        "zh": "使宿主在接下来5秒内受到的伤害降低30%，并每秒恢复3%最大生命值。该技能只能在附身状态下施放。"
+      }
+    }
+  ]
 }

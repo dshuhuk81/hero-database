@@ -2,19 +2,23 @@
   "name": {
     "de": "Demeter",
     "es": "Deméter",
-    "ru": "Деметра"
+    "ru": "Деметра",
+    "en": "Demeter",
+    "zh": "德墨忒尔"
   },
   "skills": [
     {
       "name": {
         "de": "Die Kraft der Erde",
         "en": "The Earth’s Vigor",
-        "es": "Vigor de la Tierra"
+        "es": "Vigor de la Tierra",
+        "zh": "大地之力"
       },
       "description": {
         "de": "Demeter wurzelt sich selbst, fesselt Feind um sie herum für 3 Sek. und verursacht jede Sek. SCH in Höhe von 100 % ANG. Jeder Feind stellt für sie pro Sek. LP in Höhe von 90 % ANG wieder her. Demeter erhält für die Dauer Super-Rüstung.",
         "en": "Demeter roots herself, restraining enemies around her for 3s, dealing DMG equal to 100% of ATK every second. Each enemy restores HP equal to 90% of ATK to her per second. Demeter gains Super Armor for the duration.",
-        "es": "Deméter se arraiga, inmovilizando a los enemigos a su alrededor durante 3s e infligiendo un Daño equivalente al 100 % de su ATQ cada segundo. Cada enemigo le restaura una cantidad de PS equivalente al 90 % de su ATQ por segundo. Deméter obtiene Superarmadura mientras dure el efecto."
+        "es": "Deméter se arraiga, inmovilizando a los enemigos a su alrededor durante 3s e infligiendo un Daño equivalente al 100 % de su ATQ cada segundo. Cada enemigo le restaura una cantidad de PS equivalente al 90 % de su ATQ por segundo. Deméter obtiene Superarmadura mientras dure el efecto.",
+        "zh": "德墨忒尔扎根大地，束缚周围敌人3秒，每秒造成相当于攻击力100%的伤害。每个敌人每秒为她恢复相当于攻击力90%的生命值。持续期间德墨忒尔获得霸体。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Wuchernde Dornen",
         "en": "Sprawling Thorns",
-        "es": "Espinas trepadoras"
+        "es": "Espinas trepadoras",
+        "zh": "蔓生荆棘"
       },
       "description": {
         "de": "Demeter verwendet Ranken, um den entferntesten Gegner zu binden, fügt 270% ANG als SCH zu und entzieht ihm 100 Energie.",
         "en": "Demeter controls vines to restrain the farthest enemy, dealing DMG equal to 270% of ATK and draining 100 Energy from them.",
-        "es": "Deméter controla enredaderas para inmovilizar al enemigo más lejano, lo que inflige un Daño equivalente al 270 % de su ATQ y le drena 100 de Energía."
+        "es": "Deméter controla enredaderas para inmovilizar al enemigo más lejano, lo que inflige un Daño equivalente al 270 % de su ATQ y le drena 100 de Energía.",
+        "zh": "德墨忒尔操控藤蔓束缚最远的敌人，造成相当于攻击力270%的伤害并抽取其100点能量。"
       },
       "upgrades": {
         "level2": {
@@ -66,11 +72,13 @@
     {
       "name": {
         "es": "Regreso de la doncella",
-        "en": "Return of the Maiden"
+        "en": "Return of the Maiden",
+        "zh": "少女归来"
       },
       "description": {
         "es": "Restaura un 2 % de PS cada 0,2s durante 3s cuando sus PS bajan del 50 %. Se puede usar una vez por batalla.",
-        "en": "Restores 2% HP every 0.2s for 3s when Demeter’s HP drops below 50%. Can be triggered once per battle."
+        "en": "Restores 2% HP every 0.2s for 3s when Demeter’s HP drops below 50%. Can be triggered once per battle.",
+        "zh": "当德墨忒尔的生命值低于50%时，每0.2秒恢复2%生命值，持续3秒。每场战斗可触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -91,12 +99,14 @@
       "name": {
         "de": "Segen der Ernte",
         "en": "Harvest’s Blessing",
-        "es": "Bendición de la cosecha"
+        "es": "Bendición de la cosecha",
+        "zh": "丰收祝福"
       },
       "description": {
         "de": "Demeter gewährt sich selbst und dem verwundbarsten Verbündeten einen Schild in Höhe von 200 % ANG. Der Schild dauert bis zu 10 Sek.",
         "en": "Demeter grants a shield equal to 200% of ATK to herself and the most vulnerable ally. The shield lasts up to 10s.",
-        "es": "Deméter se otorga un escudo equivalente al 200 % de su ATQ a sí misma y al aliado más vulnerable. El escudo dura hasta 10s."
+        "es": "Deméter se otorga un escudo equivalente al 200 % de su ATQ a sí misma y al aliado más vulnerable. El escudo dura hasta 10s.",
+        "zh": "德墨忒尔为自己与最脆弱的友方提供相当于攻击力200%的护盾，护盾最长持续10秒。"
       },
       "upgrades": {
         "level2": {

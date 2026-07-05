@@ -1,4 +1,4 @@
-export const locales = ["en", "de", "es", "ru"] as const;
+export const locales = ["en", "de", "es", "ru", "zh"] as const;
 export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = "en";
@@ -8,6 +8,7 @@ export const localeLabels: Record<Locale, string> = {
   de: "DE",
   es: "ES",
   ru: "RU",
+  zh: "中文",
 };
 
 export const localeNames: Record<Locale, string> = {
@@ -15,6 +16,7 @@ export const localeNames: Record<Locale, string> = {
   de: "Deutsch",
   es: "Español",
   ru: "Русский",
+  zh: "中文（简体）",
 };
 
 const localizedRoutes = new Set(["/", "/events", "/tips", "/totems"]);

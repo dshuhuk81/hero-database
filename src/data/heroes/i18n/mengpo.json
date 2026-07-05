@@ -2,19 +2,23 @@
   "name": {
     "de": "Meng Po",
     "es": "Meng Po",
-    "ru": "Мэн По"
+    "ru": "Мэн По",
+    "en": "Mengpo",
+    "zh": "孟婆"
   },
   "skills": [
     {
       "name": {
         "de": "Ufer des Samsara",
         "en": "Samsara's Shore",
-        "es": "Orilla del samsara"
+        "es": "Orilla del samsara",
+        "zh": "轮回彼岸"
       },
       "description": {
         "de": "Verbraucht bei vorhandenen Samsara-Stapeln einen Stapel, um einen gefallenen Verbündeten wiederzubeleben und 50 % seiner max. LP wiederherzustellen (Passiv).\nGewährt sich selbst einen Stapel Samsara (Aktiv).",
         "en": "While having Samsara stacks, consumes one stack to revive a fallen ally and restore 50% of their max HP (Passive). Grants herself one stack of Samsara (Active).",
-        "es": "Mientras tenga acumulaciones de Samsara, consume una acumulación para revivir a un aliado caído y restaurarle un 50 % de sus PS máximos (Pasiva).\nSe otorga una acumulación de Samsara (Activa)."
+        "es": "Mientras tenga acumulaciones de Samsara, consume una acumulación para revivir a un aliado caído y restaurarle un 50 % de sus PS máximos (Pasiva).\nSe otorga una acumulación de Samsara (Activa).",
+        "zh": "拥有轮回层数时，消耗一层复活一名倒下的友方并恢复其50%最大生命值（被动）。为自己获得一层轮回（主动）。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Stein der drei Schicksale",
         "en": "Stone of Three Fates",
-        "es": "Piedra de los tres destinos"
+        "es": "Piedra de los tres destinos",
+        "zh": "三生石"
       },
       "description": {
         "de": "Passiv: Wenn ein Verbündeter kontrolliert wird, werden ihm sofort LP in Höhe von 200 % ihres ANG wiederhergestellt und seine Debuffs entfernt. Abklingzeit: 20 Sek.",
         "en": "Passive: When an ally is controlled, immediately restores HP equal to 200% of her ATK to them and removes their debuffs. CD: 20s.",
-        "es": "Pasiva: Cuando un aliado es controlado, le restaura inmediatamente PS equivalentes al 200 % de su ATQ y elimina sus desventajas. TdE: 20s."
+        "es": "Pasiva: Cuando un aliado es controlado, le restaura inmediatamente PS equivalentes al 200 % de su ATQ y elimina sus desventajas. TdE: 20s.",
+        "zh": "被动：当友方被控制时，立即为其恢复相当于她攻击力200%的生命值并移除其减益效果。冷却：20秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Wasser des Vergessens",
         "en": "Waters of Oblivion",
-        "es": "Aguas del olvido"
+        "es": "Aguas del olvido",
+        "zh": "忘川之水"
       },
       "description": {
         "de": "Fügt dem Feind, der den Verbündeten in der Hinterreihe am nächsten ist, SCH in Höhe von 270 % ANG zu und belegt ihn mit Fluss des Vergessens, wodurch er sich für 3 Sek. in Richtung seiner Ausgangsposition bewegt.",
         "en": "Deals DMG equal to 270% of ATK to the enemy closest to backline allies and inflicts River of Oblivion, moving toward the initial position for 3s.",
-        "es": "Inflige un Daño equivalente al 270 % de su ATQ al enemigo más cercano a los aliados de la retaguardia y le aplica Río del Olvido, lo que lo mueve hacia la posición inicial durante 3s."
+        "es": "Inflige un Daño equivalente al 270 % de su ATQ al enemigo más cercano a los aliados de la retaguardia y le aplica Río del Olvido, lo que lo mueve hacia la posición inicial durante 3s.",
+        "zh": "对离后排友方最近的敌人造成相当于攻击力270%的伤害并施加忘川，使其向初始位置移动3秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Lycorisblüte",
         "en": "Lycoris Bloom",
-        "es": "Flor de lycoris"
+        "es": "Flor de lycoris",
+        "zh": "彼岸花开"
       },
       "description": {
         "de": "Stärkt den Verbündeten mit der höchsten Energie, erhöht seinen ANG um 15 % und stellt für ihn 5 Sek. lang 50 Energie pro Sek. wieder her.",
         "en": "Buffs the ally with the highest Energy, increasing their ATK by 15% and restoring 50 Energy per sec to them for 5s.",
-        "es": "Mejora al aliado con la mayor Energía, lo que aumenta su ATQ en un 15 % y le restaura 50 de Energía por segundo durante 5s."
+        "es": "Mejora al aliado con la mayor Energía, lo que aumenta su ATQ en un 15 % y le restaura 50 de Energía por segundo durante 5s.",
+        "zh": "强化能量最高的友方，使其攻击力提升15%，并每秒为其恢复50点能量，持续5秒。"
       },
       "upgrades": {
         "level2": {

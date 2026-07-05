@@ -2,20 +2,33 @@
   "name": {
     "de": "Momos",
     "es": "Momos",
-    "ru": "Момос"
+    "ru": "Момос",
+    "en": "Momus",
+    "zh": "摩墨斯"
   },
   "skills": [
-    {},
+    {
+      "name": {
+        "en": "Deceptive Magic",
+        "zh": "欺诈魔法"
+      },
+      "description": {
+        "en": "After using a skill, Momus grants himself a shield equal to 50% of ATK. (Unlock at Relic Lv.1)",
+        "zh": "使用技能后，摩墨斯为自己提供相当于攻击力50%的护盾。（圣物1级解锁）"
+      }
+    },
     {
       "name": {
         "de": "Kommt doch her!",
         "en": "Come at Me!",
-        "es": "¡Ven por mí!"
+        "es": "¡Ven por mí!",
+        "zh": "冲我来！"
       },
       "description": {
         "de": "Momos springt in die Mitte des Bereichs mit den meisten Feinden und verspottet Feind in der Nähe für 5 Sek.",
         "en": "Momus leaps into the center of the most enemy-clustered area, taunting nearby enemies for 5s.",
-        "es": "Momo salta al centro del área con más enemigos y provoca a los enemigos cercanos durante 5s."
+        "es": "Momo salta al centro del área con más enemigos y provoca a los enemigos cercanos durante 5s.",
+        "zh": "摩墨斯跃入敌人最密集区域的中心，嘲讽附近敌人5秒。"
       },
       "upgrades": {
         "level2": {
@@ -39,12 +52,14 @@
       "name": {
         "de": "Süßer Schmerz",
         "en": "Sweet Pain",
-        "es": "Dulce dolor"
+        "es": "Dulce dolor",
+        "zh": "甜蜜苦痛"
       },
       "description": {
         "de": "Jedes Mal, wenn Momos SCH in Höhe von 20 % seiner max. LP erleidet, startet er einen Gegenangriff in einem kleinen Bereich, der SCH in Höhe von 200 % ANG verursacht. Dieser Effekt kann mehrmals ausgelöst werden.",
         "en": "Whenever taking 20% max HP as DMG, Momus launches a counterattack in a small area, dealing DMG equal to 200% of ATK. This effect can trigger multiple times.",
-        "es": "Cada vez que recibe un Daño equivalente al 20 % de sus PS máximos, Momo lanza un contraataque en un área pequeña que inflige un Daño del 200 % de ATQ. Este efecto puede activarse varias veces."
+        "es": "Cada vez que recibe un Daño equivalente al 20 % de sus PS máximos, Momo lanza un contraataque en un área pequeña que inflige un Daño del 200 % de ATQ. Este efecto puede activarse varias veces.",
+        "zh": "每受到相当于最大生命值20%的伤害，摩墨斯就在小范围内发动反击，造成相当于攻击力200%的伤害。该效果可多次触发。"
       },
       "upgrades": {
         "level2": {
@@ -68,12 +83,14 @@
       "name": {
         "de": "Bombenparty",
         "en": "Bomb Party",
-        "es": "Fiesta de bombas"
+        "es": "Fiesta de bombas",
+        "zh": "炸弹派对"
       },
       "description": {
         "de": "Momos zündet eine Springbombe, die SCH in Höhe von 200 % ANG verursacht und Feinde in der Nähe zu Boden wirft.",
         "en": "Momus detonates a bouncing bomb, dealing DMG equal to 200% of ATK and knocking down nearby enemies.",
-        "es": "Momo detona una bomba rebotadora que inflige un Daño del 200 % de ATQ y derriba a los enemigos cercanos."
+        "es": "Momo detona una bomba rebotadora que inflige un Daño del 200 % de ATQ y derriba a los enemigos cercanos.",
+        "zh": "摩墨斯引爆弹跳炸弹，造成相当于攻击力200%的伤害并击倒附近敌人。"
       },
       "upgrades": {
         "level2": {

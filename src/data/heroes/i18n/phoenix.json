@@ -2,19 +2,23 @@
   "name": {
     "de": "Phönix",
     "es": "Fénix",
-    "ru": "Феникс"
+    "ru": "Феникс",
+    "en": "Phoenix",
+    "zh": "凤凰"
   },
   "skills": [
     {
       "name": {
         "de": "Flammende Wiedergeburt",
         "en": "Flaming Rebirth",
-        "es": "Renacimiento llameante"
+        "es": "Renacimiento llameante",
+        "zh": "烈焰重生"
       },
       "description": {
         "de": "Wenn Phönix fällt, setzt sie Auferstehung aus der Asche ein. Wenn sie die einzige verbleibende Einheit ist und unter dem Effekt von Auferstehung aus der Asche steht, ist der Kampf verloren (kann nur einmal pro Kampf ausgelöst werden).\n(Auferstehung aus der Asche: Wird nicht anvisierbar, stellt pro Sek. 15 % der max. LP wieder her und wird bei vollen LP wiederbelebt.)",
         "en": "When Phoenix falls, she casts Rise From Ashes. If she is the only remaining unit and under Rise From Ashes, the battle is lost (can only trigger once per battle). (Rise From Ashes: Becomes untargetable, restores 15% of max HP per sec, revives when HP is fully restored.)",
-        "es": "Cuando Fénix cae, lanza Resurgir de las cenizas. Si es la única unidad que queda y está bajo el efecto de Resurgir de las cenizas, la batalla se pierde (solo se puede activar una vez por batalla).\n(Resurgir de las cenizas: Se vuelve inalcanzable, restaura un 15 % de los PS máx. por segundo y revive cuando los PS se restauran por completo)."
+        "es": "Cuando Fénix cae, lanza Resurgir de las cenizas. Si es la única unidad que queda y está bajo el efecto de Resurgir de las cenizas, la batalla se pierde (solo se puede activar una vez por batalla).\n(Resurgir de las cenizas: Se vuelve inalcanzable, restaura un 15 % de los PS máx. por segundo y revive cuando los PS se restauran por completo).",
+        "zh": "凤凰倒下时施放浴火重生。若她是场上唯一存活单位且处于浴火重生状态，则战斗失败（每场战斗只能触发一次）。（浴火重生：进入不可被选中状态，每秒恢复15%最大生命值，生命值恢复满后复活。）"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Asche zu ewiger Flamme",
         "en": "Ashes to Everflame",
-        "es": "Cenizas a la llama eterna"
+        "es": "Cenizas a la llama eterna",
+        "zh": "灰烬永焰"
       },
       "description": {
         "de": "Phönix zielt auf die entfernteste Einheit, opfert 50 % ihrer max. LP, um einen Phönix zu beschwören, der das Ziel trifft. Fügt dem Ziel und allen Einheiten auf dem Weg SCH in Höhe von 240 % ihres ANG + 100 % der geopferten LP zu.",
         "en": "Phoenix targets the farthest unit, sacrificing 50% of her max HP to summon a phoenix that strikes the target, dealing DMG equal to 240% of her ATK + 100% of sacrificed HP to the target and all units along the path.",
-        "es": "Fénix apunta a la unidad más lejana, sacrifica el 50 % de sus PS máx. para invocar un fénix que golpea al objetivo, infligiendo un Daño equivalente a su 240 % de ATQ + el 100 % de los PS sacrificados al objetivo y a todas las unidades en el camino."
+        "es": "Fénix apunta a la unidad más lejana, sacrifica el 50 % de sus PS máx. para invocar un fénix que golpea al objetivo, infligiendo un Daño equivalente a su 240 % de ATQ + el 100 % de los PS sacrificados al objetivo y a todas las unidades en el camino.",
+        "zh": "凤凰以最远的单位为目标，牺牲50%最大生命值召唤一只凤凰冲击目标，对目标及路径上的所有单位造成相当于其攻击力240%+牺牲生命值100%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Lodernde Feder",
         "en": "Blazing Feather",
-        "es": "Pluma ardiente"
+        "es": "Pluma ardiente",
+        "zh": "炽焰之羽"
       },
       "description": {
         "de": "Jeder Normalangriff von Phönix verbraucht 10 % ihrer aktuellen LP, verursacht SCH in Höhe von 100 % ANG und belegt das Ziel mit einem Stapel Seelenbrand.\n(Seelenbrand: Verursacht 10 Sek. lang alle 2 Sek. SCH in Höhe von 75 % ANG, bis zu 10-mal stapelbar.)",
         "en": "Each Phoenix's Normal Attack consumes 10% of her current HP, dealing DMG equal to 100% of ATK and inflicting a stack of Soul Burn on the target. (Soul Burn: Deals DMG equal to 75% of ATK every 2s for 10s, stacking up to 10 times.)",
-        "es": "Cada Ataque normal de Fénix consume un 10 % de sus PS actuales, infligiendo un Daño equivalente al 100 % de su ATQ e infligiendo una acumulación de Quemadura anímica al objetivo.\n(Quemadura anímica: Inflige un Daño equivalente al 75 % del ATQ cada 2s durante 10s, acumulable hasta 10 veces)."
+        "es": "Cada Ataque normal de Fénix consume un 10 % de sus PS actuales, infligiendo un Daño equivalente al 100 % de su ATQ e infligiendo una acumulación de Quemadura anímica al objetivo.\n(Quemadura anímica: Inflige un Daño equivalente al 75 % del ATQ cada 2s durante 10s, acumulable hasta 10 veces).",
+        "zh": "凤凰的每次普通攻击消耗10%当前生命值，造成相当于攻击力100%的伤害并对目标施加一层灼魂。（灼魂：每2秒造成相当于攻击力75%的伤害，持续10秒，最多叠加10层。）"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Auferstehung aus der Asche",
         "en": "Rise From Ashes",
-        "es": "Resurgir de las cenizas"
+        "es": "Resurgir de las cenizas",
+        "zh": "浴火重生"
       },
       "description": {
         "de": "Phönix erhält 5 % ANG-GES für je 10 % verlorene max. LP, bis zu 10-mal stapelbar.",
         "en": "Phoenix gains 5% ATK SPD for every 10% of max HP lost, stacking up to 10 times.",
-        "es": "Fénix obtiene un 5 % de VEL de ATQ por cada 10 % de PS máx. perdidos, acumulable hasta 10 veces."
+        "es": "Fénix obtiene un 5 % de VEL de ATQ por cada 10 % de PS máx. perdidos, acumulable hasta 10 veces.",
+        "zh": "凤凰每损失10%最大生命值获得5%攻速，最多叠加10层。"
       },
       "upgrades": {
         "level2": {

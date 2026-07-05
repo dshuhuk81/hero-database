@@ -2,19 +2,23 @@
   "name": {
     "de": "Hela",
     "es": "Hela",
-    "ru": "Хела"
+    "ru": "Хела",
+    "en": "Hela",
+    "zh": "海拉"
   },
   "skills": [
     {
       "name": {
         "de": "Verfall von Allem",
         "en": "Decay of All",
-        "es": "Decadencia total"
+        "es": "Decadencia total",
+        "zh": "万物凋零"
       },
       "description": {
         "de": "Hela schießt Nether-Feuerbälle auf die 3 nächsten Feinde auf dem Feld, die jeweils SCH in Höhe von 250 % ANG verursachen. Die Feuerbälle explodieren und fügen umliegenden Feinden SCH in Höhe von 150 % ANG zu.",
         "en": "Hela shoots Nether Fireballs at the 3 nearest enemies on the field, each dealing DMG equal to 250% of ATK. The fireballs explode to deal DMG equal to 150% of ATK to surrounding enemies.",
-        "es": "Hela lanza Piroesferas del Inframundo a los 3 enemigos más cercanos en el campo, cada una inflige un Daño equivalente al 250 % de su ATQ. Las piroesferas explotan para infligir un Daño equivalente al 150 % de su ATQ a los enemigos circundantes."
+        "es": "Hela lanza Piroesferas del Inframundo a los 3 enemigos más cercanos en el campo, cada una inflige un Daño equivalente al 250 % de su ATQ. Las piroesferas explotan para infligir un Daño equivalente al 150 % de su ATQ a los enemigos circundantes.",
+        "zh": "海拉向场上最近的3名敌人发射冥界火球，每个火球造成相当于攻击力250%的伤害。火球爆炸后对周围敌人造成相当于攻击力150%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Fäulnis des Lebens",
         "en": "Blight upon Life",
-        "es": "Plagas en la vida"
+        "es": "Plagas en la vida",
+        "zh": "生命凋敝"
       },
       "description": {
         "de": "Hela stiehlt einem zufälligen Feind Energie und entzieht ihm 2 Sek. lang alle 0,5 Sek. 30 Energie.",
         "en": "Hela steals Energy from a random enemy, draining 30 Energy every 0.5s for 2s.",
-        "es": "Hela roba energía de un enemigo al azar, drenando 30 de energía cada 0.5s durante 2s."
+        "es": "Hela roba energía de un enemigo al azar, drenando 30 de energía cada 0.5s durante 2s.",
+        "zh": "海拉窃取随机一名敌人的能量，每0.5秒抽取30点能量，持续2秒。"
       },
       "upgrades": {
         "level4": {
@@ -65,12 +71,14 @@
       "name": {
         "de": "Verschlingen der Toten",
         "en": "Devour the Dead",
-        "es": "Devorar a los muertos"
+        "es": "Devorar a los muertos",
+        "zh": "吞噬亡者"
       },
       "description": {
         "de": "Wenn eine Einheit auf dem Schlachtfeld fällt, stellt das 100 Energie für Hela wieder her. Dieser Effekt hat eine Abklingzeit von 0,5 Sek.",
         "en": "A unit falls on the battlefield restores 100 Energy to Hela. This effect has a 0.5s CD.",
-        "es": "Cuando una unidad cae en el campo de batalla, Hela restaura 100 de energía. Este efecto tiene un TdE de 0.5s."
+        "es": "Cuando una unidad cae en el campo de batalla, Hela restaura 100 de energía. Este efecto tiene un TdE de 0.5s.",
+        "zh": "战场上有单位倒下时，为海拉恢复100点能量。该效果冷却0.5秒。"
       },
       "upgrades": {
         "level2": {
@@ -94,12 +102,14 @@
       "name": {
         "de": "Raub der Schwachen",
         "en": "Prey on the Weak",
-        "es": "Depredador de débiles"
+        "es": "Depredador de débiles",
+        "zh": "弱者为食"
       },
       "description": {
         "de": "Hela fügt dem schwächsten Gegner 240 % ANG als SCH zu. Das Besiegen des Ziels gewährt eine weitere Anwendung.",
         "en": "Hela deals 240% ATK as DMG to the weakest enemy. Defeating the target grants another cast.",
-        "es": "Hela inflige 240 % de ATQ como daño al enemigo más débil. Derrotar al objetivo otorga otro lanzamiento."
+        "es": "Hela inflige 240 % de ATQ como daño al enemigo más débil. Derrotar al objetivo otorga otro lanzamiento.",
+        "zh": "海拉对最弱的敌人造成相当于攻击力240%的伤害。若击败目标则可再次施放。"
       },
       "upgrades": {
         "level2": {

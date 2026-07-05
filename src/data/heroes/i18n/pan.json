@@ -2,19 +2,23 @@
   "name": {
     "de": "Pan",
     "es": "Pan",
-    "ru": "Pan"
+    "ru": "Pan",
+    "en": "Pan",
+    "zh": "潘"
   },
   "skills": [
     {
       "name": {
         "de": "Panisches Flüstern",
         "en": "Panic Whispers",
-        "es": "Susurros de pánico"
+        "es": "Susurros de pánico",
+        "zh": "恐慌低语"
       },
       "description": {
         "de": "Pan greift den Gegner mit der höchsten Energie an, verursacht 4 Treffer mit 50% ANG-SCH und leert dessen gesamte Energie.",
         "en": "Pan attacks the enemy with the highest current Energy, dealing DMG equal to 50% of ATK 4 times and draining all their Energy.",
-        "es": "Pan ataca al enemigo con la mayor Energía actual, lo que inflige un Daño equivalente al 50 % de su ATQ 4 veces y drena toda su Energía."
+        "es": "Pan ataca al enemigo con la mayor Energía actual, lo que inflige un Daño equivalente al 50 % de su ATQ 4 veces y drena toda su Energía.",
+        "zh": "潘攻击当前能量最高的敌人，造成4次相当于攻击力50%的伤害并抽干其全部能量。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Panflöte",
         "en": "Pandean Pipes",
-        "es": "Flauta de pan"
+        "es": "Flauta de pan",
+        "zh": "潘神排箫"
       },
       "description": {
         "de": "Versetzt den entferntesten Gegner für 4 Sekunden in Schlaf. (Schlaf: Ziel ist handlungsunfähig. Der Effekt wird entfernt, wenn das Ziel durch einen einzelnen SCH über 10% seiner max. LP getroffen wird).",
         "en": "Targets the farthest enemy and dazes them for 4s (Daze: Enemies cannot move but are awakened when taking DMG exceeding 10% of their max HP in a single hit).",
-        "es": "Apunta al enemigo más lejano y lo aturde durante 4s (Aturdimiento: los enemigos no pueden moverse, pero se despiertan al recibir un Daño que exceda el 10 % de sus PS máx. en un solo golpe)."
+        "es": "Apunta al enemigo más lejano y lo aturde durante 4s (Aturdimiento: los enemigos no pueden moverse, pero se despiertan al recibir un Daño que exceda el 10 % de sus PS máx. en un solo golpe).",
+        "zh": "以最远的敌人为目标，使其恍惚4秒（恍惚：敌人无法移动，但受到单次超过其最大生命值10%的伤害时会被唤醒）。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Ländliches Murmeln",
         "en": "Rustic Murmur",
-        "es": "Murmullo rústico"
+        "es": "Murmullo rústico",
+        "zh": "乡野低吟"
       },
       "description": {
         "de": "Immer wenn die Energie eines Feindes 99 % übersteigt, bringt Pan diesen Feind für 3 Sek. zum Schweigen. Dieser Effekt kann nur einmal alle 15 Sek. ausgelöst werden.",
         "en": "Whenever an enemy's Energy exceeds 99%, Pan silences that enemy for 3s. This effect can only trigger once every 15s.",
-        "es": "Cada vez que la Energía de un enemigo supera el 99 %, Pan silencia a ese enemigo durante 3s. Este efecto solo puede activarse una vez cada 15s."
+        "es": "Cada vez que la Energía de un enemigo supera el 99 %, Pan silencia a ese enemigo durante 3s. Este efecto solo puede activarse una vez cada 15s.",
+        "zh": "当敌人的能量超过99%时，潘沉默该敌人3秒。该效果每15秒只能触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Schrecken des Hirten",
         "en": "Shepard's Dread",
-        "es": "Pavor del pastor"
+        "es": "Pavor del pastor",
+        "zh": "牧羊人之惧"
       },
       "description": {
         "de": "Greift den nächsten Feind an, fügt ihm und den umliegenden Feinden SCH in Höhe von 200 % ANG zu und belegt sie für 4 Sek. mit Terror. (Terror: Verringert die BEW-GES um 90 % und lässt Feind fliehen).",
         "en": "Targets the nearest enemy, dealing DMG equal to 200% of ATK to them and surrounding enemies, and inflicts Terror on them for 4s (Terror: Reduces Move SPD by 90% and causes enemies to flee).",
-        "es": "Apunta al enemigo más cercano, inflige un Daño equivalente al 200 % de su ATQ a él y a los enemigos circundantes, y les inflige Terror durante 4s (Terror: reduce la VEL de mov. en un 90 % y hace que los enemigos huyan)."
+        "es": "Apunta al enemigo más cercano, inflige un Daño equivalente al 200 % de su ATQ a él y a los enemigos circundantes, y les inflige Terror durante 4s (Terror: reduce la VEL de mov. en un 90 % y hace que los enemigos huyan).",
+        "zh": "以最近的敌人为目标，对其及周围敌人造成相当于攻击力200%的伤害，并施加恐惧4秒（恐惧：移速降低90%并使敌人逃窜）。"
       },
       "upgrades": {
         "level2": {

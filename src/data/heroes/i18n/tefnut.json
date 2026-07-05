@@ -2,19 +2,23 @@
   "name": {
     "de": "Tefnut",
     "es": "Tefnut",
-    "ru": "Tefnut"
+    "ru": "Tefnut",
+    "en": "Tefnut",
+    "zh": "泰芙努特"
   },
   "skills": [
     {
       "name": {
         "de": "Wohltuender Regen",
         "en": "Soothing Rain",
-        "es": "Lluvia relajante"
+        "es": "Lluvia relajante",
+        "zh": "舒缓之雨"
       },
       "description": {
         "de": "Erschafft einen Regenvorhang in einem 3-Meter-Radius um den Verbündeten, der von den meisten Feinden angegriffen wird. Verbündete in diesem Bereich stellen pro Sek. LP in Höhe von 150 % ANG für 6 Sek. wieder her.",
         "en": "Creates a rain curtain within a 3-meter area around the ally being attacked by the most enemies. Allies within the area restore HP equal to 150% of ATK per second for 6s.",
-        "es": "Crea una cortina de lluvia en un radio de 3 metros alrededor del aliado que está siendo atacado por más enemigos. Los aliados dentro del área restauran PS equivalentes al 150 % de ATQ por segundo durante 6s."
+        "es": "Crea una cortina de lluvia en un radio de 3 metros alrededor del aliado que está siendo atacado por más enemigos. Los aliados dentro del área restauran PS equivalentes al 150 % de ATQ por segundo durante 6s.",
+        "zh": "在被最多敌人攻击的友方周围3米范围内降下雨幕。范围内的友方每秒恢复相当于攻击力150%的生命值，持续6秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Seelentherapie",
         "en": "Spirit Therapy",
-        "es": "Terapia espiritual"
+        "es": "Terapia espiritual",
+        "zh": "心灵治愈"
       },
       "description": {
         "de": "Heilt den vordersten Verbündeten um LP in Höhe von 200% des ANG. Für die nächsten 5 Sekunden stellen sie LP in Höhe von 50% des ANG wieder her, jedes Mal, wenn sie angegriffen werden.",
         "en": "Restores HP equal to 200% of ATK to the frontmost ally, then restores HP equal to 50% of ATK each time they are attacked for the next 5s.",
-        "es": "Restaura PS equivalentes al 200 % de ATQ al aliado en la vanguardia y luego restaura PS equivalentes al 50 % de ATQ cada vez que es atacado durante los siguientes 5s."
+        "es": "Restaura PS equivalentes al 200 % de ATQ al aliado en la vanguardia y luego restaura PS equivalentes al 50 % de ATQ cada vez que es atacado durante los siguientes 5s.",
+        "zh": "为最前方的友方恢复相当于攻击力200%的生命值，随后5秒内其每次被攻击时恢复相当于攻击力50%的生命值。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Lebensbarriere",
         "en": "Life Barrier",
-        "es": "Barrera de vida"
+        "es": "Barrera de vida",
+        "zh": "生命屏障"
       },
       "description": {
         "de": "Wenn die LP eines Verbündeten unter 30 % fallen, erhält er sofort einen Schild in Höhe von 250 % ANG (Passiv). Dieser Effekt kann nur einmal alle 12 Sek. ausgelöst werden.",
         "en": "When an ally's HP drops below 30%, instantly grants them a shield equal to 250% of ATK (Passive). This effect can only trigger once every 12s.",
-        "es": "Cuando los PS de un aliado bajan del 30 %, le otorga al instante un escudo equivalente al 250 % de ATQ (Pasiva). Este efecto solo puede activarse una vez cada 12s."
+        "es": "Cuando los PS de un aliado bajan del 30 %, le otorga al instante un escudo equivalente al 250 % de ATQ (Pasiva). Este efecto solo puede activarse una vez cada 12s.",
+        "zh": "当友方生命值低于30%时，立即为其提供相当于攻击力250%的护盾（被动）。该效果每12秒只能触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Regenrausch",
         "en": "Rainrush",
-        "es": "Ráfaga de lluvia"
+        "es": "Ráfaga de lluvia",
+        "zh": "骤雨"
       },
       "description": {
         "de": "Tefnut entfesselt eine Wasserwelle, die Gegnern SCH in Höhe von 180% des ANG zufügt und sie zurückstößt.",
         "en": "Tefnut releases splashes, dealing DMG equal to 180% of ATK and knocking back enemies.",
-        "es": "Tefnut libera salpicaduras que infligen un Daño del 180 % de ATQ y derriban a los enemigos."
+        "es": "Tefnut libera salpicaduras que infligen un Daño del 180 % de ATQ y derriban a los enemigos.",
+        "zh": "泰芙努特激起水花，造成相当于攻击力180%的伤害并击退敌人。"
       },
       "upgrades": {
         "level2": {

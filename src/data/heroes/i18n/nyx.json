@@ -2,19 +2,23 @@
   "name": {
     "de": "Nyx",
     "es": "Nyx",
-    "ru": "Nyx"
+    "ru": "Nyx",
+    "en": "Nyx",
+    "zh": "倪克斯"
   },
   "skills": [
     {
       "name": {
         "de": "Überfall der ewigen Nacht",
         "en": "Evernight Raid",
-        "es": "Incursión de noche eterna"
+        "es": "Incursión de noche eterna",
+        "zh": "暗夜突袭"
       },
       "description": {
         "de": "Zu Beginn des Kampfes teleportiert sich Nyx hinter den Gegner in symmetrischer Position und fügt SCH in Höhe von 200% des ANG zu. Sie markiert das Ziel, wodurch es 8 Sekunden lang keine Energie regenerieren kann und 3 Sekunden lang betäubt wird.",
         "en": "Nyx blinks behind the symmetrically opposite enemy at combat start, dealing DMG equal to 200% of ATK. She also prevents the target from recovering Energy for 8s and stuns them for 3s.",
-        "es": "Al inicio del combate, Nix realiza un Destello detrás del enemigo en la posición simétricamente opuesta, infligiendo un daño equivalente al 200 % de ATQ. También evita que el objetivo recupere Energía durante 8 s y lo aturde durante 3 s."
+        "es": "Al inicio del combate, Nix realiza un Destello detrás del enemigo en la posición simétricamente opuesta, infligiendo un daño equivalente al 200 % de ATQ. También evita que el objetivo recupere Energía durante 8 s y lo aturde durante 3 s.",
+        "zh": "战斗开始时，倪克斯闪现至对称位置的敌人身后，造成相当于攻击力200%的伤害，并使目标8秒内无法恢复能量，同时眩晕3秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Nächtliches Urteil",
         "en": "Nocturnal Judgment",
-        "es": "Juicio nocturno"
+        "es": "Juicio nocturno",
+        "zh": "黑夜审判"
       },
       "description": {
         "de": "Führt eine 4-Schlag-Kombo gegen den nächsten Gegner aus, wobei jeder Schlag SCH in Höhe von 180% des ANG verursacht. Nyx ist während der Kombo nicht anvisierbar und kontrolliert den Gegner kontinuierlich. Der letzte Schlag fügt zusätzlich eine 2-sekündige Betäubung zu.",
         "en": "Performs a 4-hit combo on the nearest enemy, each hit dealing DMG equal to 180% of ATK. Nyx is untargetable and continuously controls the enemy during this. The final hit stuns the target for 2s.",
-        "es": "Realiza un combo de 4 golpes al enemigo más cercano, y cada golpe inflige un daño equivalente al 180 % de ATQ. Nix es inalcanzable y controla continuamente al enemigo durante este tiempo. El golpe final aturde al objetivo durante 2 s."
+        "es": "Realiza un combo de 4 golpes al enemigo más cercano, y cada golpe inflige un daño equivalente al 180 % de ATQ. Nix es inalcanzable y controla continuamente al enemigo durante este tiempo. El golpe final aturde al objetivo durante 2 s.",
+        "zh": "对最近的敌人进行4连击，每次造成相当于攻击力180%的伤害。期间倪克斯不可被选中并持续控制该敌人。最后一击眩晕目标2秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Herannahende Nacht",
         "en": "Encroaching Nightfall",
-        "es": "Anochecer inminente"
+        "es": "Anochecer inminente",
+        "zh": "黑夜侵蚀"
       },
       "description": {
         "de": "Nyx erschafft eine Dunkle Domäne in einem Bereich mit hoher Gegnerdichte und wird unantastbar. Sie verursacht SCH in Höhe von 150% der ANG 3-mal bei Gegnern innerhalb der Dunklen Domäne, gefolgt von einem finalen Schlag, SCH in Höhe von 250% der ANG bei allen Gegnern in der Domäne verursacht.",
         "en": "Nyx creates a Dark Domain in an enemy-clustered area and becomes untargetable for the duration. She strikes enemies in Dark Domain 3 times, each dealing DMG equal to 150% of ATK. She emerges in the end and deals DMG equal to 250% of ATK to all enemies in Dark Domain.",
-        "es": "Nix crea un Dominio oscuro en un área con muchos enemigos y es inalcanzable mientras dure. Golpea a los enemigos en el Dominio oscuro 3 veces, y cada golpe inflige un daño equivalente al 150 % de ATQ. Al final, emerge e inflige un daño equivalente al 250 % de ATQ a todos los enemigos en el Dominio oscuro."
+        "es": "Nix crea un Dominio oscuro en un área con muchos enemigos y es inalcanzable mientras dure. Golpea a los enemigos en el Dominio oscuro 3 veces, y cada golpe inflige un daño equivalente al 150 % de ATQ. Al final, emerge e inflige un daño equivalente al 250 % de ATQ a todos los enemigos en el Dominio oscuro.",
+        "zh": "倪克斯在敌人密集区域创造黑暗领域，期间不可被选中。她对黑暗领域内的敌人打击3次，每次造成相当于攻击力150%的伤害。最后她现身，对黑暗领域内的所有敌人造成相当于攻击力250%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Domäne der Nacht",
         "en": "Domain of Night",
-        "es": "Dominio de la noche"
+        "es": "Dominio de la noche",
+        "zh": "黑夜领域"
       },
       "description": {
         "de": "Für jeden überlebenden Verbündeten (Diener ausgenommen) auf dem Schlachtfeld erhält Nyx 5 % Ausweichrate und einen 4 % ANG-Boost.",
         "en": "For each surviving ally (excluding minions) on the battlefield, Nyx gains 5% Dodge Rate and a 4% ATK boost.",
-        "es": "Por cada aliado sobreviviente (excluyendo súbditos) en el campo de batalla, Nix obtiene un 5 % de Prob. de evasión y un 4 % de aumento de ATQ."
+        "es": "Por cada aliado sobreviviente (excluyendo súbditos) en el campo de batalla, Nix obtiene un 5 % de Prob. de evasión y un 4 % de aumento de ATQ.",
+        "zh": "战场上每有一名存活的友方（不含随从），倪克斯获得5%闪避率与4%攻击力加成。"
       },
       "upgrades": {
         "level2": {

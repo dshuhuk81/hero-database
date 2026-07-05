@@ -2,6 +2,40 @@
   "name": {
     "de": "Widder",
     "es": "Aries",
-    "ru": "Овен"
-  }
+    "ru": "Овен",
+    "en": "Aries",
+    "zh": "白羊座"
+  },
+  "skills": [
+    {
+      "name": {
+        "en": "Tenacious Bloodline",
+        "zh": "坚韧血脉"
+      },
+      "description": {
+        "en": "Permanently gains 20% Lifesteal in battle.",
+        "zh": "战斗中永久获得20%吸血。"
+      }
+    },
+    {
+      "name": {
+        "en": "Swipe 'Em",
+        "zh": "横扫一击"
+      },
+      "description": {
+        "en": "Deals 270% ATK as DMG to the nearest target and knocks them down.",
+        "zh": "对最近的目标造成相当于攻击力270%的伤害并将其击倒。"
+      }
+    },
+    {
+      "name": {
+        "en": "Aries Pounce",
+        "zh": "白羊猛扑"
+      },
+      "description": {
+        "en": "Aries leaps up and slams down, dealing 360% ATK as DMG to enemies in a cone and knocking them back.",
+        "zh": "白羊座跃起后猛砸地面，对锥形范围内的敌人造成相当于攻击力360%的伤害并将其击退。"
+      }
+    }
+  ]
 }

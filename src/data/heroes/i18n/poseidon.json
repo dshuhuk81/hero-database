@@ -2,20 +2,33 @@
   "name": {
     "de": "Poseidon",
     "es": "Poseidon",
-    "ru": "Poseidon"
+    "ru": "Poseidon",
+    "en": "Poseidon",
+    "zh": "波塞冬"
   },
   "skills": [
-    {},
+    {
+      "name": {
+        "en": "Raging Tide",
+        "zh": "怒潮"
+      },
+      "description": {
+        "en": "Gains 200 Energy upon entering battle. (Unlock at Relic Lv.1)",
+        "zh": "进入战斗时获得200点能量。（圣物1级解锁）"
+      }
+    },
     {
       "name": {
         "de": "Monsterwelle",
         "en": "Rogue Wave",
-        "es": "Ola de rebeldía"
+        "es": "Ola de rebeldía",
+        "zh": "惊涛骇浪"
       },
       "description": {
         "de": "Poseidon hebt seinen Dreizack und beschwört zwei Wellen auf beiden Seiten des Schlachtfelds. Feinde im Bereich werden 2 Meter zurückgestoßen und erleiden SCH in Höhe von 200% seines ANG.",
         "en": "Poseidon raises his trident, summoning two tidal waves on both sides of the battlefield. Enemies within range are pushed 2 meters and take DMG equal to 200% of his ATK.",
-        "es": "Poseidón levanta su tridente e invoca dos marejadas a ambos lados del campo de batalla. Los enemigos dentro del alcance son empujados 2 metros y reciben un Daño equivalente al 200 % de su ATQ."
+        "es": "Poseidón levanta su tridente e invoca dos marejadas a ambos lados del campo de batalla. Los enemigos dentro del alcance son empujados 2 metros y reciben un Daño equivalente al 200 % de su ATQ.",
+        "zh": "波塞冬举起三叉戟，在战场两侧召唤两道潮汐。范围内的敌人被推动2米并受到相当于其攻击力200%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -39,12 +52,14 @@
       "name": {
         "de": "Wasserhose",
         "en": "Waterspout",
-        "es": "Tromba marina"
+        "es": "Tromba marina",
+        "zh": "水龙卷"
       },
       "description": {
         "de": "Poseidon stößt seinen Dreizack zu den Füßen des aktuellen Ziels, wodurch eine Welle aus dem Boden hervorbricht, die Feinden in einem kleinen Bereich SCH in Höhe von 200% seines ANG zufügt und sie zu Boden wirft.",
         "en": "Poseidon drives his trident into the ground under the current target, triggering a tidal wave that deals DMG equal to 200% of ATK to enemies in a small area and knocking them down.",
-        "es": "Poseidón clava su tridente en el suelo bajo el objetivo actual, provocando una marejada que inflige un Daño equivalente al 200 % de su ATQ a los enemigos en un área pequeña y los derriba."
+        "es": "Poseidón clava su tridente en el suelo bajo el objetivo actual, provocando una marejada que inflige un Daño equivalente al 200 % de su ATQ a los enemigos en un área pequeña y los derriba.",
+        "zh": "波塞冬将三叉戟插入当前目标脚下的地面，引发潮汐，对小范围内的敌人造成相当于攻击力200%的伤害并将其击倒。"
       },
       "upgrades": {
         "level2": {
@@ -67,11 +82,13 @@
     {
       "name": {
         "es": "Tridente de la marea",
-        "en": "Tidal Trident"
+        "en": "Tidal Trident",
+        "zh": "潮汐三叉戟"
       },
       "description": {
         "es": "Después de cada dos ataques, Poseidón carga su tridente. El siguiente ataque inflige un Daño equivalente al 200 % de su ATQ al objetivo y restaura 100 de energía para sí mismo.",
-        "en": "After every two attacks, Poseidon charges his trident. The next attack deals DMG equal to 200% of ATK to the target and restores 100 Energy to himself."
+        "en": "After every two attacks, Poseidon charges his trident. The next attack deals DMG equal to 200% of ATK to the target and restores 100 Energy to himself.",
+        "zh": "每2次攻击后，波塞冬为三叉戟蓄力，下一次攻击对目标造成相当于攻击力200%的伤害并为自己恢复100点能量。"
       },
       "upgrades": {
         "level2": {

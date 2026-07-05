@@ -2,19 +2,23 @@
   "name": {
     "de": "Serket",
     "es": "Serket",
-    "ru": "Serket"
+    "ru": "Serket",
+    "en": "Serket",
+    "zh": "塞尔凯特"
   },
   "skills": [
     {
       "name": {
         "de": "Sandgeborener Schwarm",
         "en": "Sandborn Swarm",
-        "es": "Enjambre de arena"
+        "es": "Enjambre de arena",
+        "zh": "沙生蝎群"
       },
       "description": {
         "de": "Serket taucht in den Sand und beschwört 3 Skorpione um sich herum. Die Skorpione erben 100 % ihrer Basisattribute, erleiden 200 % SCH und halten 10 Sek. lang.",
         "en": "Serket dives into the sand and summons 3 scorpions around her. The scorpions inherit 100% of her basic stats, take 200% DMG, and last for 10s.",
-        "es": "Serket se sumerge en la arena e invoca 3 escorpiones a su alrededor. Los escorpiones heredan el 100 % de sus estadísticas básicas, reciben un 200 % de Daño y duran 10 s."
+        "es": "Serket se sumerge en la arena e invoca 3 escorpiones a su alrededor. Los escorpiones heredan el 100 % de sus estadísticas básicas, reciben un 200 % de Daño y duran 10 s.",
+        "zh": "塞尔凯特潜入沙中，在周围召唤3只蝎子。蝎子继承她100%的基础属性，受到200%伤害，持续10秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Lauernder Stachel",
         "en": "Lurking Sting",
-        "es": "Aguijón acechante"
+        "es": "Aguijón acechante",
+        "zh": "潜伏毒刺"
       },
       "description": {
         "de": "Serket visiert den am weitesten entfernten Feind an und gräbt sich vorwärts, wobei sie Feinden auf ihrem Weg 150 % ANG als SCH zufügt und beim Auftauchen umstehende Feinde zu Boden wirft.",
         "en": "Serket locks onto the farthest enemy and burrows to tunnel forward, dealing 150% ATK as DMG to enemies in her path and knocking down surrounding enemies upon emerging.",
-        "es": "Serket fija al enemigo más lejano y se entierra para avanzar, infligiendo un Daño equivalente al 150 % de su ATQ a los enemigos en su camino y derribando a los enemigos cercanos al emerger."
+        "es": "Serket fija al enemigo más lejano y se entierra para avanzar, infligiendo un Daño equivalente al 150 % de su ATQ a los enemigos en su camino y derribando a los enemigos cercanos al emerger.",
+        "zh": "塞尔凯特锁定最远的敌人并潜地前行，对路径上的敌人造成相当于攻击力150%的伤害，钻出时击倒周围敌人。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Giftexplosion",
         "en": "Venom Burst",
-        "es": "Explosión de veneno"
+        "es": "Explosión de veneno",
+        "zh": "毒液爆发"
       },
       "description": {
         "de": "Wenn ein beschworener Skorpion fällt oder verschwindet, zerstört er sich selbst, fügt Feinden in einem Radius von 3 Metern SCH in Höhe von 200 % ANG zu und verringert ihren ANG 10 Sek. lang um 10 %.",
         "en": "When a summoned scorpion falls or disappears, it self-destructs, dealing DMG equal to 200% ATK to enemies within a 3-meter radius and reducing their ATK by 10% for 10s.",
-        "es": "Cuando un escorpión invocado cae o desaparece, se autodestruye, infligiendo un Daño equivalente al 200 % de su ATQ a los enemigos en un radio de 3 metros y reduciendo su ATQ en un 10 % durante 10 s."
+        "es": "Cuando un escorpión invocado cae o desaparece, se autodestruye, infligiendo un Daño equivalente al 200 % de su ATQ a los enemigos en un radio de 3 metros y reduciendo su ATQ en un 10 % durante 10 s.",
+        "zh": "当召唤的蝎子倒下或消失时会自爆，对3米半径内的敌人造成相当于攻击力200%的伤害，并使其攻击力降低10%，持续10秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Sand-Wiedergeburt",
         "en": "Sand Rebirth",
-        "es": "Renacimiento de arena"
+        "es": "Renacimiento de arena",
+        "zh": "沙中重生"
       },
       "description": {
         "de": "Wenn ihre LP zum ersten Mal unter 40 % fallen, taucht Serket sofort für 3 Sek. in den Sand und erhöht ihre max. LP dauerhaft um 30 %. Während sie eingegraben ist, stellt sie pro Sek. LP in Höhe von 60 % ANG wieder her (Passiv).",
         "en": "When her HP drops below 40% for the first time, Serket immediately dives into the sand for 3s and permanently increases her max HP by 30%. While burrowing, she restores HP equal to 60% ATK per sec (Passive).",
-        "es": "Cuando sus PS bajan del 40 % por primera vez, Serket se sumerge inmediatamente en la arena durante 3 s y aumenta permanentemente sus PS máximos en un 30 %. Mientras está enterrada, restaura PS equivalentes al 60 % de su ATQ por segundo (Pasiva)."
+        "es": "Cuando sus PS bajan del 40 % por primera vez, Serket se sumerge inmediatamente en la arena durante 3 s y aumenta permanentemente sus PS máximos en un 30 %. Mientras está enterrada, restaura PS equivalentes al 60 % de su ATQ por segundo (Pasiva).",
+        "zh": "当她的生命值首次低于40%时，塞尔凯特立即潜入沙中3秒，并永久提升30%最大生命值。潜地期间每秒恢复相当于攻击力60%的生命值（被动）。"
       },
       "upgrades": {
         "level2": {

@@ -3,19 +3,22 @@
     "de": "Caishen",
     "en": "Caishen",
     "es": "Caishen",
-    "ru": "Цайшэнь"
+    "ru": "Цайшэнь",
+    "zh": "财神"
   },
   "skills": [
     {
       "name": {
         "de": "Goldene Verjüngung",
         "en": "Golden Rejuvenation",
-        "es": "Rejuvenecimiento dorado"
+        "es": "Rejuvenecimiento dorado",
+        "zh": "金玉回春"
       },
       "description": {
         "de": "Fügt einem Ziel SCH in Höhe von 270 % ANG zu und stellt bei sich selbst 200 Energie wieder her.",
         "en": "Deals DMG equal to 270% of ATK to a target and restores 200 Energy to himself.",
-        "es": "Inflige un Daño equivalente al 270 % de su ATQ a un objetivo y se restaura 200 de Energía."
+        "es": "Inflige un Daño equivalente al 270 % de su ATQ a un objetivo y se restaura 200 de Energía.",
+        "zh": "对目标造成相当于攻击力270%的伤害，并为自己恢复200点能量。"
       },
       "upgrades": {
         "level2": {
@@ -39,12 +42,14 @@
       "name": {
         "de": "Schwimmen im Geld",
         "en": "Rollin' in Riches",
-        "es": "Mares de abundancia"
+        "es": "Mares de abundancia",
+        "zh": "财源滚滚"
       },
       "description": {
         "de": "Caishen stellt bei Verbündeten in einem großen Bereich um ihn herum 100 Energie wieder her und dann für die nächsten 10 Sek. 25 Energie pro Sek.",
         "en": "Caishen restores 100 Energy to allies in a large area around him and then restores 25 Energy per sec to them for the next 10s.",
-        "es": "Caishen restaura 100 de Energía a los aliados en una gran área a su alrededor y luego les restaura 25 de Energía por segundo durante los siguientes 10s."
+        "es": "Caishen restaura 100 de Energía a los aliados en una gran área a su alrededor y luego les restaura 25 de Energía por segundo durante los siguientes 10s.",
+        "zh": "财神为周围大范围内的友方恢复100点能量，并在接下来10秒内每秒为其恢复25点能量。"
       },
       "upgrades": {
         "level2": {
@@ -68,12 +73,14 @@
       "name": {
         "de": "Leuchtender Glücksstern",
         "en": "Lucky Star Alight",
-        "es": "Estrella de la suerte encendida"
+        "es": "Estrella de la suerte encendida",
+        "zh": "福星高照"
       },
       "description": {
         "de": "Negiert tödlichen SCH und wird für 2 Sekunden unverwundbar. Kann nur einmal ausgelöst werden.",
         "en": "Before falling, becomes immune to the DMG and invincible for 2s. It can only trigger once.",
-        "es": "Antes de caer, se vuelve inmune al Daño e invencible durante 2s. Solo se puede activar una vez."
+        "es": "Antes de caer, se vuelve inmune al Daño e invencible durante 2s. Solo se puede activar una vez.",
+        "zh": "倒下前免疫该伤害并进入无敌状态2秒。只能触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -97,12 +104,14 @@
       "name": {
         "de": "Endloses Vermögen",
         "en": "Endless Fortune",
-        "es": "Fortuna interminable"
+        "es": "Fortuna interminable",
+        "zh": "财运亨通"
       },
       "description": {
         "de": "Caishen ist beim Eintritt in den Kampf von 2 Goldbarren umgeben. Wenn die LP eines nahen Verbündeten unter 50 % fallen, wird ein Barren verbraucht, um bei diesem Verbündeten 25 % der max. LP wiederherzustellen. Die Verwendung eines Goldbarrens hat eine Abklingzeit von 8 Sek. für jede Gottheit. Caishen kann max. 3 Goldbarren haben.\nSobald alle Goldbarren verbraucht sind, werden sie automatisch wieder vollständig aufgefüllt. Dieser Effekt hat eine Abklingzeit von 20 Sek.",
         "en": "Caishen is surrounded by 2 Golden Ingots upon entering battle. When a nearby ally's HP drops below 50%, an Ingot is consumed to restore 25% max HP to that ally. Using a Golden Ingot has an 8s CD for each Deity. Caishen can have a maximum of 3 Golden Ingots. Once all Golden Ingots are used, they are automatically replenished to full. This effect has a 20s CD.",
-        "es": "Caishen está rodeado por 2 Lingotes de oro al entrar en batalla. Cuando los PS de un aliado cercano caen por debajo del 50 %, se consume un Lingote para restaurar el 25 % de los PS máximos de ese aliado. Usar un Lingote de oro tiene un TdE de 8s para cada Deidad. Caishen puede tener un máximo de 3 Lingotes de oro.\nUna vez que se usan todos los Lingotes de oro, se reponen automáticamente al máximo. Este efecto tiene un TdE de 20s."
+        "es": "Caishen está rodeado por 2 Lingotes de oro al entrar en batalla. Cuando los PS de un aliado cercano caen por debajo del 50 %, se consume un Lingote para restaurar el 25 % de los PS máximos de ese aliado. Usar un Lingote de oro tiene un TdE de 8s para cada Deidad. Caishen puede tener un máximo de 3 Lingotes de oro.\nUna vez que se usan todos los Lingotes de oro, se reponen automáticamente al máximo. Este efecto tiene un TdE de 20s.",
+        "zh": "财神进入战斗时身边环绕2个金元宝。当附近友方的生命值低于50%时，消耗一个金元宝为其恢复25%最大生命值。每个神祇使用金元宝有8秒冷却。财神最多可拥有3个金元宝。金元宝全部用完后会自动补满，该效果有20秒冷却。"
       },
       "upgrades": {
         "level2": {

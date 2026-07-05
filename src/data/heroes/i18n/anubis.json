@@ -2,19 +2,23 @@
   "name": {
     "de": "Anubis",
     "es": "Anubis",
-    "ru": "Anubis"
+    "ru": "Anubis",
+    "en": "Anubis",
+    "zh": "阿努比斯"
   },
   "skills": [
     {
       "name": {
         "de": "Urteil des Federfalls",
         "en": "Featherfall Judgment",
-        "es": "Juicio de la pluma"
+        "es": "Juicio de la pluma",
+        "zh": "羽落审判"
       },
       "description": {
         "de": "Anubis entzieht dem schwächsten Gegner die Seele, betäubt ihn für 2 Sek. und verursacht 450 % ANG als SCH. Wird das Ziel besiegt, wenn die Fähigkeit endet, stellt Anubis 600 Energie wieder her.",
         "en": "Anubis drains the soul of the weakest enemy, stunning them for 2s and dealing DMG equal to 450% of ATK. If the target is defeated when the skill ends, Anubis restores 600 Energy.",
-        "es": "Anubis drena el alma del enemigo más débil, lo aturde durante 2 s e inflige un 450 % de ATQ como daño. Si el objetivo es derrotado cuando termina la habilidad, Anubis restaura 600 de energía."
+        "es": "Anubis drena el alma del enemigo más débil, lo aturde durante 2 s e inflige un 450 % de ATQ como daño. Si el objetivo es derrotado cuando termina la habilidad, Anubis restaura 600 de energía.",
+        "zh": "阿努比斯抽取最弱敌人的灵魂，将其眩晕2秒并造成相当于攻击力450%的伤害。若技能结束时目标被击败，阿努比斯恢复600点能量。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Unterwelt-Seelenwanderer",
         "en": "Underworld Soulfarer",
-        "es": "Guía del Inframundo"
+        "es": "Guía del Inframundo",
+        "zh": "冥界渡魂人"
       },
       "description": {
         "de": "Das erste Mal, wenn die LP eines Feindes in einem Kampf unter 80% fallen, verschwindet Anubis und erscheint hinter ihm, verursacht 240% ANG-SCH und betäubt ihn für 2 Sekunden.",
         "en": "The first time an enemy's HP drops below 80% in a battle, Anubis fades into the void. He then appears behind that enemy, deals DMG equal to 240% of ATK, and stuns the target for 2s.",
-        "es": "La primera vez que los PS de un enemigo caen por debajo del 80 % en una batalla, Anubis se desvanece en el vacío. Luego, aparece detrás de ese enemigo, inflige un Daño equivalente al 240 % de su ATQ y aturde al objetivo durante 2s."
+        "es": "La primera vez que los PS de un enemigo caen por debajo del 80 % en una batalla, Anubis se desvanece en el vacío. Luego, aparece detrás de ese enemigo, inflige un Daño equivalente al 240 % de su ATQ y aturde al objetivo durante 2s.",
+        "zh": "战斗中当敌人的生命值首次低于80%时，阿努比斯隐入虚空，随后出现在该敌人身后，造成相当于攻击力240%的伤害，并将目标眩晕2秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Mythischer Balsamierer",
         "en": "Mythic Embalmer",
-        "es": "Embalsamador mítico"
+        "es": "Embalsamador mítico",
+        "zh": "神话防腐师"
       },
       "description": {
         "de": "Jedes Mal, wenn Anubis insgesamt 50 % seiner max. LP verliert, wird er für 3 Sek. immun gegen SCH und kann nicht anvisiert werden. Dieser Effekt kann nur einmal alle 10 Sek. ausgelöst werden.",
         "en": "Each time Anubis loses a total of 50% of his max HP, he becomes immune to DMG and untargetable for 3s. This effect can only trigger once every 10s.",
-        "es": "Cada vez que Anubis pierde un total del 50 % de sus PS máx., se vuelve inmune al daño e inalcanzable durante 3 s. Este efecto solo se puede activar una vez cada 10 s."
+        "es": "Cada vez que Anubis pierde un total del 50 % de sus PS máx., se vuelve inmune al daño e inalcanzable durante 3 s. Este efecto solo se puede activar una vez cada 10 s.",
+        "zh": "阿努比斯每累计损失50%最大生命值，便免疫伤害且不可被选中，持续3秒。该效果每10秒只能触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Was-Zepter-Schatten",
         "en": "Shadowy Was-Scepter",
-        "es": "Cetro was sombrío"
+        "es": "Cetro was sombrío",
+        "zh": "暗影权杖"
       },
       "description": {
         "de": "Schwingt sein Zepter, um Feinde in der Nähe anzugreifen, verursacht SCH in Höhe von 210 % ANG und verringert ihre Heilungseffekte für 5 Sek. um 50 %.",
         "en": "Spins his scepter to attack nearby enemies, dealing DMG equal to 210% of ATK and reducing their healing effects by 50% for 5s.",
-        "es": "Gira su cetro para atacar a los enemigos cercanos, lo que inflige un Daño equivalente al 210 % de su ATQ y reduce sus efectos de sanación en un 50 % durante 5 ."
+        "es": "Gira su cetro para atacar a los enemigos cercanos, lo que inflige un Daño equivalente al 210 % de su ATQ y reduce sus efectos de sanación en un 50 % durante 5 .",
+        "zh": "挥舞权杖攻击附近的敌人，造成相当于攻击力210%的伤害，并使其受到的治疗效果降低50%，持续5秒。"
       },
       "upgrades": {
         "level2": {

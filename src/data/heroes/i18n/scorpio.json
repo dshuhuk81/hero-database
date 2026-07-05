@@ -2,19 +2,23 @@
   "name": {
     "de": "Skorpion",
     "es": "Escorpio",
-    "ru": "Скорпион"
+    "ru": "Скорпион",
+    "en": "Scorpio",
+    "zh": "天蝎座"
   },
   "skills": [
     {
       "name": {
         "de": "Verstohlener Skorpion",
         "en": "Stealthy Scorpion",
-        "es": "Escorpio sigiloso"
+        "es": "Escorpio sigiloso",
+        "zh": "隐秘之蝎"
       },
       "description": {
         "de": "Skorpion erhält einen Schild, der SCH bis zu einer Höhe von 300 % des ANG absorbiert.",
         "en": "Scorpio gains a shield that absorbs DMG up to 300% ATK.",
-        "es": "Escorpio obtiene un escudo que absorbe daño hasta un 300 % del ATQ."
+        "es": "Escorpio obtiene un escudo que absorbe daño hasta un 300 % del ATQ.",
+        "zh": "天蝎座获得一个护盾，最多可吸收相当于攻击力300%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -33,12 +37,14 @@
       "name": {
         "de": "Schwanzstich",
         "en": "Tail Sting",
-        "es": "Aguijón de cola"
+        "es": "Aguijón de cola",
+        "zh": "毒尾螫刺"
       },
       "description": {
         "de": "Skorpion schlägt auf den nächsten Gegner ein, verursacht dreimal SCH in Höhe von 100 % des ANG, gefolgt von einem mächtigen Stoß, der SCH in Höhe von 210 % des ANG verursacht.",
         "en": "Scorpio slashes the nearest enemy, dealing three instances of DMG equal to 100% ATK, followed by a powerful thrust that deals 210% ATK as DMG.",
-        "es": "Escorpio acuchilla al enemigo más cercano, lo que inflige tres instancias de daño equivalentes a un 100 % del ATQ, seguido de una estocada potente que inflige un 210 % de ATQ como daño."
+        "es": "Escorpio acuchilla al enemigo más cercano, lo que inflige tres instancias de daño equivalentes a un 100 % del ATQ, seguido de una estocada potente que inflige un 210 % de ATQ como daño.",
+        "zh": "天蝎座斩击最近的敌人，造成3次相当于攻击力100%的伤害，随后进行一次强力突刺，造成相当于攻击力210%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -57,12 +63,14 @@
       "name": {
         "de": "Präventivschlag",
         "en": "Preemptive Strike",
-        "es": "Ataque preventivo"
+        "es": "Ataque preventivo",
+        "zh": "先发制人"
       },
       "description": {
         "de": "Bei Kampfbeginn teleportiert sich Skorpion an die symmetrische Position hinter einem Gegner, verursacht SCH in Höhe von 220 % des ANG und betäubt ihn für 2 Sek. Diese Fähigkeit schlägt fehl, wenn sich an dieser Position kein Gegner befindet.",
         "en": "At combat start, Scorpio blinks to the symmetric position behind an enemy, dealing 220% ATK as DMG and stunning them for 2s. This skill fails if no enemy is at that position.",
-        "es": "Al inicio del combate, Escorpio se teletransporta a la posición simétrica detrás de un enemigo, lo que inflige un 220 % de ATQ como daño y lo aturde durante 2 s. Esta habilidad falla si no hay ningún enemigo en esa posición."
+        "es": "Al inicio del combate, Escorpio se teletransporta a la posición simétrica detrás de un enemigo, lo que inflige un 220 % de ATQ como daño y lo aturde durante 2 s. Esta habilidad falla si no hay ningún enemigo en esa posición.",
+        "zh": "战斗开始时，天蝎座闪现至对称位置的敌人身后，造成相当于攻击力220%的伤害并眩晕2秒。若该位置没有敌人，技能失效。"
       },
       "upgrades": {
         "level2": {

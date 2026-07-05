@@ -2,21 +2,43 @@
   "name": {
     "de": "Khepri",
     "es": "Khepri",
-    "ru": "Khepri"
+    "ru": "Khepri",
+    "en": "Khepri",
+    "zh": "凯布利"
   },
   "skills": [
-    {},
-    {},
+    {
+      "name": {
+        "en": "Scarab Go",
+        "zh": "圣甲虫出击"
+      },
+      "description": {
+        "en": "Khepri rolls forward, knocks back all enemy units along the path, and attacks 4 times, each time dealing DMG equal to 100% of ATK.",
+        "zh": "凯布利向前滚动，击退路径上的所有敌方单位并攻击4次，每次造成相当于攻击力100%的伤害。"
+      }
+    },
+    {
+      "name": {
+        "en": "Scarab Charge",
+        "zh": "圣甲虫冲锋"
+      },
+      "description": {
+        "en": "Upon entering battle, Khepri quickly rolls forward and slams into the target, dealing DMG equal to 270% of ATK and knocking them back 3 meters.",
+        "zh": "进入战斗时，凯布利快速向前滚动撞向目标，造成相当于攻击力270%的伤害并将其击退3米。"
+      }
+    },
     {
       "name": {
         "de": "Sandsturm-Zermalmer",
         "en": "Sandstorm Crush",
-        "es": "Aplastamiento arenoso"
+        "es": "Aplastamiento arenoso",
+        "zh": "沙暴碾压"
       },
       "description": {
         "de": "Khepri befiehlt einem Skarabäus, auf den Boden zu schmettern, was umliegenden Einheiten SCH in Höhe von 200 % ANG zufügt. Er erhält einen Schild in Höhe von 60 % ANG × (1 + Anzahl der getroffenen Einheiten).",
         "en": "Khepri commands a scarab to slam the ground, dealing DMG equal to 200% of ATK to surrounding units. He gains a shield equal to 60% of ATK × (1 + number of units hit).",
-        "es": "Khepri ordena a un escarabajo que golpee el suelo, lo que inflige un Daño del 200 % de ATQ a las unidades circundantes. Obtiene un escudo equivalente al 60 % de ATQ × (1 + número de unidades golpeadas)."
+        "es": "Khepri ordena a un escarabajo que golpee el suelo, lo que inflige un Daño del 200 % de ATQ a las unidades circundantes. Obtiene un escudo equivalente al 60 % de ATQ × (1 + número de unidades golpeadas).",
+        "zh": "凯布利命令圣甲虫猛击地面，对周围单位造成相当于攻击力200%的伤害。他获得相当于攻击力60%×（1+命中单位数）的护盾。"
       },
       "upgrades": {
         "level2": {
@@ -40,12 +62,14 @@
       "name": {
         "de": "Segen des Skarabäus",
         "en": "Scarab's Blessing",
-        "es": "Bendición del escarabajo"
+        "es": "Bendición del escarabajo",
+        "zh": "圣甲虫祝福"
       },
       "description": {
         "de": "Khepri versteckt sich im Skarabäus und kann nicht handeln. Der Einsatz der Fähigkeit gewährt ihm für 5 Sek. einen Schild in Höhe von 300 % ANG und 10 % SCH-RED. Er erhält während der Fähigkeit Super-Rüstung.",
         "en": "Khepri hides himself inside the scarab and cannot act. Casting the skill grants him a shield equal to 300% of ATK and 10% DMG RED for 5s. He gains Super Armor during the skill.",
-        "es": "Khepri se esconde dentro del escarabajo y no puede actuar. Lanzar la habilidad le otorga un escudo equivalente al 300 % de ATQ y un 10 % de Reduc. de daño durante 5s. Obtiene Superarmadura durante la habilidad."
+        "es": "Khepri se esconde dentro del escarabajo y no puede actuar. Lanzar la habilidad le otorga un escudo equivalente al 300 % de ATQ y un 10 % de Reduc. de daño durante 5s. Obtiene Superarmadura durante la habilidad.",
+        "zh": "凯布利躲入圣甲虫体内，无法行动。施放技能时获得相当于攻击力300%的护盾与10%减伤，持续5秒。技能期间获得霸体。"
       },
       "upgrades": {
         "level2": {

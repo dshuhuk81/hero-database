@@ -2,19 +2,23 @@
   "name": {
     "de": "Kronos",
     "es": "Crono",
-    "ru": "Кронос"
+    "ru": "Кронос",
+    "en": "Cronus",
+    "zh": "克洛诺斯"
   },
   "skills": [
     {
       "name": {
         "de": "Zeitstrudel",
         "en": "Temporal Vortex",
-        "es": "Vórtice temporal"
+        "es": "Vórtice temporal",
+        "zh": "时空漩涡"
       },
       "description": {
         "de": "Beschwört einen Zeitstrudel, der allen feindlichen Einheiten SCH in Höhe von 280 % ANG zufügt und ihre ANG-GES sowie BEW-GES für 5 Sek. um 100 % verringert.",
         "en": "Summons a Temporal Vortex that deals 280% ATK DMG to all enemy units, reducing their ATK SPD and Move SPD by 100% for 5s.",
-        "es": "Invoca un Vórtice temporal que inflige un 280 % de daño de ATQ a todas las unidades enemigas, y reduce su VEL de ATQ y VEL de mov. en un 100 % durante 5 s."
+        "es": "Invoca un Vórtice temporal que inflige un 280 % de daño de ATQ a todas las unidades enemigas, y reduce su VEL de ATQ y VEL de mov. en un 100 % durante 5 s.",
+        "zh": "召唤时空漩涡，对所有敌方单位造成相当于攻击力280%的伤害，并使其攻速与移速降低100%，持续5秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Zeitriss",
         "en": "Temporal Rift",
-        "es": "Grieta temporal"
+        "es": "Grieta temporal",
+        "zh": "时空裂隙"
       },
       "description": {
         "de": "Kronos teleportiert den nächsten Feind zur Position des am weitesten entfernten Feindes, fügt beiden Zielen SCH in Höhe von 180 % ANG zu und betäubt sie für 2 Sek.",
         "en": "Cronus teleports the nearest enemy to the position of the farthest enemy, dealing 180% ATK DMG to both targets and Stunning them for 2 seconds.",
-        "es": "Cronos teletransporta al enemigo más cercano a la posición del enemigo más lejano, inflige un 180 % de daño de ATQ a ambos objetivos y los aturde durante 2 segundos."
+        "es": "Cronos teletransporta al enemigo más cercano a la posición del enemigo más lejano, inflige un 180 % de daño de ATQ a ambos objetivos y los aturde durante 2 segundos.",
+        "zh": "克洛诺斯将最近的敌人传送至最远敌人所在位置，对两个目标造成相当于攻击力180%的伤害并眩晕2秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Zurückgespulte Überreste",
         "en": "Rewinding Remains",
-        "es": "Regreso del remanente"
+        "es": "Regreso del remanente",
+        "zh": "时光回溯"
       },
       "description": {
         "de": "Passiv: Wenn eine verbündete Einheit kurz davor ist zu fallen, spult Kronos diese Einheit in ihren optimalen Zustand der letzten 5 Sek. zurück. Nach dem Zurückspulen werden ANG und ANG-GES des Ziels für 2 Sek. um 90 % verringert. Diese Fähigkeit hat eine Abklingzeit von 18 Sek.",
         "en": "When an allied unit is about to fall, Cronus rewinds that unit to its optimal state from the past 5 seconds. After the rewind, the target's ATK and ATK SPD are reduced by 90% for 2s. This skill has 18s CD.",
-        "es": "Pasiva: Cuando una unidad aliada está a punto de caer, Cronos rebobina a esa unidad a su estado óptimo de los últimos 5 segundos. Después del rebobinado, el ATQ y la VEL de ATQ del objetivo se reducen en un 90 % durante 2 s. Esta habilidad tiene 18 s de TdE."
+        "es": "Pasiva: Cuando una unidad aliada está a punto de caer, Cronos rebobina a esa unidad a su estado óptimo de los últimos 5 segundos. Después del rebobinado, el ATQ y la VEL de ATQ del objetivo se reducen en un 90 % durante 2 s. Esta habilidad tiene 18 s de TdE.",
+        "zh": "当友方单位即将倒下时，克洛诺斯将其回溯至过去5秒内的最佳状态。回溯后，目标的攻击力与攻速降低90%，持续2秒。该技能冷却18秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Echo der Kausalität",
         "en": "Echo of Causality",
-        "es": "Eco de la causalidad"
+        "es": "Eco de la causalidad",
+        "zh": "因果回响"
       },
       "description": {
         "de": "Passiv: Markiert zu Kampfbeginn die verbündete Einheit mit der höchsten Abklingzeitreduktion als [Zeitreisender].\nAktiv: Wenn der [Zeitreisende] eine aktive Fähigkeit (ausgenommen Ultimative Fähigkeiten und Einsatzfähigkeiten) einsetzt, wird diese Fähigkeit sofort erneut eingesetzt. Dieser Effekt hat eine Abklingzeit von 20 Sek.",
         "en": "At the start of battle, mark the allied unit with the highest CD Reduction as [Time Traveler]. When the Time Traveler casts an Active Skill (excluding Ultimate and Entry Skill), that skill is cast again immediately. This effect has 20s CD.",
-        "es": "Pasiva: Al inicio de la batalla, marca a la unidad aliada con la mayor reducción de TdE como [Viajero del Tiempo].\nActiva: Cuando el [Viajero del Tiempo] lanza una Habilidad activa, excluyendo la Habilidad definitiva y la Habilidad de entrada, esa habilidad se lanza de nuevo inmediatamente. Este efecto tiene 20 s de TdE."
+        "es": "Pasiva: Al inicio de la batalla, marca a la unidad aliada con la mayor reducción de TdE como [Viajero del Tiempo].\nActiva: Cuando el [Viajero del Tiempo] lanza una Habilidad activa, excluyendo la Habilidad definitiva y la Habilidad de entrada, esa habilidad se lanza de nuevo inmediatamente. Este efecto tiene 20 s de TdE.",
+        "zh": "战斗开始时，标记冷却缩减最高的友方单位为【时间旅者】。当时间旅者施放主动技能（大招与入场技能除外）时，该技能立即再次施放。该效果冷却20秒。"
       },
       "upgrades": {
         "level2": {

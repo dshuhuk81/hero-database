@@ -2,19 +2,23 @@
   "name": {
     "de": "Hera",
     "es": "Hera",
-    "ru": "Hera"
+    "ru": "Hera",
+    "en": "Hera",
+    "zh": "赫拉"
   },
   "skills": [
     {
       "name": {
         "de": "Dominanzrausch",
         "en": "Dominance Spree",
-        "es": "Racha de Dominio"
+        "es": "Racha de Dominio",
+        "zh": "支配狂潮"
       },
       "description": {
         "de": "Hera entfesselt eine Welle der Bezauberung auf den am weitesten entfernten Feind (Bezauberung: Betroffene Einheiten greifen ihre eigenen Verbündeten an). Getroffene Feinde verursachen 3 Sek. lang 40 % erhöhten Normalangriff-SCH.",
         "en": "Hera releases a wave of Charm toward the farthest enemy (Charm: Afflicted units attack their own allies). Enemies hit deal 40% increased Normal Attack DMG for 3s.",
-        "es": "Hera lanza una oleada de Encanto hacia el enemigo más lejano (Encanto: las unidades afectadas atacan a sus propios aliados). Los enemigos golpeados infligen un 40 % más de Daño de Ataque normal durante 3 s."
+        "es": "Hera lanza una oleada de Encanto hacia el enemigo más lejano (Encanto: las unidades afectadas atacan a sus propios aliados). Los enemigos golpeados infligen un 40 % más de Daño de Ataque normal durante 3 s.",
+        "zh": "赫拉向最远的敌人释放魅惑波（魅惑：受影响的单位会攻击自己的队友）。被命中的敌人普攻伤害提升40%，持续3秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Kronenverleihung",
         "en": "Crown Bestowal",
-        "es": "Otorgamiento de Corona"
+        "es": "Otorgamiento de Corona",
+        "zh": "加冕之礼"
       },
       "description": {
         "de": "Hera krönt den Verbündeten mit dem höchsten ANG und gewährt ihm 3 Sek. lang +30 % ANG und +100 % ANG-GES.",
         "en": "Hera crowns the ally with the highest ATK, granting +30% ATK and +100% ATK SPD for 3s.",
-        "es": "Hera corona al aliado con el ATQ más alto, otorgándole un +30 % de ATQ y un +100 % de VEL de ATQ durante 3 s."
+        "es": "Hera corona al aliado con el ATQ más alto, otorgándole un +30 % de ATQ y un +100 % de VEL de ATQ durante 3 s.",
+        "zh": "赫拉为攻击力最高的友方加冕，使其获得+30%攻击力与+100%攻速，持续3秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Souveräne Domäne",
         "en": "Sovereign Domain",
-        "es": "Dominio soberano"
+        "es": "Dominio soberano",
+        "zh": "君权领域"
       },
       "description": {
         "de": "Bei Kampfbeginn erschafft Hera eine Souveräne Domäne in der Hälfte der Verbündeten. Solange sie sich in der Domäne befindet, erhält sie alle 5 Sek. 2,5 % Energieaufladung und 5 % SCH-RED. Maximal 6-mal stapelbar. Wenn ein Feind die Domäne zum ersten Mal betritt, wird er 2 Sek. lang unterdrückt.",
         "en": "At combat start, Hera creates a Sovereign Domain in the ally half. While in the domain, she gains 2.5% Energy Regen and 5% DMG RED every 5s. Max at 6 stacks. When an enemy enters the domain for the first time, they are suppressed for 2s.",
-        "es": "Al inicio del combate, Hera crea un Dominio Soberano en la mitad del campo aliada. Mientras está en el dominio, obtiene un 2,5 % de Recarga de energía y un 5 % de Reduc. de daño cada 5 s. Se acumula hasta 6 veces. Cuando un enemigo entra en el dominio por primera vez, es suprimido durante 2 s."
+        "es": "Al inicio del combate, Hera crea un Dominio Soberano en la mitad del campo aliada. Mientras está en el dominio, obtiene un 2,5 % de Recarga de energía y un 5 % de Reduc. de daño cada 5 s. Se acumula hasta 6 veces. Cuando un enemigo entra en el dominio por primera vez, es suprimido durante 2 s.",
+        "zh": "战斗开始时，赫拉在友方半场创造君权领域。处于领域中时，她每5秒获得2.5%能量恢复与5%减伤，最多叠加6层。敌人首次进入领域时会被压制2秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Fatale Besessenheit",
         "en": "Fatal Obsession",
-        "es": "Obsesión fatal"
+        "es": "Obsesión fatal",
+        "zh": "致命痴迷"
       },
       "description": {
         "de": "Belegt den Feind mit dem höchsten DPS 3 Sek. lang mit [Besessenheit], wodurch seine Angriffe deaktiviert, seine BEW-GES reduziert und er zu Hera gezogen wird. Das Ziel erleidet pro Sekunde SCH in Höhe von 100 % von Heras ANG, der in Heras LP umgewandelt wird.",
         "en": "Inflicts [Obsession] on the enemy with the highest DPS for 3s, disabling their attacks, reducing their Move SPD, and pulling them to Hera. The target takes 100% of Hera's ATK as DMG per sec, which converts into Hera's HP.",
-        "es": "Inflige [Obsesión] al enemigo con el DPS más alto durante 3 s, lo que deshabilita sus ataques, reduce su VEL de mov. y lo atrae hacia Hera. El objetivo recibe un 100 % del ATQ de Hera como Daño por segundo, que se convierte en los PS de Hera."
+        "es": "Inflige [Obsesión] al enemigo con el DPS más alto durante 3 s, lo que deshabilita sus ataques, reduce su VEL de mov. y lo atrae hacia Hera. El objetivo recibe un 100 % del ATQ de Hera como Daño por segundo, que se convierte en los PS de Hera.",
+        "zh": "对输出最高的敌人施加【痴迷】3秒，使其无法攻击、移速降低并被拉向赫拉。目标每秒受到相当于赫拉攻击力100%的伤害，该伤害转化为赫拉的生命值。"
       },
       "upgrades": {
         "level2": {

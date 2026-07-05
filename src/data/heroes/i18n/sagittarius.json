@@ -2,19 +2,23 @@
   "name": {
     "de": "Schütze",
     "es": "Sagitario",
-    "ru": "Стрелец"
+    "ru": "Стрелец",
+    "en": "Sagittarius",
+    "zh": "射手座"
   },
   "skills": [
     {
       "name": {
         "de": "Aurora-Pfeil",
         "en": "Aurora Arrow",
-        "es": "Flecha de aurora"
+        "es": "Flecha de aurora",
+        "zh": "极光之箭"
       },
       "description": {
         "de": "Verursacht 240% ANG-SCH am Ziel und erhöht ANG um 15% für 7 Sekunden.",
         "en": "Deals DMG equal to 240% of ATK to the target and increases ATK by 15% for 7s.",
-        "es": "Inflige un Daño equivalente al 240 % de su ATQ al objetivo y aumenta su ATQ en un 15 % durante 7s."
+        "es": "Inflige un Daño equivalente al 240 % de su ATQ al objetivo y aumenta su ATQ en un 15 % durante 7s.",
+        "zh": "对目标造成相当于攻击力240%的伤害，并使攻击力提升15%，持续7秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Bogenschützen-Instinkt",
         "en": "Archer's Instinct",
-        "es": "Instinto de arquero"
+        "es": "Instinto de arquero",
+        "zh": "射手直觉"
       },
       "description": {
         "de": "Erhöht den SCH gegen Gegner mit weniger als 50% LP um 20%.",
         "en": "Increases DMG dealt to enemies with HP below 50% by 20%.",
-        "es": "Aumenta el Daño infligido a los enemigos con PS por debajo del 50 % en un 20 %."
+        "es": "Aumenta el Daño infligido a los enemigos con PS por debajo del 50 % en un 20 %.",
+        "zh": "对生命值低于50%的敌人造成的伤害提升20%。"
       },
       "upgrades": {
         "level2": {
@@ -62,12 +68,14 @@
       "name": {
         "de": "Durchdringender Ansturm",
         "en": "Piercing Rush",
-        "es": "Embestida penetrante"
+        "es": "Embestida penetrante",
+        "zh": "贯穿突进"
       },
       "description": {
         "de": "Stürmt auf das aktuelle Ziel zu und fügt den Feinden auf dem Weg SCH in Höhe von 220 % ANG zu. Kehrt nach einer kurzen Verzögerung zurück und fügt den Feinden auf dem Weg erneut SCH in Höhe von 220 % ANG zu.",
         "en": "Charges toward the current target, dealing DMG equal to 220% of ATK to enemies along the path. After a brief delay, returns to deal DMG equal to 220% of ATK again to enemies along the path.",
-        "es": "Carga hacia el objetivo actual e inflige un Daño equivalente al 220 % de su ATQ a los enemigos en su camino. Tras una breve pausa, regresa para volver a infligir un Daño equivalente al 220 % de su ATQ a los enemigos en su camino."
+        "es": "Carga hacia el objetivo actual e inflige un Daño equivalente al 220 % de su ATQ a los enemigos en su camino. Tras una breve pausa, regresa para volver a infligir un Daño equivalente al 220 % de su ATQ a los enemigos en su camino.",
+        "zh": "冲向当前目标，对路径上的敌人造成相当于攻击力220%的伤害。短暂延迟后折返，再次对路径上的敌人造成相当于攻击力220%的伤害。"
       },
       "upgrades": {
         "level2": {

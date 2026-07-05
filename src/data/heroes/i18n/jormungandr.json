@@ -2,19 +2,23 @@
   "name": {
     "de": "Jörmungandr",
     "es": "Jörmungandr",
-    "ru": "Ёрмунганд"
+    "ru": "Ёрмунганд",
+    "en": "Jormungandr",
+    "zh": "耶梦加得"
   },
   "skills": [
     {
       "name": {
         "de": "Giftspritzer",
         "en": "Venom Spray",
-        "es": "Rociada de veneno"
+        "es": "Rociada de veneno",
+        "zh": "毒雾喷吐"
       },
       "description": {
         "de": "Beschwört beim Eintritt in den Kampf einen Giftnebel um sich, der Einheiten in der Nähe jede Sek. SCH in Höhe von 70 % ANG zufügt.",
         "en": "Upon entering battle, summons a poison mist around Jormungandr, dealing damage equal to 70% of ATK every second to nearby enemies.",
-        "es": "Invoca una niebla venenosa a su alrededor al entrar en batalla, lo que inflige un Daño equivalente al 70 % de su ATQ cada segundo a las unidades cercanas."
+        "es": "Invoca una niebla venenosa a su alrededor al entrar en batalla, lo que inflige un Daño equivalente al 70 % de su ATQ cada segundo a las unidades cercanas.",
+        "zh": "进入战斗时，在耶梦加得周围召唤毒雾，对附近敌人每秒造成相当于攻击力70%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Nagen der Schlange",
         "en": "Serpent’s Gnawing",
-        "es": "Mordiscos de serpiente"
+        "es": "Mordiscos de serpiente",
+        "zh": "巨蛇啃噬"
       },
       "description": {
         "de": "Jormungandr springt in die Luft und entfesselt einen Schwarm Schlangen, die 5 Mal zuschlagen. Jeder Schlag verursacht 100% ANG-SCH.",
         "en": "Jormungandr leaps into the air and rains down a swarm of snakes 5 times, each hit dealing damage equal to 100% of ATK.",
-        "es": "Jörmungandr salta por los aires y hace llover un enjambre de serpientes 5 veces, lo que inflige un Daño equivalente al 100 % de su ATQ cada vez."
+        "es": "Jörmungandr salta por los aires y hace llover un enjambre de serpientes 5 veces, lo que inflige un Daño equivalente al 100 % de su ATQ cada vez.",
+        "zh": "耶梦加得跃入空中，降下蛇群5次，每次命中造成相当于攻击力100%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Annäherung der Schlange",
         "en": "Serpent’s Approach",
-        "es": "Acercamiento de serpiente"
+        "es": "Acercamiento de serpiente",
+        "zh": "巨蛇逼近"
       },
       "description": {
         "de": "Jormungandr schlängelt sich vorwärts und fügt Gegnern auf seinem Weg 200% ANG-SCH zu.",
         "en": "Jormungandr slides forward, dealing damage equal to 200% of ATK to enemies along the path.",
-        "es": "Jörmungandr se desliza hacia adelante, lo que inflige un Daño equivalente al 200 % de su ATQ a los enemigos en su camino."
+        "es": "Jörmungandr se desliza hacia adelante, lo que inflige un Daño equivalente al 200 % de su ATQ a los enemigos en su camino.",
+        "zh": "耶梦加得向前滑行，对路径上的敌人造成相当于攻击力200%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Häutung der Schlange",
         "en": "Serpent’s Molt",
-        "es": "Muda de serpiente"
+        "es": "Muda de serpiente",
+        "zh": "巨蛇蜕皮"
       },
       "description": {
         "de": "Wenn Jörmungandr tödlichen SCH erleidet, tritt er in den Zustand [Rache] ein. Er überlebt für weitere 5 Sek. und speichert 60 % allen SCH, den er im Zustand [Rache] erleidet. Er fügt allen Feinden in der Nähe den gespeicherten SCH als Wahren SCH zu, wenn der Zustand abläuft.",
         "en": "Upon taking lethal damage, Jormungandr enters the Revenge state, survives for 5s, and stores 60% of all damage taken. When Revenge expires, stored damage is dealt as True Damage to nearby enemies.",
-        "es": "Al recibir daño letal, Jörmungandr entra en el estado de [Venganza]. Sobrevive durante otros 5s y acumula el 60 % de todo el Daño recibido durante el estado de [Venganza]. Inflige el daño acumulado como Daño verdadero a todos los enemigos cercanos cuando el estado expira."
+        "es": "Al recibir daño letal, Jörmungandr entra en el estado de [Venganza]. Sobrevive durante otros 5s y acumula el 60 % de todo el Daño recibido durante el estado de [Venganza]. Inflige el daño acumulado como Daño verdadero a todos los enemigos cercanos cuando el estado expira.",
+        "zh": "受到致命伤害时，耶梦加得进入复仇状态，存活5秒并储存所受伤害的60%。复仇状态结束时，将储存的伤害作为真实伤害对附近敌人造成。"
       },
       "upgrades": {
         "level2": {

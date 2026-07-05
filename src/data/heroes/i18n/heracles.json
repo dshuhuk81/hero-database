@@ -2,7 +2,9 @@
   "name": {
     "de": "Herakles",
     "es": "Hércules",
-    "ru": "Геракл"
+    "ru": "Геракл",
+    "en": "Heracles",
+    "zh": "赫拉克勒斯"
   },
   "skills": [
     {
@@ -10,13 +12,15 @@
         "de": "Vernarbtes Fell",
         "es": "Furia marcada",
         "ru": "Израненная ярость",
-        "en": "Scarred Fury"
+        "en": "Scarred Fury",
+        "zh": "伤痕之怒"
       },
       "description": {
         "de": "Herakles speichert allen erlittenen SCH, bis zu einem Maximum von 80 % seiner max. LP. Bei Freisetzung fügt er den Feinden im Umkreis von 3 Metern SCH in Höhe von 20 % seiner max. LP +100 % des gespeicherten SCH zu.",
         "es": "Heracles registra todo el daño recibido, hasta un máximo del 80 % de sus PS máximos. Al liberarlo, inflige un daño igual al 20 % de sus PS máximos + el 100 % del daño registrado a los enemigos en un radio de 3 metros.",
         "ru": "Геракл накапливает весь полученный DMG, максимум до 80% своей макс. HP. При высвобождении он наносит врагам в радиусе 3 метров DMG, равный 20% его макс. HP плюс 100% накопленного DMG.",
-        "en": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals DMG equal to 20% of his max HP +100% of the recorded DMG to enemies within 3 meters."
+        "en": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals DMG equal to 20% of his max HP +100% of the recorded DMG to enemies within 3 meters.",
+        "zh": "赫拉克勒斯记录受到的所有伤害，上限为其最大生命值的80%。释放时，对3米内的敌人造成相当于其最大生命值20%+已记录伤害100%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -44,13 +48,15 @@
         "de": "Weltenerschütterer",
         "es": "Sacudemundos",
         "ru": "Мироразрушитель",
-        "en": "Worldshaker"
+        "en": "Worldshaker",
+        "zh": "撼世者"
       },
       "description": {
         "de": "Unterdrückt einen Feind, hebt ihn auf und schleudert ihn in eine Feindesgruppe. Fügt den Feinden im Umkreis von 3 Metern AoE-SCH in Höhe von 10 % der max. LP des unterdrückten Ziels zu (bis zu 20 % der eigenen max. LP).",
         "es": "Suprime a un enemigo, lo levanta y lo estrella contra un área llena de enemigos, infligiendo Daño de AdE equivalente al 10 % de los PS máx. del objetivo suprimido (hasta un 20 % de sus PS máx.) a los enemigos en un radio de 3 metros.",
         "ru": "Подавляет врага, поднимает его и швыряет в область с плотной группой противников, нанося врагам в радиусе 3 метров AoE DMG в размере 10% макс. HP подавленной цели (до 20% его макс. HP).",
-        "en": "Suppresses an enemy, picks them up, and slams them into an enemy-clustered area, dealing AoE DMG equal to 10% of the suppressed target's max HP (up to 20% of his max HP) to enemies within 3 meters."
+        "en": "Suppresses an enemy, picks them up, and slams them into an enemy-clustered area, dealing AoE DMG equal to 10% of the suppressed target's max HP (up to 20% of his max HP) to enemies within 3 meters.",
+        "zh": "压制一名敌人，将其举起并砸向敌人密集区域，对3米内的敌人造成相当于被压制目标最大生命值10%的范围伤害（上限为他自身最大生命值的20%）。"
       },
       "upgrades": {
         "level2": {
@@ -78,13 +84,15 @@
         "de": "Wilde Zertrümmerung",
         "es": "Golpe salvaje",
         "ru": "Дикий удар",
-        "en": "Savage Smash"
+        "en": "Savage Smash",
+        "zh": "蛮力重击"
       },
       "description": {
         "de": "Schlägt nach einem kurzen Ansturm auf den Boden, fügt den Feinden in einem Kegel SCH in Höhe von 200 % ANG zu und wirft sie zu Boden.",
         "es": "Tras una breve carga, golpea el suelo, infligiendo un Daño equivalente al 200 % de su ATQ a los enemigos en un cono y los derriba.",
         "ru": "После короткой подготовки он ударяет по земле, нанося врагам в конусе DMG в размере 200% ATK и сбивая их с ног.",
-        "en": "After a brief charge, slams the ground, dealing DMG equal to 200% of ATK to enemies in a cone and knocking them down."
+        "en": "After a brief charge, slams the ground, dealing DMG equal to 200% of ATK to enemies in a cone and knocking them down.",
+        "zh": "短暂蓄力后猛击地面，对锥形范围内的敌人造成相当于攻击力200%的伤害并将其击倒。"
       },
       "upgrades": {
         "level2": {
@@ -112,13 +120,15 @@
         "de": "Aufstieg zur Gottheit",
         "es": "Ascensión a la divinidad",
         "ru": "Вознесение к божеству",
-        "en": "Godhood Ascension"
+        "en": "Godhood Ascension",
+        "zh": "神性升华"
       },
       "description": {
         "de": "Beim Betreten des Schlachtfelds erhöht Herakles seine max. LP um 10 % und wandelt jede Sek. 5 % seines ANG in 2,5 % max. LP um.",
         "es": "Al entrar al campo de batalla, Heracles aumenta sus PS máx. un 10 % y convierte un 5 % de su ATQ en un 2,5 % de PS máx. por segundo.",
         "ru": "При входе на поле боя Геракл увеличивает свою макс. HP на 10% и каждую секунду преобразует 5% своего ATK в 2,5% макс. HP.",
-        "en": "Upon entering the battlefield, Heracles increases his max HP by 10% and converts 5% of his ATK to 2.5% max HP every second."
+        "en": "Upon entering the battlefield, Heracles increases his max HP by 10% and converts 5% of his ATK to 2.5% max HP every second.",
+        "zh": "进入战场后，赫拉克勒斯的最大生命值提升10%，并每秒将5%攻击力转化为2.5%最大生命值。"
       },
       "upgrades": {
         "level2": {

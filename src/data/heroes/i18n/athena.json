@@ -2,7 +2,9 @@
   "name": {
     "de": "Athene",
     "es": "Atenea",
-    "ru": "Афина"
+    "ru": "Афина",
+    "en": "Athena",
+    "zh": "雅典娜"
   },
   "description": {
     "de": "Athene, Göttin der Weisheit und des gerechten Krieges, verkörpert Vernunft und Strategie. Sie herrscht über Wissen und Handwerk, und ihre Macht reicht vom Werkzeugbau bis zur Befehlsführung auf dem Schlachtfeld.",
@@ -15,13 +17,15 @@
         "de": "Aegis des Heiligenscheins",
         "es": "Égida del halo",
         "ru": "Эгида сияния",
-        "en": "Aegis of Halo"
+        "en": "Aegis of Halo",
+        "zh": "圣盾光环"
       },
       "description": {
         "de": "Zu Kampfbeginn erschafft Athene eine Aura in ihrer Nähe, die den von Verbündeten darin erlittenen SCH um 10% verringert.\nBeim ersten Einsatz wird die Aura mittelgroß und gewährt Verbündeten darin einen Schild in Höhe von 200 % von Athenes ANG, während die Aura permanent verstärkt wird: Sie erhält 5 % SCH-RED & ANG für jeden Verbündeten in der Aura. Beim zweiten Einsatz erhalten alle Verbündeten in der Aura zusätzlich 40 % ANG-GES.",
         "es": "Al inicio del combate, Atenea crea un aura cerca de ella que reduce el daño que reciben los aliados en su interior un 10 %.\nEn el primer lanzamiento, el aura crece a tamaño mediano y otorga a los aliados en su interior un escudo equivalente al 200 % del ATQ de Atenea, a la vez que mejora el aura permanentemente: obtiene un 5 % de Reduc. de daño y ATQ por cada aliado dentro del aura. En el segundo lanzamiento, todos los aliados dentro del aura obtienen un 40 % adicional de VEL de ATQ.",
         "ru": "В начале боя Афина создаёт вокруг себя ауру, снижающую получаемый союзниками внутри неё DMG на 10%. При первом применении аура увеличивается до среднего размера и даёт союзникам внутри щит в размере 200% ATK Афины, а сама аура навсегда усиливается: за каждого союзника внутри ауры она получает по 5% DMG RED и ATK. При втором применении все союзники внутри ауры дополнительно получают 40% ATK SPD.",
-        "en": "At combat start, Athena creates an aura near herself, reducing DMG taken by allies within by 10%. On the first cast, the aura grows to medium size, granting allies inside a shield equal to 200% of Athena's ATK while permanently enhancing the aura: she gains 5% DMG RED & ATK for each ally within the aura. On the second cast, all allies within the aura gain an additional 40% ATK SPD."
+        "en": "At combat start, Athena creates an aura near herself, reducing DMG taken by allies within by 10%. On the first cast, the aura grows to medium size, granting allies inside a shield equal to 200% of Athena's ATK while permanently enhancing the aura: she gains 5% DMG RED & ATK for each ally within the aura. On the second cast, all allies within the aura gain an additional 40% ATK SPD.",
+        "zh": "战斗开始时，雅典娜在自身附近创造一个光环，使光环内友方受到的伤害降低10%。首次施放时，光环扩大至中等范围，为其中的友方提供相当于雅典娜攻击力200%的护盾，并永久强化光环：光环内每有一名友方，她获得5%减伤与攻击力。第二次施放时，光环内所有友方额外获得40%攻速。"
       },
       "upgrades": {
         "level2": {
@@ -49,13 +53,15 @@
         "de": "Göttlicher Schlag",
         "es": "Golpe divino",
         "ru": "Божественный удар",
-        "en": "Divine Strike"
+        "en": "Divine Strike",
+        "zh": "神圣打击"
       },
       "description": {
         "de": "Schwingt den Schild, um dem Ziel 250% SCH zuzufügen und es für 1,5 Sekunden zu betäuben.",
         "es": "Blande la Égida para infligir un Daño equivalente al 250 % de su ATQ al objetivo y aturdirlo durante 1,5s.",
         "ru": "Размахивает Эгидой, нанося цели DMG в размере 250% ATK и оглушая её на 1,5 с.",
-        "en": "Swings the Aegis to deal DMG equal to 250% of ATK to the target and stun them for 1.5s."
+        "en": "Swings the Aegis to deal DMG equal to 250% of ATK to the target and stun them for 1.5s.",
+        "zh": "挥舞圣盾对目标造成相当于攻击力250%的伤害并将其眩晕1.5秒。"
       },
       "upgrades": {
         "level2": {
@@ -83,13 +89,15 @@
         "de": "Segen des Heiligenscheins",
         "es": "Bendición del halo",
         "ru": "Благословение сияния",
-        "en": "Blessing of Halo"
+        "en": "Blessing of Halo",
+        "zh": "光环祝福"
       },
       "description": {
         "de": "Solange Athena auf dem Feld ist, segnet sie die verbündete Einheit mit dem höchsten ANG und erhöht deren ANG-GES um 25%.",
         "es": "Atenea bendice al aliado con el ATQ más alto, aumentando su VEL de ATQ un 25 %.",
         "ru": "Афина благословляет союзника с самым высоким ATK, увеличивая его ATK SPD на 25%.",
-        "en": "Athena blesses the ally with the highest ATK, increasing their ATK SPD by 25%."
+        "en": "Athena blesses the ally with the highest ATK, increasing their ATK SPD by 25%.",
+        "zh": "雅典娜祝福攻击力最高的友方，使其攻速提升25%。"
       },
       "upgrades": {
         "level2": {
@@ -117,13 +125,15 @@
         "de": "Handauflegung",
         "es": "Imposición de manos",
         "ru": "Возложение рук",
-        "en": "Lay on Hands"
+        "en": "Lay on Hands",
+        "zh": "圣手治愈"
       },
       "description": {
         "de": "Wählt die schwächste verbündete Einheit aus und überschüttet sie und umliegende Verbündete mit Heiligem Licht, heilt sie um 200% der ATK und erhöht ihre M-RES um 20% für die nächsten 8 Sekunden.",
         "es": "Baña con luz sagrada al aliado más débil y a los cercanos, sanándolos un 200 % de ATQ como PS y aumentando su RES M un 20 % durante 8s.",
         "ru": "Озаряет святом светом самого слабого союзника и ближайших к нему союзников, леча их на 200% ATK в виде HP и повышая их M-RES на 20% на 8 с.",
-        "en": "Showers the weakest ally and those nearby with sacred light, healing them for 200% ATK as HP and increasing their M-RES by 20% for 8s."
+        "en": "Showers the weakest ally and those nearby with sacred light, healing them for 200% ATK as HP and increasing their M-RES by 20% for 8s.",
+        "zh": "以圣光沐浴最弱的友方及其周围目标，为其恢复相当于攻击力200%的生命值，并使其魔抗提升20%，持续8秒。"
       },
       "upgrades": {
         "level2": {

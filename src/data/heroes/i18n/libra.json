@@ -2,19 +2,23 @@
   "name": {
     "de": "Waage",
     "es": "Libra",
-    "ru": "Весы"
+    "ru": "Весы",
+    "en": "Libra",
+    "zh": "天秤座"
   },
   "skills": [
     {
       "name": {
         "de": "Seelenhieb",
         "en": "Soul Slash",
-        "es": "Corte anímico"
+        "es": "Corte anímico",
+        "zh": "灵魂斩"
       },
       "description": {
         "de": "Libra schwingt eine massive Lichtklinge nach vorne und fügt Gegnern in einem rechteckigen Bereich 340% ANG SCH zu.",
         "en": "Libra slashes forward with a giant blade, dealing DMG equal to 340% of her ATK to enemies in a rectangle.",
-        "es": "Libra ataca hacia adelante con una espada gigante, lo que inflige un Daño equivalente al 340 % de su ATQ a los enemigos en un área rectangular."
+        "es": "Libra ataca hacia adelante con una espada gigante, lo que inflige un Daño equivalente al 340 % de su ATQ a los enemigos en un área rectangular.",
+        "zh": "天秤座挥舞巨刃向前斩击，对矩形范围内的敌人造成相当于其攻击力340%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -33,12 +37,14 @@
       "name": {
         "de": "Urteil",
         "en": "Verdict",
-        "es": "Veredicto"
+        "es": "Veredicto",
+        "zh": "裁决"
       },
       "description": {
         "de": "Libra beschwört Waagen des Urteils über einem zufälligen Gegner und fügt 250% ANG SCH zu, wobei das Ziel für 2 Sekunden betäubt wird.",
         "en": "Libra summons a scale above a random enemy to judge them, dealing DMG equal to 250% of her ATK and stunning them for 2s.",
-        "es": "Libra invoca una balanza sobre un enemigo al azar para juzgarlo, lo que le inflige un Daño equivalente al 250 % de su ATQ y lo aturde durante 2s."
+        "es": "Libra invoca una balanza sobre un enemigo al azar para juzgarlo, lo que le inflige un Daño equivalente al 250 % de su ATQ y lo aturde durante 2s.",
+        "zh": "天秤座在随机一名敌人上方召唤天平进行审判，造成相当于其攻击力250%的伤害并眩晕2秒。"
       },
       "upgrades": {
         "level2": {
@@ -62,12 +68,14 @@
       "name": {
         "de": "Kosmische Waage",
         "en": "Cosmic Scale",
-        "es": "Balanza cósmica"
+        "es": "Balanza cósmica",
+        "zh": "宇宙天平"
       },
       "description": {
         "de": "Libra erhält einen Schild in Höhe von 270% der ANG für bis zu 10 Sekunden. Solange der Schild aktiv ist, wird die ANG um 20% erhöht.",
         "en": "Libra grants herself a shield equal to 270% of her ATK for up to 10s. Increases her ATK by 20% while the shield is active.",
-        "es": "Libra se otorga un escudo equivalente al 270 % de su ATQ durante un máximo de 10s. Aumenta su ATQ en un 20 % mientras el escudo está activo."
+        "es": "Libra se otorga un escudo equivalente al 270 % de su ATQ durante un máximo de 10s. Aumenta su ATQ en un 20 % mientras el escudo está activo.",
+        "zh": "天秤座为自己提供相当于其攻击力270%的护盾，最长持续10秒。护盾存在期间，她的攻击力提升20%。"
       },
       "upgrades": {
         "level2": {

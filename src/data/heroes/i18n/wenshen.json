@@ -2,19 +2,23 @@
   "name": {
     "de": "Wen-Shen",
     "es": "Wen-Shen",
-    "ru": "Wen-Shen"
+    "ru": "Wen-Shen",
+    "en": "Wen-Shen",
+    "zh": "瘟神"
   },
   "skills": [
     {
       "name": {
         "de": "Stern des Unheils",
         "en": "Star of Ill Omen",
-        "es": "Estrella de mal agüero"
+        "es": "Estrella de mal agüero",
+        "zh": "凶星降临"
       },
       "description": {
         "de": "Verhext den nächsten Feind, macht ihn für 4 Sek. kampfunfähig und verursacht dabei SCH in Höhe von 80 % ANG pro Sek.",
         "en": "Jinxes the nearest enemy, disabling them for 4s while dealing DMG equal to 80% of ATK per sec.",
-        "es": "Maldice al enemigo más cercano, incapacitándolo durante 4s mientras inflige un Daño equivalente al 80 % de ATQ por segundo."
+        "es": "Maldice al enemigo más cercano, incapacitándolo durante 4s mientras inflige un Daño equivalente al 80 % de ATQ por segundo.",
+        "zh": "诅咒最近的敌人，使其无法行动4秒，并每秒造成相当于攻击力80%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Dualitätsumkehr",
         "en": "Duality Inversion",
-        "es": "Inversión de dualidad"
+        "es": "Inversión de dualidad",
+        "zh": "阴阳逆转"
       },
       "description": {
         "de": "Verflucht den Feind in der symmetrischen Position und fügt ihm SCH in Höhe von 50% seiner max. LP zu (bis zu 1000% des ANG des Zaubernden). Der Fluch wird langsam über 5 Sekunden entfernt, wodurch die verlorenen LP wiederhergestellt werden.",
         "en": "Curses the symmetrically opposite enemy, dealing DMG equal to 50% of their max HP (up to 1000% of Wenshen’s ATK). The curse is slowly lifted over 5s, restoring the lost HP.",
-        "es": "Maldice al enemigo simétricamente opuesto, infligiendo un Daño equivalente al 50 % de sus PS máximos (hasta un 1000 % del ATQ de Wenshen). La maldición se levanta lentamente durante 5s, restaurando los PS perdidos."
+        "es": "Maldice al enemigo simétricamente opuesto, infligiendo un Daño equivalente al 50 % de sus PS máximos (hasta un 1000 % del ATQ de Wenshen). La maldición se levanta lentamente durante 5s, restaurando los PS perdidos.",
+        "zh": "诅咒对称位置的敌人，造成相当于其最大生命值50%的伤害（上限为瘟神攻击力的1000%）。诅咒在5秒内缓慢解除，返还损失的生命值。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Unheilsgeplagt",
         "en": "Calamity-Ridden",
-        "es": "Plagado de calamidades"
+        "es": "Plagado de calamidades",
+        "zh": "灾祸缠身"
       },
       "description": {
         "de": "Der Feind, der Wenshen besiegt, wird permanent Verhext (Passiv). Verhext: Hat eine Chance von 50 %, beim Angriff für 2,5 Sek. betäubt, verängstigt oder versteinert zu werden; hat eine Chance von 50 %, bei Bewegung niedergeschlagen zu werden. Verhext kann nur einmal alle 4 Sek. ausgelöst werden.",
         "en": "The enemy defeating Wenshen becomes permanently Jinxed (Passive). Jinxed: Has a 50% chance to be stunned, terrified, or petrified for 2.5s when attacking; has a 50% chance to be knocked down when moving. Jinxed can only trigger once every 4s.",
-        "es": "El enemigo que derrote a Wenshen recibe una Maldición permanente (Pasiva). Maldición: tiene un 50 % de probabilidad de ser aturdido, aterrorizado o petrificado durante 2,5s al atacar; tiene un 50 % de probabilidad de ser derribado al moverse. La Maldición solo puede activarse una vez cada 4s."
+        "es": "El enemigo que derrote a Wenshen recibe una Maldición permanente (Pasiva). Maldición: tiene un 50 % de probabilidad de ser aturdido, aterrorizado o petrificado durante 2,5s al atacar; tiene un 50 % de probabilidad de ser derribado al moverse. La Maldición solo puede activarse una vez cada 4s.",
+        "zh": "击败瘟神的敌人将被永久附上厄运（被动）。厄运：攻击时有50%几率被眩晕、恐惧或石化2.5秒；移动时有50%几率被击倒。厄运每4秒只能触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Verfluchter Boden",
         "en": "Cursed Ground",
-        "es": "Tierra maldita"
+        "es": "Tierra maldita",
+        "zh": "诅咒之地"
       },
       "description": {
         "de": "Wenshen erschafft eine Aura des Unglücks in einem Radius von 3 Metern um sich, die den ANG von Feinden darin um 20 % verringert (Passiv). Sie fliegt auf den Feind mit dem höchsten ANG zu und verursacht SCH in Höhe von 180 % ANG (Aktiv).",
         "en": "Wenshen creates an Aura of Misfortune within a 3-meter radius around her, reducing the ATK of enemies inside by 20% (Passive). She flies toward the enemy with the highest ATK, dealing DMG equal to 180% of ATK (Active).",
-        "es": "Wenshen crea un Aura de infortunio en un radio de 3 metros a su alrededor, que reduce el ATQ de los enemigos en su interior en un 20 % (Pasiva). Vuela hacia el enemigo con el ATQ más alto, infligiendo un Daño equivalente al 180 % de su ATQ (Activa)."
+        "es": "Wenshen crea un Aura de infortunio en un radio de 3 metros a su alrededor, que reduce el ATQ de los enemigos en su interior en un 20 % (Pasiva). Vuela hacia el enemigo con el ATQ más alto, infligiendo un Daño equivalente al 180 % de su ATQ (Activa).",
+        "zh": "瘟神在自身周围3米范围内形成厄运光环，使其中敌人的攻击力降低20%（被动）。她飞向攻击力最高的敌人，造成相当于攻击力180%的伤害（主动）。"
       },
       "upgrades": {
         "level2": {

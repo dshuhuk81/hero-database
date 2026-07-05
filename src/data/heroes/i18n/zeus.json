@@ -3,7 +3,8 @@
     "de": "Zeus",
     "en": "Zeus",
     "es": "Zeus",
-    "ru": "Зевс"
+    "ru": "Зевс",
+    "zh": "宙斯"
   },
   "description": {
     "de": "Zeus, König der Götter und Sterblichen, herrscht über Himmel, Donner und Gerechtigkeit. Hoch über den Wolken, mit dem Blitz in der Hand, lässt er seinen Blick über die Welt schweifen, und alle Wesen beugen sich vor seiner Macht.",
@@ -17,13 +18,15 @@
         "de": "Allmächtiger Donnerschlag",
         "en": "Almighty Thunderstrike",
         "es": "Trueno todopoderoso",
-        "ru": "Всемогущий громовой удар"
+        "ru": "Всемогущий громовой удар",
+        "zh": "神王雷殛"
       },
       "description": {
         "de": "Zeus beschwört seinen Donner-Avatar. Ein Donnerspeer fällt herab und fügt allen Einheiten 120% ANG-SCH 3-mal zu.",
         "en": "Zeus summons his Echoes and rains down thunderbolts, striking all units 3 times, each dealing DMG equal to 120% of ATK.",
         "es": "Zeus invoca a sus ecos y desata una lluvia de rayos, lo que golpea a todas las unidades 3 veces, cada una infligiendo un daño equivalente al 120 % de su ATQ.",
-        "ru": "Зевс призывает свои Эхо и обрушивает молнии, поражая все юниты 3 раза, каждый удар наносит DMG, равный 120% ATK."
+        "ru": "Зевс призывает свои Эхо и обрушивает молнии, поражая все юниты 3 раза, каждый удар наносит DMG, равный 120% ATK.",
+        "zh": "宙斯召唤雷霆分身，降下雷霆，对所有单位打击3次，每次造成相当于攻击力120%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -51,13 +54,15 @@
         "de": "Höchstes Urteil",
         "en": "Supreme Judgment",
         "es": "Juicio supremo",
-        "ru": "Верховный приговор"
+        "ru": "Верховный приговор",
+        "zh": "审判"
       },
       "description": {
         "de": "Zeus richtet über das aktuelle Ziel und verursacht SCH in Höhe von 270 % ANG +8 % der aktuellen LP des Ziels (bis zu 100 % von Zeus' aktuellem ANG).",
         "en": "Zeus judges the current target, dealing DMG equal to 270% of ATK plus 8% of the target’s current HP (up to 100% of Zeus’s current ATK).",
         "es": "Zeus juzga al objetivo actual, lo que inflige un daño equivalente al 270 % de su ATQ + un 8 % de los PS actuales del objetivo (hasta un 100 % del ATQ actual de Zeus).",
-        "ru": "Зевс судит текущую цель, нанося DMG, равный 270% ATK плюс 8% от текущего HP цели (до 100% текущего ATK Зевса)."
+        "ru": "Зевс судит текущую цель, нанося DMG, равный 270% ATK плюс 8% от текущего HP цели (до 100% текущего ATK Зевса).",
+        "zh": "宙斯审判当前目标，造成相当于攻击力270%+目标当前生命值8%的伤害（上限为宙斯当前攻击力的100%）。"
       },
       "upgrades": {
         "level2": {
@@ -85,13 +90,15 @@
         "de": "Allmächtiger Advent",
         "en": "Almighty Advent",
         "es": "Advenimiento todopoderoso",
-        "ru": "Всемогущее явление"
+        "ru": "Всемогущее явление",
+        "zh": "圣化降世"
       },
       "description": {
         "de": "Beschwört ein Echo, das 35 % seiner max. LP und 75 % seines ANG erbt. Dies hält 15 Sek. an.\n(Passiv) Wenn ein einzelner Treffer SCH verursacht, der 20 % seiner max. LP übersteigt, erschafft er ein Echo und teleportiert sich zum sichersten Verbündeten. Dieser Effekt hat eine Abklingzeit von 20 Sek.",
         "en": "Summons an Echo that inherits 35% of Zeus’s max HP and 75% of his ATK, lasting 15s. If a single hit deals DMG exceeding 20% of his max HP, Zeus creates an Echo and blinks to the safest ally (Passive). This effect has a 20s cooldown.",
         "es": "Invoca un Eco que hereda el 35 % de sus PS máximos y el 75 % de su ATQ, y dura 15s.\nSi un solo golpe inflige un Daño que supera el 20 % de sus PS máximos, crea un Eco y se teletransporta hacia el aliado más seguro (Pasiva). Este efecto tiene un TdE de 20s.",
-        "ru": "Призывает Эхо, которое наследует 35% макс. HP Зевса и 75% его ATK, и действует 15с. Если один удар наносит DMG, превышающий 20% его макс. HP, Зевс создаёт Эхо и перемещается к самому безопасному союзнику (Пассивно). Этот эффект имеет 20с перезарядки."
+        "ru": "Призывает Эхо, которое наследует 35% макс. HP Зевса и 75% его ATK, и действует 15с. Если один удар наносит DMG, превышающий 20% его макс. HP, Зевс создаёт Эхо и перемещается к самому безопасному союзнику (Пассивно). Этот эффект имеет 20с перезарядки.",
+        "zh": "召唤一个雷霆分身，继承宙斯35%的最大生命值与75%的攻击力，持续15秒。若单次受到的伤害超过其最大生命值的20%，宙斯创造一个分身并闪现至最安全的友方身边（被动）。该效果冷却20秒。"
       },
       "upgrades": {
         "level2": {
@@ -119,13 +126,15 @@
         "de": "Entfesselung der Überladung",
         "en": "Overload Unleash",
         "es": "Liberación de sobrecarga",
-        "ru": "Освобождение перегрузки"
+        "ru": "Освобождение перегрузки",
+        "zh": "超载解放"
       },
       "description": {
         "de": "Beim Erhalt eines Buffs von einem Verbündeten erhält er 8% ANG-Tempo und 2% Ultimativen SCH. Dieser Effekt stapelt sich bis zu 10-mal. Bei maximalen Stapeln wird SCH, der im Elementarzustand verursacht wird, um 30% erhöht.",
         "en": "Increases ATK SPD by 8% and Ultimate DMG by 2% when gaining a buff from an ally. This effect can stack up to 10 times. At max stacks, Zeus gains Thundercrack, dealing 30% increased DMG.",
         "es": "Aumenta la VEL de ATQ en un  8 % y el daño de la Habilidad definitiva en un 2 % al obtener una mejora de un aliado. Este efecto se puede acumular hasta 10 veces. Con el máximo de acumulaciones, obtiene Trueno, lo que inflige un 30 % de daño aumentado.",
-        "ru": "Увеличивает ATK SPD на 8% и Ultimate DMG на 2% при получении баффа от союзника. Этот эффект может складываться до 10 раз. При максимальных стаках Зевс получает Thundercrack и наносит на 30% больше DMG."
+        "ru": "Увеличивает ATK SPD на 8% и Ultimate DMG на 2% при получении баффа от союзника. Этот эффект может складываться до 10 раз. При максимальных стаках Зевс получает Thundercrack и наносит на 30% больше DMG.",
+        "zh": "获得友方增益时，攻速提升8%、大招伤害提升2%。该效果最多叠加10层。叠满时，宙斯获得雷霆爆裂，造成的伤害提升30%。"
       },
       "upgrades": {
         "level2": {

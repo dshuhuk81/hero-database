@@ -2,19 +2,23 @@
   "name": {
     "de": "Jungfrau",
     "es": "Virgo",
-    "ru": "Дева"
+    "ru": "Дева",
+    "en": "Virgo",
+    "zh": "处女座"
   },
   "skills": [
     {
       "name": {
         "de": "Logos-Unterstützung",
         "en": "Logos Support",
-        "es": "Apoyo del logos"
+        "es": "Apoyo del logos",
+        "zh": "理性支援"
       },
       "description": {
         "de": "Jungfrau gewährt dem vordersten Verbündeten einen Schild in Höhe von 200% ANG für 5 Sekunden. Während der Schild aktiv ist, verursacht er 60% ANG SCH pro Sekunde an umliegenden Feinden.",
         "en": "Virgo grants a shield equal to 200% of her ATK to the frontmost ally for 5s. While active, the shield deals DMG equal to 60% of her ATK per sec to surrounding enemies.",
-        "es": "Virgo otorga un escudo equivalente al 200 % de su ATQ al aliado de la vanguardia durante 5s. Mientras está activo, el escudo inflige un Daño equivalente al 60 % de su ATQ por segundo a los enemigos circundantes."
+        "es": "Virgo otorga un escudo equivalente al 200 % de su ATQ al aliado de la vanguardia durante 5s. Mientras está activo, el escudo inflige un Daño equivalente al 60 % de su ATQ por segundo a los enemigos circundantes.",
+        "zh": "处女座为最前方的友方提供相当于其攻击力200%的护盾，持续5秒。护盾存在期间，每秒对周围敌人造成相当于其攻击力60%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -33,12 +37,14 @@
       "name": {
         "de": "Wissenschaftliches Feld",
         "en": "Scientific Field",
-        "es": "Campo científico"
+        "es": "Campo científico",
+        "zh": "科学力场"
       },
       "description": {
         "de": "Jungfrau betäubt einen Feind für 4 Sekunden und verursacht 450% ANG als SCH.",
         "en": "Virgo stuns an enemy for 4s and deals DMG equal to 450% of ATK.",
-        "es": "Virgo aturde a un enemigo durante 4s e inflige un Daño equivalente al 450 % de su ATQ."
+        "es": "Virgo aturde a un enemigo durante 4s e inflige un Daño equivalente al 450 % de su ATQ.",
+        "zh": "处女座将一名敌人眩晕4秒，并造成相当于攻击力450%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -57,12 +63,14 @@
       "name": {
         "de": "Goldenes Dreieck",
         "en": "Golden Triangle",
-        "es": "Triángulo dorado"
+        "es": "Triángulo dorado",
+        "zh": "黄金三角"
       },
       "description": {
         "de": "Verursacht 210% ANG SCH an einem Feind und umliegenden Zielen.",
         "en": "Deals DMG equal to 210% of ATK to an enemy and those around it.",
-        "es": "Inflige un Daño equivalente al 210 % de su ATQ a un enemigo y a los que lo rodean."
+        "es": "Inflige un Daño equivalente al 210 % de su ATQ a un enemigo y a los que lo rodean.",
+        "zh": "对一名敌人及其周围目标造成相当于攻击力210%的伤害。"
       },
       "upgrades": {
         "level2": {

@@ -2,19 +2,23 @@
   "name": {
     "de": "Nuba",
     "es": "Nuba",
-    "ru": "Нуба"
+    "ru": "Нуба",
+    "en": "Nuba",
+    "zh": "女魃"
   },
   "skills": [
     {
       "name": {
         "de": "Seelensiphon",
         "en": "Siphon of Souls",
-        "es": "Sifón de almas"
+        "es": "Sifón de almas",
+        "zh": "摄魂夺魄"
       },
       "description": {
         "de": "Passiv: Belegt zu Kampfbeginn die 3 am weitesten entfernten Feind mit dem Karmesinroten Verderbensmal. Alle 2,5 Sek. verursacht das Karmesinrote Verderbensmal bei seinem Wirt SCH in Höhe von 15 % seiner aktuellen LP (begrenzt auf 240 % ANG) und zerstört 50 Energie. Wenn ein Feind mit dem Karmesinroten Verderbensmal fällt, verschwindet das Mal nicht. Stattdessen entzieht es dem Ziel die Essenz und verwandelt sich am Standort des Ziels in eine Quelle des Dürreteufels.\nBei Aktivierung: Belegt den nächsten Feind mit dem Karmesinroten Verderbensmal, macht ihn für 3 Sek. kampfunfähig, verursacht SCH in Höhe von 400 % ANG und absorbiert 200 Energie.",
         "en": "Passively, at the start of battle, inflicts Crimson Doom Mark on the 3 farthest enemies. Every 2.5s, Crimson Doom Mark deals DMG equal to 15% of their current HP, capped at 240% of ATK, and destroys 50 Energy. When an enemy with Crimson Doom Mark falls, the mark does not disappear. Instead, it drains the target's essence and transforms into a Source of the Drought Devil at the target's location. Upon activation, inflicts Crimson Doom Mark on the nearest enemy, disabling them for 3 seconds, dealing 400% of ATK DMG, and absorbing 200 Energy.",
-        "es": "Pasivamente, al inicio de la batalla, inflige la Marca de perdición carmesí a los 3 enemigos más alejados. Cada 2,5 s, la Marca de perdición carmesí inflige daño a su portador equivalente al 15 % de sus PS actuales, con un límite del 240 % del ATQ, y destruye 50 de Energía. Cuando un enemigo con la Marca de perdición carmesí cae, la marca no desaparece. En su lugar, drena la esencia del objetivo y se transforma en una Fuente del Demonio de la Sequía en la ubicación del objetivo.\nAl activarse, inflige la Marca de perdición carmesí al enemigo más cercano, lo incapacita durante 3 segundos, inflige un 400 % de ATQ como daño y absorbe 200 de Energía."
+        "es": "Pasivamente, al inicio de la batalla, inflige la Marca de perdición carmesí a los 3 enemigos más alejados. Cada 2,5 s, la Marca de perdición carmesí inflige daño a su portador equivalente al 15 % de sus PS actuales, con un límite del 240 % del ATQ, y destruye 50 de Energía. Cuando un enemigo con la Marca de perdición carmesí cae, la marca no desaparece. En su lugar, drena la esencia del objetivo y se transforma en una Fuente del Demonio de la Sequía en la ubicación del objetivo.\nAl activarse, inflige la Marca de perdición carmesí al enemigo más cercano, lo incapacita durante 3 segundos, inflige un 400 % de ATQ como daño y absorbe 200 de Energía.",
+        "zh": "被动：战斗开始时，对最远的3名敌人施加赤祸印记。赤祸印记每2.5秒造成相当于其当前生命值15%的伤害（上限为攻击力的240%），并破坏50点能量。当带有赤祸印记的敌人倒下时，印记不会消失，而是抽取目标的精气，在其位置化为旱魃之源。主动：对最近的敌人施加赤祸印记，使其无法行动3秒，造成相当于攻击力400%的伤害并吸收200点能量。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Höllischer Seelenbrecher",
         "en": "Infernal Soulbreaker",
-        "es": "Rompealmas infernal"
+        "es": "Rompealmas infernal",
+        "zh": "炼狱碎魂"
       },
       "description": {
         "de": "Fügt dem nächsten Feind SCH in Höhe von 100 % ANG zu und unterbricht ihn. Wenn das Ziel das Karmesinrote Verderbensmal hat, verursacht dies stattdessen SCH in Höhe von 300 % ANG und betäubt das Ziel für 2 Sek.",
         "en": "Deal 100% of ATK DMG to the nearest enemy and interrupt them. If the target has Crimson Doom Mark, this instead deals 300% of ATK DMG and stuns the target for 2s.",
-        "es": "Inflige un 100 % de ATQ como daño al enemigo más cercano y lo interrumpe. Si el objetivo tiene la Marca de perdición carmesí, inflige en su lugar un 300 % de ATQ como daño y aturde al objetivo durante 2 s."
+        "es": "Inflige un 100 % de ATQ como daño al enemigo más cercano y lo interrumpe. Si el objetivo tiene la Marca de perdición carmesí, inflige en su lugar un 300 % de ATQ como daño y aturde al objetivo durante 2 s.",
+        "zh": "对最近的敌人造成相当于攻击力100%的伤害并打断目标。若目标带有赤祸印记，则改为造成相当于攻击力300%的伤害并眩晕目标2秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Ritus der Asche",
         "en": "Rite of Ashes",
-        "es": "Rito de las cenizas"
+        "es": "Rito de las cenizas",
+        "zh": "灰烬仪式"
       },
       "description": {
         "de": "Passiv: Heilt um 50 % des von Nvba und dem Karmesinroten Verderbensmal verursachten SCH. Wandelt alle über die max. LP hinaus wiederhergestellten LP in einen Schild um. Dieser Schild kann 100 % der max. LP von Nvba nicht überschreiten.",
         "en": "Passively, heals for 50% of the DMG dealt by Nuba and Crimson Doom Mark. Converts any HP restored beyond Max HP into a shield. This shield cannot exceed 100% of Nuba's Max HP.",
-        "es": "Pasivamente, sana un 50 % del Daño infligido por Nvba y la Marca de perdición carmesí. Convierte cualquier PS restaurado por encima de los PS máx. en un escudo. Este escudo no puede exceder el 100 % de los PS máx. de Nvba."
+        "es": "Pasivamente, sana un 50 % del Daño infligido por Nvba y la Marca de perdición carmesí. Convierte cualquier PS restaurado por encima de los PS máx. en un escudo. Este escudo no puede exceder el 100 % de los PS máx. de Nvba.",
+        "zh": "被动：将女魃与赤祸印记所造成伤害的50%转化为治疗。超出最大生命值的治疗量转化为护盾，护盾不能超过女魃最大生命值的100%。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Aufstieg der Dürre",
         "en": "Rise of the Drought",
-        "es": "Ascenso de la sequía"
+        "es": "Ascenso de la sequía",
+        "zh": "大旱将至"
       },
       "description": {
         "de": "Wenn Nvba fällt, verbraucht sie eine Quelle des Dürreteufels, um an ihrem aktuellen Standort wiederbelebt zu werden, und stellt 30 % ihrer max. LP wieder her.",
         "en": "When Nuba falls, she consumes one Source of the Drought Devil to revive at her current location, restoring 30% of her Max HP.",
-        "es": "Cuando Nvba cae, consume una Fuente del Demonio de la Sequía para revivir en su ubicación actual, restaurando un 30 % de sus PS máx."
+        "es": "Cuando Nvba cae, consume una Fuente del Demonio de la Sequía para revivir en su ubicación actual, restaurando un 30 % de sus PS máx.",
+        "zh": "女魃倒下时，消耗一个旱魃之源在原地复活，恢复30%最大生命值。"
       },
       "upgrades": {
         "level2": {

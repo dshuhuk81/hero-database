@@ -2,19 +2,23 @@
   "name": {
     "de": "Bastet",
     "es": "Bastet",
-    "ru": "Bastet"
+    "ru": "Bastet",
+    "en": "Bastet",
+    "zh": "芭丝特"
   },
   "skills": [
     {
       "name": {
         "de": "Niltanz",
         "en": "Nile Dance",
-        "es": "Danza del Nilo"
+        "es": "Danza del Nilo",
+        "zh": "尼罗之舞"
       },
       "description": {
         "de": "Bastet springt anmutig zur Position des Feindes mit dem höchsten ANG. Jedes Mal, wenn sie landet, fügt sie Feinden um sie herum SCH in Höhe von 160 % ANG zu.",
         "en": "Bastet gracefully leaps toward the position of the enemy with the highest ATK, dealing DMG equal to 160% of ATK to enemies around her each time she lands.",
-        "es": "Bastet salta con elegancia hacia la posición del enemigo con el ATQ más alto. Inflige un Daño equivalente al 160 % de su ATQ a los enemigos a su alrededor cada vez que aterriza."
+        "es": "Bastet salta con elegancia hacia la posición del enemigo con el ATQ más alto. Inflige un Daño equivalente al 160 % de su ATQ a los enemigos a su alrededor cada vez que aterriza.",
+        "zh": "芭丝特优雅地跃向攻击力最高的敌人所在位置，每次落地时对周围敌人造成相当于攻击力160%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Bastets Drehung",
         "en": "Bastet’s Spin",
-        "es": "Giro de Bastet"
+        "es": "Giro de Bastet",
+        "zh": "芭丝特回旋"
       },
       "description": {
         "de": "Bastet dreht sich anmutig und schlägt 3-mal auf nahe Feinde ein. Dabei fügt sie den umstehenden Feinden pro Schlag SCH in Höhe von 100 % ANG zu und verringert ihre Trefferrate für 5 Sek. um 15 %.",
         "en": "Bastet spins her body and strikes nearby enemies 3 times, dealing DMG equal to 100% of ATK per strike and reducing their Hit Rate by 15% for 5s.",
-        "es": "Bastet gira su cuerpo con elegancia y golpea a los enemigos cercanos 3 veces, infligiendo un Daño equivalente al 100 % de su ATQ por golpe a los enemigos circundantes y reduciendo su Tasa de aciertos un 15 % durante 5s."
+        "es": "Bastet gira su cuerpo con elegancia y golpea a los enemigos cercanos 3 veces, infligiendo un Daño equivalente al 100 % de su ATQ por golpe a los enemigos circundantes y reduciendo su Tasa de aciertos un 15 % durante 5s.",
+        "zh": "芭丝特旋转身体打击附近敌人3次，每次造成相当于攻击力100%的伤害，并使其命中率降低15%，持续5秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Fellknäuel",
         "en": "Furball",
-        "es": "Bola de pelos"
+        "es": "Bola de pelos",
+        "zh": "绒毛球"
       },
       "description": {
         "de": "Erzeugt Kugeln, die sie für 15 Sek. umkreisen und nahen Feinden pro Sek. SCH in Höhe von 42 % ANG zufügen.",
         "en": "Creates orbs that orbit Bastet for 15s, dealing DMG equal to 42% of ATK per second to nearby enemies.",
-        "es": "Crea orbes que la orbitan durante 15s e infligen un Daño equivalente al 42 % de su ATQ por segundo a los enemigos cercanos."
+        "es": "Crea orbes que la orbitan durante 15s e infligen un Daño equivalente al 42 % de su ATQ por segundo a los enemigos cercanos.",
+        "zh": "创造环绕芭丝特的法球，持续15秒，对附近敌人每秒造成相当于攻击力42%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Katzenhafte Agilität",
         "en": "Feline Agility",
-        "es": "Agilidad felina"
+        "es": "Agilidad felina",
+        "zh": "猫之敏捷"
       },
       "description": {
         "de": "Wenn Bastet einen einzelnen Treffer erleidet, der SCH von mehr als 10 % ihrer max. LP zufügt, wird sie immun gegen den SCH und erhält für 6 Sek. eine Ausweichrate von 30 %. Kann bis zu einmal alle 15 Sek. ausgelöst werden.",
         "en": "When Bastet takes a single hit dealing DMG exceeding 10% of her max HP, she becomes immune to the DMG and gains 30% Dodge Rate for 6s. Can trigger once every 15s.",
-        "es": "Cuando Bastet recibe un solo golpe que inflige un Daño superior al 10 % de sus PS máximos, se vuelve inmune al Daño y obtiene un 30 % de Prob. de evasión durante 6s. Se puede activar como máximo una vez cada 15s."
+        "es": "Cuando Bastet recibe un solo golpe que inflige un Daño superior al 10 % de sus PS máximos, se vuelve inmune al Daño y obtiene un 30 % de Prob. de evasión durante 6s. Se puede activar como máximo una vez cada 15s.",
+        "zh": "当芭丝特受到单次超过其最大生命值10%的伤害时，免疫该伤害并获得30%闪避率，持续6秒。每15秒可触发一次。"
       },
       "upgrades": {
         "level2": {

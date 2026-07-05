@@ -2,19 +2,23 @@
   "name": {
     "de": "Artemis",
     "es": "Artemisa",
-    "ru": "Артемида"
+    "ru": "Артемида",
+    "en": "Artemis",
+    "zh": "阿尔忒弥斯"
   },
   "skills": [
     {
       "name": {
         "de": "Sturmschuss",
         "en": "Gale-Force Shot",
-        "es": "Disparo huracanado"
+        "es": "Disparo huracanado",
+        "zh": "疾风射击"
       },
       "description": {
         "de": "Artemis springt ganz nach hinten auf das Schlachtfeld und bewegt sich am Rand entlang, während sie alle 0,7 Sek. 1 Schuss abfeuert, der PEN-SCH in Höhe von 180 % ANG verursacht. Die Fähigkeit dauert 8 Sek. und Artemis erhält für die Dauer Super-Rüstung.",
         "en": "Artemis leaps to the very back of the battlefield and moves along the edge while firing 1 shot every 0.7s, dealing PEN DMG equal to 180% of ATK. The skill lasts 8s, and Artemis gains Super Armor for the duration.",
-        "es": "Artemisa salta al fondo del campo de batalla y se mueve por el borde mientras dispara 1 tiro cada 0,7s que inflige un Daño de PEN equivalente al 180 % de su ATQ. La habilidad dura 8s y Artemisa obtiene Superarmadura mientras dure."
+        "es": "Artemisa salta al fondo del campo de batalla y se mueve por el borde mientras dispara 1 tiro cada 0,7s que inflige un Daño de PEN equivalente al 180 % de su ATQ. La habilidad dura 8s y Artemisa obtiene Superarmadura mientras dure.",
+        "zh": "阿尔忒弥斯跃至战场最后方，沿边缘移动并每0.7秒射出1箭，造成相当于攻击力180%的穿透伤害。技能持续8秒，期间阿尔忒弥斯获得霸体。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Präzisionsschuss",
         "en": "Steadied Shot",
-        "es": "Disparo certero"
+        "es": "Disparo certero",
+        "zh": "稳固射击"
       },
       "description": {
         "de": "Feuert ein Fangnetz auf den nächsten Gegner, immobilisiert ihn für 2 Sekunden und verursacht SCH in Höhe von 270% des ANG.",
         "en": "Fires a net at the nearest enemy, ensnaring them in place for 2s and dealing DMG equal to 270% of ATK.",
-        "es": "Dispara una red al enemigo más cercano, lo inmoviliza durante 2s e inflige un Daño equivalente al 270 % de su ATQ."
+        "es": "Dispara una red al enemigo más cercano, lo inmoviliza durante 2s e inflige un Daño equivalente al 270 % de su ATQ.",
+        "zh": "向最近的敌人射出罗网，将其定身2秒并造成相当于攻击力270%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Falle des Jägers",
         "en": "Hunter’s Snare",
-        "es": "Trampa del cazador"
+        "es": "Trampa del cazador",
+        "zh": "猎手陷阱"
       },
       "description": {
         "de": "Wenn ein Ziel in der Nähe Artemis angreift, erhält sie für 3 Sek. eine zusätzliche Ausweichrate von 50 %.",
         "en": "When a nearby target attacks Artemis, she gains an additional 50% Dodge Rate for 3s.",
-        "es": "Cuando un objetivo cercano ataca a Artemisa, obtiene un 50 % de Prob. de evasión adicional durante 3s."
+        "es": "Cuando un objetivo cercano ataca a Artemisa, obtiene un 50 % de Prob. de evasión adicional durante 3s.",
+        "zh": "当附近的目标攻击阿尔忒弥斯时，她额外获得50%闪避率，持续3秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Wolkendurchbohrer",
         "en": "Cloud-Piercer",
-        "es": "Perforanubes"
+        "es": "Perforanubes",
+        "zh": "穿云箭"
       },
       "description": {
         "de": "Artemis feuert einen durchdringenden Pfeil auf den schwächsten Gegner, SCH in Höhe von 200% des ANG an jeden getroffenen Gegner verursacht.",
         "en": "Artemis fires piercing arrows at the most vulnerable enemy, dealing DMG equal to 200% of ATK to each enemy hit.",
-        "es": "Artemisa dispara flechas perforantes al enemigo más vulnerable, lo que inflige un Daño equivalente al 200 % de su ATQ a cada enemigo golpeado."
+        "es": "Artemisa dispara flechas perforantes al enemigo más vulnerable, lo que inflige un Daño equivalente al 200 % de su ATQ a cada enemigo golpeado.",
+        "zh": "阿尔忒弥斯向最脆弱的敌人射出穿透之箭，对每个命中的敌人造成相当于攻击力200%的伤害。"
       },
       "upgrades": {
         "level2": {

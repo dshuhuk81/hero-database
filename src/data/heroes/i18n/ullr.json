@@ -2,19 +2,23 @@
   "name": {
     "de": "Ullr",
     "es": "Ullr",
-    "ru": "Ullr"
+    "ru": "Ullr",
+    "en": "Ullr",
+    "zh": "乌勒尔"
   },
   "skills": [
     {
       "name": {
         "de": "Der ultimative Schneeball",
         "en": "The Ultimate Snowball",
-        "es": "Bola de nieve definitiva"
+        "es": "Bola de nieve definitiva",
+        "zh": "终极雪球"
       },
       "description": {
         "de": "Ullr friert den nächsten Feind sofort in einen riesigen Schneeball ein, lädt auf und führt dann einen mächtigen geladenen Angriff aus, der SCH in Höhe von 500 % seines ANG verursacht und das Ziel 10 Meter wegschleudert.",
         "en": "Ullr instantly freezes the nearest enemy into a giant snowball, charges up, and then delivers a powerful charged attack, dealing DMG equal to 500% of his ATK and launching them 10 meters away.",
-        "es": "Ullr congela instantáneamente al enemigo más cercano en una bola de nieve gigante, carga y luego lanza un potente ataque cargado, que inflige un Daño equivalente al 500 % de su ATQ y lo lanza a 10 metros de distancia."
+        "es": "Ullr congela instantáneamente al enemigo más cercano en una bola de nieve gigante, carga y luego lanza un potente ataque cargado, que inflige un Daño equivalente al 500 % de su ATQ y lo lanza a 10 metros de distancia.",
+        "zh": "乌勒尔立即将最近的敌人冻成巨大雪球，蓄力后发动强力攻击，造成相当于其攻击力500%的伤害并将其击飞10米。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Fessel des Schmerzes",
         "en": "Shackle of Pain",
-        "es": "Grillete de dolor"
+        "es": "Grillete de dolor",
+        "zh": "苦痛枷锁"
       },
       "description": {
         "de": "Fesselt den nächsten Gegner mit Ketten und verursacht 100% ANG SCH 4 Mal.",
         "en": "Shackles the nearest enemy with chains, then deals DMG equal to 100% of ATK to them 4 times.",
-        "es": "Encadena al enemigo más cercano y luego le inflige un Daño equivalente al 100 % de su ATQ 4 veces."
+        "es": "Encadena al enemigo más cercano y luego le inflige un Daño equivalente al 100 % de su ATQ 4 veces.",
+        "zh": "用锁链束缚最近的敌人，随后对其造成4次相当于攻击力100%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -66,12 +72,14 @@
       "name": {
         "de": "Absoluter Nullpunkt",
         "en": "Absolute Zero",
-        "es": "Cero absoluto"
+        "es": "Cero absoluto",
+        "zh": "绝对零度"
       },
       "description": {
         "de": "Ullr erschafft eine Frostkette mit dem nächsten Verbündeten in der Hinterreihe, die für den gesamten Kampf bestehen bleibt. 10 % SCH, den die verbundene Einheit erleidet, wird auf Ullr umgeleitet. Wenn die LP des Verbündeten unter 30 % fallen, teleportiert sich Ullr sofort vor ihn, hüllt ihn für 3 Sek. in einen Schneeball ein und stellt pro Sek. LP in Höhe von 250 % seines ANG wieder her. Dieser Effekt kann nur einmal pro Kampf ausgelöst werden.",
         "en": "Ullr creates a Frost Chain with the nearest backline ally for the entire battle. 10% of the DMG taken by the linked unit is redirected to Ullr. When the ally's HP falls below 30%, Ullr instantly blinks in front of them, encasing them in a snowball for 3s and restoring HP equal to 250% of his ATK to them per sec. This effect can only trigger once per battle.",
-        "es": "Ullr crea una Cadena de escarcha con el aliado de la retaguardia más cercano durante toda la batalla. Un 10 % del Daño recibido por la unidad vinculada se redirige a Ullr. Cuando los PS del aliado caen por debajo del 30 %, Ullr se teletransporta instantáneamente frente a él, lo envuelve en una bola de nieve durante 3s y le restaura PS equivalentes al 250 % de su ATQ por segundo. Este efecto solo puede activarse una vez por batalla."
+        "es": "Ullr crea una Cadena de escarcha con el aliado de la retaguardia más cercano durante toda la batalla. Un 10 % del Daño recibido por la unidad vinculada se redirige a Ullr. Cuando los PS del aliado caen por debajo del 30 %, Ullr se teletransporta instantáneamente frente a él, lo envuelve en una bola de nieve durante 3s y le restaura PS equivalentes al 250 % de su ATQ por segundo. Este efecto solo puede activarse una vez por batalla.",
+        "zh": "乌勒尔与最近的后排友方建立持续整场战斗的霜链。被链接单位受到伤害的10%转移给乌勒尔。当该友方生命值低于30%时，乌勒尔立即闪现到其面前，将其裹入雪球3秒，并每秒为其恢复相当于他攻击力250%的生命值。该效果每场战斗只能触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -94,12 +102,14 @@
       "name": {
         "de": "Blutbeflecktes Band",
         "en": "Bloodstained Bond",
-        "es": "Vínculo ensangrentado"
+        "es": "Vínculo ensangrentado",
+        "zh": "染血羁绊"
       },
       "description": {
         "de": "Alle 15 Sek. verbraucht Ullr 20 % seiner aktuellen LP, um einen Schild zu erhalten, der 25 % seiner max. LP entspricht und 10 Sek. lang anhält.",
         "en": "Every 15s, Ullr consumes 20% of his current HP to grant himself a shield equal to 25% of his max HP for 10s.",
-        "es": "Cada 15s, Ullr consume un 20 % de sus PS actuales para obtener un escudo equivalente al 25 % de sus PS máximos durante 10s."
+        "es": "Cada 15s, Ullr consume un 20 % de sus PS actuales para obtener un escudo equivalente al 25 % de sus PS máximos durante 10s.",
+        "zh": "每15秒，乌勒尔消耗20%当前生命值，为自己提供相当于最大生命值25%的护盾，持续10秒。"
       },
       "upgrades": {
         "level2": {

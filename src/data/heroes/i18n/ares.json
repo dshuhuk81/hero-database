@@ -2,19 +2,23 @@
   "name": {
     "de": "Ares",
     "es": "Ares",
-    "ru": "Ares"
+    "ru": "Ares",
+    "en": "Ares",
+    "zh": "阿瑞斯"
   },
   "skills": [
     {
       "name": {
         "de": "Schlachtfeldsturm",
         "en": "Battlefield Storm",
-        "es": "Batalla tempestuosa"
+        "es": "Batalla tempestuosa",
+        "zh": "战场风暴"
       },
       "description": {
         "de": "Ares schwingt seine Waffe und fügt den umstehenden Feinden SCH in Höhe von 100 % ANG 6 Sek. lang pro Sek. zu. Er ist für die Dauer immun gegen Massenkontrolle.",
         "en": "Ares swings his weapon, dealing DMG equal to 100% of ATK per sec to surrounding enemies for 6s. He is immune to Crowd Control for the duration.",
-        "es": "Ares blande su arma e inflige un Daño equivalente al 100 % de su ATQ por segundo a los enemigos cercanos durante 6s. Es inmune al Control de masas mientras dure el efecto."
+        "es": "Ares blande su arma e inflige un Daño equivalente al 100 % de su ATQ por segundo a los enemigos cercanos durante 6s. Es inmune al Control de masas mientras dure el efecto.",
+        "zh": "阿瑞斯挥舞武器，对周围敌人每秒造成相当于攻击力100%的伤害，持续6秒。持续期间免疫控制效果。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Fleischwolf",
         "en": "Flesh Grinder",
-        "es": "Triturador de carne"
+        "es": "Triturador de carne",
+        "zh": "血肉磨盘"
       },
       "description": {
         "de": "Ares verursacht 200% SCH an umliegenden Feinden und reduziert ihre Rüstung um 15% für 6 Sekunden.",
         "en": "Ares deals DMG equal to 200% of ATK to nearby enemies and reduces their Armor by 15% for 6s.",
-        "es": "Ares inflige un Daño equivalente al 200 % de su ATQ a los enemigos cercanos y reduce su Armadura un 15 % durante 6s."
+        "es": "Ares inflige un Daño equivalente al 200 % de su ATQ a los enemigos cercanos y reduce su Armadura un 15 % durante 6s.",
+        "zh": "阿瑞斯对附近敌人造成相当于攻击力200%的伤害，并使其护甲降低15%，持续6秒。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Unbeugsamer Wille",
         "en": "Unyielding Will",
-        "es": "Voluntad inquebrantable"
+        "es": "Voluntad inquebrantable",
+        "zh": "不屈意志"
       },
       "description": {
         "de": "Das erste Mal, wenn Ares tödlichen SCH erleidet, negiert er diesen und wird für die nächsten 5 Sekunden immun gegen jeglichen SCH und CC. (Dies kann nur einmal pro Kampf ausgelöst werden).",
         "en": "The first time Ares takes lethal DMG, he becomes immune to the lethal DMG and gains immunity to all DMG & Crowd Control for the next 5s (it can only trigger once per battle).",
-        "es": "La primera vez que Ares recibe Daño letal, se vuelve inmune a ese daño y obtiene inmunidad a todo el daño y al Control de masas durante los siguientes 5s (solo se puede activar una vez por batalla)."
+        "es": "La primera vez que Ares recibe Daño letal, se vuelve inmune a ese daño y obtiene inmunidad a todo el daño y al Control de masas durante los siguientes 5s (solo se puede activar una vez por batalla).",
+        "zh": "阿瑞斯首次受到致命伤害时，免疫该致命伤害，并在接下来5秒内免疫所有伤害与控制效果（每场战斗只能触发一次）。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Kriegsgottgeist",
         "en": "War God Spirit",
-        "es": "Espíritu del dios de la guerra"
+        "es": "Espíritu del dios de la guerra",
+        "zh": "战神之魂"
       },
       "description": {
         "de": "Je niedriger seine LP im Kampf sind, desto höher wird sein ANG, bis zu einem Maximum von 90%.",
         "en": "Ares's ATK increases as his HP drops, with a maximum boost of 90% ATK.",
-        "es": "El ATQ de Ares aumenta a medida que sus PS disminuyen, con un aumento máximo del 90 % de ATQ."
+        "es": "El ATQ de Ares aumenta a medida que sus PS disminuyen, con un aumento máximo del 90 % de ATQ.",
+        "zh": "阿瑞斯的攻击力随生命值降低而提升，最多提升90%攻击力。"
       },
       "upgrades": {
         "level2": {

@@ -2,19 +2,23 @@
   "name": {
     "de": "Isis",
     "es": "Isis",
-    "ru": "Isis"
+    "ru": "Isis",
+    "en": "Isis",
+    "zh": "伊西斯"
   },
   "skills": [
     {
       "name": {
         "de": "Allwissender Pfeil",
         "en": "Omniscient Arrow",
-        "es": "Flecha omnisciente"
+        "es": "Flecha omnisciente",
+        "zh": "全知之箭"
       },
       "description": {
         "de": "Nach jeweils 2 Normalangriffen wird Isis' nächster Angriff zu einem Allwissenden Pfeil, der SCH in Höhe von 160% ANG plus Bonus-SCH in Höhe von 10% der max. LP des Ziels zufügt (bis zu 300 % ihres ANG).",
         "en": "After every 2 Normal Attacks, Isis's next attack becomes an Omniscient Arrow, which deals DMG equal to 160% of ATK plus bonus DMG equal to 10% of the target's max HP (up to 300% of her ATK).",
-        "es": "Después de cada 2 Ataques normales, el siguiente ataque de Isis se convierte en una Flecha omnisciente, que inflige un Daño equivalente al 160 % de su ATQ más un Daño adicional equivalente al 10 % de los PS máximos del objetivo (hasta un 300 % de su ATQ)."
+        "es": "Después de cada 2 Ataques normales, el siguiente ataque de Isis se convierte en una Flecha omnisciente, que inflige un Daño equivalente al 160 % de su ATQ más un Daño adicional equivalente al 10 % de los PS máximos del objetivo (hasta un 300 % de su ATQ).",
+        "zh": "每2次普通攻击后，伊西斯的下一次攻击变为全知之箭，造成相当于攻击力160%的伤害，并附加相当于目标最大生命值10%的额外伤害（上限为她攻击力的300%）。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Allmacht",
         "en": "Omnipotence",
-        "es": "Omnipotencia"
+        "es": "Omnipotencia",
+        "zh": "全能之力"
       },
       "description": {
         "de": "Isis kanalisiert ihre Macht und tritt kurzzeitig in den Zustand [Allwissend] ein. Ihre ANG-GES wird um 100 % erhöht und ihre Angriffsreichweite wird unendlich, aber sie verliert alle 0.2 Sek. 45 Energie, während sie in diesem Zustand ist.",
         "en": "Isis channels her power and briefly enters the [Omniscient] state. Her ATK SPD is increased by 100% and her attack range becomes infinite, but she loses 45 Energy every 0.2s when she is in the state.",
-        "es": "Isis canaliza su poder y entra brevemente en el estado [Omnisciente]. Su VEL de ATQ aumenta en un 100 % y su alcance de ataque se vuelve infinito, pero pierde 45 de Energía cada 0,2s mientras está en este estado."
+        "es": "Isis canaliza su poder y entra brevemente en el estado [Omnisciente]. Su VEL de ATQ aumenta en un 100 % y su alcance de ataque se vuelve infinito, pero pierde 45 de Energía cada 0,2s mientras está en este estado.",
+        "zh": "伊西斯汇聚力量，短暂进入【全知】状态。攻速提升100%且攻击距离变为无限，但处于该状态时每0.2秒损失45点能量。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Göttin der List",
         "en": "The Cunning Goddess",
-        "es": "Diosa de la astucia"
+        "es": "Diosa de la astucia",
+        "zh": "狡黠女神"
       },
       "description": {
         "de": "Wenn sich keine Feind im Umkreis von 3 Metern um Isis befinden, wird ihr ANG um 30 % erhöht. Sie verliert diesen Bonus, wenn sich ein Feind in einem Umkreis von 3 Metern um sie befindet.",
         "en": "When no enemies are within 3 meters of Isis, her ATK is increased by 30%. She loses this bonus when an enemy is within 3 meters of her.",
-        "es": "Cuando no hay enemigos a menos de 3 metros de Isis, su ATQ aumenta en un 30 %. Pierde esta bonificación cuando un enemigo se encuentra a menos de 3 metros de ella."
+        "es": "Cuando no hay enemigos a menos de 3 metros de Isis, su ATQ aumenta en un 30 %. Pierde esta bonificación cuando un enemigo se encuentra a menos de 3 metros de ella.",
+        "zh": "当3米内没有敌人时，伊西斯的攻击力提升30%。当敌人进入3米范围内时失去该加成。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Aufruf des wahren Namens",
         "en": "True Name Invocation",
-        "es": "Invocación del nombre verdadero"
+        "es": "Invocación del nombre verdadero",
+        "zh": "真名咒唤"
       },
       "description": {
         "de": "Für je 5 von Verbündeten eingesetzte Ultimative Fähigkeiten erhält Isis 20 % erhöhte ANG-GES, bis zu 4-mal stapelbar.",
         "en": "For every 5 Ultimates cast by allies, Isis gains 20% increased ATK SPD, stacking up to 4 times.",
-        "es": "Por cada 5 Habilidades definitivas lanzadas por los aliados, Isis obtiene un 20 % de aumento de VEL de ATQ, acumulable hasta 4 veces."
+        "es": "Por cada 5 Habilidades definitivas lanzadas por los aliados, Isis obtiene un 20 % de aumento de VEL de ATQ, acumulable hasta 4 veces.",
+        "zh": "友方每施放5次大招，伊西斯的攻速提升20%，最多叠加4次。"
       },
       "upgrades": {
         "level2": {

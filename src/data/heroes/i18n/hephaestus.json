@@ -2,19 +2,23 @@
   "name": {
     "de": "Hephaistos",
     "es": "Hefesto",
-    "ru": "Гефест"
+    "ru": "Гефест",
+    "en": "Hephaestus",
+    "zh": "赫菲斯托斯"
   },
   "skills": [
     {
       "name": {
         "de": "Mech-Domäne",
         "en": "Mech Domain",
-        "es": "Dominio mecánico"
+        "es": "Dominio mecánico",
+        "zh": "机械领域"
       },
       "description": {
         "de": "Beschwört zu Kampfbeginn 3 inaktive mechanische Geräte.\nBei Einsatz wird das am weitesten entfernte Gerät aktiviert. Verbündete in seinem AoE stellen pro Sekunde 15 Energie und LP in Höhe von 50 % des ANG wieder her. Feinde im AoE erhalten -15 % ANG und -20 % ANG-GES.\nWenn alle Geräte aktiviert sind, wird der von Feinden verursachte SCH um 20 % verringert und alle Verbündeten erhalten für 5 s einen SCH-Bonus von 30 % und 50 % ANG-GES. Dieser Effekt wird auch bei den nachfolgenden Ultimates von Hephaistos ausgelöst.",
         "en": "Summons 3 inactive mechanical devices at combat start. When cast, activates the furthest device. Allies within its AoE restore 15 Energy and HP equal to 50% ATK per sec. Enemies in the AoE gain -15% ATK and -20% ATK SPD. If all devices are activated, decreases DMG dealt by enemies by 20%, and grants all allies 30% DMG bonus and 50% ATK SPD for 5s. This effect also triggers on Hephaestus's subsequent Ultimates.",
-        "es": "Invoca 3 dispositivos mecánicos inactivos al inicio del combate.\nAl lanzarla, activa el dispositivo más lejano. Los aliados dentro de su AdE restauran 15 de Energía y PS equivalentes al 50 % del ATQ por segundo. Los enemigos en el AdE obtienen -15 % de ATQ y -20 % de VEL de ATQ.\nSi todos los dispositivos están activados, reduce el Daño infligido por los enemigos en un 20 % y otorga a todos los aliados un 30 % de bonificación de Daño y un 50 % de VEL de ATQ durante 5 s. Este efecto también se activa con las siguientes Habilidades definitivas de Hefesto."
+        "es": "Invoca 3 dispositivos mecánicos inactivos al inicio del combate.\nAl lanzarla, activa el dispositivo más lejano. Los aliados dentro de su AdE restauran 15 de Energía y PS equivalentes al 50 % del ATQ por segundo. Los enemigos en el AdE obtienen -15 % de ATQ y -20 % de VEL de ATQ.\nSi todos los dispositivos están activados, reduce el Daño infligido por los enemigos en un 20 % y otorga a todos los aliados un 30 % de bonificación de Daño y un 50 % de VEL de ATQ durante 5 s. Este efecto también se activa con las siguientes Habilidades definitivas de Hefesto.",
+        "zh": "战斗开始时召唤3台未激活的机械装置。施放时激活最远的装置。装置范围内的友方每秒恢复15点能量与相当于攻击力50%的生命值；范围内的敌人攻击力-15%、攻速-20%。若所有装置均被激活，则敌方造成的伤害降低20%，且所有友方获得30%伤害加成与50%攻速，持续5秒。该效果在赫菲斯托斯后续的大招中同样触发。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Einsicht des Handwerkers",
         "en": "Artisan's Insight",
-        "es": "Perspicacia del artesano"
+        "es": "Perspicacia del artesano",
+        "zh": "工匠慧眼"
       },
       "description": {
         "de": "Hephaistos feuert einen Strahl ab, um den Feind mit dem höchsten DPS für 2 s zu fesseln (+0,5 s für jedes aktivierte Gerät auf dem Feld), wodurch die Rüstung und M-RES des Ziels um 20 % reduziert werden.",
         "en": "Hephaestus fires a beam to restrain the enemy with the highest DPS for 2s (+0.5s for each activated device on the field), reducing the target's Armor and M-RES by 20%.",
-        "es": "Hefesto dispara un rayo para restringir al enemigo con el DPS más alto durante 2 s (+0,5 s por cada dispositivo activado en el campo), lo que reduce la Armadura y la RES mágica del objetivo en un 20 %."
+        "es": "Hefesto dispara un rayo para restringir al enemigo con el DPS más alto durante 2 s (+0,5 s por cada dispositivo activado en el campo), lo que reduce la Armadura y la RES mágica del objetivo en un 20 %.",
+        "zh": "赫菲斯托斯发射光束束缚输出最高的敌人2秒（场上每有一台已激活的装置，延长0.5秒），并使目标的护甲与魔抗降低20%。"
       },
       "upgrades": {
         "level2": {
@@ -63,17 +69,28 @@
         }
       }
     },
-    {},
+    {
+      "name": {
+        "en": "Primal Resonance",
+        "zh": "原初共鸣"
+      },
+      "description": {
+        "en": "Hephaestus's Energy Regen +20% (Passive).",
+        "zh": "赫菲斯托斯的能量恢复+20%（被动）。"
+      }
+    },
     {
       "name": {
         "de": "Geschmolzene Aegis",
         "en": "Molten Aegis",
-        "es": "Égida fundida"
+        "es": "Égida fundida",
+        "zh": "熔火圣盾"
       },
       "description": {
         "de": "Heilt den schwächsten Verbündeten um LP in Höhe von 150 % des ANG und reduziert seinen erlittenen SCH für 5 s um 10 %. Für jedes aktivierte Gerät auf dem Feld wird der erlittene SCH um weitere 5 % reduziert.",
         "en": "Heals the weakest ally for HP equal to 150% ATK and reduces their incoming DMG by 10% for 5s. For each activated device on the field, further reduces incoming DMG by 5%.",
-        "es": "Sana al aliado más débil por una cantidad de PS equivalente al 150 % del ATQ y reduce su daño recibido en un 10 % durante 5 s. Por cada dispositivo activado en el campo, reduce aún más el daño recibido en un 5 %."
+        "es": "Sana al aliado más débil por una cantidad de PS equivalente al 150 % del ATQ y reduce su daño recibido en un 10 % durante 5 s. Por cada dispositivo activado en el campo, reduce aún más el daño recibido en un 5 %.",
+        "zh": "治疗最弱的友方，恢复相当于攻击力150%的生命值，并使其受到的伤害降低10%，持续5秒。场上每有一台已激活的装置，额外降低5%受到的伤害。"
       },
       "upgrades": {
         "level2": {
