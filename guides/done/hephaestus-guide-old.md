@@ -522,6 +522,6 @@ Dieses Dokument kombiniert drei Datenebenen:
 
 Exakte Prozentwerte, Skalierungsformeln und Frame-Data sind aus statischen Screenshots nicht ablesbar und daher NICHT enthalten. Für diese Daten wäre Zugang zum CN-Client oder Datamining erforderlich.
 
-Erstellt für motto-immortal.vercel.app — die einzige Community-Hero-Stats-Datenbank für Motto Immortal.
+Erstellt für motto-immortal-db.com — die einzige Community-Hero-Stats-Datenbank für Motto Immortal.
 
-motto-immortal.vercel.app | Datenstand: März 2026 | Quelle: CN Screenshots + TapTap Official
+motto-immortal-db.com | Datenstand: März 2026 | Quelle: CN Screenshots + TapTap Official

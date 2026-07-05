@@ -37,7 +37,7 @@ const client = new S3Client({
 const BUCKET = env.R2_BUCKET;
 const PUBLIC_DIR = join(ROOT, "public");
 
-// Files to skip (keep on Vercel)
+// Files to skip (keep in the site root)
 const SKIP_FILES = new Set([
   "favicon.ico",
   "favicon.svg",

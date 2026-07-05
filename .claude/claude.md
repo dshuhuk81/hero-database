@@ -1,7 +1,7 @@
 # Hero Database - Copilot Instructions
 
 ## Project Overview
-Statistical database and web frontend for the "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (static build, `output: 'static'`) deployed on **Vercel** (Hobby plan), plus **Node.js** scripts for data processing.
+Statistical database and web frontend for the "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (static build, `output: 'static'`) and hosted on **Cloudflare**, plus **Node.js** scripts for data processing.
 
 A separate Express server (`api-server.js`, started via `npm run dev:api`) uses **Supabase** for auth and user-roster storage. It is dev tooling only: the public site never calls it. Its only consumer is the local-only `/status` admin CMS page. The public `/my-roster` page is pure localStorage and shares rosters via URL, no backend.
 

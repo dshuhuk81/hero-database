@@ -1,7 +1,7 @@
 # Hero Database – Copilot Instructions
 
 ## Project Overview
-Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (SSR via `output: 'server'`) deployed on **Vercel** (Hobby plan) with **Supabase** for auth and user data, plus **Node.js** scripts for data processing.
+Statistical database and web frontend for "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (static output), hosted on **Cloudflare**, with **Node.js** scripts for data processing.
 
 ## Tokens
 For creating new content use the design foundation laid out in styles/tokens.css. There is also a overview of the system in design-system.astro.
@@ -251,6 +251,5 @@ See memory file for full details: `memory/project_skill_videos.md`
 4. Upload `.webm` to R2 bucket under `skills/` for production
 5. Test coordinates: die koordinaten sollten sein: A (110/700 )(oben links), B (610/1110) (unten rechts). oder brauchst du. noch mehr ?
 Das rechteck hat 500x410 abmaße innerhalb des 720x1600 videos.
-
 
 

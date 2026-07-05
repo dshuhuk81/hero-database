@@ -7,7 +7,6 @@
     "dev:api": "node api-server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:api\"",
     "build": "astro build",
-    "deploy:prod": "npm run build && npx vercel deploy --prebuilt --prod --yes",
     "preview": "astro preview",
     "astro": "astro",
     "tag-manager": "node scripts/tag-manager-server.js",
@@ -42,13 +41,11 @@
     "node": "20.x"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.6.1",
     "astro": "^5.18.0",
     "express": "^4.18.2"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.7.1",
-    "@aws-sdk/client-s3": "^3.1030.0",
-    "vercel": "^51.2.1"
+    "@aws-sdk/client-s3": "^3.1030.0"
   }
 }

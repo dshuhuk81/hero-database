@@ -103,6 +103,20 @@ const allNavEntries: NavEntry[] = [
     icon: `<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/>`,
   },
   {
+    label: "Divine Throne",
+    href: "/guides/divine-throne",
+    group: "content",
+    teaser: true,
+    description: {
+      en: "New Divine Throne system - unlocks, Ether upgrades and first-wave heroes",
+      de: "Neues Divine-Throne-System - Freischaltung, Ether-Upgrades und erste Heldenwelle",
+      es: "Nuevo sistema Divine Throne: desbloqueos, mejoras de Ether y primeros héroes",
+      ru: "Новая система Divine Throne: открытие, улучшения Ether и первая волна героев",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое" }, color: "var(--accent-new)" },
+    icon: `<path d="M12 2l2.4 5.1L20 8l-4 4.1.9 5.9L12 15.1 7.1 18l.9-5.9L4 8l5.6-.9L12 2z"/><path d="M5 21h14"/><path d="M8 18h8"/>`,
+  },
+  {
     label: "Delusion Den Guide",
     href: "/delusions-den",
     group: "content",

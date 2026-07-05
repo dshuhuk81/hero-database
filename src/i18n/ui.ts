@@ -143,7 +143,7 @@ const translations: TranslationTree = {
       ru: "Motto Immortal DB создаётся и поддерживается в одиночку — без платного доступа и без спонсоров. Хостинг и инфраструктура стоят реальных денег каждый месяц. Если этот инструмент сэкономил вам время или помог собрать более сильную команду, небольшая поддержка действительно помогает.",
       zh: "Motto Immortal DB 由个人独立开发和维护——没有付费墙，也没有赞助。托管和基础设施每个月都要花真金白银。如果这个工具帮你省下了时间，或帮你组出了更强的队伍，一点小小的支持就能帮上大忙。",
     },
-    supportBullet1: { en: "Vercel hosting & serverless functions", de: "Vercel-Hosting und serverlose Funktionen", es: "Hosting en Vercel y funciones sin servidor", ru: "Хостинг Vercel и serverless-функции", zh: "Vercel 托管与无服务器函数" },
+    supportBullet1: { en: "Cloudflare hosting & infrastructure", de: "Cloudflare-Hosting und Infrastruktur", es: "Hosting e infraestructura en Cloudflare", ru: "Хостинг и инфраструктура Cloudflare", zh: "Cloudflare 托管与基础设施" },
     supportBullet2: { en: "Domain & CDN costs", de: "Domain- und CDN-Kosten", es: "Costes de dominio y CDN", ru: "Расходы на домен и CDN", zh: "域名与 CDN 费用" },
     supportBullet3: { en: "Time spent on data, updates & new features", de: "Zeit für Daten, Updates und neue Funktionen", es: "Tiempo dedicado a datos, actualizaciones y nuevas funciones", ru: "Время на данные, обновления и новые функции", zh: "投入在数据、更新与新功能上的时间" },
     supportKofi: { en: "Support on Ko-fi", de: "Auf Ko-fi unterstützen", es: "Apoyar en Ko-fi", ru: "Поддержать на Ko-fi", zh: "在 Ko-fi 上支持" },

@@ -3309,6 +3309,399 @@
   font-style: italic;
 }
 
+/* -- Divine Throne feature guide -- */
+.guide-banner--feature {
+  --guide-accent: var(--accent-gold-light);
+  --guide-accent-dim: var(--accent-gold-dim);
+  --guide-accent-line: color-mix(in srgb, var(--accent-gold) 36%, transparent);
+  min-height: 460px;
+}
+
+.guide-banner-bg--divine-throne {
+  background-position: center 24%;
+}
+
+.guide-body--divine-throne {
+  --guide-accent: var(--accent-gold-light);
+  --guide-accent-dim: var(--accent-gold-dim);
+  --guide-accent-line: color-mix(in srgb, var(--accent-gold) 36%, transparent);
+}
+
+.divine-feature-lede {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.divine-split-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.divine-split-copy {
+  min-width: 0;
+}
+
+.divine-unlock-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.divine-unlock-step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.divine-unlock-step span {
+  grid-row: span 2;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--guide-accent-line);
+  border-radius: var(--radius-full);
+  background: var(--guide-accent-dim);
+  color: var(--accent-gold);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-black);
+}
+
+.divine-unlock-step strong {
+  color: var(--text-bright);
+  font-size: var(--text-sm);
+}
+
+.divine-unlock-step p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.divine-image-frame {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.divine-image-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.divine-constellation-card {
+  position: relative;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at 62% 38%, color-mix(in srgb, var(--accent-gold) 22%, transparent), transparent 20%),
+    radial-gradient(circle at 30% 64%, color-mix(in srgb, var(--accent-teal) 30%, transparent), transparent 24%),
+    var(--bg-raised);
+}
+
+.divine-constellation-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/features/divine-throne/starry-sky-bg.png");
+  background-size: cover;
+  background-position: center 40%;
+  opacity: 0.58;
+}
+
+.divine-star-map {
+  position: absolute;
+  inset: var(--space-8) var(--space-6) var(--space-16);
+}
+
+.divine-star-node {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--accent-gold-light);
+  border-radius: var(--radius-full);
+  background: var(--accent-gold);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-gold) 70%, transparent);
+}
+
+.divine-star-node--one { left: 12%; top: 58%; }
+.divine-star-node--two { left: 31%; top: 34%; }
+.divine-star-node--three { left: 56%; top: 50%; }
+.divine-star-node--four { left: 76%; top: 24%; }
+
+.divine-star-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left center;
+  background: color-mix(in srgb, var(--accent-gold-light) 54%, transparent);
+}
+
+.divine-star-line--one {
+  left: 15%;
+  top: 59%;
+  width: 26%;
+  transform: rotate(-38deg);
+}
+
+.divine-star-line--two {
+  left: 34%;
+  top: 37%;
+  width: 27%;
+  transform: rotate(24deg);
+}
+
+.divine-star-line--three {
+  left: 59%;
+  top: 51%;
+  width: 24%;
+  transform: rotate(-44deg);
+}
+
+.divine-star-core {
+  position: absolute;
+  right: 2%;
+  top: 9%;
+  width: min(34%, 150px);
+  height: auto;
+  filter: drop-shadow(0 0 26px color-mix(in srgb, var(--accent-gold) 44%, transparent));
+}
+
+.divine-constellation-caption {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-5);
+  background: linear-gradient(to top, color-mix(in srgb, var(--bg-base) 86%, transparent), transparent);
+}
+
+.divine-constellation-caption strong {
+  color: var(--text-bright);
+  font-size: var(--text-sm);
+}
+
+.divine-constellation-caption span {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.divine-loop-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.divine-loop-step {
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.divine-loop-step-index {
+  width: fit-content;
+  padding: 2px 8px;
+  border: 1px solid var(--guide-accent-line);
+  border-radius: var(--radius-full);
+  color: var(--accent-gold);
+  background: var(--guide-accent-dim);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-black);
+}
+
+.divine-loop-step h4,
+.divine-gain-card h4,
+.divine-resource-card h4 {
+  margin: 0;
+  color: var(--text-bright);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  line-height: 1.3;
+}
+
+.divine-loop-step p,
+.divine-gain-card p,
+.divine-resource-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+.divine-resource-grid,
+.divine-gain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.divine-resource-card,
+.divine-gain-card {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.divine-resource-card img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent-purple) 34%, transparent));
+}
+
+.divine-resource-card span {
+  width: fit-content;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, var(--accent-teal) 44%, var(--border-subtle));
+  border-radius: var(--radius-full);
+  background: var(--accent-teal-dim);
+  color: color-mix(in srgb, #b9fff1 70%, var(--text-bright));
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+}
+
+.divine-resource-card strong {
+  color: var(--accent-gold);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.divine-authority-panel {
+  margin-top: var(--space-5);
+  padding: var(--space-6);
+  border: 1px solid color-mix(in srgb, var(--accent-teal) 44%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent-teal) 12%, var(--bg-raised));
+}
+
+.divine-authority-number {
+  margin-bottom: var(--space-2);
+  color: var(--accent-gold);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: var(--weight-black);
+  line-height: 1;
+}
+
+.divine-authority-panel p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.divine-priority-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.divine-priority-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.divine-priority-item span {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--guide-accent-dim);
+  color: var(--accent-gold);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-black);
+}
+
+.divine-priority-item p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.divine-roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: var(--space-3);
+}
+
+.divine-roster-card {
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-primary);
+  text-align: center;
+  text-decoration: none;
+  transition: var(--transition-colors), var(--transition-transform);
+}
+
+.divine-roster-card:hover {
+  border-color: var(--guide-accent-line);
+  transform: translateY(-1px);
+}
+
+.divine-roster-card img {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  object-position: center top;
+}
+
+.divine-roster-card span {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  line-height: 1.25;
+}
+
 /* -- Hero Detail: Recommended Virtues -- */
 .virtue-sets-row {
   display: flex;
@@ -3540,6 +3933,13 @@
   .guide-board-grid,
   .guide-damage-layout,
   .guide-mini-systems { grid-template-columns: 1fr; }
+  .divine-feature-lede,
+  .divine-split-card { grid-template-columns: 1fr; }
+  .divine-feature-lede { flex-direction: column; }
+  .divine-loop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .divine-resource-grid,
+  .divine-gain-grid,
+  .divine-priority-list { grid-template-columns: 1fr; }
   .guide-taiji-track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .guide-taiji-step:not(:last-child)::after { display: none; }
   .guide-math-tiers { grid-template-columns: repeat(3, 1fr); }
@@ -3559,6 +3959,13 @@
   .guide-mode-grid,
   .guide-target-grid,
   .guide-branch-grid { grid-template-columns: 1fr; }
+  .guide-banner--feature { min-height: 380px; }
+  .guide-banner-bg--divine-throne { background-position: center top; }
+  .divine-loop-grid { grid-template-columns: 1fr; }
+  .divine-loop-step { min-height: 0; }
+  .divine-roster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .divine-roster-card { min-height: 112px; }
+  .divine-authority-number { font-size: var(--text-3xl); }
   .guide-formula-row {
     grid-template-columns: 1fr;
     gap: var(--space-1);

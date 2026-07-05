@@ -14,9 +14,9 @@ The project is content-heavy. Game knowledge matters as much as code knowledge. 
 
 - Astro 5 site.
 - `astro.config.mjs` currently sets `output: "static"`.
-- Vercel deployment via `vercel.json`, output directory `dist`.
+- Cloudflare hosting with Astro output directory `dist`.
 - Node 20 per `package.json`.
-- Runtime dependencies are small: Astro, `@vercel/analytics`, Express.
+- Runtime dependencies are small: Astro and Express.
 - Express is used for local utility servers such as the tag manager and API server.
 - No current Supabase dependency is present in `package.json`, even though older docs mention Supabase.
 - No frontend framework dependency like React or Vue is currently used.
@@ -376,7 +376,7 @@ Scripts from `package.json`:
 - `npm run import-attack-rates`: import boss attack rates.
 - `npm run validate:hero-detail-stats`: compare hero detail stats against extracted game data.
 - `npm run upload-assets`, `upload-assets:dry`, `upload-assets:force`: Cloudflare R2 upload pipeline.
-- `npm run deploy:prod`: build and deploy to Vercel.
+- Production deploy: handled by Cloudflare outside npm scripts.
 
 Be careful: some workflow docs mention scripts or generated files that are no longer present. Check `package.json` and `scripts/` before relying on old workflow text.
 

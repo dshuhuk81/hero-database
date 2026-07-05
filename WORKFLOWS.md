@@ -110,7 +110,7 @@ Siehe auch: `STATUS_DASHBOARD.md`
 |---|---|
 | `npm run build` | Produktions-Build (Astro) |
 | `npm run rebuild` | Daten neu generieren + Build |
-| `npm run deploy:prod` | Build + Vercel Deploy |
+| Production deploy | Build and deploy are handled by Cloudflare |
 
 ### Daten-Workflows (die wichtigen)
 | Script | Beschreibung |
