@@ -8102,242 +8102,6 @@
     ],
     "baseAttackRate": 1.592,
     "bossUltimatesPer90s": 4,
-    "cn": {
-      "captured": "2026-05-19",
-      "source": "CN client extracted skill text",
-      "skills": [
-        {
-          "id": "skill_1",
-          "cnName": "剧毒绽放",
-          "values": [
-            {
-              "label": "poison dmg/sec base",
-              "field": "atkPct",
-              "global": 70,
-              "cn": 70,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "poison dmg/sec tier A",
-              "field": "atkPct",
-              "global": 85,
-              "cn": 85,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "poison dmg/sec tier B",
-              "field": "atkPct",
-              "global": 100,
-              "cn": 100,
-              "unit": "%",
-              "change": "neutral"
-            }
-          ],
-          "notes": [
-            "CN labels tiers Lv3/Lv4; Global gates same values behind Relic Lv.20/30 - structural label diff, not a value change."
-          ]
-        },
-        {
-          "id": "skill_2",
-          "cnName": "蛇噬",
-          "values": [
-            {
-              "label": "hit count",
-              "field": "count",
-              "global": 5,
-              "cn": 5,
-              "unit": "x",
-              "change": "neutral"
-            },
-            {
-              "label": "per-hit base",
-              "field": "atkPct",
-              "global": 100,
-              "cn": 100,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "per-hit Lv3",
-              "field": "atkPct",
-              "global": 110,
-              "cn": 110,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "per-hit Lv4",
-              "field": "atkPct",
-              "global": 120,
-              "cn": 120,
-              "unit": "%",
-              "change": "neutral"
-            }
-          ],
-          "notes": [
-            "Hit count confirmed 5 in CN text - earlier image-pipeline 'unconfirmed' flag resolved."
-          ]
-        },
-        {
-          "id": "skill_3",
-          "cnName": "蛇行",
-          "values": [
-            {
-              "label": "base dmg",
-              "field": "atkPct",
-              "global": 200,
-              "cn": 200,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "shield Lv2",
-              "field": "atkPct",
-              "global": 250,
-              "cn": 250,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "shield duration",
-              "field": "seconds",
-              "global": 6,
-              "cn": 6,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "dmg Lv3",
-              "field": "atkPct",
-              "global": 220,
-              "cn": 220,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "shield Lv4",
-              "field": "atkPct",
-              "global": 300,
-              "cn": 300,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "damage type",
-              "field": "damageType",
-              "global": "True",
-              "cn": "Physical",
-              "unit": "",
-              "change": "diff",
-              "verified": false
-            }
-          ],
-          "notes": [
-            "damageType: Global JSON = True, CN text = physical. Confirmed in text (not vision artifact). The divergence is on the Global side - either an intentional Global change from the CN base or a Global data/transcription error. CN is the source version and does not change. Verify before treating as a balance difference."
-          ]
-        },
-        {
-          "id": "skill_4",
-          "cnName": "蛇蜕",
-          "values": [
-            {
-              "label": "stored dmg",
-              "field": "pct",
-              "global": 60,
-              "cn": 60,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "survive duration",
-              "field": "seconds",
-              "global": 5,
-              "cn": 5,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "reflect Lv2",
-              "field": "pct",
-              "global": 70,
-              "cn": 70,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "reflect Lv3",
-              "field": "pct",
-              "global": 80,
-              "cn": 80,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "reflect Lv4",
-              "field": "pct",
-              "global": 100,
-              "cn": 100,
-              "unit": "%",
-              "change": "neutral"
-            }
-          ],
-          "notes": [
-            "Image pipeline misread Lv3 as 90% (false buff); CN text confirms 80% = identical to Global. No balance change."
-          ]
-        },
-        {
-          "id": "relic",
-          "cnName": "蛇引",
-          "values": [
-            {
-              "label": "base dmg",
-              "field": "atkPct",
-              "global": 200,
-              "cn": 200,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "pull range",
-              "field": "meters",
-              "global": 1,
-              "cn": 1,
-              "unit": "m",
-              "change": "neutral"
-            },
-            {
-              "label": "taunt Lv2",
-              "field": "seconds",
-              "global": 3,
-              "cn": 3,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "dmg Lv3",
-              "field": "atkPct",
-              "global": 220,
-              "cn": 220,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "bonus dmg Lv4",
-              "field": "pct",
-              "global": 10,
-              "cn": 10,
-              "unit": "%",
-              "change": "neutral"
-            }
-          ],
-          "notes": [
-            "Pull range confirmed 1m in CN text - earlier image-pipeline 'obscured' flag resolved."
-          ]
-        }
-      ]
-    },
     "virtueSets": [
       {
         "label": "Desire",
@@ -9209,7 +8973,31 @@
           "TEAM_BUFF"
         ]
       }
-    ]
+    ],
+    "cn": {
+      "captured": "2026-07-04",
+      "source": "CN client extracted skill text",
+      "skills": [
+        {
+          "id": "skill_1",
+          "cnName": "石化凝视",
+          "values": [
+            {
+              "label": "Skill DMG (Lv.2)",
+              "field": "atkPct",
+              "global": 340,
+              "cn": 360,
+              "unit": "%",
+              "change": "nerf",
+              "verified": false
+            }
+          ],
+          "notes": [
+            "Auto-detected from CN client capture 2026-07-04; not yet in-game confirmed. Lv.2 skill damage: Global 340% ATK vs CN 360% ATK - Global slightly undertuned."
+          ]
+        }
+      ]
+    }
   },
   "mengpo": {
     "id": "mengpo",
@@ -10117,7 +9905,40 @@
           "ENEMY_CROWD_CONTROL"
         ]
       }
-    ]
+    ],
+    "cn": {
+      "captured": "2026-07-04",
+      "source": "CN client extracted skill text",
+      "skills": [
+        {
+          "id": "skill_3",
+          "cnName": "决斗之舞",
+          "values": [
+            {
+              "label": "Empowered ATK bonus",
+              "field": "pct",
+              "global": 30,
+              "cn": 15,
+              "unit": "%",
+              "change": "buff",
+              "verified": false
+            },
+            {
+              "label": "Empowered ATK bonus (Lv.3)",
+              "field": "pct",
+              "global": 50,
+              "cn": 25,
+              "unit": "%",
+              "change": "buff",
+              "verified": false
+            }
+          ],
+          "notes": [
+            "Auto-detected from CN client capture 2026-07-04; not yet in-game confirmed. 10-hit trigger, 6s duration and 12s CD all match CN; only the empowered ATK bonus differs (Global 30% vs CN 15%), so Global is stronger here."
+          ]
+        }
+      ]
+    }
   },
   "nephtys": {
     "id": "nephtys",
@@ -14112,322 +13933,6 @@
       "SELF_SUSTAIN",
       "SELF_DAMAGE_REDUCTION"
     ],
-    "cn": {
-      "captured": "2026-05-20",
-      "source": "CN client extracted skill text",
-      "skills": [
-        {
-          "id": "skill_1",
-          "cnName": "沙影千蝎",
-          "values": [
-            {
-              "label": "summon count",
-              "field": "count",
-              "global": 3,
-              "cn": 3,
-              "unit": "x",
-              "change": "neutral"
-            },
-            {
-              "label": "inherited base stats",
-              "field": "pct",
-              "global": 100,
-              "cn": 100,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "scorpion dmg taken base",
-              "field": "pct",
-              "global": 200,
-              "cn": 200,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "duration base",
-              "field": "seconds",
-              "global": 10,
-              "cn": 10,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "duration Lv2",
-              "field": "seconds",
-              "global": 15,
-              "cn": 15,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "scorpion dmg taken Lv3",
-              "field": "pct",
-              "global": 180,
-              "cn": 180,
-              "unit": "%",
-              "change": "neutral"
-            }
-          ],
-          "notes": []
-        },
-        {
-          "id": "skill_2",
-          "cnName": "掘地穿刺",
-          "values": [
-            {
-              "label": "base dmg",
-              "field": "atkPct",
-              "global": 150,
-              "cn": 150,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "dmg Lv2",
-              "field": "atkPct",
-              "global": 200,
-              "cn": 200,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "emerge shield Lv3",
-              "field": "atkPct",
-              "global": 200,
-              "cn": 200,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "dmg Lv4",
-              "field": "atkPct",
-              "global": 250,
-              "cn": 250,
-              "unit": "%",
-              "change": "neutral"
-            }
-          ],
-          "notes": []
-        },
-        {
-          "id": "skill_3",
-          "cnName": "蝎爆毒殇",
-          "values": [
-            {
-              "label": "base dmg",
-              "field": "atkPct",
-              "global": 200,
-              "cn": 200,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "blast radius",
-              "field": "meters",
-              "global": 3,
-              "cn": 3,
-              "unit": "m",
-              "change": "neutral"
-            },
-            {
-              "label": "ATK reduction base",
-              "field": "pct",
-              "global": 10,
-              "cn": 10,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "ATK reduction duration",
-              "field": "seconds",
-              "global": 10,
-              "cn": 10,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "dmg Lv2",
-              "field": "atkPct",
-              "global": 240,
-              "cn": 240,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "ATK reduction Lv3",
-              "field": "pct",
-              "global": 15,
-              "cn": 15,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "dmg Lv4",
-              "field": "atkPct",
-              "global": 280,
-              "cn": 280,
-              "unit": "%",
-              "change": "neutral"
-            }
-          ],
-          "notes": []
-        },
-        {
-          "id": "skill_4",
-          "cnName": "遁地回生",
-          "values": [
-            {
-              "label": "heal/sec base",
-              "field": "atkPct",
-              "global": 60,
-              "cn": 60,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "HP trigger threshold",
-              "field": "pct",
-              "global": 40,
-              "cn": 40,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "burrow duration",
-              "field": "seconds",
-              "global": 3,
-              "cn": 3,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "max HP increase base",
-              "field": "pct",
-              "global": 30,
-              "cn": 30,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "heal/sec Lv2",
-              "field": "atkPct",
-              "global": 80,
-              "cn": 80,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "max HP increase Lv3",
-              "field": "pct",
-              "global": 40,
-              "cn": 40,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "heal/sec Lv4",
-              "field": "atkPct",
-              "global": 100,
-              "cn": 100,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "skill type",
-              "field": "damageType",
-              "global": null,
-              "cn": "Passive",
-              "unit": "",
-              "change": "diff",
-              "verified": false
-            }
-          ],
-          "notes": [
-            "Global damageType is null while CN marks Sand Rebirth as Passive. Treat as a data/schema flag, not a confirmed balance change."
-          ]
-        },
-        {
-          "id": "relic",
-          "cnName": "毒瘴领域",
-          "values": [
-            {
-              "label": "aura dmg/sec base",
-              "field": "atkPct",
-              "global": 80,
-              "cn": 80,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "single-hit threshold Lv2",
-              "field": "pct",
-              "global": 20,
-              "cn": 20,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "damage reduction Lv2",
-              "field": "pct",
-              "global": 50,
-              "cn": 50,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "damage reduction duration",
-              "field": "seconds",
-              "global": 3,
-              "cn": 3,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "cooldown",
-              "field": "seconds",
-              "global": 15,
-              "cn": 15,
-              "unit": "s",
-              "change": "neutral"
-            },
-            {
-              "label": "scorpion aura dmg/sec Lv3",
-              "field": "atkPct",
-              "global": 80,
-              "cn": 80,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "scorpion single-hit threshold Lv4",
-              "field": "pct",
-              "global": 20,
-              "cn": 20,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "scorpion damage reduction Lv4",
-              "field": "pct",
-              "global": 50,
-              "cn": 50,
-              "unit": "%",
-              "change": "neutral"
-            },
-            {
-              "label": "damage type",
-              "field": "damageType",
-              "global": "Physical",
-              "cn": "Physical",
-              "unit": "",
-              "change": "neutral"
-            }
-          ],
-          "notes": []
-        }
-      ]
-    },
     "virtueSets": [
       {
         "label": "Desire",
