@@ -24,12 +24,14 @@
         "level2": {
           "de": "Erhöht den SCH der ersten 2 Treffer auf 100 % ANG.",
           "en": "Increases DMG of the first 2 hits to 100% ATK. (Unlocks at Lv.81)",
-          "es": "aumenta el daño de los 2 primeros golpes al 100 % de ATQ."
+          "es": "aumenta el daño de los 2 primeros golpes al 100 % de ATQ.",
+          "zh": "前2次攻击的伤害提升至100%攻击力。（81级解锁）"
         },
         "level3": {
           "de": "Erhöht den SCH des letzten Treffers auf 180 % des ANG.",
           "en": "Increases the last hit's DMG to 180% ATK. (Unlocks at Lv.141)",
-          "es": "Aumenta el daño del último golpe a un 180 % del ATQ."
+          "es": "Aumenta el daño del último golpe a un 180 % del ATQ.",
+          "zh": "最后一击的伤害提升至180%攻击力。（141级解锁）"
         }
       }
     },
@@ -41,6 +43,16 @@
       "description": {
         "en": "Enters the [Lionheart] state. Increases ATK/ATK SPD by 50%/100% and gains Super Armor for 10s. Normal Attacks deal AoE DMG in a cone.",
         "zh": "进入【狮心】状态。攻击力/攻速提升50%/100%，并获得霸体，持续10秒。普通攻击对锥形范围造成范围伤害。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "ATK increases by 60%. (Unlocks at Lv.41)",
+          "zh": "攻击力提升60%。（41级解锁）"
+        },
+        "level3": {
+          "en": "The [Lionheart] state lasts for 15s. (Unlocks at Lv.101)",
+          "zh": "【狮心】状态持续15秒。（101级解锁）"
+        }
       }
     },
     {
@@ -60,17 +72,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 270 % ANG.",
           "en": "Increases DMG dealt to 270% ATK. (Unlocks at Lv.21)",
-          "es": "Aumenta el daño infligido a 270 % de ATQ."
+          "es": "Aumenta el daño infligido a 270 % de ATQ.",
+          "zh": "造成的伤害提升至270%攻击力。（21级解锁）"
         },
         "level3": {
           "de": "Reduziert die Rüstung um 40 %.",
           "en": "Reduces Armor by 40%. (Unlocks at Lv.121)",
-          "es": "Reduce la armadura en un 40 %."
+          "es": "Reduce la armadura en un 40 %.",
+          "zh": "护甲降低40%。（121级解锁）"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 300 % ANG.",
           "en": "Increases DMG dealt to 300% ATK. (Unlocks at Lv.161)",
-          "es": "Aumenta el daño infligido a 300 % de ATQ."
+          "es": "Aumenta el daño infligido a 300 % de ATQ.",
+          "zh": "造成的伤害提升至300%攻击力。（161级解锁）"
         }
       }
     }

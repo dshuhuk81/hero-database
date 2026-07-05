@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht zusätzlich die Abklingzeit aktiver Fähigkeiten von Feinden im Bereich um 5 Sek.",
           "en": "Also increases enemy active skill CD by 5 seconds for enemies within the area.",
-          "es": "También aumenta el TdE de la habilidad activa de los enemigos dentro del área en 5 segundos."
+          "es": "También aumenta el TdE de la habilidad activa de los enemigos dentro del área en 5 segundos.",
+          "zh": "还使范围内敌人的主动技能冷却时间增加5秒。"
         },
         "level3": {
           "de": "Erhöht den verursachten SCH auf 360 %.",
           "en": "Increases DMG dealt to 360% ATK.",
-          "es": "Aumenta el daño infligido a 360 %."
+          "es": "Aumenta el daño infligido a 360 %.",
+          "zh": "造成的伤害提升至360%攻击力。"
         },
         "level4": {
           "de": "Betroffene Feinde können während der Effektdauer keine Energie auf natürliche Weise regenerieren.",
           "en": "Affected enemies cannot regenerate Energy naturally during the effect duration.",
-          "es": "Los enemigos afectados no pueden regenerar Energía de forma natural mientras dure el efecto."
+          "es": "Los enemigos afectados no pueden regenerar Energía de forma natural mientras dure el efecto.",
+          "zh": "效果期间，受影响的敌人无法自然恢复能量。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 200 %.",
           "en": "Increases DMG dealt to 200% ATK.",
-          "es": "Aumenta el daño infligido a 200 %."
+          "es": "Aumenta el daño infligido a 200 %.",
+          "zh": "造成的伤害提升至200%攻击力。"
         },
         "level3": {
           "de": "Jedes Mal, wenn eine verbündete Einheit eine aktive Fähigkeit einsetzt, wird die Abklingzeit dieser Fähigkeit um 0,5 Sek. verringert.",
           "en": "Each time an allied unit casts an Active Skill, the CD of this skill is reduced by 0.5 seconds.",
-          "es": "Cada vez que una unidad aliada lanza una Habilidad activa, el TdE de esta habilidad se reduce en 0,5 segundos."
+          "es": "Cada vez que una unidad aliada lanza una Habilidad activa, el TdE de esta habilidad se reduce en 0,5 segundos.",
+          "zh": "友方单位每施放一次主动技能，该技能的冷却时间缩短0.5秒。"
         },
         "level4": {
           "de": "Die Betäubungsdauer wird auf 3 Sek. erhöht.",
           "en": "Stun duration is increased to 3s.",
-          "es": "La duración del aturdimiento aumenta a 3 s."
+          "es": "La duración del aturdimiento aumenta a 3 s.",
+          "zh": "眩晕时间延长至3秒。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Verringert die Abklingzeit auf 15 Sek.",
           "en": "Reduces the CD to 15s.",
-          "es": "Reduce el TdE a 15 s."
+          "es": "Reduce el TdE a 15 s.",
+          "zh": "冷却时间缩短至15秒。"
         },
         "level3": {
           "de": "Wenn Kronos kurz davor ist zu fallen, wird dieser Effekt einmal kostenlos auf ihn selbst ausgelöst.",
           "en": "When Cronus is about to fall, this effect triggers once for free on himself.",
-          "es": "Cuando Cronos está a punto de caer, este efecto se activa una vez gratis en sí mismo."
+          "es": "Cuando Cronos está a punto de caer, este efecto se activa una vez gratis en sí mismo.",
+          "zh": "当克洛诺斯即将倒下时，该效果对他自己免费触发一次。"
         },
         "level4": {
           "de": "Verringert die Abklingzeit auf 12 Sek.",
           "en": "Reduces the CD to 12s.",
-          "es": "Reduce el TdE a 12 s."
+          "es": "Reduce el TdE a 12 s.",
+          "zh": "冷却时间缩短至12秒。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Verringert die Abklingzeit der Fähigkeit auf 18 Sek.",
           "en": "Reduces the skill CD to 18s.",
-          "es": "Reduce el TdE de la habilidad a 18 s."
+          "es": "Reduce el TdE de la habilidad a 18 s.",
+          "zh": "技能冷却时间缩短至18秒。"
         },
         "level3": {
           "de": "Verringert zu Kampfbeginn die anfängliche Abklingzeit aller verbündeten Einheiten um 5 Sek.",
           "en": "At the start of battle, reduce the initial CD of all allied units by 5s.",
-          "es": "Al inicio de la batalla, reduce el TdE inicial de todas las unidades aliadas en 5 s."
+          "es": "Al inicio de la batalla, reduce el TdE inicial de todas las unidades aliadas en 5 s.",
+          "zh": "战斗开始时，所有友方单位的初始冷却时间缩短5秒。"
         },
         "level4": {
           "de": "Verringert die Abklingzeit der Fähigkeit auf 15 Sek.",
           "en": "Reduces the skill CD to 15s.",
-          "es": "Reduce el TdE de la habilidad a 15 s."
+          "es": "Reduce el TdE de la habilidad a 15 s.",
+          "zh": "技能冷却时间缩短至15秒。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Fähre der Zeit",
       "en": "Doctrine of Time",
-      "es": "Transbordador del tiempo"
+      "es": "Transbordador del tiempo",
+      "zh": "时间法则"
     },
     "description": {
       "de": "Alle 15 Sek. projiziert Kronos zyklisch ein durchscheinendes Echo eines Teammitglieds für 6 Sek. in den Kampf. Projektionspriorität: Zuerst [Zeitreisender], dann verbündete Einheiten vom höchsten zum niedrigsten ANG. Die Projektion erbt 50 % von Kronos' ANG und max. LP sowie alle Fähigkeiten der projizierten Einheit. Die Charakter- und Fähigkeitslevels der projizierten Einheit skalieren mit Kronos' Level.",
       "en": "Every 15 seconds, Cronus cyclically projects a Translucent Echo of a teammate into the battle for 6 seconds. Projection priority: Time Traveler first, then allied units from highest to lowest ATK. The Projection inherits 50% of Cronus's ATK and Max HP, and all skills of the projected unit. The projected unit's character and skill levels scale with Cronus's level.",
-      "es": "Cada 15 segundos, Cronos proyecta cíclicamente un Eco translúcido de un compañero de equipo en la batalla durante 6 segundos. La prioridad de proyección es la siguiente: primero el [Viajero del Tiempo], luego las unidades aliadas de mayor a menor ATQ. La proyección hereda el 50 % del ATQ y los PS máx. de Cronos, y todas las habilidades de la unidad proyectada. Los niveles de personaje y habilidad de la unidad proyectada escalan con el nivel de Cronos."
+      "es": "Cada 15 segundos, Cronos proyecta cíclicamente un Eco translúcido de un compañero de equipo en la batalla durante 6 segundos. La prioridad de proyección es la siguiente: primero el [Viajero del Tiempo], luego las unidades aliadas de mayor a menor ATQ. La proyección hereda el 50 % del ATQ y los PS máx. de Cronos, y todas las habilidades de la unidad proyectada. Los niveles de personaje y habilidad de la unidad proyectada escalan con el nivel de Cronos.",
+      "zh": "每15秒，克洛诺斯循环将一名队友的半透明投影投射到战场上，持续6秒。投射优先级：先为时间旅者，随后按攻击力从高到低选择友方单位。投影继承克洛诺斯50%的攻击力与最大生命值，以及被投射单位的全部技能。被投射单位的角色与技能等级随克洛诺斯的等级变化。"
     },
     "upgrades": {
       "level2": {
         "de": "Beim Betreten des Schlachtfelds setzt das durchscheinende Echo alle Fähigkeitsabklingzeiten zurück.",
         "en": "Upon entering the battlefield, the Translucent Echo refreshes all skill CDs. [Relic Lv.10]",
-        "es": "Al entrar en el campo de batalla, el Eco translúcido reinicia todos los TdE de las habilidades."
+        "es": "Al entrar en el campo de batalla, el Eco translúcido reinicia todos los TdE de las habilidades.",
+        "zh": "半透明投影进入战场时刷新全部技能冷却。（圣物10级解锁）"
       },
       "level3": {
         "de": "Die Dauer des durchscheinenden Echos wird auf 10 Sek. erhöht.",
         "en": "Translucent Echo duration is increased to 10s. [Relic Lv.20]",
-        "es": "La duración del Eco translúcido aumenta a 10 s."
+        "es": "La duración del Eco translúcido aumenta a 10 s.",
+        "zh": "半透明投影的持续时间延长至10秒。（圣物20级解锁）"
       },
       "level4": {
         "de": "Das durchscheinende Echo erhält beim Eintritt in den Kampf 1000 Energie.",
         "en": "Translucent Echo gains 1000 Energy upon entering battle.",
-        "es": "El Eco translúcido obtiene 1000 de Energía al entrar en batalla."
+        "es": "El Eco translúcido obtiene 1000 de Energía al entrar en batalla.",
+        "zh": "半透明投影进入战斗时获得1000点能量。"
       }
     }
   }

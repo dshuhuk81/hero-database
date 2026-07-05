@@ -24,12 +24,14 @@
         "level2": {
           "de": "Die Schildstärke erhöht sich auf 300 % ANG.",
           "en": "Shield Strength increases to 300% ATK. (Unlocks at Lv.81)",
-          "es": "La fuerza del Escudo aumenta a 300 % de ATQ."
+          "es": "La fuerza del Escudo aumenta a 300 % de ATQ.",
+          "zh": "护盾强度提升至300%攻击力。（81级解锁）"
         },
         "level3": {
           "de": "Heilt den Verbündeten zusätzlich um LP in Höhe von 200 % des ANG.",
           "en": "Additionally heals the ally for HP equal to 200% ATK. (Unlocks at Lv.141)",
-          "es": "Además, sana al aliado por una cantidad de PS equivalente a un 200 % del ATQ."
+          "es": "Además, sana al aliado por una cantidad de PS equivalente a un 200 % del ATQ.",
+          "zh": "还为该友方恢复相当于攻击力200%的生命值。（141级解锁）"
         }
       }
     },
@@ -41,6 +43,16 @@
       "description": {
         "en": "Pisces summons a whale to crash down on the target, dealing AoE DMG equal to 360% ATK.",
         "zh": "双鱼座召唤鲸鱼砸向目标，造成相当于攻击力360%的范围伤害。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "DMG increases to 390% ATK. (Unlocks at Lv.41)",
+          "zh": "伤害提升至390%攻击力。（41级解锁）"
+        },
+        "level3": {
+          "en": "Reduces the target's M-RES by 20% for 6s while dealing DMG. (Unlocks at Lv.101)",
+          "zh": "造成伤害时使目标的魔抗降低20%，持续6秒。（101级解锁）"
+        }
       }
     },
     {
@@ -51,6 +63,20 @@
       "description": {
         "en": "Launches 2 Flicker Minnows at random enemies, dealing 180% ATK as DMG.",
         "zh": "向随机敌人发射2条闪光小鱼，造成相当于攻击力180%的伤害。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Increases DMG dealt to 200% ATK. (Unlocks at Lv.21)",
+          "zh": "造成的伤害提升至200%攻击力。（21级解锁）"
+        },
+        "level3": {
+          "en": "Increases the number of Flicker Minnows to 3. (Unlocks at Lv.121)",
+          "zh": "闪光小鱼的数量提升至3条。（121级解锁）"
+        },
+        "level4": {
+          "en": "Increases DMG dealt to 220% ATK. (Unlocks at Lv.161)",
+          "zh": "造成的伤害提升至220%攻击力。（161级解锁）"
+        }
       }
     }
   ]

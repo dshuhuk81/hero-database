@@ -24,17 +24,20 @@
         "level2": {
           "de": "Eris' Schuss verursacht 300 % ANG als SCH.",
           "en": "Eris's shot deals 300% ATK as DMG.",
-          "es": "El disparo de Eris inflige un 300 % de ATQ como daño."
+          "es": "El disparo de Eris inflige un 300 % de ATQ como daño.",
+          "zh": "厄里斯的射击造成相当于攻击力300%的伤害。"
         },
         "level3": {
           "de": "Jeder Puppenschuss verursacht Bonus-SCH in Höhe von 7,5 % der verlorenen LP des Ziels (bis zu 600 % des ANG der Puppe).",
           "en": "Each Puppet shot deals bonus DMG equal to 7.5% of the target's lost HP (up to 600% of the puppets ATK).",
-          "es": "Cada disparo de marioneta inflige daño adicional equivalente al 7,5 % de los PS perdidos del objetivo (hasta un 600 % del ATQ de la marioneta)."
+          "es": "Cada disparo de marioneta inflige daño adicional equivalente al 7,5 % de los PS perdidos del objetivo (hasta un 600 % del ATQ de la marioneta).",
+          "zh": "每发傀儡射击额外造成相当于目标已损失生命值7.5%的伤害（上限为傀儡攻击力的600%）。"
         },
         "level4": {
           "de": "Eris' Schuss verursacht Bonus-SCH in Höhe von 15 % der max. LP des Ziels (bis zu 500 % von Eris' ANG).",
           "en": "Eris's shot deals bonus DMG equal to 15% of the target's max HP (up to 500% of Eris's ATK).",
-          "es": "El disparo de Eris inflige daño adicional equivalente al 15 % de los PS máximos del objetivo (hasta un 500 % del ATQ de Eris)."
+          "es": "El disparo de Eris inflige daño adicional equivalente al 15 % de los PS máximos del objetivo (hasta un 500 % del ATQ de Eris).",
+          "zh": "厄里斯的射击额外造成相当于目标最大生命值15%的伤害（上限为厄里斯攻击力的500%）。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Puppe: Erbt 30 % von Eris' ANG und max. LP.",
           "en": "Puppet: Inherits 30% of Eris's ATK and Max HP.",
-          "es": "Marioneta: hereda el 30 % del ATQ y los PS máximos de Eris."
+          "es": "Marioneta: hereda el 30 % del ATQ y los PS máximos de Eris.",
+          "zh": "傀儡：继承厄里斯30%的攻击力与最大生命值。"
         },
         "level3": {
           "de": "Jeder Normalangriff von Eris reduziert die CD dieser Fähigkeit um 0,5 Sek.",
           "en": "Each of Eris's Normal Attack reduces this skill's CD by 0.5s.",
-          "es": "Cada ataque normal de Eris reduce el TdE de esta habilidad en 0,5 s."
+          "es": "Cada ataque normal de Eris reduce el TdE de esta habilidad en 0,5 s.",
+          "zh": "厄里斯的每次普通攻击使该技能的冷却时间缩短0.5秒。"
         },
         "level4": {
           "de": "Puppe: Erbt 60 % von Eris' ANG und 30 % max. LP.",
           "en": "Puppet: Inherits 60% of Eris's ATK and 30% of Max HP.",
-          "es": "Marioneta: hereda el 60 % del ATQ y el 30 % de los PS máximos de Eris."
+          "es": "Marioneta: hereda el 60 % del ATQ y el 30 % de los PS máximos de Eris.",
+          "zh": "傀儡：继承厄里斯60%的攻击力与30%的最大生命值。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Max. 5 Puppen.",
           "en": "Max 5 puppets.",
-          "es": "Máximo 5 marionetas."
+          "es": "Máximo 5 marionetas.",
+          "zh": "最多5个傀儡。"
         },
         "level3": {
           "de": "Max. 7 Puppen.",
           "en": "Max 7 puppets.",
-          "es": "Máximo 7 marionetas."
+          "es": "Máximo 7 marionetas.",
+          "zh": "最多7个傀儡。"
         },
         "level4": {
           "de": "Die Dauer der Puppe wird auf 35 Sek. verlängert.",
           "en": "Puppet duration extends to 35s.",
-          "es": "La duración de la marioneta se extiende a 35 s."
+          "es": "La duración de la marioneta se extiende a 35 s.",
+          "zh": "傀儡的持续时间延长至35秒。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Die Dauer wird auf 6 Sek. verlängert.",
           "en": "Duration extends to 6s.",
-          "es": "La duración se extiende a 6 s."
+          "es": "La duración se extiende a 6 s.",
+          "zh": "持续时间延长至6秒。"
         },
         "level3": {
           "de": "CD wird auf 25 Sek. verringert.",
           "en": "CD decreases to 25s.",
-          "es": "El TdE se reduce a 25 s."
+          "es": "El TdE se reduce a 25 s.",
+          "zh": "冷却时间缩短至25秒。"
         },
         "level4": {
           "de": "Wenn Eris einen Kill erzielt, wird die CD dieser Fähigkeit um 7,5 Sek. reduziert.",
           "en": "When Eris secures a kill, this skill's CD is reduced by 7.5s.",
-          "es": "Cuando Eris consigue una eliminación, el TdE de esta habilidad se reduce en 7,5 s."
+          "es": "Cuando Eris consigue una eliminación, el TdE de esta habilidad se reduce en 7,5 s.",
+          "zh": "厄里斯完成击杀时，该技能的冷却时间缩短7.5秒。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Fluch der Marionetten",
       "en": "Curse of Puppets",
-      "es": "Maldición de las marionetas"
+      "es": "Maldición de las marionetas",
+      "zh": "傀儡诅咒"
     },
     "description": {
       "de": "Eris markiert einen Gegner und ignoriert 30 % der VTD des Ziels, wenn sie und ihre Puppen SCH verursachen (Passiv).",
       "en": "Eris marks an enemy, ignoring 30% of the target's DEF when she and her puppets deal DMG (passive).",
-      "es": "Eris marca a un enemigo e ignora el 30 % de la DEF del objetivo cuando ella y sus marionetas infligen daño (Pasiva)."
+      "es": "Eris marca a un enemigo e ignora el 30 % de la DEF del objetivo cuando ella y sus marionetas infligen daño (Pasiva).",
+      "zh": "厄里斯标记一名敌人，她与傀儡对其造成伤害时无视目标30%的防御（被动）。"
     },
     "upgrades": {
       "level2": {
         "de": "Ignoriert 60 % der VTD des Ziels.",
         "en": "Ignores 60% of the target's DEF.",
-        "es": "Ignora el 60 % de la DEF del objetivo."
+        "es": "Ignora el 60 % de la DEF del objetivo.",
+        "zh": "无视目标60%的防御。"
       },
       "level3": {
         "de": "Beschwört Puppen bei der Niederlage gegnerischer Gottheiten.",
         "en": "Summons puppets upon the defeat an enemy Deitys.",
-        "es": "Invoca marionetas tras la derrota de las deidades enemigas."
+        "es": "Invoca marionetas tras la derrota de las deidades enemigas.",
+        "zh": "击败敌方神祇时召唤傀儡。"
       },
       "level4": {
         "de": "Ignoriert 90 % der VTD des Ziels.",
         "en": "Ignores 90% of the target's DEF.",
-        "es": "Ignora el 90 % de la DEF del objetivo."
+        "es": "Ignora el 90 % de la DEF del objetivo.",
+        "zh": "无视目标90%的防御。"
       }
     }
   }

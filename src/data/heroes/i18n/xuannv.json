@@ -24,17 +24,20 @@
         "level2": {
           "de": "Verursacht bei allen Gegnern 500 % ANG als SCH.",
           "en": "On activation, also deals 500% ATK damage to all enemies.",
-          "es": "Inflige un 500 % de ATQ como Daño a todos los enemigos."
+          "es": "Inflige un 500 % de ATQ como Daño a todos los enemigos.",
+          "zh": "施放时，还对所有敌人造成相当于攻击力500%的伤害。"
         },
         "level3": {
           "de": "Erhält im Zustand [Spiel als Schwarz] 160 % ANG-GES.",
           "en": "While in the [Play as Black] state, gains 160% ATK SPD.",
-          "es": "Obtiene un 160 % de VEL de ATQ en el estado [Jugar con Negras]."
+          "es": "Obtiene un 160 % de VEL de ATQ en el estado [Jugar con Negras].",
+          "zh": "处于【执黑】状态时，获得160%攻速。"
         },
         "level4": {
           "de": "Erhält im Zustand [Spiel als Weiß] 50 % zusätzlichen Normalangriff-SCH.",
           "en": "While in the [Play as White] state, gains an extra 50% normal-attack damage.",
-          "es": "Obtiene un 50 % adicional de Daño de Ataque Normal en el estado [Jugar con Blancas]."
+          "es": "Obtiene un 50 % adicional de Daño de Ataque Normal en el estado [Jugar con Blancas].",
+          "zh": "处于【执白】状态时，普攻伤害额外提升50%。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Wenn das Ziel weniger Energie hat, stellt Xuannü 70 Energie wieder her.",
           "en": "If the target has less energy, Xuannv restores 70 energy instead.",
-          "es": "Si el objetivo tiene menos Energía, Xuannv recupera 70 de Energía."
+          "es": "Si el objetivo tiene menos Energía, Xuannv recupera 70 de Energía.",
+          "zh": "若目标能量更低，玄女改为恢复70点能量。"
         },
         "level3": {
           "de": "Wenn das Ziel gleich viel oder mehr Energie hat, verliert es 70 Energie.",
           "en": "If the target has equal or more energy, the target loses 70 energy instead.",
-          "es": "Si el objetivo tiene igual o más Energía, pierde 70 de energía."
+          "es": "Si el objetivo tiene igual o más Energía, pierde 70 de energía.",
+          "zh": "若目标能量相等或更高，目标改为损失70点能量。"
         },
         "level4": {
           "de": "Wenn das Ziel gleich viel oder mehr Energie hat, verliert es 100 Energie.",
           "en": "If the target has equal or more energy, the target loses 100 energy instead.",
-          "es": "Si el objetivo tiene igual o más Energía, pierde 100 de energía."
+          "es": "Si el objetivo tiene igual o más Energía, pierde 100 de energía.",
+          "zh": "若目标能量相等或更高，目标改为损失100点能量。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Schwarzer Stein: Verursacht 40 % mehr SCH.",
           "en": "Black Stone deals 40% more damage.",
-          "es": "Piedra Negra: Inflige un 40 % más de Daño."
+          "es": "Piedra Negra: Inflige un 40 % más de Daño.",
+          "zh": "黑子造成的伤害提升40%。"
         },
         "level3": {
           "de": "Bei der Umwandlung erhält die Einheit einen Schild in Höhe von 500 % des ANG.",
           "en": "When a unit converts from one state to the other, it gains a shield equal to 500% ATK.",
-          "es": "Al cambiar de un estado a otro, la unidad obtiene un Escudo equivalente al 500 % del ATQ."
+          "es": "Al cambiar de un estado a otro, la unidad obtiene un Escudo equivalente al 500 % del ATQ.",
+          "zh": "单位转换状态时，获得相当于攻击力500%的护盾。"
         },
         "level4": {
           "de": "Weißer Stein: Erleidet 40 % weniger SCH.",
           "en": "White Stone takes 40% less damage.",
-          "es": "Piedra Blanca: Recibe un 40 % menos de Daño."
+          "es": "Piedra Blanca: Recibe un 40 % menos de Daño.",
+          "zh": "白子受到的伤害降低40%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Verringert die Abklingzeit auf 25 Sek.",
           "en": "Cooldown reduced to 25s.",
-          "es": "Reduce el TdE a 25 s."
+          "es": "Reduce el TdE a 25 s.",
+          "zh": "冷却时间缩短至25秒。"
         },
         "level3": {
           "de": "Verringert die Abklingzeit auf 20 Sek.",
           "en": "Cooldown reduced to 20s.",
-          "es": "Reduce el TdE a 20 s."
+          "es": "Reduce el TdE a 20 s.",
+          "zh": "冷却时间缩短至20秒。"
         },
         "level4": {
           "de": "Reduziert erlittenen SCH um 80 %.",
           "en": "Reduces incoming damage by 80% instead of 50%.",
-          "es": "Reduce el daño recibido en un 80 %."
+          "es": "Reduce el daño recibido en un 80 %.",
+          "zh": "受到的伤害降低80%（原为50%）。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Leerenfinte",
       "en": "Void Feint",
-      "es": "Finta del Vacío"
+      "es": "Finta del Vacío",
+      "zh": "虚招"
     },
     "description": {
       "de": "Verstärkt Xuannüs Zustände.\n[Spiel als Schwarz]: Jeder Angriff verursacht zusätzlichen SCH in Höhe von 200 % ANG + 6 % der max. LP des Ziels (bis zu 500 % von Xuannüs ANG).\n[Spiel als Weiß]: Die ersten 3 Normalangriffe nach dem Eintreten in den Zustand verursachen SCH in Höhe von 200 % ANG + 30 % der verlorenen LP des Ziels (bis zu 500 % von Xuannüs ANG).",
       "en": "Enhances Xuannv's states and can also trigger Step Into the Game. [Play as Black]: every attack deals extra damage equal to 200% ATK + 6% of the target's max HP (capped at 500% of Xuannv's ATK). [Play as White]: the first 3 normal attacks after entering the state deal extra damage equal to 200% ATK + 30% of the target's lost HP (capped at 500% of Xuannv's ATK).",
-      "es": "Mejora los estados de Xuannv.\n[Jugar con Negras]: Cada ataque inflige Daño adicional equivalente al 200 % de ATQ + el 6 % de los PS máx. del objetivo (hasta un 500 % del ATQ de Xuannv).\n[Jugar con Blancas]: Los primeros 3 Ataques Normales tras entrar en los estados infligen un Daño equivalente al 200 % de ATQ + el 30 % de los PS perdidos del objetivo (hasta un 500 % del ATQ de Xuannv)."
+      "es": "Mejora los estados de Xuannv.\n[Jugar con Negras]: Cada ataque inflige Daño adicional equivalente al 200 % de ATQ + el 6 % de los PS máx. del objetivo (hasta un 500 % del ATQ de Xuannv).\n[Jugar con Blancas]: Los primeros 3 Ataques Normales tras entrar en los estados infligen un Daño equivalente al 200 % de ATQ + el 30 % de los PS perdidos del objetivo (hasta un 500 % del ATQ de Xuannv).",
+      "zh": "强化玄女的状态，并可额外触发入局。【执黑】：每次攻击额外造成相当于攻击力200%+目标最大生命值6%的伤害（上限为玄女攻击力的500%）。【执白】：进入该状态后的前3次普通攻击额外造成相当于攻击力200%+目标已损失生命值30%的伤害（上限为玄女攻击力的500%）。"
     },
     "upgrades": {
       "level2": {
         "de": "Wenn SCH erlitten wird, während [Eintritt ins Spiel] abklingt, besteht eine Chance von 50 %, [Eintritt ins Spiel] auszulösen. CD: 30 Sek.",
         "en": "When Step Into the Game is on cooldown and Xuannv takes damage, 50% chance to trigger Step Into the Game (this effect has a 30s cooldown).",
-        "es": "Si recibe Daño mientras [Entrar en el juego] está en tiempo de espera, tiene un 50 % de probabilidad de activar [Entrar en el juego]. TdE: 30 s."
+        "es": "Si recibe Daño mientras [Entrar en el juego] está en tiempo de espera, tiene un 50 % de probabilidad de activar [Entrar en el juego]. TdE: 30 s.",
+        "zh": "当入局处于冷却且玄女受到伤害时，有50%几率触发入局（该效果冷却30秒）。"
       },
       "level3": {
         "de": "Wenn SCH erlitten wird, während [Eintritt ins Spiel] abklingt, besteht eine Chance von 100 %, [Eintritt ins Spiel] auszulösen. CD: 30 Sek.",
         "en": "The trigger chance becomes 100%.",
-        "es": "Si recibe Daño mientras [Entrar en el juego] está en tiempo de espera, tiene un 100 % de probabilidad de activar [Entrar en el juego]. TdE: 30 s."
+        "es": "Si recibe Daño mientras [Entrar en el juego] está en tiempo de espera, tiene un 100 % de probabilidad de activar [Entrar en el juego]. TdE: 30 s.",
+        "zh": "触发几率提升至100%。"
       },
       "level4": {
         "de": "Verstärkt Xuannüs Zustände.\n[Spiel als Schwarz]: Jeder Angriff verursacht zusätzlichen SCH in Höhe von 300 % ANG + 10 % der max. LP des Ziels (bis zu 800 % von Xuannüs ANG).\n[Spiel als Weiß]: Die ersten 3 Normalangriffe nach Eintritt in die Zustände verursachen SCH in Höhe von 400 % ANG + 60 % der verlorenen LP des Ziels (bis zu 1.000 % von Xuannüs ANG).",
         "en": "[Play as Black]: extra damage becomes 300% ATK + 10% of the target's max HP (capped at 800% ATK). [Play as White]: the first 3 attacks deal 400% ATK + 60% of the target's lost HP (capped at 1000% ATK).",
-        "es": "Mejora los estados de Xuannv.\n[Jugar con Negras]: Cada ataque inflige Daño adicional equivalente al 300 % de ATQ + el 10 % de los PS máx. del objetivo (hasta un 800 % del ATQ de Xuannv).\n[Jugar con Blancas]: Los primeros 3 Ataques Normales tras entrar en los estados infligen un Daño equivalente al 400 % de ATQ + el 60 % de los PS perdidos del objetivo (hasta un 1.000 % del ATQ de Xuannv)."
+        "es": "Mejora los estados de Xuannv.\n[Jugar con Negras]: Cada ataque inflige Daño adicional equivalente al 300 % de ATQ + el 10 % de los PS máx. del objetivo (hasta un 800 % del ATQ de Xuannv).\n[Jugar con Blancas]: Los primeros 3 Ataques Normales tras entrar en los estados infligen un Daño equivalente al 400 % de ATQ + el 60 % de los PS perdidos del objetivo (hasta un 1.000 % del ATQ de Xuannv).",
+        "zh": "【执黑】：额外伤害变为攻击力300%+目标最大生命值10%（上限为攻击力的800%）。【执白】：前3次攻击造成攻击力400%+目标已损失生命值60%（上限为攻击力的1000%）。"
       }
     }
   }

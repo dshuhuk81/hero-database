@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den SCH des Geladenen Angriffs auf 520 % ANG.",
           "en": "Increases DMG of Charged Attack to 520% ATK.",
-          "es": "Aumenta el daño del ataque cargado al 520 % de ATQ."
+          "es": "Aumenta el daño del ataque cargado al 520 % de ATQ.",
+          "zh": "蓄力攻击的伤害提升至520%攻击力。"
         },
         "level3": {
           "de": "Weggeschleuderte Ziele werden bei der Landung für 2 Sek. betäubt.",
           "en": "Targets launched will be stunned for 2s upon landing.",
-          "es": "Los objetivos lanzados quedarán aturdidos durante 2s al aterrizar."
+          "es": "Los objetivos lanzados quedarán aturdidos durante 2s al aterrizar.",
+          "zh": "被击飞的目标落地时眩晕2秒。"
         },
         "level4": {
           "de": "Erhöht den SCH des Geladenen Angriffs auf 550 % ANG.",
           "en": "Increases DMG of Charged Attack to 550% ATK.",
-          "es": "Aumenta el daño del ataque cargado al 550 % de ATQ."
+          "es": "Aumenta el daño del ataque cargado al 550 % de ATQ.",
+          "zh": "蓄力攻击的伤害提升至550%攻击力。"
         }
       }
     },
@@ -55,16 +58,19 @@
         "level2": {
           "de": "Erhöht den SCH pro Instanz auf 110 % ANG.\nLevel 3: Wenn das Ziel besiegt wird, während die Fähigkeit aktiv ist, werden 20% der max. LP wiederhergestellt.",
           "en": "Increases DMG per instance to 110% ATK.",
-          "es": "aumenta el daño por instancia al 110 % de ATQ."
+          "es": "aumenta el daño por instancia al 110 % de ATQ.",
+          "zh": "每次伤害提升至110%攻击力。"
         },
         "level4": {
           "de": "Erhöht den SCH pro Instanz auf 120 % ANG.",
           "en": "Increases DMG per instance to 120% ATK.",
-          "es": "aumenta el daño por instancia al 120 % de ATQ."
+          "es": "aumenta el daño por instancia al 120 % de ATQ.",
+          "zh": "每次伤害提升至120%攻击力。"
         },
         "level3": {
           "es": "Restaura un 20 % de los PS máximos si el objetivo es derrotado mientras la habilidad está activa.",
-          "en": "Restores 20% of max HP if the target is defeated while the skill is active."
+          "en": "Restores 20% of max HP if the target is defeated while the skill is active.",
+          "zh": "技能期间若目标被击败，恢复20%最大生命值。"
         }
       }
     },
@@ -85,16 +91,19 @@
         "level2": {
           "de": "Stellt LP in Höhe von 300 % des ANG pro Sek. wieder her.",
           "en": "Restores HP equal to 300% ATK per sec.",
-          "es": "Restaura PS equivalentes a un 300 % del ATQ por segundo."
+          "es": "Restaura PS equivalentes a un 300 % del ATQ por segundo.",
+          "zh": "每秒恢复相当于攻击力300%的生命值。"
         },
         "level3": {
           "de": "Stellt 80 Energie pro Sek. wieder her.\nLevel 4: Ullr nimmt 20% des SCH auf, der der verbundenen Einheit zugefügt wird.",
           "en": "Restores 80 Energy per sec.",
-          "es": "Restaura 80 de Energía por segundo."
+          "es": "Restaura 80 de Energía por segundo.",
+          "zh": "每秒恢复80点能量。"
         },
         "level4": {
           "es": "Un 20 % del Daño recibido por las unidades vinculadas se redirige a Ullr.",
-          "en": "20% of the DMG taken by linked units is redirected to Ullr."
+          "en": "20% of the DMG taken by linked units is redirected to Ullr.",
+          "zh": "被链接单位受到伤害的20%转移给乌勒尔。"
         }
       }
     },
@@ -115,17 +124,20 @@
         "level2": {
           "de": "Schildstärke erhöht sich auf 30 % der max. LP.",
           "en": "Shield Strength increases to 30% of max HP.",
-          "es": "la fuerza del escudo aumenta al 30 % de los PS máx."
+          "es": "la fuerza del escudo aumenta al 30 % de los PS máx.",
+          "zh": "护盾强度提升至最大生命值的30%。"
         },
         "level3": {
           "de": "Solange der Schild aktiv ist, werden pro Sek. 5 % der max. LP wiederhergestellt.",
           "en": "Restores 5% of max HP per sec when the shield is active.",
-          "es": "Restaura un 5 % de los PS máximos por segundo cuando el escudo está activo."
+          "es": "Restaura un 5 % de los PS máximos por segundo cuando el escudo está activo.",
+          "zh": "护盾存在期间每秒恢复5%最大生命值。"
         },
         "level4": {
           "de": "Schildstärke erhöht sich auf 35 % der max. LP.",
           "en": "Shield Strength increases to 35% of max HP.",
-          "es": "la fuerza del escudo aumenta al 35 % de los PS máx."
+          "es": "la fuerza del escudo aumenta al 35 % de los PS máx.",
+          "zh": "护盾强度提升至最大生命值的35%。"
         }
       }
     }
@@ -134,28 +146,33 @@
     "name": {
       "de": "Tödlicher Nervenkitzel",
       "en": "Deadly Thrill",
-      "es": "Emoción mortal"
+      "es": "Emoción mortal",
+      "zh": "致命快感"
     },
     "description": {
       "de": "Verringert die Abklingzeit von Fessel des Schmerzes von 15 auf 10 Sek.",
       "en": "Reduces Shackle of Pain's CD from 15s to 10s.",
-      "es": "Reduce el TdE de Grillete de dolor de 15 a 10 s."
+      "es": "Reduce el TdE de Grillete de dolor de 15 a 10 s.",
+      "zh": "苦痛枷锁的冷却时间从15秒缩短至10秒。"
     },
     "upgrades": {
       "level2": {
         "de": "Fessel des Schmerzes leitet 20 % des erlittenen SCH auf gefesselte Feinde um.",
         "en": "Shackle of Pain redirects 20% DMG taken to restrained enemies.",
-        "es": "Grillete de dolor redirige el 20 % del daño recibido a los enemigos inmovilizados."
+        "es": "Grillete de dolor redirige el 20 % del daño recibido a los enemigos inmovilizados.",
+        "zh": "苦痛枷锁将受到伤害的20%转移给被束缚的敌人。"
       },
       "level3": {
         "de": "Verringert die Abklingzeit von Fessel des Schmerzes auf 7 Sek.",
         "en": "Reduces Shackle of Pain's CD to 7s.",
-        "es": "Reduce el TdE de Grillete de dolor a 7 s."
+        "es": "Reduce el TdE de Grillete de dolor a 7 s.",
+        "zh": "苦痛枷锁的冷却时间缩短至7秒。"
       },
       "level4": {
         "de": "Fessel des Schmerzes leitet 40 % des erlittenen SCH auf gefesselte Gegner um.",
         "en": "Shackle of Pain redirects 40% DMG taken to restrained enemies.",
-        "es": "Grillete de dolor redirige el 40 % del daño recibido a los enemigos inmovilizados."
+        "es": "Grillete de dolor redirige el 40 % del daño recibido a los enemigos inmovilizados.",
+        "zh": "苦痛枷锁将受到伤害的40%转移给被束缚的敌人。"
       }
     }
   }

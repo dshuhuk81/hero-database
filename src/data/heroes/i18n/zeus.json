@@ -10,7 +10,8 @@
     "de": "Zeus, König der Götter und Sterblichen, herrscht über Himmel, Donner und Gerechtigkeit. Hoch über den Wolken, mit dem Blitz in der Hand, lässt er seinen Blick über die Welt schweifen, und alle Wesen beugen sich vor seiner Macht.",
     "en": "Zeus, king of gods and mortals, rules over the sky, thunder, and justice. High among the clouds with Lightning Bolt in hand, he casts his gaze across the world, and all beings bow beneath his might.",
     "es": "Zeus, rey de dioses y mortales, gobierna el cielo, el trueno y la justicia. Muy por encima de las nubes, con el Rayo en la mano, extiende su mirada sobre el mundo, y todos los seres se inclinan ante su poder.",
-    "ru": "Зевс, царь богов и смертных, властвует над небом, громом и справедливостью. Высоко над облаками, с молнией в руке, он простирает свой взор над миром, и все существа склоняются перед его мощью."
+    "ru": "Зевс, царь богов и смертных, властвует над небом, громом и справедливостью. Высоко над облаками, с молнией в руке, он простирает свой взор над миром, и все существа склоняются перед его мощью.",
+    "zh": "宙斯，众神与凡人之王，主宰天空、雷霆与正义。他高踞云端，手握雷霆之杖，目光扫视世界，众生皆在他的威能下俯首。"
   },
   "skills": [
     {
@@ -33,19 +34,22 @@
           "de": "Erhöht den verursachten SCH um 160 %.",
           "en": "Increases DMG dealt to 160%.",
           "es": "Aumenta el daño infligido en 160 %.",
-          "ru": "Увеличивает наносимый DMG до 160%."
+          "ru": "Увеличивает наносимый DMG до 160%.",
+          "zh": "造成的伤害提升至160%。"
         },
         "level3": {
           "de": "Erhält beim Eintritt 500 Energie.",
           "en": "Gains 500 Energy on entry.",
           "es": "Obtiene 500 de Energía al entrar.",
-          "ru": "Получает 500 Energy при входе в бой."
+          "ru": "Получает 500 Energy при входе в бой.",
+          "zh": "入场时获得500点能量。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH um 200 %.",
           "en": "Increases DMG dealt to 200%.",
           "es": "Aumenta el daño infligido en 200 %.",
-          "ru": "Увеличивает наносимый DMG до 200%."
+          "ru": "Увеличивает наносимый DMG до 200%.",
+          "zh": "造成的伤害提升至200%。"
         }
       }
     },
@@ -69,19 +73,22 @@
           "de": "Erhöht den verursachten SCH auf 300 %.",
           "en": "Increases DMG dealt to 300% of ATK.",
           "es": "Aumenta el daño infligido a 300 %.",
-          "ru": "Увеличивает наносимый DMG до 300% ATK."
+          "ru": "Увеличивает наносимый DMG до 300% ATK.",
+          "zh": "造成的伤害提升至300%攻击力。"
         },
         "level3": {
           "de": "Diese Fähigkeit ignoriert Ausweichrate.",
           "en": "This skill ignores Dodge Rate.",
           "es": "Esta habilidad ignora la Prob. de evasión.",
-          "ru": "Этот навык игнорирует Dodge Rate."
+          "ru": "Этот навык игнорирует Dodge Rate.",
+          "zh": "该技能无视闪避率。"
         },
         "level4": {
           "de": "Verursacht SCH in Höhe von 12 % der aktuellen LP des Ziels (bis zu 150 % von Zeus' aktuellem ANG).",
           "en": "Deals DMG equal to 12% of the target’s current HP (up to 150% of Zeus’s current ATK).",
           "es": "Inflige un daño equivalente al 12 % de los PS actuales del objetivo (hasta un 150 % del ATQ actual de Zeus).",
-          "ru": "Наносит DMG, равный 12% текущего HP цели (до 150% текущего ATK Зевса)."
+          "ru": "Наносит DMG, равный 12% текущего HP цели (до 150% текущего ATK Зевса).",
+          "zh": "造成相当于目标当前生命值12%的伤害（上限为宙斯当前攻击力的150%）。"
         }
       }
     },
@@ -105,19 +112,22 @@
           "de": "Geerbte max. LP werden auf 50% erhöht.",
           "en": "Echoes inherit 50% of Zeus’s max HP.",
           "es": "Los ecos heredan el 50 % de su PS.",
-          "ru": "Эхо наследуют 50% макс. HP Зевса."
+          "ru": "Эхо наследуют 50% макс. HP Зевса.",
+          "zh": "雷霆分身继承宙斯50%的最大生命值。"
         },
         "level3": {
           "de": "Echos erben die Entfesselung der Überladung.",
           "en": "Echoes inherit the Overload Unleash effect.",
           "es": "Los ecos heredan el efecto Liberación de sobrecarga.",
-          "ru": "Эхо наследуют эффект 'Освобождение перегрузки'."
+          "ru": "Эхо наследуют эффект 'Освобождение перегрузки'.",
+          "zh": "雷霆分身继承超载解放的效果。"
         },
         "level4": {
           "de": "Erbt 100% seines eigenen ANG.",
           "en": "Echoes inherit 100% of Zeus’s ATK.",
           "es": "Los ecos heredan el 100 % de su ATQ.",
-          "ru": "Эхо наследуют 100% ATK Зевса."
+          "ru": "Эхо наследуют 100% ATK Зевса.",
+          "zh": "雷霆分身继承宙斯100%的攻击力。"
         }
       }
     },
@@ -141,19 +151,22 @@
           "de": "Erhöht eigenes ANG-Tempo um 12% und Ultimativen SCH um 3%.",
           "en": "Increases ATK SPD by 12% and Ultimate DMG by 3%.",
           "es": "Aumenta la VEL de ATQ en un 12 % y el daño de la Habilidad definitiva en un 3 %.",
-          "ru": "Увеличивает ATK SPD до 12% и Ultimate DMG до 3%."
+          "ru": "Увеличивает ATK SPD до 12% и Ultimate DMG до 3%.",
+          "zh": "攻速提升12%、大招伤害提升3%。"
         },
         "level3": {
           "de": "Wird bei Erreichen von 8 Stapeln Donnerkrachen ausgelöst.",
           "en": "Triggers Thundercrack upon reaching 8 stacks.",
           "es": "Activa Estruendo de trueno al alcanzar 8 acumulaciones.",
-          "ru": "Активирует Thundercrack при достижении 8 стаков."
+          "ru": "Активирует Thundercrack при достижении 8 стаков.",
+          "zh": "达到8层时即触发雷霆爆裂。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH um 50 %.",
           "en": "Increases DMG dealt by 50%.",
           "es": "Aumenta el daño infligido en 50 %.",
-          "ru": "Увеличивает наносимый DMG на 50%."
+          "ru": "Увеличивает наносимый DMG на 50%.",
+          "zh": "造成的伤害提升50%。"
         }
       }
     }
@@ -163,32 +176,37 @@
       "de": "Göttlicher Puls",
       "en": "Divine Pulse",
       "es": "Pulso divino",
-      "ru": "Божественный импульс"
+      "ru": "Божественный импульс",
+      "zh": "神权律动"
     },
     "description": {
       "de": "Wenn Zeus Allmächtiger Donnerschlag wirkt, wirken ihn auch alle Echos auf dem Feld und verursachen 70 % des ursprünglichen SCH.",
       "en": "When Zeus casts Almighty Thunderstrike, all Echoes on the field also cast it, dealing 70% of the original DMG.",
       "es": "Cuando Zeus lanza Trueno todopoderoso, todos los ecos en el campo también lo lanzan, lo que inflige el 70 % del daño original.",
-      "ru": "Когда Зевс применяет Всемогущий громовой удар, все Эхо на поле также используют его, нанося 70% от исходного DMG."
+      "ru": "Когда Зевс применяет Всемогущий громовой удар, все Эхо на поле также используют его, нанося 70% от исходного DMG.",
+      "zh": "宙斯施放神王雷殛时，场上所有雷霆分身也一同施放，造成原伤害的70%。"
     },
     "upgrades": {
       "level2": {
         "de": "Nach jedem normalen Angriff löst der nächste Angriff [Urteil] aus, wodurch sein SCH um 20% erhöht wird.",
         "en": "After each Normal Attack, the next attack triggers Supreme Judgment. Increases Supreme Judgment DMG by 20%.",
         "es": "Después de cada Ataque normal, el siguiente ataque activa Juicio supremo. Aumenta el daño infligido por Juicio supremo en un 20 %.",
-        "ru": "После каждой обычной атаки следующая атака активирует Верховный приговор. Увеличивает DMG Верховного приговора на 20%."
+        "ru": "После каждой обычной атаки следующая атака активирует Верховный приговор. Увеличивает DMG Верховного приговора на 20%.",
+        "zh": "每次普通攻击后，下一次攻击触发审判。审判的伤害提升20%。"
       },
       "level3": {
         "de": "Wenn Zeus Allmächtiger Donnerschlag wirkt, wirken ihn auch alle Echos auf dem Feld und verursachen 100 % des ursprünglichen SCH.",
         "en": "When Zeus casts Almighty Thunderstrike, all Echoes also cast it, dealing 100% of the original DMG.",
         "es": "Cuando Zeus lanza Trueno todopoderoso, todos los ecos en el campo también lo lanzan, lo que inflige el 100 % del daño original.",
-        "ru": "Когда Зевс применяет Всемогущий громовой удар, все Эхо также используют его, нанося 100% от исходного DMG."
+        "ru": "Когда Зевс применяет Всемогущий громовой удар, все Эхо также используют его, нанося 100% от исходного DMG.",
+        "zh": "宙斯施放神王雷殛时，所有雷霆分身也一同施放，造成原伤害的100%。"
       },
       "level4": {
         "de": "Echos können auch Göttlichen Puls und Höchstes Urteil auslösen.",
         "en": "Echoes can also trigger Divine Pulse and Supreme Judgment.",
         "es": "Los ecos también pueden activar Pulso divino y Juicio supremo.",
-        "ru": "Эхо также могут активировать Божественный импульс и Верховный приговор."
+        "ru": "Эхо также могут активировать Божественный импульс и Верховный приговор.",
+        "zh": "雷霆分身也可以触发神权律动与审判。"
       }
     }
   },
@@ -197,7 +215,8 @@
       "de": "Die vielseitigste Einheit - funktioniert in jedem Modus, Team und Fortschrittsschritt. Der Judgment-Burst wird durch Athenas ATK-Geschwindigkeit, Yuelaos ATK-Buff und Dionysos' Schadensbonus verstärkt.",
       "en": "Most versatile unit -- functions in every mode, team, and progression stage. Judgment burst buffed by Athena ATK speed, Yuelao ATK buff, and Dionysus damage boost.",
       "es": "La unidad más versátil: funciona en todos los modos, equipos y etapas de progreso. El estallido de Juicio se potencia con la velocidad de ATK de Athena, el buff de ATK de Yuelao y la mejora de daño de Dionisio.",
-      "ru": "Самый универсальный юнит - работает в любом режиме, в любой команде и на любом этапе прогресса. Взрывной урон Judgment усиливается скоростью ATK Афины, баффом ATK Юэлао и бонусом к урону Диониса."
+      "ru": "Самый универсальный юнит - работает в любом режиме, в любой команде и на любом этапе прогресса. Взрывной урон Judgment усиливается скоростью ATK Афины, баффом ATK Юэлао и бонусом к урону Диониса.",
+      "zh": "最全能的单位——适用于所有模式、阵容与养成阶段。审判爆发可由雅典娜的攻速增益、月老的攻击力增益与狄俄尼索斯的伤害加成强化。"
     }
   },
   "synergyLinks": [
@@ -206,7 +225,8 @@
         "de": "Der Buff auf ATK-Geschwindigkeit steigert den Schadensausstoß im Judgment-Fenster direkt.",
         "en": "ATK speed buff directly amplifies Judgment window output.",
         "es": "El buff de ATK SPD amplifica directamente el daño de la ventana de Juicio.",
-        "ru": "Бафф ATK SPD напрямую усиливает урон в окне Judgment."
+        "ru": "Бафф ATK SPD напрямую усиливает урон в окне Judgment.",
+        "zh": "攻速增益直接放大审判窗口期的输出。"
       }
     },
     {
@@ -214,7 +234,8 @@
         "de": "ATK-Buff und Link-Kette - Zeus trifft härter und überlebt länger.",
         "en": "ATK buff and link chain -- Zeus hits harder and survives longer.",
         "es": "Buff de ATK y cadena de enlace: Zeus golpea más fuerte y sobrevive más tiempo.",
-        "ru": "Бафф ATK и цепочка связи - Зевс бьёт сильнее и живёт дольше."
+        "ru": "Бафф ATK и цепочка связи - Зевс бьёт сильнее и живёт дольше.",
+        "zh": "攻击力增益与红线连结——宙斯打得更痛、活得更久。"
       }
     },
     {
@@ -222,7 +243,8 @@
         "de": "Maximale Energiekreisläufe für garantierte Judgment-Uptime.",
         "en": "Maximum energy cycling for guaranteed Judgment uptime.",
         "es": "Ciclo de energía máximo para asegurar la disponibilidad de Juicio.",
-        "ru": "Максимальный цикл энергии для гарантированного uptime Judgment."
+        "ru": "Максимальный цикл энергии для гарантированного uptime Judgment.",
+        "zh": "极致的能量循环，确保审判的持续覆盖。"
       }
     },
     {
@@ -230,7 +252,8 @@
         "de": "Der Schadensbuff des Supports vervollstaendigt das Meta-Support-Setup für das Endgame.",
         "en": "Damage-boost support completes the endgame meta support stack.",
         "es": "El soporte de aumento de daño completa la pila meta de soporte del endgame.",
-        "ru": "Поддержка с усилением урона завершает мета-набор саппортов для эндгейма."
+        "ru": "Поддержка с усилением урона завершает мета-набор саппортов для эндгейма.",
+        "zh": "伤害加成型辅助，补全后期版本的辅助体系。"
       }
     },
     {
@@ -238,7 +261,8 @@
         "de": "Dianas Armor-Debuff und Zeus' Judgment erzeugen unverhältnismaessigen Burst.",
         "en": "Diana armor debuff plus Zeus Judgment creates disproportionate burst.",
         "es": "El debuff de armadura de Diana junto con Juicio de Zeus crea un burst desproporcionado.",
-        "ru": "Дебафф брони Дианы вместе с Judgment Зевса создаёт непропорциональный взрывной урон."
+        "ru": "Дебафф брони Дианы вместе с Judgment Зевса создаёт непропорциональный взрывной урон.",
+        "zh": "黛安娜的破甲配合宙斯的审判，造就不成比例的爆发。"
       }
     }
   ],
@@ -248,7 +272,8 @@
         "de": "Inbrunst",
         "en": "Fervor",
         "es": "Fervor",
-        "ru": "Рвение"
+        "ru": "Рвение",
+        "zh": "炽情"
       }
     },
     {
@@ -256,7 +281,8 @@
         "de": "Begierde",
         "en": "Desire",
         "es": "Deseo",
-        "ru": "Желание"
+        "ru": "Желание",
+        "zh": "欲望"
       }
     },
     {
@@ -264,7 +290,8 @@
         "de": "Gnosis",
         "en": "Gnosis",
         "es": "Gnosis",
-        "ru": "Гнозис"
+        "ru": "Гнозис",
+        "zh": "灵知"
       }
     },
     {
@@ -272,7 +299,8 @@
         "de": "Wildheit",
         "en": "Wildness",
         "es": "Salvajismo",
-        "ru": "Дикость"
+        "ru": "Дикость",
+        "zh": "野性"
       }
     }
   ]

@@ -24,17 +24,20 @@
         "level2": {
           "de": "Nut erhält während des Aufladens eine Ausweichrate von 50 %.",
           "en": "Nut gains 50% Dodge Rate during the charge-up.",
-          "es": "Nut obtiene un 50 % de Prob. de Evasión durante la carga."
+          "es": "Nut obtiene un 50 % de Prob. de Evasión durante la carga.",
+          "zh": "蓄能期间，努特获得50%闪避率。"
         },
         "level3": {
           "de": "Für jede angesammelte Energie erhöht sich der Schadensmultiplikator um 3 %.",
           "en": "For every Energy accumulated, the DMG multiplier increases by 3%.",
-          "es": "Por cada punto de Energía acumulado, el multiplicador de Daño aumenta un 3 %."
+          "es": "Por cada punto de Energía acumulado, el multiplicador de Daño aumenta un 3 %.",
+          "zh": "每积累1点能量，伤害倍率提升3%。"
         },
         "level4": {
           "de": "Für jede angesammelte Energie erhöht sich der Schadensmultiplikator um 4 %.",
           "en": "For every Energy accumulated, the DMG multiplier increases by 4%.",
-          "es": "Por cada punto de Energía acumulado, el multiplicador de Daño aumenta un 4 %."
+          "es": "Por cada punto de Energía acumulado, el multiplicador de Daño aumenta un 4 %.",
+          "zh": "每积累1点能量，伤害倍率提升4%。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 100 % ANG.",
           "en": "Increases DMG dealt to 100% ATK.",
-          "es": "Aumenta el Daño infligido a 100 % de ATQ."
+          "es": "Aumenta el Daño infligido a 100 % de ATQ.",
+          "zh": "造成的伤害提升至100%攻击力。"
         },
         "level3": {
           "de": "Verringert außerdem die M-RES der Ziele um 20 %.",
           "en": "Also reduces the targets' M-RES by 20%.",
-          "es": "También reduce la RES M de los objetivos en un 20 %."
+          "es": "También reduce la RES M de los objetivos en un 20 %.",
+          "zh": "还使目标的魔抗降低20%。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 120 % des ANG.",
           "en": "Increases DMG dealt to 120% ATK.",
-          "es": "Aumenta el Daño infligido a 120 % de ATQ."
+          "es": "Aumenta el Daño infligido a 120 % de ATQ.",
+          "zh": "造成的伤害提升至120%攻击力。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhält einen Schild in Höhe von 30 % ihrer max. LP.",
           "en": "Gains a Shield equal to 30% of her max HP.",
-          "es": "Obtiene un Escudo equivalente al 30 % de sus PS máx."
+          "es": "Obtiene un Escudo equivalente al 30 % de sus PS máx.",
+          "zh": "获得相当于最大生命值30%的护盾。"
         },
         "level3": {
           "de": "Erhält 200 Energie pro Sek.",
           "en": "Gains 200 Energy per sec.",
-          "es": "Obtiene 200 de Energía por segundo."
+          "es": "Obtiene 200 de Energía por segundo.",
+          "zh": "每秒获得200点能量。"
         },
         "level4": {
           "de": "Jeder kleine Sternenkern gewährt Nut 30 % ANG.",
           "en": "Each small star core provides Nut with 30% ATK.",
-          "es": "Cada pequeño núcleo estelar le otorga a Nut un 30 % de ATQ."
+          "es": "Cada pequeño núcleo estelar le otorga a Nut un 30 % de ATQ.",
+          "zh": "每颗小星核为努特提供30%攻击力。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Verringert die Abklingzeit auf 18 Sek.",
           "en": "Reduces the CD to 18s.",
-          "es": "Reduce el TdE a 18 s."
+          "es": "Reduce el TdE a 18 s.",
+          "zh": "冷却时间缩短至18秒。"
         },
         "level3": {
           "de": "Verringert die Abklingzeit auf 16 Sek.",
           "en": "Reduces the CD to 16s.",
-          "es": "Reduce el TdE a 16 s."
+          "es": "Reduce el TdE a 16 s.",
+          "zh": "冷却时间缩短至16秒。"
         },
         "level4": {
           "de": "Verringert die Abklingzeit auf 14 Sek.",
           "en": "Reduces the CD to 14s.",
-          "es": "Reduce el TdE a 14 s."
+          "es": "Reduce el TdE a 14 s.",
+          "zh": "冷却时间缩短至14秒。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Himmlischer Pakt",
       "en": "Celestial Covenant",
-      "es": "Pacto Celestial"
+      "es": "Pacto Celestial",
+      "zh": "天界之约"
     },
     "description": {
       "de": "[Himmlischer Sternenfall] Nut stellt während des Aufladens 30 Energie pro Sek. wieder her.",
       "en": "[Celestial Starfall] Nut restores 30 Energy per sec during the charge-up.",
-      "es": "[Caída Celestial Estelar] Nut restaura 30 de Energía por segundo durante la carga."
+      "es": "[Caída Celestial Estelar] Nut restaura 30 de Energía por segundo durante la carga.",
+      "zh": "【天界星陨】蓄能期间，努特每秒恢复30点能量。"
     },
     "upgrades": {
       "level2": {
         "de": "[Astrale Abwehr] Beim Wirken wird sie außerdem für 3 Sek. unanvisierbar.",
         "en": "[Astral Repulse] When cast, also becomes untargetable for 3s.",
-        "es": "[Repulsión Astral] Al lanzarse, también se vuelve inalcanzable durante 3 s."
+        "es": "[Repulsión Astral] Al lanzarse, también se vuelve inalcanzable durante 3 s.",
+        "zh": "【星辰斥力】施放时还进入不可被选中状态3秒。"
       },
       "level3": {
         "de": "[Himmlischer Sternenfall] Nut stellt während des Aufladens 60 Energie pro Sek. wieder her.",
         "en": "[Celestial Starfall] Nut restores 60 Energy per sec during the charge-up.",
-        "es": "[Caída Celestial Estelar] Nut restaura 60 de Energía por segundo durante la carga."
+        "es": "[Caída Celestial Estelar] Nut restaura 60 de Energía por segundo durante la carga.",
+        "zh": "【天界星陨】蓄能期间，努特每秒恢复60点能量。"
       },
       "level4": {
         "de": "[Himmlischer Sternenfall] Das Energielimit erhöht sich auf 1.000.",
         "en": "[Celestial Starfall] Energy Limit increases to 1,000.",
-        "es": "[Caída Celestial Estelar] El Límite de Energía aumenta a 1.000."
+        "es": "[Caída Celestial Estelar] El Límite de Energía aumenta a 1.000.",
+        "zh": "【天界星陨】能量上限提升至1000点。"
       }
     }
   }

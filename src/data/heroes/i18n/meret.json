@@ -24,17 +24,20 @@
         "level2": {
           "de": "Der Schild der Sonnennote wird auf 50 % der max. LP erhöht.",
           "en": "Sun Note shield is increased to 50% of Max HP.",
-          "es": "El escudo de la Nota Solar aumenta hasta un 50 % de los PS máx."
+          "es": "El escudo de la Nota Solar aumenta hasta un 50 % de los PS máx.",
+          "zh": "太阳音符的护盾提升至最大生命值的50%。"
         },
         "level3": {
           "de": "Die Mondnote gewährt zusätzlich +30 % ANG und +30 % KRIT-Rate für 8 Sek.",
           "en": "Moon Note also grants +30% ATK and +30% CRIT Rate for 8 seconds.",
-          "es": "La Nota Lunar también otorga +30 % de ATQ y +30 % de Tasa de crít. durante 8 segundos."
+          "es": "La Nota Lunar también otorga +30 % de ATQ y +30 % de Tasa de crít. durante 8 segundos.",
+          "zh": "月亮音符还提供+30%攻击力与+30%暴击率，持续8秒。"
         },
         "level4": {
           "de": "Die Sternennote stellt 300 Energie wieder her.",
           "en": "Star Note restores 300 Energy.",
-          "es": "La Nota Estelar restaura 300 de Energía."
+          "es": "La Nota Estelar restaura 300 de Energía.",
+          "zh": "星辰音符恢复300点能量。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Die Sonnennote erhöht die max. LP um 15 %.",
           "en": "Sun Note increases Max HP by 15%.",
-          "es": "La Nota Solar aumenta los PS máx. un 15 %."
+          "es": "La Nota Solar aumenta los PS máx. un 15 %.",
+          "zh": "太阳音符使最大生命值提升15%。"
         },
         "level3": {
           "de": "Die Mondnote erhöht den verursachten SCH um 30 %.",
           "en": "Moon Note increases damage dealt by 30%.",
-          "es": "La Nota Lunar aumenta el daño infligido un 30 %."
+          "es": "La Nota Lunar aumenta el daño infligido un 30 %.",
+          "zh": "月亮音符使造成的伤害提升30%。"
         },
         "level4": {
           "de": "Die Sternennote erhöht die Energieaufladung um 15 %.",
           "en": "Star Note increases Energy regeneration by 15%.",
-          "es": "La Nota Estelar aumenta la Recarga de energía un 15 %."
+          "es": "La Nota Estelar aumenta la Recarga de energía un 15 %.",
+          "zh": "星辰音符使能量恢复提升15%。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 70 % ANG pro Sek. wieder her.",
           "en": "Restores HP equal to 70% of ATK per second.",
-          "es": "Restaura PS equivalentes a un 70 % del ATQ por segundo."
+          "es": "Restaura PS equivalentes a un 70 % del ATQ por segundo.",
+          "zh": "每秒恢复相当于攻击力70%的生命值。"
         },
         "level3": {
           "de": "Wenn das Ziel ein Notenträger ist, wird es zusätzlich pro Sek. um 3 % der max. LP geheilt.",
           "en": "If the target has a Note, it also heals for an additional 3% of their Max HP each second.",
-          "es": "Si el objetivo es un portador de Nota, también sana un 3 % adicional de los PS máx. por segundo."
+          "es": "Si el objetivo es un portador de Nota, también sana un 3 % adicional de los PS máx. por segundo.",
+          "zh": "若目标持有音符，还会每秒额外治疗其3%最大生命值。"
         },
         "level4": {
           "de": "Die Dauer wird auf 7 Sek. verlängert.",
           "en": "Duration extends to 7 seconds.",
-          "es": "La duración se extiende a 7 s."
+          "es": "La duración se extiende a 7 s.",
+          "zh": "持续时间延长至7秒。"
         }
       }
     },
@@ -117,7 +126,16 @@
         "level4": {
           "de": "Jede Einheit hat eine unabhängige Abklingzeit von 20 Sek.",
           "en": "Each unit has an independend Cooldown of 20 seconds.",
-          "es": "Cada unidad tiene un TdE independiente de 20 segundos."
+          "es": "Cada unidad tiene un TdE independiente de 20 segundos.",
+          "zh": "每个单位有独立的20秒冷却时间。"
+        },
+        "level2": {
+          "en": "Passively, when any allied unit's HP falls below 50%, Meret heals them for 30% of their Max HP. Can trigger once per unit.",
+          "zh": "被动：当任意友方单位的生命值低于50%时，梅里特为其恢复30%最大生命值。每个单位可触发一次。"
+        },
+        "level3": {
+          "en": "Passively, when any allied unit's HP falls below 50%, Meret heals them for 35% of their Max HP. Can trigger once per unit.",
+          "zh": "被动：当任意友方单位的生命值低于50%时，梅里特为其恢复35%最大生命值。每个单位可触发一次。"
         }
       }
     }
@@ -126,28 +144,33 @@
     "name": {
       "de": "Endloses Echo",
       "en": "Endless Echo",
-      "es": "Eco sin fin"
+      "es": "Eco sin fin",
+      "zh": "无尽回响"
     },
     "description": {
       "de": "Wenn ein verbündeter Notenträger tödlichen SCH erleiden würde, wird er immun gegen Tod und erhält einen Schild in Höhe von 300 % ANG. Abklingzeit: 15 Sek.",
       "en": "When a Note-bearing ally would die, prevents their death and grants them a shield equal to 300% of ATK. 15-second cooldown.",
-      "es": "Cuando un portador de Nota aliado está a punto de recibir daño letal, se vuelve inmune a la muerte y obtiene un escudo equivalente al 300 % del ATQ. TdE de 15 s."
+      "es": "Cuando un portador de Nota aliado está a punto de recibir daño letal, se vuelve inmune a la muerte y obtiene un escudo equivalente al 300 % del ATQ. TdE de 15 s.",
+      "zh": "持有音符的友方即将死亡时，免除其死亡并为其提供相当于攻击力300%的护盾。冷却15秒。"
     },
     "upgrades": {
       "level2": {
         "de": "Für jede Note auf dem Schlachtfeld, erhält 15 % SCH-RED.",
         "en": "For each Note on the field, gains 15% DMG Reduction.",
-        "es": "Por cada Nota en el campo de batalla, obtiene un 15 % de Reduc. de daño."
+        "es": "Por cada Nota en el campo de batalla, obtiene un 15 % de Reduc. de daño.",
+        "zh": "场上每有一个音符，获得15%减伤。"
       },
       "level3": {
         "de": "Wenn ein verbündeter Notenträger tödlichen SCH erleiden würde, wird er immun gegen Tod und erhält einen Schild in Höhe von 400 % ANG. Abklingzeit: 15 Sek.",
         "en": "When a Note unit is about to die, they become immunie to death and gain a shield equal to 400% of ATK. 15s Cooldown.",
-        "es": "Cuando un portador de Nota aliado está a punto de recibir daño letal, se vuelve inmune a la muerte y obtiene un escudo equivalente al 400 % del ATQ. TdE de 15 s."
+        "es": "Cuando un portador de Nota aliado está a punto de recibir daño letal, se vuelve inmune a la muerte y obtiene un escudo equivalente al 400 % del ATQ. TdE de 15 s.",
+        "zh": "持有音符的单位即将死亡时，免疫死亡并获得相当于攻击力400%的护盾。冷却15秒。"
       },
       "level4": {
         "de": "Für jede Note auf dem Schlachtfeld, erhält 27 % SCH-RED.",
         "en": "For each Note on the battlefield, gains 27% DMG Reduction.",
-        "es": "Por cada Nota en el campo de batalla, obtiene un 27 % de Reduc. de daño."
+        "es": "Por cada Nota en el campo de batalla, obtiene un 27 % de Reduc. de daño.",
+        "zh": "战场上每有一个音符，获得27%减伤。"
       }
     }
   }

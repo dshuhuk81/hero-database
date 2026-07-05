@@ -24,17 +24,20 @@
         "level2": {
           "de": "Verringert die Rüstung getroffener Gegner um 20 % für 5 Sek.",
           "en": "Reduces the Armor of hit enemies by 20% for 5s.",
-          "es": "Reduce la Armadura de los enemigos golpeados en un 20 % durante 5 s."
+          "es": "Reduce la Armadura de los enemigos golpeados en un 20 % durante 5 s.",
+          "zh": "被命中敌人的护甲降低20%，持续5秒。"
         },
         "level3": {
           "de": "Erhöht den verursachten SCH auf 285 % ANG.",
           "en": "Increases DMG dealt to 285% of ATK.",
-          "es": "Aumenta el daño infligido a 285 % de ATQ."
+          "es": "Aumenta el daño infligido a 285 % de ATQ.",
+          "zh": "造成的伤害提升至285%攻击力。"
         },
         "level4": {
           "de": "Verringert die Rüstung getroffener Gegner um 20 % für 10 Sek.",
           "en": "Reduces the Armor of hit enemies by 20% for 10s.",
-          "es": "Reduce la Armadura de los enemigos golpeados en un 20 % durante 10 s."
+          "es": "Reduce la Armadura de los enemigos golpeados en un 20 % durante 10 s.",
+          "zh": "被命中敌人的护甲降低20%，持续10秒。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht die ANG-GES um 50 %.",
           "en": "Increases ATK SPD to 50%.",
-          "es": "Aumenta la VEL de ATQ en un 50 %."
+          "es": "Aumenta la VEL de ATQ en un 50 %.",
+          "zh": "攻速提升至50%。"
         },
         "level3": {
           "de": "Erhöht die pro Sek. gewonnene Energie auf 20.",
           "en": "Increases Energy gained per second to 20.",
-          "es": "Aumenta la Energía obtenida por segundo a 20."
+          "es": "Aumenta la Energía obtenida por segundo a 20.",
+          "zh": "每秒获得的能量提升至20点。"
         },
         "level4": {
           "de": "Die Dauer wird auf 10 Sek. verlängert.",
           "en": "Extends the duration to 10s.",
-          "es": "La duración se extiende a 10 s."
+          "es": "La duración se extiende a 10 s.",
+          "zh": "持续时间延长至10秒。"
         }
       }
     },
@@ -77,6 +83,20 @@
       "description": {
         "en": "Permanently marks the enemy with the highest Armor, reducing their Armor by 20%.",
         "zh": "永久标记护甲最高的敌人，使其护甲降低20%。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Can now mark 2 enemies.",
+          "zh": "现在可标记2名敌人。"
+        },
+        "level3": {
+          "en": "Marked enemies also have their CRIT RES reduced by 10%.",
+          "zh": "被标记的敌人暴击抵抗还降低10%。"
+        },
+        "level4": {
+          "en": "Marked enemies now have their Armor reduced by 25%.",
+          "zh": "被标记敌人的护甲降低25%。"
+        }
       }
     },
     {
@@ -96,17 +116,20 @@
         "level2": {
           "de": "Erhöht den SCH des letzten Treffers auf 170 % des ANG.",
           "en": "Increases the last hit’s DMG to 170% of ATK.",
-          "es": "Aumenta el daño del último golpe a un 170 % del ATQ."
+          "es": "Aumenta el daño del último golpe a un 170 % del ATQ.",
+          "zh": "最后一击的伤害提升至170%攻击力。"
         },
         "level3": {
           "de": "Der letzte Treffer ist garantiert ein KRIT-Treffer.",
           "en": "The final hit is guaranteed to be a CRIT Hit.",
-          "es": "Se garantiza que el golpe final sea un golpe Crít."
+          "es": "Se garantiza que el golpe final sea un golpe Crít.",
+          "zh": "最后一击必定暴击。"
         },
         "level4": {
           "de": "Erhöht den SCH des letzten Treffers auf 200 % des ANG.",
           "en": "Increases the last hit’s DMG to 200% of ATK.",
-          "es": "Aumenta el daño del último golpe a un 200 % del ATQ."
+          "es": "Aumenta el daño del último golpe a un 200 % del ATQ.",
+          "zh": "最后一击的伤害提升至200%攻击力。"
         }
       }
     }
@@ -115,28 +138,33 @@
     "name": {
       "de": "Selenes Segen",
       "en": "Selene’s Boon",
-      "es": "Don de Selene"
+      "es": "Don de Selene",
+      "zh": "月神恩赐"
     },
     "description": {
       "de": "Segnet den Verbündeten mit dem höchsten ANG mit Mondlicht. Wenn der Verbündete SCH verursacht, erleidet das Ziel zusätzlichen SCH in Höhe von 100 % von Dianas ANG. Dieser Effekt wird einmal pro Sek. ausgelöst.",
       "en": "Blesses the ally with the highest ATK with moonlight. When the ally deals DMG, they deal extra DMG equal to 100% of Diana’s ATK to the target. Triggers once per second.",
-      "es": "Bendice con luz de luna al aliado con el ATQ más alto. Cuando el aliado inflige daño, inflige un daño extra equivalente al 100 % del ATQ de Diana al objetivo. Este efecto se activa una vez por segundo."
+      "es": "Bendice con luz de luna al aliado con el ATQ más alto. Cuando el aliado inflige daño, inflige un daño extra equivalente al 100 % del ATQ de Diana al objetivo. Este efecto se activa una vez por segundo.",
+      "zh": "以月光祝福攻击力最高的友方。该友方造成伤害时，对目标额外造成相当于黛安娜攻击力100%的伤害。每秒触发一次。"
     },
     "upgrades": {
       "level2": {
         "de": "Der ANG- und Bewegungstempo-Bonus des ersten Einsatzes von [Mondphase] in jedem Kampf wird verdoppelt.",
         "en": "The first time Waxing Blessing is cast in battle, ATK SPD and Move SPD bonuses are doubled.",
-        "es": "La primera vez que se lanza Bendición creciente en una batalla, las bonificaciones de VEL de ATQ y VEL de mov. se duplican."
+        "es": "La primera vez que se lanza Bendición creciente en una batalla, las bonificaciones de VEL de ATQ y VEL de mov. se duplican.",
+        "zh": "战斗中首次施放盈月祝福时，攻速与移速加成翻倍。"
       },
       "level3": {
         "de": "Wenn entweder Diana oder der mit Mondlicht gesegnete Verbündete eine Ultimative Fähigkeit einsetzt, stellt der andere 100 Energie wieder her.",
         "en": "When either Diana or the moonlight-blessed ally casts an Ultimate, the other restores 100 Energy.",
-        "es": "Cuando Diana o el aliado bendecido con la luz de la luna lanzan una Habilidad definitiva, el otro restaura 100 de Energía."
+        "es": "Cuando Diana o el aliado bendecido con la luz de la luna lanzan una Habilidad definitiva, el otro restaura 100 de Energía.",
+        "zh": "当黛安娜或被月光祝福的友方施放大招时，另一方恢复100点能量。"
       },
       "level4": {
         "de": "Segnet den Verbündeten mit dem höchsten ANG mit Mondlicht. Wenn der Verbündete SCH verursacht, erleidet das Ziel zusätzlichen SCH in Höhe von 150 % von Dianas ANG. Dieser Effekt wird einmal pro Sek. ausgelöst.",
         "en": "Extra DMG dealt is increased to 150% of Diana’s ATK.",
-        "es": "Bendice con luz de luna al aliado con el ATQ más alto. Cuando el aliado inflige daño, inflige un daño extra equivalente al 150 % del ATQ de Diana al objetivo. Este efecto se activa una vez por segundo."
+        "es": "Bendice con luz de luna al aliado con el ATQ más alto. Cuando el aliado inflige daño, inflige un daño extra equivalente al 150 % del ATQ de Diana al objetivo. Este efecto se activa una vez por segundo.",
+        "zh": "额外伤害提升至黛安娜攻击力的150%。"
       }
     }
   }

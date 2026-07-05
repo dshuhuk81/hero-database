@@ -24,17 +24,20 @@
         "level2": {
           "de": "Während der Ausgelassenheit erhöht sich die ANG-GESW auf 60% und die Energie-Regenerations-GESW auf 35%.",
           "en": "While in the [Frenzy] state, increases ATK SPD to 60% and Energy Regen to 35%.",
-          "es": "Mientras está en estado de [Frenesí], aumenta la VEL de ATQ a un 60 % y la Recarga de energía a un 35 %."
+          "es": "Mientras está en estado de [Frenesí], aumenta la VEL de ATQ a un 60 % y la Recarga de energía a un 35 %.",
+          "zh": "处于【狂热】状态时，攻速提升至60%、能量恢复提升至35%。"
         },
         "level3": {
           "de": "Die Dauer wird auf 7 Sek. verlängert.",
           "en": "Duration extends to 7s.",
-          "es": "La duración se extiende a 7 s."
+          "es": "La duración se extiende a 7 s.",
+          "zh": "持续时间延长至7秒。"
         },
         "level4": {
           "de": "Die Verwendung dieser Fähigkeit entfernt außerdem alle Debuffs von einem Verbündeten und macht ihn für 2 Sek. immun gegen Massenkontrolle.",
           "en": "Using this skill also removes all debuffs from an ally and makes them immune to Crowd Control for 2s.",
-          "es": "Usar esta habilidad también elimina todos los efectos negativos de un aliado y lo hace inmune al Control de masas durante 2 s."
+          "es": "Usar esta habilidad también elimina todos los efectos negativos de un aliado y lo hace inmune al Control de masas durante 2 s.",
+          "zh": "施放该技能还会移除一名友方的所有减益效果，并使其免疫控制2秒。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 160 % des ANG wieder her.",
           "en": "Restores HP equal to 160% of ATK.",
-          "es": "Restaura PS equivalentes a un 160 % del ATQ."
+          "es": "Restaura PS equivalentes a un 160 % del ATQ.",
+          "zh": "恢复相当于攻击力160%的生命值。"
         },
         "level3": {
           "de": "Die geheilte Einheit erhält zusätzlich 30% SCH-Reduktion.",
           "en": "The healed unit also gains 30% DMG RED.",
-          "es": "La unidad curada también obtiene un 30 % de Reduc. de daño."
+          "es": "La unidad curada también obtiene un 30 % de Reduc. de daño.",
+          "zh": "被治疗的单位还获得30%减伤。"
         },
         "level4": {
           "de": "Stellt LP in Höhe von 200 % des ANG wieder her.",
           "en": "Restores HP equal to 200% of ATK.",
-          "es": "Restaura PS equivalentes a un 200 % del ATQ."
+          "es": "Restaura PS equivalentes a un 200 % del ATQ.",
+          "zh": "恢复相当于攻击力200%的生命值。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Der Bonus auf P&M-RES-Werte für alle Verbündeten erhöht sich auf 20%.",
           "en": "Increases all allies' P&M-RES by 20%.",
-          "es": "Aumenta la RES F y M de todos los aliados un 20 %."
+          "es": "Aumenta la RES F y M de todos los aliados un 20 %.",
+          "zh": "所有友方的物抗与魔抗提升20%。"
         },
         "level3": {
           "de": "Für jede einzigartige Klasse in deinem Team erhalten alle Verbündeten zusätzlich einen Schild in Höhe von 50% seines ANG.",
           "en": "For each unique ally class on the battlefield, grants all allies a shield equal to 50% of her ATK.",
-          "es": "Por cada clase de aliado única en el campo de batalla, otorga a todos los aliados un escudo equivalente al 50 % de su ATQ."
+          "es": "Por cada clase de aliado única en el campo de batalla, otorga a todos los aliados un escudo equivalente al 50 % de su ATQ.",
+          "zh": "战场上每有一种不同的友方职业，为所有友方提供相当于她攻击力50%的护盾。"
         },
         "level4": {
           "de": "Die Dauer wird auf 20 Sek. verlängert.",
           "en": "Duration extends to 20s.",
-          "es": "La duración se extiende a 20 s."
+          "es": "La duración se extiende a 20 s.",
+          "zh": "持续时间延长至20秒。"
         }
       }
     },
@@ -117,19 +126,46 @@
         "level2": {
           "de": "Der erlittene SCH wird um 70% reduziert.",
           "en": "Reduces 70% of the next DMG taken.",
-          "es": "Reduce el siguiente daño recibido en un 70 %."
+          "es": "Reduce el siguiente daño recibido en un 70 %.",
+          "zh": "下一次受到的伤害降低70%。"
         },
         "level3": {
           "de": "Dieser Effekt kann nur einmal alle 6 Sek. ausgelöst werden.",
           "en": "This effect can only trigger once every 6s.",
-          "es": "Este efecto solo se puede activar una vez cada 6 s."
+          "es": "Este efecto solo se puede activar una vez cada 6 s.",
+          "zh": "该效果每6秒即可触发一次。"
         },
         "level4": {
           "de": "Wird gegen diesen SCH immun.",
           "en": "Becomes immune to the next DMG taken.",
-          "es": "Se vuelve inmune al siguiente daño recibido."
+          "es": "Se vuelve inmune al siguiente daño recibido.",
+          "zh": "免疫下一次受到的伤害。"
         }
       }
     }
-  ]
+  ],
+  "relic": {
+    "name": {
+      "en": "Revelry Queen",
+      "zh": "舞会女王"
+    },
+    "description": {
+      "en": "When casting Bacchic Blessing, Dionysus buffs her allies based on their classes. This effect lasts until the battle ends and can stack up to 3 times.",
+      "zh": "施放灵契赐福时，狄俄尼索斯根据友方的职业为其提供增益。该效果持续到战斗结束，最多叠加3次。"
+    },
+    "upgrades": {
+      "level2": {
+        "en": "Tank/Warrior: DMG RED +20%. Mage/Archer: DMG bonus +20%. Support/Assassin: Energy Regen +25%.",
+        "zh": "坦克/战士：减伤+20%。法师/射手：伤害加成+20%。辅助/刺客：能量恢复+25%。"
+      },
+      "level3": {
+        "en": "Reduces Bacchic Blessing's cooldown to 20s.",
+        "zh": "灵契赐福的冷却时间缩短至20秒。"
+      },
+      "level4": {
+        "en": "Casts Bacchic Blessing upon entering battle and restores 200 Energy to each affected Deity if at least 3 classes are affected.",
+        "zh": "进入战斗时施放灵契赐福；若至少3种职业受到影响，则为每位受影响的神祇恢复200点能量。"
+      }
+    }
+  }
 }

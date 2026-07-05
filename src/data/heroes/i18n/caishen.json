@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den ANG-Bonus auf 300 %.",
           "en": "Increases ATK bonus to 300%.",
-          "es": "aumenta la bonificación de ATQ al 300 %."
+          "es": "aumenta la bonificación de ATQ al 300 %.",
+          "zh": "攻击力加成提升至300%。"
         },
         "level3": {
           "de": "Stellt bei sich selbst 300 Energie wieder her.",
           "en": "Restores 300 Energy to himself.",
-          "es": "Se restaura 300 de Energía."
+          "es": "Se restaura 300 de Energía.",
+          "zh": "为自己恢复300点能量。"
         },
         "level4": {
           "de": "Erhöht den ANG-Bonus auf 330 %.",
           "en": "Increases ATK bonus to 330%. (Unlocks at Lv.281)",
-          "es": "aumenta la bonificación de ATQ al 330 %."
+          "es": "aumenta la bonificación de ATQ al 330 %.",
+          "zh": "攻击力加成提升至330%。（281级解锁）"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht die Energieaufladung auf 30.",
           "en": "Increases Energy Regen to 30.",
-          "es": "Aumenta la Recarga de energía a 30."
+          "es": "Aumenta la Recarga de energía a 30.",
+          "zh": "能量恢复提升至30点。"
         },
         "level3": {
           "de": "Erhöht außerdem den ANG von Verbündeten in Reichweite für 5 Sek. um 15 %.",
           "en": "Also increases ATK of allies within range by 15% for 5s.",
-          "es": "También aumenta el ATQ de los aliados dentro del alcance en un 15 % durante 5s."
+          "es": "También aumenta el ATQ de los aliados dentro del alcance en un 15 % durante 5s.",
+          "zh": "还使范围内友方的攻击力提升15%，持续5秒。"
         },
         "level4": {
           "de": "Erhöht die Energieaufladung auf 35.",
           "en": "Increases Energy Regen to 35.",
-          "es": "Aumenta la Recarga de energía a 35."
+          "es": "Aumenta la Recarga de energía a 35.",
+          "zh": "能量恢复提升至35点。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Stellt zusätzlich LP in Höhe von 200 % ANG wieder her.",
           "en": "Additionally restores HP equal to 200% ATK.",
-          "es": "Restaura adicionalmente una cantidad de PS equivalente al 200 % de ATQ."
+          "es": "Restaura adicionalmente una cantidad de PS equivalente al 200 % de ATQ.",
+          "zh": "额外恢复相当于攻击力200%的生命值。"
         },
         "level3": {
           "de": "Stellt zusätzlich LP in Höhe von 300 % ANG wieder her.",
           "en": "Additionally restores HP equal to 300% ATK.",
-          "es": "Restaura adicionalmente una cantidad de PS equivalente al 300 % de ATQ."
+          "es": "Restaura adicionalmente una cantidad de PS equivalente al 300 % de ATQ.",
+          "zh": "额外恢复相当于攻击力300%的生命值。"
         },
         "level4": {
           "de": "Der Effekt wird jetzt zweimal ausgelöst.",
           "en": "The effect now trigger twice. (Unlocks at Lv.261)",
-          "es": "El efecto ahora se activa dos veces."
+          "es": "El efecto ahora se activa dos veces.",
+          "zh": "该效果可触发两次。（261级解锁）"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht den Heilungseffekt auf 27 %.",
           "en": "Increases healing effect to 27%.",
-          "es": "Aumenta el efecto de sanación a 27 %."
+          "es": "Aumenta el efecto de sanación a 27 %.",
+          "zh": "治疗效果提升至27%。"
         },
         "level3": {
           "de": "Goldbarren +1 zu Kampfbeginn.",
           "en": "Golden Ingots +1 at combat start.",
-          "es": "Lingotes de oro +1 al inicio del combate."
+          "es": "Lingotes de oro +1 al inicio del combate.",
+          "zh": "战斗开始时金元宝+1。"
         },
         "level4": {
           "de": "Erhöht den Heilungseffekt auf 30 %.",
           "en": "Increases healing effect to 30%.",
-          "es": "Aumenta el efecto de sanación a 30 %."
+          "es": "Aumenta el efecto de sanación a 30 %.",
+          "zh": "治疗效果提升至30%。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Glückshebel",
       "en": "Fortune Leverage",
-      "es": "Apalancamiento de la fortuna"
+      "es": "Apalancamiento de la fortuna",
+      "zh": "财运杠杆"
     },
     "description": {
       "de": "Wenn ein Verbündeter zum ersten Mal 700 Energie erreicht, erhält er 300 Energie.",
       "en": "The first time an ally reaches 700 Energy, grants them 300 Energy.",
-      "es": "La primera vez que un aliado alcanza 700 de Energía, le otorga 300 de Energía."
+      "es": "La primera vez que un aliado alcanza 700 de Energía, le otorga 300 de Energía.",
+      "zh": "友方首次达到700点能量时，为其提供300点能量。"
     },
     "upgrades": {
       "level2": {
         "de": "Wenn ein Verbündeter zum ersten Mal 650 Energie erreicht, erhält er 350 Energie.",
         "en": "The first time an ally reaches 650 Energy, grants them 350 Energy.",
-        "es": "La primera vez que un aliado alcanza 650 de Energía, le otorga 350 de Energía."
+        "es": "La primera vez que un aliado alcanza 650 de Energía, le otorga 350 de Energía.",
+        "zh": "友方首次达到650点能量时，为其提供350点能量。"
       },
       "level3": {
         "de": "Dieser Effekt kann wiederholt mit einer Abklingzeit von 15 Sek. ausgelöst werden.",
         "en": "This effect can trigger repeatedly with a 15s CD. (Unlock at Relic Lv.20)",
-        "es": "Este efecto puede activarse repetidamente con un TdE de 15s."
+        "es": "Este efecto puede activarse repetidamente con un TdE de 15s.",
+        "zh": "该效果可重复触发，冷却15秒。（圣物20级解锁）"
       },
       "level4": {
         "de": "Wenn ein Verbündeter zum ersten Mal 600 Energie erreicht, erhält er 400 Energie.",
         "en": "The first time an ally reaches 600 Energy, grants them 400 Energy. (Unlock at Relic Lv.30)",
-        "es": "La primera vez que un aliado alcanza 600 de Energía, le otorga 400 de Energía."
+        "es": "La primera vez que un aliado alcanza 600 de Energía, le otorga 400 de Energía.",
+        "zh": "友方首次达到600点能量时，为其提供400点能量。（圣物30级解锁）"
       }
     }
   }

@@ -24,17 +24,20 @@
         "level2": {
           "de": "SCH jedes Nether-Feuerballs wird auf 280% ANG erhöht.",
           "en": "Increases the DMG of each Nether Fireball to 280% of ATK.",
-          "es": "Aumenta el Daño de cada Piroesfera del Inframundo al 280 % de su ATQ."
+          "es": "Aumenta el Daño de cada Piroesfera del Inframundo al 280 % de su ATQ.",
+          "zh": "每个冥界火球的伤害提升至280%攻击力。"
         },
         "level3": {
           "de": "Der Explosion-SCH jedes Nether-Feuerballs wird auf 200% ANG erhöht.",
           "en": "Increases the explosion DMG of each Nether Fireball to 200% of ATK.",
-          "es": "Aumenta el Daño de explosión de cada Piroesfera del Inframundo al 200 % de su ATQ."
+          "es": "Aumenta el Daño de explosión de cada Piroesfera del Inframundo al 200 % de su ATQ.",
+          "zh": "每个冥界火球的爆炸伤害提升至200%攻击力。"
         },
         "level4": {
           "de": "Hela schießt einen zusätzlichen Nether-Feuerball.",
           "en": "Hela shoots an extra Nether Fireball.",
-          "es": "Hela lanza una Piroesfera del Inframundo adicional."
+          "es": "Hela lanza una Piroesfera del Inframundo adicional.",
+          "zh": "海拉额外发射一个冥界火球。"
         }
       }
     },
@@ -55,15 +58,18 @@
         "level4": {
           "de": "Stiehlt dem Ziel alle 0,5 Sek. 50 Energie.",
           "en": "Steals 50 Energy from the target every 0.5s.",
-          "es": "Roba 50 de energía del objetivo cada 0.5s."
+          "es": "Roba 50 de energía del objetivo cada 0.5s.",
+          "zh": "每0.5秒从目标处窃取50点能量。"
         },
         "level2": {
           "es": "Roba una cantidad de PS equivalente al 50 % de su ATQ del objetivo cada 0.5s.",
-          "en": "Steals HP equal to 50% of ATK from the target every 0.5s."
+          "en": "Steals HP equal to 50% of ATK from the target every 0.5s.",
+          "zh": "每0.5秒从目标处窃取相当于攻击力50%的生命值。"
         },
         "level3": {
           "es": "Reduce el Daño recibido en un 50 % durante la habilidad.",
-          "en": "Reduces DMG taken by 50% during the skill."
+          "en": "Reduces DMG taken by 50% during the skill.",
+          "zh": "技能期间受到的伤害降低50%。"
         }
       }
     },
@@ -84,17 +90,20 @@
         "level2": {
           "de": "Absorbiert 10 % ANG der gefallenen Einheit.",
           "en": "Absorbs 10% of the fallen unit's ATK.",
-          "es": "Absorbe el 10 % del ATQ de la unidad caída."
+          "es": "Absorbe el 10 % del ATQ de la unidad caída.",
+          "zh": "吸收倒下单位10%的攻击力。"
         },
         "level3": {
           "de": "Die Energieaufladung erhöht sich auf 150.",
           "en": "Energy Regen increases to 150.",
-          "es": "La Recarga de energía aumenta a 150."
+          "es": "La Recarga de energía aumenta a 150.",
+          "zh": "能量恢复提升至150点。"
         },
         "level4": {
           "de": "Erhöht den absorbierten ANG auf 20 %.",
           "en": "Increases ATK absorbed to 20%. (Unlocks at Lv.261)",
-          "es": "Aumenta el ATQ absorbido al 20 %."
+          "es": "Aumenta el ATQ absorbido al 20 %.",
+          "zh": "吸收的攻击力提升至20%。（261级解锁）"
         }
       }
     },
@@ -115,19 +124,46 @@
         "level2": {
           "de": "Verursachter SCH wird auf 260% ANG erhöht.",
           "en": "Increases DMG dealt to 260% of ATK.",
-          "es": "Aumenta el Daño infligido al 260 % de su ATQ."
+          "es": "Aumenta el Daño infligido al 260 % de su ATQ.",
+          "zh": "造成的伤害提升至260%攻击力。"
         },
         "level3": {
           "de": "Erhält 10 % Bonus-SCH pro Anwendung (stapelbar).",
           "en": "Gains 10% bonus DMG per cast (stacking).",
-          "es": "Obtiene 10 % de daño adicional por lanzamiento (acumulable)."
+          "es": "Obtiene 10 % de daño adicional por lanzamiento (acumulable).",
+          "zh": "每次施放获得10%伤害加成（可叠加）。"
         },
         "level4": {
           "de": "Erhält 20 % Bonus-SCH pro Anwendung (stapelbar).",
           "en": "Gains 20% bonus DMG per cast (stacking). (Unlocks at Lv.281)",
-          "es": "Obtiene 20 % de daño adicional por lanzamiento (acumulable)."
+          "es": "Obtiene 20 % de daño adicional por lanzamiento (acumulable).",
+          "zh": "每次施放获得20%伤害加成（可叠加）。（281级解锁）"
         }
       }
     }
-  ]
+  ],
+  "relic": {
+    "name": {
+      "en": "Defile the Sacred",
+      "zh": "亵渎神圣"
+    },
+    "description": {
+      "en": "When Soul Devourer triggers, it detonates the fallen's soul, dealing DMG equal to 160% of ATK to targets within range. (Unlock at Relic Lv.1)",
+      "zh": "吞噬亡者触发时引爆倒下者的灵魂，对范围内的目标造成相当于攻击力160%的伤害。（圣物1级解锁）"
+    },
+    "upgrades": {
+      "level2": {
+        "en": "Increases DMG bonus to 200%. (Unlock at Relic Lv.10)",
+        "zh": "伤害加成提升至200%。（圣物10级解锁）"
+      },
+      "level3": {
+        "en": "Upon exploding, the souls restore Energy to Hela equal to the Energy restored by Soul Devourer. (Unlock at Relic Lv.20)",
+        "zh": "灵魂爆炸时，为海拉恢复与吞噬亡者恢复量相同的能量。（圣物20级解锁）"
+      },
+      "level4": {
+        "en": "Increases DMG bonus to 240%. (Unlock at Relic Lv.30)",
+        "zh": "伤害加成提升至240%。（圣物30级解锁）"
+      }
+    }
+  }
 }

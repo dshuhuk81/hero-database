@@ -27,19 +27,22 @@
           "de": "Gewährt beim Einsatz einen Schild in Höhe von 30 % des gespeicherten SCH.",
           "es": "Otorga un escudo equivalente al 30 % del Daño registrado al lanzarlo.",
           "ru": "При применении даёт щит в размере 30% накопленного DMG.",
-          "en": "Grants a shield equal to 30% of the recorded DMG when cast."
+          "en": "Grants a shield equal to 30% of the recorded DMG when cast.",
+          "zh": "施放时获得相当于已记录伤害30%的护盾。"
         },
         "level3": {
           "de": "Verursacht 125 % des gespeicherten SCH.",
           "es": "Inflige un 125 % del daño registrado.",
           "ru": "Наносит 125% накопленного DMG.",
-          "en": "Deals 125% of the recorded DMG."
+          "en": "Deals 125% of the recorded DMG.",
+          "zh": "造成已记录伤害的125%。"
         },
         "level4": {
           "de": "Der maximale aufgezeichnete Wert wird auf 100% der max. LP erhöht.",
           "es": "Otorga un escudo equivalente al 50 % del Daño registrado al lanzarlo.",
           "ru": "При применении даёт щит в размере 50% накопленного DMG. (Открывается на ур. 221)",
-          "en": "Grants a shield equal to 50% of the recorded DMG when cast. (Unlocks at Lv.221)"
+          "en": "Grants a shield equal to 50% of the recorded DMG when cast. (Unlocks at Lv.221)",
+          "zh": "施放时获得相当于已记录伤害50%的护盾。（221级解锁）"
         }
       }
     },
@@ -63,19 +66,22 @@
           "de": "Verursacht SCH in Höhe von 15 % der max. LP des Ziels, bis zu 30 % der max. LP von Herakles.",
           "es": "inflige un daño equivalente al 15 % de los PS máx. del objetivo, hasta un 30 % de los PS máx. de Heracles.",
           "ru": "Наносит DMG в размере 15% макс. HP цели, до 30% макс. HP Геракла.",
-          "en": "Deals DMG equal to 15% of the target's max HP, up to 30% of Heracles's max HP."
+          "en": "Deals DMG equal to 15% of the target's max HP, up to 30% of Heracles's max HP.",
+          "zh": "造成相当于目标最大生命值15%的伤害，上限为赫拉克勒斯最大生命值的30%。"
         },
         "level3": {
           "de": "Wirft getroffene Einheiten zusätzlich zu Boden.",
           "es": "También derriba a las unidades golpeadas.",
           "ru": "Также сбивает поражённые юниты с ног. (Открывается на ур. 161)",
-          "en": "Also knocks down units hit. (Unlocks at Lv.161)"
+          "en": "Also knocks down units hit. (Unlocks at Lv.161)",
+          "zh": "还会击倒被命中的单位。（161级解锁）"
         },
         "level4": {
           "de": "Verursacht SCH in Höhe von 20 % der max. LP des Ziels, bis zu 40 % der max. LP von Herakles.",
           "es": "inflige un daño equivalente al 20 % de los PS máx. del objetivo, hasta un 40 % de los PS máx. de Heracles.",
           "ru": "Наносит DMG в размере 20% макс. HP цели, до 40% макс. HP Геракла. (Открывается на ур. 241)",
-          "en": "Deals DMG equal to 20% of the target's max HP, up to 40% of Heracles's max HP. (Unlocks at Lv.241)"
+          "en": "Deals DMG equal to 20% of the target's max HP, up to 40% of Heracles's max HP. (Unlocks at Lv.241)",
+          "zh": "造成相当于目标最大生命值20%的伤害，上限为赫拉克勒斯最大生命值的40%。（241级解锁）"
         }
       }
     },
@@ -99,19 +105,22 @@
           "de": "Erhält einen Schild in Höhe von 10 % der max. LP.",
           "es": "Obtiene un escudo equivalente al 10 % de los PS máx.",
           "ru": "Получает щит в размере 10% макс. HP.",
-          "en": "Gains a shield equal to 10% of the max HP."
+          "en": "Gains a shield equal to 10% of the max HP.",
+          "zh": "获得相当于最大生命值10%的护盾。"
         },
         "level3": {
           "de": "Verursacht zusätzlich Bonus-SCH in Höhe von 10% seiner max. LP.\nLevel 4: Stellt 5 % der max. LP für jeden getroffenen Feind wieder her.",
           "es": "Inflige un Daño adicional equivalente al 10 % de sus PS máx.",
           "ru": "Наносит дополнительный DMG в размере 10% его макс. HP. (Открывается на ур. 201)",
-          "en": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)"
+          "en": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)",
+          "zh": "额外造成相当于其最大生命值10%的伤害。（201级解锁）"
         },
         "level4": {
           "de": "Stellt für jeden getroffenen Gegner 5% der max. HP wieder her. (Freigeschaltet auf Lv. 281)",
           "es": "Restaura un 5 % de los PS máx. por cada enemigo golpeado.",
           "ru": "Восстанавливает 5% макс. HP за каждого поражённого врага. (Открывается на ур. 281)",
-          "en": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)"
+          "en": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)",
+          "zh": "每命中一个敌人恢复5%最大生命值。（281级解锁）"
         }
       }
     },
@@ -135,19 +144,22 @@
           "de": "Wenn sein ANG auf 0 fällt, erhält er einen Schild in Höhe von 20% seiner max. LP.",
           "es": "Obtiene un escudo equivalente al 20 % de los PS máx. cuando el ATQ llega a 0.",
           "ru": "Получает щит в размере 20% макс. HP, когда ATK падает до 0.",
-          "en": "Gains a shield equal to 20% of max HP when ATK drops to 0."
+          "en": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
+          "zh": "攻击力降至0时获得相当于最大生命值20%的护盾。"
         },
         "level3": {
           "de": "Erhöht die max. LP auf 15 %.",
           "es": "Aumenta los PS máx. a un 15 %.",
           "ru": "Увеличивает макс. HP до 15%. (Открывается на ур. 181)",
-          "en": "Increases max HP to 15%. (Unlocks at Lv.181)"
+          "en": "Increases max HP to 15%. (Unlocks at Lv.181)",
+          "zh": "最大生命值提升至15%。（181级解锁）"
         },
         "level4": {
           "de": "Wandelt nun 5% des ANG in 5% max. LP pro Sekunde um.",
           "es": "Convierte un 5 % del ATQ en un 5 % de los PS máx. cada segundo.",
           "ru": "Каждую секунду преобразует 5% ATK в 5% макс. HP. (Открывается на ур. 261)",
-          "en": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)"
+          "en": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)",
+          "zh": "每秒将5%攻击力转化为5%最大生命值。（261级解锁）"
         }
       }
     }
@@ -157,32 +169,37 @@
       "de": "Trotziges Brüllen",
       "es": "Rugido desafiante",
       "ru": "Бросающий вызов рёв",
-      "en": "Defiant Roar"
+      "en": "Defiant Roar",
+      "zh": "不屈怒吼"
     },
     "description": {
       "de": "Wird vor dem Fall immun gegen den tödlichen SCH und stellt sofort 50 % der max. LP wieder her. Verringert in den nächsten 5 Sek. den erlittenen SCH um 50 %. Kann nur einmal pro Kampf ausgelöst werden.",
       "es": "Antes de caer, se vuelve inmune al daño letal y restaura instantáneamente un 50 % de sus PS máx. Durante los siguientes 5s, reduce el daño recibido un 50 %. Solo se puede activar una vez por batalla.",
       "ru": "Перед падением он становится невосприимчив к смертельному DMG и мгновенно восстанавливает 50% своей макс. HP. В течение следующих 5 с он снижает получаемый DMG на 50%. Может сработать только один раз за бой.",
-      "en": "Before falling, becomes immune to lethal DMG and instantly restores 50% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle."
+      "en": "Before falling, becomes immune to lethal DMG and instantly restores 50% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
+      "zh": "倒下前免疫致命伤害并立即恢复50%最大生命值。接下来5秒内，受到的伤害降低50%。每场战斗只能触发一次。"
     },
     "upgrades": {
       "level2": {
         "de": "Stellt 100 % der max. LP wieder her.",
         "es": "Restaura un 100 % de los PS máx.",
         "ru": "Восстанавливает 100% макс. HP. (Открывается на ур. реликвии 10)",
-        "en": "Restores 100% of max HP. (Unlock at Relic Lv.10)"
+        "en": "Restores 100% of max HP. (Unlock at Relic Lv.10)",
+        "zh": "恢复100%最大生命值。（圣物10级解锁）"
       },
       "level3": {
         "de": "Stellt beim Auslösen die Energie vollständig wieder her.",
         "es": "Restaura toda la Energía al activarse.",
         "ru": "Полностью восстанавливает Энергию при срабатывании. (Открывается на ур. реликвии 20)",
-        "en": "Restores Energy to full when triggered. (Unlock at Relic Lv.20)"
+        "en": "Restores Energy to full when triggered. (Unlock at Relic Lv.20)",
+        "zh": "触发时能量恢复至满。（圣物20级解锁）"
       },
       "level4": {
         "de": "Für 5 Sekunden wird erlittenen SCH um 100% reduziert.",
         "es": "Reduce el Daño recibido un 100 % durante 5s.",
         "ru": "Снижает получаемый DMG на 100% в течение 5 с. (Открывается на ур. реликвии 30)",
-        "en": "Reduces DMG taken by 100% for 5s. (Unlock at Relic Lv.30)"
+        "en": "Reduces DMG taken by 100% for 5s. (Unlock at Relic Lv.30)",
+        "zh": "受到的伤害降低100%，持续5秒。（圣物30级解锁）"
       }
     }
   },
@@ -190,7 +207,9 @@
     "summary": {
       "de": "Hard Carry: Sammeln, dann zwei Schadensspitzen auslösen. Der zweite Burst trifft, bevor sich der Gegner erholen kann. CN und Excel sind für T0 vollständig abgestimmt. Nicht gegen Pan einsetzen, da Energiestörung beide Bursts kontert.",
       "es": "Carry principal: agrupa enemigos y luego lanza un patrón de dos picos de daño. El segundo estallido llega antes de que el enemigo pueda recuperarse. CN y Excel están totalmente alineados para T0. Evítalo contra Pan, porque el drenaje de Energía contrarresta ambos estallidos.",
-      "ru": "Hard carry: сначала собирает врагов вместе, затем выдаёт два пика урона. Второй взрыв приходит раньше, чем враг успевает восстановиться. CN и Excel полностью согласованы для T0. Не использовать против Пана: выжигание энергии контрит оба взрыва."
+      "ru": "Hard carry: сначала собирает врагов вместе, затем выдаёт два пика урона. Второй взрыв приходит раньше, чем враг успевает восстановиться. CN и Excel полностью согласованы для T0. Не использовать против Пана: выжигание энергии контрит оба взрыва.",
+      "en": "Hard carry: pull-group then two-burst damage pattern. Second burst arrives before enemy can recover. CN and Excel fully aligned T0. Avoid vs Pan (energy drain counters both bursts).",
+      "zh": "重装核心输出：聚怪后打出两段爆发的伤害模式。第二段爆发在敌人恢复之前到来。国服与Excel数据完全一致，T0。避免对阵潘（能量削减克制两段爆发）。"
     }
   },
   "virtueSets": [
@@ -198,35 +217,45 @@
       "label": {
         "de": "Stoisch",
         "es": "Estoico",
-        "ru": "Стоицизм"
+        "ru": "Стоицизм",
+        "en": "Stoic",
+        "zh": "坚忍"
       }
     },
     {
       "label": {
         "de": "Opfer",
         "es": "Sacrificio",
-        "ru": "Жертвенность"
+        "ru": "Жертвенность",
+        "en": "Sacrifice",
+        "zh": "牺牲"
       }
     },
     {
       "label": {
         "de": "Trotz",
         "es": "Desafío",
-        "ru": "Сопротивление"
+        "ru": "Сопротивление",
+        "en": "Defiance",
+        "zh": "抗争"
       }
     },
     {
       "label": {
         "de": "Begierde",
         "es": "Deseo",
-        "ru": "Желание"
+        "ru": "Желание",
+        "en": "Desire",
+        "zh": "欲望"
       }
     },
     {
       "label": {
         "de": "Wildheit",
         "es": "Salvajismo",
-        "ru": "Дикость"
+        "ru": "Дикость",
+        "en": "Wildness",
+        "zh": "野性"
       }
     }
   ]

@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den durch jeden Wirbelwind verursachten SCH auf 175 %.",
           "en": "Increases DMG dealt by each whirlwind to 175% of ATK.",
-          "es": "Aumenta el daño infligido por cada torbellino a 175 %."
+          "es": "Aumenta el daño infligido por cada torbellino a 175 %.",
+          "zh": "每道旋风造成的伤害提升至175%攻击力。"
         },
         "level3": {
           "de": "Erhöht den durch jeden Wirbelwind verursachten SCH auf 200 %.",
           "en": "Increases DMG dealt by each whirlwind to 200% of ATK.",
-          "es": "Aumenta el daño infligido por cada torbellino a 200 %."
+          "es": "Aumenta el daño infligido por cada torbellino a 200 %.",
+          "zh": "每道旋风造成的伤害提升至200%攻击力。"
         },
         "level4": {
           "de": "Wenn SCH verursacht wird und die LP des Gegners unter 50% liegen, wird der verursachte SCH um 20% erhöht.",
           "en": "Increases DMG dealt to enemies with less than 50% HP by 20%.",
-          "es": "Aumenta en un 20 % el Daño infligido a los enemigos con menos del 50 % de PS."
+          "es": "Aumenta en un 20 % el Daño infligido a los enemigos con menos del 50 % de PS.",
+          "zh": "对生命值低于50%的敌人造成的伤害提升20%。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 220 %.",
           "en": "Increases DMG dealt to 220% of ATK.",
-          "es": "Aumenta el daño infligido a 220 %."
+          "es": "Aumenta el daño infligido a 220 %.",
+          "zh": "造成的伤害提升至220%攻击力。"
         },
         "level3": {
           "de": "Der zusätzliche SCH von Jingwei wird auf 30% erhöht.",
           "en": "Increases DMG taken by hit enemies by 30%.",
-          "es": "Aumenta en un 30 % el Daño infligido a los enemigos golpeados."
+          "es": "Aumenta en un 30 % el Daño infligido a los enemigos golpeados.",
+          "zh": "被命中敌人受到的伤害提升30%。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 250 %.",
           "en": "Increases DMG dealt to 250% of ATK.",
-          "es": "Aumenta el Daño infligido al 250 %."
+          "es": "Aumenta el Daño infligido al 250 %.",
+          "zh": "造成的伤害提升至250%攻击力。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Jeder Stapel erhöht den ANG um 12,5 %.",
           "en": "Each stack increases ATK by 12.5%.",
-          "es": "Cada acumulación aumenta el ATQ en un 12,5 %."
+          "es": "Cada acumulación aumenta el ATQ en un 12,5 %.",
+          "zh": "每层使攻击力提升12.5%。"
         },
         "level3": {
           "de": "Jeder Stapel erhöht den ANG um 15 %.",
           "en": "Each stack increases ATK by 15%.",
-          "es": "Cada acumulación aumenta el ATQ en un 15 %."
+          "es": "Cada acumulación aumenta el ATQ en un 15 %.",
+          "zh": "每层使攻击力提升15%。"
         },
         "level4": {
           "de": "Erhöht die KRIT-Rate bei max. Stapeln auf 40 %.",
           "en": "At maximum stacks, increases CRIT Rate to 40%.",
-          "es": "Aumenta la Tasa de crít. a un 40 % con el máximo de acumulaciones."
+          "es": "Aumenta la Tasa de crít. a un 40 % con el máximo de acumulaciones.",
+          "zh": "叠满时，暴击率提升至40%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Verursacht bis zu 24 % Bonus-SCH.",
           "en": "Deals up to 24% bonus DMG.",
-          "es": "Inflige hasta un 24 % de daño adicional."
+          "es": "Inflige hasta un 24 % de daño adicional.",
+          "zh": "最多额外造成24%伤害。"
         },
         "level3": {
           "de": "Verursacht bis zu 28 % Bonus-SCH.",
           "en": "Deals up to 28% bonus DMG.",
-          "es": "Inflige hasta un 28 % de daño adicional."
+          "es": "Inflige hasta un 28 % de daño adicional.",
+          "zh": "最多额外造成28%伤害。"
         },
         "level4": {
           "de": "Verringert die max. Auslösedistanz auf 9 Meter.",
           "en": "Reduces the maximum trigger distance to 9 meters.",
-          "es": "Reduce la distancia máxima de activación a 9 metros."
+          "es": "Reduce la distancia máxima de activación a 9 metros.",
+          "zh": "最大触发距离缩短至9米。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Letzte Feder",
       "en": "Final Feather",
-      "es": "Pluma final"
+      "es": "Pluma final",
+      "zh": "最后的轻羽"
     },
     "description": {
       "de": "Heulender Hurrikan erschafft einen zusätzlichen Wirbelwind mit 60 % SCH-Bonus.",
       "en": "Howling Hurricane creates an extra whirlwind with a 60% DMG bonus.",
-      "es": "Huracán aullante crea un torbellino extra con una bonificación de daño del 60 %."
+      "es": "Huracán aullante crea un torbellino extra con una bonificación de daño del 60 %.",
+      "zh": "飓风呼啸额外生成一道旋风，伤害加成60%。"
     },
     "upgrades": {
       "level2": {
         "de": "Jingwei erhält während des Heulenden Hurrikans Super-Rüstung.",
         "en": "Jingwei gains Super Armor during Howling Hurricane.",
-        "es": "Jingwei obtiene superarmadura durante Huracán aullante."
+        "es": "Jingwei obtiene superarmadura durante Huracán aullante.",
+        "zh": "飓风呼啸期间精卫获得霸体。"
       },
       "level3": {
         "de": "Heulender Hurrikan erschafft einen zusätzlichen Wirbelwind mit 65 % SCH-Bonus.",
         "en": "Howling Hurricane creates an extra whirlwind with a 65% DMG bonus.",
-        "es": "Huracán aullante crea un torbellino adicional con una bonificación de daño del 65 %."
+        "es": "Huracán aullante crea un torbellino adicional con una bonificación de daño del 65 %.",
+        "zh": "飓风呼啸额外生成一道旋风，伤害加成65%。"
       },
       "level4": {
         "de": "Heulender Hurrikan erschafft einen zusätzlichen Wirbelsturm mit 80 % SCH-Bonus.",
         "en": "Howling Hurricane creates an extra whirlwind with an 80% DMG bonus.",
-        "es": "Huracán aullante crea un torbellino adicional con una bonificación de daño del 80 %."
+        "es": "Huracán aullante crea un torbellino adicional con una bonificación de daño del 80 %.",
+        "zh": "飓风呼啸额外生成一道旋风，伤害加成80%。"
       }
     }
   }

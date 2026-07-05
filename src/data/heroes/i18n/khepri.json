@@ -15,6 +15,20 @@
       "description": {
         "en": "Khepri rolls forward, knocks back all enemy units along the path, and attacks 4 times, each time dealing DMG equal to 100% of ATK.",
         "zh": "凯布利向前滚动，击退路径上的所有敌方单位并攻击4次，每次造成相当于攻击力100%的伤害。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Increases DMG dealt to 110%. (Unlocks at Lv.41)",
+          "zh": "造成的伤害提升至110%。（41级解锁）"
+        },
+        "level3": {
+          "en": "Gains 300 Energy on entry. (Unlocks at Lv.141)",
+          "zh": "入场时获得300点能量。（141级解锁）"
+        },
+        "level4": {
+          "en": "Increases DMG dealt to 120%. (Unlocks at Lv.221)",
+          "zh": "造成的伤害提升至120%。（221级解锁）"
+        }
       }
     },
     {
@@ -25,6 +39,20 @@
       "description": {
         "en": "Upon entering battle, Khepri quickly rolls forward and slams into the target, dealing DMG equal to 270% of ATK and knocking them back 3 meters.",
         "zh": "进入战斗时，凯布利快速向前滚动撞向目标，造成相当于攻击力270%的伤害并将其击退3米。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Increases DMG dealt to 300%. (Unlocks at Lv.21)",
+          "zh": "造成的伤害提升至300%。（21级解锁）"
+        },
+        "level3": {
+          "en": "Targets who are knocked back also launch units along the path. (Unlocks at Lv.161)",
+          "zh": "被击退的目标还会撞飞路径上的单位。（161级解锁）"
+        },
+        "level4": {
+          "en": "Gains a shield equal to 200% of ATK. (Unlocks at Lv.241)",
+          "zh": "获得相当于攻击力200%的护盾。（241级解锁）"
+        }
       }
     },
     {
@@ -44,17 +72,20 @@
         "level2": {
           "de": "Die Schildstärke erhöht sich auf 75 % ANG.",
           "en": "Shield Strength increases to 75% ATK. (Unlocks at Lv.121)",
-          "es": "La fuerza del Escudo aumenta a 75 % de ATQ."
+          "es": "La fuerza del Escudo aumenta a 75 % de ATQ.",
+          "zh": "护盾强度提升至75%攻击力。（121级解锁）"
         },
         "level3": {
           "de": "Verringert die Trefferrate des Ziels für 6 Sek. um 20 %.",
           "en": "Reduces the target's Hit Rate by 20% for 6s. (Unlocks at Lv.201)",
-          "es": "Reduce la Tasa de aciertos del objetivo en un 20 % durante 6s."
+          "es": "Reduce la Tasa de aciertos del objetivo en un 20 % durante 6s.",
+          "zh": "目标的命中率降低20%，持续6秒。（201级解锁）"
         },
         "level4": {
           "de": "Jede getroffene Einheit gewährt 10 % zusätzliche Trefferraten-RED für 6 Sek.",
           "en": "Each unit hit grants an extra 10% Hit Rate RED, lasting 6s. (Unlocks at Lv.281)",
-          "es": "Cada unidad golpeada otorga un 10 % extra de Reduc. de Tasa de aciertos, con una duración de 6s."
+          "es": "Cada unidad golpeada otorga un 10 % extra de Reduc. de Tasa de aciertos, con una duración de 6s.",
+          "zh": "每命中一个单位额外降低10%命中率，持续6秒。（281级解锁）"
         }
       }
     },
@@ -75,17 +106,20 @@
         "level2": {
           "de": "Erhalte 30% SCH-Reduktion.",
           "en": "Gains 30% DMG RED. (Unlocks at Lv.81)",
-          "es": "Obtiene un 30 % de Reduc. de daño."
+          "es": "Obtiene un 30 % de Reduc. de daño.",
+          "zh": "获得30%减伤。（81级解锁）"
         },
         "level3": {
           "de": "Die Schildstärke erhöht sich auf 350 % ANG.",
           "en": "Shield Strength increases to 350% ATK. (Unlocks at Lv.181)",
-          "es": "La fuerza del Escudo aumenta a 350 % de ATQ."
+          "es": "La fuerza del Escudo aumenta a 350 % de ATQ.",
+          "zh": "护盾强度提升至350%攻击力。（181级解锁）"
         },
         "level4": {
           "de": "Stellt zusätzlich 6% der max. LP pro Sekunde für die Dauer wieder her.",
           "en": "Also restores 6% of max HP per sec for the duration. (Unlocks at Lv.261)",
-          "es": "También restaura un 6 % de los PS máximos por segundo mientras dure el efecto."
+          "es": "También restaura un 6 % de los PS máximos por segundo mientras dure el efecto.",
+          "zh": "持续期间每秒还恢复6%最大生命值。（261级解锁）"
         }
       }
     }
@@ -94,28 +128,33 @@
     "name": {
       "de": "Wacht des Skarabäus",
       "en": "Scarab's Watch",
-      "es": "Vigilancia del escarabajo"
+      "es": "Vigilancia del escarabajo",
+      "zh": "圣甲虫守望"
     },
     "description": {
       "de": "Erhöht die SCH-Red. von Segen des Skarabäus auf 60 %.",
       "en": "Increases DMG RED of Scarab's Blessing to 60%.",
-      "es": "Aumenta la RED de daño de la Bendición del escarabajo a 60 %."
+      "es": "Aumenta la RED de daño de la Bendición del escarabajo a 60 %.",
+      "zh": "圣甲虫祝福的减伤提升至60%。"
     },
     "upgrades": {
       "level2": {
         "de": "Bevor er fällt, wird er immun gegen den SCH und löst Segen des Skarabäus aus.",
         "en": "Before falling, becomes immune to the DMG and triggers Scarab's Blessing. (Unlock at Relic Lv.10)",
-        "es": "Antes de caer, se vuelve inmune al Daño y activa Bendición del escarabajo."
+        "es": "Antes de caer, se vuelve inmune al Daño y activa Bendición del escarabajo.",
+        "zh": "倒下前免疫该伤害并触发圣甲虫祝福。（圣物10级解锁）"
       },
       "level3": {
         "de": "Erhöht die SCH-Red. von Segen des Skarabäus auf 100 %.",
         "en": "Increases DMG RED of Scarab's Blessing to 100%. (Unlock at Relic Lv.20)",
-        "es": "Aumenta la RED de daño de la Bendición del escarabajo a 100 %."
+        "es": "Aumenta la RED de daño de la Bendición del escarabajo a 100 %.",
+        "zh": "圣甲虫祝福的减伤提升至100%。（圣物20级解锁）"
       },
       "level4": {
         "de": "[Skarabäus' Segen] Die während der Dauer wiederhergestellte max. LP wird auf 10% erhöht.",
         "en": "Increases the max HP restored during Scarab's Blessing to 10%. (Unlock at Relic Lv.30)",
-        "es": "Aumenta los PS máximos restaurados durante Bendición del escarabajo al 10 %."
+        "es": "Aumenta los PS máximos restaurados durante Bendición del escarabajo al 10 %.",
+        "zh": "圣甲虫祝福期间恢复的最大生命值提升至10%。（圣物30级解锁）"
       }
     }
   }

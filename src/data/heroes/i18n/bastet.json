@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Treffer auf 180 % ANG.",
           "en": "Increases DMG per hit to 180% of ATK.",
-          "es": "aumenta el daño por golpe al 180 % de ATQ."
+          "es": "aumenta el daño por golpe al 180 % de ATQ.",
+          "zh": "每次伤害提升至180%攻击力。"
         },
         "level3": {
           "de": "Erhöht den SCH pro Instanz auf 200 % ANG.",
           "en": "Increases DMG per instance to 200% of ATK.",
-          "es": "aumenta el daño por instancia al 200 % de ATQ."
+          "es": "aumenta el daño por instancia al 200 % de ATQ.",
+          "zh": "每次伤害提升至200%攻击力。"
         },
         "level4": {
           "de": "Entfernt während der Fähigkeit die Abklingzeit von Katzenhafter Agilität.",
           "en": "Removes the cooldown of Feline Agility during the skill.",
-          "es": "Elimina la TdE de Agilidad felina durante la habilidad."
+          "es": "Elimina la TdE de Agilidad felina durante la habilidad.",
+          "zh": "技能期间移除猫之敏捷的冷却时间。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Treffer auf 110 % ANG.",
           "en": "Increases DMG per hit to 110% of ATK.",
-          "es": "aumenta el daño por golpe al 110 % de ATQ."
+          "es": "aumenta el daño por golpe al 110 % de ATQ.",
+          "zh": "每次伤害提升至110%攻击力。"
         },
         "level3": {
           "de": "Verringert die Trefferrate getroffener Feinde um 20 %.",
           "en": "Reduces the Hit Rate of hit enemies by 20%.",
-          "es": "Reduce la Tasa de aciertos de los enemigos golpeados un 20 %."
+          "es": "Reduce la Tasa de aciertos de los enemigos golpeados un 20 %.",
+          "zh": "被命中敌人的命中率降低20%。"
         },
         "level4": {
           "de": "Erhöht den SCH pro Treffer auf 120 % ANG.",
           "en": "Increases DMG per hit to 120% of ATK.",
-          "es": "Aumenta el daño por golpe a 120 % de ATQ."
+          "es": "Aumenta el daño por golpe a 120 % de ATQ.",
+          "zh": "每次伤害提升至120%攻击力。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 50 %.",
           "en": "Increases DMG dealt to 50% of ATK.",
-          "es": "Aumenta el daño infligido a 50 %."
+          "es": "Aumenta el daño infligido a 50 %.",
+          "zh": "造成的伤害提升至50%攻击力。"
         },
         "level3": {
           "de": "Die Dauer wird auf 30 Sek. verlängert.",
           "en": "Duration extends to 30s.",
-          "es": "La duración se extiende a 30 s."
+          "es": "La duración se extiende a 30 s.",
+          "zh": "持续时间延长至30秒。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 60 %.",
           "en": "Increases DMG dealt to 60% of ATK.",
-          "es": "Aumenta el Daño infligido al 60 %."
+          "es": "Aumenta el Daño infligido al 60 %.",
+          "zh": "造成的伤害提升至60%攻击力。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Ausweichbonus hält 8 Sek. an.",
           "en": "Dodge bonus lasts for 8s.",
-          "es": "la bonificación de evasión dura 8 s."
+          "es": "la bonificación de evasión dura 8 s.",
+          "zh": "闪避加成持续8秒。"
         },
         "level3": {
           "de": "Erhält eine Ausweichrate von 50 %.",
           "en": "Gains a 50% Dodge Rate.",
-          "es": "Obtiene un 50 % de Prob. de evasión."
+          "es": "Obtiene un 50 % de Prob. de evasión.",
+          "zh": "获得50%闪避率。"
         },
         "level4": {
           "de": "Ausweichbonus hält 10 Sek. an.",
           "en": "Dodge bonus lasts for 10s.",
-          "es": "la bonificación de evasión dura 10 s."
+          "es": "la bonificación de evasión dura 10 s.",
+          "zh": "闪避加成持续10秒。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Katzenhafte Schnelligkeit",
       "en": "Feline Celerity",
-      "es": "Celeridad felina"
+      "es": "Celeridad felina",
+      "zh": "猫之迅捷"
     },
     "description": {
       "de": "Erhält 25 % Ausweichrate, wenn die LP unter 50 % fallen.",
       "en": "Gains 25% Dodge Rate when HP drops below 50%.",
-      "es": "Obtiene 25 % de prob. de evasión cuando los PS bajan del 50 %."
+      "es": "Obtiene 25 % de prob. de evasión cuando los PS bajan del 50 %.",
+      "zh": "生命值低于50%时获得25%闪避率。"
     },
     "upgrades": {
       "level2": {
         "de": "Verursacht beim Ausweichen eines Treffers 100 % ANG als SCH beim Angreifer.",
         "en": "When dodging a hit, deals 100% ATK as DMG to the attacker.",
-        "es": "Al evadir un golpe, inflige un 100 % de ATQ como daño al atacante."
+        "es": "Al evadir un golpe, inflige un 100 % de ATQ como daño al atacante.",
+        "zh": "闪避攻击时，对攻击者造成相当于攻击力100%的伤害。"
       },
       "level3": {
         "de": "Erhält 35 % Ausweichrate, wenn die LP unter 50 % fallen.",
         "en": "Gains 35% Dodge Rate when HP drops below 50%.",
-        "es": "Obtiene 35 % de prob. de evasión cuando los PS bajan del 50 %."
+        "es": "Obtiene 35 % de prob. de evasión cuando los PS bajan del 50 %.",
+        "zh": "生命值低于50%时获得35%闪避率。"
       },
       "level4": {
         "de": "Verursacht beim Ausweichen eines Treffers 200 % ANG als SCH beim Angreifer.",
         "en": "When dodging a hit, deals 200% ATK as DMG to the attacker.",
-        "es": "Al evadir un golpe, inflige un 200 % de ATQ como daño al atacante."
+        "es": "Al evadir un golpe, inflige un 200 % de ATQ como daño al atacante.",
+        "zh": "闪避攻击时，对攻击者造成相当于攻击力200%的伤害。"
       }
     }
   }

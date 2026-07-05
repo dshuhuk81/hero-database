@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht verursachten SCH auf 500 % ANG.",
           "en": "Increases DMG dealt to 500% ATK.",
-          "es": "aumenta el daño infligido al 500 % de ATQ"
+          "es": "aumenta el daño infligido al 500 % de ATQ",
+          "zh": "造成的伤害提升至500%攻击力。"
         },
         "level3": {
           "de": "Wenn das Ziel besiegt wird, erhöht sich Anubis' ANG um 20% bis zum Ende des Kampfes.",
           "en": "Increases Anubis's ATK by 20% upon defeating a target. This boost lasts until the battle ends.",
-          "es": "Aumenta el ATQ de Anubis en un 20 % al derrotar a un objetivo. Esta mejora dura hasta que termina la batalla."
+          "es": "Aumenta el ATQ de Anubis en un 20 % al derrotar a un objetivo. Esta mejora dura hasta que termina la batalla.",
+          "zh": "击败目标后，阿努比斯的攻击力提升20%，持续到战斗结束。"
         },
         "level4": {
           "de": "Nach dem Besiegen des Ziels stellt Anubis 25% seiner max. LP wieder her.",
           "en": "After defeating a target, Anubis restores 25% of his max HP.",
-          "es": "Después de derrotar a un objetivo, Anubis restaura el 25 % de sus PS máx."
+          "es": "Después de derrotar a un objetivo, Anubis restaura el 25 % de sus PS máx.",
+          "zh": "击败目标后，阿努比斯恢复25%最大生命值。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Beim Verursachen von SCH stiehlt 150 Energie vom Ziel.",
           "en": "When dealing DMG, steals 150 Energy from the target.",
-          "es": "Al infligir Daño, roba 150 de Energía del objetivo."
+          "es": "Al infligir Daño, roba 150 de Energía del objetivo.",
+          "zh": "造成伤害时，从目标处窃取150点能量。"
         },
         "level3": {
           "de": "Betäuben hält jetzt 3 Sek. an.",
           "en": "Stun now lasts for 3s.",
-          "es": "El aturdimiento ahora dura 3s."
+          "es": "El aturdimiento ahora dura 3s.",
+          "zh": "眩晕时间延长至3秒。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 300 % ANG.",
           "en": "Increases DMG dealt to 300% ATK.",
-          "es": "Aumenta el daño infligido a 300 % de ATQ."
+          "es": "Aumenta el daño infligido a 300 % de ATQ.",
+          "zh": "造成的伤害提升至300%攻击力。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Wenn ausgelöst, erhöht sich Anubis' ANG um 20% bis zum Ende des Kampfes.",
           "en": "Increases Anubis's ATK by 20% until the battle ends when triggered.",
-          "es": "Aumenta el ATQ de Anubis en un 20 % hasta que termina la batalla cuando se activa."
+          "es": "Aumenta el ATQ de Anubis en un 20 % hasta que termina la batalla cuando se activa.",
+          "zh": "触发时，阿努比斯的攻击力提升20%，持续到战斗结束。"
         },
         "level3": {
           "de": "Erhöht den Lebensraub beim Auslösen um 20 % bis zum Ende des Kampfes.",
           "en": "Increases Lifesteal by 20% until the battle ends when triggered.",
-          "es": "Aumenta el Robo de vida en un 20 % hasta que termina la batalla cuando se activa."
+          "es": "Aumenta el Robo de vida en un 20 % hasta que termina la batalla cuando se activa.",
+          "zh": "触发时，吸血提升20%，持续到战斗结束。"
         },
         "level4": {
           "de": "Wenn ausgelöst, erhöht sich ANG um 30% und Lebensraub um 30%.",
           "en": "Increases ATK by 30% and grants 30% Lifesteal when triggered. (Unlocks at Lv.261)",
-          "es": "Aumenta el ATQ en un 30 % y otorga un 30 % de Robo de vida cuando se activa."
+          "es": "Aumenta el ATQ en un 30 % y otorga un 30 % de Robo de vida cuando se activa.",
+          "zh": "触发时，攻击力提升30%并获得30%吸血。（261级解锁）"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 235 % ANG.",
           "en": "Increases DMG dealt to 235% ATK.",
-          "es": "Aumenta el daño infligido a 235 % de ATQ."
+          "es": "Aumenta el daño infligido a 235 % de ATQ.",
+          "zh": "造成的伤害提升至235%攻击力。"
         },
         "level3": {
           "de": "Erhöht die Heilungsreduktion auf 80 %.",
           "en": "Increases healing reduction to 80%.",
-          "es": "Aumenta la reducción de sanación al 80 %."
+          "es": "Aumenta la reducción de sanación al 80 %.",
+          "zh": "治疗削减提升至80%。"
         },
         "level4": {
           "de": "Verursachter SCH erhöht sich auf 260 % ANG.",
           "en": "DMG dealt increases to 260% ATK. (Unlocks at Lv.281)",
-          "es": "el daño infligido aumenta al 260 % de ATQ."
+          "es": "el daño infligido aumenta al 260 % de ATQ.",
+          "zh": "造成的伤害提升至260%攻击力。（281级解锁）"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Grabbeschützer",
       "en": "Tomb Protector",
-      "es": "Protector de tumbas"
+      "es": "Protector de tumbas",
+      "zh": "陵墓守护者"
     },
     "description": {
       "de": "Erhöht den durch Urteil des Federfalls verursachten SCH bei Gegnern mit weniger als 50 % LP um 30 %.",
       "en": "Increases DMG dealt by Featherfall Judgment by 30% to enemies with less than 50% HP.",
-      "es": "Aumenta un 30 % el daño infligido por Juicio de la pluma a los enemigos con menos del 50 % de PS."
+      "es": "Aumenta un 30 % el daño infligido por Juicio de la pluma a los enemigos con menos del 50 % de PS.",
+      "zh": "羽落审判对生命值低于50%的敌人造成的伤害提升30%。"
     },
     "upgrades": {
       "level2": {
         "de": "[Urteil der Toten] Gegner können keine LP regenerieren, während diese Fähigkeit aktiv ist.",
         "en": "Enemies cannot receive healing during Featherfall Judgment. (Unlock at Relic Lv.10)",
-        "es": "Los enemigos no pueden recibir sanación durante el Juicio de la pluma."
+        "es": "Los enemigos no pueden recibir sanación durante el Juicio de la pluma.",
+        "zh": "羽落审判期间，敌人无法获得治疗。（圣物10级解锁）"
       },
       "level3": {
         "de": "[Urteil der Toten] Nach dem Verursachen von SCH, wenn die LP des Ziels unter 5% liegen, wird es sofort besiegt.",
         "en": "If an enemy drops below 5% HP after taking DMG from Featherfall Judgment, it executes that enemy. (Unlock at Relic Lv.20)",
-        "es": "Si un enemigo cae por debajo del 5 % de PS después de recibir Daño del Juicio de la pluma, lo ejecuta."
+        "es": "Si un enemigo cae por debajo del 5 % de PS después de recibir Daño del Juicio de la pluma, lo ejecuta.",
+        "zh": "若敌人受到羽落审判的伤害后生命值低于5%，则将其处决。（圣物20级解锁）"
       },
       "level4": {
         "de": "Erhöht den durch Urteil des Federfalls verursachten SCH bei Gegnern mit weniger als 50 % LP um 50 %.",
         "en": "Increases DMG dealt by Featherfall Judgment by 50% to enemies with less than 50% HP. (Unlock at Relic Lv.30)",
-        "es": "Aumenta un 50 % el daño infligido por Juicio de la pluma a los enemigos con menos del 50 % de PS."
+        "es": "Aumenta un 50 % el daño infligido por Juicio de la pluma a los enemigos con menos del 50 % de PS.",
+        "zh": "羽落审判对生命值低于50%的敌人造成的伤害提升50%。（圣物30级解锁）"
       }
     }
   }

@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Sekunde auf 110 % ANG.",
           "en": "Increases DMG per second to 110% of ATK.",
-          "es": "Aumenta el daño por segundo a 110 % de ATQ."
+          "es": "Aumenta el daño por segundo a 110 % de ATQ.",
+          "zh": "每秒伤害提升至110%攻击力。"
         },
         "level3": {
           "de": "Pro Sekunde wiederhergestellte LP von jedem Gegner erhöht auf 100% ANG.",
           "en": "Each enemy restores HP equal to 100% of her ATK per second.",
-          "es": "Cada enemigo le restaura a Deméter una cantidad de PS equivalente al 100 % de su ATQ cada segundo."
+          "es": "Cada enemigo le restaura a Deméter una cantidad de PS equivalente al 100 % de su ATQ cada segundo.",
+          "zh": "每个敌人每秒为她恢复相当于攻击力100%的生命值。"
         },
         "level4": {
           "de": "Erhöht den SCH pro Sekunde auf 120 % ANG.",
           "en": "Increases DMG per second to 120% of ATK.",
-          "es": "Aumenta el daño por segundo a 120 % de ATQ."
+          "es": "Aumenta el daño por segundo a 120 % de ATQ.",
+          "zh": "每秒伤害提升至120%攻击力。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 300 % ANG.",
           "en": "Increases DMG dealt to 300% of ATK.",
-          "es": "Aumenta el daño infligido a 300 % de ATQ."
+          "es": "Aumenta el daño infligido a 300 % de ATQ.",
+          "zh": "造成的伤害提升至300%攻击力。"
         },
         "level3": {
           "de": "Entzieht jetzt 150 Energie.",
           "en": "Energy drained increases to 150.",
-          "es": "Ahora drena 150 de Energía."
+          "es": "Ahora drena 150 de Energía.",
+          "zh": "抽取的能量提升至150点。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 330 % ANG.",
           "en": "Increases DMG dealt to 330% of ATK.",
-          "es": "Aumenta el daño infligido a 330 % de ATQ."
+          "es": "Aumenta el daño infligido a 330 % de ATQ.",
+          "zh": "造成的伤害提升至330%攻击力。"
         }
       }
     },
@@ -83,15 +89,18 @@
       "upgrades": {
         "level2": {
           "es": "Restaura un 3 % de PS cada 0,2s.",
-          "en": "Restores 3% HP every 0.2s."
+          "en": "Restores 3% HP every 0.2s.",
+          "zh": "每0.2秒恢复3%生命值。"
         },
         "level3": {
           "es": "La duración se extiende a 4 s.",
-          "en": "Duration extends to 4s."
+          "en": "Duration extends to 4s.",
+          "zh": "持续时间延长至4秒。"
         },
         "level4": {
           "es": "Se puede activar dos veces por batalla y una vez cada 6s.",
-          "en": "Can trigger twice per battle and once every 6s."
+          "en": "Can trigger twice per battle and once every 6s.",
+          "zh": "每场战斗可触发两次，每6秒一次。"
         }
       }
     },
@@ -112,17 +121,20 @@
         "level2": {
           "de": "Die Schildstärke erhöht sich auf 220 % ANG.",
           "en": "Shield strength increases to 220% of ATK.",
-          "es": "La fuerza del Escudo aumenta a 220 % de ATQ."
+          "es": "La fuerza del Escudo aumenta a 220 % de ATQ.",
+          "zh": "护盾强度提升至220%攻击力。"
         },
         "level3": {
           "de": "Erhöht die M-RES um 50 %, wenn der Schild aktiv ist.",
           "en": "Increases M-RES by 50% while the shield is active.",
-          "es": "Aumenta la RES M en un 50 % cuando el escudo está activo."
+          "es": "Aumenta la RES M en un 50 % cuando el escudo está activo.",
+          "zh": "护盾存在期间魔抗提升50%。"
         },
         "level4": {
           "de": "Die Schildstärke erhöht sich auf 250 % ANG.",
           "en": "Shield strength increases to 250% of ATK.",
-          "es": "La fuerza del Escudo aumenta a 250 % de ATQ."
+          "es": "La fuerza del Escudo aumenta a 250 % de ATQ.",
+          "zh": "护盾强度提升至250%攻击力。"
         }
       }
     }
@@ -130,24 +142,29 @@
   "relic": {
     "name": {
       "es": "Abundancia de las estaciones",
-      "en": "Four Seasons’ Bounty"
+      "en": "Four Seasons’ Bounty",
+      "zh": "四季丰饶"
     },
     "description": {
       "es": "Deméter tiene 3 acumulaciones de Abundancia al entrar en batalla. Cada acumulación reduce el Daño recibido en un 15 %. Por cada 30 % de PS máx. perdidos, Deméter pierde una acumulación de Abundancia. Cuando los PS de Deméter se restauran a cierto nivel, recupera acumulaciones de Abundancia.",
-      "en": "Demeter enters battle with 3 stacks of Abundance. Each stack reduces DMG taken by 15%. For every 30% of max HP lost, one stack is consumed. Stacks are regained when her HP is restored to a certain level."
+      "en": "Demeter enters battle with 3 stacks of Abundance. Each stack reduces DMG taken by 15%. For every 30% of max HP lost, one stack is consumed. Stacks are regained when her HP is restored to a certain level.",
+      "zh": "德墨忒尔进入战斗时携带3层丰饶。每层使受到的伤害降低15%。每损失30%最大生命值消耗一层。生命值恢复到一定程度时重新获得层数。"
     },
     "upgrades": {
       "level2": {
         "es": "Cuando Deméter tiene 3 acumulaciones de Abundancia, es inmune al Control de masas.",
-        "en": "When Demeter has 3 stacks of Abundance, she is immune to Crowd Control."
+        "en": "When Demeter has 3 stacks of Abundance, she is immune to Crowd Control.",
+        "zh": "当德墨忒尔拥有3层丰饶时，免疫控制效果。"
       },
       "level3": {
         "es": "Cada acumulación de Abundancia reduce el Daño recibido en un 17,5 %.",
-        "en": "Each stack of Abundance reduces DMG taken by 17.5%."
+        "en": "Each stack of Abundance reduces DMG taken by 17.5%.",
+        "zh": "每层丰饶使受到的伤害降低17.5%。"
       },
       "level4": {
         "es": "Cada acumulación de Abundancia reduce el Daño recibido en un 20 %.",
-        "en": "Each stack of Abundance reduces DMG taken by 20%."
+        "en": "Each stack of Abundance reduces DMG taken by 20%.",
+        "zh": "每层丰饶使受到的伤害降低20%。"
       }
     }
   }

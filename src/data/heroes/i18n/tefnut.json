@@ -24,17 +24,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 175 % des ANG pro Sek. wieder her.",
           "en": "Restores HP equal to 175% of ATK per second.",
-          "es": "Restaura PS equivalentes a un 175 % del ATQ por segundo."
+          "es": "Restaura PS equivalentes a un 175 % del ATQ por segundo.",
+          "zh": "每秒恢复相当于攻击力175%的生命值。"
         },
         "level3": {
           "de": "Verringert den ANG von Gegnern im Bereich um 30%.",
           "en": "Enemies inside the area have their ATK reduced by 30%.",
-          "es": "El ATQ de los enemigos dentro del área se reduce en un 30 %."
+          "es": "El ATQ de los enemigos dentro del área se reduce en un 30 %.",
+          "zh": "区域内敌人的攻击力降低30%。"
         },
         "level4": {
           "de": "Stellt LP in Höhe von 200 % des ANG pro Sek. wieder her.",
           "en": "Restores HP equal to 200% of ATK per second.",
-          "es": "Restaura PS equivalentes a un 200 % del ATQ por segundo."
+          "es": "Restaura PS equivalentes a un 200 % del ATQ por segundo.",
+          "zh": "每秒恢复相当于攻击力200%的生命值。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 220 % des ANG wieder her.",
           "en": "Restores HP equal to 220% of ATK.",
-          "es": "Restaura PS equivalentes a un 220 % del ATQ."
+          "es": "Restaura PS equivalentes a un 220 % del ATQ.",
+          "zh": "恢复相当于攻击力220%的生命值。"
         },
         "level3": {
           "de": "Wiederhergestellte LP pro ANG erhöht auf 75% des ANG.",
           "en": "Restores HP equal to 75% of ATK when attacked.",
-          "es": "Restaura PS equivalentes al 75 % de ATQ al ser atacado."
+          "es": "Restaura PS equivalentes al 75 % de ATQ al ser atacado.",
+          "zh": "被攻击时恢复相当于攻击力75%的生命值。"
         },
         "level4": {
           "de": "Stellt LP in Höhe von 250 % des ANG wieder her.",
           "en": "Restores HP equal to 250% of ATK.",
-          "es": "Restaura PS equivalentes a un 250 % del ATQ."
+          "es": "Restaura PS equivalentes a un 250 % del ATQ.",
+          "zh": "恢复相当于攻击力250%的生命值。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Wenn der Schild abläuft, wird Gegnern im Umkreis von 3 Metern SCH in Höhe von 150 % des ANG zugefügt.",
           "en": "When the shield expires, deals DMG equal to 150% of ATK to enemies within 3 meters.",
-          "es": "Cuando el escudo expira, inflige un 150 % de ATQ como daño a los enemigos en un radio de 3 metros."
+          "es": "Cuando el escudo expira, inflige un 150 % de ATQ como daño a los enemigos en un radio de 3 metros.",
+          "zh": "护盾消失时，对3米内的敌人造成相当于攻击力150%的伤害。"
         },
         "level3": {
           "de": "Die Schildstärke erhöht sich auf 300 % ANG.",
           "en": "Shield strength increases to 300% of ATK.",
-          "es": "La fuerza del Escudo aumenta a 300 % de ATQ."
+          "es": "La fuerza del Escudo aumenta a 300 % de ATQ.",
+          "zh": "护盾强度提升至300%攻击力。"
         },
         "level4": {
           "de": "Wenn der Schild abläuft, wird Gegnern im Umkreis von 3 Metern SCH in Höhe von 180 % des ANG zugefügt.",
           "en": "When the shield expires, deals DMG equal to 180% of ATK to enemies within 3 meters.",
-          "es": "Cuando el escudo expira, inflige un 180 % de ATQ como daño a los enemigos en un radio de 3 metros."
+          "es": "Cuando el escudo expira, inflige un 180 % de ATQ como daño a los enemigos en un radio de 3 metros.",
+          "zh": "护盾消失时，对3米内的敌人造成相当于攻击力180%的伤害。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Tefnut erhält 50 Energie für jeden Feind, der von den Wasserwellen getroffen wird (dieser Effekt kann bis zu 5-mal pro Einsatz ausgelöst werden).",
           "en": "Tefnut gains 50 Energy for each enemy hit by the splashes (can trigger up to 5 times per cast).",
-          "es": "Tefnut obtiene 50 de Energía por cada enemigo golpeado por las salpicaduras (este efecto puede activarse hasta 5 veces por lanzamiento)."
+          "es": "Tefnut obtiene 50 de Energía por cada enemigo golpeado por las salpicaduras (este efecto puede activarse hasta 5 veces por lanzamiento).",
+          "zh": "每命中一个敌人，泰芙努特获得50点能量（每次施放最多触发5次）。"
         },
         "level3": {
           "de": "Die M-RES getroffener Feinde wird für 6 Sek. um 20 % verringert.",
           "en": "Hit enemies have their M-RES reduced by 20% for 6s.",
-          "es": "La RES M de los enemigos golpeados se reduce en un 20 % durante 6s."
+          "es": "La RES M de los enemigos golpeados se reduce en un 20 % durante 6s.",
+          "zh": "被命中敌人的魔抗降低20%，持续6秒。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 220 % ANG.",
           "en": "Increases DMG dealt to 220% of ATK.",
-          "es": "Aumenta el daño infligido a 220 % de ATQ."
+          "es": "Aumenta el daño infligido a 220 % de ATQ.",
+          "zh": "造成的伤害提升至220%攻击力。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Der zweite Regen",
       "en": "The Second Rain",
-      "es": "Segunda lluvia"
+      "es": "Segunda lluvia",
+      "zh": "第二场雨"
     },
     "description": {
       "de": "Der Einsatz vom Wohltuenden Regen löst eine zusätzliche Seelentherapie aus.",
       "en": "Casting Soothing Rain triggers an additional Spirit Therapy.",
-      "es": "Lanzar Lluvia relajante activa una Terapia espiritual adicional."
+      "es": "Lanzar Lluvia relajante activa una Terapia espiritual adicional.",
+      "zh": "施放舒缓之雨时额外触发一次心灵治愈。"
     },
     "upgrades": {
       "level2": {
         "de": "Verbündete im Bereich vom [Wohltuenden Regen] erleiden 50 % weniger SCH.",
         "en": "Allies within Soothing Rain's range take 50% less DMG.",
-        "es": "Los aliados dentro del alcance de Lluvia relajante reciben un 50 % menos de Daño."
+        "es": "Los aliados dentro del alcance de Lluvia relajante reciben un 50 % menos de Daño.",
+        "zh": "舒缓之雨范围内的友方受到的伤害降低50%。"
       },
       "level3": {
         "de": "Wenn Tefnut tödlichen Schaden erleidet, wird sie gegen diesen Schaden immun und erhält einen Schild der Lebensbarriere. Dieser Effekt kann nur einmal pro Kampf ausgelöst werden.",
         "en": "Upon taking lethal DMG, Tefnut becomes immune to that DMG and gains a Life Barrier shield. This effect can only trigger once per battle.",
-        "es": "Al recibir Daño letal, Tefnut se vuelve inmune a ese daño y obtiene el escudo de Barrera de vida. Este efecto solo puede activarse una vez por batalla."
+        "es": "Al recibir Daño letal, Tefnut se vuelve inmune a ese daño y obtiene el escudo de Barrera de vida. Este efecto solo puede activarse una vez por batalla.",
+        "zh": "受到致命伤害时，泰芙努特免疫该伤害并获得一个生命屏障护盾。该效果每场战斗只能触发一次。"
       },
       "level4": {
         "de": "Entfernt während des Wohltuenden Regens alle 2 Sek. einen Debuff von Verbündeten in Reichweite.",
         "en": "Dispels one debuff from allies within range every 2s during Soothing Rain.",
-        "es": "Disipa una desventaja de los aliados en el alcance cada 2s durante Lluvia relajante."
+        "es": "Disipa una desventaja de los aliados en el alcance cada 2s durante Lluvia relajante.",
+        "zh": "舒缓之雨期间，每2秒为范围内的友方驱散一个减益效果。"
       }
     }
   }

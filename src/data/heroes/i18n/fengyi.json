@@ -24,17 +24,20 @@
         "level2": {
           "de": "Jeder Wirbelwind verursacht zusätzlich 30% ANG-SCH.",
           "en": "Each whirlwind deals 30% of ATK as extra DMG.",
-          "es": "Cada torbellino inflige un 30 % de su ATQ como Daño adicional."
+          "es": "Cada torbellino inflige un 30 % de su ATQ como Daño adicional.",
+          "zh": "每个旋风额外造成相当于攻击力30%的伤害。"
         },
         "level3": {
           "de": "Der ANG-Bonus erhöht sich auf 320 %.",
           "en": "ATK bonus increases to 320%.",
-          "es": "La bonificación de ATQ aumenta a 320 %."
+          "es": "La bonificación de ATQ aumenta a 320 %.",
+          "zh": "攻击力加成提升至320%。"
         },
         "level4": {
           "de": "Stellt 30 Energie für jeden Wirbelwind wieder her, den sie beim Einsatz einer Fähigkeit besitzt.",
           "en": "Restores 30 Energy for each whirlwind she has when casting a skill.",
-          "es": "Restaura 30 de Energía por cada torbellino que tenga al lanzar una habilidad."
+          "es": "Restaura 30 de Energía por cada torbellino que tenga al lanzar una habilidad.",
+          "zh": "施放技能时，每拥有一个旋风恢复30点能量。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Der ANG-Bonus erhöht sich auf 220 %.",
           "en": "ATK bonus increases to 220%.",
-          "es": "La bonificación de ATQ aumenta a 220 %."
+          "es": "La bonificación de ATQ aumenta a 220 %.",
+          "zh": "攻击力加成提升至220%。"
         },
         "level3": {
           "de": "Verringert die M-RES getroffener Einheiten um 20 %.",
           "en": "Reduces the M-RES of hit units by 20%.",
-          "es": "Reduce la RES M de las unidades golpeadas en un 20 %."
+          "es": "Reduce la RES M de las unidades golpeadas en un 20 %.",
+          "zh": "被命中单位的魔抗降低20%。"
         },
         "level4": {
           "de": "Der ANG-Bonus erhöht sich auf 250 %.",
           "en": "ATK bonus increases to 250%. (Unlocks at Lv.281)",
-          "es": "La bonificación de ATQ aumenta a 250 %."
+          "es": "La bonificación de ATQ aumenta a 250 %.",
+          "zh": "攻击力加成提升至250%。（281级解锁）"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht den ANG-Bonus jedes Wirbelsturms auf 20 %.",
           "en": "Increases every whirlwind's ATK bonus to 20%.",
-          "es": "Aumenta la bonificación de ATQ de cada torbellino a 20 %."
+          "es": "Aumenta la bonificación de ATQ de cada torbellino a 20 %.",
+          "zh": "每个旋风的攻击力加成提升至20%。"
         },
         "level3": {
           "de": "Fengyi erhält beim Eintritt in den Kampf 3 Wirbelwinde.",
           "en": "Fengyi gains 3 whirlwinds upon entering battle.",
-          "es": "Fengyi obtiene 3 torbellinos al entrar en combate."
+          "es": "Fengyi obtiene 3 torbellinos al entrar en combate.",
+          "zh": "封姨进入战斗时获得3个旋风。"
         },
         "level4": {
           "de": "Erhöht den ANG-Bonus jedes Wirbelsturms auf 25 %.",
           "en": "Increases every whirlwind's ATK bonus to 25%. (Unlocks at Lv.261)",
-          "es": "Aumenta la bonificación de ATQ de cada torbellino a 25 %."
+          "es": "Aumenta la bonificación de ATQ de cada torbellino a 25 %.",
+          "zh": "每个旋风的攻击力加成提升至25%。（261级解锁）"
         }
       }
     },
@@ -114,15 +123,18 @@
       "upgrades": {
         "level2": {
           "es": "La bonificación de ATQ aumenta a 165 %.",
-          "en": "ATK bonus increases to 165%."
+          "en": "ATK bonus increases to 165%.",
+          "zh": "攻击力加成提升至165%。"
         },
         "level3": {
           "es": "Torbellinos máximos +2.",
-          "en": "Maximum whirlwinds +2."
+          "en": "Maximum whirlwinds +2.",
+          "zh": "旋风上限+2。"
         },
         "level4": {
           "es": "La bonificación de ATQ aumenta a 180 %.",
-          "en": "ATK bonus increases to 180%."
+          "en": "ATK bonus increases to 180%.",
+          "zh": "攻击力加成提升至180%。"
         }
       }
     }
@@ -131,28 +143,33 @@
     "name": {
       "de": "Strudel der Anmut",
       "en": "Vortex of Grace",
-      "es": "Vórtice de gracia"
+      "es": "Vórtice de gracia",
+      "zh": "风华之涡"
     },
     "description": {
       "de": "Entfesselt Aufsteigender Sturm, um 1 Wirbelsturm zu erschaffen.",
       "en": "Releases Great Rising Gale to create 1 whirlwind.",
-      "es": "Lanza Gran vendaval ascendente para crear 1 torbellino."
+      "es": "Lanza Gran vendaval ascendente para crear 1 torbellino.",
+      "zh": "释放扶摇大风时生成1个旋风。"
     },
     "upgrades": {
       "level2": {
         "de": "Entfesselt Aufsteigender Sturm, um 2 Wirbelstürme zu erschaffen.",
         "en": "Releases Great Rising Gale to create 2 whirlwinds.",
-        "es": "Lanza Gran vendaval ascendente para crear 2 torbellinos."
+        "es": "Lanza Gran vendaval ascendente para crear 2 torbellinos.",
+        "zh": "释放扶摇大风时生成2个旋风。"
       },
       "level3": {
         "de": "Stellt 50 Energie wieder her, wenn Fengyi einen Wirbelwind erhält.",
         "en": "Restores 50 Energy when Fengyi gains a whirlwind. (Unlock at Relic Lv.20)",
-        "es": "Restaura 50 de Energía cuando Fengyi obtiene un torbellino."
+        "es": "Restaura 50 de Energía cuando Fengyi obtiene un torbellino.",
+        "zh": "封姨获得旋风时恢复50点能量。（圣物20级解锁）"
       },
       "level4": {
         "de": "Entfesselt Aufsteigender Sturm, um 3 Wirbelstürme zu erschaffen.",
         "en": "Releases Great Rising Gale to create 3 whirlwinds. (Unlock at Relic Lv.30)",
-        "es": "Lanza Gran vendaval ascendente para crear 3 torbellinos."
+        "es": "Lanza Gran vendaval ascendente para crear 3 torbellinos.",
+        "zh": "释放扶摇大风时生成3个旋风。（圣物30级解锁）"
       }
     }
   }

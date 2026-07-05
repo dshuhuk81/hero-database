@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Instanz auf 200 % ANG.",
           "en": "Increases DMG per shot to 200% of ATK.",
-          "es": "aumenta el daño por instancia al 200 % de ATQ."
+          "es": "aumenta el daño por instancia al 200 % de ATQ.",
+          "zh": "每箭伤害提升至200%攻击力。"
         },
         "level3": {
           "de": "Dauer auf 10 Sek. verlängert.",
           "en": "Extends the duration to 10s.",
-          "es": "la duración se extiende a 10 s."
+          "es": "la duración se extiende a 10 s.",
+          "zh": "持续时间延长至10秒。"
         },
         "level4": {
           "de": "Erhöht den SCH pro Instanz auf 220 % ANG.",
           "en": "Increases DMG per shot to 220% of ATK.",
-          "es": "aumenta el daño por instancia al 220 % de ATQ."
+          "es": "aumenta el daño por instancia al 220 % de ATQ.",
+          "zh": "每箭伤害提升至220%攻击力。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 300 % ANG.",
           "en": "Increases DMG dealt to 300% of ATK.",
-          "es": "Aumenta el daño infligido a 300 % de ATQ."
+          "es": "Aumenta el daño infligido a 300 % de ATQ.",
+          "zh": "造成的伤害提升至300%攻击力。"
         },
         "level3": {
           "de": "Die Ausweichrate von gefangenen Feinden wird für die nächsten 8 Sek. um 50 % verringert.",
           "en": "Ensnared enemies have their Dodge Rate reduced by 50% for 8s.",
-          "es": "A los enemigos atrapados se les reduce la Prob. de evasión en un 50 % durante los siguientes 8s."
+          "es": "A los enemigos atrapados se les reduce la Prob. de evasión en un 50 % durante los siguientes 8s.",
+          "zh": "被定身的敌人闪避率降低50%，持续8秒。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 330 % ANG.",
           "en": "Increases DMG dealt to 330% of ATK.",
-          "es": "Aumenta el daño infligido a 330 % de ATQ."
+          "es": "Aumenta el daño infligido a 330 % de ATQ.",
+          "zh": "造成的伤害提升至330%攻击力。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhält zusätzlich 70 % Ausweichen.",
           "en": "Gains an additional 70% Dodge Rate.",
-          "es": "Obtiene un 70 % de Esquiva adicional."
+          "es": "Obtiene un 70 % de Esquiva adicional.",
+          "zh": "额外获得70%闪避率。"
         },
         "level3": {
           "de": "Erhöht die Dauer des Ausweichraten-Boosts auf 5 Sek.",
           "en": "Increases the Dodge Rate duration to 5s.",
-          "es": "Aumenta la duración de la mejora de Prob. de evasión a 5s."
+          "es": "Aumenta la duración de la mejora de Prob. de evasión a 5s.",
+          "zh": "闪避率的持续时间延长至5秒。"
         },
         "level4": {
           "de": "Erhält zusätzlich 100 % Ausweichen.",
           "en": "Gains an additional 100% Dodge Rate.",
-          "es": "Obtiene un 100 % de Esquiva adicional."
+          "es": "Obtiene un 100 % de Esquiva adicional.",
+          "zh": "额外获得100%闪避率。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht den durch durchbohrende Pfeile verursachten SCH auf 220 % ANG.",
           "en": "Increases DMG dealt to 220% of ATK.",
-          "es": "Aumenta el daño infligido por las flechas perforantes a 220 % de ATQ."
+          "es": "Aumenta el daño infligido por las flechas perforantes a 220 % de ATQ.",
+          "zh": "造成的伤害提升至220%攻击力。"
         },
         "level3": {
           "de": "Der durchdringende Pfeil verursacht zusätzlich SCH in Höhe von 15% der aktuellen LP des Ziels.",
           "en": "Piercing arrows also deal bonus DMG equal to 15% of the target’s current HP.",
-          "es": "Las flechas perforantes también infligen Daño adicional equivalente al 15 % de los PS actuales del objetivo."
+          "es": "Las flechas perforantes también infligen Daño adicional equivalente al 15 % de los PS actuales del objetivo.",
+          "zh": "穿透之箭额外造成相当于目标当前生命值15%的伤害。"
         },
         "level4": {
           "de": "Erhöht den durch durchbohrende Pfeile verursachten SCH auf 250 % ANG.",
           "en": "Increases DMG dealt to 250% of ATK.",
-          "es": "Aumenta el daño infligido por las flechas perforantes a 250 % de ATQ."
+          "es": "Aumenta el daño infligido por las flechas perforantes a 250 % de ATQ.",
+          "zh": "造成的伤害提升至250%攻击力。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Pfeilhagel",
       "en": "Hail of Arrows",
-      "es": "Lluvia de flechas"
+      "es": "Lluvia de flechas",
+      "zh": "万箭齐发"
     },
     "description": {
       "de": "Wolkendurchbohrer kann während des Sturmschusses eingesetzt werden.",
       "en": "Cloud-Piercer can be cast during Gale-Force Shot.",
-      "es": "Perforanubes se puede lanzar durante Disparo huracanado."
+      "es": "Perforanubes se puede lanzar durante Disparo huracanado.",
+      "zh": "疾风射击期间可以施放穿云箭。"
     },
     "upgrades": {
       "level2": {
         "de": "Verringert die Abklingzeit von Wolkendurchbohrer während des Sturmschusses um 50 %.",
         "en": "Reduces the cooldown of Cloud-Piercer by 50% during Gale-Force Shot.",
-        "es": "Reduce el TdE de Perforanubes en un 50 % durante Disparo huracanado."
+        "es": "Reduce el TdE de Perforanubes en un 50 % durante Disparo huracanado.",
+        "zh": "疾风射击期间，穿云箭的冷却时间缩短50%。"
       },
       "level3": {
         "de": "Präzisionsschuss kann während des Sturmschusses eingesetzt werden.",
         "en": "Steadied Shot can be cast during Gale-Force Shot.",
-        "es": "Disparo certero se puede lanzar durante Disparo huracanado."
+        "es": "Disparo certero se puede lanzar durante Disparo huracanado.",
+        "zh": "疾风射击期间可以施放稳固射击。"
       },
       "level4": {
         "de": "Verringert die Abklingzeit von Präzisionsschuss während des Sturmschusses um 50 %.",
         "en": "Reduces the cooldown of Steadied Shot by 50% during Gale-Force Shot.",
-        "es": "Reduce el TdE de Disparo certero en un 50 % durante Disparo huracanado."
+        "es": "Reduce el TdE de Disparo certero en un 50 % durante Disparo huracanado.",
+        "zh": "疾风射击期间，稳固射击的冷却时间缩短50%。"
       }
     }
   }

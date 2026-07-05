@@ -15,6 +15,20 @@
       "description": {
         "en": "Yaoji summons Wushan Cloud Rain, expanding the Cloud Mist Domain to the entire battlefield for 8s. Upon cast, immediately applies 1 stack of Withering Mark to enemies within the domain, then applies 1 additional stack every 2s. Withering Mark: Each stack increases the target's DMG taken by 3% and deals 25% of Yaoji's ATK as DMG every second. Max 10 stacks. Lasts 30s. This ultimate can only be cast while attached. If Yaoji is not attached when casting, she immediately attaches to the frontmost allied unit, then casts the ultimate.",
         "zh": "瑶姬召唤巫山云雨，将云雾领域扩展至整个战场，持续8秒。施放时立即对领域内的敌人施加1层凋零印记，随后每2秒额外施加1层。凋零印记：每层使目标受到的伤害提升3%，并每秒造成相当于瑶姬攻击力25%的伤害。最多10层，持续30秒。该大招只能在附身状态下施放。若施放时瑶姬未附身，她会立即附身于最前方的友方单位，然后施放大招。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Withering Mark's damage per second increases to 40%.",
+          "zh": "凋零印记的每秒伤害提升至40%。"
+        },
+        "level3": {
+          "en": "Duration increases to 10s.",
+          "zh": "持续时间延长至10秒。"
+        },
+        "level4": {
+          "en": "Each Withering Mark stack increases enemy DMG taken by 5%.",
+          "zh": "每层凋零印记使敌人受到的伤害提升5%。"
+        }
       }
     },
     {
@@ -25,6 +39,20 @@
       "description": {
         "en": "Passive: At the start of battle, Yaoji attaches to the frontmost ally and becomes untargetable. While attached, forms a Cloud Mist Domain with a 4-meter radius centered on the host. Attachment lasts 12s. After leaving the host, Yaoji takes 50% reduced DMG for 5s. Active: Deals 150% ATK as DMG to all enemies within the Cloud Mist Domain and applies 1 stack of Withering Mark.",
         "zh": "被动：战斗开始时，瑶姬附身于最前方的友方并进入不可被选中状态。附身期间，以宿主为中心形成半径4米的云雾领域。附身持续12秒。离开宿主后，瑶姬受到的伤害降低50%，持续5秒。主动：对云雾领域内的所有敌人造成相当于攻击力150%的伤害并施加1层凋零印记。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Active DMG increases to 180% ATK.",
+          "zh": "主动伤害提升至180%攻击力。"
+        },
+        "level3": {
+          "en": "Active DMG increases to 210% ATK.",
+          "zh": "主动伤害提升至210%攻击力。"
+        },
+        "level4": {
+          "en": "Active cooldown is reduced by 30%.",
+          "zh": "主动技能的冷却时间缩短30%。"
+        }
       }
     },
     {
@@ -35,6 +63,20 @@
       "description": {
         "en": "Passive: Enemies within the Cloud Mist Domain have their ATK reduced by 15% and healing received reduced by 30%.",
         "zh": "被动：云雾领域内的敌人攻击力降低15%，受到的治疗降低30%。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Enemies within the Cloud Mist Domain have their ATK reduced by 20%.",
+          "zh": "云雾领域内敌人的攻击力降低20%。"
+        },
+        "level3": {
+          "en": "Enemies within the Cloud Mist Domain have their healing received reduced by 60%.",
+          "zh": "云雾领域内敌人受到的治疗降低60%。"
+        },
+        "level4": {
+          "en": "Enemies within the Cloud Mist Domain have their ATK reduced by 25%.",
+          "zh": "云雾领域内敌人的攻击力降低25%。"
+        }
       }
     },
     {
@@ -45,7 +87,45 @@
       "description": {
         "en": "Allows the host to take 30% reduced DMG for the next 5s and recover 3% of Max HP every second. This skill can only be cast while attached.",
         "zh": "使宿主在接下来5秒内受到的伤害降低30%，并每秒恢复3%最大生命值。该技能只能在附身状态下施放。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "DMG taken is reduced by 40% for the next 5s.",
+          "zh": "接下来5秒内受到的伤害降低40%。"
+        },
+        "level3": {
+          "en": "Recovers 5% of Max HP every second.",
+          "zh": "每秒恢复5%最大生命值。"
+        },
+        "level4": {
+          "en": "Duration increases to 6s.",
+          "zh": "持续时间延长至6秒。"
+        }
       }
     }
-  ]
+  ],
+  "relic": {
+    "name": {
+      "en": "Falling Blossoms",
+      "zh": "落花"
+    },
+    "description": {
+      "en": "When an enemy first reaches 10 stacks of Withering Mark, inflicts Wither on the target. Wither: Loses 3% of Max HP every second, ATK SPD reduced by 30%, ATK reduced by 30%. Lasts 5s.",
+      "zh": "当敌人首次达到10层凋零印记时，对目标施加枯萎。枯萎：每秒损失3%最大生命值，攻速降低30%，攻击力降低30%。持续5秒。"
+    },
+    "upgrades": {
+      "level2": {
+        "en": "Each time the host loses 40% of Max HP, immediately triggers an additional Cloudbound Possession against enemies within the Cloud Mist Domain.",
+        "zh": "宿主每损失40%最大生命值，立即对云雾领域内的敌人额外触发一次云缚附身。"
+      },
+      "level3": {
+        "en": "When an enemy first reaches 10 stacks of Withering Mark, Wither becomes stronger: loses 5% of Max HP every second, ATK SPD reduced by 50%, ATK reduced by 50%. Lasts 5s.",
+        "zh": "当敌人首次达到10层凋零印记时，枯萎效果强化：每秒损失5%最大生命值，攻速降低50%，攻击力降低50%。持续5秒。"
+      },
+      "level4": {
+        "en": "Each time the host loses 30% of Max HP, immediately triggers an additional Cloudbound Possession against enemies within the Cloud Mist Domain.",
+        "zh": "宿主每损失30%最大生命值，立即对云雾领域内的敌人额外触发一次云缚附身。"
+      }
+    }
+  }
 }

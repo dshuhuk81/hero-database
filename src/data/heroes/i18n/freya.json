@@ -24,17 +24,20 @@
         "level2": {
           "de": "Stellt LP in Höhe von 110 % des ANG pro Sek. wieder her.",
           "en": "Restores HP equal to 110% of ATK per second.",
-          "es": "Restaura PS equivalentes a un 110 % del ATQ por segundo."
+          "es": "Restaura PS equivalentes a un 110 % del ATQ por segundo.",
+          "zh": "每秒恢复相当于攻击力110%的生命值。"
         },
         "level3": {
           "de": "Freya erhält während ihrer Ultimativen Fähigkeit Super-Rüstung.",
           "en": "Freya gains Super Armor during her Ultimate.",
-          "es": "Freya obtiene Superarmadura durante su Habilidad definitiva."
+          "es": "Freya obtiene Superarmadura durante su Habilidad definitiva.",
+          "zh": "芙蕾雅在大招期间获得霸体。"
         },
         "level4": {
           "de": "Stellt LP in Höhe von 120 % des ANG pro Sek. wieder her.",
           "en": "Restores HP equal to 120% of ATK per second.",
-          "es": "Restaura PS equivalentes a un 120 % del ATQ por segundo."
+          "es": "Restaura PS equivalentes a un 120 % del ATQ por segundo.",
+          "zh": "每秒恢复相当于攻击力120%的生命值。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Stellt dem Ziel zusätzlich 75 Energie wieder her.",
           "en": "Restores an additional 75 Energy to the target.",
-          "es": "Restaura 75 de Energía adicional al objetivo."
+          "es": "Restaura 75 de Energía adicional al objetivo.",
+          "zh": "额外为目标恢复75点能量。"
         },
         "level3": {
           "de": "Sowohl die anfängliche Heilung als auch die Heilung über Zeit werden auf 120% des ANG erhöht.",
           "en": "Increases initial and over-time Energy restoration to 120%.",
-          "es": "Aumenta la Energía inicial y la restauración de Energía con el tiempo al 120 % del ATQ."
+          "es": "Aumenta la Energía inicial y la restauración de Energía con el tiempo al 120 % del ATQ.",
+          "zh": "初始与持续能量恢复提升至120%。"
         },
         "level4": {
           "de": "Erhöht die Energiewiederherstellung auf 150.",
           "en": "Increases Energy restoration to 150.",
-          "es": "Aumenta la restauración de Energía a 150."
+          "es": "Aumenta la restauración de Energía a 150.",
+          "zh": "能量恢复提升至150点。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Erhöht den Heilungseffekt um 20 %.",
           "en": "Increases healing effect by 20%.",
-          "es": "aumenta el efecto de curación un 20 %."
+          "es": "aumenta el efecto de curación un 20 %.",
+          "zh": "治疗效果提升20%。"
         },
         "level3": {
           "de": "Erhöht die Heilung um 20% für Verbündete mit weniger als 50% LP.",
           "en": "Increases healing effect on allies with less than 50% HP by 20%.",
-          "es": "Aumenta el efecto de sanación en los aliados con menos del 50 % de PS en un 20 %."
+          "es": "Aumenta el efecto de sanación en los aliados con menos del 50 % de PS en un 20 %.",
+          "zh": "对生命值低于50%的友方的治疗效果提升20%。"
         },
         "level4": {
           "de": "Erhöht den Heilungseffekt um 30 %.",
           "en": "Increases healing effect by 30%.",
-          "es": "aumenta el efecto de curación un 30 %."
+          "es": "aumenta el efecto de curación un 30 %.",
+          "zh": "治疗效果提升30%。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht den SCH pro Sekunde auf 120 % ANG.",
           "en": "Increases DMG per second to 120% of ATK.",
-          "es": "Aumenta el daño por segundo a 120 % de ATQ."
+          "es": "Aumenta el daño por segundo a 120 % de ATQ.",
+          "zh": "每秒伤害提升至120%攻击力。"
         },
         "level3": {
           "de": "Betäuben hält 4 s an.",
           "en": "Stun duration increases to 4s.",
-          "es": "Los aturdimientos duran 4 s."
+          "es": "Los aturdimientos duran 4 s.",
+          "zh": "眩晕时间延长至4秒。"
         },
         "level4": {
           "de": "Betäubte Gegner erleiden 20% mehr SCH.",
           "en": "Stunned enemies take 20% increased DMG.",
-          "es": "Los enemigos aturdidos reciben un 20 % de Daño aumentado."
+          "es": "Los enemigos aturdidos reciben un 20 % de Daño aumentado.",
+          "zh": "被眩晕的敌人受到的伤害提升20%。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Schutz der Pracht",
       "en": "Ward of Splendor",
-      "es": "Resguardo de esplendor"
+      "es": "Resguardo de esplendor",
+      "zh": "光辉守护"
     },
     "description": {
       "de": "[Liebe und Pracht] reduziert den erlittenen SCH befreundeter Einheiten um 20%, solange aktiv.",
       "en": "All allies take 20% reduced DMG during Splendor of Love.",
-      "es": "Todos los aliados reciben un 20 % de Daño reducido durante el Esplendor del amor."
+      "es": "Todos los aliados reciben un 20 % de Daño reducido durante el Esplendor del amor.",
+      "zh": "爱之光辉期间，所有友方受到的伤害降低20%。"
     },
     "upgrades": {
       "level2": {
         "de": "Erhält beim Eintritt in den Kampf 300 Energie.",
         "en": "Gains 300 Energy upon entering battle.",
-        "es": "Obtiene 300 de energía al entrar en batalla."
+        "es": "Obtiene 300 de energía al entrar en batalla.",
+        "zh": "进入战斗时获得300点能量。"
       },
       "level3": {
         "de": "Reduziert erlittenen SCH um 30 %.",
         "en": "Reduces DMG taken by 30%.",
-        "es": "Reduce el daño recibido un 30 %."
+        "es": "Reduce el daño recibido un 30 %.",
+        "zh": "受到的伤害降低30%。"
       },
       "level4": {
         "de": "Reduziert erlittenen SCH um 40 %.",
         "en": "Reduces DMG taken by 40%.",
-        "es": "Reduce el daño recibido un 40 %."
+        "es": "Reduce el daño recibido un 40 %.",
+        "zh": "受到的伤害降低40%。"
       }
     }
   }

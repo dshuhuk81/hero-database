@@ -24,17 +24,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 300 %.",
           "en": "Increases DMG dealt to 300%.",
-          "es": "Aumenta el daño infligido a 300 %."
+          "es": "Aumenta el daño infligido a 300 %.",
+          "zh": "造成的伤害提升至300%。"
         },
         "level3": {
           "de": "Gewährt außerdem einen Schild in Höhe von 300% des ANG.",
           "en": "Also grants herself a shield equal to 300% of her ATK.",
-          "es": "También obtiene un escudo equivalente al 300 % de su ATQ."
+          "es": "También obtiene un escudo equivalente al 300 % de su ATQ.",
+          "zh": "还为自己提供相当于其攻击力300%的护盾。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 330 %.",
           "en": "Increases DMG dealt to 330%. (Unlocks at Lv.281)",
-          "es": "Aumenta el Daño infligido al 330 %."
+          "es": "Aumenta el Daño infligido al 330 %.",
+          "zh": "造成的伤害提升至330%。（281级解锁）"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhält im Zustand [Schlummer] 40 % SCH-Reduktion.",
           "en": "Gains 40% DMG RED while in the [Slumber] state.",
-          "es": "Obtiene un 40 % de Reduc. de daño en el estado de [Letargo]."
+          "es": "Obtiene un 40 % de Reduc. de daño en el estado de [Letargo].",
+          "zh": "处于【沉眠】状态时获得40%减伤。"
         },
         "level3": {
           "de": "Dieser Effekt wird ein weiteres Mal ausgelöst, wenn Hladgunnr kurz davor ist, besiegt zu werden.",
           "en": "This effect triggers one extra time when Hladgunnr is about to fall.",
-          "es": "Este efecto se activa una vez más cuando Hladgunnr está a punto de caer."
+          "es": "Este efecto se activa una vez más cuando Hladgunnr está a punto de caer.",
+          "zh": "赫拉德古恩即将倒下时，该效果额外触发一次。"
         },
         "level4": {
           "de": "Erhält im Zustand [Schlummer] 60 % SCH-Reduktion.",
           "en": "Gains 60% DMG RED while in the [Slumber] state.",
-          "es": "Obtiene un 60 % de Reduc. de daño en el estado de [Letargo]."
+          "es": "Obtiene un 60 % de Reduc. de daño en el estado de [Letargo].",
+          "zh": "处于【沉眠】状态时获得60%减伤。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Hladgunnr erhält für das erste Auslösen 20 % SCH-RED.",
           "en": "Hladgunnr gains 20% DMG RED for the first release.",
-          "es": "Hladgunnr obtiene un 20 % de Reduc. de daño en el primer lanzamiento."
+          "es": "Hladgunnr obtiene un 20 % de Reduc. de daño en el primer lanzamiento.",
+          "zh": "首次释放时，赫拉德古恩获得20%减伤。"
         },
         "level3": {
           "de": "Erhält für das erste Auslösen 25 % SCH-RED.",
           "en": "Gains 25% DMG RED for the first release.",
-          "es": "Obtiene un 25 % de Reduc. de daño en el primer lanzamiento."
+          "es": "Obtiene un 25 % de Reduc. de daño en el primer lanzamiento.",
+          "zh": "首次释放时获得25%减伤。"
         },
         "level4": {
           "de": "Erhält für das erste Auslösen 30 % SCH-RED.",
           "en": "Gains 30% DMG RED for the first release.",
-          "es": "Obtiene un 30 % de Reduc. de daño en el primer lanzamiento."
+          "es": "Obtiene un 30 % de Reduc. de daño en el primer lanzamiento.",
+          "zh": "首次释放时获得30%减伤。"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Erhöht den verursachten SCH auf 440 %.",
           "en": "Increases DMG dealt to 440%.",
-          "es": "Aumenta el daño infligido a 440 %."
+          "es": "Aumenta el daño infligido a 440 %.",
+          "zh": "造成的伤害提升至440%。"
         },
         "level3": {
           "de": "Wenn ihre Ultimative Fähigkeit Heilige Meditation abbricht, übernimmt sie die verbleibenden Buffs.",
           "en": "When her Ultimate cancels Sacred Meditation, she inherits the remaining buffs from it.",
-          "es": "Cuando su Habilidad definitiva cancela Meditación sagrada, hereda las mejoras restantes de esta."
+          "es": "Cuando su Habilidad definitiva cancela Meditación sagrada, hereda las mejoras restantes de esta.",
+          "zh": "当大招解除圣息冥想时，她继承其剩余的增益效果。"
         },
         "level4": {
           "de": "Erhöht den verursachten SCH auf 480 %.",
           "en": "Increases DMG dealt to 480%.",
-          "es": "Aumenta el Daño infligido al 480 %."
+          "es": "Aumenta el Daño infligido al 480 %.",
+          "zh": "造成的伤害提升至480%。"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Leuchtendes Urteil",
       "en": "Luminous Verdict",
-      "es": "Veredicto luminoso"
+      "es": "Veredicto luminoso",
+      "zh": "圣辉裁决"
     },
     "description": {
       "de": "Leuchtende Aegis erhält einen zusätzlichen Aufwertungseffekt: Nachdem Hladgunnr ihre Ultimative Fähigkeit 3-mal eingesetzt hat, werden 10 % des von Hladgunnr verursachten SCH in Wahren SCH umgewandelt.",
       "en": "Luminous Aegis gains an additional upgrade effect: After Hladgunnr casts her Ultimate 3 times, 10% of the DMG dealt by Hladgunnr is converted to True DMG.",
-      "es": "Égida luminosa obtiene un efecto de mejora adicional: después de que Hladgunnr lance su Habilidad definitiva 3 veces, un 10 % del Daño infligido por Hladgunnr se convierte en Daño verdadero."
+      "es": "Égida luminosa obtiene un efecto de mejora adicional: después de que Hladgunnr lance su Habilidad definitiva 3 veces, un 10 % del Daño infligido por Hladgunnr se convierte en Daño verdadero.",
+      "zh": "圣辉庇护获得额外升级效果：赫拉德古恩施放3次大招后，其造成伤害的10%转化为真实伤害。"
     },
     "upgrades": {
       "level2": {
         "de": "Verringert die Anzahl der zur Verbesserung von Leuchtender Aegis erforderlichen Wirkungen um eins.",
         "en": "Reduces the number of casts required to upgrade Luminous Aegis by one.",
-        "es": "Reduce en uno el número de lanzamientos necesarios para mejorar Égida luminosa."
+        "es": "Reduce en uno el número de lanzamientos necesarios para mejorar Égida luminosa.",
+        "zh": "升级圣辉庇护所需的施放次数减少一次。"
       },
       "level3": {
         "de": "30 % des von Hladgunnr verursachten SCH werden in Wahren SCH umgewandelt.",
         "en": "30% of the DMG dealt by Hladgunnr is converted to True DMG.",
-        "es": "Un 30 % del daño infligido por Hladgunnr se convierte en Daño verdadero."
+        "es": "Un 30 % del daño infligido por Hladgunnr se convierte en Daño verdadero.",
+        "zh": "赫拉德古恩造成伤害的30%转化为真实伤害。"
       },
       "level4": {
         "de": "Hladgunnr erhält nach jedem Einsatz ihrer Ultimativen Fähigkeit für 6 Sek. Super-Rüstung.",
         "en": "Hladgunnr gains Super Armor for 6s after each cast of her Ultimate. (Unlock at Relic Lv.30)",
-        "es": "Hladgunnr obtiene Superarmadura durante 6s después de cada lanzamiento de su Habilidad definitiva."
+        "es": "Hladgunnr obtiene Superarmadura durante 6s después de cada lanzamiento de su Habilidad definitiva.",
+        "zh": "赫拉德古恩每次施放大招后获得霸体，持续6秒。（圣物30级解锁）"
       }
     }
   }

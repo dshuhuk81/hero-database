@@ -24,17 +24,20 @@
         "level2": {
           "de": "Heilt um 100% des durch das Sonnenschwert verursachten SCH.",
           "en": "Solar blades heal Amun-Ra for 100% of the DMG dealt.",
-          "es": "Las cuchillas solares curan a Amón-Ra un 100 % del daño infligido."
+          "es": "Las cuchillas solares curan a Amón-Ra un 100 % del daño infligido.",
+          "zh": "太阳之刃为阿蒙拉恢复相当于所造成伤害100%的生命值。"
         },
         "level3": {
           "de": "Erhöht den SCH des Sonnenschwerts auf 140% ANG.",
           "en": "Increases the DMG of solar blades to 140% ATK.",
-          "es": "Aumenta el daño de las cuchillas solares a 140 % de ATQ."
+          "es": "Aumenta el daño de las cuchillas solares a 140 % de ATQ.",
+          "zh": "太阳之刃的伤害提升至140%攻击力。"
         },
         "level4": {
           "de": "Verringert das Angriffsintervall der Solarklingen auf 0,7 Sek.",
           "en": "Reduces the attack interval of solar blades to 0.7s.",
-          "es": "Reduce el intervalo de ataque de las cuchillas solares a 0,7 s."
+          "es": "Reduce el intervalo de ataque de las cuchillas solares a 0,7 s.",
+          "zh": "太阳之刃的攻击间隔缩短至0.7秒。"
         }
       }
     },
@@ -55,17 +58,20 @@
         "level2": {
           "de": "Erhöht die ANG-Reduktion für Feinde innerhalb der Sonnenaura auf 30%.",
           "en": "Enemies inside Solar Aura have their ATK reduced by 30%.",
-          "es": "A los enemigos dentro del Aura solar se les reduce su ATQ en un 30 %."
+          "es": "A los enemigos dentro del Aura solar se les reduce su ATQ en un 30 %.",
+          "zh": "太阳光环内的敌人攻击力降低30%。"
         },
         "level3": {
           "de": "Erhöht den SCH pro Instanz auf 125 % ANG.",
           "en": "Increases DMG per instance to 125% ATK.",
-          "es": "aumenta el daño por instancia al 125 % de ATQ."
+          "es": "aumenta el daño por instancia al 125 % de ATQ.",
+          "zh": "每次伤害提升至125%攻击力。"
         },
         "level4": {
           "de": "Verlängert die Dauer der Solaraura auf 8 Sek.",
           "en": "Extends the duration of Solar Aura to 8s.",
-          "es": "Extiende la duración del Aura solar a 8 s."
+          "es": "Extiende la duración del Aura solar a 8 s.",
+          "zh": "太阳光环的持续时间延长至8秒。"
         }
       }
     },
@@ -86,17 +92,20 @@
         "level2": {
           "de": "Tritt bei jedem Einsatz des Ultimativs erneut in diesen Zustand ein.",
           "en": "Re-enters this state each time he casts the Ultimate.",
-          "es": "Vuelve a entrar en este estado cada vez que lanza la Habilidad definitiva."
+          "es": "Vuelve a entrar en este estado cada vez que lanza la Habilidad definitiva.",
+          "zh": "每次施放大招时重新进入该状态。"
         },
         "level3": {
           "de": "Das Ausweichen eines Angriffs stellt während der Wirkungsdauer 50 Energie für Amun-Ra wieder her. Dies kann nur einmal pro Sek. ausgelöst werden.",
           "en": "Dodging an attack restores 50 Energy to Amun-Ra for the duration. This can only trigger once per sec.",
-          "es": "Esquivar un ataque restaura 50 de Energía a Amón-Ra mientras dure. Esto solo se puede activar una vez por segundo."
+          "es": "Esquivar un ataque restaura 50 de Energía a Amón-Ra mientras dure. Esto solo se puede activar una vez por segundo.",
+          "zh": "持续期间，闪避攻击为阿蒙拉恢复50点能量。每秒只能触发一次。"
         },
         "level4": {
           "de": "Erhält für die Wirkungsdauer zusätzlich 50 % Effekt-RES.",
           "en": "Additionally gains 50% Effect RES for the duration. (Unlocks at Lv.261)",
-          "es": "Además, obtiene un 50 % de RES a efectos mientras dure."
+          "es": "Además, obtiene un 50 % de RES a efectos mientras dure.",
+          "zh": "持续期间额外获得50%效果抵抗。（261级解锁）"
         }
       }
     },
@@ -117,17 +126,20 @@
         "level2": {
           "de": "Wenn der Boost der Energieaufladung abläuft, stellen alle Verbündeten sofort 200 Energie wieder her.",
           "en": "When the Energy Regen boost expires, all allies instantly restore 200 Energy.",
-          "es": "Cuando expira el aumento de Recarga de energía, todos los aliados restauran instantáneamente 200 de Energía."
+          "es": "Cuando expira el aumento de Recarga de energía, todos los aliados restauran instantáneamente 200 de Energía.",
+          "zh": "能量恢复强化结束时，所有友方立即恢复200点能量。"
         },
         "level3": {
           "de": "Erhöht den M-RES- und Rüstungsbonus auf 75%.",
           "en": "Increases his M-RES & Armor to 75%.",
-          "es": "Aumenta su RES-M y Armadura a un 75 %."
+          "es": "Aumenta su RES-M y Armadura a un 75 %.",
+          "zh": "魔抗与护甲提升至75%。"
         },
         "level4": {
           "de": "Erhöht seine Energieaufladung auf 80 %.",
           "en": "Increases his Energy Regen to 80%. (Unlocks at Lv.281)",
-          "es": "Aumenta su Recarga de energía a un 80 %."
+          "es": "Aumenta su Recarga de energía a un 80 %.",
+          "zh": "能量恢复提升至80%。（281级解锁）"
         }
       }
     }
@@ -136,28 +148,33 @@
     "name": {
       "de": "Sonnengeblendet",
       "en": "Sun-Blinded",
-      "es": "Cegado por el sol"
+      "es": "Cegado por el sol",
+      "zh": "炫目之阳"
     },
     "description": {
       "de": "Die Blendende Sonnenscheibe bleibt nach dem Einsatz permanent. Ihre Reichweite vergrößert sich während Atons Strahlen moderat. Feinde im Bereich der Blendenden Sonnenscheibe werden für 1 Sek. betäubt, wenn sie sich 4 Sek. darin aufhalten.",
       "en": "Blinding Sun-Disk remains permanently when cast, and its range moderately expands during Aten's Radiance. Enemies within range of Blinding Sun-Disk for 4s are stunned for 1s.",
-      "es": "El Disco solar cegador permanece de forma permanente cuando se lanza, y su alcance se expande moderadamente durante Radiancia de Atón. Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 1 s."
+      "es": "El Disco solar cegador permanece de forma permanente cuando se lanza, y su alcance se expande moderadamente durante Radiancia de Atón. Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 1 s.",
+      "zh": "炫目日轮施放后永久存在，且在阿吞之辉期间范围适度扩大。在炫目日轮范围内停留4秒的敌人将被眩晕1秒。"
     },
     "upgrades": {
       "level2": {
         "de": "Feinde, die sich 4 Sek. im Bereich der Blendenden Sonnenscheibe aufhalten, werden für 1,5 Sek. betäubt.",
         "en": "Enemies within range of Blinding Sun-Disk for 4s are stunned for 1.5s. (Unlock at Relic Lv.10)",
-        "es": "Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 1.5 s."
+        "es": "Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 1.5 s.",
+        "zh": "在炫目日轮范围内停留4秒的敌人将被眩晕1.5秒。（圣物10级解锁）"
       },
       "level3": {
         "de": "Feinde, die sich 4 Sek. im Bereich der Blendenden Sonnenscheibe aufhalten, werden für 2 Sek. betäubt.",
         "en": "Enemies within range of Blinding Sun-Disk for 4s are stunned for 2s. (Unlock at Relic Lv.20)",
-        "es": "Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 2 s."
+        "es": "Los enemigos que permanezcan en el alcance del Disco solar cegador durante 4 s son aturdidos durante 2 s.",
+        "zh": "在炫目日轮范围内停留4秒的敌人将被眩晕2秒。（圣物20级解锁）"
       },
       "level4": {
         "de": "Die verbesserte Blendende Sonnenscheibe erzeugt während Atons Strahlen ein schwarzes Loch, das langsam alle Feinde auf dem Schlachtfeld zu Amun-Ra zieht.",
         "en": "The enhanced Blinding Sun-Disk creates a black hole during Aten's Radiance, slowly pulling all enemies on the battlefield toward Amun-Ra. (Unlock at Relic Lv.30)",
-        "es": "El Disco solar cegador mejorado crea un agujero negro durante Radiancia de Atón, atrayendo lentamente a todos los enemigos del campo de batalla hacia Amón-Ra."
+        "es": "El Disco solar cegador mejorado crea un agujero negro durante Radiancia de Atón, atrayendo lentamente a todos los enemigos del campo de batalla hacia Amón-Ra.",
+        "zh": "强化后的炫目日轮在阿吞之辉期间形成黑洞，缓缓将战场上所有敌人拉向阿蒙拉。（圣物30级解锁）"
       }
     }
   }
