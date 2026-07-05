@@ -2,19 +2,23 @@
   "name": {
     "de": "Eris",
     "es": "Eris",
-    "ru": "Eris"
+    "ru": "Eris",
+    "en": "Eris",
+    "zh": "厄里斯"
   },
   "skills": [
     {
       "name": {
         "de": "Ankunft der Marionette",
         "en": "Puppet's Advent",
-        "es": "Advenimiento de la marioneta"
+        "es": "Advenimiento de la marioneta",
+        "zh": "傀儡降临"
       },
       "description": {
         "de": "Eris schießt auf den schwächsten Gegner und verursacht 200 % ANG als SCH. Befiehlt allen Puppen, das Feuer zu synchronisieren, um pro Schuss zusätzlichen SCH in Höhe von 300 % ihres ANG zu verursachen.",
         "en": "Eris unleashes a shot at the weakest enemy, dealing 200% ATK as DMG. Commands all puppets to synchronize fire for additional DMG equal to 300% of their ATK per shot.",
-        "es": "Eris lanza un disparo al enemigo más débil, lo que inflige un 200 % de ATQ como daño. Ordena a todas las marionetas que sincronicen su fuego para infligir daño adicional equivalente al 300 % de su ATQ por disparo."
+        "es": "Eris lanza un disparo al enemigo más débil, lo que inflige un 200 % de ATQ como daño. Ordena a todas las marionetas que sincronicen su fuego para infligir daño adicional equivalente al 300 % de su ATQ por disparo.",
+        "zh": "厄里斯向最弱的敌人射出一击，造成相当于攻击力200%的伤害，并命令所有傀儡同步开火，每发额外造成相当于傀儡攻击力300%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Geheime Fäden",
         "en": "Secret Strands",
-        "es": "Hilos secretos"
+        "es": "Hilos secretos",
+        "zh": "隐秘丝线"
       },
       "description": {
         "de": "Feuert einen Schuss ab, der 100 % SCH verursacht und für 30 Sek. eine Puppe beschwört.\\nPuppe: Erbt 20 % von Eris' ANG und max. LP. Puppen können sich nicht bewegen oder unabhängig agieren; stattdessen unterstützen sie Eris' Normalangriffe unabhängig von der Entfernung und verursachen 100 % ihres ANG als SCH. Max. 3 Puppen.",
         "en": "Unleashes a shot to deal 100% DMG to the target and summons a Puppet for 30s. Puppets: Inherit 20% of Eris's ATK and Max HP. Puppets cannot move or act independently; instead they assist Eris's Normal Attacks regardless of distance, dealing 100% of their ATK as DMG. Max 3 Puppets.",
-        "es": "Lanza un disparo para infligir un 100 % de daño e invocar una marioneta durante 30 s.\nMarioneta: hereda el 20 % del ATQ y los PS máximos de Eris. Las marionetas no pueden moverse ni actuar de forma independiente; en su lugar, asisten en los ataques normales de Eris sin importar la distancia, infligiendo un 100 % de su ATQ como daño. Máximo 3 marionetas."
+        "es": "Lanza un disparo para infligir un 100 % de daño e invocar una marioneta durante 30 s.\nMarioneta: hereda el 20 % del ATQ y los PS máximos de Eris. Las marionetas no pueden moverse ni actuar de forma independiente; en su lugar, asisten en los ataques normales de Eris sin importar la distancia, infligiendo un 100 % de su ATQ como daño. Máximo 3 marionetas.",
+        "zh": "射出一击对目标造成100%伤害，并召唤一个持续30秒的傀儡。傀儡：继承厄里斯20%的攻击力与最大生命值。傀儡无法移动或自主行动，而是无视距离协同厄里斯的普通攻击，造成相当于其攻击力100%的伤害。最多3个傀儡。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Requiem der Fäden",
         "en": "Requiem of Strings",
-        "es": "Réquiem de los hilos"
+        "es": "Réquiem de los hilos",
+        "zh": "丝弦安魂曲"
       },
       "description": {
         "de": "Bei der Niederlage eines beliebigen nicht-Puppen-Verbündeten (einschließlich Gottheiten und regulärer Diener) wird 1 Puppe an dessen Position beschworen (Passiv). Max. 3 Puppen, die jeweils 25 Sek. andauern.\\nPuppe: Erbt 60 % von Eris' ANG und 30 % max. LP.",
         "en": "Upon the defeat of any non-puppet ally (including Deitys and Minions), summons 1 puppet at their position (Passive). Max 3 puppets, each lasting 25s. Puppet: inherits 60% of Eris's ATK and 30% max HP.",
-        "es": "Tras la derrota de cualquier aliado que no sea una marioneta (incluidas las deidades y los súbditos normales), invoca 1 marioneta en su posición (Pasiva). Máximo 3 marionetas, cada una dura 25 s.\nMarioneta: hereda el 60 % del ATQ y el 30 % de los PS máximos de Eris."
+        "es": "Tras la derrota de cualquier aliado que no sea una marioneta (incluidas las deidades y los súbditos normales), invoca 1 marioneta en su posición (Pasiva). Máximo 3 marionetas, cada una dura 25 s.\nMarioneta: hereda el 60 % del ATQ y el 30 % de los PS máximos de Eris.",
+        "zh": "当任意非傀儡友方（包括神祇与随从）倒下时，在其位置召唤1个傀儡（被动）。最多3个傀儡，每个持续25秒。傀儡：继承厄里斯60%的攻击力与30%最大生命值。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Marionettenopfer",
         "en": "Puppet Sacrifice",
-        "es": "Sacrificio de marioneta"
+        "es": "Sacrificio de marioneta",
+        "zh": "傀儡献祭"
       },
       "description": {
         "de": "Wenn Eris tödlichen SCH erleidet, wird sie für 3 Sek. unantastbar. CD: 30 Sek.",
         "en": "Upon taking Lethal DMG, Eris becomes untargetable for 3s. CD: 30s.",
-        "es": "Al recibir daño letal, Eris se vuelve inalcanzable durante 3 s. TdE: 30 s."
+        "es": "Al recibir daño letal, Eris se vuelve inalcanzable durante 3 s. TdE: 30 s.",
+        "zh": "受到致命伤害时，厄里斯进入不可被选中状态3秒。冷却：30秒。"
       },
       "upgrades": {
         "level2": {

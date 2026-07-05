@@ -2,19 +2,23 @@
   "name": {
     "de": "Nüwa",
     "es": "Nüwa",
-    "ru": "Нюйва"
+    "ru": "Нюйва",
+    "en": "Nuwa",
+    "zh": "女娲"
   },
   "skills": [
     {
       "name": {
         "de": "Gesetz der Schöpfung",
         "en": "Law of Creation",
-        "es": "Ley de la creación"
+        "es": "Ley de la creación",
+        "zh": "造物法则"
       },
       "description": {
         "de": "Zu Kampfbeginn wird eine Bollwerk-Figur beschworen, die auf den nächsten Feind zustürmt, ihm SCH in Höhe von 270 % ANG zufügt und ihn für 2 Sek. betäubt. Die Bollwerk-Figur erbt 200 % ihrer max. LP und 100 % ihres ANG (Aktiv). Beschwört sofort eine Bollwerk-Figur und errichtet eine Barriere in Höhe von 1600 % ANG für 6 Sek. Solange die Barriere besteht, erleidet sie SCH für Verbündete hinter ihr. Wenn bereits eine Bollwerk-Figur existiert, stellt sie die LP der Bollwerk-Figur vollständig wieder her und errichtet die Barriere.",
         "en": "At combat start, summons a Bulwark Figurine that charges the nearest enemy, dealing DMG equal to 270% of ATK and stunning them for 2s. The Bulwark Figurine inherits 200% of her max HP and 100% of her ATK. Activating the skill deploys a barrier equal to 1600% of ATK for 6s that absorbs damage for allies behind it. If a Bulwark Figurine already exists, its HP is fully restored and the barrier is redeployed.",
-        "es": "Al inicio del combate, invoca una Estatuilla de baluarte que carga contra el enemigo más cercano, infligiéndole un Daño equivalente al 270 % de su ATQ y aturdiéndolo durante 2s. La Estatuilla de baluarte hereda el 200 % de sus PS máximos y el 100 % de su ATQ. Invoca de inmediato una Estatuilla de baluarte y despliega una barrera equivalente al 1600 % de su ATQ durante 6s (Activa). Mientras la barrera esté activa, recibe el Daño por los aliados que estén detrás de ella. Si ya existe una Estatuilla de baluarte, restaura por completo los PS de la Estatuilla de baluarte y despliega la barrera."
+        "es": "Al inicio del combate, invoca una Estatuilla de baluarte que carga contra el enemigo más cercano, infligiéndole un Daño equivalente al 270 % de su ATQ y aturdiéndolo durante 2s. La Estatuilla de baluarte hereda el 200 % de sus PS máximos y el 100 % de su ATQ. Invoca de inmediato una Estatuilla de baluarte y despliega una barrera equivalente al 1600 % de su ATQ durante 6s (Activa). Mientras la barrera esté activa, recibe el Daño por los aliados que estén detrás de ella. Si ya existe una Estatuilla de baluarte, restaura por completo los PS de la Estatuilla de baluarte y despliega la barrera.",
+        "zh": "战斗开始时，召唤持盾泥偶冲向最近的敌人，造成相当于攻击力270%的伤害并眩晕2秒。持盾泥偶继承她200%的最大生命值与100%的攻击力。施放技能时展开相当于攻击力1600%的屏障，为身后的友方吸收伤害，持续6秒。若持盾泥偶已存在，则完全恢复其生命值并重新展开屏障。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Göttliche Umarmung",
         "en": "Divine Embrace",
-        "es": "Abrazo divino"
+        "es": "Abrazo divino",
+        "zh": "神佑护盾"
       },
       "description": {
         "de": "Gewährt einem Verbündeten an der Vorderreihe und allen Verbündeten im Umkreis von 3 Metern einen Schild in Höhe von 240 % ANG. Solange der Schild aktiv ist, blockiert er einen eingehenden Massenkontrolle-Effekt.",
         "en": "Grants a shield equal to 240% of ATK to a frontline ally and all allies within 3 meters. While the shield is active, it blocks one incoming Crowd Control effect.",
-        "es": "Otorga un escudo equivalente al 240 % del ATQ a un aliado de la vanguardia y a todos los aliados en un radio de 3 metros. Mientras el escudo esté activo, bloquea un efecto de Control de masas entrante."
+        "es": "Otorga un escudo equivalente al 240 % del ATQ a un aliado de la vanguardia y a todos los aliados en un radio de 3 metros. Mientras el escudo esté activo, bloquea un efecto de Control de masas entrante.",
+        "zh": "为一名前排友方及其3米内的所有友方提供相当于攻击力240%的护盾。护盾存在期间可抵挡一次控制效果。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Kinder aus Lehm",
         "en": "Children of the Clay",
-        "es": "Hijos de la arcilla"
+        "es": "Hijos de la arcilla",
+        "zh": "抟土造人"
       },
       "description": {
         "de": "Beschwört einen Großaxt-Golem, der 150% LP und 120% ANG übernimmt. Solange er auf dem Feld ist, greift der Großaxt-Golem kontinuierlich den entferntesten Feind an und rammt ihn, wobei er 300% ANG-SCH verursacht und ihn für 1 Sekunde betäubt. Wenn der Großaxt-Golem bereits auf dem Feld ist, wird er beim Wirken sofort vollständig geheilt und springt in den Bereich mit den meisten Feinden, wobei er 300% seines eigenen ANG als SCH an Feinden in diesem Bereich verursacht und sie zu Boden wirft.",
         "en": "Summons a Greataxe Figurine inheriting 150% of her max HP and 120% of her ATK. It attacks the farthest enemy, dealing DMG equal to 300% of ATK and stunning them for 1s. If a Greataxe Figurine already exists, it is fully healed and leaps into enemy clusters, dealing 300% ATK DMG and knocking enemies down.",
-        "es": "Invoca una Estatuilla de gran hacha que hereda el 150 % de sus PS máximos y el 120 % de su ATQ. Golpea continuamente al enemigo más lejano, infligiendo un daño equivalente al 300 % de ATQ y aturdiéndolo durante 1 s. Si ya existe una Estatuilla de Gran Hacha, le restaura todos los PS y la hace saltar a la zona con más enemigos, infligiendo un daño equivalente al 300 % de ATQ y derribando a los enemigos."
+        "es": "Invoca una Estatuilla de gran hacha que hereda el 150 % de sus PS máximos y el 120 % de su ATQ. Golpea continuamente al enemigo más lejano, infligiendo un daño equivalente al 300 % de ATQ y aturdiéndolo durante 1 s. Si ya existe una Estatuilla de Gran Hacha, le restaura todos los PS y la hace saltar a la zona con más enemigos, infligiendo un daño equivalente al 300 % de ATQ y derribando a los enemigos.",
+        "zh": "召唤持斧泥偶，继承她150%的最大生命值与120%的攻击力。它攻击最远的敌人，造成相当于攻击力300%的伤害并眩晕1秒。若持斧泥偶已存在，则将其完全治愈，并跃入敌群造成相当于攻击力300%的伤害并击倒敌人。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Himmelsrettung",
         "en": "Sky Salvation",
-        "es": "Salvación celestial"
+        "es": "Salvación celestial",
+        "zh": "补天"
       },
       "description": {
         "de": "Beschwört einen Unterstützungs-Golem, der 100% LP und 150% ANG übernimmt. Solange er auf dem Feld ist, heilt er den schwächsten Verbündeten alle 2,5 Sekunden um 100% ANG-LP. Wenn der Unterstützungs-Golem bereits auf dem Feld ist, wird er beim Wirken sofort vollständig geheilt und heilt den schwächsten Verbündeten um 300% ANG-LP.",
         "en": "Summons a Support Figurine inheriting 100% of her max HP and 150% of her ATK. It heals the most vulnerable ally for 100% ATK every 2.5s. If a Support Figurine already exists, it is fully healed and instead heals the most vulnerable ally for 300% ATK.",
-        "es": "Invoca una estatuilla de Apoyo, que hereda el 100 % de sus PS máximos y el 150 % de su ATQ. La estatuilla de Apoyo cura al aliado más vulnerable un 100 % de su ATQ cada 2,5 s. Si ya existe una estatuilla de Apoyo, restaura por completo los PS de la estatuilla de Apoyo y hace que cure al aliado más vulnerable un 300 % de su ATQ."
+        "es": "Invoca una estatuilla de Apoyo, que hereda el 100 % de sus PS máximos y el 150 % de su ATQ. La estatuilla de Apoyo cura al aliado más vulnerable un 100 % de su ATQ cada 2,5 s. Si ya existe una estatuilla de Apoyo, restaura por completo los PS de la estatuilla de Apoyo y hace que cure al aliado más vulnerable un 300 % de su ATQ.",
+        "zh": "召唤辅助泥偶，继承她100%的最大生命值与150%的攻击力。它每2.5秒为最脆弱的友方恢复相当于攻击力100%的生命值。若辅助泥偶已存在，则将其完全治愈，并改为为最脆弱的友方恢复相当于攻击力300%的生命值。"
       },
       "upgrades": {
         "level2": {

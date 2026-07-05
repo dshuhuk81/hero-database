@@ -3,19 +3,22 @@
     "de": "Yuelao",
     "en": "Yuelao",
     "es": "Yuelao",
-    "ru": "Юэлао"
+    "ru": "Юэлао",
+    "zh": "月老"
   },
   "skills": [
     {
       "name": {
         "de": "Schicksalhafte Zuneigung",
         "en": "Fated Affection",
-        "es": "Afecto predestinado"
+        "es": "Afecto predestinado",
+        "zh": "天赐良缘"
       },
       "description": {
         "de": "Yue Lao heilt Verbündete nacheinander, wobei jede Heilung LP in Höhe von 140% des ANG wiederherstellt. Dies wird 6-mal wiederholt. Wenn eine verbundene Einheit geheilt wird, erhält die andere verbundene Einheit ebenfalls diese Heilung.",
         "en": "Yuelao heals several allies in sequence, each heal restoring HP equal to 140% of ATK, repeating 6 times. If a linked unit is healed, the other linked unit also receives the healing.",
-        "es": "Yuelao sana a varios aliados en secuencia, cada curación restaura PS equivalentes al 140 % de su ATQ, repitiéndose 6 veces. Si se cura una unidad vinculada, la otra unidad vinculada también recibe la sanación."
+        "es": "Yuelao sana a varios aliados en secuencia, cada curación restaura PS equivalentes al 140 % de su ATQ, repitiéndose 6 veces. Si se cura una unidad vinculada, la otra unidad vinculada también recibe la sanación.",
+        "zh": "月老依次治疗多名友方，每次治疗恢复相当于攻击力140%的生命值，共6次。若被治疗的是被红线牵连的单位，另一名被牵连的单位也会获得该治疗。"
       },
       "upgrades": {
         "level2": {
@@ -39,12 +42,14 @@
       "name": {
         "de": "Roter Faden des Schicksals",
         "en": "Red Thread of Fate",
-        "es": "Hilo rojo del destino"
+        "es": "Hilo rojo del destino",
+        "zh": "姻缘红线"
       },
       "description": {
         "de": "Yuelao verbindet den Verbündeten mit dem höchsten ANG und den Verbündeten mit den höchsten LP mit einem roten Faden, wodurch sie 10 % ihres ANG, ihrer LP, ihrer Rüstung und ihrer M-RES teilen. Die Abklingzeit dieser Fähigkeit wird zurückgesetzt, wenn keine gültigen Ziele vorhanden sind.",
         "en": "Yuelao links the ally with the highest ATK and the ally with the highest HP with a red thread, making them share 10% of their ATK, HP, Armor, and M-RES. This skill refunds its CD if no valid targets exist.",
-        "es": "Yuelao vincula con un hilo rojo al aliado con el ATQ más alto y al aliado con los PS más altos, haciendo que compartan un 10 % de su ATQ, PS, armadura y RES M Esta habilidad reembolsa su TdE si no existen objetivos válidos."
+        "es": "Yuelao vincula con un hilo rojo al aliado con el ATQ más alto y al aliado con los PS más altos, haciendo que compartan un 10 % de su ATQ, PS, armadura y RES M Esta habilidad reembolsa su TdE si no existen objetivos válidos.",
+        "zh": "月老用红线连结攻击力最高与生命值最高的友方，使其共享10%的攻击力、生命值、护甲与魔抗。若无有效目标，该技能返还冷却时间。"
       },
       "upgrades": {
         "level2": {
@@ -68,12 +73,14 @@
       "name": {
         "de": "Band des Schicksalspaares",
         "en": "Bond of Fated Pair",
-        "es": "Vínculo de los predestinados"
+        "es": "Vínculo de los predestinados",
+        "zh": "良缘之契"
       },
       "description": {
         "de": "Yue Lao erhöht den ANG des Verbündeten mit dem höchsten ANG um 15% für 8 Sekunden und stellt 150 Energie wieder her. Wenn das Ziel verbunden ist, erhält der andere verbundene Verbündete dieselben Buffs.",
         "en": "Yuelao increases the ATK of the ally with the highest ATK by 15% for 8s and restores 150 Energy to them. If that ally is linked, Yuelao will also increase the ATK of the other linked ally and restore their Energy.",
-        "es": "Yuelao aumenta el ATQ del aliado con el ATQ más alto en un 15 % durante 8s y le restaura 150 de energía. Si ese aliado está vinculado, Yuelao también aumentará el ATQ del otro aliado vinculado y restaurará su energía."
+        "es": "Yuelao aumenta el ATQ del aliado con el ATQ más alto en un 15 % durante 8s y le restaura 150 de energía. Si ese aliado está vinculado, Yuelao también aumentará el ATQ del otro aliado vinculado y restaurará su energía.",
+        "zh": "月老使攻击力最高的友方攻击力提升15%，持续8秒，并为其恢复150点能量。若该友方被红线牵连，月老还会提升另一名被牵连友方的攻击力并恢复其能量。"
       },
       "upgrades": {
         "level2": {
@@ -97,12 +104,14 @@
       "name": {
         "de": "Laternen des Schicksals",
         "en": "Lanterns of Destiny",
-        "es": "Faroles del destino"
+        "es": "Faroles del destino",
+        "zh": "天命花灯"
       },
       "description": {
         "de": "Yue Lao stellt LP in Höhe von 200% des ANG für den schwächsten Verbündeten wieder her. Wenn dieser Verbündete verbunden ist, wird der andere verbundene Verbündete ebenfalls um denselben Betrag geheilt.",
         "en": "Yuelao restores HP equal to 200% of ATK to the most vulnerable ally. If that ally is linked, Yuelao will also restore HP to the other linked ally.",
-        "es": "Yuelao restaura una cantidad de PS equivalente al 200 % de su ATQ al aliado más vulnerable. Si ese aliado está vinculado, Yuelao también le restaurará PS al otro aliado vinculado."
+        "es": "Yuelao restaura una cantidad de PS equivalente al 200 % de su ATQ al aliado más vulnerable. Si ese aliado está vinculado, Yuelao también le restaurará PS al otro aliado vinculado.",
+        "zh": "月老为最脆弱的友方恢复相当于攻击力200%的生命值。若该友方被红线牵连，月老还会为另一名被牵连的友方恢复生命值。"
       },
       "upgrades": {
         "level2": {

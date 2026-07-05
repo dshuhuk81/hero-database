@@ -2,19 +2,23 @@
   "name": {
     "de": "Amun-Ra",
     "es": "Amón-Ra",
-    "ru": "Амон-Ра"
+    "ru": "Амон-Ра",
+    "en": "Amunra",
+    "zh": "阿蒙拉"
   },
   "skills": [
     {
       "name": {
         "de": "Atons Strahlen",
         "en": "Aten's Radiance",
-        "es": "Radiancia de Atón"
+        "es": "Radiancia de Atón",
+        "zh": "阿吞之辉"
       },
       "description": {
         "de": "Amun-Ra entfesselt Sonnenenergie und steigt auf, wodurch er Superrüstung erhält. Jede Sekunde entfesselt er ein Sonnenschwert, das dem nächsten Feind und den Feinden in seiner Umgebung 100% ANG-SCH zufügt. Diese Fähigkeit verbraucht bei Aktivierung nicht die gesamte Energie, sondern entzieht stattdessen 200 Energie pro Sekunde.",
         "en": "Amun-Ra releases solar energy and rises into air, gaining Super Armor. He fires a solar blade to strike the nearest enemy and nearby targets, dealing DMG equal to 100% of ATK. When cast, it does not drain Energy but consumes 200 Energy per sec.",
-        "es": "Amón-Ra libera energía solar y se eleva en el aire, obteniendo Superarmadura. Lanza una cuchilla solar para golpear al enemigo más cercano y a los objetivos cercanos, infligiendo un daño equivalente al 100 % de su ATQ. Al activarse, la habilidad no vacía la Energía, sino que la consume de forma continua, gastando 200 de Energía por segundo."
+        "es": "Amón-Ra libera energía solar y se eleva en el aire, obteniendo Superarmadura. Lanza una cuchilla solar para golpear al enemigo más cercano y a los objetivos cercanos, infligiendo un daño equivalente al 100 % de su ATQ. Al activarse, la habilidad no vacía la Energía, sino que la consume de forma continua, gastando 200 de Energía por segundo.",
+        "zh": "阿蒙拉释放太阳能量升上空中，获得霸体。他射出太阳之刃打击最近的敌人及其周围目标，造成相当于攻击力100%的伤害。施放时不会立即消耗能量，而是每秒消耗200点能量。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Blendende Sonnenscheibe",
         "en": "Blinding Sun-Disk",
-        "es": "Disco solar cegador"
+        "es": "Disco solar cegador",
+        "zh": "炫目日轮"
       },
       "description": {
         "de": "Amun-Ra erschafft eine Sonnenaura in einem kleinen Bereich um sich herum, die 6 Sekunden anhält. Sie fügt Feinden innerhalb des Bereichs pro Sekunde 100% ANG-SCH zu und reduziert deren ANG um 20%.",
         "en": "Amun-Ra creates a Solar Aura near himself for 6s, dealing DMG equal to 100% of ATK per sec to enemies inside and reducing their ATK by 20%.",
-        "es": "Amón-Ra crea un Aura solar cerca de sí mismo durante 6 s, lo que inflige un daño equivalente al 100 % de ATQ por segundo a los enemigos que se encuentren dentro y reduce su ATQ un 20 %."
+        "es": "Amón-Ra crea un Aura solar cerca de sí mismo durante 6 s, lo que inflige un daño equivalente al 100 % de ATQ por segundo a los enemigos que se encuentren dentro y reduce su ATQ un 20 %.",
+        "zh": "阿蒙拉在自身附近创造一个持续6秒的太阳光环，对其中的敌人每秒造成相当于攻击力100%的伤害，并使其攻击力降低20%。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Glanz von Ra",
         "en": "Glare of Ra",
-        "es": "Resplandor de Ra"
+        "es": "Resplandor de Ra",
+        "zh": "拉之凝视"
       },
       "description": {
         "de": "Amun-Ra erhält zu Kampfbeginn 100 % Ausweichrate für 8 Sek.",
         "en": "Amun-Ra gains 100% Dodge Rate for 8s at combat start.",
-        "es": "Al inicio del combate, Amón-Ra obtiene un 100 % de Prob. de evasión durante 8 s."
+        "es": "Al inicio del combate, Amón-Ra obtiene un 100 % de Prob. de evasión durante 8 s.",
+        "zh": "战斗开始时，阿蒙拉获得100%闪避率，持续8秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Die Dämmerung auf Benben",
         "en": "The Dawn on Benben",
-        "es": "Amanecer en Benben"
+        "es": "Amanecer en Benben",
+        "zh": "奔奔石之晨曦"
       },
       "description": {
         "de": "Zu Beginn des Kampfes erhöht sich die M-RES und Rüstung aller Verbündeten um 50% für 15 Sekunden. Amun-Ra tritt außerdem in einen beschleunigten Energieerholungszustand ein, der seine natürliche Energieerholungsgeschwindigkeit um 50% erhöht. Dieser Zustand endet sofort, wenn ein Verbündeter besiegt wird.",
         "en": "Increases all allies' M-RES and Armor by 50% for 15s at combat start. Amun-Ra gains Energy Regen boost, increasing his Energy Regen by 50%, until any ally falls.",
-        "es": "Al inicio del combate, aumenta la RES M y la Armadura de todos los aliados un 50 % durante 15 s. Amón-Ra obtiene un aumento de Recarga de energía, lo que aumenta su Recarga de energía un 50 %, hasta que cualquier aliado sea derrotado."
+        "es": "Al inicio del combate, aumenta la RES M y la Armadura de todos los aliados un 50 % durante 15 s. Amón-Ra obtiene un aumento de Recarga de energía, lo que aumenta su Recarga de energía un 50 %, hasta que cualquier aliado sea derrotado.",
+        "zh": "战斗开始时，使所有友方的魔抗与护甲提升50%，持续15秒。阿蒙拉获得能量恢复强化，能量恢复提升50%，直到任意友方倒下。"
       },
       "upgrades": {
         "level2": {

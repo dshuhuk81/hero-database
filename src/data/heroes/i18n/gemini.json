@@ -2,19 +2,23 @@
   "name": {
     "de": "Zwillinge",
     "es": "Géminis",
-    "ru": "Близнецы"
+    "ru": "Близнецы",
+    "en": "Gemini",
+    "zh": "双子座"
   },
   "skills": [
     {
       "name": {
         "de": "Besänftigen",
         "en": "Soothe",
-        "es": "Alivio"
+        "es": "Alivio",
+        "zh": "抚慰"
       },
       "description": {
         "de": "Kastor heilt Pollux und stellt LP in Höhe von 240 % ANG wieder her.",
         "en": "Castor heals Pollux, restoring HP equal to 240% of ATK.",
-        "es": "Cástor sana a Pólux, restaurando una cantidad de PS equivalente al 240 % de su ATQ."
+        "es": "Cástor sana a Pólux, restaurando una cantidad de PS equivalente al 240 % de su ATQ.",
+        "zh": "卡斯托尔治疗波吕克斯，恢复相当于攻击力240%的生命值。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Unter meine Fittiche!",
         "en": "Under My Wing!",
-        "es": "¡Bajo mi ala!"
+        "es": "¡Bajo mi ala!",
+        "zh": "到我羽翼下来！"
       },
       "description": {
         "de": "Gareth verbraucht 30% seiner aktuellen LP, um Keanu zu beschwören, der in das am dichtesten besiedelte Feindgebiet springt und Gegnern in der Umgebung 240% ANG-SCH zufügt. Wenn Keanu bereits auf dem Feld ist, werden Keanus LP vollständig wiederhergestellt, und Keanu fügt Gegnern in der Umgebung 300% ANG-SCH zu. (Keanus Anfangswerte entsprechen denen von Gareth).",
         "en": "Pollux consumes 30% of current HP to summon Castor, who will leap into the enemy-clustered area, dealing DMG equal to 240% of ATK to surrounding enemies. If Castor is already on the battlefield, Pollux fully restores Castor's HP and deals DMG equal to 300% of ATK to enemies around Castor. (Castor's base attributes are identical to Pollux's).",
-        "es": "Pólux consume el 30 % de sus PS actuales para invocar a Cástor, quien saltará a la zona con más enemigos, infligiendo un Daño equivalente al 240 % de su ATQ a los enemigos circundantes. Si Cástor ya está en el campo de batalla, Pólux restaura por completo los PS de Cástor e inflige un daño equivalente al 300 % de su ATQ a los enemigos que rodean a Cástor. (Los atributos base de Cástor son idénticos a los de Pólux)."
+        "es": "Pólux consume el 30 % de sus PS actuales para invocar a Cástor, quien saltará a la zona con más enemigos, infligiendo un Daño equivalente al 240 % de su ATQ a los enemigos circundantes. Si Cástor ya está en el campo de batalla, Pólux restaura por completo los PS de Cástor e inflige un daño equivalente al 300 % de su ATQ a los enemigos que rodean a Cástor. (Los atributos base de Cástor son idénticos a los de Pólux).",
+        "zh": "波吕克斯消耗30%当前生命值召唤卡斯托尔，卡斯托尔跃入敌人密集区域，对周围敌人造成相当于攻击力240%的伤害。若卡斯托尔已在战场上，则波吕克斯完全恢复卡斯托尔的生命值，并对卡斯托尔周围的敌人造成相当于攻击力300%的伤害。（卡斯托尔的基础属性与波吕克斯相同。）"
       },
       "upgrades": {
         "level2": {
@@ -62,12 +68,14 @@
       "name": {
         "de": "Kampf Seite an Seite",
         "en": "Fight Alongside",
-        "es": "Lucha unida"
+        "es": "Lucha unida",
+        "zh": "并肩作战"
       },
       "description": {
         "de": "Gareth greift an und fügt dem Gegner mit dem höchsten ANG, der Keanu gerade angreift, 240% SCH zu und blendet ihn für 3 Sekunden (Blenden: reduziert die Trefferquote um 80%).",
         "en": "Pollux deals DMG equal to 240% of ATK to the enemy with the highest ATK among those currently attacking Castor and blinds them for 3s (Blind: reduces Hit Rate by 80%).",
-        "es": "Pólux inflige un Daño equivalente al 240 % de su ATQ al enemigo con el ATQ más alto entre los que atacan a Cástor y lo ciega durante 3s (Ceguera: reduce la Tasa de aciertos en un 80 %)."
+        "es": "Pólux inflige un Daño equivalente al 240 % de su ATQ al enemigo con el ATQ más alto entre los que atacan a Cástor y lo ciega durante 3s (Ceguera: reduce la Tasa de aciertos en un 80 %).",
+        "zh": "波吕克斯对正在攻击卡斯托尔的敌人中攻击力最高者造成相当于攻击力240%的伤害，并致盲3秒（致盲：命中率降低80%）。"
       },
       "upgrades": {
         "level2": {

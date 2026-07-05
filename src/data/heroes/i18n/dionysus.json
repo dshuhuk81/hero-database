@@ -3,19 +3,22 @@
     "de": "Dionysos",
     "en": "Dionysus",
     "es": "Dioniso",
-    "ru": "Дионис"
+    "ru": "Дионис",
+    "zh": "狄俄尼索斯"
   },
   "skills": [
     {
       "name": {
         "de": "Toast der Götter",
         "en": "Toast of the Gods",
-        "es": "Brindis de los dioses"
+        "es": "Brindis de los dioses",
+        "zh": "诸神礼赞"
       },
       "description": {
         "de": "Alle verbündeten Einheiten treten für 5 Sekunden in einen Zustand der Ausgelassenheit ein (Ausgelassenheit: ANG-GESW +50%, Energie-Regenerations-GESW +30%, Fähigkeitsabklingzeit -30%, BEW-GESW +50%, ANG +20%).",
         "en": "Grants all allies the [Frenzy] state for 5s: ATK SPD +50%, Energy Regen +30%, Skill CD -30%, Move SPD +50%, ATK +20%.",
-        "es": "Otorga a todos los aliados el estado de [Frenesí] durante 5 s: VEL de ATQ +50 %, Recarga de energía +30 %, TdE de Habilidad -30 %, VEL de mov. +50 %, ATQ +20 %"
+        "es": "Otorga a todos los aliados el estado de [Frenesí] durante 5 s: VEL de ATQ +50 %, Recarga de energía +30 %, TdE de Habilidad -30 %, VEL de mov. +50 %, ATQ +20 %",
+        "zh": "使所有友方获得【狂热】状态5秒：攻速+50%、能量恢复+30%、技能冷却-30%、移速+50%、攻击力+20%。"
       },
       "upgrades": {
         "level2": {
@@ -39,12 +42,14 @@
       "name": {
         "de": "Vintage-Vivace",
         "en": "Vintage Vivace",
-        "es": "Vivacidad vintage"
+        "es": "Vivacidad vintage",
+        "zh": "回春舞步"
       },
       "description": {
         "de": "Dionysos führt keine Normalangriffe mehr aus, sondern streift über das Schlachtfeld und stößt alle 2,5 Sekunden an, um dem schwächsten Verbündeten LP in Höhe von 120% seines ANG wiederherzustellen.",
         "en": "Dionysus no longer performs Normal Attacks. Instead, she wanders the battlefield and raises a toast every 2.5s, restoring HP equal to 120% of ATK to the most vulnerable ally.",
-        "es": "Dionisio ya no realiza Ataques normales. En su lugar, deambula por el campo de batalla y hace un brindis cada 2,5 s, restaurando una cantidad de PS equivalente al 120 % de ATQ al aliado más vulnerable."
+        "es": "Dionisio ya no realiza Ataques normales. En su lugar, deambula por el campo de batalla y hace un brindis cada 2,5 s, restaurando una cantidad de PS equivalente al 120 % de ATQ al aliado más vulnerable.",
+        "zh": "狄俄尼索斯不再进行普通攻击，而是在战场上游走，每2.5秒举杯祝酒，为最脆弱的友方恢复相当于攻击力120%的生命值。"
       },
       "upgrades": {
         "level2": {
@@ -68,12 +73,14 @@
       "name": {
         "de": "Bachantischer Segen",
         "en": "Bacchic Blessing",
-        "es": "Bendición báquica"
+        "es": "Bendición báquica",
+        "zh": "灵契赐福"
       },
       "description": {
         "de": "Dionysos veranstaltet eine Weinfeier für alle anderen Verbündeten. Für jede einzigartige Klasse in deinem Team erhalten alle Verbündeten 15% auf P&M-RES-Werte für 15 Sekunden.",
         "en": "Dionysus raises a toast, increasing all allies' P&M-RES by 15% for 15s for each unique ally class on the battlefield.",
-        "es": "Dionisio hace un brindis, lo que aumenta la RES F y M de todos los aliados un 15 % durante 15 s por cada clase de aliado única en el campo de batalla."
+        "es": "Dionisio hace un brindis, lo que aumenta la RES F y M de todos los aliados un 15 % durante 15 s por cada clase de aliado única en el campo de batalla.",
+        "zh": "狄俄尼索斯举杯祝酒，战场上每有一种不同的友方职业，所有友方的物抗与魔抗提升15%，持续15秒。"
       },
       "upgrades": {
         "level2": {
@@ -97,12 +104,14 @@
       "name": {
         "de": "Trunkenes Phantasma",
         "en": "Drunken Phantasm",
-        "es": "Fantasma ebrio"
+        "es": "Fantasma ebrio",
+        "zh": "幻闪"
       },
       "description": {
         "de": "Wenn Dionysos SCH von umliegenden Feinden erleidet, reduziert er den erlittenen SCH um 50% und teleportiert sich hinter den sichersten Verbündeten. Dieser Effekt kann höchstens einmal alle 8 Sekunden ausgelöst werden.",
         "en": "When Dionysus takes DMG from a nearby enemy, she reduces the DMG taken by 50% and blinks behind the safest ally. This can only trigger once every 8s.",
-        "es": "Cuando Dionisio recibe daño de un enemigo cercano, reduce el daño recibido en un 50 % y realiza un Destello detrás del aliado más seguro. Esto solo se puede activar una vez cada 8 s."
+        "es": "Cuando Dionisio recibe daño de un enemigo cercano, reduce el daño recibido en un 50 % y realiza un Destello detrás del aliado más seguro. Esto solo se puede activar una vez cada 8 s.",
+        "zh": "当狄俄尼索斯受到附近敌人的伤害时，受到的伤害降低50%并闪现至最安全的友方身后。该效果每8秒只能触发一次。"
       },
       "upgrades": {
         "level2": {

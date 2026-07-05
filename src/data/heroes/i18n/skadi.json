@@ -2,19 +2,23 @@
   "name": {
     "de": "Skadi",
     "es": "Skadi",
-    "ru": "Skadi"
+    "ru": "Skadi",
+    "en": "Skadi",
+    "zh": "斯卡蒂"
   },
   "skills": [
     {
       "name": {
         "de": "Treibender Strudel",
         "en": "Drifting Vortex",
-        "es": "Vórtice errante"
+        "es": "Vórtice errante",
+        "zh": "流转冰涡"
       },
       "description": {
         "de": "Erschafft einen Eiswirbel, der sich für 8 Sek. ununterbrochen über das Schlachtfeld bewegt und dabei feindliche Gottheiten (Diener ausgenommen) anvisiert.\nSolange er aktiv ist, fügt der Eiswirbel Feinden in der Nähe alle 0,5 Sek. SCH in Höhe von 36 % ANG zu. Wenn er einen Feind mit Massenkontrolle durchquert, fügt er stattdessen SCH in Höhe von 60 % ANG zu.",
         "en": "Create an Ice Vortex that continuously moves around the battlefield while targeting enemy Deity units (excluding minions) for 8 seconds. While active, the Ice Vortex deals 36% ATK as DMG to nearby enemies every 0.5 seconds. If it passes through an enemy that is Crowd Controlled, it instead deals 60% ATK as DMG.",
-        "es": "Crea un Vórtice de hielo que se mueve continuamente por el campo de batalla mientras apunta a las unidades de Deidad enemigas (excluyendo súbditos) durante 8 segundos.\nMientras está activo, el Vórtice de hielo inflige un 36 % de ATQ como daño a los enemigos cercanos cada 0,5 segundos. Si pasa a través de un enemigo que está bajo Control de masas, inflige en su lugar un 60 % de ATQ como daño."
+        "es": "Crea un Vórtice de hielo que se mueve continuamente por el campo de batalla mientras apunta a las unidades de Deidad enemigas (excluyendo súbditos) durante 8 segundos.\nMientras está activo, el Vórtice de hielo inflige un 36 % de ATQ como daño a los enemigos cercanos cada 0,5 segundos. Si pasa a través de un enemigo que está bajo Control de masas, inflige en su lugar un 60 % de ATQ como daño.",
+        "zh": "创造一个冰涡，在战场上持续移动并追踪敌方神祇单位（不含随从），持续8秒。存在期间，冰涡每0.5秒对附近敌人造成相当于攻击力36%的伤害。若冰涡经过处于控制状态的敌人，则改为造成相当于攻击力60%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Ring des Schneesturms",
         "en": "Ring of Blizzard",
-        "es": "Anillo de ventisca"
+        "es": "Anillo de ventisca",
+        "zh": "暴雪之环"
       },
       "description": {
         "de": "Beschwöre einen Blizzard mit einem Radius von 3 Metern in einem Bereich mit vielen Feinden. Der Blizzard fügt 3 Sek. lang alle 0,5 Sek. SCH in Höhe von 40 % ANG zu und fügt dann Feinden, die nach 3 Sek. im Gebiet verbleiben, SCH in Höhe von 100 % ANG zu.",
         "en": "Summon a Blizzard with 3-meter radius in a densely packed area. The blizzard deals 40% ATK as DMG every 0.5 seconds for 3 seconds, then deals 100% ATK as DMG to enemies that remain within the area after 3 seconds.",
-        "es": "Invoca una Ventisca con un radio de 3 metros en un área densamente poblada. La ventisca inflige un 40 % de ATQ como daño cada 0,5 segundos durante 3 segundos, y luego inflige un 100 % de ATQ como daño a los enemigos que permanezcan dentro del área después de 3 segundos."
+        "es": "Invoca una Ventisca con un radio de 3 metros en un área densamente poblada. La ventisca inflige un 40 % de ATQ como daño cada 0,5 segundos durante 3 segundos, y luego inflige un 100 % de ATQ como daño a los enemigos que permanezcan dentro del área después de 3 segundos.",
+        "zh": "在敌人密集区域召唤半径3米的暴雪。暴雪每0.5秒造成相当于攻击力40%的伤害，持续3秒，3秒后对仍在范围内的敌人造成相当于攻击力100%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Eisgefängnis",
         "en": "Ice Prison",
-        "es": "Prisión de hielo"
+        "es": "Prisión de hielo",
+        "zh": "寒冰监牢"
       },
       "description": {
         "de": "Friere das aktuelle Ziel für 2 Sek. ein und füge ihm SCH in Höhe von 240 % ANG zu.",
         "en": "Freeze the current target for 2 seconds and deal 240% ATK as DMG.",
-        "es": "Congela al objetivo actual durante 2 segundos e inflige un 240 % de ATQ como daño."
+        "es": "Congela al objetivo actual durante 2 segundos e inflige un 240 % de ATQ como daño.",
+        "zh": "冰冻当前目标2秒，并造成相当于攻击力240%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Reich des Frosts",
         "en": "Realm of Frost",
-        "es": "Reino de escarcha"
+        "es": "Reino de escarcha",
+        "zh": "霜之国度"
       },
       "description": {
         "de": "Wenn eine feindliche Einheit von einer Massenkontrolle betroffen ist, beschwört Skadi einen Eisstachel, der dem Ziel SCH in Höhe von 60 % ANG zufügt.",
         "en": "When an enemy unit is affected by a Crowd Control effect, Skadi summons an Ice Spike to deal 60% ATK as DMG to the target.",
-        "es": "Cuando una unidad enemiga es afectada por un efecto de Control de masas, Skadi invoca un Pico de hielo para infligir un 60 % de ATQ como daño al objetivo."
+        "es": "Cuando una unidad enemiga es afectada por un efecto de Control de masas, Skadi invoca un Pico de hielo para infligir un 60 % de ATQ como daño al objetivo.",
+        "zh": "当敌方单位受到控制效果影响时，斯卡蒂召唤冰刺对目标造成相当于攻击力60%的伤害。"
       },
       "upgrades": {
         "level2": {

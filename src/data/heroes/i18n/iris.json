@@ -2,19 +2,23 @@
   "name": {
     "de": "Iris",
     "es": "Iris",
-    "ru": "Iris"
+    "ru": "Iris",
+    "en": "Iris",
+    "zh": "伊里斯"
   },
   "skills": [
     {
       "name": {
         "de": "Volle Blüte",
         "en": "Full Bloom",
-        "es": "Plena floración"
+        "es": "Plena floración",
+        "zh": "繁花盛放"
       },
       "description": {
         "de": "Iris beschwört einen Geisterschmetterling in einem Bereich mit vielen Feinden, der SCH in Höhe von 150 % ANG verursacht. Dann schlägt er alle 2 Sek. mit den Flügeln, fügt Feinden in Reichweite SCH in Höhe von 150 % ANG zu und erhöht ihren erlittenen SCH für 8 Sek. um 10 %.",
         "en": "Iris summons a spirit butterfly in an enemy-clustered area, dealing DMG equal to 150% of ATK. Then, it flaps its wings every 2s, dealing DMG equal to 150% of ATK to enemies within range and increasing their DMG taken by 10% for 8s.",
-        "es": "Iris invoca una mariposa espiritual en un área concurrida de enemigos que inflige un Daño del 150 % de ATQ. Después, aletea cada 2s para infligir un Daño del 150 % de ATQ a los enemigos en el alcance y aumentar el daño que reciben en un 10 % durante 8s."
+        "es": "Iris invoca una mariposa espiritual en un área concurrida de enemigos que inflige un Daño del 150 % de ATQ. Después, aletea cada 2s para infligir un Daño del 150 % de ATQ a los enemigos en el alcance y aumentar el daño que reciben en un 10 % durante 8s.",
+        "zh": "伊里斯在敌人密集区域召唤灵蝶，造成相当于攻击力150%的伤害。随后灵蝶每2秒振翅一次，对范围内敌人造成相当于攻击力150%的伤害，并使其受到的伤害提升10%，持续8秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Regenbogenschritt",
         "en": "Rainbow Step",
-        "es": "Paso arcoíris"
+        "es": "Paso arcoíris",
+        "zh": "虹光之步"
       },
       "description": {
         "de": "Wenn Iris SCH erleidet, teleportiert sie sich hinter einen zufälligen Verbündeten und erhöht die ANG-GES der nahen Verbündeten um 20% für 10 Sekunden. Dieser Effekt kann nur alle 15 Sekunden ausgelöst werden.",
         "en": "When taking DMG, Iris transforms into a rainbow and blinks behind a random ally, increasing nearby allies' ATK SPD by 20% for 10s. This effect can only trigger once every 15s.",
-        "es": "Al recibir Daño, Iris se transforma en un arcoíris y se teletransporta detrás de un aliado al azar, lo que aumenta la VEL de ATQ de los aliados cercanos en un 20 % durante 10s. Este efecto solo puede activarse una vez cada 15s."
+        "es": "Al recibir Daño, Iris se transforma en un arcoíris y se teletransporta detrás de un aliado al azar, lo que aumenta la VEL de ATQ de los aliados cercanos en un 20 % durante 10s. Este efecto solo puede activarse una vez cada 15s.",
+        "zh": "受到伤害时，伊里斯化作彩虹闪现至随机友方身后，使附近友方的攻速提升20%，持续10秒。该效果每15秒只能触发一次。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Traumlandschaft",
         "en": "Dreamscape",
-        "es": "Paisaje onírico"
+        "es": "Paisaje onírico",
+        "zh": "梦境幻象"
       },
       "description": {
         "de": "Beschwört einen Schmetterlingsphantom über dem nächsten Feind. Nach 4 Sekunden verursacht es 100% ANG-SCH am Ziel und an nahegelegenen Feinden in einem kleinen Bereich und betäubt sie für 3 Sekunden.",
         "en": "Summons a spectral butterfly, which slowly illuminates, above the nearest enemy. After 4s, it deals DMG equal to 100% of ATK to that enemy and nearby targets, and stuns them for 3s.",
-        "es": "Invoca una mariposa espectral que se ilumina lentamente sobre el enemigo más cercano. Tras 4s, inflige un Daño del 100 % de ATQ a ese enemigo y a los objetivos cercanos, y los aturde durante 3s."
+        "es": "Invoca una mariposa espectral que se ilumina lentamente sobre el enemigo más cercano. Tras 4s, inflige un Daño del 100 % de ATQ a ese enemigo y a los objetivos cercanos, y los aturde durante 3s.",
+        "zh": "在最近的敌人上方召唤一只缓缓发光的幻蝶。4秒后，对该敌人及附近目标造成相当于攻击力100%的伤害，并将其眩晕3秒。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Prismen-Bogen",
         "en": "Prism Arc",
-        "es": "Arco prismático"
+        "es": "Arco prismático",
+        "zh": "棱光之弧"
       },
       "description": {
         "de": "Verursacht 250% ANG-SCH an einem zufälligen Feind und bringt das Ziel für 3 Sekunden zum Schweigen.",
         "en": "Deals DMG equal to 250% of ATK to a random enemy and silences the target for 3s.",
-        "es": "Inflige un Daño del 250 % de ATQ a un enemigo al azar y silencia al objetivo durante 3s."
+        "es": "Inflige un Daño del 250 % de ATQ a un enemigo al azar y silencia al objetivo durante 3s.",
+        "zh": "对随机一名敌人造成相当于攻击力250%的伤害，并沉默目标3秒。"
       },
       "upgrades": {
         "level2": {

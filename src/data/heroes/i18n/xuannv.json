@@ -2,19 +2,23 @@
   "name": {
     "de": "Xuannv",
     "es": "Xuannv",
-    "ru": "Сюаньнюй"
+    "ru": "Сюаньнюй",
+    "en": "Xuannv",
+    "zh": "九天玄女"
   },
   "skills": [
     {
       "name": {
         "de": "Himmelslist",
         "en": "Outplay the Heavens",
-        "es": "Superar a los Cielos"
+        "es": "Superar a los Cielos",
+        "zh": "妙算胜天"
       },
       "description": {
         "de": "Passiv: Xuannü führt Normalangriffe in zwei Zuständen aus und beginnt den Kampf im Zustand [Spiel als Weiß].\n[Spiel als Schwarz]: Greift Standardziele an und verursacht 100 % SCH. Jeder Angriff erhöht den ANG um 20 % (max. 3 Stapel).\n[Spiel als Weiß]: Greift das schwächste Ziel an und verursacht 100 % SCH.\nAktiv: Xuannü macht basierend auf ihrer Analyse einen Zug.\nWenn Gegner auf dem Feld in der Überzahl sind, tritt sie in den Zustand [Spiel als Schwarz] ein und erhält 8 Sek. lang 100 % zusätzliche ANG-GES.\nWenn Gegner in der Überzahl sind, tritt sie in den Zustand [Spiel als Weiß] ein und erhält 8 Sek. lang 100 % zusätzliche ANG-GES.",
         "en": "Passive: Xuannv's normal attacks have two states; she starts each battle in the [Play as White] state. [Play as Black]: attacks the default target for 100% DMG, and each attack grants +20% ATK, stacking up to 3 times. [Play as White]: attacks change to strike the weakest enemy for 100% DMG. Active: Xuannv reads the board and makes her next move. If allies are equal to or outnumber enemies, she switches to the [Play as Black] state and gains +100% ATK SPD for 8s. If allies are outnumbered by enemies, she switches to the [Play as White] state and gains +100% ATK SPD for 8s.",
-        "es": "Pasiva: Xuannv realiza Ataques Normales en dos estados y comienza la batalla en el estado [Jugar con Blancas].\n[Jugar con Negras]: Ataca a los objetivos predeterminados e inflige un 100 % de Daño. Cada ataque aumenta el ATQ en un 20 %, acumulable hasta 3 veces.\n[Jugar con Blancas]: Ataca al objetivo más débil e inflige un 100 % de Daño.\nActiva: Xuannv realiza una jugada basada en su análisis.\nSi la cantidad de enemigos en el campo es mayor que la de los aliados, cambia al estado [Jugar con Negras] y obtiene un 100 % adicional de VEL de ATQ durante 8 s.\nSi la cantidad de enemigos es mayor que la de los aliados, cambia al estado [Jugar con Blancas] y obtiene un 100 % adicional de VEL de ATQ durante 8 s."
+        "es": "Pasiva: Xuannv realiza Ataques Normales en dos estados y comienza la batalla en el estado [Jugar con Blancas].\n[Jugar con Negras]: Ataca a los objetivos predeterminados e inflige un 100 % de Daño. Cada ataque aumenta el ATQ en un 20 %, acumulable hasta 3 veces.\n[Jugar con Blancas]: Ataca al objetivo más débil e inflige un 100 % de Daño.\nActiva: Xuannv realiza una jugada basada en su análisis.\nSi la cantidad de enemigos en el campo es mayor que la de los aliados, cambia al estado [Jugar con Negras] y obtiene un 100 % adicional de VEL de ATQ durante 8 s.\nSi la cantidad de enemigos es mayor que la de los aliados, cambia al estado [Jugar con Blancas] y obtiene un 100 % adicional de VEL de ATQ durante 8 s.",
+        "zh": "被动：玄女的普通攻击有两种状态，每场战斗开始时处于【执白】状态。【执黑】：攻击默认目标，造成100%伤害，每次攻击获得+20%攻击力，最多叠加3层。【执白】：攻击改为打击最弱的敌人，造成100%伤害。主动：玄女观棋局而落子。若友方数量大于或等于敌方，切换至【执黑】状态并获得+100%攻速，持续8秒；若友方数量少于敌方，切换至【执白】状态并获得+100%攻速，持续8秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Ungeschickte Bewegungskontrolle",
         "en": "Clumsy Move Controls",
-        "es": "Torpeza Ingeniosa"
+        "es": "Torpeza Ingeniosa",
+        "zh": "缓招制敌"
       },
       "description": {
         "de": "Feuert 3 Steine auf die nächsten Gegner. Wenn es weniger Gegner als Steine gibt, kann dasselbe Ziel mehrmals getroffen werden. Jeder Treffer verursacht 100 % SCH und löst basierend auf dem Energieunterschied einen Effekt aus:\nWenn das Ziel weniger Energie hat, stellt Xuannü 50 Energie wieder her.\nWenn das Ziel gleich viel oder mehr Energie hat, verliert es 50 Energie.",
         "en": "Fires 3 stones at the nearest enemies (if there are fewer targets than stones, the same target is hit multiple times). Each hit deals 100% DMG and resolves an effect based on the energy gap between the two sides: if the target's current energy is lower than Xuannv's, she restores 50 energy; if the target's energy is equal to or higher than hers, the target loses 50 energy.",
-        "es": "Lanza 3 piedras contra los enemigos más cercanos. Si hay menos enemigos que golpes, el mismo objetivo puede ser golpeado varias veces. Cada golpe inflige un 100 % de Daño y activa un efecto según la diferencia de Energía:\nSi el objetivo tiene menos Energía, Xuannv recupera 50 de Energía.\nSi el objetivo tiene igual o más Energía, pierde 50 de Energía."
+        "es": "Lanza 3 piedras contra los enemigos más cercanos. Si hay menos enemigos que golpes, el mismo objetivo puede ser golpeado varias veces. Cada golpe inflige un 100 % de Daño y activa un efecto según la diferencia de Energía:\nSi el objetivo tiene menos Energía, Xuannv recupera 50 de Energía.\nSi el objetivo tiene igual o más Energía, pierde 50 de Energía.",
+        "zh": "向最近的敌人射出3枚棋子（若目标数少于棋子数，同一目标会被多次命中）。每次命中造成100%伤害，并根据双方能量差结算效果：若目标当前能量低于玄女，她恢复50点能量；若目标能量等于或高于她，目标损失50点能量。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Wechselschlag",
         "en": "Switch & Strike",
-        "es": "Cambiar y Atacar"
+        "es": "Cambiar y Atacar",
+        "zh": "黑白易位"
       },
       "description": {
         "de": "Nach Kampfbeginn wird der vorderste Verbündete zum Weißen Stein und der hinterste Verbündete zum Schwarzen Stein bestimmt. Der Weiße Stein wird zum Schwarzen Stein, wenn er die hintere Reihe des Gegners betritt; der Schwarze Stein wird zum Weißen Stein, wenn sich ein Gegner in einem Umkreis von 3 Metern befindet. Jede Einheit kann sich nur einmal umwandeln.\nSchwarzer Stein: Verursacht 30 % mehr SCH.\nWeißer Stein: Erleidet 30 % weniger SCH.",
         "en": "After combat starts, the frontmost ally is designated the White Stone and the backmost ally the Black Stone. The White Stone converts into a Black Stone once it enters the enemy backline; the Black Stone converts into a White Stone when an enemy is within 3 meters. Each unit can convert only once. Black Stone: deals 30% more damage. White Stone: takes 30% less damage.",
-        "es": "Tras el inicio del combate, se designa al aliado en la vanguardia como Piedra Blanca y al aliado en la retaguardia como Piedra Negra. La Piedra Blanca se convierte en Piedra Negra al entrar en la retaguardia enemiga; la Piedra Negra se convierte en Piedra Blanca cuando hay enemigos a 3 metros a su alrededor. Este efecto solo puede activarse una vez por unidad.\nPiedra Negra: Inflige un 30 % más de Daño.\nPiedra Blanca: Recibe un 30 % menos de Daño."
+        "es": "Tras el inicio del combate, se designa al aliado en la vanguardia como Piedra Blanca y al aliado en la retaguardia como Piedra Negra. La Piedra Blanca se convierte en Piedra Negra al entrar en la retaguardia enemiga; la Piedra Negra se convierte en Piedra Blanca cuando hay enemigos a 3 metros a su alrededor. Este efecto solo puede activarse una vez por unidad.\nPiedra Negra: Inflige un 30 % más de Daño.\nPiedra Blanca: Recibe un 30 % menos de Daño.",
+        "zh": "战斗开始后，最前方的友方被指定为白子，最后方的友方被指定为黑子。白子进入敌方后排后转化为黑子；黑子在3米内出现敌人时转化为白子。每个单位只能转化一次。黑子：造成的伤害提升30%。白子：受到的伤害降低30%。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Eintritt ins Spiel",
         "en": "Step Into the Game",
-        "es": "Entrar en el Juego"
+        "es": "Entrar en el Juego",
+        "zh": "入局"
       },
       "description": {
         "de": "Wenn sie angegriffen wird, erschafft Xuannü einen Taiji-Kreis, der den erlittenen SCH 3 Sek. lang um 50 % reduziert. Wenn der Kreis abläuft, feuert sie Taiji-Projektile auf den nächsten Gegner ab, die SCH in Höhe des angesammelten Betrags ihres reduzierten SCH verursachen. CD: 30 Sek.",
         "en": "When Xuannv is attacked, she summons a Taiji Circle for 3s that reduces all incoming damage by 50% and accumulates the reduced portion. When it expires, she fires Taiji projectiles at the nearest enemy dealing damage equal to the accumulated amount. 30s cooldown.",
-        "es": "Cuando recibe un ataque, Xuannv crea un Círculo de Taiji que reduce el daño recibido en un 50 % durante 3 s. Cuando el círculo expira, lanza proyectiles de Taiji contra el enemigo más cercano, que infligen un Daño equivalente a la cantidad de Daño reducido acumulado. TdE: 30 s."
+        "es": "Cuando recibe un ataque, Xuannv crea un Círculo de Taiji que reduce el daño recibido en un 50 % durante 3 s. Cuando el círculo expira, lanza proyectiles de Taiji contra el enemigo más cercano, que infligen un Daño equivalente a la cantidad de Daño reducido acumulado. TdE: 30 s.",
+        "zh": "当玄女被攻击时，召唤持续3秒的太极圈，使受到的所有伤害降低50%并积累被减免的部分。太极圈结束时，向最近的敌人发射太极弹，造成等同于积累量的伤害。冷却30秒。"
       },
       "upgrades": {
         "level2": {

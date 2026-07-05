@@ -2,19 +2,23 @@
   "name": {
     "de": "Stier",
     "es": "Tauro",
-    "ru": "Телец"
+    "ru": "Телец",
+    "en": "Taurus",
+    "zh": "金牛座"
   },
   "skills": [
     {
       "name": {
         "de": "Suchst du Streit?",
         "en": "Asking For A Fight?",
-        "es": "¿Buscas pelea?"
+        "es": "¿Buscas pelea?",
+        "zh": "想打架吗？"
       },
       "description": {
         "de": "Löst Erdspaltung nach vorne aus, fügt Feinden 210% ANG-SCH zu und reduziert den ANG der getroffenen Feinde um 20% für 10 Sekunden.",
         "en": "Casts Earthsplitter forward, dealing DMG equal to 210% of ATK to enemies and reducing their ATK by 20% for 10s.",
-        "es": "Lanza Hendedor de la tierra hacia adelante, lo que inflige un Daño equivalente al 210 % del ATQ a los enemigos y reduce su ATQ en un 20 % durante 10s."
+        "es": "Lanza Hendedor de la tierra hacia adelante, lo que inflige un Daño equivalente al 210 % del ATQ a los enemigos y reduce su ATQ en un 20 % durante 10s.",
+        "zh": "向前方施放裂地斩，对敌人造成相当于攻击力210%的伤害，并使其攻击力降低20%，持续10秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Alter Ochse steht!",
         "en": "Old Ox Stands!",
-        "es": "¡El viejo buey resiste!"
+        "es": "¡El viejo buey resiste!",
+        "zh": "老牛挺立！"
       },
       "description": {
         "de": "Verspottet einen Feind für 3 Sekunden und stellt sofort LP in Höhe von 270% ANG wieder her. Diese Fähigkeit priorisiert Feinde, die den schwächsten Verbündeten angreifen.",
         "en": "Taunts an enemy for 3s and restores HP equal to 270% of ATK. This skill prioritizes enemies who are attacking the most vulnerable ally.",
-        "es": "Provoca a un enemigo durante 3s y restaura PS equivalentes al 270 % del ATQ. Esta habilidad prioriza a los enemigos que atacan al aliado más vulnerable."
+        "es": "Provoca a un enemigo durante 3s y restaura PS equivalentes al 270 % del ATQ. Esta habilidad prioriza a los enemigos que atacan al aliado más vulnerable.",
+        "zh": "嘲讽一名敌人3秒，并恢复相当于攻击力270%的生命值。该技能优先选择正在攻击最脆弱友方的敌人。"
       },
       "upgrades": {
         "level2": {
@@ -62,12 +68,14 @@
       "name": {
         "de": "Stellt euch mir, ihr Würmer!",
         "en": "Face Me, Worms!",
-        "es": "¡Enfréntenme, gusanos!"
+        "es": "¡Enfréntenme, gusanos!",
+        "zh": "都看着我！"
       },
       "description": {
         "de": "Stier verspottet umliegende Feinde für 3 Sekunden, schwingt dann eine Axt und fügt ihnen 360% ANG-SCH zu. Stellt 10% der max. LP für jeden getroffenen Feind wieder her.",
         "en": "Taurus taunts surrounding enemies for 3s and swings his axe to deal DMG equal to 360% of his ATK to them, restoring 10% of his max HP for each enemy hit.",
-        "es": "Tauro provoca a los enemigos circundantes durante 3s y blande su hacha para infligirles un Daño equivalente al 360 % de su ATQ, lo que restaura un 10 % de sus PS máximos por cada enemigo golpeado."
+        "es": "Tauro provoca a los enemigos circundantes durante 3s y blande su hacha para infligirles un Daño equivalente al 360 % de su ATQ, lo que restaura un 10 % de sus PS máximos por cada enemigo golpeado.",
+        "zh": "金牛座嘲讽周围敌人3秒，并挥斧对其造成相当于其攻击力360%的伤害，每命中一个敌人恢复10%最大生命值。"
       },
       "upgrades": {
         "level2": {

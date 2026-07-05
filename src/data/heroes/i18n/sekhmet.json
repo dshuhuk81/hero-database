@@ -2,19 +2,23 @@
   "name": {
     "de": "Sekhmet",
     "es": "Sekhmet",
-    "ru": "Sekhmet"
+    "ru": "Sekhmet",
+    "en": "Sekhmet",
+    "zh": "塞赫麦特"
   },
   "skills": [
     {
       "name": {
         "de": "Koste meine Klauen!",
         "en": "Taste My Claws!",
-        "es": "¡Prueba mis garras!"
+        "es": "¡Prueba mis garras!",
+        "zh": "尝尝我的爪子！"
       },
       "description": {
         "de": "Führt 3 Tritte aus, die den Feinden in einem Kegel SCH zufügen. Die ersten 2 Treffer verursachen SCH in Höhe von 80 % ANG. Der letzte Treffer verursacht SCH in Höhe von 120 % ANG und stößt das Ziel zurück.",
         "en": "Performs 3 kicks and deals DMG to enemies in a cone. The first 2 hits deal DMG equal to 80% of ATK, and the last hit deals DMG equal to 120% of ATK and knocks back the target.",
-        "es": "Da 3 patadas e inflige Daño a los enemigos en un cono. Los primeros 2 golpes infligen un Daño equivalente al 80 % de su ATQ. Y el último golpe inflige un daño equivalente al 120 % de su ATQ y repele al objetivo."
+        "es": "Da 3 patadas e inflige Daño a los enemigos en un cono. Los primeros 2 golpes infligen un Daño equivalente al 80 % de su ATQ. Y el último golpe inflige un daño equivalente al 120 % de su ATQ y repele al objetivo.",
+        "zh": "踢击3次，对锥形范围内的敌人造成伤害。前2次各造成相当于攻击力80%的伤害，最后一击造成相当于攻击力120%的伤害并击退目标。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Wag es doch!",
         "en": "Dare Anger Me?!",
-        "es": "¡¿Te atreves a enfurecerme?!"
+        "es": "¡¿Te atreves a enfurecerme?!",
+        "zh": "敢惹我？！"
       },
       "description": {
         "de": "Sachmet schleudert einen Feind in die Luft, trifft das Ziel 6-mal mit jeweils SCH in Höhe von 30 % ANG und beendet den ANG mit einem schweren Schlag, der SCH in Höhe von 400 % ANG verursacht. Sie ist für die Dauer der Fähigkeit immun gegen Massenkontrolle.",
         "en": "Sekhmet launches an enemy, strikes the target 6 times, each dealing DMG equal to 30% of ATK, and finishes with a heavy blow dealing DMG equal to 400% of ATK. She is immune to Crowd Control for the skill's duration.",
-        "es": "Sekhmet lanza a un enemigo, golpea al objetivo 6 veces, cada golpe inflige un Daño equivalente al 30 % de su ATQ, y termina con un golpe fuerte que inflige un Daño equivalente al 400 % de su ATQ. Es inmune al Control de masas mientras dure la habilidad."
+        "es": "Sekhmet lanza a un enemigo, golpea al objetivo 6 veces, cada golpe inflige un Daño equivalente al 30 % de su ATQ, y termina con un golpe fuerte que inflige un Daño equivalente al 400 % de su ATQ. Es inmune al Control de masas mientras dure la habilidad.",
+        "zh": "塞赫麦特将敌人击飞，打击目标6次，每次造成相当于攻击力30%的伤害，最后以重击造成相当于攻击力400%的伤害。技能期间免疫控制。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Brüllende Wut",
         "en": "Roaring Fury",
-        "es": "Furia rugiente"
+        "es": "Furia rugiente",
+        "zh": "咆哮之怒"
       },
       "description": {
         "de": "Erhöht den eigenen ANG um 5%, jedes Mal, wenn einem Gegner SCH zugefügt wird. Stapelt sich bis zu 20-mal.",
         "en": "Dealing DMG increases her ATK by 5%, stacking up to 20 times.",
-        "es": "Infligir Daño aumenta su ATQ un 5 %, acumulable hasta 20 veces."
+        "es": "Infligir Daño aumenta su ATQ un 5 %, acumulable hasta 20 veces.",
+        "zh": "造成伤害时攻击力提升5%，最多叠加20次。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Forderst du mich heraus?",
         "en": "You Challenge Me?",
-        "es": "¿Me desafías?"
+        "es": "¿Me desafías?",
+        "zh": "你敢挑战我？"
       },
       "description": {
         "de": "Fordert den nächsten Gegner zu einem Duell heraus. Beide Duellanten priorisieren Angriffe aufeinander. Während des Duells wird der von beiden Duellanten durch andere Gegner erlittene SCH um 50% reduziert. Das Duell dauert 8 Sekunden oder bis einer der Duellanten besiegt wird.",
         "en": "Initiates a duel with the nearest enemy. Both participants will always prioritize attacking each other, and they take 50% less DMG from enemies not involved in the duel. The duel lasts 8s or until one participant falls.",
-        "es": "Inicia un duelo con el enemigo más cercano. Ambos participantes siempre priorizarán atacarse entre sí y reciben un 50 % menos de Daño de los enemigos que no participan en el duelo. El duelo dura 8s o hasta que uno de los participantes caiga."
+        "es": "Inicia un duelo con el enemigo más cercano. Ambos participantes siempre priorizarán atacarse entre sí y reciben un 50 % menos de Daño de los enemigos que no participan en el duelo. El duelo dura 8s o hasta que uno de los participantes caiga.",
+        "zh": "与最近的敌人展开决斗。决斗双方始终优先攻击彼此，且受到决斗外敌人的伤害降低50%。决斗持续8秒或直到一方倒下。"
       },
       "upgrades": {
         "level2": {

@@ -2,19 +2,23 @@
   "name": {
     "de": "Löwe",
     "es": "Leo",
-    "ru": "Лев"
+    "ru": "Лев",
+    "en": "Leo",
+    "zh": "狮子座"
   },
   "skills": [
     {
       "name": {
         "de": "Wundklaue",
         "en": "Gash Claw",
-        "es": "Garra lacerante"
+        "es": "Garra lacerante",
+        "zh": "撕裂之爪"
       },
       "description": {
         "de": "Führt 3 Hiebe auf ein einzelnes Ziel aus. Die ersten 2 Treffer verursachen je 80 % ANG als SCH, der letzte 150 % ANG als SCH. Im [Löwenherz]-Zustand wird AoE-SCH in einem Kegel verursacht.",
         "en": "Performs 3 slashes to a single target. The first 2 hits deal 80% ATK as DMG each, and the last one deals 150% ATK as DMG. While in the [Lionheart] states, deals AoE DMG in a cone.",
-        "es": "Realiza 3 tajos a un solo objetivo. Los 2 primeros golpes infligen un 80 % de ATQ como daño cada uno, y el último inflige un 150 % de ATQ como daño. En el estado [Corazón de Leo], inflige daño de AdE en un cono."
+        "es": "Realiza 3 tajos a un solo objetivo. Los 2 primeros golpes infligen un 80 % de ATQ como daño cada uno, y el último inflige un 150 % de ATQ como daño. En el estado [Corazón de Leo], inflige daño de AdE en un cono.",
+        "zh": "对单个目标进行3次斩击。前2次各造成相当于攻击力80%的伤害，最后一次造成相当于攻击力150%的伤害。处于【狮心】状态时，改为对锥形范围造成范围伤害。"
       },
       "upgrades": {
         "level2": {
@@ -29,17 +33,28 @@
         }
       }
     },
-    {},
+    {
+      "name": {
+        "en": "Lionheart Awakening",
+        "zh": "狮心觉醒"
+      },
+      "description": {
+        "en": "Enters the [Lionheart] state. Increases ATK/ATK SPD by 50%/100% and gains Super Armor for 10s. Normal Attacks deal AoE DMG in a cone.",
+        "zh": "进入【狮心】状态。攻击力/攻速提升50%/100%，并获得霸体，持续10秒。普通攻击对锥形范围造成范围伤害。"
+      }
+    },
     {
       "name": {
         "de": "Schwäche-Schlag",
         "en": "Weakness Strike",
-        "es": "Golpe a la debilidad"
+        "es": "Golpe a la debilidad",
+        "zh": "弱点打击"
       },
       "description": {
         "de": "Unterbricht das Ziel, verursacht 250 % ANG als SCH und reduziert seine Rüstung 5 Sek. lang um 25 %.",
         "en": "Interrupts the target, dealing 250% ATK as DMG and reducing their Armor by 25% for 5s.",
-        "es": "Interrumpe al objetivo, inflige un 250 % de ATQ como daño y reduce su armadura un 25 % durante 5 s."
+        "es": "Interrumpe al objetivo, inflige un 250 % de ATQ como daño y reduce su armadura un 25 % durante 5 s.",
+        "zh": "打断目标，造成相当于攻击力250%的伤害并使其护甲降低25%，持续5秒。"
       },
       "upgrades": {
         "level2": {

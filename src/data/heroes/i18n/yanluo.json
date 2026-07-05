@@ -2,19 +2,23 @@
   "name": {
     "de": "Yanluo",
     "es": "Yanluo",
-    "ru": "Яньло"
+    "ru": "Яньло",
+    "en": "Yanluo",
+    "zh": "阎罗"
   },
   "skills": [
     {
       "name": {
         "de": "Schiedsspruch der Unterwelt",
         "en": "Underworld Arbitration",
-        "es": "Arbitraje del inframundo"
+        "es": "Arbitraje del inframundo",
+        "zh": "冥府裁断"
       },
       "description": {
         "de": "Deckt die vergangenen Taten eines Feindes auf und bestraft ihn für seine Sünden, verursacht SCH in Höhe von 200 % seines ANG + 200 % ANG des Ziels und betäubt ihn für 2 Sek.",
         "en": "Exposes an enemy’s past deeds and punishes them for their sins, dealing DMG equal to 200% of Yanluo’s ATK plus 200% of the target’s ATK and stunning them for 2s.",
-        "es": "Expone las fechorías pasadas de un enemigo y lo castiga por sus pecados, infligiendo un Daño equivalente al 200 % de su ATQ + 200 % del ATQ del objetivo y aturdiéndolo durante 2s."
+        "es": "Expone las fechorías pasadas de un enemigo y lo castiga por sus pecados, infligiendo un Daño equivalente al 200 % de su ATQ + 200 % del ATQ del objetivo y aturdiéndolo durante 2s.",
+        "zh": "揭露敌人的生前罪行并加以惩处，造成相当于阎罗攻击力200%+目标攻击力200%的伤害，并眩晕2秒。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Seelenräuber",
         "en": "Soul Reaver",
-        "es": "Segador de almas"
+        "es": "Segador de almas",
+        "zh": "夺魂锁链"
       },
       "description": {
         "de": "Wenn sich keine Feind in seiner Angriffsreichweite befinden, wirft Yanluo Ketten, um einen entfernten Feind zu sich zu ziehen, und verursacht SCH in Höhe von 100 % ANG (priorisiert den symmetrisch gegenüberliegenden Feind).",
         "en": "When no enemies are within his attack range, Yanluo throws chains to pull a distant enemy to him, dealing DMG equal to 100% of ATK, prioritizing the symmetrically opposite enemy.",
-        "es": "Cuando no hay enemigos dentro de su alcance de ataque, Yanluo lanza cadenas para atraer a un enemigo distante, infligiendo un Daño equivalente al 100 % de su ATQ (priorizando al enemigo simétricamente opuesto)."
+        "es": "Cuando no hay enemigos dentro de su alcance de ataque, Yanluo lanza cadenas para atraer a un enemigo distante, infligiendo un Daño equivalente al 100 % de su ATQ (priorizando al enemigo simétricamente opuesto).",
+        "zh": "当攻击范围内没有敌人时，阎罗抛出锁链将远处的敌人拉到身边，造成相当于攻击力100%的伤害，优先选择对称位置的敌人。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Yanluos Siegel",
         "en": "Yanluo’s Seal",
-        "es": "Sello de Yanluo"
+        "es": "Sello de Yanluo",
+        "zh": "阎罗封印"
       },
       "description": {
         "de": "Yanluo fesselt Feinde mit höllischen Ketten für 6 Sek. und fügt ihnen pro Sek. SCH in Höhe von 60 % ANG zu.",
         "en": "Restrains enemies with hellish chains for 6s, dealing DMG equal to 60% of ATK to them every second.",
-        "es": "Yanluo inmoviliza a los enemigos con cadenas infernales durante 6s, infligiéndoles un Daño equivalente al 60 % de su ATQ cada segundo."
+        "es": "Yanluo inmoviliza a los enemigos con cadenas infernales durante 6s, infligiéndoles un Daño equivalente al 60 % de su ATQ cada segundo.",
+        "zh": "以地狱锁链束缚敌人6秒，每秒对其造成相当于攻击力60%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Rad des Karmas",
         "en": "Wheel of Karma",
-        "es": "Rueda del karma"
+        "es": "Rueda del karma",
+        "zh": "业报轮回"
       },
       "description": {
         "de": "Feinde, die dem Yama-König SCH zufügen, verlieren 50 Energie. Dieser Effekt kann bis zu 4 Mal alle 10 Sekunden pro Feind ausgelöst werden.",
         "en": "Enemies that deal DMG to Yanluo lose 50 Energy. This can only trigger 4 times per enemy every 10s.",
-        "es": "Los enemigos que infligen Daño a Yanluo pierden 50 de Energía. Esto solo puede activarse 4 veces por enemigo cada 10s."
+        "es": "Los enemigos que infligen Daño a Yanluo pierden 50 de Energía. Esto solo puede activarse 4 veces por enemigo cada 10s.",
+        "zh": "对阎罗造成伤害的敌人损失50点能量。每个敌人每10秒最多触发4次。"
       },
       "upgrades": {
         "level2": {

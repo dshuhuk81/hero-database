@@ -2,19 +2,23 @@
   "name": {
     "de": "Fische",
     "es": "Piscis",
-    "ru": "Рыбы"
+    "ru": "Рыбы",
+    "en": "Pisces",
+    "zh": "双鱼座"
   },
   "skills": [
     {
       "name": {
         "de": "Schutz der Sirene",
         "en": "Siren's Ward",
-        "es": "Resguardo de sirena"
+        "es": "Resguardo de sirena",
+        "zh": "海妖守护"
       },
       "description": {
         "de": "Gewährt dem schwächsten Verbündeten für 8 Sek. einen Schild, der SCH in Höhe von 250 % des ANG absorbiert.",
         "en": "Grants a shield to the weakest ally, absorbing DMG equal to 250% ATK for 8s.",
-        "es": "Otorga un escudo al aliado más débil, que absorbe daño equivalente a un 250 % del ATQ durante 8 s."
+        "es": "Otorga un escudo al aliado más débil, que absorbe daño equivalente a un 250 % del ATQ durante 8 s.",
+        "zh": "为最弱的友方提供护盾，可吸收相当于攻击力250%的伤害，持续8秒。"
       },
       "upgrades": {
         "level2": {
@@ -29,7 +33,25 @@
         }
       }
     },
-    {},
-    {}
+    {
+      "name": {
+        "en": "Pisces Breach",
+        "zh": "鲸跃冲击"
+      },
+      "description": {
+        "en": "Pisces summons a whale to crash down on the target, dealing AoE DMG equal to 360% ATK.",
+        "zh": "双鱼座召唤鲸鱼砸向目标，造成相当于攻击力360%的范围伤害。"
+      }
+    },
+    {
+      "name": {
+        "en": "Splash",
+        "zh": "水花四溅"
+      },
+      "description": {
+        "en": "Launches 2 Flicker Minnows at random enemies, dealing 180% ATK as DMG.",
+        "zh": "向随机敌人发射2条闪光小鱼，造成相当于攻击力180%的伤害。"
+      }
+    }
   ]
 }

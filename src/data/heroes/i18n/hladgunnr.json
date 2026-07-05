@@ -2,19 +2,23 @@
   "name": {
     "de": "Hladgunnr",
     "es": "Hladgunnr",
-    "ru": "Hladgunnr"
+    "ru": "Hladgunnr",
+    "en": "Hladgunnr",
+    "zh": "赫拉德古恩"
   },
   "skills": [
     {
       "name": {
         "de": "Leuchtender Federsturm",
         "en": "Luminous Feather Lunge",
-        "es": "Embestida de pluma luminosa"
+        "es": "Embestida de pluma luminosa",
+        "zh": "光羽突刺"
       },
       "description": {
         "de": "Horadricuna bewegt sich zurück und stürmt dann nach vorne, um dem Ziel 270% SCH zuzufügen und es zurückzustoßen.",
         "en": "Hladgunnr dashes backward, then charges forward, dealing DMG equal to 270% of her ATK to the target and knocking them back.",
-        "es": "Hladgunnr se desplaza hacia atrás y luego carga hacia adelante, lo que inflige un Daño equivalente al 270 % de su ATQ al objetivo y lo repele."
+        "es": "Hladgunnr se desplaza hacia atrás y luego carga hacia adelante, lo que inflige un Daño equivalente al 270 % de su ATQ al objetivo y lo repele.",
+        "zh": "赫拉德古恩向后疾退后向前冲锋，对目标造成相当于其攻击力270%的伤害并将其击退。"
       },
       "upgrades": {
         "level2": {
@@ -38,12 +42,14 @@
       "name": {
         "de": "Heilige Meditation",
         "en": "Sacred Meditation",
-        "es": "Meditación sagrada"
+        "es": "Meditación sagrada",
+        "zh": "圣息冥想"
       },
       "description": {
         "de": "Hladgunnr tritt beim Eintritt in den Kampf in den Zustand [Schlummer] ein. Sie ist handlungsunfähig, stellt aber 10 Sek. lang pro Sek. LP in Höhe von 100 % ANG wieder her. Der Einsatz ihres Ultimativs bricht den Zustand [Schlummer] ab, gewährt ihr einen Schild in Höhe von 500 % ANG und macht sie für die Dauer der Fähigkeit immun gegen Massenkontrolle. Danach verursachen ihre Normalangriffe SCH in Höhe von 200 % ANG.",
         "en": "Hladgunnr enters the [Slumber] state upon entering battle. She is disabled but restores HP equal to 100% of ATK per sec for 10s. Casting her Ultimate cancels the [Slumber] state, grants her a shield equal to 500% of ATK, and makes her immune to Crowd Control for the skill's duration. After that, her Normal Attacks deal DMG equal to 200% of ATK.",
-        "es": "Hladgunnr entra en estado de [Letargo] al entrar en batalla. Queda incapacitada, pero restaura PS equivalentes al 100 % de su ATQ por segundo durante 10s. Lanzar su Habilidad definitiva cancela el estado de [Letargo], le otorga un escudo equivalente al 500 % de su ATQ y la hace inmune al Control de masas mientras dure la habilidad. Después de eso, sus Ataques normales infligen un Daño equivalente al 200 % de su ATQ."
+        "es": "Hladgunnr entra en estado de [Letargo] al entrar en batalla. Queda incapacitada, pero restaura PS equivalentes al 100 % de su ATQ por segundo durante 10s. Lanzar su Habilidad definitiva cancela el estado de [Letargo], le otorga un escudo equivalente al 500 % de su ATQ y la hace inmune al Control de masas mientras dure la habilidad. Después de eso, sus Ataques normales infligen un Daño equivalente al 200 % de su ATQ.",
+        "zh": "赫拉德古恩进入战斗时进入【沉眠】状态。她无法行动，但每秒恢复相当于攻击力100%的生命值，持续10秒。施放大招会解除【沉眠】状态，使其获得相当于攻击力500%的护盾，并在技能持续期间免疫控制。此后她的普通攻击造成相当于攻击力200%的伤害。"
       },
       "upgrades": {
         "level2": {
@@ -67,12 +73,14 @@
       "name": {
         "de": "Leuchtende Aegis",
         "en": "Luminous Aegis",
-        "es": "Égida luminosa"
+        "es": "Égida luminosa",
+        "zh": "圣辉庇护"
       },
       "description": {
         "de": "Jedes Ultimativ von Hladgunnr gewährt 20 % ANG. Max. 4 Stapel.",
         "en": "Hladgunnr's every Ultimate grants 20% ATK. Max at 4 stacks.",
-        "es": "Cada Habilidad definitiva de Hladgunnr otorga un 20 % de ATQ. Se acumula hasta 4 veces."
+        "es": "Cada Habilidad definitiva de Hladgunnr otorga un 20 % de ATQ. Se acumula hasta 4 veces.",
+        "zh": "赫拉德古恩每次施放大招获得20%攻击力，最多叠加4层。"
       },
       "upgrades": {
         "level2": {
@@ -96,12 +104,14 @@
       "name": {
         "de": "Domäne des Urteils",
         "en": "Domain of Verdict",
-        "es": "Dominio del veredicto"
+        "es": "Dominio del veredicto",
+        "zh": "裁决领域"
       },
       "description": {
         "de": "Hladgunnr erschafft eine Aura um sich, die Feinden in der Nähe SCH in Höhe von 400 % ihres ANG zufügt und ihren Lebensraub um 50 % sowie ihre ANG-GES um 100 % für 10 Sek. erhöht.",
         "en": "Hladgunnr creates a halo around herself, dealing DMG equal to 400% of her ATK to nearby enemies and increasing her Lifesteal by 50% and ATK DPS by 100% for 10s.",
-        "es": "Hladgunnr crea un halo a su alrededor, lo que inflige un Daño equivalente al 400 % de su ATQ a los enemigos cercanos y aumenta su Robo de vida en un 50 % y su VEL de ATQ en un 100 % durante 10s."
+        "es": "Hladgunnr crea un halo a su alrededor, lo que inflige un Daño equivalente al 400 % de su ATQ a los enemigos cercanos y aumenta su Robo de vida en un 50 % y su VEL de ATQ en un 100 % durante 10s.",
+        "zh": "赫拉德古恩在自身周围创造光环，对附近敌人造成相当于其攻击力400%的伤害，并使自身吸血提升50%、攻击输出提升100%，持续10秒。"
       },
       "upgrades": {
         "level2": {
