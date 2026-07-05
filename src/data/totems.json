@@ -5,7 +5,8 @@
     "en": "One Totem can be equipped per team. Its effects apply to all 5 heroes in battle.",
     "de": "Pro Team kann ein Totem ausgerüstet werden. Seine Effekte gelten für alle 5 Helden im Kampf.",
     "es": "Se puede equipar un tótem por equipo. Sus efectos se aplican a los 5 héroes en combate.",
-    "ru": "На команду можно экипировать один тотем. Его эффекты действуют на всех 5 героев в бою."
+    "ru": "На команду можно экипировать один тотем. Его эффекты действуют на всех 5 героев в бою.",
+    "zh": "每支队伍可装备一个图腾。其效果作用于战斗中的全部5名英雄。"
   },
   "totem_archetypes": {
     "primordial_everbloom": [
@@ -72,7 +73,8 @@
         "en": "Primordial Everbloom",
         "de": "Uranfängliche Ewigblüte",
         "es": "Floración primordial eterna",
-        "ru": "Изначальное вечное цветение"
+        "ru": "Изначальное вечное цветение",
+        "zh": "太初永绽"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/primordialeverbloom.webp",
@@ -82,7 +84,8 @@
         "en": "Energy-cycle totem with teamwide tempo buffs, healing, and energy refund.",
         "de": "Totem für Energiekreisläufe mit teamweiten Tempobuffs, Heilung und Energierückgabe.",
         "es": "Tótem de ciclo de energía con mejoras de ritmo para todo el equipo, curación y devolución de energía.",
-        "ru": "Тотем энергокруга с общекомандными баффами темпа, лечением и возвратом энергии."
+        "ru": "Тотем энергокруга с общекомандными баффами темпа, лечением и возвратом энергии.",
+        "zh": "能量循环图腾，为全队提供节奏增益、治疗与能量返还。"
       },
       "archetypes": [
         "burst",
@@ -95,7 +98,8 @@
             "en": "For every 3500 Energy consumed, allies enter an 8s active state, boosting their ATK, ATK SPD, and Energy Regen by 10% and reducing skill CD by 10%.",
             "de": "Für jeweils 3500 verbrauchte Energy treten Verbündete 8s lang in einen aktiven Zustand ein, erhöhen ATK, ATK SPD und Energy Regen um 10% und senken die Skill-CD um 10%.",
             "es": "Por cada 3500 de Energy consumida, los aliados entran en un estado activo de 8s, aumentando su ATK, ATK SPD y Energy Regen en 10% y reduciendo el CD de habilidades en 10%.",
-            "ru": "За каждые 3500 потраченной Energy союзники входят в активное состояние на 8с, повышая ATK, ATK SPD и Energy Regen на 10% и сокращая CD навыков на 10%."
+            "ru": "За каждые 3500 потраченной Energy союзники входят в активное состояние на 8с, повышая ATK, ATK SPD и Energy Regen на 10% и сокращая CD навыков на 10%.",
+            "zh": "友方每消耗3500点能量，进入持续8秒的激活状态，攻击力、攻击速度和回能效率提升10%，技能冷却减少10%。"
           }
         },
         {
@@ -104,7 +108,8 @@
             "en": "For every 1200 Energy consumed by allies, the most vulnerable ally receives healing equal to 10% of max HP.",
             "de": "Für jeweils 1200 von Verbündeten verbrauchte Energy erhält der am stärksten gefährdete Verbündete Heilung in Höhe von 10% der max. HP.",
             "es": "Por cada 1200 de Energy consumida por los aliados, el aliado más vulnerable recibe una curación equivalente al 10% de la HP máxima.",
-            "ru": "За каждые 1200 Energy, потраченной союзниками, самый уязвимый союзник получает лечение в размере 10% от макс. HP."
+            "ru": "За каждые 1200 Energy, потраченной союзниками, самый уязвимый союзник получает лечение в размере 10% от макс. HP.",
+            "zh": "友方每消耗1200点能量，最虚弱的友方单位获得相当于最大生命值10%的治疗。"
           }
         },
         {
@@ -113,7 +118,8 @@
             "en": "For every 3500 Energy consumed, allies enter an 8s active state, boosting their ATK, ATK SPD, and Energy Regen by 20% and reducing skill CD by 20%.",
             "de": "Für jeweils 3500 verbrauchte Energy treten Verbündete 8s lang in einen aktiven Zustand ein, erhöhen ATK, ATK SPD und Energy Regen um 20% und senken die Skill-CD um 20%.",
             "es": "Por cada 3500 de Energy consumida, los aliados entran en un estado activo de 8s, aumentando su ATK, ATK SPD y Energy Regen en 20% y reduciendo el CD de habilidades en 20%.",
-            "ru": "За каждые 3500 потраченной Energy союзники входят в активное состояние на 8с, повышая ATK, ATK SPD и Energy Regen на 20% и сокращая CD навыков на 20%."
+            "ru": "За каждые 3500 потраченной Energy союзники входят в активное состояние на 8с, повышая ATK, ATK SPD и Energy Regen на 20% и сокращая CD навыков на 20%.",
+            "zh": "友方每消耗3500点能量，进入持续8秒的激活状态，攻击力、攻击速度和回能效率提升20%，技能冷却减少20%。"
           }
         },
         {
@@ -122,7 +128,8 @@
             "en": "For every 1200 Energy consumed by allies, all allies restore 40 Energy.",
             "de": "Für jeweils 1200 von Verbündeten verbrauchte Energy stellen alle Verbündeten 40 Energy wieder her.",
             "es": "Por cada 1200 de Energy consumida por los aliados, todos los aliados recuperan 40 de Energy.",
-            "ru": "За каждые 1200 Energy, потраченной союзниками, все союзники восстанавливают 40 Energy."
+            "ru": "За каждые 1200 Energy, потраченной союзниками, все союзники восстанавливают 40 Energy.",
+            "zh": "友方每消耗1200点能量，所有友方单位回复40点能量。"
           }
         }
       ]
@@ -133,7 +140,8 @@
         "en": "All-Seeing Eyes",
         "de": "Allsehende Augen",
         "es": "Ojos omnividentes",
-        "ru": "Всевидящие очи"
+        "ru": "Всевидящие очи",
+        "zh": "全知之眼"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/allseeingeyes.webp",
@@ -143,7 +151,8 @@
         "en": "Snowball totem that rewards the first early kill with burst damage and energy.",
         "de": "Snowball-Totem, das den ersten frühen Kill mit Burst-Schaden und Energy belohnt.",
         "es": "Tótem de snowball que recompensa la primera baja temprana con daño explosivo y energía.",
-        "ru": "Тотем разгона, который вознаграждает первое раннее убийство взрывным уроном и энергией."
+        "ru": "Тотем разгона, который вознаграждает первое раннее убийство взрывным уроном и энергией.",
+        "zh": "滚雪球图腾，为首个早期击杀提供爆发伤害与能量奖励。"
       },
       "archetypes": [
         "burst",
@@ -156,7 +165,8 @@
             "en": "Within the first 10s of battle, the first ally who kills an enemy restores 100 Energy and deals 15% increased DMG.",
             "de": "In den ersten 10s des Kampfes stellt der erste Verbündete, der einen Gegner tötet, 100 Energy wieder her und verursacht 15% erhöhten DMG.",
             "es": "Dentro de los primeros 10s de combate, el primer aliado que mate a un enemigo recupera 100 de Energy y causa un 15% más de DMG.",
-            "ru": "В первые 10с боя первый союзник, убивший врага, восстанавливает 100 Energy и наносит на 15% больше DMG."
+            "ru": "В первые 10с боя первый союзник, убивший врага, восстанавливает 100 Energy и наносит на 15% больше DMG.",
+            "zh": "战斗前10秒内，首个击杀敌人的友方单位回复100点能量，并使造成伤害提升15%。"
           }
         },
         {
@@ -165,7 +175,8 @@
             "en": "Increases the unit's DMG dealt by 30%.",
             "de": "Erhöht den verursachten DMG der Einheit um 30%.",
             "es": "Aumenta en 30% el DMG infligido por la unidad.",
-            "ru": "Увеличивает наносимый юнитом DMG на 30%."
+            "ru": "Увеличивает наносимый юнитом DMG на 30%.",
+            "zh": "使该单位造成伤害提升30%。"
           }
         },
         {
@@ -174,7 +185,8 @@
             "en": "Restores an additional 200 Energy.",
             "de": "Stellt zusätzlich 200 Energy wieder her.",
             "es": "Restaura 200 de Energy adicionales.",
-            "ru": "Дополнительно восстанавливает 200 Energy."
+            "ru": "Дополнительно восстанавливает 200 Energy.",
+            "zh": "额外回复200点能量。"
           }
         },
         {
@@ -183,7 +195,8 @@
             "en": "Effect can trigger again after killing a target and is stackable.",
             "de": "Der Effekt kann nach dem Töten eines Ziels erneut auslösen und ist stapelbar.",
             "es": "El efecto puede activarse de nuevo tras matar a un objetivo y es acumulable.",
-            "ru": "Эффект может сработать снова после убийства цели и складывается."
+            "ru": "Эффект может сработать снова после убийства цели и складывается.",
+            "zh": "击杀目标后可再次触发，且可叠加。"
           }
         }
       ]
@@ -194,7 +207,8 @@
         "en": "Branch of Serenity",
         "de": "Zweig der Gelassenheit",
         "es": "Rama de serenidad",
-        "ru": "Ветвь безмятежности"
+        "ru": "Ветвь безмятежности",
+        "zh": "静谧之枝"
       },
       "rarity": "SR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/branchofserenity.webp",
@@ -204,7 +218,8 @@
         "en": "Simple full-team Armor and M-RES boost for safer, steadier fights.",
         "de": "Einfacher Team-Buff auf Armor und M-RES für sicherere, stabilere Kämpfe.",
         "es": "Sencillo aumento de Armor y M-RES para todo el equipo, pensado para combates más seguros y estables.",
-        "ru": "Простой командный бонус к Armor и M-RES для более безопасных и ровных боёв."
+        "ru": "Простой командный бонус к Armor и M-RES для более безопасных и ровных боёв.",
+        "zh": "简单的全队护甲与魔抗提升，让战斗更安全稳健。"
       },
       "archetypes": [
         "sustain",
@@ -217,7 +232,8 @@
             "en": "At combat start, increases all allies' Armor and M-RES by 20% for the entire battle.",
             "de": "Zu Kampfbeginn erhöht es die Armor und M-RES aller Verbündeten für den gesamten Kampf um 20%.",
             "es": "Al inicio del combate, aumenta en 20% el Armor y el M-RES de todos los aliados durante toda la batalla.",
-            "ru": "В начале боя увеличивает Armor и M-RES всех союзников на 20% на весь бой."
+            "ru": "В начале боя увеличивает Armor и M-RES всех союзников на 20% на весь бой.",
+            "zh": "战斗开始时，全体友方护甲与魔抗提升20%，持续整场战斗。"
           }
         },
         {
@@ -226,7 +242,8 @@
             "en": "Armor and M-RES +25%.",
             "de": "Armor und M-RES +25%.",
             "es": "Armor y M-RES +25%.",
-            "ru": "Armor и M-RES +25%."
+            "ru": "Armor и M-RES +25%.",
+            "zh": "护甲与魔抗+25%。"
           }
         },
         {
@@ -235,7 +252,8 @@
             "en": "Armor and M-RES +30%.",
             "de": "Armor und M-RES +30%.",
             "es": "Armor y M-RES +30%.",
-            "ru": "Armor и M-RES +30%."
+            "ru": "Armor и M-RES +30%.",
+            "zh": "护甲与魔抗+30%。"
           }
         },
         {
@@ -244,7 +262,8 @@
             "en": "Armor and M-RES +35%.",
             "de": "Armor und M-RES +35%.",
             "es": "Armor y M-RES +35%.",
-            "ru": "Armor и M-RES +35%."
+            "ru": "Armor и M-RES +35%.",
+            "zh": "护甲与魔抗+35%。"
           }
         }
       ]
@@ -255,7 +274,8 @@
         "en": "Defiant Vow",
         "de": "Trotziger Schwur",
         "es": "Voto desafiante",
-        "ru": "Дерзкая клятва"
+        "ru": "Дерзкая клятва",
+        "zh": "抗争誓约"
       },
       "rarity": "SR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/defiantvow.webp",
@@ -265,7 +285,8 @@
         "en": "Defensive anti-focus totem that scales when allies are pressured by enemy targeting.",
         "de": "Defensives Anti-Fokus-Totem, das skaliert, wenn Verbündete vom Gegner fokussiert werden.",
         "es": "Tótem defensivo anti-focus que escala cuando los aliados reciben presión del objetivo enemigo.",
-        "ru": "Оборонительный тотем против фокуса, который усиливается, когда союзников прессуют вражеские цели."
+        "ru": "Оборонительный тотем против фокуса, который усиливается, когда союзников прессуют вражеские цели.",
+        "zh": "防御型反集火图腾，当友方被敌人集火时收益提升。"
       },
       "archetypes": [
         "sustain",
@@ -278,7 +299,8 @@
             "en": "For each ally targeted by an enemy, gains 20% Armor and M-RES, stacking up to 6 times.",
             "de": "Für jeden von einem Gegner anvisierten Verbündeten erhält es 20% Armor und M-RES, bis zu 6-mal stapelbar.",
             "es": "Por cada aliado objetivo de un enemigo, obtiene 20% de Armor y M-RES, acumulable hasta 6 veces.",
-            "ru": "За каждого союзника, которого нацелил враг, получает 20% Armor и M-RES, складывается до 6 раз."
+            "ru": "За каждого союзника, которого нацелил враг, получает 20% Armor и M-RES, складывается до 6 раз.",
+            "zh": "每有一名友方被敌人以之为目标，获得20%护甲与魔抗，最多叠加6次。"
           }
         },
         {
@@ -287,7 +309,8 @@
             "en": "Gains 25% Armor and M-RES.",
             "de": "Erhält 25% Armor und M-RES.",
             "es": "Gana 25% de Armor y M-RES.",
-            "ru": "Получает 25% Armor и M-RES."
+            "ru": "Получает 25% Armor и M-RES.",
+            "zh": "获得25%护甲与魔抗。"
           }
         },
         {
@@ -296,7 +319,8 @@
             "en": "Gains 30% Armor and M-RES.",
             "de": "Erhält 30% Armor und M-RES.",
             "es": "Gana 30% de Armor y M-RES.",
-            "ru": "Получает 30% Armor и M-RES."
+            "ru": "Получает 30% Armor и M-RES.",
+            "zh": "获得30%护甲与魔抗。"
           }
         },
         {
@@ -305,7 +329,8 @@
             "en": "Gains 15% Lifesteal when targeted by 3 or more units.",
             "de": "Erhält 15% Lifesteal, wenn es von 3 oder mehr Einheiten anvisiert wird.",
             "es": "Gana 15% de Lifesteal cuando 3 o más unidades lo tienen como objetivo.",
-            "ru": "Получает 15% Lifesteal, если его выбирают целью 3 или более юнитов."
+            "ru": "Получает 15% Lifesteal, если его выбирают целью 3 или более юнитов.",
+            "zh": "当被3名或更多单位以之为目标时，获得15%生命汲取。"
           }
         }
       ]
@@ -316,7 +341,8 @@
         "en": "Eternal Eclipse",
         "de": "Ewige Finsternis",
         "es": "Eclipse eterna",
-        "ru": "Вечное затмение"
+        "ru": "Вечное затмение",
+        "zh": "永恒之蚀"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/eternaleclipse.webp",
@@ -326,7 +352,8 @@
         "en": "Periodic AoE strike that scales from your highest ATK ally and amplifies follow-up damage.",
         "de": "Periodischer AoE-Angriff, der vom Verbündeten mit dem höchsten ATK skaliert und Folgeschaden verstärkt.",
         "es": "Golpe de área periódico que escala con el aliado con mayor ATK y amplifica el daño posterior.",
-        "ru": "Периодический AoE-удар, который масштабируется от союзника с самым высоким ATK и усиливает последующий урон."
+        "ru": "Периодический AoE-удар, который масштабируется от союзника с самым высоким ATK и усиливает последующий урон.",
+        "zh": "周期性范围打击，依据友方最高攻击力结算并强化后续伤害。"
       },
       "archetypes": [
         "burst",
@@ -339,7 +366,8 @@
             "en": "At the 5th second after entering battle and every 15s thereafter, deals DMG equal to 260% of the highest ATK among allies to clustered enemies.",
             "de": "In der 5. Sekunde nach Kampfbeginn und danach alle 15s verursacht es bei dicht beieinander stehenden Gegnern DMG in Höhe von 260% des höchsten ATK unter den Verbündeten.",
             "es": "En el 5.º segundo tras entrar en combate y cada 15s después, inflige DMG equivalente al 260% del ATK más alto entre los aliados a enemigos agrupados.",
-            "ru": "На 5-й секунде после входа в бой и затем каждые 15с наносит сгруппированным врагам DMG, равный 260% от самого высокого ATK среди союзников."
+            "ru": "На 5-й секунде после входа в бой и затем каждые 15с наносит сгруппированным врагам DMG, равный 260% от самого высокого ATK среди союзников.",
+            "zh": "进入战斗后第5秒起，每15秒对密集敌人造成相当于友方最高攻击力260%的伤害。"
           }
         },
         {
@@ -348,7 +376,8 @@
             "en": "Deals 360% ATK as DMG.",
             "de": "Verursacht DMG in Höhe von 360% ATK.",
             "es": "Inflige DMG equivalente al 360% del ATK.",
-            "ru": "Наносит DMG в размере 360% ATK."
+            "ru": "Наносит DMG в размере 360% ATK.",
+            "zh": "造成360%攻击力的伤害。"
           }
         },
         {
@@ -357,7 +386,8 @@
             "en": "Also increases DMG taken by hit targets by 20%.",
             "de": "Erhöht außerdem den erlittenen DMG getroffener Ziele um 20%.",
             "es": "Además aumenta en 20% el DMG recibido por los objetivos golpeados.",
-            "ru": "Также увеличивает получаемый поражёнными целями DMG на 20%."
+            "ru": "Также увеличивает получаемый поражёнными целями DMG на 20%.",
+            "zh": "同时使被命中目标承受伤害提升20%。"
           }
         },
         {
@@ -366,7 +396,8 @@
             "en": "Increases the range to 5 meters and knocks down units hit.",
             "de": "Erhöht die Reichweite auf 5 Meter und wirft getroffene Einheiten zu Boden.",
             "es": "Aumenta el alcance a 5 metros y derriba a las unidades golpeadas.",
-            "ru": "Увеличивает радиус до 5 метров и сбивает поражённые юниты с ног."
+            "ru": "Увеличивает радиус до 5 метров и сбивает поражённые юниты с ног.",
+            "zh": "范围提升至5米，并击倒被命中的单位。"
           }
         }
       ]
@@ -377,7 +408,8 @@
         "en": "Horn of Potency",
         "de": "Horn der Kraft",
         "es": "Cuerno de potencia",
-        "ru": "Рог могущества"
+        "ru": "Рог могущества",
+        "zh": "力量之角"
       },
       "rarity": "SR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/hornofpotency.webp",
@@ -387,7 +419,8 @@
         "en": "Straightforward teamwide ATK boost with no setup required.",
         "de": "Einfacher ATK-Buff für das ganze Team ohne Vorbedingungen.",
         "es": "Un aumento de ATK para todo el equipo, directo y sin preparación.",
-        "ru": "Простой командный бафф ATK без подготовки."
+        "ru": "Простой командный бафф ATK без подготовки.",
+        "zh": "无需铺垫的直接全队攻击力提升。"
       },
       "archetypes": [
         "carry",
@@ -400,7 +433,8 @@
             "en": "At combat start, increases all allies' ATK by 6%.",
             "de": "Zu Kampfbeginn erhöht es den ATK aller Verbündeten um 6%.",
             "es": "Al inicio del combate, aumenta el ATK de todos los aliados en 6%.",
-            "ru": "В начале боя увеличивает ATK всех союзников на 6%."
+            "ru": "В начале боя увеличивает ATK всех союзников на 6%.",
+            "zh": "战斗开始时，全体友方攻击力提升6%。"
           }
         },
         {
@@ -409,7 +443,8 @@
             "en": "ATK +8%.",
             "de": "ATK +8%.",
             "es": "ATK +8%.",
-            "ru": "ATK +8%."
+            "ru": "ATK +8%.",
+            "zh": "攻击力+8%。"
           }
         },
         {
@@ -418,7 +453,8 @@
             "en": "ATK +10%.",
             "de": "ATK +10%.",
             "es": "ATK +10%.",
-            "ru": "ATK +10%."
+            "ru": "ATK +10%.",
+            "zh": "攻击力+10%。"
           }
         },
         {
@@ -427,7 +463,8 @@
             "en": "ATK +12%.",
             "de": "ATK +12%.",
             "es": "ATK +12%.",
-            "ru": "ATK +12%."
+            "ru": "ATK +12%.",
+            "zh": "攻击力+12%。"
           }
         }
       ]
@@ -438,7 +475,8 @@
         "en": "Keystone of Wonders",
         "de": "Grundstein der Wunder",
         "es": "Piedra angular de maravillas",
-        "ru": "Краеугольный камень чудес"
+        "ru": "Краеугольный камень чудес",
+        "zh": "奇迹基石"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/keystoneofwonders.webp",
@@ -448,7 +486,8 @@
         "en": "Multi-suit scaling totem that boosts damage, durability, and later max HP.",
         "de": "Skalierendes Totem mit mehreren Farben, das Schaden, Haltbarkeit und später max. HP erhöht.",
         "es": "Tótem de escalado por múltiples palos que mejora el daño, la resistencia y más tarde la HP máxima.",
-        "ru": "Тотем с масштабированием по нескольким мастям, который усиливает урон, живучесть, а позже и макс. HP."
+        "ru": "Тотем с масштабированием по нескольким мастям, который усиливает урон, живучесть, а позже и макс. HP.",
+        "zh": "多花色成长图腾，提升伤害、坚韧，并在后期提升最大生命值。"
       },
       "archetypes": [
         "scaling",
@@ -461,7 +500,8 @@
             "en": "Each suit owned increases allies' DMG dealt by 4% and reduces DMG taken by 4%.",
             "de": "Jede eigene Farbe erhöht den von Verbündeten verursachten DMG um 4% und reduziert erlittenen DMG um 4%.",
             "es": "Cada palo poseído aumenta en 4% el DMG infligido por los aliados y reduce en 4% el DMG recibido.",
-            "ru": "Каждая имеющаяся масть увеличивает наносимый союзниками DMG на 4% и снижает получаемый DMG на 4%."
+            "ru": "Каждая имеющаяся масть увеличивает наносимый союзниками DMG на 4% и снижает получаемый DMG на 4%.",
+            "zh": "每拥有一种花色，友方造成伤害提升4%，承受伤害降低4%。"
           }
         },
         {
@@ -470,7 +510,8 @@
             "en": "Each suit owned increases DMG dealt by 6% and reduces DMG taken by 6%.",
             "de": "Jede eigene Farbe erhöht den verursachten DMG um 6% und reduziert erlittenen DMG um 6%.",
             "es": "Cada palo poseído aumenta en 6% el DMG infligido y reduce en 6% el DMG recibido.",
-            "ru": "Каждая имеющаяся масть увеличивает наносимый DMG на 6% и снижает получаемый DMG на 6%."
+            "ru": "Каждая имеющаяся масть увеличивает наносимый DMG на 6% и снижает получаемый DMG на 6%.",
+            "zh": "每拥有一种花色，造成伤害提升6%，承受伤害降低6%。"
           }
         },
         {
@@ -479,7 +520,8 @@
             "en": "Increases max HP by 8% per suit.",
             "de": "Erhöht die max. HP pro Farbe um 8%.",
             "es": "Aumenta la HP máxima en 8% por cada palo.",
-            "ru": "Увеличивает макс. HP на 8% за каждую масть."
+            "ru": "Увеличивает макс. HP на 8% за каждую масть.",
+            "zh": "每种花色使最大生命值提升8%。"
           }
         },
         {
@@ -488,7 +530,8 @@
             "en": "Each suit owned increases allies' DMG dealt by 8% and reduces DMG taken by 8%.",
             "de": "Jede eigene Farbe erhöht den von Verbündeten verursachten DMG um 8% und reduziert erlittenen DMG um 8%.",
             "es": "Cada palo poseído aumenta en 8% el DMG infligido por los aliados y reduce en 8% el DMG recibido.",
-            "ru": "Каждая имеющаяся масть увеличивает наносимый союзниками DMG на 8% и снижает получаемый DMG на 8%."
+            "ru": "Каждая имеющаяся масть увеличивает наносимый союзниками DMG на 8% и снижает получаемый DMG на 8%.",
+            "zh": "每拥有一种花色，友方造成伤害提升8%，承受伤害降低8%。"
           }
         }
       ]
@@ -499,7 +542,8 @@
         "en": "Moonglow Tear",
         "de": "Mondscheinträne",
         "es": "Lágrima de resplandor lunar",
-        "ru": "Слеза лунного света"
+        "ru": "Слеза лунного света",
+        "zh": "月华之泪"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/moonglowtear.webp",
@@ -509,7 +553,8 @@
         "en": "Opening control totem that adds immediate burst and crowd control at battle start.",
         "de": "Eröffnungskontroll-Totem, das zu Kampfbeginn sofortigen Burst und Crowd Control bringt.",
         "es": "Tótem de control de apertura que añade ráfaga inmediata y control de masas al inicio de la batalla.",
-        "ru": "Тотем стартового контроля, который сразу даёт взрывной урон и контроль толпы в начале боя."
+        "ru": "Тотем стартового контроля, который сразу даёт взрывной урон и контроль толпы в начале боя.",
+        "zh": "开局控制图腾，在战斗开始时提供即时爆发与群体控制。"
       },
       "archetypes": [
         "opening",
@@ -522,7 +567,8 @@
             "en": "At combat start, highest HP ally deals 250% of team average ATK as DMG and roots enemies for 3s.",
             "de": "Zu Kampfbeginn verursacht der Verbündete mit den meisten HP 250% des durchschnittlichen ATK des Teams als DMG und bindet Gegner für 3s.",
             "es": "Al inicio del combate, el aliado con más HP inflige un 250% del ATK promedio del equipo como DMG e inmoviliza a los enemigos durante 3s.",
-            "ru": "В начале боя союзник с наибольшим HP наносит урон в размере 250% от среднего ATK команды и обездвиживает врагов на 3с."
+            "ru": "В начале боя союзник с наибольшим HP наносит урон в размере 250% от среднего ATK команды и обездвиживает врагов на 3с.",
+            "zh": "战斗开始时，生命值最高的友方造成相当于队伍平均攻击力250%的伤害，并定身敌人3秒。"
           }
         },
         {
@@ -531,7 +577,8 @@
             "en": "Deals 350% ATK as DMG.",
             "de": "Verursacht DMG in Höhe von 350% ATK.",
             "es": "Inflige DMG equivalente al 350% del ATK.",
-            "ru": "Наносит DMG в размере 350% ATK."
+            "ru": "Наносит DMG в размере 350% ATK.",
+            "zh": "造成350%攻击力的伤害。"
           }
         },
         {
@@ -540,7 +587,8 @@
             "en": "Also inflicts a 3s stun.",
             "de": "Löst außerdem einen 3s-Stun aus.",
             "es": "Además inflige un aturdimiento de 3s.",
-            "ru": "Также накладывает оглушение на 3с."
+            "ru": "Также накладывает оглушение на 3с.",
+            "zh": "同时造成3秒眩晕。"
           }
         },
         {
@@ -549,7 +597,8 @@
             "en": "Deals 450% ATK as DMG.",
             "de": "Verursacht DMG in Höhe von 450% ATK.",
             "es": "Inflige DMG equivalente al 450% del ATK.",
-            "ru": "Наносит DMG в размере 450% ATK."
+            "ru": "Наносит DMG в размере 450% ATK.",
+            "zh": "造成450%攻击力的伤害。"
           }
         }
       ]
@@ -560,7 +609,8 @@
         "en": "Sanctified Blood",
         "de": "Geheiligtes Blut",
         "es": "Sangre consagrada",
-        "ru": "Освящённая кровь"
+        "ru": "Освящённая кровь",
+        "zh": "圣血"
       },
       "rarity": "SR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/sanctifiedblood.webp",
@@ -570,7 +620,8 @@
         "en": "Periodic sustain totem that heals weakened allies throughout longer fights.",
         "de": "Periodisches Sustain-Totem, das geschwächte Verbündete in längeren Kämpfen heilt.",
         "es": "Tótem de sustain periódico que cura a los aliados debilitados durante combates largos.",
-        "ru": "Периодический тотем поддержки, который лечит ослабленных союзников в затяжных боях."
+        "ru": "Периодический тотем поддержки, который лечит ослабленных союзников в затяжных боях.",
+        "zh": "周期续航图腾，在持久战中治疗受创的友方。"
       },
       "archetypes": [
         "sustain",
@@ -583,7 +634,8 @@
             "en": "Every 15s starting at 5s, restores 20% max HP to lowest HP ally.",
             "de": "Alle 15s ab Sekunde 5 stellt es dem Verbündeten mit der niedrigsten HP 20% der max. HP wieder her.",
             "es": "Cada 15s начиная en el segundo 5, restaura el 20% de la HP máxima al aliado con menos HP.",
-            "ru": "Каждые 15с, начиная с 5с, восстанавливает 20% макс. HP союзнику с наименьшим количеством HP."
+            "ru": "Каждые 15с, начиная с 5с, восстанавливает 20% макс. HP союзнику с наименьшим количеством HP.",
+            "zh": "自第5秒起每15秒，为生命值最低的友方回复20%最大生命值。"
           }
         },
         {
@@ -592,7 +644,8 @@
             "en": "Triggers every 12s.",
             "de": "Löst alle 12s aus.",
             "es": "Se activa cada 12s.",
-            "ru": "Срабатывает каждые 12с."
+            "ru": "Срабатывает каждые 12с.",
+            "zh": "每12秒触发一次。"
           }
         },
         {
@@ -601,7 +654,8 @@
             "en": "Affects one additional ally.",
             "de": "Betroffen ist ein zusätzlicher Verbündeter.",
             "es": "Afecta a un aliado adicional.",
-            "ru": "Затрагивает ещё одного дополнительного союзника."
+            "ru": "Затрагивает ещё одного дополнительного союзника.",
+            "zh": "额外作用于一名友方。"
           }
         },
         {
@@ -610,7 +664,8 @@
             "en": "Restores 30% of max HP to the lowest HP ally.",
             "de": "Stellt dem Verbündeten mit der niedrigsten HP 30% der max. HP wieder her.",
             "es": "Restaura el 30% de la HP máxima al aliado con menos HP.",
-            "ru": "Восстанавливает 30% макс. HP союзнику с наименьшим количеством HP."
+            "ru": "Восстанавливает 30% макс. HP союзнику с наименьшим количеством HP.",
+            "zh": "为生命值最低的友方回复30%最大生命值。"
           }
         }
       ]
@@ -621,7 +676,8 @@
         "en": "Sigil of Longevity",
         "de": "Siegel der Langlebigkeit",
         "es": "Sigilo de longevidad",
-        "ru": "Печать долголетия"
+        "ru": "Печать долголетия",
+        "zh": "长生印记"
       },
       "rarity": "SR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/sigiloflongevity.webp",
@@ -631,7 +687,8 @@
         "en": "Basic max HP booster for extra frontline and team durability.",
         "de": "Einfacher max.-HP-Buff für mehr Frontline und Team-Haltbarkeit.",
         "es": "Aumento básico de HP máxima para reforzar la línea frontal y la resistencia del equipo.",
-        "ru": "Базовый бонус к макс. HP для более прочной линии фронта и команды."
+        "ru": "Базовый бонус к макс. HP для более прочной линии фронта и команды.",
+        "zh": "基础最大生命值提升，增强前排与全队坚韧。"
       },
       "archetypes": [
         "sustain",
@@ -644,7 +701,8 @@
             "en": "At combat start, increases max HP by 10%.",
             "de": "Zu Kampfbeginn erhöht es die max. HP um 10%.",
             "es": "Al inicio del combate, aumenta la HP máxima en 10%.",
-            "ru": "В начале боя увеличивает макс. HP на 10%."
+            "ru": "В начале боя увеличивает макс. HP на 10%.",
+            "zh": "战斗开始时，最大生命值提升10%。"
           }
         },
         {
@@ -653,7 +711,8 @@
             "en": "Max HP +12.5%.",
             "de": "Max. HP +12,5%.",
             "es": "HP máxima +12,5%.",
-            "ru": "Макс. HP +12,5%."
+            "ru": "Макс. HP +12,5%.",
+            "zh": "最大生命值+12.5%。"
           }
         },
         {
@@ -662,7 +721,8 @@
             "en": "Max HP +15%.",
             "de": "Max. HP +15%.",
             "es": "HP máxima +15%.",
-            "ru": "Макс. HP +15%."
+            "ru": "Макс. HP +15%.",
+            "zh": "最大生命值+15%。"
           }
         },
         {
@@ -671,7 +731,8 @@
             "en": "Max HP +17.5%.",
             "de": "Max. HP +17,5%.",
             "es": "HP máxima +17,5%.",
-            "ru": "Макс. HP +17,5%."
+            "ru": "Макс. HP +17,5%.",
+            "zh": "最大生命值+17.5%。"
           }
         }
       ]
@@ -682,7 +743,8 @@
         "en": "Solar Scorch",
         "de": "Sonnenversengung",
         "es": "Abrasamiento solar",
-        "ru": "Солнечный ожог"
+        "ru": "Солнечный ожог",
+        "zh": "烈日灼烧"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/solarscorch.webp",
@@ -692,7 +754,8 @@
         "en": "Periodic long-range burst totem that strikes the farthest enemy with knockdown pressure.",
         "de": "Periodisches Fernkampf-Burst-Totem, das den entferntesten Gegner mit Umstoßdruck trifft.",
         "es": "Tótem de ráfaga a larga distancia que golpea al enemigo más lejano con presión de derribo.",
-        "ru": "Периодический дальнобойный тотем взрывного урона, который бьёт самого дальнего врага с эффектом сбивания."
+        "ru": "Периодический дальнобойный тотем взрывного урона, который бьёт самого дальнего врага с эффектом сбивания.",
+        "zh": "周期性远程爆发图腾，打击最远的敌人并施加击倒压力。"
       },
       "archetypes": [
         "burst",
@@ -705,7 +768,8 @@
             "en": "Every 20s starting at 5s, deals 200% of highest ATK to farthest enemy.",
             "de": "Alle 20s ab Sekunde 5 verursacht es 200% des höchsten ATK am entferntesten Gegner.",
             "es": "Cada 20s начиная en el segundo 5, inflige al enemigo más lejano un 200% del ATK más alto.",
-            "ru": "Каждые 20с, начиная с 5с, наносит самому дальнему врагу 200% от самого высокого ATK."
+            "ru": "Каждые 20с, начиная с 5с, наносит самому дальнему врагу 200% от самого высокого ATK.",
+            "zh": "自第5秒起每20秒，对最远的敌人造成友方最高攻击力200%的伤害。"
           }
         },
         {
@@ -714,7 +778,8 @@
             "en": "Also knocks down the target.",
             "de": "Wirft das Ziel außerdem zu Boden.",
             "es": "Además derriba al objetivo.",
-            "ru": "Также сбивает цель с ног."
+            "ru": "Также сбивает цель с ног.",
+            "zh": "同时击倒目标。"
           }
         },
         {
@@ -723,7 +788,8 @@
             "en": "Deals 300% ATK of the highest ATK among allies.",
             "de": "Verursacht 300% ATK des höchsten ATK unter den Verbündeten.",
             "es": "Inflige 300% del ATK más alto entre los aliados.",
-            "ru": "Наносит 300% ATK от самого высокого ATK среди союзников."
+            "ru": "Наносит 300% ATK от самого высокого ATK среди союзников.",
+            "zh": "造成友方最高攻击力300%的伤害。"
           }
         },
         {
@@ -732,7 +798,8 @@
             "en": "Affects one more unit.",
             "de": "Betroffen ist eine zusätzliche Einheit.",
             "es": "Afecta a una unidad más.",
-            "ru": "Затрагивает ещё одного юнита."
+            "ru": "Затрагивает ещё одного юнита.",
+            "zh": "额外作用于一名单位。"
           }
         }
       ]
@@ -743,7 +810,8 @@
         "en": "Undying Staff",
         "de": "Unsterblicher Stab",
         "es": "Bastón imperecedero",
-        "ru": "Бессмертный посох"
+        "ru": "Бессмертный посох",
+        "zh": "不朽之杖"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/undyingstaff.webp",
@@ -753,7 +821,8 @@
         "en": "Emergency survival totem that prevents an early collapse with invincibility and shielding.",
         "de": "Notfall-Survival-Totem, das mit Unverwundbarkeit und Schutzschilden einen frühen Zusammenbruch verhindert.",
         "es": "Tótem de supervivencia de emergencia que evita un colapso temprano con invencibilidad y escudos.",
-        "ru": "Экстренный тотем выживания, который предотвращает ранний развал за счёт неуязвимости и щитов."
+        "ru": "Экстренный тотем выживания, который предотвращает ранний развал за счёт неуязвимости и щитов.",
+        "zh": "紧急生存图腾，以无敌与护盾防止早期崩盘。"
       },
       "archetypes": [
         "progression",
@@ -766,7 +835,8 @@
             "en": "When first ally is about to fall, becomes invincible for 1.5s (once per battle).",
             "de": "Wenn der erste Verbündete zu fallen droht, wird es für 1,5s unverwundbar (einmal pro Kampf).",
             "es": "Cuando el primer aliado está a punto de caer, se vuelve invencible durante 1,5s (una vez por batalla).",
-            "ru": "Когда первый союзник вот-вот падёт, становится неуязвимым на 1,5с (один раз за бой)."
+            "ru": "Когда первый союзник вот-вот падёт, становится неуязвимым на 1,5с (один раз за бой).",
+            "zh": "当首个友方即将倒下时，进入无敌状态1.5秒（每场战斗一次）。"
           }
         },
         {
@@ -775,7 +845,8 @@
             "en": "Grants shield equal to 500% of ATK.",
             "de": "Gewährt einen Schild in Höhe von 500% ATK.",
             "es": "Otorga un escudo equivalente al 500% del ATK.",
-            "ru": "Даёт щит, равный 500% ATK."
+            "ru": "Даёт щит, равный 500% ATK.",
+            "zh": "获得相当于500%攻击力的护盾。"
           }
         },
         {
@@ -784,7 +855,8 @@
             "en": "Invincibility lasts 3s.",
             "de": "Die Unverwundbarkeit dauert 3s.",
             "es": "La invencibilidad dura 3s.",
-            "ru": "Неуязвимость длится 3с."
+            "ru": "Неуязвимость длится 3с.",
+            "zh": "无敌持续3秒。"
           }
         },
         {
@@ -793,7 +865,8 @@
             "en": "Triggers one extra time.",
             "de": "Löst ein zusätzliches Mal aus.",
             "es": "Se activa una vez adicional.",
-            "ru": "Срабатывает ещё один дополнительный раз."
+            "ru": "Срабатывает ещё один дополнительный раз.",
+            "zh": "额外触发一次。"
           }
         }
       ]
@@ -804,7 +877,8 @@
         "en": "Unsullied Lotus",
         "de": "Unbefleckter Lotus",
         "es": "Loto inmaculado",
-        "ru": "Безупречный лотос"
+        "ru": "Безупречный лотос",
+        "zh": "净莲"
       },
       "rarity": "SR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/unsulliedlotus.webp",
@@ -814,7 +888,8 @@
         "en": "Aggressive positioning totem that rewards pushing into the enemy half with buffs and sustain.",
         "de": "Aggressives Positions-Totem, das Vorrücken in die gegnerische Hälfte mit Buffs und Sustain belohnt.",
         "es": "Tótem de posicionamiento agresivo que recompensa presionar en la mitad enemiga con buffs y sustain.",
-        "ru": "Тотем агрессивного позиционирования, который вознаграждает продвижение в половину врага баффами и поддержкой."
+        "ru": "Тотем агрессивного позиционирования, который вознаграждает продвижение в половину врага баффами и поддержкой.",
+        "zh": "激进走位图腾，推进至敌方半场可获得增益与续航奖励。"
       },
       "archetypes": [
         "carry",
@@ -827,7 +902,8 @@
             "en": "First time entering enemy half, gains shield equal to 30% max HP.",
             "de": "Beim ersten Betreten der gegnerischen Hälfte erhält es einen Schild in Höhe von 30% der max. HP.",
             "es": "La primera vez que entra en la mitad enemiga, obtiene un escudo equivalente al 30% de la HP máxima.",
-            "ru": "При первом входе на половину врага получает щит, равный 30% макс. HP."
+            "ru": "При первом входе на половину врага получает щит, равный 30% макс. HP.",
+            "zh": "首次进入敌方半场时，获得相当于最大生命值30%的护盾。"
           }
         },
         {
@@ -836,7 +912,8 @@
             "en": "Allies gain 20% ATK and ATK SPD in enemy half.",
             "de": "Verbündete erhalten in der gegnerischen Hälfte 20% ATK und ATK SPD.",
             "es": "Los aliados obtienen 20% de ATK y ATK SPD en la mitad enemiga.",
-            "ru": "Союзники получают 20% ATK и ATK SPD на половине врага."
+            "ru": "Союзники получают 20% ATK и ATK SPD на половине врага.",
+            "zh": "友方在敌方半场获得20%攻击力与攻击速度。"
           }
         },
         {
@@ -845,7 +922,8 @@
             "en": "Restore 15% HP every 5s while in enemy half.",
             "de": "Stellt in der gegnerischen Hälfte alle 5s 15% HP wieder her.",
             "es": "Restaura 15% de HP cada 5s mientras esté en la mitad enemiga.",
-            "ru": "Восстанавливает 15% HP каждые 5с, пока находится на половине врага."
+            "ru": "Восстанавливает 15% HP каждые 5с, пока находится на половине врага.",
+            "zh": "处于敌方半场时每5秒回复15%生命值。"
           }
         },
         {
@@ -854,7 +932,8 @@
             "en": "After allies stay in the enemy half for 15s (counted individually per unit), enters the (Ascension) state, increasing max HP by 40% and DMG dealt by 20%.",
             "de": "Nachdem Verbündete 15s lang in der gegnerischen Hälfte bleiben (pro Einheit einzeln gezählt), tritt es in den (Ascension)-Zustand ein und erhöht max. HP um 40% sowie verursachten DMG um 20%.",
             "es": "Después de que los aliados permanezcan 15s en la mitad enemiga (contado individualmente por unidad), entra en el estado (Ascension), aumentando la HP máxima en 40% y el DMG infligido en 20%.",
-            "ru": "После того как союзники пробудут 15с на половине врага (считается отдельно для каждого юнита), входит в состояние (Ascension), увеличивая макс. HP на 40% и наносимый DMG на 20%."
+            "ru": "После того как союзники пробудут 15с на половине врага (считается отдельно для каждого юнита), входит в состояние (Ascension), увеличивая макс. HP на 40% и наносимый DMG на 20%.",
+            "zh": "友方在敌方半场停留15秒后（每个单位单独计算），进入【飞升】状态，最大生命值提升40%，造成伤害提升20%。"
           }
         }
       ]
@@ -865,7 +944,8 @@
         "en": "Windrunner's Grace",
         "de": "Windläufer-Anmut",
         "es": "Gracia del corredor del viento",
-        "ru": "Милость ветробежца"
+        "ru": "Милость ветробежца",
+        "zh": "御风者之赐"
       },
       "rarity": "SSR",
       "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/totems/windrunnersgrace.webp",
@@ -875,7 +955,8 @@
         "en": "Carry-support totem that empowers your highest ATK ally with speed, ATK, and energy.",
         "de": "Carry-Support-Totem, das deinen Verbündeten mit dem höchsten ATK mit Tempo, ATK und Energy verstärkt.",
         "es": "Tótem de apoyo al carry que potencia a tu aliado con mayor ATK con velocidad, ATK y energía.",
-        "ru": "Тотем поддержки керри, который усиливает союзника с самым высоким ATK скоростью, ATK и энергией."
+        "ru": "Тотем поддержки керри, который усиливает союзника с самым высоким ATK скоростью, ATK и энергией.",
+        "zh": "核心辅助图腾，为友方最高攻击力单位提供速度、攻击力与能量。"
       },
       "archetypes": [
         "carry",
@@ -888,7 +969,8 @@
             "en": "Grants highest ATK ally 50% ATK SPD for 10s.",
             "de": "Gewährt dem Verbündeten mit dem höchsten ATK 10s lang 50% ATK SPD.",
             "es": "Otorga al aliado con mayor ATK 50% de ATK SPD durante 10s.",
-            "ru": "Даёт союзнику с самым высоким ATK 50% ATK SPD на 10с."
+            "ru": "Даёт союзнику с самым высоким ATK 50% ATK SPD на 10с.",
+            "zh": "使友方最高攻击力单位获得50%攻击速度，持续10秒。"
           }
         },
         {
@@ -897,7 +979,8 @@
             "en": "Gains 25% ATK.",
             "de": "Erhält 25% ATK.",
             "es": "Gana 25% de ATK.",
-            "ru": "Получает 25% ATK."
+            "ru": "Получает 25% ATK.",
+            "zh": "获得25%攻击力。"
           }
         },
         {
@@ -906,7 +989,8 @@
             "en": "Restores 20 Energy per second.",
             "de": "Stellt 20 Energy pro Sekunde wieder her.",
             "es": "Restaura 20 de Energy por segundo.",
-            "ru": "Восстанавливает 20 Energy в секунду."
+            "ru": "Восстанавливает 20 Energy в секунду.",
+            "zh": "每秒回复20点能量。"
           }
         },
         {
@@ -915,7 +999,8 @@
             "en": "Gains Super Armor for the duration.",
             "de": "Erhält für die Dauer Super Armor.",
             "es": "Obtiene Super Armor durante toda la duración.",
-            "ru": "Получает Super Armor на всю длительность."
+            "ru": "Получает Super Armor на всю длительность.",
+            "zh": "持续期间获得霸体。"
           }
         }
       ]
