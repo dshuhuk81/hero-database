@@ -172,5 +172,41 @@
         "zh": "每次施放黄沙掩埋，下一次黄沙掩埋的伤害提升20%，最多叠加5次。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Seth, Gott des Sturms und des Chaos, herrscht über Sturmwind, Wüste und Zerstörung, wird aber auch als Hüter von Licht und Ordnung gesehen.",
+    "es": "Set, dios de la tormenta y el caos, gobierna el vendaval, el desierto y la destrucción, aunque también es visto como guardián de la luz y el orden.",
+    "ru": "Сет, бог бури и хаоса, властвует над штормом, пустыней и разрушением, но также почитается как страж света и порядка.",
+    "zh": "赛特，风暴与混沌之神，主宰狂风、荒漠与毁灭，却也被视为光明与秩序的守护者。",
+    "en": "Set, god of storm and chaos, rules over gale, desert and destruction, yet is also seen as a guardian of light and order."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Lebensraub- und ANG%-Verstärker mit Rüstungszerreißen für das Diamant-Team. Die Meisterung von Seth an der Seite von Poseidon definiert High-Level-PvE-Pushing - zu verstehen, wie Seth funktioniert, trennt mittelmäßige von Elite-Pushern.",
+      "es": "Potenciador de robo de vida y ATQ% con desgarro de armadura para el equipo de Diamantes. Dominar a Set junto a Poseidón define el empuje de PvE de alto nivel: entender cómo funciona Set separa a los empujadores mediocres de los de élite.",
+      "ru": "Усилитель вампиризма и ATK% с разрывом брони для команды Бубен. Мастерство Сета вместе с Посейдоном определяет пуш PvE высокого уровня - понимание работы Сета отделяет средних пушеров от элитных.",
+      "zh": "为方片队提供生命汲取与攻击力%增益，并附带破甲。精通赛特与波塞冬的配合是高端PvE推图的关键——理解赛特的机制，正是平庸推图者与顶尖推图者的分水岭。",
+      "en": "Lifesteal and ATK% buffer with armor shred for Diamond team. Mastery of Set alongside Poseidon defines high-level PvE pushing -- understanding how Set works separates mediocre from elite pushers."
+    }
+  },
+  "synergyLinks": [
+    {
+      "description": {
+        "de": "Seths Rüstungszerreißen an von Poseidon gruppierten Feinden ist der Kern des Diamant-PvE-Pushings.",
+        "es": "El desgarro de armadura de Set sobre enemigos agrupados por Poseidón es el núcleo del empuje de PvE de Diamantes.",
+        "ru": "Разрыв брони Сета по сгруппированным Посейдоном врагам - основа пуша PvE фракции Бубен.",
+        "zh": "赛特对波塞冬所聚敌人的破甲，是方片PvE推图的核心。",
+        "en": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing."
+      }
+    },
+    {
+      "description": {
+        "de": "Der ANG%-Buff und Lebensraub verstärken die Burst-Fenster von Herkules.",
+        "es": "La mejora de ATQ% y el robo de vida amplifican las ventanas de estallido de Hércules.",
+        "ru": "Бафф ATK% и вампиризм усиливают окна бёрста Геракла.",
+        "zh": "攻击力%增益与生命汲取放大赫拉克勒斯的爆发窗口。",
+        "en": "ATK% buff and lifesteal amplify Heracles burst windows."
+      }
+    }
+  ]
 }

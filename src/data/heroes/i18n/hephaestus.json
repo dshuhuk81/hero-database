@@ -167,5 +167,100 @@
         "zh": "处于【专注】状态时，赫菲斯托斯受到的伤害降低60%。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Ein Zonenkontroll-Support, der zu Kampfbeginn drei mechanische Vorrichtungen platziert und pro Ultimativ-Einsatz jeweils eine aktiviert, um auf einen feldweiten Fusions-Effekt hinzuarbeiten. An seine Schmiede gebunden, erhält er unbegrenzte Reichweite und Schadensreduktion im Tausch gegen völlige Unbeweglichkeit.",
+    "es": "Un apoyo de control de zona que despliega 3 dispositivos mecánicos al inicio del combate, activándolos uno por lanzamiento de Ulti para construir un efecto de Fusión en todo el campo. Anclado a su Fragua, gana alcance ilimitado y reducción de daño a cambio de una inmovilidad total.",
+    "ru": "Поддержка контроля зоны, которая в начале боя размещает 3 механических устройства, активируя по одному за каждый каст ульты, чтобы создать эффект Слияния на всём поле. Прикованный к своей Кузнице, он получает неограниченную дальность и снижение урона в обмен на полную неподвижность.",
+    "zh": "一名区域控制型辅助，战斗开始时布置3台机械装置，每次释放终结技激活一台，逐步构建覆盖全场的融合效果。他被束缚于熔炉之上，以彻底的不可移动为代价，换取无限射程与伤害减免。",
+    "en": "A zone-control support who deploys 3 mechanical devices at battle start, activating them one per Ultimate cast to build toward a field-wide Fusion effect. Anchored to his Forge, he gains unlimited range and damage reduction in exchange for total immobility."
+  },
+  "strengths": [
+    {
+      "de": "Außergewöhnliche Team-Selbsterhaltung - mehrschichtige Heilung (150-200% ANG-Skalierung) plus stapelnde Schadensreduktion machen das Team nahezu unzerstörbar, sobald es hochgefahren ist",
+      "es": "Sustento de equipo excepcional: la curación multicapa (escalado 150-200% ATQ) más la reducción de daño acumulable vuelven al equipo casi inmatable una vez activado",
+      "ru": "Исключительное поддержание команды - многослойное лечение (масштаб 150-200% ATK) плюс накапливаемое снижение урона делают команду почти неубиваемой после разгона",
+      "zh": "卓越的团队续航——多层治疗（150-200%攻击力成长）加上可叠加的伤害减免，使队伍在起势后几乎无法被击杀",
+      "en": "Exceptional team sustain - Multi-layer healing (150-200% ATK scaling) plus damage reduction stacking makes team nearly unkillable once ramped"
+    },
+    {
+      "de": "Teamweite Schadensverstärkung - +30% Schadensbonus für alle Verbündeten, wenn alle 3 Geräte aktiv sind; harmoniert perfekt mit DPS-lastigen Carries",
+      "es": "Amplificación de daño en todo el equipo: +30% de bonificación de daño a todos los aliados con los 3 dispositivos activos; sinergiza a la perfección con carries de mucho DPS",
+      "ru": "Общекомандное усиление урона - +30% к урону всех союзников при 3 активных устройствах; идеально сочетается с DPS-ориентированными кэрри",
+      "zh": "全队增伤——3台装置全部激活时，所有友方获得+30%伤害加成；与高DPS核心完美协同",
+      "en": "Teamwide damage amplification - +30% all-ally damage bonus when all 3 devices active; synergizes perfectly with DPS-heavy carries"
+    },
+    {
+      "de": "Schwere gegnerische Debuff-Schichten - senkt gegnerisches ANG um 15%, Angriffstempo um 20% und Rüstung/M-Res um bis zu 50%, während die größte Bedrohung gefesselt wird",
+      "es": "Fuertes capas de debuff enemigo: reduce el ATQ enemigo un 15%, la vel. de ataque un 20% y la armadura/R-M hasta un 50% mientras restringe a la mayor amenaza",
+      "ru": "Мощные слои дебаффа врага - снижает ATK врага на 15%, скорость атаки на 20% и броню/M-Res до 50%, сковывая главную угрозу",
+      "zh": "强力的敌方减益层——削减敌方15%攻击力、20%攻速及最多50%护甲/魔抗，同时束缚威胁最大的目标",
+      "en": "Heavy enemy debuff layers - Reduces enemy ATK by 15%, ATK SPD by 20%, and armor/M-RES by up to 50% while restraining highest threat"
+    },
+    {
+      "de": "Skaliert unendlich mit Energieregeneration - jeder Punkt Energieregeneration beschleunigt die Geräteaktivierung; exponentielles Machtwachstum mit den Tugendensets Inbrunst/Fern",
+      "es": "Escala infinitamente con la regeneración de energía: cada punto de regeneración acelera la activación de dispositivos; crecimiento de poder exponencial con los conjuntos de virtud Fervor/Far",
+      "ru": "Бесконечно масштабируется от восстановления энергии - каждая единица регена ускоряет активацию устройств; экспоненциальный рост силы с сетами добродетелей Fervor/Far",
+      "zh": "随回能无限成长——每一点回能都加速装置激活；搭配「热忱/远」美德套装可实现指数级的力量增长",
+      "en": "Scales infinitely with energy regen - Each point of energy regen accelerates device activation; exponential power growth with Fervor/Far virtue sets"
+    },
+    {
+      "de": "Einzigartige Support-Rolle - einziger physischer/zäher Support im Spiel, skaliert anders mit Ausrüstung und überschneidet sich nicht mit magischen Supports",
+      "es": "Rol de apoyo único: el único apoyo físico/resistente del juego, escala de forma distinta con el equipo y no se solapa con los apoyos mágicos",
+      "ru": "Уникальная роль поддержки - единственная физическая/крепкая поддержка в игре, иначе масштабируется от снаряжения и не пересекается с магическими поддержками",
+      "zh": "独特的辅助定位——游戏中唯一的物理/坦克型辅助，装备成长方式不同，不与法系辅助重叠",
+      "en": "Unique support role - Only physical/tanky support in game, scales differently with gear and doesn't overlap with magical supports"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Braucht Zeit, um die Spitzenkraft zu erreichen - benötigt 3 Ultimativs (~15-20 Sekunden), um alle 3 Geräte zu aktivieren; in kurzen Kämpfen oder Early-Game-Rushes lahmgelegt",
+      "es": "Necesita tiempo para alcanzar su máximo poder: requiere 3 Ultis (~15-20 segundos) para activar los 3 dispositivos; queda lisiado en combates cortos o rushes de inicio",
+      "ru": "Нужно время, чтобы выйти на пик - требуется 3 ульты (~15-20 секунд), чтобы активировать все 3 устройства; беспомощен в коротких боях и ранних рашах",
+      "zh": "需要时间才能达到巅峰——激活全部3台装置需要3次终结技（约15-20秒）；在短战或前期速攻中会被废掉",
+      "en": "Requires time to reach peak power - Needs 3 Ultimates (~15-20 seconds) to activate all 3 devices; crippled in short fights or early-game rushes"
+    },
+    {
+      "de": "Unbeweglichkeit erzeugt Positionierungsrisiko - die Schmiede verankert ihn an einem Ort; erzwungene Bewegung löst eine 5-sekündige Betäubung aus, die das Team ohne Support lässt",
+      "es": "La inmovilidad genera riesgo de posicionamiento: la Fragua lo ancla a un lugar; el desplazamiento forzado provoca un aturdimiento de 5 segundos que deja al equipo sin apoyo",
+      "ru": "Неподвижность создаёт позиционный риск - Кузница приковывает его к месту; принудительное смещение вызывает оглушение на 5 секунд, оставляя команду без поддержки",
+      "zh": "不可移动带来站位风险——熔炉将他固定在一处；被强制位移会触发5秒眩晕，令队伍失去辅助",
+      "en": "Immobility creates positioning risk - Forge anchors him to one location; forced movement away triggers 5-second stun that leaves team without support"
+    },
+    {
+      "de": "Katastrophal gegen Versetzungs-CC - Züge von Pan/Khepri/Seth bedeuten Betäubung + wehrloses Team; eine schlechte Position gleicht einer Niederlage",
+      "es": "Catastrófico ante control de desplazamiento: los tirones de Pan/Khepri/Set significan aturdimiento + equipo indefenso; una mala posición equivale a perder la partida",
+      "ru": "Катастрофа против контроля со смещением - притягивания Пана/Хепри/Сета означают оглушение + беззащитную команду; одна плохая позиция равна поражению",
+      "zh": "对位移控制毫无招架之力——潘/凯布利/赛特的拉扯意味着眩晕+无防护的队伍；一次糟糕站位便等于输掉比赛",
+      "en": "Catastrophic to displacement CC - Pan/Khepri/Set pulls mean stun + defenseless team; one bad position equals match loss"
+    },
+    {
+      "de": "Energieaushungern ist tödlich - Pans Energieentzug und Kronos' Abklingzeitverkürzung verhindern, dass er 3 Ultimativs erreicht; hart gekontert von Energieverweigerungs-Supports",
+      "es": "La inanición de energía es fatal: el drenaje de energía de Pan y la reducción de enfriamiento de Crono le impiden llegar a 3 Ultis; contrado con dureza por apoyos que niegan energía",
+      "ru": "Энергетический голод смертелен - похищение энергии Паном и сокращение КД Кроносом мешают ему набрать 3 ульты; жёстко контрится поддержками, лишающими энергии",
+      "zh": "能量枯竭是致命的——潘的能量吸取与克洛诺斯的冷却缩减会让他凑不出3次终结技；被断能辅助强力克制",
+      "en": "Energy starvation is fatal - Pan's energy drain and Cronus cooldown reduction prevent him from hitting 3 Ultimates; hard-countered by energy-denial supports"
+    },
+    {
+      "de": "Anfällig für Burst-Aufstellungen - schnelle Teams können das Team ausradieren, bevor 3 Geräte aktiviert sind oder bevor er Verbündete in Sicherheit heilt",
+      "es": "Vulnerable a composiciones de estallido: los equipos rápidos pueden fulminar al equipo antes de que se activen los 3 dispositivos o de que cure a los aliados a salvo",
+      "ru": "Уязвим к бёрст-составам - быстрые команды могут снести команду до активации 3 устройств или до того, как он вылечит союзников",
+      "zh": "惧怕爆发阵容——快节奏队伍可在3台装置激活之前、或他将队友治疗到安全线之前将队伍打爆",
+      "en": "Vulnerable to burst compositions - Fast teams can burst down team before 3 devices activate or before he heals allies to safety"
+    },
+    {
+      "de": "Assassinen mit CC wie Nyx können seine Heilung stummschalten und ihn betäuben, bevor er in Fahrt kommt",
+      "es": "Los asesinos con control como Nix pueden silenciar su curación y aturdirlo antes de que arranque",
+      "ru": "Ассасины с контролем вроде Никты могут заглушить его лечение и оглушить его до разгона",
+      "zh": "像尼克斯这样带控制的刺客可以封锁他的治疗，并在他起势前将其眩晕",
+      "en": "Assassins with CC like Nyx can mute his healing and stun him before he gets going"
+    },
+    {
+      "de": "Versetzungs-/Zughelden, die Hephaistos von seiner Schmiede wegbewegen, lösen eine 5-sekündige Betäubung aus, die ihn völlig ausschaltet",
+      "es": "Los héroes de desplazamiento/atracción que alejan a Hefesto de su fragua provocan un aturdimiento de 5 segundos que lo inhabilita por completo",
+      "ru": "Герои смещения/притягивания, уводящие Гефеста от кузницы, вызывают 5-секундное оглушение, полностью его выключая",
+      "zh": "能将赫菲斯托斯拖离熔炉的位移/牵引英雄会触发5秒眩晕，令他彻底失效",
+      "en": "Displacement/Pull heroes that move Hephaestus away from his forge trigger a 5-second stun that completely disables him"
+    }
+  ]
 }

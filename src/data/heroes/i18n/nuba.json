@@ -177,5 +177,102 @@
         "zh": "消耗旱魃之源复活时，女魃保留倒下前的能量。"
       }
     }
-  }
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Off-Tank-Sub-DPS mit vielschichtiger Utility. Ohne Dupe- und Relikt-Investition speist sie dem Gegner Energie zu. Mehrere nicht offensichtliche Tricks im Kit.",
+      "es": "Sub-DPS y semitanque con utilidad en capas. Sin inversión en duplicados y reliquia, alimenta energía al enemigo. Varios trucos poco evidentes en su kit.",
+      "ru": "Полутанк-саб-DPS с многослойной полезностью. Без вложений в дубли и реликвию она подкармливает врага энергией. В наборе несколько неочевидных приёмов.",
+      "zh": "带多层功能性的副坦副输出。若无复制与圣物投资，她反而会给敌人回能。技能组中藏有多个不易察觉的小技巧。",
+      "en": "Off-tank sub-DPS with layered utility. Without dupe and relic investment she feeds enemy energy. Multiple non-obvious tricks in kit."
+    }
+  },
+  "strengths": [
+    {
+      "de": "Wendet das Karmesinrote Verderbensmal zu Kampfbeginn passiv an - kein Anlauf zum Schwächen nötig",
+      "es": "Aplica la Marca de Perdición Carmesí al inicio del combate de forma pasiva: no requiere preparación para debilitar",
+      "ru": "Пассивно накладывает Багровую Метку Погибели в начале боя - для дебаффа не нужен разгон",
+      "zh": "战斗开始时被动施加「绯红厄咒印记」——无需蓄势即可减益",
+      "en": "Applies Crimson Doom Mark at battle start passively — no ramp-up required for debuffing"
+    },
+    {
+      "de": "Dauerhafte Angriffstempo-Senkung auf markierten Feinden stapelt bis zu 4× - wird umso bedrückender, je länger der Kampf dauert",
+      "es": "La reducción permanente de vel. de ataque en enemigos marcados se acumula hasta 4×: se vuelve más opresiva cuanto más dura el combate",
+      "ru": "Постоянное снижение скорости атаки у помеченных врагов стакается до 4× - тем давящее, чем дольше бой",
+      "zh": "对被标记敌人的永久攻速削减最多叠加4层——战斗越久越具压迫感",
+      "en": "Permanent ATK SPD reduction on marked enemies stacks up to 4× — grows more oppressive as the fight extends"
+    },
+    {
+      "de": "Eingebaute Selbstwiederbelebung durch Dürre-Teufel-Quellen bietet außergewöhnliche Standfestigkeit",
+      "es": "La autorreanimación incorporada mediante fuentes del Demonio de Sequía brinda una permanencia excepcional",
+      "ru": "Встроенное самовоскрешение через источники Демона Засухи даёт исключительную живучесть",
+      "zh": "通过「旱魃」来源实现的内置自复活提供了非凡的持续作战能力",
+      "en": "Built-in self-revive through Drought Devil sources provides exceptional staying power"
+    },
+    {
+      "de": "Energieentzug/-zerstörung beim Ultimativ kann gegnerische Ultimativ-Rotationen verzögern und stören",
+      "es": "El drenaje/destrucción de energía en la Ulti puede retrasar y perturbar las rotaciones de Ulti enemigas",
+      "ru": "Похищение/уничтожение энергии на ульте может задерживать и срывать вражеские ротации ульт",
+      "zh": "终结技的能量吸取/摧毁可延迟并扰乱敌方的终结技循环",
+      "en": "Energy drain/destruction on Ultimate can delay and disrupt enemy Ultimate rotations"
+    },
+    {
+      "de": "Zuverlässige Betäubung mit Fähigkeit 1 gegen markierte Ziele - nahezu 100% CC-Uptime gegen getaggte Feinde",
+      "es": "Aturdimiento fiable con Habilidad 1 contra objetivos marcados: cobertura de control cercana al 100% contra enemigos marcados",
+      "ru": "Надёжное оглушение Навыком 1 по помеченным целям - почти 100% аптайм контроля по отмеченным врагам",
+      "zh": "技能1对被标记目标的稳定眩晕——对标记敌人的控制覆盖接近100%",
+      "en": "Reliable Stun on Skill 1 against marked targets — near-100% CC uptime against tagged enemies"
+    },
+    {
+      "de": "Passiver Lebensraub + Überlaufschild (Ritus der Asche) macht sie nach Investition selbsterhaltend",
+      "es": "Robo de vida pasivo + escudo de excedente (Rito de las Cenizas) la vuelve autosuficiente una vez invertida",
+      "ru": "Пассивный вампиризм + щит из излишков (Обряд Пепла) делает её самодостаточной после вложений",
+      "zh": "被动生命汲取+溢出护盾（「灰烬仪式」）使她在投资后能够自给自足",
+      "en": "Passive lifesteal + overflow shield (Rite of Ashes) makes her self-sustaining once invested"
+    },
+    {
+      "de": "Doppelte Debuff-Abdeckung: Schadensreduktion + Angriffstempo-Senkung gleichzeitig",
+      "es": "Cobertura doble de debuff: reducción de daño + reducción de vel. de ataque simultáneamente",
+      "ru": "Двойное покрытие дебаффов: снижение урона + снижение скорости атаки одновременно",
+      "zh": "双重减益覆盖：同时施加减伤与攻速削减",
+      "en": "Dual debuff coverage: DMG reduction + ATK SPD reduction simultaneously"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Bei geringer Dupe-/Relikt-Investition können die passiven Verderbensmal-Ticks dem Gegner tatsächlich Energie zuführen, statt sie zu entziehen",
+      "es": "Con poca inversión en duplicados/reliquia, los ticks pasivos de la Marca de Perdición pueden alimentar energía al enemigo en lugar de drenarla",
+      "ru": "При малых вложениях в дубли/реликвию пассивные тики Метки Погибели могут не отнимать, а подкармливать врага энергией",
+      "zh": "在低复制/圣物投资下，「厄咒印记」的被动跳动反而可能给敌人回能，而非吸取",
+      "en": "At low dupe/relic investment, Doom Mark passive ticks can actually feed enemy Energy instead of draining it"
+    },
+    {
+      "de": "Die Selbstwiederbelebung erfordert vorhandene Quellen - laufen die Markierungen aus, bevor sie stirbt, ist kein Wiederbelebungstoken verfügbar",
+      "es": "La autorreanimación requiere que existan fuentes: si las marcas expiran antes de que muera, no hay ficha de reanimación disponible",
+      "ru": "Самовоскрешение требует существующих источников - если метки исчезнут до её гибели, жетона воскрешения не будет",
+      "zh": "自复活需要来源存在——若标记在她死亡前失效，便没有可用的复活凭证",
+      "en": "Self-revive requires sources to exist — if marks expire before she dies, no revive token is available"
+    },
+    {
+      "de": "Einzelzielfokus beim aktiven Ultimativ - die erneute Markierung trifft nur den nächsten Feind",
+      "es": "Enfoque en objetivo único en la Ulti activa: la reaplicación de marca solo alcanza al enemigo más cercano",
+      "ru": "Фокус на одной цели у активной ульты - повторное наложение метки бьёт только ближайшего врага",
+      "zh": "主动终结技以单体为主——重新施加标记只作用于最近的敌人",
+      "en": "Single-target focus on Ultimate active — mark re-application hits only the nearest enemy"
+    },
+    {
+      "de": "Keine direkte Heilung außerhalb der Wiederbelebungs-LP-Wiederherstellung - anfällig für anhaltenden Burst, bevor die Markierungen auslaufen",
+      "es": "Sin curación directa fuera de la restauración de HP por reanimación: vulnerable al estallido sostenido antes de que expiren las marcas",
+      "ru": "Нет прямого лечения кроме восстановления HP при воскрешении - уязвима к продолжительному бёрсту до истечения меток",
+      "zh": "除复活时的生命回复外无直接治疗——在标记失效前惧怕持续爆发",
+      "en": "No direct healing outside of the revive HP restore — vulnerable to sustained burst before marks expire"
+    },
+    {
+      "de": "Utility-fokussiert - braucht unterstützenden DPS; funktioniert nicht als eigenständiger Schadens-Carry",
+      "es": "Centrada en utilidad: necesita DPS de apoyo; no funciona como carry de daño independiente",
+      "ru": "Ориентирована на пользу - нужен поддерживающий DPS; не работает как самостоятельный дамаг-кэрри",
+      "zh": "以功能性为主——需要输出配合；无法作为独立的伤害核心运作",
+      "en": "Utility-focused — needs supporting DPS; does not function as a standalone damage carry"
+    }
+  ]
 }

@@ -177,5 +177,109 @@
         "zh": "半透明投影进入战斗时获得1000点能量。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Ein Tempo-/Abklingzeit-/Kontroll-Support, der das Kampftempo steuert, indem er die Fähigkeitsrotationen der Gegner schwächt, verbündete aktive Zauber verdoppelt, todgeweihte Verbündete per Zeitrücklauf rettet und temporäre Kopien verbündeter Helden ins Gefecht projiziert.",
+    "es": "Un apoyo de tempo/enfriamiento/control que manipula el ritmo del combate debilitando las rotaciones de habilidades enemigas, duplicando los lanzamientos activos aliados, salvando a aliados al borde de la muerte mediante el rebobinado temporal y proyectando copias temporales de héroes aliados en la batalla.",
+    "ru": "Поддержка темпа/перезарядки/контроля, которая управляет ритмом боя: ослабляет ротации навыков врагов, удваивает активные способности союзников, спасает почти погибших союзников откатом времени и создаёт временные копии союзных героев в бою.",
+    "zh": "一名节奏/冷却/控制型辅助，通过削弱敌方技能循环、令我方主动技能翻倍、以时间回溯拯救濒死队友、并将友方英雄的临时分身投射入战场来操控战斗节奏。",
+    "en": "A Tempo/Cooldown/Control Support who manipulates fight tempo by debuffing enemy skill rotations, doubling allied active casts, saving near-death allies via time rewind, and projecting temporary copies of allied heroes into battle."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Bester Support im Spiel - vollständige CC, vollständiger Support, feldweite Abdeckung. Volles Kit bei Basis-Dupe freigeschaltet. Die verzögerte Ultimativ-Auslösung erfordert präzise Timing-Kontrolle.",
+      "es": "El mejor apoyo del juego: control completo, soporte completo, cobertura de todo el campo. Kit completo desbloqueado con el duplicado base. Su lanzamiento de Ulti retardado exige un control preciso del ritmo.",
+      "ru": "Лучшая поддержка в игре - полный контроль, полная поддержка, охват всего поля. Полный набор открыт на базовом дубле. Отложенный выпуск ульты требует точного контроля тайминга.",
+      "zh": "游戏中最强辅助——全能控制、全能辅助、全场覆盖。基础复制即解锁全部技能。延迟释放的终结技需要精准的时机把控。",
+      "en": "Best support in game -- complete CC, complete support, full-map coverage. Full kit unlocked at base dupe. Delayed ultimate release requires precise timing control."
+    }
+  },
+  "strengths": [
+    {
+      "de": "Anti-Tempo-Flächen-Ultimativ senkt gegnerisches Angriffstempo, verzögert aktive Fähigkeiten und blockiert die Energieregeneration - drei eigenständige Debuff-Schichten in einem Zauber",
+      "es": "La Ulti anti-tempo en área reduce la velocidad de ataque enemiga, retrasa las habilidades activas y bloquea la regeneración de energía: tres capas de debuff distintas en un solo lanzamiento",
+      "ru": "Анти-темповая ульта по площади снижает скорость атаки врагов, задерживает активные навыки и блокирует восстановление энергии - три отдельных слоя дебаффа за один каст",
+      "zh": "反节奏范围终结技降低敌方攻速、延迟主动技能并阻断能量恢复——一次施放叠加三层独立减益",
+      "en": "AoE anti-tempo Ultimate reduces enemy ATK Speed, delays active skills, and blocks Energy regeneration - three distinct debuff layers in one cast"
+    },
+    {
+      "de": "Zeitriss ist Formationsbruch plus Doppelbetäubung - sehr effektiv gegen backline- und positionsabhängige Aufstellungen",
+      "es": "Fisura Temporal es Ruptura de Formación más Aturdimiento Doble: muy eficaz contra composiciones dependientes de la retaguardia y del posicionamiento",
+      "ru": "Временной Разлом - это Разрыв Построения плюс Двойное Оглушение: очень эффективно против составов, зависящих от заднего ряда и позиционирования",
+      "zh": "「时空裂隙」兼具破阵与双重眩晕——对依赖后排和站位的阵容极为有效",
+      "en": "Temporal Rift is Formation Break plus Double Stun - very effective against backline-dependent and positioning-reliant compositions"
+    },
+    {
+      "de": "Zurückspulende Überreste bieten einen Rettungsmechanismus, der den vollen Zustand eines Verbündeten wiederherstellt, nicht nur die LP - Energie und Buffs bleiben zum vorherigen Schnappschuss erhalten",
+      "es": "Restos que Rebobinan ofrecen un mecanismo de salvación que restaura el estado completo de un aliado, no solo la HP: la energía y las mejoras se conservan según la instantánea anterior",
+      "ru": "Отматывающиеся Останки дают механизм спасения, восстанавливающий полное состояние союзника, а не только HP - энергия и баффы сохраняются по прежнему снимку",
+      "zh": "「回溯残响」提供的救援机制会恢复友方的完整状态，而不仅是生命值——能量与增益均按此前的快照保留",
+      "en": "Rewinding Remains provides a save mechanic that restores an ally's full state, not just HP - Energy and buffs are preserved at the prior snapshot"
+    },
+    {
+      "de": "Echo der Kausalität verdoppelt pro Rotation die aktive Fähigkeit eines Verbündeten - ein konstanter, passiver Schadens- und Utility-Multiplikator ohne Ausführungsaufwand",
+      "es": "Eco de Causalidad duplica la habilidad activa de un aliado cada rotación: un multiplicador de daño y utilidad pasivo y constante, sin sobrecarga de ejecución",
+      "ru": "Эхо Причинности удваивает активный навык одного союзника каждую ротацию - постоянный пассивный множитель урона и пользы без затрат на исполнение",
+      "zh": "「因果回响」每轮循环令一名友方的主动技能翻倍——一个稳定的被动伤害与功能倍增器，无需额外操作",
+      "en": "Echo of Causality doubles one ally's active skill every rotation - a consistent, passive damage and utility multiplier that requires no execution overhead"
+    },
+    {
+      "de": "Das Projektionssystem erschafft eine zweite temporäre Version eines Schlüsselverbündeten - bei Relikt Lv2 in Kombination mit einem CD-Reset entspricht das einer zweiten vollen Team-Rotation",
+      "es": "El sistema de Proyección crea una segunda versión temporal de un aliado clave: con la Reliquia Lv2 junto a un reinicio de enfriamiento, equivale a una segunda rotación completa del equipo",
+      "ru": "Система Проекции создаёт вторую временную версию ключевого союзника - на Реликвии Lv2 вместе со сбросом КД это равнозначно второй полной ротации команды",
+      "zh": "投影系统为关键友方创造第二个临时分身——在圣物2搭配冷却重置时，相当于整队多打一轮循环",
+      "en": "Projection system creates a second temporary version of a key ally - at Relic Lv2 paired with a CD reset, this amounts to a second full team rotation"
+    },
+    {
+      "de": "Zeitriss Lv3 beschleunigt sich selbst mit der Einsatzfrequenz - je aktiver dein Team spielt, desto schneller kehrt die Formationsstörung zurück",
+      "es": "Fisura Temporal Lv3 se autoacelera según la frecuencia de lanzamiento: cuanto más activo juega tu equipo, más rápido regresa la disrupción de formación",
+      "ru": "Временной Разлом Lv3 самоускоряется от частоты кастов - чем активнее играет ваша команда, тем быстрее возвращается срыв построения",
+      "zh": "「时空裂隙」3级会随施放频率自我加速——你的队伍越主动，破阵效果回归得越快",
+      "en": "Temporal Rift Lv3 self-accelerates on cast frequency - the more your team plays actively, the faster formation disruption returns"
+    },
+    {
+      "de": "Skaliert mit der Teamqualität: Je stärker der als Zeitreisender bestimmte oder projizierte Verbündete, desto höher Kronos' Multiplikator-Output",
+      "es": "Escala con la calidad del equipo: cuanto más fuerte sea el aliado designado como Viajero del Tiempo o proyectado, mayor será la producción de multiplicador de Crono",
+      "ru": "Масштабируется от качества команды: чем сильнее союзник, назначенный Путешественником во Времени или спроецированный, тем выше множитель Кроноса",
+      "zh": "随队伍质量成长：被指定为「时间旅者」或被投影的友方越强，克洛诺斯的倍增输出就越高",
+      "en": "Scales with team quality: the stronger the ally designated as Time Traveler or projected, the higher Cronus's multiplier output"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Keine Top-Wahl für reine Einzelziel-Boss-DPS-Rennen, bei denen Tempomanipulation und Formationsstörung irrelevant sind",
+      "es": "No es una opción destacada en carreras de DPS puro contra jefes de objetivo único, donde manipular el tempo y romper formaciones es irrelevante",
+      "ru": "Не топ-выбор для чистых гонок DPS по боссу с одной целью, где манипуляция темпом и срыв построения не важны",
+      "zh": "在纯单体Boss竞速的DPS场景中并非首选，那里节奏操控与破阵毫无意义",
+      "en": "Not a top pick for pure single-target boss DPS races where tempo manipulation and formation disruption are irrelevant"
+    },
+    {
+      "de": "Der Wert skaliert mit der Verbündetenqualität - ist der Carry-Pool schwach, verliert Kronos erheblichen Multiplikator-Output",
+      "es": "Su valor escala con la calidad de los aliados: si el elenco de carries es débil, Crono pierde mucha producción de multiplicador",
+      "ru": "Ценность масштабируется от качества союзников - если пул кэрри слаб, Кронос теряет значительный множитель",
+      "zh": "其价值随队友质量成长——若核心储备薄弱，克洛诺斯的倍增输出会大幅下降",
+      "en": "Value scales with ally quality - if the carry pool is weak, Cronus loses significant multiplier output"
+    },
+    {
+      "de": "Relikt-abhängig: Ohne Relikt Lv2 fehlt dem Projektionssystem sein prägender CD-Reset; ohne Lv4 verzögert sich die Wirkung der Projektion",
+      "es": "Dependiente de reliquia: sin Reliquia Lv2, el sistema de Proyección carece de su reinicio de enfriamiento característico; sin Lv4, el impacto de la proyección se retrasa",
+      "ru": "Зависит от реликвии: без Реликвии Lv2 у системы Проекции нет её ключевого сброса КД; без Lv4 эффект проекции запаздывает",
+      "zh": "依赖圣物：无圣物2则投影系统缺少其标志性的冷却重置；无圣物4则投影的效果会被延迟",
+      "en": "Relic-dependent: without Relic Lv2 the Projection system lacks its defining CD reset; without Lv4 the projection's impact is delayed"
+    },
+    {
+      "de": "Gegen reine Statcheck-Teams, die Utility schlicht durch Schadensoutput überwältigen, kann Kronos' Kit große Werteunterschiede nicht allein ausgleichen",
+      "es": "Contra equipos de puro chequeo de estadísticas que aplastan la utilidad a base de daño, el kit de Crono no puede compensar por sí solo grandes diferencias de estadísticas",
+      "ru": "Против команд чистого статчека, что давят полезность одним уроном, набор Кроноса сам по себе не компенсирует большой разрыв в характеристиках",
+      "zh": "面对纯粹拼属性、以输出碾压功能的队伍，克洛诺斯的技能组无法单凭一己之力弥补巨大的属性差距",
+      "en": "Against raw stat-check teams that simply overwhelm utility through damage output, Cronus's kit cannot compensate for large stat disparities alone"
+    },
+    {
+      "de": "Zurückspulende Überreste senken nach der Auslösung ANG und Angriffstempo des geretteten Ziels - der gerettete Verbündete ist nach dem Rettungsfenster vorübergehend geschwächt",
+      "es": "Restos que Rebobinan reducen el ATQ y la vel. de ataque del objetivo salvado tras activarse: el aliado rescatado queda temporalmente debilitado tras la ventana de rescate",
+      "ru": "Отматывающиеся Останки после срабатывания снижают ATK и скорость атаки спасённой цели - спасённый союзник временно ослаблен после окна спасения",
+      "zh": "「回溯残响」触发后会降低被救目标的攻击力与攻速——被救的友方在救援窗口之后会暂时被削弱",
+      "en": "Rewinding Remains reduces the saved target's ATK and ATK Speed after triggering - the saved ally is temporarily weakened following the rescue window"
+    }
+  ]
 }

@@ -177,5 +177,114 @@
         "zh": "被厄运缠身期间，目标受到的伤害提升20%。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Nutze ihre Duellstärke und ihr Schikanierpotenzial optimal aus.",
+    "es": "Aprovecha al máximo su poder en duelos y su potencial de hostigamiento.",
+    "ru": "Максимально используйте её силу в дуэлях и способность донимать врагов.",
+    "zh": "充分发挥她的对决能力与骚扰潜力。",
+    "en": "Make the most of her dueling power and her harrassing potential."
+  },
+  "strengths": [
+    {
+      "de": "Das Ultimativ bietet eine der längsten harten CC-Sperren im Spiel - bis zu 6s vollständige Deaktivierung des nächsten Feindes",
+      "es": "La Ulti ofrece uno de los bloqueos de control duro más largos del juego: hasta 6s de inhabilitación total del enemigo más cercano",
+      "ru": "Ульта даёт один из самых долгих жёстких контролей в игре - до 6с полного отключения ближайшего врага",
+      "zh": "终结技提供游戏中最长的硬控之一——对最近的敌人最多6秒完全禁用",
+      "en": "Ultimate provides one of the longest hard-CC lockdowns in the game - up to 6s full disable on the nearest enemy"
+    },
+    {
+      "de": "Das Todes-Passiv verflucht dauerhaft den Verursacher und macht den Hauptangreifer des gegnerischen Teams zur Belastung",
+      "es": "El pasivo de muerte maldice permanentemente al causante, convirtiendo al principal agresor del equipo rival en un lastre",
+      "ru": "Пассивка смерти навсегда проклинает убийцу, превращая главного агрессора вражеской команды в обузу",
+      "zh": "死亡被动会永久诅咒击杀者，将敌方的主要攻击手变成累赘",
+      "en": "Death passive permanently Jinxes the killer, turning the opposing team's primary aggressor into a liability"
+    },
+    {
+      "de": "Aura des Unglücks auf Lv4 bleibt nach dem Tod bestehen und legt ohne Unterhalt Debuffs von -20% ANG und -20% VER an",
+      "es": "El Aura de Infortunio en Lv4 persiste tras la muerte, aplicando debuffs de -20% ATQ y -20% DEF sin mantenimiento",
+      "ru": "Аура Несчастья на Lv4 сохраняется после смерти, накладывая дебаффы -20% ATK и -20% DEF без поддержания",
+      "zh": "「厄运光环」4级在死亡后依然存在，无需维持即可施加-20%攻击力与-20%防御的减益",
+      "en": "Aura of Misfortune at Lv4 persists after death, applying -20% ATK and -20% DEF debuffs with no upkeep required"
+    },
+    {
+      "de": "Dualitätsumkehr verursacht Schaden nach maximalen LP - skaliert gegen Tanks und Bruiser mit hohen LP, unabhängig von Wen-Shens eigenem ANG",
+      "es": "Inversión de Dualidad inflige daño según la HP máxima: escala contra tanques y bruisers de alta HP sin importar el ATQ propio de Wen-Shen",
+      "ru": "Инверсия Дуальности наносит урон по макс. HP - масштабируется против танков и бруизеров с высоким HP независимо от собственного ATK Вэнь-Шэнь",
+      "zh": "「二元反转」造成按最大生命值计算的伤害——无论文神自身攻击力如何，都能对高血量坦克与战士型单位造成成长伤害",
+      "en": "Duality Inversion deals damage based on max HP - scales against high-HP Tanks and bruisers regardless of Wen-Shen's own ATK"
+    },
+    {
+      "de": "Heilungsreduktion (bis zu 60% bei Fähigkeit 2 Lv4) ist selten und hochrelevant gegen selbsterhaltungslastige Aufstellungen",
+      "es": "La reducción de curación (hasta 60% en Habilidad 2 Lv4) es rara y muy relevante contra composiciones con mucho sustento",
+      "ru": "Снижение лечения (до 60% на Навыке 2 Lv4) редкое и крайне полезное против составов с сильным сустейном",
+      "zh": "减疗（技能2的4级最多60%）十分稀有，对续航型阵容极为关键",
+      "en": "Heal reduction (up to 60% at Skill 2 Lv4) is rare and highly relevant against sustain-heavy compositions"
+    },
+    {
+      "de": "Relikt Lv3 ermöglicht aktive, wiederholbare Fluchanwendung unabhängig von ihrem Tod",
+      "es": "La Reliquia Lv3 permite aplicar la maldición de forma activa y repetible, independientemente de su muerte",
+      "ru": "Реликвия Lv3 позволяет активно и многократно накладывать проклятие независимо от её смерти",
+      "zh": "圣物3使她无需死亡即可主动、反复地施加诅咒",
+      "en": "Relic Lv3 enables active, repeatable Jinx application independent of her death"
+    },
+    {
+      "de": "Kann im CN über Questbelohnungen erhalten werden - keine Gacha-Investition für die Basiseinheit nötig",
+      "es": "Se puede obtener mediante recompensas de misión en CN: no requiere inversión en Gacha para la unidad base",
+      "ru": "В CN добывается за награды заданий - вложения в гачу для базового юнита не нужны",
+      "zh": "国服可通过任务奖励获得——基础单位无需抽卡投资",
+      "en": "Can be obtained through quest rewards in CN - no Gacha investment required for the base unit"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Fluch ist RNG-basiert - bei 50% Basisauslösechance mit 4s internem Cooldown ist er über die Zeit zuverlässig, aber keine garantierte Sofort-CC",
+      "es": "La maldición depende del azar: con 50% de probabilidad base y 4s de enfriamiento interno, es fiable a la larga pero no un control instantáneo garantizado",
+      "ru": "Проклятие зависит от РНГ - при базовом шансе 50% и внутреннем откате 4с оно надёжно со временем, но не гарантированный мгновенный контроль",
+      "zh": "诅咒基于概率——基础50%触发率、内置4秒冷却，长期而言可靠，但并非保证的即时控制",
+      "en": "Jinx is RNG-based - at base 50% proc chance with a 4s internal cooldown, it is reliable over time but not a guaranteed instant CC"
+    },
+    {
+      "de": "Keine direkte Heilung, Beschilderung oder teamweiten Buffs - Teams müssen jegliche Selbsterhaltung extern beziehen",
+      "es": "Sin curación directa, escudos ni mejoras de equipo: los equipos deben obtener todo el sustento de fuera",
+      "ru": "Нет прямого лечения, щитов и общекомандных баффов - весь сустейн команде нужно брать извне",
+      "zh": "无直接治疗、护盾或全队增益——队伍的一切续航都需外部提供",
+      "en": "No direct healing, shielding, or team-wide buffs - teams must source all sustain externally"
+    },
+    {
+      "de": "Dualitätsumkehr zielt auf die symmetrisch gegenüberliegende Position - Gegenspiel existiert durch bewusste Feindpositionierung",
+      "es": "Inversión de Dualidad apunta a la posición simétricamente opuesta: existe contrajuego mediante un posicionamiento enemigo deliberado",
+      "ru": "Инверсия Дуальности целит в симметрично противоположную позицию - контригра возможна через продуманное расположение врагов",
+      "zh": "「二元反转」瞄准对称的相反位置——通过刻意的敌方站位可加以针对",
+      "en": "Duality Inversion targets the symmetrically opposite position - counterplay exists through deliberate enemy positioning"
+    },
+    {
+      "de": "Das aktive Fähigkeit-4 zielt auf den Feind mit dem höchsten ANG - kann gegen vielfältige Teamaufstellungen in eine ungewollte Position stürmen",
+      "es": "La Habilidad 4 activa apunta al enemigo con más ATQ: puede lanzarse a una posición no deseada contra composiciones variadas",
+      "ru": "Активный Навык 4 целит во врага с наибольшим ATK - против разнородных составов может рвануть в нежелательную позицию",
+      "zh": "技能4的主动效果瞄准攻击力最高的敌人——面对多样阵容时可能冲进非预期的位置",
+      "en": "Skill 4 active targets the highest-ATK enemy - may dash into an unintended position against diverse team compositions"
+    },
+    {
+      "de": "Relikt Lv3 ist die Mechanik-Freischaltung für proaktive Fluchanwendung; unter Lv3 ist der Fluch nur reaktiv (Todesauslöser)",
+      "es": "La Reliquia Lv3 es el desbloqueo mecánico para aplicar la maldición de forma proactiva; por debajo de Lv3, la maldición es solo reactiva (disparador por muerte)",
+      "ru": "Реликвия Lv3 - разблокировка механики проактивного проклятия; ниже Lv3 проклятие только реактивное (триггер смерти)",
+      "zh": "圣物3是主动施加诅咒的机制解锁；圣物3以下，诅咒只能被动触发（死亡触发）",
+      "en": "Relic Lv3 is the mechanic unlock for proactive Jinx application; below Lv3, Jinx is reactive only (death trigger)"
+    },
+    {
+      "de": "Ein One-Shot, bevor ihr Todes-Passiv auslöst, neutralisiert Unheilbeladen vollständig",
+      "es": "Un disparo mortal antes de que se active su pasivo de muerte neutraliza por completo Cargada de Calamidad",
+      "ru": "Ваншот до срабатывания её пассивки смерти полностью нейтрализует «Отягощённую Бедой»",
+      "zh": "在她的死亡被动触发前将其秒杀，会完全废掉「灾厄缠身」",
+      "en": "One-shot before her death passive fires entirely neutralizes Calamity-Ridden"
+    },
+    {
+      "de": "CC-Immunitäts-Aufstellungen heben das Fluchsystem vollständig auf",
+      "es": "Las composiciones con inmunidad a control anulan por completo el sistema de maldición",
+      "ru": "Составы с иммунитетом к контролю полностью отменяют систему проклятия",
+      "zh": "带免控的阵容会彻底抵消诅咒系统",
+      "en": "CC immunity compositions fully negate the Jinx system"
+    }
+  ]
 }

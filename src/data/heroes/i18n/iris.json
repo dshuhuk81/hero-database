@@ -177,5 +177,32 @@
         "zh": "当2名带有梦境幻象的敌人靠近时，幻象爆炸，额外造成相当于攻击力280%的伤害。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Isis ist die Göttin des Lebens, der Magie, der Ehe und der Fruchtbarkeit. Ihr Name bedeutet Thron und macht sie zum Sinnbild königlicher Autorität, zur größten Mutter und zur treuen Gattin.",
+    "es": "Isis es la diosa de la vida, la magia, el matrimonio y la fertilidad. Su nombre significa trono, lo que la marca como símbolo de autoridad real, la más grande madre y una esposa devota.",
+    "ru": "Исида — богиня жизни, магии, брака и плодородия. Её имя означает «трон», обозначая её как символ царской власти, величайшую мать и преданную жену.",
+    "zh": "伊西斯，生命、魔法、婚姻与丰饶的女神。她的名字意为「宝座」，象征着王权、至高的母亲与忠贞的妻子。",
+    "en": "Isis is the godess of life, magic, marriage, and fertility. Her name means throne,  marking her as a symbol of royal authority, the greates mother, and a devoted wife."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "CC und Flächen-Angriffsbuffs. Kombiniert mit Poseidon, um Flächen-DPS zu verstärken. CN: kleiner Schmetterling, unauffälliger Support mit einem konstanten Anwendungsfall.",
+      "es": "Control y mejoras de ataque en área. Se combina con Poseidón para amplificar el DPS en área. CN: mariposita, apoyo discreto con un caso de uso constante.",
+      "ru": "Контроль и баффы атаки по площади. В связке с Посейдоном усиливает урон по площади. CN: маленькая бабочка, неприметная поддержка с постоянной нишей.",
+      "zh": "控制与范围攻击增益。与波塞冬搭配可放大范围DPS。国服：小蝴蝶，不起眼但有稳定用武之地的辅助。",
+      "en": "CC and AoE ATK buffs. Pairs with Poseidon to amplify AoE DPS. CN: small butterfly, unremarkable support with a consistent use case."
+    }
+  },
+  "synergyLinks": [
+    {
+      "description": {
+        "de": "Kombiniert mit Poseidon, um den gruppierten Flächen-DPS-Output zu verstärken.",
+        "es": "Se combina con Poseidón para amplificar la producción de DPS en área sobre enemigos agrupados.",
+        "ru": "В связке с Посейдоном усиливает урон по площади по сгруппированным целям.",
+        "zh": "与波塞冬搭配，放大对聚集敌人的范围DPS输出。",
+        "en": "Pairs with Poseidon to amplify grouped AoE DPS output."
+      }
+    }
+  ]
 }

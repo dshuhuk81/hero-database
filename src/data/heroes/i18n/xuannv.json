@@ -177,5 +177,109 @@
         "zh": "【执黑】：额外伤害变为攻击力300%+目标最大生命值10%（上限为攻击力的800%）。【执白】：前3次攻击造成攻击力400%+目标已损失生命值60%（上限为攻击力的1000%）。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Göttin der Strategie. Alle Wesen sind Spielsteine; jeder Zug entspringt allein dem Verstand.",
+    "es": "Diosa de la estrategia. Todos los seres son fichas; cada jugada nace solo del ingenio.",
+    "ru": "Богиня стратегии. Все существа — камни на доске; каждый ход рождается одним лишь разумом.",
+    "zh": "谋略女神。众生皆为棋子，每一手落子唯凭智计。",
+    "en": "Goddess of Strategy. All beings play as stones; each strike from wit alone."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Physischer Carry mit Haltungswechsel. Ihr Ultimativ wechselt zwischen einer Schwarzen Haltung (trifft das Standardziel, steigert +20% ANG pro Treffer bis zu 3 Stapel) und einer Weißen Haltung (trifft den schwächsten Feind, hinrichtungsartig) und wählt die Haltung automatisch anhand des Verhältnisses von verbündeten zu feindlichen Einheiten. Das Relikt Leerenfinte ist die eigentliche Schadensmaschine und fügt pro Treffer %ANG- + %Ziel-LP-Zusätze hinzu, die mit der aktiven Haltung skalieren. Tritt ins Spiel wandelt erlittene Treffer in einen verzögerten Taiji-Reflekt um, während Ungeschickte Züge Energie abzieht oder zurückgibt, je nach Energiedifferenz.",
+      "es": "Carry físico que baila entre posturas. Su Ulti alterna entre una Postura Negra (golpea al objetivo por defecto, acumula +20% ATQ por golpe hasta 3 cargas) y una Postura Blanca (golpea al enemigo más débil, con matiz de ejecución), y elige la postura automáticamente según el conteo de unidades aliadas frente a enemigas. La reliquia Finta del Vacío es el verdadero motor de daño, añadiendo por golpe extras de %ATQ + %HP del objetivo que escalan con la postura activa. Entrar en el Juego convierte los golpes recibidos en un reflejo Taiji retardado, mientras que Movimientos Torpes drena o devuelve energía según la diferencia de energía.",
+      "ru": "Физический кэрри со сменой стоек. Её ульта переключается между Чёрной стойкой (бьёт цель по умолчанию, +20% ATK за удар до 3 зарядов) и Белой стойкой (бьёт слабейшего врага, с оттенком добивания) и выбирает стойку автоматически по соотношению союзных и вражеских юнитов. Реликвия Финт Пустоты - настоящий двигатель урона, добавляя за удар прибавки %ATK + %HP цели, что растут с активной стойкой. Вступление в Игру превращает полученные удары в отложенный отражатель Тайцзи, а Неуклюжие Ходы вытягивают или возвращают энергию в зависимости от разницы в энергии.",
+      "zh": "换势起舞的物理核心。她的终结技在「执黑」（攻击默认目标，每次命中+20%攻击力，最多3层）与「执白」（攻击最虚弱的敌人，带处决性质）之间切换，并依据我方与敌方单位数量自动选择姿态。圣物「虚影诱敌」才是真正的伤害引擎，为每次命中附加随当前姿态成长的%攻击力+%目标生命值加成。「身入局」将受到的攻击转化为延迟的太极反弹，而「拙招妙控」则依据能量差吸取或返还能量。",
+      "en": "Stance-dancing Physical carry. Her ultimate flips between a Black Stance (hits the default target, ramps +20% ATK per hit up to 3 stacks) and a White Stance (hits the weakest enemy, execute-flavored), and it picks the stance automatically from the ally-versus-enemy unit count. The Void Feint Relic is the real damage engine, adding per-hit %ATK + %target-HP riders that scale with the active stance. Step Into the Game converts incoming hits into a delayed Taiji reflect, while Clumsy Move Controls drains or refunds energy based on the energy gap."
+    }
+  },
+  "strengths": [
+    {
+      "de": "Automatischer Haltungswechsel passt sich bei jedem Ultimativ ans Spielfeld an - die Schwarze Haltung steigert ANG für anhaltenden Einzelzielschaden, die Weiße Haltung wechselt zum schwächsten Feind zum Aufräumen",
+      "es": "El cambio automático de postura se adapta al tablero en cada Ulti: la Postura Negra acumula ATQ para daño sostenido a un objetivo, la Postura Blanca pivota al enemigo más débil para rematar",
+      "ru": "Автосмена стойки подстраивается под доску на каждой ульте - Чёрная стойка копит ATK для устойчивого урона по одной цели, Белая переключается на слабейшего врага для зачистки",
+      "zh": "每次终结技自动切换姿态以适应战局——「执黑」叠加攻击力用于持续单体输出，「执白」转向最虚弱的敌人进行收割",
+      "en": "Automatic stance switching adapts to the board on every ultimate - Black Stance ramps ATK for sustained single-target, White Stance pivots to the weakest enemy for cleanup"
+    },
+    {
+      "de": "Das Relikt Leerenfinte ist die eigentliche Schadensmaschine: pro Treffer %ANG- + %Ziel-LP-Zusätze (bis zu 300% ANG + 10% max. LP in Schwarz, 400% ANG + 60% verlorene LP in Weiß auf Lv4) heben sie weit über ihr Basis-ANG",
+      "es": "La reliquia Finta del Vacío es el verdadero motor de daño: por golpe añade %ATQ + %HP del objetivo (hasta 300% ATQ + 10% HP máx. en Negra, 400% ATQ + 60% HP perdida en Blanca a Lv4), elevándola muy por encima de su ATQ base",
+      "ru": "Реликвия Финт Пустоты - настоящий двигатель урона: за удар прибавки %ATK + %HP цели (до 300% ATK + 10% макс. HP в Чёрной, 400% ATK + 60% потерянного HP в Белой на Lv4) поднимают её далеко за базовый ATK",
+      "zh": "圣物「虚影诱敌」才是真正的伤害引擎：每次命中附加%攻击力+%目标生命值（4级时执黑最高300%攻击力+10%最大生命，执白400%攻击力+60%已损失生命），令她远超基础攻击力",
+      "en": "Void Feint Relic is the true damage engine: per-hit %ATK + %target-HP riders (up to 300% ATK + 10% max HP in Black, 400% ATK + 60% lost HP in White at Lv4) push her far above her base ATK"
+    },
+    {
+      "de": "Die Weiße Haltung koppelt Schaden nach verlorenen LP mit der Wahl des schwächsten Ziels und übt starken Hinrichtungsdruck aus, um niedrige Einheiten und Bosse in ihrer Endphase zu erledigen",
+      "es": "La Postura Blanca combina daño según HP perdida con la selección del objetivo más débil, ejerciendo fuerte presión de ejecución para rematar unidades bajas y jefes en su fase final",
+      "ru": "Белая стойка сочетает урон по потерянному HP с выбором слабейшей цели, создавая сильное давление добивания низких юнитов и боссов в их финальной фазе",
+      "zh": "「执白」将按已损失生命值计算的伤害与选取最虚弱目标相结合，形成强力的处决压力，用以终结残血单位与处于最后阶段的Boss",
+      "en": "White Stance pairs %lost-HP damage with weakest-target selection, giving strong execute pressure to finish low units and bosses in their final phase"
+    },
+    {
+      "de": "Tritt ins Spiel wandelt erlittenen Schaden in einen verzögerten Taiji-Reflekt um, belohnt sie fürs Angegriffenwerden und bestraft Mehrfachtreffer-Feinde",
+      "es": "Entrar en el Juego convierte el daño recibido en un reflejo Taiji retardado, recompensándola por ser atacada y castigando a los enemigos de múltiples golpes",
+      "ru": "Вступление в Игру превращает полученный урон в отложенный отражатель Тайцзи, награждая её за атаки по ней и наказывая многоударных врагов",
+      "zh": "「身入局」将受到的伤害转化为延迟的太极反弹，因被攻击而受益，并惩罚多段攻击的敌人",
+      "en": "Step Into the Game turns incoming damage into a delayed Taiji reflect, rewarding her for being attacked and punishing multi-hit enemies"
+    },
+    {
+      "de": "Ungeschickte Züge fügt echte Energiestörung hinzu - zieht bis zu 100 Energie von energiereicheren Zielen ab, während sie ihre eigene zurückerhält, und verzögert gegnerische Ultimativs",
+      "es": "Movimientos Torpes añade una disrupción de energía real: drena hasta 100 de energía de objetivos con más energía mientras recupera la suya, retrasando las Ultis enemigas",
+      "ru": "Неуклюжие Ходы добавляют реальный срыв энергии - вытягивают до 100 энергии у более энергичных целей, возвращая свою, и задерживают ульты врагов",
+      "zh": "「拙招妙控」带来真正的能量扰乱——从能量更高的目标吸取最多100点能量并返还自身，延迟敌方终结技",
+      "en": "Clumsy Move Controls adds real energy disruption - draining up to 100 energy from higher-energy targets while refunding her own, delaying enemy ultimates"
+    },
+    {
+      "de": "Wechsel & Schlag bufft zwei bestimmte Verbündete (vorne Weißer Stein, hinten Schwarzer Stein) mit Bonusschaden / Schadensreduktion plus einem Schild in Höhe von 500% ANG bei der Umwandlung, sodass sie unterstützt und trägt zugleich",
+      "es": "Cambio y Golpe mejora a dos aliados designados (Piedra Blanca delante, Piedra Negra detrás) con daño extra / reducción de daño más un escudo del 500% ATQ al convertir, de modo que apoya mientras carga",
+      "ru": "Смена и Удар баффает двух назначенных союзников (передний Белый Камень, задний Чёрный Камень) бонусным уроном / снижением урона плюс щит в 500% ATK при преобразовании, так что она поддерживает и тащит одновременно",
+      "zh": "「换子出击」为两名指定友方（前排白棋、后排黑棋）提供额外伤害/减伤，并在转化时给予500%攻击力的护盾，让她在输出的同时兼顾辅助",
+      "en": "Switch & Strike buffs two designated allies (front White Stone, back Black Stone) with bonus damage / damage reduction plus a 500% ATK shield on conversion, so she supports while carrying"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Die Haltung wird durch die Einheitenzahl bestimmt, nicht durch die Spielerabsicht - in einem verlorenen Kampf mit weniger Verbündeten fixiert sie sich auf die Weiße Haltung, selbst wenn der Schwarze Aufbau mehr Schaden brächte",
+      "es": "La postura la elige el conteo de unidades, no la intención del jugador: en un combate perdido con menos aliados se queda en Postura Blanca aunque la acumulación Negra haría más daño",
+      "ru": "Стойку выбирает число юнитов, а не намерение игрока - в проигрышном бою с меньшим числом союзников она застревает в Белой стойке, даже когда Чёрный разгон нанёс бы больше урона",
+      "zh": "姿态由单位数量决定，而非玩家意图——在劣势、我方人数更少的战斗中，即便「执黑」叠层伤害更高，她也会锁定「执白」",
+      "en": "Stance is chosen by unit count, not player intent - in a losing fight with fewer allies she locks into White Stance even when the Black ramp would deal more"
+    },
+    {
+      "de": "Der Aufbau der Schwarzen Haltung (max. 3 Stapel, +60% ANG) braucht Zeit am selben Ziel; in den Anfangssekunden ist sie schwach, bevor Stapel und Relikt-Zusätze aufgebaut sind",
+      "es": "La acumulación de la Postura Negra (máx. 3 cargas, +60% ATQ) necesita tiempo sobre el mismo objetivo; es débil en los segundos iniciales antes de acumular cargas y extras de reliquia",
+      "ru": "Разгон Чёрной стойки (макс. 3 стака, +60% ATK) требует времени на одной цели; в первые секунды она слаба, пока не набраны стаки и прибавки реликвии",
+      "zh": "「执黑」的叠层（最多3层，+60%攻击力）需要在同一目标身上持续；在叠层与圣物加成累积之前，她在开局数秒内很弱",
+      "en": "Black Stance ramp (max 3 stacks, +60% ATK) needs time on the same target; she is weak in the opening seconds before stacks and Relic riders build"
+    },
+    {
+      "de": "Wechsel & Schlag ist stark positionsabhängig - die Vorne-/Hinten-Zuweisungen erfordern bewussten Teamaufbau und lassen sich nicht blind einsetzen",
+      "es": "Cambio y Golpe depende mucho del posicionamiento: las asignaciones de delante/detrás requieren una construcción de equipo intencional y no se pueden colocar a ciegas",
+      "ru": "Смена и Удар сильно зависит от позиций - назначения перед/зад требуют осознанного построения команды и не ставятся вслепую",
+      "zh": "「换子出击」高度依赖站位——前/后的指定需要刻意的组队构建，无法盲目套用",
+      "en": "Switch & Strike is heavily positioning-dependent - the front/back designations require intentional team construction and cannot be blind-slotted"
+    },
+    {
+      "de": "Tritt ins Spiel kann durch einen einzigen harten One-Shot übersprungen werden, bevor sich die 3s-Taiji-Formation auflöst",
+      "es": "Entrar en el Juego puede saltarse con un único disparo mortal antes de que se resuelva la Formación Taiji de 3s",
+      "ru": "Вступление в Игру можно обойти одним жёстким ваншотом до того, как разрешится 3-секундное Построение Тайцзи",
+      "zh": "在3秒太极阵解算完成前，一次硬性的秒杀即可跳过「身入局」",
+      "en": "Step Into the Game can be skipped by a single hard one-shot before the 3s Taiji Formation resolves"
+    },
+    {
+      "de": "Der gesamte Schaden ist physisch, daher treffen gegnerische Rüstung und physische Schadensreduktion ihr ganzes Kit; sie hat keine magische oder wahre Komponente, um sie zu umgehen",
+      "es": "Todo su daño es físico, así que la armadura enemiga y la reducción de daño físico afectan a todo su kit; no tiene componente mágico ni verdadero para eludirlas",
+      "ru": "Весь её урон физический, поэтому вражеская броня и снижение физического урона бьют по всему её набору; у неё нет магической или истинной компоненты для обхода",
+      "zh": "她的全部伤害均为物理，因此敌方护甲与物理减伤会削弱她的整套技能；她没有魔法或真实伤害成分可以绕过",
+      "en": "All damage is Physical, so enemy Armor and physical damage reduction hit her full kit; she has no magic or true component to bypass it"
+    },
+    {
+      "de": "Energieentzug und Reflekt-Wert skalieren mit der Kampflänge; in sehr kurzen Kämpfen liefert sie im Vergleich zu reinen Burst-Carries zu wenig",
+      "es": "El drenaje de energía y el valor del reflejo escalan con la duración del combate; en combates muy cortos rinde por debajo de los carries de puro estallido",
+      "ru": "Похищение энергии и ценность отражения растут с длиной боя; в очень коротких боях она уступает чистым бёрст-кэрри",
+      "zh": "能量吸取与反弹价值随战斗时长成长；在极短的战斗中，她的表现不如纯爆发核心",
+      "en": "Energy drain and reflect value scale with fight length; in very short fights she underdelivers versus pure burst carries"
+    }
+  ]
 }

@@ -177,5 +177,50 @@
         "zh": "飓风呼啸额外生成一道旋风，伤害加成80%。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Jingwei, der unbezähmbare Vogel, geboren aus einer ertrunkenen Seele, verkörpert Entschlossenheit und Beharrlichkeit. Ihr Leben ist der Aufgabe geweiht, das Meer zu füllen.",
+    "es": "Jingwei, el ave indómita nacida de un alma ahogada, encarna la determinación y la perseverancia. Su vida está dedicada a colmar el mar.",
+    "ru": "Цзинвэй, неукротимая птица, рождённая из утонувшей души, воплощает решимость и упорство. Вся её жизнь посвящена тому, чтобы засыпать море.",
+    "zh": "精卫，由溺亡之魂化成的不屈之鸟，是决心与坚韧的化身。她毕生只为填平大海。",
+    "en": "Jingwei, the indomitable bird born from a drowned soul, embodies resolve and perseverance. Her life is devoted to filling the sea."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Fernkampf-Carry, der in die hintere Reihe springt, den entferntesten Feind für +20% erlittenen Schaden markiert und im Flug alle 1,5s Windklingen abfeuert. Zielt gezielt auf die gegnerische hintere Reihe.",
+      "es": "Carry a distancia que salta a la fila trasera, marca al enemigo más lejano para +20% de daño recibido y dispara cuchillas de viento en vuelo cada 1,5s. Apunta específicamente a la fila trasera enemiga.",
+      "ru": "Дальнобойный кэрри, прыгающий в задний ряд, метит самого дальнего врага на +20% получаемого урона и в полёте выпускает клинки ветра каждые 1,5с. Целится именно в задний ряд врага.",
+      "zh": "远程核心，跃至后排，标记最远的敌人使其承受+20%伤害，飞行中每1.5秒发射风刃。专门针对敌方后排。",
+      "en": "Ranged carry who jumps to back row, marks farthest enemy for +20% incoming damage, fires wind blades in flight every 1.5s. Targets enemy back row specifically."
+    }
+  },
+  "synergyLinks": [
+    {
+      "description": {
+        "de": "Der Energiezyklus speist die Flugphase; je länger in der Luft, desto mehr Schadensoutput.",
+        "es": "El ciclo de energía alimenta la fase de vuelo; cuanto más tiempo en el aire, mayor producción de daño.",
+        "ru": "Цикл энергии питает фазу полёта; чем дольше в воздухе, тем больше урона.",
+        "zh": "能量循环支撑飞行阶段；滞空越久，输出越高。",
+        "en": "Energy cycling feeds flight phase; longer airborne means more damage output."
+      }
+    },
+    {
+      "description": {
+        "de": "Wiederbelebungen geben Jingwei ein zweites Leben, falls sie während des Flugs fokussiert wird.",
+        "es": "Las reanimaciones dan a Jingwei una segunda vida si la focalizan mientras vuela.",
+        "ru": "Воскрешения дают Цзинвэй вторую жизнь, если её фокусят в полёте.",
+        "zh": "复活为精卫提供第二条命，以防她在滞空时被集火。",
+        "en": "Revives give Jingwei a second life if focused while airborne."
+      }
+    },
+    {
+      "description": {
+        "de": "Das r10-Timing von Yanluo synchronisiert sich mit Jingweis Sprungtritt für ein +20% ANG-Burst-Fenster.",
+        "es": "El tiempo de r10 de Yanluo se sincroniza con la patada en salto de Jingwei para una ventana de estallido de +20% ATQ.",
+        "ru": "Тайминг r10 Яньло синхронизируется с прыжковым ударом Цзинвэй для окна бёрста +20% ATK.",
+        "zh": "阎罗圣物10的时机与精卫的跳踢同步，形成+20%攻击力的爆发窗口。",
+        "en": "Yanluo r10 timing syncs with Jingwei jump kick for +20% ATK burst window."
+      }
+    }
+  ]
 }

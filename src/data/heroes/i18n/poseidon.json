@@ -162,5 +162,59 @@
         "zh": "护盾强度提升至330%。（281级解锁）"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Poseidon, Gott des Meeres und der Beben, gebietet über Gezeiten, Stürme und Erschütterungen. Er kann aufragende Fluten heraufbeschwören oder die Wasser beruhigen.",
+    "es": "Poseidón, dios del mar y los temblores, preside las mareas, las tormentas y los seísmos. Puede invocar oleajes imponentes o calmar las aguas.",
+    "ru": "Посейдон, бог моря и землетрясений, повелевает приливами, бурями и толчками. Он может призвать вздымающиеся валы или усмирить воды.",
+    "zh": "波塞冬，海洋与地震之神，掌管潮汐、风暴与震颤。他能掀起滔天巨浪，也能令海水归于平静。",
+    "en": "Poseidon, god of the sea and quakes, presides over tides, storms, and tremors. He can summon towering surges or calm the waters."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Bestes Gruppierwerkzeug im Spiel. r10 zwingend - Ketten-Wasserhosen skalieren dramatisch mit dem Relikt. Die Meisterung von Poseidon und Seth definiert High-Level-PvE-Pushing.",
+      "es": "La mejor herramienta de agrupamiento del juego. r10 obligatorio: las trombas encadenadas escalan enormemente con la reliquia. Dominar a Poseidón y a Set define el empuje de PvE de alto nivel.",
+      "ru": "Лучший инструмент группировки в игре. r10 обязателен - цепные смерчи резко усиливаются от реликвии. Мастерство Посейдона и Сета определяет пуш PvE высокого уровня.",
+      "zh": "游戏中最强的聚怪工具。圣物10为必备——连锁水龙卷随圣物大幅成长。精通波塞冬与赛特是高端PvE推图的关键。",
+      "en": "Best grouping tool in game. r10 mandatory -- chain waterspouts scale dramatically with relic. Mastery of Poseidon and Set defines high-level PvE pushing."
+    }
+  },
+  "synergyLinks": [
+    {
+      "description": {
+        "de": "Gruppierte Ziele maximieren den Wert von Skadis Flächen-Burst.",
+        "es": "Los objetivos agrupados maximizan el valor del estallido en área de Skadi.",
+        "ru": "Сгруппированные цели максимизируют ценность бёрста Скади по площади.",
+        "zh": "聚集的目标能最大化丝卡蒂的范围爆发价值。",
+        "en": "Grouped targets maximize Skadi AoE burst value."
+      }
+    },
+    {
+      "description": {
+        "de": "Seths Rüstungszerreißen an von Poseidon gruppierten Feinden ist der Kern des Diamant-PvE-Pushings.",
+        "es": "El desgarro de armadura de Set sobre enemigos agrupados por Poseidón es el núcleo del empuje de PvE de Diamantes.",
+        "ru": "Разрыв брони Сета по сгруппированным Посейдоном врагам - основа пуша PvE фракции Бубен.",
+        "zh": "赛特对波塞冬所聚敌人的破甲，是方片PvE推图的核心。",
+        "en": "Set armor shred on Poseidon-grouped enemies is the core of Diamond PvE pushing."
+      }
+    },
+    {
+      "description": {
+        "de": "Schub und Gruppierung an der Seite von Poseidon zur Positionskontrolle.",
+        "es": "Empuje y agrupamiento junto a Poseidón para el control de posicionamiento.",
+        "ru": "Толчок и группировка вместе с Посейдоном для контроля позиций.",
+        "zh": "与波塞冬并肩推怪聚怪，进行站位控制。",
+        "en": "Push and group alongside Poseidon for positioning control."
+      }
+    },
+    {
+      "description": {
+        "de": "Hela als Carry wird durch Poseidons Gruppierung an der Seite von Khepri und Iris ermöglicht.",
+        "es": "El carry Hela se habilita mediante el agrupamiento de Poseidón junto a Khepri e Iris.",
+        "ru": "Кэрри Хела раскрывается через группировку Посейдона вместе с Хепри и Ирис.",
+        "zh": "波塞冬的聚怪配合凯布利与伊里斯，使海拉得以担任核心。",
+        "en": "Hela carry enabled by Poseidon grouping alongside Khepri and Iris."
+      }
+    }
+  ]
 }

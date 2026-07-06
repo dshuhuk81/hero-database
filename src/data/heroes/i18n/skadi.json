@@ -177,5 +177,116 @@
         "zh": "触发霜之国度时获得12%攻击力，持续8秒。最多叠加10次。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Kern der Kontrolle",
+    "es": "Núcleo de control",
+    "ru": "Ядро контроля",
+    "zh": "控制核心",
+    "en": "Core of Control"
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Flächen-Carry mit Schadensskalierung nach Feinddichte und eingebautem Lebensraub. Nicht überlappende Synergien - passt in jede Aufstellung. CN: der einem Celestial am nächsten kommende Nicht-Celestial-DPS.",
+      "es": "Carry de área con daño que escala según la densidad enemiga y robo de vida incorporado. Sinergias no superpuestas: encaja en cualquier composición. CN: el DPS no Celestial más cercano a un Celestial.",
+      "ru": "Кэрри по площади с уроном, растущим от плотности врагов, и встроенным вампиризмом. Непересекающиеся синергии - вписывается в любой состав. CN: ближайший к Celestial не-Celestial DPS.",
+      "zh": "范围核心，伤害随敌人密度成长，并自带生命汲取。协同不冲突——可融入任何阵容。国服：最接近天神的非天神输出。",
+      "en": "AoE carry with damage scaling by enemy density and built-in lifesteal. Non-overlapping synergies -- slots into any comp. CN: closest non-Celestial DPS to a Celestial."
+    }
+  },
+  "strengths": [
+    {
+      "de": "Schaden skaliert mit dem CC-Output des Teams - je mehr Kontrolle, desto höher der Schaden",
+      "es": "El daño escala con la producción de control del equipo: cuanto más control, mayor daño",
+      "ru": "Урон масштабируется от контроля команды - чем больше контроля, тем выше урон",
+      "zh": "伤害随队伍的控制输出成长——控制越多，伤害越高",
+      "en": "Damage scales with team CC output — the more control, the higher the damage"
+    },
+    {
+      "de": "Dreifache Skalierungsachse: Kampfdauer, Kontrollfrequenz und Treffer-Stapelung wirken multiplikativ zusammen",
+      "es": "Triple eje de escalado: la duración del combate, la frecuencia de control y la acumulación de golpes se combinan de forma multiplicativa",
+      "ru": "Тройная ось масштабирования: длительность боя, частота контроля и накопление попаданий умножаются вместе",
+      "zh": "三重成长维度：战斗时长、控制频率与命中叠层以乘算方式复合放大",
+      "en": "Triple scaling axis: fight duration, control frequency, and hit stacking compound multiplicatively"
+    },
+    {
+      "de": "Energie-Selbsterhaltung durch das Reich des Frosts ermöglicht nahezu konstante Ultimativ-Verfügbarkeit in CC-lastigen Teams",
+      "es": "La autosostenibilidad de energía mediante el Reino de la Escarcha permite una disponibilidad de Ulti casi constante en equipos con mucho control",
+      "ru": "Самоподдержание энергии через Царство Мороза даёт почти постоянную доступность ульты в командах с обилием контроля",
+      "zh": "「冰霜领域」的能量自给使她在多控队伍中几乎能持续保有终结技",
+      "en": "Energy self-sustain through Realm of Frost allows near-constant Ultimate availability in CC-heavy teams"
+    },
+    {
+      "de": "Relikt-ANG-Stapelung wird mit der Zeit stärker - das Schneeballpotenzial in längeren Kämpfen ist extrem",
+      "es": "La acumulación de ATQ de la reliquia se fortalece con el tiempo: el potencial de bola de nieve en combates prolongados es extremo",
+      "ru": "Накопление ATK от реликвии крепнет со временем - потенциал снежного кома в затяжных боях экстремален",
+      "zh": "圣物的攻击力叠层随时间越发强大——在持久战中的滚雪球潜力极高",
+      "en": "Relic ATK stacking grows stronger over time — snowball potential in extended fights is extreme"
+    },
+    {
+      "de": "Relikt Lv2 Pseudo-Wiederbelebung verhindert einen DPS-Reset und verlängert das Skalierungsfenster",
+      "es": "La pseudorreanimación de la Reliquia Lv2 evita un reinicio de DPS y extiende la ventana de escalado",
+      "ru": "Псевдо-воскрешение Реликвии Lv2 предотвращает сброс DPS и продлевает окно масштабирования",
+      "zh": "圣物2的伪复活防止DPS归零，并延长成长窗口",
+      "en": "Relic Lv2 pseudo-revival prevents DPS reset and extends the scaling window"
+    },
+    {
+      "de": "Flächen-DoT vom Ring des Schneesturms + anhaltendes Ultimativ deckt große Bereiche ab, wenn Feinde gruppiert sind",
+      "es": "El DoT en área del Anillo de Ventisca + la Ulti persistente cubre grandes áreas cuando los enemigos están agrupados",
+      "ru": "Урон по площади со временем от Кольца Метели + постоянная ульта покрывают большие зоны, когда враги сгруппированы",
+      "zh": "「暴雪之环」的范围持续伤害+持续性终结技，在敌人聚集时可覆盖大片区域",
+      "en": "AoE DoT from Ring of Blizzard + persistent Ultimate covers large areas when enemies are grouped"
+    },
+    {
+      "de": "Ring des Schneesturms Lv4 Einfrieren erzeugt zusätzliche CC, die in die Schleife zurückfließt",
+      "es": "El Congelamiento del Anillo de Ventisca Lv4 crea control adicional que realimenta el bucle",
+      "ru": "Заморозка Кольца Метели Lv4 создаёт дополнительный контроль, питающий петлю",
+      "zh": "「暴雪之环」4级的冰冻创造额外控制，反哺整个循环",
+      "en": "Ring of Blizzard Lv4 Freeze creates additional CC that feeds back into the loop"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Vollständig davon abhängig, dass Teamkameraden Massenkontrolle liefern - nahezu nutzlos in Teams ohne CC",
+      "es": "Totalmente dependiente de que los compañeros aporten control de masas: casi inútil en equipos sin control",
+      "ru": "Полностью зависит от контроля со стороны союзников - почти бесполезна в командах без контроля",
+      "zh": "完全依赖队友提供群体控制——在无控队伍中几乎毫无用处",
+      "en": "Entirely dependent on teammates providing crowd control — near-useless in CC-less teams"
+    },
+    {
+      "de": "Hart gekontert von Reinigungs- und CC-Immunitätseffekten, die die passive Maschine lahmlegen",
+      "es": "Contrada con dureza por efectos de purga e inmunidad a control que apagan su motor pasivo",
+      "ru": "Жёстко контрится очищением и иммунитетом к контролю, которые глушат её пассивный движок",
+      "zh": "被净化与免控效果强力克制，这会使她的被动引擎停摆",
+      "en": "Hard-countered by Cleanse and CC-Immunity effects that shut down the passive engine"
+    },
+    {
+      "de": "Anfällig für Burst-Aufstellungen, die töten, bevor die Kontrollschleife starten kann",
+      "es": "Vulnerable a composiciones de estallido que matan antes de que pueda iniciarse el bucle de control",
+      "ru": "Уязвима к бёрст-составам, которые убивают до запуска петли контроля",
+      "zh": "惧怕爆发阵容，它们会在控制循环启动前就将其击杀",
+      "en": "Vulnerable to burst compositions that kill before the control loop can start"
+    },
+    {
+      "de": "Braucht Vorbereitungszeit - die ersten Sekunden eines Kampfes sind ihr schwächster Punkt",
+      "es": "Necesita tiempo de preparación: los primeros segundos de un combate son su punto más débil",
+      "ru": "Нужно время на подготовку - первые секунды боя - её слабейшая точка",
+      "zh": "需要铺垫时间——战斗最初的几秒是她最薄弱的时刻",
+      "en": "Needs setup time — first few seconds of a fight are her weakest point"
+    },
+    {
+      "de": "Die Tornado-Bahn ist positionsabhängig; verstreute Feinde verringern die Trefferfrequenz",
+      "es": "La trayectoria del tornado depende del posicionamiento; los enemigos dispersos reducen la frecuencia de impacto",
+      "ru": "Траектория торнадо зависит от позиций; рассеянные враги снижают частоту попаданий",
+      "zh": "龙卷的路径依赖站位；敌人分散会降低命中频率",
+      "en": "Tornado pathing is positioning-dependent; scattered enemies reduce hit frequency"
+    },
+    {
+      "de": "Einzelziel-Begegnungen (Bosse) begrenzen die Prozrate des Reichs des Frosts stark",
+      "es": "Los encuentros de objetivo único (jefes) limitan gravemente la tasa de activación del Reino de la Escarcha",
+      "ru": "Бои с одной целью (боссы) резко ограничивают частоту срабатывания Царства Мороза",
+      "zh": "单体战（Boss）会严重限制「冰霜领域」的触发率",
+      "en": "Single-target encounters (bosses) severely limit Realm of Frost proc rate"
+    }
+  ]
 }

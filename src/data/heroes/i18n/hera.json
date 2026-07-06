@@ -177,5 +177,114 @@
         "zh": "被赫拉魅惑的敌人完成击杀时，魅惑的持续时间延长5秒。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Hera ist eine kontrollorientierte Utility-Einheit rund um Unterdrückung, Störung und Feindmanipulation. Ihre Spielidentität dreht sich darum, die eigenen Schadensausteiler des Gegners gegen dessen Team zu wenden.",
+    "es": "Hera es una unidad de utilidad orientada al control, centrada en la supresión, la disrupción y la manipulación enemiga. Su identidad de juego gira en torno a volver a los propios causantes de daño del rival contra su equipo.",
+    "ru": "Гера — ориентированный на контроль вспомогательный юнит, построенный вокруг подавления, срыва и манипуляции врагами. Её игровая идентичность — обращать собственных дамагеров противника против их же команды.",
+    "zh": "赫拉是一名以控制为核心的功能型单位，围绕压制、扰乱与操控敌人展开。她的玩法核心在于让对手自己的输出单位反噬其队伍。",
+    "en": "Hera is a control-oriented utility unit centered around suppression, disruption, and enemy manipulation. Her gameplay identity revolves around turning the opponent’s own damage dealers against their team."
+  },
+  "strengths": [
+    {
+      "de": "Nutzt gegnerischen DPS gegen dessen eigenes Team",
+      "es": "Usa el DPS enemigo contra su propio equipo",
+      "ru": "Обращает урон врага против его же команды",
+      "zh": "利用敌方输出反噬其自身队伍",
+      "en": "Uses enemy DPS against their own team"
+    },
+    {
+      "de": "Außergewöhnliche Störung der hinteren Reihe",
+      "es": "Disrupción excepcional de la retaguardia",
+      "ru": "Исключительный срыв заднего ряда",
+      "zh": "卓越的后排扰乱能力",
+      "en": "Exceptional backline disruption"
+    },
+    {
+      "de": "Starke Skalierung in längeren Kämpfen",
+      "es": "Fuerte escalado en combates prolongados",
+      "ru": "Сильное масштабирование в затяжных боях",
+      "zh": "在持久战中成长强劲",
+      "en": "Strong scaling in extended fights"
+    },
+    {
+      "de": "Mächtige Unterdrückungs-Utility",
+      "es": "Poderosa utilidad de supresión",
+      "ru": "Мощная полезность подавления",
+      "zh": "强大的压制功能",
+      "en": "Powerful suppression utility"
+    },
+    {
+      "de": "Hervorragendes Anti-Carry-Potenzial",
+      "es": "Excelente potencial anti-carry",
+      "ru": "Отличный потенциал против кэрри",
+      "zh": "出色的反核心潜力",
+      "en": "Excellent anti-carry potential"
+    },
+    {
+      "de": "Ermöglicht verbündeten DPS-Einheiten durch Kontrollfenster",
+      "es": "Habilita a las unidades de DPS aliadas mediante ventanas de control",
+      "ru": "Открывает союзным DPS окна через контроль",
+      "zh": "通过控制窗口为友方输出单位创造机会",
+      "en": "Enables allied DPS units through control windows"
+    },
+    {
+      "de": "Bestraft hyperinvestierte Fernkampf-Carries",
+      "es": "Castiga a los carries a distancia con hiperinversión",
+      "ru": "Наказывает сильно вложенных дальнобойных кэрри",
+      "zh": "惩罚被过度投资的远程核心",
+      "en": "Punishes hyper-invested ranged carries"
+    },
+    {
+      "de": "Reduziert den Anfangsdruck",
+      "es": "Reduce la presión inicial",
+      "ru": "Снижает стартовое давление",
+      "zh": "减轻开局压力",
+      "en": "Reduces start pressure"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Anfällig für Nahkampfdruck",
+      "es": "Vulnerable a la presión cuerpo a cuerpo",
+      "ru": "Уязвима к давлению ближнего боя",
+      "zh": "惧怕近战压制",
+      "en": "Vulnerable to melee pressure"
+    },
+    {
+      "de": "Braucht Zeit, um voll zu skalieren",
+      "es": "Requiere tiempo para escalar por completo",
+      "ru": "Требует времени для полного масштабирования",
+      "zh": "需要时间才能完全成长",
+      "en": "Requires time to fully scale"
+    },
+    {
+      "de": "Stark abhängig von der Zielkonstanz",
+      "es": "Depende en gran medida de la consistencia del objetivo",
+      "ru": "Сильно зависит от постоянства целей",
+      "zh": "高度依赖目标选取的稳定性",
+      "en": "Relies heavily on targeting consistency"
+    },
+    {
+      "de": "Weniger effektiv gegen frontlinienlastige Teams",
+      "es": "Menos eficaz contra equipos con mucha vanguardia",
+      "ru": "Менее эффективна против составов с тяжёлым фронтом",
+      "zh": "对前排厚重的队伍效果较差",
+      "en": "Less effective into frontline-heavy teams"
+    },
+    {
+      "de": "Die Ultimativ-Zielwahl tut sich schwer gegen Nahkampfeinheiten",
+      "es": "El objetivo de su Ulti tiene problemas contra unidades cuerpo a cuerpo",
+      "ru": "Наведение ульты плохо работает против юнитов ближнего боя",
+      "zh": "终结技的目标选取难以应对近战单位",
+      "en": "Ultimate targeting struggles against melee units"
+    },
+    {
+      "de": "Kann in schnellen Burst-Matchups an Wert verlieren",
+      "es": "Puede perder valor en enfrentamientos de estallido rápido",
+      "ru": "Может терять ценность в быстрых бёрст-матчапах",
+      "zh": "在快速爆发的对局中可能失去价值",
+      "en": "Can lose value in fast-paced burst matchups"
+    }
+  ]
 }

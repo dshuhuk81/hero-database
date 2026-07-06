@@ -177,5 +177,93 @@
         "zh": "【天界星陨】能量上限提升至1000点。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Nut",
+    "es": "Nut",
+    "ru": "Нут",
+    "zh": "努特",
+    "en": "Nuts"
+  },
+  "strengths": [
+    {
+      "de": "Autarke Energie: ultimativbereit nach ~2,5-3s Ruhe - kein Batterie-Held nötig",
+      "es": "Energía autosuficiente: lista para la Ulti tras ~2,5-3s de calma, sin necesidad de un héroe batería",
+      "ru": "Автономная энергия: готовность к ульте за ~2,5-3с покоя - герой-батарея не нужен",
+      "zh": "能量自给：约2.5-3秒无干扰即可备好终结技——无需电池英雄",
+      "en": "Self-sufficient energy: ult-ready in ~2.5-3s of peace - no battery hero required"
+    },
+    {
+      "de": "Unterbrechung verzögert nur ihr Ultimativ; völlige Verhinderung ist nahezu unmöglich",
+      "es": "La interrupción solo retrasa su Ulti; negarla por completo es casi imposible",
+      "ru": "Прерывание лишь откладывает её ульту; полностью запретить её почти невозможно",
+      "zh": "打断只能延迟她的终结技；完全阻止几乎不可能",
+      "en": "Interruption only discounts her ult; full denial is nearly impossible"
+    },
+    {
+      "de": "Selbstverstärkendes ANG: jeder umkreisende Kern verleiht ihrer eigenen Detonation +30% ANG - kein Team-Buff",
+      "es": "ATQ autoescalable: cada núcleo en órbita añade +30% ATQ a su propia detonación, no es una mejora de equipo",
+      "ru": "Самонарастающий ATK: каждое вращающееся ядро добавляет +30% ATK к её собственной детонации - это не тимбафф",
+      "zh": "自我叠加的攻击力：每一个环绕核心为她自身的引爆增加+30%攻击力——并非团队增益",
+      "en": "Self-ramping ATK: every orbiting core adds +30% ATK to her own detonation - not a team buff"
+    },
+    {
+      "de": "Mehrschichtige Fluchtkette: Schild - Rückstoß - Ausweichen - nicht anvisierbar",
+      "es": "Cadena de escape en capas: escudo - empuje - esquiva - inmune a objetivo",
+      "ru": "Многослойная цепь спасения: щит - отбрасывание - уклонение - невозможность стать целью",
+      "zh": "多层逃生链：护盾—击退—闪避—不可选中",
+      "en": "Layered escape chain: shield - knockback - dodge - untargetable"
+    },
+    {
+      "de": "Kann selbst bei großem Unterschied in Kampfkraft oder Level den Ausschlag geben",
+      "es": "Puede marcar la diferencia incluso con una gran diferencia de PC o de nivel",
+      "ru": "Может решить исход даже при большой разнице в БМ или уровне",
+      "zh": "即便在战力或等级差距很大时，也能起到决定作用",
+      "en": "Can make a difference even with high difference in BP or level"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Null Team-Utility - ihre Aufbau-Buffs gelten nur ihr selbst; landet die Bombe nie, hat sie nichts beigetragen",
+      "es": "Cero utilidad de equipo: sus mejoras acumuladas solo la benefician a ella; si la bomba nunca impacta, no aportó nada",
+      "ru": "Ноль командной пользы - её нарастающие баффы только для неё самой; если бомба не срабатывает, она не внесла вклада",
+      "zh": "零团队功能性——她的叠层增益只作用于自身；若炸弹始终未命中，她便毫无贡献",
+      "en": "Zero team utility - her ramp buffs only herself; if the bomb never lands, she contributed nothing"
+    },
+    {
+      "de": "Harte CC vor dem Aufladungszustand ist ihr wahres Tötungsfenster",
+      "es": "El control duro antes del estado de carga es su verdadera ventana de muerte",
+      "ru": "Жёсткий контроль до состояния зарядки - её настоящее окно смерти",
+      "zh": "进入蓄力状态前的硬控是击杀她的真正窗口",
+      "en": "Hard CC before the charge state is her real kill window"
+    },
+    {
+      "de": "Vorsicht vor ANG-sperrenden Assassinen oder Tauchern, die sie wegen ihres ANG-Aufbaus leicht ins Visier nehmen könnten",
+      "es": "Cuidado con asesinos que bloquean el ATQ o penetradores que podrían atacarla fácilmente por su acumulación de ATQ",
+      "ru": "Опасайтесь ассасинов, блокирующих ATK, или ныряльщиков, которым легко нацелиться на неё из-за её нарастающего ATK",
+      "zh": "当心锁攻击的刺客或突进者，因她攻击力叠加而容易被针对",
+      "en": "Beware of ATK-locking Assassins or divers that could target her easily cause of her ATK-ramping"
+    },
+    {
+      "de": "Der Rückstoß beantwortet einen Taucher pro 14s - ein Doppeltauch geht hindurch",
+      "es": "El empuje responde a un penetrador cada 14s: una doble penetración lo atraviesa",
+      "ru": "Отбрасывание отвечает на одного ныряльщика раз в 14с - двойной нырок проходит сквозь него",
+      "zh": "击退每14秒只能应对一名突进者——双突进可直接穿过",
+      "en": "Knockback answers one diver per 14s - double-dive walks through it"
+    },
+    {
+      "de": "Schwach gegen einen Solo-Boss - ihr Schaden ist mittelmäßig wegen ihres Zyklus",
+      "es": "Débil contra un jefe en solitario: su daño es mediocre por su ciclo",
+      "ru": "Слаба против одиночного босса - её урон посредственный из-за её цикла",
+      "zh": "对单个Boss较弱——受其循环所限，伤害平庸",
+      "en": "Weak against a solo boss - her damage is mediocre cause of her cycle"
+    },
+    {
+      "de": "Die Obergrenze ist relikt-gesperrt: nicht anvisierbar bei R10, 1.000er-Kappe bei R30 - lange Investitionskurve",
+      "es": "Su techo está limitado por reliquia: inmune a objetivo en R10, tope de 1.000 en R30: larga curva de inversión",
+      "ru": "Потолок заперт реликвией: невозможность стать целью на R10, кап 1000 на R30 - долгая кривая вложений",
+      "zh": "上限受圣物限制：圣物10不可选中，圣物30达成1000上限——投资周期漫长",
+      "en": "Ceiling is relic-gated: untargetable at R10, 1,000-cap at R30 - long investment curve"
+    }
+  ]
 }

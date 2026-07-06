@@ -145,5 +145,41 @@
         "zh": "蟹壳庇护使目标的护甲与魔抗提升50%。（圣物30级解锁）"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Thethys, bekannt als Krebs, ist die Göttin familiärer Wärme und Fürsorge, Hüterin der Ozeane.",
+    "es": "Thethys, conocida como Cáncer, es la diosa de la calidez y la protección familiar, guardiana de los océanos.",
+    "ru": "Тефия, известная как Рак, — богиня семейного тепла и защиты, хранительница океанов.",
+    "zh": "忒堤斯，即巨蟹座，是家庭温情与守护的女神，海洋的守护者。",
+    "en": "Thethys, known as Cancer is the godess of familial warmth and protection, guardian of the oceans."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Energiebatterie für die Frontlinie mit Superrüstung (CC-Immunität). Einzige nützliche Sternzeichen-Einheit. PvP-Tier höher als PvE, weil Superrüstung im 5v5 CC-Lock beim Auftakt verhindert.",
+      "es": "Batería de energía para la vanguardia con superarmadura (inmunidad a control). Única unidad del Zodiaco útil. Su nivel en PvP es mayor que en PvE porque la superarmadura evita el bloqueo por control al iniciar en 5v5.",
+      "ru": "Энергобатарея для передней линии со сверхбронёй (иммунитет к контролю). Единственный полезный юнит Зодиака. В PvP выше, чем в PvE, ведь сверхброня в 5v5 не даёт застанить на старте.",
+      "zh": "带霸体（免控）的前排能量电池。唯一有用的黄道单位。PvP评级高于PvE，因为5v5开局时霸体可防止被控制锁死。",
+      "en": "Energy battery for frontline with super armor (CC immunity). Only useful Zodiac unit. PvP tier higher than PvE because super armor in 5v5 prevents CC-lock at initiation."
+    }
+  },
+  "synergyLinks": [
+    {
+      "description": {
+        "de": "Beide liefern Energie und CC an die Frontlinie; zusammen verhindern sie einen kompletten CC-Lock.",
+        "es": "Ambos aportan energía y control a la vanguardia; juntos evitan un bloqueo de control total.",
+        "ru": "Оба дают энергию и контроль передней линии; вместе они предотвращают полный контроль-лок.",
+        "zh": "两者都为前排提供能量与控制；合力可防止被完全控制锁死。",
+        "en": "Both provide energy and CC to frontline; together prevent complete CC-lock."
+      }
+    },
+    {
+      "description": {
+        "de": "Superrüstung hilft der Frontlinie von Meng Po, lange genug zu überleben, um die Wiederbelebung auszulösen.",
+        "es": "La superarmadura ayuda a la vanguardia de Meng Po a sobrevivir lo suficiente para activar la reanimación.",
+        "ru": "Сверхброня помогает фронтлайну Мэн По выжить достаточно долго, чтобы сработало воскрешение.",
+        "zh": "霸体帮助孟婆的前排存活足够久，以触发复活。",
+        "en": "Super armor helps Meng Po frontline survive long enough for revive proc."
+      }
+    }
+  ]
 }

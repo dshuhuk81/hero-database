@@ -157,5 +157,50 @@
         "zh": "掠夺提升至4%。（圣物30级解锁）"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Hekate, die dreigestaltige Göttin des Neumonds, der Gelegenheit und des unabwendbaren Todes, verkörpert die Schattenseite der Welt.",
+    "es": "Hécate, la diosa de tres formas de la luna oscura, la oportunidad y la muerte irresistible, encarna el lado oscuro del mundo.",
+    "ru": "Геката, трёхликая богиня тёмной луны, случая и неотвратимой смерти, воплощает теневую сторону мира.",
+    "zh": "赫卡忒，三相之身的暗月、机遇与不可抗拒之死的女神，是世界阴影面的化身。",
+    "en": "Hecate, the tripled-formed goddess of the dark moon, opportunity, and irresistible death, embodies the shadow side of the world."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "10-sekündiger anhaltender Schadenskanal mit dem höchsten Gesamtschadensmultiplikator im Spiel. Langsame Ausgabe verliert früh, gewinnt aber spät. Kern-Trio: Yuelao (ANG-Verknüpfung) + Momus (Schilde) + Hekate.",
+      "es": "Canalización de daño sostenida de 10 segundos con el mayor multiplicador de daño total del juego. Su producción lenta pierde temprano pero gana tarde. Trío central: Yuelao (enlace de ATQ) + Momo (escudos) + Hécate.",
+      "ru": "10-секундный непрерывный канал урона с наибольшим суммарным множителем урона в игре. Медленная отдача проигрывает рано, но выигрывает поздно. Ядро-трио: Юэлао (связь ATK) + Мом (щиты) + Геката.",
+      "zh": "持续10秒的引导伤害，拥有游戏中最高的总伤害倍率。输出较慢，前期吃亏但后期取胜。核心三人组：月老（攻击联结）+摩摩斯（护盾）+赫卡忒。",
+      "en": "10-second sustained damage channel with highest total damage multiplier in game. Slow output loses early but wins late. Core trio: Yuelao (ATK link) + Momus (shields) + Hecate."
+    }
+  },
+  "synergyLinks": [
+    {
+      "description": {
+        "de": "Yuelao verbindet Hekate (höchstes ANG) und Momus und teilt Werte sowie anhaltende ANG-Buffs.",
+        "es": "Yuelao enlaza a Hécate (mayor ATQ) y a Momo, compartiendo estadísticas y mejoras de ATQ sostenidas.",
+        "ru": "Юэлао связывает Гекату (наибольший ATK) и Мома, разделяя характеристики и постоянные баффы ATK.",
+        "zh": "月老将赫卡忒（最高攻击力）与摩摩斯相连，共享属性并持续提供攻击增益。",
+        "en": "Yuelao links Hecate (highest ATK) and Momus, sharing stats and sustained ATK buffs."
+      }
+    },
+    {
+      "description": {
+        "de": "Momus' Schilde halten Hekate während des 10-sekündigen Kanals am Leben.",
+        "es": "Los escudos de Momo mantienen viva a Hécate durante la canalización de 10 segundos.",
+        "ru": "Щиты Мома удерживают Гекату в живых во время 10-секундного канала.",
+        "zh": "摩摩斯的护盾让赫卡忒在10秒引导期间保持存活。",
+        "en": "Momus shields keep Hecate alive during 10-second channel."
+      }
+    },
+    {
+      "description": {
+        "de": "Volles Pik-Meta-Trio - Yuelao bufft sowohl Hekate als auch Skadi.",
+        "es": "Trío meta de Picas completo - Yuelao mejora tanto a Hécate como a Skadi.",
+        "ru": "Полное мета-трио Пик - Юэлао баффает и Гекату, и Скади.",
+        "zh": "完整的黑桃版本三人组——月老同时增益赫卡忒与丝卡蒂。",
+        "en": "Full Spade meta trio -- Yuelao buffs both Hecate and Skadi."
+      }
+    }
+  ]
 }

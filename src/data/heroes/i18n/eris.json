@@ -177,5 +177,86 @@
         "zh": "无视目标90%的防御。"
       }
     }
-  }
+  },
+  "strengths": [
+    {
+      "de": "Einzigartige DPS-Verstärkung: Jede zusätzliche Marionette vervielfacht den Gesamtoutput. Mehr Marionetten = höhere Burst-Obergrenze bei jedem Ultimativ-Zyklus.",
+      "es": "Amplificación de DPS única: cada Marioneta adicional multiplica la producción total. Más Marionetas = mayor techo de estallido en cada ciclo de Ulti.",
+      "ru": "Уникальное усиление DPS: каждая дополнительная Марионетка умножает общий выхлоп. Больше Марионеток = выше потолок бёрста на каждом цикле ульты.",
+      "zh": "独特的DPS放大：每多一个傀儡都会成倍提升总输出。傀儡越多，每次终结技循环的爆发上限越高。",
+      "en": "Unique DPS amplification: each additional Puppet multiplies total output. More Puppets = higher burst ceiling on every Ultimate cycle."
+    },
+    {
+      "de": "Passive Marionettenerzeugung durch Verbündetentode. Gewinnt genau dann an Kraft, wenn ein Team unter Druck steht, und kehrt so den üblichen Carry-Nachteil um.",
+      "es": "Generación pasiva de Marionetas por muertes aliadas. Gana poder justo cuando el equipo está bajo presión, invirtiendo la desventaja habitual de un carry.",
+      "ru": "Пассивное создание Марионеток от гибели союзников. Набирает силу именно тогда, когда команда под давлением, переворачивая обычный недостаток кэрри.",
+      "zh": "通过友方阵亡被动生成傀儡。恰在队伍承压时增强，扭转了核心通常的劣势。",
+      "en": "Passive Puppet generation from ally deaths. Gains power precisely when a team is under pressure, inverting the normal carry disadvantage."
+    },
+    {
+      "de": "Eingebaute Überlebensfähigkeit durch den Todesausweich der Marionetten-Attrappe. Außergewöhnliche Zähigkeit für eine Bogenschützen-Klasse.",
+      "es": "Supervivencia incorporada mediante la esquiva de muerte del Señuelo de Marioneta. Resistencia excepcional para una clase de Arquero.",
+      "ru": "Встроенная живучесть через уклонение от смерти Марионетки-Приманки. Исключительная стойкость для класса Лучника.",
+      "zh": "通过傀儡诱饵的免死闪避获得内置生存能力。对弓手职业而言坚韧异常。",
+      "en": "Built-in survivability through Puppet Decoy death-dodge. Exceptional durability for an Archer class."
+    },
+    {
+      "de": "Das Rüstungsdurchdringungs-Relikt gilt gleichzeitig für alle aktiven Marionetten. 90% Rüstungsignorierung bei maximalem Relikt verstärkt den gesamten Marionettenschwarm.",
+      "es": "La reliquia de penetración de DEF se aplica a todas las Marionetas activas a la vez. Ignorar el 90% de DEF a reliquia máxima amplifica todo el enjambre de Marionetas.",
+      "ru": "Реликвия пробития DEF действует на всех активных Марионеток одновременно. Игнор 90% DEF на макс. реликвии усиливает весь рой Марионеток.",
+      "zh": "破防圣物同时作用于所有活跃傀儡。满圣物90%无视防御可放大整个傀儡群。",
+      "en": "DEF penetration relic applies to all active Puppets simultaneously. 90% DEF ignore at max relic amplifies the entire Puppet swarm."
+    },
+    {
+      "de": "Relikt Lv3: Tode gegnerischer Gottheiten lösen Marionettenbeschwörung aus. Potenzielles Schneeballpotenzial im PvP, wenn beide Teams Einheiten verlieren.",
+      "es": "Reliquia Lv3: las muertes de Deidades enemigas activan invocación de Marionetas. Potencial de bola de nieve en PvP cuando ambos equipos pierden unidades.",
+      "ru": "Реликвия Lv3: гибель вражеских Божеств вызывает призыв Марионеток. Потенциал снежного кома в PvP, когда обе команды теряют юниты.",
+      "zh": "圣物3：敌方神明阵亡会触发傀儡召唤。在双方都在损失单位的PvP中具备滚雪球潜力。",
+      "en": "Relic Lv3: enemy Deity deaths trigger Puppet summoning. Potential snowball in PvP where both teams are losing units."
+    },
+    {
+      "de": "Schaden nach fehlenden/maximalen LP beim Ultimativ ab Fähigkeit 1 Lv3-4. Effektiv gegen zähe Ziele mit hohen LP.",
+      "es": "Daño según HP faltante/máxima en la Ulti a partir de Habilidad 1 Lv3-4. Eficaz contra objetivos resistentes de alta HP.",
+      "ru": "Урон по недостающему/макс. HP на ульте с Навыка 1 Lv3-4. Эффективно против крепких целей с высоким HP.",
+      "zh": "技能1的3-4级起，终结技造成按已损失/最大生命值计算的伤害。对高血量的坦克目标有效。",
+      "en": "Missing/Max HP damage on Ultimate at Skill 1 Lv3–4. Effective against tanky high-HP targets."
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Erfordert Aufbauzeit für Marionetten. Ohne angesammelte Marionetten ist Eris eine unterdurchschnittliche Bogenschützin.",
+      "es": "Requiere tiempo de acumulación de Marionetas. Sin Marionetas acumuladas, Eris es una Arquera por debajo del promedio.",
+      "ru": "Требует времени на накопление Марионеток. Без накопленных Марионеток Эрида - Лучник ниже среднего.",
+      "zh": "需要时间积攒傀儡。缺少积累的傀儡时，厄里斯只是一名低于平均水平的弓手。",
+      "en": "Requires Puppet buildup time. Without accumulated Puppets, Eris is a below-average Archer."
+    },
+    {
+      "de": "Schnelle Burst-Aufstellungen beenden Kämpfe, bevor sich Marionettenstapel und Todesauslöser ansammeln.",
+      "es": "Las composiciones de estallido rápido acaban los combates antes de que se acumulen las cargas de Marioneta y los disparadores por muerte.",
+      "ru": "Быстрые бёрст-составы заканчивают бой до накопления стаков Марионеток и триггеров смерти.",
+      "zh": "快速爆发的阵容会在傀儡层数与死亡触发积累之前就结束战斗。",
+      "en": "Fast burst compositions end fights before Puppet stacks and death-triggers accumulate."
+    },
+    {
+      "de": "Marionettenvererbung beginnt bei 20% ANG (Fähigkeit 2 Basis). Hohe Investition in Fähigkeit-2-Upgrades nötig, um die Schadensobergrenze zu erreichen.",
+      "es": "La herencia de las Marionetas empieza en 20% ATQ (base de Habilidad 2). Se requiere alta inversión en mejoras de Habilidad 2 para alcanzar el techo de daño.",
+      "ru": "Наследование Марионеток начинается с 20% ATK (база Навыка 2). Для достижения потолка урона нужны большие вложения в улучшения Навыка 2.",
+      "zh": "傀儡的属性继承从20%攻击力起步（技能2基础）。要达到伤害上限需要在技能2的升级上高投资。",
+      "en": "Puppet inheritance starts at 20% ATK (Skill 2 base). High Skill 2 upgrade investment required to reach damage ceiling."
+    },
+    {
+      "de": "Maximale Marionettenzahl ist hinter Fähigkeit-4-Upgradestufen gesperrt (3 → 5 → 7).",
+      "es": "El número máximo de Marionetas está limitado por los niveles de mejora de Habilidad 4 (3 → 5 → 7).",
+      "ru": "Максимальное число Марионеток заперто за уровнями улучшения Навыка 4 (3 → 5 → 7).",
+      "zh": "傀儡数量上限受技能4升级等级限制（3→5→7）。",
+      "en": "Maximum Puppet count gated behind Skill 4 upgrade levels (3 → 5 → 7)."
+    },
+    {
+      "de": "Die Marionetten-Attrappe hat 30s Basis-Abklingzeit. In wiederholten Burst-Matchups ist der Ausweich womöglich nicht für jede tödliche Bedrohung verfügbar.",
+      "es": "El Señuelo de Marioneta tiene 30s de enfriamiento base. En enfrentamientos de estallido repetido, la esquiva puede no estar disponible ante cada amenaza letal.",
+      "ru": "У Марионетки-Приманки базовый откат 30с. В матчапах с повторяющимся бёрстом уклонение может быть недоступно для каждой смертельной угрозы.",
+      "zh": "傀儡诱饵的基础冷却为30秒。在反复爆发的对局中，闪避未必能应对每一次致命威胁。",
+      "en": "Puppet Decoy has a 30s base cooldown. In repeated burst matchups, the dodge may not be available for every lethal threat."
+    }
+  ]
 }

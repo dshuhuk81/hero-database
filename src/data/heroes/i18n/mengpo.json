@@ -177,5 +177,107 @@
         "zh": "当战场上有4名或更多存活友方（不含随从）时，孟婆即不可被选中。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Meng Po, legendäre Unterstützerin der Herz-Fraktion, beherrscht das Schlachtfeld durch Samsara - die Macht der Wiederkehr. Während andere ums Überleben kämpfen, sorgt Meng Po dafür, dass selbst der Tod nur eine Pause ist. Ihr Ultimativ sammelt Samsara-Stapel, die gefallene Verbündete in voller Stärke wiederbeleben und Niederlage in Erneuerung verwandeln. Solange ihre Gefährten stehen, macht ihr Relikt sie unberührbar. Der Stein der drei Schicksale zerschlägt Kontrolleffekte und heilt die Betroffenen, während die Lycoris-Blüte Kraft an den Verbündeten leitet, der seinem Ultimativ am nächsten ist. Mit Meng Po beugt sich der Fluss des Kampfes einer einzigen Wahrheit: Für ihre Verbündeten ist das Ende niemals das Ende.",
+    "es": "Meng Po, apoyo legendario de la facción Corazones, domina el campo de batalla a través del Samsara, el poder del retorno. Mientras otros luchan por sobrevivir, Meng Po hace que la propia muerte sea solo una pausa. Su Ulti acumula cargas de Samsara que reviven a aliados caídos a plena fuerza, convirtiendo la derrota en renovación. Mientras sus compañeros sigan en pie, su Reliquia la vuelve intocable. La Piedra de los Tres Destinos rompe los efectos de control y restaura a los afectados, mientras que la Flor de Lycoris canaliza poder al aliado más cercano a desatar su Ulti. Con Meng Po presente, el flujo de la batalla se pliega a una sola verdad: para sus aliados, el final nunca es el final.",
+    "ru": "Мэн По, легендарная поддержка фракции Червей, властвует над полем боя через Сансару — силу возвращения. Пока другие сражаются за выживание, Мэн По делает саму смерть лишь паузой. Её ульта копит заряды Сансары, что воскрешают павших союзников в полной силе, превращая поражение в обновление. Пока её товарищи стоят, Реликвия делает её неуязвимой. Камень Трёх Судеб разбивает эффекты контроля и исцеляет пострадавших, а Цветок Ликорис направляет силу союзнику, ближайшему к своей ульте. С Мэн По течение боя подчиняется одной истине: для её союзников конец никогда не конец.",
+    "zh": "孟婆，红心阵营的传奇辅助，以「轮回」——归来之力——掌控战场。当他人为生存而战时，孟婆让死亡也不过是一次停顿。她的终结技积攒轮回层数，使阵亡的队友满状态复活，将失败化为新生。只要同伴尚存，她的圣物便让她无法被触及。三生石粉碎控制效果并治愈受创者，而彼岸花则将力量导向最接近释放终结技的队友。有孟婆在场，战斗的走向臣服于唯一的真理：对她的队友而言，终结永非终结。",
+    "en": "Mengpo, Legendary Support of the Hearts faction, governs the battlefield through Samsara—the power of return. While others fight to survive, Mengpo ensures that death itself is only a pause. Her Ultimate gathers Samsara stacks that revive fallen allies at full strength, turning defeat into renewal. As long as her companions stand, her Relic renders her untouchable. Stone of Three Fates shatters control effects and restores the afflicted, while Lycoris Bloom channels power to the ally closest to unleashing their Ultimate. With Mengpo present, the flow of battle bends around a single truth: for her allies, the end is never the end."
+  },
+  "strengths": [
+    {
+      "de": "Wiederbelebung mit vollen LP schafft ein echtes zweites Leben für jeden gefallenen Carry",
+      "es": "La reanimación a HP completa crea una segunda vida genuina para cualquier carry caído",
+      "ru": "Воскрешение с полным HP даёт настоящую вторую жизнь любому павшему кэрри",
+      "zh": "满血复活为任何阵亡的核心带来真正的第二条命",
+      "en": "Full-HP revival creates a genuine second life for any fallen carry"
+    },
+    {
+      "de": "Nicht-Anvisierbarkeit in frühen Kampfphasen schützt die Wiederbelebungsmaschine",
+      "es": "La inmunidad a objetivo en fases tempranas del combate protege el motor de reanimación",
+      "ru": "Невозможность стать целью в ранних фазах боя защищает механизм воскрешения",
+      "zh": "战斗前期的不可选中保护了复活引擎",
+      "en": "Untargetability in early-fight phases protects the revival engine"
+    },
+    {
+      "de": "Anti-CC-Reinigung feuert passiv und kostenlos - kostenloser Wert in jedem CC-lastigen Matchup",
+      "es": "La purga anti-control se activa de forma pasiva y sin coste: valor gratuito en cualquier enfrentamiento con mucho control",
+      "ru": "Очищение от контроля срабатывает пассивно и бесплатно - бесплатная ценность в любом матчапе с обилием контроля",
+      "zh": "抗控净化被动免费触发——在任何多控对局中都是白赚的价值",
+      "en": "Anti-CC cleanse fires passively at no cost — free value in any CC-heavy matchup"
+    },
+    {
+      "de": "Die Lycoris-Blüte belohnt energiefokussierten Teamaufbau mit anhaltendem ANG% und Energieregeneration",
+      "es": "La Flor de Lycoris recompensa la construcción de equipo centrada en energía con ATQ% sostenido y regeneración de energía",
+      "ru": "Цветок Ликорис вознаграждает построение команды вокруг энергии постоянным ATK% и восстановлением энергии",
+      "zh": "「彼岸花」以持续的攻击力%与回能奖励以能量为核心的组队思路",
+      "en": "Lycoris Bloom rewards Energy-focused team construction with sustained ATK% and Energy regen"
+    },
+    {
+      "de": "Relikt-Energie-Rückkopplungsschleife: Verbündetentode befeuern die Erzeugung von Samsara-Stapeln",
+      "es": "Bucle de retroalimentación de energía de la reliquia: las muertes aliadas realimentan la generación de cargas de Samsara",
+      "ru": "Петля обратной связи энергии реликвии: гибель союзников подпитывает накопление зарядов Сансары",
+      "zh": "圣物能量反馈循环：友方阵亡会为轮回层数的生成补充燃料",
+      "en": "Relic energy feedback loop: ally deaths refuel Samsara stack generation"
+    },
+    {
+      "de": "Die Rückzugshilfe aus den Wassern des Vergessens repositioniert Taucher, ohne Support-Aktionen zu verbrauchen",
+      "es": "El peel de las Aguas del Olvido reposiciona a los penetradores sin consumir acciones de apoyo",
+      "ru": "Прикрытие Водами Забвения перемещает ныряльщиков, не расходуя действия поддержки",
+      "zh": "「忘川之水」的解围能重新调整突进者的位置，且不消耗辅助动作",
+      "en": "Backline peel from Waters of Oblivion repositions divers without consuming support actions"
+    },
+    {
+      "de": "Ermöglicht aggressive Spielstile und risikoreiche Teams, die andernfalls nicht spielbar wären",
+      "es": "Habilita estilos de juego agresivos y equipos arriesgados que de otro modo no serían viables",
+      "ru": "Открывает агрессивные стили и рискованные команды, которые иначе были бы нежизнеспособны",
+      "zh": "让原本无法成型的激进打法与高风险阵容变得可行",
+      "en": "Enables aggressive playstyles and risk-heavy teams that would otherwise be unviable"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Wenn zwei oder mehr Helden gleichzeitig sterben, werden beide Samsara-Stapel auf einmal aufgebraucht",
+      "es": "Si dos o más héroes mueren a la vez, se agotan ambas cargas de Samsara de golpe",
+      "ru": "Если двое и более героев гибнут одновременно, оба заряда Сансары расходуются сразу",
+      "zh": "若有两名或更多英雄同时阵亡，两层轮回会被一次性耗尽",
+      "en": "Two or more heroes dying simultaneously exhausts both Samsara stacks at once"
+    },
+    {
+      "de": "Nicht-Anvisierbarkeit hat eine feste Kopfzahlanforderung - fällt weg, wenn Verbündete sterben",
+      "es": "La inmunidad a objetivo tiene un requisito fijo de número de aliados: desaparece a medida que mueren",
+      "ru": "Невозможность стать целью требует определённого числа союзников - пропадает по мере их гибели",
+      "zh": "不可选中有固定的存活人数要求——随着友方阵亡而失效",
+      "en": "Untargetability has a hard headcount requirement — falls away as allies die"
+    },
+    {
+      "de": "Der Stein der drei Schicksale hat eine Abklingzeit; eine zweite CC-Welle im Fenster erhält keinen Schutz",
+      "es": "La Piedra de los Tres Destinos tiene enfriamiento; una segunda oleada de control dentro de la ventana no recibe protección",
+      "ru": "У Камня Трёх Судеб есть откат; вторая волна контроля в окне не получает защиты",
+      "zh": "三生石有冷却；窗口期内的第二波控制将得不到保护",
+      "en": "Stone of Three Fates has a cooldown; a second CC wave in the window receives no protection"
+    },
+    {
+      "de": "Der Wiederbelebungsvorteil wird durch Anti-Wiederbelebungsmechaniken bei manchen Bosskämpfen zunichtegemacht",
+      "es": "La ventaja de reanimación queda anulada por mecánicas anti-reanimación en algunos encuentros de jefe",
+      "ru": "Преимущество воскрешения обнуляется механиками анти-воскрешения на некоторых боссах",
+      "zh": "部分Boss战的反复活机制会抵消她的复活优势",
+      "en": "Revival advantage negated by anti-revive mechanics on some boss encounters"
+    },
+    {
+      "de": "Energiesperre oder Stille bringt die Erzeugung von Samsara-Stapeln zum Stillstand",
+      "es": "El bloqueo de energía o el silencio detiene la generación de cargas de Samsara",
+      "ru": "Блокировка энергии или немота останавливают накопление зарядов Сансары",
+      "zh": "能量锁定或沉默会中止轮回层数的生成",
+      "en": "Energy lock or silence stalls Samsara stack generation"
+    },
+    {
+      "de": "Bringt minimalen direkten Schaden - Teams müssen andere dedizierte Schadensquellen aufstellen",
+      "es": "Aporta un daño directo mínimo: los equipos deben incluir otras fuentes de daño dedicadas",
+      "ru": "Наносит минимальный прямой урон - командам нужны другие выделенные источники урона",
+      "zh": "直接伤害极低——队伍必须配备其他专职输出来源",
+      "en": "Brings minimal direct damage — teams must field other dedicated damage sources"
+    }
+  ]
 }

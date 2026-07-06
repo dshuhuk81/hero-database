@@ -12,6 +12,7 @@ import allVirtues from "../../data/virtues.json";
 import allInvest from "../../data/ratings/invest.json";
 import { getLocaleFromPathname, localizePath, type Locale } from "../../i18n/config";
 import { t } from "../../i18n/ui";
+import { getTagLabelTranslation } from "../../i18n/tags";
 import { getCnSummary, formatCnValue } from "../../utils/cnDiff.js";
 /* STATIC PATHS */
 export function getStaticPaths() {
@@ -122,9 +123,11 @@ function statRank(key: string, val: number): number | null {
   return Number.isFinite(rank) && rank > 0 ? rank : null;
 }
 
-// Tag label display: SNAKE_CASE -> Title Case
+// Tag label display: localized where available, else SNAKE_CASE -> Title Case
 function tagLabel(tag: unknown): string {
   const s = String(tag ?? "");
+  const translated = getTagLabelTranslation(s, locale);
+  if (translated) return translated;
   const acronyms = new Set(["ATK", "SPD", "HP", "DMG", "CC", "CDR", "AOE"]);
   return s
     .split("_")

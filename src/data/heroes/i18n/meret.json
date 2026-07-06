@@ -173,5 +173,102 @@
         "zh": "战场上每有一个音符，获得27%减伤。"
       }
     }
-  }
+  },
+  "description": {
+    "de": "Meret ist eine notenbasierte Unterstützerin der Sterne-Fraktion, die zu Kampfbeginn Sonnen-, Mond- und Sternennoten an Schlüsselverbündete verteilt. Noten gewähren Schilde, Angriffsbuffs und Energie - und mit der Harmonie aller Dinge teilen sich Notenträger gegenseitig Schaden und bilden so einen verteilten Schadenspool. Ihr Artefakt macht Notenträger einmalig unsterblich, und ihre Heilungen bevorzugen den schwächsten Verbündeten. Herausragend darin, hochwertige Einheiten am Leben zu halten und gleichzeitig ihre Wirkung zu verstärken.",
+    "es": "Meret es un apoyo basado en Notas de la facción Estrellas que reparte Notas de Sol, Luna y Estrella a aliados clave al inicio del combate. Las Notas otorgan escudos, mejoras de ataque y energía; y con la Armonía de Todas las Cosas, los portadores de Notas comparten daño entre sí, creando una reserva de daño distribuida. Su Artefacto vuelve inmortales una vez a los portadores de Notas, y sus curaciones priorizan al aliado más débil. Excepcional para mantener con vida a unidades de alto valor y amplificar su rendimiento a la vez.",
+    "ru": "Мерет — поддержка фракции Звёзд на основе Нот, раздающая Ноты Солнца, Луны и Звезды ключевым союзникам в начале боя. Ноты дают щиты, баффы атаки и энергию, а с Гармонией Всего носители Нот делят урон между собой, создавая распределённый пул урона. Её Артефакт делает носителей Нот однократно неуязвимыми, а её лечение отдаёт приоритет самому слабому союзнику. Превосходно удерживает ценные юниты в живых, одновременно усиливая их отдачу.",
+    "zh": "梅蕾特，星辰阵营的音符型辅助，战斗开始时向关键队友分发日、月、星三种音符。音符提供护盾、攻击增益与能量——配合「万物共鸣」，持符者彼此分摊伤害，形成分散的伤害池。她的神器让持符者获得一次不死，其治疗优先照顾最虚弱的队友。她极擅于让高价值单位存活，同时放大他们的输出。",
+    "en": "Meret is a Stars-faction Note-based support who distributes Sun, Moon, and Star Notes to key allies at battle start. Notes provide shields, attack buffs, and energy — and with Harmony of All Things, Note-bearers share damage with each other, creating a distributed damage pool. Her Artifact makes Note-bearers unkillable once, and her heals prioritize the weakest ally. Exceptional at keeping high-value units alive and amplifying their output simultaneously."
+  },
+  "coreMechanic": {
+    "summary": {
+      "de": "Diamant-Support mit schützenden Lebensteilungs-Mechaniken. Schirmt Herkules in der Aufbauphase ab, kann aber seine Energieregeneration verlangsamen - bekannter Kompromiss. Unzureichend gegen hohen gegnerischen Burst. r1-10 reicht für Basis-Utility; r30 für vollen Schutz-Output.",
+      "es": "Apoyo de Diamantes con mecánicas protectoras de reparto de vida. Escuda a Hércules durante su fase de arranque, pero puede ralentizar su recuperación de energía: compromiso conocido. Insuficiente ante estallidos enemigos altos. r1-10 basta para utilidad básica; r30 para producción protectora completa.",
+      "ru": "Поддержка фракции Бубен с защитными механиками разделения жизни. Прикрывает Геракла в фазе разгона, но может замедлить его восстановление энергии - известный компромисс. Недостаточна против сильного бёрста врага. r1-10 хватает для базовой пользы; r30 - для полной защиты.",
+      "zh": "方片阵营辅助，具备保护性的生命分摊机制。在赫拉克勒斯蓄势阶段为其护盾，但可能拖慢他的回能——这是已知的取舍。面对敌方高爆发时防护不足。圣物1-10即可提供基础功能，圣物30可达成完整保护输出。",
+      "en": "Diamond Support with protective life-sharing mechanics. Shields Heracles during ramp-up phase but can slow his energy recovery -- known tradeoff. Insufficient against high enemy burst. r1-10 enough for baseline utility; r30 for full protective output."
+    }
+  },
+  "strengths": [
+    {
+      "de": "Hohe Rollenkompression - schirmt den Tank ab, bufft den Carry, teilt Schaden und regeneriert gleichzeitig Energie",
+      "es": "Alta compresión de roles: escuda al tanque, mejora al carry, reparte daño y regenera energía a la vez",
+      "ru": "Высокая компрессия ролей - щитует танка, баффает кэрри, делит урон и восстанавливает энергию одновременно",
+      "zh": "高度的定位压缩——同时为坦克护盾、为核心增益、分摊伤害并回复能量",
+      "en": "High role compression - shields the tank, buffs the carry, shares damage, and regenerates Energy simultaneously"
+    },
+    {
+      "de": "Das Notenschadensteilen ist eine passive Anti-Burst-Schicht ohne Zauber-Timing- oder Positionierungsanforderung",
+      "es": "El reparto de daño de las Notas es una capa anti-estallido pasiva sin requisitos de tiempo de lanzamiento ni posicionamiento",
+      "ru": "Разделение урона Нотами - пассивный анти-бёрст слой без требований к таймингу каста или позиционированию",
+      "zh": "音符的伤害分摊是一层被动的抗爆发机制，无需施法时机或站位要求",
+      "en": "Note damage-sharing is a passive anti-burst layer with no cast timing or positioning requirement"
+    },
+    {
+      "de": "Relikt Lv1 wandelt einen Carry-Tod in ein Überlebensereignis um - der wirkungsvollste frühe Relikt-Breakpoint im Diamant-Support-Slot",
+      "es": "La Reliquia Lv1 convierte la muerte de un carry en un evento de supervivencia: el breakpoint de reliquia temprana más impactante en la ranura de apoyo de Diamantes",
+      "ru": "Реликвия Lv1 превращает гибель кэрри в событие выживания - самый значимый ранний порог реликвии в слоте поддержки Бубен",
+      "zh": "圣物1将核心的死亡转化为一次存活事件——是方片辅助位中最具影响力的早期圣物节点",
+      "en": "Relic Lv1 converts a carry kill into a survival event - the most impactful early Relic breakpoint in the Diamonds support slot"
+    },
+    {
+      "de": "Mondnote Lv3 fügt dem Haupt-Carry zusätzlich zum ANG Kritrate hinzu",
+      "es": "La Nota de Luna Lv3 añade probabilidad de crítico además de ATQ al carry principal",
+      "ru": "Нота Луны Lv3 добавляет главному кэрри шанс крита вдобавок к ATK",
+      "zh": "月之音符3级在攻击力之外，为主核心额外提供暴击率",
+      "en": "Moon Note Lv3 adds Crit Rate on top of ATK to the main carry"
+    },
+    {
+      "de": "Der Vorhang fällt nie feuert automatisch, wenn Verbündete unter 50% LP fallen",
+      "es": "El Telón Nunca Cae se activa automáticamente cuando los aliados caen por debajo del 50% de HP",
+      "ru": "«Занавес никогда не падает» срабатывает автоматически, когда HP союзников опускается ниже 50%",
+      "zh": "「帷幕永不落下」在友方生命值低于50%时自动触发",
+      "en": "The Curtain Never Falls fires automatically when allies drop below 50% HP"
+    },
+    {
+      "de": "Funktioniert zuverlässig in Standardaufstellungen mit klarem Tank und klarem Carry",
+      "es": "Funciona de forma fiable en composiciones estándar con un tanque y un carry claros",
+      "ru": "Надёжно работает в стандартных составах с чётким танком и чётким кэрри",
+      "zh": "在有明确坦克与明确核心的标准阵容中稳定运作",
+      "en": "Works reliably in standard team compositions with a clear tank and a clear carry"
+    }
+  ],
+  "weaknesses": [
+    {
+      "de": "Die Notenzielwahl ist vollautomatisiert - ein schlecht gebautes Team mit unklarer Werte-Hierarchie führt dazu, dass Noten auf den falschen Einheiten landen",
+      "es": "El objetivo de las Notas está totalmente automatizado: un equipo mal construido con jerarquía de estadísticas poco clara hace que las Notas caigan en las unidades equivocadas",
+      "ru": "Наведение Нот полностью автоматизировано - в плохо собранной команде с нечёткой иерархией характеристик Ноты попадают не на тех юнитов",
+      "zh": "音符的目标选取完全自动——若队伍构建混乱、属性优先级不清，音符会落到错误的单位上",
+      "en": "Note targeting is fully automated - a poorly built team with unclear stat hierarchy causes Notes to land on the wrong units"
+    },
+    {
+      "de": "Kein direkter Schadensoutput - ihr Wert hängt vollständig vom Carry ab, den sie unterstützt",
+      "es": "Sin producción de daño directo: su valor depende por completo del carry al que apoya",
+      "ru": "Нет прямого урона - её ценность полностью зависит от кэрри, которого она поддерживает",
+      "zh": "无直接输出——其价值完全取决于她所辅助的核心",
+      "en": "No direct damage output - her value depends entirely on the carry she supports"
+    },
+    {
+      "de": "Teamweiter Flächen-Burst kann den kombinierten LP-Pool der Notenträger überschreiten und den Schadensteilungsschutz umgehen",
+      "es": "El estallido en área de todo el equipo puede superar la reserva combinada de HP de los portadores de Notas, saltándose la protección de reparto de daño",
+      "ru": "Общекомандный бёрст по площади может превысить суммарный HP-пул носителей Нот, обходя защиту разделения урона",
+      "zh": "全队范围爆发可能超过持符者的合计生命池，从而绕过伤害分摊保护",
+      "en": "Full-team AoE burst can exceed the combined Note-bearer HP pool, bypassing the damage-sharing protection"
+    },
+    {
+      "de": "Wenn Feinde Meret direkt ins Visier nehmen und die Notenträger ignorieren, bricht das Notensystem zusammen",
+      "es": "Si los enemigos atacan a Meret directamente e ignoran a los portadores de Notas, el sistema de Notas se derrumba",
+      "ru": "Если враги бьют по Мерет напрямую, игнорируя носителей Нот, система Нот рушится",
+      "zh": "若敌人直接针对梅蕾特而无视持符者，整个音符系统便会崩溃",
+      "en": "If enemies target Meret directly and ignore Note-bearers, the Note system collapses"
+    },
+    {
+      "de": "Athene ist die einzige Alternative, repliziert aber Merets Buff- und Tempobeitrag nicht",
+      "es": "Atenea es la única sustituta, pero no replica la contribución de mejora y tempo de Meret",
+      "ru": "Афина - единственная замена, но она не воспроизводит вклад Мерет в баффы и темп",
+      "zh": "雅典娜是唯一的替代者，但无法复现梅蕾特的增益与节奏贡献",
+      "en": "Athena is the only substitute but does not replicate Meret's buff and tempo contribution"
+    }
+  ]
 }
