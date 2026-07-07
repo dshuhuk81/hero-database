@@ -117,6 +117,12 @@ const translations: TranslationTree = {
     different: { en: "Different", de: "Anders", es: "Diferente", ru: "Отличается", zh: "不同" },
     unconfirmed: { en: "Unconfirmed", de: "Unbestätigt", es: "Sin confirmar", ru: "Не подтверждено", zh: "未确认" },
     globalIs: { en: "Global is", de: "Global ist", es: "Global es", ru: "Global", zh: "国际服为" },
+    divineThrone: { en: "Divine Throne", de: "Götterthron", es: "Trono divino", ru: "Божественный трон", zh: "神座" },
+    divineThroneAvailable: { en: "Divine Throne available", de: "Götterthron verfügbar", es: "Trono divino disponible", ru: "Божественный трон доступен", zh: "神座已开放" },
+    divineThroneMilestones: { en: "Exclusive milestones", de: "Exklusive Meilensteine", es: "Hitos exclusivos", ru: "Эксклюзивные этапы", zh: "专属节点" },
+    divineThroneOriginalName: { en: "Original name", de: "Originalname", es: "Nombre original", ru: "Оригинальное имя", zh: "原名" },
+    divineThroneGuide: { en: "Full guide", de: "Guide öffnen", es: "Guía completa", ru: "Полный гайд", zh: "完整攻略" },
+    levelShort: { en: "Lv", de: "Lv", es: "Nv", ru: "Ур", zh: "级" },
   },
   home: {
     metaTitle: {

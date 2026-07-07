@@ -107,6 +107,7 @@ const allNavEntries: NavEntry[] = [
     href: "/guides/divine-throne",
     group: "content",
     teaser: true,
+    localOnly: true,
     description: {
       en: "New Divine Throne system - unlocks, Ether upgrades and first-wave heroes",
       de: "Neues Divine-Throne-System - Freischaltung, Ether-Upgrades und erste Heldenwelle",

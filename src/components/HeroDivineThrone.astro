@@ -1,0 +1,288 @@
+---
+import type { Locale } from "../i18n/config";
+import { pickLang } from "../i18n/helpers";
+import { t } from "../i18n/ui";
+
+type LocalizedText = Partial<Record<Locale, string>>;
+type DivineThroneMilestone = {
+  level: number;
+  text: LocalizedText;
+};
+type DivineThroneEntry = {
+  heroId: string;
+  cnName: string;
+  seatName: LocalizedText;
+  subtitle: LocalizedText;
+  throneAssetId: string;
+  milestones: DivineThroneMilestone[];
+};
+
+interface Props {
+  entry: DivineThroneEntry;
+  heroName: string;
+  locale: Locale;
+}
+
+const { entry, heroName, locale } = Astro.props as Props;
+const seatName = pickLang(entry.seatName, locale);
+const subtitle = pickLang(entry.subtitle, locale);
+const throneAssetSrc = `/features/divine-throne/thrones/${entry.throneAssetId}.png`;
+const guideLabel = t(locale, "hero", "divineThroneGuide");
+---
+
+<div class="hero-throne-card">
+  <div class="hero-throne-art" aria-hidden="true">
+    <img src={throneAssetSrc} alt="" loading="lazy" decoding="async" />
+  </div>
+
+  <div class="hero-throne-content">
+    <div class="hero-throne-header">
+      <div class="hero-throne-title-block">
+        <div class="hero-throne-eyebrow">{t(locale, "hero", "divineThroneAvailable")}</div>
+        <h3>{seatName || t(locale, "hero", "divineThrone")}</h3>
+        {subtitle && <p>{subtitle}</p>}
+      </div>
+      <a class="hero-throne-guide-link" href="/guides/divine-throne" aria-label={`${guideLabel}: ${heroName}`}>
+        <span>{guideLabel}</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero-throne-milestones" aria-label={t(locale, "hero", "divineThroneMilestones")}>
+      {entry.milestones.map((milestone) => (
+        <div class="hero-throne-milestone">
+          <div class="hero-throne-level">
+            <span>{t(locale, "hero", "levelShort")}</span>
+            <strong>{milestone.level}</strong>
+          </div>
+          <p>{pickLang(milestone.text, locale)}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .hero-throne-card {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1.45fr);
+    border: 1px solid color-mix(in srgb, var(--faction-a) 34%, var(--border-subtle));
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(circle at top left, color-mix(in srgb, var(--faction-a) 18%, transparent), transparent 34%),
+      linear-gradient(135deg, rgba(18, 17, 28, 0.96), rgba(8, 8, 14, 0.98));
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  }
+
+  .hero-throne-art {
+    position: relative;
+    min-height: 420px;
+    display: grid;
+    place-items: center;
+    padding: var(--space-6) var(--space-4);
+    border-right: 1px solid var(--border-faint);
+    background:
+      radial-gradient(circle at center, color-mix(in srgb, var(--faction-a) 18%, transparent), transparent 58%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent);
+  }
+
+  .hero-throne-art img {
+    position: relative;
+    z-index: 1;
+    width: min(78%, 292px);
+    max-height: 380px;
+    object-fit: contain;
+    filter: drop-shadow(0 22px 32px rgba(0, 0, 0, 0.45));
+  }
+
+  .hero-throne-content {
+    min-width: 0;
+  }
+
+  .hero-throne-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--faction-a) 15%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--faction-a) 12%, transparent) 1px, transparent 1px);
+    background-size: 44px 44px;
+    opacity: 0.14;
+    mask-image: linear-gradient(to bottom, black, transparent 76%);
+  }
+
+  .hero-throne-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-5);
+    align-items: center;
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--border-faint);
+  }
+
+  .hero-throne-title-block {
+    min-width: 0;
+  }
+
+  .hero-throne-eyebrow {
+    margin-bottom: var(--space-2);
+    color: var(--faction-a);
+    font-size: 0.68rem;
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  .hero-throne-title-block h3 {
+    margin: 0;
+    color: var(--text-bright);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+
+  .hero-throne-title-block p {
+    margin: var(--space-2) 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .hero-throne-guide-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid color-mix(in srgb, var(--faction-a) 38%, var(--border-subtle));
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.82rem;
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast);
+  }
+
+  .hero-throne-guide-link:hover {
+    transform: translateY(-1px);
+    border-color: var(--faction-a);
+    background: color-mix(in srgb, var(--faction-a) 12%, transparent);
+  }
+
+  .hero-throne-guide-link svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .hero-throne-milestones {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    padding: var(--space-6);
+  }
+
+  .hero-throne-milestone {
+    min-height: 128px;
+    display: grid;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+    padding: var(--space-4);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .hero-throne-level {
+    width: 62px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    border-radius: var(--radius-md);
+    border: 1px solid color-mix(in srgb, var(--faction-a) 34%, var(--border-faint));
+    background: color-mix(in srgb, var(--faction-a) 12%, rgba(255, 255, 255, 0.03));
+  }
+
+  .hero-throne-level span {
+    color: var(--text-muted);
+    font-size: 0.58rem;
+    font-weight: var(--weight-black);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .hero-throne-level strong {
+    color: var(--text-bright);
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .hero-throne-milestone p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 760px) {
+    .hero-throne-card {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-throne-art {
+      min-height: 300px;
+      padding: var(--space-5) var(--space-4) var(--space-3);
+      border-right: 0;
+      border-bottom: 1px solid var(--border-faint);
+    }
+
+    .hero-throne-art img {
+      width: min(64%, 220px);
+      max-height: 280px;
+    }
+
+    .hero-throne-header {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      padding: var(--space-5);
+    }
+
+    .hero-throne-guide-link {
+      justify-content: center;
+      width: 100%;
+    }
+
+    .hero-throne-milestones {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-throne-milestones {
+      padding: var(--space-5);
+    }
+
+    .hero-throne-milestone {
+      min-height: 0;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: var(--space-3);
+    }
+
+    .hero-throne-level {
+      width: 54px;
+    }
+  }
+</style>

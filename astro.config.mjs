@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
 
-const LOCAL_ONLY_ROUTES = ['/status'];
+const LOCAL_ONLY_ROUTES = ['/status', '/guides/divine-throne'];
 const SITE = 'https://motto-immortal-db.com';
 
 function localOnlyRoutes() {
@@ -16,9 +16,10 @@ function localOnlyRoutes() {
 
         const assetDir = new URL('./_astro/', dir);
         const assets = await readdir(assetDir).catch(() => []);
+        const assetPrefixes = LOCAL_ONLY_ROUTES.map((route) => `${route.split('/').filter(Boolean).pop()}.`);
         await Promise.all(
           assets
-            .filter((name) => name.startsWith('status.'))
+            .filter((name) => assetPrefixes.some((prefix) => name.startsWith(prefix)))
             .map((name) => rm(new URL(name, assetDir), { force: true }))
         );
 

@@ -1,133 +1,133 @@
 {
   "campaigns": [
     {
-      "id": "xuannv-campaign",
+      "id": "nephtys-event",
       "name": {
-        "en": "Xuannv Campaign",
-        "de": "Xuannv-Kampagne",
-        "es": "Campaña de Xuannv",
-        "ru": "Кампания Сюаньнюй",
-        "zh": "玄女战役"
+        "en": "Nephtys Event",
+        "de": "Nephtys-Event",
+        "es": "Evento de Nephtys",
+        "ru": "Событие Нефтиды",
+        "zh": "奈芙蒂斯活动"
       },
-      "hero": "xuannv",
+      "hero": "nephtys",
       "description": {
-        "en": "Complete PVE campaign stages for the Timed Challenge.",
-        "de": "Schließe die PvE-Kampagnenstufen für die Zeit-Herausforderung ab.",
-        "es": "Completa las fases de campaña PvE para el desafío por tiempo limitado.",
-        "ru": "Пройдите этапы PvE-кампании для испытания с ограничением по времени.",
-        "zh": "完成 PVE 战役关卡以通过限时挑战。"
+        "en": "Complete PVE campaign stages for the Nephtys event.",
+        "de": "Schließe die PvE-Kampagnenstufen für das Nephtys-Event ab.",
+        "es": "Completa las fases de campaña PvE del evento de Nephtys.",
+        "ru": "Пройдите этапы PvE-кампании события Нефтиды.",
+        "zh": "完成奈芙蒂斯活动的 PVE 战役关卡。"
       },
       "stages": [
         {
           "id": 1,
           "name": {
-            "en": "1. Heavenly Questions",
-            "de": "1. Himmlische Fragen",
-            "es": "1. Preguntas celestiales",
-            "ru": "1. Небесные вопросы",
-            "zh": "1. 天问"
+            "en": "1. A Giant Wave Brought You",
+            "de": "1. Eine Riesenwelle brachte dich",
+            "es": "1. Una ola gigante te trajo",
+            "ru": "1. Гигантская волна принесла тебя",
+            "zh": "1. 巨浪带来了你"
           },
           "composition": {
-            "front": ["aquarius", ""],
-            "back": ["", "", "xuannv"]
+            "front": ["nephtys", "taurus"],
+            "back": ["sagittarius", "cancer", "libra"]
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "2. Blinding Obsession",
-            "de": "2. Blindes Verlangen",
-            "es": "2. Obsesión cegadora",
-            "ru": "2. Ослепляющая одержимость",
-            "zh": "2. 迷目之障"
+            "en": "2. Desolate Crystal",
+            "de": "2. Trostloser Kristall",
+            "es": "2. Cristal desolado",
+            "ru": "2. Безутешный кристалл",
+            "zh": "2. 凄凉的水晶"
           },
           "composition": {
-            "front": ["aquarius", "taurus"],
-            "back": ["scorpio", "cancer", "xuannv"]
+            "front": ["taurus", "nephtys"],
+            "back": ["sagittarius"]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "3. Philosophy of the Grid",
-            "de": "3. Philosophie des Gitters",
-            "es": "3. Filosofía de la cuadrícula",
-            "ru": "3. Философия сетки",
-            "zh": "3. 棋局之理"
+            "en": "3. The Painful Sun",
+            "de": "3. Die schmerzhafte Sonne",
+            "es": "3. El sol doloroso",
+            "ru": "3. Болезненное солнце",
+            "zh": "3. 痛苦的太阳"
           },
           "composition": {
-            "front": ["aquarius", "taurus"],
-            "back": ["scorpio", "xuannv", "cancer"]
+            "front": ["nephtys", "libra"],
+            "back": ["virgo", "cancer", "gemini"]
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "4. Stars in the Palm",
-            "de": "4. Sterne in der Handfläche",
-            "es": "4. Estrellas en la palma",
-            "ru": "4. Звёзды на ладони",
-            "zh": "4. 掌中星辰"
+            "en": "4. A Flame Long Gazing at the Lonely Moon",
+            "de": "4. Eine Flamme, die lange auf den einsamen Mond blickt",
+            "es": "4. Una llama que mira largo tiempo la luna solitaria",
+            "ru": "4. Пламя, долго глядящее на одинокую луну",
+            "zh": "4. 个久久望着孤月的火"
           },
           "composition": {
-            "front": ["anubis", "yuelao"],
-            "back": ["caishen", "pan", "xuannv"]
+            "front": ["poseidon", "khepri"],
+            "back": ["nephtys", "skadi", "tefnut"]
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "5. Tempered Arts",
-            "de": "5. Gehärtete Künste",
-            "es": "5. Artes templadas",
-            "ru": "5. Закалённое искусство",
-            "zh": "5. 千锤百炼"
+            "en": "5. An Unanswered Call",
+            "de": "5. Ein unbeantworteter Ruf",
+            "es": "5. Una llamada sin respuesta",
+            "ru": "5. Зов без ответа",
+            "zh": "5. 无人应答的呼唤"
           },
           "composition": {
-            "front": ["yanluo", "prometheus"],
-            "back": ["hephaestus", "xuannv", "mengpo"]
+            "front": ["momus", "nephtys"],
+            "back": ["tefnut", "skadi", "poseidon"]
           }
         },
         {
           "id": 6,
           "name": {
-            "en": "6. Undecided Move ",
-            "de": "6. Unentschlossener Zug",
-            "es": "6. Movimiento indeciso",
-            "ru": "6. Неопределённый ход",
-            "zh": "6. 未定之着"
+            "en": "6. Dimming Many Twilights",
+            "de": "6. Viele Dämmerungen verblassen lassen",
+            "es": "6. Oscureciendo muchos crepúsculos",
+            "ru": "6. Затмевая многие сумерки",
+            "zh": "6. 使许多个黄昏暗淡"
           },
           "composition": {
-            "front": ["geb", "bastet"],
-            "back": ["meret", "xuannv", "set"]
+            "front": ["nephtys", "khepri"],
+            "back": ["skadi", "poseidon", "tefnut"]
           }
         },
         {
           "id": 7,
           "name": {
-            "en": "7. The very first move",
-            "de": "7. Der allererste Zug",
-            "es": "7. El primer movimiento",
-            "ru": "7. Самый первый ход",
-            "zh": "7. 开局第一手"
+            "en": "7. Here, Waiting for Someone Who Will Not Come",
+            "de": "7. Hier, wartend auf jemanden, der nicht kommen wird",
+            "es": "7. Aquí, esperando a alguien que no vendrá",
+            "ru": "7. Здесь, ожидая того, кто не придет",
+            "zh": "7. 在这里，等一个不会来的人"
           },
           "composition": {
-            "front": ["anubis", "demeter"],
-            "back": ["xuannv", "wenshen", "pan"]
+            "front": ["poseidon", "nephtys"],
+            "back": ["khepri", "skadi", "tefnut"]
           }
         },
         {
           "id": 8,
           "name": {
-            "en": "8. One Step Ahead",
-            "de": "8. Ein Schritt voraus",
-            "es": "8. Un paso adelante",
-            "ru": "8. На шаг впереди",
-            "zh": "8. 先人一步"
+            "en": "8. Farewell, Hands That Loved Each Other",
+            "de": "8. Lebt wohl, Hände, die einander liebten",
+            "es": "8. Adiós, manos que se amaron",
+            "ru": "8. Прощайте, руки, любившие друг друга",
+            "zh": "8. 永别了，相互爱慕的手"
           },
           "composition": {
-            "front": ["poseidon", "anubis"],
-            "back": ["skadi", "wenshen", "xuannv"]
+            "front": ["yanluo", "poseidon"],
+            "back": ["skadi", "caishen", "tefnut"]
           }
         }
       ]

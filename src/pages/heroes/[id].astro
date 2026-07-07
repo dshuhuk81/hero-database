@@ -8,8 +8,10 @@ import StrengthWeakness from '../../components/StrengthWeakness.astro';
 import RelicInvestment from '../../components/RelicInvestment.astro';
 import F2pInvestment from '../../components/F2pInvestment.astro';
 import RatingTiles from '../../components/RatingTiles.astro';
+import HeroDivineThrone from '../../components/HeroDivineThrone.astro';
 import allVirtues from "../../data/virtues.json";
 import allInvest from "../../data/ratings/invest.json";
+import divineThroneData from "../../data/divine-throne.json";
 import { getLocaleFromPathname, localizePath, type Locale } from "../../i18n/config";
 import { t } from "../../i18n/ui";
 import { getTagLabelTranslation } from "../../i18n/tags";
@@ -55,6 +57,10 @@ const heroInvest = (allInvest as any)[routeId] ?? null;
 const cnSummary = getCnSummary(hero as any);
 const prevHero = heroIndex > 0 ? navHeroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < navHeroes.length - 1 ? navHeroes[heroIndex + 1] : null;
+// Divine Throne is unreleased: dev-only until launch (see LOCAL_ONLY_ROUTES in astro.config.mjs)
+const divineThroneEntry = import.meta.env.DEV
+  ? (divineThroneData as any).heroes.find((entry: any) => entry.heroId === routeId) ?? null
+  : null;
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const raritySuffixMap: Record<string, string> = {
@@ -165,6 +171,7 @@ function localizedHeroName(id: string): string {
 const dotSections = [
   { id: "section-profile",    label: t(locale, "hero", "profile") },
   { id: "skills",             label: t(locale, "hero", "skillsAbilities") },
+  ...(divineThroneEntry ? [{ id: "section-divine-throne", label: t(locale, "hero", "divineThrone") }] : []),
   ...(cnSummary && cnSummary.hasChanges ? [{ id: "section-cn", label: t(locale, "hero", "cnVsGlobal") }] : []),
   { id: "section-ratings",    label: t(locale, "hero", "metaRatings") },
   { id: "section-stats",      label: t(locale, "hero", "combatStatistics") },
@@ -409,6 +416,14 @@ const dotSections = [
         )}
       </div>
     </section>
+
+    <!-- __ SECTION: DIVINE THRONE __ -->
+    {divineThroneEntry && (
+      <section class="content-section" id="section-divine-throne">
+        <div class="section-label">{t(locale, "hero", "divineThrone")}</div>
+        <HeroDivineThrone entry={divineThroneEntry} heroName={hero.name} locale={locale} />
+      </section>
+    )}
 
     <!-- ── SECTION: CN vs GLOBAL ── -->
     {cnSummary && cnSummary.hasChanges && (
