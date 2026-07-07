@@ -6,14 +6,176 @@
     "en": "Nephtys",
     "zh": "奈芙蒂斯"
   },
+  "skills": [
+    {
+      "name": {
+        "de": "Tödliche Umschlingung",
+        "en": "Deathly Entanglement",
+        "es": "Enredo mortal",
+        "zh": "死灵缠身"
+      },
+      "description": {
+        "de": "Nephthys fesselt den nächsten Feind 5 Sek. lang und fügt ihm währenddessen jede Sekunde SCH in Höhe von 60% ANG zu. Der letzte Treffer verursacht SCH in Höhe von 200% ANG plus 30% der verlorenen LP des Ziels, maximal jedoch 600% von Nephthys' ANG, und wirft das Ziel sowie Feinde im Umkreis von 3 Metern nieder. Während der Fesselung ist Nephthys unaufhaltsam.",
+        "en": "Nephtys binds the nearest enemy for 5s, dealing DMG equal to 60% of ATK each second. The final hit deals DMG equal to 200% of ATK plus 30% of the target's lost HP, capped at 600% of Nephtys's ATK, and knocks down the target and enemies within 3 meters. Nephtys is Unstoppable during the bind.",
+        "es": "Neftis ata al enemigo más cercano durante 5 s e inflige daño equivalente al 60 % de ATQ cada segundo. El golpe final inflige daño equivalente al 200 % de ATQ más el 30 % de los PS perdidos del objetivo, con un límite del 600 % del ATQ de Neftis, y derriba al objetivo y a los enemigos en un radio de 3 metros. Neftis es Imparable durante la atadura.",
+        "zh": "奈芙蒂斯束缚最近的敌人5秒，持续期间每秒对其造成60%攻击力的伤害，最后一击造成200%攻击力+目标已损失生命值30%的伤害（最高不超过自身攻击力600%），并击倒目标及周围3米范围的敌人，持续期间自身处于霸体状态。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Während der Fesselung erhöht sich der Schaden pro Sekunde auf 70% ANG.",
+          "en": "During the bind, damage dealt each second increases to 70% of ATK.",
+          "es": "Durante la atadura, el daño infligido cada segundo aumenta al 70 % de ATQ.",
+          "zh": "束缚持续期间每秒70%攻击力伤害。"
+        },
+        "level3": {
+          "de": "Während der Fesselung wird zusätzlich jede Sekunde SCH in Höhe von 6% der max. LP des Ziels verursacht, maximal jedoch 200% von Nephthys' ANG.",
+          "en": "During the bind, additionally deals DMG equal to 6% of the target's max HP each second, capped at 200% of Nephtys's ATK.",
+          "es": "Durante la atadura, inflige además daño equivalente al 6 % de los PS máximos del objetivo cada segundo, con un límite del 200 % del ATQ de Neftis.",
+          "zh": "束缚持续期间每秒额外造成目标6%最大生命值的伤害（最高不超过自身攻击力200%）。"
+        },
+        "level4": {
+          "de": "Der Grundschaden des letzten Treffers erhöht sich auf 300% ANG.",
+          "en": "The final hit's base damage increases to 300% of ATK.",
+          "es": "El daño base del golpe final aumenta al 300 % de ATQ.",
+          "zh": "最后一击造成300%攻击力的伤害。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Rachsüchtiger Seelenzug",
+        "en": "Vengeful Spirit Pull",
+        "es": "Atracción del espíritu vengativo",
+        "zh": "怨灵牵引"
+      },
+      "description": {
+        "de": "Umschlingt das aktuelle Ziel und die feindliche Einheit mit dem höchsten ANG, fügt ihnen SCH in Höhe von 150% ANG zu und zieht sie anschließend zueinander. Stoßen sie während der Bewegung zusammen, erleiden sie SCH in Höhe von 200% ANG und werden 2 Sek. lang betäubt.",
+        "en": "Entangles the current target and the enemy unit with the highest ATK, dealing DMG equal to 150% of ATK to them, then pulls them toward each other. If they collide while moving, deals DMG equal to 200% of ATK and stuns them for 2s.",
+        "es": "Enreda al objetivo actual y a la unidad enemiga con mayor ATQ, les inflige daño equivalente al 150 % de ATQ y luego los atrae entre sí. Si chocan mientras se desplazan, les inflige daño equivalente al 200 % de ATQ y los aturde durante 2 s.",
+        "zh": "缠绕当前目标和敌方攻击力最高的单位，对其造成150%攻击力的伤害，而后将他们拉向彼此，如果移动过程中二者相撞则对其造成200%攻击力的伤害和2秒眩晕效果。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Der Anfangsschaden erhöht sich auf 200% ANG.",
+          "en": "Initial damage increases to 200% of ATK.",
+          "es": "El daño inicial aumenta al 200 % de ATQ.",
+          "zh": "造成伤害提升至200%攻击力。"
+        },
+        "level3": {
+          "de": "Wenn beide Ziele zusammenstoßen, erhöht sich die Betäubungsdauer auf 3 Sek.",
+          "en": "If the two targets collide, the stun duration increases to 3s.",
+          "es": "Si los dos objetivos chocan, la duración del aturdimiento aumenta a 3 s.",
+          "zh": "如果二者相撞则对其造成3秒眩晕效果。"
+        },
+        "level4": {
+          "de": "Der Anfangsschaden erhöht sich auf 250% ANG.",
+          "en": "Initial damage increases to 250% of ATK.",
+          "es": "El daño inicial aumenta al 250 % de ATQ.",
+          "zh": "造成伤害提升至250%攻击力。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Fortdauernde Seelenkraft",
+        "en": "Enduring Soulforce",
+        "es": "Fuerza anímica perdurable",
+        "zh": "魂力永续"
+      },
+      "description": {
+        "de": "Passiv: Wenn Nephthys an der Tötung eines Feindes beteiligt ist, erhält sie 15% des ANG und der max. LP dieses Feindes, kumulativ bis zu 100% ihres eigenen ANG und ihrer eigenen LP.",
+        "en": "Passive: when Nephtys participates in killing an enemy, she gains 15% of that enemy's ATK and max HP, stacking up to 100% of her own ATK and HP.",
+        "es": "Pasiva: cuando Neftis participa en la eliminación de un enemigo, obtiene el 15 % del ATQ y de los PS máximos de ese enemigo, acumulable hasta el 100 % de su propio ATQ y PS.",
+        "zh": "被动的，奈芙蒂斯参与击杀时，获得该敌人15%的攻击力和最大生命值（累计最多获取自身100%的攻击力和生命值）。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Wenn Nephthys an der Tötung eines Feindes beteiligt ist, stellt sie außerdem sofort LP in Höhe von 30% der max. LP des besiegten Feindes wieder her.",
+          "en": "When Nephtys participates in killing an enemy, she also immediately restores HP equal to 30% of the defeated enemy's max HP.",
+          "es": "Cuando Neftis participa en la eliminación de un enemigo, también recupera de inmediato PS equivalentes al 30 % de los PS máximos del enemigo derrotado.",
+          "zh": "参与击杀敌人还会立即回复生命值，恢复阵亡敌人30%的最大生命值。"
+        },
+        "level3": {
+          "de": "Wenn Nephthys an der Tötung eines Feindes beteiligt ist, erhält sie 20% des ANG und der LP dieses Feindes, kumulativ bis zu 200% ihres eigenen Basis-ANG und ihrer eigenen LP.",
+          "en": "When Nephtys participates in killing an enemy, she gains 20% of that enemy's ATK and HP, stacking up to 200% of her own base ATK and HP.",
+          "es": "Cuando Neftis participa en la eliminación de un enemigo, obtiene el 20 % del ATQ y de los PS de ese enemigo, acumulable hasta el 200 % de su propio ATQ base y PS.",
+          "zh": "奈芙蒂斯参与击杀敌人时，获得该敌人20%的攻击力和生命值（累计最多获取自身200%的基础攻击力和生命值）。"
+        },
+        "level4": {
+          "de": "Wenn Nephthys an der Tötung eines Feindes beteiligt ist, stellt sie außerdem sofort LP in Höhe von 50% der max. LP des besiegten Feindes wieder her.",
+          "en": "When Nephtys participates in killing an enemy, she also immediately restores HP equal to 50% of the defeated enemy's max HP.",
+          "es": "Cuando Neftis participa en la eliminación de un enemigo, también recupera de inmediato PS equivalentes al 50 % de los PS máximos del enemigo derrotado.",
+          "zh": "参与击杀敌人还会立即回复生命值，恢复阵亡敌人50%的最大生命值。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Aufschub des Totenwegs",
+        "en": "Stygian Reprieve",
+        "es": "Prórroga del camino sombrío",
+        "zh": "冥途延缓"
+      },
+      "description": {
+        "de": "Passiv: Wenn Nephthys sterben würde, nutzt sie ein Leichentuch, um ihren Tod 5 Sek. lang aufzuschieben. Ist sie währenddessen an einer Tötung beteiligt, wird sie sofort wiederbelebt. Dieser Effekt kann höchstens einmal alle 25 Sek. ausgelöst werden.",
+        "en": "Passive: when Nephtys is about to die, she uses a shroud to delay death for 5s. If she participates in a kill during this duration, she revives immediately. This effect can trigger at most once every 25s.",
+        "es": "Pasiva: cuando Neftis está a punto de morir, usa un sudario para retrasar su muerte durante 5 s. Si participa en una eliminación durante ese tiempo, revive de inmediato. Este efecto puede activarse como máximo una vez cada 25 s.",
+        "zh": "被动的，奈芙蒂斯即将阵亡时，使用裹尸布延缓阵亡5秒，若持续期间参与击杀，则立即复活，该效果25秒内最多触发一次。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Schiebt den Tod 6 Sek. lang auf.",
+          "en": "Delays death for 6s.",
+          "es": "Retrasa la muerte durante 6 s.",
+          "zh": "延缓6秒阵亡。"
+        },
+        "level3": {
+          "de": "Dieser Effekt kann höchstens einmal alle 20 Sek. ausgelöst werden.",
+          "en": "This effect can trigger at most once every 20s.",
+          "es": "Este efecto puede activarse como máximo una vez cada 20 s.",
+          "zh": "该效果20秒内最多触发一次。"
+        },
+        "level4": {
+          "de": "Schiebt den Tod 7 Sek. lang auf.",
+          "en": "Delays death for 7s.",
+          "es": "Retrasa la muerte durante 7 s.",
+          "zh": "延缓7秒阵亡。"
+        }
+      }
+    }
+  ],
   "relic": {
     "name": {
-      "en": "Vortex of Grace",
-      "zh": "风华之涡"
+      "de": "Seelenernte",
+      "en": "Soul Reaping",
+      "es": "Cosecha de almas",
+      "zh": "灵魂收割"
     },
     "description": {
-      "en": "Releases Great Rising Gale to create 1 whirlwind.",
-      "zh": "释放扶摇大风时生成1个旋风。"
+      "de": "Solange Nephthys auf dem Schlachtfeld ist, entzieht sie feindlichen Einheiten fortlaufend Seelen. Wenn feindliche Einheiten Schaden erleiden, speichert Nephthys 10% dieses Schadens, maximal 400% ihres ANG. Sobald die Obergrenze erreicht ist, bricht die gespeicherte Kraft hervor und fügt Feinden im Umkreis von 3 Metern SCH in Höhe von 150% ANG plus dem gespeicherten Schaden zu.",
+      "en": "While Nephtys is on the battlefield, she continuously siphons enemy souls. When enemy units take damage, Nephtys records 10% of that damage, capped at 400% of her ATK. When the cap is reached, the stored power bursts outward, dealing DMG equal to 150% of ATK plus the recorded damage to enemies within 3 meters.",
+      "es": "Mientras Neftis está en el campo de batalla, absorbe continuamente las almas de las unidades enemigas. Cuando las unidades enemigas reciben daño, Neftis registra el 10 % de ese daño, con un límite del 400 % de su ATQ. Al alcanzar el límite, el poder acumulado estalla e inflige a los enemigos en un radio de 3 metros daño equivalente al 150 % de ATQ más el daño registrado.",
+      "zh": "奈芙蒂斯在场时不断汲取敌方单位的灵魂，场上敌方单位受到伤害时奈芙蒂斯记录其受到伤害的10%伤害值（最多自身400%攻击力上限），达到上限时爆发出去对周围3米范围敌人造成150%攻击力+记录伤害值的伤害。"
+    },
+    "upgrades": {
+      "level2": {
+        "de": "Feinde, deren Seelen von Nephthys entzogen wurden, werden von ihrer Leichenaura infiziert und verlieren 15% Rüstung und Magieresistenz.",
+        "en": "Enemies whose souls have been siphoned by Nephtys are infected by her corpse aura, reducing Armor and Magic Resistance by 15%.",
+        "es": "Los enemigos cuyas almas hayan sido absorbidas por Neftis quedan infectados por su aura cadavérica, lo que reduce su Armadura y Resistencia mágica un 15 %.",
+        "zh": "被奈芙蒂斯汲取过灵魂的敌人被其尸气感染，降低15%的护甲和魔抗。"
+      },
+      "level3": {
+        "de": "Speichert 20% des erlittenen Schadens, maximal 600% von Nephthys' ANG.",
+        "en": "Records 20% of damage taken, capped at 600% of Nephtys's ATK.",
+        "es": "Registra el 20 % del daño recibido, con un límite del 600 % del ATQ de Neftis.",
+        "zh": "记录20%受到的伤害（最多自身600%攻击力上限）。"
+      },
+      "level4": {
+        "de": "Feinde, deren Seelen von Nephthys entzogen wurden, werden von ihrer Leichenaura infiziert und verlieren 30% Rüstung und Magieresistenz.",
+        "en": "Enemies whose souls have been siphoned by Nephtys are infected by her corpse aura, reducing Armor and Magic Resistance by 30%.",
+        "es": "Los enemigos cuyas almas hayan sido absorbidas por Neftis quedan infectados por su aura cadavérica, lo que reduce su Armadura y Resistencia mágica un 30 %.",
+        "zh": "被奈芙蒂斯汲取过灵魂的敌人被其尸气感染，降低30%的护甲和魔抗。"
+      }
     }
   }
 }

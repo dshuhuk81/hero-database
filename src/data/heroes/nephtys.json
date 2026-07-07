@@ -44,58 +44,59 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "",
-      "description": "",
+      "name": "Deathly Entanglement",
+      "description": "Nephtys binds the nearest enemy for 5s, dealing DMG equal to 60% of ATK each second. The final hit deals DMG equal to 200% of ATK plus 30% of the target's lost HP, capped at 600% of Nephtys's ATK, and knocks down the target and enemies within 3 meters. Nephtys is Unstoppable during the bind.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "During the bind, damage dealt each second increases to 70% of ATK.",
+        "level3": "During the bind, additionally deals DMG equal to 6% of the target's max HP each second, capped at 200% of Nephtys's ATK.",
+        "level4": "The final hit's base damage increases to 300% of ATK."
       },
-      "damageType": "",
+      "damageType": "Physical",
       "isUltimate": true
     },
     {
       "id": "skill_2",
-      "name": "",
-      "description": "",
+      "name": "Vengeful Spirit Pull",
+      "description": "Entangles the current target and the enemy unit with the highest ATK, dealing DMG equal to 150% of ATK to them, then pulls them toward each other. If they collide while moving, deals DMG equal to 200% of ATK and stuns them for 2s.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "Initial damage increases to 200% of ATK.",
+        "level3": "If the two targets collide, the stun duration increases to 3s.",
+        "level4": "Initial damage increases to 250% of ATK."
       },
-      "damageType": ""
+      "damageType": "Physical"
     },
     {
       "id": "skill_3",
-      "name": "",
-      "description": "",
+      "name": "Enduring Soulforce",
+      "description": "Passive: when Nephtys participates in killing an enemy, she gains 15% of that enemy's ATK and max HP, stacking up to 100% of her own ATK and HP.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "When Nephtys participates in killing an enemy, she also immediately restores HP equal to 30% of the defeated enemy's max HP.",
+        "level3": "When Nephtys participates in killing an enemy, she gains 20% of that enemy's ATK and HP, stacking up to 200% of her own base ATK and HP.",
+        "level4": "When Nephtys participates in killing an enemy, she also immediately restores HP equal to 50% of the defeated enemy's max HP."
       },
       "damageType": ""
     },
     {
       "id": "skill_4",
-      "name": "",
-      "description": "",
+      "name": "Stygian Reprieve",
+      "description": "Passive: when Nephtys is about to die, she uses a shroud to delay death for 5s. If she participates in a kill during this duration, she revives immediately. This effect can trigger at most once every 25s.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "Delays death for 6s.",
+        "level3": "This effect can trigger at most once every 20s.",
+        "level4": "Delays death for 7s."
       },
       "damageType": ""
     }
   ],
   "relic": {
-    "name": "Vortex of Grace",
-    "description": "Releases Great Rising Gale to create 1 whirlwind.",
+    "name": "Soul Reaping",
+    "description": "While Nephtys is on the battlefield, she continuously siphons enemy souls. When enemy units take damage, Nephtys records 10% of that damage, capped at 400% of her ATK. When the cap is reached, the stored power bursts outward, dealing DMG equal to 150% of ATK plus the recorded damage to enemies within 3 meters.",
     "upgrades": {
-      "level2": "",
-      "level3": "",
-      "level4": ""
-    }
+      "level2": "Enemies whose souls have been siphoned by Nephtys are infected by her corpse aura, reducing Armor and Magic Resistance by 15%.",
+      "level3": "Records 20% of damage taken, capped at 600% of Nephtys's ATK.",
+      "level4": "Enemies whose souls have been siphoned by Nephtys are infected by her corpse aura, reducing Armor and Magic Resistance by 30%."
+    },
+    "damageType": "Physical"
   },
   "synergies": [],
   "baseAttackRate": 0,
