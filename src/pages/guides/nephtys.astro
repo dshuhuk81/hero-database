@@ -44,19 +44,19 @@ const relic = {
 };
 
 const strengths = [
-  "Team damage amplifier: Soul Reaping adds repeated AoE bursts and up to -30% Armor and M-RES on siphoned enemies",
-  "Strong extended-fight scaling: kill participation steals ATK and max HP, then heals her from the defeated enemy's max HP",
+  "Team damage amplifier: Soul Harvest adds repeated AoE bursts and up to -30% Armor and M-RES on absorbed enemies",
+  "Strong extended-fight scaling: secured kills steal ATK and max HP, then heal her from the fallen enemy's max HP",
   "Good disruption for a frontline Warrior: pulls the current target and highest-ATK enemy together, then stuns on collision",
-  "Ultimate is hard to stop: Deathly Entanglement binds for 5s and makes Nephtys Unstoppable during the channel",
+  "Ultimate is hard to stop: Wraith Entanglement restrains for 5s and gives Nephtys Super Armor during the channel",
   "Works well in messy 5v5 fights where allies keep damage flowing and kills are actually available",
   "Can become difficult to remove once the first kill starts the ATK, HP, and healing loop",
 ];
 
 const weaknesses = [
-  "Not a solo damage dealer: her best damage comes from team damage, defense shred, and kill participation",
+  "Not a solo damage dealer: her best damage comes from team damage, defense shred, and secured kills",
   "Poor fit for pure single-target damage checks where there are no side kills to feed her snowball",
-  "Stygian Reprieve is conditional: if no enemy dies during the shroud window, she still falls",
-  "Needs Relic value: without Soul Reaping, she loses a large part of her defense shred and AoE identity",
+  "Delayed Demise is conditional: if she cannot secure a kill during the shroud window, she still falls",
+  "Needs Relic value: without Soul Harvest, she loses a large part of her defense shred and AoE identity",
   "Melee positioning exposes her before she has stacked stolen stats or healed from a kill",
   "Can look underwhelming when the team cannot secure kills or keep pressure on a focused target",
 ];
@@ -102,7 +102,7 @@ const virtues = [
       { label: "2-Piece", text: "HP +15% at combat start" },
       { label: "4-Piece", text: "+5% ATK every 5s, max 10 stacks" },
     ],
-    note: "Fits her identity as an extended-fight bruiser. More HP buys time, and the delayed ATK ramp supports Soul Reaping and her ultimate cap.",
+    note: "Fits her identity as an extended-fight bruiser. More HP buys time, and the delayed ATK ramp supports Soul Harvest and her ultimate cap.",
   },
   {
     name: "Oblivion",
@@ -114,7 +114,7 @@ const virtues = [
       { label: "2-Piece", text: "Armor +30%, M-RES +30% at combat start" },
       { label: "4-Piece", text: "Crowd Control immunity for 8s at combat start" },
     ],
-    note: "A safer PvP option when early CC would stop her from pulling, binding, or reaching the first Soul Reaping cycle.",
+    note: "A safer PvP option when early CC would stop her from pulling, restraining, or reaching the first Soul Harvest cycle.",
   },
 ];
 
@@ -122,25 +122,25 @@ const soulLedger = [
   {
     stage: "Seed",
     title: "Start a target problem",
-    copy: "Vengeful Spirit Pull tags the current target and the highest-ATK enemy, then drags them together. It is less about burst and more about forcing the enemy carry into a bad place.",
+    copy: "Wraithbound Pull tags the current target and the highest-ATK enemy, then drags them together. It is less about burst and more about forcing the enemy carry into a bad place.",
     payoff: "Pull + stun threat",
   },
   {
     stage: "Collect",
     title: "Turn team damage into stored pressure",
-    copy: "Soul Reaping watches enemy units take damage. The more consistently your team is hitting, the faster Nephtys builds toward another AoE burst.",
+    copy: "Soul Harvest watches enemy units take damage. The more consistently your team is hitting, the faster Nephtys builds toward another AoE burst.",
     payoff: "Team damage becomes her resource",
   },
   {
     stage: "Weaken",
     title: "Make focus fire stick",
-    copy: "The Relic's corpse aura cuts Armor and M-RES on siphoned enemies. That is the real team value: everyone gets a softer target.",
+    copy: "The Relic's corpse aura cuts Armor and M-RES on absorbed enemies. That is the real team value: everyone gets a softer target.",
     payoff: "Up to -30% Armor and M-RES",
   },
   {
     stage: "Claim",
     title: "Cash out on the kill",
-    copy: "Once a kill happens, Enduring Soulforce turns the result into permanent ATK and HP for the fight, plus a burst of healing.",
+    copy: "Once Nephtys secures a kill, Everlasting Soul turns the result into permanent ATK and HP for the fight, plus a burst of healing.",
     payoff: "Stats stolen, HP restored",
   },
 ];
@@ -148,22 +148,22 @@ const soulLedger = [
 const winConditions = [
   {
     title: "Team is dealing steady damage",
-    whenTrue: "Soul Reaping fills, bursts in 3m AoE, and keeps corpse aura relevant.",
+    whenTrue: "Soul Harvest fills, bursts in 3m AoE, and keeps corpse aura relevant.",
     whenFalse: "She becomes a melee Warrior waiting on a low-value personal cycle.",
   },
   {
     title: "The team can focus one target",
-    whenTrue: "Deathly Entanglement's bind and lost-HP finisher help convert pressure into a kill.",
+    whenTrue: "Wraith Entanglement's restrain and lost-HP finisher help convert pressure into a kill.",
     whenFalse: "Damage gets spread around and her execute scaling has less to cash out on.",
   },
   {
     title: "A kill is available",
-    whenTrue: "Enduring Soulforce steals ATK and max HP, then heals her from the defeated enemy.",
+    whenTrue: "Everlasting Soul steals ATK and max HP, then heals her from the fallen enemy.",
     whenFalse: "Her scaling and sustain stay mostly theoretical.",
   },
   {
     title: "The shroud window has support",
-    whenTrue: "Stygian Reprieve buys time for the team to secure the kill that lets her return.",
+    whenTrue: "Delayed Demise buys time for Nephtys to secure the kill that lets her return.",
     whenFalse: "It only delays the death animation. Useful time, but not a real revive.",
   },
 ];
@@ -177,42 +177,42 @@ const kitTruths = [
   {
     number: "3m",
     label: "Burst area",
-    copy: "Soul Reaping and the ultimate knockdown both reward grouped enemies.",
+    copy: "Soul Harvest and the ultimate knockdown both reward grouped enemies.",
   },
   {
     number: "30%",
     label: "Defense shred",
-    copy: "Relic Lv4 turns siphoned enemies into better targets for the whole team.",
+    copy: "Relic Lv4 turns absorbed enemies into better targets for the whole team.",
   },
   {
     number: "7s",
     label: "Max shroud",
-    copy: "The window to find a kill before Stygian Reprieve fails.",
+    copy: "The window to secure a kill before Delayed Demise fails.",
   },
 ];
 
 const aresComparison = [
   {
     label: "Main job",
-    nephtys: "Turns team damage into Soul Reaping bursts, defense shred, and kill-based scaling.",
+    nephtys: "Turns team damage into Soul Harvest bursts, defense shred, and kill-based scaling.",
     ares: "Forces a direct melee brawl with AoE damage, Armor reduction, and personal survival.",
     takeaway: "Nephtys converts team pressure. Ares creates pressure by standing in the fight.",
   },
   {
     label: "Survival window",
-    nephtys: "Stygian Reprieve delays death, but she needs kill participation during the shroud to return.",
+    nephtys: "Delayed Demise delays falling, but she needs to secure a kill during the shroud to return.",
     ares: "Unyielding Will blocks his first lethal hit and gives a fixed immunity window.",
     takeaway: "Nephtys has a conditional comeback. Ares has a simpler emergency button.",
   },
   {
     label: "Defense break",
-    nephtys: "Relic Lv4 can cut Armor and M-RES by 30% on siphoned enemies.",
+    nephtys: "Relic Lv4 can cut Armor and M-RES by 30% on absorbed enemies.",
     ares: "Flesh Grinder cuts Armor, reaching 25% at Lv4.",
     takeaway: "Nephtys helps mixed-damage teams more. Ares is mainly Physical pressure.",
   },
   {
     label: "Kill payoff",
-    nephtys: "Kill participation steals ATK and max HP, then heals her from the defeated enemy.",
+    nephtys: "Secured kills steal ATK and max HP, then heal her from the fallen enemy.",
     ares: "Relic can add shields on kills during Battlefield Storm, while low HP raises his ATK.",
     takeaway: "Both like kills, but Nephtys snowballs through stats while Ares stabilizes the brawl.",
   },
@@ -228,8 +228,8 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
 ---
 
 <Base
-  title="Nephtys Guide - Soul Reaping Bruiser | Motto Immortal"
-  description="Complete hero guide for Nephtys: team-dependent bruiser role, skill breakdown, Soul Reaping engine, synergies, counters, gear stats, and virtues."
+  title="Nephtys Guide - Soul Harvest Bruiser | Motto Immortal"
+  description="Complete hero guide for Nephtys: team-dependent bruiser role, skill breakdown, Soul Harvest engine, synergies, counters, gear stats, and virtues."
 >
   <!-- BANNER -->
   <div class="guide-banner">
@@ -241,7 +241,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
     <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
     <div class="guide-banner-content">
       <h1 class="guide-hero-name">Nephtys</h1>
-      <p class="guide-hero-subtitle">Soul Reaping Bruiser.</p>
+      <p class="guide-hero-subtitle">Soul Harvest Bruiser.</p>
       <div class="guide-badge-row">
         <span class="guide-badge">
           <img
@@ -293,7 +293,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
         </div>
         <p class="guide-quick-verdict">
           Nephtys is not built to carry a fight by raw single-target damage. Her value comes from
-          softening enemies, turning the team's damage into Soul Reaping bursts, disrupting the enemy
+          softening enemies, turning the team's damage into Soul Harvest bursts, disrupting the enemy
           carry, and snowballing when kills happen. Put simply: she wants a team that is already
           creating pressure, then she makes that pressure harder to survive.
         </p>
@@ -369,7 +369,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
         <div class="nephtys-ledger-intro">
           <div>
             <h3 class="guide-card-heading">She keeps account of the fight</h3>
-            <p class="guide-card-subheading">Nephtys is easier to understand as a ledger than as a rotation. The team creates debt on the enemy side; she collects it through Soul Reaping, defense shred, and kill participation.</p>
+            <p class="guide-card-subheading">Nephtys is easier to understand as a ledger than as a rotation. The team creates debt on the enemy side; she collects it through Soul Harvest, defense shred, and secured kills.</p>
           </div>
           <div class="nephtys-ledger-summary">
             <span>Core idea</span>
@@ -612,7 +612,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
       <h2 class="guide-section-title">Gear &amp; Stats</h2>
       <div class="guide-card">
         <h3 class="guide-card-heading">Build for uptime and survival, then ATK</h3>
-        <p class="guide-card-subheading">She needs to stay alive long enough for Soul Reaping, kill participation, and her shroud window to matter.</p>
+        <p class="guide-card-subheading">She needs to stay alive long enough for Soul Harvest, secured kills, and her shroud window to matter.</p>
         <div class="guide-stat-chain">
           <span class="guide-stat-pill guide-stat-pill--primary">Energy / Haste</span>
           <span class="guide-stat-sep">&gt;</span>
