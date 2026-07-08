@@ -9,8 +9,15 @@ import nephtysData from "../../data/heroes/nephtys.json";
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
 const VIRTUE_ASSET_BASE = `${R2_BASE}/images/virtues`;
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
 
 const heroImage = (id: string) => `${HERO_ASSET_BASE}/${id}.webp`;
+const heroCardImage = (id: string, width = 240) => (
+  `${HERO_ASSET_BASE}/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`
+);
+const heroCardSrcset = (id: string) => [240, 360]
+  .map((width) => `${heroCardImage(id, width)} ${width}w`)
+  .join(", ");
 const skillImage = (id: string) => `/skills/nephtys_${id}.webp`;
 const relicImage = () => "/skills/nephtys_relic.webp";
 const virtueImage = (assetId: string, suffix: string) => `${VIRTUE_ASSET_BASE}/${assetId}${suffix}.png`;
@@ -191,6 +198,13 @@ const kitTruths = [
   },
 ];
 
+const guideRatings = [
+  { label: "PvP", value: "A" },
+  { label: "PvE", value: "B+" },
+  { label: "F2P", value: "B" },
+  { label: "Late", value: "A" },
+];
+
 const aresComparison = [
   {
     label: "Main job",
@@ -215,6 +229,33 @@ const aresComparison = [
     nephtys: "Secured kills steal ATK and max HP, then heal her from the fallen enemy.",
     ares: "Relic can add shields on kills during Battlefield Storm, while low HP raises his ATK.",
     takeaway: "Both like kills, but Nephtys snowballs through stats while Ares stabilizes the brawl.",
+  },
+];
+
+const modeFit = [
+  {
+    label: "Use her",
+    title: "Odyssey and Arena",
+    copy: "These are the places where her team-fed pressure, pull, shroud window, and kill snowball can actually matter.",
+    tone: "good",
+  },
+  {
+    label: "Investment",
+    title: "Relic 1-20 is enough",
+    copy: "If you build her at all, she does not look like a hero that needs to be forced past Relic 20 for the main job.",
+    tone: "neutral",
+  },
+  {
+    label: "Avoid",
+    title: "Club Spire",
+    copy: "She has a bad time there because Momus and Khepri already cover the kind of frontline utility you usually want.",
+    tone: "bad",
+  },
+  {
+    label: "Avoid",
+    title: "Main Spire",
+    copy: "Do not plan around her here. High-pressure stages can delete her before her delayed value turns on.",
+    tone: "bad",
   },
 ];
 
@@ -280,7 +321,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
           </div>
           <div class="guide-overview-item">
             <div class="guide-overview-label">Best in</div>
-            <div class="guide-overview-value">5v5 fights, arena, attrition PvE</div>
+            <div class="guide-overview-value">Odyssey, Arena, event fights</div>
           </div>
           <div class="guide-overview-item">
             <div class="guide-overview-label">Needs</div>
@@ -288,7 +329,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
           </div>
           <div class="guide-overview-item">
             <div class="guide-overview-label">Avoid</div>
-            <div class="guide-overview-value">Solo DPS checks, stalled fights with no kills</div>
+            <div class="guide-overview-value">Club Spire, Main Spire, high-pressure stages</div>
           </div>
         </div>
         <p class="guide-quick-verdict">
@@ -297,27 +338,40 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
           carry, and snowballing when kills happen. Put simply: she wants a team that is already
           creating pressure, then she makes that pressure harder to survive.
         </p>
-        <div class="guide-rating-row">
-          <div class="guide-rating-cell">
-            <span class="guide-rating-category">PvP</span>
-            <span class="rating-badge" data-tier="A">A</span>
-          </div>
-          <div class="guide-rating-cell">
-            <span class="guide-rating-category">PvE</span>
-            <span class="rating-badge" data-tier="B+">B+</span>
-          </div>
-          <div class="guide-rating-cell">
-            <span class="guide-rating-category">F2P</span>
-            <span class="rating-badge" data-tier="B">B</span>
-          </div>
-          <div class="guide-rating-cell">
-            <span class="guide-rating-category">Late</span>
-            <span class="rating-badge" data-tier="A">A</span>
-          </div>
+        <div class="nephtys-rating-grid" aria-label="Nephtys ratings">
+          {guideRatings.map((rating) => (
+            <div class="nephtys-rating-tile">
+              <span>{rating.label}</span>
+              <strong>{rating.value}</strong>
+            </div>
+          ))}
         </div>
         <p class="guide-math-footnote">
           First-impression guide ratings based on her current project skill data and early combat notes.
         </p>
+      </div>
+    </section>
+
+    <!-- MODE FIT -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Where to Use Her</h2>
+      <div class="guide-card nephtys-mode-card">
+        <h3 class="guide-card-heading">Good in selected team fights, weak as a Spire answer</h3>
+        <p class="guide-card-subheading">
+          Nephtys is not a general progression carry. Use her where fights give her time to convert
+          team pressure into kills, and skip her where enemies open too hard or better frontline tools
+          are already available.
+        </p>
+
+        <div class="nephtys-mode-grid">
+          {modeFit.map((item) => (
+            <div class={`nephtys-mode-item nephtys-mode-item--${item.tone}`}>
+              <span>{item.label}</span>
+              <strong>{item.title}</strong>
+              <p>{item.copy}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 
@@ -339,7 +393,14 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
                 <div class="nephtys-event-heroes">
                   {stage.front.map((hero) => (
                     <a class="nephtys-event-hero" href={`/heroes/${hero.id}`}>
-                      <img src={heroImage(hero.id)} alt={hero.name} loading="lazy" />
+                      <img
+                        src={heroCardImage(hero.id, 240)}
+                        srcset={heroCardSrcset(hero.id)}
+                        sizes="(max-width: 480px) 42vw, (max-width: 768px) 28vw, 96px"
+                        alt={hero.name}
+                        loading="lazy"
+                        decoding="async"
+                      />
                       <strong>{hero.name}</strong>
                     </a>
                   ))}
@@ -350,7 +411,14 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
                 <div class="nephtys-event-heroes">
                   {stage.back.map((hero) => (
                     <a class="nephtys-event-hero" href={`/heroes/${hero.id}`}>
-                      <img src={heroImage(hero.id)} alt={hero.name} loading="lazy" />
+                      <img
+                        src={heroCardImage(hero.id, 240)}
+                        srcset={heroCardSrcset(hero.id)}
+                        sizes="(max-width: 480px) 42vw, (max-width: 768px) 28vw, 96px"
+                        alt={hero.name}
+                        loading="lazy"
+                        decoding="async"
+                      />
                       <strong>{hero.name}</strong>
                     </a>
                   ))}
@@ -454,13 +522,27 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
           </div>
           <div class="nephtys-compare-snapshot">
             <div class="nephtys-compare-hero">
-              <img src={heroImage("nephtys")} alt="Nephtys" loading="lazy" />
+              <img
+                src={heroCardImage("nephtys", 240)}
+                srcset={heroCardSrcset("nephtys")}
+                sizes="72px"
+                alt="Nephtys"
+                loading="lazy"
+                decoding="async"
+              />
               <span>Nephtys</span>
               <strong>Team converter</strong>
             </div>
             <div class="nephtys-compare-vs">vs</div>
             <div class="nephtys-compare-hero">
-              <img src={heroImage("ares")} alt="Ares" loading="lazy" />
+              <img
+                src={heroCardImage("ares", 240)}
+                srcset={heroCardSrcset("ares")}
+                sizes="72px"
+                alt="Ares"
+                loading="lazy"
+                decoding="async"
+              />
               <span>Ares</span>
               <strong>Self brawler</strong>
             </div>
@@ -577,7 +659,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
           <div class="guide-hero-card">
             <div
               class="guide-hero-portrait"
-              style={`background-image: url('${heroImage(hero.id)}');`}
+              style={`background-image: url('${heroCardImage(hero.id, 240)}');`}
               role="img"
               aria-label={hero.name}
             ></div>
@@ -596,7 +678,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
           <div class="guide-hero-card">
             <div
               class="guide-hero-portrait"
-              style={`background-image: url('${heroImage(hero.id)}');`}
+              style={`background-image: url('${heroCardImage(hero.id, 240)}');`}
               role="img"
               aria-label={hero.name}
             ></div>
