@@ -1,0 +1,136 @@
+{
+  "name": {
+    "en": "Charon",
+    "zh": "卡戎"
+  },
+  "title": {
+    "en": "Ferryman of the River Styx",
+    "zh": "冥河摆渡人"
+  },
+  "quote": {
+    "en": "Where do you want me to take you? As long as the money is right.",
+    "zh": "你想让我带你通往何方？只要钱管够。"
+  },
+  "skills": [
+    {
+      "name": {
+        "en": "Soul Ferry",
+        "zh": "渡魂"
+      },
+      "description": {
+        "en": "When entering battle, Charon deals damage based on a percentage of his ATK to the farthest unit and banishes the target to the Netherworld for a period of time. The banished target temporarily leaves the battlefield, cannot act, and cannot be selected by either side.",
+        "zh": "登场时，卡戎对最远的单位造成基于自身攻击力一定比例的伤害，并将其驱逐至冥界，持续一段时间。被驱逐的目标会暂时离开战场，无法行动，且无法被双方选中。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Increases the damage dealt to the target.",
+          "zh": "对目标造成的伤害提升"
+        },
+        "level3": {
+          "en": "Extends the banish duration and additionally affects one more unit.",
+          "zh": "驱逐持续时间延长，且额外对一名单位生效"
+        },
+        "level4": {
+          "en": "Further increases the damage dealt to the target.",
+          "zh": "对目标造成的伤害再次提升"
+        }
+      }
+    },
+    {
+      "name": {
+        "en": "Lantern Scorching Current",
+        "zh": "提灯灼流"
+      },
+      "description": {
+        "en": "Charon channels continuously, directing a beam at the current target and dealing damage each second based on a percentage of his ATK. For every period of time the channel continues, this damage multiplier increases by a percentage, up to a cap. While channeling, Charon consumes Energy each second. If interrupted, he loses a portion of Energy.",
+        "zh": "卡戎持续施法，引导射线攻击当前目标，每秒对目标造成基于自身攻击力一定比例的伤害。引导每持续一段时间，该伤害倍率提升一定百分比，最多提升至一定比例；持续期间每秒消耗一定能量，若被打断则失去一定能量。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Increases the damage dealt to the target each second.",
+          "zh": "每秒对目标造成的伤害提升"
+        },
+        "level3": {
+          "en": "Reduces the Energy consumed each second while channeling.",
+          "zh": "持续期间每秒能量消耗降低"
+        },
+        "level4": {
+          "en": "Further increases the damage dealt each second.",
+          "zh": "每秒对目标造成的伤害再次提升"
+        }
+      }
+    },
+    {
+      "name": {
+        "en": "Refuse Passage",
+        "zh": "拒渡"
+      },
+      "description": {
+        "en": "When any enemy unit approaches Charon, Charon banishes that unit for a period of time. After this effect triggers, it enters cooldown.",
+        "zh": "当任意敌方单位靠近卡戎时，卡戎将其驱逐一段时间。该效果触发后会进入冷却。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "Extends the banish duration.",
+          "zh": "驱逐持续时间延长"
+        },
+        "level3": {
+          "en": "Reduces this skill's cooldown.",
+          "zh": "技能冷却时间缩短"
+        },
+        "level4": {
+          "en": "When triggered, Charon gains a Shield based on a percentage of his ATK.",
+          "zh": "触发时，卡戎获得基于自身攻击力一定比例的护盾"
+        }
+      }
+    },
+    {
+      "name": {
+        "en": "Nether River Descends",
+        "zh": "冥河降临"
+      },
+      "description": {
+        "en": "Charon slowly summons the Nether River into the mortal world. If Charon does not move for a period of time, he gains the Nether River state. Once he moves, this state is removed. While in the Nether River state, Charon deals increased damage and gains increased Lifesteal.",
+        "zh": "卡戎缓慢召唤冥河浮现于现世。若卡戎一段时间内没有移动，自身获得【冥河】状态；产生移动后，该状态清除。【冥河】状态下，卡戎造成的伤害提升，生命偷取提升。"
+      },
+      "upgrades": {
+        "level2": {
+          "en": "While in the Nether River state, Charon's damage dealt is further increased.",
+          "zh": "【冥河】状态下，卡戎造成的伤害进一步提升"
+        },
+        "level3": {
+          "en": "While in the Nether River state, Charon's ATK is increased.",
+          "zh": "【冥河】状态下，卡戎的攻击力提升"
+        },
+        "level4": {
+          "en": "While in the Nether River state, Charon's damage dealt is increased again.",
+          "zh": "【冥河】状态下，卡戎造成的伤害再次提升"
+        }
+      }
+    }
+  ],
+  "relic": {
+    "name": {
+      "en": "River-Crossing Form",
+      "zh": "渡河之姿"
+    },
+    "description": {
+      "en": "For every period of time Lantern Scorching Current continues channeling, its damage multiplier increases by a percentage, up to a cap.",
+      "zh": "提灯灼流引导每持续一段时间，伤害倍率提升一定比例，有提升上限。"
+    },
+    "upgrades": {
+      "level2": {
+        "en": "When Charon is about to die, he becomes immune to that instance of damage and briefly becomes invincible, then banishes the enemy unit that dealt that damage.",
+        "zh": "当卡戎即将阵亡时，自身免疫此次伤害并进入短暂无敌，同时将造成该次伤害的敌方单位驱逐"
+      },
+      "level3": {
+        "en": "While in the Nether River state, Charon can become immune to a certain number of control effects.",
+        "zh": "【冥河】状态下，卡戎可免疫一定次数的控制效果"
+      },
+      "level4": {
+        "en": "For every period of time Lantern Scorching Current continues channeling, the amount by which its damage multiplier increases is raised, and the damage multiplier cap is increased.",
+        "zh": "提灯灼流引导每持续一段时间，伤害倍率增加的比例提升，伤害倍率提升的上限增加"
+      }
+    }
+  }
+}

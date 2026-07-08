@@ -1,0 +1,575 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import nephtysData from "../../data/heroes/nephtys.json";
+import nephtysPortrait from "../../../extracted/portraits/A_UI_Portrait_Naifudisi_Img.png";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
+const VIRTUE_ASSET_BASE = `${R2_BASE}/images/virtues`;
+
+const heroImage = (id: string) => `${HERO_ASSET_BASE}/${id}.webp`;
+const skillImage = (id: string) => `/skills/nephtys_${id}.webp`;
+const relicImage = () => "/skills/nephtys_relic.webp";
+const virtueImage = (assetId: string, suffix: string) => `${VIRTUE_ASSET_BASE}/${assetId}${suffix}.png`;
+
+const skills = nephtysData.skills.map((skill) => ({
+  ...skill,
+  badge: skill.isUltimate ? "Skill 1 - Ultimate" : `Skill ${skill.id.replace("skill_", "")}`,
+  upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({
+    level: level.replace("level", "Lv "),
+    text,
+  })),
+}));
+
+const relic = {
+  ...nephtysData.relic,
+  badge: "Relic",
+  levelBadge: "Level 30",
+  upgrades: Object.entries(nephtysData.relic.upgrades).map(([level, text]) => ({
+    level: level.replace("level", "Lv "),
+    text,
+  })),
+};
+
+const strengths = [
+  "Team damage amplifier: Soul Reaping adds repeated AoE bursts and up to -30% Armor and M-RES on siphoned enemies",
+  "Strong extended-fight scaling: kill participation steals ATK and max HP, then heals her from the defeated enemy's max HP",
+  "Good disruption for a frontline Warrior: pulls the current target and highest-ATK enemy together, then stuns on collision",
+  "Ultimate is hard to stop: Deathly Entanglement binds for 5s and makes Nephtys Unstoppable during the channel",
+  "Works well in messy 5v5 fights where allies keep damage flowing and kills are actually available",
+  "Can become difficult to remove once the first kill starts the ATK, HP, and healing loop",
+];
+
+const weaknesses = [
+  "Not a solo damage dealer: her best damage comes from team damage, defense shred, and kill participation",
+  "Poor fit for pure single-target damage checks where there are no side kills to feed her snowball",
+  "Stygian Reprieve is conditional: if no enemy dies during the shroud window, she still falls",
+  "Needs Relic value: without Soul Reaping, she loses a large part of her defense shred and AoE identity",
+  "Melee positioning exposes her before she has stacked stolen stats or healed from a kill",
+  "Can look underwhelming when the team cannot secure kills or keep pressure on a focused target",
+];
+
+const synergies = [
+  { id: "caishen", name: "Caishen", note: "Energy support for more bind uptime" },
+  { id: "cancer", name: "Cancer", note: "Super-armor and Energy support" },
+  { id: "poseidon", name: "Poseidon", note: "CC and defense-down pressure" },
+  { id: "tefnut", name: "Tefnut", note: "Cleanse and AoE damage reduction" },
+  { id: "momus", name: "Momus", note: "Shield and stall support" },
+  { id: "khepri", name: "Khepri", note: "Frontline stability for longer fights" },
+];
+
+const counters = [
+  { id: "nyx", name: "Nyx", note: "Silence and stun disrupt her setup" },
+  { id: "mengpo", name: "Mengpo", note: "Silence and Energy denial" },
+  { id: "capricorn", name: "Capricorn", note: "Burst before she ramps" },
+  { id: "anubis", name: "Anubis", note: "Backline dive and untargetable pressure" },
+  { id: "pan", name: "Pan", note: "Energy control slows her ultimate cycle" },
+  { id: "demeter", name: "Demeter", note: "High Armor can blunt her Physical kit" },
+];
+
+const virtues = [
+  {
+    name: "Fervor",
+    rarity: "Red",
+    rarityClass: "guide-virtue-rarity--legendary",
+    assetId: "fervorI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "Energy Regen Bonus +10%" },
+      { label: "4-Piece", text: "On Ultimate use, +10% ATK (max 4 stacks)" },
+    ],
+    note: "Best default if you want more binds and a smoother long-fight ramp. The ATK stacks also raise the ceiling on her capped effects.",
+  },
+  {
+    name: "Wildness",
+    rarity: "Red",
+    rarityClass: "guide-virtue-rarity--legendary",
+    assetId: "wildnessI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "HP +15% at combat start" },
+      { label: "4-Piece", text: "+5% ATK every 5s, max 10 stacks" },
+    ],
+    note: "Fits her identity as an extended-fight bruiser. More HP buys time, and the delayed ATK ramp supports Soul Reaping and her ultimate cap.",
+  },
+  {
+    name: "Oblivion",
+    rarity: "Red",
+    rarityClass: "guide-virtue-rarity--legendary",
+    assetId: "oblivionI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "Armor +30%, M-RES +30% at combat start" },
+      { label: "4-Piece", text: "Crowd Control immunity for 8s at combat start" },
+    ],
+    note: "A safer PvP option when early CC would stop her from pulling, binding, or reaching the first Soul Reaping cycle.",
+  },
+];
+
+const soulLedger = [
+  {
+    stage: "Seed",
+    title: "Start a target problem",
+    copy: "Vengeful Spirit Pull tags the current target and the highest-ATK enemy, then drags them together. It is less about burst and more about forcing the enemy carry into a bad place.",
+    payoff: "Pull + stun threat",
+  },
+  {
+    stage: "Collect",
+    title: "Turn team damage into stored pressure",
+    copy: "Soul Reaping watches enemy units take damage. The more consistently your team is hitting, the faster Nephtys builds toward another AoE burst.",
+    payoff: "Team damage becomes her resource",
+  },
+  {
+    stage: "Weaken",
+    title: "Make focus fire stick",
+    copy: "The Relic's corpse aura cuts Armor and M-RES on siphoned enemies. That is the real team value: everyone gets a softer target.",
+    payoff: "Up to -30% Armor and M-RES",
+  },
+  {
+    stage: "Claim",
+    title: "Cash out on the kill",
+    copy: "Once a kill happens, Enduring Soulforce turns the result into permanent ATK and HP for the fight, plus a burst of healing.",
+    payoff: "Stats stolen, HP restored",
+  },
+];
+
+const fieldRules = [
+  {
+    label: "Best position",
+    value: "Front-mid",
+    copy: "Close enough to pull and bind, not so isolated that she dies before the first kill window.",
+  },
+  {
+    label: "Best team shape",
+    value: "Pressure + cleanup",
+    copy: "She wants allies who keep damage flowing and can finish targets during her shroud window.",
+  },
+  {
+    label: "First goal",
+    value: "Create one kill",
+    copy: "The first kill unlocks her bruiser loop. Before that, she is mostly control, shred, and stored AoE.",
+  },
+  {
+    label: "Bad assignment",
+    value: "Solo carry",
+    copy: "If the team is not producing damage or kills, her strongest mechanics never fully turn on.",
+  },
+];
+
+const winConditions = [
+  {
+    title: "Team is dealing steady damage",
+    whenTrue: "Soul Reaping fills, bursts in 3m AoE, and keeps corpse aura relevant.",
+    whenFalse: "She becomes a melee Warrior waiting on a low-value personal cycle.",
+  },
+  {
+    title: "The team can focus one target",
+    whenTrue: "Deathly Entanglement's bind and lost-HP finisher help convert pressure into a kill.",
+    whenFalse: "Damage gets spread around and her execute scaling has less to cash out on.",
+  },
+  {
+    title: "A kill is available",
+    whenTrue: "Enduring Soulforce steals ATK and max HP, then heals her from the defeated enemy.",
+    whenFalse: "Her scaling and sustain stay mostly theoretical.",
+  },
+  {
+    title: "The shroud window has support",
+    whenTrue: "Stygian Reprieve buys time for the team to secure the kill that lets her return.",
+    whenFalse: "It only delays the death animation. Useful time, but not a real revive.",
+  },
+];
+
+const kitTruths = [
+  {
+    number: "5s",
+    label: "Bind window",
+    copy: "Long enough for allies to hit the target she has pinned.",
+  },
+  {
+    number: "3m",
+    label: "Burst area",
+    copy: "Soul Reaping and the ultimate knockdown both reward grouped enemies.",
+  },
+  {
+    number: "30%",
+    label: "Defense shred",
+    copy: "Relic Lv4 turns siphoned enemies into better targets for the whole team.",
+  },
+  {
+    number: "7s",
+    label: "Max shroud",
+    copy: "The window to find a kill before Stygian Reprieve fails.",
+  },
+];
+---
+
+<Base
+  title="Nephtys Guide - Soul Reaping Bruiser | Motto Immortal"
+  description="Complete hero guide for Nephtys: team-dependent bruiser role, skill breakdown, Soul Reaping engine, synergies, counters, gear stats, and virtues."
+>
+  <!-- BANNER -->
+  <div class="guide-banner">
+    <div
+      class="guide-banner-bg"
+      style={`background-image: url('${nephtysPortrait.src}'); background-position: center 18%;`}
+    ></div>
+    <div class="guide-banner-overlay"></div>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Nephtys</h1>
+      <p class="guide-hero-subtitle">Soul Reaping Bruiser.</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge">
+          <img
+            class="guide-badge-icon"
+            src={`${R2_BASE}/icons/factions/spades.webp`}
+            alt="Spades"
+          />
+          Spades
+        </span>
+        <span class="guide-badge">
+          <img
+            class="guide-badge-icon"
+            src={`${R2_BASE}/icons/classes/warrior.webp`}
+            alt="Warrior"
+          />
+          Warrior
+        </span>
+        <span class="guide-badge">{nephtysData.role}</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="guide-body">
+
+    <!-- QUICK OVERVIEW -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Quick Overview</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">A bruiser who wins through the team</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Role</div>
+            <div class="guide-overview-value">Scaling Bruiser / Debuffer</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Best in</div>
+            <div class="guide-overview-value">5v5 fights, arena, attrition PvE</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Needs</div>
+            <div class="guide-overview-value">Relic, team damage, kill pressure</div>
+          </div>
+          <div class="guide-overview-item">
+            <div class="guide-overview-label">Avoid</div>
+            <div class="guide-overview-value">Solo DPS checks, stalled fights with no kills</div>
+          </div>
+        </div>
+        <p class="guide-quick-verdict">
+          Nephtys is not built to carry a fight by raw single-target damage. Her value comes from
+          softening enemies, turning the team's damage into Soul Reaping bursts, disrupting the enemy
+          carry, and snowballing when kills happen. Put simply: she wants a team that is already
+          creating pressure, then she makes that pressure harder to survive.
+        </p>
+        <div class="guide-rating-row">
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">PvP</span>
+            <span class="rating-badge" data-tier="A">A</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">PvE</span>
+            <span class="rating-badge" data-tier="B+">B+</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">F2P</span>
+            <span class="rating-badge" data-tier="B">B</span>
+          </div>
+          <div class="guide-rating-cell">
+            <span class="guide-rating-category">Late</span>
+            <span class="rating-badge" data-tier="A">A</span>
+          </div>
+        </div>
+        <p class="guide-math-footnote">
+          First-impression guide ratings based on her current project skill data and early combat notes.
+        </p>
+      </div>
+    </section>
+
+    <!-- SOUL LEDGER -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Soul Ledger</h2>
+      <div class="guide-card nephtys-ledger-card">
+        <div class="nephtys-ledger-intro">
+          <div>
+            <h3 class="guide-card-heading">She keeps account of the fight</h3>
+            <p class="guide-card-subheading">Nephtys is easier to understand as a ledger than as a rotation. The team creates debt on the enemy side; she collects it through Soul Reaping, defense shred, and kill participation.</p>
+          </div>
+          <div class="nephtys-ledger-summary">
+            <span>Core idea</span>
+            <strong>Pressure in, souls out</strong>
+          </div>
+        </div>
+
+        <div class="nephtys-ledger-flow">
+          {soulLedger.map((item) => (
+            <div class="nephtys-ledger-step">
+              <div class="nephtys-ledger-stage">{item.stage}</div>
+              <h4>{item.title}</h4>
+              <p>{item.copy}</p>
+              <div class="nephtys-ledger-payoff">{item.payoff}</div>
+            </div>
+          ))}
+        </div>
+
+        <div class="nephtys-field-grid">
+          {fieldRules.map((rule) => (
+            <div class="nephtys-field-card">
+              <span>{rule.label}</span>
+              <strong>{rule.value}</strong>
+              <p>{rule.copy}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- WIN CONDITIONS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Win Conditions</h2>
+      <div class="guide-card nephtys-contract-card">
+        <h3 class="guide-card-heading">Her power has conditions attached</h3>
+        <p class="guide-card-subheading">This is the part that matters for team-building. Nephtys is strong when her conditions are met, and very ordinary when they are not.</p>
+
+        <div class="nephtys-contract-grid">
+          {winConditions.map((condition) => (
+            <div class="nephtys-contract">
+              <h4>{condition.title}</h4>
+              <div class="nephtys-contract-row nephtys-contract-row--good">
+                <span>When true</span>
+                <p>{condition.whenTrue}</p>
+              </div>
+              <div class="nephtys-contract-row nephtys-contract-row--bad">
+                <span>When false</span>
+                <p>{condition.whenFalse}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="nephtys-truth-strip">
+          {kitTruths.map((truth) => (
+            <div class="nephtys-truth">
+              <div class="nephtys-truth-number">{truth.number}</div>
+              <div>
+                <strong>{truth.label}</strong>
+                <p>{truth.copy}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="nephtys-matchup-note">
+          <div>
+            <span>Guide takeaway</span>
+            <strong>Do not ask her to be the whole damage plan.</strong>
+          </div>
+          <p>
+            Bring her when your team can already create pressure, group enemies, or finish low targets.
+            Avoid treating her as the answer to a pure single-target check, because the kit is built around
+            conversion and cleanup rather than raw solo output.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Skills</h2>
+      <div class="guide-skills-grid">
+        {skills.map((skill) => (
+          <div class="guide-skill-card">
+            <div class="guide-skill-header">
+              <div
+                class="guide-skill-icon"
+                style={`background-image: url('${skillImage(skill.id)}');`}
+                role="img"
+                aria-label={skill.name}
+              ></div>
+              <div class="guide-skill-meta">
+                <div class="guide-skill-name">{skill.name}</div>
+                <span class={`guide-skill-badge${skill.isUltimate ? " guide-skill-badge--ult" : ""}`}>
+                  {skill.badge}
+                </span>
+              </div>
+            </div>
+            <p class="guide-skill-desc">{skill.description}</p>
+            <div class="guide-skill-upgrades">
+              {skill.upgrades.map((u) => (
+                <div class="guide-upgrade">
+                  <span class="guide-upgrade-chip">{u.level}</span>
+                  <span class="guide-upgrade-text">{u.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="guide-skill-card guide-skill-card--relic">
+        <div>
+          <div class="guide-skill-header">
+            <div
+              class="guide-skill-icon"
+              style={`background-image: url('${relicImage()}');`}
+              role="img"
+              aria-label={relic.name}
+            ></div>
+            <div class="guide-skill-meta">
+              <div class="guide-skill-name">{relic.name}</div>
+              <div class="guide-relic-badges">
+                <span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span>
+                <span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="guide-skill-desc">{relic.description}</p>
+          <div class="guide-skill-upgrades guide-skill-upgrades--relic">
+            {relic.upgrades.map((u) => (
+              <div class="guide-upgrade guide-upgrade--relic">
+                <span class="guide-upgrade-chip">{u.level}</span>
+                <span class="guide-upgrade-text">{u.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRENGTHS & WEAKNESSES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Strength &amp; Weaknesses</h2>
+      <StrengthWeakness strengths={strengths} weaknesses={weaknesses} />
+    </section>
+
+    <!-- SYNERGIES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Synergies</h2>
+      <div class="guide-hero-grid">
+        {synergies.map((hero) => (
+          <div class="guide-hero-card">
+            <div
+              class="guide-hero-portrait"
+              style={`background-image: url('${heroImage(hero.id)}');`}
+              role="img"
+              aria-label={hero.name}
+            ></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- SHUT DOWN BY -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Shut Down By</h2>
+      <div class="guide-hero-grid">
+        {counters.map((hero) => (
+          <div class="guide-hero-card">
+            <div
+              class="guide-hero-portrait"
+              style={`background-image: url('${heroImage(hero.id)}');`}
+              role="img"
+              aria-label={hero.name}
+            ></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- GEAR & STATS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Gear &amp; Stats</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Build for uptime and survival, then ATK</h3>
+        <p class="guide-card-subheading">She needs to stay alive long enough for Soul Reaping, kill participation, and her shroud window to matter.</p>
+        <div class="guide-stat-chain">
+          <span class="guide-stat-pill guide-stat-pill--primary">Energy / Haste</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">HP%</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">ATK %</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Armor / M-RES</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Control Res</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Crit</span>
+        </div>
+        <div class="guide-callout">
+          ATK is still important because many of her caps scale from it, but she should not be built like a
+          pure carry. Her best fights are the ones where she gets a second and third round of value.
+        </div>
+      </div>
+    </section>
+
+    <!-- VIRTUES -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Virtues</h2>
+      <div class="guide-virtue-grid">
+        {virtues.map((v) => (
+          <div class="guide-virtue-card">
+            <div class="guide-virtue-header">
+              <div
+                class="guide-virtue-icon"
+                style={`background-image: url('${virtueImage(v.assetId, v.assetSuffix)}');`}
+                role="img"
+                aria-label={v.name}
+              ></div>
+              <div>
+                <div class="guide-virtue-name">{v.name}</div>
+                <span class={`guide-virtue-rarity ${v.rarityClass}`}>{v.rarity}</span>
+              </div>
+            </div>
+            <div class="guide-virtue-bonuses">
+              {v.bonuses.map((b) => (
+                <div class="guide-virtue-bonus">
+                  <div class="guide-virtue-bonus-label">{b.label}</div>
+                  <div class="guide-virtue-bonus-text">{b.text}</div>
+                </div>
+              ))}
+            </div>
+            <p class="guide-virtue-note">{v.note}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- VERDICT -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Verdict</h2>
+      <div class="guide-verdict-box">
+        <h3 class="guide-verdict-heading">Strong foundation, but not a solo carry</h3>
+        <p class="guide-verdict-text">
+          Nephtys is best understood as a bruiser-enabler. She brings pull disruption, a long bind,
+          defense shred through Relic, team-fed AoE damage, and a kill-based snowball. That makes her
+          attractive in longer team fights where pressure is constant and kills happen. The warning is
+          just as important: she does not solve pure single-target damage checks on her own, and her
+          revive mechanic is not automatic. Build around the team first, then let Nephtys turn that team
+          pressure into a fight that is harder and harder for the enemy to stabilize.
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>

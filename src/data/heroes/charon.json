@@ -1,0 +1,105 @@
+{
+  "id": "charon",
+  "name": "Charon",
+  "title": "Ferryman of the River Styx",
+  "quote": "Where do you want me to take you? As long as the money is right.",
+  "image": null,
+  "release": false,
+  "faction": "Hearts",
+  "role": "",
+  "class": "Archer",
+  "rarity": "",
+  "description": "",
+  "recommendedRelicLevel": null,
+  "evolution": null,
+  "level": null,
+  "stats": null,
+  "skills": [
+    {
+      "id": "skill_1",
+      "name": "Soul Ferry",
+      "type": "Ultimate",
+      "description": "When entering battle, Charon deals damage based on a percentage of his ATK to the farthest unit and banishes the target to the Netherworld for a period of time. The banished target temporarily leaves the battlefield, cannot act, and cannot be selected by either side.",
+      "upgrades": {
+        "level2": "Increases the damage dealt to the target.",
+        "level3": "Extends the banish duration and additionally affects one more unit.",
+        "level4": "Further increases the damage dealt to the target."
+      },
+      "damageType": "",
+      "isUltimate": true
+    },
+    {
+      "id": "skill_2",
+      "name": "Lantern Scorching Current",
+      "type": "Active",
+      "description": "Charon channels continuously, directing a beam at the current target and dealing damage each second based on a percentage of his ATK. For every period of time the channel continues, this damage multiplier increases by a percentage, up to a cap. While channeling, Charon consumes Energy each second. If interrupted, he loses a portion of Energy.",
+      "upgrades": {
+        "level2": "Increases the damage dealt to the target each second.",
+        "level3": "Reduces the Energy consumed each second while channeling.",
+        "level4": "Further increases the damage dealt each second."
+      },
+      "damageType": ""
+    },
+    {
+      "id": "skill_3",
+      "name": "Refuse Passage",
+      "type": "Passive",
+      "description": "When any enemy unit approaches Charon, Charon banishes that unit for a period of time. After this effect triggers, it enters cooldown.",
+      "upgrades": {
+        "level2": "Extends the banish duration.",
+        "level3": "Reduces this skill's cooldown.",
+        "level4": "When triggered, Charon gains a Shield based on a percentage of his ATK."
+      },
+      "damageType": ""
+    },
+    {
+      "id": "skill_4",
+      "name": "Nether River Descends",
+      "type": "Passive",
+      "description": "Charon slowly summons the Nether River into the mortal world. If Charon does not move for a period of time, he gains the Nether River state. Once he moves, this state is removed. While in the Nether River state, Charon deals increased damage and gains increased Lifesteal.",
+      "upgrades": {
+        "level2": "While in the Nether River state, Charon's damage dealt is further increased.",
+        "level3": "While in the Nether River state, Charon's ATK is increased.",
+        "level4": "While in the Nether River state, Charon's damage dealt is increased again."
+      },
+      "damageType": ""
+    }
+  ],
+  "relic": {
+    "name": "River-Crossing Form",
+    "type": "Relic",
+    "description": "For every period of time Lantern Scorching Current continues channeling, its damage multiplier increases by a percentage, up to a cap.",
+    "upgrades": {
+      "level2": "When Charon is about to die, he becomes immune to that instance of damage and briefly becomes invincible, then banishes the enemy unit that dealt that damage.",
+      "level3": "While in the Nether River state, Charon can become immune to a certain number of control effects.",
+      "level4": "For every period of time Lantern Scorching Current continues channeling, the amount by which its damage multiplier increases is raised, and the damage multiplier cap is increased."
+    }
+  },
+  "synergies": [],
+  "baseAttackRate": 0,
+  "bossUltimatesPer90s": 0,
+  "coreMechanic": {
+    "summary": "Sustained channel damage that scales the longer it is held, paired with a stationary state that boosts damage and Lifesteal when Charon does not move. His defensive tools use banish effects to remove threats from the battlefield temporarily rather than killing them outright.",
+    "depthRating": "",
+    "commonlyMisunderstood": false
+  },
+  "synergyLinks": [],
+  "relicBreakpoints": null,
+  "activeBug": null,
+  "activeBugNotes": null,
+  "f2pInvestment": null,
+  "virtues": null,
+  "virtueSets": null,
+  "content-creator": null,
+  "strengths": [],
+  "weaknesses": [],
+  "_meta": {
+    "source": "[CN-COMMUNITY] user-uploaded screenshot, likely new CN leak",
+    "transcriptionNote": "All descriptionCN and upgrade text transcribed from screenshot. No numeric values, percentages, damage type, rarity, stats, image, release date, or role were visible in the source image. Do not infer numbers.",
+    "openFlags": [
+      "damageType unset for all skills - no Magical tag visible in screenshot, needs stat-panel screenshot to confirm Physical vs Magical",
+      "rarity, stats, image, and release date not present in this screenshot",
+      "role (Arcane/Nimble/Hefty) not shown in this screenshot"
+    ]
+  }
+}
