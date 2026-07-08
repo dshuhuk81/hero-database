@@ -3,7 +3,6 @@ export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 import nephtysData from "../../data/heroes/nephtys.json";
-import nephtysPortrait from "../../../extracted/portraits/A_UI_Portrait_Naifudisi_Img.png";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
@@ -203,6 +202,33 @@ const kitTruths = [
     copy: "The window to find a kill before Stygian Reprieve fails.",
   },
 ];
+
+const aresComparison = [
+  {
+    label: "Main job",
+    nephtys: "Turns team damage into Soul Reaping bursts, defense shred, and kill-based scaling.",
+    ares: "Forces a direct melee brawl with AoE damage, Armor reduction, and personal survival.",
+    takeaway: "Nephtys converts team pressure. Ares creates pressure by standing in the fight.",
+  },
+  {
+    label: "Survival window",
+    nephtys: "Stygian Reprieve delays death, but she needs kill participation during the shroud to return.",
+    ares: "Unyielding Will blocks his first lethal hit and gives a fixed immunity window.",
+    takeaway: "Nephtys has a conditional comeback. Ares has a simpler emergency button.",
+  },
+  {
+    label: "Defense break",
+    nephtys: "Relic Lv4 can cut Armor and M-RES by 30% on siphoned enemies.",
+    ares: "Flesh Grinder cuts Armor, reaching 25% at Lv4.",
+    takeaway: "Nephtys helps mixed-damage teams more. Ares is mainly Physical pressure.",
+  },
+  {
+    label: "Kill payoff",
+    nephtys: "Kill participation steals ATK and max HP, then heals her from the defeated enemy.",
+    ares: "Relic can add shields on kills during Battlefield Storm, while low HP raises his ATK.",
+    takeaway: "Both like kills, but Nephtys snowballs through stats while Ares stabilizes the brawl.",
+  },
+];
 ---
 
 <Base
@@ -213,7 +239,7 @@ const kitTruths = [
   <div class="guide-banner">
     <div
       class="guide-banner-bg"
-      style={`background-image: url('${nephtysPortrait.src}'); background-position: center 18%;`}
+      style={`background-image: url('${heroImage("nephtys")}'); background-position: center 18%;`}
     ></div>
     <div class="guide-banner-overlay"></div>
     <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
@@ -381,6 +407,65 @@ const kitTruths = [
             Bring her when your team can already create pressure, group enemies, or finish low targets.
             Avoid treating her as the answer to a pure single-target check, because the kit is built around
             conversion and cleanup rather than raw solo output.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARES LENS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Ares Lens</h2>
+      <div class="guide-card nephtys-compare-card">
+        <div class="nephtys-compare-intro">
+          <div>
+            <h3 class="guide-card-heading">The closest role comparison is Ares</h3>
+            <p class="guide-card-subheading">
+              Nephtys and Ares share enough DNA that the comparison is useful: melee presence,
+              Armor pressure, a lethal-damage safety window, and extra value when kills happen.
+              The difference is where the pressure comes from.
+            </p>
+          </div>
+          <div class="nephtys-compare-snapshot">
+            <div class="nephtys-compare-hero">
+              <img src={heroImage("nephtys")} alt="Nephtys" loading="lazy" />
+              <span>Nephtys</span>
+              <strong>Team converter</strong>
+            </div>
+            <div class="nephtys-compare-vs">vs</div>
+            <div class="nephtys-compare-hero">
+              <img src={heroImage("ares")} alt="Ares" loading="lazy" />
+              <span>Ares</span>
+              <strong>Self brawler</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="nephtys-compare-grid">
+          {aresComparison.map((row) => (
+            <div class="nephtys-compare-row">
+              <div class="nephtys-compare-label">{row.label}</div>
+              <div>
+                <span>Nephtys</span>
+                <p>{row.nephtys}</p>
+              </div>
+              <div>
+                <span>Ares</span>
+                <p>{row.ares}</p>
+              </div>
+              <strong>{row.takeaway}</strong>
+            </div>
+          ))}
+        </div>
+
+        <div class="nephtys-matchup-note">
+          <div>
+            <span>Decision point</span>
+            <strong>Use the comparison to pick the job, not the winner.</strong>
+          </div>
+          <p>
+            If the team needs a simple frontliner who brings his own brawl window, Ares is the cleaner idea.
+            If the team already deals damage and needs that pressure converted into shred, control, and
+            snowball value, Nephtys is the more interesting fit.
           </p>
         </div>
       </div>
