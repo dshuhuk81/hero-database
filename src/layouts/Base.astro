@@ -53,8 +53,6 @@ const defaultAlternate = alternateLinks.find((entry) => entry.locale === "en");
   <meta name="twitter:image" content={new URL(image, Astro.site)} />
 
   <title>{title}</title>
-  <!-- Google AdSense -->
-  <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1272647850363446" crossorigin="anonymous"></script>
   <slot name="head" />
 </head>
 <body>

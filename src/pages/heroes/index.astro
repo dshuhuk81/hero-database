@@ -77,18 +77,6 @@ const sortedHeroes = [...heroes]
     </div>
   </div>
 
-  <!-- Ad slot: hero list top -->
-  <div class="ad-slot-list is-empty" id="heroTopAdSlot">
-    <ins class="adsbygoogle"
-      id="heroTopAdIns"
-      style="display:block"
-      data-ad-client="ca-pub-1272647850363446"
-      data-ad-slot="auto"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
   <div class="grid" id="heroGrid">
     {sortedHeroes.map(hero => (
       <div
@@ -361,29 +349,6 @@ const sortedHeroes = [...heroes]
 
   .hero-wrapper::before {
     display: none;
-  }
-}
-
-.ad-slot-list {
-  min-height: 0;
-  transition: margin var(--duration-fast) var(--ease-out), max-height var(--duration-fast) var(--ease-out);
-}
-
-.ad-slot-list .adsbygoogle {
-  display: block;
-  min-height: 0;
-}
-
-@media (max-width: 768px) {
-  .ad-slot-list.is-empty {
-    margin: 0;
-    max-height: 0;
-    overflow: hidden;
-  }
-
-  .ad-slot-list.is-filled {
-    margin: 0 auto var(--space-4);
-    max-height: 420px;
   }
 }
 
@@ -911,29 +876,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterBar = document.getElementById("filterBar") as HTMLElement | null;
   const filterOverlayBackdrop = document.getElementById("filterOverlayBackdrop") as HTMLElement | null;
   const filterOverlayClose = document.getElementById("filterOverlayClose") as HTMLButtonElement | null;
-  const heroTopAdSlot = document.getElementById("heroTopAdSlot") as HTMLElement | null;
-  const heroTopAdIns = document.getElementById("heroTopAdIns") as HTMLElement | null;
-
-  let topAdObserver: MutationObserver | null = null;
-
-  function syncTopAdState() {
-    if (!heroTopAdSlot || !heroTopAdIns) return;
-    const isFilled = heroTopAdIns.getAttribute("data-ad-status") === "filled";
-    heroTopAdSlot.classList.toggle("is-filled", isFilled);
-    heroTopAdSlot.classList.toggle("is-empty", !isFilled);
-  }
-
-  function watchTopAdState() {
-    if (!heroTopAdIns) return;
-    syncTopAdState();
-    topAdObserver = new MutationObserver(syncTopAdState);
-    topAdObserver.observe(heroTopAdIns, {
-      attributes: true,
-      attributeFilter: ["data-ad-status"]
-    });
-    window.setTimeout(syncTopAdState, 2000);
-    window.setTimeout(syncTopAdState, 5000);
-  }
 
   function openFilterOverlay() {
     filterBar?.classList.add("filter-overlay-open");
@@ -973,10 +915,5 @@ document.addEventListener("DOMContentLoaded", () => {
   resetButton?.addEventListener("click", updateFabBadge);
 
   updateFabBadge();
-  watchTopAdState();
-
-  window.addEventListener("beforeunload", () => {
-    topAdObserver?.disconnect();
-  });
 });
 </script>
