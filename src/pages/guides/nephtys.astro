@@ -43,7 +43,7 @@ const skills = nephtysData.skills.map((skill) => ({
 const relic = {
   ...nephtysData.relic,
   badge: "Relic",
-  levelBadge: "Level 30",
+  levelBadge: "Level 1-20",
   upgrades: Object.entries(nephtysData.relic.upgrades).map(([level, text]) => ({
     level: level.replace("level", "Lv "),
     text,
@@ -68,13 +68,57 @@ const weaknesses = [
   "Can look underwhelming when the team cannot secure kills or keep pressure on a focused target",
 ];
 
+const kitTags = [
+  {
+    label: "Strong",
+    title: "Crowd control",
+    tag: "ENEMY_CROWD_CONTROL",
+    copy: "Wraith Entanglement restrains for 5s, Wraithbound Pull can stun on collision, and the ultimate finish knocks down enemies in the 3m burst.",
+  },
+  {
+    label: "Strong",
+    title: "Area damage",
+    tag: "PLAYSTYLE_AREA_DAMAGE",
+    copy: "Her ultimate finish and Soul Harvest both reward grouped enemies, turning team pressure into repeated AoE damage.",
+  },
+  {
+    label: "Strong",
+    title: "Conditional revive",
+    tag: "REVIVE",
+    copy: "Delayed Demise gives her a shroud window. If she secures a kill during it, she returns immediately.",
+  },
+  {
+    label: "Strong",
+    title: "Armor reduction",
+    tag: "ENEMY_ARMOR_REDUCTION",
+    copy: "Soul Harvest's corpse aura can reduce Armor and M-RES by up to 30% on absorbed enemies.",
+  },
+  {
+    label: "Medium",
+    title: "Self protection",
+    tag: "SELF_CC_RESISTANCE",
+    copy: "She gains Super Armor during Wraith Entanglement, helping the bind finish once it starts.",
+  },
+  {
+    label: "Medium",
+    title: "Kill scaling",
+    tag: "SELF_HP_UP",
+    copy: "Secured kills steal part of the enemy's ATK and max HP, giving her a bruiser snowball if the team can finish targets.",
+  },
+  {
+    label: "Medium",
+    title: "Attribute reduction",
+    tag: "ENEMY_ATTRIBUTE_REDUCTION",
+    copy: "The corpse aura affects both defensive attributes, so mixed-damage teams can benefit from her Relic value.",
+  },
+];
+
 const synergies = [
-  { id: "caishen", name: "Caishen", note: "Energy support for more bind uptime" },
-  { id: "cancer", name: "Cancer", note: "Super-armor and Energy support" },
-  { id: "poseidon", name: "Poseidon", note: "CC and defense-down pressure" },
-  { id: "tefnut", name: "Tefnut", note: "Cleanse and AoE damage reduction" },
-  { id: "momus", name: "Momus", note: "Shield and stall support" },
-  { id: "khepri", name: "Khepri", note: "Frontline stability for longer fights" },
+  { id: "hephaestus", name: "Hephaestus", note: "S fit: ATK SPD, team buff, CC, Armor reduction" },
+  { id: "iris", name: "Iris", note: "A+ fit: ATK SPD, team buff, CC, vulnerability" },
+  { id: "set", name: "Set", note: "A+ fit: ATK SPD, team buff, Armor reduction, CC" },
+  { id: "hera", name: "Hera", note: "S+ fit: ATK SPD, team buff, CC" },
+  { id: "nezha", name: "Nezha", note: "S+ fit: team buff, CC, Armor reduction" },
 ];
 
 const counters = [
@@ -88,16 +132,16 @@ const counters = [
 
 const virtues = [
   {
-    name: "Fervor",
-    rarity: "Red",
-    rarityClass: "guide-virtue-rarity--legendary",
-    assetId: "fervorI",
-    assetSuffix: "_legendary",
+    name: "Desire",
+    rarity: "Gold",
+    rarityClass: "guide-virtue-rarity--epic",
+    assetId: "desireI",
+    assetSuffix: "_elite",
     bonuses: [
-      { label: "2-Piece", text: "Energy Regen Bonus +10%" },
-      { label: "4-Piece", text: "On Ultimate use, +10% ATK (max 4 stacks)" },
+      { label: "2-Piece", text: "ATK +10% at combat start" },
+      { label: "4-Piece", text: "After 15s, ATK +20%" },
     ],
-    note: "Best default if you want more binds and a smoother long-fight ramp. The ATK stacks also raise the ceiling on her capped effects.",
+    note: "Strong ATK-scaler choice. Her ultimate, Soul Harvest caps, and kill payoff all care about ATK, so Desire raises the parts of her kit that actually convert pressure.",
   },
   {
     name: "Wildness",
@@ -109,19 +153,7 @@ const virtues = [
       { label: "2-Piece", text: "HP +15% at combat start" },
       { label: "4-Piece", text: "+5% ATK every 5s, max 10 stacks" },
     ],
-    note: "Fits her identity as an extended-fight bruiser. More HP buys time, and the delayed ATK ramp supports Soul Harvest and her ultimate cap.",
-  },
-  {
-    name: "Oblivion",
-    rarity: "Red",
-    rarityClass: "guide-virtue-rarity--legendary",
-    assetId: "oblivionI",
-    assetSuffix: "_legendary",
-    bonuses: [
-      { label: "2-Piece", text: "Armor +30%, M-RES +30% at combat start" },
-      { label: "4-Piece", text: "Crowd Control immunity for 8s at combat start" },
-    ],
-    note: "A safer PvP option when early CC would stop her from pulling, restraining, or reaching the first Soul Harvest cycle.",
+    note: "Strong bruiser choice. The HP helps her survive the first exchange, while the delayed ATK ramp fits the longer fights where her Soul Harvest loop matters.",
   },
 ];
 
@@ -199,10 +231,10 @@ const kitTruths = [
 ];
 
 const guideRatings = [
-  { label: "PvP", value: "A" },
-  { label: "PvE", value: "B+" },
+  { label: "PvP", value: "B" },
+  { label: "PvE", value: "C" },
   { label: "F2P", value: "B" },
-  { label: "Late", value: "A" },
+  { label: "Late", value: "C" },
 ];
 
 const aresComparison = [
@@ -340,7 +372,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
         </p>
         <div class="nephtys-rating-grid" aria-label="Nephtys ratings">
           {guideRatings.map((rating) => (
-            <div class="nephtys-rating-tile">
+            <div class="nephtys-rating-tile" data-rating={rating.value}>
               <span>{rating.label}</span>
               <strong>{rating.value}</strong>
             </div>
@@ -349,6 +381,31 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
         <p class="guide-math-footnote">
           First-impression guide ratings based on her current project skill data and early combat notes.
         </p>
+      </div>
+    </section>
+
+    <!-- KIT TAGS -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Kit Tags</h2>
+      <div class="guide-card nephtys-tags-card">
+        <h3 class="guide-card-heading">What her profile actually says</h3>
+        <p class="guide-card-subheading">
+          Nephtys is tagged as a control bruiser with AoE payoff, a conditional revive,
+          and Relic-based defense reduction. These tags matter most when the team can keep damage flowing.
+        </p>
+
+        <div class="nephtys-tag-grid">
+          {kitTags.map((item) => (
+            <div class={`nephtys-tag-item nephtys-tag-item--${item.label.toLowerCase()}`}>
+              <div class="nephtys-tag-topline">
+                <span>{item.label}</span>
+                <code>{item.tag}</code>
+              </div>
+              <strong>{item.title}</strong>
+              <p>{item.copy}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 

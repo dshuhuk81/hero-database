@@ -10145,14 +10145,116 @@
       },
       "damageType": "Physical"
     },
-    "synergies": [],
+    "synergies": [
+      "ENEMY_CROWD_CONTROL",
+      "PLAYSTYLE_AREA_DAMAGE",
+      "SELF_CC_RESISTANCE",
+      "SELF_HP_UP",
+      "REVIVE",
+      "ENEMY_ATTRIBUTE_REDUCTION",
+      "ENEMY_ARMOR_REDUCTION"
+    ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "coreMechanic": {
       "summary": "",
       "depthRating": "",
       "commonlyMisunderstood": false
-    }
+    },
+    "synergyLinks": [
+      {
+        "heroId": "hephaestus",
+        "type": "core",
+        "description": "S fit: ATK SPD, team buff, CC, and Armor reduction help Nephtys reach her first kill window."
+      },
+      {
+        "heroId": "iris",
+        "type": "core",
+        "description": "A+ fit: ATK SPD, team buff, CC, and vulnerability keep damage flowing during her shroud and Soul Harvest windows."
+      },
+      {
+        "heroId": "set",
+        "type": "core",
+        "description": "A+ fit: ATK SPD, team buff, Armor reduction, and CC support her Physical damage and cleanup pressure."
+      },
+      {
+        "heroId": "hera",
+        "type": "core",
+        "description": "S+ fit: ATK SPD, team buff, and CC give Nephtys cleaner access to restrained or grouped targets."
+      },
+      {
+        "heroId": "nezha",
+        "type": "core",
+        "description": "S+ fit: team buff, CC, and Armor reduction support the kill chain she needs to become durable."
+      }
+    ],
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "Strong ATK-scaler option for her ultimate, Soul Harvest caps, and kill payoff.",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "Strong HP option that still ramps ATK over time, fitting her bruiser loop.",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      }
+    ],
+    "synergyPartners": [
+      {
+        "heroId": "hephaestus",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
+        ]
+      },
+      {
+        "heroId": "iris",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_VULNERABILITY"
+        ]
+      },
+      {
+        "heroId": "set",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
+        ]
+      },
+      {
+        "heroId": "hera",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL"
+        ]
+      },
+      {
+        "heroId": "nezha",
+        "via": [
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
+        ]
+      }
+    ]
   },
   "nezha": {
     "id": "nezha",
