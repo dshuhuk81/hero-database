@@ -233,6 +233,7 @@ const translations: TranslationTree = {
     "/hero-stats": { en: "Hero Stats", de: "Heldenattribute", es: "Atributos de héroes", ru: "Характеристики героев", zh: "英雄属性" },
     "/cn-preview": { en: "CN vs Global", de: "CN vs. Global", es: "CN vs. global", ru: "CN vs Global", zh: "国服 vs 国际服" },
     "/virtues": { en: "Virtue Guide", de: "Tugenden-Guide", es: "Guía de virtudes", ru: "Гайд по добродетелям", zh: "美德指南" },
+    "/guides": { en: "Guides", de: "Guides", es: "Guías", ru: "Гайды", zh: "攻略" },
     "/delusions-den": { en: "Delusion Den Guide", de: "Guide für die Höhle der Täuschung", es: "Guía de la Cueva del Engaño", ru: "Гайд по Пещере иллюзий", zh: "幻境攻略" },
     "/tips": { en: "Tips", de: "Tipps", es: "Consejos", ru: "Советы", zh: "攻略技巧" },
     "/bosses": { en: "Boss Encounters", de: "Bosskämpfe", es: "Encuentros con jefes", ru: "Бои с боссами", zh: "Boss 战" },

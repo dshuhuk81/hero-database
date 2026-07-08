@@ -1,0 +1,66 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import PageHero from "../../components/PageHero.astro";
+import allHeroes from "../../data/all_heroes_db.json";
+import { guides } from "../../data/guides";
+import "../../styles/components.css";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+
+const heroCardImage = (id: string, width = 240) => (
+  `${HERO_ASSET_BASE}/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`
+);
+
+const cards = guides.map((guide) => {
+  const hero = allHeroes[guide.heroId as keyof typeof allHeroes] as
+    | { name?: string; class?: string; role?: string }
+    | undefined;
+  return {
+    ...guide,
+    heroName: hero?.name ?? guide.heroId,
+    heroClass: hero?.class ?? "",
+    heroRole: hero?.role ?? "",
+    portrait: heroCardImage(guide.heroId, 360),
+  };
+});
+---
+
+<Base
+  title="Hero Guides | Motto Immortal"
+  description="Deep-dive hero guides for Motto Immortal: kit analysis, skill breakdowns, synergies, counters, gear stats and virtue recommendations."
+>
+  <PageHero
+    id="guides"
+    tag="Guides"
+    headline="Hero Guides"
+    subtitle="Deep-dive guides: kit analysis, skill breakdowns, teams, gear and virtues"
+  />
+
+  <div class="page-wrapper">
+    <div class="guides-index-grid">
+      {cards.map((card) => (
+        <a class="guides-index-card" href={card.href}>
+          <div
+            class="guides-index-portrait"
+            style={`background-image: url('${card.portrait}')`}
+            role="img"
+            aria-label={card.heroName}
+          >
+          </div>
+          <div class="guides-index-body">
+            <div class="guides-index-chips">
+              {card.heroClass && <span class="guides-index-chip">{card.heroClass}</span>}
+              {card.heroRole && <span class="guides-index-chip">{card.heroRole}</span>}
+            </div>
+            <h2 class="guides-index-title">{card.title}</h2>
+            <p class="guides-index-hook">{card.hook}</p>
+            <span class="guides-index-cta">Read guide</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>

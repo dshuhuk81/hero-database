@@ -119,6 +119,21 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M12 2l2.4 5.1L20 8l-4 4.1.9 5.9L12 15.1 7.1 18l.9-5.9L4 8l5.6-.9L12 2z"/><path d="M5 21h14"/><path d="M8 18h8"/>`,
   },
   {
+    label: "Guides",
+    href: "/guides",
+    group: "content",
+    teaser: true,
+    description: {
+      en: "Deep-dive hero guides: kit analysis, teams, gear & virtues",
+      de: "Ausführliche Helden-Guides: Kit-Analyse, Teams, Ausrüstung und Tugenden",
+      es: "Guías detalladas de héroes: análisis del kit, equipos, equipamiento y virtudes",
+      ru: "Подробные гайды по героям: разбор набора навыков, команды, снаряжение и добродетели",
+      zh: "深度英雄攻略：技能解析、队伍搭配、装备与美德",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)" },
+    icon: `<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,
+  },
+  {
     label: "Delusion Den Guide",
     href: "/delusions-den",
     group: "content",
