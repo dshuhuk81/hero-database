@@ -2,6 +2,8 @@
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import allHeroes from "../../data/all_heroes_db.json";
+import eventsData from "../../data/events.json";
 import nephtysData from "../../data/heroes/nephtys.json";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
@@ -12,6 +14,15 @@ const heroImage = (id: string) => `${HERO_ASSET_BASE}/${id}.webp`;
 const skillImage = (id: string) => `/skills/nephtys_${id}.webp`;
 const relicImage = () => "/skills/nephtys_relic.webp";
 const virtueImage = (assetId: string, suffix: string) => `${VIRTUE_ASSET_BASE}/${assetId}${suffix}.png`;
+
+function getHero(heroId: string) {
+  const rawId = String(heroId || "");
+  const lowerId = rawId.toLowerCase();
+  const compactId = lowerId.replace(/[\s_-]+/g, "");
+  return allHeroes[lowerId as keyof typeof allHeroes]
+    ?? allHeroes[compactId as keyof typeof allHeroes]
+    ?? allHeroes[rawId as keyof typeof allHeroes];
+}
 
 const skills = nephtysData.skills.map((skill) => ({
   ...skill,
@@ -134,29 +145,6 @@ const soulLedger = [
   },
 ];
 
-const fieldRules = [
-  {
-    label: "Best position",
-    value: "Front-mid",
-    copy: "Close enough to pull and bind, not so isolated that she dies before the first kill window.",
-  },
-  {
-    label: "Best team shape",
-    value: "Pressure + cleanup",
-    copy: "She wants allies who keep damage flowing and can finish targets during her shroud window.",
-  },
-  {
-    label: "First goal",
-    value: "Create one kill",
-    copy: "The first kill unlocks her bruiser loop. Before that, she is mostly control, shred, and stored AoE.",
-  },
-  {
-    label: "Bad assignment",
-    value: "Solo carry",
-    copy: "If the team is not producing damage or kills, her strongest mechanics never fully turn on.",
-  },
-];
-
 const winConditions = [
   {
     title: "Team is dealing steady damage",
@@ -229,6 +217,14 @@ const aresComparison = [
     takeaway: "Both like kills, but Nephtys snowballs through stats while Ares stabilizes the brawl.",
   },
 ];
+
+const nephtysEvent = eventsData.campaigns.find((campaign) => campaign.id === "nephtys-event");
+const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
+  id: stage.id,
+  name: stage.name.en,
+  front: stage.composition.front.map((heroId) => getHero(heroId)).filter(Boolean),
+  back: stage.composition.back.map((heroId) => getHero(heroId)).filter(Boolean),
+})) ?? [];
 ---
 
 <Base
@@ -325,6 +321,47 @@ const aresComparison = [
       </div>
     </section>
 
+    <!-- EVENT PREVIEW -->
+    <section class="guide-section">
+      <h2 class="guide-section-title">Event Preview</h2>
+      <div class="guide-card nephtys-event-card">
+        <h3 class="guide-card-heading">First 3 playable fights</h3>
+        <p class="guide-card-subheading">
+          These are the event compositions currently visible from the Nephtys event page.
+        </p>
+
+        <div class="nephtys-event-grid">
+          {eventPreviewStages.map((stage) => (
+            <div class="nephtys-event-stage">
+              <div class="nephtys-event-stage-title">{stage.name}</div>
+              <div class="nephtys-event-row">
+                <span>Front</span>
+                <div class="nephtys-event-heroes">
+                  {stage.front.map((hero) => (
+                    <a class="nephtys-event-hero" href={`/heroes/${hero.id}`}>
+                      <img src={heroImage(hero.id)} alt={hero.name} loading="lazy" />
+                      <strong>{hero.name}</strong>
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div class="nephtys-event-row">
+                <span>Back</span>
+                <div class="nephtys-event-heroes">
+                  {stage.back.map((hero) => (
+                    <a class="nephtys-event-hero" href={`/heroes/${hero.id}`}>
+                      <img src={heroImage(hero.id)} alt={hero.name} loading="lazy" />
+                      <strong>{hero.name}</strong>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- SOUL LEDGER -->
     <section class="guide-section">
       <h2 class="guide-section-title">Soul Ledger</h2>
@@ -347,16 +384,6 @@ const aresComparison = [
               <h4>{item.title}</h4>
               <p>{item.copy}</p>
               <div class="nephtys-ledger-payoff">{item.payoff}</div>
-            </div>
-          ))}
-        </div>
-
-        <div class="nephtys-field-grid">
-          {fieldRules.map((rule) => (
-            <div class="nephtys-field-card">
-              <span>{rule.label}</span>
-              <strong>{rule.value}</strong>
-              <p>{rule.copy}</p>
             </div>
           ))}
         </div>
