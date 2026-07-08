@@ -74,6 +74,8 @@ const synergies = [
   { id: "set", name: "Set", note: "A+ fit: ATK SPD, team buff, Armor reduction, CC" },
   { id: "hera", name: "Hera", note: "S+ fit: ATK SPD, team buff, CC" },
   { id: "nezha", name: "Nezha", note: "S+ fit: team buff, CC, Armor reduction" },
+  { id: "skadi", name: "Skadi", note: "Alt pick: pull/grouping sets up her collision stun" },
+  { id: "poseidon", name: "Poseidon", note: "Alt pick: pull/grouping sets up her collision stun" },
 ];
 
 const counters = [
@@ -229,7 +231,7 @@ const modeFit = [
   {
     label: "Investment",
     title: "Relic 1-20 is enough",
-    copy: "If you build her at all, she does not look like a hero that needs to be forced past Relic 20 for the main job.",
+    copy: "If you build her at all, she does not look like a hero that needs to be forced past Relic 20 for the main job. Do not spend heavy feathers on her unless you specifically need this frontline utility.",
     tone: "neutral",
   },
   {
@@ -347,7 +349,8 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
         <p class="guide-card-subheading">
           Nephtys is not a general progression carry. Use her where fights give her time to convert
           team pressure into kills, and skip her where enemies open too hard or better frontline tools
-          are already available.
+          are already available. She works as a temporary frontline/tank slot, but does not automatically
+          replace Momus or Khepri.
         </p>
 
         <div class="nephtys-mode-grid">
