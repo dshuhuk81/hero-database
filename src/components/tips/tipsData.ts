@@ -1,32 +1,32 @@
-const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes";
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cards";
 
 export const WISHLIST_DATA: Record<string, { id: string; image: string }[]> = {
   Hearts: [
-    { id: "caishen", image: `${R2_BASE}/caishen.webp` },
-    { id: "yuelao", image: `${R2_BASE}/yuelao.webp` },
-    { id: "mengpo", image: `${R2_BASE}/mengpo.webp` },
-    { id: "isis", image: `${R2_BASE}/isis.webp` },
+    { id: "caishen", image: `${R2_BASE}/caishen-360.webp` },
+    { id: "yuelao", image: `${R2_BASE}/yuelao-360.webp` },
+    { id: "mengpo", image: `${R2_BASE}/mengpo-360.webp` },
+    { id: "isis", image: `${R2_BASE}/isis-360.webp` },
 
   ],
   Diamonds: [
-    { id: "phoenix", image: `${R2_BASE}/phoenix.webp` },
-    { id: "set", image: `${R2_BASE}/set.webp` },
-    { id: "meret", image: `${R2_BASE}/meret.webp` },
-    { id: "heracles", image: `${R2_BASE}/heracles.webp` },
+    { id: "phoenix", image: `${R2_BASE}/phoenix-360.webp` },
+    { id: "serket", image: `${R2_BASE}/serket-360.webp` },
+    { id: "meret", image: `${R2_BASE}/meret-360.webp` },
+    { id: "heracles", image: `${R2_BASE}/heracles-360.webp` },
 
   ],
   Spades: [
-    { id: "hecate", image: `${R2_BASE}/hecate.webp` },
-    { id: "tefnut", image: `${R2_BASE}/tefnut.webp` },
-    { id: "skadi", image: `${R2_BASE}/skadi.webp` },
-    { id: "momus", image: `${R2_BASE}/momus.webp` },
+    { id: "poseidon", image: `${R2_BASE}/poseidon-360.webp` },
+    { id: "tefnut", image: `${R2_BASE}/tefnut-360.webp` },
+    { id: "skadi", image: `${R2_BASE}/skadi-360.webp` },
+    { id: "momus", image: `${R2_BASE}/momus-360.webp` },
 
   ],
   Clubs: [
-    { id: "fengyi", image: `${R2_BASE}/fengyi.webp` },
-    { id: "nuba", image: `${R2_BASE}/nuba.webp` },
-    { id: "anubis", image: `${R2_BASE}/anubis.webp` },
-    { id: "pan", image: `${R2_BASE}/pan.webp` },
+    { id: "xuannv", image: `${R2_BASE}/xuannv-360.webp` },
+    { id: "nuba", image: `${R2_BASE}/nuba-360.webp` },
+    { id: "anubis", image: `${R2_BASE}/anubis-360.webp` },
+    { id: "pan", image: `${R2_BASE}/pan-360.webp` },
   ],
 };
 
