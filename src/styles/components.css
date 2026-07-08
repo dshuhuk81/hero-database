@@ -2254,7 +2254,7 @@
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center 15%;
+  background-position: center var(--guide-banner-y, 15%);
   z-index: 0;
 }
 
