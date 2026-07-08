@@ -68,51 +68,6 @@ const weaknesses = [
   "Can look underwhelming when the team cannot secure kills or keep pressure on a focused target",
 ];
 
-const kitTags = [
-  {
-    label: "Strong",
-    title: "Crowd control",
-    tag: "ENEMY_CROWD_CONTROL",
-    copy: "Wraith Entanglement restrains for 5s, Wraithbound Pull can stun on collision, and the ultimate finish knocks down enemies in the 3m burst.",
-  },
-  {
-    label: "Strong",
-    title: "Area damage",
-    tag: "PLAYSTYLE_AREA_DAMAGE",
-    copy: "Her ultimate finish and Soul Harvest both reward grouped enemies, turning team pressure into repeated AoE damage.",
-  },
-  {
-    label: "Strong",
-    title: "Conditional revive",
-    tag: "REVIVE",
-    copy: "Delayed Demise gives her a shroud window. If she secures a kill during it, she returns immediately.",
-  },
-  {
-    label: "Strong",
-    title: "Armor reduction",
-    tag: "ENEMY_ARMOR_REDUCTION",
-    copy: "Soul Harvest's corpse aura can reduce Armor and M-RES by up to 30% on absorbed enemies.",
-  },
-  {
-    label: "Medium",
-    title: "Self protection",
-    tag: "SELF_CC_RESISTANCE",
-    copy: "She gains Super Armor during Wraith Entanglement, helping the bind finish once it starts.",
-  },
-  {
-    label: "Medium",
-    title: "Kill scaling",
-    tag: "SELF_HP_UP",
-    copy: "Secured kills steal part of the enemy's ATK and max HP, giving her a bruiser snowball if the team can finish targets.",
-  },
-  {
-    label: "Medium",
-    title: "Attribute reduction",
-    tag: "ENEMY_ATTRIBUTE_REDUCTION",
-    copy: "The corpse aura affects both defensive attributes, so mixed-damage teams can benefit from her Relic value.",
-  },
-];
-
 const synergies = [
   { id: "hephaestus", name: "Hephaestus", note: "S fit: ATK SPD, team buff, CC, Armor reduction" },
   { id: "iris", name: "Iris", note: "A+ fit: ATK SPD, team buff, CC, vulnerability" },
@@ -381,31 +336,6 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
         <p class="guide-math-footnote">
           First-impression guide ratings based on her current project skill data and early combat notes.
         </p>
-      </div>
-    </section>
-
-    <!-- KIT TAGS -->
-    <section class="guide-section">
-      <h2 class="guide-section-title">Kit Tags</h2>
-      <div class="guide-card nephtys-tags-card">
-        <h3 class="guide-card-heading">What her profile actually says</h3>
-        <p class="guide-card-subheading">
-          Nephtys is tagged as a control bruiser with AoE payoff, a conditional revive,
-          and Relic-based defense reduction. These tags matter most when the team can keep damage flowing.
-        </p>
-
-        <div class="nephtys-tag-grid">
-          {kitTags.map((item) => (
-            <div class={`nephtys-tag-item nephtys-tag-item--${item.label.toLowerCase()}`}>
-              <div class="nephtys-tag-topline">
-                <span>{item.label}</span>
-                <code>{item.tag}</code>
-              </div>
-              <strong>{item.title}</strong>
-              <p>{item.copy}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
 
