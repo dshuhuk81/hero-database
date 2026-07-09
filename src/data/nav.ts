@@ -23,13 +23,15 @@ export interface NavEntry {
   /** Inner SVG markup for a 24x24 stroke icon. */
   icon: string;
   /** Sidebar bucket. */
-  group: "primary" | "content" | "meta";
+  group: "primary" | "content" | "tools" | "meta";
   /** Show this entry as a card on the index.astro teaser grid. */
   teaser?: boolean;
+  /** Pin this entry to the mobile bottom bar (max 4). Others go to the More sheet. */
+  mobile?: boolean;
   /** Teaser card sub-text. Only used when `teaser` is true. */
   description?: LocalizedString;
-  /** Teaser-only badge. Never shown on the sidebar. */
-  badge?: { text: LocalizedString; color?: string };
+  /** Teaser-only badge. Never shown on the sidebar. `until` (YYYY-MM-DD) hides the badge after that date at build time. */
+  badge?: { text: LocalizedString; color?: string; until?: string };
   /** Marks the destination as under maintenance (disables the link). */
   status?: { type: "maintenance"; tooltip?: string };
   /** Keep internal tooling visible during local development only. */
@@ -43,12 +45,14 @@ const allNavEntries: NavEntry[] = [
     label: "Home",
     href: "/",
     group: "primary",
+    mobile: true,
     icon: `<path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>`,
   },
   {
     label: "Hero List",
     href: "/heroes",
     group: "primary",
+    mobile: true,
     teaser: true,
     description: {
       en: "Browse all heroes with stats & ratings",
@@ -57,13 +61,14 @@ const allNavEntries: NavEntry[] = [
       ru: "Просматривайте всех героев с характеристиками и рейтингами",
       zh: "浏览全部英雄的属性与评分",
     },
-    badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено", zh: "已更新" }, color: "var(--accent-purple)" },
+    badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено", zh: "已更新" }, color: "var(--accent-purple)", until: "2026-08-01" },
     icon: `<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19.5 6.5L21 3l-3.5 1.5"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6"/><path d="M8 16l-4 4"/><path d="M4.5 6.5L3 3l3.5 1.5"/>`,
   },
   {
     label: "Hero Stats",
     href: "/hero-stats",
     group: "primary",
+    mobile: true,
     teaser: true,
     description: {
       en: "Compare all heroes with their stats",
@@ -89,18 +94,20 @@ const allNavEntries: NavEntry[] = [
     icon: `<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M8 7h4"/><path d="M10 5v4"/><path d="M15.5 15h.01"/><path d="M17.5 17h.01"/><path d="M14.5 18.5h.01"/>`,
   },
   {
-    label: "Virtue Guide",
-    href: "/virtues",
+    label: "Guides",
+    href: "/guides",
     group: "content",
+    mobile: true,
     teaser: true,
     description: {
-      en: "New deity upgrade pieces - sets, rarities & farming guide",
-      de: "Neue Aufstiegsstücke für Gottheiten - Sets, Seltenheiten und Farm-Guide",
-      es: "Nuevas piezas de mejora divina: conjuntos, rarezas y guía de farmeo",
-      ru: "Новые материалы улучшения божеств: наборы, редкости и гайд по фарму",
-      zh: "全新神祇养成部件——套装、稀有度与刷取攻略",
+      en: "Deep-dive hero guides: kit analysis, teams, gear & virtues",
+      de: "Ausführliche Helden-Guides: Kit-Analyse, Teams, Ausrüstung und Tugenden",
+      es: "Guías detalladas de héroes: análisis del kit, equipos, equipamiento y virtudes",
+      ru: "Подробные гайды по героям: разбор набора навыков, команды, снаряжение и добродетели",
+      zh: "深度英雄攻略：技能解析、队伍搭配、装备与美德",
     },
-    icon: `<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/>`,
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-08-01" },
+    icon: `<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,
   },
   {
     label: "Divine Throne",
@@ -115,23 +122,22 @@ const allNavEntries: NavEntry[] = [
       ru: "Новая система Divine Throne: открытие, улучшения Ether и первая волна героев",
       zh: "全新神王宝座系统——解锁条件、以太升级与首批英雄",
     },
-    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)" },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-08-01" },
     icon: `<path d="M12 2l2.4 5.1L20 8l-4 4.1.9 5.9L12 15.1 7.1 18l.9-5.9L4 8l5.6-.9L12 2z"/><path d="M5 21h14"/><path d="M8 18h8"/>`,
   },
   {
-    label: "Guides",
-    href: "/guides",
+    label: "Virtue Guide",
+    href: "/virtues",
     group: "content",
     teaser: true,
     description: {
-      en: "Deep-dive hero guides: kit analysis, teams, gear & virtues",
-      de: "Ausführliche Helden-Guides: Kit-Analyse, Teams, Ausrüstung und Tugenden",
-      es: "Guías detalladas de héroes: análisis del kit, equipos, equipamiento y virtudes",
-      ru: "Подробные гайды по героям: разбор набора навыков, команды, снаряжение и добродетели",
-      zh: "深度英雄攻略：技能解析、队伍搭配、装备与美德",
+      en: "New deity upgrade pieces - sets, rarities & farming guide",
+      de: "Neue Aufstiegsstücke für Gottheiten - Sets, Seltenheiten und Farm-Guide",
+      es: "Nuevas piezas de mejora divina: conjuntos, rarezas y guía de farmeo",
+      ru: "Новые материалы улучшения божеств: наборы, редкости и гайд по фарму",
+      zh: "全新神祇养成部件——套装、稀有度与刷取攻略",
     },
-    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)" },
-    icon: `<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>`,
+    icon: `<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/>`,
   },
   {
     label: "Delusion Den Guide",
@@ -159,7 +165,7 @@ const allNavEntries: NavEntry[] = [
       ru: "Советы для новичков и разбор системы святилищ",
       zh: "新手技巧与神龛系统解析",
     },
-    badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено", zh: "已更新" }, color: "var(--accent-purple)" },
+    badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено", zh: "已更新" }, color: "var(--accent-purple)", until: "2026-08-01" },
     icon: `<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
   },
   {
@@ -189,7 +195,7 @@ const allNavEntries: NavEntry[] = [
       zh: "战役关卡与活动队伍攻略",
     },
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
-      badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено", zh: "已更新" }, color: "var(--accent-purple)" },
+      badge: { text: { en: "Updated", de: "Aktualisiert", es: "Actualizado", ru: "Обновлено", zh: "已更新" }, color: "var(--accent-purple)", until: "2026-08-01" },
 
   },
   {
@@ -209,7 +215,7 @@ const allNavEntries: NavEntry[] = [
   {
     label: "Summon Calendar",
     href: "/summon-calendar",
-    group: "content",
+    group: "tools",
     teaser: true,
     description: {
       en: "Possible guesses on upcoming releases - based on CN data.",
@@ -218,12 +224,12 @@ const allNavEntries: NavEntry[] = [
       ru: "Возможные прогнозы будущих релизов на основе данных CN.",
       zh: "基于国服数据对后续上线内容的推测。",
     },
-    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1" fill="currentColor" stroke="none"/>`,
+    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 12.5l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.1-2.2 1.1.4-2.4-1.7-1.7 2.4-.4z"/>`,
   },
   {
     label: "Summon Calculator",
     href: "/summon-calculator",
-    group: "content",
+    group: "tools",
     teaser: true,
     description: {
       en: "Calculate target odds and expected copies from your saved summons",
@@ -232,7 +238,7 @@ const allNavEntries: NavEntry[] = [
       ru: "Рассчитайте шансы на цель и ожидаемое число копий на основе ваших сохранённых призывов",
       zh: "根据已保存的召唤记录计算目标概率与期望获取数量",
     },
-    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)" },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-08-01" },
     icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="12" y1="15" x2="12" y2="15"/><path d="M15 14l2 2 3-4"/>`,
   },
   {
@@ -257,6 +263,14 @@ const allNavEntries: NavEntry[] = [
 ];
 
 export const navEntries = allNavEntries.filter((entry) => !entry.localOnly || import.meta.env.DEV);
+
+/** Badge for an entry, or undefined once its `until` date has passed (evaluated at build time). */
+export function activeBadge(entry: NavEntry): NavEntry["badge"] {
+  const badge = entry.badge;
+  if (!badge) return undefined;
+  if (badge.until && new Date(badge.until + "T23:59:59") < new Date()) return undefined;
+  return badge;
+}
 
 /** Entries shown on the index.astro teaser grid, in array order. */
 export const teaserEntries = navEntries.filter((e) => e.teaser);

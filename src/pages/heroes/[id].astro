@@ -16,6 +16,7 @@ import { getLocaleFromPathname, localizePath, type Locale } from "../../i18n/con
 import { t } from "../../i18n/ui";
 import { getTagLabelTranslation } from "../../i18n/tags";
 import { getCnSummary, formatCnValue } from "../../utils/cnDiff.js";
+import { guides } from "../../data/guides";
 /* STATIC PATHS */
 export function getStaticPaths() {
   return heroes
@@ -54,6 +55,9 @@ const resolvedVirtueSets = heroVirtueSets.map((vs) => ({
 }));
 const hasVirtues = resolvedVirtueSets.length > 0;
 const heroInvest = (allInvest as any)[routeId] ?? null;
+const heroGuide = guides.find(
+  (g) => g.heroId === routeId && (import.meta.env.DEV || !g.localOnly)
+) ?? null;
 const cnSummary = getCnSummary(hero as any);
 const prevHero = heroIndex > 0 ? navHeroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < navHeroes.length - 1 ? navHeroes[heroIndex + 1] : null;
@@ -282,6 +286,20 @@ const dotSections = [
 
   <!-- ===================== MAIN SCROLL CONTENT ===================== -->
   <main class="scroll-content">
+
+    {heroGuide && (
+      <a class="hero-guide-link" href={heroGuide.href}>
+        <div class="hero-guide-link-text">
+          <span class="hero-guide-link-eyebrow">{t(locale, "hero", "deepDiveGuideTitle")}</span>
+          <span class="hero-guide-link-title">{heroGuide.title}</span>
+          <span class="hero-guide-link-hook">{heroGuide.hook}</span>
+        </div>
+        <span class="hero-guide-link-cta">
+          {t(locale, "hero", "deepDiveGuideCta")}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+    )}
 
     <!-- ── SECTION 1: PROFILE ── -->
     <section class="content-section" id="section-profile">

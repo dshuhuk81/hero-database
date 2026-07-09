@@ -2215,9 +2215,122 @@
 .cn-notes strong { color: var(--text-secondary); }
 
 /* ============================================================
+   HERO DETAIL -> GUIDE CROSS-LINK
+   Banner on /heroes/[id] pointing to the deep-dive guide
+   ============================================================ */
+
+.hero-guide-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  max-width: 1100px;
+  margin: 0 auto var(--space-8);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.07), rgba(168, 85, 247, 0.06));
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.hero-guide-link:hover {
+  border-color: rgba(250, 204, 21, 0.6);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(168, 85, 247, 0.1));
+  transform: translateY(-2px);
+}
+
+.hero-guide-link-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hero-guide-link-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-gold);
+}
+
+.hero-guide-link-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-bright);
+}
+
+.hero-guide-link-hook {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.hero-guide-link-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  border-radius: var(--radius-full);
+  color: var(--accent-gold);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+
+.hero-guide-link-cta svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 640px) {
+  .hero-guide-link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+}
+
+/* ============================================================
    HERO GUIDE PAGE
    Standalone editorial guide pages (e.g. /guides/nut)
    ============================================================ */
+
+/* Back-link from a guide page to the /guides hub */
+.guide-back {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-full);
+  background: rgba(7, 6, 12, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.guide-back:hover {
+  color: var(--text-bright);
+  border-color: rgba(250, 204, 21, 0.5);
+}
+
+.guide-back svg {
+  width: 15px;
+  height: 15px;
+}
 
 .guide-banner {
   --guide-accent: var(--accent-blue);
@@ -2253,7 +2366,8 @@
 
 .guide-meta-label {
   position: absolute;
-  top: var(--space-4);
+  /* Sits below the .guide-back pill (33.5px tall at top: space-4). */
+  top: calc(var(--space-4) + 44px);
   left: var(--space-6);
   font-size: 0.65rem;
   font-weight: var(--weight-semibold);

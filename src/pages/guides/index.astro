@@ -14,18 +14,22 @@ const heroCardImage = (id: string, width = 240) => (
   `${HERO_ASSET_BASE}/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`
 );
 
-const cards = guides.map((guide) => {
-  const hero = allHeroes[guide.heroId as keyof typeof allHeroes] as
-    | { name?: string; class?: string; role?: string }
-    | undefined;
-  return {
-    ...guide,
-    heroName: hero?.name ?? guide.heroId,
-    heroClass: hero?.class ?? "",
-    heroRole: hero?.role ?? "",
-    portrait: heroCardImage(guide.heroId, 360),
-  };
-});
+const cards = guides
+  .filter((guide) => import.meta.env.DEV || !guide.localOnly)
+  .map((guide) => {
+    const hero = guide.heroId
+      ? (allHeroes[guide.heroId as keyof typeof allHeroes] as
+          | { name?: string; class?: string; role?: string }
+          | undefined)
+      : undefined;
+    return {
+      ...guide,
+      heroName: hero?.name ?? guide.heroId ?? guide.title,
+      heroClass: hero?.class ?? "",
+      heroRole: hero?.role ?? "",
+      portrait: guide.heroId ? heroCardImage(guide.heroId, 360) : guide.image ?? "",
+    };
+  });
 ---
 
 <Base

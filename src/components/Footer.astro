@@ -2,7 +2,7 @@
 // src/components/Footer.astro
 import { getLocaleFromPathname } from "../i18n/config";
 import { interpolate } from "../i18n/helpers";
-import { t } from "../i18n/ui";
+import { navLabel, t } from "../i18n/ui";
 
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const footerClaim = t(locale, "footer", "claim").split("\n");
@@ -22,6 +22,8 @@ const copyright = interpolate(t(locale, "footer", "copyright"), {
 
     <!-- LINKS -->
     <div class="footer-links">
+      <a href="/changelog" class="footer-link">{navLabel("/changelog", "Changes", locale)}</a>
+      <a href="/about" class="footer-link">{navLabel("/about", "About", locale)}</a>
       <a href="/privacy" class="footer-link">{t(locale, "footer", "privacyPolicy")}</a>
     </div>
 
@@ -70,13 +72,15 @@ const copyright = interpolate(t(locale, "footer", "copyright"), {
   /* LINKS */
   .footer-links {
     margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
   }
 
   .footer-link {
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
     color: rgba(230, 230, 235, 0.7);
     text-decoration: none;
     font-size: 0.95rem;

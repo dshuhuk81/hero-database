@@ -6,17 +6,25 @@ import { navEntries, defaultMaintenanceTooltip, type NavEntry } from "../data/na
 import { getLocaleFromPathname, localizePath, stripLocaleFromPathname } from "../i18n/config";
 import { navLabel, t } from "../i18n/ui";
 
-// Mobile bottom bar: first 4 items + "More"
-const mobileItems = navEntries.slice(0, 4);
+// Mobile bottom bar: entries flagged `mobile` (max 4) + "More".
+// Falls back to the first 4 nav entries if nothing is flagged.
+const flaggedMobile = navEntries.filter(i => i.mobile).slice(0, 4);
+const mobileItems = flaggedMobile.length > 0 ? flaggedMobile : navEntries.slice(0, 4);
 const mobileOverflowItems = navEntries.filter(i => !mobileItems.includes(i));
 
 const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
 const locale = getLocaleFromPathname(Astro.url.pathname);
 const currentPath = normalize(stripLocaleFromPathname(Astro.url.pathname));
-const isActive = (href: string) => normalize(href) === currentPath;
+const isActive = (href: string) => {
+  const target = normalize(href);
+  if (target === currentPath) return true;
+  // Section match: /heroes highlights on /heroes/anubis, /guides on /guides/nut.
+  return target !== "/" && currentPath.startsWith(target + "/");
+};
 
 const primaryItems = navEntries.filter(i => i.group === "primary");
 const contentItems = navEntries.filter(i => i.group === "content");
+const toolsItems   = navEntries.filter(i => i.group === "tools");
 const metaItems    = navEntries.filter(i => i.group === "meta");
 
 function getIcon(item: NavEntry) {
@@ -71,6 +79,33 @@ function getLabel(item: NavEntry) {
     <div class="rail-divider" />
 
     {contentItems.map((item) => {
+      const disabled = isMaintenance(item);
+      const label = getLabel(item);
+      const tooltip = disabled ? getTooltip(item) : label;
+      const itemClass = `rail-item ${isActive(item.href) && !disabled ? "active" : ""} ${disabled ? "nav-disabled" : ""}`;
+      const itemContent = (
+        <>
+          <div class="rail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
+            {isActive(item.href) && !disabled && <span class="active-pill" />}
+          </div>
+        </>
+      );
+
+      return disabled ? (
+        <span class={itemClass} data-tooltip={tooltip} title={tooltip} aria-disabled="true" role="link">
+          {itemContent}
+        </span>
+      ) : (
+        <a href={getHref(item)} class={itemClass} data-tooltip={tooltip}>
+          {itemContent}
+        </a>
+      );
+    })}
+
+    <div class="rail-divider" />
+
+    {toolsItems.map((item) => {
       const disabled = isMaintenance(item);
       const label = getLabel(item);
       const tooltip = disabled ? getTooltip(item) : label;

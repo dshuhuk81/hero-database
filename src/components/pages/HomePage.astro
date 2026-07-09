@@ -2,7 +2,7 @@
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import supporters from "../../data/supporters.json";
-import { teaserEntries as teasers, defaultMaintenanceTooltip } from "../../data/nav";
+import { teaserEntries as teasers, defaultMaintenanceTooltip, activeBadge } from "../../data/nav";
 import { defaultLocale, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { navLabel, t } from "../../i18n/ui";
@@ -75,6 +75,7 @@ const { locale = defaultLocale } = Astro.props as Props;
       {teasers.map((teaser) => {
         const isMaintenance = teaser.status?.type === "maintenance";
         const tooltip = teaser.status?.tooltip ?? defaultMaintenanceTooltip;
+        const badge = activeBadge(teaser);
         const teaserContent = (
           <>
             <div class="teaser-icon">
@@ -84,12 +85,12 @@ const { locale = defaultLocale } = Astro.props as Props;
               <h3 class="teaser-headline">{navLabel(teaser.href, teaser.label, locale)}</h3>
               <p class="teaser-desc">{pickLang(teaser.description, locale)}</p>
             </div>
-            {teaser.badge && (
+            {badge && (
               <span
                 class="teaser-badge"
-                style={teaser.badge.color ? `background-color: ${teaser.badge.color};` : ''}
+                style={badge.color ? `background-color: ${badge.color};` : ''}
               >
-                {pickLang(teaser.badge.text, locale)}
+                {pickLang(badge.text, locale)}
               </span>
             )}
           </>
