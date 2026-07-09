@@ -1,9 +1,7 @@
 {
   "id": "charon",
   "name": "Charon",
-  "title": "Ferryman of the River Styx",
-  "quote": "Where do you want me to take you? As long as the money is right.",
-  "image": null,
+  "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/gaiya.webp",
   "release": false,
   "faction": "Hearts",
   "role": "",
@@ -18,7 +16,6 @@
     {
       "id": "skill_1",
       "name": "Soul Ferry",
-      "type": "Ultimate",
       "description": "When entering battle, Charon deals damage based on a percentage of his ATK to the farthest unit and banishes the target to the Netherworld for a period of time. The banished target temporarily leaves the battlefield, cannot act, and cannot be selected by either side.",
       "upgrades": {
         "level2": "Increases the damage dealt to the target.",
@@ -31,7 +28,6 @@
     {
       "id": "skill_2",
       "name": "Lantern Scorching Current",
-      "type": "Active",
       "description": "Charon channels continuously, directing a beam at the current target and dealing damage each second based on a percentage of his ATK. For every period of time the channel continues, this damage multiplier increases by a percentage, up to a cap. While channeling, Charon consumes Energy each second. If interrupted, he loses a portion of Energy.",
       "upgrades": {
         "level2": "Increases the damage dealt to the target each second.",
@@ -43,7 +39,6 @@
     {
       "id": "skill_3",
       "name": "Refuse Passage",
-      "type": "Passive",
       "description": "When any enemy unit approaches Charon, Charon banishes that unit for a period of time. After this effect triggers, it enters cooldown.",
       "upgrades": {
         "level2": "Extends the banish duration.",
@@ -55,7 +50,6 @@
     {
       "id": "skill_4",
       "name": "Nether River Descends",
-      "type": "Passive",
       "description": "Charon slowly summons the Nether River into the mortal world. If Charon does not move for a period of time, he gains the Nether River state. Once he moves, this state is removed. While in the Nether River state, Charon deals increased damage and gains increased Lifesteal.",
       "upgrades": {
         "level2": "While in the Nether River state, Charon's damage dealt is further increased.",
@@ -67,7 +61,6 @@
   ],
   "relic": {
     "name": "River-Crossing Form",
-    "type": "Relic",
     "description": "For every period of time Lantern Scorching Current continues channeling, its damage multiplier increases by a percentage, up to a cap.",
     "upgrades": {
       "level2": "When Charon is about to die, he becomes immune to that instance of damage and briefly becomes invincible, then banishes the enemy unit that dealt that damage.",
