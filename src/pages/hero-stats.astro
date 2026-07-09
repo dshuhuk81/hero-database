@@ -177,10 +177,11 @@ function fmt(value: number, percent: boolean): string {
 
       function applySearch() {
         const q = (search && search.value ? search.value : "").trim().toLowerCase();
+        const terms = q.split(/[&,;|]+/).map((term) => term.trim()).filter(Boolean);
         let shown = 0;
         body.querySelectorAll("tr").forEach((row) => {
           const name = row.getAttribute("data-name") || "";
-          const match = q === "" || name.indexOf(q) !== -1;
+          const match = terms.length === 0 || terms.some((term) => name.indexOf(term) !== -1);
           row.style.display = match ? "" : "none";
           if (match) shown++;
         });
