@@ -1,12 +1,16 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import PageHero from "../../components/PageHero.astro";
 
 const FEATURE_ASSET_BASE = "/features/divine-throne";
-const HERO_THUMB_BASE = "/heroes/thumbs";
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+const HERO_THUMB_BASE = `${R2_BASE}/heroes/thumbs`;
 
 const featureAsset = (name: string) => `${FEATURE_ASSET_BASE}/${name}`;
-const heroThumb = (id: string) => `${HERO_THUMB_BASE}/${id}-96.webp`;
+const heroThumb = (id: string) => `${HERO_THUMB_BASE}/${encodeURIComponent(id)}-96.webp?v=${HERO_IMAGE_VERSION}`;
+const heroImage = (id: string) => `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
 
 const overview = [
   { label: "Unlock", value: "Clear Journey 25-3 and raise the hero to the required rank" },
@@ -135,29 +139,13 @@ const firstWaveHeroes = [
 <Base
   title="Divine Throne Guide - 神座 Feature | Motto Immortal"
   description="One-page Divine Throne guide for Motto Immortal: unlock requirements, star map upgrades, Ether resources, exclusive skills, Divine Authority, and first-wave heroes."
-  image={featureAsset("starry-sky-bg.png")}
 >
-  <div class="guide-banner guide-banner--feature">
-    <div
-      class="guide-banner-bg guide-banner-bg--divine-throne"
-      style={`background-image: url('${featureAsset("starry-sky-bg.png")}');`}
-    ></div>
-    <div class="guide-banner-overlay"></div>
-    <a class="guide-back" href="/guides">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      <span>Guides</span>
-    </a>
-    <p class="guide-meta-label">Motto Immortal &middot; Feature Guide</p>
-    <div class="guide-banner-content">
-      <h1 class="guide-hero-name">Divine Throne</h1>
-      <p class="guide-hero-subtitle">神座 - hero-specific star maps, skills, and Divine Authority.</p>
-      <div class="guide-badge-row">
-        <span class="guide-badge guide-badge--legendary">New Feature</span>
-        <span class="guide-badge">Progression System</span>
-        <span class="guide-badge">One Page Guide</span>
-      </div>
-    </div>
-  </div>
+  <PageHero
+    id="divine-throne"
+    tag="Feature Guide"
+    headline="Divine Throne"
+    subtitle="神座 - hero-specific star maps, skills, and Divine Authority."
+  />
 
   <div class="guide-body guide-body--divine-throne">
     <section class="guide-section">
@@ -221,7 +209,7 @@ const firstWaveHeroes = [
             <span class="divine-star-line divine-star-line--one"></span>
             <span class="divine-star-line divine-star-line--two"></span>
             <span class="divine-star-line divine-star-line--three"></span>
-            <img class="divine-star-core" src={featureAsset("choose-star.png")} alt="" loading="lazy" />
+            <img class="divine-star-core" src={featureAsset("pure-ether.png")} alt="" loading="lazy" />
           </div>
           <div class="divine-constellation-caption">
             <strong>Personal star map</strong>
@@ -324,7 +312,12 @@ const firstWaveHeroes = [
         <div class="divine-roster-grid">
           {firstWaveHeroes.map((hero) => (
             <a class="divine-roster-card" href={`/heroes/${hero.id}`}>
-              <img src={heroThumb(hero.id)} alt={`${hero.name} portrait`} loading="lazy" />
+              <img
+                src={heroThumb(hero.id)}
+                alt={`${hero.name} portrait`}
+                loading="lazy"
+                onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
+              />
               <span>{hero.name}</span>
             </a>
           ))}

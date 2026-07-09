@@ -3896,17 +3896,6 @@
 }
 
 /* -- Divine Throne feature guide -- */
-.guide-banner--feature {
-  --guide-accent: var(--accent-gold-light);
-  --guide-accent-dim: var(--accent-gold-dim);
-  --guide-accent-line: color-mix(in srgb, var(--accent-gold) 36%, transparent);
-  min-height: 460px;
-}
-
-.guide-banner-bg--divine-throne {
-  background-position: center 24%;
-}
-
 .guide-body--divine-throne {
   --guide-accent: var(--accent-gold-light);
   --guide-accent-dim: var(--accent-gold-dim);
@@ -4009,9 +3998,10 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("/features/divine-throne/starry-sky-bg.png");
-  background-size: cover;
-  background-position: center 40%;
+  background:
+    radial-gradient(circle at 35% 20%, color-mix(in srgb, var(--accent-gold) 26%, transparent), transparent 22%),
+    radial-gradient(circle at 72% 58%, color-mix(in srgb, var(--accent-teal) 18%, transparent), transparent 28%),
+    linear-gradient(145deg, rgba(13, 18, 34, 0.88), rgba(8, 10, 16, 0.96));
   opacity: 0.58;
 }
 
@@ -4624,8 +4614,6 @@
 	  .nephtys-compare-vs { text-align: center; }
 	  .nephtys-compare-row { grid-template-columns: 1fr; }
 	  .nephtys-compare-row > strong { grid-column: auto; }
-	  .guide-banner--feature { min-height: 380px; }
-  .guide-banner-bg--divine-throne { background-position: center top; }
   .divine-loop-grid { grid-template-columns: 1fr; }
   .divine-loop-step { min-height: 0; }
   .divine-roster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
