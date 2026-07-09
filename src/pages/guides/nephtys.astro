@@ -293,7 +293,14 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
           />
           Warrior
         </span>
-        <span class="guide-badge">{nephtysData.role}</span>
+        <span class="guide-badge">
+          <img
+            class="guide-badge-icon"
+            src={`${R2_BASE}/icons/roles/${nephtysData.role.toLowerCase()}.webp`}
+            alt={nephtysData.role}
+          />
+          {nephtysData.role}
+        </span>
         <span class="guide-badge guide-badge--legendary">Legendary</span>
       </div>
     </div>
