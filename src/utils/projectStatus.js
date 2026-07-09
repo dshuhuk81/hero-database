@@ -4,7 +4,7 @@ import pageUpdates from "../data/pageUpdates.json";
 import { navEntries } from "../data/nav";
 import { getCnHeroes, getCnOverview } from "./cnDiff.js";
 
-const RATING_FIELDS = ["overall", "pvp", "pve", "pveEarly", "pveLate"];
+const RATING_FIELDS = ["overall", "pvp", "pve"];
 const REQUIRED_FIELDS = ["id", "name", "faction", "role", "class", "rarity"];
 const INTERNAL_ROUTES = new Set(["/design-system", "/privacy", "/status"]);
 const pageModules = import.meta.glob(["../pages/**/*.astro", "!../pages/status.astro"]);

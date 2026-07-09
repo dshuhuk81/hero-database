@@ -170,9 +170,7 @@ for (const sheetName of SUIT_SHEETS) {
     ratingUpdates[key] = {
       overall,
       pvp,
-      pveEarly,
-      pveLate,
-      pve: pveLate, // backward compat: endgame value
+      pve: pveLate || pveEarly, // sheet still splits early/late; collapse to endgame value
     };
 
     investUpdates[key] = {
@@ -195,15 +193,11 @@ for (const key of Object.keys(ratings)) {
   if (u) {
     ratings[key].overall = u.overall;
     ratings[key].pvp = u.pvp;
-    ratings[key].pveEarly = u.pveEarly;
-    ratings[key].pveLate = u.pveLate;
     ratings[key].pve = u.pve;
     rUpdated++;
   } else {
     ratings[key].overall = '';
     ratings[key].pvp = '';
-    ratings[key].pveEarly = '';
-    ratings[key].pveLate = '';
     ratings[key].pve = '';
     rCleared++;
   }

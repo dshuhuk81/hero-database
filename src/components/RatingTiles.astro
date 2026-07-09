@@ -6,8 +6,6 @@ type Ratings = {
   overall?: string | null;
   pvp?: string | null;
   pve?: string | null;
-  pveEarly?: string | null;
-  pveLate?: string | null;
 };
 
 interface Props {
@@ -19,14 +17,12 @@ const { ratings = {}, locale = getLocaleFromPathname(Astro.url.pathname) } = Ast
 const singleCategories = [
   { key: "overall", label: t(locale, "hero", "overall") },
   { key: "pvp", label: t(locale, "hero", "pvp") },
+  { key: "pve", label: t(locale, "hero", "pve") },
 ] as const;
 
 function tierClass(value: string) {
   return value ? value.toLowerCase().replace(/\+/g, "plus") : "na";
 }
-
-const pveEarly = ratings?.pveEarly || "";
-const pveLate = ratings?.pveLate || ratings?.pve || "";
 ---
 
 <div class="big-rating-tiles">
@@ -39,22 +35,6 @@ const pveLate = ratings?.pveLate || ratings?.pve || "";
       </div>
     );
   })}
-
-  <div class="big-rating-tile big-rating-tile-split">
-    <div class="pve-split-row">
-      <span class={`pve-split-cell rating-tile-${tierClass(pveEarly)}`}>
-        <span class="big-rating-val">{pveEarly || "N/A"}</span>
-      </span>
-      <span class="pve-split-divider"></span>
-      <span class={`pve-split-cell rating-tile-${tierClass(pveLate)}`}>
-        <span class="big-rating-val">{pveLate || "N/A"}</span>
-      </span>
-    </div>
-    <div class="pve-split-labels">
-      <span class="big-rating-label">{t(locale, "hero", "pveEarly")}</span>
-      <span class="big-rating-label">{t(locale, "hero", "pveLate")}</span>
-    </div>
-  </div>
 </div>
 
 <style>
@@ -83,11 +63,6 @@ const pveLate = ratings?.pveLate || ratings?.pve || "";
     transform: translateY(-3px);
   }
 
-  .big-rating-tile-split {
-    padding-left: var(--space-3);
-    padding-right: var(--space-3);
-  }
-
   /* value row */
   .big-rating-val {
     align-self: center;
@@ -95,32 +70,6 @@ const pveLate = ratings?.pveLate || ratings?.pve || "";
     font-weight: var(--weight-black);
     line-height: 1;
     letter-spacing: 0;
-  }
-
-  .pve-split-row {
-    align-self: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-3);
-    width: 100%;
-  }
-
-  .pve-split-cell {
-    display: flex;
-    justify-content: center;
-    flex: 1 1 0;
-  }
-
-  .pve-split-divider {
-    width: 1px;
-    height: 2.4rem;
-    flex: 0 0 auto;
-    background: var(--border-subtle);
-  }
-
-  .pve-split-val {
-    font-size: 2.4rem;
   }
 
   /* label row */
@@ -131,16 +80,6 @@ const pveLate = ratings?.pveLate || ratings?.pve || "";
     text-transform: uppercase;
     letter-spacing: var(--tracking-widest);
     color: var(--text-muted);
-  }
-
-  .pve-split-labels {
-    display: flex;
-    gap: var(--space-3);
-    width: 100%;
-  }
-
-  .pve-split-labels .big-rating-label {
-    flex: 1 1 0;
   }
 
   .big-rating-tile.rating-tile-sss,
@@ -219,39 +158,15 @@ const pveLate = ratings?.pveLate || ratings?.pve || "";
       font-size: 2rem;
     }
 
-    .pve-split-val {
-      font-size: 1.5rem;
-    }
-
-    .pve-split-row {
-      gap: var(--space-1);
-    }
-
-    .pve-split-divider {
-      height: 1.6rem;
-    }
-
     .big-rating-label {
       font-size: 0.58rem;
       letter-spacing: var(--tracking-wide);
-    }
-
-    .pve-split-labels {
-      gap: var(--space-1);
-    }
-
-    .pve-split-labels .big-rating-label {
-      white-space: nowrap;
     }
   }
 
   @media (max-width: 480px) {
     .big-rating-tiles {
       gap: var(--space-2);
-    }
-
-    .pve-split-val {
-      font-size: 1.25rem;
     }
 
     .big-rating-label {

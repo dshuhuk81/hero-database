@@ -3,13 +3,11 @@ import { heroes as baseHeroes, getHeroById as getBaseHeroById, statMaxima } from
 
 function ratingsForHeroId(id) {
   const r = heroRatings?.[id];
-  if (!r) return { overall: null, pvp: null, pve: null, pveEarly: null, pveLate: null };
+  if (!r) return { overall: null, pvp: null, pve: null };
   return {
     overall: r.overall ?? null,
     pvp: r.pvp ?? null,
     pve: r.pve ?? null,
-    pveEarly: r.pveEarly ?? null,
-    pveLate: r.pveLate ?? null,
   };
 }
 

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const SOURCE_PATH = "newFeature/throne_capture_current.json";
+const SOURCE_PATH = "src/data/divinethrone/throne_capture_current.json";
 const HERO_DB_PATH = "src/data/all_heroes_db.json";
 const OUTPUT_PATH = "src/data/divine-throne.json";
 
@@ -48,42 +48,42 @@ const heroIdByCaptureId = {
 };
 
 const throneAssetIdByHeroId = {
-  zeus: "zhousi",
-  nuwa: "nvwa",
-  dionysus: "diaonisuosi",
-  nyx: "nikesi",
-  amunra: "amengla",
-  ullr: "wuleer",
-  prometheus: "puluomixiusi",
+  zeus: "zeus",
+  nuwa: "nuwa",
+  dionysus: "dionysus",
+  nyx: "nyx",
+  amunra: "amunra",
+  ullr: "ullr",
+  prometheus: "prometheus",
   jingwei: "jingwei",
   yuelao: "yuelao",
-  yanluo: "yanluowang",
+  yanluo: "yanluo",
   caishen: "caishen",
-  isis: "yixisi",
+  isis: "isis",
   fengyi: "fengyi",
-  diana: "dianna",
+  diana: "diana",
   pan: "pan",
-  artemis: "aertemisi",
-  jormungandr: "yemengjiade",
-  demeter: "demoteer",
-  freya: "fuleiya",
-  anubis: "anubisi",
-  phoenix: "feinikesi",
-  set: "saite",
-  athena: "yadianna",
-  bastet: "basite",
-  geb: "gaibu",
-  horus: "helusi",
-  ares: "aruisi",
-  sekhmet: "saihemaite",
-  momus: "momosi",
-  khepri: "kaibuli",
-  iris: "yilisi",
-  nemesis: "niemoxisi",
-  poseidon: "bosaidong",
-  hela: "haila",
-  medusa: "meidusha",
-  hecate: "hekate",
+  artemis: "artemis",
+  jormungandr: "jormungandr",
+  demeter: "demeter",
+  freya: "freya",
+  anubis: "anubis",
+  phoenix: "phoenix",
+  set: "set",
+  athena: "athena",
+  bastet: "bastet",
+  geb: "geb",
+  horus: "horus",
+  ares: "ares",
+  sekhmet: "sekhmet",
+  momus: "momus",
+  khepri: "khepri",
+  iris: "iris",
+  nemesis: "nemesis",
+  poseidon: "poseidon",
+  hela: "hela",
+  medusa: "medusa",
+  hecate: "hecate",
 };
 
 const metadata = {

@@ -15,30 +15,30 @@ const heroImage = (id: string) => `${R2_BASE}/heroes/${encodeURIComponent(id)}.w
 const overview = [
   { label: "Unlock", value: "Clear Journey 25-3 and raise the hero to the required rank" },
   { label: "Where", value: "Deity screen, beside the Artifact slot" },
-  { label: "Spend", value: "Ether items to light each hero's star map" },
+  { label: "Spend", value: "Ether items to upgrade individual heroes" },
   { label: "Payoff", value: "Stats, exclusive Divine Throne skills, and Divine Authority" },
 ];
 
 const throneLoop = [
   {
     step: "01",
-    name: "Unlock the map",
-    text: "Eligible heroes get their own star chart once your account and that hero meet the requirements.",
+    name: "Unlock the hero",
+    text: "Clear Journey 25-3, then raise an eligible hero to the required rank.",
   },
   {
     step: "02",
     name: "Spend Ether",
-    text: "Each node asks for upgrade materials. Later stages change the required items and the number of stars.",
+    text: "Use the required Ether item to attempt the next Divine Throne upgrade.",
   },
   {
     step: "03",
     name: "Roll the upgrade",
-    text: "Success lights the next star. Failure can drop the Divine Throne by one level unless protected.",
+    text: "Success completes the next upgrade. Failure can drop the Divine Throne by one level unless protected.",
   },
   {
     step: "04",
     name: "Finish a stage",
-    text: "Lighting every star in the current chart completes one stage, then the next stage opens.",
+    text: "Complete the current stage to move into the next set of requirements.",
   },
   {
     step: "05",
@@ -50,21 +50,18 @@ const throneLoop = [
 const resourceCards = [
   {
     name: "Immaculate Ether",
-    cn: "无垢以太",
     asset: "immaculate-ether.png",
     role: "Base upgrade material",
-    note: "Used to attempt normal star-node upgrades.",
+    note: "Used for regular Divine Throne upgrade attempts.",
   },
   {
     name: "Pure Ether",
-    cn: "至纯以太",
     asset: "pure-ether.png",
     role: "Higher-tier upgrade material",
-    note: "Used as the star map advances into stronger upgrade requirements.",
+    note: "Used once the hero advances into stronger upgrade requirements.",
   },
   {
     name: "Steadfast Ether",
-    cn: "不坠以太",
     asset: "steadfast-ether.png",
     role: "Downgrade protection",
     note: "Protects against level loss on failure. It does not raise upgrade success chance.",
@@ -73,9 +70,9 @@ const resourceCards = [
 
 const gainCards = [
   {
-    label: "Star Map Stats",
+    label: "Stats",
     title: "Core combat stats",
-    text: "Every lit node gives the hero direct attribute bonuses. This is not a team-wide shrine; it is hero-specific investment.",
+    text: "Each upgrade is tied to one hero and adds direct attributes to that hero.",
   },
   {
     label: "Exclusive Skills",
@@ -91,7 +88,7 @@ const gainCards = [
 
 const priorityRules = [
   "Start with heroes you field everywhere. Divine Authority applies in all modes, so your PvP carry, PvE carry, or main tank gets more value than a niche bench pick.",
-  "Do not spread early resources too thin. Stages and materials change as the star map advances, so finishing meaningful milestones beats half-lighting many heroes.",
+  "Do not spread early resources too thin. Finishing meaningful milestones beats leaving many heroes barely upgraded.",
   "Use Steadfast Ether when a downgrade would hurt. Its job is protection only; save it for levels where losing progress matters.",
   "Check the hero's exclusive skill before committing. Some thrones are raw stats, but the biggest jumps come from milestone effects that change how a hero performs.",
 ];
@@ -137,14 +134,14 @@ const firstWaveHeroes = [
 ---
 
 <Base
-  title="Divine Throne Guide - 神座 Feature | Motto Immortal"
-  description="One-page Divine Throne guide for Motto Immortal: unlock requirements, star map upgrades, Ether resources, exclusive skills, Divine Authority, and first-wave heroes."
+  title="Divine Throne Guide | Motto Immortal"
+  description="One-page Divine Throne guide for Motto Immortal: unlock requirements, Ether resources, exclusive skills, Divine Authority, and first-wave heroes."
 >
   <PageHero
     id="divine-throne"
     tag="Feature Guide"
     headline="Divine Throne"
-    subtitle="神座 - hero-specific star maps, skills, and Divine Authority."
+    subtitle="Hero-specific upgrades, exclusive skills, and Divine Authority."
   />
 
   <div class="guide-body guide-body--divine-throne">
@@ -155,7 +152,7 @@ const firstWaveHeroes = [
           <div>
             <h3 class="guide-card-heading">What Divine Throne actually is</h3>
             <p class="guide-card-subheading">
-              A long-term upgrade board for individual heroes. You light stars with Ether, finish stages, and unlock direct combat stats plus hero-exclusive effects.
+              A long-term upgrade system for individual heroes. You spend Ether, complete stages, and unlock direct combat stats plus hero-exclusive effects.
             </p>
           </div>
         </div>
@@ -168,63 +165,17 @@ const firstWaveHeroes = [
           ))}
         </div>
         <p class="guide-quick-verdict">
-          Think of Divine Throne as the next progression layer after artifacts and rank: not a new battle mode, but a permanent hero power system.
-          The important player question is not "Can I unlock it?" but "Which hero deserves scarce Ether first?"
+          It is not a new battle mode. Treat it like the next permanent progression layer after rank and artifacts, with the main decision being which hero deserves scarce Ether first.
         </p>
       </div>
     </section>
 
     <section class="guide-section">
-      <h2 class="guide-section-title">Unlock</h2>
-      <div class="guide-card divine-split-card">
-        <div class="divine-split-copy">
-          <h3 class="guide-card-heading">How to enter the system</h3>
-          <p class="guide-card-subheading">
-            Divine Throne unlocks after Journey 25-3, with each hero also needing a required rank.
-          </p>
-          <div class="divine-unlock-steps">
-            <div class="divine-unlock-step">
-              <span>1</span>
-              <strong>Clear Journey 25-3</strong>
-              <p>This opens the account-side gate.</p>
-            </div>
-            <div class="divine-unlock-step">
-              <span>2</span>
-              <strong>Raise an eligible hero</strong>
-              <p>The hero must reach the specified rank before their map is usable.</p>
-            </div>
-            <div class="divine-unlock-step">
-              <span>3</span>
-              <strong>Open the Deity screen</strong>
-              <p>Tap the Divine Throne icon beside the Artifact area.</p>
-            </div>
-          </div>
-        </div>
-        <div class="divine-constellation-card" aria-label="Divine Throne star map illustration">
-          <div class="divine-star-map">
-            <span class="divine-star-node divine-star-node--one"></span>
-            <span class="divine-star-node divine-star-node--two"></span>
-            <span class="divine-star-node divine-star-node--three"></span>
-            <span class="divine-star-node divine-star-node--four"></span>
-            <span class="divine-star-line divine-star-line--one"></span>
-            <span class="divine-star-line divine-star-line--two"></span>
-            <span class="divine-star-line divine-star-line--three"></span>
-            <img class="divine-star-core" src={featureAsset("pure-ether.png")} alt="" loading="lazy" />
-          </div>
-          <div class="divine-constellation-caption">
-            <strong>Personal star map</strong>
-            <span>Light nodes, finish stages, unlock hero power.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="guide-section">
-      <h2 class="guide-section-title">Upgrade Loop</h2>
+      <h2 class="guide-section-title">How It Works</h2>
       <div class="guide-card">
-        <h3 class="guide-card-heading">Five steps, repeated per hero</h3>
+        <h3 class="guide-card-heading">Unlock, upgrade, repeat</h3>
         <p class="guide-card-subheading">
-          Every hero has a personal star map. You light nodes in order, complete a stage, then move into a changed map with new costs.
+          Divine Throne unlocks after Journey 25-3. Each hero still needs their own required rank, then upgrades are handled from the Deity screen beside the Artifact area.
         </p>
         <div class="divine-loop-grid">
           {throneLoop.map((item) => (
@@ -249,7 +200,6 @@ const firstWaveHeroes = [
           {resourceCards.map((item) => (
             <div class="divine-resource-card">
               <img src={featureAsset(item.asset)} alt="" loading="lazy" />
-              <span>{item.cn}</span>
               <h4>{item.name}</h4>
               <strong>{item.role}</strong>
               <p>{item.note}</p>
@@ -257,17 +207,17 @@ const firstWaveHeroes = [
           ))}
         </div>
         <div class="guide-callout">
-          Upgrade success lights one star. Upgrade failure can lower the Divine Throne by one level. Steadfast Ether reduces downgrade risk, but it does not increase success rate.
+          Upgrade success completes the next step. Upgrade failure can lower the Divine Throne by one level. Steadfast Ether reduces downgrade risk, but it does not increase success rate.
         </div>
       </div>
     </section>
 
     <section class="guide-section">
-      <h2 class="guide-section-title">Power Gains</h2>
+      <h2 class="guide-section-title">Power and Priority</h2>
       <div class="guide-card divine-gains-card">
-        <h3 class="guide-card-heading">Three layers of value</h3>
+        <h3 class="guide-card-heading">What you get for the Ether</h3>
         <p class="guide-card-subheading">
-          Divine Throne matters because it stacks permanent stats with hero-specific mechanics and a new all-mode confrontation stat.
+          Divine Throne is valuable because it combines permanent stats, hero-specific skill effects, and a new all-mode confrontation stat.
         </p>
         <div class="divine-gain-grid">
           {gainCards.map((item) => (
@@ -279,18 +229,11 @@ const firstWaveHeroes = [
           ))}
         </div>
         <div class="divine-authority-panel">
-          <div class="divine-authority-number">Divine Authority</div>
+          <h4>Divine Authority</h4>
           <p>
-            Treat this as a new power axis. Because it works in every environment and affects both damage and survival, high Divine Throne heroes should feel stronger everywhere, not only in one event.
+            This stat works across modes and affects both damage and survival. That makes high Divine Throne investment most useful on heroes you already use often.
           </p>
         </div>
-      </div>
-    </section>
-
-    <section class="guide-section">
-      <h2 class="guide-section-title">Upgrade Strategy</h2>
-      <div class="guide-card">
-        <h3 class="guide-card-heading">How to spend without regret</h3>
         <div class="divine-priority-list">
           {priorityRules.map((rule, index) => (
             <div class="divine-priority-item">
@@ -307,7 +250,7 @@ const firstWaveHeroes = [
       <div class="guide-card">
         <h3 class="guide-card-heading">Heroes in the first unlock wave</h3>
         <p class="guide-card-subheading">
-          More hero maps should unlock later. These are the heroes in the first-wave list.
+          More heroes should unlock later. These are the heroes in the first-wave list.
         </p>
         <div class="divine-roster-grid">
           {firstWaveHeroes.map((hero) => (
@@ -322,16 +265,6 @@ const firstWaveHeroes = [
             </a>
           ))}
         </div>
-      </div>
-    </section>
-
-    <section class="guide-section">
-      <h2 class="guide-section-title">Bottom Line</h2>
-      <div class="guide-verdict-box">
-        <h3 class="guide-verdict-heading">Divine Throne is a permanent account pressure system</h3>
-        <p class="guide-verdict-text">
-          It rewards deep investment into the heroes you already rely on. The safe approach is to pick one high-usage first-wave hero, push meaningful milestones, and only use downgrade protection when a failed roll would undo expensive progress. Divine Authority makes this more than a cosmetic star chart: it is likely to become a real separator in PvP and high-end PvE.
-        </p>
       </div>
     </section>
   </div>

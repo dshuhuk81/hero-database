@@ -361,7 +361,7 @@ const kpis = [
         <section class="edit-section">
           <h3>Ratings</h3>
           <div class="rating-grid">
-            {["overall", "pvp", "pve", "pveEarly", "pveLate"].map((field) => (
+            {["overall", "pvp", "pve"].map((field) => (
               <label>
                 <span>{field}</span>
                 <select name={field}>
@@ -1058,7 +1058,7 @@ const kpis = [
       setEditorialLists(hero);
       renderPartnerList();
 
-      for (const field of ["overall", "pvp", "pve", "pveEarly", "pveLate"]) {
+      for (const field of ["overall", "pvp", "pve"]) {
         setField(field, ratings?.[field] || "");
       }
 
@@ -1199,8 +1199,6 @@ const kpis = [
             overall: getField("overall"),
             pvp: getField("pvp"),
             pve: getField("pve"),
-            pveEarly: getField("pveEarly"),
-            pveLate: getField("pveLate"),
           }),
         }));
 

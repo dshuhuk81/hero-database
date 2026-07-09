@@ -350,8 +350,6 @@ app.get('/api/admin/heroes/:id', async (req, res) => {
         overall: '',
         pvp: '',
         pve: '',
-        pveEarly: '',
-        pveLate: '',
       },
       investment: invest[id] || {
         relicRecommendation: '',
@@ -419,11 +417,9 @@ app.patch('/api/admin/ratings/:id', async (req, res) => {
       overall: sanitizeRating(req.body.overall ?? current.overall ?? ''),
       pvp: sanitizeRating(req.body.pvp ?? current.pvp ?? ''),
       pve: sanitizeRating(req.body.pve ?? current.pve ?? ''),
-      pveEarly: sanitizeRating(req.body.pveEarly ?? current.pveEarly ?? ''),
-      pveLate: sanitizeRating(req.body.pveLate ?? current.pveLate ?? ''),
     };
 
-    if (!hasExistingRating && !next.overall && !next.pvp && !next.pve && !next.pveEarly && !next.pveLate) {
+    if (!hasExistingRating && !next.overall && !next.pvp && !next.pve) {
       return res.json({ success: true, skipped: true, ratings: next, changedFiles: [] });
     }
 
