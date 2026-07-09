@@ -4,7 +4,15 @@ import Base from "../../layouts/Base.astro";
 import PageHero from "../../components/PageHero.astro";
 import allHeroes from "../../data/all_heroes_db.json";
 import { guides } from "../../data/guides";
+import { navEntries } from "../../data/nav";
+import { pickLang } from "../../i18n/helpers";
 import "../../styles/components.css";
+
+const MODE_GUIDE_HREFS = ["/delusions-den", "/guides/divine-throne", "/events", "/bosses", "/virtues"];
+const modeCards = MODE_GUIDE_HREFS
+  .map((href) => navEntries.find((entry) => entry.href === href))
+  .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
+  .filter((entry) => import.meta.env.DEV || !entry.localOnly);
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
@@ -16,17 +24,16 @@ const heroCardImage = (id: string, width = 240) => (
 
 const cards = guides
   .filter((guide) => import.meta.env.DEV || !guide.localOnly)
+  .filter((guide) => Boolean(guide.heroId))
   .map((guide) => {
     const hero = guide.heroId
       ? (allHeroes[guide.heroId as keyof typeof allHeroes] as
-          | { name?: string; class?: string; role?: string }
+          | { name?: string }
           | undefined)
       : undefined;
     return {
       ...guide,
       heroName: hero?.name ?? guide.heroId ?? guide.title,
-      heroClass: hero?.class ?? "",
-      heroRole: hero?.role ?? "",
       portrait: guide.heroId ? heroCardImage(guide.heroId, 360) : guide.image ?? "",
     };
   });
@@ -34,34 +41,45 @@ const cards = guides
 
 <Base
   title="Hero Guides | Motto Immortal"
-  description="Deep-dive hero guides for Motto Immortal: kit analysis, skill breakdowns, synergies, counters, gear stats and virtue recommendations."
+  description="Deep-dive hero guides and game mode guides for Motto Immortal"
 >
   <PageHero
     id="guides"
     tag="Guides"
-    headline="Hero Guides"
-    subtitle="Deep-dive guides: kit analysis, skill breakdowns, teams, gear and virtues"
+    headline="Guides"
+    subtitle="Deep-dive hero guides and game mode guides for Motto Immortal"
   />
 
   <div class="page-wrapper">
-    <div class="guides-index-grid">
+    <h2 class="guides-index-section-title">Game Mode Guides</h2>
+    <div class="guides-mode-grid">
+      {modeCards.map((entry) => (
+        <a class="guides-mode-card" href={entry.href}>
+          <div class="guides-mode-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
+          </div>
+          <div class="guides-mode-text">
+            <h3 class="guides-mode-title">{entry.label}</h3>
+            {entry.description && <p class="guides-mode-hook">{pickLang(entry.description, "en")}</p>}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <h2 class="guides-index-section-title">Hero Guides</h2>
+    <div class="guides-mode-grid">
       {cards.map((card) => (
-        <a class="guides-index-card" href={card.href}>
+        <a class="guides-mode-card guides-mode-card--hero" href={card.href}>
           <div
-            class="guides-index-portrait"
+            class="guides-mode-portrait"
             style={`background-image: url('${card.portrait}')`}
             role="img"
             aria-label={card.heroName}
           >
           </div>
-          <div class="guides-index-body">
-            <div class="guides-index-chips">
-              {card.heroClass && <span class="guides-index-chip">{card.heroClass}</span>}
-              {card.heroRole && <span class="guides-index-chip">{card.heroRole}</span>}
-            </div>
-            <h2 class="guides-index-title">{card.title}</h2>
-            <p class="guides-index-hook">{card.hook}</p>
-            <span class="guides-index-cta">Read guide</span>
+          <div class="guides-mode-text">
+            <h3 class="guides-mode-title">{card.title}</h3>
+            <p class="guides-mode-hook">{card.hook}</p>
           </div>
         </a>
       ))}

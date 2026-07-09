@@ -6,11 +6,15 @@ import { navEntries, defaultMaintenanceTooltip, type NavEntry } from "../data/na
 import { getLocaleFromPathname, localizePath, stripLocaleFromPathname } from "../i18n/config";
 import { navLabel, t } from "../i18n/ui";
 
+// Entries reachable from another hub page (e.g. /guides game-mode section) are
+// hidden from the sidebar entirely via `sidebar: false`.
+const sidebarEntries = navEntries.filter(i => i.sidebar !== false);
+
 // Mobile bottom bar: entries flagged `mobile` (max 4) + "More".
 // Falls back to the first 4 nav entries if nothing is flagged.
-const flaggedMobile = navEntries.filter(i => i.mobile).slice(0, 4);
-const mobileItems = flaggedMobile.length > 0 ? flaggedMobile : navEntries.slice(0, 4);
-const mobileOverflowItems = navEntries.filter(i => !mobileItems.includes(i));
+const flaggedMobile = sidebarEntries.filter(i => i.mobile).slice(0, 4);
+const mobileItems = flaggedMobile.length > 0 ? flaggedMobile : sidebarEntries.slice(0, 4);
+const mobileOverflowItems = sidebarEntries.filter(i => !mobileItems.includes(i));
 
 const normalize = (p: string) => (p.replace(/\/+$/, "") || "/");
 const locale = getLocaleFromPathname(Astro.url.pathname);
@@ -22,10 +26,10 @@ const isActive = (href: string) => {
   return target !== "/" && currentPath.startsWith(target + "/");
 };
 
-const primaryItems = navEntries.filter(i => i.group === "primary");
-const contentItems = navEntries.filter(i => i.group === "content");
-const toolsItems   = navEntries.filter(i => i.group === "tools");
-const metaItems    = navEntries.filter(i => i.group === "meta");
+const primaryItems = sidebarEntries.filter(i => i.group === "primary");
+const contentItems = sidebarEntries.filter(i => i.group === "content");
+const toolsItems   = sidebarEntries.filter(i => i.group === "tools");
+const metaItems    = sidebarEntries.filter(i => i.group === "meta");
 
 function getIcon(item: NavEntry) {
   return item.icon;
