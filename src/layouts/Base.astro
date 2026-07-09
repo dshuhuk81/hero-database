@@ -9,13 +9,15 @@ interface Props {
   description?: string;
   image?: string;
   locale?: Locale;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title = "Motto Immortal Database",
   description = "The complete hero database for Motto Immortal. Stats, skills, tier lists, team comps and boss guides for all heroes.",
   image = "/og-default.png",
-  locale = getLocaleFromPathname(Astro.url.pathname)
+  locale = getLocaleFromPathname(Astro.url.pathname),
+  jsonLd
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -38,6 +40,9 @@ const defaultAlternate = alternateLinks.find((entry) => entry.locale === "en");
     <link rel="alternate" hreflang="x-default" href={defaultAlternate.href} />
   )}
   <link rel="preconnect" href="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -53,6 +58,9 @@ const defaultAlternate = alternateLinks.find((entry) => entry.locale === "en");
   <meta name="twitter:image" content={new URL(image, Astro.site)} />
 
   <title>{title}</title>
+  {jsonLd && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  )}
   <slot name="head" />
 </head>
 <body>
@@ -64,7 +72,6 @@ const defaultAlternate = alternateLinks.find((entry) => entry.locale === "en");
 </html>
 
 <style is:global>
-  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
   @import '../styles/tokens.css';
   @import '../styles/reset.css';
   @import '../styles/base.css';

@@ -13,12 +13,20 @@ interface Props {
 
 const { locale = defaultLocale } = Astro.props as Props;
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Motto Immortal Database",
+  url: new URL("/", Astro.site).href,
+};
+
 ---
 
 <Base
   title={t(locale, "home", "metaTitle")}
   description={t(locale, "home", "metaDescription")}
   locale={locale}
+  jsonLd={jsonLd}
 >
   <dialog
     class="language-notice"

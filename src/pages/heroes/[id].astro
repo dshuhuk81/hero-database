@@ -89,6 +89,26 @@ if (!hero) {
   throw new Error(`Hero with id "${routeId}" not found`);
 }
 
+const heroPortraitUrl = `${R2_BASE}/heroes/${routeId}.webp`;
+const heroJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", Astro.site).href },
+      { "@type": "ListItem", position: 2, name: "Heroes", item: new URL("/heroes/", Astro.site).href },
+      { "@type": "ListItem", position: 3, name: hero.name, item: new URL(Astro.url.pathname, Astro.site).href },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    contentUrl: heroPortraitUrl,
+    name: hero.name,
+    representativeOfPage: true,
+  },
+];
+
 const PERCENT_STATS = new Set([
   "dodgeRate", "hitBonus", "critRate", "critRes", "critDmgBonus", "critDmgRed",
   "cooldownHaste", "atkSpdBonus", "pDmgBonus", "pDmgRed", "mDmgBonus", "mDmgRed",
@@ -190,6 +210,8 @@ const dotSections = [
   title={hero ? t(locale, "hero", "metaTitle").replaceAll("{name}", hero.name) : "Hero | Motto Immortal"}
   description={hero ? t(locale, "hero", "metaDescription").replaceAll("{name}", hero.name).replaceAll("{class}", String(hero.class ?? "")).replaceAll("{role}", String(hero.role ?? "")) : undefined}
   locale={locale}
+  image={heroPortraitUrl}
+  jsonLd={heroJsonLd}
 >
 <div
   class="hero-page"
