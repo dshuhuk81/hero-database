@@ -76,9 +76,42 @@ const jsonLd = {
   <main class="main-content home-main">
     <h2 class="sr-only">{t(locale, "home", "exploreHeadline")}</h2>
 
+    <aside id="support" class="support-strip" aria-labelledby="supportStripTitle">
+      <div class="support-strip-copy">
+        <h2 id="supportStripTitle" class="support-strip-title">
+          <svg class="support-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span>{t(locale, "home", "keepFreeHeadline")}</span>
+        </h2>
+        <p>{t(locale, "home", "supportCompactBody")}</p>
+      </div>
+      <div class="support-strip-actions">
+        <a
+          href="https://ko-fi.com/dsfrieren"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="donate-btn donate-btn-kofi support-strip-primary"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+            <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 2.293.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
+          </svg>
+          <span>{t(locale, "home", "supportKofi")}</span>
+        </a>
+        <a
+          href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="support-strip-secondary"
+        >
+          {t(locale, "home", "supportPaypal")}
+        </a>
+      </div>
+    </aside>
+
     <!-- TEASER GRID -->
     <div class="teaser-grid">
-      {teasers.map((teaser, index) => {
+      {teasers.map((teaser) => {
         const isMaintenance = teaser.status?.type === "maintenance";
         const tooltip = teaser.status?.tooltip ?? defaultMaintenanceTooltip;
         const badge = activeBadge(teaser);
@@ -102,7 +135,7 @@ const jsonLd = {
           </>
         );
 
-        const teaserCard = isMaintenance ? (
+        return isMaintenance ? (
           <span
             class="teaser teaser-disabled"
             title={tooltip}
@@ -115,46 +148,6 @@ const jsonLd = {
           <a href={teaser.href} class="teaser">
             {teaserContent}
           </a>
-        );
-
-        return (
-          <>
-            {teaserCard}
-            {index === 5 && (
-              <aside class="support-strip" aria-labelledby="supportStripTitle">
-                <div class="support-strip-copy">
-                  <h2 id="supportStripTitle" class="support-strip-title">
-                    <svg class="support-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                    </svg>
-                    <span>{t(locale, "home", "keepFreeHeadline")}</span>
-                  </h2>
-                  <p>{t(locale, "home", "supportCompactBody")}</p>
-                </div>
-                <div class="support-strip-actions">
-                  <a
-                    href="https://ko-fi.com/dsfrieren"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="donate-btn donate-btn-kofi support-strip-primary"
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
-                      <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 2.293.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
-                    </svg>
-                    <span>{t(locale, "home", "supportKofi")}</span>
-                  </a>
-                  <a
-                    href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="support-strip-secondary"
-                  >
-                    {t(locale, "home", "supportPaypal")}
-                  </a>
-                </div>
-              </aside>
-            )}
-          </>
         );
       })}
     </div>
@@ -607,11 +600,12 @@ const jsonLd = {
 
 /* COMPACT SUPPORT STRIP */
 .support-strip {
-  grid-column: 1 / -1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-5);
+  width: 100%;
+  margin: 0 auto 28px;
   padding: 16px 20px;
   border: 1px solid rgba(250, 204, 21, 0.24);
   border-radius: var(--radius-lg);

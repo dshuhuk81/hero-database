@@ -4478,6 +4478,129 @@
       }
     ]
   },
+  "gaiya": {
+    "id": "gaiya",
+    "name": "Gaiya",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/gaiya.webp",
+    "release": false,
+    "faction": "Starglint",
+    "role": "Hefty",
+    "class": "Tank",
+    "rarity": "Legendary",
+    "description": "",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 825000,
+      "hp": 3366556,
+      "atk": 217575,
+      "armor": 79503,
+      "magicRes": 79503,
+      "dodgeRate": 0,
+      "hitBonus": 4,
+      "critRate": 0,
+      "critRes": 10,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Rebirth of All Things",
+        "description": "Immediately restores HP to all allied units equal to 30% of Gaiya's max HP. For the next 8s, Grace Field's recovery effect is doubled, all allied units take 30% reduced DMG, and Gaiya is immune to control effects for the duration.",
+        "upgrades": {
+          "level2": "Restores HP equal to 40% of Gaiya's max HP.",
+          "level3": "During the effect, all allied units take 40% reduced DMG.",
+          "level4": "Restores HP equal to 50% of Gaiya's max HP."
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Thorn Overgrowth",
+        "description": "Deals 200% ATK DMG to surrounding enemies and reduces hit enemies' ATK by 20% for 5s. For each enemy hit, Gaiya gains a shield that can absorb damage equal to 10% of her max HP for 8s.",
+        "upgrades": {
+          "level2": "Damage dealt increases to 220% of ATK.",
+          "level3": "Reduces hit enemies' ATK by 30%.",
+          "level4": "For each enemy hit, Gaiya gains a shield that can absorb damage equal to 12% of her max HP."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_3",
+        "name": "Grace Field",
+        "description": "Gaiya opens Grace Field at the start of battle. All allied units recover HP equal to 2% of Gaiya's max HP every second, and their healing and shield effects received are increased by 15%.",
+        "upgrades": {
+          "level2": "All allied units recover HP equal to 3% of Gaiya's max HP every second.",
+          "level3": "Healing and shield effects received are increased by 20%.",
+          "level4": "While inside Grace Field, Gaiya recovers HP equal to 5% of her max HP every second."
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "Nature's Armor",
+        "description": "During battle, Gaiya increases her max HP by 10%. Each time she casts her Ultimate, she gains an additional 5% max HP, stacking up to 5 times.",
+        "upgrades": {
+          "level2": "During battle, Gaiya increases her max HP by 15%.",
+          "level3": "Each time she casts her Ultimate, the additional max HP gained increases to 6%.",
+          "level4": "During battle, Gaiya increases her max HP by 20%."
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Life Spirit Ascension",
+      "description": "Overflow healing received by Gaiya is automatically stored. For every overflow amount equal to 50% of her max HP, one \"Flower of Life\" is created. When any allied unit is about to die, one \"Flower of Life\" is consumed to restore HP to that unit equal to the HP stored by the \"Flower of Life\".",
+      "upgrades": {
+        "level2": "For each allied unit protected by Grace Field, Gaiya takes 6% reduced DMG, stacking up to 5 times.",
+        "level3": "For each allied unit protected by Grace Field, Gaiya takes 9% reduced DMG, stacking up to 5 times.",
+        "level4": "Every time 3 \"Flowers of Life\" are created, the next overflow healing equal to 50% of max HP creates one \"Flower of Energy\", restoring 400 Energy to the allied unit with the highest ATK and increasing their ATK by 40% for 6s."
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    },
+    "newHero": false,
+    "activeBug": false,
+    "activeBugNotes": "",
+    "recommendedRelicLevel": null,
+    "f2pInvestment": "",
+    "strengths": [],
+    "weaknesses": [],
+    "detailComps": [
+      {}
+    ],
+    "virtueSets": [
+      {}
+    ],
+    "synergyPartners": [
+      {}
+    ]
+  },
   "geb": {
     "id": "geb",
     "name": "Geb",
