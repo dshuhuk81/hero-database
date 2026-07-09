@@ -1,7 +1,6 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
-import supporters from "../../data/supporters.json";
 import { teaserEntries as teasers, defaultMaintenanceTooltip, activeBadge } from "../../data/nav";
 import { defaultLocale, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
@@ -74,13 +73,12 @@ const jsonLd = {
   </section>
 
   <!-- MAIN CONTENT -->
-  <main class="main-content">
-    <h2 class="section-headline">{t(locale, "home", "exploreHeadline")}</h2>
-    <div class="separator"></div>
+  <main class="main-content home-main">
+    <h2 class="sr-only">{t(locale, "home", "exploreHeadline")}</h2>
 
     <!-- TEASER GRID -->
     <div class="teaser-grid">
-      {teasers.map((teaser) => {
+      {teasers.map((teaser, index) => {
         const isMaintenance = teaser.status?.type === "maintenance";
         const tooltip = teaser.status?.tooltip ?? defaultMaintenanceTooltip;
         const badge = activeBadge(teaser);
@@ -104,7 +102,7 @@ const jsonLd = {
           </>
         );
 
-        return isMaintenance ? (
+        const teaserCard = isMaintenance ? (
           <span
             class="teaser teaser-disabled"
             title={tooltip}
@@ -118,68 +116,48 @@ const jsonLd = {
             {teaserContent}
           </a>
         );
+
+        return (
+          <>
+            {teaserCard}
+            {index === 5 && (
+              <aside class="support-strip" aria-labelledby="supportStripTitle">
+                <div class="support-strip-copy">
+                  <h2 id="supportStripTitle" class="support-strip-title">
+                    <svg class="support-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    <span>{t(locale, "home", "keepFreeHeadline")}</span>
+                  </h2>
+                  <p>{t(locale, "home", "supportCompactBody")}</p>
+                </div>
+                <div class="support-strip-actions">
+                  <a
+                    href="https://ko-fi.com/dsfrieren"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="donate-btn donate-btn-kofi support-strip-primary"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+                      <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 2.293.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
+                    </svg>
+                    <span>{t(locale, "home", "supportKofi")}</span>
+                  </a>
+                  <a
+                    href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="support-strip-secondary"
+                  >
+                    {t(locale, "home", "supportPaypal")}
+                  </a>
+                </div>
+              </aside>
+            )}
+          </>
+        );
       })}
     </div>
-
-    <!-- SUPPORT SECTION -->
-    <section id="support" class="support-section">
-      <div class="support-card">
-        <div class="support-body">
-        <div class="support-text">
-          <h2 class="support-headline">
-            <svg class="support-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            <span>{t(locale, "home", "keepFreeHeadline")}</span>
-          </h2>
-          <p class="support-desc">
-            {t(locale, "home", "supportDescription")}
-          </p>
-          <ul class="support-list">
-            <li>{t(locale, "home", "supportBullet1")}</li>
-            <li>{t(locale, "home", "supportBullet2")}</li>
-            <li>{t(locale, "home", "supportBullet3")}</li>
-          </ul>
-        </div>
-        <div class="support-cta">
-          <a
-            href="https://ko-fi.com/dsfrieren"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="donate-btn donate-btn-kofi"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" width="18" height="18" aria-hidden="true">
-              <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 2.293.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"/>
-            </svg>
-            <span>{t(locale, "home", "supportKofi")}</span>
-          </a>
-          <a
-            href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="donate-btn donate-btn-paypal"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            <span>{t(locale, "home", "supportPaypal")}</span>
-          </a>
-          <p class="support-alt">
-            {t(locale, "home", "supportAlt")}
-          </p>
-        </div>
-      </div>
-      {supporters.length > 0 && (
-        <div class="supporters-row">
-          <span class="supporters-label">{t(locale, "home", "supportersLabel")}</span>
-          <ul class="supporters-pills">
-            {supporters.map((s) => (
-              <li class="supporter-pill" title={s.note || undefined}>{s.name}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </section>
 
   </main>
 
@@ -374,7 +352,7 @@ const jsonLd = {
 .hero {
   position: relative;
   width: 100%;
-  height: 480px;
+  height: clamp(320px, 36vh, 390px);
   background-image: url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg.jpg");
   background-size: cover;
   background-position: center;
@@ -402,7 +380,7 @@ const jsonLd = {
 .hero-headline {
   position: relative;
   z-index: 1;
-  padding: 0 32px 48px;
+  padding: 0 32px 36px;
   margin: 0;
   font-size: 3.5rem;
   font-weight: 700;
@@ -425,6 +403,10 @@ const jsonLd = {
 }
 
 /* MAIN CONTENT */
+.home-main {
+  padding-top: var(--space-6);
+}
+
 .section-headline {
   font-size: 2.5rem;
   font-weight: 600;
@@ -439,8 +421,8 @@ const jsonLd = {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   max-width: 1200px;
   margin: 0 auto;
-  gap: 32px;
-  padding-top: 40px;
+  gap: 28px 32px;
+  padding-top: 0;
 }
 
 @media (min-width: 900px) {
@@ -621,53 +603,89 @@ const jsonLd = {
   }
 }
 
-/* SUPPORT CARD LAYOUT OVERRIDE FOR SUPPORTERS ROW */
-.support-card {
-  flex-direction: column;
-  gap: 0;
-  padding: 0;
-}
-
-.support-body {
+/* COMPACT SUPPORT STRIP */
+.support-strip {
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: 48px;
-  padding: 40px;
-  width: 100%;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: 16px 20px;
+  border: 1px solid rgba(250, 204, 21, 0.24);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(250, 204, 21, 0.07), rgba(168, 85, 247, 0.045)),
+    rgba(255, 255, 255, 0.02);
 }
 
-.support-body .support-text {
-  flex: 1;
+.support-strip-copy {
   min-width: 0;
 }
 
-.support-body .support-cta {
-  flex-shrink: 0;
-  min-width: 200px;
+.support-strip-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 4px;
+  color: var(--accent-gold);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
 }
 
-@media (max-width: 768px) {
-  .support-body {
-    flex-direction: column;
-    gap: 32px;
-    padding: 28px;
-  }
+.support-strip-title .support-heart {
+  width: 18px;
+  height: 18px;
+}
 
-  .support-body .support-cta {
-    width: 100%;
+.support-strip p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.support-strip-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 0 0 auto;
+}
+
+.support-strip .donate-btn {
+  width: auto;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.support-strip .donate-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.support-strip-secondary {
+  color: var(--accent-gold);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.support-strip-secondary:hover {
+  color: var(--text-bright);
+}
+
+@media (max-width: 760px) {
+  .support-strip {
     align-items: flex-start;
+    flex-direction: column;
   }
-}
 
-@media (max-width: 480px) {
-  .support-body {
-    padding: 20px;
+  .support-strip-actions {
+    width: 100%;
+    justify-content: space-between;
   }
-}
-
-/* SUPPORT CARD LAYOUT OVERRIDE */
-.support-card {
-  flex-wrap: wrap;
 }
 
 /* THANK YOU CARD (ported from about.astro) */
@@ -820,17 +838,6 @@ const jsonLd = {
 
 .about-thanks-separator {
   margin: var(--space-4, 16px) 0 var(--space-3, 12px);
-}
-
-.supporters-row--in-card {
-  display: block;
-  border-top: none;
-  padding: 0;
-}
-
-.supporters-row--in-card .supporters-label {
-  display: block;
-  margin-bottom: 10px;
 }
 
 @media (max-width: 640px) {

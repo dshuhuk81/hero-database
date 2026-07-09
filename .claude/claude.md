@@ -3,7 +3,7 @@
 ## Project Overview
 Statistical database and web frontend for the "MOTTO IMMORTAL" mobile game. Tracks all heroes with game stats, skills, synergy relationships, and PvE/PvP ratings. Built with **Astro** (static build, `output: 'static'`) and hosted on **Cloudflare**, plus **Node.js** scripts for data processing.
 
-A separate Express server (`api-server.js`, started via `npm run dev:api`) uses **Supabase** for auth and user-roster storage. It is dev tooling only: the public site never calls it. Its only consumer is the local-only `/status` admin CMS page. The public `/my-roster` page is pure localStorage and shares rosters via URL, no backend.
+A separate Express server (`api-server.js`, started via `npm run dev:api`) uses **Supabase** for auth and user-roster storage. It is dev tooling only: the public site never calls it. Its only consumer is the local-only `/status` admin CMS page. (`/my-roster` was removed - see below.)
 
 ## Tokens
 For creating new content use the design foundation laid out in src/styles/tokens.css. There is also an overview of the system in src/pages/design-system.astro.
@@ -14,7 +14,7 @@ Dont use inline css styles. Add new css styles to the global stylesheet at src/s
 Known debt: older pages (tips.astro especially) still carry inline styles and per-page `<style>` blocks. When touching such a page, migrate the styles you touch into components.css instead of adding more.
 
 ## Game leaked data
-unter data-mine/ there are a ton of ingame infos (md files, xlsx, screenshots, json dumps). maybe we can use something here. an explanation what was done to achieve that is within data-mine/EXTRACTION_PROGRESS.md
+unter data-mine/ there are a ton of ingame infos (md files, xlsx, screenshots, json dumps). maybe we can use something here. See `data-mine/INTEGRATION_NOTES.md` for what was done with it (EXTRACTION_PROGRESS.md no longer exists).
 
 ## Plan
 Do not make any changes until you have 95% confidence in what you need to build. Ask me follow up questions until you reach that confidence.
@@ -73,17 +73,19 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
 - Entries have `group` (primary/content/meta), optional `teaser`, `badge`, `status` (maintenance), `localOnly` (dev-only routes, e.g. /status).
 
 ### Local-only routes
-- `astro.config.mjs` contains a `localOnlyRoutes()` build hook that deletes `LOCAL_ONLY_ROUTES` (currently `/status`) from the production build output and the sitemap. Dev-only tooling pages must be registered there AND flagged `localOnly: true` in nav.ts.
+- `astro.config.mjs` contains a `localOnlyRoutes()` build hook that deletes `LOCAL_ONLY_ROUTES` (currently `/status` and `/guides/divine-throne`) from the production build output and the sitemap. Dev-only tooling pages must be registered there AND flagged `localOnly: true` in nav.ts.
 
 ### Pages
 - `/heroes` - hero list with card grid + sortable table view incl. tier badges (this IS the tier list view)
 - `/heroes/[id]` - hero detail (profile, skills, CN diff, ratings, stats, synergies, investment, virtues)
 - `/hero-stats` - stat comparison table
 - `/cn-preview` - CN vs Global divergence hub
-- `/virtues`, `/totems`, `/bosses`, `/events`, `/delusions-den`, `/tips`, `/summon-calendar` - content/guide pages
-- `/my-roster` - localStorage roster tool with share links
+- `/virtues`, `/totems`, `/bosses`, `/events`, `/delusions-den`, `/tips`, `/summon-calendar`, `/summon-calculator` - content/guide pages
+- `/guides` - hub for deep-dive hero guides; `/guides/nephtys`, `/guides/nut`, `/guides/xuannv` public, `/guides/divine-throne` local-only (dev only, deity upgrade pieces feature)
 - `/status` - dev-only admin dashboard + CMS (talks to api-server.js)
 - `/changelog`, `/about`, `/privacy`, `/design-system`
+- `[locale]/` variants exist for `events`, `index`, `tips`, `totems` (i18n routes)
+- Note: `/my-roster` (localStorage roster tool) has been REMOVED from the site.
 
 ### Critical Systems
 
