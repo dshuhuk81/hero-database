@@ -3843,6 +3843,18 @@
   color: var(--accent-gold);
 }
 
+.guide-virtue-rarity--gold {
+  background: var(--guide-legendary-dim);
+  border: 1px solid var(--rarity-legendary-border);
+  color: var(--accent-gold);
+}
+
+.guide-virtue-rarity--red {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  color: #ef4444;
+}
+
 .guide-virtue-rarity--epic {
   background: var(--accent-purple-dim);
   border: 1px solid var(--rarity-epic-border);
