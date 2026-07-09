@@ -29,17 +29,25 @@ import Base from "../layouts/Base.astro";
           <p>
             The primary purpose of this website is to display publicly available game data from Motto Immortal, including but not limited to hero statistics, skill descriptions, rankings, tier lists, and boss information. This data is sourced from the game itself and does not contain any personal information.
           </p>
+          <h3>2.2 Account Data</h3>
+          <p>
+            This website does not require registration and has no user accounts, login, or password system. We do not collect or store your name, email address, or any other personal identifiers.
+          </p>
+          <h3>2.3 Roster Tool</h3>
+          <p>
+            The "My Roster" feature stores your selections locally in your browser (localStorage). This data never leaves your device unless you generate a share link yourself; it is not transmitted to or stored on our servers.
+          </p>
         </section>
 
         <section>
           <h2>3. How We Use Your Information</h2>
-          <p>We use the information we collect for the following purposes:</p>
+          <p>Aggregate, anonymous analytics data (via Cloudflare, see Section 6) is used for the following purposes:</p>
           <ul>
             <li>To provide and maintain our Service</li>
             <li>To improve and optimize our website</li>
           </ul>
           <p>
-            We will not sell, rent, or share your email address with third parties for marketing purposes. We will not send you promotional emails or newsletters unless you explicitly opt in to such communications.
+            We do not sell, rent, or share any data with third parties for marketing purposes, and we do not send promotional emails or newsletters.
           </p>
         </section>
 
@@ -61,7 +69,7 @@ import Base from "../layouts/Base.astro";
           <h2>6. Third-Party Service Providers</h2>
           <p>We use the following third-party services to operate our website:</p>
           <ul>
-            <li><strong>Cloudflare</strong> -- for website hosting, CDN, and asset delivery. Cloudflare may collect Log Data as described above. Cloudflare's privacy policy applies to data processed through their platform.</li>
+            <li><strong>Cloudflare</strong> - for website hosting, CDN, asset delivery, and privacy-focused web analytics (aggregate page-visit statistics; no cookies, no cross-site tracking, no personal identification). Cloudflare may also collect Log Data as described above. Cloudflare's privacy policy applies to data processed through their platform.</li>
           </ul>
           <p>
             These third-party providers have access to your information only to perform tasks on our behalf and are obligated not to disclose or use it for other purposes.
@@ -71,14 +79,14 @@ import Base from "../layouts/Base.astro";
         <section>
           <h2>7. Data Security</h2>
           <p>
-            We take reasonable measures to protect your personal information. Your email address and account data are stored securely using industry-standard practices provided by our service providers. However, no method of electronic storage or transmission over the internet is 100% secure, and we cannot guarantee absolute security.
+            Since we do not collect or store personal information, there is no personal data on our servers to secure. Log Data collected by Cloudflare is handled under their own security practices. However, no method of electronic storage or transmission over the internet is 100% secure, and we cannot guarantee absolute security.
           </p>
         </section>
 
         <section>
           <h2>8. Data Retention and Deletion</h2>
           <p>
-            We retain your account data (email address and user-generated data) for as long as your account remains active. If you wish to delete your account and all associated data, please contact me using the information provided below. Upon request, we will permanently delete your personal data from our systems within a reasonable timeframe.
+            We do not retain any personal data, since none is collected. Data you create with the "My Roster" tool stays in your browser's local storage and is under your control; clearing your browser data removes it. Log Data retention is governed by Cloudflare's own policies.
           </p>
         </section>
 
@@ -92,7 +100,7 @@ import Base from "../layouts/Base.astro";
         <section>
           <h2>10. Children's Privacy</h2>
           <p>
-            Our Service is not directed at anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. If we become aware that a child under 13 has provided us with personal information, we will take steps to delete such information from our servers. If you are a parent or guardian and believe your child has provided us with personal information, please contact me so we can take appropriate action.
+            Our Service is not directed at anyone under the age of 13. Since we do not collect personal information from any user, this applies equally to children.
           </p>
         </section>
 
@@ -117,139 +125,10 @@ import Base from "../layouts/Base.astro";
           </p>
           <div class="contact-methods">
             <p><strong>Discord:</strong> ds_frieren</p>
-            <p><strong>Email:</strong> <span id="contact-email"></span></p>
           </div>
         </section>
       </main>
 
     </div>
 
-    <style>
-.privacy-page {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .privacy-header {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 64px 24px 32px;
-        text-align: center;
-      }
-
-      .back-link {
-        display: inline-block;
-        margin-bottom: 24px;
-        color: rgba(255, 255, 255, 0.7);
-        text-decoration: none;
-        font-size: 0.95rem;
-        transition: color 0.2s ease;
-      }
-
-      .back-link:hover {
-        color: #facc15;
-      }
-
-      .privacy-header h1 {
-        font-size: 3rem;
-        font-weight: 600;
-        margin: 0;
-      }
-
-      .privacy-content {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 24px;
-        flex: 1;
-      }
-
-      .privacy-content section {
-        margin-bottom: 48px;
-      }
-
-      .privacy-content h2 {
-        font-size: 1.75rem;
-        font-weight: 600;
-        margin: 0 0 16px;
-        color: #fff;
-      }
-
-      .privacy-content p {
-        line-height: 1.7;
-        color: rgba(230, 230, 235, 0.85);
-        margin: 0 0 12px;
-      }
-
-      .privacy-content p:last-child {
-        margin-bottom: 0;
-      }
-
-      .privacy-content h3 {
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin: 24px 0 8px;
-        color: rgba(255, 255, 255, 0.9);
-      }
-
-      .privacy-content ul {
-        margin: 12px 0;
-        padding-left: 24px;
-        color: rgba(230, 230, 235, 0.85);
-        line-height: 1.7;
-      }
-
-      .privacy-content ul li {
-        margin-bottom: 8px;
-      }
-
-      .last-updated {
-        text-align: center;
-        color: rgba(230, 230, 235, 0.5);
-        font-size: 0.9rem;
-        margin-bottom: 48px;
-      }
-
-      .contact-methods {
-        margin-top: 8px;
-        padding: 16px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(168, 85, 247, 0.2);
-        border-radius: 8px;
-      }
-
-      .contact-methods a {
-        color: #facc15;
-        text-decoration: none;
-        transition: opacity 0.2s ease;
-      }
-
-      .contact-methods a:hover {
-        opacity: 0.8;
-      }
-
-      @media (max-width: 768px) {
-        .privacy-header h1 {
-          font-size: 2rem;
-        }
-
-        .privacy-content h2 {
-          font-size: 1.5rem;
-        }
-      }
-    </style>
-    <script>
-      (function() {
-        var u = 'dshuhuk';
-        var d = 'gmail.com';
-        var el = document.getElementById('contact-email');
-        if (el) {
-          var addr = u + '@' + d;
-          var link = document.createElement('a');
-          link.href = 'mailto:' + addr;
-          link.textContent = addr;
-          el.appendChild(link);
-        }
-      })();
-    </script>
 </Base>
