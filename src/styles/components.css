@@ -5308,6 +5308,10 @@
   margin-top: 0;
 }
 
+.event-section-title {
+  margin-bottom: var(--space-6);
+}
+
 .guides-mode-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

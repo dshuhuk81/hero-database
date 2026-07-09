@@ -3,7 +3,6 @@ export const prerender = true;
 
 import Base from "../../layouts/Base.astro";
 import PageHero from "../PageHero.astro";
-import Accordion from "../Accordion.astro";
 import "../../styles/events.css";
 import "../../styles/components.css";
 import { getPageUpdate } from "../../utils/getPageUpdate";
@@ -75,24 +74,14 @@ const campaigns = eventsData.campaigns.map((campaign) => {
   locale={locale}
 />
 
-<div class="event-accordion-nav">
-  <Accordion
-    instanceId="events"
-    items={campaigns.map((campaign) => ({
-      id: campaign.id,
-      label: campaign.displayName,
-      image: getHero(campaign.hero) ? heroCardSrc(getHero(campaign.hero).id, 480) : `${R2_BASE}/bg.jpg`,
-    }))}
-  />
-</div>
-
 <div class="page-wrapper">
   <div class="content-wrapper">
 
     <!-- Campaign slides -->
     <main class="events-main">
-      {campaigns.map((campaign, index) => (
-        <div class={`event-slide ${index === 0 ? "is-active" : ""}`} id={campaign.id} data-event-slide>
+      {campaigns.map((campaign) => (
+        <div class="event-slide is-active" id={campaign.id}>
+          <h2 class="guides-index-section-title event-section-title">{campaign.displayName}</h2>
           <!-- STAGES LIST -->
           <div class="stages-container">
             {campaign.stages.map((stage) => (
@@ -194,41 +183,3 @@ const campaigns = eventsData.campaigns.map((campaign) => {
 
 </Base>
 
-<style>
-  .event-accordion-nav {
-    height: 200px;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  @media (max-width: 768px) {
-    .event-accordion-nav {
-      height: 160px;
-    }
-  }
-</style>
-
-<script>
-  const campaignTabs = Array.from(document.querySelectorAll('[data-accordion-instance="events"] [data-accordion-tab]'));
-  const campaignSlides = Array.from(document.querySelectorAll('[data-event-slide]'));
-  let currentIndex = 0;
-
-  function updateCampaign(index) {
-    if (!campaignSlides.length) return;
-
-    currentIndex = (index + campaignSlides.length) % campaignSlides.length;
-    campaignTabs.forEach((tab, tabIndex) => tab.classList.toggle('is-active', tabIndex === currentIndex));
-    campaignSlides.forEach((slide, slideIndex) => slide.classList.toggle('is-active', slideIndex === currentIndex));
-  }
-
-  if (campaignSlides.length) updateCampaign(0);
-
-  campaignTabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => updateCampaign(index));
-  });
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "ArrowLeft") updateCampaign(currentIndex - 1);
-    if (event.key === "ArrowRight") updateCampaign(currentIndex + 1);
-  });
-</script>
