@@ -1,5 +1,4 @@
 ---
-import { WISHLIST_DATA, FACTION_META } from "./tipsData";
 import TipsTeams from "./TipsTeams.astro";
 import { defaultLocale, type Locale } from "../../i18n/config";
 import { pickLang, type LocalizedString } from "../../i18n/helpers";
@@ -18,7 +17,6 @@ const c = {
   jumpSummons: { en: "Summons", de: "Beschwörungen", es: "Invocaciones", ru: "Призывы" },
   jumpChronos: { en: "Chronos", de: "Chronos", es: "Chronos", ru: "Хронос" },
   jumpMindsea: { en: "Mindsea", de: "Mindsea", es: "Mindsea", ru: "Mindsea" },
-  jumpWishlist: { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List" },
   f2pNote: { en: "This guide is written from a F2P and low-spender perspective. If you are a whale or have heavily starred heroes, you can replace the suggested heroes below with your own star picks.", de: "Dieser Guide ist aus F2P- und Low-Spender-Sicht geschrieben. Wenn du ein Whale bist oder stark aufgewertete Helden hast, kannst du die vorgeschlagenen Helden unten durch deine eigenen Stern-Auswahlen ersetzen.", es: "Esta guía está escrita desde una perspectiva F2P y de bajo gasto. Si eres un whale o tienes héroes muy estrelados, puedes sustituir los héroes sugeridos por tus propias elecciones.", ru: "Этот гайд написан с точки зрения F2P и низких трат. Если ты whale или у тебя сильно прокачанные герои, можешь заменить предложенных героев на своих звёздных кандидатов." },
   firstTitle: { en: "What Should I Do First?", de: "Was sollte ich zuerst tun?", es: "¿Qué debo hacer primero?", ru: "Что делать сначала?" },
   firstIntro: { en: "Focus on pushing Odyssey, Torment Rift and building your first team. Summon to get a good roster (1-2 damage dealers, 2 supports, 1-2 tanks).", de: "Konzentriere dich darauf, Odyssey und Torment Rift voranzutreiben und dein erstes Team aufzubauen. Beschwöre, um ein gutes Roster zu bekommen (1-2 Schadensausteiler, 2 Supports, 1-2 Tanks).", es: "Concéntrate en avanzar Odyssey, Torment Rift y construir tu primer equipo. Invoca para conseguir un buen plantel (1-2 causantes de daño, 2 supports, 1-2 tanques).", ru: "Сосредоточься на продвижении Odyssey, Torment Rift и сборке первой команды. Призывай, чтобы собрать хороший ростер (1-2 дамагера, 2 саппорта, 1-2 танка)." },
@@ -150,12 +148,6 @@ const c = {
   supportLabel: { en: "3-4 Supports", de: "3-4 Supports", es: "3-4 supports", ru: "3-4 саппорта" },
   supportDesc: { en: "Give the carry energy, buffs, and uptime. They exist to enable the carry.", de: "Sie geben dem Carry Energie, Buffs und Uptime. Sie sind dafür da, den Carry zu ermöglichen.", es: "Dan energía, buffs y presencia al carry. Existen para habilitar al carry.", ru: "Они дают керри энергию, бафы и время действия. Их задача - раскрывать керри." },
   coreExample: { en: "Example: if Isis is your carry, you need supports to give her energy, healing and buffs to deal faster damage and use her ultimate more often than the enemy team does.", de: "Beispiel: Wenn Isis dein Carry ist, brauchst du Supports, die ihr Energie, Heilung und Buffs geben, damit sie schneller Schaden macht und ihre Ultimate öfter einsetzen kann als das Gegnerteam.", es: "Ejemplo: si Isis es tu carry, necesitas supports que le den energía, curación y buffs para infligir daño más rápido y usar su ultimate más veces que el equipo enemigo.", ru: "Пример: если Исида твой керри, нужны саппорты, которые дают ей энергию, лечение и бафы, чтобы она наносила урон быстрее и чаще ультила, чем команда противника." },
-  wishListTitle: { en: "Wish List - Your Free Early Picks", de: "Wish List - Deine kostenlosen frühen Picks", es: "Wish List - tus picks gratuitos iniciales", ru: "Wish List - твои бесплатные ранние выборы" },
-  wishListIntro: { en: "The Wish List lets you influence which hero you pull in each faction. Pick wrong and your gold pinions feed the wrong hero. These are the recommended F2P picks per faction:", de: "Mit der Wish List kannst du beeinflussen, welchen Helden du pro Fraktion ziehst. Wählst du falsch, füttern deine goldenen Federn den falschen Helden. Das sind die empfohlenen F2P-Picks pro Fraktion:", es: "La Wish List te permite influir en qué héroe obtienes en cada facción. Si eliges mal, tus plumas doradas alimentan al héroe equivocado. Estas son las opciones F2P recomendadas por facción:", ru: "Wish List позволяет влиять на то, какого героя ты получишь в каждой фракции. Выберешь неправильно - золотые перья уйдут не тому герою. Вот рекомендованные F2P-выборы по фракциям:" },
-  wishListHeaderTitle: { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List" },
-  wishListHeaderSubtitle: { en: "Have a higher chance to get Deities in the Wishlist while summoning Epic Deities.", de: "Du hast eine höhere Chance, Gottheiten aus der Wish List zu bekommen, während du Epic-Gottheiten beschwörst.", es: "Tienes más probabilidad de obtener deidades en la lista mientras invocas deidades Épicas.", ru: "У тебя выше шанс получить божеств из Wish List при призыве Epic-божеств." },
-  wishListHeaderNote: { en: "Does not change Epic Deities overall drop rate.", de: "Ändert nicht die Gesamt-Dropchance für Epic-Gottheiten.", es: "No cambia la tasa global de aparición de deidades Épicas.", ru: "Не меняет общий шанс выпадения Epic-божеств." },
-  wishListFooter: { en: "Fengyi can be swapped with Wenshen later. Also Phoenix with Set.", de: "Fengyi kann später gegen Wenshen getauscht werden. Ebenso Phoenix gegen Set.", es: "Fengyi puede cambiarse más adelante por Wenshen. También Phoenix por Set.", ru: "Фэнъи позже можно заменить на Вэньшэня. А также Феникса на Сета." },
 } satisfies Record<string, LocalizedString>;
 ---
     <!-- SUB-TAB: EARLY GAME -->
@@ -171,7 +163,6 @@ const c = {
         <a href="#section-summons" class="tips-jump-link">{pickLang(c.jumpSummons, locale)}</a>
         <a href="#section-chronos" class="tips-jump-link">{pickLang(c.jumpChronos, locale)}</a>
         <a href="#section-mindsea" class="tips-jump-link">{pickLang(c.jumpMindsea, locale)}</a>
-        <a href="#section-wishlist" class="tips-jump-link">{pickLang(c.jumpWishlist, locale)}</a>
       </nav>
 
       <!-- F2P NOTE -->
@@ -580,69 +571,6 @@ const c = {
           <p>{pickLang(c.coreExample, locale)}</p>
         </div>
       </div>
-
-
-      <div class="eg-content-card" id="wish-list">
-        <h2>{pickLang(c.wishListTitle, locale)}</h2>
-        <p>{pickLang(c.wishListIntro, locale)}</p>
-
-        <section class="wl-module" aria-label={pickLang(c.wishListHeaderTitle, locale)}>
-          <div class="wl-header">
-            <div class="wl-header-ornament" aria-hidden="true">
-              <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <line x1="100" y1="0"  x2="100" y2="20" stroke="#d4af37" stroke-width="1.5" opacity="0.8"/>
-                <line x1="100" y1="0"  x2="85"  y2="22" stroke="#d4af37" stroke-width="1"   opacity="0.6"/>
-                <line x1="100" y1="0"  x2="72"  y2="28" stroke="#d4af37" stroke-width="0.8" opacity="0.45"/>
-                <line x1="100" y1="0"  x2="115" y2="22" stroke="#d4af37" stroke-width="1"   opacity="0.6"/>
-                <line x1="100" y1="0"  x2="128" y2="28" stroke="#d4af37" stroke-width="0.8" opacity="0.45"/>
-                <line x1="100" y1="0"  x2="60"  y2="36" stroke="#d4af37" stroke-width="0.6" opacity="0.3"/>
-                <line x1="100" y1="0"  x2="140" y2="36" stroke="#d4af37" stroke-width="0.6" opacity="0.3"/>
-                <line x1="100" y1="0"  x2="42"  y2="45" stroke="#d4af37" stroke-width="0.5" opacity="0.2"/>
-                <line x1="100" y1="0"  x2="158" y2="45" stroke="#d4af37" stroke-width="0.5" opacity="0.2"/>
-                <path d="M68 42 Q100 52 132 42" stroke="#d4af37" stroke-width="1" fill="none" opacity="0.5"/>
-                <polygon points="100,20 107,30 100,40 93,30" fill="#d4af37" opacity="0.9"/>
-                <polygon points="100,20 107,30 100,40 93,30" fill="none" stroke="#fde68a" stroke-width="0.5"/>
-              </svg>
-            </div>
-            <h3 class="wl-title">{pickLang(c.wishListHeaderTitle, locale)}</h3>
-            <p class="wl-subtitle">
-              {pickLang(c.wishListHeaderSubtitle, locale)}<br/>
-              <span class="wl-subtitle-note">({pickLang(c.wishListHeaderNote, locale)})</span>
-            </p>
-          </div>
-
-          <div class="wl-body">
-            {Object.entries(WISHLIST_DATA).map(([faction, heroes]) => {
-              const meta = FACTION_META[faction];
-              return (
-                <div class="wl-faction" style={`--faction-color:${meta.color};--faction-glow:${meta.glow};--faction-dim:${meta.dim};`}>
-                  <div class="wl-divider" aria-hidden="true">
-                    <span class="wl-divider-line"></span>
-                    <div class="wl-faction-hex">
-                      <img src={meta.icon} alt={faction} class="wl-faction-icon" />
-                    </div>
-                    <span class="wl-divider-line"></span>
-                  </div>
-                  <div class="wl-card-row">
-                    {heroes.map((hero) => (
-                      <a class="wl-card" href={`/heroes/${hero.id}`} aria-label={hero.id}>
-                        <div class="wl-card-portrait" style={`background-image:url('${hero.image}');`}></div>
-                        <div class="wl-card-holo" aria-hidden="true"></div>
-                        <div class="wl-card-vignette" aria-hidden="true"></div>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div class="wl-footer">
-            <small>{pickLang(c.wishListFooter, locale)}</small>
-          </div>
-        </section>
-      </div>
-
 
       <TipsTeams locale={locale} />
     </main>
