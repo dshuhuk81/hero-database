@@ -4,7 +4,7 @@ import Base from "../../layouts/Base.astro";
 import PageHero from "../../components/PageHero.astro";
 import allHeroes from "../../data/all_heroes_db.json";
 import { guides } from "../../data/guides";
-import { navEntries } from "../../data/nav";
+import { activeBadge, navEntries } from "../../data/nav";
 import { pickLang } from "../../i18n/helpers";
 import "../../styles/components.css";
 
@@ -13,6 +13,7 @@ const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
   .filter((entry) => import.meta.env.DEV || !entry.localOnly);
+const guidesBadge = activeBadge(navEntries.find((entry) => entry.href === "/guides")!);
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
@@ -68,7 +69,7 @@ const cards = guides
 
     <h2 class="guides-index-section-title">Hero Guides</h2>
     <div class="guides-mode-grid">
-      {cards.map((card) => (
+      {cards.map((card, index) => (
         <a class="guides-mode-card guides-mode-card--hero" href={card.href}>
           <div
             class="guides-mode-portrait"
@@ -81,6 +82,14 @@ const cards = guides
             <h3 class="guides-mode-title">{card.title}</h3>
             <p class="guides-mode-hook">{card.hook}</p>
           </div>
+          {index === 0 && guidesBadge && (
+            <span
+              class="guides-mode-badge"
+              style={guidesBadge.color ? `background-color: ${guidesBadge.color};` : undefined}
+            >
+              {pickLang(guidesBadge.text, "en")}
+            </span>
+          )}
         </a>
       ))}
     </div>
