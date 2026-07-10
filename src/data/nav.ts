@@ -68,7 +68,9 @@ const allNavEntries: NavEntry[] = [
     label: "CN vs Global",
     href: "/cn-preview",
     group: "primary",
-    teaser: true,
+    teaser: false,
+    sidebar: false,
+    localOnly: true,
     description: {
       en: "Compare Global hero skills against the Chinese base version",
       de: "Vergleiche die globalen Heldenfähigkeiten mit der chinesischen Basisversion",
