@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import PageHero from "../../components/PageHero.astro";
+import divineThroneData from "../../data/divine-throne.json";
 
 const FEATURE_ASSET_BASE = "/features/divine-throne";
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
@@ -17,34 +18,6 @@ const overview = [
   { label: "Where", value: "Deity screen, beside the Artifact slot" },
   { label: "Spend", value: "Ether items to upgrade individual heroes" },
   { label: "Payoff", value: "Stats, exclusive Divine Throne skills, and Divine Authority" },
-];
-
-const throneLoop = [
-  {
-    step: "01",
-    name: "Unlock the hero",
-    text: "Clear Journey 25-3, then raise an eligible hero to the required rank.",
-  },
-  {
-    step: "02",
-    name: "Spend Ether",
-    text: "Use the required Ether item to attempt the next Divine Throne upgrade.",
-  },
-  {
-    step: "03",
-    name: "Roll the upgrade",
-    text: "Success completes the next upgrade. Failure can drop the Divine Throne by one level unless protected.",
-  },
-  {
-    step: "04",
-    name: "Finish a stage",
-    text: "Complete the current stage to move into the next set of requirements.",
-  },
-  {
-    step: "05",
-    name: "Unlock power",
-    text: "Milestone nodes add core stats, exclusive skill effects, and more Divine Authority.",
-  },
 ];
 
 const resourceCards = [
@@ -68,30 +41,54 @@ const resourceCards = [
   },
 ];
 
-const gainCards = [
-  {
-    label: "Stats",
-    title: "Core combat stats",
-    text: "Each upgrade is tied to one hero and adds direct attributes to that hero.",
-  },
-  {
-    label: "Exclusive Skills",
-    title: "Kit-level upgrades",
-    text: "Specific Divine Throne levels unlock exclusive skill effects, often adding damage pressure, survivability, or stronger execution windows.",
-  },
-  {
-    label: "Divine Authority",
-    title: "New confrontation stat",
-    text: "A new all-mode stat that rises with Divine Throne level and affects both damage and survivability.",
-  },
-];
+const resourceIcons = {
+  "Immaculate Ether": "immaculate-ether.png",
+  "Pure Ether": "pure-ether.png",
+  "Steadfast Ether": "steadfast-ether.png",
+} as const;
 
-const priorityRules = [
-  "Start with heroes you field everywhere. Divine Authority applies in all modes, so your PvP carry, PvE carry, or main tank gets more value than a niche bench pick.",
-  "Do not spread early resources too thin. Finishing meaningful milestones beats leaving many heroes barely upgraded.",
-  "Use Steadfast Ether when a downgrade would hurt. Its job is protection only; save it for levels where losing progress matters.",
-  "Check the hero's exclusive skill before committing. Some thrones are raw stats, but the biggest jumps come from milestone effects that change how a hero performs.",
-];
+const upgradeRows = [
+  [1, "Immaculate Ether", 5, 100],
+  [2, "Immaculate Ether", 5, 100],
+  [3, "Immaculate Ether", 10, 100],
+  [4, "Immaculate Ether", 10, 100],
+  [5, "Immaculate Ether", 15, 100],
+  [6, "Immaculate Ether", 15, 100],
+  [7, "Immaculate Ether", 20, 100],
+  [8, "Immaculate Ether", 20, 100],
+  [9, "Immaculate Ether", 25, 100],
+  [10, "Immaculate Ether", 25, 100],
+  [11, "Immaculate Ether", 30, 100],
+  [12, "Immaculate Ether", 30, 100],
+  [13, "Immaculate Ether", 35, 100],
+  [14, "Immaculate Ether", 35, 100],
+  [15, "Immaculate Ether", 40, 100],
+  [16, "Immaculate Ether", 40, 100],
+  [17, "Immaculate Ether", 45, 100],
+  [18, "Immaculate Ether", 45, 100],
+  [19, "Immaculate Ether", 50, 100],
+  [20, "Immaculate Ether", 50, 100],
+  [21, "Pure Ether", 5, 90],
+  [22, "Pure Ether", 5, 90],
+  [23, "Pure Ether", 10, 90],
+  [24, "Pure Ether", 10, 90],
+  [25, "Pure Ether", 15, 80],
+  [26, "Pure Ether", 15, 80],
+  [27, "Pure Ether", 20, 80],
+  [28, "Pure Ether", 20, 80],
+  [29, "Pure Ether", 25, 70],
+  [30, "Pure Ether", 25, 70],
+  [31, "Pure Ether", 30, 70],
+  [32, "Pure Ether", 35, 70],
+  [33, "Pure Ether", 40, 60],
+  [34, "Pure Ether", 45, 60],
+  [35, "Pure Ether", 50, 50],
+  [36, "Pure Ether", 60, 50],
+  [37, "Pure Ether", 70, 40],
+  [38, "Pure Ether", 80, 30],
+  [39, "Pure Ether", 90, 20],
+  [40, "Pure Ether", 100, 10],
+] as const;
 
 const firstWaveHeroes = [
   { id: "fengyi", name: "Fengyi" },
@@ -130,7 +127,10 @@ const firstWaveHeroes = [
   { id: "iris", name: "Iris" },
   { id: "amunra", name: "Amunra" },
   { id: "ullr", name: "Ullr" },
-];
+].map((hero) => ({
+  ...hero,
+  milestones: divineThroneData.heroes.find((entry) => entry.heroId === hero.id)?.milestones ?? [],
+}));
 ---
 
 <Base
@@ -171,25 +171,6 @@ const firstWaveHeroes = [
     </section>
 
     <section class="guide-section">
-      <h2 class="guide-section-title">How It Works</h2>
-      <div class="guide-card">
-        <h3 class="guide-card-heading">Unlock, upgrade, repeat</h3>
-        <p class="guide-card-subheading">
-          Divine Throne unlocks after Journey 25-3. Each hero still needs their own required rank, then upgrades are handled from the Deity screen beside the Artifact area.
-        </p>
-        <div class="divine-loop-grid">
-          {throneLoop.map((item) => (
-            <div class="divine-loop-step">
-              <div class="divine-loop-step-index">{item.step}</div>
-              <h4>{item.name}</h4>
-              <p>{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="guide-section">
       <h2 class="guide-section-title">Resources</h2>
       <div class="guide-card guide-board-card">
         <h3 class="guide-card-heading">Ether is the bottleneck</h3>
@@ -213,32 +194,44 @@ const firstWaveHeroes = [
     </section>
 
     <section class="guide-section">
-      <h2 class="guide-section-title">Power and Priority</h2>
-      <div class="guide-card divine-gains-card">
-        <h3 class="guide-card-heading">What you get for the Ether</h3>
+      <h2 class="guide-section-title">Upgrade Resources: Levels 1–40</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Ether required for each level</h3>
         <p class="guide-card-subheading">
-          Divine Throne is valuable because it combines permanent stats, hero-specific skill effects, and a new all-mode confrontation stat.
+          The amount shown is the cost of one upgrade attempt. Failed attempts may require additional Ether.
         </p>
-        <div class="divine-gain-grid">
-          {gainCards.map((item) => (
-            <div class="divine-gain-card">
-              <div class="guide-board-lane-label">{item.label}</div>
-              <h4>{item.title}</h4>
-              <p>{item.text}</p>
-            </div>
-          ))}
+        <div class="divine-upgrade-summary">
+          <div><strong>Levels 1–20</strong><span>550 Immaculate Ether</span></div>
+          <div><strong>Levels 21–40</strong><span>750 Pure Ether</span></div>
         </div>
-        <div class="divine-authority-panel">
-          <h4>Divine Authority</h4>
-          <p>
-            This stat works across modes and affects both damage and survival. That makes high Divine Throne investment most useful on heroes you already use often.
-          </p>
-        </div>
-        <div class="divine-priority-list">
-          {priorityRules.map((rule, index) => (
-            <div class="divine-priority-item">
-              <span>{index + 1}</span>
-              <p>{rule}</p>
+        <div class="divine-upgrade-tables">
+          {[upgradeRows.slice(0, 20), upgradeRows.slice(20)].map((rows, tableIndex) => (
+            <div class="divine-upgrade-table-wrap">
+              <table class="divine-upgrade-table">
+                <thead>
+                  <tr>
+                    <th>Level {tableIndex === 0 ? "1–20" : "21–40"}</th>
+                    <th>Resource</th><th>Amount</th><th>Chance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map(([level, resource, amount, chance]) => (
+                    <tr>
+                      <td>{level}</td>
+                      <td>
+                        <img
+                          class="divine-upgrade-resource-icon"
+                          src={featureAsset(resourceIcons[resource])}
+                          alt={resource}
+                          title={resource}
+                          loading="lazy"
+                        />
+                      </td>
+                      <td>{amount}</td><td>{chance}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           ))}
         </div>
@@ -254,15 +247,25 @@ const firstWaveHeroes = [
         </p>
         <div class="divine-roster-grid">
           {firstWaveHeroes.map((hero) => (
-            <a class="divine-roster-card" href={`/heroes/${hero.id}`}>
-              <img
-                src={heroThumb(hero.id)}
-                alt={`${hero.name} portrait`}
-                loading="lazy"
-                onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
-              />
-              <span>{hero.name}</span>
-            </a>
+            <article class="divine-roster-card">
+              <a class="divine-roster-hero" href={`/heroes/${hero.id}`}>
+                <img
+                  src={heroThumb(hero.id)}
+                  alt={`${hero.name} portrait`}
+                  loading="lazy"
+                  onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
+                />
+                <span>{hero.name}</span>
+              </a>
+              <div class="divine-roster-milestones" aria-label={`${hero.name} Divine Throne skills`}>
+                {hero.milestones.map((milestone) => (
+                  <div class="upgrade-row">
+                    <span class="upgrade-lv">Lv {milestone.level}</span>
+                    <span class="upgrade-text">{milestone.text.en}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
           ))}
         </div>
       </div>
@@ -271,3 +274,146 @@ const firstWaveHeroes = [
 
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
 </Base>
+
+<style>
+  .divine-upgrade-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+
+  .divine-upgrade-summary div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-md);
+    background: var(--bg-raised);
+  }
+
+  .divine-upgrade-summary strong { color: var(--text-bright); }
+  .divine-upgrade-summary span { color: var(--accent-gold); }
+  .divine-upgrade-tables {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .divine-upgrade-table-wrap { min-width: 0; overflow-x: auto; }
+
+  .divine-upgrade-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    font-size: var(--text-xs);
+  }
+
+  .divine-upgrade-table th,
+  .divine-upgrade-table td {
+    padding: var(--space-2) var(--space-1);
+    border-bottom: 1px solid var(--border-faint);
+    text-align: left;
+  }
+
+  .divine-upgrade-table th {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .divine-upgrade-table td { color: var(--text-secondary); }
+  .divine-upgrade-table td:first-child,
+  .divine-upgrade-table td:nth-child(3),
+  .divine-upgrade-table td:last-child { font-weight: var(--weight-bold); }
+  .divine-upgrade-resource-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent-purple) 30%, transparent));
+  }
+
+  .divine-roster-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .divine-roster-card {
+    min-height: 0;
+    align-items: stretch;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    text-align: left;
+    background:
+      linear-gradient(180deg, rgba(255, 208, 74, 0.06), rgba(255, 208, 74, 0) 36%),
+      var(--bg-raised);
+  }
+
+  .divine-roster-hero {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-bright);
+    text-decoration: none;
+  }
+
+  .divine-roster-hero:hover span { color: var(--accent-gold); }
+
+  .divine-roster-hero img {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    object-position: center top;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  }
+
+  .divine-roster-hero span {
+    font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.2rem);
+    font-weight: var(--weight-bold);
+    line-height: 1.2;
+    transition: color var(--duration-fast);
+  }
+
+  .divine-roster-milestones {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .divine-roster-milestones {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    gap: 0.3rem;
+  }
+
+  .divine-roster-milestones .upgrade-lv {
+    font-size: 0.64rem;
+    padding: 0.1rem 0.35rem;
+  }
+
+  .divine-roster-milestones .upgrade-text {
+    font-size: 0.68rem;
+    font-weight: var(--weight-normal);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 560px) {
+    .divine-upgrade-summary { grid-template-columns: 1fr; }
+    .divine-upgrade-tables { grid-template-columns: 1fr; }
+    .divine-upgrade-table th,
+    .divine-upgrade-table td { padding: var(--space-2) var(--space-3); }
+    .divine-roster-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (min-width: 1180px) {
+    .divine-roster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+</style>

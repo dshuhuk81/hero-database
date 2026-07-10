@@ -29,6 +29,21 @@
   }
 }
 
+/* Homepage intro paragraph, top of main-content above the support strip */
+.hero-intro {
+  margin: 0 0 var(--space-12);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .hero-intro {
+    font-size: 0.95rem;
+    margin-bottom: var(--space-8);
+  }
+}
+
 /* Page header + title pattern */
 .page-header {
   margin-bottom: var(--space-8);

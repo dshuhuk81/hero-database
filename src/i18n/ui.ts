@@ -142,6 +142,13 @@ const translations: TranslationTree = {
       zh: "Motto Immortal 完整数据库：英雄属性、技能、强度排行、阵容搭配、Boss 攻略等，收录全部 89 位英雄。",
     },
     heroHeadline: { en: "Motto Immortal", de: "Motto Immortal", es: "Motto Immortal", ru: "Motto Immortal", zh: "Motto Immortal" },
+    introText: {
+      en: "Motto Immortal is a hero-collector RPG with idle mechanics - build a team from heroes with factions, skills, and synergies, then push through PvE and PvP content. This database brings together every hero's stats, tier ratings, and synergy links in one place. Use the tier list and boss DPS guides to sharpen your roster decisions.",
+      de: "Motto Immortal ist ein Hero-Collector-RPG mit Idle-Elementen: Du baust ein Team aus Helden mit Fraktionen, Fähigkeiten und Synergien auf und kämpfst dich durch PvE- und PvP-Content. Diese Datenbank sammelt alle Helden-Werte, Tier-Ratings und Synergie-Beziehungen an einem Ort. Nutze die Tierlist und Boss-DPS-Guides, um deine Roster-Entscheidungen zu optimieren.",
+      es: "Motto Immortal es un RPG de coleccion de heroes con mecanicas idle: forma un equipo de heroes con facciones, habilidades y sinergias, y avanza a traves del contenido PvE y PvP. Esta base de datos reune las estadisticas, clasificaciones de nivel y vinculos de sinergia de cada heroe en un solo lugar. Usa la lista de niveles y las guias de daño a jefes para mejorar las decisiones de tu equipo.",
+      ru: "Motto Immortal - это RPG-коллекционер героев с элементами idle: собирайте команду из героев с фракциями, способностями и синергиями и проходите PvE- и PvP-контент. Эта база данных объединяет характеристики, тир-рейтинги и синергические связи всех героев в одном месте. Используйте тир-лист и гайды по урону по боссам, чтобы улучшить решения по составу команды.",
+      zh: "Motto Immortal 是一款带放置元素的英雄收集RPG：组建拥有阵营、技能与羁绊的英雄队伍，挑战PvE与PvP内容。本数据库将每位英雄的属性、强度评级与羁绊关系汇集一处。借助强度榜与Boss输出攻略，优化你的阵容决策。",
+    },
     exploreHeadline: { en: "Explore the Database", de: "Datenbank erkunden", es: "Explora la base de datos", ru: "Изучите базу данных", zh: "浏览数据库" },
     keepFreeHeadline: { en: "Keep this free", de: "Diese Seite kostenlos halten", es: "Mantener esto gratis", ru: "Сохранить это бесплатным", zh: "让网站保持免费" },
     supportCompactBody: {
