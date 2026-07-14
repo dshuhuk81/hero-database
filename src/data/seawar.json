@@ -1,0 +1,4328 @@
+{
+  "meta": {
+    "source": "live_extractions/20260713_104826/unpacked/region_02/client/config/seawar",
+    "captured": "2026-07-13",
+    "generatedBy": "scripts/import-seawar.mjs",
+    "note": "Values copied verbatim from the game client config. Units for miningEfficiency, staminaRecovery and deathProtectionPeriod are not exposed by the client and are shown as raw values."
+  },
+  "seasons": [
+    {
+      "id": 201160001,
+      "name": "seawar",
+      "version": 1,
+      "start": "2026-05-01 00:00:00",
+      "end": "2026-05-12 23:59:59"
+    },
+    {
+      "id": 201160002,
+      "name": "seawar_2",
+      "version": 2,
+      "start": "2026-07-08 00:00:00",
+      "end": "2026-07-19 23:59:59"
+    }
+  ],
+  "constants": {
+    "unprotectionLevel": 5,
+    "deathProtectionPeriod": 240,
+    "shieldDuration": 3600,
+    "defenderAdvantage": 0.2,
+    "attacksPerBattle": 3,
+    "continuousAttackStaminaRequirement": 10,
+    "refreshEnemyNum": 9,
+    "dailyFreeRefreshCount": 2,
+    "refreshPurchaseLimitPerDay": 10,
+    "radarCost": {
+      "resource": "rareOre",
+      "num": 50
+    },
+    "oreToHpExchange": 20,
+    "rareOrePerStamina": 50,
+    "rareOreToOreRate": 0.1,
+    "battleRecordLimit": 30,
+    "attackedRecordLimit": 20,
+    "allianceBattleRecordLimit": 150,
+    "matchmaking": {
+      "sameAllianceMembers": false,
+      "includeDefeatedPlayers": true,
+      "defeatedPlayerPercent": 10,
+      "higherCombatPercent": 20,
+      "lowerCombatPercent": 30
+    },
+    "talentGroupCount": 14
+  },
+  "shipLevels": [
+    {
+      "level": 1,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 10
+      },
+      "hp": 50,
+      "armorPiercing": 5,
+      "explosion": 5,
+      "hardness": 0,
+      "thickness": 0,
+      "hpRecovery": 5,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 1800,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 0
+    },
+    {
+      "level": 2,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 50
+      },
+      "hp": 100,
+      "armorPiercing": 10,
+      "explosion": 10,
+      "hardness": 5,
+      "thickness": 5,
+      "hpRecovery": 10,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 2400,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 10
+    },
+    {
+      "level": 3,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 200
+      },
+      "hp": 200,
+      "armorPiercing": 20,
+      "explosion": 20,
+      "hardness": 10,
+      "thickness": 10,
+      "hpRecovery": 20,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 3200,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 60
+    },
+    {
+      "level": 4,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 600
+      },
+      "hp": 400,
+      "armorPiercing": 40,
+      "explosion": 40,
+      "hardness": 20,
+      "thickness": 20,
+      "hpRecovery": 40,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 4200,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 260
+    },
+    {
+      "level": 5,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 1250
+      },
+      "hp": 600,
+      "armorPiercing": 60,
+      "explosion": 60,
+      "hardness": 30,
+      "thickness": 30,
+      "hpRecovery": 60,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 5400,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 860
+    },
+    {
+      "level": 6,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 2500
+      },
+      "hp": 800,
+      "armorPiercing": 80,
+      "explosion": 80,
+      "hardness": 40,
+      "thickness": 40,
+      "hpRecovery": 80,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 6800,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 2110
+    },
+    {
+      "level": 7,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 5000
+      },
+      "hp": 1000,
+      "armorPiercing": 100,
+      "explosion": 100,
+      "hardness": 50,
+      "thickness": 50,
+      "hpRecovery": 100,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 8400,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 4610
+    },
+    {
+      "level": 8,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 10000
+      },
+      "hp": 1200,
+      "armorPiercing": 120,
+      "explosion": 120,
+      "hardness": 60,
+      "thickness": 60,
+      "hpRecovery": 120,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 10200,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 9610
+    },
+    {
+      "level": 9,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 20000
+      },
+      "hp": 1460,
+      "armorPiercing": 146,
+      "explosion": 146,
+      "hardness": 73,
+      "thickness": 73,
+      "hpRecovery": 146,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 12200,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 19610
+    },
+    {
+      "level": 10,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 50000
+      },
+      "hp": 1760,
+      "armorPiercing": 176,
+      "explosion": 176,
+      "hardness": 88,
+      "thickness": 88,
+      "hpRecovery": 176,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 14400,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 39610
+    },
+    {
+      "level": 11,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 100000
+      },
+      "hp": 2100,
+      "armorPiercing": 210,
+      "explosion": 210,
+      "hardness": 105,
+      "thickness": 105,
+      "hpRecovery": 210,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 16800,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 89610
+    },
+    {
+      "level": 12,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 200000
+      },
+      "hp": 2500,
+      "armorPiercing": 250,
+      "explosion": 250,
+      "hardness": 125,
+      "thickness": 125,
+      "hpRecovery": 250,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 19400,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 189610
+    },
+    {
+      "level": 13,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 500000
+      },
+      "hp": 3000,
+      "armorPiercing": 300,
+      "explosion": 300,
+      "hardness": 150,
+      "thickness": 150,
+      "hpRecovery": 300,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 22200,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 389610
+    },
+    {
+      "level": 14,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 1000000
+      },
+      "hp": 3600,
+      "armorPiercing": 360,
+      "explosion": 360,
+      "hardness": 180,
+      "thickness": 180,
+      "hpRecovery": 360,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 25200,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 889610
+    },
+    {
+      "level": 15,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 2000000
+      },
+      "hp": 4320,
+      "armorPiercing": 432,
+      "explosion": 432,
+      "hardness": 216,
+      "thickness": 216,
+      "hpRecovery": 432,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 28400,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 1889610
+    },
+    {
+      "level": 16,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 5000000
+      },
+      "hp": 5180,
+      "armorPiercing": 518,
+      "explosion": 518,
+      "hardness": 259,
+      "thickness": 259,
+      "hpRecovery": 518,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 31800,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 3889610
+    },
+    {
+      "level": 17,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 10000000
+      },
+      "hp": 6200,
+      "armorPiercing": 620,
+      "explosion": 620,
+      "hardness": 310,
+      "thickness": 310,
+      "hpRecovery": 620,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 35400,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 8889610
+    },
+    {
+      "level": 18,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 20000000
+      },
+      "hp": 7440,
+      "armorPiercing": 744,
+      "explosion": 744,
+      "hardness": 372,
+      "thickness": 372,
+      "hpRecovery": 744,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 40000,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 18889610
+    },
+    {
+      "level": 19,
+      "upgradeCost": {
+        "resource": "ore",
+        "num": 40000000
+      },
+      "hp": 8800,
+      "armorPiercing": 880,
+      "explosion": 880,
+      "hardness": 440,
+      "thickness": 440,
+      "hpRecovery": 880,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 44500,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 38889610
+    },
+    {
+      "level": 20,
+      "upgradeCost": null,
+      "hp": 10000,
+      "armorPiercing": 1000,
+      "explosion": 1000,
+      "hardness": 500,
+      "thickness": 500,
+      "hpRecovery": 1000,
+      "cannon": 1,
+      "shield": 0,
+      "miningEfficiency": 50000,
+      "miningCapacity": 10000,
+      "plunderEfficiency": 20,
+      "stamina": 3,
+      "staminaRecovery": 10,
+      "cumulativeOre": 78889610
+    }
+  ],
+  "talents": [
+    {
+      "group": 1,
+      "attr": 1,
+      "attrName": "Hp",
+      "statKey": "hp",
+      "category": "Survival",
+      "icon": "/seawar/icons/maxhp.webp",
+      "maxLevel": 50,
+      "costResource": "ore",
+      "totalCost": 65363460,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 5
+          },
+          "value": 60
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 10
+          },
+          "value": 120
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 20
+          },
+          "value": 180
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 50
+          },
+          "value": 220
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 260
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 150
+          },
+          "value": 300
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 200
+          },
+          "value": 340
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 250
+          },
+          "value": 380
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 325
+          },
+          "value": 400
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 440
+        },
+        {
+          "level": 11,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 550
+          },
+          "value": 480
+        },
+        {
+          "level": 12,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 715
+          },
+          "value": 520
+        },
+        {
+          "level": 13,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 930
+          },
+          "value": 580
+        },
+        {
+          "level": 14,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1200
+          },
+          "value": 640
+        },
+        {
+          "level": 15,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 700
+        },
+        {
+          "level": 16,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2030
+          },
+          "value": 780
+        },
+        {
+          "level": 17,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2640
+          },
+          "value": 860
+        },
+        {
+          "level": 18,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 3430
+          },
+          "value": 940
+        },
+        {
+          "level": 19,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 4460
+          },
+          "value": 1040
+        },
+        {
+          "level": 20,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 1140
+        },
+        {
+          "level": 21,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 7540
+          },
+          "value": 1260
+        },
+        {
+          "level": 22,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 9800
+          },
+          "value": 1380
+        },
+        {
+          "level": 23,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 12740
+          },
+          "value": 1520
+        },
+        {
+          "level": 24,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 16560
+          },
+          "value": 1680
+        },
+        {
+          "level": 25,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 1840
+        },
+        {
+          "level": 26,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 28000
+          },
+          "value": 2020
+        },
+        {
+          "level": 27,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 36400
+          },
+          "value": 2220
+        },
+        {
+          "level": 28,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 47320
+          },
+          "value": 2440
+        },
+        {
+          "level": 29,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 61500
+          },
+          "value": 2680
+        },
+        {
+          "level": 30,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 2940
+        },
+        {
+          "level": 31,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 104000
+          },
+          "value": 3240
+        },
+        {
+          "level": 32,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 135000
+          },
+          "value": 3560
+        },
+        {
+          "level": 33,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 175500
+          },
+          "value": 3920
+        },
+        {
+          "level": 34,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 228000
+          },
+          "value": 4300
+        },
+        {
+          "level": 35,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 4740
+        },
+        {
+          "level": 36,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 385320
+          },
+          "value": 5200
+        },
+        {
+          "level": 37,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 500000
+          },
+          "value": 5720
+        },
+        {
+          "level": 38,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 650000
+          },
+          "value": 6300
+        },
+        {
+          "level": 39,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 845000
+          },
+          "value": 7000
+        },
+        {
+          "level": 40,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 7700
+        },
+        {
+          "level": 41,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1430000
+          },
+          "value": 8480
+        },
+        {
+          "level": 42,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1860000
+          },
+          "value": 9320
+        },
+        {
+          "level": 43,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 2418000
+          },
+          "value": 10240
+        },
+        {
+          "level": 44,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 3140000
+          },
+          "value": 11260
+        },
+        {
+          "level": 45,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 12380
+        },
+        {
+          "level": 46,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 5300000
+          },
+          "value": 13620
+        },
+        {
+          "level": 47,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 6900000
+          },
+          "value": 15000
+        },
+        {
+          "level": 48,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 8970000
+          },
+          "value": 16500
+        },
+        {
+          "level": 49,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 11500000
+          },
+          "value": 18160
+        },
+        {
+          "level": 50,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 20000
+        }
+      ]
+    },
+    {
+      "group": 2,
+      "attr": 2,
+      "attrName": "ArmorPiercing",
+      "statKey": "atk1",
+      "category": "Combat",
+      "icon": "/seawar/icons/armorpenetration.webp",
+      "maxLevel": 50,
+      "costResource": "ore",
+      "totalCost": 65363460,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 5
+          },
+          "value": 6
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 10
+          },
+          "value": 12
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 20
+          },
+          "value": 18
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 50
+          },
+          "value": 22
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 26
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 150
+          },
+          "value": 30
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 200
+          },
+          "value": 34
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 250
+          },
+          "value": 38
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 325
+          },
+          "value": 40
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 44
+        },
+        {
+          "level": 11,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 550
+          },
+          "value": 48
+        },
+        {
+          "level": 12,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 715
+          },
+          "value": 52
+        },
+        {
+          "level": 13,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 930
+          },
+          "value": 58
+        },
+        {
+          "level": 14,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1200
+          },
+          "value": 64
+        },
+        {
+          "level": 15,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 70
+        },
+        {
+          "level": 16,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2030
+          },
+          "value": 78
+        },
+        {
+          "level": 17,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2640
+          },
+          "value": 86
+        },
+        {
+          "level": 18,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 3430
+          },
+          "value": 94
+        },
+        {
+          "level": 19,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 4460
+          },
+          "value": 104
+        },
+        {
+          "level": 20,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 114
+        },
+        {
+          "level": 21,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 7540
+          },
+          "value": 126
+        },
+        {
+          "level": 22,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 9800
+          },
+          "value": 138
+        },
+        {
+          "level": 23,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 12740
+          },
+          "value": 152
+        },
+        {
+          "level": 24,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 16560
+          },
+          "value": 168
+        },
+        {
+          "level": 25,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 184
+        },
+        {
+          "level": 26,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 28000
+          },
+          "value": 202
+        },
+        {
+          "level": 27,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 36400
+          },
+          "value": 222
+        },
+        {
+          "level": 28,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 47320
+          },
+          "value": 244
+        },
+        {
+          "level": 29,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 61500
+          },
+          "value": 268
+        },
+        {
+          "level": 30,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 294
+        },
+        {
+          "level": 31,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 104000
+          },
+          "value": 324
+        },
+        {
+          "level": 32,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 135000
+          },
+          "value": 356
+        },
+        {
+          "level": 33,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 175500
+          },
+          "value": 392
+        },
+        {
+          "level": 34,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 228000
+          },
+          "value": 430
+        },
+        {
+          "level": 35,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 474
+        },
+        {
+          "level": 36,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 385320
+          },
+          "value": 520
+        },
+        {
+          "level": 37,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 500000
+          },
+          "value": 572
+        },
+        {
+          "level": 38,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 650000
+          },
+          "value": 630
+        },
+        {
+          "level": 39,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 845000
+          },
+          "value": 700
+        },
+        {
+          "level": 40,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 770
+        },
+        {
+          "level": 41,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1430000
+          },
+          "value": 848
+        },
+        {
+          "level": 42,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1860000
+          },
+          "value": 932
+        },
+        {
+          "level": 43,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 2418000
+          },
+          "value": 1024
+        },
+        {
+          "level": 44,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 3140000
+          },
+          "value": 1126
+        },
+        {
+          "level": 45,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 1238
+        },
+        {
+          "level": 46,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 5300000
+          },
+          "value": 1362
+        },
+        {
+          "level": 47,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 6900000
+          },
+          "value": 1500
+        },
+        {
+          "level": 48,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 8970000
+          },
+          "value": 1650
+        },
+        {
+          "level": 49,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 11500000
+          },
+          "value": 1816
+        },
+        {
+          "level": 50,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 2000
+        }
+      ]
+    },
+    {
+      "group": 3,
+      "attr": 3,
+      "attrName": "Explosion",
+      "statKey": "atk2",
+      "category": "Combat",
+      "icon": "/seawar/icons/blastdmg.webp",
+      "maxLevel": 50,
+      "costResource": "ore",
+      "totalCost": 65363460,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 5
+          },
+          "value": 6
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 10
+          },
+          "value": 12
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 20
+          },
+          "value": 18
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 50
+          },
+          "value": 22
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 26
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 150
+          },
+          "value": 30
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 200
+          },
+          "value": 34
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 250
+          },
+          "value": 38
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 325
+          },
+          "value": 40
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 44
+        },
+        {
+          "level": 11,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 550
+          },
+          "value": 48
+        },
+        {
+          "level": 12,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 715
+          },
+          "value": 52
+        },
+        {
+          "level": 13,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 930
+          },
+          "value": 58
+        },
+        {
+          "level": 14,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1200
+          },
+          "value": 64
+        },
+        {
+          "level": 15,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 70
+        },
+        {
+          "level": 16,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2030
+          },
+          "value": 78
+        },
+        {
+          "level": 17,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2640
+          },
+          "value": 86
+        },
+        {
+          "level": 18,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 3430
+          },
+          "value": 94
+        },
+        {
+          "level": 19,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 4460
+          },
+          "value": 104
+        },
+        {
+          "level": 20,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 114
+        },
+        {
+          "level": 21,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 7540
+          },
+          "value": 126
+        },
+        {
+          "level": 22,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 9800
+          },
+          "value": 138
+        },
+        {
+          "level": 23,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 12740
+          },
+          "value": 152
+        },
+        {
+          "level": 24,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 16560
+          },
+          "value": 168
+        },
+        {
+          "level": 25,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 184
+        },
+        {
+          "level": 26,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 28000
+          },
+          "value": 202
+        },
+        {
+          "level": 27,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 36400
+          },
+          "value": 222
+        },
+        {
+          "level": 28,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 47320
+          },
+          "value": 244
+        },
+        {
+          "level": 29,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 61500
+          },
+          "value": 268
+        },
+        {
+          "level": 30,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 294
+        },
+        {
+          "level": 31,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 104000
+          },
+          "value": 324
+        },
+        {
+          "level": 32,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 135000
+          },
+          "value": 356
+        },
+        {
+          "level": 33,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 175500
+          },
+          "value": 392
+        },
+        {
+          "level": 34,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 228000
+          },
+          "value": 430
+        },
+        {
+          "level": 35,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 474
+        },
+        {
+          "level": 36,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 385320
+          },
+          "value": 520
+        },
+        {
+          "level": 37,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 500000
+          },
+          "value": 572
+        },
+        {
+          "level": 38,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 650000
+          },
+          "value": 630
+        },
+        {
+          "level": 39,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 845000
+          },
+          "value": 700
+        },
+        {
+          "level": 40,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 770
+        },
+        {
+          "level": 41,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1430000
+          },
+          "value": 848
+        },
+        {
+          "level": 42,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1860000
+          },
+          "value": 932
+        },
+        {
+          "level": 43,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 2418000
+          },
+          "value": 1024
+        },
+        {
+          "level": 44,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 3140000
+          },
+          "value": 1126
+        },
+        {
+          "level": 45,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 1238
+        },
+        {
+          "level": 46,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 5300000
+          },
+          "value": 1362
+        },
+        {
+          "level": 47,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 6900000
+          },
+          "value": 1500
+        },
+        {
+          "level": 48,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 8970000
+          },
+          "value": 1650
+        },
+        {
+          "level": 49,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 11500000
+          },
+          "value": 1816
+        },
+        {
+          "level": 50,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 2000
+        }
+      ]
+    },
+    {
+      "group": 4,
+      "attr": 4,
+      "attrName": "Hardness",
+      "statKey": "def1",
+      "category": "Survival",
+      "icon": "/seawar/icons/armorhard.webp",
+      "maxLevel": 50,
+      "costResource": "ore",
+      "totalCost": 65363460,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 5
+          },
+          "value": 3
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 10
+          },
+          "value": 6
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 20
+          },
+          "value": 9
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 50
+          },
+          "value": 11
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 13
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 150
+          },
+          "value": 15
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 200
+          },
+          "value": 17
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 250
+          },
+          "value": 19
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 325
+          },
+          "value": 20
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 22
+        },
+        {
+          "level": 11,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 550
+          },
+          "value": 24
+        },
+        {
+          "level": 12,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 715
+          },
+          "value": 26
+        },
+        {
+          "level": 13,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 930
+          },
+          "value": 29
+        },
+        {
+          "level": 14,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1200
+          },
+          "value": 32
+        },
+        {
+          "level": 15,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 35
+        },
+        {
+          "level": 16,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2030
+          },
+          "value": 39
+        },
+        {
+          "level": 17,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2640
+          },
+          "value": 43
+        },
+        {
+          "level": 18,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 3430
+          },
+          "value": 47
+        },
+        {
+          "level": 19,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 4460
+          },
+          "value": 52
+        },
+        {
+          "level": 20,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 57
+        },
+        {
+          "level": 21,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 7540
+          },
+          "value": 63
+        },
+        {
+          "level": 22,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 9800
+          },
+          "value": 69
+        },
+        {
+          "level": 23,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 12740
+          },
+          "value": 76
+        },
+        {
+          "level": 24,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 16560
+          },
+          "value": 84
+        },
+        {
+          "level": 25,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 92
+        },
+        {
+          "level": 26,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 28000
+          },
+          "value": 101
+        },
+        {
+          "level": 27,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 36400
+          },
+          "value": 111
+        },
+        {
+          "level": 28,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 47320
+          },
+          "value": 122
+        },
+        {
+          "level": 29,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 61500
+          },
+          "value": 134
+        },
+        {
+          "level": 30,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 147
+        },
+        {
+          "level": 31,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 104000
+          },
+          "value": 162
+        },
+        {
+          "level": 32,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 135000
+          },
+          "value": 178
+        },
+        {
+          "level": 33,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 175500
+          },
+          "value": 196
+        },
+        {
+          "level": 34,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 228000
+          },
+          "value": 215
+        },
+        {
+          "level": 35,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 237
+        },
+        {
+          "level": 36,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 385320
+          },
+          "value": 260
+        },
+        {
+          "level": 37,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 500000
+          },
+          "value": 286
+        },
+        {
+          "level": 38,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 650000
+          },
+          "value": 315
+        },
+        {
+          "level": 39,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 845000
+          },
+          "value": 350
+        },
+        {
+          "level": 40,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 385
+        },
+        {
+          "level": 41,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1430000
+          },
+          "value": 424
+        },
+        {
+          "level": 42,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1860000
+          },
+          "value": 466
+        },
+        {
+          "level": 43,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 2418000
+          },
+          "value": 512
+        },
+        {
+          "level": 44,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 3140000
+          },
+          "value": 563
+        },
+        {
+          "level": 45,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 619
+        },
+        {
+          "level": 46,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 5300000
+          },
+          "value": 681
+        },
+        {
+          "level": 47,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 6900000
+          },
+          "value": 750
+        },
+        {
+          "level": 48,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 8970000
+          },
+          "value": 825
+        },
+        {
+          "level": 49,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 11500000
+          },
+          "value": 908
+        },
+        {
+          "level": 50,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 1000
+        }
+      ]
+    },
+    {
+      "group": 5,
+      "attr": 5,
+      "attrName": "Thickness",
+      "statKey": "def2",
+      "category": "Survival",
+      "icon": "/seawar/icons/armorthick.webp",
+      "maxLevel": 50,
+      "costResource": "ore",
+      "totalCost": 65363460,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 5
+          },
+          "value": 3
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 10
+          },
+          "value": 6
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 20
+          },
+          "value": 9
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 50
+          },
+          "value": 11
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 13
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 150
+          },
+          "value": 15
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 200
+          },
+          "value": 17
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 250
+          },
+          "value": 19
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 325
+          },
+          "value": 20
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 22
+        },
+        {
+          "level": 11,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 550
+          },
+          "value": 24
+        },
+        {
+          "level": 12,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 715
+          },
+          "value": 26
+        },
+        {
+          "level": 13,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 930
+          },
+          "value": 29
+        },
+        {
+          "level": 14,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1200
+          },
+          "value": 32
+        },
+        {
+          "level": 15,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 35
+        },
+        {
+          "level": 16,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2030
+          },
+          "value": 39
+        },
+        {
+          "level": 17,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2640
+          },
+          "value": 43
+        },
+        {
+          "level": 18,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 3430
+          },
+          "value": 47
+        },
+        {
+          "level": 19,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 4460
+          },
+          "value": 52
+        },
+        {
+          "level": 20,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 57
+        },
+        {
+          "level": 21,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 7540
+          },
+          "value": 63
+        },
+        {
+          "level": 22,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 9800
+          },
+          "value": 69
+        },
+        {
+          "level": 23,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 12740
+          },
+          "value": 76
+        },
+        {
+          "level": 24,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 16560
+          },
+          "value": 84
+        },
+        {
+          "level": 25,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 92
+        },
+        {
+          "level": 26,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 28000
+          },
+          "value": 101
+        },
+        {
+          "level": 27,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 36400
+          },
+          "value": 111
+        },
+        {
+          "level": 28,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 47320
+          },
+          "value": 122
+        },
+        {
+          "level": 29,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 61500
+          },
+          "value": 134
+        },
+        {
+          "level": 30,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 147
+        },
+        {
+          "level": 31,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 104000
+          },
+          "value": 162
+        },
+        {
+          "level": 32,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 135000
+          },
+          "value": 178
+        },
+        {
+          "level": 33,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 175500
+          },
+          "value": 196
+        },
+        {
+          "level": 34,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 228000
+          },
+          "value": 215
+        },
+        {
+          "level": 35,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 237
+        },
+        {
+          "level": 36,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 385320
+          },
+          "value": 260
+        },
+        {
+          "level": 37,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 500000
+          },
+          "value": 286
+        },
+        {
+          "level": 38,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 650000
+          },
+          "value": 315
+        },
+        {
+          "level": 39,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 845000
+          },
+          "value": 350
+        },
+        {
+          "level": 40,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 385
+        },
+        {
+          "level": 41,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1430000
+          },
+          "value": 424
+        },
+        {
+          "level": 42,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1860000
+          },
+          "value": 466
+        },
+        {
+          "level": 43,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 2418000
+          },
+          "value": 512
+        },
+        {
+          "level": 44,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 3140000
+          },
+          "value": 563
+        },
+        {
+          "level": 45,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 619
+        },
+        {
+          "level": 46,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 5300000
+          },
+          "value": 681
+        },
+        {
+          "level": 47,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 6900000
+          },
+          "value": 750
+        },
+        {
+          "level": 48,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 8970000
+          },
+          "value": 825
+        },
+        {
+          "level": 49,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 11500000
+          },
+          "value": 908
+        },
+        {
+          "level": 50,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 1000
+        }
+      ]
+    },
+    {
+      "group": 6,
+      "attr": 6,
+      "attrName": "HpRecovery",
+      "statKey": "hp_restore",
+      "category": "Survival",
+      "icon": "/seawar/icons/hprate.webp",
+      "maxLevel": 50,
+      "costResource": "ore",
+      "totalCost": 65363460,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 5
+          },
+          "value": 6
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 10
+          },
+          "value": 12
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 20
+          },
+          "value": 18
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 50
+          },
+          "value": 22
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 26
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 150
+          },
+          "value": 30
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 200
+          },
+          "value": 34
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 250
+          },
+          "value": 38
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 325
+          },
+          "value": 40
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 44
+        },
+        {
+          "level": 11,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 550
+          },
+          "value": 48
+        },
+        {
+          "level": 12,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 715
+          },
+          "value": 52
+        },
+        {
+          "level": 13,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 930
+          },
+          "value": 58
+        },
+        {
+          "level": 14,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1200
+          },
+          "value": 64
+        },
+        {
+          "level": 15,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 70
+        },
+        {
+          "level": 16,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2030
+          },
+          "value": 78
+        },
+        {
+          "level": 17,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2640
+          },
+          "value": 86
+        },
+        {
+          "level": 18,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 3430
+          },
+          "value": 94
+        },
+        {
+          "level": 19,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 4460
+          },
+          "value": 104
+        },
+        {
+          "level": 20,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 114
+        },
+        {
+          "level": 21,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 7540
+          },
+          "value": 126
+        },
+        {
+          "level": 22,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 9800
+          },
+          "value": 138
+        },
+        {
+          "level": 23,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 12740
+          },
+          "value": 152
+        },
+        {
+          "level": 24,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 16560
+          },
+          "value": 168
+        },
+        {
+          "level": 25,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 184
+        },
+        {
+          "level": 26,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 28000
+          },
+          "value": 202
+        },
+        {
+          "level": 27,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 36400
+          },
+          "value": 222
+        },
+        {
+          "level": 28,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 47320
+          },
+          "value": 244
+        },
+        {
+          "level": 29,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 61500
+          },
+          "value": 268
+        },
+        {
+          "level": 30,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 294
+        },
+        {
+          "level": 31,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 104000
+          },
+          "value": 324
+        },
+        {
+          "level": 32,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 135000
+          },
+          "value": 356
+        },
+        {
+          "level": 33,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 175500
+          },
+          "value": 392
+        },
+        {
+          "level": 34,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 228000
+          },
+          "value": 430
+        },
+        {
+          "level": 35,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 474
+        },
+        {
+          "level": 36,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 385320
+          },
+          "value": 520
+        },
+        {
+          "level": 37,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 500000
+          },
+          "value": 572
+        },
+        {
+          "level": 38,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 650000
+          },
+          "value": 630
+        },
+        {
+          "level": 39,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 845000
+          },
+          "value": 700
+        },
+        {
+          "level": 40,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 770
+        },
+        {
+          "level": 41,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1430000
+          },
+          "value": 848
+        },
+        {
+          "level": 42,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1860000
+          },
+          "value": 932
+        },
+        {
+          "level": 43,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 2418000
+          },
+          "value": 1024
+        },
+        {
+          "level": 44,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 3140000
+          },
+          "value": 1126
+        },
+        {
+          "level": 45,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 1238
+        },
+        {
+          "level": 46,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 5300000
+          },
+          "value": 1362
+        },
+        {
+          "level": 47,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 6900000
+          },
+          "value": 1500
+        },
+        {
+          "level": 48,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 8970000
+          },
+          "value": 1650
+        },
+        {
+          "level": 49,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 11500000
+          },
+          "value": 1816
+        },
+        {
+          "level": 50,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 2000
+        }
+      ]
+    },
+    {
+      "group": 7,
+      "attr": 7,
+      "attrName": "MiningEfficiency",
+      "statKey": "prod_rate",
+      "category": "Mining",
+      "icon": "/seawar/icons/miningrate.webp",
+      "maxLevel": 50,
+      "costResource": "ore",
+      "totalCost": 65363460,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 5
+          },
+          "value": 600
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 10
+          },
+          "value": 1000
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 20
+          },
+          "value": 1500
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 50
+          },
+          "value": 2100
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 2800
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 150
+          },
+          "value": 3600
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 200
+          },
+          "value": 4500
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 250
+          },
+          "value": 5500
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 325
+          },
+          "value": 6600
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 7800
+        },
+        {
+          "level": 11,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 550
+          },
+          "value": 9100
+        },
+        {
+          "level": 12,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 715
+          },
+          "value": 10500
+        },
+        {
+          "level": 13,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 930
+          },
+          "value": 12000
+        },
+        {
+          "level": 14,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1200
+          },
+          "value": 13600
+        },
+        {
+          "level": 15,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 15300
+        },
+        {
+          "level": 16,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2030
+          },
+          "value": 17100
+        },
+        {
+          "level": 17,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 2640
+          },
+          "value": 19000
+        },
+        {
+          "level": 18,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 3430
+          },
+          "value": 21000
+        },
+        {
+          "level": 19,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 4460
+          },
+          "value": 23100
+        },
+        {
+          "level": 20,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 25300
+        },
+        {
+          "level": 21,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 7540
+          },
+          "value": 27600
+        },
+        {
+          "level": 22,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 9800
+          },
+          "value": 30000
+        },
+        {
+          "level": 23,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 12740
+          },
+          "value": 32500
+        },
+        {
+          "level": 24,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 16560
+          },
+          "value": 35100
+        },
+        {
+          "level": 25,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 37800
+        },
+        {
+          "level": 26,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 28000
+          },
+          "value": 40600
+        },
+        {
+          "level": 27,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 36400
+          },
+          "value": 43500
+        },
+        {
+          "level": 28,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 47320
+          },
+          "value": 46500
+        },
+        {
+          "level": 29,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 61500
+          },
+          "value": 49600
+        },
+        {
+          "level": 30,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 52800
+        },
+        {
+          "level": 31,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 104000
+          },
+          "value": 56100
+        },
+        {
+          "level": 32,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 135000
+          },
+          "value": 59500
+        },
+        {
+          "level": 33,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 175500
+          },
+          "value": 63000
+        },
+        {
+          "level": 34,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 228000
+          },
+          "value": 66600
+        },
+        {
+          "level": 35,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 70300
+        },
+        {
+          "level": 36,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 385320
+          },
+          "value": 74100
+        },
+        {
+          "level": 37,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 500000
+          },
+          "value": 78000
+        },
+        {
+          "level": 38,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 650000
+          },
+          "value": 82000
+        },
+        {
+          "level": 39,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 845000
+          },
+          "value": 86100
+        },
+        {
+          "level": 40,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 90300
+        },
+        {
+          "level": 41,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1430000
+          },
+          "value": 94600
+        },
+        {
+          "level": 42,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 1860000
+          },
+          "value": 99000
+        },
+        {
+          "level": 43,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 2418000
+          },
+          "value": 103500
+        },
+        {
+          "level": 44,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 3140000
+          },
+          "value": 108100
+        },
+        {
+          "level": 45,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 113500
+        },
+        {
+          "level": 46,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 5300000
+          },
+          "value": 119000
+        },
+        {
+          "level": 47,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 6900000
+          },
+          "value": 125000
+        },
+        {
+          "level": 48,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 8970000
+          },
+          "value": 132000
+        },
+        {
+          "level": 49,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 11500000
+          },
+          "value": 140000
+        },
+        {
+          "level": 50,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 150000
+        }
+      ]
+    },
+    {
+      "group": 8,
+      "attr": 8,
+      "attrName": "MiningCapacity",
+      "statKey": "prod_limit",
+      "category": "Mining",
+      "icon": "/seawar/icons/maxload.webp",
+      "maxLevel": 10,
+      "costResource": "ore",
+      "totalCost": 20585815,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 10000
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 30000
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 70000
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 140000
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 390000
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 11,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 990000
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 12,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 2390000
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 13,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 4990000
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 14,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 9990000
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 15,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 19990000
+        }
+      ]
+    },
+    {
+      "group": 9,
+      "attr": 9,
+      "attrName": "PlunderEfficiency",
+      "statKey": "rape_rate",
+      "category": "Mining",
+      "icon": "/seawar/icons/lootingrate.webp",
+      "maxLevel": 10,
+      "costResource": "ore",
+      "totalCost": 20585815,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 1,
+          "cost": {
+            "resource": "ore",
+            "num": 100
+          },
+          "value": 2
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 4
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "ore",
+            "num": 1560
+          },
+          "value": 6
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 8
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "ore",
+            "num": 21530
+          },
+          "value": 10
+        },
+        {
+          "level": 6,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 12
+        },
+        {
+          "level": 7,
+          "requiredShipLevel": 7,
+          "cost": {
+            "resource": "ore",
+            "num": 296400
+          },
+          "value": 14
+        },
+        {
+          "level": 8,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 16
+        },
+        {
+          "level": 9,
+          "requiredShipLevel": 9,
+          "cost": {
+            "resource": "ore",
+            "num": 4080000
+          },
+          "value": 18
+        },
+        {
+          "level": 10,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 20
+        }
+      ]
+    },
+    {
+      "group": 10,
+      "attr": 10,
+      "attrName": "AdvancedMiningEfficiency",
+      "statKey": "prod_limit_sp",
+      "category": "Mining",
+      "icon": "/seawar/icons/rareyield.webp",
+      "maxLevel": 5,
+      "costResource": "ore",
+      "totalCost": 16186225,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 2,
+          "cost": {
+            "resource": "ore",
+            "num": 425
+          },
+          "value": 1
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 4,
+          "cost": {
+            "resource": "ore",
+            "num": 5800
+          },
+          "value": 2
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 6,
+          "cost": {
+            "resource": "ore",
+            "num": 80000
+          },
+          "value": 5
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 8,
+          "cost": {
+            "resource": "ore",
+            "num": 1100000
+          },
+          "value": 10
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 10,
+          "cost": {
+            "resource": "ore",
+            "num": 15000000
+          },
+          "value": 20
+        }
+      ]
+    },
+    {
+      "group": 11,
+      "attr": 11,
+      "attrName": "Cannon",
+      "statKey": "atk_num",
+      "category": "Combat",
+      "icon": "/seawar/icons/barrelnum.webp",
+      "maxLevel": 5,
+      "costResource": "rareOre",
+      "totalCost": 3000,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 100
+          },
+          "value": 1
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 200
+          },
+          "value": 2
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 400
+          },
+          "value": 3
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 800
+          },
+          "value": 4
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 1500
+          },
+          "value": 5
+        }
+      ]
+    },
+    {
+      "group": 12,
+      "attr": 12,
+      "attrName": "Shield",
+      "statKey": "def_shield",
+      "category": "Combat",
+      "icon": "/seawar/icons/immunityshield.webp",
+      "maxLevel": 5,
+      "costResource": "rareOre",
+      "totalCost": 5900,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 200
+          },
+          "value": 1
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 400
+          },
+          "value": 2
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 800
+          },
+          "value": 3
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 1500
+          },
+          "value": 4
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 5,
+          "cost": {
+            "resource": "rareOre",
+            "num": 3000
+          },
+          "value": 5
+        }
+      ]
+    },
+    {
+      "group": 13,
+      "attr": 13,
+      "attrName": "Stamina",
+      "statKey": "power_limit",
+      "category": "Survival",
+      "icon": "/seawar/icons/armorhard.webp",
+      "maxLevel": 5,
+      "costResource": "rareOre",
+      "totalCost": 3000,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 100
+          },
+          "value": 2
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 200
+          },
+          "value": 5
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 400
+          },
+          "value": 9
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 800
+          },
+          "value": 13
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 1500
+          },
+          "value": 17
+        }
+      ]
+    },
+    {
+      "group": 14,
+      "attr": 14,
+      "attrName": "StaminaRecovery",
+      "statKey": "power_restore",
+      "category": "Survival",
+      "icon": "/seawar/icons/strrate.webp",
+      "maxLevel": 5,
+      "costResource": "rareOre",
+      "totalCost": 3000,
+      "levels": [
+        {
+          "level": 1,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 100
+          },
+          "value": 8
+        },
+        {
+          "level": 2,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 200
+          },
+          "value": 6
+        },
+        {
+          "level": 3,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 400
+          },
+          "value": 4
+        },
+        {
+          "level": 4,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 800
+          },
+          "value": 2
+        },
+        {
+          "level": 5,
+          "requiredShipLevel": 3,
+          "cost": {
+            "resource": "rareOre",
+            "num": 1500
+          },
+          "value": 1
+        }
+      ]
+    }
+  ],
+  "shipVisuals": [
+    {
+      "id": 1,
+      "part": "sails",
+      "asset": "chuanfan",
+      "drivenBy": [
+        "shipLevel"
+      ],
+      "stageThresholds": [
+        1,
+        5,
+        10,
+        15,
+        18,
+        20
+      ],
+      "images": [
+        "/seawar/a_ui_seawar_chuanfan_0.webp",
+        "/seawar/a_ui_seawar_chuanfan_1.webp",
+        "/seawar/a_ui_seawar_chuanfan_2.webp",
+        "/seawar/a_ui_seawar_chuanfan_3.webp",
+        "/seawar/a_ui_seawar_chuanfan_4.webp",
+        "/seawar/a_ui_seawar_chuanfan_5.webp"
+      ]
+    },
+    {
+      "id": 2,
+      "part": "bow",
+      "asset": "chuanshou",
+      "drivenBy": [
+        "ArmorPiercing",
+        "Explosion"
+      ],
+      "stageThresholds": [
+        0,
+        10,
+        30,
+        50,
+        70,
+        100
+      ],
+      "images": [
+        "/seawar/a_ui_seawar_chuanshou_0.webp",
+        "/seawar/a_ui_seawar_chuanshou_1.webp",
+        "/seawar/a_ui_seawar_chuanshou_2.webp",
+        "/seawar/a_ui_seawar_chuanshou_3.webp",
+        "/seawar/a_ui_seawar_chuanshou_4.webp",
+        "/seawar/a_ui_seawar_chuanshou_5.webp"
+      ]
+    },
+    {
+      "id": 3,
+      "part": "hull",
+      "asset": "chuanshen",
+      "drivenBy": [
+        "Hardness",
+        "Thickness"
+      ],
+      "stageThresholds": [
+        0,
+        10,
+        30,
+        50,
+        70,
+        100
+      ],
+      "images": [
+        "/seawar/a_ui_seawar_chuanshen_0.webp",
+        "/seawar/a_ui_seawar_chuanshen_1.webp",
+        "/seawar/a_ui_seawar_chuanshen_2.webp",
+        "/seawar/a_ui_seawar_chuanshen_3.webp",
+        "/seawar/a_ui_seawar_chuanshen_4.webp",
+        "/seawar/a_ui_seawar_chuanshen_5.webp"
+      ]
+    },
+    {
+      "id": 4,
+      "part": "cannons",
+      "asset": "huopao",
+      "drivenBy": [
+        "Cannon"
+      ],
+      "stageThresholds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "images": [
+        null,
+        "/seawar/a_ui_seawar_huopao_1.webp",
+        "/seawar/a_ui_seawar_huopao_2.webp",
+        "/seawar/a_ui_seawar_huopao_3.webp",
+        "/seawar/a_ui_seawar_huopao_4.webp",
+        "/seawar/a_ui_seawar_huopao_5.webp"
+      ]
+    },
+    {
+      "id": 5,
+      "part": "shield",
+      "asset": null,
+      "drivenBy": [
+        "Shield"
+      ],
+      "stageThresholds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "images": null
+    }
+  ]
+}

@@ -20,6 +20,13 @@ export interface GuideEntry {
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
   {
+    heroId: "eden",
+    href: "/guides/idun",
+    localOnly: true,
+    title: "Idun",
+    hook: "Golden Apple specialist for aggressive frontline carries.",
+  },
+  {
     href: "/guides/divine-throne",
     image: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg_neutral.webp",
     localOnly: true,
