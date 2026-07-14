@@ -2420,9 +2420,9 @@
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/charon.webp",
     "release": false,
     "faction": "Hearts",
-    "role": "",
+    "role": "Arcane",
     "class": "Archer",
-    "rarity": "",
+    "rarity": "Legendary",
     "description": "",
     "recommendedRelicLevel": null,
     "evolution": null,
@@ -9014,6 +9014,107 @@
         ]
       }
     ]
+  },
+  "mazu": {
+    "id": "mazu",
+    "name": "Mazu",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/mazu.webp",
+    "release": false,
+    "faction": "Diamonds",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "",
+    "recommendedRelicLevel": null,
+    "evolution": null,
+    "level": null,
+    "stats": null,
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Merciful Voyage",
+        "description": "Upon entering battle, Mazu restores HP equal to 200% of her ATK to the ally with the lowest HP, plus an additional 10% of the target's missing HP.",
+        "upgrades": {
+          "level2": "Healing is increased to 250% ATK.",
+          "level3": "The healing also affects one additional allied unit.",
+          "level4": "Healing based on missing HP is increased to 25%."
+        },
+        "damageType": "Support",
+        "isUltimate": false
+      },
+      {
+        "id": "skill_2",
+        "name": "Sacred Grail Divination",
+        "description": "At the start of battle, all allied units perform a divination. If the result is 'Holy Grail', they gain 100 Energy and a 45% ATK increase.",
+        "upgrades": {
+          "level2": "If 'Holy Grail' is rolled, Mazu also gains 50% ATK.",
+          "level3": "If 'Holy Grail' is rolled, Mazu instead gains 55% ATK.",
+          "level4": "If 'Holy Grail' is rolled, Mazu instead gains 60% ATK."
+        },
+        "damageType": "Support",
+        "isUltimate": false
+      },
+      {
+        "id": "skill_3",
+        "name": "Heavenly Sacred Decree",
+        "description": "For each living allied unit, Mazu takes 10% less damage and her Time Energy recovery is increased by 5%.",
+        "upgrades": {
+          "level2": "Damage reduction per living ally is increased to 15%.",
+          "level3": "Time Energy recovery per living ally is increased to 10%.",
+          "level4": "Damage reduction per living ally is increased to 20%."
+        },
+        "damageType": "Passive",
+        "isUltimate": false
+      },
+      {
+        "id": "skill_4",
+        "name": "Merciful Domain",
+        "description": "Grants all allied units a shield equal to 200% of Mazu's ATK. For 8 seconds, 40% of damage taken is converted into delayed damage and dealt gradually over the next 5 seconds.",
+        "upgrades": {
+          "level2": "Shield strength is increased to 300% ATK.",
+          "level3": "Shield strength is increased to 400% ATK.",
+          "level4": "Shield strength is increased to 500% ATK."
+        },
+        "damageType": "Support",
+        "isUltimate": true
+      }
+    ],
+    "relic": {
+      "name": "Compassionate Blessing",
+      "description": "When Merciful Domain is cast, allied units gain 30% ATK for 8 seconds.",
+      "upgrades": {
+        "level10": "Merciful Domain converts 50% of incoming damage into delayed damage over 5 seconds.",
+        "level20": "Mazu gains 200 Energy upon entering battle.",
+        "level30": "Merciful Domain converts 50% of incoming damage into delayed damage over 7 seconds."
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "Sustained channel damage that scales the longer it is held, paired with a stationary state that boosts damage and Lifesteal when Charon does not move. His defensive tools use banish effects to remove threats from the battlefield temporarily rather than killing them outright.",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    },
+    "synergyLinks": [],
+    "relicBreakpoints": null,
+    "activeBug": null,
+    "activeBugNotes": null,
+    "f2pInvestment": null,
+    "virtues": null,
+    "virtueSets": null,
+    "content-creator": null,
+    "strengths": [],
+    "weaknesses": [],
+    "_meta": {
+      "source": "[CN-COMMUNITY] user-uploaded screenshot, likely new CN leak",
+      "transcriptionNote": "All descriptionCN and upgrade text transcribed from screenshot. No numeric values, percentages, damage type, rarity, stats, image, release date, or role were visible in the source image. Do not infer numbers.",
+      "openFlags": [
+        "damageType unset for all skills - no Magical tag visible in screenshot, needs stat-panel screenshot to confirm Physical vs Magical",
+        "rarity, stats, image, and release date not present in this screenshot",
+        "role (Arcane/Nimble/Hefty) not shown in this screenshot"
+      ]
+    }
   },
   "medusa": {
     "id": "medusa",
