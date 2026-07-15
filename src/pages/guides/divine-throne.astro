@@ -1,7 +1,6 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
-import PageHero from "../../components/PageHero.astro";
 import divineThroneData from "../../data/divine-throne.json";
 
 const FEATURE_ASSET_BASE = "/features/divine-throne";
@@ -137,12 +136,17 @@ const firstWaveHeroes = [
   title="Divine Throne Guide | Motto Immortal"
   description="One-page Divine Throne guide for Motto Immortal: unlock requirements, Ether resources, exclusive skills, Divine Authority, and first-wave heroes."
 >
-  <PageHero
-    id="divine-throne"
-    tag="Feature Guide"
-    headline="Divine Throne"
-    subtitle="Hero-specific upgrades, exclusive skills, and Divine Authority."
-  />
+  <header class="divine-throne-hero">
+    <div class="divine-throne-hero-media" aria-hidden="true">
+      <div class="divine-throne-hero-backdrop"></div>
+      <img src="/hera2.png" alt="" fetchpriority="high" />
+    </div>
+    <div class="divine-throne-hero-text">
+      <span class="divine-throne-hero-tag">Feature Guide</span>
+      <h1 class="divine-throne-hero-headline">Divine Throne</h1>
+      <p class="divine-throne-hero-sub">Hero-specific upgrades, exclusive skills, and Divine Authority.</p>
+    </div>
+  </header>
 
   <div class="guide-body guide-body--divine-throne">
     <section class="guide-section">
