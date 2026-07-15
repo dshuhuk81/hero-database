@@ -4021,12 +4021,24 @@
 }
 
 /* -- Divine Throne feature guide -- */
-.divine-throne-hero {
+.divine-throne-parallax {
   position: relative;
-  display: flex;
-  align-items: flex-end;
-  min-height: clamp(420px, 56vw, 700px);
-  margin: 0;
+  z-index: 0;
+  isolation: isolate;
+}
+
+/* Pinned image layer. Sticks to the viewport top while the text stage and
+   the opaque body sheet scroll up over it (image-only parallax). The
+   negative margin-bottom removes its layout height so following content
+   overlaps it instead of being pushed below. */
+.divine-throne-hero-media {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  margin-bottom: -100vh;
+  margin-bottom: -100svh;
+  z-index: 0;
   overflow: hidden;
   isolation: isolate;
   background:
@@ -4034,10 +4046,22 @@
     #07060c;
 }
 
-.divine-throne-hero-media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+/* Transparent spacer that positions the title over the pinned image and
+   scrolls away with the rest of the content. */
+.divine-throne-hero-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(420px, 56vw, 600px);
+}
+
+/* Full-width opaque sheet so the pinned image never bleeds through the
+   content column's side margins or the gaps between sections. */
+.divine-throne-body-bg {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-base);
 }
 
 /* Blurred, scaled copy of the same art fills the full width behind the
@@ -4141,7 +4165,7 @@
 }
 
 @media (max-width: 600px) {
-  .divine-throne-hero {
+  .divine-throne-hero-stage {
     min-height: min(128vw, 560px);
   }
 
