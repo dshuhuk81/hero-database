@@ -58,14 +58,21 @@ const defaultAlternate = alternateLinks.find((entry) => entry.locale === "en");
   <meta name="twitter:image" content={new URL(image, Astro.site)} />
 
   <title>{title}</title>
+  <script is:inline>
+    if (new URLSearchParams(window.location.search).has("preview")) {
+      document.documentElement.classList.add("preview-mode");
+    }
+  </script>
   {jsonLd && (
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   )}
   <slot name="head" />
 </head>
 <body>
-  <LanguageSwitcher />
-  <Sidebar />
+  <div class="site-navigation">
+    <LanguageSwitcher />
+    <Sidebar />
+  </div>
   <slot />
   <Footer />
 </body>
@@ -76,4 +83,8 @@ const defaultAlternate = alternateLinks.find((entry) => entry.locale === "en");
   @import '../styles/reset.css';
   @import '../styles/base.css';
   @import '../styles/components.css';
+
+  html.preview-mode .site-navigation {
+    display: none;
+  }
 </style>
