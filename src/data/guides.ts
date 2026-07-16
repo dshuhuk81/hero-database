@@ -40,7 +40,7 @@ export const guides: GuideEntry[] = [
     image: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg_neutral.webp",
     localOnly: true,
     title: "Divine Throne - System Guide",
-    hook: "New endgame system: unlock requirements, Ether upgrades and the first wave of throne heroes.",
+    hook: "New hero system: unlock requirements, Ether upgrades and the first wave of throne heroes.",
   },
   {
     heroId: "nephtys",
