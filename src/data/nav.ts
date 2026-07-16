@@ -111,6 +111,21 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M8.5 5.5c1.2-1.5 5.8-1.5 7 0"/><path d="M12 1.5v1.25M6.5 3l1 1M17.5 3l-1 1"/><path d="M8 9.5c0-1.4 1-2.5 2.3-2.5h3.4C15 7 16 8.1 16 9.5V16H8z"/><path d="M8 13H6.5A1.5 1.5 0 0 0 5 14.5V17h3M16 13h1.5a1.5 1.5 0 0 1 1.5 1.5V17h-3"/><path d="M7 17v4M17 17v4M7 19h10"/>`,
   },
   {
+    label: "Golden Arcanum",
+    href: "/guides/golden-arcanum",
+    group: "content",
+    sidebar: false,
+    description: {
+      en: "Weekly bottle mini-game - board strategy, materials and the coin shop priority",
+      de: "Woechentliches Flaschen-Minispiel - Board-Strategie, Materialien und Shop-Prioritaet",
+      es: "Minijuego semanal de botellas: estrategia del tablero, materiales y prioridad de la tienda",
+      ru: "Еженедельная мини-игра с бутылкой: стратегия поля, материалы и приоритет магазина",
+      zh: "每周药瓶小游戏——棋盘策略、材料与商店优先级",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-09-01" },
+    icon: `<path d="M10 2h4"/><path d="M11 2v5.6a2 2 0 0 1-.3 1L6.5 15"/><path d="M13 2v5.6a2 2 0 0 0 .3 1l4.2 6.4"/><path d="M6.5 15a3 3 0 0 0 2.5 4.7h6a3 3 0 0 0 2.5-4.7"/><path d="M7.8 13h8.4"/>`,
+  },
+  {
     label: "Sacred Vessel War",
     href: "/guides/sacred-vessel-war",
     group: "content",

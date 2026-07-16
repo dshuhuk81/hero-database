@@ -8,7 +8,7 @@ import { activeBadge, navEntries } from "../../data/nav";
 import { pickLang } from "../../i18n/helpers";
 import "../../styles/components.css";
 
-const MODE_GUIDE_HREFS = ["/delusions-den", "/events", "/bosses", "/virtues"];
+const MODE_GUIDE_HREFS = ["/guides/golden-arcanum", "/delusions-den", "/events", "/bosses", "/virtues"];
 const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))

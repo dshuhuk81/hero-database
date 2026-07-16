@@ -13,12 +13,21 @@ export interface GuideEntry {
   href: string;
   /** Card headline, e.g. "Nut - Goddess of the Sky". */
   title: string;
+  /** Card sub-text under the headline. */
+  hook?: string;
   /** YYYY-MM-DD of last content update. */
   updated?: string;
 }
 
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
+  {
+    href: "/guides/golden-arcanum",
+    image: "/features/golden-arcanum/assets/ui/A_UI_Alchemy_Illustration01_Bg.png",
+    title: "Golden Arcanum - Event Guide",
+    hook: "Weekly bottle mini-game: where the good chests spawn, which materials climb, and what to buy first.",
+    updated: "2026-07-16",
+  },
   {
     heroId: "eden",
     href: "/guides/idun",

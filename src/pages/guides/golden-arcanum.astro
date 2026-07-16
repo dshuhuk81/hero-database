@@ -1,0 +1,668 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import "../../styles/components.css";
+
+const FEATURE_ASSET_BASE = "/features/golden-arcanum/assets";
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+
+const icon = (name: string) => `${FEATURE_ASSET_BASE}/icons/${name}`;
+const ui = (name: string) => `${FEATURE_ASSET_BASE}/ui/${name}`;
+const chestArt = (name: string) => `${FEATURE_ASSET_BASE}/chests/${name}`;
+const heroThumb = (id: string) => `${R2_BASE}/heroes/thumbs/${encodeURIComponent(id)}-96.webp?v=${HERO_IMAGE_VERSION}`;
+const heroImage = (id: string) => `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
+
+const overview = [
+  { label: "What it is", value: "A weekly mini-game. Steer a potion bottle into the chest you want" },
+  { label: "Cost", value: "One Universal Solvent per run. One run grabs one chest and counts as one craft" },
+  { label: "Earn", value: "Alchemy Coins from chests, and crafts toward the shop gates. Coins carry over, crafts do not" },
+  { label: "F2P ceiling", value: "About 120 crafts. Crafts reset every cycle, so the 150+ rows never open" },
+];
+
+// Universal Solvent economy, read from the in-game Quest and Pack tabs.
+// Login: 5 tiers x 3. Event Quest: "Get N rewards" tiers at 10/25/50/75/100/125/175/200/250+, 10 each.
+// Solvent is spent to earn rewards, which unlock more solvent, so the loop converges.
+const tryEconomy = [
+  { source: "Starting stock", amount: "~40 to 50", note: "Handed out when the event opens.", free: true },
+  { source: "Free Pack", amount: "5", note: "Pack tab, claimable once for nothing.", free: true },
+  { source: "Login Quests", amount: "15", note: "Five tiers at 3 each, one per day logged in.", free: true },
+  { source: "Event Quests", amount: "10 per tier", note: "Tiers at 10, 25, 50, 75, 100, 125, then every 25 to 50.", free: true },
+  { source: "Gem Pack", amount: "10 max", note: "300 Elysian Gems buys one, capped at 10 a week. Gets you near 130, still short of 150.", free: false },
+];
+
+// Pool economics. weekly_activities_reward_pool.json -> 200320002: 49 standard pools of
+// 3x Big + 4x Middle + 2x Small + 1x Optional. Quality totals across the event (156/208/104/50)
+// match the hardcoded map in the client's DTWeeklyActivitiesRewardPool, so 50 Optionals is exact.
+const poolFacts = [
+  { label: "Board size", value: "10 chests", note: "Three Big, four Middle, two Small, one Optional." },
+  { label: "Coins per board", value: "17", note: "If you drain all ten. That is 1.7 coins per craft." },
+  { label: "Optional bottles", value: "50 total", note: "The Rewards Left counter in the top corner tracks what you have not taken yet." },
+  { label: "Draw All", value: "1 per chest", note: "Auto-clears the board. Same Solvent as doing it by hand, no discount." },
+  { label: "Refresh cost", value: "Free", note: "Unlocked the moment you take the board's Optional bottle." },
+];
+
+// weekly_activities_chest.json ids 5-8 (quality_type 1-4). Art family index matches quality_type.
+const chests = [
+  {
+    name: "Big Bottle",
+    art: "Fx_Mask_0011_Zy.png",
+    payout: "1 Alchemy Coin",
+    tone: "ga-chest--worst",
+    note: "The biggest bottle pays the least. Mostly sits near your launch point.",
+  },
+  {
+    name: "Middle Bottle",
+    art: "Fx_Mask_0021_Zy.png",
+    payout: "2 Alchemy Coins",
+    tone: "ga-chest--mid",
+    note: "The most common chest on the board. Four of them every round.",
+  },
+  {
+    name: "Small Bottle",
+    art: "Fx_Mask_0031_Zy.png",
+    payout: "3 Alchemy Coins",
+    tone: "ga-chest--good",
+    note: "The slim bottle is the best coin payout. Only two per round.",
+  },
+  {
+    name: "Optional Bottle",
+    art: "Fx_Mask_0041_Zy.png",
+    payout: "Pick your reward",
+    tone: "ga-chest--best",
+    note: "No coins. Gives a self-select bundle instead. Exactly one per round.",
+  },
+];
+
+// weekly_activities_alchemy_mat.json -> weekly_activities_path_point.json.
+// "climb" is the net vertical displacement of the path's end point from its start.
+// Ordered by how far up the board each shape carries you, longest first.
+// Shapes read from weekly_activities_path_point.json; "hands" is how many of the
+// 51 live rounds offer that form.
+const materials = [
+  { name: "Frog Leg", asset: "A_UI_Alchemy_FrogLeg_Icon.png", hands: 42, shape: "Wide zig-zag, climbs the furthest", role: "climb" },
+  { name: "Monster Tooth", asset: "A_UI_Alchemy_MonsterTooth_Icon.png", hands: 29, shape: "Long arc that lands back on your line", role: "climb" },
+  { name: "Aquatic Plant", asset: "A_UI_Alchemy_AquaticPlant_Icon.png", hands: 21, shape: "Staircase, climbs and drifts right", role: "climb" },
+  { name: "Rabbit Ears", asset: "A_UI_Alchemy_RabbitEars_Icon.png", hands: 22, shape: "Tight zig-zag, climbs and drifts left", role: "climb" },
+  { name: "Conch", asset: "A_UI_Alchemy_Conch_Icon.png", hands: 4, shape: "Big spiral, ends up-left of where it began", role: "climb" },
+  { name: "Fish", asset: "A_UI_Alchemy_Fish_Icon.png", hands: 50, shape: "Straight sideways, gains no height", role: "aim" },
+  { name: "Butterfly Wing", asset: "A_UI_Alchemy_ButterflyWing_Icon.png", hands: 8, shape: "Loop that ends where it started", role: "zero" },
+  { name: "Ouroboros", asset: "A_UI_Alchemy_Ouroboros_Icon.png", hands: 8, shape: "Out and back to where it started", role: "zero" },
+];
+
+const steps = [
+  {
+    img: "A_UI_Alchemy_Help01_Img.png",
+    title: "Throw a form in the pot",
+    body: "Each round offers 3 or 4 of the eight forms. A form is a path shape, and you can use each one as often as you like.",
+  },
+  {
+    img: "A_UI_Alchemy_Help02_Img.png",
+    title: "Steer while it flies",
+    body: "Add another form mid-flight and the bottle drops its old path and redraws from wherever it is right now. Forms are free and unlimited, so keep correcting.",
+  },
+  {
+    img: "A_UI_Alchemy_Help03_Img.png",
+    title: "Touch the bottle you want",
+    body: "The first bottle you graze ends the run, wanted or not. Leave the board and you get nothing. You have 60 seconds.",
+  },
+];
+
+const HERO_ROW = [
+  { id: "hela", name: "Hela" },
+  { id: "sekhmet", name: "Sekhmet" },
+  { id: "artemis", name: "Artemis" },
+  { id: "jingwei", name: "Jingwei" },
+];
+
+// active_exchange.json, func_id 200320002. Costs and gates read from config;
+// display names supplied from the live shop.
+const shopGroups = [
+  {
+    title: "Heroes",
+    gate: 100,
+    priority: "buy-first",
+    f2p: true,
+    verdict: "The only gated tier a free player ever reaches. Eats your whole budget, and only pays off on an early roster.",
+    rows: [
+      { name: "Hela", cost: 50, hero: "hela" },
+      { name: "Sekhmet", cost: 50, hero: "sekhmet" },
+      { name: "Artemis", cost: 50, hero: "artemis" },
+      { name: "Jingwei", cost: 50, hero: "jingwei" },
+    ],
+  },
+  {
+    title: "Premium picks",
+    gate: 150,
+    priority: "paywalled",
+    f2p: false,
+    verdict: "The best rows in the shop, and a free player never sees them unlock. Needs paid Solvent to clear 150 crafts.",
+    rows: [
+      { name: "Hero Selector Card", cost: 100 },
+      { name: "Star Chest x20", cost: 80 },
+      { name: "Apotheosis Elixir x50", cost: 75 },
+      { name: "Genesis Elixir x100", cost: 60 },
+    ],
+  },
+  {
+    title: "Totem keys",
+    gate: 200,
+    priority: "paywalled",
+    f2p: false,
+    verdict: "Flat 50 coins each with the amount dropping every row, so buy top down. Craft gate puts them out of reach.",
+    rows: [
+      { name: "Totem Keys x10", cost: 50 },
+      { name: "Totem Keys x8", cost: 50 },
+      { name: "Totem Keys x7", cost: 50 },
+      { name: "Totem Keys x5", cost: 50 },
+    ],
+  },
+  {
+    title: "Late gates",
+    gate: 400,
+    priority: "paywalled",
+    f2p: false,
+    verdict: "More than three times the free ceiling, and crafts reset every cycle. Heavy spenders only, permanently.",
+    rows: [
+      { name: "Equipment Awakening Selector", cost: 100 },
+      { name: "Yellow Refining Stone x5", cost: 100 },
+      { name: "Hammer Artifact Enhancement Stone x10", cost: 100 },
+      { name: "Hammer Artifact Enhancement Stone x5", cost: 100 },
+    ],
+  },
+  {
+    title: "Plumes",
+    gate: 0,
+    priority: "filler",
+    f2p: true,
+    verdict: "No craft gate, so this is where free players park spare coins. Same 30 coins for a shrinking pile, take the x10 first.",
+    rows: [
+      { name: "Plumes x10", cost: 30 },
+      { name: "Plumes x8", cost: 30 },
+      { name: "Plumes x7", cost: 30 },
+      { name: "Plumes x5", cost: 30 },
+    ],
+  },
+  {
+    title: "Leftover coins",
+    gate: 0,
+    priority: "filler",
+    f2p: true,
+    verdict: "No craft gate. Cheap top-ups to clear out with whatever is left at the end of the cycle.",
+    rows: [
+      { name: "8h Upgrade Mats Pack", cost: 10 },
+      { name: "8h Gold Pack", cost: 10 },
+      { name: "8h Orison EXP Pack", cost: 10 },
+      { name: "8h Evolution Mandala", cost: 10 },
+      { name: "2h Upgrade Mats Selector x5", cost: 5 },
+      { name: "2h Upgrade Mats Selector x4", cost: 5 },
+      { name: "2h Upgrade Mats Selector x3", cost: 5 },
+      { name: "2h Upgrade Mats Selector x2", cost: 5 },
+    ],
+  },
+];
+
+const shopTotal = shopGroups.reduce(
+  (sum, group) => sum + group.rows.reduce((groupSum, row) => groupSum + row.cost, 0),
+  0
+);
+
+const PRIORITY_LABEL = {
+  "buy-first": "Buy first",
+  paywalled: "Paid tries only",
+  filler: "Filler",
+};
+
+// weekly_activities_rank.json -> 200320002. Verified against the in-game Rank Rewards screen.
+// Elixirs cut off past rank 200; the Conch tail runs all the way to 10001+.
+const rankRows = [
+  { rank: "1", eternity: 100, apotheosis: 100, genesis: 50, conch: 50 },
+  { rank: "2", eternity: 50, apotheosis: 50, genesis: 50, conch: 45 },
+  { rank: "3", eternity: 30, apotheosis: 45, genesis: 50, conch: 40 },
+  { rank: "4 - 10", eternity: 15, apotheosis: 40, genesis: 45, conch: 35 },
+  { rank: "11 - 20", eternity: 0, apotheosis: 30, genesis: 40, conch: 25 },
+  { rank: "21 - 50", eternity: 0, apotheosis: 20, genesis: 35, conch: 18 },
+  { rank: "51 - 100", eternity: 0, apotheosis: 10, genesis: 30, conch: 14 },
+  { rank: "101 - 200", eternity: 0, apotheosis: 0, genesis: 25, conch: 12 },
+  { rank: "201 - 500", eternity: 0, apotheosis: 0, genesis: 15, conch: 10 },
+  { rank: "501 - 1000", eternity: 0, apotheosis: 0, genesis: 5, conch: 9 },
+  { rank: "1001 - 5000", eternity: 0, apotheosis: 0, genesis: 0, conch: "8 to 4" },
+  { rank: "5001 - 10000", eternity: 0, apotheosis: 0, genesis: 0, conch: "3 to 2" },
+  { rank: "10001+", eternity: 0, apotheosis: 0, genesis: 0, conch: 1 },
+];
+
+// weekly_reward_self.json -> 200320002. The list grows with the highest evolution any hero you
+// have ever owned reached (UIChangeOptionalItem checks max_evo against each row's quality_id),
+// so a developed roster sees all six.
+const selfSelect = [
+  { item: "Eternity Elixir", qty: "x2", best: true },
+  { item: "Apotheosis Elixir", qty: "x3", best: true },
+  { item: "Genesis Elixir", qty: "x5", best: false },
+  { item: "Epic Deity Shard", qty: "x10", best: true },
+  { item: "Calamity's Tear", qty: "x20", best: false },
+  { item: "Plumes", qty: "x1", best: false },
+];
+---
+
+<Base
+  title="Golden Arcanum Guide | Motto Immortal"
+  description="Golden Arcanum guide for Motto Immortal: how the bottle mini-game works, where the good chests spawn, which materials actually climb, and what to buy with Alchemy Coins."
+>
+  <div class="ga-parallax">
+    <div class="ga-hero-media" aria-hidden="true">
+      <div class="ga-hero-backdrop"></div>
+      <img src={ui("A_UI_Alchemy_Crucible_Img.png")} alt="" fetchpriority="high" />
+    </div>
+    <div class="ga-hero-stage">
+      <div class="ga-hero-text">
+        <span class="ga-hero-tag">Feature Guide</span>
+        <h1 class="ga-hero-headline">Golden Arcanum</h1>
+        <p class="ga-hero-sub">Aim long, ignore the big bottles, and spend every coin on heroes first.</p>
+      </div>
+    </div>
+
+    <div class="ga-body-bg">
+      <div class="guide-body guide-body--arcanum">
+        <section class="guide-section">
+          <h2 class="guide-section-title">Quick Read</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">The whole mode in one line</h3>
+            <p class="guide-card-subheading">
+              You fly a potion bottle at a board of ten chests, and the first chest you touch ends the run and leaves the board.
+              Coins are not really the prize here. The Optional bottle is, because taking it hands you a free board refresh.
+            </p>
+            <div class="guide-overview-grid">
+              {overview.map((item) => (
+                <div class="guide-overview-item">
+                  <div class="guide-overview-label">{item.label}</div>
+                  <div class="guide-overview-value">{item.value}</div>
+                </div>
+              ))}
+            </div>
+            <div class="ga-verdict-split">
+              <div class="ga-verdict">
+                <span class="ga-verdict-who">Early game</span>
+                <p>Drain every board. Ten chests pay 17 coins, and about 120 crafts gets you past the 200 you need for all four
+                  heroes. They are early-roster units, so this is the one cycle where they are worth your whole budget.</p>
+              </div>
+              <div class="ga-verdict ga-verdict--alt">
+                <span class="ga-verdict-who">Everyone else</span>
+                <p>Dig out the Optional and refresh instead of pressing Draw All. Same crafts, about twice the Selection Chests,
+                  and near enough the same coins, because the bottles blocking your way are the coin bottles anyway.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">How A Run Works</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">You fly it live, not on rails</h3>
+            <p class="guide-card-subheading">
+              One Universal Solvent buys one run, and one run takes exactly one bottle. The forms are not a hand you spend, they
+              are steering you keep using for the full 60 seconds. The whole difficulty is that every other bottle is a wall.
+            </p>
+            <div class="ga-steps">
+              {steps.map((step, index) => (
+                <article class="ga-step">
+                  <img src={ui(step.img)} alt="" loading="lazy" />
+                  <div class="ga-step-text">
+                    <span class="ga-step-num">{index + 1}</span>
+                    <h4>{step.title}</h4>
+                    <p>{step.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div class="guide-callout">
+              Every bottle on the board is solid. You cannot pass through one to reach a better one behind it, which is why the
+              Optional is often walled in and has to be dug out over several runs.
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Board Is A Pool</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Chests do not come back, and that is the whole trick</h3>
+            <p class="guide-card-subheading">
+              The ten chests are not re-rolled every run. A chest you take is gone from the board for good, and the board only replaces
+              itself once you have emptied all ten. That makes each board a budget of ten crafts.
+            </p>
+            <div class="ga-pool-grid">
+              {poolFacts.map((fact) => (
+                <div class="ga-pool-fact">
+                  <span class="ga-pool-label">{fact.label}</span>
+                  <strong class="ga-pool-value">{fact.value}</strong>
+                  <span class="ga-pool-note">{fact.note}</span>
+                </div>
+              ))}
+            </div>
+            <div class="ga-refresh-flow">
+              <div class="ga-refresh-step">
+                <span class="ga-refresh-num">1</span>
+                <div>
+                  <strong>Take the Optional bottle</strong>
+                  <p>It sits in the far row. Landing it flips the Refresh button on.</p>
+                </div>
+              </div>
+              <div class="ga-refresh-arrow" aria-hidden="true"></div>
+              <div class="ga-refresh-step ga-refresh-step--key">
+                <span class="ga-refresh-num">2</span>
+                <div>
+                  <strong>Refresh for free</strong>
+                  <p>Costs nothing. You forfeit whatever is left on the board, which is exactly what you want.</p>
+                </div>
+              </div>
+              <div class="ga-refresh-arrow" aria-hidden="true"></div>
+              <div class="ga-refresh-step">
+                <span class="ga-refresh-num">3</span>
+                <div>
+                  <strong>New board, new Optional</strong>
+                  <p>Repeat until you hit the 50-Optional event cap.</p>
+                </div>
+              </div>
+            </div>
+            <div class="guide-callout">
+              Refresh stays greyed out until the board's Optional bottle is yours. That single rule is the whole game: land the
+              Optional early and the other nine bottles were never worth waiting for.
+            </div>
+            <div class="ga-hud">
+              <span class="ga-hud-kicker">Reading the screen</span>
+              <ul>
+                <li><strong>Rewards Left</strong> in the top corner counts the Optional bottles you have not taken, out of 50.</li>
+                <li><strong>Solid red</strong> is the path already flown. <strong>Dotted red</strong> is where the bottle is headed next.</li>
+                <li><strong>The ring</strong> is the bottle. When it stops, it is waiting for you to feed it another form.</li>
+                <li><strong>Game ends in</strong> is a 60 second cap on the whole run, not on a single form.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Strategy</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Where the Optional bottle hides</h3>
+            <p class="guide-card-subheading">
+              The board has 15 fixed slots and every live round uses the same spawn table. Only one chest ever lands in the far
+              row, and the table is rigged so that bottle is usually the Optional: weight 90, against 40, 25 and 10 for the coin
+              bottles. The row nearest your launch is the mirror image, stacked with 1-coin junk. Getting to the far row means
+              threading between everything in between, because you cannot pass through a bottle.
+            </p>
+
+            <div class="ga-rules">
+              <div class="ga-rule">
+                <strong>Fly to the far centre.</strong>
+                <p>Slots 2, 3 and 4 hold the only far-row bottle, and it is the Optional more often than not. Land it and the free refresh is yours.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Never clip the near row.</strong>
+                <p>It is 60-weighted toward 1-coin bottles. Clip one by accident and you have paid a craft for the worst bottle on the board.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Clear the wall on purpose.</strong>
+                <p>If bottles block the lane to the Optional, take them deliberately. Each one is a coin bottle you wanted anyway, and it opens the lane for the next run.</p>
+              </div>
+            </div>
+            <div class="ga-paths">
+              <article class="ga-path">
+                <header>
+                  <span class="ga-path-tag">Lazy</span>
+                  <h4>Draw All</h4>
+                </header>
+                <p class="ga-path-when">Ten crafts, one button, no aiming.</p>
+                <ul>
+                  <li>Clears the whole board at once: 17 coins and exactly one Optional.</li>
+                  <li>Costs one Solvent per chest, so it saves time and nothing else.</li>
+                  <li>Correct if you are early and saving the 200 coins for the heroes.</li>
+                </ul>
+              </article>
+              <article class="ga-path ga-path--best">
+                <header>
+                  <span class="ga-path-tag">Better</span>
+                  <h4>Aim, then refresh</h4>
+                </header>
+                <p class="ga-path-when">The same ten crafts, about double the payout.</p>
+                <ul>
+                  <li>Dig the Optional out in roughly four or five runs, refresh free, go again.</li>
+                  <li>Ten crafts buys about two Selection Chests instead of one.</li>
+                  <li>The bottles you clear on the way are the coin bottles, so your coins barely move.</li>
+                </ul>
+              </article>
+            </div>
+            <p class="ga-table-note">
+              Your craft total is just Solvent spent, so neither path changes it. All you are choosing is how many Selection Chests
+              those crafts turn into.
+            </p>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">Chests</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Bigger bottle, smaller payout</h3>
+            <p class="guide-card-subheading">
+              Every normal round puts the same ten chests on the board: three Big, four Middle, two Small, one Optional.
+            </p>
+            <div class="ga-chest-grid">
+              {chests.map((chest) => (
+                <article class={`ga-chest ${chest.tone}`}>
+                  <img src={chestArt(chest.art)} alt={`${chest.name} art`} loading="lazy" />
+                  <h4>{chest.name}</h4>
+                  <strong>{chest.payout}</strong>
+                  <p>{chest.note}</p>
+                </article>
+              ))}
+            </div>
+            <div class="guide-callout">
+              The Optional bottle is the one to hunt. It skips coins entirely and hands you a Selection Chest instead: one pick
+              from the list below, and you can change which item it is any time between tries. Higher tiers stack extra choices on
+              top of the base list.
+            </div>
+            <div class="ga-shard-note">
+              <span class="ga-shard-kicker">Why the shards are the sleeper pick</span>
+              <p>
+                Epic Deity Shards stack to <strong>60 for one random Epic deity</strong>, and the chest hands out 10 at a time. Six
+                Selection Chests is a deity. Aim-and-refresh roughly doubles your chests per craft, so a cycle of about 120 crafts
+                turns into a few Epics that pressing Draw All would never have paid for.
+              </p>
+            </div>
+            <p class="ga-select-intro">
+              Pick one of these. A developed roster sees all six; if your best hero is still low on evolution the elixirs stay
+              locked until it climbs.
+            </p>
+            <div class="ga-select-list">
+              {selfSelect.map((entry) => (
+                <div class={`ga-select-row${entry.best ? " ga-select-row--best" : ""}`}>
+                  <span class="ga-select-item">{entry.item}</span>
+                  <span class="ga-select-qty">{entry.qty}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">Materials</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Only five of the eight actually gain ground</h3>
+            <p class="guide-card-subheading">
+              Each form redraws your path from the bottle's current position using a fixed shape. What separates them is where that
+              shape ends up. Three of the eight finish exactly where they started, which makes them stalls rather than moves.
+              Whichever 3 or 4 you are offered, you can reuse them all round.
+            </p>
+            <div class="ga-mat-grid">
+              {materials.map((mat) => (
+                <article class={`ga-mat ga-mat--${mat.role}`}>
+                  <img src={icon(mat.asset)} alt={`${mat.name} icon`} loading="lazy" />
+                  <div class="ga-mat-body">
+                    <h4>{mat.name}</h4>
+                    <p class="ga-mat-shape">{mat.shape}</p>
+                    <div class="ga-mat-meta">
+                      <span class="ga-mat-hands">offered in {mat.hands} of 50 rounds</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div class="ga-rules">
+              <div class="ga-rule">
+                <strong>Frog Leg and Monster Tooth are your reach.</strong>
+                <p>Both climb 1100, the most on the board. Monster Tooth arcs out and lands back on your original line, so it gains height without throwing off your aim.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Fish is for aiming, not distance.</strong>
+                <p>Offered every single round and it climbs nothing at all. It is your fine adjustment: slide sideways into a gap, then climb with something else.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Butterfly Wing and Ouroboros go nowhere.</strong>
+                <p>Both end where they began. They burn seconds off the timer without gaining ground, so they are stalls, not moves.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">Rank Rewards</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Do not play for rank</h3>
+            <p class="guide-card-subheading">
+              The leaderboard scores off crafts, and a free player caps near 115 while whales run past 1000. The elixirs dry up
+              after rank 200, so unless you are spending real money the top of this table is not a target.
+            </p>
+            <div class="ga-rank-lede">
+              <p>
+                What does matter: <strong>Wind Carrier Conches</strong> pay out all the way down to rank 10001 and beyond, so
+                everyone who plays gets some. They are not a Golden Arcanum currency at all. They are the entry ticket for
+                <strong>Water Game</strong>, the sibling mini-game, which means your placement here quietly funds a different mode.
+              </p>
+            </div>
+            <div class="ga-zone-table-wrap">
+              <table class="ga-zone-table ga-rank-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Eternity</th>
+                    <th>Apotheosis</th>
+                    <th>Genesis</th>
+                    <th>Conch</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rankRows.map((row) => (
+                    <tr>
+                      <td class="ga-rank-pos">{row.rank}</td>
+                      <td class={row.eternity ? "ga-weight ga-weight--peak" : "ga-rank-none"}>{row.eternity || "-"}</td>
+                      <td class={row.apotheosis ? "ga-weight" : "ga-rank-none"}>{row.apotheosis || "-"}</td>
+                      <td class={row.genesis ? "ga-weight" : "ga-rank-none"}>{row.genesis || "-"}</td>
+                      <td class="ga-weight ga-rank-conch">{row.conch}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="ga-table-note">
+              Elixir amounts are exact. The Conch tail is condensed across its placement brackets.
+            </p>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Shop</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">You cannot buy it all, so buy in order</h3>
+            <p class="guide-card-subheading">
+              Every row is one purchase per cycle. Coins are not your problem here, crafts are. A free player lands near 120 crafts,
+              which opens the 100 gate and stops dead. Clearing all {shopGroups.reduce((n, g) => n + g.rows.length, 0)} rows would
+              cost {shopTotal.toLocaleString("en-US")} coins, but most of them will never be purchasable at all.
+            </p>
+
+            <div class="ga-hero-row">
+              {HERO_ROW.map((hero) => (
+                <a class="ga-hero-pick" href={`/heroes/${hero.id}`}>
+                  <img
+                    src={heroThumb(hero.id)}
+                    alt={`${hero.name} portrait`}
+                    loading="lazy"
+                    onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
+                  />
+                  <span class="ga-hero-name">{hero.name}</span>
+                  <span class="ga-hero-cost">50 coins</span>
+                </a>
+              ))}
+            </div>
+            <p class="ga-table-note ga-table-note--center">
+              200 coins for all four, unlocking at 100 crafts, which is the one gate free players clear. It costs a full cycle of
+              draining boards. Worth it on an early roster, close to worthless on a developed one.
+            </p>
+
+            <div class="ga-shop">
+              {shopGroups.map((group) => (
+                <section class={`ga-shop-group ga-shop-group--${group.priority}`}>
+                  <header class="ga-shop-head">
+                    <div class="ga-shop-head-main">
+                      <h4>{group.title}</h4>
+                      <span class="ga-shop-flag">{PRIORITY_LABEL[group.priority as keyof typeof PRIORITY_LABEL]}</span>
+                    </div>
+                    <span class="ga-shop-gate">
+                      {group.gate > 0 ? `Unlocks at ${group.gate} crafts` : "No craft gate"}
+                    </span>
+                  </header>
+                  <p class="ga-shop-verdict">{group.verdict}</p>
+                  <ul class="ga-shop-rows">
+                    {group.rows.map((row) => (
+                      <li class="ga-shop-row">
+                        <span class="ga-shop-item">{row.name}</span>
+                        <span class="ga-shop-cost">{row.cost}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+
+            <div class="ga-econ">
+              <div class="ga-econ-intro">
+                <span class="ga-econ-kicker">Why the ceiling exists</span>
+                <h4>Where Universal Solvent comes from</h4>
+                <p>
+                  Universal Solvent is what you spend per run, and runs pay Quest tiers that hand back more Solvent, so the loop
+                  feeds itself until it runs dry. Your starting stock carries you to roughly 50 rewards, clearing the 10, 25 and 50
+                  tiers. What those pay out, plus your login Solvent, carries you to about 95, clearing the 75 tier. That payout
+                  pushes you past 100. Then you stall, because the next tier is 125 and you no longer have the Solvent to reach it.
+                </p>
+              </div>
+              <div class="ga-econ-rows">
+                {tryEconomy.map((row) => (
+                  <div class={`ga-econ-row${row.free ? "" : " ga-econ-row--paid"}`}>
+                    <img src={ui("A_UI_Props_Alchemy.png")} alt="" loading="lazy" />
+                    <span class="ga-econ-src">{row.source}</span>
+                    <span class="ga-econ-amt">{row.amount}</span>
+                    <span class="ga-econ-note">{row.note}</span>
+                  </div>
+                ))}
+              </div>
+              <p class="ga-econ-foot">
+                Lands a free player around 120 crafts. The 100 gate opens, the 150 gate does not, and emptying the Gem Pack for
+                3,000 Elysian Gems still does not close the difference.
+              </p>
+            </div>
+
+            <div class="ga-trap">
+              <span class="ga-trap-kicker">The part that catches people out</span>
+              <h4>Saving coins does not help</h4>
+              <p>
+                Alchemy Coins carry over to the next time Golden Arcanum runs. Crafts do not. Every cycle you start back at zero
+                crafts and stall near 120 again, so the 150, 200 and 400 rows re-lock every single time. You can bank coins for a
+                year and still never be allowed to buy them. Whatever you save can only ever go on the heroes and the cheap rows,
+                which is why hoarding is pointless and the Optional bottle is the real prize.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>
