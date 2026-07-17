@@ -66,10 +66,6 @@ const rows = heroes
                 <strong>{usedIn}</strong>
               </div>
               <p>{explanation}</p>
-              <a class="ri-detail" href={`/heroes/${hero.id}#section-investment`}>
-                Full investment guide
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </a>
             </div>
           </article>
         );
@@ -125,8 +121,6 @@ const rows = heroes
   .ri-usage span { flex-shrink: 0; color: var(--text-muted); font-size: .66rem; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
   .ri-usage strong { color: var(--text-primary); font-size: .84rem; }
   .ri-card-body p { margin: 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.6; }
-  .ri-detail { display: inline-flex; align-items: center; gap: .35rem; margin-top: var(--space-4); color: var(--accent-gold); font-size: .76rem; font-weight: var(--weight-bold); text-decoration: none; }
-  .ri-detail svg { width: 15px; }
   .ri-empty { padding: var(--space-10); text-align: center; color: var(--text-muted); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   @media (max-width: 760px) { .ri-page { width: min(100% - 1rem, 1180px); padding-top: var(--space-5); } .ri-grid { grid-template-columns: 1fr; } .ri-toolbar { align-items: stretch; flex-direction: column; gap: var(--space-2); } .ri-search-wrap { width: 100%; } .ri-count { align-self: flex-end; } }
