@@ -261,6 +261,7 @@ const translations: TranslationTree = {
     "/": { en: "Home", de: "Startseite", es: "Inicio", ru: "Главная", zh: "首页" },
     "/heroes": { en: "Hero List", de: "Heldenliste", es: "Lista de héroes", ru: "Список героев", zh: "英雄列表" },
     "/hero-stats": { en: "Hero Stats", de: "Heldenattribute", es: "Atributos de héroes", ru: "Характеристики героев", zh: "英雄属性" },
+    "/relic-investment": { en: "Relic Investment", de: "Relikt-Investition", es: "Inversión de reliquia", ru: "Вложения в реликвии", zh: "圣物培养" },
     "/cn-preview": { en: "CN vs Global", de: "CN vs. Global", es: "CN vs. global", ru: "CN vs Global", zh: "国服 vs 国际服" },
     "/virtues": { en: "Virtue Guide", de: "Tugenden-Guide", es: "Guía de virtudes", ru: "Гайд по добродетелям", zh: "美德指南" },
     "/guides": { en: "Guides", de: "Guides", es: "Guías", ru: "Гайды", zh: "攻略" },

@@ -204,6 +204,21 @@ const allNavEntries: NavEntry[] = [
     icon: `<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>`,
   },
   {
+    label: "Relic Investment",
+    href: "/relic-investment",
+    group: "primary",
+    teaser: true,
+    description: {
+      en: "See the recommended relic level for every rated hero",
+      de: "Empfohlene Reliktstufe für alle bewerteten Helden",
+      es: "Consulta el nivel de reliquia recomendado para cada héroe valorado",
+      ru: "Рекомендуемый уровень реликвии для каждого оценённого героя",
+      zh: "查看所有已评级英雄的推荐圣物等级",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-08-17" },
+    icon: `<path d="M12 2l3 5 5.5 1-4 4.2.8 5.8-5.3-2.5L6.7 18l.8-5.8-4-4.2L9 7z"/><circle cx="12" cy="11" r="2.5"/>`,
+  },
+  {
     label: "Tips",
     href: "/tips",
     group: "content",
