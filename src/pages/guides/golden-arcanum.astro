@@ -4,31 +4,24 @@ import Base from "../../layouts/Base.astro";
 import "../../styles/components.css";
 
 const FEATURE_ASSET_BASE = "/features/golden-arcanum/assets";
-const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
-const HERO_IMAGE_VERSION = "2026-06-08-portrait";
 
 const icon = (name: string) => `${FEATURE_ASSET_BASE}/icons/${name}`;
 const ui = (name: string) => `${FEATURE_ASSET_BASE}/ui/${name}`;
 const chestArt = (name: string) => `${FEATURE_ASSET_BASE}/chests/${name}`;
-const heroThumb = (id: string) => `${R2_BASE}/heroes/thumbs/${encodeURIComponent(id)}-96.webp?v=${HERO_IMAGE_VERSION}`;
-const heroImage = (id: string) => `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
 
 const overview = [
   { label: "What it is", value: "A weekly mini-game. Steer a potion bottle into the chest you want" },
   { label: "Cost", value: "One Universal Solvent per run. One run grabs one chest and counts as one craft" },
   { label: "Earn", value: "Alchemy Coins from chests, and crafts toward the shop gates. Coins carry over, crafts do not" },
-  { label: "F2P ceiling", value: "About 120 crafts. Crafts reset every cycle, so the 150+ rows never open" },
+  { label: "Plan first", value: "Count saved Solvent, quest rewards, packs and any event-specific starting bonus before choosing a craft target" },
 ];
 
-// Universal Solvent economy, read from the in-game Quest and Pack tabs.
-// Login: 5 tiers x 3. Event Quest: "Get N rewards" tiers at 10/25/50/75/100/125/175/200/250+, 10 each.
-// Solvent is spent to earn rewards, which unlock more solvent, so the loop converges.
 const tryEconomy = [
-  { source: "Starting stock", amount: "~40 to 50", note: "Handed out when the event opens.", free: true },
-  { source: "Free Pack", amount: "5", note: "Pack tab, claimable once for nothing.", free: true },
-  { source: "Login Quests", amount: "15", note: "Five tiers at 3 each, one per day logged in.", free: true },
-  { source: "Event Quests", amount: "10 per tier", note: "Tiers at 10, 25, 50, 75, 100, 125, then every 25 to 50.", free: true },
-  { source: "Gem Pack", amount: "10 max", note: "300 Elysian Gems buys one, capped at 10 a week. Gets you near 130, still short of 150.", free: false },
+  { source: "Saved Solvent", amount: "Varies", note: "Unused tickets remain available for a later Golden Arcanum.", free: true },
+  { source: "Rank bonus", amount: "Varies", note: "Include any event-specific allocation granted from your earlier placement.", free: true },
+  { source: "Daily & weekly quests", amount: "Claim all", note: "Include login and recurring quest rewards in the budget.", free: true },
+  { source: "Event quests", amount: "Varies", note: "Craft milestones return more tickets as you progress.", free: true },
+  { source: "Free & gem packs", amount: "Check shop", note: "Claim the free offer and decide whether the limited gem tickets fit your plan.", free: false },
 ];
 
 // Pool economics: 49 standard pools of 3x Big + 4x Middle + 2x Small + 1x Optional.
@@ -105,110 +98,72 @@ const steps = [
   },
 ];
 
-const HERO_ROW = [
-  { id: "hela", name: "Hela" },
-  { id: "sekhmet", name: "Sekhmet" },
-  { id: "artemis", name: "Artemis" },
-  { id: "jingwei", name: "Jingwei" },
-];
-
-// active_exchange.json, func_id 200320002. Costs and gates read from config;
-// display names supplied from the live shop.
-const shopGroups = [
+// Shop tiers are ordered by reward value, best first. `gate` is the number of crafts needed to unlock a row.
+const shopTiers = [
   {
-    title: "Heroes",
-    gate: 100,
-    priority: "buy-first",
-    f2p: true,
-    verdict: "The only gated tier a free player ever reaches. Eats your whole budget, and only pays off on an early roster.",
+    rank: 1,
+    title: "Crafting materials",
+    verdict: "The best value in the shop. Both elixirs feed relic and exclusive-gear upgrades, which is where lasting power actually comes from.",
     rows: [
-      { name: "Hela", cost: 50, hero: "hela" },
-      { name: "Sekhmet", cost: 50, hero: "sekhmet" },
-      { name: "Artemis", cost: 50, hero: "artemis" },
-      { name: "Jingwei", cost: 50, hero: "jingwei" },
+      { name: "Apotheosis Elixir x50", cost: 75, gate: 150 },
+      { name: "Genesis Elixir x100", cost: 60, gate: 150 },
     ],
   },
   {
-    title: "Premium picks",
-    gate: 150,
-    priority: "paywalled",
-    f2p: false,
-    verdict: "The best rows in the shop, and a free player never sees them unlock. Needs paid Solvent to clear 150 crafts.",
+    rank: 2,
+    title: "Totem keys & Star Chest",
+    verdict: "Strong second. Totem keys drop in amount each row, so buy top down. The Star Chest is a solid one-off.",
     rows: [
-      { name: "Hero Selector Card", cost: 100 },
-      { name: "Star Chest x20", cost: 80 },
-      { name: "Apotheosis Elixir x50", cost: 75 },
-      { name: "Genesis Elixir x100", cost: 60 },
+      { name: "Totem Keys x10", cost: 50, gate: 200 },
+      { name: "Totem Keys x8", cost: 50, gate: 200 },
+      { name: "Totem Keys x7", cost: 50, gate: 200 },
+      { name: "Totem Keys x5", cost: 50, gate: 200 },
+      { name: "Star Chest x20", cost: 80, gate: 150 },
     ],
   },
   {
-    title: "Totem keys",
-    gate: 200,
-    priority: "paywalled",
-    f2p: false,
-    verdict: "Flat 50 coins each with the amount dropping every row, so buy top down. Craft gate puts them out of reach.",
+    rank: 3,
+    title: "Gear upgrades",
+    verdict: "Worth clearing once the tiers above are done. Equipment awakening, refining and artifact hammers all push gear power.",
     rows: [
-      { name: "Totem Keys x10", cost: 50 },
-      { name: "Totem Keys x8", cost: 50 },
-      { name: "Totem Keys x7", cost: 50 },
-      { name: "Totem Keys x5", cost: 50 },
+      { name: "Equipment Awakening Selector", cost: 100, gate: 400 },
+      { name: "Yellow Refining Stone x5", cost: 100, gate: 400 },
+      { name: "Hammer Artifact Enhancement Stone x10", cost: 100, gate: 400 },
+      { name: "Hammer Artifact Enhancement Stone x5", cost: 100, gate: 400 },
     ],
   },
   {
-    title: "Late gates",
-    gate: 400,
-    priority: "paywalled",
-    f2p: false,
-    verdict: "More than three times the free ceiling, and crafts reset every cycle. Heavy spenders only, permanently.",
+    rank: 4,
+    title: "Heroes & Plumes",
+    verdict: "Heroes only help if your roster is genuinely thin, and even then not by much. Plumes have no gate, so anyone can grab them.",
     rows: [
-      { name: "Equipment Awakening Selector", cost: 100 },
-      { name: "Yellow Refining Stone x5", cost: 100 },
-      { name: "Hammer Artifact Enhancement Stone x10", cost: 100 },
-      { name: "Hammer Artifact Enhancement Stone x5", cost: 100 },
+      { name: "Hela", cost: 50, gate: 100, hero: "hela" },
+      { name: "Sekhmet", cost: 50, gate: 100, hero: "sekhmet" },
+      { name: "Artemis", cost: 50, gate: 100, hero: "artemis" },
+      { name: "Jingwei", cost: 50, gate: 100, hero: "jingwei" },
+      { name: "Hero Selector Card", cost: 100, gate: 150 },
+      { name: "Plumes x10", cost: 30, gate: 0 },
+      { name: "Plumes x8", cost: 30, gate: 0 },
+      { name: "Plumes x7", cost: 30, gate: 0 },
+      { name: "Plumes x5", cost: 30, gate: 0 },
     ],
   },
   {
-    title: "Plumes",
-    gate: 0,
-    priority: "filler",
-    f2p: true,
-    verdict: "No craft gate, so this is where free players park spare coins. Same 30 coins for a shrinking pile, take the x10 first.",
+    rank: 5,
+    title: "Everything else",
+    verdict: "Cheap top-ups. Clear these with whatever coins are left at the end of the cycle.",
     rows: [
-      { name: "Plumes x10", cost: 30 },
-      { name: "Plumes x8", cost: 30 },
-      { name: "Plumes x7", cost: 30 },
-      { name: "Plumes x5", cost: 30 },
-    ],
-  },
-  {
-    title: "Leftover coins",
-    gate: 0,
-    priority: "filler",
-    f2p: true,
-    verdict: "No craft gate. Cheap top-ups to clear out with whatever is left at the end of the cycle.",
-    rows: [
-      { name: "8h Upgrade Mats Pack", cost: 10 },
-      { name: "8h Gold Pack", cost: 10 },
-      { name: "8h Orison EXP Pack", cost: 10 },
-      { name: "8h Evolution Mandala", cost: 10 },
-      { name: "2h Upgrade Mats Selector x5", cost: 5 },
-      { name: "2h Upgrade Mats Selector x4", cost: 5 },
-      { name: "2h Upgrade Mats Selector x3", cost: 5 },
-      { name: "2h Upgrade Mats Selector x2", cost: 5 },
+      { name: "8h Upgrade Mats Pack", cost: 10, gate: 0 },
+      { name: "8h Gold Pack", cost: 10, gate: 0 },
+      { name: "8h Orison EXP Pack", cost: 10, gate: 0 },
+      { name: "8h Evolution Mandala", cost: 10, gate: 0 },
+      { name: "2h Upgrade Mats Selector x5", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x4", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x3", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x2", cost: 5, gate: 0 },
     ],
   },
 ];
-
-const shopTotal = shopGroups.reduce(
-  (sum, group) => sum + group.rows.reduce((groupSum, row) => groupSum + row.cost, 0),
-  0
-);
-
-const PRIORITY_LABEL = {
-  "buy-first": "Buy first",
-  paywalled: "Paid tries only",
-  filler: "Filler",
-};
 
 // Verified against the in-game Rank Rewards screen.
 // Elixirs cut off past rank 200; the Conch tail runs all the way to 10001+.
@@ -278,8 +233,8 @@ const selfSelect = [
             <div class="ga-verdict-split">
               <div class="ga-verdict">
                 <span class="ga-verdict-who">Early game</span>
-                <p>Drain every board. Ten chests pay 17 coins, and about 120 crafts gets you past the 200 you need for all four
-                  heroes. They are early-roster units, so this is the one cycle where they are worth your whole budget.</p>
+                <p>Drain every board. Ten chests pay 17 coins; whether all four heroes fit this cycle depends on your total ticket
+                  budget and banked coins. They are early-roster units, so prioritize only the ones that improve your roster.</p>
               </div>
               <div class="ga-verdict ga-verdict--alt">
                 <span class="ga-verdict-who">Everyone else</span>
@@ -459,8 +414,8 @@ const selfSelect = [
               <span class="ga-shard-kicker">Why the shards are the sleeper pick</span>
               <p>
                 Epic Deity Shards stack to <strong>60 for one random Epic deity</strong>, and the chest hands out 10 at a time. Six
-                Selection Chests is a deity. Aim-and-refresh roughly doubles your chests per craft, so a cycle of about 120 crafts
-                turns into a few Epics that pressing Draw All would never have paid for.
+                Selection Chests is a deity. Aim-and-refresh gives you far more useful chests per craft, turning the same ticket
+                budget into progress that pressing Draw All would often miss.
               </p>
             </div>
             <p class="ga-select-intro">
@@ -504,7 +459,7 @@ const selfSelect = [
             <div class="ga-rules">
               <div class="ga-rule">
                 <strong>Frog Leg and Monster Tooth are your reach.</strong>
-                <p>Both climb 1100, the most on the board. Monster Tooth arcs out and lands back on your original line, so it gains height without throwing off your aim.</p>
+                <p>Monster Tooth arcs out and lands back on your original line, so it gains height without throwing off your aim.</p>
               </div>
               <div class="ga-rule">
                 <strong>Fish is for aiming, not distance.</strong>
@@ -521,16 +476,16 @@ const selfSelect = [
         <section class="guide-section">
           <h2 class="guide-section-title">Rank Rewards</h2>
           <div class="guide-card">
-            <h3 class="guide-card-heading">Do not play for rank</h3>
+            <h3 class="guide-card-heading">Rank matters—set a limit</h3>
             <p class="guide-card-subheading">
-              The leaderboard scores off crafts, and a free player caps near 115 while whales run past 1000. The elixirs dry up
-              after rank 200, so unless you are spending real money the top of this table is not a target.
+              Rank is part of the event economy, not just a leaderboard badge. Aim for the next realistic reward bracket, but do
+              not spend money or empty a saved ticket reserve merely to defend a position whose extra reward is worth less than the cost.
             </p>
             <div class="ga-rank-lede">
               <p>
-                What does matter: <strong>Wind Carrier Conches</strong> pay out all the way down to rank 10001 and beyond, so
-                everyone who plays gets some. They are not a Golden Arcanum currency at all. They are the entry ticket for
-                <strong>Water Game</strong>, the sibling mini-game, which means your placement here quietly funds a different mode.
+                Rank rewards still have value even when the top places are unrealistic. Compare the next bracket's extra
+                <strong>Wind Carrier Conches</strong> and materials with the Solvent it would cost to reach it, then stop when the
+                additional reward no longer justifies the tickets.
               </p>
             </div>
             <div class="ga-zone-table-wrap">
@@ -566,50 +521,33 @@ const selfSelect = [
         <section class="guide-section">
           <h2 class="guide-section-title">The Shop</h2>
           <div class="guide-card">
-            <h3 class="guide-card-heading">You cannot buy it all, so buy in order</h3>
+            <h3 class="guide-card-heading">Buy in value order, best first</h3>
             <p class="guide-card-subheading">
-              Every row is one purchase per cycle. Coins are not your problem here, crafts are. A free player lands near 120 crafts,
-              which opens the 100 gate and stops dead. Clearing all {shopGroups.reduce((n, g) => n + g.rows.length, 0)} rows would
-              cost {shopTotal.toLocaleString("en-US")} coins, but most of them will never be purchasable at all.
-            </p>
-
-            <div class="ga-hero-row">
-              {HERO_ROW.map((hero) => (
-                <a class="ga-hero-pick" href={`/heroes/${hero.id}`}>
-                  <img
-                    src={heroThumb(hero.id)}
-                    alt={`${hero.name} portrait`}
-                    loading="lazy"
-                    onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
-                  />
-                  <span class="ga-hero-name">{hero.name}</span>
-                  <span class="ga-hero-cost">50 coins</span>
-                </a>
-              ))}
-            </div>
-            <p class="ga-table-note ga-table-note--center">
-              200 coins for all four, unlocking at 100 crafts, which is the one gate free players clear. It costs a full cycle of
-              draining boards. Worth it on an early roster, close to worthless on a developed one.
+              Every row is one purchase per cycle. Before spending, total your saved Solvent, event-specific starting bonus, daily and weekly
+              quests, login and event quests, and available packs. There is no single F2P ceiling: the rows you can open depend on
+              what you carried in and how many milestone tickets you earn during the run.
             </p>
 
             <div class="ga-shop">
-              {shopGroups.map((group) => (
-                <section class={`ga-shop-group ga-shop-group--${group.priority}`}>
+              {shopTiers.map((tier) => (
+                <section class={`ga-shop-group${tier.rank === 1 ? " ga-shop-group--top" : ""}`}>
                   <header class="ga-shop-head">
-                    <div class="ga-shop-head-main">
-                      <h4>{group.title}</h4>
-                      <span class="ga-shop-flag">{PRIORITY_LABEL[group.priority as keyof typeof PRIORITY_LABEL]}</span>
-                    </div>
-                    <span class="ga-shop-gate">
-                      {group.gate > 0 ? `Unlocks at ${group.gate} crafts` : "No craft gate"}
-                    </span>
+                    <span class="ga-shop-rank">{tier.rank}</span>
+                    <h4>{tier.title}</h4>
                   </header>
-                  <p class="ga-shop-verdict">{group.verdict}</p>
+                  <p class="ga-shop-verdict">{tier.verdict}</p>
                   <ul class="ga-shop-rows">
-                    {group.rows.map((row) => (
+                    {tier.rows.map((row) => (
                       <li class="ga-shop-row">
-                        <span class="ga-shop-item">{row.name}</span>
-                        <span class="ga-shop-cost">{row.cost}</span>
+                        <span class="ga-shop-item">
+                          {row.hero ? <a href={`/heroes/${row.hero}`}>{row.name}</a> : row.name}
+                        </span>
+                        <span class="ga-shop-meta">
+                          <span class="ga-gate">
+                            {row.gate > 0 ? `${row.gate} crafts` : "no gate"}
+                          </span>
+                          <span class="ga-shop-cost">{row.cost}</span>
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -619,13 +557,12 @@ const selfSelect = [
 
             <div class="ga-econ">
               <div class="ga-econ-intro">
-                <span class="ga-econ-kicker">Why the ceiling exists</span>
-                <h4>Where Universal Solvent comes from</h4>
+                <span class="ga-econ-kicker">Plan the whole cycle</span>
+                <h4>Build your actual ticket budget</h4>
                 <p>
-                  Universal Solvent is what you spend per run, and runs pay Quest tiers that hand back more Solvent, so the loop
-                  feeds itself until it runs dry. Your starting stock carries you to roughly 50 rewards, clearing the 10, 25 and 50
-                  tiers. What those pay out, plus your login Solvent, carries you to about 95, clearing the 75 tier. That payout
-                  pushes you past 100. Then you stall, because the next tier is 125 and you no longer have the Solvent to reach it.
+                  Do not estimate your result from the tickets visible on day one. Add every free source, then account for the event
+                  quests unlocked by crafting. Your event-specific starting bonus and any saved Solvent can move the next shop gate within
+                  reach, while a fresh account or a missed quest will finish lower.
                 </p>
               </div>
               <div class="ga-econ-rows">
@@ -639,19 +576,19 @@ const selfSelect = [
                 ))}
               </div>
               <p class="ga-econ-foot">
-                Lands a free player around 120 crafts. The 100 gate opens, the 150 gate does not, and emptying the Gem Pack for
-                3,000 Elysian Gems still does not close the difference.
+                Recheck the total after each quest claim. Stop at a useful shop or rank milestone when the next one is too expensive;
+                otherwise continue and use the rank payout to strengthen the next event in the rotation.
               </p>
             </div>
 
             <div class="ga-trap">
               <span class="ga-trap-kicker">The part that catches people out</span>
-              <h4>Saving coins does not help</h4>
+              <h4>Saving can unlock a later push</h4>
               <p>
-                Alchemy Coins carry over to the next time Golden Arcanum runs. Crafts do not. Every cycle you start back at zero
-                crafts and stall near 120 again, so the 150, 200 and 400 rows re-lock every single time. You can bank coins for a
-                year and still never be allowed to buy them. Whatever you save can only ever go on the heroes and the cheap rows,
-                which is why hoarding is pointless and the Optional bottle is the real prize.
+                Alchemy Coins and unused Solvent carry over; crafts and shop gates reset. A harvest cycle can stop after a worthwhile
+                milestone and bank the remainder. On a later push cycle, combine that reserve with quest tickets and any applicable
+                starting bonus to cross a higher gate. Still take the Optional bottle whenever it appears: the free reset preserves
+                your ticket while improving the board.
               </p>
             </div>
           </div>

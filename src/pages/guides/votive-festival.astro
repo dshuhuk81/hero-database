@@ -1,0 +1,510 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import "../../styles/components.css";
+import votiveGameplay from "../../../newData/votivegameplay.png";
+
+const FEATURE_ASSET_BASE = "/features/gold-miner/assets";
+
+const icon = (name: string) => `${FEATURE_ASSET_BASE}/icons/${name}`;
+const ui = (name: string) => `${FEATURE_ASSET_BASE}/ui/${name}`;
+
+const overview = [
+  { label: "What it is", value: "A weekly claw mini-game. Swing a firework hook and fire it into the lantern you want" },
+  { label: "Cost", value: "One ticket per lantern collected. A shot that hits nothing is free and can be retried" },
+  { label: "Earn", value: "Festival Coins from lanterns, and crafts toward the shop gates. Coins carry over, crafts do not" },
+  { label: "Timer", value: "30 seconds to land a lantern. Clean misses can be retried within the run" },
+];
+
+const hooks = [
+  { name: "Opening boards", role: "climb", tempo: "Slow, relaxed swing", note: "The early pace makes the Optional easy to line up. Use these boards to learn the timing." },
+  { name: "Building pace", role: "climb", tempo: "Steady swing", note: "The hook begins moving faster, but there is still plenty of time to place a deliberate shot." },
+  { name: "Fast boards", role: "aim", tempo: "Quick swing", note: "Release slightly before the hook reaches the lantern you want." },
+  { name: "Late boards", role: "zero", tempo: "Very fast swing", note: "The timing window becomes tight. A clean miss is still free, so avoid clipping low-value lanterns." },
+];
+
+const poolFacts = [
+  { label: "Board size", value: "10 lanterns", note: "Three Big, four Middle, two Small, one Optional." },
+  { label: "Coins per board", value: "17", note: "If you clear all ten. That is 1.7 coins per craft." },
+  { label: "Optional lantern", value: "One on a normal board", note: "Taking it unlocks the free board reset." },
+  { label: "Later boards", value: "Faster timing", note: "The hook becomes harder to time as you progress." },
+  { label: "Refresh cost", value: "Free", note: "Unlocked as soon as you take the board's Optional lantern." },
+];
+
+const chests = [
+  {
+    name: "Big Lantern",
+    art: "A_UI_GoldMiner_Material_Lantern01_Img.png",
+    payout: "1 Festival Coin",
+    tone: "ga-chest--worst",
+    note: "The plain round lantern pays the least, and three of them clutter every board.",
+  },
+  {
+    name: "Middle Lantern",
+    art: "A_UI_GoldMiner_Material_Lantern02_Img.png",
+    payout: "2 Festival Coins",
+    tone: "ga-chest--mid",
+    note: "The most common lantern on the board. Four every round.",
+  },
+  {
+    name: "Small Lantern",
+    art: "A_UI_GoldMiner_Material_Lantern03_Img.png",
+    payout: "3 Festival Coins",
+    tone: "ga-chest--good",
+    note: "The ornate lantern is the best coin payout. Only two per round.",
+  },
+  {
+    name: "Optional Lantern",
+    art: "A_UI_GoldMiner_Material_Lantern04_Img.png",
+    payout: "Pick your reward",
+    tone: "ga-chest--best",
+    note: "The paper crane gives no coins. It hands you a self-select bundle instead. Exactly one per round.",
+  },
+];
+
+const steps = [
+  {
+    img: votiveGameplay.src,
+    focus: "launcher",
+    title: "The launcher swings",
+    body: "A firework hook pivots at the bottom of the board and swings like a pendulum, sweeping the same arc from one side to the other. Its angle is your aim.",
+  },
+  {
+    img: ui("A_UI_GoldMiner_Help01_Img.png"),
+    focus: "aim",
+    title: "Fire on the beat",
+    body: "Tap to shoot the hook straight out along whatever angle it points. The shot is fast and does not curve, so the whole skill is releasing when the line lands on the lantern you want.",
+  },
+  {
+    img: votiveGameplay.src,
+    focus: "targets",
+    title: "First lantern ends it",
+    body: "The hook grabs the first lantern its head touches, wanted or not, and that collection ends the run. If it touches nothing, it returns and you can fire again without losing a ticket.",
+  },
+];
+
+const shopTiers = [
+  {
+    rank: 1,
+    title: "Crafting materials",
+    verdict: "The best value in the shop. Whether it opens this cycle depends on saved tickets, quests and any event-specific starting bonus.",
+    rows: [
+      { name: "Apotheosis Elixir x50", cost: 75, gate: 150 },
+      { name: "Genesis Elixir x100", cost: 60, gate: 150 },
+    ],
+  },
+  {
+    rank: 2,
+    title: "Totem keys & Star Chest",
+    verdict: "Strong second. Totem keys drop in amount each row, so buy top down. The Star Chest is a solid one-off.",
+    rows: [
+      { name: "Totem Keys x10", cost: 50, gate: 200 },
+      { name: "Totem Keys x8", cost: 50, gate: 200 },
+      { name: "Totem Keys x7", cost: 50, gate: 200 },
+      { name: "Totem Keys x5", cost: 50, gate: 200 },
+      { name: "Star Chest x20", cost: 80, gate: 150 },
+    ],
+  },
+  {
+    rank: 3,
+    title: "Gear upgrades",
+    verdict: "Worth clearing once the tiers above are done. Awakening, refining and artifact hammers all push gear power.",
+    rows: [
+      { name: "Equipment Awakening Selector", cost: 100, gate: 400 },
+      { name: "Yellow Refining Stone x5", cost: 100, gate: 400 },
+      { name: "Hammer Artifact Enhancement Stone x10", cost: 100, gate: 400 },
+      { name: "Hammer Artifact Enhancement Stone x5", cost: 100, gate: 400 },
+    ],
+  },
+  {
+    rank: 4,
+    title: "Heroes & Plumes",
+    verdict: "This cycle's headline pulls. Heroes are worthwhile when they improve your roster; otherwise keep the coins for stronger materials.",
+    rows: [
+      { name: "Poseidon", cost: 50, gate: 100, hero: "poseidon" },
+      { name: "Athena", cost: 50, gate: 100, hero: "athena" },
+      { name: "Diana", cost: 50, gate: 100, hero: "diana" },
+      { name: "Yanluo", cost: 50, gate: 100, hero: "yanluo" },
+      { name: "Hero Selector Card", cost: 100, gate: 150 },
+      { name: "Plumes x10", cost: 30, gate: 0 },
+      { name: "Plumes x8", cost: 30, gate: 0 },
+      { name: "Plumes x7", cost: 30, gate: 0 },
+      { name: "Plumes x5", cost: 30, gate: 0 },
+    ],
+  },
+  {
+    rank: 5,
+    title: "Everything else",
+    verdict: "Cheap top-ups. Clear these with whatever coins are left at the end of the cycle.",
+    rows: [
+      { name: "8h Upgrade Mats Pack", cost: 10, gate: 0 },
+      { name: "8h Gold Pack", cost: 10, gate: 0 },
+      { name: "8h Orison EXP Pack", cost: 10, gate: 0 },
+      { name: "8h Evolution Mandala", cost: 10, gate: 0 },
+      { name: "2h Upgrade Mats Selector x5", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x4", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x3", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x2", cost: 5, gate: 0 },
+    ],
+  },
+];
+
+const rankRows = [
+  { rank: "1", solvent: 50, plumes: 20 },
+  { rank: "2", solvent: 45, plumes: 15 },
+  { rank: "3", solvent: 40, plumes: 10 },
+  { rank: "4 - 10", solvent: 35, plumes: 10 },
+  { rank: "11 - 20", solvent: 25, plumes: 9 },
+  { rank: "21 - 50", solvent: 18, plumes: 8 },
+  { rank: "51 - 100", solvent: 14, plumes: 7 },
+  { rank: "101 - 200", solvent: 12, plumes: 6 },
+  { rank: "201 - 500", solvent: 10, plumes: 4 },
+  { rank: "501 - 1000", solvent: 9, plumes: 2 },
+  { rank: "1001 - 2000", solvent: "8 to 7", plumes: 0 },
+  { rank: "2001 - 5000", solvent: "6 to 4", plumes: 0 },
+  { rank: "5001 - 10000", solvent: "3 to 2", plumes: 0 },
+  { rank: "10001+", solvent: 1, plumes: 0 },
+];
+
+const selfSelect = [
+  { item: "Eternity Elixir", qty: "x2", best: true },
+  { item: "Apotheosis Elixir", qty: "x3", best: true },
+  { item: "Genesis Elixir", qty: "x5", best: false },
+  { item: "Epic Deity Shard", qty: "x10", best: true },
+  { item: "Calamity's Tear", qty: "x20", best: false },
+  { item: "Plumes", qty: "x1", best: false },
+];
+---
+
+<Base
+  title="Votive Festival Guide | Motto Immortal"
+  description="Votive Festival guide for Motto Immortal: how the swinging firework hook works, how to snipe the Optional lantern before the swing speeds up, and what to buy with Festival Coins."
+>
+  <div class="ga-parallax ga-parallax--goldminer">
+    <div class="ga-hero-media" aria-hidden="true">
+      <div class="ga-hero-backdrop"></div>
+      <img src={ui("A_UI_GoldMiner_Help01_Img.png")} alt="" fetchpriority="high" />
+    </div>
+    <div class="ga-hero-stage">
+      <div class="ga-hero-text">
+        <span class="ga-hero-tag">Feature Guide</span>
+        <h1 class="ga-hero-headline">Votive Festival</h1>
+        <p class="ga-hero-sub">Time the swing, snipe Optional lanterns early, and match the shop priority to your roster.</p>
+      </div>
+    </div>
+
+    <div class="ga-body-bg">
+      <div class="guide-body guide-body--arcanum">
+        <section class="guide-section">
+          <h2 class="guide-section-title">Quick Read</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">The whole mode in one line</h3>
+            <p class="guide-card-subheading">
+              A firework hook swings across a board of ten lanterns. The first lantern it touches ends the run; a clean miss simply
+              returns the hook and lets you try again for free.
+              Coins are not really the prize. The Optional lantern is, because it hands you a self-select chest instead of loose coins.
+            </p>
+            <div class="guide-overview-grid">
+              {overview.map((item) => (
+                <div class="guide-overview-item">
+                  <div class="guide-overview-label">{item.label}</div>
+                  <div class="guide-overview-value">{item.value}</div>
+                </div>
+              ))}
+            </div>
+            <div class="ga-verdict-split">
+              <div class="ga-verdict">
+                <span class="ga-verdict-who">Early game</span>
+                <p>If the four headline heroes are your priority, keep clearing coin lanterns before using the unlocked reset.
+                  A full board pays 17 coins, and all four heroes cost 200 coins total.</p>
+              </div>
+              <div class="ga-verdict ga-verdict--alt">
+                <span class="ga-verdict-who">Everyone else</span>
+                <p>Snipe the Optional lantern, then reset the board for free. A clean miss costs nothing; hitting a different lantern
+                  removes only that lantern, so the Optional remains available for another attempt.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">How A Run Works</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">You time a swinging hook, you do not steer it</h3>
+            <p class="guide-card-subheading">
+              A ticket is consumed only when the hook collects a lantern. The launcher swings on a fixed arc and the hook flies dead
+              straight, so the only variable you control is the instant you release. Miss everything and you can retry; clip the wrong
+              lantern and that lantern becomes the paid result.
+            </p>
+            <div class="ga-steps ga-steps--votive-live">
+              {steps.map((step, index) => (
+                <article class={`ga-step ga-step--${step.focus}`}>
+                  <img src={step.img} alt="" loading="lazy" />
+                  <div class="ga-step-text">
+                    <span class="ga-step-num">{index + 1}</span>
+                    <h4>{step.title}</h4>
+                    <p>{step.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Board Is A Pool</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Take the Optional, then reset for free</h3>
+            <p class="guide-card-subheading">
+              The ten lanterns are fixed for the board, and each lantern you grab disappears. Once you take the Optional lantern,
+              the reset unlocks and you can immediately replace the remaining coin lanterns with a fresh board and a new Optional.
+              Clearing all ten also advances the board, but it is usually worse value than resetting early.
+            </p>
+            <div class="ga-pool-grid">
+              {poolFacts.map((fact) => (
+                <div class="ga-pool-fact">
+                  <span class="ga-pool-label">{fact.label}</span>
+                  <strong class="ga-pool-value">{fact.value}</strong>
+                  <span class="ga-pool-note">{fact.note}</span>
+                </div>
+              ))}
+            </div>
+            <div class="ga-hud">
+              <span class="ga-hud-kicker">Reading the screen</span>
+              <ul>
+                <li><strong>The swinging hook</strong> at the bottom is your aim. Where the line points is where the shot goes.</li>
+                <li><strong>Rewards Left</strong> in the top corner counts the Optional lanterns you have not taken, out of 50.</li>
+                <li><strong>Game timer</strong> gives you 30 seconds to collect a lantern; empty shots can be retried without losing a ticket.</li>
+                <li><strong>Summon x10 / grab-all</strong> auto-fires and takes whatever it hits, no aiming.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Strategy</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Grab the Optional while the swing is still slow</h3>
+            <p class="guide-card-subheading">
+              The hook follows the same general swing from side to side, but it moves faster as you progress. Early boards are easy
+              to read, while later boards leave a much smaller timing window. That is
+              exactly where careful timing matters most. If you hit another lantern, the Optional stays on the board for another shot.
+            </p>
+
+            <div class="ga-rules">
+              <div class="ga-rule">
+                <strong>Hunt the Optional first.</strong>
+                <p>One self-select chest beats every coin lantern on the board. Fire at the paper crane, then use the free reset instead of clearing the leftovers.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Lead the fast swings.</strong>
+                <p>On Hook III and IV the line moves quicker than it reads. Release a hair before it reaches the target so the shot lands where the hook is heading.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Never spend a ticket on a Big lantern.</strong>
+                <p>The plain round lantern pays a single coin. A clean miss is free, so missing everything is better than clipping a low-value lantern.</p>
+              </div>
+            </div>
+            <div class="ga-paths">
+              <article class="ga-path">
+                <header>
+                  <span class="ga-path-tag">Lazy</span>
+                  <h4>Summon x10</h4>
+                </header>
+                <p class="ga-path-when">Ten crafts, one button, no aiming.</p>
+                <ul>
+                  <li>Clears the whole board at once: 17 coins and the single Optional, if the auto-fire happens to reach it.</li>
+                  <li>Costs one ticket per lantern, so it saves time and nothing else.</li>
+                  <li>Correct if you are early and racing to the 200 coins for the four heroes.</li>
+                </ul>
+              </article>
+              <article class="ga-path ga-path--best">
+                <header>
+                  <span class="ga-path-tag">Better</span>
+                  <h4>Snipe by hand</h4>
+                </header>
+                <p class="ga-path-when">Fewer crafts per board, more self-select chests.</p>
+                <ul>
+                  <li>Land the Optional on every board you can, especially on the slow early hooks.</li>
+                  <li>Six self-select chests stack into a full Epic deity, which loose coins never buy.</li>
+                  <li>Reset immediately after the Optional instead of spending tickets on the remaining coin lanterns.</li>
+                </ul>
+              </article>
+            </div>
+            <p class="ga-table-note">
+              Only a collected lantern consumes a ticket and counts as one craft; empty shots do neither. Resetting after the Optional
+              spends fewer tickets on each board, so more crafts can become self-select rewards instead of low-value coin lanterns.
+            </p>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">Lanterns</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Bigger lantern, smaller payout</h3>
+            <p class="guide-card-subheading">
+              Every normal round puts the same ten lanterns on the board: three Big, four Middle, two Small, one Optional. As with
+              the other weekly modes, the smallest lantern pays the most coins and the biggest pays the least.
+            </p>
+            <div class="ga-chest-grid">
+              {chests.map((chest) => (
+                <article class={`ga-chest ${chest.tone}`}>
+                  <img src={icon(chest.art)} alt={`${chest.name} art`} loading="lazy" />
+                  <h4>{chest.name}</h4>
+                  <strong>{chest.payout}</strong>
+                  <p>{chest.note}</p>
+                </article>
+              ))}
+            </div>
+            <div class="guide-callout">
+              The Optional lantern is the one to hunt. It skips coins entirely and hands you a self-select chest instead: one pick
+              from the list below, and you can change which item it is any time before you claim. Higher tiers stack extra choices
+              on top of the base list.
+            </div>
+            <p class="ga-select-intro">
+              Pick one of these. A developed roster sees all six; if your best hero is still low on evolution the elixirs stay
+              locked until it climbs.
+            </p>
+            <div class="ga-select-list">
+              {selfSelect.map((entry) => (
+                <div class={`ga-select-row${entry.best ? " ga-select-row--best" : ""}`}>
+                  <span class="ga-select-item">{entry.item}</span>
+                  <span class="ga-select-qty">{entry.qty}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Hook</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">The hook gets faster as you progress</h3>
+            <p class="guide-card-subheading">
+              The aiming motion stays familiar, but its pace increases as you move through the event. It starts slowly and becomes
+              much harder to read later, so the window for a clean hit gradually shrinks.
+            </p>
+            <div class="ga-mat-grid">
+              {hooks.map((hook) => (
+                <article class={`ga-mat ga-mat--${hook.role}`}>
+                  <img src={icon("A_UI_GoldMiner_Material_RocketFireworks_Img.png")} alt={`${hook.name} art`} loading="lazy" />
+                  <div class="ga-mat-body">
+                    <h4>{hook.name}</h4>
+                    <p class="ga-mat-shape">{hook.tempo}</p>
+                    <div class="ga-mat-meta">
+                      <span class="ga-mat-hands">{hook.note}</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div class="ga-rules">
+              <div class="ga-rule">
+                <strong>Use the slower boards.</strong>
+                <p>The opening pace gives you the cleanest chance to hit the crane. Do not coast through the easy boards on grab-all.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Lead the faster swing.</strong>
+                <p>Once the hook becomes difficult to track, release slightly before it visually reaches the target.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Use clean misses safely.</strong>
+                <p>On the fastest boards, missing everything is better than clipping a low-value lantern because a clean miss costs nothing.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">Rank Rewards</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Rank matters—set a limit</h3>
+            <p class="guide-card-subheading">
+              Rank rewards belong in an F2P plan. Aim for the next realistic bracket, but do not
+              spend money or burn a large reserve solely to chase a leaderboard position with a smaller incremental return.
+            </p>
+            <div class="ga-rank-lede">
+              <p>
+                Even a modest placement returns useful rewards. Compare the next bracket's extra <strong>Universal Solvent</strong>
+                and Plumes with the tickets needed to reach it, then stop when the incremental reward no longer justifies the cost.
+              </p>
+            </div>
+            <div class="ga-zone-table-wrap">
+              <table class="ga-zone-table ga-rank-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Universal Solvent</th>
+                    <th>Plumes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rankRows.map((row) => (
+                    <tr>
+                      <td class="ga-rank-pos">{row.rank}</td>
+                      <td class="ga-weight ga-rank-conch">{row.solvent}</td>
+                      <td class={row.plumes ? "ga-weight" : "ga-rank-none"}>{row.plumes || "-"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="ga-table-note">Check the event's rank preview for any additional rewards shown in the highest brackets.</p>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Shop</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Buy in value order, best first</h3>
+            <p class="guide-card-subheading">
+              Every row is one purchase per cycle, and the item list is identical to Golden Arcanum and Benevolent Feast apart from the four
+              heroes. Total saved tickets, any event-specific starting bonus, daily and weekly quests, login and event quests, and shop tickets
+              before choosing a target. There is no universal F2P ceiling because both carry-over and quest completion vary.
+            </p>
+
+            <div class="ga-shop">
+              {shopTiers.map((tier) => (
+                <section class={`ga-shop-group${tier.rank === 1 ? " ga-shop-group--top" : ""}`}>
+                  <header class="ga-shop-head">
+                    <span class="ga-shop-rank">{tier.rank}</span>
+                    <h4>{tier.title}</h4>
+                  </header>
+                  <p class="ga-shop-verdict">{tier.verdict}</p>
+                  <ul class="ga-shop-rows">
+                    {tier.rows.map((row) => (
+                      <li class="ga-shop-row">
+                        <span class="ga-shop-item">
+                          {row.hero ? <a href={`/heroes/${row.hero}`}>{row.name}</a> : row.name}
+                        </span>
+                        <span class="ga-shop-meta">
+                          <span class="ga-gate">
+                            {row.gate > 0 ? `${row.gate} crafts` : "no gate"}
+                          </span>
+                          <span class="ga-shop-cost">{row.cost}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+
+            <div class="ga-trap">
+              <span class="ga-trap-kicker">The part that catches people out</span>
+              <h4>Use harvest cycles and push cycles</h4>
+              <p>
+                Festival Coins and unused tickets carry over; crafts and shop gates reset. If the next useful gate or rank bracket is
+                out of reach, stop after a worthwhile milestone and bank the rest. In a later push cycle, combine the reserve with
+                daily, weekly, login and event quest rewards plus any applicable starting bonus. Take the Optional lantern for its free
+                reset, and reassess your target whenever a quest adds more tickets.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>

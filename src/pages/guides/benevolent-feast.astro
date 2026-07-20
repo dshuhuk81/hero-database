@@ -1,0 +1,430 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import "../../styles/components.css";
+
+const FEATURE_ASSET_BASE = "/features/water-game/assets";
+
+const icon = (name: string) => `${FEATURE_ASSET_BASE}/icons/${name}`;
+const ui = (name: string) => `${FEATURE_ASSET_BASE}/ui/${name}`;
+
+const overview = [
+  { label: "What it is", value: "A weekly wind mini-game. Tap to float animal tiles up to a shark in the middle that eats one" },
+  { label: "Cost", value: "One ticket per run. The shark eats one tile and it counts as one craft" },
+  { label: "Earn", value: "Feast Coins from animal tiles or the Optional reward, plus crafts toward the shop gates" },
+  { label: "Timer", value: "60 seconds per run, the most generous of the three weekly mini-games" },
+];
+
+const tiles = [
+  {
+    name: "Fish",
+    art: "A_UI_WaterGame_Offerings01_Img.png",
+    payout: "1 Feast Coin",
+    tone: "ga-chest--worst",
+    note: "The smallest tile and the most common. Let the shark eat one of these only when nothing better is in reach.",
+  },
+  {
+    name: "Sheep",
+    art: "A_UI_WaterGame_Offerings02_Img.png",
+    payout: "2 Feast Coins",
+    tone: "ga-chest--mid",
+    note: "The middle animal, and the tile you will see most on the board. A fine fallback if the Cattle drifts off.",
+  },
+  {
+    name: "Cattle",
+    art: "A_UI_WaterGame_Offerings03_Img.png",
+    payout: "3 Feast Coins",
+    tone: "ga-chest--best",
+    note: "The biggest coin payout on the board. Fewer of them float, so steering one into the shark is the whole skill.",
+  },
+];
+
+const steps = [
+  {
+    img: ui("A_UI_WaterGame_Help01_Img.png"),
+    title: "Tap to make wind",
+    body: "A shark sits in the middle of the board with animal tiles floating around it. Each tap sends up a gust of wind that lifts the tiles, and tapping again stacks more wind and pushes them higher.",
+  },
+  {
+    img: ui("A_UI_WaterGame_SceneObject_BigFish_Img.png"),
+    title: "The shark eats one",
+    body: "When a tile drifts close enough to the shark, it eats it, and that tile is your reward. You have 60 seconds to line up the bite you want.",
+  },
+];
+
+const wind = [
+  { name: "Tap lifts", role: "climb", detail: "Upward gust", note: "Every tap spawns a gust that pushes the floating tiles up toward the shark in the centre." },
+  { name: "Gusts stack", role: "climb", detail: "Tap repeatedly", note: "More taps mean more wind and more height. Overdo it and tiles blow past the shark instead of into it." },
+  { name: "Idle sinks", role: "aim", detail: "Wind fades quickly", note: "Stop tapping and the tiles settle back toward the bottom of the board." },
+  { name: "Consistent rhythm", role: "zero", detail: "Familiar timing", note: "The same lift-and-settle approach remains useful as you progress, so play at your own pace." },
+];
+
+const shopTiers = [
+  {
+    rank: 1,
+    title: "Crafting materials",
+    verdict: "The best value in the shop. Both elixirs feed relic and exclusive-gear upgrades, where lasting power actually comes from.",
+    rows: [
+      { name: "Apotheosis Elixir x50", cost: 75, gate: 150 },
+      { name: "Genesis Elixir x100", cost: 60, gate: 150 },
+    ],
+  },
+  {
+    rank: 2,
+    title: "Totem keys & Star Chest",
+    verdict: "Strong second. Totem keys drop in amount each row, so buy top down. The Star Chest is a solid one-off.",
+    rows: [
+      { name: "Totem Keys x10", cost: 50, gate: 200 },
+      { name: "Totem Keys x8", cost: 50, gate: 200 },
+      { name: "Totem Keys x7", cost: 50, gate: 200 },
+      { name: "Totem Keys x5", cost: 50, gate: 200 },
+      { name: "Star Chest x20", cost: 80, gate: 150 },
+    ],
+  },
+  {
+    rank: 3,
+    title: "Gear upgrades",
+    verdict: "Worth clearing once the tiers above are done. Awakening, refining and artifact hammers all push gear power.",
+    rows: [
+      { name: "Equipment Awakening Selector", cost: 100, gate: 400 },
+      { name: "Yellow Refining Stone x5", cost: 100, gate: 400 },
+      { name: "Hammer Artifact Enhancement Stone x10", cost: 100, gate: 400 },
+      { name: "Hammer Artifact Enhancement Stone x5", cost: 100, gate: 400 },
+    ],
+  },
+  {
+    rank: 4,
+    title: "Heroes & Plumes",
+    verdict: "This cycle's headline pulls. Heroes are worthwhile when they improve your roster; otherwise keep the coins for stronger materials.",
+    rows: [
+      { name: "Nemesis", cost: 50, gate: 100, hero: "nemesis" },
+      { name: "Phoenix", cost: 50, gate: 100, hero: "phoenix" },
+      { name: "Jormungandr", cost: 50, gate: 100, hero: "jormungandr" },
+      { name: "Prometheus", cost: 50, gate: 100, hero: "prometheus" },
+      { name: "Hero Selector Card", cost: 100, gate: 150 },
+      { name: "Plumes x10", cost: 30, gate: 0 },
+      { name: "Plumes x8", cost: 30, gate: 0 },
+      { name: "Plumes x7", cost: 30, gate: 0 },
+      { name: "Plumes x5", cost: 30, gate: 0 },
+    ],
+  },
+  {
+    rank: 5,
+    title: "Everything else",
+    verdict: "Cheap top-ups. Clear these with whatever coins are left at the end of the cycle.",
+    rows: [
+      { name: "8h Upgrade Mats Pack", cost: 10, gate: 0 },
+      { name: "8h Gold Pack", cost: 10, gate: 0 },
+      { name: "8h Orison EXP Pack", cost: 10, gate: 0 },
+      { name: "8h Evolution Mandala", cost: 10, gate: 0 },
+      { name: "2h Upgrade Mats Selector x5", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x4", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x3", cost: 5, gate: 0 },
+      { name: "2h Upgrade Mats Selector x2", cost: 5, gate: 0 },
+    ],
+  },
+];
+
+const rankRows = [
+  { rank: "1", refining: 10, totems: 40, hammer: 20, ticket: 50 },
+  { rank: "2", refining: 5, totems: 20, hammer: 15, ticket: 45 },
+  { rank: "3", refining: 2, totems: 16, hammer: 10, ticket: 40 },
+  { rank: "4 - 10", refining: 1, totems: 14, hammer: 9, ticket: 35 },
+  { rank: "11 - 20", refining: 0, totems: 12, hammer: 8, ticket: 25 },
+  { rank: "21 - 50", refining: 0, totems: 8, hammer: 7, ticket: 18 },
+  { rank: "51 - 100", refining: 0, totems: 4, hammer: 6, ticket: 14 },
+  { rank: "101 - 200", refining: 0, totems: 0, hammer: 5, ticket: 12 },
+  { rank: "201 - 500", refining: 0, totems: 0, hammer: 3, ticket: 10 },
+  { rank: "501 - 1000", refining: 0, totems: 0, hammer: 1, ticket: 9 },
+  { rank: "1001 - 2000", refining: 0, totems: 0, hammer: 0, ticket: "8 to 7" },
+  { rank: "2001 - 5000", refining: 0, totems: 0, hammer: 0, ticket: "6 to 4" },
+  { rank: "5001 - 10000", refining: 0, totems: 0, hammer: 0, ticket: "3 to 2" },
+  { rank: "10001+", refining: 0, totems: 0, hammer: 0, ticket: 1 },
+];
+---
+
+<Base
+  title="Benevolent Feast Guide | Motto Immortal"
+  description="Benevolent Feast guide for Motto Immortal: how the tap-to-wind mechanic works, how to float high-value animal tiles into the shark, and what to buy with Feast Coins."
+>
+  <div class="ga-parallax ga-parallax--watergame">
+    <div class="ga-hero-media" aria-hidden="true">
+      <div class="ga-hero-backdrop"></div>
+      <img src={ui("A_UI_WaterGame_SceneObject_BigFish_Img.png")} alt="" fetchpriority="high" />
+    </div>
+    <div class="ga-hero-stage">
+      <div class="ga-hero-text">
+        <span class="ga-hero-tag">Feature Guide</span>
+        <h1 class="ga-hero-headline">Benevolent Feast</h1>
+        <p class="ga-hero-sub">Tap to make wind, float the biggest animals into the shark, and spend your Feast Coins wisely.</p>
+      </div>
+    </div>
+
+    <div class="ga-body-bg">
+      <div class="guide-body guide-body--arcanum">
+        <section class="guide-section">
+          <h2 class="guide-section-title">Quick Read</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">The whole mode in one line</h3>
+            <p class="guide-card-subheading">
+              A shark floats in the middle of the board with animal tiles bobbing around it. You tap to blow wind that lifts the tiles
+              upward, and when one drifts into the shark it gets eaten. Animal tiles pay Feast Coins; taking the Optional unlocks a
+              free board reset.
+            </p>
+            <div class="guide-overview-grid">
+              {overview.map((item) => (
+                <div class="guide-overview-item">
+                  <div class="guide-overview-label">{item.label}</div>
+                  <div class="guide-overview-value">{item.value}</div>
+                </div>
+              ))}
+            </div>
+            <div class="ga-verdict-split">
+              <div class="ga-verdict">
+                <span class="ga-verdict-who">Early game</span>
+                <p>Just play the boards. It takes only 200 coins to grab all four headline heroes, and they are early-roster units,
+                  so this is the one cycle where they are worth your whole budget. Favour Cattle when you can.</p>
+              </div>
+              <div class="ga-verdict ga-verdict--alt">
+                <span class="ga-verdict-who">Everyone else</span>
+                <p>Take the Optional whenever it appears, reset the board for free, and otherwise feed the shark a 3-coin Cattle.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">How A Run Works</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">You blow wind, the shark does the grabbing</h3>
+            <p class="guide-card-subheading">
+              One ticket buys one run, and the shark eats exactly one tile before the run ends. There is no aiming a shot and no
+              grabbing by hand. All you do is tap to make wind and let physics carry a tile into the shark's mouth.
+            </p>
+            <div class="ga-steps ga-steps--two">
+              {steps.map((step, index) => (
+                <article class="ga-step">
+                  <img src={step.img} alt="" loading="lazy" />
+                  <div class="ga-step-text">
+                    <span class="ga-step-num">{index + 1}</span>
+                    <h4>{step.title}</h4>
+                    <p>{step.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div class="guide-callout">
+              This is a balancing act, not a reflex test. Too little wind and every tile sinks past the shark; too much and they all
+              overshoot it. The sweet spot floats your target tile up to the shark's height and holds it there until it bites.
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Tiles</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Bigger animal, bigger payout</h3>
+            <p class="guide-card-subheading">
+              The animals float around the shark worth different amounts of coins, and here the bigger animal is worth more, the
+              reverse of the Golden Arcanum and Votive Festival boards. Whatever the shark eats is what you bank, so target the
+              largest animal in reach.
+            </p>
+            <div class="ga-chest-grid">
+              {tiles.map((tile) => (
+                <article class={`ga-chest ${tile.tone}`}>
+                  <img src={icon(tile.art)} alt={`${tile.name} art`} loading="lazy" />
+                  <h4>{tile.name}</h4>
+                  <strong>{tile.payout}</strong>
+                  <p>{tile.note}</p>
+                </article>
+              ))}
+            </div>
+            <div class="guide-callout">
+              The Optional is not a Ship. Once the shark takes the Optional, reset the board for free rather than spending more
+              tickets on the remaining coin animals. When no Optional is available, Cattle is the best coin target.
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Strategy</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Feather the wind, do not spam it</h3>
+            <p class="guide-card-subheading">
+              The shark eats whatever reaches it, so target the Optional first and Cattle second. The
+              trick is that wind is easy to overdo. A burst of taps launches everything past the shark; a single tap barely lifts them.
+              Nudge the tile you want up to the shark's line and let it settle into the bite.
+            </p>
+
+            <div class="ga-rules">
+              <div class="ga-rule">
+                <strong>Optional first, then reset.</strong>
+                <p>Guide the Optional into the shark, then use the free reset immediately. Do not clear the leftover coin animals.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Small taps near the top.</strong>
+                <p>Once your tile is close, ease off. Gentle single taps hold it at the shark's level; a fast burst blows it clean over the top.</p>
+              </div>
+              <div class="ga-rule">
+                <strong>Let idle do the work.</strong>
+                <p>Stop tapping and everything sinks. If your tile has drifted too high, waiting a beat drops it back down into the shark for free.</p>
+              </div>
+            </div>
+            <div class="ga-paths">
+              <article class="ga-path">
+                <header>
+                  <span class="ga-path-tag">Lazy</span>
+                  <h4>Summon x10</h4>
+                </header>
+                <p class="ga-path-when">Ten crafts, one button, no aiming.</p>
+                <ul>
+                  <li>Auto-plays the runs and lets the shark eat whatever ends up nearest, big or small.</li>
+                  <li>Costs one ticket per run, so it saves time and nothing else.</li>
+                  <li>Fine if you are early and just racing to the 200 coins for the four heroes.</li>
+                </ul>
+              </article>
+              <article class="ga-path ga-path--best">
+                <header>
+                  <span class="ga-path-tag">Better</span>
+                  <h4>Steer the shark</h4>
+                </header>
+                <p class="ga-path-when">Same crafts, up to triple the coins.</p>
+                <ul>
+                  <li>Take the Optional and reset for free; otherwise feed the shark a 3-coin Cattle instead of a 1-coin Fish.</li>
+                  <li>Over a cycle that is a large pile of extra coins toward the shop for no extra tickets.</li>
+                  <li>The generous 60-second timer makes it easy to wait for the right bite.</li>
+                </ul>
+              </article>
+            </div>
+            <p class="ga-table-note">
+              Each ticket still counts as one craft. Optional-and-reset improves the reward quality per ticket; when you take a coin
+              animal instead, careful play can still triple the Feast Coins from that run.
+            </p>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Wind</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">A steady lift-and-settle rhythm</h3>
+            <p class="guide-card-subheading">
+              Unlike Votive Festival's increasingly fast hook, Benevolent Feast keeps a familiar rhythm. Taps push the tiles up and
+              easing off lets them settle, so careful adjustments work better than rapid tapping.
+            </p>
+            <div class="ga-mat-grid">
+              {wind.map((w) => (
+                <article class={`ga-mat ga-mat--${w.role}`}>
+                  <div class="ga-mat-body">
+                    <h4>{w.name}</h4>
+                    <p class="ga-mat-shape">{w.detail}</p>
+                    <div class="ga-mat-meta">
+                      <span class="ga-mat-hands">{w.note}</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div class="guide-callout">
+              There is no need to rush a bad bite. Wait for a useful target, make small adjustments, and let the tile settle toward
+              the shark before tapping again.
+            </div>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">Rank Rewards</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Rank matters—set a limit</h3>
+            <p class="guide-card-subheading">
+              Rank rewards belong in an F2P plan. Aim for the next realistic bracket, but do not
+              spend money or burn a large reserve solely to chase a leaderboard position with a smaller incremental return.
+            </p>
+            <div class="ga-rank-lede">
+              <p>
+                Even a modest placement returns useful rewards. Compare the next bracket's extra ticket reward and materials with
+                the tickets needed to reach it, then stop when the incremental reward no longer justifies the cost.
+              </p>
+            </div>
+            <div class="ga-zone-table-wrap">
+              <table class="ga-zone-table ga-rank-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Refining Stone</th>
+                    <th>Totem Keys</th>
+                    <th>Hammer Stone</th>
+                    <th>Votive Ticket</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rankRows.map((row) => (
+                    <tr>
+                      <td class="ga-rank-pos">{row.rank}</td>
+                      <td class={row.refining ? "ga-weight ga-weight--peak" : "ga-rank-none"}>{row.refining || "-"}</td>
+                      <td class={row.totems ? "ga-weight" : "ga-rank-none"}>{row.totems || "-"}</td>
+                      <td class={row.hammer ? "ga-weight" : "ga-rank-none"}>{row.hammer || "-"}</td>
+                      <td class="ga-weight ga-rank-conch">{row.ticket}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="ga-table-note">Lower placement brackets are grouped to keep the table compact.</p>
+          </div>
+        </section>
+
+        <section class="guide-section">
+          <h2 class="guide-section-title">The Shop</h2>
+          <div class="guide-card">
+            <h3 class="guide-card-heading">Buy in value order, best first</h3>
+            <p class="guide-card-subheading">
+              Every row is one purchase per cycle, and the item list is identical to Golden Arcanum and Votive Festival apart from the four
+              heroes. Total saved tickets, any event-specific starting bonus, daily and weekly quests, login and event quests, and shop tickets
+              before choosing a target. There is no universal F2P ceiling because both carry-over and quest completion vary.
+            </p>
+
+            <div class="ga-shop">
+              {shopTiers.map((tier) => (
+                <section class={`ga-shop-group${tier.rank === 1 ? " ga-shop-group--top" : ""}`}>
+                  <header class="ga-shop-head">
+                    <span class="ga-shop-rank">{tier.rank}</span>
+                    <h4>{tier.title}</h4>
+                  </header>
+                  <p class="ga-shop-verdict">{tier.verdict}</p>
+                  <ul class="ga-shop-rows">
+                    {tier.rows.map((row) => (
+                      <li class="ga-shop-row">
+                        <span class="ga-shop-item">
+                          {row.hero ? <a href={`/heroes/${row.hero}`}>{row.name}</a> : row.name}
+                        </span>
+                        <span class="ga-shop-meta">
+                          <span class="ga-gate">
+                            {row.gate > 0 ? `${row.gate} crafts` : "no gate"}
+                          </span>
+                          <span class="ga-shop-cost">{row.cost}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+
+            <div class="ga-trap">
+              <span class="ga-trap-kicker">The part that catches people out</span>
+              <h4>Use harvest cycles and push cycles</h4>
+              <p>
+                Feast Coins and unused tickets carry over; crafts and shop gates reset. If the next useful gate or rank bracket is
+                out of reach, stop after a worthwhile milestone and bank the rest. In a later push cycle, combine the reserve with
+                daily, weekly, login and event quest rewards plus any applicable starting bonus. Use the free Optional reset to improve
+                the board, and reassess your target whenever a quest adds more tickets.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>
