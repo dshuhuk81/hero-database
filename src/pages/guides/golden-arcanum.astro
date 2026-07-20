@@ -31,9 +31,8 @@ const tryEconomy = [
   { source: "Gem Pack", amount: "10 max", note: "300 Elysian Gems buys one, capped at 10 a week. Gets you near 130, still short of 150.", free: false },
 ];
 
-// Pool economics. weekly_activities_reward_pool.json -> 200320002: 49 standard pools of
-// 3x Big + 4x Middle + 2x Small + 1x Optional. Quality totals across the event (156/208/104/50)
-// match the hardcoded map in the client's DTWeeklyActivitiesRewardPool, so 50 Optionals is exact.
+// Pool economics: 49 standard pools of 3x Big + 4x Middle + 2x Small + 1x Optional.
+// Quality totals across the event are 156/208/104/50, so 50 Optionals is exact.
 const poolFacts = [
   { label: "Board size", value: "10 chests", note: "Three Big, four Middle, two Small, one Optional." },
   { label: "Coins per board", value: "17", note: "If you drain all ten. That is 1.7 coins per craft." },
@@ -74,11 +73,9 @@ const chests = [
   },
 ];
 
-// weekly_activities_alchemy_mat.json -> weekly_activities_path_point.json.
 // "climb" is the net vertical displacement of the path's end point from its start.
 // Ordered by how far up the board each shape carries you, longest first.
-// Shapes read from weekly_activities_path_point.json; "hands" is how many of the
-// 51 live rounds offer that form.
+// "hands" is how many of the 51 live rounds offer that form.
 const materials = [
   { name: "Frog Leg", asset: "A_UI_Alchemy_FrogLeg_Icon.png", hands: 42, shape: "Wide zig-zag, climbs the furthest", role: "climb" },
   { name: "Monster Tooth", asset: "A_UI_Alchemy_MonsterTooth_Icon.png", hands: 29, shape: "Long arc that lands back on your line", role: "climb" },
@@ -213,7 +210,7 @@ const PRIORITY_LABEL = {
   filler: "Filler",
 };
 
-// weekly_activities_rank.json -> 200320002. Verified against the in-game Rank Rewards screen.
+// Verified against the in-game Rank Rewards screen.
 // Elixirs cut off past rank 200; the Conch tail runs all the way to 10001+.
 const rankRows = [
   { rank: "1", eternity: 100, apotheosis: 100, genesis: 50, conch: 50 },
@@ -231,8 +228,7 @@ const rankRows = [
   { rank: "10001+", eternity: 0, apotheosis: 0, genesis: 0, conch: 1 },
 ];
 
-// weekly_reward_self.json -> 200320002. The list grows with the highest evolution any hero you
-// have ever owned reached (UIChangeOptionalItem checks max_evo against each row's quality_id),
+// The list grows with the highest evolution any hero you have ever owned reached,
 // so a developed roster sees all six.
 const selfSelect = [
   { item: "Eternity Elixir", qty: "x2", best: true },
