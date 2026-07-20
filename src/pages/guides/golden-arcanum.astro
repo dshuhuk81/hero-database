@@ -94,7 +94,7 @@ const shopTiers = [
     ],
   },
   {
-    rank: 2,
+    rank: 4,
     title: "Totem keys & Star Chest",
     verdict: "Totem keys drop in amount each row, so buy top down. The Star Chest is a solid one-off.",
     rows: [
@@ -117,7 +117,7 @@ const shopTiers = [
     ],
   },
   {
-    rank: 4,
+    rank: 2,
     title: "Heroes & Plumes",
     verdict: "Heroes only help if your roster is genuinely thin, and even then not by much. Plumes have no gate, so anyone can grab them.",
     rows: [
@@ -147,7 +147,7 @@ const shopTiers = [
       { name: "2h Upgrade Mats Selector x2", cost: 5, gate: 0 },
     ],
   },
-];
+].sort((a, b) => a.rank - b.rank);
 
 // Verified against the in-game Rank Rewards screen.
 // Elixirs cut off past rank 200; the Conch tail runs all the way to 10001+.

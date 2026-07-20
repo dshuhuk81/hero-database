@@ -63,7 +63,7 @@ const shopTiers = [
     ],
   },
   {
-    rank: 2,
+    rank: 4,
     title: "Totem keys & Star Chest",
     verdict: "Totem keys drop in amount each row, so buy top down. The Star Chest is a solid one-off.",
     rows: [
@@ -86,7 +86,7 @@ const shopTiers = [
     ],
   },
   {
-    rank: 4,
+    rank: 2,
     title: "Heroes & Plumes",
     verdict: "Heroes are worthwhile when they improve your roster; otherwise keep the coins for stronger materials.",
     rows: [
@@ -116,7 +116,7 @@ const shopTiers = [
       { name: "2h Upgrade Mats Selector x2", cost: 5, gate: 0 },
     ],
   },
-];
+].sort((a, b) => a.rank - b.rank);
 
 const rankRows = [
   { rank: "1", refining: 10, totems: 40, hammer: 20, ticket: 50 },
