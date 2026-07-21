@@ -4,7 +4,11 @@ import Base from "../../layouts/Base.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
 const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const heroCardImage = (id: string, width = 240) => (
+  `${R2_BASE}/heroes/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`
+);
 const skillImage = (id: string) => `${R2_BASE}/skills/idunn_${id}.webp`;
 const virtueImage = (id: string, suffix: string) => `${R2_BASE}/images/virtues/${id}${suffix}.png`;
 
@@ -51,7 +55,7 @@ const skills = [
     name: "Divine Protection Moment",
     badge: "Skill 4 - Passive",
     description: "Passive: When Idunn is about to die, she summons Golden Apple to shield herself, gaining a shield equal to 75% of max HP for 5 seconds. During the effect, the shield is converted into HP at a rate of 20% of max HP per second. This effect can only trigger once per battle.",
-    takeaway: "This automatic, once-per-battle effect saves Idunn herself—not an ally—and may buy time for one more support cast.",
+    takeaway: "This automatic, once-per-battle effect saves Idunn herself, not an ally, and may buy time for one more support cast.",
     upgrades: [
       { level: "Lv 2", text: "Shield increased to 100% of max HP." },
       { level: "Lv 3", text: "Damage taken while the shield lasts is reduced by 70%." },
@@ -63,13 +67,13 @@ const skills = [
 const relic = {
   name: "Eternal Fruit",
   badge: "Relic",
-  levelBadge: "Level 30",
+  levelBadge: "Rec. Relic 30",
   description: "If the Ultimate's target is an ally with Golden Apple, they gain an additional 40% of Idunn's ATK for 10 seconds.",
   takeaway: "Each Ultimate turns the Apple bearer's protection window into an offensive one, with higher Relic levels adding CRIT buffs and Super Armor.",
   upgrades: [
-    { level: "Lv 2", text: "The target also gains 30% CRIT Rate for 10 seconds." },
-    { level: "Lv 3", text: "The target gains Super Armor for 10 seconds." },
-    { level: "Lv 4", text: "The target also gains 30% CRIT DMG for 10 seconds." },
+    { level: "Relic 10", text: "The target also gains 30% CRIT Rate for 10 seconds." },
+    { level: "Relic 20", text: "The target gains Super Armor for 10 seconds." },
+    { level: "Relic 30", text: "The target also gains 30% CRIT DMG for 10 seconds." },
   ],
 };
 
@@ -116,7 +120,7 @@ const counters = [
 ];
 
 const comparisons = [
-  { label: "vs Cancer (Hearts, S)", text: "Cancer gives the whole frontline Energy and Super Armor. Idunn gives one ally far more, but only one. In PvP the CN sheet is blunt: Idunn does not replace Cancer, she is a second support next to her." },
+  { label: "vs Cancer (Hearts, S)", text: "Cancer gives the whole frontline Energy and Super Armor. Idunn gives one ally far more, but only one. In PvP she does not compete with Cancer for the same slot; she joins the team next to her." },
   { label: "vs Yuelao (Hearts, S)", text: "Yuelao buffs and damage-shares across a comp, which is why Main Spire still wants him first. Idunn is the pick when a single frontliner, not the whole team, is the thing that must survive." },
   { label: "vs Hephaestus (Hearts, S)", text: "Hephaestus supports the whole field with Energy, healing, enemy debuffs, and late-fight team buffs. Idunn is narrower and faster: choose her when one frontline carry needs immediate, concentrated protection." },
   { label: "vs Caishen (Hearts, S+)", text: "Caishen is the stronger general Energy battery and emergency healer for multiple allies. Idunn offers less team-wide tempo, but gives one chosen carry a much stronger offensive and defensive package." },
@@ -232,13 +236,20 @@ const virtues = [
       <h2 class="guide-section-title">The Golden Apple Plan</h2>
       <div class="guide-card guide-apple-card">
         <h3 class="guide-card-heading">Position first; every other effect follows</h3>
-        <p class="guide-card-subheading">Golden Apple is assigned at combat start to the frontline ally closest to Idunn. The formation decides who receives the entire package.</p>
-        <div class="guide-apple-path">
-          <div class="guide-apple-step"><span class="guide-apple-number">1</span><strong>Place Idunn</strong><p>Keep her closest to the frontline carry you actually want to empower.</p></div>
-          <div class="guide-apple-arrow" aria-hidden="true">&rarr;</div>
-          <div class="guide-apple-step guide-apple-step--core"><span class="guide-apple-number">2</span><strong>Golden Apple</strong><p>The chosen ally gains part of Idunn's ATK, HP, Armor, and M-RES.</p></div>
-          <div class="guide-apple-arrow" aria-hidden="true">&rarr;</div>
-          <div class="guide-apple-step"><span class="guide-apple-number">3</span><strong>Protect the window</strong><p>Water Blessing Oath prioritizes that ally; Vitality Renewed heals them again; the Relic adds offensive buffs.</p></div>
+        <p class="guide-card-subheading">Golden Apple is assigned at combat start to the frontline ally closest to Idunn: the chosen ally gains part of her ATK, HP, Armor, and M-RES, Water Blessing Oath prioritizes them, Vitality Renewed heals them again, and the Relic adds offensive buffs. The formation decides who receives the entire package.</p>
+        <div class="guide-formation" role="img" aria-label="Formation example: two front slots, three back slots. Idunn stands in the back slot closest to the carry in the front row.">
+          <div class="guide-formation-label">Enemy side</div>
+          <div class="guide-formation-board">
+            <div class="guide-formation-slot guide-formation-slot--carry">Carry<span>gets the Apple</span></div>
+            <div class="guide-formation-slot">Frontliner</div>
+            <div class="guide-formation-spacer" aria-hidden="true"></div>
+            <div class="guide-formation-arrow" aria-hidden="true">&uarr;</div>
+            <div class="guide-formation-spacer" aria-hidden="true"></div>
+            <div class="guide-formation-spacer" aria-hidden="true"></div>
+            <div class="guide-formation-slot guide-formation-slot--idunn">Idunn<span>closest to carry</span></div>
+            <div class="guide-formation-slot">Support</div>
+            <div class="guide-formation-slot">Damage</div>
+          </div>
         </div>
         <div class="guide-apple-rule"><strong>Formation rule:</strong> if another frontline ally stands closer, that ally takes Golden Apple. Treat the nearest slot as part of Idunn's build, not a cosmetic choice.</div>
       </div>
@@ -288,7 +299,7 @@ const virtues = [
     <section class="guide-section">
       <h2 class="guide-section-title">Relic Breakpoints</h2>
       <div class="guide-apple-breakpoints">
-        <div class="guide-apple-breakpoint"><span>Relic 4</span><strong>ATK window</strong><p>The Apple bearer gains 40% of Idunn's ATK after being targeted by her Ultimate.</p></div>
+        <div class="guide-apple-breakpoint"><span>Relic 1</span><strong>ATK window</strong><p>The Apple bearer gains 40% of Idunn's ATK after being targeted by her Ultimate.</p></div>
         <div class="guide-apple-breakpoint"><span>Relic 10</span><strong>Damage spike</strong><p>Adds 30% CRIT Rate for 10 seconds. This is the entry point where she starts paying off.</p></div>
         <div class="guide-apple-breakpoint"><span>Relic 20</span><strong>Utility spike</strong><p>Adds Super Armor so Control is less likely to waste the window.</p></div>
         <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Relic 30</span><strong>The Boss breakpoint</strong><p>Adds 30% CRIT DMG to the carry. This is the level that makes her a Boss pick, not a nice-to-have.</p></div>
@@ -298,12 +309,12 @@ const virtues = [
     <section class="guide-section">
       <h2 class="guide-section-title">Where She Works</h2>
       <div class="guide-card">
-        <h3 class="guide-card-heading">Boss is her best room, Spire is her worst</h3>
+        <h3 class="guide-card-heading">Boss fights are where she shines</h3>
         <div class="guide-overview-grid">
-          <div class="guide-overview-item"><div class="guide-overview-label">Boss &middot; S at Relic 30</div><div class="guide-overview-value">Her ideal fight: long, single-target, no AoE sweep and no dive, so one protected damage dealer is exactly the right shape of value. The rating assumes Relic 30 - without the CRIT DMG buff she is not really a Boss pick.</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Campaign &amp; Rift &middot; A</div><div class="guide-overview-value">Strong when one durable carry anchors a longer fight; weaker into heavy AoE or backline dive.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Boss &middot; S at Relic 30</div><div class="guide-overview-value">Her ideal fight: long and single-target, with no AoE sweeps and no backline dives. Keeping one damage dealer alive and buffed is exactly what a boss fight rewards. The rating assumes Relic 30 - without the CRIT DMG buff she is not really a Boss pick.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Campaign &amp; Rift &middot; A</div><div class="guide-overview-value">Strong when one durable carry anchors a longer fight; weaker against heavy AoE or backline dives.</div></div>
           <div class="guide-overview-item"><div class="guide-overview-label">Arena &middot; A</div><div class="guide-overview-value">Real value in the right formation, but she is a second support, not a replacement for Cancer.</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Main Spire &middot; B</div><div class="guide-overview-value">Occasional pick only. Yuelao covers the Hearts support slot better; bring Idunn when a specific frontliner has to survive.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Spire &middot; B</div><div class="guide-overview-value">In the Main Spire the hardest floors call for broader supports, and Yuelao covers the Hearts slot better. In the Hearts-only faction Spire she can fit, but Hearts is full of strong supports, so she is rarely the first pick there either.</div></div>
         </div>
       </div>
     </section>
@@ -318,7 +329,7 @@ const virtues = [
       <div class="guide-hero-grid">
         {synergies.map((hero) => (
           <div class="guide-hero-card">
-            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
+            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroCardImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
             <div class="guide-hero-card-name">{hero.name}</div>
             <div class="guide-hero-card-note">{hero.note}</div>
           </div>
@@ -348,7 +359,7 @@ const virtues = [
       <div class="guide-hero-grid">
         {counters.map((hero) => (
           <div class="guide-hero-card">
-            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
+            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroCardImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
             <div class="guide-hero-card-name">{hero.name}</div>
             <div class="guide-hero-card-note">{hero.note}</div>
           </div>
