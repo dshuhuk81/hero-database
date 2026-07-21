@@ -16,10 +16,10 @@
         "zh": "战痕凝煞"
       },
       "description": {
-        "de": "Herakles speichert allen erlittenen SCH, bis zu einem Maximum von 80 % seiner max. LP. Bei Freisetzung fügt er den Feinden im Umkreis von 3 Metern echten SCH in Höhe von 100 % des gespeicherten SCH zu.",
-        "es": "Heracles registra todo el daño recibido, hasta un máximo del 80 % de sus PS máximos. Al liberarlo, inflige daño verdadero equivalente al 100 % del daño registrado a los enemigos en un radio de 3 metros.",
-        "ru": "Геракл накапливает весь полученный DMG, максимум до 80% своей макс. HP. При высвобождении он наносит врагам в радиусе 3 метров истинный DMG в размере 100% накопленного DMG.",
-        "en": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals True DMG equal to 100% of the recorded DMG to enemies within 3 meters.",
+        "de": "Herakles speichert allen erlittenen SCH, bis zu einem Maximum von 80 % seiner max. LP. Bei Freisetzung fügt er den Feinden im Umkreis von 3 Metern SCH in Höhe von 20 % seiner max. LP +100 % des gespeicherten SCH zu.",
+        "es": "Heracles registra todo el daño recibido, hasta un máximo del 80 % de sus PS máximos. Al liberarlo, inflige un daño igual al 20 % de sus PS máximos + el 100 % del daño registrado a los enemigos en un radio de 3 metros.",
+        "ru": "Геракл накапливает весь полученный DMG, максимум до 80% своей макс. HP. При высвобождении он наносит врагам в радиусе 3 метров DMG, равный 20% его макс. HP плюс 100% накопленного DMG.",
+        "en": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals DMG equal to 20% of his max HP +100% of the recorded DMG to enemies within 3 meters.",
         "zh": "赫拉克勒斯记录自身受到的所有伤害，记录值最大为自身80%最大生命值。释放时对自身周围3米敌人造成记录伤害值100%的真实伤害。"
       },
       "upgrades": {
@@ -94,10 +94,10 @@
         "zh": "神躯觉醒"
       },
       "description": {
-        "de": "Beim Betreten des Schlachtfelds erhöht Herakles seine max. LP um 30 % und wandelt jede Sek. 5 % seines ANG in 2,5 % max. LP um.",
-        "es": "Al entrar al campo de batalla, Heracles aumenta sus PS máx. un 30 % y convierte un 5 % de su ATQ en un 2,5 % de PS máx. por segundo.",
-        "ru": "При входе на поле боя Геракл увеличивает свою макс. HP на 30% и каждую секунду преобразует 5% своего ATK в 2,5% макс. HP.",
-        "en": "Upon entering the battlefield, Heracles increases his max HP by 30% and converts 5% of his ATK to 2.5% max HP every second.",
+        "de": "Beim Betreten des Schlachtfelds erhöht Herakles seine max. LP um 10 % und wandelt jede Sek. 5 % seines ANG in 2,5 % max. LP um.",
+        "es": "Al entrar al campo de batalla, Heracles aumenta sus PS máx. un 10 % y convierte un 5 % de su ATQ en un 2,5 % de PS máx. por segundo.",
+        "ru": "При входе на поле боя Геракл увеличивает свою макс. HP на 10% и каждую секунду преобразует 5% своего ATK в 2,5% макс. HP.",
+        "en": "Upon entering the battlefield, Heracles increases his max HP by 10% and converts 5% of his ATK to 2.5% max HP every second.",
         "zh": "赫拉克勒斯登场时提升自身30%最大生命值，并且每秒将5%攻击力转换为2.5%最大生命值。"
       },
       "upgrades": {
@@ -109,10 +109,10 @@
           "zh": "当攻击力归0时，自身获得20%最大生命值护盾。"
         },
         "level3": {
-          "de": "Erhöht die max. LP auf 50 %.",
-          "es": "Aumenta los PS máx. a un 50 %.",
-          "ru": "Увеличивает макс. HP до 50%. (Открывается на ур. 181)",
-          "en": "Increases max HP to 50%. (Unlocks at Lv.181)",
+          "de": "Erhöht die max. LP auf 15 %.",
+          "es": "Aumenta los PS máx. a un 15 %.",
+          "ru": "Увеличивает макс. HP до 15%. (Открывается на ур. 181)",
+          "en": "Increases max HP to 15%. (Unlocks at Lv.181)",
           "zh": "最大生命值提高50%。"
         },
         "level4": {
@@ -173,18 +173,18 @@
       "zh": "残躯怒吼"
     },
     "description": {
-      "de": "Wird vor dem Fall immun gegen den tödlichen SCH und stellt sofort 20 % der max. LP wieder her. Verringert in den nächsten 5 Sek. den erlittenen SCH um 50 %. Kann nur einmal pro Kampf ausgelöst werden.",
-      "es": "Antes de caer, se vuelve inmune al daño letal y restaura instantáneamente un 20 % de sus PS máx. Durante los siguientes 5s, reduce el daño recibido un 50 %. Solo se puede activar una vez por batalla.",
-      "ru": "Перед падением он становится невосприимчив к смертельному DMG и мгновенно восстанавливает 20% своей макс. HP. В течение следующих 5 с он снижает получаемый DMG на 50%. Может сработать только один раз за бой.",
-      "en": "Before falling, becomes immune to lethal DMG and instantly restores 20% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
+      "de": "Wird vor dem Fall immun gegen den tödlichen SCH und stellt sofort 50 % der max. LP wieder her. Verringert in den nächsten 5 Sek. den erlittenen SCH um 50 %. Kann nur einmal pro Kampf ausgelöst werden.",
+      "es": "Antes de caer, se vuelve inmune al daño letal y restaura instantáneamente un 50 % de sus PS máx. Durante los siguientes 5s, reduce el daño recibido un 50 %. Solo se puede activar una vez por batalla.",
+      "ru": "Перед падением он становится невосприимчив к смертельному DMG и мгновенно восстанавливает 50% своей макс. HP. В течение следующих 5 с он снижает получаемый DMG на 50%. Может сработать только один раз за бой.",
+      "en": "Before falling, becomes immune to lethal DMG and instantly restores 50% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
       "zh": "即将阵亡时，免疫本次伤害并且立即恢复自身20%最大生命值，并在接下来5秒内受到伤害降低50%。每场战斗只能触发一次。"
     },
     "upgrades": {
       "level2": {
-        "de": "Stellt 40 % der max. LP wieder her.",
-        "es": "Restaura un 40 % de los PS máx.",
-        "ru": "Восстанавливает 40% макс. HP. (Открывается на ур. реликвии 10)",
-        "en": "Restores 40% of max HP. (Unlock at Relic Lv.10)",
+        "de": "Stellt 100 % der max. LP wieder her.",
+        "es": "Restaura un 100 % de los PS máx.",
+        "ru": "Восстанавливает 100% макс. HP. (Открывается на ур. реликвии 10)",
+        "en": "Restores 100% of max HP. (Unlock at Relic Lv.10)",
         "zh": "回复40%最大生命值（神器等级10解锁）"
       },
       "level3": {

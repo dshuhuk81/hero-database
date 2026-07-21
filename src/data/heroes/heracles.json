@@ -45,13 +45,13 @@
     {
       "id": "skill_1",
       "name": "Scarred Fury",
-      "description": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals True DMG equal to 100% of the recorded DMG to enemies within 3 meters.",
+      "description": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals DMG equal to 20% of his max HP +100% of the recorded DMG to enemies within 3 meters.",
       "upgrades": {
         "level2": "Grants a shield equal to 30% of the recorded DMG when cast.",
         "level3": "Deals 125% of the recorded DMG.",
         "level4": "Grants a shield equal to 50% of the recorded DMG when cast. (Unlocks at Lv.221)"
       },
-      "damageType": "True",
+      "damageType": "",
       "isUltimate": true
     },
     {
@@ -68,10 +68,10 @@
     {
       "id": "skill_3",
       "name": "Godhood Ascension",
-      "description": "Upon entering the battlefield, Heracles increases his max HP by 30% and converts 5% of his ATK to 2.5% max HP every second.",
+      "description": "Upon entering the battlefield, Heracles increases his max HP by 10% and converts 5% of his ATK to 2.5% max HP every second.",
       "upgrades": {
         "level2": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
-        "level3": "Increases max HP to 50%. (Unlocks at Lv.181)",
+        "level3": "Increases max HP to 15%. (Unlocks at Lv.181)",
         "level4": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)"
       },
       "damageType": "Physical"
@@ -90,9 +90,9 @@
   ],
   "relic": {
     "name": "Defiant Roar",
-    "description": "Before falling, becomes immune to lethal DMG and instantly restores 20% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
+    "description": "Before falling, becomes immune to lethal DMG and instantly restores 50% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
     "upgrades": {
-      "level2": "Restores 40% of max HP. (Unlock at Relic Lv.10)",
+      "level2": "Restores 100% of max HP. (Unlock at Relic Lv.10)",
       "level3": "Restores Energy to full when triggered. (Unlock at Relic Lv.20)",
       "level4": "Reduces DMG taken by 100% for 5s. (Unlock at Relic Lv.30)"
     }
@@ -173,6 +173,80 @@
       ]
     }
   ],
+  "cn": {
+    "captured": "2026-07-21",
+    "source": "CN client text capture (newData/text/captured_text_zh.jsonl, seq 632-648)",
+    "skills": [
+      {
+        "id": "skill_1",
+        "cnName": "战痕凝煞",
+        "values": [
+          {
+            "label": "Release damage formula and type",
+            "field": "damageFormulaAndType",
+            "global": "20% Max HP + 100% recorded DMG (normal DMG)",
+            "cn": "100% recorded DMG (True DMG)",
+            "unit": "",
+            "change": "nerf",
+            "verified": true
+          }
+        ],
+        "notes": [
+          "Global adds 20% of Heracles's Max HP, but the entire release is normal damage. CN omits that additive component and deals 100% of the recorded value as True DMG; this is classified as a Global nerf."
+        ]
+      },
+      {
+        "id": "skill_3",
+        "cnName": "神躯觉醒",
+        "values": [
+          {
+            "label": "Max HP increase on entry",
+            "field": "maxHpPct",
+            "global": 10,
+            "cn": 30,
+            "unit": "%",
+            "change": "nerf",
+            "verified": true
+          },
+          {
+            "label": "Lv.3 Max HP increase",
+            "field": "maxHpPct",
+            "global": 15,
+            "cn": 50,
+            "unit": "%",
+            "change": "nerf",
+            "verified": true
+          }
+        ],
+        "notes": []
+      },
+      {
+        "id": "relic",
+        "cnName": "残躯怒吼",
+        "values": [
+          {
+            "label": "Immediate Max HP recovery",
+            "field": "healPctMaxHp",
+            "global": 50,
+            "cn": 20,
+            "unit": "%",
+            "change": "buff",
+            "verified": true
+          },
+          {
+            "label": "Relic Lv.10 Max HP recovery",
+            "field": "healPctMaxHp",
+            "global": 100,
+            "cn": 40,
+            "unit": "%",
+            "change": "buff",
+            "verified": true
+          }
+        ],
+        "notes": []
+      }
+    ]
+  },
   "synergyPartners": [
     {
       "heroId": "nezha",
