@@ -161,6 +161,37 @@
       ]
     }
   ],
+  "cn": {
+    "captured": "2026-07-21",
+    "source": "CN client text capture (newData/text/captured_text_zh.jsonl)",
+    "skills": [
+      {
+        "id": "relic",
+        "cnName": "神圣洗礼",
+        "values": [
+          {
+            "label": "Relic Lv.30: True DMG per second",
+            "field": "damagePctMaxHp",
+            "global": 5,
+            "cn": 7,
+            "unit": "% Max HP",
+            "change": "nerf",
+            "verified": true
+          },
+          {
+            "label": "Relic Lv.30: True DMG ATK cap",
+            "field": "damageAtkCap",
+            "global": 200,
+            "cn": 300,
+            "unit": "% ATK",
+            "change": "nerf",
+            "verified": true
+          }
+        ],
+        "notes": []
+      }
+    ]
+  },
   "synergyPartners": [
     {
       "heroId": "dionysus",
