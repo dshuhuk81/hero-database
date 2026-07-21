@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
 
-const LOCAL_ONLY_ROUTES = ['/status', '/guides/sacred-vessel-war', '/guides/idun'];
+const LOCAL_ONLY_ROUTES = ['/status', '/guides/sacred-vessel-war'];
 const SITE = 'https://motto-immortal-db.com';
 
 function localOnlyRoutes() {

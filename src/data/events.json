@@ -1,20 +1,20 @@
 {
   "campaigns": [
     {
-      "id": "idun-event",
+      "id": "idunn-event",
       "name": {
-        "en": "Idun Event",
-        "de": "Idun-Event",
-        "es": "Evento de Idun",
-        "ru": "Событие Идун",
+        "en": "Idunn Event",
+        "de": "Idunn-Event",
+        "es": "Evento de Idunn",
+        "ru": "Событие Идунн",
         "zh": "伊登活动"
       },
-      "hero": "idun",
+      "hero": "idunn",
       "description": {
-        "en": "Complete PVE campaign stages for the Idun event.",
-        "de": "Schließe die PvE-Kampagnenstufen für das Idun-Event ab.",
-        "es": "Completa las fases de campaña PvE del evento de Idun.",
-        "ru": "Пройдите этапы PvE-кампании события Идун.",
+        "en": "Complete PVE campaign stages for the Idunn event.",
+        "de": "Schließe die PvE-Kampagnenstufen für das Idunn-Event ab.",
+        "es": "Completa las fases de campaña PvE del evento de Idunn.",
+        "ru": "Пройдите этапы PvE-кампании события Идунн.",
         "zh": "完成伊登活动的 PVE 战役关卡。"
       },
       "stages": [
@@ -28,7 +28,7 @@
             "zh": "1. 巨浪带来了你"
           },
           "composition": {
-            "front": ["idun", "taurus"],
+            "front": ["idunn", "taurus"],
             "back": ["sagittarius", "cancer", "libra"]
           }
         },
@@ -42,7 +42,7 @@
             "zh": "2. 凄凉的水晶"
           },
           "composition": {
-            "front": ["taurus", "idun"],
+            "front": ["taurus", "idunn"],
             "back": ["sagittarius"]
           }
         },
@@ -56,7 +56,7 @@
             "zh": "3. 痛苦的太阳"
           },
           "composition": {
-            "front": ["idun", "libra"],
+            "front": ["idunn", "libra"],
             "back": ["virgo", "cancer", "gemini"]
           }
         },
@@ -71,7 +71,7 @@
           },
           "composition": {
             "front": ["poseidon", "khepri"],
-            "back": ["idun", "skadi", "tefnut"]
+            "back": ["idunn", "skadi", "tefnut"]
           }
         },
         {
@@ -84,7 +84,7 @@
             "zh": "5. 无人应答的呼唤"
           },
           "composition": {
-            "front": ["momus", "idun"],
+            "front": ["momus", "idunn"],
             "back": ["tefnut", "skadi", "poseidon"]
           }
         },
@@ -98,7 +98,7 @@
             "zh": "6. 使许多个黄昏暗淡"
           },
           "composition": {
-            "front": ["idun", "khepri"],
+            "front": ["idunn", "khepri"],
             "back": ["skadi", "poseidon", "tefnut"]
           }
         },
@@ -112,7 +112,7 @@
             "zh": "7. 在这里，等一个不会来的人"
           },
           "composition": {
-            "front": ["poseidon", "idun"],
+            "front": ["poseidon", "idunn"],
             "back": ["khepri", "skadi", "tefnut"]
           }
         },

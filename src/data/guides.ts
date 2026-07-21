@@ -43,11 +43,9 @@ export const guides: GuideEntry[] = [
     updated: "2026-07-20",
   },
   {
-    heroId: "eden",
-    href: "/guides/idun",
-    localOnly: true,
-    title: "Idun",
-    hook: "Golden Apple specialist for aggressive frontline carries.",
+    heroId: "idunn",
+    href: "/guides/idunn",
+    title: "Idunn"
   },
   {
     href: "/guides/divine-throne",

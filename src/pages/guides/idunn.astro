@@ -1,0 +1,433 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const skillImage = (id: string) => `${R2_BASE}/skills/idunn_${id}.webp`;
+const virtueImage = (id: string, suffix: string) => `${R2_BASE}/images/virtues/${id}${suffix}.png`;
+
+const skills = [
+  {
+    id: "skill_1",
+    name: "Water Blessing Oath",
+    badge: "Skill 1 - Ultimate",
+    isUlt: true,
+    description: "Protects the frontmost ally, granting a shield equal to 400% ATK for 6 seconds, and reduces damage taken by 20% for the next 6 seconds. Prioritizes allies with Golden Apple.",
+    takeaway: "In manual play, hold it for incoming burst instead of wasting the Shield early; ATK increases the Shield while damage reduction covers the full protection window.",
+    upgrades: [
+      { level: "Lv 2", text: "Shield duration and damage reduction duration increased to 8 seconds." },
+      { level: "Lv 3", text: "Damage reduction during the effect increased to 40%." },
+      { level: "Lv 4", text: "Shield increased to 500% ATK." },
+    ],
+  },
+  {
+    id: "skill_2",
+    name: "Vitality Renewed",
+    badge: "Skill 2",
+    description: "Bless the most injured ally, restoring 250% ATK + 15% of the target's missing HP. This effect is cast one additional time on allies who have Golden Apple.",
+    takeaway: "The main heal automatically targets the most injured ally, while the extra cast supports the Apple bearer; its missing-HP scaling is strongest on high-HP allies.",
+    upgrades: [
+      { level: "Lv 2", text: "Healing increased to 270% ATK." },
+      { level: "Lv 3", text: "Restores 25% of the target's missing HP." },
+      { level: "Lv 4", text: "Healing increased to 300% ATK." },
+    ],
+  },
+  {
+    id: "skill_3",
+    name: "Divine Share",
+    badge: "Skill 3 - Passive",
+    description: "Passive: In battle, Idunn grants Golden Apple to the nearest front-row ally. Golden Apple: Gains 10% of Idunn's ATK, HP, Armor, and M-RES.",
+    takeaway: "Formation selects Idunn's carry: place her closest to the intended front-row target, then build ATK and defensive stats that benefit them both.",
+    upgrades: [
+      { level: "Lv 2", text: "The target gains 15% of Idunn's ATK, HP, Armor, and M-RES." },
+      { level: "Lv 3", text: "While the Golden Apple target is alive, Idunn takes 50% less damage." },
+      { level: "Lv 4", text: "The target gains 20% of Idunn's ATK, HP, Armor, and M-RES." },
+    ],
+  },
+  {
+    id: "skill_4",
+    name: "Divine Protection Moment",
+    badge: "Skill 4 - Passive",
+    description: "Passive: When Idunn is about to die, she summons Golden Apple to shield herself, gaining a shield equal to 75% of max HP for 5 seconds. During the effect, the shield is converted into HP at a rate of 20% of max HP per second. This effect can only trigger once per battle.",
+    takeaway: "This automatic, once-per-battle effect saves Idunn herself—not an ally—and may buy time for one more support cast.",
+    upgrades: [
+      { level: "Lv 2", text: "Shield increased to 100% of max HP." },
+      { level: "Lv 3", text: "Damage taken while the shield lasts is reduced by 70%." },
+      { level: "Lv 4", text: "Shield increased to 125% of max HP." },
+    ],
+  },
+];
+
+const relic = {
+  name: "Eternal Fruit",
+  badge: "Relic",
+  levelBadge: "Level 30",
+  description: "If the Ultimate's target is an ally with Golden Apple, they gain an additional 40% of Idunn's ATK for 10 seconds.",
+  takeaway: "Each Ultimate turns the Apple bearer's protection window into an offensive one, with higher Relic levels adding CRIT buffs and Super Armor.",
+  upgrades: [
+    { level: "Lv 2", text: "The target also gains 30% CRIT Rate for 10 seconds." },
+    { level: "Lv 3", text: "The target gains Super Armor for 10 seconds." },
+    { level: "Lv 4", text: "The target also gains 30% CRIT DMG for 10 seconds." },
+  ],
+};
+
+const guideRatings = [
+  { label: "Overall", value: "S" },
+  { label: "Boss", value: "S" },
+  { label: "PvP", value: "A" },
+  { label: "PvE", value: "A" },
+];
+
+const strengths = [
+  "Concentrates shields, damage reduction, healing, and offensive Relic buffs on one frontline carry",
+  "Golden Apple shares four useful stats at once: ATK, HP, Armor, and M-RES",
+  "Missing-HP healing scales well with durable carries and large health pools",
+  "One-time self-preservation makes her harder to remove with the first burst",
+  "Relic 20 gives the chosen carry Super Armor during Idunn's Ultimate window",
+  "At Relic 30 she adds CRIT Rate and CRIT DMG on top of the protection, which is what makes her a Boss pick",
+];
+
+const weaknesses = [
+  "Most of her value is concentrated on one ally rather than spread across the team",
+  "The wrong nearby frontline unit can intercept Golden Apple at combat start",
+  "She has no hard Crowd Control, defense shred, or broad damage amplification",
+  "Crowd Control can disrupt the protected carry before Relic 20",
+  "AoE pressure and backline dive can bypass the ally she is built to protect",
+  "Her self-preservation triggers only once and does not protect her from renewed focus",
+  "Her Boss value is gated behind Relic 30; below that she keeps a carry alive but barely moves the damage total",
+];
+
+const synergies = [
+  { id: "nut", name: "Nut", note: "Prime target: frontline damage backed by stats, healing, shield, and CRIT buffs" },
+  { id: "nezha", name: "Nezha", note: "Extra durability and a protected burst window for an exposed frontline carry" },
+  { id: "heracles", name: "Heracles", note: "Golden Apple protects his frontline ramp-up and adds Super Armor during the Ultimate" },
+  { id: "zeus", name: "Zeus", note: "Shared ATK and Relic buffs strengthen his damage while the shield protects an aggressive frontline position" },
+  { id: "hladgunnr", name: "Hladgunnr", note: "The Hearts-locked Apple carrier: a pure meatshield that turns her stat transfer into real bulk" },
+  { id: "cancer", name: "Cancer", note: "Adds Energy and layered frontline protection so Idunn can maintain her carry more reliably" },
+];
+
+const counters = [
+  { id: "capricorn", name: "Capricorn", note: "Swaps positions at combat start, which can break the formation Golden Apple was assigned around" },
+  { id: "pan", name: "Pan", note: "Silences an enemy whose Energy passes 99%, denying the Ultimate at the exact moment it is ready" },
+  { id: "nyx", name: "Nyx", note: "Opens on the mirrored slot with a stun and an 8s Energy lock, delaying the protection window" },
+  { id: "anubis", name: "Anubis", note: "Dives past the protected frontliner and cuts healing received by 50%" },
+];
+
+const comparisons = [
+  { label: "vs Cancer (Hearts, S)", text: "Cancer gives the whole frontline Energy and Super Armor. Idunn gives one ally far more, but only one. In PvP the CN sheet is blunt: Idunn does not replace Cancer, she is a second support next to her." },
+  { label: "vs Yuelao (Hearts, S)", text: "Yuelao buffs and damage-shares across a comp, which is why Main Spire still wants him first. Idunn is the pick when a single frontliner, not the whole team, is the thing that must survive." },
+  { label: "vs Hephaestus (Hearts, S)", text: "Hephaestus supports the whole field with Energy, healing, enemy debuffs, and late-fight team buffs. Idunn is narrower and faster: choose her when one frontline carry needs immediate, concentrated protection." },
+  { label: "vs Caishen (Hearts, S+)", text: "Caishen is the stronger general Energy battery and emergency healer for multiple allies. Idunn offers less team-wide tempo, but gives one chosen carry a much stronger offensive and defensive package." },
+];
+
+const virtues = [
+  {
+    name: "Sacrifice",
+    rarity: "Gold",
+    rarityClass: "guide-virtue-rarity--gold",
+    assetId: "sacrificeI",
+    assetSuffix: "_elite",
+    bonuses: [
+      { label: "2-Piece", text: "HP +10% at combat start" },
+      { label: "4-Piece", text: "max HP +30% at combat start; current HP remains unchanged" },
+    ],
+    note: "A direct way to enlarge her own health pool and strengthen the defensive side of Golden Apple's stat transfer.",
+  },
+  {
+    name: "Stoic",
+    rarity: "Gold",
+    rarityClass: "guide-virtue-rarity--gold",
+    assetId: "stoicI",
+    assetSuffix: "_elite",
+    bonuses: [
+      { label: "2-Piece", text: "HP +10% at combat start" },
+      { label: "4-Piece", text: "Damage received and dealt -30%" },
+    ],
+    note: "The damage penalty barely matters to a pure support, while the durability helps her survive long enough to cast and reach her safeguard.",
+  },
+  {
+    name: "Grace",
+    rarity: "Gold",
+    rarityClass: "guide-virtue-rarity--gold",
+    assetId: "graceI",
+    assetSuffix: "_elite",
+    bonuses: [
+      { label: "2-Piece", text: "Healing Effectiveness +15% at combat start" },
+      { label: "4-Piece", text: "Healing +30% on allies below 50% HP" },
+    ],
+    note: "Aimed straight at Vitality Renewed: the 4-piece fires exactly when the missing-HP portion of her heal is already at its largest.",
+  },
+  {
+    name: "Defiance",
+    rarity: "Red",
+    rarityClass: "guide-virtue-rarity--red",
+    assetId: "defianceI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "HP +15% at combat start" },
+      { label: "4-Piece", text: "At 50% HP, dispel debuffs and Control; restore 10% max HP/s for 5s once per battle" },
+    ],
+    note: "Adds a second survival layer and can clear the control that would otherwise keep her from protecting the Apple carrier.",
+  },
+];
+---
+
+<Base title="Idunn Guide - Golden Apple Support | Motto Immortal" description="Complete Idunn guide: Golden Apple positioning, skills, Relic breakpoints, frontline carry synergies, counters, gear stats, and virtues.">
+  <div class="guide-banner guide-banner--idunn">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("idunn")}'); --guide-banner-y: 22%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span>Guides</span>
+    </a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Idunn</h1>
+      <p class="guide-hero-subtitle">Goddess of Youth &middot; Keeper of the Golden Apple</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/hearts.webp`} alt="Hearts" />Hearts</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/support.webp`} alt="Support" />Support</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--idunn">
+    <section class="guide-section">
+      <h2 class="guide-section-title">Meet Idunn</h2>
+      <div class="guide-card guide-idunn-intro">
+        <img class="guide-idunn-intro-apple" src="/apple.png" alt="Golden Apple" width="111" height="136" />
+        <div>
+          <h3 class="guide-card-heading">Renew one ally, not the whole team</h3>
+          <p class="guide-card-subheading">Idunn is the Goddess of Youth and a Support Deity built around vitality, renewal, and protection. She gives Golden Apple to one frontline ally, shares her stats with them, and layers healing, a shield, and damage reduction onto that chosen hero. She is a specialist for keeping one win condition alive, not a universal team healer.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Quick Overview</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Build around one golden target</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Role</div><div class="guide-overview-value">Single-carry frontline support</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Best in</div><div class="guide-overview-value">Boss, Campaign, Rift, Arena</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Needs</div><div class="guide-overview-value">Exact positioning, durable frontline carry</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Relic</div><div class="guide-overview-value">10 entry, 20 utility spike, 30 required for Boss</div></div>
+        </div>
+        <p class="guide-quick-verdict">Pick Idunn when a durable frontline carry decides the battle. Avoid her when the whole team needs equal healing or the enemy can ignore your frontline.</p>
+        <div class="guide-rating-grid" aria-label="Idunn ratings">
+          {guideRatings.map((rating) => (
+            <div class="guide-rating-tile" data-rating={rating.value}>
+              <span>{rating.label}</span>
+              <strong>{rating.value}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">The Golden Apple Plan</h2>
+      <div class="guide-card guide-apple-card">
+        <h3 class="guide-card-heading">Position first; every other effect follows</h3>
+        <p class="guide-card-subheading">Golden Apple is assigned at combat start to the frontline ally closest to Idunn. The formation decides who receives the entire package.</p>
+        <div class="guide-apple-path">
+          <div class="guide-apple-step"><span class="guide-apple-number">1</span><strong>Place Idunn</strong><p>Keep her closest to the frontline carry you actually want to empower.</p></div>
+          <div class="guide-apple-arrow" aria-hidden="true">&rarr;</div>
+          <div class="guide-apple-step guide-apple-step--core"><span class="guide-apple-number">2</span><strong>Golden Apple</strong><p>The chosen ally gains part of Idunn's ATK, HP, Armor, and M-RES.</p></div>
+          <div class="guide-apple-arrow" aria-hidden="true">&rarr;</div>
+          <div class="guide-apple-step"><span class="guide-apple-number">3</span><strong>Protect the window</strong><p>Water Blessing Oath prioritizes that ally; Vitality Renewed heals them again; the Relic adds offensive buffs.</p></div>
+        </div>
+        <div class="guide-apple-rule"><strong>Formation rule:</strong> if another frontline ally stands closer, that ally takes Golden Apple. Treat the nearest slot as part of Idunn's build, not a cosmetic choice.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Skills: What They Mean</h2>
+      <div class="guide-skills-grid">
+        {skills.map((skill) => (
+          <div class="guide-skill-card">
+            <div class="guide-skill-header">
+              <div class="guide-skill-icon" style={`background-image: url('${skillImage(skill.id)}');`} role="img" aria-label={skill.name}></div>
+              <div class="guide-skill-meta"><div class="guide-skill-name">{skill.name}</div><span class={`guide-skill-badge${skill.isUlt ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div>
+            </div>
+            <p class="guide-skill-desc">{skill.description}</p>
+            <div class="guide-skill-upgrades">{skill.upgrades.map((u) => <div class="guide-upgrade"><span class="guide-upgrade-chip">{u.level}</span><span class="guide-upgrade-text">{u.text}</span></div>)}</div>
+            <div class="guide-skill-caption"><strong>In practice:</strong> {skill.takeaway}</div>
+          </div>
+        ))}
+      </div>
+      <div class="guide-skill-card guide-skill-card--relic">
+        <div class="guide-skill-header">
+          <div class="guide-skill-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label={relic.name}></div>
+          <div class="guide-skill-meta">
+            <div class="guide-skill-name">{relic.name}</div>
+            <div class="guide-relic-badges">
+              <span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span>
+              <span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span>
+            </div>
+          </div>
+        </div>
+        <div class="guide-skill-relic-body">
+          <p class="guide-skill-desc">{relic.description}</p>
+          <div class="guide-skill-upgrades guide-skill-upgrades--relic">
+            {relic.upgrades.map((u) => (
+              <div class="guide-upgrade guide-upgrade--relic">
+                <span class="guide-upgrade-chip">{u.level}</span>
+                <span class="guide-upgrade-text">{u.text}</span>
+              </div>
+            ))}
+          </div>
+          <div class="guide-skill-caption"><strong>In practice:</strong> {relic.takeaway}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Relic Breakpoints</h2>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint"><span>Relic 4</span><strong>ATK window</strong><p>The Apple bearer gains 40% of Idunn's ATK after being targeted by her Ultimate.</p></div>
+        <div class="guide-apple-breakpoint"><span>Relic 10</span><strong>Damage spike</strong><p>Adds 30% CRIT Rate for 10 seconds. This is the entry point where she starts paying off.</p></div>
+        <div class="guide-apple-breakpoint"><span>Relic 20</span><strong>Utility spike</strong><p>Adds Super Armor so Control is less likely to waste the window.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Relic 30</span><strong>The Boss breakpoint</strong><p>Adds 30% CRIT DMG to the carry. This is the level that makes her a Boss pick, not a nice-to-have.</p></div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Where She Works</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Boss is her best room, Spire is her worst</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Boss &middot; S at Relic 30</div><div class="guide-overview-value">Her ideal fight: long, single-target, no AoE sweep and no dive, so one protected damage dealer is exactly the right shape of value. The rating assumes Relic 30 - without the CRIT DMG buff she is not really a Boss pick.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Campaign &amp; Rift &middot; A</div><div class="guide-overview-value">Strong when one durable carry anchors a longer fight; weaker into heavy AoE or backline dive.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Arena &middot; A</div><div class="guide-overview-value">Real value in the right formation, but she is a second support, not a replacement for Cancer.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Main Spire &middot; B</div><div class="guide-overview-value">Occasional pick only. Yuelao covers the Hearts support slot better; bring Idunn when a specific frontliner has to survive.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Strengths &amp; Weaknesses</h2>
+      <StrengthWeakness strengths={strengths} weaknesses={weaknesses} />
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Teams &amp; Positioning</h2>
+      <div class="guide-hero-grid">
+        {synergies.map((hero) => (
+          <div class="guide-hero-card">
+            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+      <div class="guide-callout"><strong>Reliable shell:</strong> frontline carry + Idunn + Energy/tempo support + Control + secondary damage. Nut, Nezha, Heracles, Zeus, and Hladgunnr are Apple carriers; Cancer is an enabler. Position Idunn closest to the intended Apple carrier, with the other frontline hero farther from her.</div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Versus the Other Supports</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Where she sits among Hearts support</h3>
+        <p class="guide-card-subheading">Idunn does not compete for the generalist support slot. She competes for the slot next to it.</p>
+        <div class="guide-overview-grid">
+          {comparisons.map((c) => (
+            <div class="guide-overview-item">
+              <div class="guide-overview-label">{c.label}</div>
+              <div class="guide-overview-value">{c.text}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Shut Down By</h2>
+      <div class="guide-hero-grid">
+        {counters.map((hero) => (
+          <div class="guide-hero-card">
+            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Gear &amp; Stats</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Build the stats she shares</h3>
+        <p class="guide-card-subheading">Everything Golden Apple hands over is a percentage of Idunn's own sheet, so her gear is the carry's gear too.</p>
+        <div class="guide-stat-chain">
+          <span class="guide-stat-pill guide-stat-pill--primary">ATK 4-set</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">HP 2-set</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Armor / M-RES</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Control Res</span>
+        </div>
+        <div class="guide-callout"><strong>Default build:</strong> ATK 4-piece plus HP 2-piece. ATK drives the shield, the ATK-based heal, and the Relic buff she hands to the carry; HP drives Divine Protection Moment and the defensive half of the transfer. Her own CRIT and penetration do not advance her support job.</div>
+        <div class="guide-callout"><strong>Do not awaken her gear.</strong> Relic 30 is the recommended ceiling; awakening substats are better spent on your carries.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Virtues</h2>
+      <div class="guide-virtue-grid">
+        {virtues.map((v) => (
+          <div class="guide-virtue-card">
+            <div class="guide-virtue-header">
+              <div class="guide-virtue-icon" style={`background-image: url('${virtueImage(v.assetId, v.assetSuffix)}');`} role="img" aria-label={v.name}></div>
+              <div>
+                <div class="guide-virtue-name">{v.name}</div>
+                <span class={`guide-virtue-rarity ${v.rarityClass}`}>{v.rarity}</span>
+              </div>
+            </div>
+            <div class="guide-virtue-bonuses">
+              {v.bonuses.map((b) => (
+                <div class="guide-virtue-bonus">
+                  <div class="guide-virtue-bonus-label">{b.label}</div>
+                  <div class="guide-virtue-bonus-text">{b.text}</div>
+                </div>
+              ))}
+            </div>
+            <p class="guide-virtue-note">{v.note}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Pick or Skip?</h2>
+      <div class="guide-card">
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Pick Idunn</div><div class="guide-overview-value">One frontline carry is your win condition, enemy pressure hits that hero, and you can guarantee Apple targeting. Boss content is the clearest case.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Skip Idunn</div><div class="guide-overview-value">Your whole team needs healing, enemies dive the back row, or you need hard Control, cleansing, or defense shred.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Lore in the Kit</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Preservation, not resurrection</h3>
+        <p class="guide-card-text">In Norse myth Idunn is not a fighter and not a healer of wounds. She is the keeper of the apples that stop the gods from ageing, and the myth that matters is the one where she is stolen: the moment Idunn leaves, the gods start to wither. Her value is defined by absence, and the designers kept that reading intact.</p>
+        <p class="guide-card-text">It shows in what her kit refuses to do. She has no revive, unlike Mengpo, and no damage share, unlike Yuelao. Every effect she owns preserves a state that already exists: Divine Share lends her own vitality out rather than creating any, Vitality Renewed restores what was lost instead of adding new ceilings, and Water Blessing Oath freezes a moment of safety for a few seconds. Divine Protection Moment is the same idea turned inward, and it is worth noting that it saves only herself. In the myth nobody replaces Idunn either.</p>
+        <p class="guide-card-text">That is also why she gives the apple to one ally instead of the team. The Golden Apple was never a public good in the source material; it was a gift, handed over deliberately, and whoever held it was kept young while everyone else aged. The game turns that selectivity into her core mechanic and into her main weakness at the same time, which is a rare case of lore and balance pointing the same direction.</p>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Verdict</h2>
+      <div class="guide-verdict-box">
+        <h3 class="guide-verdict-heading">A specialist for aggressive frontliners</h3>
+        <p class="guide-verdict-text">Idunn is at her best when one exposed frontline carry decides the fight, and Boss content is where that is true every single time. Golden Apple builds that hero up; Vitality Renewed and Water Blessing Oath keep them standing; Eternal Fruit turns defense into a burst window. She is less convincing when pressure is spread across the team, which is why Main Spire still prefers Yuelao and Arena still starts with Cancer. Relic 10 is the entry point and Relic 20 adds the Super Armor utility, but Relic 30 is the level that matters: the CRIT DMG it hands the carry is what turns her from a bodyguard into a damage contributor, and without it she is not worth a Boss slot.</p>
+      </div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>

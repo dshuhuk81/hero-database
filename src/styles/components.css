@@ -2464,11 +2464,17 @@
   gap: var(--space-12);
 }
 
-.guide-section {
+.guide-section:first-child {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
   margin-top: var(--space-12);
+}
+
+.guide-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }
 
 .guide-section-title {
@@ -2509,6 +2515,25 @@
   margin: 0 0 var(--space-6);
 }
 
+/* Cards whose subheading is the last child would otherwise stack the
+   subheading margin on top of the card padding. */
+.guide-card-subheading:last-child {
+  margin-bottom: 0;
+}
+
+/* Body copy inside a guide card. Unlike guide-card-subheading this is meant to
+   carry prose, not caption a heading. */
+.guide-card-text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0 0 var(--space-4);
+}
+
+.guide-card-text:last-child {
+  margin-bottom: 0;
+}
+
 /* -- Overview card -- */
 .guide-overview-grid {
   display: grid;
@@ -2517,7 +2542,9 @@
   margin-bottom: var(--space-6);
 }
 
-.guide-overview-item {}
+.guide-overview-grid:last-child {
+  margin-bottom: 0;
+}
 
 .guide-overview-label {
   font-size: var(--text-xs);
@@ -2540,9 +2567,9 @@
   margin-bottom: var(--space-6);
 }
 
-/* -- Idun: Golden Apple target flow -- */
-.guide-banner--idun,
-.guide-body--idun {
+/* -- Idunn: Golden Apple target flow -- */
+.guide-banner--idunn,
+.guide-body--idunn {
   --guide-accent: var(--accent-gold-light);
   --guide-accent-dim: var(--accent-gold-dim);
   --guide-accent-line: color-mix(in srgb, var(--accent-gold) 34%, transparent);
@@ -2552,6 +2579,34 @@
   background:
     radial-gradient(circle at 50% 12%, var(--guide-accent-dim), transparent 38%),
     var(--bg-surface);
+}
+
+.guide-idunn-intro {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.guide-idunn-intro-apple {
+  width: 72px;
+  height: auto;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.guide-idunn-intro > div {
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .guide-idunn-intro {
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .guide-idunn-intro-apple {
+    width: 52px;
+  }
 }
 
 .guide-apple-path {
@@ -2669,14 +2724,18 @@
   color: var(--text-muted);
 }
 
-.nephtys-rating-grid {
+/* -- Guide rating tiles --
+   Large rating cards used on hero guide pages. Shared by every guide; the
+   letter colour comes from the tier tokens so a tile matches the tier badges
+   used elsewhere on the site. */
+.guide-rating-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(92px, 118px));
   gap: var(--space-3);
   margin-top: var(--space-5);
 }
 
-.nephtys-rating-tile {
+.guide-rating-tile {
   aspect-ratio: 118 / 96;
   display: flex;
   flex-direction: column;
@@ -2688,7 +2747,7 @@
   background: rgba(0, 0, 0, 0.30);
 }
 
-.nephtys-rating-tile span {
+.guide-rating-tile span {
   color: #7A7060;
   font-family: "Space Mono";
   font-size: 7px;
@@ -2699,7 +2758,7 @@
   text-transform: uppercase;
 }
 
-.nephtys-rating-tile strong {
+.guide-rating-tile strong {
   color: #40AFF0;
   font-family: Cinzel;
   font-size: 28px;
@@ -2708,13 +2767,12 @@
   line-height: 31.68px;
 }
 
-.nephtys-rating-tile[data-rating="B"] strong {
-  color: #A855F7;
-}
-
-.nephtys-rating-tile[data-rating="B+"] strong {
-  color: #A855F7;
-}
+.guide-rating-tile[data-rating="S+"] strong { color: var(--tier-splus-from); }
+.guide-rating-tile[data-rating="S"] strong { color: var(--tier-s-from); }
+.guide-rating-tile[data-rating="A+"] strong { color: var(--tier-aplus-from); }
+.guide-rating-tile[data-rating="A"] strong { color: var(--tier-a-from); }
+.guide-rating-tile[data-rating="B+"] strong { color: #A855F7; }
+.guide-rating-tile[data-rating="B"] strong { color: #A855F7; }
 
 /* -- Combat cycle -- */
 .guide-cycle-phases {
@@ -3707,10 +3765,15 @@
 
 .guide-skill-card--relic {
   grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-5);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.guide-skill-relic-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .guide-skill-header {
@@ -3748,7 +3811,7 @@
   display: inline-block;
   padding: 1px 7px;
   border-radius: var(--radius-full);
-  font-size: var(--text-xs);
+  font-size: var(--text-2xs);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
@@ -3807,6 +3870,21 @@
   gap: var(--space-4);
 }
 
+.guide-skill-caption {
+  margin-top: var(--space-2);
+  border-left: 2px solid var(--guide-accent-line);
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--guide-accent-dim) 55%, transparent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.guide-skill-caption strong {
+  color: var(--text-secondary);
+}
+
 .guide-upgrade--relic {
   flex: 1;
   min-width: 200px;
@@ -3857,7 +3935,12 @@
   border-radius: var(--radius-md);
   background-size: cover;
   background-position: center top 20%;
+  background-clip: padding-box;
   border: 1px solid var(--border-subtle);
+}
+
+.guide-hero-portrait[data-hero="heracles"] {
+  background-position: center top;
 }
 
 .guide-hero-card-name {
@@ -3915,9 +3998,11 @@
 }
 
 /* -- Virtue cards -- */
+/* auto-fit so guides with 3 and with 4 virtues both fill a single row instead
+   of leaving one orphan card on a second row. */
 .guide-virtue-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--space-5);
 }
 
@@ -5442,11 +5527,10 @@
   .guide-math-tiers { grid-template-columns: repeat(3, 1fr); }
   .guide-math-stats { grid-template-columns: repeat(2, 1fr); }
   .guide-skills-grid { grid-template-columns: repeat(2, 1fr); }
-  .guide-skill-card--relic { grid-template-columns: 1fr; }
   .guide-virtue-grid { grid-template-columns: 1fr; }
   .guide-tier-legend-grid { grid-template-columns: repeat(2, 1fr); }
   .guide-overview-grid { grid-template-columns: 1fr; }
-  .nephtys-rating-grid { grid-template-columns: repeat(4, minmax(76px, 1fr)); }
+  .guide-rating-grid { grid-template-columns: repeat(4, minmax(76px, 1fr)); }
   .guide-hero-grid { gap: var(--space-3); }
   .guide-hero-card { width: 100px; }
   .guide-hero-portrait { height: 80px; }
@@ -5455,7 +5539,7 @@
 @media (max-width: 480px) {
   .guide-apple-breakpoints { grid-template-columns: 1fr; }
   .guide-cycle-phases { grid-template-columns: repeat(2, 1fr); }
-  .nephtys-rating-grid { grid-template-columns: repeat(2, minmax(0, 118px)); }
+  .guide-rating-grid { grid-template-columns: repeat(2, minmax(0, 118px)); }
   .guide-mode-grid,
   .guide-target-grid,
 	  .guide-branch-grid { grid-template-columns: 1fr; }

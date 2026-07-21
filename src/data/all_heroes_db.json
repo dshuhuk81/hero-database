@@ -7170,10 +7170,10 @@
       }
     ]
   },
-  "idun": {
-    "id": "idun",
-    "name": "Idun",
-    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/idun.webp",
+  "idunn": {
+    "id": "idunn",
+    "name": "Idunn",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/idunn.webp",
     "release": false,
     "faction": "Hearts",
     "role": "Arcane",
@@ -7215,67 +7215,98 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "",
-        "description": "",
+        "name": "Water Blessing Oath",
+        "description": "Protects the frontmost ally, granting a shield equal to 400% ATK for 6 seconds, and reduces damage taken by 20% for the next 6 seconds. Prioritizes allies with [Golden Apple].",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Shield duration and damage reduction duration increased to 8 seconds.",
+          "level3": "Damage reduction during the effect increased to 40%.",
+          "level4": "Shield increased to 500% ATK."
         },
         "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "",
-        "description": "",
+        "name": "Vitality Renewed",
+        "description": "Bless the most injured ally, restoring 250% ATK + 15% of the target's missing HP. This effect is cast one additional time on allies who have [Golden Apple].",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Healing increased to 270% ATK.",
+          "level3": "Restores 25% of the target's missing HP.",
+          "level4": "Healing increased to 300% ATK."
         },
         "damageType": ""
       },
       {
         "id": "skill_3",
-        "name": "",
-        "description": "",
+        "name": "Divine Share",
+        "description": "Passive: In battle, Idunn grants [Golden Apple] to the nearest front-row ally. [Golden Apple]: Gains 10% of Idunn's ATK, HP, Armor, and M-RES.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "The target gains 15% of Idunn's ATK, HP, Armor, and M-RES.",
+          "level3": "While the [Golden Apple] target is alive, Idunn takes 50% less damage.",
+          "level4": "The target gains 20% of Idunn's ATK, HP, Armor, and M-RES."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "",
-        "description": "",
+        "name": "Divine Protection Moment",
+        "description": "Passive: When Idunn is about to die, she summons [Golden Apple] to shield herself, gaining a shield equal to 75% of max HP for 5 seconds. During the effect, the shield is converted into HP at a rate of 20% of max HP per second. This effect can only trigger once per battle.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Shield increased to 100% of max HP.",
+          "level3": "Damage taken while the shield lasts is reduced by 70%.",
+          "level4": "Shield increased to 125% of max HP."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Vortex of Grace",
-      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "name": "Eternal Fruit",
+      "description": "If the Ultimate's target is an ally with [Golden Apple], they gain an additional 40% of Idunn's ATK for 10 seconds.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "The target also gains 30% CRIT Rate for 10 seconds.",
+        "level3": "The target gains Super Armor for 10 seconds.",
+        "level4": "The target also gains 30% CRIT DMG for 10 seconds."
       }
     },
-    "synergies": [],
+    "synergies": [
+      "TEAM_BUFF",
+      "TEAM_DAMAGE_REDUCTION",
+      "TEAM_HEAL",
+      "TEAM_SHIELD",
+      "TEAM_CC_IMMUNITY",
+      "SELF_DAMAGE_REDUCTION",
+      "SELF_HEAL",
+      "SELF_SHIELD"
+    ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "coreMechanic": {
-      "summary": "",
-      "depthRating": "",
-      "commonlyMisunderstood": false
+      "summary": "Golden Apple turns the nearest front-row ally into Idunn's dedicated carry. She shares base stats with that target, adds healing, shields, and damage reduction, then grants ATK, CRIT Rate, Super Armor, and CRIT DMG through Eternal Fruit.",
+      "depthRating": "medium",
+      "commonlyMisunderstood": true
     },
+    "synergyLinks": [
+      {
+        "heroId": "nut",
+        "type": "core",
+        "description": "Nut is an ideal Golden Apple target: Idunn reinforces her exposed frontline position with shared stats, missing-HP healing, shields, damage reduction, and offensive relic buffs."
+      },
+      {
+        "heroId": "nezha",
+        "type": "core",
+        "description": "Golden Apple gives Nezha the durability to stay in melee range, while Eternal Fruit adds ATK, CRIT Rate, Super Armor, and CRIT DMG to his burst window."
+      },
+      {
+        "heroId": "heracles",
+        "type": "core",
+        "description": "Heracles benefits from the full Golden Apple package while ramping on the frontline, especially the extra survivability and control protection during Idunn's Ultimate."
+      },
+      {
+        "heroId": "cancer",
+        "type": "conditional",
+        "description": "Cancer adds frontline energy, healing, shields, and control protection, helping Idunn cast more reliably while layering protection on the Golden Apple carrier."
+      }
+    ],
     "virtueSets": [
       {
         "label": "Sacrifice",
@@ -7306,9 +7337,31 @@
           "defiance_3",
           "defiance_4"
         ]
+      },
+      {
+        "label": "Grace",
+        "comment": "Improves Vitality Renewed's healing output.",
+        "virtues": [
+          "grace_1",
+          "grace_2",
+          "grace_3",
+          "grace_4"
+        ]
       }
     ],
     "synergyPartners": [
+      {
+        "heroId": "dionysus",
+        "via": [
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "ENEMY_VULNERABILITY"
+        ]
+      },
       {
         "heroId": "cancer",
         "via": [
@@ -7321,41 +7374,31 @@
         ]
       },
       {
-        "heroId": "dionysus",
+        "heroId": "hephaestus",
         "via": [
-          "TEAM_CC_IMMUNITY",
+          "TEAM_BUFF",
           "TEAM_DAMAGE_REDUCTION",
-          "TEAM_DEBUFF_CLEANSE",
           "TEAM_ENERGY_RESTORE",
           "TEAM_HEAL",
-          "TEAM_SHIELD"
+          "ENEMY_ARMOR_REDUCTION"
+        ]
+      },
+      {
+        "heroId": "mengpo",
+        "via": [
+          "TEAM_BUFF",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_ENERGY_RESTORE"
         ]
       },
       {
         "heroId": "meret",
         "via": [
+          "TEAM_BUFF",
           "TEAM_DAMAGE_REDUCTION",
-          "TEAM_ENERGY_RESTORE",
           "TEAM_HEAL",
           "TEAM_SHIELD"
-        ]
-      },
-      {
-        "heroId": "tefnut",
-        "via": [
-          "TEAM_DEBUFF_CLEANSE",
-          "TEAM_HEAL",
-          "TEAM_SHIELD",
-          "TEAM_DAMAGE_REDUCTION"
-        ]
-      },
-      {
-        "heroId": "athena",
-        "via": [
-          "TEAM_DAMAGE_REDUCTION",
-          "TEAM_HEAL",
-          "TEAM_SHIELD",
-          "TEAM_ENERGY_RESTORE"
         ]
       }
     ],
