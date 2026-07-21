@@ -221,6 +221,95 @@
       }
     ]
   },
+  "ananke": {
+    "id": "ananke",
+    "name": "Ananke",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/ananke.webp",
+    "release": false,
+    "faction": "Diamonds",
+    "role": "Arcane",
+    "class": "Assassin",
+    "rarity": "Legendary",
+    "description": "",
+    "recommendedRelicLevel": null,
+    "evolution": null,
+    "level": null,
+    "stats": null,
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "",
+      "description": "",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    },
+    "synergyLinks": [],
+    "relicBreakpoints": null,
+    "activeBug": null,
+    "activeBugNotes": null,
+    "f2pInvestment": null,
+    "virtues": null,
+    "virtueSets": null,
+    "content-creator": null,
+    "strengths": [],
+    "weaknesses": []
+  },
   "anubis": {
     "id": "anubis",
     "name": "Anubis",
@@ -3679,197 +3768,6 @@
       }
     ]
   },
-  "eden": {
-    "id": "eden",
-    "name": "Eden",
-    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/eden.webp",
-    "release": false,
-    "faction": "Hearts",
-    "role": "Arcane",
-    "class": "Support",
-    "rarity": "Legendary",
-    "description": "",
-    "evolution": "Divine V",
-    "level": 300,
-    "stats": {
-      "might": 631000,
-      "hp": 2384964,
-      "atk": 210169,
-      "armor": 36550,
-      "magicRes": 32703,
-      "dodgeRate": 6,
-      "hitBonus": 0,
-      "critRate": 4,
-      "critRes": 6,
-      "critDmgBonus": 0,
-      "critDmgRed": 0,
-      "energy": 0,
-      "cooldownHaste": 0,
-      "atkSpdBonus": 0,
-      "pDmgBonus": 0,
-      "pDmgRed": 0,
-      "mDmgBonus": 0,
-      "mDmgRed": 0,
-      "healEff": 0,
-      "rechargeEff": 0,
-      "lifestealEff": 0,
-      "reflectEff": 0,
-      "effectRes": 0,
-      "effectHit": 0,
-      "controlRes": 0,
-      "controlBonus": 0,
-      "normalSkillPWR": 0,
-      "ultimatePWR": 0
-    },
-    "skills": [
-      {
-        "id": "skill_1",
-        "name": "",
-        "description": "",
-        "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
-        },
-        "damageType": "",
-        "isUltimate": true
-      },
-      {
-        "id": "skill_2",
-        "name": "",
-        "description": "",
-        "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
-        },
-        "damageType": ""
-      },
-      {
-        "id": "skill_3",
-        "name": "",
-        "description": "",
-        "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
-        },
-        "damageType": ""
-      },
-      {
-        "id": "skill_4",
-        "name": "",
-        "description": "",
-        "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
-        },
-        "damageType": ""
-      }
-    ],
-    "relic": {
-      "name": "Vortex of Grace",
-      "description": "Releases Great Rising Gale to create 1 whirlwind.",
-      "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
-      }
-    },
-    "synergies": [],
-    "baseAttackRate": 0,
-    "bossUltimatesPer90s": 0,
-    "coreMechanic": {
-      "summary": "",
-      "depthRating": "",
-      "commonlyMisunderstood": false
-    },
-    "virtueSets": [
-      {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
-        ]
-      },
-      {
-        "label": "Defiance",
-        "comment": "",
-        "virtues": [
-          "defiance_1",
-          "defiance_2",
-          "defiance_3",
-          "defiance_4"
-        ]
-      }
-    ],
-    "synergyPartners": [
-      {
-        "heroId": "cancer",
-        "via": [
-          "TEAM_DAMAGE_REDUCTION",
-          "TEAM_DEBUFF_CLEANSE",
-          "TEAM_ENERGY_RESTORE",
-          "TEAM_HEAL",
-          "TEAM_SHIELD",
-          "TEAM_CC_IMMUNITY"
-        ]
-      },
-      {
-        "heroId": "dionysus",
-        "via": [
-          "TEAM_CC_IMMUNITY",
-          "TEAM_DAMAGE_REDUCTION",
-          "TEAM_DEBUFF_CLEANSE",
-          "TEAM_ENERGY_RESTORE",
-          "TEAM_HEAL",
-          "TEAM_SHIELD"
-        ]
-      },
-      {
-        "heroId": "meret",
-        "via": [
-          "TEAM_DAMAGE_REDUCTION",
-          "TEAM_ENERGY_RESTORE",
-          "TEAM_HEAL",
-          "TEAM_SHIELD"
-        ]
-      },
-      {
-        "heroId": "tefnut",
-        "via": [
-          "TEAM_DEBUFF_CLEANSE",
-          "TEAM_HEAL",
-          "TEAM_SHIELD",
-          "TEAM_DAMAGE_REDUCTION"
-        ]
-      },
-      {
-        "heroId": "athena",
-        "via": [
-          "TEAM_DAMAGE_REDUCTION",
-          "TEAM_HEAL",
-          "TEAM_SHIELD",
-          "TEAM_ENERGY_RESTORE"
-        ]
-      }
-    ],
-    "imgY": "22%"
-  },
   "eris": {
     "id": "eris",
     "name": "Eris",
@@ -6349,7 +6247,7 @@
       {
         "id": "skill_1",
         "name": "Scarred Fury",
-        "description": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals DMG equal to 20% of his max HP +100% of the recorded DMG to enemies within 3 meters.",
+        "description": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals True DMG equal to 100% of the recorded DMG to enemies within 3 meters.",
         "upgrades": {
           "level2": "Grants a shield equal to 30% of the recorded DMG when cast.",
           "level3": "Deals 125% of the recorded DMG.",
@@ -6371,6 +6269,17 @@
       },
       {
         "id": "skill_3",
+        "name": "Godhood Ascension",
+        "description": "Upon entering the battlefield, Heracles increases his max HP by 30% and converts 5% of his ATK to 2.5% max HP every second.",
+        "upgrades": {
+          "level2": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
+          "level3": "Increases max HP to 50%. (Unlocks at Lv.181)",
+          "level4": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)"
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_4",
         "name": "Savage Smash",
         "description": "After a brief charge, slams the ground, dealing DMG equal to 200% of ATK to enemies in a cone and knocking them down.",
         "upgrades": {
@@ -6378,25 +6287,14 @@
           "level3": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)",
           "level4": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)"
         },
-        "damageType": ""
-      },
-      {
-        "id": "skill_4",
-        "name": "Godhood Ascension",
-        "description": "Upon entering the battlefield, Heracles increases his max HP by 10% and converts 5% of his ATK to 2.5% max HP every second.",
-        "upgrades": {
-          "level2": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
-          "level3": "Increases max HP to 15%. (Unlocks at Lv.181)",
-          "level4": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)"
-        },
         "damageType": "Physical"
       }
     ],
     "relic": {
       "name": "Defiant Roar",
-      "description": "Before falling, becomes immune to lethal DMG and instantly restores 50% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
+      "description": "Before falling, becomes immune to lethal DMG and instantly restores 20% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
       "upgrades": {
-        "level2": "Restores 100% of max HP. (Unlock at Relic Lv.10)",
+        "level2": "Restores 40% of max HP. (Unlock at Relic Lv.10)",
         "level3": "Restores Energy to full when triggered. (Unlock at Relic Lv.20)",
         "level4": "Reduces DMG taken by 100% for 5s. (Unlock at Relic Lv.30)"
       }
@@ -7166,6 +7064,197 @@
         ]
       }
     ]
+  },
+  "idun": {
+    "id": "idun",
+    "name": "Idun",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/idun.webp",
+    "release": false,
+    "faction": "Hearts",
+    "role": "Arcane",
+    "class": "Support",
+    "rarity": "Legendary",
+    "description": "",
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 631000,
+      "hp": 2384964,
+      "atk": 210169,
+      "armor": 36550,
+      "magicRes": 32703,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 4,
+      "critRes": 6,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 0,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": "",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_3",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "",
+        "description": "",
+        "upgrades": {
+          "level2": "",
+          "level3": "",
+          "level4": ""
+        },
+        "damageType": ""
+      }
+    ],
+    "relic": {
+      "name": "Vortex of Grace",
+      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "upgrades": {
+        "level2": "",
+        "level3": "",
+        "level4": ""
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    },
+    "virtueSets": [
+      {
+        "label": "Sacrifice",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4"
+        ]
+      },
+      {
+        "label": "Stoic",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4"
+        ]
+      },
+      {
+        "label": "Defiance",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4"
+        ]
+      }
+    ],
+    "synergyPartners": [
+      {
+        "heroId": "cancer",
+        "via": [
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_CC_IMMUNITY"
+        ]
+      },
+      {
+        "heroId": "dionysus",
+        "via": [
+          "TEAM_CC_IMMUNITY",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
+        ]
+      },
+      {
+        "heroId": "meret",
+        "via": [
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_ENERGY_RESTORE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD"
+        ]
+      },
+      {
+        "heroId": "tefnut",
+        "via": [
+          "TEAM_DEBUFF_CLEANSE",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_DAMAGE_REDUCTION"
+        ]
+      },
+      {
+        "heroId": "athena",
+        "via": [
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_HEAL",
+          "TEAM_SHIELD",
+          "TEAM_ENERGY_RESTORE"
+        ]
+      }
+    ],
+    "imgY": "22%"
   },
   "iris": {
     "id": "iris",

@@ -13,14 +13,14 @@
         "es": "Furia marcada",
         "ru": "Израненная ярость",
         "en": "Scarred Fury",
-        "zh": "伤痕之怒"
+        "zh": "战痕凝煞"
       },
       "description": {
-        "de": "Herakles speichert allen erlittenen SCH, bis zu einem Maximum von 80 % seiner max. LP. Bei Freisetzung fügt er den Feinden im Umkreis von 3 Metern SCH in Höhe von 20 % seiner max. LP +100 % des gespeicherten SCH zu.",
-        "es": "Heracles registra todo el daño recibido, hasta un máximo del 80 % de sus PS máximos. Al liberarlo, inflige un daño igual al 20 % de sus PS máximos + el 100 % del daño registrado a los enemigos en un radio de 3 metros.",
-        "ru": "Геракл накапливает весь полученный DMG, максимум до 80% своей макс. HP. При высвобождении он наносит врагам в радиусе 3 метров DMG, равный 20% его макс. HP плюс 100% накопленного DMG.",
-        "en": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals DMG equal to 20% of his max HP +100% of the recorded DMG to enemies within 3 meters.",
-        "zh": "赫拉克勒斯记录受到的所有伤害，上限为其最大生命值的80%。释放时，对3米内的敌人造成相当于其最大生命值20%+已记录伤害100%的伤害。"
+        "de": "Herakles speichert allen erlittenen SCH, bis zu einem Maximum von 80 % seiner max. LP. Bei Freisetzung fügt er den Feinden im Umkreis von 3 Metern echten SCH in Höhe von 100 % des gespeicherten SCH zu.",
+        "es": "Heracles registra todo el daño recibido, hasta un máximo del 80 % de sus PS máximos. Al liberarlo, inflige daño verdadero equivalente al 100 % del daño registrado a los enemigos en un radio de 3 metros.",
+        "ru": "Геракл накапливает весь полученный DMG, максимум до 80% своей макс. HP. При высвобождении он наносит врагам в радиусе 3 метров истинный DMG в размере 100% накопленного DMG.",
+        "en": "Heracles records all DMG taken, up to a maximum of 80% of his Max HP. Upon release, he deals True DMG equal to 100% of the recorded DMG to enemies within 3 meters.",
+        "zh": "赫拉克勒斯记录自身受到的所有伤害，记录值最大为自身80%最大生命值。释放时对自身周围3米敌人造成记录伤害值100%的真实伤害。"
       },
       "upgrades": {
         "level2": {
@@ -52,7 +52,7 @@
         "es": "Sacudemundos",
         "ru": "Мироразрушитель",
         "en": "Worldshaker",
-        "zh": "撼世者"
+        "zh": "拔山盖世"
       },
       "description": {
         "de": "Unterdrückt einen Feind, hebt ihn auf und schleudert ihn in eine Feindesgruppe. Fügt den Feinden im Umkreis von 3 Metern AoE-SCH in Höhe von 10 % der max. LP des unterdrückten Ziels zu (bis zu 20 % der eigenen max. LP).",
@@ -87,57 +87,18 @@
     },
     {
       "name": {
-        "de": "Wilde Zertrümmerung",
-        "es": "Golpe salvaje",
-        "ru": "Дикий удар",
-        "en": "Savage Smash",
-        "zh": "蛮力重击"
-      },
-      "description": {
-        "de": "Schlägt nach einem kurzen Ansturm auf den Boden, fügt den Feinden in einem Kegel SCH in Höhe von 200 % ANG zu und wirft sie zu Boden.",
-        "es": "Tras una breve carga, golpea el suelo, infligiendo un Daño equivalente al 200 % de su ATQ a los enemigos en un cono y los derriba.",
-        "ru": "После короткой подготовки он ударяет по земле, нанося врагам в конусе DMG в размере 200% ATK и сбивая их с ног.",
-        "en": "After a brief charge, slams the ground, dealing DMG equal to 200% of ATK to enemies in a cone and knocking them down.",
-        "zh": "短暂蓄力后猛击地面，对锥形范围内的敌人造成相当于攻击力200%的伤害并将其击倒。"
-      },
-      "upgrades": {
-        "level2": {
-          "de": "Erhält einen Schild in Höhe von 10 % der max. LP.",
-          "es": "Obtiene un escudo equivalente al 10 % de los PS máx.",
-          "ru": "Получает щит в размере 10% макс. HP.",
-          "en": "Gains a shield equal to 10% of the max HP.",
-          "zh": "获得相当于最大生命值10%的护盾。"
-        },
-        "level3": {
-          "de": "Verursacht zusätzlich Bonus-SCH in Höhe von 10% seiner max. LP.\nLevel 4: Stellt 5 % der max. LP für jeden getroffenen Feind wieder her.",
-          "es": "Inflige un Daño adicional equivalente al 10 % de sus PS máx.",
-          "ru": "Наносит дополнительный DMG в размере 10% его макс. HP. (Открывается на ур. 201)",
-          "en": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)",
-          "zh": "额外造成相当于其最大生命值10%的伤害。（201级解锁）"
-        },
-        "level4": {
-          "de": "Stellt für jeden getroffenen Gegner 5% der max. HP wieder her. (Freigeschaltet auf Lv. 281)",
-          "es": "Restaura un 5 % de los PS máx. por cada enemigo golpeado.",
-          "ru": "Восстанавливает 5% макс. HP за каждого поражённого врага. (Открывается на ур. 281)",
-          "en": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)",
-          "zh": "每命中一个敌人恢复5%最大生命值。（281级解锁）"
-        }
-      }
-    },
-    {
-      "name": {
         "de": "Aufstieg zur Gottheit",
         "es": "Ascensión a la divinidad",
         "ru": "Вознесение к божеству",
         "en": "Godhood Ascension",
-        "zh": "神性升华"
+        "zh": "神躯觉醒"
       },
       "description": {
-        "de": "Beim Betreten des Schlachtfelds erhöht Herakles seine max. LP um 10 % und wandelt jede Sek. 5 % seines ANG in 2,5 % max. LP um.",
-        "es": "Al entrar al campo de batalla, Heracles aumenta sus PS máx. un 10 % y convierte un 5 % de su ATQ en un 2,5 % de PS máx. por segundo.",
-        "ru": "При входе на поле боя Геракл увеличивает свою макс. HP на 10% и каждую секунду преобразует 5% своего ATK в 2,5% макс. HP.",
-        "en": "Upon entering the battlefield, Heracles increases his max HP by 10% and converts 5% of his ATK to 2.5% max HP every second.",
-        "zh": "进入战场后，赫拉克勒斯的最大生命值提升10%，并每秒将5%攻击力转化为2.5%最大生命值。"
+        "de": "Beim Betreten des Schlachtfelds erhöht Herakles seine max. LP um 30 % und wandelt jede Sek. 5 % seines ANG in 2,5 % max. LP um.",
+        "es": "Al entrar al campo de batalla, Heracles aumenta sus PS máx. un 30 % y convierte un 5 % de su ATQ en un 2,5 % de PS máx. por segundo.",
+        "ru": "При входе на поле боя Геракл увеличивает свою макс. HP на 30% и каждую секунду преобразует 5% своего ATK в 2,5% макс. HP.",
+        "en": "Upon entering the battlefield, Heracles increases his max HP by 30% and converts 5% of his ATK to 2.5% max HP every second.",
+        "zh": "赫拉克勒斯登场时提升自身30%最大生命值，并且每秒将5%攻击力转换为2.5%最大生命值。"
       },
       "upgrades": {
         "level2": {
@@ -145,21 +106,60 @@
           "es": "Obtiene un escudo equivalente al 20 % de los PS máx. cuando el ATQ llega a 0.",
           "ru": "Получает щит в размере 20% макс. HP, когда ATK падает до 0.",
           "en": "Gains a shield equal to 20% of max HP when ATK drops to 0.",
-          "zh": "攻击力降至0时获得相当于最大生命值20%的护盾。"
+          "zh": "当攻击力归0时，自身获得20%最大生命值护盾。"
         },
         "level3": {
-          "de": "Erhöht die max. LP auf 15 %.",
-          "es": "Aumenta los PS máx. a un 15 %.",
-          "ru": "Увеличивает макс. HP до 15%. (Открывается на ур. 181)",
-          "en": "Increases max HP to 15%. (Unlocks at Lv.181)",
-          "zh": "最大生命值提升至15%。（181级解锁）"
+          "de": "Erhöht die max. LP auf 50 %.",
+          "es": "Aumenta los PS máx. a un 50 %.",
+          "ru": "Увеличивает макс. HP до 50%. (Открывается на ур. 181)",
+          "en": "Increases max HP to 50%. (Unlocks at Lv.181)",
+          "zh": "最大生命值提高50%。"
         },
         "level4": {
           "de": "Wandelt nun 5% des ANG in 5% max. LP pro Sekunde um.",
           "es": "Convierte un 5 % del ATQ en un 5 % de los PS máx. cada segundo.",
           "ru": "Каждую секунду преобразует 5% ATK в 5% макс. HP. (Открывается на ур. 261)",
           "en": "Converts 5% of ATK to 5% of max HP every sec. (Unlocks at Lv.261)",
-          "zh": "每秒将5%攻击力转化为5%最大生命值。（261级解锁）"
+          "zh": "每秒5%攻击力转换为5%最大生命值。"
+        }
+      }
+    },
+    {
+      "name": {
+        "de": "Wilde Zertrümmerung",
+        "es": "Golpe salvaje",
+        "ru": "Дикий удар",
+        "en": "Savage Smash",
+        "zh": "残虐猛击"
+      },
+      "description": {
+        "de": "Schlägt nach einem kurzen Ansturm auf den Boden, fügt den Feinden in einem Kegel SCH in Höhe von 200 % ANG zu und wirft sie zu Boden.",
+        "es": "Tras una breve carga, golpea el suelo, infligiendo un Daño equivalente al 200 % de su ATQ a los enemigos en un cono y los derriba.",
+        "ru": "После короткой подготовки он ударяет по земле, нанося врагам в конусе DMG в размере 200% ATK и сбивая их с ног.",
+        "en": "After a brief charge, slams the ground, dealing DMG equal to 200% of ATK to enemies in a cone and knocking them down.",
+        "zh": "短暂蓄力后猛击地面，对身前扇形范围敌人造成自身200%攻击力的伤害并且击倒目标。"
+      },
+      "upgrades": {
+        "level2": {
+          "de": "Erhält einen Schild in Höhe von 10 % der max. LP.",
+          "es": "Obtiene un escudo equivalente al 10 % de los PS máx.",
+          "ru": "Получает щит в размере 10% макс. HP.",
+          "en": "Gains a shield equal to 10% of the max HP.",
+          "zh": "额外获得自身最大生命值10%护盾。"
+        },
+        "level3": {
+          "de": "Verursacht zusätzlich Bonus-SCH in Höhe von 10% seiner max. LP.",
+          "es": "Inflige un Daño adicional equivalente al 10 % de sus PS máx.",
+          "ru": "Наносит дополнительный DMG в размере 10% его макс. HP. (Открывается на ур. 201)",
+          "en": "Deals extra DMG equal to 10% of his max HP. (Unlocks at Lv.201)",
+          "zh": "额外造成自身最大生命值10%的伤害。"
+        },
+        "level4": {
+          "de": "Stellt für jeden getroffenen Gegner 5% der max. HP wieder her. (Freigeschaltet auf Lv. 281)",
+          "es": "Restaura un 5 % de los PS máx. por cada enemigo golpeado.",
+          "ru": "Восстанавливает 5% макс. HP за каждого поражённого врага. (Открывается на ур. 281)",
+          "en": "Restores 5% max HP for each enemy hit. (Unlocks at Lv.281)",
+          "zh": "根据命中人数恢复生命值，每命中一个单位恢复自身最大生命值5%血量。"
         }
       }
     }
@@ -170,36 +170,36 @@
       "es": "Rugido desafiante",
       "ru": "Бросающий вызов рёв",
       "en": "Defiant Roar",
-      "zh": "不屈怒吼"
+      "zh": "残躯怒吼"
     },
     "description": {
-      "de": "Wird vor dem Fall immun gegen den tödlichen SCH und stellt sofort 50 % der max. LP wieder her. Verringert in den nächsten 5 Sek. den erlittenen SCH um 50 %. Kann nur einmal pro Kampf ausgelöst werden.",
-      "es": "Antes de caer, se vuelve inmune al daño letal y restaura instantáneamente un 50 % de sus PS máx. Durante los siguientes 5s, reduce el daño recibido un 50 %. Solo se puede activar una vez por batalla.",
-      "ru": "Перед падением он становится невосприимчив к смертельному DMG и мгновенно восстанавливает 50% своей макс. HP. В течение следующих 5 с он снижает получаемый DMG на 50%. Может сработать только один раз за бой.",
-      "en": "Before falling, becomes immune to lethal DMG and instantly restores 50% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
-      "zh": "倒下前免疫致命伤害并立即恢复50%最大生命值。接下来5秒内，受到的伤害降低50%。每场战斗只能触发一次。"
+      "de": "Wird vor dem Fall immun gegen den tödlichen SCH und stellt sofort 20 % der max. LP wieder her. Verringert in den nächsten 5 Sek. den erlittenen SCH um 50 %. Kann nur einmal pro Kampf ausgelöst werden.",
+      "es": "Antes de caer, se vuelve inmune al daño letal y restaura instantáneamente un 20 % de sus PS máx. Durante los siguientes 5s, reduce el daño recibido un 50 %. Solo se puede activar una vez por batalla.",
+      "ru": "Перед падением он становится невосприимчив к смертельному DMG и мгновенно восстанавливает 20% своей макс. HP. В течение следующих 5 с он снижает получаемый DMG на 50%. Может сработать только один раз за бой.",
+      "en": "Before falling, becomes immune to lethal DMG and instantly restores 20% of max HP. For the next 5s, reduces DMG taken by 50%. Can only trigger once per battle.",
+      "zh": "即将阵亡时，免疫本次伤害并且立即恢复自身20%最大生命值，并在接下来5秒内受到伤害降低50%。每场战斗只能触发一次。"
     },
     "upgrades": {
       "level2": {
-        "de": "Stellt 100 % der max. LP wieder her.",
-        "es": "Restaura un 100 % de los PS máx.",
-        "ru": "Восстанавливает 100% макс. HP. (Открывается на ур. реликвии 10)",
-        "en": "Restores 100% of max HP. (Unlock at Relic Lv.10)",
-        "zh": "恢复100%最大生命值。（圣物10级解锁）"
+        "de": "Stellt 40 % der max. LP wieder her.",
+        "es": "Restaura un 40 % de los PS máx.",
+        "ru": "Восстанавливает 40% макс. HP. (Открывается на ур. реликвии 10)",
+        "en": "Restores 40% of max HP. (Unlock at Relic Lv.10)",
+        "zh": "回复40%最大生命值（神器等级10解锁）"
       },
       "level3": {
         "de": "Stellt beim Auslösen die Energie vollständig wieder her.",
         "es": "Restaura toda la Energía al activarse.",
         "ru": "Полностью восстанавливает Энергию при срабатывании. (Открывается на ур. реликвии 20)",
         "en": "Restores Energy to full when triggered. (Unlock at Relic Lv.20)",
-        "zh": "触发时能量恢复至满。（圣物20级解锁）"
+        "zh": "触发时回复自身全部能量（神器等级20解锁）"
       },
       "level4": {
         "de": "Für 5 Sekunden wird erlittenen SCH um 100% reduziert.",
         "es": "Reduce el Daño recibido un 100 % durante 5s.",
         "ru": "Снижает получаемый DMG на 100% в течение 5 с. (Открывается на ур. реликвии 30)",
         "en": "Reduces DMG taken by 100% for 5s. (Unlock at Relic Lv.30)",
-        "zh": "受到的伤害降低100%，持续5秒。（圣物30级解锁）"
+        "zh": "5秒内受到伤害降低100%（神器等级30解锁）"
       }
     }
   },

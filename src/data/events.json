@@ -1,21 +1,21 @@
 {
   "campaigns": [
     {
-      "id": "nephtys-event",
+      "id": "idun-event",
       "name": {
-        "en": "Nephtys Event",
-        "de": "Nephtys-Event",
-        "es": "Evento de Nephtys",
-        "ru": "Событие Нефтиды",
-        "zh": "奈芙蒂斯活动"
+        "en": "Idun Event",
+        "de": "Idun-Event",
+        "es": "Evento de Idun",
+        "ru": "Событие Идун",
+        "zh": "伊登活动"
       },
-      "hero": "nephtys",
+      "hero": "idun",
       "description": {
-        "en": "Complete PVE campaign stages for the Nephtys event.",
-        "de": "Schließe die PvE-Kampagnenstufen für das Nephtys-Event ab.",
-        "es": "Completa las fases de campaña PvE del evento de Nephtys.",
-        "ru": "Пройдите этапы PvE-кампании события Нефтиды.",
-        "zh": "完成奈芙蒂斯活动的 PVE 战役关卡。"
+        "en": "Complete PVE campaign stages for the Idun event.",
+        "de": "Schließe die PvE-Kampagnenstufen für das Idun-Event ab.",
+        "es": "Completa las fases de campaña PvE del evento de Idun.",
+        "ru": "Пройдите этапы PvE-кампании события Идун.",
+        "zh": "完成伊登活动的 PVE 战役关卡。"
       },
       "stages": [
         {
@@ -28,7 +28,7 @@
             "zh": "1. 巨浪带来了你"
           },
           "composition": {
-            "front": ["nephtys", "taurus"],
+            "front": ["idun", "taurus"],
             "back": ["sagittarius", "cancer", "libra"]
           }
         },
@@ -42,7 +42,7 @@
             "zh": "2. 凄凉的水晶"
           },
           "composition": {
-            "front": ["taurus", "nephtys"],
+            "front": ["taurus", "idun"],
             "back": ["sagittarius"]
           }
         },
@@ -56,7 +56,7 @@
             "zh": "3. 痛苦的太阳"
           },
           "composition": {
-            "front": ["nephtys", "libra"],
+            "front": ["idun", "libra"],
             "back": ["virgo", "cancer", "gemini"]
           }
         },
@@ -71,7 +71,7 @@
           },
           "composition": {
             "front": ["poseidon", "khepri"],
-            "back": ["nephtys", "skadi", "tefnut"]
+            "back": ["idun", "skadi", "tefnut"]
           }
         },
         {
@@ -84,7 +84,7 @@
             "zh": "5. 无人应答的呼唤"
           },
           "composition": {
-            "front": ["momus", "nephtys"],
+            "front": ["momus", "idun"],
             "back": ["tefnut", "skadi", "poseidon"]
           }
         },
@@ -98,7 +98,7 @@
             "zh": "6. 使许多个黄昏暗淡"
           },
           "composition": {
-            "front": ["nephtys", "khepri"],
+            "front": ["idun", "khepri"],
             "back": ["skadi", "poseidon", "tefnut"]
           }
         },
@@ -112,7 +112,7 @@
             "zh": "7. 在这里，等一个不会来的人"
           },
           "composition": {
-            "front": ["poseidon", "nephtys"],
+            "front": ["poseidon", "idun"],
             "back": ["khepri", "skadi", "tefnut"]
           }
         },
