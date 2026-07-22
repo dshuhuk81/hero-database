@@ -15,65 +15,65 @@ const virtueImage = (id: string, suffix: string) => `${R2_BASE}/images/virtues/$
 const skills = [
   {
     id: "skill_1",
-    name: "Water Blessing Oath",
+    name: "Everguard Oath",
     badge: "Skill 1 - Ultimate",
     isUlt: true,
-    description: "Protects the frontmost ally, granting a shield equal to 400% ATK for 6 seconds, and reduces damage taken by 20% for the next 6 seconds. Prioritizes allies with Golden Apple.",
+    description: "Protects an ally in the front row, granting them a Shield equal to 400% of ATK for 6s, and reduces their DMG taken by 20% for the next 6s. Prioritizes the ally with Golden Apple.",
     takeaway: "In manual play, hold it for incoming burst instead of wasting the Shield early; ATK increases the Shield while damage reduction covers the full protection window.",
     upgrades: [
-      { level: "Lv 2", text: "Shield duration and damage reduction duration increased to 8 seconds." },
-      { level: "Lv 3", text: "Damage reduction during the effect increased to 40%." },
-      { level: "Lv 4", text: "Shield increased to 500% ATK." },
+      { level: "Lv 2", text: "Shield and DMG reduction duration extends to 8s." },
+      { level: "Lv 3", text: "The target takes 40% reduced DMG for the duration." },
+      { level: "Lv 4", text: "Grants a Shield equal to 500% of ATK." },
     ],
   },
   {
     id: "skill_2",
-    name: "Vitality Renewed",
+    name: "Radiant Vitality",
     badge: "Skill 2",
-    description: "Bless the most injured ally, restoring 250% ATK + 15% of the target's missing HP. This effect is cast one additional time on allies who have Golden Apple.",
-    takeaway: "The main heal automatically targets the most injured ally, while the extra cast supports the Apple bearer; its missing-HP scaling is strongest on high-HP allies.",
+    description: "Blesses the 1 weakest ally, restoring HP equal to 250% of ATK + 15% of the target's lost HP. This effect is cast one extra time on allies with Golden Apple.",
+    takeaway: "The main heal automatically targets the weakest ally, while the extra cast supports the Apple bearer; its lost-HP scaling is strongest on high-HP allies.",
     upgrades: [
-      { level: "Lv 2", text: "Healing increased to 270% ATK." },
-      { level: "Lv 3", text: "Restores 25% of the target's missing HP." },
-      { level: "Lv 4", text: "Healing increased to 300% ATK." },
+      { level: "Lv 2", text: "Restores HP equal to 270% ATK." },
+      { level: "Lv 3", text: "Restores 25% of the target's lost HP." },
+      { level: "Lv 4", text: "Restores HP equal to 300% ATK." },
     ],
   },
   {
     id: "skill_3",
-    name: "Divine Share",
+    name: "Shared Divinity",
     badge: "Skill 3 - Passive",
-    description: "Passive: In battle, Idunn grants Golden Apple to the nearest front-row ally. Golden Apple: Gains 10% of Idunn's ATK, HP, Armor, and M-RES.",
+    description: "Passive: In battle, Idunn grants Golden Apple to the nearest front-row ally. (Golden Apple: Grants 10% of Idunn's ATK, HP, Armor, and M-RES.)",
     takeaway: "Formation selects Idunn's carry: place her closest to the intended front-row target, then build ATK and defensive stats that benefit them both.",
     upgrades: [
-      { level: "Lv 2", text: "The target gains 15% of Idunn's ATK, HP, Armor, and M-RES." },
-      { level: "Lv 3", text: "While the Golden Apple target is alive, Idunn takes 50% less damage." },
-      { level: "Lv 4", text: "The target gains 20% of Idunn's ATK, HP, Armor, and M-RES." },
+      { level: "Lv 2", text: "Golden Apple grants the target 15% of Idunn's ATK, HP, Armor, and M-RES." },
+      { level: "Lv 3", text: "While the Golden Apple target is alive, Idunn takes 50% reduced DMG." },
+      { level: "Lv 4", text: "Golden Apple grants the target 20% of Idunn's ATK, HP, Armor, and M-RES." },
     ],
   },
   {
     id: "skill_4",
-    name: "Divine Protection Moment",
+    name: "Providence Moment",
     badge: "Skill 4 - Passive",
-    description: "Passive: When Idunn is about to die, she summons Golden Apple to shield herself, gaining a shield equal to 75% of max HP for 5 seconds. During the effect, the shield is converted into HP at a rate of 20% of max HP per second. This effect can only trigger once per battle.",
+    description: "Passive: When Idunn is about to fall, she summons a Golden Apple to cover herself, gaining a Shield equal to 75% of max HP for 5s. During this time, the Shield converts into her HP at a rate of 20% of her max HP per second. This effect can only be triggered once per battle.",
     takeaway: "This automatic, once-per-battle effect saves Idunn herself, not an ally, and may buy time for one more support cast.",
     upgrades: [
-      { level: "Lv 2", text: "Shield increased to 100% of max HP." },
-      { level: "Lv 3", text: "Damage taken while the shield lasts is reduced by 70%." },
-      { level: "Lv 4", text: "Shield increased to 125% of max HP." },
+      { level: "Lv 2", text: "Gains a Shield equal to 100% of max HP." },
+      { level: "Lv 3", text: "Idunn takes 70% reduced DMG while shielded." },
+      { level: "Lv 4", text: "Gains a Shield equal to 125% of max HP." },
     ],
   },
 ];
 
 const relic = {
-  name: "Eternal Fruit",
+  name: "Fruit of Eternity",
   badge: "Relic",
   levelBadge: "Rec. Relic 30",
-  description: "If the Ultimate's target is an ally with Golden Apple, they gain an additional 40% of Idunn's ATK for 10 seconds.",
+  description: "If the target of the Ultimate is an ally with Golden Apple, they gain an additional 40% of Idunn's ATK for 10s.",
   takeaway: "Each Ultimate turns the Apple bearer's protection window into an offensive one, with higher Relic levels adding CRIT buffs and Super Armor.",
   upgrades: [
-    { level: "Relic 10", text: "The target also gains 30% CRIT Rate for 10 seconds." },
-    { level: "Relic 20", text: "The target gains Super Armor for 10 seconds." },
-    { level: "Relic 30", text: "The target also gains 30% CRIT DMG for 10 seconds." },
+    { level: "Relic 10", text: "The target also gains an additional 30% CRIT Rate for 10s." },
+    { level: "Relic 20", text: "The target also gains Super Armor for 10s." },
+    { level: "Relic 30", text: "The target also gains an additional 30% CRIT DMG for 10s." },
   ],
 };
 
@@ -87,7 +87,7 @@ const guideRatings = [
 const strengths = [
   "Concentrates shields, damage reduction, healing, and offensive Relic buffs on one frontline carry",
   "Golden Apple shares four useful stats at once: ATK, HP, Armor, and M-RES",
-  "Missing-HP healing scales well with durable carries and large health pools",
+  "Lost-HP healing scales well with durable carries and large health pools",
   "One-time self-preservation makes her harder to remove with the first burst",
   "Relic 20 gives the chosen carry Super Armor during Idunn's Ultimate window",
   "At Relic 30 she adds CRIT Rate and CRIT DMG on top of the protection, which is what makes her a Boss pick",
@@ -161,7 +161,7 @@ const virtues = [
       { label: "2-Piece", text: "Healing Effectiveness +15% at combat start" },
       { label: "4-Piece", text: "Healing +30% on allies below 50% HP" },
     ],
-    note: "Aimed straight at Vitality Renewed: the 4-piece fires exactly when the missing-HP portion of her heal is already at its largest.",
+    note: "Aimed straight at Radiant Vitality: the 4-piece fires exactly when the lost-HP portion of her heal is already at its largest.",
   },
   {
     name: "Defiance",
@@ -236,7 +236,7 @@ const virtues = [
       <h2 class="guide-section-title">The Golden Apple Plan</h2>
       <div class="guide-card guide-apple-card">
         <h3 class="guide-card-heading">Position first; every other effect follows</h3>
-        <p class="guide-card-subheading">Golden Apple is assigned at combat start to the frontline ally closest to Idunn: the chosen ally gains part of her ATK, HP, Armor, and M-RES, Water Blessing Oath prioritizes them, Vitality Renewed heals them again, and the Relic adds offensive buffs. The formation decides who receives the entire package.</p>
+        <p class="guide-card-subheading">Golden Apple is assigned at combat start to the frontline ally closest to Idunn: the chosen ally gains part of her ATK, HP, Armor, and M-RES, Everguard Oath prioritizes them, Radiant Vitality heals them again, and the Relic adds offensive buffs. The formation decides who receives the entire package.</p>
         <div class="guide-formation" role="img" aria-label="Formation example: two front slots, three back slots. Idunn stands in the back slot closest to the carry in the front row.">
           <div class="guide-formation-label">Enemy side</div>
           <div class="guide-formation-board">
@@ -381,7 +381,7 @@ const virtues = [
           <span class="guide-stat-sep">&gt;</span>
           <span class="guide-stat-pill">Control Res</span>
         </div>
-        <div class="guide-callout"><strong>Default build:</strong> ATK 4-piece plus HP 2-piece. ATK drives the shield, the ATK-based heal, and the Relic buff she hands to the carry; HP drives Divine Protection Moment and the defensive half of the transfer. Her own CRIT and penetration do not advance her support job.</div>
+        <div class="guide-callout"><strong>Default build:</strong> ATK 4-piece plus HP 2-piece. ATK drives the shield, the ATK-based heal, and the Relic buff she hands to the carry; HP drives Providence Moment and the defensive half of the transfer. Her own CRIT and penetration do not advance her support job.</div>
         <div class="guide-callout"><strong>Do not awaken her gear.</strong> Relic 30 is the recommended ceiling; awakening substats are better spent on your carries.</div>
       </div>
     </section>
@@ -427,7 +427,7 @@ const virtues = [
       <div class="guide-card">
         <h3 class="guide-card-heading">Preservation, not resurrection</h3>
         <p class="guide-card-text">In Norse myth Idunn is not a fighter and not a healer of wounds. She is the keeper of the apples that stop the gods from ageing, and the myth that matters is the one where she is stolen: the moment Idunn leaves, the gods start to wither. Her value is defined by absence, and the designers kept that reading intact.</p>
-        <p class="guide-card-text">It shows in what her kit refuses to do. She has no revive, unlike Mengpo, and no damage share, unlike Yuelao. Every effect she owns preserves a state that already exists: Divine Share lends her own vitality out rather than creating any, Vitality Renewed restores what was lost instead of adding new ceilings, and Water Blessing Oath freezes a moment of safety for a few seconds. Divine Protection Moment is the same idea turned inward, and it is worth noting that it saves only herself. In the myth nobody replaces Idunn either.</p>
+        <p class="guide-card-text">It shows in what her kit refuses to do. She has no revive, unlike Mengpo, and no damage share, unlike Yuelao. Every effect she owns preserves a state that already exists: Shared Divinity lends her own vitality out rather than creating any, Radiant Vitality restores what was lost instead of adding new ceilings, and Everguard Oath freezes a moment of safety for a few seconds. Providence Moment is the same idea turned inward, and it is worth noting that it saves only herself. In the myth nobody replaces Idunn either.</p>
         <p class="guide-card-text">That is also why she gives the apple to one ally instead of the team. The Golden Apple was never a public good in the source material; it was a gift, handed over deliberately, and whoever held it was kept young while everyone else aged. The game turns that selectivity into her core mechanic and into her main weakness at the same time, which is a rare case of lore and balance pointing the same direction.</p>
       </div>
     </section>
@@ -436,7 +436,7 @@ const virtues = [
       <h2 class="guide-section-title">Verdict</h2>
       <div class="guide-verdict-box">
         <h3 class="guide-verdict-heading">A specialist for aggressive frontliners</h3>
-        <p class="guide-verdict-text">Idunn is at her best when one exposed frontline carry decides the fight, and Boss content is where that is true every single time. Golden Apple builds that hero up; Vitality Renewed and Water Blessing Oath keep them standing; Eternal Fruit turns defense into a burst window. She is less convincing when pressure is spread across the team, which is why Main Spire still prefers Yuelao and Arena still starts with Cancer. Relic 10 is the entry point and Relic 20 adds the Super Armor utility, but Relic 30 is the level that matters: the CRIT DMG it hands the carry is what turns her from a bodyguard into a damage contributor, and without it she is not worth a Boss slot.</p>
+        <p class="guide-verdict-text">Idunn is at her best when one exposed frontline carry decides the fight, and Boss content is where that is true every single time. Golden Apple builds that hero up; Radiant Vitality and Everguard Oath keep them standing; Fruit of Eternity turns defense into a burst window. She is less convincing when pressure is spread across the team, which is why Main Spire still prefers Yuelao and Arena still starts with Cancer. Relic 10 is the entry point and Relic 20 adds the Super Armor utility, but Relic 30 is the level that matters: the CRIT DMG it hands the carry is what turns her from a bodyguard into a damage contributor, and without it she is not worth a Boss slot.</p>
       </div>
     </section>
   </div>

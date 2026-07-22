@@ -10,121 +10,121 @@
     {
       "name": {
         "zh": "永护誓言",
-        "en": "Water Blessing Oath"
+        "en": "Everguard Oath"
       },
       "description": {
         "zh": "庇佑一名最前排的友军，使其获得400%攻击力的护盾，持续6秒，并使该目标在接下来6秒内受到伤害降低20%，会优先选择拥有【金苹果】的友军释放",
-        "en": "Protects the frontmost ally, granting a shield equal to 400% ATK for 6 seconds, and reduces damage taken by 20% for the next 6 seconds. Prioritizes allies with [Golden Apple]."
+        "en": "Protects an ally in the front row, granting them a Shield equal to 400% of ATK for 6s, and reduces their DMG taken by 20% for the next 6s. Prioritizes the ally with [Golden Apple]."
       },
       "upgrades": {
         "level2": {
           "zh": "护盾和受到伤害降低持续时间提升至8秒",
-          "en": "Shield duration and damage reduction duration increased to 8 seconds."
+          "en": "Shield and DMG reduction duration extends to 8s."
         },
         "level3": {
           "zh": "持续期间该目标受到伤害降低40%",
-          "en": "Damage reduction during the effect increased to 40%."
+          "en": "The target takes 40% reduced DMG for the duration."
         },
         "level4": {
           "zh": "获得500%攻击力的护盾",
-          "en": "Shield increased to 500% ATK."
+          "en": "Grants a Shield equal to 500% of ATK."
         }
       }
     },
     {
       "name": {
         "zh": "生机焕发",
-        "en": "Vitality Renewed"
+        "en": "Radiant Vitality"
       },
       "description": {
         "zh": "祝福最虚弱的1名友军，恢复250%攻击力+目标15%已损失生命的生命值，该效果对拥有【金苹果】的友军额外释放一次",
-        "en": "Bless the most injured ally, restoring 250% ATK + 15% of the target's missing HP. This effect is cast one additional time on allies who have [Golden Apple]."
+        "en": "Blesses the 1 weakest ally, restoring HP equal to 250% of ATK + 15% of the target's lost HP. This effect is cast one extra time on allies with [Golden Apple]."
       },
       "upgrades": {
         "level2": {
           "zh": "恢复生命值提升至270%攻击力",
-          "en": "Healing increased to 270% ATK."
+          "en": "Restores HP equal to 270% ATK."
         },
         "level3": {
           "zh": "恢复目标25%已损失生命值",
-          "en": "Restores 25% of the target's missing HP."
+          "en": "Restores 25% of the target's lost HP."
         },
         "level4": {
           "zh": "恢复生命值提升至300%攻击力",
-          "en": "Healing increased to 300% ATK."
+          "en": "Restores HP equal to 300% ATK."
         }
       }
     },
     {
       "name": {
         "zh": "神性共享",
-        "en": "Divine Share"
+        "en": "Shared Divinity"
       },
       "description": {
         "zh": "被动的，伊登战斗中赋予距离自身最近的友方前排友军【金苹果】（金苹果：获得伊登10%的攻击力，生命值，护甲和魔抗）",
-        "en": "Passive: In battle, Idunn grants [Golden Apple] to the nearest front-row ally. [Golden Apple]: Gains 10% of Idunn's ATK, HP, Armor, and M-RES."
+        "en": "Passive: In battle, Idunn grants [Golden Apple] to the nearest front-row ally. ([Golden Apple]: Grants 10% of Idunn's ATK, HP, Armor, and M-RES.)"
       },
       "upgrades": {
         "level2": {
           "zh": "金苹果目标获得伊登15%的攻击力，生命值，护甲和魔抗",
-          "en": "The target gains 15% of Idunn's ATK, HP, Armor, and M-RES."
+          "en": "[Golden Apple] grants the target 15% of Idunn's ATK, HP, Armor, and M-RES."
         },
         "level3": {
           "zh": "【金苹果】目标存活时，伊登受到伤害降低50%",
-          "en": "While the [Golden Apple] target is alive, Idunn takes 50% less damage."
+          "en": "While the [Golden Apple] target is alive, Idunn takes 50% reduced DMG."
         },
         "level4": {
           "zh": "金苹果目标获得伊登20%的攻击力，生命值，护甲和魔抗",
-          "en": "The target gains 20% of Idunn's ATK, HP, Armor, and M-RES."
+          "en": "[Golden Apple] grants the target 20% of Idunn's ATK, HP, Armor, and M-RES."
         }
       }
     },
     {
       "name": {
         "zh": "神佑时刻",
-        "en": "Divine Protection Moment"
+        "en": "Providence Moment"
       },
       "description": {
         "zh": "被动的，伊登即将阵亡时，召唤金苹果罩住自身，获得75%最大生命值的护盾，持续5秒，持续期间，护盾以每秒20%最大生命值的效率转化为自身生命值，该效果一场战斗只能触发一次",
-        "en": "Passive: When Idunn is about to die, she summons [Golden Apple] to shield herself, gaining a shield equal to 75% of max HP for 5 seconds. During the effect, the shield is converted into HP at a rate of 20% of max HP per second. This effect can only trigger once per battle."
+        "en": "Passive: When Idunn is about to fall, she summons a Golden Apple to cover herself, gaining a Shield equal to 75% of max HP for 5s. During this time, the Shield converts into her HP at a rate of 20% of her max HP per second. This effect can only be triggered once per battle."
       },
       "upgrades": {
         "level2": {
           "zh": "获得100%最大生命值的护盾",
-          "en": "Shield increased to 100% of max HP."
+          "en": "Gains a Shield equal to 100% of max HP."
         },
         "level3": {
           "zh": "护盾持续期间伊登受到伤害降低70%",
-          "en": "Damage taken while the shield lasts is reduced by 70%."
+          "en": "Idunn takes 70% reduced DMG while shielded."
         },
         "level4": {
           "zh": "获得125%最大生命值的护盾",
-          "en": "Shield increased to 125% of max HP."
+          "en": "Gains a Shield equal to 125% of max HP."
         }
       }
     }
   ],
   "relic": {
     "name": {
-      "en": "Eternal Fruit",
+      "en": "Fruit of Eternity",
       "zh": "永恒之果"
     },
     "description": {
-      "en": "If the Ultimate's target is an ally with [Golden Apple], they gain an additional 40% of Idunn's ATK for 10 seconds.",
+      "en": "If the target of the Ultimate is an ally with [Golden Apple], they gain an additional 40% of Idunn's ATK for 10s.",
       "zh": "终结技的目标若是拥有【金苹果】的友军，10秒内额外获得伊登的40%攻击力"
     },
     "upgrades": {
       "level2": {
         "zh": "终结技的目标若是拥有【金苹果】的友军，10秒内额外获得30%会心率",
-        "en": "The target also gains 30% CRIT Rate for 10 seconds."
+        "en": "If the target of the Ultimate is an ally with [Golden Apple], they gain an additional 30% CRIT Rate for 10s."
       },
       "level3": {
         "zh": "终结技的目标若是拥有【金苹果】的友军，使目标10秒内获得霸体",
-        "en": "The target gains Super Armor for 10 seconds."
+        "en": "If the target of the Ultimate is an ally with [Golden Apple], they gain Super Armor for 10s."
       },
       "level4": {
         "zh": "终结技的目标若是拥有【金苹果】的友军，10秒内额外获得30%会心伤害",
-        "en": "The target also gains 30% CRIT DMG for 10 seconds."
+        "en": "If the target of the Ultimate is an ally with [Golden Apple], they gain an additional 30% CRIT DMG for 10s."
       }
     }
   }

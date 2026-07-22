@@ -7215,57 +7215,57 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Water Blessing Oath",
-        "description": "Protects the frontmost ally, granting a shield equal to 400% ATK for 6 seconds, and reduces damage taken by 20% for the next 6 seconds. Prioritizes allies with [Golden Apple].",
+        "name": "Everguard Oath",
+        "description": "Protects an ally in the front row, granting them a Shield equal to 400% of ATK for 6s, and reduces their DMG taken by 20% for the next 6s. Prioritizes the ally with [Golden Apple].",
         "upgrades": {
-          "level2": "Shield duration and damage reduction duration increased to 8 seconds.",
-          "level3": "Damage reduction during the effect increased to 40%.",
-          "level4": "Shield increased to 500% ATK."
+          "level2": "Shield and DMG reduction duration extends to 8s.",
+          "level3": "The target takes 40% reduced DMG for the duration.",
+          "level4": "Grants a Shield equal to 500% of ATK."
         },
         "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Vitality Renewed",
-        "description": "Bless the most injured ally, restoring 250% ATK + 15% of the target's missing HP. This effect is cast one additional time on allies who have [Golden Apple].",
+        "name": "Radiant Vitality",
+        "description": "Blesses the 1 weakest ally, restoring HP equal to 250% of ATK + 15% of the target's lost HP. This effect is cast one extra time on allies with [Golden Apple].",
         "upgrades": {
-          "level2": "Healing increased to 270% ATK.",
-          "level3": "Restores 25% of the target's missing HP.",
-          "level4": "Healing increased to 300% ATK."
+          "level2": "Restores HP equal to 270% ATK.",
+          "level3": "Restores 25% of the target's lost HP.",
+          "level4": "Restores HP equal to 300% ATK."
         },
         "damageType": ""
       },
       {
         "id": "skill_3",
-        "name": "Divine Share",
-        "description": "Passive: In battle, Idunn grants [Golden Apple] to the nearest front-row ally. [Golden Apple]: Gains 10% of Idunn's ATK, HP, Armor, and M-RES.",
+        "name": "Shared Divinity",
+        "description": "Passive: In battle, Idunn grants [Golden Apple] to the nearest front-row ally. ([Golden Apple]: Grants 10% of Idunn's ATK, HP, Armor, and M-RES.)",
         "upgrades": {
-          "level2": "The target gains 15% of Idunn's ATK, HP, Armor, and M-RES.",
-          "level3": "While the [Golden Apple] target is alive, Idunn takes 50% less damage.",
-          "level4": "The target gains 20% of Idunn's ATK, HP, Armor, and M-RES."
+          "level2": "[Golden Apple] grants the target 15% of Idunn's ATK, HP, Armor, and M-RES.",
+          "level3": "While the [Golden Apple] target is alive, Idunn takes 50% reduced DMG.",
+          "level4": "[Golden Apple] grants the target 20% of Idunn's ATK, HP, Armor, and M-RES."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "Divine Protection Moment",
-        "description": "Passive: When Idunn is about to die, she summons [Golden Apple] to shield herself, gaining a shield equal to 75% of max HP for 5 seconds. During the effect, the shield is converted into HP at a rate of 20% of max HP per second. This effect can only trigger once per battle.",
+        "name": "Providence Moment",
+        "description": "Passive: When Idunn is about to fall, she summons a Golden Apple to cover herself, gaining a Shield equal to 75% of max HP for 5s. During this time, the Shield converts into her HP at a rate of 20% of her max HP per second. This effect can only be triggered once per battle.",
         "upgrades": {
-          "level2": "Shield increased to 100% of max HP.",
-          "level3": "Damage taken while the shield lasts is reduced by 70%.",
-          "level4": "Shield increased to 125% of max HP."
+          "level2": "Gains a Shield equal to 100% of max HP.",
+          "level3": "Idunn takes 70% reduced DMG while shielded.",
+          "level4": "Gains a Shield equal to 125% of max HP."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Eternal Fruit",
-      "description": "If the Ultimate's target is an ally with [Golden Apple], they gain an additional 40% of Idunn's ATK for 10 seconds.",
+      "name": "Fruit of Eternity",
+      "description": "If the target of the Ultimate is an ally with [Golden Apple], they gain an additional 40% of Idunn's ATK for 10s.",
       "upgrades": {
-        "level2": "The target also gains 30% CRIT Rate for 10 seconds.",
-        "level3": "The target gains Super Armor for 10 seconds.",
-        "level4": "The target also gains 30% CRIT DMG for 10 seconds."
+        "level2": "If the target of the Ultimate is an ally with [Golden Apple], they gain an additional 30% CRIT Rate for 10s.",
+        "level3": "If the target of the Ultimate is an ally with [Golden Apple], they gain Super Armor for 10s.",
+        "level4": "If the target of the Ultimate is an ally with [Golden Apple], they gain an additional 30% CRIT DMG for 10s."
       }
     },
     "synergies": [
@@ -7281,7 +7281,7 @@
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "coreMechanic": {
-      "summary": "Golden Apple turns the nearest front-row ally into Idunn's dedicated carry. She shares base stats with that target, adds healing, shields, and damage reduction, then grants ATK, CRIT Rate, Super Armor, and CRIT DMG through Eternal Fruit.",
+      "summary": "Golden Apple turns the nearest front-row ally into Idunn's dedicated carry. She shares base stats with that target, adds healing, shields, and damage reduction, then grants ATK, CRIT Rate, Super Armor, and CRIT DMG through Fruit of Eternity.",
       "depthRating": "medium",
       "commonlyMisunderstood": true
     },
@@ -7294,7 +7294,7 @@
       {
         "heroId": "nezha",
         "type": "core",
-        "description": "Golden Apple gives Nezha the durability to stay in melee range, while Eternal Fruit adds ATK, CRIT Rate, Super Armor, and CRIT DMG to his burst window."
+        "description": "Golden Apple gives Nezha the durability to stay in melee range, while Fruit of Eternity adds ATK, CRIT Rate, Super Armor, and CRIT DMG to his burst window."
       },
       {
         "heroId": "heracles",
@@ -7340,7 +7340,7 @@
       },
       {
         "label": "Grace",
-        "comment": "Improves Vitality Renewed's healing output.",
+        "comment": "Improves Radiant Vitality's healing output.",
         "virtues": [
           "grace_1",
           "grace_2",

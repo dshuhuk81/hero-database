@@ -21,113 +21,166 @@
         {
           "id": 1,
           "name": {
-            "en": "1. The Great Wave Brought You",
-            "de": "1. Eine Riesenwelle brachte dich",
-            "es": "1. Una ola gigante te trajo",
-            "ru": "1. Гигантская волна принесла тебя",
-            "zh": "1. 巨浪带来了你"
+            "en": "1. Depths of the Clamor",
+            "de": "1. Tiefen des Getöses",
+            "es": "1. Profundidades del clamor",
+            "ru": "1. Глубины гула",
+            "zh": "1. 喧嚣深处"
           },
           "composition": {
-            "front": ["idunn", "taurus"],
-            "back": ["sagittarius", "cancer", "libra"]
+            "front": [
+              "aries"
+            ],
+            "back": [
+              "idunn"
+            ]
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "2. Desolate Crystal",
-            "de": "2. Trostloser Kristall",
-            "es": "2. Cristal desolado",
-            "ru": "2. Безутешный кристалл",
-            "zh": "2. 凄凉的水晶"
+            "en": "2. The Shadow Behind the Spotlight",
+            "de": "2. Der Schatten hinter dem Rampenlicht",
+            "es": "2. La sombra tras los focos",
+            "ru": "2. Тень за софитами",
+            "zh": "2. 聚光灯后的影子"
           },
           "composition": {
-            "front": ["taurus", "idunn"],
-            "back": ["sagittarius"]
+            "front": [
+              "hladgunnr",
+              "taurus"
+            ],
+            "back": [
+              "idunn",
+              "caishen",
+              "isis"
+            ]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "3. Agonizing Sun",
-            "de": "3. Die schmerzhafte Sonne",
-            "es": "3. El sol doloroso",
-            "ru": "3. Болезненное солнце",
-            "zh": "3. 痛苦的太阳"
+            "en": "3. Refined Love",
+            "de": "3. Veredelte Liebe",
+            "es": "3. Amor refinado",
+            "ru": "3. Утонченная любовь",
+            "zh": "3. 淬炼的爱"
           },
           "composition": {
-            "front": ["idunn", "libra"],
-            "back": ["virgo", "cancer", "gemini"]
+            "front": [
+              "isis",
+              "prometheus"
+            ],
+            "back": [
+              "taurus",
+              "idunn",
+              "yuelao"
+            ]
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "4. Onw Who Gazes at the lone Moon",
-            "de": "4. Eine Flamme, die lange auf den einsamen Mond blickt",
-            "es": "4. Una llama que mira largo tiempo la luna solitaria",
-            "ru": "4. Пламя, долго глядящее на одинокую луну",
-            "zh": "4. 个久久望着孤月的火"
+            "en": "4. Spring Never Arrived",
+            "de": "4. Der Frühling kam nie",
+            "es": "4. La primavera nunca llegó",
+            "ru": "4. Весна так и не пришла",
+            "zh": "4. 春天从未到来"
           },
           "composition": {
-            "front": ["poseidon", "khepri"],
-            "back": ["idunn", "skadi", "tefnut"]
+            "front": [
+              "isis",
+              "hladgunnr"
+            ],
+            "back": [
+              "idunn",
+              "caishen",
+              "yuelao"
+            ]
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "5. An Unanswered Call",
-            "de": "5. Ein unbeantworteter Ruf",
-            "es": "5. Una llamada sin respuesta",
-            "ru": "5. Зов без ответа",
-            "zh": "5. 无人应答的呼唤"
+            "en": "5. The True Arc",
+            "de": "5. Der wahre Bogen",
+            "es": "5. El arco verdadero",
+            "ru": "5. Истинная арка",
+            "zh": "5. 真正的弧光"
           },
           "composition": {
-            "front": ["momus", "idunn"],
-            "back": ["tefnut", "skadi", "poseidon"]
+            "front": [
+              "hladgunnr",
+              "ullr"
+            ],
+            "back": [
+              "idunn",
+              "caishen",
+              "yuelao"
+            ]
           }
         },
         {
           "id": 6,
           "name": {
-            "en": "6. Dimming Countless Dusks",
-            "de": "6. Viele Dämmerungen verblassen lassen",
-            "es": "6. Oscureciendo muchos crepúsculos",
-            "ru": "6. Затмевая многие сумерки",
-            "zh": "6. 使许多个黄昏暗淡"
+            "en": "6. I Loved a Mistake",
+            "de": "6. Ich liebte einen Fehler",
+            "es": "6. Amé un error",
+            "ru": "6. Я любила ошибку",
+            "zh": "6. 我爱上了一个错误"
           },
           "composition": {
-            "front": ["idunn", "khepri"],
-            "back": ["skadi", "poseidon", "tefnut"]
+            "front": [
+              "hladgunnr",
+              "prometheus"
+            ],
+            "back": [
+              "idunn",
+              "caishen",
+              "yuelao"
+            ]
           }
         },
         {
           "id": 7,
           "name": {
-            "en": "7. Waiting for Someone Who Will Never Come",
-            "de": "7. Hier, wartend auf jemanden, der nicht kommen wird",
-            "es": "7. Aquí, esperando a alguien que no vendrá",
-            "ru": "7. Здесь, ожидая того, кто не придет",
-            "zh": "7. 在这里，等一个不会来的人"
+            "en": "7. Spring Breeze Brushes the Scars",
+            "de": "7. Frühlingsbrise streift die Narben",
+            "es": "7. La brisa primaveral roza las cicatrices",
+            "ru": "7. Весенний ветер касается шрамов",
+            "zh": "7. 春风拂过伤痕"
           },
           "composition": {
-            "front": ["poseidon", "idunn"],
-            "back": ["khepri", "skadi", "tefnut"]
+            "front": [
+              "prometheus",
+              "hladgunnr"
+            ],
+            "back": [
+              "yuelao",
+              "caishen",
+              "idunn"
+            ]
           }
         },
         {
           "id": 8,
           "name": {
-            "en": "8. Farewell, Hands That Loved Each Other",
-            "de": "8. Lebt wohl, Hände, die einander liebten",
-            "es": "8. Adiós, manos que se amaron",
-            "ru": "8. Прощайте, руки, любившие друг друга",
-            "zh": "8. 永别了，相互爱慕的手"
+            "en": "8. Crunch, Crunch, Take a Bite",
+            "de": "8. Knack, knack, beiß hinein",
+            "es": "8. Ñam, ñam, dale un mordisco",
+            "ru": "8. Хрусть, хрусть, откуси кусочек",
+            "zh": "8. 咔嚓咔嚓，咬一口"
           },
           "composition": {
-            "front": ["yanluo", "poseidon"],
-            "back": ["skadi", "caishen", "tefnut"]
+            "front": [
+              "anubis",
+              "heracles"
+            ],
+            "back": [
+              "diana",
+              "idunn",
+              "wenshen"
+            ]
           }
         }
       ]
