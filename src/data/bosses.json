@@ -7,6 +7,7 @@
   "bosses": [
     {
       "id": "baphomet",
+      "beginnerComp": ["", "", "", "", ""],
       "name": "Baphomet",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -91,16 +92,14 @@
             "zeus"
           ],
           "reason": "",
-          "notes": [
-            "Substitutes if missing: Caishen for Cronus, Hephaestus for Nemesis, Xuannv for Zeus.",
-            "Prioritize Energy Regen; Baphomet's pentacle drains energy every 3s"
-          ],
+          "notes": [],
           "source": "manual"
         }
       ]
     },
     {
       "id": "spirit_of_night_hag",
+      "beginnerComp": ["Isis", "Yuelao", "Caishen", "Dionysus", "Hladgunnr"],
       "name": "Spirit of Night Hag",
       "mode": "Grim Surge",
       "battlepower": "4500M",
@@ -149,24 +148,25 @@
       ],
       "recommendedComps": [
         {
-          "id": "demonic_horse_manual",
+          "id": "demonic_horse_meta",
           "label": "Recommended",
-          "hero-comp": "yuelao, meret, caishen, dionysus, xuannv",
+          "hero-comp": "zeus, hephaestus, caishen, dionysus, idunn",
           "heroes": [
-            "yuelao",
-            "meret",
+            "zeus",
+            "idunn",
             "caishen",
             "dionysus",
-            "xuannv"
+            "hephaestus"
           ],
-          "reason": "Substitutes if missing: Hephaestus for Yuelao, Nuwa for Dionysus, Isis for Xuannv.",
-          "notes": [],
-          "source": "manual"
+          "reason": "",
+          "notes": ["Zeus & Idunn Divine+ and Relic 30+"],
+          "source": "auto"
         }
       ]
     },
     {
       "id": "epica",
+      "beginnerComp": ["", "", "", "", ""],
       "name": "Epica",
       "mode": "Grim Surge",
       "battlepower": "4500M",
@@ -236,6 +236,7 @@
     },
     {
       "id": "lilith",
+      "beginnerComp": ["", "", "", "", ""],
       "name": "Lilith",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -349,6 +350,7 @@
     },
     {
       "id": "isthar_vi",
+      "beginnerComp": ["", "", "", "", ""],
       "name": "Isthar VI",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -459,6 +461,7 @@
     },
     {
       "id": "jackfrost",
+      "beginnerComp": ["", "", "", "", ""],
       "name": "Jack Frost",
       "mode": "Olds God's Return",
       "battlepower": "33932",
@@ -537,6 +540,7 @@
     },
     {
       "id": "typhoon",
+      "beginnerComp": ["", "", "", "", ""],
       "name": "Typhoon",
       "mode": "Olds God's Return",
       "battlepower": "4500M",
@@ -692,6 +696,7 @@
     },
     {
       "id": "nian_beast",
+      "beginnerComp": ["", "", "", "", ""],
       "name": "Nian Beast",
       "mode": "Olds God's Return",
       "battlepower": "33932",

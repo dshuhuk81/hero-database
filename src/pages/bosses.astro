@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import bosses from "../data/bosses.json";
-import { heroes, getHeroById } from "../data/heroes";
+import { getHeroById } from "../data/heroes";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import "../styles/components.css";
@@ -84,127 +84,29 @@ function compHeroIds(comp: Record<string, any>) {
   return ids.length ? ids : (comp.heroes ?? []);
 }
 
-function normalizeHeroName(value: string) {
-  return String(value || "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "");
-}
-
-const heroNameToId = new Map<string, string>();
-heroes.forEach((hero) => {
-  heroNameToId.set(normalizeHeroName(hero.id), hero.id);
-  heroNameToId.set(normalizeHeroName(hero.name), hero.id);
-});
-
-function heroIdFromName(value: string) {
-  return heroNameToId.get(normalizeHeroName(value));
-}
-
-function parseSubstitutesFromText(text = "") {
-  const substitutions: Array<{ targetId: string; substituteId: string }> = [];
-  const source = text.trim();
-  if (!source) return substitutions;
-
-  const explicitList = source.match(/substitutes if missing:\s*(.+)$/i)?.[1] || "";
-  explicitList
-    .replace(/\.$/, "")
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter(Boolean)
-    .forEach((entry) => {
-      const match = entry.match(/^(.+?)\s+for\s+(.+)$/i);
-      const substituteId = match ? heroIdFromName(match[1]) : null;
-      const targetId = match ? heroIdFromName(match[2]) : null;
-      if (substituteId && targetId) substitutions.push({ targetId, substituteId });
-    });
-
-  Array.from(source.matchAll(/replace\s+([a-z0-9\s'-]+?)\s+with\s+([a-z0-9\s'-]+?)(?=\s+if|\.|,|$)/gi))
-    .forEach((match) => {
-      const targetId = heroIdFromName(match[1]);
-      const substituteId = heroIdFromName(match[2]);
-      if (targetId && substituteId) substitutions.push({ targetId, substituteId });
-    });
-
-  return substitutions;
-}
-
-function cleanCompReason(reason = "") {
-  return reason.replace(/\s*Substitutes if missing:.*$/i, "").trim();
-}
-
-function noteHasParsedSubstitution(note = "") {
-  return parseSubstitutesFromText(note).length > 0;
-}
-
-function buildSubstituteSlots(main: Record<string, any>, alternatives: Array<Record<string, any>>) {
-  const mainIds = compHeroIds(main);
-  const substitutions = new Map<string, Map<string, string>>();
-
-  function addSubstitute(targetId: string, substituteId: string, source: string) {
-    if (!targetId || !substituteId || targetId === substituteId || !mainIds.includes(targetId)) return;
-    if (mainIds.includes(substituteId)) return;
-    if (!substitutions.has(targetId)) substitutions.set(targetId, new Map());
-    const slot = substitutions.get(targetId);
-    if (slot && !slot.has(substituteId)) slot.set(substituteId, source);
-  }
-
-  alternatives.forEach((alt) => {
-    const altIds = compHeroIds(alt);
-    altIds.forEach((substituteId: string, index: number) => {
-      const targetId = mainIds[index];
-      addSubstitute(targetId, substituteId, alt.label || "Alternative");
-    });
-  });
-
-  [main.reason, ...(main.notes || [])].forEach((text) => {
-    parseSubstitutesFromText(text).forEach(({ targetId, substituteId }) => {
-      addSubstitute(targetId, substituteId, "If missing");
-    });
-  });
-
-  alternatives.forEach((alt) => {
-    [alt.reason, ...(alt.notes || [])].forEach((text) => {
-      parseSubstitutesFromText(text).forEach(({ targetId, substituteId }) => {
-        addSubstitute(targetId, substituteId, alt.label || "Alternative");
-      });
-    });
-  });
-
-  return mainIds
-    .map((targetId: string) => ({
-      target: getHeroById(targetId),
-      substitutes: Array.from(substitutions.get(targetId)?.entries() || [])
-        .map(([substituteId, source]) => ({ hero: getHeroById(substituteId), source }))
-        .filter((entry) => entry.hero),
-    }))
-    .filter((slot) => slot.target && slot.substitutes.length > 0);
-}
-
 const bossViews = bosses.bosses.map((boss) => {
   const comps = boss.recommendedComps || [];
-  const [main, ...alts] = comps;
-  const mainReason = main ? cleanCompReason(main.reason || "") : "";
-  const mainNotes = (main?.notes || []).filter((note: string) => !noteHasParsedSubstitution(note));
+  const [main] = comps;
+  const beginnerHeroes = ((boss as any).beginnerComp || [])
+    .map((id: string) => getHeroById(id))
+    .filter(Boolean);
   return {
     ...boss,
     mainComp: main
-      ? { label: main.label || "Recommended", reason: mainReason, heroes: compHeroes(main) }
+      ? {
+          label: main.label || "Recommended",
+          reason: main.reason || "",
+          heroes: compHeroes(main),
+        }
       : null,
-    altComps: alts.map((comp) => ({
-      label: comp.label || "Alternative",
-      reason: comp.reason || "",
-      heroes: compHeroes(comp),
-      notes: comp.notes || [],
-    })),
-    mainNotes,
-    substituteSlots: main ? buildSubstituteSlots(main, alts) : [],
+    beginnerSlots: Array.from({ length: 5 }, (_, index) => beginnerHeroes[index] || null),
   };
 });
 ---
 
 <Base
   title="PvE Content | Motto Immortal"
-  description="Boss guides for Motto Immortal PvE content. Counter picks, recommended team comps and substitute heroes for every boss encounter."
+  description="Boss guides for Motto Immortal PvE content. Counter picks and recommended team comps for every boss encounter."
 >
 <PageHero
   id="bosses"
@@ -304,8 +206,9 @@ const bossViews = bosses.bosses.map((boss) => {
           </section>
 
           <div class="boss-content-grid">
-            {boss.mainComp && (
-              <section class="boss-team-panel" aria-labelledby={`${boss.id}-team-title`}>
+            <div class="boss-team-stack">
+              {boss.mainComp && (
+                <section class="boss-team-panel" aria-labelledby={`${boss.id}-team-title`}>
                 <div class="boss-section-header">
                   <div>
                     <p class="boss-section-kicker">Recommended Team</p>
@@ -344,50 +247,52 @@ const bossViews = bosses.bosses.map((boss) => {
                   ))}
                 </div>
 
-                {boss.mainComp.reason && <p class="boss-comp-reason">{boss.mainComp.reason}</p>}
+                  {boss.mainComp.reason && <p class="boss-comp-reason">{boss.mainComp.reason}</p>}
+                </section>
+              )}
 
-                {boss.mainNotes.length > 0 && (
-                  <ul class="boss-comp-notes">
-                    {boss.mainNotes.map((note) => <li>{note}</li>)}
-                  </ul>
-                )}
-
-                {boss.substituteSlots.length > 0 && (
-                  <div class="boss-substitutes">
-                    <h4 class="boss-substitutes-heading">Substitutes</h4>
-                    <div class="boss-substitute-grid">
-                      {boss.substituteSlots.map((slot) => (
-                        <div class="boss-substitute-slot">
-                          <div class="boss-substitute-target">
-                            <span class="boss-substitute-target-label">For</span>
-                            <a href={`/heroes/${slot.target.id}`}>{slot.target.name}</a>
-                          </div>
-                          <div class="boss-substitute-options">
-                            {slot.substitutes.map(({ hero, source }) => (
-                              <a class="boss-substitute-hero" href={`/heroes/${hero.id}`}>
-                                <img
-                                  src={heroCardSrc(hero.id, 240)}
-                                  srcset={heroCardSrcset(hero.id)}
-                                  sizes="56px"
-                                  alt=""
-                                  loading="lazy"
-                                  decoding="async"
-                                  onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
-                                />
-                                <span>
-                                  <span class="boss-substitute-name">{hero.name}</span>
-                                  <span class="boss-substitute-source">{source}</span>
-                                </span>
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+              <section class="boss-team-panel" aria-labelledby={`${boss.id}-beginner-team-title`}>
+                <div class="boss-section-header">
+                  <div>
+                    <p class="boss-section-kicker">Recommended Team</p>
+                    <h3 id={`${boss.id}-beginner-team-title`}>Beginner Comp</h3>
                   </div>
-                )}
+                  <span class="boss-section-count">5 heroes</span>
+                </div>
+
+                <div class="boss-team-row">
+                  {boss.beginnerSlots.map((hero) => hero ? (
+                    <a class="boss-team-hero" href={`/heroes/${hero.id}`}>
+                      <span class="boss-team-image">
+                        <img
+                          src={heroCardSrc(hero.id, 240)}
+                          srcset={heroCardSrcset(hero.id)}
+                          sizes="(max-width: 720px) 28vw, 128px"
+                          alt={hero.name}
+                          loading="lazy"
+                          decoding="async"
+                          onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                        />
+                      </span>
+                      <span class="boss-team-copy">
+                        <span class="boss-team-name">{hero.name}</span>
+                        <span class="boss-team-meta">
+                          <img src={factionIcon(hero.faction)} alt="" loading="lazy" decoding="async" />
+                          {hero.faction}
+                        </span>
+                      </span>
+                    </a>
+                  ) : (
+                    <div class="boss-team-hero boss-team-placeholder">
+                      <span class="boss-team-image" aria-hidden="true">?</span>
+                      <span class="boss-team-copy">
+                        <span class="boss-team-name">To be announced</span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </section>
-            )}
+            </div>
 
             <section class="boss-guide-panel" aria-labelledby={`${boss.id}-guide-title`}>
               <div class="boss-section-header">

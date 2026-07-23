@@ -5944,6 +5944,12 @@
   align-items: start;
 }
 
+.boss-team-stack {
+  min-width: 0;
+  display: grid;
+  gap: var(--space-6);
+}
+
 .boss-team-panel,
 .boss-guide-panel {
   min-width: 0;
@@ -6020,6 +6026,23 @@
   display: block;
   object-fit: cover;
   object-position: center 18%;
+}
+
+.boss-team-placeholder {
+  cursor: default;
+  border-style: dashed;
+}
+
+.boss-team-placeholder .boss-team-image {
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+}
+
+.boss-team-placeholder .boss-team-copy {
+  text-align: center;
 }
 
 .boss-team-copy {
