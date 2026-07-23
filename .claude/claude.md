@@ -82,6 +82,7 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
 - `/cn-preview` - CN vs Global divergence hub
 - `/virtues`, `/totems`, `/bosses`, `/events`, `/delusions-den`, `/tips`, `/summon-calendar`, `/summon-calculator` - content/guide pages
 - `/guides` - hub for deep-dive hero guides; `/guides/nephtys`, `/guides/nut`, `/guides/xuannv` public, `/guides/divine-throne` local-only (dev only, deity upgrade pieces feature)
+- `/virtue-wizard` - grid placement tool: mark unlocked cells, pick up to 3 sets with piece count (2 or 4; solver picks best subset of a 4-set when trying 2), solver places all pieces (silent live: deployed but not in nav)
 - `/status` - dev-only admin dashboard + CMS (talks to api-server.js)
 - `/changelog`, `/about`, `/privacy`, `/design-system`
 - `[locale]/` variants exist for `events`, `index`, `tips`, `totems` (i18n routes)
@@ -114,7 +115,7 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
   - `stats`: array of `{ key, base, bonus }` - key matches hero stat keys; `bonus` is upgrade value (0 if not upgraded)
   - `setBonuses`: `{ "2": "...", "4": "..." }` - effect text (set type only)
 - **Hero assignment**: hero JSON field is `"virtueSets"` - an array of `{ label, comment, virtues: [virtue_id, ...] }` recommendation groups (NOT a flat `virtues` array).
-- **Shape**: Tetris shape intentionally omitted for now - will be added as matrix `[[1,1],[1,0]]` when a visual grid page is built.
+- **Shape**: field `shape`, matrix like `[[1,1],[1,0]]` (rows top to bottom, 1 = occupied). Orientation is FIXED - no rotation in-game. Present on all 52 set pieces (transcribed from the R2 virtue images, pattern chip bottom-left); singulars have no shape yet. Used by `/virtue-wizard`.
 - **Display**: Hero detail page shows Virtue cards under "Recommended Virtues" section (color-coded by rarity) if any are assigned.
 - **Known Sets (partial)**: Sacrifice (gold, 2-piece: +10% HP at combat start), Far 2 / Far 3 (Realm Rover shop, 2-piece: +10% Energy Regen at combat start - considered meta for energy-dependent carries)
 

@@ -1,0 +1,377 @@
+---
+export const prerender = true;
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+
+const ROWS = 5;
+const COLS = 8;
+const SLOTS = [0, 1, 2];
+---
+
+<Base
+  title="Virtue Wizard | Motto Immortal"
+  description="Mark your hero's unlocked Virtue grid cells and try on Virtue sets - the wizard finds a placement that fits every piece."
+>
+<PageHero
+  tag="Tool"
+  headline="Virtue Wizard"
+  subtitle="Mark the cells your hero has unlocked, pick sets to try on, and the wizard places every piece for you"
+/>
+
+<div class="vwz-page">
+
+  <section class="vwz-panel">
+    <div class="vwz-controls">
+      {SLOTS.map((i) => (
+        <div class="vwz-field">
+          <label class="vwz-label" for={`vwz-slot-set-${i}`}>Set {i + 1}</label>
+          <div class="vwz-slot">
+            <select class="vwz-select" id={`vwz-slot-set-${i}`}>
+              <option value="">None</option>
+            </select>
+            <select class="vwz-select vwz-select--count" id={`vwz-slot-cnt-${i}`} aria-label={`Pieces from set ${i + 1}`} disabled>
+              <option value="">-</option>
+            </select>
+          </div>
+        </div>
+      ))}
+      <div class="vwz-actions">
+        <button class="vwz-btn" id="vwz-open-all" type="button">Open All</button>
+        <button class="vwz-btn" id="vwz-lock-all" type="button">Lock All</button>
+        <button class="vwz-btn" id="vwz-reset" type="button">Reset</button>
+      </div>
+    </div>
+    <p class="vwz-hint">Click or drag on the grid to toggle cells between locked and open. Every hero unlocks a different pattern depending on Ascension, so mark yours here - the layout is saved in this browser. For 4-piece sets you can also try just 2 pieces to grab the 2-piece bonus; the wizard picks whichever 2 fit best.</p>
+  </section>
+
+  <section class="vwz-panel">
+    <div class="vwz-grid" id="vwz-grid">
+      {Array.from({ length: ROWS }).map((_, r) =>
+        Array.from({ length: COLS }).map((_, c) => (
+          <button class="vwz-cell" type="button" data-k={`${r},${c}`} aria-label={`Cell row ${r + 1}, column ${c + 1}`}></button>
+        ))
+      )}
+    </div>
+    <p class="vwz-status" id="vwz-status"></p>
+    <div class="vwz-legend" id="vwz-legend"></div>
+    <div class="vwz-bonuses" id="vwz-bonuses"></div>
+  </section>
+
+</div>
+</Base>
+
+<script>
+  import virtuesJson from "../data/virtues.json";
+
+  const all = virtuesJson as any[];
+  const ROWS = 5;
+  const COLS = 8;
+  const SLOTS = 3;
+  const LS_KEY = "vwz-grid-v1";
+  const PIECE_COLORS = 12;
+
+  const setsByName: Record<string, any[]> = {};
+  for (const v of all) {
+    if (v.type === "set" && v.shape) {
+      (setsByName[v.set] ??= []).push(v);
+    }
+  }
+  const setNames4 = Object.keys(setsByName).filter((s) => setsByName[s].length === 4).sort();
+  const setNames2 = Object.keys(setsByName).filter((s) => setsByName[s].length === 2).sort();
+
+  const grid = document.getElementById("vwz-grid") as HTMLElement;
+  const statusEl = document.getElementById("vwz-status") as HTMLElement;
+  const legendEl = document.getElementById("vwz-legend") as HTMLElement;
+  const bonusesEl = document.getElementById("vwz-bonuses") as HTMLElement;
+  const cells = Array.from(grid.querySelectorAll<HTMLButtonElement>(".vwz-cell"));
+  const setSels: HTMLSelectElement[] = [];
+  const cntSels: HTMLSelectElement[] = [];
+  for (let i = 0; i < SLOTS; i++) {
+    setSels.push(document.getElementById(`vwz-slot-set-${i}`) as HTMLSelectElement);
+    cntSels.push(document.getElementById(`vwz-slot-cnt-${i}`) as HTMLSelectElement);
+  }
+
+  function rarityLabel(r: string) {
+    return r === "red" ? "Legendary" : r === "gold" ? "Epic" : "Rare";
+  }
+
+  function fillSetSelect(sel: HTMLSelectElement) {
+    const groupsDef: [string, string[]][] = [
+      ["4-Piece Sets", setNames4],
+      ["2-Piece Sets", setNames2],
+    ];
+    for (const [label, names] of groupsDef) {
+      const og = document.createElement("optgroup");
+      og.label = label;
+      for (const name of names) {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = `${name} (${rarityLabel(setsByName[name][0].rarity)})`;
+        og.appendChild(opt);
+      }
+      sel.appendChild(og);
+    }
+  }
+  setSels.forEach(fillSetSelect);
+
+  function syncCount(i: number) {
+    const name = setSels[i].value;
+    const cnt = cntSels[i];
+    cnt.innerHTML = "";
+    if (!name) {
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "-";
+      cnt.appendChild(opt);
+      cnt.disabled = true;
+      return;
+    }
+    const size = setsByName[name].length;
+    const options = size === 4 ? ["4", "2"] : ["2"];
+    for (const val of options) {
+      const opt = document.createElement("option");
+      opt.value = val;
+      opt.textContent = `${val} pieces`;
+      cnt.appendChild(opt);
+    }
+    cnt.disabled = size === 2;
+  }
+  for (let i = 0; i < SLOTS; i++) syncCount(i);
+
+  let open = new Set<string>();
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    if (Array.isArray(saved)) open = new Set(saved.filter((k) => typeof k === "string"));
+  } catch {
+    open = new Set();
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify([...open]));
+    } catch {
+      // storage unavailable - grid still works for this visit
+    }
+  }
+
+  function cellCount(shape: number[][]) {
+    return shape.reduce((sum, row) => sum + row.reduce((a, b) => a + b, 0), 0);
+  }
+
+  function pieceLabel(piece: any) {
+    const parts = String(piece.name).split(" ");
+    return parts[parts.length - 1];
+  }
+
+  type Group = { name: string; pieces: any[]; quota: number };
+  type Placement = { piece: any; g: number; cells: string[] };
+
+  function selectedGroups(): { groups: Group[]; duplicates: string[] } {
+    const groups: Group[] = [];
+    const duplicates: string[] = [];
+    const used = new Set<string>();
+    for (let i = 0; i < SLOTS; i++) {
+      const name = setSels[i].value;
+      if (!name) continue;
+      if (used.has(name)) {
+        duplicates.push(name);
+        continue;
+      }
+      used.add(name);
+      const pieces = setsByName[name];
+      const quota = Math.min(parseInt(cntSels[i].value || "2", 10) || 2, pieces.length);
+      groups.push({ name, pieces, quota });
+    }
+    return { groups, duplicates };
+  }
+
+  function solve(groups: Group[], openCells: Set<string>): Placement[] {
+    const order: { piece: any; g: number }[] = [];
+    groups.forEach((grp, g) => grp.pieces.forEach((p) => order.push({ piece: p, g })));
+    order.sort((a, b) => cellCount(b.piece.shape) - cellCount(a.piece.shape));
+    const quotas = groups.map((grp) => grp.quota);
+    const target = quotas.reduce((a, b) => a + b, 0);
+    const counts = new Array(groups.length).fill(0);
+    const occ = new Set<string>();
+    const current: Placement[] = [];
+    let best: Placement[] = [];
+    let nodes = 0;
+
+    function rec(i: number) {
+      if (nodes++ > 400000 || best.length === target) return;
+      if (i === order.length) {
+        if (current.length > best.length) {
+          best = current.map((p) => ({ piece: p.piece, g: p.g, cells: [...p.cells] }));
+        }
+        return;
+      }
+      const { piece, g } = order[i];
+      if (counts[g] < quotas[g]) {
+        const sh = piece.shape as number[][];
+        for (let r = 0; r <= ROWS - sh.length; r++) {
+          for (let c = 0; c <= COLS - sh[0].length; c++) {
+            const taken: string[] = [];
+            let fits = true;
+            for (let y = 0; y < sh.length && fits; y++) {
+              for (let x = 0; x < sh[y].length; x++) {
+                if (!sh[y][x]) continue;
+                const k = `${r + y},${c + x}`;
+                if (!openCells.has(k) || occ.has(k)) {
+                  fits = false;
+                  break;
+                }
+                taken.push(k);
+              }
+            }
+            if (!fits) continue;
+            taken.forEach((k) => occ.add(k));
+            counts[g]++;
+            current.push({ piece, g, cells: taken });
+            rec(i + 1);
+            current.pop();
+            counts[g]--;
+            taken.forEach((k) => occ.delete(k));
+            if (best.length === target) return;
+          }
+        }
+      }
+      rec(i + 1);
+    }
+    rec(0);
+    return best;
+  }
+
+  function render() {
+    for (const cell of cells) {
+      const k = cell.dataset.k as string;
+      cell.classList.toggle("is-open", open.has(k));
+      cell.textContent = "";
+      for (let i = 0; i < PIECE_COLORS; i++) cell.classList.remove(`vwz-pc${i}`);
+    }
+
+    const { groups, duplicates } = selectedGroups();
+    const placements = groups.length ? solve(groups, open) : [];
+    const target = groups.reduce((a, g) => a + g.quota, 0);
+    const usedCells = placements.reduce((a, pl) => a + pl.cells.length, 0);
+
+    legendEl.innerHTML = "";
+    placements.forEach((pl, i) => {
+      const colorClass = `vwz-pc${i % PIECE_COLORS}`;
+      for (const k of pl.cells) {
+        const cell = cells.find((c) => c.dataset.k === k);
+        if (cell) {
+          cell.classList.add(colorClass);
+          cell.textContent = pieceLabel(pl.piece);
+        }
+      }
+      const item = document.createElement("span");
+      item.className = "vwz-legend-item";
+      const chip = document.createElement("span");
+      chip.className = `vwz-chip ${colorClass}`;
+      item.appendChild(chip);
+      item.appendChild(document.createTextNode(pl.piece.name));
+      legendEl.appendChild(item);
+    });
+    groups.forEach((grp, g) => {
+      const placedInG = placements.filter((pl) => pl.g === g).length;
+      const missing = grp.quota - placedInG;
+      if (missing > 0) {
+        const item = document.createElement("span");
+        item.className = "vwz-legend-item is-missing";
+        item.textContent = `${grp.name} - ${missing} of ${grp.quota} pieces do not fit`;
+        legendEl.appendChild(item);
+      }
+    });
+    for (const name of duplicates) {
+      const item = document.createElement("span");
+      item.className = "vwz-legend-item is-missing";
+      item.textContent = `${name} selected twice - a hero cannot equip the same set piece twice`;
+      legendEl.appendChild(item);
+    }
+
+    if (!groups.length) {
+      statusEl.textContent = `Open cells: ${open.size} of ${ROWS * COLS}. Pick a set to try it on.`;
+    } else if (placements.length === target) {
+      statusEl.textContent = `All ${target} pieces fit (${usedCells} cells used, ${open.size - usedCells} open cells left).`;
+    } else {
+      statusEl.textContent = `Only ${placements.length} of ${target} pieces fit with the current open cells.`;
+    }
+
+    bonusesEl.innerHTML = "";
+    for (const grp of groups) {
+      const bonuses = grp.pieces[0].setBonuses ?? {};
+      for (const tier of ["2", "4"]) {
+        if (!bonuses[tier] || parseInt(tier, 10) > grp.quota) continue;
+        const row = document.createElement("p");
+        row.className = "vwz-bonus-row";
+        row.textContent = `${grp.name} ${tier}-piece: ${bonuses[tier]}`;
+        bonusesEl.appendChild(row);
+      }
+    }
+  }
+
+  function setCell(k: string, value: boolean) {
+    if (value) open.add(k);
+    else open.delete(k);
+  }
+
+  let painting = false;
+  let paintValue = false;
+
+  grid.addEventListener("pointerdown", (e) => {
+    const cell = (e.target as HTMLElement).closest(".vwz-cell") as HTMLButtonElement | null;
+    if (!cell) return;
+    e.preventDefault();
+    const k = cell.dataset.k as string;
+    painting = true;
+    paintValue = !open.has(k);
+    setCell(k, paintValue);
+    save();
+    render();
+  });
+  grid.addEventListener("pointerover", (e) => {
+    if (!painting) return;
+    const cell = (e.target as HTMLElement).closest(".vwz-cell") as HTMLButtonElement | null;
+    if (!cell) return;
+    setCell(cell.dataset.k as string, paintValue);
+    save();
+    render();
+  });
+  window.addEventListener("pointerup", () => {
+    painting = false;
+  });
+
+  setSels.forEach((sel, i) => {
+    sel.addEventListener("change", () => {
+      syncCount(i);
+      render();
+    });
+  });
+  cntSels.forEach((sel) => sel.addEventListener("change", render));
+
+  document.getElementById("vwz-open-all")?.addEventListener("click", () => {
+    open = new Set(cells.map((c) => c.dataset.k as string));
+    save();
+    render();
+  });
+  document.getElementById("vwz-lock-all")?.addEventListener("click", () => {
+    open = new Set();
+    save();
+    render();
+  });
+  document.getElementById("vwz-reset")?.addEventListener("click", () => {
+    open = new Set();
+    try {
+      localStorage.removeItem(LS_KEY);
+    } catch {
+      // ignore
+    }
+    for (let i = 0; i < SLOTS; i++) {
+      setSels[i].value = "";
+      syncCount(i);
+    }
+    render();
+  });
+
+  render();
+</script>

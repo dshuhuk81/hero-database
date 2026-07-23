@@ -15,7 +15,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, ATK +5%"
-    }
+    },
+    "shape": [[1,1,1],[0,1,0]]
   },
   {
     "id": "resolve_2",
@@ -33,7 +34,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, ATK +5%"
-    }
+    },
+    "shape": [[0,1],[1,1],[1,0]]
   },
   {
     "id": "clarity_1",
@@ -51,7 +53,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, CRIT Rate +5%"
-    }
+    },
+    "shape": [[0,1,0],[1,1,1]]
   },
   {
     "id": "clarity_2",
@@ -69,7 +72,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, CRIT Rate +5%"
-    }
+    },
+    "shape": [[1,1],[0,1],[0,1]]
   },
   {
     "id": "mercy_1",
@@ -87,7 +91,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, HP +5%"
-    }
+    },
+    "shape": [[1,1,1,1]]
   },
   {
     "id": "mercy_2",
@@ -105,7 +110,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, HP +5%"
-    }
+    },
+    "shape": [[1,1],[1,0]]
   },
   {
     "id": "zeal_1",
@@ -123,7 +129,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, Healing Effectiveness +5%"
-    }
+    },
+    "shape": [[1],[1],[1],[1]]
   },
   {
     "id": "zeal_2",
@@ -141,7 +148,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, Healing Effectiveness +5%"
-    }
+    },
+    "shape": [[1,1],[1,0]]
   },
   {
     "id": "peace_1",
@@ -159,7 +167,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, Dodge Rate +5%"
-    }
+    },
+    "shape": [[1,1,1,1]]
   },
   {
     "id": "peace_2",
@@ -177,7 +186,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, Dodge Rate +5%"
-    }
+    },
+    "shape": [[1,0],[1,1]]
   },
   {
     "id": "humility_1",
@@ -195,7 +205,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, Armor +5%, M-RES +5%"
-    }
+    },
+    "shape": [[1],[1],[1],[1]]
   },
   {
     "id": "humility_2",
@@ -213,7 +224,8 @@
     ],
     "setBonuses": {
       "2": "At combat start, Armor +5%, M-RES +5%"
-    }
+    },
+    "shape": [[1,0],[1,1]]
   },
   {
     "id": "desire_1",
@@ -232,7 +244,8 @@
     "setBonuses": {
       "2": "At combat start, ATK +10%",
       "4": "After 15s into the battle, ATK +20%"
-    }
+    },
+    "shape": [[1,1,1]]
   },
   {
     "id": "desire_2",
@@ -251,7 +264,8 @@
     "setBonuses": {
       "2": "At combat start, ATK +10%",
       "4": "After 15s into the battle, ATK +20%"
-    }
+    },
+    "shape": [[1],[1],[1]]
   },
   {
     "id": "desire_3",
@@ -270,7 +284,8 @@
     "setBonuses": {
       "2": "At combat start, ATK +10%",
       "4": "After 15s into the battle, ATK +20%"
-    }
+    },
+    "shape": [[1,1],[1,1]]
   },
   {
     "id": "desire_4",
@@ -289,7 +304,8 @@
     "setBonuses": {
       "2": "At combat start, ATK +10%",
       "4": "After 15s into the battle, ATK +20%"
-    }
+    },
+    "shape": [[0,1],[0,1],[1,1]]
   },
   {
     "id": "insight_1",
@@ -308,7 +324,8 @@
     "setBonuses": {
       "2": "At combat start, CRIT Rate +10%",
       "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
-    }
+    },
+    "shape": [[1,1,1]]
   },
   {
     "id": "insight_2",
@@ -327,7 +344,8 @@
     "setBonuses": {
       "2": "At combat start, CRIT Rate +10%",
       "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
-    }
+    },
+    "shape": [[0,1],[1,1]]
   },
   {
     "id": "insight_3",
@@ -346,7 +364,8 @@
     "setBonuses": {
       "2": "At combat start, CRIT Rate +10%",
       "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
-    }
+    },
+    "shape": [[1,1],[1,1]]
   },
   {
     "id": "insight_4",
@@ -365,7 +384,8 @@
     "setBonuses": {
       "2": "At combat start, CRIT Rate +10%",
       "4": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s"
-    }
+    },
+    "shape": [[1,1],[0,1],[0,1]]
   },
   {
     "id": "sacrifice_1",
@@ -384,7 +404,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "At combat start, max HP +30% while current HP remains unchanged"
-    }
+    },
+    "shape": [[1],[1],[1]]
   },
   {
     "id": "sacrifice_2",
@@ -403,7 +424,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "At combat start, max HP +30% while current HP remains unchanged"
-    }
+    },
+    "shape": [[0,1],[1,1]]
   },
   {
     "id": "sacrifice_3",
@@ -422,7 +444,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "At combat start, max HP +30% while current HP remains unchanged"
-    }
+    },
+    "shape": [[1],[1],[1],[1]]
   },
   {
     "id": "sacrifice_4",
@@ -441,7 +464,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "At combat start, max HP +30% while current HP remains unchanged"
-    }
+    },
+    "shape": [[0,1],[1,1],[1,0]]
   },
   {
     "id": "grace_1",
@@ -460,7 +484,8 @@
     "setBonuses": {
       "2": "At combat start, Healing Effectiveness +15%",
       "4": "Healing +30% on allies with HP below 50%"
-    }
+    },
+    "shape": [[1],[1],[1]]
   },
   {
     "id": "grace_2",
@@ -479,7 +504,8 @@
     "setBonuses": {
       "2": "At combat start, Healing Effectiveness +15%",
       "4": "Healing +30% on allies with HP below 50%"
-    }
+    },
+    "shape": [[1,1],[0,1]]
   },
   {
     "id": "grace_3",
@@ -498,7 +524,8 @@
     "setBonuses": {
       "2": "At combat start, Healing Effectiveness +15%",
       "4": "Healing +30% on allies with HP below 50%"
-    }
+    },
+    "shape": [[1,1],[0,1],[0,1]]
   },
   {
     "id": "grace_4",
@@ -517,7 +544,8 @@
     "setBonuses": {
       "2": "At combat start, Healing Effectiveness +15%",
       "4": "Healing +30% on allies with HP below 50%"
-    }
+    },
+    "shape": [[1,0,0],[1,1,1]]
   },
   {
     "id": "stoic_1",
@@ -536,7 +564,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "DMG received and dealt -30%"
-    }
+    },
+    "shape": [[1],[1],[1]]
   },
   {
     "id": "stoic_2",
@@ -555,7 +584,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "DMG received and dealt -30%"
-    }
+    },
+    "shape": [[1,1,1]]
   },
   {
     "id": "stoic_3",
@@ -574,7 +604,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "DMG received and dealt -30%"
-    }
+    },
+    "shape": [[1,1],[1,1]]
   },
   {
     "id": "stoic_4",
@@ -593,7 +624,8 @@
     "setBonuses": {
       "2": "At combat start, HP +10%",
       "4": "DMG received and dealt -30%"
-    }
+    },
+    "shape": [[1,0,0],[1,1,1]]
   },
   {
     "id": "gnosis_1",
@@ -612,7 +644,8 @@
     "setBonuses": {
       "2": "At combat start, Dodge Rate +10%",
       "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
-    }
+    },
+    "shape": [[1,1,1]]
   },
   {
     "id": "gnosis_2",
@@ -631,7 +664,8 @@
     "setBonuses": {
       "2": "At combat start, Dodge Rate +10%",
       "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
-    }
+    },
+    "shape": [[1,1],[0,1]]
   },
   {
     "id": "gnosis_3",
@@ -650,7 +684,8 @@
     "setBonuses": {
       "2": "At combat start, Dodge Rate +10%",
       "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
-    }
+    },
+    "shape": [[1,1,1,1]]
   },
   {
     "id": "gnosis_4",
@@ -669,7 +704,8 @@
     "setBonuses": {
       "2": "At combat start, Dodge Rate +10%",
       "4": "Dodge Rate +15% per hit taken. Clears all effects upon dodge"
-    }
+    },
+    "shape": [[1,1,0],[0,1,1]]
   },
   {
     "id": "wildness_1",
@@ -688,7 +724,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "Gains 5% ATK every 5s, Max at 10 stacks"
-    }
+    },
+    "shape": [[1,1,1]]
   },
   {
     "id": "wildness_2",
@@ -707,7 +744,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "Gains 5% ATK every 5s, Max at 10 stacks"
-    }
+    },
+    "shape": [[1,1],[1,0]]
   },
   {
     "id": "wildness_3",
@@ -726,7 +764,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "Gains 5% ATK every 5s, Max at 10 stacks"
-    }
+    },
+    "shape": [[0,1,1],[1,1,0]]
   },
   {
     "id": "wildness_4",
@@ -745,7 +784,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "Gains 5% ATK every 5s, Max at 10 stacks"
-    }
+    },
+    "shape": [[0,0,1],[1,1,1]]
   },
   {
     "id": "defiance_1",
@@ -764,7 +804,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
-    }
+    },
+    "shape": [[1,1,1]]
   },
   {
     "id": "defiance_2",
@@ -783,7 +824,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
-    }
+    },
+    "shape": [[1,0],[1,1]]
   },
   {
     "id": "defiance_3",
@@ -802,7 +844,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
-    }
+    },
+    "shape": [[0,1],[1,1],[0,1]]
   },
   {
     "id": "defiance_4",
@@ -821,7 +864,8 @@
     "setBonuses": {
       "2": "At combat start, HP +15%",
       "4": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)"
-    }
+    },
+    "shape": [[1,1,1],[1,0,0]]
   },
   {
     "id": "fervor_1",
@@ -840,7 +884,8 @@
     "setBonuses": {
       "2": "At combat start, Energy Regen Bonus +10%",
       "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
-    }
+    },
+    "shape": [[1],[1],[1]]
   },
   {
     "id": "fervor_2",
@@ -859,7 +904,8 @@
     "setBonuses": {
       "2": "At combat start, Energy Regen Bonus +10%",
       "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
-    }
+    },
+    "shape": [[1,1],[0,1]]
   },
   {
     "id": "fervor_3",
@@ -878,7 +924,8 @@
     "setBonuses": {
       "2": "At combat start, Energy Regen Bonus +10%",
       "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
-    }
+    },
+    "shape": [[1,0],[1,1],[0,1]]
   },
   {
     "id": "fervor_4",
@@ -897,7 +944,8 @@
     "setBonuses": {
       "2": "At combat start, Energy Regen Bonus +10%",
       "4": "Upon using Ultimate, gains 10% ATK, Max at 4 stacks"
-    }
+    },
+    "shape": [[1,0],[1,0],[1,1]]
   },
   {
     "id": "oblivion_1",
@@ -916,7 +964,8 @@
     "setBonuses": {
       "2": "At combat start, Armor +30%, M-RES +30%",
       "4": "At combat start, gains immunity to Crowd Control for 8s"
-    }
+    },
+    "shape": [[1],[1],[1]]
   },
   {
     "id": "oblivion_2",
@@ -934,7 +983,8 @@
     ],
     "setBonuses": {
       "4": "At combat start, gains immunity to Crowd Control for 8s"
-    }
+    },
+    "shape": [[0,1],[1,1]]
   },
   {
     "id": "oblivion_3",
@@ -952,7 +1002,8 @@
     ],
     "setBonuses": {
       "4": "At combat start, gains immunity to Crowd Control for 8s"
-    }
+    },
+    "shape": [[1,1],[1,1]]
   },
   {
     "id": "oblivion_4",
@@ -970,7 +1021,8 @@
     ],
     "setBonuses": {
       "4": "At combat start, gains immunity to Crowd Control for 8s"
-    }
+    },
+    "shape": [[1,0],[1,1],[1,0]]
   },
   {
     "id": "justice",
