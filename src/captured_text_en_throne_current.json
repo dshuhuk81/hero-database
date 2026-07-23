@@ -1,0 +1,2363 @@
+{
+  "marker": "divine_throne",
+  "hero_id": null,
+  "language": "en",
+  "package": "com.goatgames.mot.gb.gp",
+  "session": "20260723_150336",
+  "updated_at": "2026-07-23T15:04:44.850+02:00",
+  "count": 336,
+  "strings": [
+    {
+      "seq": 1,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:39.810+02:00",
+      "src": "set_text",
+      "v": "Locked"
+    },
+    {
+      "seq": 2,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:40.975+02:00",
+      "src": "set_text",
+      "v": "2649K"
+    },
+    {
+      "seq": 3,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:40.976+02:00",
+      "src": "set_text",
+      "v": "268K"
+    },
+    {
+      "seq": 4,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:40.976+02:00",
+      "src": "set_text",
+      "v": "Might: 824K"
+    },
+    {
+      "seq": 5,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:40.980+02:00",
+      "src": "set_text",
+      "v": "Divine V"
+    },
+    {
+      "seq": 6,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:40.981+02:00",
+      "src": "set_text",
+      "v": "Cronus"
+    },
+    {
+      "seq": 7,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:40.981+02:00",
+      "src": "set_text",
+      "v": "God of Time"
+    },
+    {
+      "seq": 8,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:41.866+02:00",
+      "src": "set_text",
+      "v": "The Throne feature is not yet available for this Deity. Stay tuned."
+    },
+    {
+      "seq": 9,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:42.991+02:00",
+      "src": "set_text",
+      "v": "3097K"
+    },
+    {
+      "seq": 10,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:42.993+02:00",
+      "src": "set_text",
+      "v": "280K"
+    },
+    {
+      "seq": 11,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:42.996+02:00",
+      "src": "set_text",
+      "v": "Nezha"
+    },
+    {
+      "seq": 12,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:42.996+02:00",
+      "src": "set_text",
+      "v": "Heaven's Resplendent Marshal"
+    },
+    {
+      "seq": 13,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.058+02:00",
+      "src": "set_text",
+      "v": "2316K"
+    },
+    {
+      "seq": 14,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.058+02:00",
+      "src": "set_text",
+      "v": "304K"
+    },
+    {
+      "seq": 15,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.062+02:00",
+      "src": "set_text",
+      "v": "Zeus"
+    },
+    {
+      "seq": 16,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.063+02:00",
+      "src": "set_text",
+      "v": "God of Sky and Thunder"
+    },
+    {
+      "seq": 17,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.856+02:00",
+      "src": "set_text",
+      "v": "Lv."
+    },
+    {
+      "seq": 18,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.857+02:00",
+      "src": "set_text",
+      "v": "Throne Special Skill"
+    },
+    {
+      "seq": 19,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.857+02:00",
+      "src": "set_text",
+      "v": "Skill Unawakened"
+    },
+    {
+      "seq": 20,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.858+02:00",
+      "src": "set_text",
+      "v": "HP"
+    },
+    {
+      "seq": 21,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.858+02:00",
+      "src": "set_text",
+      "v": "Awaken"
+    },
+    {
+      "seq": 22,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.859+02:00",
+      "src": "set_text",
+      "v": "New"
+    },
+    {
+      "seq": 23,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.859+02:00",
+      "src": "set_text",
+      "v": "Ascend"
+    },
+    {
+      "seq": 24,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.860+02:00",
+      "src": "set_text",
+      "v": "Divinity"
+    },
+    {
+      "seq": 25,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.860+02:00",
+      "src": "set_text",
+      "v": "Virtue"
+    },
+    {
+      "seq": 26,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.861+02:00",
+      "src": "set_text",
+      "v": "Throne"
+    },
+    {
+      "seq": 27,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.861+02:00",
+      "src": "set_text",
+      "v": "Relic"
+    },
+    {
+      "seq": 28,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.862+02:00",
+      "src": "set_text",
+      "v": "Deity"
+    },
+    {
+      "seq": 29,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.866+02:00",
+      "src": "set_text",
+      "v": "Throne of Thunder"
+    },
+    {
+      "seq": 30,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.869+02:00",
+      "src": "set_text",
+      "v": "Enhance"
+    },
+    {
+      "seq": 31,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.871+02:00",
+      "src": "set_text",
+      "v": "Theocracy"
+    },
+    {
+      "seq": 32,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.878+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Zeus gains a permanent Thunder Echo at the start of battle. The Thunder Echo inherits 30% of all of Zeus's stats."
+    },
+    {
+      "seq": 33,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.879+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]The Thunder Echo inherits 60% of all of Zeus's stats."
+    },
+    {
+      "seq": 34,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.879+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When Zeus is about to fall, sacrifices the Thunder Echo to become Invincible for 3s and recovers 60% Max HP. Triggers once per battle."
+    },
+    {
+      "seq": 35,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:45.880+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]The Thunder Echo inherits 70% of all of Zeus's stats."
+    },
+    {
+      "seq": 36,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.358+02:00",
+      "src": "set_text",
+      "v": "2827K"
+    },
+    {
+      "seq": 37,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.359+02:00",
+      "src": "set_text",
+      "v": "242K"
+    },
+    {
+      "seq": 38,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.359+02:00",
+      "src": "set_text",
+      "v": "Might: 823K"
+    },
+    {
+      "seq": 39,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.363+02:00",
+      "src": "set_text",
+      "v": "Nuwa"
+    },
+    {
+      "seq": 40,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.363+02:00",
+      "src": "set_text",
+      "v": "The Primordial Celestial"
+    },
+    {
+      "seq": 41,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.365+02:00",
+      "src": "set_text",
+      "v": "Throne of Humanity"
+    },
+    {
+      "seq": 42,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.368+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Divine Embrace also grants the target 30% ATK for 5s."
+    },
+    {
+      "seq": 43,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.368+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Divine Embrace also grants the target 40% ATK for 5s."
+    },
+    {
+      "seq": 44,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.369+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]For each summoned unit on the battlefield, the Shield Power granted by Nuwa increases by 10%."
+    },
+    {
+      "seq": 45,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:47.369+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Divine Embrace also grants the target 50% ATK for 5s."
+    },
+    {
+      "seq": 46,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.041+02:00",
+      "src": "set_text",
+      "v": "2741K"
+    },
+    {
+      "seq": 47,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.042+02:00",
+      "src": "set_text",
+      "v": "246K"
+    },
+    {
+      "seq": 48,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.046+02:00",
+      "src": "set_text",
+      "v": "Dionysus"
+    },
+    {
+      "seq": 49,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.047+02:00",
+      "src": "set_text",
+      "v": "Goddess of Wine and Revelry"
+    },
+    {
+      "seq": 50,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.047+02:00",
+      "src": "set_text",
+      "v": "Throne of Wine and Ecstasy"
+    },
+    {
+      "seq": 51,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.049+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Vintage Vivace takes effect on 1 additional unit."
+    },
+    {
+      "seq": 52,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.049+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Vintage Vivace additionally restores HP equal to 200% of ATK."
+    },
+    {
+      "seq": 53,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.050+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Vintage Vivace takes effect on 3 additional units."
+    },
+    {
+      "seq": 54,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:49.051+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Vintage Vivace additionally restores HP equal to 250% of ATK."
+    },
+    {
+      "seq": 55,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.541+02:00",
+      "src": "set_text",
+      "v": "2500K"
+    },
+    {
+      "seq": 56,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.542+02:00",
+      "src": "set_text",
+      "v": "272K"
+    },
+    {
+      "seq": 57,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.546+02:00",
+      "src": "set_text",
+      "v": "Nyx"
+    },
+    {
+      "seq": 58,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.546+02:00",
+      "src": "set_text",
+      "v": "Goddess of Night"
+    },
+    {
+      "seq": 59,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.547+02:00",
+      "src": "set_text",
+      "v": "Throne of the Dark Night"
+    },
+    {
+      "seq": 60,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.549+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]When the battle starts, reduces the Hit Rate of all enemy units by 30% for 15s."
+    },
+    {
+      "seq": 61,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.550+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Nyx deals 40% increased DMG to units with HP above 30%."
+    },
+    {
+      "seq": 62,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.550+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When the battle starts, reduces the Hit Rate of all enemy units by 30% for 30s."
+    },
+    {
+      "seq": 63,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:50.550+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Nyx deals 45% increased DMG to units with HP above 30%."
+    },
+    {
+      "seq": 64,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.658+02:00",
+      "src": "set_text",
+      "v": "2986K"
+    },
+    {
+      "seq": 65,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.658+02:00",
+      "src": "set_text",
+      "v": "260K"
+    },
+    {
+      "seq": 66,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.662+02:00",
+      "src": "set_text",
+      "v": "Amun-Ra"
+    },
+    {
+      "seq": 67,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.663+02:00",
+      "src": "set_text",
+      "v": "God of the Sun and Secrets"
+    },
+    {
+      "seq": 68,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.664+02:00",
+      "src": "set_text",
+      "v": "Throne of the Hidden Blazing Sun"
+    },
+    {
+      "seq": 69,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.666+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]During Aten's Radiance, each solar blade fired grants the most vulnerable ally a shield equal to 50% of ATK for 3s."
+    },
+    {
+      "seq": 70,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.666+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When the battle starts, Glare of Ra takes effect on an additional ally, prioritizing front-row allies."
+    },
+    {
+      "seq": 71,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.667+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]During Aten's Radiance, DMG dealt becomes True DMG."
+    },
+    {
+      "seq": 72,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:51.667+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]During Aten's Radiance, each solar blade fired grants the most vulnerable ally a shield equal to 60% of ATK for 3s."
+    },
+    {
+      "seq": 73,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.191+02:00",
+      "src": "set_text",
+      "v": "3029K"
+    },
+    {
+      "seq": 74,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.192+02:00",
+      "src": "set_text",
+      "v": "167K"
+    },
+    {
+      "seq": 75,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.192+02:00",
+      "src": "set_text",
+      "v": "Might: 632K"
+    },
+    {
+      "seq": 76,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.193+02:00",
+      "src": "set_text",
+      "v": "Ullr"
+    },
+    {
+      "seq": 77,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.193+02:00",
+      "src": "set_text",
+      "v": "God of Winter and Snow"
+    },
+    {
+      "seq": 78,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.194+02:00",
+      "src": "set_text",
+      "v": "Throne of Winter"
+    },
+    {
+      "seq": 79,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.196+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]When casting Bloodstained Bond, also grants a shield to the frost-linked ally. This shield's effectiveness is only 30%."
+    },
+    {
+      "seq": 80,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Casting Shackle of Pain permanently increases the target's DMG taken by 10%, up to 3 stacks."
+    },
+    {
+      "seq": 81,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When casting Bloodstained Bond, also grants a shield to the frost-linked ally. This shield's effectiveness is only 60%."
+    },
+    {
+      "seq": 82,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:53.198+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Casting Shackle of Pain permanently increases the target's DMG taken by 15%, up to 3 stacks."
+    },
+    {
+      "seq": 83,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.857+02:00",
+      "src": "set_text",
+      "v": "3245K"
+    },
+    {
+      "seq": 84,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.858+02:00",
+      "src": "set_text",
+      "v": "158K"
+    },
+    {
+      "seq": 85,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.859+02:00",
+      "src": "set_text",
+      "v": "Might: 631K"
+    },
+    {
+      "seq": 86,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.859+02:00",
+      "src": "set_text",
+      "v": "Prometheus"
+    },
+    {
+      "seq": 87,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.860+02:00",
+      "src": "set_text",
+      "v": "The Fire-Bringer"
+    },
+    {
+      "seq": 88,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.860+02:00",
+      "src": "set_text",
+      "v": "Throne of Sacrifice"
+    },
+    {
+      "seq": 89,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.862+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]In the Bound state, DMG taken is reduced by an additional 20%."
+    },
+    {
+      "seq": 90,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.862+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Gains 200 initial Energy when the battle starts."
+    },
+    {
+      "seq": 91,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.863+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]In the Bound state, DMG taken is reduced by an additional 40%."
+    },
+    {
+      "seq": 92,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:54.864+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Gains 200 initial Energy when the battle starts."
+    },
+    {
+      "seq": 93,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.407+02:00",
+      "src": "set_text",
+      "v": "1923K"
+    },
+    {
+      "seq": 94,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.408+02:00",
+      "src": "set_text",
+      "v": "206K"
+    },
+    {
+      "seq": 95,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.409+02:00",
+      "src": "set_text",
+      "v": "Jingwei"
+    },
+    {
+      "seq": 96,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.409+02:00",
+      "src": "set_text",
+      "v": "Sea-Filling Princess"
+    },
+    {
+      "seq": 97,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.410+02:00",
+      "src": "set_text",
+      "v": "Throne of Oaths"
+    },
+    {
+      "seq": 98,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.412+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Each Whirlwind of Howling Hurricane reduces the target's Armor and M-RES by 10% for 15s, up to 10 stacks."
+    },
+    {
+      "seq": 99,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.412+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When Grand Nosedive reaches max stacks, additionally increases CRIT DMG by 45%."
+    },
+    {
+      "seq": 100,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.413+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Each Whirlwind of Howling Hurricane reduces the target's Armor and M-RES by 20% for 15s, up to 10 stacks."
+    },
+    {
+      "seq": 101,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:56.413+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]When Grand Nosedive reaches max stacks, additionally increases CRIT DMG by 50%."
+    },
+    {
+      "seq": 102,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.047+02:00",
+      "src": "set_text",
+      "v": "2284K"
+    },
+    {
+      "seq": 103,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.071+02:00",
+      "src": "set_text",
+      "v": "191K"
+    },
+    {
+      "seq": 104,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.090+02:00",
+      "src": "set_text",
+      "v": "Yuelao"
+    },
+    {
+      "seq": 105,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.091+02:00",
+      "src": "set_text",
+      "v": "Matchmaker of Red Threads"
+    },
+    {
+      "seq": 106,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.092+02:00",
+      "src": "set_text",
+      "v": "Throne of Fated Pair"
+    },
+    {
+      "seq": 107,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.093+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]When the linked unit with the highest HP is about to fall, gains a shield equal to 200% of the ATK of the linked unit with the highest ATK."
+    },
+    {
+      "seq": 108,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.094+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When the linked unit with the highest ATK is about to fall, gains a shield equal to 20% of the Max HP of the linked unit with the highest HP."
+    },
+    {
+      "seq": 109,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.095+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When the linked unit with the highest HP is about to fall, gains a shield equal to 300% of the ATK of the linked unit with the highest ATK."
+    },
+    {
+      "seq": 110,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:58.097+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]When the linked unit with the highest ATK is about to fall, gains a shield equal to 30% of the Max HP of the linked unit with the highest HP."
+    },
+    {
+      "seq": 111,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.191+02:00",
+      "src": "set_text",
+      "v": "2765K"
+    },
+    {
+      "seq": 112,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.192+02:00",
+      "src": "set_text",
+      "v": "Yanluo"
+    },
+    {
+      "seq": 113,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.192+02:00",
+      "src": "set_text",
+      "v": "Judge of the Underworld"
+    },
+    {
+      "seq": 114,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.193+02:00",
+      "src": "set_text",
+      "v": "Throne of Verdict"
+    },
+    {
+      "seq": 115,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.195+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]If Underworld Arbitration kills an enemy, Yanluo gains 10% of that unit's ATK (up to 1000% of his own ATK)."
+    },
+    {
+      "seq": 116,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.195+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]If Underworld Arbitration kills an enemy, Yanluo gains 20% of that unit's ATK (up to 2000% of his own ATK)."
+    },
+    {
+      "seq": 117,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.196+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Underworld Arbitration increases DMG dealt to enemies with HP below 50% by 50%."
+    },
+    {
+      "seq": 118,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:03:59.196+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]If Underworld Arbitration kills an enemy, Yanluo gains 25% of that unit's ATK (up to 2500% of his own ATK)."
+    },
+    {
+      "seq": 119,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.391+02:00",
+      "src": "set_text",
+      "v": "2193K"
+    },
+    {
+      "seq": 120,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.392+02:00",
+      "src": "set_text",
+      "v": "185K"
+    },
+    {
+      "seq": 121,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.392+02:00",
+      "src": "set_text",
+      "v": "Caishen"
+    },
+    {
+      "seq": 122,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.393+02:00",
+      "src": "set_text",
+      "v": "Lord of Wealth"
+    },
+    {
+      "seq": 123,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.395+02:00",
+      "src": "set_text",
+      "v": "Throne of Prosperity"
+    },
+    {
+      "seq": 124,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.397+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Golden Ingot additionally grants the target a shield equal to 300% of Caishen's ATK."
+    },
+    {
+      "seq": 125,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.398+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Golden Ingot additionally grants the target a shield equal to 400% of Caishen's ATK."
+    },
+    {
+      "seq": 126,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.398+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]The trigger range of Endless Fortune becomes the entire battlefield."
+    },
+    {
+      "seq": 127,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:00.399+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Golden Ingot additionally grants the target a shield equal to 500% of Caishen's ATK."
+    },
+    {
+      "seq": 128,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.524+02:00",
+      "src": "set_text",
+      "v": "1615K"
+    },
+    {
+      "seq": 129,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.525+02:00",
+      "src": "set_text",
+      "v": "234K"
+    },
+    {
+      "seq": 130,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.525+02:00",
+      "src": "set_text",
+      "v": "Isis"
+    },
+    {
+      "seq": 131,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.526+02:00",
+      "src": "set_text",
+      "v": "Goddess of Life and Motherhood"
+    },
+    {
+      "seq": 132,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.527+02:00",
+      "src": "set_text",
+      "v": "Throne of Compassion"
+    },
+    {
+      "seq": 133,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.527+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Isis's Basic ATK fires an additional arrow that deals DMG to a random target and can trigger on-hit effects. This DMG is equal to 30% of the original DMG."
+    },
+    {
+      "seq": 134,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.528+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Isis gains 600 Energy upon entering battle."
+    },
+    {
+      "seq": 135,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.529+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]The arrow deals DMG equal to 50% of the original DMG."
+    },
+    {
+      "seq": 136,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:01.529+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]The arrow deals DMG equal to 55% of the original DMG."
+    },
+    {
+      "seq": 137,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.657+02:00",
+      "src": "set_text",
+      "v": "1910K"
+    },
+    {
+      "seq": 138,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.658+02:00",
+      "src": "set_text",
+      "v": "217K"
+    },
+    {
+      "seq": 139,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.659+02:00",
+      "src": "set_text",
+      "v": "Fengyi"
+    },
+    {
+      "seq": 140,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.660+02:00",
+      "src": "set_text",
+      "v": "Goddess of the Winds"
+    },
+    {
+      "seq": 141,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.660+02:00",
+      "src": "set_text",
+      "v": "Throne of Blooming"
+    },
+    {
+      "seq": 142,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.661+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Fengyi gains 50% CRIT Rate when gaining a Whirlwind for the first time."
+    },
+    {
+      "seq": 143,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.662+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Fengyi's CRIT hits ignore 80% of the target's Physical & Magical Resistance."
+    },
+    {
+      "seq": 144,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.663+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Each stack of Whirlwind additionally grants Fengyi 70% CRIT DMG."
+    },
+    {
+      "seq": 145,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:02.664+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Each stack of Whirlwind additionally grants Fengyi 75% CRIT DMG."
+    },
+    {
+      "seq": 146,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.658+02:00",
+      "src": "set_text",
+      "v": "2262K"
+    },
+    {
+      "seq": 147,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.658+02:00",
+      "src": "set_text",
+      "v": "211K"
+    },
+    {
+      "seq": 148,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.659+02:00",
+      "src": "set_text",
+      "v": "Diana"
+    },
+    {
+      "seq": 149,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.659+02:00",
+      "src": "set_text",
+      "v": "Goddess of the Moon and Oak"
+    },
+    {
+      "seq": 150,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.660+02:00",
+      "src": "set_text",
+      "v": "Throne of the Oak"
+    },
+    {
+      "seq": 151,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.661+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]When a unit with the Waxing Blessing effect participates in killing an enemy unit, the effect's duration is extended by 5s."
+    },
+    {
+      "seq": 152,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.662+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]The Waxing Blessing effect additionally increases CRIT Rate by 20% and Hit Rate by 30%."
+    },
+    {
+      "seq": 153,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.662+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Reduces the CD of Waxing Blessing to 10s."
+    },
+    {
+      "seq": 154,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:03.663+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]The Waxing Blessing effect additionally increases CRIT Rate by 30% and Hit Rate by 40%."
+    },
+    {
+      "seq": 155,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.808+02:00",
+      "src": "set_text",
+      "v": "2101K"
+    },
+    {
+      "seq": 156,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.808+02:00",
+      "src": "set_text",
+      "v": "201K"
+    },
+    {
+      "seq": 157,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.809+02:00",
+      "src": "set_text",
+      "v": "Pan"
+    },
+    {
+      "seq": 158,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.809+02:00",
+      "src": "set_text",
+      "v": "God of Forest and Wildlife"
+    },
+    {
+      "seq": 159,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.810+02:00",
+      "src": "set_text",
+      "v": "Throne of Desire and Fear"
+    },
+    {
+      "seq": 160,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.812+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]When an allied Deity unit is killed, Pan curses the killer, inflicting Shepherd's Dread on them for 5s."
+    },
+    {
+      "seq": 161,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.813+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When an allied Deity unit is killed, Pan curses the killer, inflicting Shepherd's Dread on them for 5s and increasing their DMG taken by 30%."
+    },
+    {
+      "seq": 162,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.813+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Pandean Pipes inflicts Daze on an additional unit."
+    },
+    {
+      "seq": 163,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:04.814+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]When an allied Deity unit is killed, Pan curses the killer, inflicting Shepherd's Dread on them for 8s."
+    },
+    {
+      "seq": 164,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.907+02:00",
+      "src": "set_text",
+      "v": "1939K"
+    },
+    {
+      "seq": 165,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.908+02:00",
+      "src": "set_text",
+      "v": "222K"
+    },
+    {
+      "seq": 166,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.908+02:00",
+      "src": "set_text",
+      "v": "Artemis"
+    },
+    {
+      "seq": 167,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.909+02:00",
+      "src": "set_text",
+      "v": "Goddess of the Hunt"
+    },
+    {
+      "seq": 168,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.911+02:00",
+      "src": "set_text",
+      "v": "Throne of the Silver Moon"
+    },
+    {
+      "seq": 169,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.912+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Enemies hit by Gale-Force Shot have their Physical & Magical Resistance reduced by 5% for 10s, up to 10 stacks."
+    },
+    {
+      "seq": 170,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.913+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Gains 300 Energy when Hunter's Snare is triggered."
+    },
+    {
+      "seq": 171,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.914+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Enemies hit by Gale-Force Shot have their Physical & Magical Resistance reduced by 10% for 10s, up to 10 stacks."
+    },
+    {
+      "seq": 172,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:05.914+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Gains 400 Energy when Hunter's Snare is triggered."
+    },
+    {
+      "seq": 173,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.041+02:00",
+      "src": "set_text",
+      "v": "2378K"
+    },
+    {
+      "seq": 174,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.041+02:00",
+      "src": "set_text",
+      "v": "200K"
+    },
+    {
+      "seq": 175,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.042+02:00",
+      "src": "set_text",
+      "v": "Jormungandr"
+    },
+    {
+      "seq": 176,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.042+02:00",
+      "src": "set_text",
+      "v": "Midgard Serpent"
+    },
+    {
+      "seq": 177,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.043+02:00",
+      "src": "set_text",
+      "v": "Throne of Ouroboros"
+    },
+    {
+      "seq": 178,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.045+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]For every 10% Max HP lost, Jormungandr gains 5% ATK, up to 50% (this ATK can be inherited by its corpse at 30% efficiency)."
+    },
+    {
+      "seq": 179,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.046+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]For every 10% Max HP lost, Jormungandr gains 10% ATK, up to 100%."
+    },
+    {
+      "seq": 180,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.047+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Gains Super Armor during the Serpent's Approach dash."
+    },
+    {
+      "seq": 181,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:07.047+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]For every 10% Max HP lost, Jormungandr gains 20% ATK, up to 100%."
+    },
+    {
+      "seq": 182,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.191+02:00",
+      "src": "set_text",
+      "v": "3083K"
+    },
+    {
+      "seq": 183,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.192+02:00",
+      "src": "set_text",
+      "v": "Demeter"
+    },
+    {
+      "seq": 184,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.192+02:00",
+      "src": "set_text",
+      "v": "Goddess of Agriculture"
+    },
+    {
+      "seq": 185,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.194+02:00",
+      "src": "set_text",
+      "v": "Throne of Harvest"
+    },
+    {
+      "seq": 186,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.196+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Each Heal from the Return of the Maiden effect additionally restores own HP equal to 50% ATK."
+    },
+    {
+      "seq": 187,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.196+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Return of the Maiden trigger count +1."
+    },
+    {
+      "seq": 188,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Each Heal from the Return of the Maiden effect additionally restores own HP equal to 85% ATK."
+    },
+    {
+      "seq": 189,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:08.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]When Return of the Maiden is triggered, grants her a shield equal to 500% of ATK."
+    },
+    {
+      "seq": 190,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.324+02:00",
+      "src": "set_text",
+      "v": "1918K"
+    },
+    {
+      "seq": 191,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.325+02:00",
+      "src": "set_text",
+      "v": "205K"
+    },
+    {
+      "seq": 192,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.326+02:00",
+      "src": "set_text",
+      "v": "Freya"
+    },
+    {
+      "seq": 193,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.326+02:00",
+      "src": "set_text",
+      "v": "Goddess of Love and Beauty"
+    },
+    {
+      "seq": 194,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.327+02:00",
+      "src": "set_text",
+      "v": "Throne of Blossoms"
+    },
+    {
+      "seq": 195,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.328+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Converts 25% of Freya's Overhealing into a shield (up to 100% of the target's Max HP)."
+    },
+    {
+      "seq": 196,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.328+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When an allied unit's HP falls to 50% Max HP, Freya restores HP equal to 500% of her ATK for them. Triggers only once."
+    },
+    {
+      "seq": 197,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.329+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Freya's Overhealing is converted into a Shield at 35% efficiency."
+    },
+    {
+      "seq": 198,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:09.330+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Freya's Overhealing is converted into a shield at 40% efficiency."
+    },
+    {
+      "seq": 199,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.390+02:00",
+      "src": "set_text",
+      "v": "2019K"
+    },
+    {
+      "seq": 200,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.391+02:00",
+      "src": "set_text",
+      "v": "204K"
+    },
+    {
+      "seq": 201,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.392+02:00",
+      "src": "set_text",
+      "v": "Anubis"
+    },
+    {
+      "seq": 202,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.392+02:00",
+      "src": "set_text",
+      "v": "God of Funerary Rites"
+    },
+    {
+      "seq": 203,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.393+02:00",
+      "src": "set_text",
+      "v": "Throne of the Scale"
+    },
+    {
+      "seq": 204,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.394+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]For 8s after Underworld Soulfarer is triggered, the target takes 30% increased DMG."
+    },
+    {
+      "seq": 205,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.395+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]For 8s after Underworld Soulfarer is triggered, the target takes 50% increased DMG."
+    },
+    {
+      "seq": 206,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.395+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Featherfall Judgment deals 45% increased DMG, and the Execute granted by the Relic is increased to 10% of Max HP (ineffective if this Relic effect is not unlocked)."
+    },
+    {
+      "seq": 207,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:10.396+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Featherfall Judgment deals 50% increased damage."
+    },
+    {
+      "seq": 208,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.458+02:00",
+      "src": "set_text",
+      "v": "210K"
+    },
+    {
+      "seq": 209,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.459+02:00",
+      "src": "set_text",
+      "v": "Phoenix"
+    },
+    {
+      "seq": 210,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.459+02:00",
+      "src": "set_text",
+      "v": "Nirvana Bird"
+    },
+    {
+      "seq": 211,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.461+02:00",
+      "src": "set_text",
+      "v": "Throne of Poetry and Fire"
+    },
+    {
+      "seq": 212,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.462+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Effect enhanced in the Rise From Ashes state: Additionally restores 5% Max HP per second."
+    },
+    {
+      "seq": 213,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.463+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Effect enhanced in the Rise From Ashes state: Additionally restores 12% Max HP per second."
+    },
+    {
+      "seq": 214,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.463+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When Phoenix revives from the Rise From Ashes state for the first time, 40% of DMG dealt is converted into True DMG. Each subsequent Rise From Ashes increases the conversion rate by 20%, up to 100%."
+    },
+    {
+      "seq": 215,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:11.464+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Effect enhanced in the Rise From Ashes state: Additionally restores 15% Max HP per second."
+    },
+    {
+      "seq": 216,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.524+02:00",
+      "src": "set_text",
+      "v": "2322K"
+    },
+    {
+      "seq": 217,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.525+02:00",
+      "src": "set_text",
+      "v": "Set"
+    },
+    {
+      "seq": 218,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.526+02:00",
+      "src": "set_text",
+      "v": "God of Deserts and Disorder"
+    },
+    {
+      "seq": 219,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.526+02:00",
+      "src": "set_text",
+      "v": "Throne of Frenzy and Sand"
+    },
+    {
+      "seq": 220,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.528+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]The Dunes' Bloodrage effect increases the Dodge Rate of allied units by 10%."
+    },
+    {
+      "seq": 221,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.529+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]The Dunes' Bloodrage effect increases the Dodge Rate of allied units by 20%."
+    },
+    {
+      "seq": 222,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.529+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Upon landing, Khamsin's Shelter deals 200% DMG and inflicts a Knockdown effect on units around the target."
+    },
+    {
+      "seq": 223,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:12.530+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Upon landing, Khamsin's Shelter deals 300% DMG and inflicts a Knockdown effect on units around the target."
+    },
+    {
+      "seq": 224,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.540+02:00",
+      "src": "set_text",
+      "v": "2723K"
+    },
+    {
+      "seq": 225,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.541+02:00",
+      "src": "set_text",
+      "v": "173K"
+    },
+    {
+      "seq": 226,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.542+02:00",
+      "src": "set_text",
+      "v": "Athena"
+    },
+    {
+      "seq": 227,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.543+02:00",
+      "src": "set_text",
+      "v": "Goddess of Wisdom and Crafts"
+    },
+    {
+      "seq": 228,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.544+02:00",
+      "src": "set_text",
+      "v": "Throne of Wisdom and Strategy"
+    },
+    {
+      "seq": 229,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.545+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Allies within the Aura restore Max HP equal to 100% of ATK per second."
+    },
+    {
+      "seq": 230,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.545+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Allies within the Aura restore Max HP equal to 150% of ATK per second."
+    },
+    {
+      "seq": 231,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.546+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When there are 3 allies within the Aura, own Heal efficiency and Shield Power increase by 50%."
+    },
+    {
+      "seq": 232,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:13.546+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]When there are 3 allies within the Aura, own DMG taken decreases by 70%."
+    },
+    {
+      "seq": 233,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.507+02:00",
+      "src": "set_text",
+      "v": "2212K"
+    },
+    {
+      "seq": 234,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.508+02:00",
+      "src": "set_text",
+      "v": "Bastet"
+    },
+    {
+      "seq": 235,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.509+02:00",
+      "src": "set_text",
+      "v": "Household Safeguard"
+    },
+    {
+      "seq": 236,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.510+02:00",
+      "src": "set_text",
+      "v": "Throne of the Cat"
+    },
+    {
+      "seq": 237,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.512+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]When Bastet triggers a Dodge, permanently gains 2.5% ATK, up to 25%."
+    },
+    {
+      "seq": 238,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.513+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When Bastet triggers a Dodge, permanently gains 5% ATK, up to 50%."
+    },
+    {
+      "seq": 239,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.513+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When Bastet has over 100% Dodge, her DMG dealt increases by 20%."
+    },
+    {
+      "seq": 240,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:14.514+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]When Bastet triggers a Dodge, permanently gains 5% ATK, up to 60%."
+    },
+    {
+      "seq": 241,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.541+02:00",
+      "src": "set_text",
+      "v": "2962K"
+    },
+    {
+      "seq": 242,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.541+02:00",
+      "src": "set_text",
+      "v": "150K"
+    },
+    {
+      "seq": 243,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.542+02:00",
+      "src": "set_text",
+      "v": "Geb"
+    },
+    {
+      "seq": 244,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.542+02:00",
+      "src": "set_text",
+      "v": "God of Nature and Birth"
+    },
+    {
+      "seq": 245,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.543+02:00",
+      "src": "set_text",
+      "v": "Throne of Ley Lines"
+    },
+    {
+      "seq": 246,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.545+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]After Unstoppable ends, taunts enemies within a 3-meter radius for 3s."
+    },
+    {
+      "seq": 247,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.545+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]After Unstoppable ends, taunts enemies within a 3-meter radius for 5s."
+    },
+    {
+      "seq": 248,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.546+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Takes 30% less DMG while shielded."
+    },
+    {
+      "seq": 249,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:15.546+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]After Unstoppable ends, taunts enemies within a 5-meter radius for 5s."
+    },
+    {
+      "seq": 250,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.540+02:00",
+      "src": "set_text",
+      "v": "213K"
+    },
+    {
+      "seq": 251,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.541+02:00",
+      "src": "set_text",
+      "v": "Horus"
+    },
+    {
+      "seq": 252,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.542+02:00",
+      "src": "set_text",
+      "v": "God of the Sky and Revenge"
+    },
+    {
+      "seq": 253,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.543+02:00",
+      "src": "set_text",
+      "v": "Throne of Insight"
+    },
+    {
+      "seq": 254,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.545+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]While in the Revenge state, DMG dealt to locked-on enemies increases by 30%."
+    },
+    {
+      "seq": 255,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.546+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]While in the Revenge state, DMG dealt to locked-on enemies increases by 50%."
+    },
+    {
+      "seq": 256,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.546+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]While in the Revenge state, DMG taken from non-locked-on enemies decreases by 50%."
+    },
+    {
+      "seq": 257,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:16.547+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]After casting Frenzied Blade, increases own ATK by 30% for 5s. This effect can stack."
+    },
+    {
+      "seq": 258,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.774+02:00",
+      "src": "set_text",
+      "v": "184K"
+    },
+    {
+      "seq": 259,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.775+02:00",
+      "src": "set_text",
+      "v": "Ares"
+    },
+    {
+      "seq": 260,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.775+02:00",
+      "src": "set_text",
+      "v": "God of War and Chaos"
+    },
+    {
+      "seq": 261,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.776+02:00",
+      "src": "set_text",
+      "v": "Throne of War and Violence"
+    },
+    {
+      "seq": 262,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.778+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Duration of Unyielding Will increases by 2s."
+    },
+    {
+      "seq": 263,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.778+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Battlefield Will deals 30% increased DMG."
+    },
+    {
+      "seq": 264,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.779+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]While Unyielding Will is active, securing a kill extends its duration by 3s."
+    },
+    {
+      "seq": 265,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:18.780+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Duration of Unyielding Will increases by 3s."
+    },
+    {
+      "seq": 266,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.774+02:00",
+      "src": "set_text",
+      "v": "2433K"
+    },
+    {
+      "seq": 267,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.775+02:00",
+      "src": "set_text",
+      "v": "Sekhmet"
+    },
+    {
+      "seq": 268,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.775+02:00",
+      "src": "set_text",
+      "v": "Goddess of Fire and Vengeance"
+    },
+    {
+      "seq": 269,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.776+02:00",
+      "src": "set_text",
+      "v": "Throne of the Blazing Sun"
+    },
+    {
+      "seq": 270,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.778+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Sekhmet steals 15% of all stats from the Duel target (up to 75% of her own corresponding stats)."
+    },
+    {
+      "seq": 271,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.778+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Upon entering battle, gains 10 stacks of Roaring Fury."
+    },
+    {
+      "seq": 272,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.779+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Sekhmet steals 20% of all stats from the Duel target (up to 100% of her own corresponding stats)."
+    },
+    {
+      "seq": 273,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:19.780+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Sekhmet steals 25% of all stats from the Duel target (up to 125% of her own corresponding stats)."
+    },
+    {
+      "seq": 274,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.874+02:00",
+      "src": "set_text",
+      "v": "169K"
+    },
+    {
+      "seq": 275,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.875+02:00",
+      "src": "set_text",
+      "v": "Momus"
+    },
+    {
+      "seq": 276,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.876+02:00",
+      "src": "set_text",
+      "v": "God of Satire and Mockery"
+    },
+    {
+      "seq": 277,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.878+02:00",
+      "src": "set_text",
+      "v": "Throne of Mockery"
+    },
+    {
+      "seq": 278,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.880+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Taking DMG increases own Armor and M-RES by 5%, up to 20 stacks."
+    },
+    {
+      "seq": 279,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.881+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Taking DMG increases own Armor and M-RES by 10%, up to 20 stacks."
+    },
+    {
+      "seq": 280,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.881+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]When max stacks are reached, refreshes the uses of Phantom Puppet (only once)."
+    },
+    {
+      "seq": 281,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:20.882+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Taking DMG increases own Armor and M-RES by 12%, up to 20 stacks."
+    },
+    {
+      "seq": 282,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:22.025+02:00",
+      "src": "set_text",
+      "v": "Khepri"
+    },
+    {
+      "seq": 283,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:22.026+02:00",
+      "src": "set_text",
+      "v": "God of Dawn and the Scarab"
+    },
+    {
+      "seq": 284,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:22.027+02:00",
+      "src": "set_text",
+      "v": "Throne of Rebirth"
+    },
+    {
+      "seq": 285,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:22.028+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Each instance of DMG from Khepri's Ultimate reduces the target's M-RES by 10% for 10s, stacking up to 5 times."
+    },
+    {
+      "seq": 286,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:22.029+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Each instance of DMG from Khepri's Ultimate reduces the target's M-RES by 20% for 10s, stacking up to 5 times."
+    },
+    {
+      "seq": 287,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:22.030+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]While Khepri is in the Scarab's Blessing state, restores 100 Energy per second."
+    },
+    {
+      "seq": 288,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:22.031+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Each instance of DMG from Khepri's Ultimate reduces the target's M-RES by 25% for 10s, stacking up to 5 times."
+    },
+    {
+      "seq": 289,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:23.191+02:00",
+      "src": "set_text",
+      "v": "Iris"
+    },
+    {
+      "seq": 290,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:23.192+02:00",
+      "src": "set_text",
+      "v": "Rainbow Messenger"
+    },
+    {
+      "seq": 291,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:23.194+02:00",
+      "src": "set_text",
+      "v": "Throne of the Rainbow"
+    },
+    {
+      "seq": 292,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:23.196+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]At the start of battle, summons a butterfly on the nearest 1 front-row ally. After 4s, the butterfly deals DMG equal to 150% of ATK and inflicts a 3s Stun to enemies within 3 meters."
+    },
+    {
+      "seq": 293,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:23.196+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]At the start of battle, summons a butterfly on the nearest 1 front-row ally. After 4s, the butterfly deals DMG equal to 150% of ATK and inflicts a 4s Stun to enemies within 3 meters."
+    },
+    {
+      "seq": 294,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:23.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]At the start of battle, summons butterflies on the nearest 2 front-row allies. After 4s, the butterflies deal DMG equal to 150% of ATK and inflict a 4s Stun to enemies within 3 meters."
+    },
+    {
+      "seq": 295,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:23.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]At the start of battle, summons butterflies on the nearest 2 front-row allies. After 4s, the butterflies deal DMG equal to 150% of ATK and inflict a 5s Stun to enemies within 3 meters."
+    },
+    {
+      "seq": 296,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:24.360+02:00",
+      "src": "set_text",
+      "v": "Nemesis"
+    },
+    {
+      "seq": 297,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:24.361+02:00",
+      "src": "set_text",
+      "v": "Goddess of Vengeance"
+    },
+    {
+      "seq": 298,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:24.362+02:00",
+      "src": "set_text",
+      "v": "Throne of Justice"
+    },
+    {
+      "seq": 299,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:24.362+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]The first time Nemesis deals DMG to each enemy Deity unit, she permanently gains 30% ATK, up to 5 stacks."
+    },
+    {
+      "seq": 300,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:24.363+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Gains 40% ATK."
+    },
+    {
+      "seq": 301,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:24.363+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]The first time Nemesis secures a kill, she permanently gains 50% Lifesteal."
+    },
+    {
+      "seq": 302,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:24.364+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Gains 45% ATK."
+    },
+    {
+      "seq": 303,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.624+02:00",
+      "src": "set_text",
+      "v": "209K"
+    },
+    {
+      "seq": 304,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.624+02:00",
+      "src": "set_text",
+      "v": "Poseidon"
+    },
+    {
+      "seq": 305,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.625+02:00",
+      "src": "set_text",
+      "v": "God of the Sea and Quakes"
+    },
+    {
+      "seq": 306,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.626+02:00",
+      "src": "set_text",
+      "v": "Throne of Ocean Currents"
+    },
+    {
+      "seq": 307,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.628+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]When inflicting Crowd Control effects, Poseidon gains a shield equal to 50% of ATK."
+    },
+    {
+      "seq": 308,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.629+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When inflicting Crowd Control effects, Poseidon gains a shield equal to 100% of ATK."
+    },
+    {
+      "seq": 309,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.629+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Poseidon takes 40% less DMG while shielded."
+    },
+    {
+      "seq": 310,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:25.630+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Poseidon takes 50% less DMG while shielded."
+    },
+    {
+      "seq": 311,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.658+02:00",
+      "src": "set_text",
+      "v": "1737K"
+    },
+    {
+      "seq": 312,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.659+02:00",
+      "src": "set_text",
+      "v": "228K"
+    },
+    {
+      "seq": 313,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.659+02:00",
+      "src": "set_text",
+      "v": "Hela"
+    },
+    {
+      "seq": 314,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.660+02:00",
+      "src": "set_text",
+      "v": "Goddess of Death and Helheim"
+    },
+    {
+      "seq": 315,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.660+02:00",
+      "src": "set_text",
+      "v": "Throne of Decay"
+    },
+    {
+      "seq": 316,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.662+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Hela gains 100 initial Energy upon entering battle."
+    },
+    {
+      "seq": 317,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.662+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]Hela gains 300 initial Energy upon entering battle."
+    },
+    {
+      "seq": 318,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.663+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Refreshes the CD of Blight upon Life after casting the Ultimate."
+    },
+    {
+      "seq": 319,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:26.664+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Hela gains 400 initial Energy upon entering battle."
+    },
+    {
+      "seq": 320,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.790+02:00",
+      "src": "set_text",
+      "v": "1777K"
+    },
+    {
+      "seq": 321,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.792+02:00",
+      "src": "set_text",
+      "v": "227K"
+    },
+    {
+      "seq": 322,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.793+02:00",
+      "src": "set_text",
+      "v": "Medusa"
+    },
+    {
+      "seq": 323,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.795+02:00",
+      "src": "set_text",
+      "v": "Snake-Haired Gorgon"
+    },
+    {
+      "seq": 324,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.795+02:00",
+      "src": "set_text",
+      "v": "Throne of the Serpent and Gaze"
+    },
+    {
+      "seq": 325,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.796+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Medusa gains 40% ATK SPD after casting her Ultimate."
+    },
+    {
+      "seq": 326,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.796+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]After dealing DMG 3 times to a target with the \"Serpent Kiss\" mark, Medusa petrifies them for 1 s."
+    },
+    {
+      "seq": 327,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.798+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]After dealing DMG 3 times to a target with the \"Serpent Kiss\" mark, Medusa petrifies them for 2 s."
+    },
+    {
+      "seq": 328,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:28.798+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Medusa gains 60% ATK SPD after casting her Ultimate."
+    },
+    {
+      "seq": 329,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.191+02:00",
+      "src": "set_text",
+      "v": "1819K"
+    },
+    {
+      "seq": 330,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.192+02:00",
+      "src": "set_text",
+      "v": "Hecate"
+    },
+    {
+      "seq": 331,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.193+02:00",
+      "src": "set_text",
+      "v": "Triple Goddess of the Moon"
+    },
+    {
+      "seq": 332,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.195+02:00",
+      "src": "set_text",
+      "v": "Throne of the Nether and Dark Moon"
+    },
+    {
+      "seq": 333,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.10]Increases Hecate's healing effects received by 30%."
+    },
+    {
+      "seq": 334,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.197+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.20]When casting the Ultimate, also steals 2% Physical & Magical Resistance from enemy units on the field, up to 100% of own Physical & Magical Resistance."
+    },
+    {
+      "seq": 335,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.198+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.30]Increases Hecate's healing effects received by 50%."
+    },
+    {
+      "seq": 336,
+      "session": "20260723_150336",
+      "ts": "2026-07-23T15:04:37.198+02:00",
+      "src": "set_text",
+      "v": "[Throne Lv.40]Increases Hecate's healing effects received by 60%."
+    }
+  ]
+}

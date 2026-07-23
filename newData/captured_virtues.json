@@ -1,0 +1,643 @@
+{
+  "marker": "virtues",
+  "package": "com.goatgames.mot.gb.gp",
+  "captured_at": "2026-07-23T11:03:32.313+02:00",
+  "count": 127,
+  "strings": [
+    {
+      "seq": 1,
+      "src": "set_text",
+      "v": "Resolve I"
+    },
+    {
+      "seq": 2,
+      "src": "set_text",
+      "v": "Resolve II"
+    },
+    {
+      "seq": 3,
+      "src": "set_text",
+      "v": "At combat start,ATK+5%"
+    },
+    {
+      "seq": 4,
+      "src": "set_text",
+      "v": "【2-Piece Bonus】"
+    },
+    {
+      "seq": 5,
+      "src": "set_text",
+      "v": "Clarity I"
+    },
+    {
+      "seq": 6,
+      "src": "set_text",
+      "v": "Clarity II"
+    },
+    {
+      "seq": 7,
+      "src": "set_text",
+      "v": "At combat start,CRIT Rate+5%"
+    },
+    {
+      "seq": 8,
+      "src": "set_text",
+      "v": "Mercy I"
+    },
+    {
+      "seq": 9,
+      "src": "set_text",
+      "v": "Mercy II"
+    },
+    {
+      "seq": 10,
+      "src": "set_text",
+      "v": "At combat start,HP+5%"
+    },
+    {
+      "seq": 11,
+      "src": "set_text",
+      "v": "Zeal I"
+    },
+    {
+      "seq": 12,
+      "src": "set_text",
+      "v": "Zeal II"
+    },
+    {
+      "seq": 13,
+      "src": "set_text",
+      "v": "At combat start,Healing Effectiveness+5%"
+    },
+    {
+      "seq": 14,
+      "src": "set_text",
+      "v": "Peace I"
+    },
+    {
+      "seq": 15,
+      "src": "set_text",
+      "v": "Peace II"
+    },
+    {
+      "seq": 16,
+      "src": "set_text",
+      "v": "At combat start,Dodge Rate+5%"
+    },
+    {
+      "seq": 17,
+      "src": "set_text",
+      "v": "Humility I"
+    },
+    {
+      "seq": 18,
+      "src": "set_text",
+      "v": "Humility II"
+    },
+    {
+      "seq": 19,
+      "src": "set_text",
+      "v": "At combat start,Armor+5%M-RES+5%"
+    },
+    {
+      "seq": 20,
+      "src": "set_text",
+      "v": "Desire I"
+    },
+    {
+      "seq": 21,
+      "src": "set_text",
+      "v": "Desire II"
+    },
+    {
+      "seq": 22,
+      "src": "set_text",
+      "v": "Desire III"
+    },
+    {
+      "seq": 23,
+      "src": "set_text",
+      "v": "Desire IV"
+    },
+    {
+      "seq": 24,
+      "src": "set_text",
+      "v": "At combat start,ATK+10%"
+    },
+    {
+      "seq": 25,
+      "src": "set_text",
+      "v": "After 15s into the battle, ATK +20%."
+    },
+    {
+      "seq": 26,
+      "src": "set_text",
+      "v": "【4-Piece Bonus】"
+    },
+    {
+      "seq": 27,
+      "src": "set_text",
+      "v": "Insight I"
+    },
+    {
+      "seq": 28,
+      "src": "set_text",
+      "v": "Insight II"
+    },
+    {
+      "seq": 29,
+      "src": "set_text",
+      "v": "Insight III"
+    },
+    {
+      "seq": 30,
+      "src": "set_text",
+      "v": "Insight IV"
+    },
+    {
+      "seq": 31,
+      "src": "set_text",
+      "v": "At combat start,CRIT Rate+10%"
+    },
+    {
+      "seq": 32,
+      "src": "set_text",
+      "v": "Before first dealing DMG to an enemy, CRIT Rate +30% for 5s."
+    },
+    {
+      "seq": 33,
+      "src": "set_text",
+      "v": "Sacrifice I"
+    },
+    {
+      "seq": 34,
+      "src": "set_text",
+      "v": "Sacrifice II"
+    },
+    {
+      "seq": 35,
+      "src": "set_text",
+      "v": "Sacrifice III"
+    },
+    {
+      "seq": 36,
+      "src": "set_text",
+      "v": "Sacrifice IV"
+    },
+    {
+      "seq": 37,
+      "src": "set_text",
+      "v": "At combat start,HP+10%"
+    },
+    {
+      "seq": 38,
+      "src": "set_text",
+      "v": "At combat start, max HP +30% while current HP remains unchanged."
+    },
+    {
+      "seq": 39,
+      "src": "set_text",
+      "v": "Grace I"
+    },
+    {
+      "seq": 40,
+      "src": "set_text",
+      "v": "Grace II"
+    },
+    {
+      "seq": 41,
+      "src": "set_text",
+      "v": "Grace III"
+    },
+    {
+      "seq": 42,
+      "src": "set_text",
+      "v": "Grace IV"
+    },
+    {
+      "seq": 43,
+      "src": "set_text",
+      "v": "At combat start,Healing Effectiveness+15%"
+    },
+    {
+      "seq": 44,
+      "src": "set_text",
+      "v": "Healing +30% on allies with HP below 50%."
+    },
+    {
+      "seq": 45,
+      "src": "set_text",
+      "v": "Stoic I"
+    },
+    {
+      "seq": 46,
+      "src": "set_text",
+      "v": "Stoic II"
+    },
+    {
+      "seq": 47,
+      "src": "set_text",
+      "v": "Stoic III"
+    },
+    {
+      "seq": 48,
+      "src": "set_text",
+      "v": "Stoic IV"
+    },
+    {
+      "seq": 49,
+      "src": "set_text",
+      "v": "DMG received and dealt -30%."
+    },
+    {
+      "seq": 50,
+      "src": "set_text",
+      "v": "Gnosis I"
+    },
+    {
+      "seq": 51,
+      "src": "set_text",
+      "v": "Gnosis II"
+    },
+    {
+      "seq": 52,
+      "src": "set_text",
+      "v": "Gnosis III"
+    },
+    {
+      "seq": 53,
+      "src": "set_text",
+      "v": "Gnosis IV"
+    },
+    {
+      "seq": 54,
+      "src": "set_text",
+      "v": "At combat start,Dodge Rate+10%"
+    },
+    {
+      "seq": 55,
+      "src": "set_text",
+      "v": "Dodge Rate +15% per hit taken. Clears all effects upon dodge."
+    },
+    {
+      "seq": 56,
+      "src": "set_text",
+      "v": "Wildness I"
+    },
+    {
+      "seq": 57,
+      "src": "set_text",
+      "v": "Wildness II"
+    },
+    {
+      "seq": 58,
+      "src": "set_text",
+      "v": "Wildness III"
+    },
+    {
+      "seq": 59,
+      "src": "set_text",
+      "v": "Wildness IV"
+    },
+    {
+      "seq": 60,
+      "src": "set_text",
+      "v": "At combat start,ATK+15%"
+    },
+    {
+      "seq": 61,
+      "src": "set_text",
+      "v": "Gains 5% ATK every 5s. Max at 10 stacks."
+    },
+    {
+      "seq": 62,
+      "src": "set_text",
+      "v": "Defiance I"
+    },
+    {
+      "seq": 63,
+      "src": "set_text",
+      "v": "Defiance II"
+    },
+    {
+      "seq": 64,
+      "src": "set_text",
+      "v": "Defiance III"
+    },
+    {
+      "seq": 65,
+      "src": "set_text",
+      "v": "Defiance IV"
+    },
+    {
+      "seq": 66,
+      "src": "set_text",
+      "v": "At combat start,HP+15%"
+    },
+    {
+      "seq": 67,
+      "src": "set_text",
+      "v": "When HP drops to 50%, dispels all debuffs and Control, and restores 10% max HP per sec for 5s (once per battle)."
+    },
+    {
+      "seq": 68,
+      "src": "set_text",
+      "v": "Fervor I"
+    },
+    {
+      "seq": 69,
+      "src": "set_text",
+      "v": "Fervor II"
+    },
+    {
+      "seq": 70,
+      "src": "set_text",
+      "v": "Fervor III"
+    },
+    {
+      "seq": 71,
+      "src": "set_text",
+      "v": "Fervor IV"
+    },
+    {
+      "seq": 72,
+      "src": "set_text",
+      "v": "At combat start,Energy Regen Bonus+10%"
+    },
+    {
+      "seq": 73,
+      "src": "set_text",
+      "v": "Upon using Ultimate, gains 10% ATK. Max at 4 stacks."
+    },
+    {
+      "seq": 74,
+      "src": "set_text",
+      "v": "Oblivion I"
+    },
+    {
+      "seq": 75,
+      "src": "set_text",
+      "v": "Oblivion II"
+    },
+    {
+      "seq": 76,
+      "src": "set_text",
+      "v": "Oblivion III"
+    },
+    {
+      "seq": 77,
+      "src": "set_text",
+      "v": "Oblivion IV"
+    },
+    {
+      "seq": 78,
+      "src": "set_text",
+      "v": "At combat start,Armor+30%M-RES+30%"
+    },
+    {
+      "seq": 79,
+      "src": "set_text",
+      "v": "At combat start, gains immunity to Crowd Control for 8s."
+    },
+    {
+      "seq": 80,
+      "src": "set_text",
+      "v": "Set List"
+    },
+    {
+      "seq": 81,
+      "src": "set_text",
+      "v": "Basic Effects"
+    },
+    {
+      "seq": 82,
+      "src": "set_text",
+      "v": "Equippable Deities"
+    },
+    {
+      "seq": 83,
+      "src": "set_text",
+      "v": "Equip Now"
+    },
+    {
+      "seq": 84,
+      "src": "set_text",
+      "v": "Craft All"
+    },
+    {
+      "seq": 85,
+      "src": "set_text",
+      "v": "Tap on a blank space to close"
+    },
+    {
+      "seq": 86,
+      "src": "set_text",
+      "v": "Set Bonus(0/2)"
+    },
+    {
+      "seq": 87,
+      "src": "set_text",
+      "v": "They are the first candlelight in the deep dark, burning through the mist to light the path forward."
+    },
+    {
+      "seq": 88,
+      "src": "set_text",
+      "v": "They are the first candlelight in the deep dark, burning through the mist to enlighten the ignorant heart."
+    },
+    {
+      "seq": 89,
+      "src": "set_text",
+      "v": "They are the first piece dropped on the chessboard of fate to clear the path and set the endgame."
+    },
+    {
+      "seq": 90,
+      "src": "set_text",
+      "v": "They are the first piece dropped on the chessboard of fate to clear the path and ensure victory."
+    },
+    {
+      "seq": 91,
+      "src": "set_text",
+      "v": "They are the heart, pierced and healed, standing unyielding toward eternity."
+    },
+    {
+      "seq": 92,
+      "src": "set_text",
+      "v": "They are the heart, pierced and healed, beating ceaselessly toward eternity."
+    },
+    {
+      "seq": 93,
+      "src": "set_text",
+      "v": "They are the burning heart held in the palm, hot enough to set the wasteland ablaze."
+    },
+    {
+      "seq": 94,
+      "src": "set_text",
+      "v": "They are the scorching heart held in the palm, hot enough to set the wasteland ablaze."
+    },
+    {
+      "seq": 95,
+      "src": "set_text",
+      "v": "They bring a pure white olive branch, and with a gentle flutter of their wings, still strife and violence."
+    },
+    {
+      "seq": 96,
+      "src": "set_text",
+      "v": "They bring a pure white olive branch, and with a gentle flutter of their wings, curb strife and violence."
+    },
+    {
+      "seq": 97,
+      "src": "set_text",
+      "v": "They bow down to the dust, making the crown and the weed mirror the same nature."
+    },
+    {
+      "seq": 98,
+      "src": "set_text",
+      "v": "They bow down to the dust, making the crown and the weed mirror the same ground."
+    },
+    {
+      "seq": 99,
+      "src": "set_text",
+      "v": "Set Bonus(0/4)"
+    },
+    {
+      "seq": 100,
+      "src": "set_text",
+      "v": "They scoop up the fallen stars, planting an unfading hope in the endless night."
+    },
+    {
+      "seq": 101,
+      "src": "set_text",
+      "v": "They scoop up the fallen stars, planting an undying hope in the endless night."
+    },
+    {
+      "seq": 102,
+      "src": "set_text",
+      "v": "They scoop up the fallen stars, planting an indestructible hope in the endless night."
+    },
+    {
+      "seq": 103,
+      "src": "set_text",
+      "v": "They scoop up the fallen stars, planting an untainted hope in the endless night."
+    },
+    {
+      "seq": 104,
+      "src": "set_text",
+      "v": "They strip away the glorious robe of all creation to stare down the lice and false gods cowering in the darkness of glory."
+    },
+    {
+      "seq": 105,
+      "src": "set_text",
+      "v": "They strip away the glorious robe of all creation to stare down the shadows and false gods cowering in the darkness of glory."
+    },
+    {
+      "seq": 106,
+      "src": "set_text",
+      "v": "They strip away the glorious robe of all creation to stare down the weak and false gods cowering in the darkness of glory."
+    },
+    {
+      "seq": 107,
+      "src": "set_text",
+      "v": "They strip away the glorious robe of all creation to stare down the delusion and false gods cowering in the darkness of glory."
+    },
+    {
+      "seq": 108,
+      "src": "set_text",
+      "v": "They willingly don the crown of thorns, nurturing all beings with flesh and blood."
+    },
+    {
+      "seq": 109,
+      "src": "set_text",
+      "v": "They willingly don the crown of thorns, tempering all beings with flesh and blood."
+    },
+    {
+      "seq": 110,
+      "src": "set_text",
+      "v": "They willingly don the crown of thorns, protecting all beings with flesh and blood."
+    },
+    {
+      "seq": 111,
+      "src": "set_text",
+      "v": "They willingly don the crown of thorns, nourishing all beings with flesh and blood."
+    },
+    {
+      "seq": 112,
+      "src": "set_text",
+      "v": "They soothe the suffering of all beings, sheltering the fragile with spreading wings."
+    },
+    {
+      "seq": 113,
+      "src": "set_text",
+      "v": "They soothe the suffering of all beings, safeguarding the fragile with spreading wings."
+    },
+    {
+      "seq": 114,
+      "src": "set_text",
+      "v": "They soothe the suffering of all beings, protecting the fragile with spreading wings."
+    },
+    {
+      "seq": 115,
+      "src": "set_text",
+      "v": "They soothe the suffering of all beings, purifying the fragile with spreading wings."
+    },
+    {
+      "seq": 116,
+      "src": "set_text",
+      "v": "They are the poised scale; as they will, it tilts towards judgment or absolution."
+    },
+    {
+      "seq": 117,
+      "src": "set_text",
+      "v": "They are the poised scale; as they will, it tilts towards judgment or punishment."
+    },
+    {
+      "seq": 118,
+      "src": "set_text",
+      "v": "They are the poised scale; as they will, it tilts towards judgment or protection."
+    },
+    {
+      "seq": 119,
+      "src": "set_text",
+      "v": "They are the poised scale; as they will, it tilts towards judgment or banishment."
+    },
+    {
+      "seq": 120,
+      "src": "set_text",
+      "v": "They are the butterfly emerging from the chrysalis, their quivering wings rippling out the wavelets of doom."
+    },
+    {
+      "seq": 121,
+      "src": "set_text",
+      "v": "They are the butterfly emerging from the chrysalis, their quivering wings rippling out the edge of fate."
+    },
+    {
+      "seq": 122,
+      "src": "set_text",
+      "v": "They are the butterfly emerging from the chrysalis, their quivering wings rippling out the rings of karma."
+    },
+    {
+      "seq": 123,
+      "src": "set_text",
+      "v": "They are the butterfly emerging from the chrysalis, their quivering wings rippling out the shimmer of illusion."
+    },
+    {
+      "seq": 124,
+      "src": "set_text",
+      "v": "They tear apart restraints and cages, leaving a mark of freedom beyond the rules."
+    },
+    {
+      "seq": 125,
+      "src": "set_text",
+      "v": "They sever the blade of terror and corrode the locks of confinement. All who rise to face the enemy will be granted courage."
+    },
+    {
+      "seq": 126,
+      "src": "set_text",
+      "v": "They are the overflowing grail, from which the sacred and the wild surge forth, washing over heaven and earth."
+    },
+    {
+      "seq": 127,
+      "src": "set_text",
+      "v": "They close their eyes within the cycle of all things, and from that moment on, all the clinging returns to the primal tranquility."
+    }
+  ]
+}
