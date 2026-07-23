@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import bosses from "../data/bosses.json";
-import { getHeroById } from "../data/heroes";
+import { heroes, getHeroById } from "../data/heroes";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import "../styles/components.css";
@@ -84,11 +84,27 @@ function compHeroIds(comp: Record<string, any>) {
   return ids.length ? ids : (comp.heroes ?? []);
 }
 
+function normalizeHeroReference(value: string) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+const heroReferenceLookup = new Map<string, (typeof heroes)[number]>();
+heroes.forEach((hero) => {
+  heroReferenceLookup.set(normalizeHeroReference(hero.id), hero);
+  heroReferenceLookup.set(normalizeHeroReference(hero.name), hero);
+});
+
+function resolveHeroReference(value: string) {
+  return heroReferenceLookup.get(normalizeHeroReference(value));
+}
+
 const bossViews = bosses.bosses.map((boss) => {
   const comps = boss.recommendedComps || [];
   const [main] = comps;
   const beginnerHeroes = ((boss as any).beginnerComp || [])
-    .map((id: string) => getHeroById(id))
+    .map((reference: string) => resolveHeroReference(reference))
     .filter(Boolean);
   return {
     ...boss,

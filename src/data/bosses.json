@@ -7,7 +7,7 @@
   "bosses": [
     {
       "id": "baphomet",
-      "beginnerComp": ["", "", "", "", ""],
+      "beginnerComp": ["hladgunnr", "isis", "yuelao", "caishen", "dionysus"],
       "name": "Baphomet",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -83,12 +83,12 @@
         {
           "id": "baphomet_meta_1",
           "label": "Meta Comp",
-          "hero-comp": "dionysus, meret, cronus, nemesis, zeus",
+          "hero-comp": "dionysus, meret, cronus, idunn, zeus",
           "heroes": [
             "dionysus",
             "meret",
             "cronus",
-            "nemesis",
+            "idunn",
             "zeus"
           ],
           "reason": "",

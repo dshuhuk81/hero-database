@@ -2,10 +2,23 @@
 export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
+import { heroes } from "../data/heroes/index.js";
 
 const ROWS = 5;
 const COLS = 8;
 const SLOTS = [0, 1, 2];
+
+const heroOptions = (heroes as any[])
+  .filter((h) => (import.meta.env.DEV || h.release !== false) && Array.isArray(h.virtueSets))
+  .map((h) => ({
+    id: h.id,
+    name: h.name,
+    sets: (h.virtueSets as any[])
+      .filter((g) => Array.isArray(g.virtues) && g.virtues.length)
+      .map((g) => ({ label: g.label ?? "", comment: g.comment ?? "", virtues: g.virtues })),
+  }))
+  .filter((h) => h.sets.length)
+  .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <Base
@@ -21,6 +34,15 @@ const SLOTS = [0, 1, 2];
 <div class="vwz-page">
 
   <section class="vwz-panel">
+    <div class="vwz-hero-row">
+      <div class="vwz-field">
+        <label class="vwz-label" for="vwz-hero">Hero (optional)</label>
+        <select class="vwz-select" id="vwz-hero">
+          <option value="">None</option>
+        </select>
+      </div>
+      <div class="vwz-chips" id="vwz-chips" hidden></div>
+    </div>
     <div class="vwz-controls">
       {SLOTS.map((i) => (
         <div class="vwz-field">
@@ -58,6 +80,8 @@ const SLOTS = [0, 1, 2];
   </section>
 
 </div>
+
+<script is:inline type="application/json" id="vwz-hero-data" set:html={JSON.stringify(heroOptions)}></script>
 </Base>
 
 <script>
@@ -78,7 +102,20 @@ const SLOTS = [0, 1, 2];
   }
   const setNames4 = Object.keys(setsByName).filter((s) => setsByName[s].length === 4).sort();
   const setNames2 = Object.keys(setsByName).filter((s) => setsByName[s].length === 2).sort();
+  const shapedById: Record<string, any> = {};
+  for (const name of Object.keys(setsByName)) {
+    for (const v of setsByName[name]) shapedById[v.id] = v;
+  }
 
+  let heroData: any[] = [];
+  try {
+    heroData = JSON.parse(document.getElementById("vwz-hero-data")?.textContent || "[]");
+  } catch {
+    heroData = [];
+  }
+
+  const heroSel = document.getElementById("vwz-hero") as HTMLSelectElement;
+  const chipsEl = document.getElementById("vwz-chips") as HTMLElement;
   const grid = document.getElementById("vwz-grid") as HTMLElement;
   const statusEl = document.getElementById("vwz-status") as HTMLElement;
   const legendEl = document.getElementById("vwz-legend") as HTMLElement;
@@ -137,6 +174,100 @@ const SLOTS = [0, 1, 2];
     cnt.disabled = size === 2;
   }
   for (let i = 0; i < SLOTS; i++) syncCount(i);
+
+  for (const h of heroData) {
+    const opt = document.createElement("option");
+    opt.value = h.id;
+    opt.textContent = h.name;
+    heroSel.appendChild(opt);
+  }
+
+  function assignSlot(i: number, setName: string, count: number) {
+    setSels[i].value = setName;
+    syncCount(i);
+    const cnt = cntSels[i];
+    cnt.value = String(count);
+    if (cnt.value !== String(count)) cnt.value = cnt.options[0].value;
+  }
+
+  // A recommendation group (hero virtueSets entry) mapped to per-set slot entries.
+  function groupEntries(group: any): { set: string; count: number }[] {
+    const bySet: Record<string, number> = {};
+    for (const id of group.virtues) {
+      const v = shapedById[id];
+      if (!v) continue;
+      bySet[v.set] = (bySet[v.set] || 0) + 1;
+    }
+    return Object.entries(bySet).map(([set, count]) => ({ set, count }));
+  }
+
+  let chipRefs: { btn: HTMLButtonElement; entries: { set: string; count: number }[] }[] = [];
+
+  function groupIsActive(entries: { set: string; count: number }[]) {
+    return entries.length > 0 && entries.every((e) => setSels.some((s) => s.value === e.set));
+  }
+
+  function updateChipStates() {
+    for (const ref of chipRefs) {
+      ref.btn.classList.toggle("is-active", groupIsActive(ref.entries));
+    }
+  }
+
+  function toggleGroup(entries: { set: string; count: number }[]) {
+    if (groupIsActive(entries)) {
+      for (const e of entries) {
+        const i = setSels.findIndex((s) => s.value === e.set);
+        if (i >= 0) {
+          setSels[i].value = "";
+          syncCount(i);
+        }
+      }
+    } else {
+      for (const e of entries) {
+        let i = setSels.findIndex((s) => s.value === e.set);
+        if (i < 0) i = setSels.findIndex((s) => !s.value);
+        if (i < 0) break;
+        assignSlot(i, e.set, e.count);
+      }
+    }
+    render();
+  }
+
+  function renderChips(hero: any) {
+    chipsEl.innerHTML = "";
+    chipRefs = [];
+    chipsEl.hidden = !hero;
+    if (!hero) return;
+    for (const group of hero.sets) {
+      const entries = groupEntries(group);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "vwz-chip-btn";
+      btn.textContent = group.label || entries.map((e) => e.set).join(" + ");
+      if (group.comment) btn.title = group.comment;
+      if (!entries.length) {
+        btn.disabled = true;
+        btn.title = "No shape data for these pieces yet";
+      } else {
+        btn.addEventListener("click", () => toggleGroup(entries));
+      }
+      chipsEl.appendChild(btn);
+      chipRefs.push({ btn, entries });
+    }
+  }
+
+  function applyHero(heroId: string) {
+    const hero = heroData.find((h) => h.id === heroId) ?? null;
+    renderChips(hero);
+    if (hero) {
+      // Start with a clean slate so no chip appears preselected.
+      for (let i = 0; i < SLOTS; i++) {
+        setSels[i].value = "";
+        syncCount(i);
+      }
+    }
+    render();
+  }
 
   let open = new Set<string>();
   try {
@@ -308,6 +439,8 @@ const SLOTS = [0, 1, 2];
         bonusesEl.appendChild(row);
       }
     }
+
+    updateChipStates();
   }
 
   function setCell(k: string, value: boolean) {
@@ -341,6 +474,8 @@ const SLOTS = [0, 1, 2];
     painting = false;
   });
 
+  heroSel.addEventListener("change", () => applyHero(heroSel.value));
+
   setSels.forEach((sel, i) => {
     sel.addEventListener("change", () => {
       syncCount(i);
@@ -370,6 +505,8 @@ const SLOTS = [0, 1, 2];
       setSels[i].value = "";
       syncCount(i);
     }
+    heroSel.value = "";
+    renderChips(null);
     render();
   });
 

@@ -7864,6 +7864,49 @@
   min-width: 180px;
 }
 
+.vwz-hero-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-end;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.vwz-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.vwz-chip-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.vwz-chip-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-bright);
+}
+
+.vwz-chip-btn.is-active {
+  background: rgba(167,139,250,0.15);
+  border-color: rgba(167,139,250,0.5);
+  color: #a78bfa;
+}
+
+.vwz-chip-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .vwz-slot {
   display: flex;
   gap: var(--space-2);
