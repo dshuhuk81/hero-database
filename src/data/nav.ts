@@ -320,6 +320,21 @@ const allNavEntries: NavEntry[] = [
     icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M12 12.5l1.1 2.2 2.4.4-1.7 1.7.4 2.4-2.2-1.1-2.2 1.1.4-2.4-1.7-1.7 2.4-.4z"/>`,
   },
   {
+    label: "Virtue Wizard",
+    href: "/virtue-wizard",
+    group: "tools",
+    teaser: true,
+    description: {
+      en: "Fit Virtue sets onto your hero's grid",
+      de: "Virtue-Sets auf das Helden-Grid legen",
+      es: "Encaja conjuntos de Virtud en la cuadrícula del héroe",
+      ru: "Разместите наборы Добродетелей на сетке героя",
+      zh: "将美德套装放入英雄网格",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-09-01" },
+    icon: `<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/><rect x="3" y="3" width="6" height="6" rx="1" fill="currentColor" stroke="none" opacity="0.35"/>`,
+  },
+  {
     label: "Virtue Guide",
     href: "/virtues",
     group: "content",

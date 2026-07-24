@@ -82,7 +82,7 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
 - `/cn-preview` - CN vs Global divergence hub
 - `/virtues`, `/totems`, `/bosses`, `/events`, `/delusions-den`, `/tips`, `/summon-calendar`, `/summon-calculator` - content/guide pages
 - `/guides` - hub for deep-dive hero guides; `/guides/nephtys`, `/guides/nut`, `/guides/xuannv` public, `/guides/divine-throne` local-only (dev only, deity upgrade pieces feature)
-- `/virtue-wizard` - grid placement tool: mark unlocked cells, pick up to 3 sets with piece count (2 or 4; solver picks best subset of a 4-set when trying 2), solver places all pieces (silent live: deployed but not in nav)
+- `/virtue-wizard` - grid placement tool: pick a hero + Ascension stage to auto-fill their real unlocked grid (from `src/data/virtueGrids.json`), or mark cells by hand; pick up to 3 sets with piece count (2 or 4; solver picks best subset of a 4-set when trying 2), solver places all pieces (in nav + teaser, group "tools"; Epic-rarity heroes excluded - cannot equip Virtues)
 - `/status` - dev-only admin dashboard + CMS (talks to api-server.js)
 - `/changelog`, `/about`, `/privacy`, `/design-system`
 - `[locale]/` variants exist for `events`, `index`, `tips`, `totems` (i18n routes)

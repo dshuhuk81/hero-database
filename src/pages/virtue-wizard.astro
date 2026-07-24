@@ -3,21 +3,25 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import { heroes } from "../data/heroes/index.js";
+import virtueGrids from "../data/virtueGrids.json";
 
 const ROWS = 5;
 const COLS = 8;
 const SLOTS = [0, 1, 2];
+const gridData = virtueGrids as Record<string, Record<string, string[]>>;
 
 const heroOptions = (heroes as any[])
-  .filter((h) => (import.meta.env.DEV || h.release !== false) && Array.isArray(h.virtueSets))
+  // Epic-rarity heroes cannot equip Virtues, so they never appear in the wizard.
+  .filter((h) => (import.meta.env.DEV || h.release !== false) && h.rarity !== "Epic" && (Array.isArray(h.virtueSets) || gridData[h.id]))
   .map((h) => ({
     id: h.id,
     name: h.name,
-    sets: (h.virtueSets as any[])
-      .filter((g) => Array.isArray(g.virtues) && g.virtues.length)
-      .map((g) => ({ label: g.label ?? "", comment: g.comment ?? "", virtues: g.virtues })),
+    sets: (h.virtueSets ?? [])
+      .filter((g: any) => Array.isArray(g.virtues) && g.virtues.length)
+      .map((g: any) => ({ label: g.label ?? "", comment: g.comment ?? "", virtues: g.virtues })),
+    grids: gridData[h.id] ?? null,
   }))
-  .filter((h) => h.sets.length)
+  .filter((h) => h.sets.length || h.grids)
   .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
@@ -41,6 +45,16 @@ const heroOptions = (heroes as any[])
           <option value="">None</option>
         </select>
       </div>
+      <div class="vwz-field" id="vwz-evo-field" hidden>
+        <label class="vwz-label" for="vwz-evo">Ascension</label>
+        <select class="vwz-select" id="vwz-evo">
+          <option value="mythic">Mythic</option>
+          <option value="divine1">Divine I</option>
+          <option value="divine3">Divine III</option>
+          <option value="divine5" selected>Divine V</option>
+        </select>
+        <span class="vwz-evo-note" id="vwz-evo-note" hidden>No grid captured for this hero yet - mark it by hand.</span>
+      </div>
       <div class="vwz-chips" id="vwz-chips" hidden></div>
     </div>
     <div class="vwz-controls">
@@ -63,7 +77,7 @@ const heroOptions = (heroes as any[])
         <button class="vwz-btn" id="vwz-reset" type="button">Reset</button>
       </div>
     </div>
-    <p class="vwz-hint">Click or drag on the grid to toggle cells between locked and open. Every hero unlocks a different pattern depending on Ascension, so mark yours here - the layout is saved in this browser. For 4-piece sets you can also try just 2 pieces to grab the 2-piece bonus; the wizard picks whichever 2 fit best.</p>
+    <p class="vwz-hint">Pick a hero and Ascension stage to auto-fill their unlocked grid, or click and drag to mark cells yourself. For 4-piece sets you can also try just 2 pieces to grab the 2-piece bonus; the wizard picks whichever 2 fit best.</p>
   </section>
 
   <section class="vwz-panel">
@@ -91,7 +105,6 @@ const heroOptions = (heroes as any[])
   const ROWS = 5;
   const COLS = 8;
   const SLOTS = 3;
-  const LS_KEY = "vwz-grid-v1";
   const PIECE_COLORS = 12;
 
   const setsByName: Record<string, any[]> = {};
@@ -115,6 +128,9 @@ const heroOptions = (heroes as any[])
   }
 
   const heroSel = document.getElementById("vwz-hero") as HTMLSelectElement;
+  const evoField = document.getElementById("vwz-evo-field") as HTMLElement;
+  const evoSel = document.getElementById("vwz-evo") as HTMLSelectElement;
+  const evoNote = document.getElementById("vwz-evo-note") as HTMLElement;
   const chipsEl = document.getElementById("vwz-chips") as HTMLElement;
   const grid = document.getElementById("vwz-grid") as HTMLElement;
   const statusEl = document.getElementById("vwz-status") as HTMLElement;
@@ -256,8 +272,26 @@ const heroOptions = (heroes as any[])
     }
   }
 
+  let currentHero: any = null;
+
+  // Map a hero's ASCII grid ('#' = unlocked) to the open-cell set, anchored top-left.
+  function applyGrid(hero: any, evo: string) {
+    const rows = hero?.grids?.[evo];
+    if (!rows) return;
+    open = new Set();
+    for (let r = 0; r < rows.length && r < ROWS; r++) {
+      const line = rows[r];
+      for (let c = 0; c < line.length && c < COLS; c++) {
+        if (line[c] === "#") open.add(`${r},${c}`);
+      }
+    }
+  }
+
+  const DEFAULT_EVO = "divine5";
+
   function applyHero(heroId: string) {
     const hero = heroData.find((h) => h.id === heroId) ?? null;
+    currentHero = hero;
     renderChips(hero);
     if (hero) {
       // Start with a clean slate so no chip appears preselected.
@@ -266,24 +300,28 @@ const heroOptions = (heroes as any[])
         syncCount(i);
       }
     }
+    // Switching hero always resets Ascension to the default and rebuilds the grid.
+    evoSel.value = DEFAULT_EVO;
+    open = new Set();
+    if (hero) {
+      evoField.hidden = false;
+      if (hero.grids) {
+        evoSel.disabled = false;
+        evoNote.hidden = true;
+        applyGrid(hero, evoSel.value);
+      } else {
+        // No captured grid: keep the field visible but inert, let the user mark cells by hand.
+        evoSel.disabled = true;
+        evoNote.hidden = false;
+      }
+    } else {
+      evoField.hidden = true;
+    }
     render();
   }
 
+  // Grid is derived from hero + Ascension; manual edits are transient (no persistence).
   let open = new Set<string>();
-  try {
-    const saved = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-    if (Array.isArray(saved)) open = new Set(saved.filter((k) => typeof k === "string"));
-  } catch {
-    open = new Set();
-  }
-
-  function save() {
-    try {
-      localStorage.setItem(LS_KEY, JSON.stringify([...open]));
-    } catch {
-      // storage unavailable - grid still works for this visit
-    }
-  }
 
   function cellCount(shape: number[][]) {
     return shape.reduce((sum, row) => sum + row.reduce((a, b) => a + b, 0), 0);
@@ -459,7 +497,6 @@ const heroOptions = (heroes as any[])
     painting = true;
     paintValue = !open.has(k);
     setCell(k, paintValue);
-    save();
     render();
   });
   grid.addEventListener("pointerover", (e) => {
@@ -467,7 +504,6 @@ const heroOptions = (heroes as any[])
     const cell = (e.target as HTMLElement).closest(".vwz-cell") as HTMLButtonElement | null;
     if (!cell) return;
     setCell(cell.dataset.k as string, paintValue);
-    save();
     render();
   });
   window.addEventListener("pointerup", () => {
@@ -475,6 +511,11 @@ const heroOptions = (heroes as any[])
   });
 
   heroSel.addEventListener("change", () => applyHero(heroSel.value));
+  evoSel.addEventListener("change", () => {
+    if (!currentHero?.grids) return;
+    applyGrid(currentHero, evoSel.value);
+    render();
+  });
 
   setSels.forEach((sel, i) => {
     sel.addEventListener("change", () => {
@@ -486,26 +527,24 @@ const heroOptions = (heroes as any[])
 
   document.getElementById("vwz-open-all")?.addEventListener("click", () => {
     open = new Set(cells.map((c) => c.dataset.k as string));
-    save();
     render();
   });
   document.getElementById("vwz-lock-all")?.addEventListener("click", () => {
     open = new Set();
-    save();
     render();
   });
   document.getElementById("vwz-reset")?.addEventListener("click", () => {
     open = new Set();
-    try {
-      localStorage.removeItem(LS_KEY);
-    } catch {
-      // ignore
-    }
     for (let i = 0; i < SLOTS; i++) {
       setSels[i].value = "";
       syncCount(i);
     }
     heroSel.value = "";
+    currentHero = null;
+    evoField.hidden = true;
+    evoSel.disabled = false;
+    evoSel.value = DEFAULT_EVO;
+    evoNote.hidden = true;
     renderChips(null);
     render();
   });

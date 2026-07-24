@@ -7861,6 +7861,10 @@
   align-items: flex-end;
 }
 
+.vwz-page [hidden] {
+  display: none;
+}
+
 .vwz-field {
   display: flex;
   flex-direction: column;
@@ -7926,6 +7930,12 @@
 .vwz-chip-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.vwz-evo-note {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
 .vwz-slot {
