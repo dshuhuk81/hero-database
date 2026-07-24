@@ -6,13 +6,23 @@ import heroRatings from "../data/ratings/hero-ratings.json";
 import { heroes as heroPages } from "../data/heroes/withRatings";
 
 type Status = "released" | "coming-soon" | "far-future";
+type PullQuality = "pull" | "optional" | "whales-only" | "skip" | "unsure";
 
 interface ScheduleEntry {
   id: string;
   displayName?: string;
   status: Status;
   order: number;
+  pullQuality?: PullQuality;
 }
+
+const PULL_QUALITY_META: Record<PullQuality, { label: string; className: string }> = {
+  "pull":   { label: "Pull",   className: "pull-must" },
+  "optional":    { label: "Optional",    className: "pull-optional" },
+  "unsure":      { label: "Unsure", className: "pull-optional"},
+  "whales-only": { label: "Whales Only", className: "pull-whales" },
+  "skip":        { label: "Skip",        className: "pull-skip" },
+};
 
 const schedule: ScheduleEntry[] = [
   { id: "hladgunnr",     status: "released",    order: 1 },
@@ -33,16 +43,16 @@ const schedule: ScheduleEntry[] = [
   { id: "xuannv",       status: "released", order: 16 },
   { id: "nephtys",          status: "released", order: 17 },
   { id: "idunn",     status: "coming-soon", order: 18 },
-  { id: "hades",      status: "coming-soon", order: 19 },
-  { id: "audhumla",         status: "coming-soon", order: 20 },
-  { id: "hebo",         status: "far-future", order: 21 },
-  { id: "heket",         status: "far-future", order: 22 },
-  { id: "zaojun",         status: "far-future", order: 23 },
-  { id: "yaoji",         status: "far-future", order: 24 },
-  { id: "mazu",         status: "far-future", order: 25 },
-  { id: "gaiya",         status: "far-future", order: 26 },
-  { id: "charon",         status: "far-future", order: 27 },
-  { id: "ananke",         status: "far-future", order: 28 },
+  { id: "hades",      status: "coming-soon", order: 19, pullQuality: "whales-only" },
+  { id: "audhumla",         status: "coming-soon", order: 20, pullQuality: "unsure"},
+  { id: "hebo",         status: "far-future", order: 21, pullQuality: "skip" },
+  { id: "heket",         status: "far-future", order: 22, pullQuality: "optional" },
+  { id: "zaojun",         status: "far-future", order: 23, pullQuality: "pull" },
+  { id: "yaoji",         status: "far-future", order: 24, pullQuality: "pull" },
+  { id: "mazu",         status: "far-future", order: 25, pullQuality: "optional" },
+  { id: "gaiya",         status: "far-future", order: 26, pullQuality: "whales-only" },
+  { id: "charon",         status: "far-future", order: 27, pullQuality: "skip" },
+  { id: "ananke",         status: "far-future", order: 28, pullQuality: "skip" },
   
 ];
 
@@ -98,6 +108,7 @@ function resolveEntry(entry: ScheduleEntry) {
     status: entry.status,
     order: entry.order,
     hasDetailPage: heroPageIds.has(entry.id),
+    pullQuality: entry.pullQuality ? PULL_QUALITY_META[entry.pullQuality] : null,
   };
 }
 
@@ -145,6 +156,9 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
         {comingSoon.map((hero, i) => (
           <a href={`/heroes/${hero.id}`} class="spotlight-card">
             <div class="spotlight-order">{hero.order}</div>
+            {hero.pullQuality && (
+              <div class={`pull-badge pull-badge-corner ${hero.pullQuality.className}`}>{hero.pullQuality.label}</div>
+            )}
             <div class="spotlight-img-wrap">
               <img
                 class="spotlight-img"
@@ -292,7 +306,11 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
             <div class="tl-faction">
               {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
             </div>
-            <div class="tl-ratings" aria-hidden="true"></div>
+            <div class="tl-ratings" aria-hidden={hero.pullQuality ? undefined : "true"}>
+              {hero.pullQuality && (
+                <span class={`pull-badge ${hero.pullQuality.className}`}>{hero.pullQuality.label}</span>
+              )}
+            </div>
             <div class="tl-status-badge soon-badge">Soon</div>
           </a>
         ))}
