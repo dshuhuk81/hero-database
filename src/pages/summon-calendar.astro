@@ -229,7 +229,9 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
                 <h3 class="spotlight-name">{hero.displayName}</h3>
                 <p class="hero-role">{hero.role}</p>
                 </div>
-              <div class="spotlight-next-badge future-badge">FAR FUTURE</div>
+              {hero.pullQuality && (
+                <div class={`pull-badge pull-badge-corner ${hero.pullQuality.className}`}>{hero.pullQuality.label}</div>
+              )}
             </a>
           ))}
         </div>
@@ -346,7 +348,11 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
                   <div class="tl-faction">
                     {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
                   </div>
-                  <div class="tl-ratings" aria-hidden="true"></div>
+                  <div class="tl-ratings" aria-hidden={hero.pullQuality ? undefined : "true"}>
+                    {hero.pullQuality && (
+                      <span class={`pull-badge ${hero.pullQuality.className}`}>{hero.pullQuality.label}</span>
+                    )}
+                  </div>
                   <div class="tl-status-badge future-badge-tl">Far Future</div>
                 </a>
               ) : (
@@ -372,7 +378,11 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
                   <div class="tl-faction">
                     {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
                   </div>
-                  <div class="tl-ratings" aria-hidden="true"></div>
+                  <div class="tl-ratings" aria-hidden={hero.pullQuality ? undefined : "true"}>
+                    {hero.pullQuality && (
+                      <span class={`pull-badge ${hero.pullQuality.className}`}>{hero.pullQuality.label}</span>
+                    )}
+                  </div>
                   <div class="tl-status-badge future-badge-tl">Far Future</div>
                 </div>
               )
@@ -717,26 +727,6 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
     min-width: 26px;
     height: 18px;
     font-size: 0.68rem;
-  }
-
-  .spotlight-next-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 3;
-    font-size: 0.6rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    padding: 3px 7px;
-    border-radius: 4px;
-    background: var(--accent-gold);
-    color: #1a1100;
-    text-transform: uppercase;
-  }
-
-  .future-badge {
-    background: rgba(168, 85, 247, 0.85);
-    color: #fff;
   }
 
   /* ---- Timeline ---- */
