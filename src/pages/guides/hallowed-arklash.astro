@@ -90,6 +90,14 @@ const rareTalentTotal = talents
   .reduce((sum, talent) => sum + talent.totalCost, 0);
 const storageTalent = talentByName("MiningCapacity");
 
+const jumpNav = [
+  { href: "#plan", label: "Start Here" },
+  { href: "#playstyles", label: "Choose a Build" },
+  { href: "#combat", label: "Combat" },
+  { href: "#reference", label: "Data Tables" },
+  { href: "#planner", label: "Cost Planner" },
+];
+
 const overview = [
   { label: "PvP unlocks at", value: `Ship level ${constants.unprotectionLevel}` },
   { label: "Ship levels", value: `1 to ${maxLevel.level}` },
@@ -133,130 +141,220 @@ const plannerData = {
   })),
 };
 
-// Ship builder. The four drawn layers share one 520x360 canvas and stack in
-// this order. Bow and hull thresholds run 0 to 100, which is the sum of their
-// two driving talents (each capped at 50).
 const LAYER_ORDER = ["hull", "bow", "sails", "cannons"];
 const layers = LAYER_ORDER.map((part) => shipVisuals.find((visual) => visual.part === part)).filter(
   (visual) => visual && visual.images,
 );
-
-const builderData = {
-  layers: layers.map((layer) => ({
-    part: layer.part,
-    stageThresholds: layer.stageThresholds,
-    images: layer.images,
-  })),
-};
-
-const builderControls = [
-  {
-    key: "sails",
-    label: "Ship level",
-    hint: "Drives the sails",
-    max: maxLevel.level,
-    min: 1,
-    value: 1,
-  },
-  {
-    key: "bow",
-    label: "Armor Piercing plus Blast Damage talent levels",
-    hint: "Drives the bow",
-    max: 100,
-    min: 0,
-    value: 0,
-  },
-  {
-    key: "hull",
-    label: "Hardness plus Thickness talent levels",
-    hint: "Drives the hull",
-    max: 100,
-    min: 0,
-    value: 0,
-  },
-  {
-    key: "cannons",
-    label: "Cannon talent level",
-    hint: "Drives the cannons",
-    max: 5,
-    min: 0,
-    value: 0,
-  },
-];
 ---
 
 <Base
-  title="Sacred Vessel War Guide | Motto Immortal"
-  description="Sacred Vessel War guide for Motto Immortal: full ship level table, all 14 talent trees, stamina and ore economy, raid rules and an ore cost planner."
+  title="Hallowed Arklash Guide | Motto Immortal"
+  description="Hallowed Arklash guide for Motto Immortal: full ship level table, all 14 talent trees, stamina and ore economy, raid rules and an ore cost planner."
 >
-  <div class="guide-body guide-body--sacred-vessel">
-    <header class="svw-page-header">
-      <span>Game Mode Guide</span>
-      <h1 id="sacred-vessel-war">Sacred Vessel War</h1>
-      <p>Mine ore, build your warship and survive a shared sea full of rival captains.</p>
-    </header>
-
-    <section class="guide-section">
-      <h2 class="guide-section-title">Quick Read</h2>
-      <div class="guide-card svw-overview-card">
-        <h3 class="guide-card-heading">A seasonal warship race built around ore</h3>
-        <p class="guide-card-subheading">
-          Every captain runs one ship on a shared sea. Ore is the growth engine and the lifeline: it pays for ship
-          levels, talents and repairs, and it is exactly what a raider takes from you when your ship goes down.
-        </p>
-        <div class="guide-overview-grid">
-          {overview.map((item) => (
-            <div class="guide-overview-item">
-              <div class="guide-overview-label">{item.label}</div>
-              <div class="guide-overview-value">{item.value}</div>
-            </div>
-          ))}
-        </div>
-        <p class="guide-quick-verdict">
-          Push to level {constants.unprotectionLevel} in total safety, then decide what the ship is for. Mining wins the
-          long game, raiding wins the ore you did not mine, and stamina is the resource that limits how often you get to
-          choose.
-        </p>
+  <div class="ga-parallax ga-parallax--arklash">
+    <div class="ga-hero-media" aria-hidden="true">
+      <div class="ga-hero-backdrop"></div>
+      <div class="svw-feature-ship">
+        {layers.map((layer) => (
+          <img src={layer.images.at(-1)} alt="" />
+        ))}
       </div>
-    </section>
+    </div>
+    <div class="ga-hero-stage">
+      <div class="ga-hero-text">
+        <span class="ga-hero-tag">Feature Guide</span>
+        <h1 class="ga-hero-headline" id="hallowed-arklash">Hallowed Arklash</h1>
+        <p class="ga-hero-sub">Build an ore empire, arm your warship and take the sea from rival captains.</p>
+      </div>
+    </div>
 
-    <section class="guide-section">
-      <h2 class="guide-section-title">The Loop</h2>
+    <div class="ga-body-bg">
+      <div class="guide-body guide-body--hallowed-arklash">
+        <nav class="svw-jumpnav" aria-label="On this page">
+          {jumpNav.map((item) => (
+            <a class="svw-jumpnav-link" href={item.href}>{item.label}</a>
+          ))}
+        </nav>
+
+    <section class="guide-section svw-loop-section">
+      <div class="svw-section-heading">
+        <span>01 · The mode at a glance</span>
+        <h2>The loop is simple. The choices are not.</h2>
+      </div>
       <div class="svw-loop">
         <article class="guide-card svw-loop-step">
           <span class="svw-step-num">1</span>
           <h3>Mine</h3>
-          <p>
-            The ship produces ore on its own up to a storage cap of {fmt(shipLevels[0].miningCapacity)}. Once storage is
-            full, production stalls, so spend before you cap out.
-          </p>
+          <p>Generate ore passively. Spend before your {fmt(shipLevels[0].miningCapacity)} base storage fills.</p>
         </article>
         <article class="guide-card svw-loop-step">
           <span class="svw-step-num">2</span>
           <h3>Upgrade</h3>
-          <p>
-            Ore buys ship levels and the ten ore talents. Rare Ore buys the four premium talents, repairs and stamina.
-          </p>
+          <p>Turn Ore into levels and core talents. Save Rare Ore for premium power and repairs.</p>
         </article>
         <article class="guide-card svw-loop-step">
           <span class="svw-step-num">3</span>
           <h3>Raid</h3>
-          <p>
-            From level {constants.unprotectionLevel} you can attack. Each raid spends 1 Stamina. A sink takes a share of
-            the target's stored ore.
-          </p>
+          <p>From level {constants.unprotectionLevel}, spend 1 Stamina to hunt loaded, sinkable ships.</p>
         </article>
         <article class="guide-card svw-loop-step">
           <span class="svw-step-num">4</span>
           <h3>Repair</h3>
+          <p>A sunk ship is safe but mines nothing. Repair with Rare Ore and get moving.</p>
+        </article>
+      </div>
+      <div class="svw-mode-strip">
+        {overview.slice(2, 5).map((item) => (
+          <div><span>{item.label}</span><strong>{item.value}</strong></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section" id="plan">
+      <div class="svw-section-heading">
+        <span>02 · Best opening</span>
+        <h2>Your winning plan</h2>
+      </div>
+
+      <div class="guide-callout svw-answer-callout">
+        <strong>The 60 second answer</strong>
+        <ul class="svw-answer">
+          <li>Rush to ship level {constants.unprotectionLevel} in full safety, then pick a role.</li>
+          <li>Pour ore into Mining Efficiency first. It is the cheapest power in the mode by a wide margin.</li>
+          <li>Keep Ore Storage one step ahead of your income so you never sit capped.</li>
+          <li>Max all four Rare Ore talents. Permanent power for almost nothing.</li>
+          <li>Buy Max HP before any other combat stat.</li>
+        </ul>
+      </div>
+
+      <div class="guide-card svw-prio-card">
+        <h3 class="guide-card-heading">Priority order</h3>
+        <ol class="svw-prio">
+          <li>
+            <strong>Mining Efficiency, as far as the ship level gate allows</strong>
+            <span>
+              The cheapest thing in the mode by a wide margin. Every level up to talent level 15 pays for itself in
+              under one production cycle, and it stays under three cycles all the way to level 20. Nothing else comes
+              close to that return.
+            </span>
+          </li>
+          <li>
+            <strong>Ore Storage, one step ahead of your income</strong>
+            <span>
+              Base storage is only {fmt(shipLevels[0].miningCapacity)}. Production stops dead when storage fills, so
+              every hour you spend capped is income you never earned. The first level costs
+              {" "}{fmt(storageTalent.levels[0].cost.num)} ore and doubles storage. Take it immediately, then keep it
+              ahead of your mining rate.
+            </span>
+          </li>
+          <li>
+            <strong>Ship levels, but as a gate key, not for the mining</strong>
+            <span>
+              Ship levels are cheap through level 10 and get brutal after: level 12 to 13 alone costs
+              {" "}{fmt(shipLevels[11].upgradeCost.num)} ore. Buy them to unlock the next tier of talent levels, which
+              is where most of their value lies. Each ship level also raises passive mining output, but less
+              efficiently than investing directly in Mining Efficiency.
+            </span>
+          </li>
+          <li>
+            <strong>The four Rare Ore talents, all of them</strong>
+            <span>
+              Maxing all four costs {fmt(rareTalentTotal)} Rare Ore total, which is nothing next to the millions of ore
+              the big trees demand. They are the only cheap permanent power in the mode.
+            </span>
+          </li>
+          <li>
+            <strong>Max HP before any other combat stat</strong>
+            <span>
+              All seven big trees cost the same per level, so compare what a level buys. Max HP gives 60 per level at
+              the start, Armor Piercing and Blast Damage give 6, Hardness and Thickness give 3. HP is ten times the
+              value per ore, and it protects against both damage types at once.
+            </span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="svw-prio-grid">
+        <article class="guide-card svw-prio-note">
+          <h3>Stamina is the raid budget</h3>
           <p>
-            At 0 HP the ship is protected but produces nothing. Repair with Rare Ore to get back in the water.
+            Stamina talent level {fiveXUnlock.level} puts your cap at {staminaCapBase + fiveXUnlock.value}, past the
+            {" "}{constants.continuousAttackStaminaRequirement} needed for the five-attack button, and costs only
+            {" "}{fmt(fiveXCost)} Rare Ore to get there. Compare that to buying stamina outright at
+            {" "}{constants.rareOrePerStamina} Rare Ore each. If you intend to raid at all, the talent is bought back
+            within a handful of attacks.
+          </p>
+        </article>
+        <article class="guide-card svw-prio-note">
+          <h3>Offense is cheaper than defense</h3>
+          <p>
+            Armor Piercing and Blast Damage buy twice the points per ore that Hardness and Thickness do. The defender
+            already carries a {Math.round(constants.defenderAdvantage * 100)} percent advantage, so defense is being
+            sold to you at double the price on top of a stat you already get for free by sitting still. Attack stats
+            are the better ore.
+          </p>
+        </article>
+        <article class="guide-card svw-prio-note">
+          <h3>Plunder Efficiency only pays if you raid</h3>
+          <p>
+            It moves your cut from {shipLevels[0].plunderEfficiency} to 40 percent, but the curve is savage: level 5
+            costs {fmt(talentByName("PlunderEfficiency").levels[4].cost.num)} ore for two percentage points, and level
+            10 costs {fmt(talentByName("PlunderEfficiency").levels[9].cost.num)}. It multiplies raid income, so it is
+            worth ore only after you already sink ships reliably. It does nothing for a farmer.
+          </p>
+        </article>
+        <article class="guide-card svw-prio-note">
+          <h3>Rare Ore Yield is a trap early</h3>
+          <p>
+            Rare Ore is genuinely scarce, so more of it looks attractive. But the talent's third level costs
+            {" "}{fmt(talentByName("AdvancedMiningEfficiency").levels[2].cost.num)} ore and the fourth costs
+            {" "}{fmt(talentByName("AdvancedMiningEfficiency").levels[3].cost.num)}. Take the first two cheap levels,
+            then leave it alone until your ore income is enormous.
           </p>
         </article>
       </div>
     </section>
 
-    <section class="guide-section">
+    <section class="guide-section" id="playstyles">
+      <div class="svw-section-heading">
+        <span>03 · Choose your role</span>
+        <h2>What kind of captain are you?</h2>
+      </div>
+      <div class="svw-build-grid">
+        <article class="guide-card svw-build">
+          <span class="svw-build-index">01</span>
+          <img src={talentByName("MiningEfficiency").icon} alt="" width="48" height="48" />
+          <h3>Farmer</h3>
+          <span class="svw-build-line">Mining Efficiency, Ore Storage, Max HP</span>
+          <p>
+            Never raid, never get raided profitably. Stack mining and storage, then pour the surplus into Max HP so a
+            raider who finds you cannot finish the job. Skip Plunder Efficiency entirely.
+          </p>
+        </article>
+        <article class="guide-card svw-build">
+          <span class="svw-build-index">02</span>
+          <img src={talentByName("Cannon").icon} alt="" width="48" height="48" />
+          <h3>Raider</h3>
+          <span class="svw-build-line">Stamina, Cannons, Armor Piercing and Blast Damage, then Plunder</span>
+          <p>
+            Get the stamina cap up first so you actually have attacks to spend, buy offense over defense, and only then
+            raise Plunder Efficiency, which multiplies what the raids already bring in.
+          </p>
+        </article>
+        <article class="guide-card svw-build">
+          <span class="svw-build-index">03</span>
+          <img src={talentByName("Hp").icon} alt="" width="48" height="48" />
+          <h3>Balanced</h3>
+          <span class="svw-build-line">Mining first, all four Rare Ore talents, HP, opportunistic raids</span>
+          <p>
+            Mine as the default, keep every cheap Rare Ore talent maxed, and spend stamina only on targets that are
+            both sinkable and loaded. The realistic plan for most captains.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="guide-section" id="combat">
       <h2 class="guide-section-title">Stamina: The Real Attack Limit</h2>
       <div class="guide-card">
         <h3 class="guide-card-heading">Every raid costs 1 Stamina</h3>
@@ -349,13 +447,51 @@ const builderControls = [
           </div>
         </div>
         <div class="guide-callout">
-          A shield item grants {constants.shieldDuration / 3600} hour of protection while your ship is still afloat and
-          mining, which is the version of protection you actually want.
+          The Void Helm shield item grants {constants.shieldDuration / 3600} hour of protection while your ship is
+          still afloat and mining. It does not activate automatically: use it manually from the Ship interface.
         </div>
       </div>
     </section>
 
     <section class="guide-section">
+      <h2 class="guide-section-title">Finding Targets</h2>
+      <div class="guide-card">
+        <div class="svw-target-grid">
+          <div>
+            <strong>{constants.refreshEnemyNum} targets per refresh</strong>
+            <p>
+              You get {constants.dailyFreeRefreshCount} free refreshes a day and can buy up to
+              {" "}{constants.refreshPurchaseLimitPerDay} more.
+            </p>
+          </div>
+          <div>
+            <strong>The pool is not random</strong>
+            <p>
+              Roughly {constants.matchmaking.defeatedPlayerPercent} percent already-beaten players,
+              {" "}{constants.matchmaking.higherCombatPercent} percent stronger ships and
+              {" "}{constants.matchmaking.lowerCombatPercent} percent weaker ones. Alliance mates never show up.
+            </p>
+          </div>
+          <div>
+            <strong>Revenge list</strong>
+            <p>Your last {constants.attackedRecordLimit} attackers are stored, so you can hit back on your terms.</p>
+          </div>
+          <div>
+            <strong>Radar search</strong>
+            <p>
+              A radar costs {constants.radarCost.num} Rare Ore and lets you pick a specific player instead of taking
+              what the refresh gives you.
+            </p>
+          </div>
+        </div>
+        <div class="guide-callout">
+          Attacks are stamina, and stamina is slow. Spend it on ships that are both sinkable and actually holding ore.
+          A rich target with a full storage bar is worth more than three empty ones.
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section" id="reference">
       <h2 class="guide-section-title">Ship Levels 1 to {maxLevel.level}</h2>
       <div class="guide-card">
         <p class="guide-card-subheading">
@@ -475,129 +611,7 @@ const builderControls = [
       </div>
     </section>
 
-    <section class="guide-section">
-      <h2 class="guide-section-title">Where the Ore Goes</h2>
-      <p class="svw-lede">
-        Every claim below is read straight off the cost tables above. The cost curves do most of the deciding for you:
-        the seven big ore talents share one identical cost table, so the only question is how much value each point
-        buys.
-      </p>
-
-      <div class="guide-card svw-prio-card">
-        <h3 class="guide-card-heading">Priority order</h3>
-        <ol class="svw-prio">
-          <li>
-            <strong>Mining Efficiency, as far as the ship level gate allows</strong>
-            <span>
-              The cheapest thing in the mode by a wide margin. Every level up to talent level 15 pays for itself in
-              under one production cycle, and it stays under three cycles all the way to level 20. Nothing else comes
-              close to that return.
-            </span>
-          </li>
-          <li>
-            <strong>Ore Storage, one step ahead of your income</strong>
-            <span>
-              Base storage is only {fmt(shipLevels[0].miningCapacity)}. Production stops dead when storage fills, so
-              every hour you spend capped is income you never earned. The first level costs
-              {" "}{fmt(storageTalent.levels[0].cost.num)} ore and doubles storage. Take it immediately, then keep it
-              ahead of your mining rate.
-            </span>
-          </li>
-          <li>
-            <strong>Ship levels, but as a gate key, not for the mining</strong>
-            <span>
-              Ship levels are cheap through level 10 and get brutal after: level 12 to 13 alone costs
-              {" "}{fmt(shipLevels[11].upgradeCost.num)} ore. Buy them to unlock the next tier of talent levels, which
-              is what the ship level requirement column is for, not because the level itself adds mining.
-            </span>
-          </li>
-          <li>
-            <strong>The four Rare Ore talents, all of them</strong>
-            <span>
-              Maxing all four costs {fmt(rareTalentTotal)} Rare Ore total, which is nothing next to the millions of ore
-              the big trees demand. They are the only cheap permanent power in the mode.
-            </span>
-          </li>
-          <li>
-            <strong>Max HP before any other combat stat</strong>
-            <span>
-              All seven big trees cost the same per level, so compare what a level buys. Max HP gives 60 per level at
-              the start, Armor Piercing and Blast Damage give 6, Hardness and Thickness give 3. HP is ten times the
-              value per ore, and it protects against both damage types at once.
-            </span>
-          </li>
-        </ol>
-      </div>
-
-      <div class="svw-prio-grid">
-        <article class="guide-card svw-prio-note">
-          <h3>Stamina is the raid budget</h3>
-          <p>
-            Stamina talent level {fiveXUnlock.level} puts your cap at {staminaCapBase + fiveXUnlock.value}, past the
-            {" "}{constants.continuousAttackStaminaRequirement} needed for the five-attack button, and costs only
-            {" "}{fmt(fiveXCost)} Rare Ore to get there. Compare that to buying stamina outright at
-            {" "}{constants.rareOrePerStamina} Rare Ore each. If you intend to raid at all, the talent is bought back
-            within a handful of attacks.
-          </p>
-        </article>
-        <article class="guide-card svw-prio-note">
-          <h3>Offense is cheaper than defense</h3>
-          <p>
-            Armor Piercing and Blast Damage buy twice the points per ore that Hardness and Thickness do. The defender
-            already carries a {Math.round(constants.defenderAdvantage * 100)} percent advantage, so defense is being
-            sold to you at double the price on top of a stat you already get for free by sitting still. Attack stats
-            are the better ore.
-          </p>
-        </article>
-        <article class="guide-card svw-prio-note">
-          <h3>Plunder Efficiency only pays if you raid</h3>
-          <p>
-            It moves your cut from {shipLevels[0].plunderEfficiency} to 40 percent, but the curve is savage: level 5
-            costs {fmt(talentByName("PlunderEfficiency").levels[4].cost.num)} ore for two percentage points, and level
-            10 costs {fmt(talentByName("PlunderEfficiency").levels[9].cost.num)}. It multiplies raid income, so it is
-            worth ore only after you already sink ships reliably. It does nothing for a farmer.
-          </p>
-        </article>
-        <article class="guide-card svw-prio-note">
-          <h3>Rare Ore Yield is a trap early</h3>
-          <p>
-            Rare Ore is genuinely scarce, so more of it looks attractive. But the talent's third level costs
-            {" "}{fmt(talentByName("AdvancedMiningEfficiency").levels[2].cost.num)} ore and the fourth costs
-            {" "}{fmt(talentByName("AdvancedMiningEfficiency").levels[3].cost.num)}. Take the first two cheap levels,
-            then leave it alone until your ore income is enormous.
-          </p>
-        </article>
-      </div>
-
-      <div class="svw-build-grid">
-        <article class="guide-card svw-build">
-          <h3>Farmer</h3>
-          <span class="svw-build-line">Mining Efficiency, Ore Storage, Max HP</span>
-          <p>
-            Never raid, never get raided profitably. Stack mining and storage, then pour the surplus into Max HP so a
-            raider who finds you cannot finish the job. Skip Plunder Efficiency entirely.
-          </p>
-        </article>
-        <article class="guide-card svw-build">
-          <h3>Raider</h3>
-          <span class="svw-build-line">Stamina, Cannons, Armor Piercing and Blast Damage, then Plunder</span>
-          <p>
-            Get the stamina cap up first so you actually have attacks to spend, buy offense over defense, and only then
-            raise Plunder Efficiency, which multiplies what the raids already bring in.
-          </p>
-        </article>
-        <article class="guide-card svw-build">
-          <h3>Balanced</h3>
-          <span class="svw-build-line">Mining first, all four Rare Ore talents, HP, opportunistic raids</span>
-          <p>
-            Mine as the default, keep every cheap Rare Ore talent maxed, and spend stamina only on targets that are
-            both sinkable and loaded. The realistic plan for most captains.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section class="guide-section">
+    <section class="guide-section" id="planner">
       <h2 class="guide-section-title">Ore Cost Planner</h2>
       <div class="guide-card svw-planner" data-planner>
         <p class="guide-card-subheading">
@@ -645,91 +659,6 @@ const builderControls = [
       </div>
     </section>
 
-    <section class="guide-section">
-      <h2 class="guide-section-title">Finding Targets</h2>
-      <div class="guide-card">
-        <div class="svw-target-grid">
-          <div>
-            <strong>{constants.refreshEnemyNum} targets per refresh</strong>
-            <p>
-              You get {constants.dailyFreeRefreshCount} free refreshes a day and can buy up to
-              {" "}{constants.refreshPurchaseLimitPerDay} more.
-            </p>
-          </div>
-          <div>
-            <strong>The pool is not random</strong>
-            <p>
-              Roughly {constants.matchmaking.defeatedPlayerPercent} percent already-beaten players,
-              {" "}{constants.matchmaking.higherCombatPercent} percent stronger ships and
-              {" "}{constants.matchmaking.lowerCombatPercent} percent weaker ones. Alliance mates never show up.
-            </p>
-          </div>
-          <div>
-            <strong>Revenge list</strong>
-            <p>Your last {constants.attackedRecordLimit} attackers are stored, so you can hit back on your terms.</p>
-          </div>
-          <div>
-            <strong>Radar search</strong>
-            <p>
-              A radar costs {constants.radarCost.num} Rare Ore and lets you pick a specific player instead of taking
-              what the refresh gives you.
-            </p>
-          </div>
-        </div>
-        <div class="guide-callout">
-          Attacks are stamina, and stamina is slow. Spend it on ships that are both sinkable and actually holding ore.
-          A rich target with a full storage bar is worth more than three empty ones.
-        </div>
-      </div>
-    </section>
-
-    <section class="guide-section">
-      <h2 class="guide-section-title">Your Ship Shows Its Build</h2>
-      <div class="guide-card svw-builder" data-builder>
-        <h3 class="guide-card-heading">Build a ship and watch it change</h3>
-        <p class="guide-card-subheading">
-          The ship is not one picture. It is four layers, and each layer swaps art at fixed thresholds as you invest.
-          That means a glance at an enemy ship already tells you where their ore went: big sails is a high ship level,
-          a monstrous bow is offense, a heavy hull is defense, and visible cannon barrels are Rare Ore spent.
-        </p>
-
-        <div class="svw-builder-stage">
-          <div class="svw-ship" data-ship>
-            {layers.map((layer) => (
-              <img class="svw-ship-layer" data-layer={layer.part} src={layer.images[0] ?? ""} alt="" hidden={!layer.images[0]} />
-            ))}
-          </div>
-        </div>
-
-        <div class="svw-builder-controls">
-          {builderControls.map((control) => (
-            <label class="svw-builder-control">
-              <span class="svw-builder-label">
-                {control.label}
-                <output data-out={control.key}>{control.value}</output>
-              </span>
-              <input
-                type="range"
-                min={control.min}
-                max={control.max}
-                value={control.value}
-                data-control={control.key}
-                aria-label={control.label}
-              />
-              <span class="svw-builder-hint">{control.hint}</span>
-            </label>
-          ))}
-        </div>
-
-        <p class="svw-note">
-          Art stages change at these thresholds:
-          {layers.map((layer) => ` ${layer.part} at ${layer.stageThresholds.join(" / ")}.`).join("")}
-          {" "}The bow and hull scales run to 100, which is the combined level of the two talents that drive each one,
-          since both of those talents cap at 50.
-        </p>
-      </div>
-    </section>
-
     {shots.length > 0 && (
       <section class="guide-section">
         <h2 class="guide-section-title">In Game</h2>
@@ -744,52 +673,13 @@ const builderControls = [
       </section>
     )}
 
+      </div>
+
+      <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+    </div>
   </div>
 
-  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
-
   <script type="application/json" id="svw-data" set:html={JSON.stringify(plannerData)}></script>
-  <script type="application/json" id="svw-builder-data" set:html={JSON.stringify(builderData)}></script>
-
-  <script>
-    const builder = document.querySelector("[data-builder]");
-    const builderNode = document.getElementById("svw-builder-data");
-    if (builder && builderNode) {
-      const { layers } = JSON.parse(builderNode.textContent);
-
-      // Stage index = how many thresholds the current value has reached.
-      const stageFor = (thresholds, value) => {
-        let stage = 0;
-        thresholds.forEach((threshold, index) => {
-          if (value >= threshold) stage = index;
-        });
-        return stage;
-      };
-
-      const paint = () => {
-        for (const layer of layers) {
-          const input = builder.querySelector(`[data-control="${layer.part}"]`);
-          const img = builder.querySelector(`[data-layer="${layer.part}"]`);
-          const out = builder.querySelector(`[data-out="${layer.part}"]`);
-          if (!input || !img) continue;
-
-          const value = Number(input.value);
-          const src = layer.images[stageFor(layer.stageThresholds, value)];
-          if (out) out.textContent = String(value);
-
-          if (src) {
-            if (img.getAttribute("src") !== src) img.setAttribute("src", src);
-            img.hidden = false;
-          } else {
-            img.hidden = true;
-          }
-        }
-      };
-
-      builder.addEventListener("input", paint);
-      paint();
-    }
-  </script>
 
   <script>
     const root = document.querySelector("[data-planner]");

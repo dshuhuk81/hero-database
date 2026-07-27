@@ -18,21 +18,21 @@ const overview = [
 const tiles = [
   {
     name: "Fish",
-    art: "A_UI_WaterGame_Offerings01_Img.png",
+    art: "offerings01.png",
     payout: "1 Feast Coin",
     tone: "ga-chest--worst",
     note: "The lowest-value animal. Choose it only when nothing better is in reach.",
   },
   {
     name: "Sheep",
-    art: "A_UI_WaterGame_Offerings02_Img.png",
+    art: "offerings02.png",
     payout: "2 Feast Coins",
     tone: "ga-chest--mid",
     note: "A useful fallback if Cattle is not in reach.",
   },
   {
     name: "Cattle",
-    art: "A_UI_WaterGame_Offerings03_Img.png",
+    art: "offerings03.png",
     payout: "3 Feast Coins",
     tone: "ga-chest--best",
     note: "The highest coin payout on the board and the best normal target.",
@@ -41,12 +41,12 @@ const tiles = [
 
 const steps = [
   {
-    img: ui("A_UI_WaterGame_Help01_Img.png"),
+    img: ui("help01.png"),
     title: "Tap to make wind",
     body: "A shark sits in the middle of the board with animal tiles floating around it. Each tap sends up a gust of wind that lifts the tiles, and tapping again stacks more wind and pushes them higher.",
   },
   {
-    img: ui("A_UI_WaterGame_SceneObject_BigFish_Img.png"),
+    img: ui("scene-object-big-fish.png"),
     title: "The shark eats one",
     body: "When a tile drifts close enough to the shark, it eats it, and that tile is your reward. You have 60 seconds to line up the bite you want.",
   },
@@ -143,7 +143,7 @@ const rankRows = [
   <div class="ga-parallax ga-parallax--watergame">
     <div class="ga-hero-media" aria-hidden="true">
       <div class="ga-hero-backdrop"></div>
-      <img src={ui("A_UI_WaterGame_SceneObject_BigFish_Img.png")} alt="" fetchpriority="high" />
+      <img src={ui("scene-object-big-fish.png")} alt="" fetchpriority="high" />
     </div>
     <div class="ga-hero-stage">
       <div class="ga-hero-text">

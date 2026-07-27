@@ -156,8 +156,8 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M4.5 8.2C7 5.7 10.2 5 13.2 6c2.3.8 4.1 2.5 5.3 4.5-1.2 2-3 3.7-5.3 4.5-3 1-6.2.3-8.7-2.2L1.5 16v-5.5L1.5 5z"/><path d="M10.5 6.1 8.8 3.5M10.5 14.9l-1.7 2.6"/><circle cx="15.2" cy="9" r=".7" fill="currentColor" stroke="none"/><path d="M18.5 10.5H22"/>`,
   },
   {
-    label: "Sacred Vessel War",
-    href: "/guides/sacred-vessel-war",
+    label: "Hallowed Arklash",
+    href: "/guides/hallowed-arklash",
     group: "content",
     sidebar: false,
     localOnly: true,

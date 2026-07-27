@@ -54,29 +54,29 @@ const chests = [
 ];
 
 const materials = [
-  { name: "Frog Leg", asset: "A_UI_Alchemy_FrogLeg_Icon.png", shape: "Wide zig-zag that climbs", role: "climb" },
-  { name: "Monster Tooth", asset: "A_UI_Alchemy_MonsterTooth_Icon.png", shape: "Long arc that lands back on your line", role: "climb" },
-  { name: "Aquatic Plant", asset: "A_UI_Alchemy_AquaticPlant_Icon.png", shape: "Staircase that climbs and drifts right", role: "climb" },
-  { name: "Rabbit Ears", asset: "A_UI_Alchemy_RabbitEars_Icon.png", shape: "Tight zig-zag that climbs and drifts left", role: "climb" },
-  { name: "Conch", asset: "A_UI_Alchemy_Conch_Icon.png", shape: "Spiral that ends up-left", role: "climb" },
-  { name: "Fish", asset: "A_UI_Alchemy_Fish_Icon.png", shape: "Moves sideways without gaining height", role: "aim" },
-  { name: "Butterfly Wing", asset: "A_UI_Alchemy_ButterflyWing_Icon.png", shape: "Loop that ends where it started", role: "zero" },
-  { name: "Ouroboros", asset: "A_UI_Alchemy_Ouroboros_Icon.png", shape: "Returns to where it started", role: "zero" },
+  { name: "Frog Leg", asset: "frog-leg.png", shape: "Wide zig-zag that climbs", role: "climb" },
+  { name: "Monster Tooth", asset: "monster-tooth.png", shape: "Long arc that lands back on your line", role: "climb" },
+  { name: "Aquatic Plant", asset: "aquatic-plant.png", shape: "Staircase that climbs and drifts right", role: "climb" },
+  { name: "Rabbit Ears", asset: "rabbit-ears.png", shape: "Tight zig-zag that climbs and drifts left", role: "climb" },
+  { name: "Conch", asset: "conch.png", shape: "Spiral that ends up-left", role: "climb" },
+  { name: "Fish", asset: "fish.png", shape: "Moves sideways without gaining height", role: "aim" },
+  { name: "Butterfly Wing", asset: "butterfly-wing.png", shape: "Loop that ends where it started", role: "zero" },
+  { name: "Ouroboros", asset: "ouroboros.png", shape: "Returns to where it started", role: "zero" },
 ];
 
 const steps = [
   {
-    img: "A_UI_Alchemy_Help01_Img.png",
+    img: "help01.png",
     title: "Throw a form in the pot",
     body: "Each form creates a different path shape. You can reuse the available forms as often as you like.",
   },
   {
-    img: "A_UI_Alchemy_Help02_Img.png",
+    img: "help02.png",
     title: "Steer while it flies",
     body: "Add another form mid-flight and the bottle drops its old path and redraws from wherever it is right now. Forms are free and unlimited, so keep correcting.",
   },
   {
-    img: "A_UI_Alchemy_Help03_Img.png",
+    img: "help03.png",
     title: "Touch the bottle you want",
     body: "The first bottle you graze ends the run, wanted or not. Leave the board and you get nothing. You have 60 seconds.",
   },
@@ -186,7 +186,7 @@ const selfSelect = [
   <div class="ga-parallax">
     <div class="ga-hero-media" aria-hidden="true">
       <div class="ga-hero-backdrop"></div>
-      <img src={ui("A_UI_Alchemy_Crucible_Img.png")} alt="" fetchpriority="high" />
+      <img src={ui("crucible.png")} alt="" fetchpriority="high" />
     </div>
     <div class="ga-hero-stage">
       <div class="ga-hero-text">

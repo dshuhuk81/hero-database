@@ -19,28 +19,28 @@ const overview = [
 const chests = [
   {
     name: "Big Lantern",
-    art: "A_UI_GoldMiner_Material_Lantern01_Img.png",
+    art: "material-lantern01.png",
     payout: "1 Festival Coin",
     tone: "ga-chest--worst",
     note: "The plain round lantern pays the fewest coins.",
   },
   {
     name: "Middle Lantern",
-    art: "A_UI_GoldMiner_Material_Lantern02_Img.png",
+    art: "material-lantern02.png",
     payout: "2 Festival Coins",
     tone: "ga-chest--mid",
     note: "The middle-value coin lantern.",
   },
   {
     name: "Small Lantern",
-    art: "A_UI_GoldMiner_Material_Lantern03_Img.png",
+    art: "material-lantern03.png",
     payout: "3 Festival Coins",
     tone: "ga-chest--good",
     note: "The ornate lantern gives the best coin payout.",
   },
   {
     name: "Reward Lantern",
-    art: "A_UI_GoldMiner_Material_Lantern04_Img.png",
+    art: "material-lantern04.png",
     payout: "Pick your reward",
     tone: "ga-chest--best",
     note: "The paper crane gives a selectable reward instead of coins.",
@@ -55,7 +55,7 @@ const steps = [
     body: "A firework hook pivots at the bottom of the board and swings like a pendulum, sweeping the same arc from one side to the other. Its angle is your aim.",
   },
   {
-    img: ui("A_UI_GoldMiner_Help01_Img.png"),
+    img: ui("help01.png"),
     focus: "aim",
     title: "Fire on the beat",
     body: "Tap to shoot the hook straight out along whatever angle it points. The shot is fast and does not curve, so the whole skill is releasing when the line lands on the lantern you want.",
@@ -168,7 +168,7 @@ const selfSelect = [
   <div class="ga-parallax ga-parallax--goldminer">
     <div class="ga-hero-media" aria-hidden="true">
       <div class="ga-hero-backdrop"></div>
-      <img src={ui("A_UI_GoldMiner_Help01_Img.png")} alt="" fetchpriority="high" />
+      <img src={ui("help01.png")} alt="" fetchpriority="high" />
     </div>
     <div class="ga-hero-stage">
       <div class="ga-hero-text">

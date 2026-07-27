@@ -176,7 +176,7 @@ function buildShipVisuals(raw) {
       // Only the four drawn layers have textures; the shield layer is empty_img in the config.
       images: meta.asset
         ? row.res_path.map((res, index) =>
-            res === "empty_img" ? null : `/seawar/a_ui_seawar_${meta.asset}_${index}.webp`,
+            res === "empty_img" ? null : `/seawar/ship-${meta.part}-${index + 1}.webp`,
           )
         : null,
     };
