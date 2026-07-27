@@ -8,11 +8,12 @@ import { activeBadge, navEntries } from "../../data/nav";
 import { pickLang } from "../../i18n/helpers";
 import "../../styles/components.css";
 
-const MODE_GUIDE_HREFS = ["/guides/golden-arcanum", "/guides/votive-festival", "/guides/benevolent-feast", "/delusions-den", "/events", "/bosses", "/virtues"];
+const MODE_GUIDE_HREFS = ["/guides/hallowed-arklash", "/guides/golden-arcanum", "/guides/votive-festival", "/guides/benevolent-feast", "/delusions-den", "/events", "/bosses", "/virtues"];
 const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
-  .filter((entry) => import.meta.env.DEV || !entry.localOnly);
+  .filter((entry) => import.meta.env.DEV || !entry.localOnly)
+  .map((entry) => ({ ...entry, activeBadge: activeBadge(entry) }));
 const guidesBadge = activeBadge(navEntries.find((entry) => entry.href === "/guides")!);
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
@@ -55,7 +56,10 @@ const cards = guides
     <h2 class="guides-index-section-title">Game Mode Guides</h2>
     <div class="guides-mode-grid">
       {modeCards.map((entry) => (
-        <a class="guides-mode-card" href={entry.href}>
+        <a
+          class:list={["guides-mode-card", { "guides-mode-card--badged": entry.activeBadge }]}
+          href={entry.href}
+        >
           <div class="guides-mode-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
           </div>
@@ -63,6 +67,14 @@ const cards = guides
             <h3 class="guides-mode-title">{entry.label}</h3>
             {entry.description && <p class="guides-mode-hook">{pickLang(entry.description, "en")}</p>}
           </div>
+          {entry.activeBadge && (
+            <span
+              class="guides-mode-badge"
+              style={entry.activeBadge.color ? `background-color: ${entry.activeBadge.color};` : undefined}
+            >
+              {pickLang(entry.activeBadge.text, "en")}
+            </span>
+          )}
         </a>
       ))}
     </div>

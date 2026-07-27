@@ -160,7 +160,6 @@ const allNavEntries: NavEntry[] = [
     href: "/guides/hallowed-arklash",
     group: "content",
     sidebar: false,
-    localOnly: true,
     description: {
       en: "Warship progression, ore mining, PvP raiding and survival strategies",
       de: "Schiffsausbau, Erzabbau, PvP-Plünderung und Überlebensstrategien",

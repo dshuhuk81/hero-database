@@ -6858,6 +6858,10 @@
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
+.guides-mode-card--badged {
+  padding-top: calc(var(--space-4) + 10px);
+}
+
 .guides-mode-badge {
   position: absolute;
   top: 8px;
