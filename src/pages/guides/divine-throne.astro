@@ -1,16 +1,13 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import allHeroes from "../../data/all_heroes_db.json";
 import divineThroneData from "../../data/divine-throne.json";
 
 const FEATURE_ASSET_BASE = "/features/divine-throne";
-const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
-const HERO_IMAGE_VERSION = "2026-06-08-portrait";
-const HERO_THUMB_BASE = `${R2_BASE}/heroes/thumbs`;
 
 const featureAsset = (name: string) => `${FEATURE_ASSET_BASE}/${name}`;
-const heroThumb = (id: string) => `${HERO_THUMB_BASE}/${encodeURIComponent(id)}-96.webp?v=${HERO_IMAGE_VERSION}`;
-const heroImage = (id: string) => `${R2_BASE}/heroes/${encodeURIComponent(id)}.webp`;
+const factionOrder = ["Starglint", "Hearts", "Clubs", "Diamonds", "Spades"];
 
 const overview = [
   { label: "Unlock", value: "Clear Journey 25-3 and raise the hero to the required rank" },
@@ -128,8 +125,16 @@ const firstWaveHeroes = [
   { id: "ullr", name: "Ullr" },
 ].map((hero) => ({
   ...hero,
+  faction: allHeroes[hero.id as keyof typeof allHeroes]?.faction ?? "",
   milestones: divineThroneData.heroes.find((entry) => entry.heroId === hero.id)?.milestones ?? [],
-}));
+  throneAssetId:
+    divineThroneData.heroes.find((entry) => entry.heroId === hero.id)?.throneAssetId ?? hero.id,
+})).sort((a, b) => {
+  const factionDifference =
+    (factionOrder.indexOf(a.faction) === -1 ? factionOrder.length : factionOrder.indexOf(a.faction)) -
+    (factionOrder.indexOf(b.faction) === -1 ? factionOrder.length : factionOrder.indexOf(b.faction));
+  return factionDifference || a.name.localeCompare(b.name);
+});
 ---
 
 <Base
@@ -291,7 +296,7 @@ const firstWaveHeroes = [
     </section>
 
     <section class="guide-section">
-      <h2 class="guide-section-title">Hero list</h2>
+      <h2 class="guide-section-title">Hero list ({firstWaveHeroes.length})</h2>
       <div class="guide-card">
         <h3 class="guide-card-heading">Heroes to upgrade</h3>
         <p class="guide-card-subheading">
@@ -302,10 +307,11 @@ const firstWaveHeroes = [
             <article class="divine-roster-card">
               <a class="divine-roster-hero" href={`/heroes/${hero.id}`}>
                 <img
-                  src={heroThumb(hero.id)}
-                  alt={`${hero.name} portrait`}
+                  class="divine-roster-throne"
+                  src={`${FEATURE_ASSET_BASE}/thrones/${hero.throneAssetId}.png`}
+                  alt={`${hero.name} Divine Throne`}
                   loading="lazy"
-                  onerror={`this.onerror=null;this.src='${heroImage(hero.id)}'`}
+                  decoding="async"
                 />
                 <span>{hero.name}</span>
               </a>
@@ -525,7 +531,7 @@ const firstWaveHeroes = [
 
   .divine-roster-hero:hover span { color: var(--accent-gold); }
 
-  .divine-roster-hero img {
+  .divine-roster-hero .divine-roster-throne {
     flex: 0 0 auto;
     width: 64px;
     height: 64px;
@@ -534,6 +540,11 @@ const firstWaveHeroes = [
     object-fit: cover;
     object-position: center top;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    object-fit: contain;
+    object-position: center;
+    background:
+      radial-gradient(circle, rgba(255, 208, 74, 0.12), transparent 70%),
+      rgba(255, 255, 255, 0.025);
   }
 
   .divine-roster-hero span {
