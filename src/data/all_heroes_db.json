@@ -4905,7 +4905,8 @@
     "id": "hades",
     "name": "Hades",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hades.webp",
-    "release": false,
+    "release": true,
+    "newHero": true,
     "faction": "Starglint",
     "role": "Nimble",
     "class": "Warrior",
@@ -4946,67 +4947,157 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "",
-        "description": "",
+        "name": "Underworld Frenzy",
+        "description": "Passive: When any unit on the field falls, grants Hades souls. Deity units grant Hades 3 souls, and Minions grant Hades 1 soul. Hades can have up to 25 souls. Active: Hades leaps into a dense enemy area and summons Soul Storm within 5 meters around himself, entering a continuous casting state for 8 seconds. During this time, he continually moves toward dense enemy areas, gaining a 30% dodge rate, and deals DMG equal to 50% of ATK per second to surrounding units. 50% of the DMG dealt is converted into a Shield for himself. For every 1 soul he has, the DMG multiplier of Soul Storm increases by 7.5% of ATK.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Deals DMG equal to 80% of ATK per second to surrounding units.",
+          "level3": "30% of the DMG dealt by Soul Storm is converted into Healing.",
+          "level4": "For every 1 soul he has, the DMG multiplier of Soul Storm increases by 15% of ATK."
         },
-        "damageType": "",
+        "damageType": "Physical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "",
-        "description": "",
+        "name": "Abyssal Claws",
+        "description": "Swings the Soul Claw forward, dealing DMG equal to 300% of ATK to the farthest enemy unit and rooting them. After a short delay, retracts the Soul Claw, pulling the unit to the front of Hades.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Deals DMG equal to 400% of ATK to the farthest enemy unit.",
+          "level3": "The hit unit will also grant Hades 1 soul.",
+          "level4": "The hit unit will also grant Hades 3 souls."
         },
-        "damageType": ""
+        "damageType": "Physical"
       },
       {
         "id": "skill_3",
-        "name": "",
-        "description": "",
+        "name": "True Form Revealed",
+        "description": "After Hades falls, he transforms into [Underworld Divinity] until the end of the battle. [Underworld Divinity] is considered a Deity unit (1. Cannot be revived by Mengpo; 2. The battle will not end if only Underworld Divinity remains). Underworld Divinity: Inherits all stats and gains an additional 100% Max HP and 50% Physical & Magical Resistance, but cannot use Ultimate Skills.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Inherits all stats and gains an additional 120% Max HP.",
+          "level3": "Inherits all stats and gains an additional 140% Max HP.",
+          "level4": "Inherits all stats and gains an additional 160% Max HP."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "",
-        "description": "",
+        "name": "Truly Delectable",
+        "description": "Passive: When Hades absorbs a soul, he restores HP equal to 8% of ATK.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Each soul also grants him 5% ATK.",
+          "level3": "When Hades absorbs a soul, he restores HP equal to 15% of ATK.",
+          "level4": "Each soul also grants him 10% ATK."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Vortex of Grace",
-      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "name": "Underworld Throne",
+      "description": "Hades carries 5 souls upon entering the battle.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "Underworld Divinity no longer casts any active skills, but gains a permanent Soul Storm effect.",
+        "level3": "When reaching 20 souls and Soul Storm is active, his DMG taken is reduced by a fixed amount equal to 60% ATK.",
+        "level4": "When any unit falls while Soul Storm is active: Emits a soul shockwave outward from the fallen unit, dealing DMG equal to 100% ATK + 10% of the fallen unit's Max HP to enemy units in a large area (not exceeding 800% of his own ATK)."
       }
     },
-    "synergies": [],
+    "synergies": [
+      "SELF_SHIELD",
+      "SELF_HEAL",
+      "ENEMY_CROWD_CONTROL",
+      "REVIVE",
+      "SELF_HP_UP",
+      "SELF_SUSTAIN"
+    ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
     "coreMechanic": {
       "summary": "",
       "depthRating": "",
       "commonlyMisunderstood": false
-    }
+    },
+    "virtueSets": [
+      {
+        "label": "Desire",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4"
+        ]
+      },
+      {
+        "label": "Wildness",
+        "comment": "",
+        "virtues": [
+          "wildness_1",
+          "wildness_2",
+          "wildness_3",
+          "wildness_4"
+        ]
+      },
+      {
+        "label": "Gnosis",
+        "comment": "",
+        "virtues": [
+          "gnosis_1",
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4"
+        ]
+      }
+    ],
+    "synergyPartners": [
+      {
+        "heroId": "dionysus",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_CDR",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_VULNERABILITY"
+        ]
+      },
+      {
+        "heroId": "hephaestus",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_ARMOR_REDUCTION"
+        ]
+      },
+      {
+        "heroId": "set",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_SHIELD",
+          "ENEMY_ARMOR_REDUCTION",
+          "ENEMY_CROWD_CONTROL"
+        ]
+      },
+      {
+        "heroId": "athena",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "TEAM_DAMAGE_REDUCTION",
+          "TEAM_SHIELD",
+          "ENEMY_CROWD_CONTROL"
+        ]
+      },
+      {
+        "heroId": "iris",
+        "via": [
+          "TEAM_ATK_SPD_UP",
+          "TEAM_BUFF",
+          "ENEMY_CROWD_CONTROL",
+          "ENEMY_VULNERABILITY"
+        ]
+      }
+    ]
   },
   "hebo": {
     "id": "hebo",

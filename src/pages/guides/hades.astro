@@ -1,0 +1,327 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const heroCardImage = (id: string, width = 240) => (
+  `${R2_BASE}/heroes/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`
+);
+const skillImage = (id: string) => `${R2_BASE}/skills/hades_${id}.webp`;
+const virtueImage = (id: string, suffix: string) => `${R2_BASE}/images/virtues/${id}${suffix}.png`;
+
+const skills = [
+  {
+    id: "skill_1",
+    name: "Underworld Frenzy",
+    badge: "Skill 1 - Ultimate",
+    isUlt: true,
+    description: "Passive: When any unit on the field falls, grants Hades souls. Deity units grant Hades 3 souls, and Minions grant Hades 1 soul. Hades can have up to 25 souls. Active: Hades leaps into a dense enemy area and summons Soul Storm within 5 meters around himself, entering a continuous casting state for 8 seconds. During this time, he continually moves toward dense enemy areas, gaining a 30% dodge rate, and deals DMG equal to 50% of ATK per second to surrounding units. 50% of the DMG dealt is converted into a Shield for himself. For every 1 soul he has, the DMG multiplier of Soul Storm increases by 7.5% of ATK.",
+    takeaway: "At max skill level, Soul Storm reaches 80% base plus 15% ATK per Soul. With 25 Souls that is 455% ATK per second, or a nominal 3,640% over the full channel per target that stays inside.",
+    upgrades: [
+      { level: "Lv 2", text: "Deals DMG equal to 80% of ATK per second to surrounding units." },
+      { level: "Lv 3", text: "30% of the DMG dealt by Soul Storm is converted into Healing." },
+      { level: "Lv 4", text: "For every 1 soul he has, the DMG multiplier of Soul Storm increases by 15% of ATK." },
+    ],
+  },
+  {
+    id: "skill_2",
+    name: "Abyssal Claws",
+    badge: "Skill 2 - Control",
+    description: "Swings the Soul Claw forward, dealing DMG equal to 300% of ATK to the farthest enemy unit and rooting them. After a short delay, retracts the Soul Claw, pulling the unit to the front of Hades.",
+    takeaway: "This disrupts a backliner and drags it into Soul Storm. At Lv4 it also provides 3 Souls without requiring a death, so Hades can become stronger even before the first unit dies.",
+    upgrades: [
+      { level: "Lv 2", text: "Deals DMG equal to 400% of ATK to the farthest enemy unit." },
+      { level: "Lv 3", text: "The hit unit will also grant Hades 1 soul." },
+      { level: "Lv 4", text: "The hit unit will also grant Hades 3 souls." },
+    ],
+  },
+  {
+    id: "skill_3",
+    name: "True Form Revealed",
+    badge: "Skill 3 - Transformation",
+    description: "After Hades falls, he transforms into [Underworld Divinity] until the end of the battle. [Underworld Divinity] is considered a Deity unit (1. Cannot be revived by Mengpo; 2. The battle will not end if only Underworld Divinity remains). Underworld Divinity: Inherits all stats and gains an additional 100% Max HP and 50% Physical & Magical Resistance, but cannot use Ultimate Skills.",
+    takeaway: "This is a transformation, not a revive. Mengpo cannot bring him back again, and a battle can still end while Underworld Divinity is the only allied unit left.",
+    upgrades: [
+      { level: "Lv 2", text: "Inherits all stats and gains an additional 120% Max HP." },
+      { level: "Lv 3", text: "Inherits all stats and gains an additional 140% Max HP." },
+      { level: "Lv 4", text: "Inherits all stats and gains an additional 160% Max HP." },
+    ],
+  },
+  {
+    id: "skill_4",
+    name: "Truly Delectable",
+    badge: "Skill 4 - Passive",
+    description: "Passive: When Hades absorbs a soul, he restores HP equal to 8% of ATK.",
+    takeaway: "At max level, every Soul heals for 15% ATK and grants 10% ATK. At 25 Souls the listed ATK gain reaches 250%, improving his damage, Shield, Healing, and Relic effects at the same time.",
+    upgrades: [
+      { level: "Lv 2", text: "Each soul also grants him 5% ATK." },
+      { level: "Lv 3", text: "When Hades absorbs a soul, he restores HP equal to 15% of ATK." },
+      { level: "Lv 4", text: "Each soul also grants him 10% ATK." },
+    ],
+  },
+];
+
+const relic = {
+  name: "Underworld Throne",
+  badge: "Relic",
+  levelBadge: "High investment",
+  description: "Hades carries 5 souls upon entering the battle.",
+  takeaway: "Lv2 is the most important upgrade for his second form. Lv3 is strongest against many rapid, smaller hits, while Lv4 makes teams with plenty of Minions and deaths much more effective.",
+  upgrades: [
+    { level: "Lv 2", text: "Underworld Divinity no longer casts any active skills, but gains a permanent Soul Storm effect." },
+    { level: "Lv 3", text: "When reaching 20 souls and Soul Storm is active, his DMG taken is reduced by a fixed amount equal to 60% ATK." },
+    { level: "Lv 4", text: "When any unit falls while Soul Storm is active: Emits a soul shockwave outward from the fallen unit, dealing DMG equal to 100% ATK + 10% of the fallen unit's Max HP to enemy units in a large area (not exceeding 800% of his own ATK)." },
+  ],
+};
+
+const guideRatings = [
+  { label: "Overall", value: "S" },
+  { label: "PvP", value: "S+" },
+  { label: "Campaign", value: "S" },
+  { label: "Boss", value: "C" },
+];
+
+const strengths = [
+  "Soul Storm scales to enormous AoE damage while converting damage into both Shield and Healing",
+  "Builds Souls from allied and enemy deaths, Minions, and Abyssal Claws",
+  "Pulls the farthest enemy into melee range and roots it",
+  "30% Dodge during the Ultimate makes his first dive harder to punish",
+  "Underworld Divinity gives him an exceptionally durable second combat phase",
+  "Relic Lv3 can erase much of the pressure from rapid multi-hit attacks",
+  "Relic Lv4 turns every death during Soul Storm into another large AoE event",
+];
+
+const weaknesses = [
+  "Starglint copies and Relic progress demand an exceptional amount of resources",
+  "Performs far below his reputation with low ascension, weak gear, or a low-level Relic",
+  "Needs time to collect Souls before reaching his full damage and durability",
+  "The second form cannot cast an Ultimate and, from Relic Lv2 onward, uses no active skills",
+  "His transformation is not a revive and cannot be repeated by Mengpo",
+  "Single-target Boss fights without additional enemies give him few ways to collect Souls",
+  "Large single hits are a better answer to Relic Lv3 than many small hits",
+];
+
+const synergies = [
+  { id: "nuwa", name: "Nuwa", note: "Her summoned units give Hades Souls when they die and can trigger Relic Lv4 shockwaves" },
+  { id: "serket", name: "Serket", note: "Summons 3 scorpions whose deaths grant Hades Souls and can trigger Relic Lv4 shockwaves" },
+  { id: "eris", name: "Eris", note: "Adds more units to a Summon team, creating more deaths for Hades to benefit from" },
+  { id: "cronus", name: "Cronus", note: "Provides team support while Hades serves as the team's main damage dealer" },
+];
+
+const virtues = [
+  {
+    name: "Gnosis",
+    rarity: "Gold",
+    rarityClass: "guide-virtue-rarity--gold",
+    assetId: "gnosisI",
+    assetSuffix: "_elite",
+    bonuses: [
+      { label: "2-Piece", text: "Dodge Rate +10% at combat start" },
+      { label: "4-Piece", text: "Dodge Rate +15% per hit taken; clears all stacks after a dodge" },
+    ],
+    note: "This is the clearest Hades-specific recommendation: extra Dodge works well with the 30% built into Underworld Frenzy and helps him stay alive while he gains Souls, Shield, and Healing.",
+  },
+  {
+    name: "Desire",
+    rarity: "Gold",
+    rarityClass: "guide-virtue-rarity--gold",
+    assetId: "desireI",
+    assetSuffix: "_elite",
+    bonuses: [
+      { label: "2-Piece", text: "ATK +10% at combat start" },
+      { label: "4-Piece", text: "After 15s, ATK +20%" },
+    ],
+    note: "An ATK-focused fallback. ATK improves his damage, damage conversions, Soul healing, fixed Relic reduction, and shockwaves, but it gives up the safer Dodge plan.",
+  },
+  {
+    name: "Wildness",
+    rarity: "Red",
+    rarityClass: "guide-virtue-rarity--red",
+    assetId: "wildnessI",
+    assetSuffix: "_legendary",
+    bonuses: [
+      { label: "2-Piece", text: "HP +15% at combat start" },
+      { label: "4-Piece", text: "+5% ATK every 5s, up to 10 stacks" },
+    ],
+    note: "An alternative for long fights: the early HP protects his first form, while the growing ATK bonus gradually improves his damage and defensive effects.",
+  },
+];
+---
+
+<Base title="Hades Guide - Soul Storm PvP Carry | Motto Immortal" description="Hades guide covering Souls, Underworld Divinity, Relic upgrades, Summon teams, gear priorities, investment needs, and whether he is worth pulling.">
+  <div class="guide-banner guide-banner--hades">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("hades")}'); --guide-banner-y: 15%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span>Guides</span>
+    </a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Hades</h1>
+      <p class="guide-hero-subtitle">Lord of the Underworld &middot; Soul Storm Carry</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/starglint.webp`} alt="Starglint" />Starglint</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/warrior.webp`} alt="Warrior" />Warrior</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--hades">
+    <section class="guide-section">
+      <h2 class="guide-section-title">Meet Hades</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">A death-fed PvP carry with two combat phases</h3>
+        <p class="guide-card-subheading">Hades is a Starglint Warrior who dives into enemy groups, gains Souls whenever units die, and uses those Souls to increase his ATK, survivability, and Soul Storm damage. Killing his first form does not remove him: he returns as the much tougher Underworld Divinity. With enough investment, he is an elite PvP carry. Without it, he struggles to deliver enough damage for his cost.</p>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Quick Overview</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Do not pull him without a full investment plan</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Role</div><div class="guide-overview-value">AoE bruiser and PvP carry</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Best in</div><div class="guide-overview-value">Arena, Campaign, Summon teams</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Needs</div><div class="guide-overview-value">Mythic+, strong Relic, Dodge, high-quality gear</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Relic</div><div class="guide-overview-value">Lv2 is essential; Lv4 greatly improves Summon teams</div></div>
+        </div>
+        <p class="guide-quick-verdict">Hades is not a “pull one copy and use him” hero. He is worth considering only if PvP is a priority and you have enough resources for high ascension, a strong Relic, and well-rolled gear. Free-to-play players should skip.</p>
+        <div class="guide-rating-grid" aria-label="Hades ratings">
+          {guideRatings.map((rating) => <div class="guide-rating-tile" data-rating={rating.value}><span>{rating.label}</span><strong>{rating.value}</strong></div>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">How Souls Make Hades Stronger</h2>
+      <div class="guide-card guide-apple-card">
+        <h3 class="guide-card-heading">Every death can make him stronger</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">1 &middot; Collect</div><div class="guide-overview-value">Deity deaths grant 3 Souls, Minion deaths grant 1, and maxed Abyssal Claws grants 3. The cap is 25.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">2 &middot; Scale</div><div class="guide-overview-value">Each Soul raises ATK, heals Hades, and adds another 15% ATK per second to a maxed Soul Storm.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">3 &middot; Sustain</div><div class="guide-overview-value">Storm damage becomes Shield and Healing, so hitting a packed group is both his offense and defense.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">4 &middot; Trigger shockwaves</div><div class="guide-overview-value">At Relic Lv4, deaths during the Storm cause more AoE damage, which can help kill other weakened units nearby.</div></div>
+        </div>
+        <div class="guide-callout"><strong>Team-building rule:</strong> allied Minions help Hades even when they die. Each one grants a Soul and can trigger a shockwave, so he performs best when several units are fighting and dying around him.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Skills: What They Mean</h2>
+      <div class="guide-skills-grid">
+        {skills.map((skill) => (
+          <div class="guide-skill-card">
+            <div class="guide-skill-header">
+              <div class="guide-skill-icon" style={`background-image: url('${skillImage(skill.id)}');`} role="img" aria-label={skill.name}></div>
+              <div class="guide-skill-meta"><div class="guide-skill-name">{skill.name}</div><span class={`guide-skill-badge${skill.isUlt ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div>
+            </div>
+            <p class="guide-skill-desc">{skill.description}</p>
+            <div class="guide-skill-upgrades">{skill.upgrades.map((u) => <div class="guide-upgrade"><span class="guide-upgrade-chip">{u.level}</span><span class="guide-upgrade-text">{u.text}</span></div>)}</div>
+            <div class="guide-skill-caption"><strong>In practice:</strong> {skill.takeaway}</div>
+          </div>
+        ))}
+      </div>
+      <div class="guide-skill-card guide-skill-card--relic">
+        <div class="guide-skill-header">
+          <div class="guide-skill-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label={relic.name}></div>
+          <div class="guide-skill-meta"><div class="guide-skill-name">{relic.name}</div><div class="guide-relic-badges"><span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span><span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span></div></div>
+        </div>
+        <div class="guide-skill-relic-body">
+          <p class="guide-skill-desc">{relic.description}</p>
+          <div class="guide-skill-upgrades guide-skill-upgrades--relic">{relic.upgrades.map((u) => <div class="guide-upgrade guide-upgrade--relic"><span class="guide-upgrade-chip">{u.level}</span><span class="guide-upgrade-text">{u.text}</span></div>)}</div>
+          <div class="guide-skill-caption"><strong>In practice:</strong> {relic.takeaway}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">What Each Relic Level Adds</h2>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint"><span>Relic Lv1</span><strong>Starts with 5 Souls</strong><p>The extra Souls improve his first Soul Storm, healing, and ATK sooner. Helpful, but not enough on its own.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Relic Lv2</span><strong>Permanent Storm after transforming</strong><p>Underworld Divinity receives permanent Soul Storm, allowing his second form to keep dealing meaningful area damage.</p></div>
+        <div class="guide-apple-breakpoint"><span>Relic Lv3</span><strong>Much harder to kill at 20 Souls</strong><p>At 20+ Souls, every incoming hit is reduced by a fixed amount equal to 60% of his current ATK. This is not percentage damage reduction.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Relic Lv4</span><strong>Deaths cause damaging shockwaves</strong><p>Every death during Soul Storm can cause an explosion for up to 800% Hades ATK, making Minions and crowded fights much more valuable.</p></div>
+      </div>
+      <div class="guide-callout"><strong>Fixed means fixed:</strong> at 500,000 current ATK, Relic Lv3 subtracts 300,000 from each incoming hit before it lands. Many small hits suffer far more than one enormous blow.</div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Where He Works</h2>
+      <div class="guide-card">
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Arena &middot; S+</div><div class="guide-overview-value">His best mode. Packed teams, deaths, backline disruption, two combat phases, and Relic Lv3 all punish common PvP pressure patterns.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Campaign &middot; S</div><div class="guide-overview-value">Very strong when waves and Summons give him plenty of Souls. With the right team and enough investment, he can carry difficult stages.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Tower &middot; A</div><div class="guide-overview-value">Strong, but not automatically the best carry for this mode; Nezha remains the more reliable choice.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Single Boss &middot; C</div><div class="guide-overview-value">No adds means few deaths, fewer Souls, and no Lv4 chain. Do not invest in Hades primarily for single-target Boss damage.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section"><h2 class="guide-section-title">Strengths &amp; Weaknesses</h2><StrengthWeakness strengths={strengths} weaknesses={weaknesses} /></section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Summon Team</h2>
+      <div class="guide-hero-grid">
+        {synergies.map((hero) => (
+          <div class="guide-hero-card">
+            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroCardImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
+            <div class="guide-hero-card-name">{hero.name}</div><div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+      <div class="guide-callout"><strong>Recommended team:</strong> Hades + Nuwa + Serket + Eris + Cronus. Nuwa and Serket are especially valuable because their summoned units grant Hades Souls when they die and can trigger Relic Lv4 shockwaves. Other supports may work with him, but they do not necessarily take advantage of his Soul mechanics this directly.</div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Gear &amp; Stats</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">ATK makes every system stronger; Dodge lets it start</h3>
+        <div class="guide-stat-chain">
+          <span class="guide-stat-pill guide-stat-pill--primary">Dodge</span><span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">ATK</span><span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">HP / Resistances</span><span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Damage stats</span>
+        </div>
+        <div class="guide-callout"><strong>Why ATK matters:</strong> it scales Soul Storm, Shield conversion, Healing conversion, Soul healing, the Relic Lv3 fixed reduction, and Relic Lv4 shockwaves. It is simultaneously an offensive and defensive stat.</div>
+        <div class="guide-callout"><strong>Other stats:</strong> there is no reliable universal order for CRIT, Physical Damage, Cooldown Haste, or Effect Hit. Prioritize strong Dodge and ATK rolls, then use HP and resistances to help him survive the opening dive.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Virtues</h2>
+      <div class="guide-virtue-grid">
+        {virtues.map((v) => (
+          <div class="guide-virtue-card">
+            <div class="guide-virtue-header"><div class="guide-virtue-icon" style={`background-image: url('${virtueImage(v.assetId, v.assetSuffix)}');`} role="img" aria-label={v.name}></div><div><div class="guide-virtue-name">{v.name}</div><span class={`guide-virtue-rarity ${v.rarityClass}`}>{v.rarity}</span></div></div>
+            <div class="guide-virtue-bonuses">{v.bonuses.map((b) => <div class="guide-virtue-bonus"><div class="guide-virtue-bonus-label">{b.label}</div><div class="guide-virtue-bonus-text">{b.text}</div></div>)}</div>
+            <p class="guide-virtue-note">{v.note}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Pick or Skip?</h2>
+      <div class="guide-card">
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Pick Hades</div><div class="guide-overview-value">PvP is a priority, you can take a Starglint hero beyond Mythic, upgrade his Relic far enough, give him excellent gear, and preferably build the recommended Summon team.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Skip Hades</div><div class="guide-overview-value">You are free-to-play, want value from one copy, need a Boss specialist, or cannot commit the Relic and gear resources after pulling him.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Verdict</h2>
+      <div class="guide-verdict-box">
+        <h3 class="guide-verdict-heading">A top carry only after top-tier investment</h3>
+        <p class="guide-verdict-text">Hades has nearly everything a PvP carry needs: he reaches the enemy backline, deals more damage as units die, protects and heals himself through Soul Storm, and returns in a much tougher form after his first death. At Relic Lv3, rapid smaller hits struggle to hurt him once he has 20 Souls. Relic Lv4 also lets every Minion death contribute more area damage. The drawback is his cost. With low ascension, an unfinished Relic, or mediocre gear, he is much less effective than the fully upgraded version. Build him only if you can commit enough resources to finish him. For free-to-play players, the answer is a clear skip.</p>
+      </div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>

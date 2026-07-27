@@ -22,6 +22,12 @@ export interface GuideEntry {
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
   {
+    heroId: "hades",
+    href: "/guides/hades",
+    title: "Hades",
+    updated: "2026-07-27",
+  },
+  {
     href: "/guides/golden-arcanum",
     image: "/features/golden-arcanum/assets/ui/illustration01.png",
     title: "Golden Arcanum - Event Guide",

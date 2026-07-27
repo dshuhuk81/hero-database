@@ -12,6 +12,11 @@ const MODE_GUIDE_HREFS = ["/guides/hallowed-arklash", "/guides/divine-throne", "
 const MODE_GUIDE_LABELS: Record<string, string> = {
   "/events": "Timed Challenges",
 };
+const MODE_GUIDES_WITHOUT_BADGE = new Set([
+  "/guides/golden-arcanum",
+  "/guides/votive-festival",
+  "/guides/benevolent-feast",
+]);
 const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
@@ -19,7 +24,7 @@ const modeCards = MODE_GUIDE_HREFS
   .map((entry) => ({
     ...entry,
     displayLabel: MODE_GUIDE_LABELS[entry.href] ?? entry.label,
-    activeBadge: activeBadge(entry),
+    activeBadge: MODE_GUIDES_WITHOUT_BADGE.has(entry.href) ? undefined : activeBadge(entry),
   }));
 const guidesBadge = activeBadge(navEntries.find((entry) => entry.href === "/guides")!);
 

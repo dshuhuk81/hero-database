@@ -2576,6 +2576,13 @@
   --guide-accent-line: color-mix(in srgb, var(--accent-gold) 34%, transparent);
 }
 
+.guide-banner--hades,
+.guide-body--hades {
+  --guide-accent: #bba5ff;
+  --guide-accent-dim: color-mix(in srgb, #7758c7 18%, transparent);
+  --guide-accent-line: color-mix(in srgb, #9a7ce8 38%, transparent);
+}
+
 .guide-apple-card {
   background:
     radial-gradient(circle at 50% 12%, var(--guide-accent-dim), transparent 38%),
