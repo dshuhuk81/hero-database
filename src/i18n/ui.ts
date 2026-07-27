@@ -168,7 +168,7 @@ const translations: TranslationTree = {
       zh: "了解解锁条件、以太升级、专属技能与首批英雄。",
     },
     celebrationReadGuide: { en: "Prepare with the guide", de: "Mit dem Guide vorbereiten", es: "Prepárate con la guía", ru: "Подготовиться с гайдом", zh: "查看攻略，提前准备" },
-    celebrationSacredVessel: { en: "Hallowed Arklash", de: "Hallowed Arklash", es: "Hallowed Arklash", ru: "Hallowed Arklash", zh: "圣舟战争" },
+    celebrationSacredVessel: { en: "Hallowed Arklash", de: "Hallowed Arklash", es: "Hallowed Arklash", ru: "Hallowed Arklash", zh: "Hallowed Arklash" },
     celebrationSacredVesselCopy: {
       en: "Mine ore, upgrade your warship and raid rival vessels in a shared sea battle.",
       de: "Baue Erz ab, verbessere dein Kriegsschiff und plündere Rivalen in einer gemeinsamen Seeschlacht.",

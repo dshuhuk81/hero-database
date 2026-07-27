@@ -26,21 +26,18 @@ export const guides: GuideEntry[] = [
     image: "/features/golden-arcanum/assets/ui/illustration01.png",
     title: "Golden Arcanum - Event Guide",
     hook: "Weekly bottle mini-game: where the good chests spawn, which materials climb, and what to buy first.",
-    updated: "2026-07-16",
   },
   {
     href: "/guides/votive-festival",
     image: "/features/gold-miner/assets/ui/menu-item.png",
     title: "Votive Festival - Event Guide",
     hook: "Weekly lantern claw mini-game: time the swinging hook, snipe the Optional lantern, and what to buy first.",
-    updated: "2026-07-20",
   },
   {
     href: "/guides/benevolent-feast",
     image: "/features/water-game/assets/ui/illustration01.png",
     title: "Benevolent Feast - Event Guide",
     hook: "Weekly wind mini-game: take the Optional and reset, or target Cattle for coins.",
-    updated: "2026-07-20",
   },
   {
     heroId: "idunn",
