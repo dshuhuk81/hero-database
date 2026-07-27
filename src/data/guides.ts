@@ -47,7 +47,6 @@ export const guides: GuideEntry[] = [
   {
     href: "/guides/divine-throne",
     image: "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/bg_neutral.webp",
-    localOnly: true,
     title: "Divine Throne - System Guide",
     hook: "New hero system: unlock requirements, Ether upgrades and the first wave of throne heroes.",
   },

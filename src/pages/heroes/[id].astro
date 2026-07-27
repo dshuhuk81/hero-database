@@ -61,10 +61,8 @@ const heroGuide = guides.find(
 const cnSummary = getCnSummary(hero as any);
 const prevHero = heroIndex > 0 ? navHeroes[heroIndex - 1] : null;
 const nextHero = heroIndex >= 0 && heroIndex < navHeroes.length - 1 ? navHeroes[heroIndex + 1] : null;
-// Divine Throne is unreleased: dev-only until launch (see LOCAL_ONLY_ROUTES in astro.config.mjs)
-const divineThroneEntry = import.meta.env.DEV
-  ? (divineThroneData as any).heroes.find((entry: any) => entry.heroId === routeId) ?? null
-  : null;
+const divineThroneEntry =
+  (divineThroneData as any).heroes.find((entry: any) => entry.heroId === routeId) ?? null;
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const raritySuffixMap: Record<string, string> = {

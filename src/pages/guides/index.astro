@@ -8,12 +8,19 @@ import { activeBadge, navEntries } from "../../data/nav";
 import { pickLang } from "../../i18n/helpers";
 import "../../styles/components.css";
 
-const MODE_GUIDE_HREFS = ["/guides/hallowed-arklash", "/guides/golden-arcanum", "/guides/votive-festival", "/guides/benevolent-feast", "/delusions-den", "/events", "/bosses", "/virtues"];
+const MODE_GUIDE_HREFS = ["/guides/hallowed-arklash", "/guides/divine-throne", "/guides/golden-arcanum", "/guides/votive-festival", "/guides/benevolent-feast", "/delusions-den", "/events", "/bosses", "/virtues"];
+const MODE_GUIDE_LABELS: Record<string, string> = {
+  "/events": "Timed Challenges",
+};
 const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
   .filter((entry) => import.meta.env.DEV || !entry.localOnly)
-  .map((entry) => ({ ...entry, activeBadge: activeBadge(entry) }));
+  .map((entry) => ({
+    ...entry,
+    displayLabel: MODE_GUIDE_LABELS[entry.href] ?? entry.label,
+    activeBadge: activeBadge(entry),
+  }));
 const guidesBadge = activeBadge(navEntries.find((entry) => entry.href === "/guides")!);
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
@@ -64,7 +71,7 @@ const cards = guides
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
           </div>
           <div class="guides-mode-text">
-            <h3 class="guides-mode-title">{entry.label}</h3>
+            <h3 class="guides-mode-title">{entry.displayLabel}</h3>
             {entry.description && <p class="guides-mode-hook">{pickLang(entry.description, "en")}</p>}
           </div>
           {entry.activeBadge && (
