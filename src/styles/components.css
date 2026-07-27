@@ -2568,6 +2568,13 @@
   margin-bottom: var(--space-6);
 }
 
+.guide-rating-note {
+  margin: var(--space-3) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
 /* -- Idunn: Golden Apple target flow -- */
 .guide-banner--idunn,
 .guide-body--idunn {

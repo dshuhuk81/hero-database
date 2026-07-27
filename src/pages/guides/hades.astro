@@ -78,9 +78,9 @@ const relic = {
 };
 
 const guideRatings = [
-  { label: "Overall", value: "S" },
-  { label: "PvP", value: "S+" },
-  { label: "Campaign", value: "S" },
+  { label: "Overall", value: "A+" },
+  { label: "PvP", value: "S" },
+  { label: "Campaign", value: "A+" },
   { label: "Boss", value: "C" },
 ];
 
@@ -194,6 +194,7 @@ const virtues = [
         <div class="guide-rating-grid" aria-label="Hades ratings">
           {guideRatings.map((rating) => <div class="guide-rating-tile" data-rating={rating.value}><span>{rating.label}</span><strong>{rating.value}</strong></div>)}
         </div>
+        <p class="guide-rating-note">These ratings are based on Hades at Divine I with Relic 20. At that investment level, he may not yet show his full potential.</p>
       </div>
     </section>
 
