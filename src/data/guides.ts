@@ -22,6 +22,13 @@ export interface GuideEntry {
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
   {
+    heroId: "audhumla",
+    href: "/guides/audhumla",
+    title: "Audhumla",
+    hook: "Target-lock Archer: build attack speed, trigger every-third-hit damage, and understand the cost of Overload.",
+    updated: "2026-07-28",
+  },
+  {
     heroId: "hades",
     href: "/guides/hades",
     title: "Hades",

@@ -33,9 +33,23 @@ const resourceCards = [
     name: "Steadfast Ether",
     asset: "steadfast-ether.png",
     role: "Downgrade protection",
-    note: "Protects against level loss on failure. It does not raise upgrade success chance.",
+    note: "Each one removes 10% of the downgrade risk. 10 in a single attempt means 0% risk. It never raises the success chance.",
   },
 ];
+
+const protectionRows = [
+  [0, 90, 50, 10],
+  [1, 81, 45, 9],
+  [2, 72, 40, 8],
+  [3, 63, 35, 7],
+  [4, 54, 30, 6],
+  [5, 45, 25, 5],
+  [6, 36, 20, 4],
+  [7, 27, 15, 3],
+  [8, 18, 10, 2],
+  [9, 9, 5, 1],
+  [10, 0, 0, 0],
+] as const;
 
 const resourceIcons = {
   "Immaculate Ether": "immaculate-ether.png",
@@ -248,7 +262,7 @@ const firstWaveHeroes = [
           </div>
         </div>
         <div class="guide-callout">
-          Upgrade success completes the next step. Upgrade failure can lower the Divine Throne by one level. Steadfast Ether reduces downgrade risk, but it does not increase success rate.
+          Upgrade success completes the next step. Upgrade failure can lower the Divine Throne by one level. Steadfast Ether reduces downgrade risk, but it does not increase success rate. The paid Journal track grants only 1 Steadfast Ether, and a fully protected attempt needs 10.
         </div>
       </div>
     </section>
@@ -291,6 +305,41 @@ const firstWaveHeroes = [
               </table>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Downgrade Protection</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">How Steadfast Ether actually works</h3>
+        <p class="guide-card-subheading">
+          Steadfast Ether is not a one-time save, and it is not a random chance to block a downgrade. Every piece you add lowers the downgrade risk by a flat 10% of its value, and you can add up to 10 per attempt.
+        </p>
+        <div class="divine-upgrade-table-wrap">
+          <table class="divine-upgrade-table">
+            <thead>
+              <tr>
+                <th>Steadfast Ether</th>
+                <th>Lv 39→40 (10% success)</th>
+                <th>Lv 35→36 (50% success)</th>
+                <th>Lv 20→21 (90% success)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {protectionRows.map(([used, risk40, risk36, risk22]) => (
+                <tr>
+                  <td>{used}</td>
+                  <td>{risk40}%</td>
+                  <td>{risk36}%</td>
+                  <td>{risk22}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div class="guide-callout">
+          Even a fully protected attempt can still fail. With 10 Steadfast Ether you cannot lose a level, but a failed roll still consumes the Ether cost and leaves you at your current level. Every upgrade up to Level 20 succeeds, so the protection slot stays disabled until the first risky attempt at 20→21.
         </div>
       </div>
     </section>
@@ -435,6 +484,19 @@ const firstWaveHeroes = [
   }
 
   .divine-journal-rewards strong { color: var(--text-bright); }
+
+  .divine-protection-formula {
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
+    border: 1px solid var(--guide-accent-line);
+    border-radius: var(--radius-md);
+    background: var(--guide-accent-dim);
+    color: var(--text-bright);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.6;
+    text-align: center;
+  }
 
   .divine-upgrade-summary {
     display: grid;

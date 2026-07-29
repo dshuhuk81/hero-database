@@ -1,0 +1,314 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const HERO_IMAGE_VERSION = "2026-06-08-portrait";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const heroCardImage = (id: string, width = 240) => (
+  `${R2_BASE}/heroes/cards/${encodeURIComponent(id)}-${width}.webp?v=${HERO_IMAGE_VERSION}`
+);
+const skillImage = (id: string) => `${R2_BASE}/skills/audhumla_${id}.webp`;
+
+const skills = [
+  {
+    id: "skill_1",
+    name: "Final Oathbind",
+    badge: "Skill 1 - Ultimate",
+    isUlt: true,
+    description: "Audhumla naturally attacks with a shorter interval. When cast, she locks onto the nearest enemy for 8s, gains 100% ATK Speed, and cannot use active skills. She moves into range if needed and only changes targets if the locked enemy becomes invisible, untargetable, or dies.",
+    takeaway: "This is an eight-second basic-attack window, not a burst cast. A target change during the window resets the two passives that make those fast attacks valuable.",
+    upgrades: [
+      { level: "Lv 2", text: "Gains 30% DMG Reduction during the 8s lock." },
+      { level: "Lv 3", text: "Gains 40% Lifesteal during the 8s lock." },
+      { level: "Lv 4", text: "Normal attacks and basic skills deal 30% more damage during the lock." },
+    ],
+  },
+  {
+    id: "skill_2",
+    name: "Primordial Repulsion",
+    badge: "Skill 2",
+    description: "If an enemy is close, Audhumla deals 300% ATK physical damage to the nearest target and knocks it to the edge of the battlefield. If nobody is close, she fires at the farthest enemy, dealing 200% ATK to every unit in the beam's path.",
+    takeaway: "The close-range version is self-peel; the long-range beam is incidental line damage. Neither turns her into an AoE carry—her real output still depends on repeatedly attacking one target.",
+    upgrades: [
+      { level: "Lv 2", text: "Close-range damage increases to 500% ATK." },
+      { level: "Lv 3", text: "Beam damage increases to 300% ATK." },
+      { level: "Lv 4", text: "Beam damage increases to 400% ATK." },
+    ],
+  },
+  {
+    id: "skill_3",
+    name: "Judgment of Three Lives",
+    badge: "Skill 3 - Passive",
+    description: "Every third consecutive normal attack against the same enemy deals True Damage based on that enemy's max HP. At Lv4 it deals 18% max HP, capped at 1,800% of Audhumla's ATK. Changing targets removes the stored attack count.",
+    takeaway: "The max-HP percentage pressures durable enemies, but the ATK cap and the game's True-Damage rules decide what actually lands. Fast attacks only matter if the third hit reaches the same target.",
+    upgrades: [
+      { level: "Lv 2", text: "Deals 14% max-HP True Damage, capped at 1,400% ATK." },
+      { level: "Lv 3", text: "Deals 16% max-HP True Damage, capped at 1,600% ATK." },
+      { level: "Lv 4", text: "Deals 18% max-HP True Damage, capped at 1,800% ATK." },
+    ],
+  },
+  {
+    id: "skill_4",
+    name: "Unbroken Sequence",
+    badge: "Skill 4 - Passive",
+    description: "Each attack against the same target heats Audhumla's weapon and grants ATK Speed, up to 300%. At Lv4 she gains 60% per attack and reaches the maximum after five attacks. Changing targets removes the entire bonus.",
+    takeaway: "She supplies her own speed and does not need a dedicated ATK-Speed support. Protecting target uptime is more valuable than blindly stacking even more speed.",
+    upgrades: [
+      { level: "Lv 2", text: "Each attack grants 40% ATK Speed, up to 300%." },
+      { level: "Lv 3", text: "Each attack grants 50% ATK Speed, up to 300%." },
+      { level: "Lv 4", text: "Each attack grants 60% ATK Speed, up to 300%." },
+    ],
+  },
+];
+
+const relic = {
+  name: "Finality",
+  badge: "Relic",
+  levelBadge: "Rec. Relic 10 / 30",
+  description: "When Audhumla would die, she enters Overload for 10s. She cannot die during this state and gains 100% ATK Speed, but dies unavoidably when it ends. She remains targetable, can take damage, and can be controlled. The final death cannot be prevented by immunity, but she can be revived afterward.",
+  takeaway: "Treat Overload as a guaranteed final damage phase, not a defensive save. Relic 20 protects that phase from Control; revival can give her another life after the forced death.",
+  upgrades: [
+    { level: "Relic 10", text: "Overload immediately starts at the full 300% ATK-Speed bonus." },
+    { level: "Relic 20", text: "Audhumla gains Super Armor during Overload." },
+    { level: "Relic 30", text: "Judgment deals 25% max-HP True Damage with a much higher 4,000% ATK cap." },
+  ],
+};
+
+const guideRatings = [
+  { label: "Overall", value: "B" },
+  { label: "Campaign", value: "A" },
+  { label: "Diamond Tower", value: "A" },
+  { label: "PvP", value: "C" },
+];
+
+const strengths = [
+  "Repeated max-HP damage gives her a clear job against one durable enemy",
+  "Builds up to 300% ATK Speed by herself instead of demanding a speed-focused support",
+  "The Relic guarantees a ten-second final damage window after the first lethal hit",
+  "Relic 10 is a practical budget breakpoint; Relic 30 raises her damage ceiling sharply",
+  "Relic 20 prevents Control from wasting the most important Overload window",
+  "Can be revived after the Relic's forced death",
+  "Close-range knockback gives an Archer some protection against approaching enemies",
+];
+
+const weaknesses = [
+  "Changing targets removes both her ATK-Speed build-up and progress toward the third hit",
+  "Invisible, untargetable, or dying enemies can break her best damage window",
+  "Her True Damage loses most of its impact when she fights far above her own level",
+  "The Ultimate locks her out of active skills for eight seconds",
+  "Overload ends in a forced death that immunity cannot prevent",
+  "She can still be controlled during Overload before Relic 20",
+  "Backline dives can force her into survival mode before she has built momentum",
+  "She has no established PvP niche and offers little team-wide utility",
+];
+
+const synergies = [
+  { id: "mengpo", name: "Meng Po", note: "Her revive is the cleanest answer to Audhumla's forced death after Overload" },
+  { id: "heracles", name: "Heracles", note: "Anchors the frontline while Audhumla supplies sustained damage into durable targets" },
+  { id: "bastet", name: "Bastet", note: "Fits the proven Campaign shell and helps round out a Heracles frontline" },
+  { id: "phoenix", name: "Phoenix", note: "A flexible Campaign and Tower partner when Audhumla needs more room to keep firing" },
+];
+---
+
+<Base title="Audhumla Guide - Target Lock & Overload | Motto Immortal" description="Complete Audhumla guide: target-lock mechanics, every-third-hit True Damage, Overload, Relic breakpoints, Campaign teams, positioning, stats, and pull value.">
+  <div class="guide-banner guide-banner--audhumla">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("audhumla")}'); --guide-banner-y: 10%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span>Guides</span>
+    </a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Audhumla</h1>
+      <p class="guide-hero-subtitle">Single-Target Archer &middot; Overload Finisher</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/diamonds.webp`} alt="Diamonds" />Diamonds</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/archer.webp`} alt="Archer" />Archer</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--audhumla">
+    <section class="guide-section">
+      <h2 class="guide-section-title">Meet Audhumla</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Pick one target and never let go</h3>
+        <p class="guide-card-subheading">Audhumla is a specialized physical Archer for Campaign and Diamond Tower. She accelerates while hitting the same enemy, triggers max-HP True Damage on every third consecutive normal attack, and turns her first lethal hit into ten more seconds of firing. She looks like a universal tank killer, but target changes and high level deficits can remove much of that promise.</p>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Quick Overview</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">A formation-dependent PvE specialist</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Role</div><div class="guide-overview-value">Sustained single-target DPS</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Best in</div><div class="guide-overview-value">Campaign and Diamond Tower</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Needs</div><div class="guide-overview-value">Stable targeting, frontline protection, long-lived enemies</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Relic</div><div class="guide-overview-value">10 budget, 20 safety, 30 damage ceiling</div></div>
+        </div>
+        <p class="guide-quick-verdict">Pick Audhumla to add damage against a durable target in PvE. Skip her if you need an all-purpose carry, a PvP hero, or reliable True Damage while pushing stages far above your level.</p>
+        <div class="guide-rating-grid" aria-label="Audhumla ratings">
+          {guideRatings.map((rating) => (
+            <div class="guide-rating-tile" data-rating={rating.value}>
+              <span>{rating.label}</span>
+              <strong>{rating.value}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">The Same-Target Engine</h2>
+      <div class="guide-card guide-apple-card">
+        <h3 class="guide-card-heading">Her entire kit is one repeating sequence</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">1 &middot; Lock</div><div class="guide-overview-value">Start attacking one durable enemy and keep that enemy targetable.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">2 &middot; Accelerate</div><div class="guide-overview-value">Each hit adds ATK Speed. At Skill Lv4, five hits reach the 300% maximum.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">3 &middot; Trigger</div><div class="guide-overview-value">Every third consecutive normal attack deals max-HP True Damage, limited by Audhumla's ATK.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">4 &middot; Overload</div><div class="guide-overview-value">Her first lethal hit opens a final ten-second phase before the Relic forces her death.</div></div>
+        </div>
+        <div class="guide-callout"><strong>The reset rule:</strong> one target change removes the full ATK-Speed bonus and the stored count toward her next third-hit proc. Keeping a target is Audhumla's real resource.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Skills: What They Mean</h2>
+      <div class="guide-skills-grid">
+        {skills.map((skill) => (
+          <div class="guide-skill-card">
+            <div class="guide-skill-header">
+              <div class="guide-skill-icon" style={`background-image: url('${skillImage(skill.id)}');`} role="img" aria-label={skill.name}></div>
+              <div class="guide-skill-meta"><div class="guide-skill-name">{skill.name}</div><span class={`guide-skill-badge${skill.isUlt ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div>
+            </div>
+            <p class="guide-skill-desc">{skill.description}</p>
+            <div class="guide-skill-upgrades">{skill.upgrades.map((u) => <div class="guide-upgrade"><span class="guide-upgrade-chip">{u.level}</span><span class="guide-upgrade-text">{u.text}</span></div>)}</div>
+            <div class="guide-skill-caption"><strong>In practice:</strong> {skill.takeaway}</div>
+          </div>
+        ))}
+      </div>
+      <div class="guide-skill-card guide-skill-card--relic">
+        <div class="guide-skill-header">
+          <div class="guide-skill-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label={relic.name}></div>
+          <div class="guide-skill-meta">
+            <div class="guide-skill-name">{relic.name}</div>
+            <div class="guide-relic-badges">
+              <span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span>
+              <span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span>
+            </div>
+          </div>
+        </div>
+        <div class="guide-skill-relic-body">
+          <p class="guide-skill-desc">{relic.description}</p>
+          <div class="guide-skill-upgrades guide-skill-upgrades--relic">
+            {relic.upgrades.map((u) => <div class="guide-upgrade guide-upgrade--relic"><span class="guide-upgrade-chip">{u.level}</span><span class="guide-upgrade-text">{u.text}</span></div>)}
+          </div>
+          <div class="guide-skill-caption"><strong>In practice:</strong> {relic.takeaway}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Relic Breakpoints</h2>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint"><span>Relic 1</span><strong>The final ten seconds</strong><p>Overload already works: she survives the first lethal hit, attacks faster for 10s, then dies.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Relic 10</span><strong>Best budget stop</strong><p>Overload begins at the full 300% ATK-Speed bonus instead of rebuilding it hit by hit.</p></div>
+        <div class="guide-apple-breakpoint"><span>Relic 20</span><strong>Reliable Overload</strong><p>Super Armor prevents Control from consuming most of her fixed final window.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Relic 30</span><strong>Damage ceiling</strong><p>The third hit rises to 25% max HP and its cap jumps from 1,800% to 4,000% ATK.</p></div>
+      </div>
+      <div class="guide-callout"><strong>Investment rule:</strong> Relic 10 is enough for the budget version. Relic 30 is the major offensive finish, but it does not fix target resets or the level penalty on True Damage.</div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">True Damage Reality</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">It bypasses defense, not the whole damage system</h3>
+        <p class="guide-card-subheading">Audhumla's third hit skips the defense calculation, but shields, invulnerability, general damage modifiers, damage caps, and—most importantly—the level difference still affect the result. It also does not critically strike or gain the usual type and faction modifiers.</p>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">30 levels behind</div><div class="guide-overview-value">20% True-Damage reduction</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">50 levels behind</div><div class="guide-overview-value">40% True-Damage reduction</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">70 levels behind</div><div class="guide-overview-value">60% True-Damage reduction</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">100+ levels behind</div><div class="guide-overview-value">90% True-Damage reduction</div></div>
+        </div>
+        <div class="guide-callout"><strong>Why this changes the verdict:</strong> at a 100-level deficit, only one tenth of the calculated True Damage remains before later filters. Audhumla can still contribute through her fast physical attacks, but her signature third hit is weakest in the deepest level-deficit pushes.</div>
+        <div class="guide-callout"><strong>ATK cap at the listed Lv300 stats:</strong> with 232,292 ATK, Skill Lv4 caps one proc at 4,181,256 damage. Relic 30 raises the cap to 9,291,680. Battle ATK buffs can increase both caps.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Where She Works</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Best when one tough enemy stays in front of her</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Campaign &middot; A</div><div class="guide-overview-value">Her clearest use. She adds sustained damage to a durable frontline shell, but formations with backline access, frequent summons, or disappearing targets can break her sequence.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Diamond Tower &middot; A</div><div class="guide-overview-value">Strong into large, durable frontliners when positioned safely. Some floors are poor matches and may still call for a different damage dealer.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Boss &amp; Rift &middot; B</div><div class="guide-overview-value">A stationary single target suits her mechanics, but she is not automatically a top boss pick. Level deficit, ATK caps, and boss-specific behavior decide her value.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Arena &middot; C</div><div class="guide-overview-value">Fast deaths, target changes, untargetable effects, Control, and backline pressure all punish her. She has no established PvP role.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Strengths &amp; Weaknesses</h2>
+      <StrengthWeakness strengths={strengths} weaknesses={weaknesses} />
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Teams &amp; Positioning</h2>
+      <div class="guide-hero-grid">
+        {synergies.map((hero) => (
+          <div class="guide-hero-card">
+            <div class="guide-hero-portrait" data-hero={hero.id} style={`background-image: url('${heroCardImage(hero.id)}');`} role="img" aria-label={hero.name}></div>
+            <div class="guide-hero-card-name">{hero.name}</div>
+            <div class="guide-hero-card-note">{hero.note}</div>
+          </div>
+        ))}
+      </div>
+      <div class="guide-callout"><strong>Reliable Campaign shell:</strong> Heracles + Meng Po + Bastet + Phoenix + Audhumla. Heracles holds the frontline, Audhumla supplies the extra damage, and Meng Po can bring her back after the Relic's forced death.</div>
+      <div class="guide-callout"><strong>Positioning rule:</strong> keep Audhumla away from the first dive and line her up with the durable enemy you want her to attack. Do not let an immortality effect reach her too early: it cannot cancel the Relic's forced death and may be wasted before Overload begins.</div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Gear &amp; Stats</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Raise the cap, then keep her firing</h3>
+        <div class="guide-stat-chain">
+          <span class="guide-stat-pill guide-stat-pill--primary">ATK</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill guide-stat-pill--primary">Survivability</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Normal Attack DMG</span>
+          <span class="guide-stat-sep">&gt;</span>
+          <span class="guide-stat-pill">Situational ATK Speed</span>
+        </div>
+        <div class="guide-callout"><strong>Why ATK comes first:</strong> it raises the hard ceiling on every third-hit True-Damage proc and also scales her physical attacks and active skill.</div>
+        <div class="guide-callout"><strong>Do not overbuild speed:</strong> Unbroken Sequence already supplies up to 300%, the Ultimate adds another speed window, and Relic 10 starts Overload fully stacked. Extra speed may help her opening, but target stability and survival are the safer priorities.</div>
+        <div class="guide-callout"><strong>No fake precision:</strong> there is not enough reliable evidence to rank CRIT, Physical Damage, Hit, and exact gear sets universally. Use the strongest ATK-focused pieces you can support, then adjust defense to the stage.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Pick or Skip?</h2>
+      <div class="guide-card">
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Pick Audhumla</div><div class="guide-overview-value">Campaign or Diamond Tower is your priority, you use a durable frontline shell, and you want extra damage into enemies that remain visible and alive long enough for her sequence.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Skip Audhumla</div><div class="guide-overview-value">You need a universal carry, mainly play PvP, push at extreme level deficits, or cannot protect a backline Archer from dives and target disruption.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Verdict</h2>
+      <div class="guide-verdict-box">
+        <h3 class="guide-verdict-heading">Useful specialist, not a must-pull</h3>
+        <p class="guide-verdict-text">Audhumla has a coherent and satisfying job: stay on one durable target, accelerate, trigger every-third-hit damage, and turn her first death into one final barrage. That makes her a useful Campaign and Diamond Tower option, especially beside Heracles and Meng Po. It does not make her universal. A single target change resets both of her core passives, PvP naturally creates those resets, and large level deficits heavily reduce the True Damage that defines her ceiling. Relic 10 is the sensible budget goal; Relic 20 protects Overload; Relic 30 is the luxury damage spike. Pull her if that narrow PvE role solves a real problem in your roster—not because “max-HP True Damage” sounds like an automatic answer to every tank.</p>
+      </div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>
