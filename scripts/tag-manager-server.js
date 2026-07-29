@@ -565,9 +565,9 @@ async function buildSuggestionsPayload() {
     .map((h) => ({
       ...h,
       suggestedAdd: (h.suggestedAdd || []).filter((a) => !isDismissed(dismissed, h.id, 'add', a.tag)),
-      flagRemove: (h.flagRemove || []).filter((r) => !isDismissed(dismissed, h.id, 'remove', r.tag)),
+      unverifiedManual: h.unverifiedManual || [],
     }))
-    .filter((h) => h.suggestedAdd.length || h.flagRemove.length);
+    .filter((h) => h.suggestedAdd.length || h.unverifiedManual.length);
   return { generatedAt: data.generatedAt, summary: data.summary, heroes };
 }
 

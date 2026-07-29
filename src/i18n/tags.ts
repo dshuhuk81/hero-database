@@ -6,6 +6,7 @@ import type { Locale } from "./config";
 type TagLabel = Partial<Record<Locale, string>>;
 
 const TAG_LABELS: Record<string, TagLabel> = {
+  DEATH_PREVENTION: { de: "Todesverhinderung", es: "Prevención de muerte", ru: "Предотвращение смерти", zh: "免死" },
   ENEMY_ARMOR_REDUCTION: { de: "Rüstungsreduktion", es: "Reducción de armadura", ru: "Снижение брони", zh: "减甲" },
   ENEMY_ATK_DOWN: { de: "ANG-Senkung", es: "Reducción de ATQ", ru: "Снижение ATK", zh: "降攻" },
   ENEMY_ATK_SPD_DOWN: { de: "Angriffstempo-Senkung", es: "Reducción de vel. de ATQ", ru: "Снижение скор. атаки", zh: "降攻速" },
@@ -13,6 +14,7 @@ const TAG_LABELS: Record<string, TagLabel> = {
   ENEMY_BUFF_DISPEL: { de: "Buff-Entfernung", es: "Disipar mejoras", ru: "Развеивание баффов", zh: "驱散增益" },
   ENEMY_CROWD_CONTROL: { de: "Massenkontrolle", es: "Control de masas", ru: "Контроль", zh: "控制" },
   ENEMY_ENERGY_DRAIN: { de: "Energieentzug", es: "Drenaje de energía", ru: "Похищение энергии", zh: "能量吸取" },
+  ENEMY_DAMAGE_DEALT_DOWN: { de: "Gegnerschaden −", es: "Daño enemigo reducido", ru: "Снижение урона врага", zh: "降低敌方伤害" },
   ENEMY_TAUNT: { de: "Spott", es: "Provocar", ru: "Провокация", zh: "嘲讽" },
   ENEMY_VULNERABILITY: { de: "Verwundbarkeit", es: "Vulnerabilidad", ru: "Уязвимость", zh: "易伤" },
   PLAYSTYLE_AREA_DAMAGE: { de: "Flächenschaden", es: "Daño en área", ru: "Урон по площади", zh: "范围伤害" },
@@ -25,6 +27,7 @@ const TAG_LABELS: Record<string, TagLabel> = {
   SELF_DAMAGE_REDUCTION: { de: "Schadensreduktion", es: "Reducción de daño", ru: "Снижение урона", zh: "减伤" },
   SELF_DODGE: { de: "Ausweichen", es: "Evasión", ru: "Уклонение", zh: "闪避" },
   SELF_ENERGY_RESTORE: { de: "Energieregeneration", es: "Recuperación de energía", ru: "Восстановление энергии", zh: "回能" },
+  SELF_DEF_IGNORE: { de: "VTD ignorieren", es: "Ignorar DEF", ru: "Игнорирование защиты", zh: "无视防御" },
   SELF_HEAL: { de: "Heilung", es: "Curación", ru: "Лечение", zh: "治疗" },
   SELF_HEAL_EFFECT_UP: { de: "Heileffekt +", es: "Aumento de curación", ru: "Усиление лечения", zh: "治疗强化" },
   SELF_HIT_AVOID: { de: "Treffer vermeiden", es: "Evitar impacto", ru: "Уход от удара", zh: "免命中" },

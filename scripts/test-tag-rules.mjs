@@ -239,3 +239,99 @@ test("real hero (nezha) detects core tags", () => {
     assert.ok(hits[tag], `nezha should detect ${tag}`);
   }
 });
+
+test("context inheritance keeps colon payloads and upgrades on the team target", () => {
+  const contextual = {
+    id: "contextual",
+    name: "Contextual",
+    skills: [{
+      description: "Grants all allies [Tempo] for 5s: ATK SPD +50%, Energy Regen +30%.",
+      upgrades: {
+        level2: "Increases ATK SPD to 60%.",
+        level3: "Restoring HP equal to 100% ATK to the weakest ally.",
+      },
+    }],
+  };
+  const hits = detectForHero(contextual, rules);
+  assert.ok(hits.TEAM_ATK_SPD_UP, "colon payload inherits team target");
+  assert.equal(hits.TEAM_ATK_SPD_UP.scopeSource, "carried-clause");
+  assert.ok(hits.TEAM_ENERGY_RESTORE, "second colon effect inherits team target");
+  assert.ok(!hits.SELF_ATK_SPEED, "team upgrade must not become self ATK speed");
+  assert.ok(!hits.SELF_ENERGY_RESTORE, "team colon payload must not become self energy");
+  assert.ok(hits.TEAM_HEAL, "restoring morphology is recognized");
+});
+
+test("cleanse recipient is not mistaken for an ally trigger", () => {
+  const hits = detectForHero(
+    fakeHero("Tester", ["Removes all debuffs from an ally and makes them immune to Crowd Control."]),
+    rules
+  );
+  assert.ok(hits.TEAM_DEBUFF_CLEANSE);
+  assert.ok(hits.TEAM_CC_IMMUNITY);
+});
+
+test("Dionysus full skill audit confirms evidenced manual tags without bogus self inheritance", () => {
+  const dionysus = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/heroes/dionysus.json"), "utf8"));
+  const hits = detectForHero(dionysus, rules);
+  for (const tag of dionysus.synergies.filter((tag) => tag !== "ENEMY_VULNERABILITY")) {
+    assert.ok(hits[tag], `Dionysus should detect manual tag ${tag}`);
+  }
+  assert.ok(!hits.ENEMY_VULNERABILITY, "taking less damage from an enemy is not enemy vulnerability");
+  for (const tag of ["SELF_ATK_SPEED", "SELF_ATK_UP", "SELF_ENERGY_RESTORE", "SELF_HEAL", "SELF_SUSTAIN"]) {
+    assert.ok(!hits[tag], `Dionysus team effects must not produce ${tag}`);
+  }
+  assert.equal(hits.TEAM_ATK_SPD_UP.source, "skills[0].description");
+  assert.equal(hits.TEAM_ATK_SPD_UP.scopeSource, "carried-clause");
+});
+
+test("large real-hero corpus audit retains useful agreement and evidence provenance", () => {
+  const heroDir = path.join(ROOT, "src/data/heroes");
+  const heroes = fs.readdirSync(heroDir)
+    .filter((file) => file.endsWith(".json") && !file.startsWith("_"))
+    .map((file) => JSON.parse(fs.readFileSync(path.join(heroDir, file), "utf8")));
+
+  let manual = 0;
+  let matched = 0;
+  let confirmed = 0;
+  for (const hero of heroes) {
+    const hits = detectForHero(hero, rules);
+    const current = new Set(hero.synergies || []);
+    manual += current.size;
+    matched += Object.keys(hits).length;
+    confirmed += Object.keys(hits).filter((tag) => current.has(tag)).length;
+    for (const [tag, hit] of Object.entries(hits)) {
+      assert.ok(hit.evidence, `${hero.id}/${tag} has evidence`);
+      assert.ok(hit.source, `${hero.id}/${tag} has source provenance`);
+      assert.ok(["explicit", "carried-clause", "inherited-upgrade", "unknown"].includes(hit.scopeSource));
+    }
+  }
+
+  const recall = confirmed / manual;
+  const precisionVsManual = confirmed / matched;
+  assert.ok(heroes.length >= 80, `expected broad corpus, got ${heroes.length} heroes`);
+  assert.ok(recall >= 0.75, `manual agreement recall regressed to ${(recall * 100).toFixed(1)}%`);
+  assert.ok(precisionVsManual >= 0.8, `manual agreement precision regressed to ${(precisionVsManual * 100).toFixed(1)}%`);
+});
+
+test("distinct mitigation taxonomy does not collapse into older tags", () => {
+  const cronus = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/heroes/cronus.json"), "utf8"));
+  const eris = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/heroes/eris.json"), "utf8"));
+  const hephaestus = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/heroes/hephaestus.json"), "utf8"));
+  const meret = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/heroes/meret.json"), "utf8"));
+  const nuba = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/heroes/nuba.json"), "utf8"));
+
+  const cronusHits = detectForHero(cronus, rules);
+  assert.ok(cronusHits.DEATH_PREVENTION, "Cronus rewind is death prevention");
+  assert.ok(!cronusHits.REVIVE, "Cronus rewind must not become revive");
+
+  const erisHits = detectForHero(eris, rules);
+  assert.ok(erisHits.SELF_DEF_IGNORE, "Eris ignores target DEF");
+  assert.ok(!erisHits.ENEMY_ARMOR_REDUCTION, "DEF ignore must not become Armor reduction");
+
+  const nubaHits = detectForHero(nuba, rules);
+  assert.ok(nubaHits.ENEMY_DAMAGE_DEALT_DOWN, "Nuba reduces enemy damage dealt");
+  assert.ok(!nubaHits.ENEMY_ATTRIBUTE_REDUCTION, "damage dealt down must not become generic attribute reduction");
+
+  assert.ok(detectForHero(hephaestus, rules).ENEMY_DAMAGE_DEALT_DOWN, "Hephaestus reduces enemy damage dealt");
+  assert.ok(detectForHero(meret, rules).DEATH_PREVENTION, "Meret prevents an ally's death");
+});

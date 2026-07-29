@@ -68,7 +68,7 @@
       "confidence": "strong",
       "patterns": [
         "DMG RED",
-        "reduc\\w* DMG taken",
+        "reduc\\w* (?:the )?DMG taken",
         "damage reduction",
         "reduc\\w* damage taken",
         "take\\w* \\d+% less DMG"
@@ -100,10 +100,10 @@
       "scope": "team",
       "confidence": "strong",
       "patterns": [
-        "restore\\w* HP",
+        "restor(?:e|es|ed|ing) HP",
         "heal\\w*",
         "recover\\w* HP",
-        "restore\\w* .*max HP"
+        "restor(?:e|es|ed|ing) .*max HP"
       ]
     },
     "TEAM_SHIELD": {
@@ -197,6 +197,16 @@
         "lose\\w* .*Energy"
       ]
     },
+    "ENEMY_DAMAGE_DEALT_DOWN": {
+      "scope": "enemy",
+      "confidence": "strong",
+      "patterns": [
+        "deal\\w* \\d+% less DMG",
+        "reduc\\w* .*DMG dealt by enem",
+        "decreas\\w* .*DMG dealt by enem",
+        "enemy damage dealt (?:is )?reduced"
+      ]
+    },
     "ENEMY_ATTRIBUTE_REDUCTION": {
       "scope": "enemy",
       "confidence": "medium",
@@ -284,7 +294,7 @@
       "confidence": "strong",
       "patterns": [
         "DMG RED",
-        "reduc\\w* DMG taken",
+        "reduc\\w* (?:the )?DMG taken",
         "damage reduction",
         "take\\w* \\d+% less DMG"
       ]
@@ -312,6 +322,15 @@
         "\\d+ bonus Energy"
       ]
     },
+    "SELF_DEF_IGNORE": {
+      "scope": "self",
+      "confidence": "strong",
+      "patterns": [
+        "ignor\\w* .*DEF",
+        "DEF (?:is )?ignored",
+        "DEF ignore"
+      ]
+    },
     "SELF_ARMOR_UP": {
       "scope": "self",
       "confidence": "medium",
@@ -326,7 +345,7 @@
       "scope": "self",
       "confidence": "medium",
       "patterns": [
-        "restore\\w* HP",
+        "restor(?:e|es|ed|ing) HP",
         "heal\\w*",
         "recover\\w* HP"
       ]
@@ -380,6 +399,17 @@
         "shield"
       ]
     },
+    "DEATH_PREVENTION": {
+      "scope": "any",
+      "confidence": "strong",
+      "patterns": [
+        "about to fall.*rewind",
+        "rewinds? .*optimal state",
+        "prevents? (?:their |his |her )?death",
+        "cannot (?:fall|die)",
+        "surviv\\w* lethal"
+      ]
+    },
     "REVIVE": {
       "scope": "any",
       "confidence": "strong",
@@ -407,7 +437,7 @@
       "patterns": [
         "lifesteal",
         "life steal",
-        "restore\\w* HP",
+        "restor(?:e|es|ed|ing) HP",
         "heal\\w* (?:himself|herself|itself|self)",
         "invincib",
         "recover\\w* HP"

@@ -412,7 +412,6 @@
     "synergies": [
       "ENEMY_CROWD_CONTROL",
       "ENEMY_ENERGY_DRAIN",
-      "ENEMY_ATTRIBUTE_REDUCTION",
       "PLAYSTYLE_AREA_DAMAGE",
       "SELF_ATK_UP",
       "SELF_ENERGY_RESTORE",
@@ -2743,10 +2742,10 @@
       "ENEMY_ATK_SPD_DOWN",
       "ENEMY_CROWD_CONTROL",
       "ENEMY_ENERGY_DRAIN",
-      "REVIVE",
       "ENEMY_ATK_DOWN",
       "SUMMON",
-      "PLAYSTYLE_AREA_DAMAGE"
+      "PLAYSTYLE_AREA_DAMAGE",
+      "DEATH_PREVENTION"
     ],
     "coreMechanic": {
       "summary": "Best support in game -- complete CC, complete support, full-map coverage. Full kit unlocked at base dupe. Delayed ultimate release requires precise timing control.",
@@ -3175,7 +3174,6 @@
       "ENEMY_ATTRIBUTE_REDUCTION",
       "ENEMY_ARMOR_REDUCTION",
       "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_ATK_SPEED",
       "SELF_ENERGY_RESTORE"
     ],
     "baseAttackRate": 0.901,
@@ -3376,8 +3374,7 @@
       "TEAM_HEAL",
       "TEAM_SHIELD",
       "SELF_DAMAGE_REDUCTION",
-      "SELF_HIT_AVOID",
-      "ENEMY_VULNERABILITY"
+      "SELF_HIT_AVOID"
     ],
     "coreMechanic": {
       "summary": "Energy battery with insane damage-boosting buffs. Highest DPS-increasing support at full uptime. Weakness: dies early and the buff window disappears.",
@@ -3896,11 +3893,10 @@
       }
     },
     "synergies": [
-      "ENEMY_ARMOR_REDUCTION",
       "PLAYSTYLE_BASIC_ATTACK_SCALER",
       "SELF_HIT_AVOID",
       "SUMMON",
-      "SELF_HP_UP"
+      "SELF_DEF_IGNORE"
     ],
     "baseAttackRate": 0,
     "bossUltimatesPer90s": 0,
@@ -4630,7 +4626,6 @@
       "SELF_ENERGY_RESTORE",
       "SELF_SHIELD",
       "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_HP_UP",
       "ENEMY_ATK_DOWN"
     ],
     "baseAttackRate": 0.571,
@@ -5935,6 +5930,7 @@
       "TEAM_HEAL",
       "ENEMY_ATK_DOWN",
       "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_DAMAGE_DEALT_DOWN",
       "ENEMY_CROWD_CONTROL",
       "ENEMY_ARMOR_REDUCTION",
       "SUMMON",
@@ -7156,7 +7152,6 @@
       }
     },
     "synergies": [
-      "ENEMY_CROWD_CONTROL",
       "ENEMY_ARMOR_REDUCTION",
       "SELF_ATK_SPEED",
       "SELF_ATK_UP",
@@ -8129,7 +8124,6 @@
     },
     "synergies": [
       "ENEMY_VULNERABILITY",
-      "PLAYSTYLE_BASIC_ATTACK_SCALER",
       "SELF_ATK_UP",
       "SELF_CC_RESISTANCE"
     ],
@@ -8638,9 +8632,7 @@
       "ENEMY_VULNERABILITY",
       "ENEMY_TAUNT",
       "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_DAMAGE_REDUCTION",
       "SELF_SHIELD",
-      "SUMMON",
       "SELF_HIT_AVOID",
       "SELF_SUSTAIN"
     ],
@@ -9264,8 +9256,7 @@
       "SELF_ATK_UP",
       "SELF_SHIELD",
       "PLAYSTYLE_AREA_DAMAGE",
-      "ENEMY_ATK_DOWN",
-      "SUMMON"
+      "ENEMY_ATK_DOWN"
     ],
     "baseAttackRate": 0.874,
     "bossUltimatesPer90s": 4,
@@ -9749,11 +9740,8 @@
       "SELF_ENERGY_RESTORE",
       "SELF_HIT_AVOID",
       "REVIVE",
-      "SELF_HEAL",
       "SELF_SUSTAIN",
-      "TEAM_ENERGY_RESTORE",
-      "SELF_DAMAGE_REDUCTION",
-      "SELF_ATK_UP"
+      "TEAM_ENERGY_RESTORE"
     ],
     "baseAttackRate": 0.706,
     "bossUltimatesPer90s": 4,
@@ -9993,6 +9981,7 @@
       "TEAM_DAMAGE_REDUCTION",
       "TEAM_HEAL",
       "TEAM_SHIELD",
+      "DEATH_PREVENTION",
       "SELF_ENERGY_RESTORE",
       "SELF_DAMAGE_REDUCTION"
     ],
@@ -11519,13 +11508,13 @@
     "synergies": [
       "ENEMY_CROWD_CONTROL",
       "ENEMY_ENERGY_DRAIN",
-      "ENEMY_ATTRIBUTE_REDUCTION",
       "PLAYSTYLE_AREA_DAMAGE",
       "SELF_DAMAGE_REDUCTION",
       "SELF_HEAL",
       "SELF_SHIELD",
       "REVIVE",
-      "ENEMY_ATK_SPD_DOWN"
+      "ENEMY_ATK_SPD_DOWN",
+      "ENEMY_DAMAGE_DEALT_DOWN"
     ],
     "baseAttackRate": 1.908,
     "bossUltimatesPer90s": 6,
@@ -13275,7 +13264,6 @@
       "REVIVE",
       "SELF_HP_UP",
       "PLAYSTYLE_AREA_DAMAGE",
-      "SUMMON",
       "PLAYSTYLE_BASIC_ATTACK_SCALER",
       "SELF_SUSTAIN",
       "SELF_HEAL_EFFECT_UP"
@@ -14668,7 +14656,6 @@
       "SUMMON",
       "ENEMY_CROWD_CONTROL",
       "PLAYSTYLE_AREA_DAMAGE",
-      "SELF_ATK_UP",
       "SELF_SHIELD",
       "ENEMY_ATK_DOWN",
       "SELF_HP_UP",
@@ -15267,7 +15254,6 @@
     },
     "synergies": [
       "ENEMY_CROWD_CONTROL",
-      "ENEMY_ATTRIBUTE_REDUCTION",
       "SELF_ATK_UP",
       "SELF_SHIELD",
       "PLAYSTYLE_AREA_DAMAGE",
