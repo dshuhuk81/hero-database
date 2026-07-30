@@ -8,6 +8,8 @@ const FEATURE_ASSET_BASE = "/features/divine-throne";
 
 const featureAsset = (name: string) => `${FEATURE_ASSET_BASE}/${name}`;
 const factionOrder = ["Starglint", "Hearts", "Clubs", "Diamonds", "Spades"];
+const recommendedHeroOrder = ["zeus", "dionysus", "nyx", "amunra", "bastet", "phoenix", "set"];
+const recommendedHeroRank = new Map(recommendedHeroOrder.map((id, index) => [id, index]));
 
 const overview = [
   { label: "Unlock", value: "Clear Journey 25-3 and raise the hero to the required rank" },
@@ -143,7 +145,13 @@ const firstWaveHeroes = [
   milestones: divineThroneData.heroes.find((entry) => entry.heroId === hero.id)?.milestones ?? [],
   throneAssetId:
     divineThroneData.heroes.find((entry) => entry.heroId === hero.id)?.throneAssetId ?? hero.id,
+  recommended: recommendedHeroRank.has(hero.id),
 })).sort((a, b) => {
+  const recommendationDifference =
+    (recommendedHeroRank.get(a.id) ?? recommendedHeroOrder.length) -
+    (recommendedHeroRank.get(b.id) ?? recommendedHeroOrder.length);
+  if (recommendationDifference) return recommendationDifference;
+
   const factionDifference =
     (factionOrder.indexOf(a.faction) === -1 ? factionOrder.length : factionOrder.indexOf(a.faction)) -
     (factionOrder.indexOf(b.faction) === -1 ? factionOrder.length : factionOrder.indexOf(b.faction));
@@ -316,28 +324,7 @@ const firstWaveHeroes = [
         <p class="guide-card-subheading">
           Steadfast Ether is not a one-time save, and it is not a random chance to block a downgrade. Every piece you add lowers the downgrade risk by a flat 10% of its value, and you can add up to 10 per attempt.
         </p>
-        <div class="divine-upgrade-table-wrap">
-          <table class="divine-upgrade-table">
-            <thead>
-              <tr>
-                <th>Steadfast Ether</th>
-                <th>Lv 39→40 (10% success)</th>
-                <th>Lv 35→36 (50% success)</th>
-                <th>Lv 20→21 (90% success)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {protectionRows.map(([used, risk40, risk36, risk22]) => (
-                <tr>
-                  <td>{used}</td>
-                  <td>{risk40}%</td>
-                  <td>{risk36}%</td>
-                  <td>{risk22}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        
         <div class="guide-callout">
           Even a fully protected attempt can still fail. With 10 Steadfast Ether you cannot lose a level, but a failed roll still consumes the Ether cost and leaves you at your current level. Every upgrade up to Level 20 succeeds, so the protection slot stays disabled until the first risky attempt at 20→21.
         </div>
@@ -353,7 +340,8 @@ const firstWaveHeroes = [
         </p>
         <div class="divine-roster-grid">
           {firstWaveHeroes.map((hero) => (
-            <article class="divine-roster-card">
+            <article class:list={["divine-roster-card", { "divine-roster-card--recommended": hero.recommended }]}>
+              {hero.recommended && <span class="divine-roster-recommended">Recommended</span>}
               <a class="divine-roster-hero" href={`/heroes/${hero.id}`}>
                 <img
                   class="divine-roster-throne"
@@ -573,6 +561,7 @@ const firstWaveHeroes = [
   }
 
   .divine-roster-card {
+    position: relative;
     min-height: 0;
     align-items: stretch;
     gap: var(--space-3);
@@ -581,6 +570,24 @@ const firstWaveHeroes = [
     background:
       linear-gradient(180deg, rgba(255, 208, 74, 0.06), rgba(255, 208, 74, 0) 36%),
       var(--bg-raised);
+  }
+
+  .divine-roster-card--recommended {
+    border-color: rgba(255, 208, 74, 0.42);
+  }
+
+  .divine-roster-recommended {
+    align-self: flex-start;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid rgba(255, 208, 74, 0.42);
+    border-radius: 999px;
+    color: var(--accent-gold);
+    background: rgba(255, 208, 74, 0.1);
+    font-size: 0.65rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    line-height: 1.2;
+    text-transform: uppercase;
   }
 
   .divine-roster-hero {

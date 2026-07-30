@@ -85,7 +85,32 @@
   "activeBugNotes": null,
   "f2pInvestment": null,
   "virtues": null,
-  "virtueSets": null,
+  "virtueSets": [
+    {
+      "label": "Stoic (4) + Fervor (2)",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4",
+        "fervor_1",
+        "fervor_2"
+      ]
+    },
+    {
+      "label": "Stoic (4) + Resolve (2)",
+      "comment": "",
+      "virtues": [
+        "stoic_1",
+        "stoic_2",
+        "stoic_3",
+        "stoic_4",
+        "resolve_1",
+        "resolve_2"
+      ]
+    }
+  ],
   "content-creator": null,
   "strengths": [],
   "weaknesses": [],

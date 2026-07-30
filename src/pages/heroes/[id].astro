@@ -52,6 +52,16 @@ const resolvedVirtueSets = heroVirtueSets.map((vs) => ({
   virtues: vs.virtues
     .map((vid) => (allVirtues as any[]).find((v) => v.id === vid))
     .filter(Boolean),
+})).map((recommendation) => ({
+  ...recommendation,
+  sets: Object.values(
+    recommendation.virtues.reduce((groups: Record<string, { name: string; virtues: any[] }>, virtue: any) => {
+      const setName = virtue.set ?? virtue.name;
+      groups[setName] ??= { name: setName, virtues: [] };
+      groups[setName].virtues.push(virtue);
+      return groups;
+    }, {})
+  ),
 }));
 const hasVirtues = resolvedVirtueSets.length > 0;
 const heroInvest = (allInvest as any)[routeId] ?? null;
@@ -708,77 +718,85 @@ const dotSections = [
       <section class="content-section" id="section-virtues">
         <div class="section-label">{t(locale, "hero", "recommendedVirtues")}</div>
         <div class="virtue-sets-row">
-          {resolvedVirtueSets.map((vs) => {
-            const setBonuses = vs.virtues.length > 0 ? (vs.virtues[0] as any).setBonuses : null;
-            return (
-              <div class="virtue-set-column">
-                <div class="virtue-set-header">
-                  <span class="virtue-set-title">{vs.label}</span>
-                  <span class="virtue-set-count">{vs.virtues.length} {t(locale, "hero", "piece")}</span>
+          {resolvedVirtueSets.map((vs, recommendationIndex) => (
+            <article class="virtue-recommendation">
+              <div class="virtue-recommendation-header">
+                <div>
+                  <span class="virtue-build-kicker">
+                    {resolvedVirtueSets.length > 1
+                      ? `Build ${String(recommendationIndex + 1).padStart(2, "0")}`
+                      : t(locale, "hero", "recommendedVirtues")}
+                  </span>
+                  <h3 class="virtue-set-title">{vs.label}</h3>
                 </div>
-                <div class="virtue-pieces">
-                  {vs.virtues.map((v: any) => {
-                    const virtueStats: { key: string; base: number; bonus: number }[] = v.stats ?? [];
-                    return (
-                      <div class={`virtue-card virtue-rarity-${v.rarity ?? "blue"}`}>
-                        <div class="virtue-card-media-wrap">
-                          {virtueAssetUrl(v.name, v.rarity) ? (
-                            <img
-                              class="virtue-card-media"
-                              src={virtueAssetUrl(v.name, v.rarity)}
-                              alt={`${v.name} virtue asset`}
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          ) : (
+                <span class="virtue-set-count">{vs.virtues.length} {t(locale, "hero", "piece")}</span>
+              </div>
+
+              <div class="virtue-set-groups">
+                {vs.sets.map((setGroup: any, setIndex: number) => {
+                  const setBonuses = setGroup.virtues[0]?.setBonuses;
+                  const activeBonus = setBonuses?.[String(setGroup.virtues.length)];
+                  return (
+                    <>
+                      {setIndex > 0 && <span class="virtue-combo-plus" aria-hidden="true">+</span>}
+                      <section class={`virtue-set-group virtue-set-group--${setGroup.virtues.length}`}>
+                        <div class="virtue-group-header">
+                          <span class="virtue-group-name">{setGroup.name}</span>
+                          <span class="virtue-group-count">{setGroup.virtues.length}×</span>
+                        </div>
+                        <div class="virtue-pieces">
+                          {setGroup.virtues.map((v: any) => {
+                            const virtueStats: { key: string; base: number; bonus: number }[] = v.stats ?? [];
+                            return (
+                              <div class={`virtue-card virtue-rarity-${v.rarity ?? "blue"}`}>
+                                <div class="virtue-card-media-wrap">
+                                  {virtueAssetUrl(v.name, v.rarity) ? (
+                                    <img
+                                      class="virtue-card-media"
+                                      src={virtueAssetUrl(v.name, v.rarity)}
+                                      alt={`${v.name} virtue asset`}
+                                      loading="lazy"
+                                      decoding="async"
+                                    />
+                                  ) : (
                               <div class="virtue-card-media virtue-card-media--missing" aria-hidden="true">
-                              <span>{t(locale, "hero", "noAsset")}</span>
-                            </div>
-                          )}
+                                      <span>{t(locale, "hero", "noAsset")}</span>
+                                    </div>
+                                  )}
+                                </div>
+                                <span class="virtue-name">{v.name}</span>
+                                {virtueStats.length > 0 && (
+                                  <div class="virtue-stats-list">
+                                    {virtueStats.map((s: { key: string; base: number; bonus: number }) => {
+                                      const label = statLabel(s.key);
+                                      if (!s.base && !s.bonus) return <span class="virtue-stat">{label}</span>;
+                                      const val = s.bonus > 0
+                                        ? `${s.base.toLocaleString()} + ${s.bonus.toLocaleString()}`
+                                        : s.base.toLocaleString();
+                                      return <span class="virtue-stat">{label} {val}</span>;
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
-                        <div class="virtue-header">
-                          <span class="virtue-name">{v.name}</span>
-                          {v.type === "singular" && <span class="virtue-singular-badge">{t(locale, "hero", "singular")}</span>}
-                        </div>
-                        {v.bp > 0 && <div class="virtue-bp">BP +{v.bp.toLocaleString()}</div>}
-                        {virtueStats.length > 0 && (
-                          <div class="virtue-stats-list">
-                            {virtueStats.map((s: { key: string; base: number; bonus: number }) => {
-                              const label = statLabel(s.key);
-                              if (!s.base && !s.bonus) return <div class="virtue-stat">{label}</div>;
-                              const val = s.bonus > 0
-                                ? `${s.base.toLocaleString()} + ${s.bonus.toLocaleString()}`
-                                : s.base.toLocaleString();
-                              return <div class="virtue-stat">{label} {val}</div>;
-                            })}
+                        {activeBonus && (
+                          <div class="virtue-bonus-row">
+                            <span class="virtue-bonus-label">{setGroup.virtues.length} {t(locale, "hero", "piece")}</span>
+                            <span class="virtue-bonus-text">{activeBonus}</span>
                           </div>
                         )}
-                      </div>
-                    );
-                  })}
-                </div>
-                {setBonuses && (setBonuses["2"] || setBonuses["4"]) && (
-                  <div class="virtue-bonuses">
-                    {setBonuses["2"] && (
-                      <div class="virtue-bonus-row">
-                        <span class="virtue-bonus-label">2 {t(locale, "hero", "piece")}</span>
-                        <span class="virtue-bonus-text">{setBonuses["2"]}</span>
-                      </div>
-                    )}
-                    {setBonuses["4"] && vs.virtues.length >= 4 && (
-                      <div class="virtue-bonus-row">
-                        <span class="virtue-bonus-label">4 {t(locale, "hero", "piece")}</span>
-                        <span class="virtue-bonus-text">{setBonuses["4"]}</span>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {vs.comment && (
-                  <div class="virtue-comment">{vs.comment}</div>
-                )}
+                      </section>
+                    </>
+                  );
+                })}
               </div>
-            );
-          })}
+              {vs.comment && (
+                <div class="virtue-comment">{vs.comment}</div>
+              )}
+            </article>
+          ))}
         </div>
       </section>
     )}
@@ -1713,61 +1731,126 @@ const dotSections = [
    ============================================= */
 .virtue-sets-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr));
   gap: var(--space-5);
   align-items: start;
 }
-.virtue-set-column {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+.virtue-recommendation {
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 0 0, color-mix(in srgb, var(--faction-a) 10%, transparent), transparent 42%),
+    var(--bg-surface);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.16);
 }
-.virtue-set-header {
+.virtue-recommendation-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: var(--space-2);
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-5) var(--space-4);
   border-bottom: 1px solid var(--border-subtle);
 }
+.virtue-build-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--faction-a);
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 .virtue-set-title {
-  font-size: var(--text-base);
+  margin: 0;
+  font-size: 1.05rem;
   font-weight: var(--weight-bold);
   color: var(--text-primary);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
 }
 .virtue-set-count {
+  flex-shrink: 0;
   font-size: 0.72rem;
   font-weight: var(--weight-semibold);
-  padding: 2px var(--space-2);
+  padding: 4px var(--space-3);
   border-radius: var(--radius-full);
   background: var(--chip-bg);
   color: var(--text-muted);
   letter-spacing: 0.03em;
 }
-.virtue-pieces {
+.virtue-set-groups {
   display: flex;
-  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+.virtue-set-group {
+  min-width: 0;
+  flex: 1 1 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.018);
+}
+.virtue-set-group--4 { flex-grow: 2; }
+.virtue-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.virtue-group-name {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.virtue-group-count {
+  color: var(--text-disabled);
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+}
+.virtue-combo-plus {
+  align-self: center;
+  flex: 0 0 26px;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: var(--weight-bold);
+}
+.virtue-pieces {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
   gap: var(--space-2);
 }
 .virtue-card {
   background: var(--chip-bg);
   border: 1px solid var(--border-faint);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
 }
 .virtue-card-media-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--space-1);
 }
 .virtue-card-media {
-  width: 72px;
-  height: 92px;
+  width: 52px;
+  height: 66px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.28));
+  filter: drop-shadow(0 8px 13px rgba(0,0,0,0.3));
 }
 .virtue-card-media--missing {
   border: 1px dashed var(--border-subtle);
@@ -1784,15 +1867,14 @@ const dotSections = [
   text-transform: uppercase;
   color: var(--text-disabled);
 }
-.virtue-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
 .virtue-name {
-  font-size: 0.9rem;
+  overflow: hidden;
+  width: 100%;
+  font-size: 0.72rem;
   font-weight: var(--weight-bold);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .virtue-rarity-blue   { border-color: var(--rarity-rare-border); }
 .virtue-rarity-purple { border-color: var(--rarity-epic-border); }
@@ -1803,41 +1885,25 @@ const dotSections = [
 .virtue-rarity-gold   .virtue-name { color: #eab308; }
 .virtue-rarity-red    .virtue-name { color: #ef4444; }
 
-.virtue-singular-badge {
-  font-size: 0.68rem;
-  font-weight: var(--weight-semibold);
-  padding: 2px var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--chip-bg);
-  color: var(--text-disabled);
-  letter-spacing: 0.03em;
-}
-.virtue-bp {
-  font-size: 0.78rem;
-  color: var(--text-disabled);
-}
 .virtue-stats-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  min-height: 1em;
 }
 .virtue-stat {
-  font-size: var(--text-sm);
+  font-size: 0.67rem;
   font-weight: var(--weight-semibold);
-  color: var(--text-secondary);
-}
-.virtue-bonuses {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  border-top: 1px solid var(--border-faint);
-  padding-top: var(--space-3);
-  margin-top: 2px;
+  color: var(--text-muted);
+  text-align: center;
 }
 .virtue-bonus-row {
   display: flex;
   gap: var(--space-2);
   align-items: flex-start;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-faint);
 }
 .virtue-bonus-label {
   flex-shrink: 0;
@@ -1856,12 +1922,13 @@ const dotSections = [
   color: var(--text-muted);
 }
 .virtue-comment {
+  margin: 0 var(--space-5) var(--space-5);
   font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--text-muted);
   font-style: italic;
-  border-top: 1px solid var(--border-faint);
-  padding-top: var(--space-2);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-3);
 }
 
 /* =============================================
@@ -1889,7 +1956,7 @@ const dotSections = [
   .showcase-nav { width: 38px; height: 38px; }
   .showcase-nav.prev { left: 12px; }
   .showcase-nav.next { right: 12px; }
-  .virtue-sets-row { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+  .virtue-sets-row { grid-template-columns: 1fr; gap: var(--space-3); }
 }
 
 @media (max-width: 480px) {
@@ -1897,7 +1964,17 @@ const dotSections = [
   .skill-tab { min-width: 70px; padding: var(--space-2) var(--space-3) var(--space-3); }
   .skill-tab-icon { width: 36px; height: 36px; }
   .stat-columns { grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
-  .virtue-sets-row { grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
+  .virtue-sets-row { grid-template-columns: 1fr; gap: var(--space-3); }
+  .virtue-recommendation-header { padding: var(--space-4); align-items: flex-start; }
+  .virtue-set-title { font-size: 0.95rem; }
+  .virtue-set-groups { flex-direction: column; padding: var(--space-4); }
+  .virtue-combo-plus { align-self: center; margin: -2px 0; }
+  .virtue-pieces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .virtue-set-group--4 .virtue-pieces { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .virtue-card { padding: 6px 4px; }
+  .virtue-card-media { width: 42px; height: 54px; }
+  .virtue-name { font-size: 0.62rem; }
+  .virtue-stat { font-size: 0.6rem; }
 }
 </style>
 

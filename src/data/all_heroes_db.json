@@ -118,49 +118,27 @@
     "synergyLinks": [],
     "virtueSets": [
       {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2",
-          "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Fervor",
+        "label": "Fervor (4) + Peace (2)",
         "comment": "",
         "virtues": [
           "fervor_1",
+          "fervor_2",
+          "fervor_3",
+          "fervor_4",
+          "peace_1",
+          "peace_2"
+        ]
+      },
+      {
+        "label": "Oblivion (4) + Fervor (2)",
+        "comment": "",
+        "virtues": [
+          "oblivion_1",
+          "oblivion_2",
+          "oblivion_3",
+          "oblivion_4",
+          "fervor_1",
           "fervor_2"
-        ]
-      },
-      {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
-        ]
-      },
-      {
-        "label": "Gnosis",
-        "comment": "",
-        "virtues": [
-          "gnosis_1",
-          "gnosis_2",
-          "gnosis_3",
-          "gnosis_4"
         ]
       }
     ],
@@ -430,49 +408,15 @@
     "synergyLinks": [],
     "virtueSets": [
       {
-        "label": "Insight",
-        "comment": "",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Desire",
+        "label": "Desire (4) + Clarity (2)",
         "comment": "",
         "virtues": [
           "desire_1",
-          "desire_2"
-        ]
-      },
-      {
-        "label": "Gnosis",
-        "comment": "",
-        "virtues": [
-          "gnosis_1",
-          "gnosis_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
-        ]
-      },
-      {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2",
-          "fervor_3",
-          "fervor_4"
+          "desire_2",
+          "desire_3",
+          "desire_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],
@@ -1723,39 +1667,15 @@
     ],
     "virtueSets": [
       {
-        "label": "Insight",
-        "comment": "",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2"
-        ]
-      },
-      {
-        "label": "Gnosis",
+        "label": "Gnosis (4) + Clarity (2)",
         "comment": "",
         "virtues": [
           "gnosis_1",
-          "gnosis_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],
@@ -1930,39 +1850,27 @@
     },
     "virtueSets": [
       {
-        "label": "Sacrifice",
+        "label": "Gnosis (4) + Zeal (2)",
         "comment": "",
         "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
+          "gnosis_1",
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4",
+          "zeal_1",
+          "zeal_2"
         ]
       },
       {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2"
-        ]
-      },
-      {
-        "label": "Defiance",
-        "comment": "",
-        "virtues": [
-          "defiance_1",
-          "defiance_2"
-        ]
-      },
-      {
-        "label": "Grace",
+        "label": "Grace (4) + Peace (2)",
         "comment": "",
         "virtues": [
           "grace_1",
           "grace_2",
           "grace_3",
-          "grace_4"
+          "grace_4",
+          "peace_1",
+          "peace_2"
         ]
       }
     ],
@@ -2754,39 +2662,27 @@
     },
     "virtueSets": [
       {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2",
-          "fervor_3",
-          "fervor_4"
-        ]
-      },
-      {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2"
-        ]
-      },
-      {
-        "label": "Defiance",
+        "label": "Defiance (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "defiance_1",
           "defiance_2",
           "defiance_3",
-          "defiance_4"
+          "defiance_4",
+          "mercy_1",
+          "mercy_2"
+        ]
+      },
+      {
+        "label": "Sacrifice (4) + Mercy (2)",
+        "comment": "",
+        "virtues": [
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -3390,39 +3286,15 @@
     ],
     "virtueSets": [
       {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2"
-        ]
-      },
-      {
-        "label": "Defiance",
+        "label": "Defiance (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "defiance_1",
-          "defiance_2"
-        ]
-      },
-      {
-        "label": "Grace",
-        "comment": "",
-        "virtues": [
-          "grace_1",
-          "grace_2",
-          "grace_3",
-          "grace_4"
+          "defiance_2",
+          "defiance_3",
+          "defiance_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -4517,7 +4389,20 @@
     "strengths": [],
     "weaknesses": [],
     "detailComps": [],
-    "virtueSets": [],
+    "virtueSets": [
+      {
+        "label": "Defiance (4) + Mercy (2)",
+        "comment": "",
+        "virtues": [
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4",
+          "mercy_1",
+          "mercy_2"
+        ]
+      }
+    ],
     "synergyPartners": []
   },
   "geb": {
@@ -5006,33 +4891,15 @@
     },
     "virtueSets": [
       {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2",
-          "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
-        ]
-      },
-      {
-        "label": "Gnosis",
+        "label": "Gnosis (4) + Clarity (2)",
         "comment": "",
         "virtues": [
           "gnosis_1",
           "gnosis_2",
           "gnosis_3",
-          "gnosis_4"
+          "gnosis_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],
@@ -5539,33 +5406,15 @@
     },
     "virtueSets": [
       {
-        "label": "Sacrifice",
+        "label": "Gnosis (4) + Resolve (2)",
         "comment": "",
         "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Defiance",
-        "comment": "",
-        "virtues": [
-          "defiance_1",
-          "defiance_2",
-          "defiance_3",
-          "defiance_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
+          "gnosis_1",
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4",
+          "resolve_1",
+          "resolve_2"
         ]
       }
     ],
@@ -6219,43 +6068,15 @@
     ],
     "virtueSets": [
       {
-        "label": "Defiance",
+        "label": "Defiance (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "defiance_1",
           "defiance_2",
           "defiance_3",
-          "defiance_4"
-        ]
-      },
-      {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2",
-          "fervor_3",
-          "wildness_4"
-        ]
-      },
-      {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
+          "defiance_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -6441,49 +6262,27 @@
     },
     "virtueSets": [
       {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
-        ]
-      },
-      {
-        "label": "Sacrifice",
+        "label": "Sacrifice (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "sacrifice_1",
-          "sacrifice_2"
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4",
+          "mercy_1",
+          "mercy_2"
         ]
       },
       {
-        "label": "Defiance",
+        "label": "Oblivion (4) + Mercy (2)",
         "comment": "",
         "virtues": [
-          "defiance_1",
-          "defiance_2"
-        ]
-      },
-      {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2",
-          "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "oblivion_1",
+          "oblivion_2",
+          "oblivion_3",
+          "oblivion_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -6986,23 +6785,27 @@
     },
     "virtueSets": [
       {
-        "label": "Desire",
+        "label": "Defiance (4) + Mercy (2)",
         "comment": "",
         "virtues": [
-          "desire_1",
-          "desire_2",
-          "desire_3",
-          "desire_4"
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4",
+          "mercy_1",
+          "mercy_2"
         ]
       },
       {
-        "label": "Wildness",
+        "label": "Sacrifice (4) + Mercy (2)",
         "comment": "",
         "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -7390,43 +7193,15 @@
     ],
     "virtueSets": [
       {
-        "label": "Sacrifice",
+        "label": "Grace (4) + Mercy (2)",
         "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
-        ]
-      },
-      {
-        "label": "Defiance",
-        "comment": "",
-        "virtues": [
-          "defiance_1",
-          "defiance_2",
-          "defiance_3",
-          "defiance_4"
-        ]
-      },
-      {
-        "label": "Grace",
-        "comment": "Improves Radiant Vitality's healing output.",
         "virtues": [
           "grace_1",
           "grace_2",
           "grace_3",
-          "grace_4"
+          "grace_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -8640,23 +8415,11 @@
     "bossUltimatesPer90s": 4,
     "virtueSets": [
       {
-        "label": "Desire",
+        "label": "Resolve (2)",
         "comment": "",
         "virtues": [
-          "desire_1",
-          "desire_2",
-          "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "resolve_1",
+          "resolve_2"
         ]
       }
     ],
@@ -9416,7 +9179,32 @@
     "activeBugNotes": null,
     "f2pInvestment": null,
     "virtues": null,
-    "virtueSets": null,
+    "virtueSets": [
+      {
+        "label": "Stoic (4) + Fervor (2)",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4",
+          "fervor_1",
+          "fervor_2"
+        ]
+      },
+      {
+        "label": "Stoic (4) + Resolve (2)",
+        "comment": "",
+        "virtues": [
+          "stoic_1",
+          "stoic_2",
+          "stoic_3",
+          "stoic_4",
+          "resolve_1",
+          "resolve_2"
+        ]
+      }
+    ],
     "content-creator": null,
     "strengths": [],
     "weaknesses": [],
@@ -9749,43 +9537,15 @@
     "activeBugNotes": "",
     "virtueSets": [
       {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
-        ]
-      },
-      {
-        "label": "Insight",
-        "comment": "",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Grace",
+        "label": "Grace (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "grace_1",
           "grace_2",
           "grace_3",
-          "grace_4"
+          "grace_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -9992,61 +9752,15 @@
     },
     "virtueSets": [
       {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
-        ]
-      },
-      {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2"
-        ]
-      },
-      {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Insight",
-        "comment": "",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Grace",
-        "comment": "",
-        "virtues": [
-          "grace_1",
-          "grace_2",
-          "grace_3",
-          "grace_4"
-        ]
-      },
-      {
-        "label": "Defiance",
+        "label": "Defiance (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "defiance_1",
           "defiance_2",
           "defiance_3",
-          "defiance_4"
+          "defiance_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -10913,39 +10627,15 @@
     },
     "virtueSets": [
       {
-        "label": "Insight",
+        "label": "Gnosis (4) + Clarity (2)",
         "comment": "",
         "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2"
-        ]
-      },
-      {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2",
-          "fervor_3",
-          "fervor_4"
+          "gnosis_1",
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],
@@ -11525,29 +11215,15 @@
     },
     "virtueSets": [
       {
-        "label": "Insight",
+        "label": "Defiance (4) + Peace (2)",
         "comment": "",
         "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2"
+          "defiance_1",
+          "defiance_2",
+          "defiance_3",
+          "defiance_4",
+          "peace_1",
+          "peace_2"
         ]
       }
     ],
@@ -11741,39 +11417,15 @@
     },
     "virtueSets": [
       {
-        "label": "Desire",
+        "label": "Desire (4) + Fervor (2)",
         "comment": "",
         "virtues": [
           "desire_1",
           "desire_2",
           "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
-        ]
-      },
-      {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
+          "desire_4",
           "fervor_1",
           "fervor_2"
-        ]
-      },
-      {
-        "label": "Gnosis",
-        "comment": "",
-        "virtues": [
-          "gnosis_1",
-          "gnosis_2"
         ]
       }
     ],
@@ -11917,49 +11569,15 @@
     "synergyLinks": [],
     "virtueSets": [
       {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2"
-        ]
-      },
-      {
-        "label": "Defiance",
+        "label": "Defiance (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "defiance_1",
-          "defiance_2"
-        ]
-      },
-      {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2",
-          "fervor_3",
-          "fervor_4"
-        ]
-      },
-      {
-        "label": "Gnosis",
-        "comment": "",
-        "virtues": [
-          "gnosis_1",
-          "gnosis_2",
-          "gnosis_3",
-          "gnosis_4"
+          "defiance_2",
+          "defiance_3",
+          "defiance_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -12587,39 +12205,15 @@
     "synergyLinks": [],
     "virtueSets": [
       {
-        "label": "Insight",
-        "comment": "",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Gnosis",
+        "label": "Gnosis (4) + Clarity (2)",
         "comment": "",
         "virtues": [
           "gnosis_1",
-          "gnosis_2"
-        ]
-      },
-      {
-        "label": "Desire",
-        "comment": "",
-        "virtues": [
-          "desire_1",
-          "desire_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],
@@ -13278,23 +12872,15 @@
     "synergyLinks": [],
     "virtueSets": [
       {
-        "label": "Desire",
+        "label": "Sacrifice (4) + Mercy (2)",
         "comment": "",
         "virtues": [
-          "desire_1",
-          "desire_2",
-          "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "sacrifice_1",
+          "sacrifice_2",
+          "sacrifice_3",
+          "sacrifice_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -14665,23 +14251,15 @@
     ],
     "virtueSets": [
       {
-        "label": "Desire",
+        "label": "Desire (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "desire_1",
           "desire_2",
           "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "desire_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -15061,29 +14639,15 @@
     },
     "virtueSets": [
       {
-        "label": "Desire",
+        "label": "Desire (4) + Clarity (2)",
         "comment": "",
         "virtues": [
           "desire_1",
           "desire_2",
           "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2"
+          "desire_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],
@@ -16058,23 +15622,15 @@
     },
     "virtueSets": [
       {
-        "label": "Sacrifice",
+        "label": "Sacrifice (4) + Mercy (2)",
         "comment": "",
         "virtues": [
           "sacrifice_1",
           "sacrifice_2",
           "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Defiance",
-        "comment": "",
-        "virtues": [
-          "defiance_1",
-          "defiance_2",
-          "defiance_3",
-          "defiance_4"
+          "sacrifice_4",
+          "mercy_1",
+          "mercy_2"
         ]
       }
     ],
@@ -16708,43 +16264,15 @@
     },
     "virtueSets": [
       {
-        "label": "Desire",
-        "comment": "4pc ramps ATK passively after 15s - rewards long fights and boss content.",
+        "label": "Desire (4) + Clarity (2)",
+        "comment": "",
         "virtues": [
           "desire_1",
           "desire_2",
           "desire_3",
-          "desire_4"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "4pc stacks +5% ATK every 5s up to 10 stacks - best sustained damage over a long fight.",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
-        ]
-      },
-      {
-        "label": "Insight",
-        "comment": "4pc grants +30% CRIT Rate before first hit, amplifying burst in both stances.",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Gnosis",
-        "comment": "",
-        "virtues": [
-          "gnosis_1",
-          "gnosis_2",
-          "gnosis_3",
-          "gnosis_4"
+          "desire_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],
@@ -17159,43 +16687,15 @@
     "weaknesses": [],
     "virtueSets": [
       {
-        "label": "Grace",
-        "comment": "",
-        "virtues": [
-          "grace_1",
-          "grace_2",
-          "grace_3",
-          "grace_4"
-        ]
-      },
-      {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2",
-          "stoic_3",
-          "stoic_4"
-        ]
-      },
-      {
-        "label": "Defiance",
+        "label": "Defiance (4) + Fervor (2)",
         "comment": "",
         "virtues": [
           "defiance_1",
           "defiance_2",
           "defiance_3",
-          "defiance_4"
+          "defiance_4",
+          "fervor_1",
+          "fervor_2"
         ]
       }
     ],
@@ -17359,49 +16859,27 @@
     "bossUltimatesPer90s": 4,
     "virtueSets": [
       {
-        "label": "Sacrifice",
+        "label": "Gnosis (4) + Zeal (2)",
         "comment": "",
         "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
+          "gnosis_1",
+          "gnosis_2",
+          "gnosis_3",
+          "gnosis_4",
+          "zeal_1",
+          "zeal_2"
         ]
       },
       {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2"
-        ]
-      },
-      {
-        "label": "Defiance",
-        "comment": "",
-        "virtues": [
-          "defiance_1",
-          "defiance_2"
-        ]
-      },
-      {
-        "label": "Insight",
-        "comment": "",
-        "virtues": [
-          "insight_1",
-          "insight_2",
-          "insight_3",
-          "insight_4"
-        ]
-      },
-      {
-        "label": "Grace",
+        "label": "Grace (4) + Peace (2)",
         "comment": "",
         "virtues": [
           "grace_1",
           "grace_2",
           "grace_3",
-          "grace_4"
+          "grace_4",
+          "peace_1",
+          "peace_2"
         ]
       }
     ],
@@ -17569,6 +17047,20 @@
       "commonlyMisunderstood": false
     },
     "newHero": false,
+    "virtueSets": [
+      {
+        "label": "Desire (4) + Clarity (2)",
+        "comment": "",
+        "virtues": [
+          "desire_1",
+          "desire_2",
+          "desire_3",
+          "desire_4",
+          "clarity_1",
+          "clarity_2"
+        ]
+      }
+    ],
     "strengths": [],
     "weaknesses": []
   },
@@ -17719,39 +17211,15 @@
     ],
     "virtueSets": [
       {
-        "label": "Fervor",
-        "comment": "",
-        "virtues": [
-          "fervor_1",
-          "fervor_2",
-          "fervor_3",
-          "fervor_4"
-        ]
-      },
-      {
-        "label": "Desire",
+        "label": "Desire (4) + Clarity (2)",
         "comment": "",
         "virtues": [
           "desire_1",
-          "desire_2"
-        ]
-      },
-      {
-        "label": "Gnosis",
-        "comment": "",
-        "virtues": [
-          "gnosis_1",
-          "gnosis_2"
-        ]
-      },
-      {
-        "label": "Wildness",
-        "comment": "",
-        "virtues": [
-          "wildness_1",
-          "wildness_2",
-          "wildness_3",
-          "wildness_4"
+          "desire_2",
+          "desire_3",
+          "desire_4",
+          "clarity_1",
+          "clarity_2"
         ]
       }
     ],

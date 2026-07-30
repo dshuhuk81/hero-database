@@ -101,43 +101,15 @@
   },
   "virtueSets": [
     {
-      "label": "Desire",
-      "comment": "4pc ramps ATK passively after 15s - rewards long fights and boss content.",
+      "label": "Desire (4) + Clarity (2)",
+      "comment": "",
       "virtues": [
         "desire_1",
         "desire_2",
         "desire_3",
-        "desire_4"
-      ]
-    },
-    {
-      "label": "Wildness",
-      "comment": "4pc stacks +5% ATK every 5s up to 10 stacks - best sustained damage over a long fight.",
-      "virtues": [
-        "wildness_1",
-        "wildness_2",
-        "wildness_3",
-        "wildness_4"
-      ]
-    },
-    {
-      "label": "Insight",
-      "comment": "4pc grants +30% CRIT Rate before first hit, amplifying burst in both stances.",
-      "virtues": [
-        "insight_1",
-        "insight_2",
-        "insight_3",
-        "insight_4"
-      ]
-    },
-    {
-      "label": "Gnosis",
-      "comment": "",
-      "virtues": [
-        "gnosis_1",
-        "gnosis_2",
-        "gnosis_3",
-        "gnosis_4"
+        "desire_4",
+        "clarity_1",
+        "clarity_2"
       ]
     }
   ],
