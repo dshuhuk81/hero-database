@@ -10,8 +10,7 @@ import PageHero from "../components/PageHero.astro";
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const investment = allInvest as Record<string, {
   relicRecommendation: LocalizedString;
-  usedIn: LocalizedString;
-  explanation: LocalizedString;
+  f2pInvestment?: LocalizedString;
 }>;
 const english = (value: LocalizedString) => pickLang(value, "en");
 
@@ -23,49 +22,54 @@ const rows = heroes
 
 <Base
   title="Relic Investment | Motto Immortal Database"
-  description="Compare recommended relic investment levels for Motto Immortal heroes, including where each hero is used and why the investment matters."
+  description="See the recommended relic and hero investment for every rated Motto Immortal hero."
 >
   <PageHero
     id="relic-investment"
     tag="Hero Development"
     headline="Relic Investment"
-    subtitle="Recommended relic levels for every rated hero"
+    subtitle="The investment each hero needs, at a glance"
   />
 
   <main class="ri-page">
     <div class="ri-toolbar">
       <label class="ri-search-wrap">
-        <span class="sr-only">Search heroes or game modes</span>
+        <span class="sr-only">Search heroes</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-        <input id="riSearch" class="ri-search" type="search" placeholder="Search hero or game mode..." autocomplete="off" />
+        <input id="riSearch" class="ri-search" type="search" placeholder="Search hero..." autocomplete="off" />
       </label>
       <p id="riCount" class="ri-count">{rows.length} heroes</p>
     </div>
 
-    <div id="riGrid" class="ri-grid">
+    <div class="ri-list-head" aria-hidden="true">
+      <span>Hero</span>
+      <span>Relic target</span>
+      <span>Hero investment</span>
+    </div>
+
+    <div id="riGrid" class="ri-list">
       {rows.map(({ hero, investment: entry }) => {
         const recommendation = english(entry.relicRecommendation);
-        const usedIn = english(entry.usedIn);
-        const explanation = english(entry.explanation);
+        const heroInvestment = entry.f2pInvestment ? english(entry.f2pInvestment) : "—";
         return (
           <article
-            class="ri-card"
-            data-search={`${hero.name} ${recommendation} ${usedIn}`.toLowerCase()}
+            class="ri-row"
+            data-search={hero.name.toLowerCase()}
           >
-            <a class="ri-card-head" href={`/heroes/${hero.id}`}>
+            <a class="ri-hero" href={`/heroes/${hero.id}`}>
               <span class="ri-avatar" style={`background-image:url(${R2_BASE}/heroes/${hero.id}.webp)`}></span>
               <span class="ri-identity">
                 <strong>{hero.name}</strong>
                 <small>{hero.class} · {hero.faction}</small>
               </span>
-              <span class="ri-level">Relic {recommendation}</span>
             </a>
-            <div class="ri-card-body">
-              <div class="ri-usage">
-                <span>Used in</span>
-                <strong>{usedIn}</strong>
-              </div>
-              <p>{explanation}</p>
+            <div class="ri-value ri-relic">
+              <span class="ri-mobile-label">Relic target</span>
+              <strong>{recommendation}</strong>
+            </div>
+            <div class="ri-value">
+              <span class="ri-mobile-label">Hero investment</span>
+              <strong>{heroInvestment}</strong>
             </div>
           </article>
         );
@@ -77,7 +81,7 @@ const rows = heroes
   <script is:inline>
     (() => {
       const search = document.getElementById("riSearch");
-      const cards = Array.from(document.querySelectorAll(".ri-card"));
+      const cards = Array.from(document.querySelectorAll(".ri-row"));
       const count = document.getElementById("riCount");
       const empty = document.getElementById("riEmpty");
       if (!search) return;
@@ -106,22 +110,39 @@ const rows = heroes
   .ri-search { width: 100%; padding: .85rem 1rem .85rem 2.8rem; color: var(--text-primary); background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font: inherit; outline: none; }
   .ri-search:focus { border-color: var(--accent-gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-gold) 18%, transparent); }
   .ri-count { margin: 0; color: var(--text-muted); font-size: .85rem; white-space: nowrap; }
-  .ri-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-  .ri-card { overflow: hidden; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
-  .ri-card[hidden] { display: none; }
-  .ri-card-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); color: inherit; text-decoration: none; background: var(--chip-bg); border-bottom: 1px solid var(--border-faint); }
-  .ri-card-head:hover .ri-identity strong { color: var(--accent-gold); }
-  .ri-avatar { width: 48px; height: 48px; flex: 0 0 48px; border-radius: 50%; background-size: cover; background-position: center top; border: 1px solid var(--border-subtle); }
+  .ri-list-head, .ri-row { display: grid; grid-template-columns: minmax(260px, 1.2fr) minmax(190px, .8fr) minmax(260px, 1fr); align-items: center; }
+  .ri-list-head { padding: 0 var(--space-4) var(--space-2); color: var(--text-muted); font-size: .67rem; font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+  .ri-list { overflow: hidden; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+  .ri-row { min-height: 76px; border-bottom: 1px solid var(--border-faint); }
+  .ri-row:last-child { border-bottom: 0; }
+  .ri-row[hidden] { display: none; }
+  .ri-row:hover { background: color-mix(in srgb, var(--chip-bg) 65%, transparent); }
+  .ri-hero { display: flex; align-items: center; align-self: stretch; gap: var(--space-3); padding: var(--space-3) var(--space-4); color: inherit; text-decoration: none; }
+  .ri-hero:hover .ri-identity strong { color: var(--accent-gold); }
+  .ri-avatar { width: 50px; height: 50px; flex: 0 0 50px; border-radius: 12px; background-size: cover; background-position: center top; border: 1px solid var(--border-subtle); }
   .ri-identity { min-width: 0; display: flex; flex-direction: column; }
   .ri-identity strong { color: var(--text-primary); font-size: 1rem; transition: color .2s ease; }
   .ri-identity small { color: var(--text-muted); font-size: .72rem; margin-top: .15rem; }
-  .ri-level { margin-left: auto; flex-shrink: 0; max-width: 52%; padding: .42rem .65rem; border-radius: 999px; background: color-mix(in srgb, var(--faction-a) 14%, transparent); border: 1px solid color-mix(in srgb, var(--faction-a) 38%, transparent); color: var(--faction-a); font-weight: var(--weight-black); font-size: .78rem; text-align: center; }
-  .ri-card-body { padding: var(--space-4); }
-  .ri-usage { display: flex; gap: var(--space-3); align-items: baseline; margin-bottom: var(--space-3); }
-  .ri-usage span { flex-shrink: 0; color: var(--text-muted); font-size: .66rem; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
-  .ri-usage strong { color: var(--text-primary); font-size: .84rem; }
-  .ri-card-body p { margin: 0; color: var(--text-secondary); font-size: .82rem; line-height: 1.6; }
+  .ri-value { min-width: 0; padding: var(--space-3) var(--space-4); color: var(--text-primary); font-size: .84rem; line-height: 1.45; }
+  .ri-value strong { font-weight: var(--weight-bold); }
+  .ri-relic strong { display: inline-block; padding: .42rem .7rem; border-radius: 999px; background: color-mix(in srgb, var(--faction-a) 14%, transparent); border: 1px solid color-mix(in srgb, var(--faction-a) 38%, transparent); color: var(--faction-a); font-weight: var(--weight-black); }
+  .ri-mobile-label { display: none; }
   .ri-empty { padding: var(--space-10); text-align: center; color: var(--text-muted); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-  @media (max-width: 760px) { .ri-page { width: min(100% - 1rem, 1180px); padding-top: var(--space-5); } .ri-grid { grid-template-columns: 1fr; } .ri-toolbar { align-items: stretch; flex-direction: column; gap: var(--space-2); } .ri-search-wrap { width: 100%; } .ri-count { align-self: flex-end; } }
+  @media (max-width: 760px) {
+    .ri-page { width: min(100% - 1rem, 1180px); padding-top: var(--space-5); }
+    .ri-toolbar { align-items: stretch; flex-direction: column; gap: var(--space-2); }
+    .ri-search-wrap { width: 100%; }
+    .ri-count { align-self: flex-end; }
+    .ri-list-head { display: none; }
+    .ri-list { display: grid; gap: var(--space-2); overflow: visible; background: transparent; border: 0; border-radius: 0; }
+    .ri-row { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; overflow: hidden; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+    .ri-row:last-child { border-bottom: 1px solid var(--border-subtle); }
+    .ri-hero { grid-column: 1 / -1; padding: var(--space-3); background: var(--chip-bg); border-bottom: 1px solid var(--border-faint); }
+    .ri-avatar { width: 44px; height: 44px; flex-basis: 44px; border-radius: 10px; }
+    .ri-value { display: flex; flex-direction: column; gap: .35rem; padding: var(--space-3); }
+    .ri-value + .ri-value { border-left: 1px solid var(--border-faint); }
+    .ri-mobile-label { display: block; color: var(--text-muted); font-size: .62rem; font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+    .ri-relic strong { align-self: flex-start; padding: .32rem .55rem; }
+  }
 </style>
