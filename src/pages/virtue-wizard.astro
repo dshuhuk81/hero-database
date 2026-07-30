@@ -11,8 +11,8 @@ const SLOTS = [0, 1, 2];
 const gridData = virtueGrids as Record<string, Record<string, string[]>>;
 
 const heroOptions = (heroes as any[])
-  // Epic-rarity heroes cannot equip Virtues, so they never appear in the wizard.
-  .filter((h) => (import.meta.env.DEV || h.release !== false) && h.rarity !== "Epic" && (Array.isArray(h.virtueSets) || gridData[h.id]))
+  // Common heroes cannot equip Virtues, so they never appear in the wizard.
+  .filter((h) => (import.meta.env.DEV || h.release !== false) && h.rarity !== "Common" && (Array.isArray(h.virtueSets) || gridData[h.id]))
   .map((h) => ({
     id: h.id,
     name: h.name,
