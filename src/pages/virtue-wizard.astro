@@ -194,7 +194,7 @@ const heroOptions = (heroes as any[])
   for (const h of heroData) {
     const opt = document.createElement("option");
     opt.value = h.id;
-    opt.textContent = h.name;
+    opt.textContent = h.grids ? h.name : `${h.name} — no grid data (manual)`;
     heroSel.appendChild(opt);
   }
 
