@@ -26,7 +26,7 @@ function formatDate(dateStr: string) {
       subtitle="Who is behind this project and what is the vision?"
     />
  
-    <main class="about-page">
+    <main class="about-page page-content">
       <div class="about-me">
         <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/frieren.jpg" alt="Profile Picture" class="profile-picture" />
         <div class="about-me-text">
@@ -85,8 +85,9 @@ function formatDate(dateStr: string) {
      PAGE LAYOUT
      =============================== */
   .about-page {
-    padding: 80px 24px 120px;
-    max-width: 900px;
+    width: 100%;
+    max-width: var(--page-max-width);
+    padding: var(--space-20) var(--page-gutter) var(--space-24);
     margin-left: auto;
     margin-right: auto;
   }
@@ -288,6 +289,10 @@ function formatDate(dateStr: string) {
   }
 
   @media (max-width: 640px) {
+    .about-page {
+      padding: var(--space-10) var(--space-4) var(--space-20);
+    }
+
     .about-me {
       flex-direction: column;
       text-align: center;
@@ -309,6 +314,13 @@ function formatDate(dateStr: string) {
       margin-top: var(--space-3, 12px);
       justify-content: start;
       opacity: 0.9;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-page {
+      padding-right: var(--space-3);
+      padding-left: var(--space-3);
     }
   }
 

@@ -2,6 +2,9 @@
 
 > For the current product-wide visual direction and the checklist used to build or
 > audit pages, see [STYLE_GUIDELINES.md](./STYLE_GUIDELINES.md).
+>
+> For the staged redesign plan covering the remaining pages, see
+> [SITE_AUDIT_ROADMAP.md](./SITE_AUDIT_ROADMAP.md).
 Phase 0 - READ ONLY Audit
 
 ---

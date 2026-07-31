@@ -116,7 +116,7 @@ const c = {
   gradeGold: { en: "Gold = relics unlock here (Exalted / Exalted+). Violet = Divine tiers, the current ceiling (Divine 5 is the highest anyone has reached so far; higher tiers may follow).", de: "Gold = Hier werden Relikte freigeschaltet (Exalted / Exalted+). Violett = Divine-Stufen, die aktuelle Obergrenze (Divine 5 ist bisher die höchste erreichte Stufe; höhere Stufen können folgen).", es: "Gold = aquí se desbloquean las reliquias (Exalted / Exalted+). Violeta = niveles Divine, el tope actual (Divine 5 es el más alto alcanzado hasta ahora; podrían llegar niveles superiores).", ru: "Gold = здесь открываются реликвии (Exalted / Exalted+). Violet = уровни Divine, текущий потолок (Divine 5 — самый высокий достигнутый уровень; дальше могут появиться новые)." },
 } satisfies Record<string, LocalizedString>;
 ---
-<div id="subtab-mechanics" class="tips-panel is-active" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics">
+<div id="subtab-mechanics" class="tips-panel" role="tabpanel" tabindex="0" aria-labelledby="subtab-btn-mechanics" hidden>
   <main class="eg-main-content">
     <nav class="tips-jumpbar" aria-label={pickLang(c.jumpLabel, locale)}>
       <span class="tips-jump-label">{pickLang(c.jumpLabel, locale)}</span>

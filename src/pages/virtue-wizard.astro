@@ -35,9 +35,33 @@ const heroOptions = (heroes as any[])
   subtitle="Mark the cells your hero has unlocked, pick sets to try on, and the wizard places every piece for you"
 />
 
-<div class="vwz-page">
+<div class="vwz-page page-content">
+  <section class="vwz-intro" aria-labelledby="vwz-intro-title">
+    <div>
+      <span class="section-label">Fit check</span>
+      <h2 id="vwz-intro-title">Find a build that fits your grid</h2>
+      <p>Choose a hero first for an automatic grid, then add the Virtue sets you want to test. The result updates immediately.</p>
+    </div>
+    <ol class="vwz-steps" aria-label="How to use the Virtue Wizard">
+      <li><span>1</span><strong>Choose hero</strong></li>
+      <li><span>2</span><strong>Add sets</strong></li>
+      <li><span>3</span><strong>Check fit</strong></li>
+    </ol>
+  </section>
 
-  <section class="vwz-panel vwz-panel--controls">
+  <div class="vwz-mobile-switch" role="tablist" aria-label="Virtue Wizard workspace">
+    <button class="is-active" id="vwz-setup-tab" type="button" role="tab" aria-selected="true" aria-controls="vwz-setup-panel">Build setup</button>
+    <button id="vwz-preview-tab" type="button" role="tab" aria-selected="false" aria-controls="vwz-preview-panel">Placement preview</button>
+  </div>
+
+  <section class="vwz-panel vwz-panel--controls" id="vwz-setup-panel" role="tabpanel" aria-labelledby="vwz-setup-tab">
+    <div class="vwz-panel-heading">
+      <span class="vwz-step-number">01</span>
+      <div>
+        <span class="section-label">Build setup</span>
+        <h2>Choose your hero and sets</h2>
+      </div>
+    </div>
     <div class="vwz-hero-row">
       <div class="vwz-field">
         <label class="vwz-label" for="vwz-hero">Hero (optional)</label>
@@ -80,7 +104,14 @@ const heroOptions = (heroes as any[])
     <p class="vwz-hint">Pick a hero and Ascension stage to auto-fill their unlocked grid, or click and drag to mark cells yourself. For 4-piece sets you can also try just 2 pieces to grab the 2-piece bonus; the wizard picks whichever 2 fit best.</p>
   </section>
 
-  <section class="vwz-panel">
+  <section class="vwz-panel vwz-panel--preview" id="vwz-preview-panel" role="tabpanel" aria-labelledby="vwz-preview-tab">
+    <div class="vwz-panel-heading">
+      <span class="vwz-step-number">02</span>
+      <div>
+        <span class="section-label">Live result</span>
+        <h2>Placement preview</h2>
+      </div>
+    </div>
     <div class="vwz-grid" id="vwz-grid">
       {Array.from({ length: ROWS }).map((_, r) =>
         Array.from({ length: COLS }).map((_, c) => (
@@ -136,7 +167,24 @@ const heroOptions = (heroes as any[])
   const statusEl = document.getElementById("vwz-status") as HTMLElement;
   const legendEl = document.getElementById("vwz-legend") as HTMLElement;
   const bonusesEl = document.getElementById("vwz-bonuses") as HTMLElement;
+  const wizardPage = document.querySelector<HTMLElement>(".vwz-page");
+  const setupTab = document.getElementById("vwz-setup-tab") as HTMLButtonElement;
+  const previewTab = document.getElementById("vwz-preview-tab") as HTMLButtonElement;
   const cells = Array.from(grid.querySelectorAll<HTMLButtonElement>(".vwz-cell"));
+
+  function setMobileStage(stage: "setup" | "preview") {
+    if (!wizardPage) return;
+    wizardPage.dataset.mobileStage = stage;
+    const previewActive = stage === "preview";
+    setupTab.classList.toggle("is-active", !previewActive);
+    previewTab.classList.toggle("is-active", previewActive);
+    setupTab.setAttribute("aria-selected", String(!previewActive));
+    previewTab.setAttribute("aria-selected", String(previewActive));
+  }
+
+  setupTab?.addEventListener("click", () => setMobileStage("setup"));
+  previewTab?.addEventListener("click", () => setMobileStage("preview"));
+  setMobileStage("setup");
   const setSels: HTMLSelectElement[] = [];
   const cntSels: HTMLSelectElement[] = [];
   for (let i = 0; i < SLOTS; i++) {
@@ -460,10 +508,13 @@ const heroOptions = (heroes as any[])
 
     if (!groups.length) {
       statusEl.textContent = `Open cells: ${open.size} of ${ROWS * COLS}. Pick a set to try it on.`;
+      statusEl.dataset.state = "empty";
     } else if (placements.length === target) {
       statusEl.textContent = `All ${target} pieces fit (${usedCells} cells used, ${open.size - usedCells} open cells left).`;
+      statusEl.dataset.state = "success";
     } else {
       statusEl.textContent = `Only ${placements.length} of ${target} pieces fit with the current open cells.`;
+      statusEl.dataset.state = "warning";
     }
 
     bonusesEl.innerHTML = "";

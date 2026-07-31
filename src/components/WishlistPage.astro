@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "./PageHero.astro";
 import { WISHLIST_DATA, FACTION_META } from "./tips/tipsData";
+import allHeroes from "../data/all_heroes_db.json";
 import { defaultLocale, localizePath, type Locale } from "../i18n/config";
 import { pickLang, type LocalizedString } from "../i18n/helpers";
 import "../styles/wishlist.css";
@@ -19,13 +20,21 @@ const copy = {
   intro: { en: "The Wishlist influences which hero you pull from each faction. These are the recommended F2P picks; finish the left-side heroes first, then swap in the alternatives noted below.", de: "Die Wish List beeinflusst, welchen Helden du aus jeder Fraktion ziehst. Das sind die empfohlenen F2P-Picks: Schließe zuerst die Helden auf der linken Seite ab und wechsle dann zu den unten genannten Alternativen.", es: "La lista influye en qué héroe obtienes de cada facción. Estas son las selecciones F2P recomendadas: completa primero los héroes de la izquierda y luego usa las alternativas indicadas abajo.", ru: "Wish List влияет на то, какого героя вы получите из каждой фракции. Это рекомендуемые F2P-варианты: сначала завершите героев слева, затем замените их указанными ниже альтернативами.", zh: "心愿单会影响你从各阵营抽到的英雄。以下是推荐的零氪选择：优先培养左侧英雄，完成后再替换为下方注明的备选。" },
   moduleSubtitle: { en: "Have a higher chance to get Deities in the Wishlist while summoning Epic Deities.", de: "Du hast eine höhere Chance, Gottheiten aus der Wish List zu bekommen, während du Epic-Gottheiten beschwörst.", es: "Tienes más probabilidad de obtener deidades de la lista al invocar deidades Épicas.", ru: "При призыве Epic-божеств шанс получить божество из Wish List выше.", zh: "召唤史诗神明时，更有机会获得心愿单中的神明。" },
   moduleNote: { en: "Does not change the overall Epic Deity drop rate.", de: "Ändert nicht die Gesamt-Dropchance für Epic-Gottheiten.", es: "No cambia la tasa global de aparición de deidades Épicas.", ru: "Не меняет общий шанс выпадения Epic-божеств.", zh: "不会改变史诗神明的总体获取概率。" },
+  firstPriority: { en: "First priority", de: "Erste Priorität", es: "Primera prioridad", ru: "Первый приоритет", zh: "第一优先" },
+  nextPriority: { en: "Then", de: "Danach", es: "Después", ru: "Затем", zh: "之后" },
 } satisfies Record<string, LocalizedString>;
+
+const heroNames = Object.fromEntries(
+  Object.values(allHeroes as Record<string, { id?: string; name?: string }>)
+    .filter((hero) => hero.id)
+    .map((hero) => [hero.id!, hero.name ?? hero.id!]),
+);
 ---
 
 <Base title={pickLang(copy.metaTitle, locale)} description={pickLang(copy.metaDescription, locale)} locale={locale}>
   <PageHero tag={pickLang(copy.tag, locale)} headline={pickLang(copy.headline, locale)} subtitle={pickLang(copy.subtitle, locale)} locale={locale} />
 
-  <main class="page-wrapper wishlist-page">
+  <main class="page-wrapper wishlist-page page-content">
     <section class="wishlist-intro">
       <span class="wishlist-kicker">{pickLang(copy.tag, locale)}</span>
       <h2>{pickLang(copy.introTitle, locale)}</h2>
@@ -48,10 +57,18 @@ const copy = {
             <section class="wl-faction" style={`--faction-color:${meta.color};--faction-glow:${meta.glow};--faction-dim:${meta.dim};`} aria-label={faction}>
               <div class="wl-divider" aria-hidden="true"><span class="wl-divider-line"></span><div class=""><img src={meta.icon} alt="" class="wl-faction-icon" /></div><span class="wl-divider-line"></span></div>
               <div class="wl-card-row">
-                {heroes.map((hero) => (
-                  <a class="wl-card" href={localizePath(`/heroes/${hero.id}`, locale)} aria-label={hero.id}>
-                    <img class="wl-card-portrait" src={hero.image} alt={hero.id} loading="lazy" decoding="async" />
+                {heroes.map((hero, index) => (
+                  <a
+                    class:list={["wl-card", { "wl-card--priority": index === 0 }]}
+                    href={localizePath(`/heroes/${hero.id}`, locale)}
+                    aria-label={heroNames[hero.id] ?? hero.id}
+                  >
+                    <img class="wl-card-portrait" src={hero.image} alt={heroNames[hero.id] ?? hero.id} loading="lazy" decoding="async" />
                     <span class="wl-card-holo" aria-hidden="true"></span><span class="wl-card-vignette" aria-hidden="true"></span>
+                    <span class="wl-card-info">
+                      <small>{pickLang(index === 0 ? copy.firstPriority : copy.nextPriority, locale)}</small>
+                      <strong>{heroNames[hero.id] ?? hero.id}</strong>
+                    </span>
                   </a>
                 ))}
               </div>

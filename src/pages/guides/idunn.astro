@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_IMAGE_VERSION = "2026-06-08-portrait";
@@ -199,6 +200,7 @@ const virtues = [
   </div>
 
   <div class="guide-body guide-body--idunn">
+    <GuideSectionNav />
     <section class="guide-section">
       <h2 class="guide-section-title">Meet Idunn</h2>
       <div class="guide-card guide-idunn-intro">

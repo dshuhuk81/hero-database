@@ -1,6 +1,9 @@
 ---
 export const prerender = true;
 import Base from "../layouts/Base.astro";
+import ContentState from "../components/ui/ContentState.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import SurfacePanel from "../components/ui/SurfacePanel.astro";
 ---
 
 <Base title="Design System | Motto Immortal">
@@ -19,6 +22,7 @@ import Base from "../layouts/Base.astro";
       <a href="#shadows">Shadows</a>
       <a href="#tiers">Tier Ratings</a>
       <a href="#rarity">Rarity</a>
+      <a href="#experience-primitives">Experience Primitives</a>
       <a href="#css-components">CSS Components</a>
       <a href="#astro-components">Astro Components</a>
     </nav>
@@ -194,6 +198,84 @@ import Base from "../layouts/Base.astro";
       <div class="ds-rarity-demo" style="border-color:var(--rarity-rare-border)">Rare<br/><small>--rarity-rare-border</small></div>
       <div class="ds-rarity-demo" style="border-color:var(--rarity-epic-border)">Epic<br/><small>--rarity-epic-border</small></div>
       <div class="ds-rarity-demo" style="border-color:var(--rarity-legendary-border)">Legendary<br/><small>--rarity-legendary-border</small></div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       EXPERIENCE PRIMITIVES
+       ===================================================== -->
+  <section id="experience-primitives" class="ds-section">
+    <h2 class="ds-section-title">Experience Primitives</h2>
+    <p class="ds-note">Foundations for pages following <code>STYLE_GUIDELINES.md</code>. Review these before migrating individual page families.</p>
+
+    <div class="ds-component-block">
+      <h3 class="ds-component-name">Section Header</h3>
+      <SectionHeader
+        kicker="Hero Database"
+        title="Make the next decision clear"
+        description="A dominant heading, a concise explanation, and an optional action establish hierarchy without decorative clutter."
+      >
+        <a slot="actions" class="action-button action-button--primary" href="#experience-primitives">Primary action</a>
+      </SectionHeader>
+    </div>
+
+    <div class="ds-component-block">
+      <h3 class="ds-component-name">Surface Hierarchy</h3>
+      <div class="ds-primitive-grid">
+        <SurfacePanel>
+          <p class="content-heading-kicker">Raised panel</p>
+          <h3 class="ds-primitive-title">Comparable or reusable content</h3>
+          <p class="ds-note">Use borders and surface contrast instead of heavy shadows.</p>
+        </SurfacePanel>
+        <SurfacePanel variant="quiet">
+          <p class="content-heading-kicker">Quiet panel</p>
+          <h3 class="ds-primitive-title">Supporting information</h3>
+          <p class="ds-note">A lower-emphasis surface for secondary context.</p>
+        </SurfacePanel>
+      </div>
+    </div>
+
+    <div class="ds-component-block">
+      <h3 class="ds-component-name">Toolbar and Tabs</h3>
+      <div class="control-toolbar">
+        <div class="control-toolbar-group control-toolbar-group--grow">
+          <button class="action-button action-button--quiet" type="button">Filter</button>
+          <button class="action-button action-button--quiet" type="button">Sort</button>
+        </div>
+        <p class="control-toolbar-meta">74 results</p>
+      </div>
+      <div class="tab-strip ds-primitive-tabs" role="tablist" aria-label="Primitive tab example">
+        <button class="tab-strip-item is-active" type="button" role="tab" aria-selected="true">Overview</button>
+        <button class="tab-strip-item" type="button" role="tab" aria-selected="false">Build</button>
+        <button class="tab-strip-item" type="button" role="tab" aria-selected="false">Teams</button>
+      </div>
+    </div>
+
+    <div class="ds-component-block">
+      <h3 class="ds-component-name">Lean Content List</h3>
+      <div class="content-list">
+        <a class="content-list-item" href="#experience-primitives">
+          <span class="content-list-item-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 18h4M4 12h9M4 6h14"/><path d="m16 15 3 3 3-3M19 10v8"/></svg>
+          </span>
+          <span class="content-list-item-copy">
+            <span class="content-list-item-title">Hero rankings</span>
+            <span class="content-list-item-description">Compare heroes without turning every destination into a large card.</span>
+          </span>
+          <span class="content-list-item-action" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="ds-component-block">
+      <h3 class="ds-component-name">Content State</h3>
+      <ContentState
+        title="Nothing to show yet"
+        description="Missing and future data should be stated clearly without creating a misleading empty card grid."
+      >
+        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+        <button slot="actions" class="action-button action-button--quiet" type="button">Secondary action</button>
+      </ContentState>
     </div>
   </section>
 
@@ -381,8 +463,7 @@ import Base from "../layouts/Base.astro";
           <code>tag?: string</code> -- small kicker above headline<br/>
           <code>subtitle?: string</code><br/>
           <code>bgImage?: string</code> -- URL; falls back to purple gradient<br/>
-          <code>id?: string</code> -- used to pick a CSS background from Base<br/>
-          <code>pageUpdate?: &#123; formatted, version &#125;</code>
+          <code>id?: string</code> -- used to pick a CSS background from Base
         </div>
         <div class="ds-astro-note">Banner hero at top of every content page. Import from Base layout pattern.</div>
       </div>
@@ -487,6 +568,28 @@ import Base from "../layouts/Base.astro";
   max-width: 1100px;
   margin: 0 auto;
   padding: 40px 24px 80px;
+}
+
+.ds-primitive-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.ds-primitive-title {
+  margin: 0;
+  color: var(--text-bright);
+  font-size: var(--text-lg);
+}
+
+.ds-primitive-tabs {
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 640px) {
+  .ds-primitive-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Header */

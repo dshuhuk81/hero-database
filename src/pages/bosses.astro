@@ -5,8 +5,6 @@ import { heroes, getHeroById } from "../data/heroes";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import "../styles/components.css";
-import { getPageUpdate } from "../utils/getPageUpdate";
-const pageUpdate = getPageUpdate("bosses");
 
 // Player-friendly mechanic tag labels
 const MECHANIC_LABELS = {
@@ -129,10 +127,9 @@ const bossViews = bosses.bosses.map((boss) => {
   tag="PvE"
   headline="PvE Content"
   subtitle="Boss counters & recommended team comps"
-  pageUpdate={pageUpdate}
 />
 
-<div class="page-wrapper">
+<div class="page-wrapper page-content">
   <div class="content-wrapper">
 
     <nav class="boss-tabs" aria-label="Boss selection">

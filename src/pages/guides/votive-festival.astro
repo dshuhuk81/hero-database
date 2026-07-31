@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import "../../styles/components.css";
 import votiveGameplay from "../../../newData/votivegameplay.png";
 
@@ -180,6 +181,7 @@ const selfSelect = [
 
     <div class="ga-body-bg">
       <div class="guide-body guide-body--arcanum">
+        <GuideSectionNav />
         <section class="guide-section">
           <h2 class="guide-section-title">Quick Read</h2>
           <div class="guide-card">

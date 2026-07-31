@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_IMAGE_VERSION = "2026-06-08-portrait";
@@ -78,9 +79,9 @@ const relic = {
 };
 
 const guideRatings = [
-  { label: "Overall", value: "A+" },
+  { label: "Overall", value: "A" },
   { label: "PvP", value: "S" },
-  { label: "Campaign", value: "A+" },
+  { label: "Campaign", value: "A" },
   { label: "Boss", value: "C" },
 ];
 
@@ -172,6 +173,7 @@ const virtues = [
   </div>
 
   <div class="guide-body guide-body--hades">
+    <GuideSectionNav />
     <section class="guide-section">
       <h2 class="guide-section-title">Meet Hades</h2>
       <div class="guide-card">

@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import allHeroes from "../../data/all_heroes_db.json";
 import eventsData from "../../data/events.json";
 import nephtysData from "../../data/heroes/nephtys.json";
@@ -188,9 +189,9 @@ const kitTruths = [
 ];
 
 const guideRatings = [
-  { label: "PvP", value: "B" },
-  { label: "PvE", value: "C" },
-  { label: "F2P", value: "B" },
+  { label: "PvP", value: "D" },
+  { label: "PvE", value: "D" },
+  { label: "F2P", value: "D" },
   { label: "Late", value: "C" },
 ];
 
@@ -308,6 +309,7 @@ const eventPreviewStages = nephtysEvent?.stages.slice(0, 3).map((stage) => ({
 
   <!-- BODY -->
   <div class="guide-body">
+    <GuideSectionNav />
 
     <!-- QUICK OVERVIEW -->
     <section class="guide-section">

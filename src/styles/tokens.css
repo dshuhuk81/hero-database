@@ -310,6 +310,7 @@
   /* --- Page Layout --- */
   --page-max-width:    1400px;
   --page-gutter:       var(--space-6);       /* horizontal padding on page */
+  --page-content-start: var(--space-10);      /* vertical gap after PageHero */
   --sidebar-width:     48px;                 /* desktop rail width */
   --content-gap:       var(--space-6);       /* gap between major sections */
 }

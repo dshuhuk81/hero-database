@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
 import allHeroes from "../data/all_heroes_db.json";
 import heroRatings from "../data/ratings/hero-ratings.json";
 import { heroes as heroPages } from "../data/heroes/withRatings";
@@ -43,11 +44,11 @@ const schedule: ScheduleEntry[] = [
   { id: "xuannv",       status: "released", order: 16 },
   { id: "nephtys",          status: "released", order: 17 },
   { id: "idunn",     status: "released", order: 18 },
-  { id: "hades",      status: "coming-soon", order: 19, pullQuality: "whales-only" },
+  { id: "hades",      status: "released", order: 19, pullQuality: "whales-only" },
   { id: "audhumla",         status: "coming-soon", order: 20, pullQuality: "unsure"},
   { id: "hebo",         status: "coming-soon", order: 21, pullQuality: "skip" },
-  { id: "heket",         status: "far-future", order: 22, pullQuality: "optional" },
-  { id: "zaojun",         status: "far-future", order: 23, pullQuality: "pull" },
+  { id: "heket",         status: "coming-soon", order: 22, pullQuality: "optional" },
+  { id: "zaojun",         status: "coming-soon", order: 23, pullQuality: "pull" },
   { id: "yaoji",         status: "far-future", order: 24, pullQuality: "pull" },
   { id: "mazu",         status: "far-future", order: 25, pullQuality: "optional" },
   { id: "gaiya",         status: "far-future", order: 26, pullQuality: "whales-only" },
@@ -122,36 +123,35 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
   title="Summon Calendar - Motto Immortal"
   description="Track upcoming hero releases for Motto Immortal. See what heroes are coming soon based on extracted game data."
 >
-  <main class="page-wrap">
+  <PageHero
+    id="summon-calendar"
+    tag="Summoning Tools"
+    headline="Summon Calendar"
+    subtitle="Plan your resources around the most likely upcoming hero releases."
+  />
 
-    <header class="page-header">
-      <div class="header-deco"></div>
-      <div class="header-content">
-        <div class="header-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-            <circle cx="8" cy="16" r="1.5" fill="currentColor"/>
-            <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
-            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="page-title">Summon Calendar</h1>
-          <p class="page-subtitle">Possible upcoming heroes.</p>
-        </div>
+  <main class="page-wrapper page-wrap page-content">
+    <section class="calendar-intro">
+      <div>
+        <span class="section-label">Release forecast</span>
+        <h2>What should you save for next?</h2>
+        <p>The closest releases matter most. Later entries are useful planning signals, but their order can still change.</p>
       </div>
-       
-    </header>
+      <div class="forecast-key" aria-label="Forecast confidence">
+        <span><i class="soon-key"></i> Coming next</span>
+        <span><i class="future-key"></i> More speculative</span>
+      </div>
+    </section>
 
     <!-- COMING SOON SPOTLIGHT -->
     <section class="section">
-      <h2 class="section-title">
-        <span class="section-dot dot-soon"></span>
-        Coming Next
-      </h2>
+      <div class="calendar-section-heading">
+        <div>
+          <span class="section-label">Highest relevance</span>
+          <h2>Coming Next</h2>
+        </div>
+        <span>{comingSoon.length} projected releases</span>
+      </div>
       <div class="spotlight-grid">
         {comingSoon.map((hero, i) => (
           <a href={`/heroes/${hero.id}`} class="spotlight-card">
@@ -189,61 +189,15 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
       </div>
     </section>
 
-    <!-- FAR FUTURE -->
-    {farFuture.length > 0 && (
-      <section class="section">
-        <h2 class="section-title">
-          <span class="section-dot dot-future"></span>
-          Far Future
-        </h2>
-        <div class="spotlight-grid">
-          {farFuture.map((hero) => (
-            <a
-              href={hero.hasDetailPage ? `/heroes/${hero.id}` : undefined}
-              class:list={["spotlight-card", "future-card", { "is-disabled": !hero.hasDetailPage }]}
-              aria-disabled={!hero.hasDetailPage ? "true" : undefined}
-              title={!hero.hasDetailPage ? "No hero detail page yet" : undefined}
-            >
-              <div class="spotlight-order">{hero.order}</div>
-              <div class="spotlight-img-wrap">
-                <img
-                  class="spotlight-img"
-                  src={heroCardImg(hero.id)}
-                  srcset={heroCardSrcset(hero.id)}
-                  sizes={SPOTLIGHT_IMAGE_SIZES}
-                  alt={hero.displayName}
-                  width="360"
-                  height="360"
-                  loading="lazy"
-                  decoding="async"
-                  onerror={`this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')};this.srcset='';this.src='${heroImg(hero.id)}'`}
-                />
-                <div class="spotlight-img-fade"></div>
-              </div>
-              <div class="spotlight-body">
-                <div class="hero-meta-row">
-                  {hero.classIconUrl ? <img src={hero.classIconUrl} alt={hero.heroClass} class="meta-icon" title={hero.heroClass} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.heroClass}>?</span>}
-                  {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="meta-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
-                  {hero.roleIconUrl ? <img src={hero.roleIconUrl} alt={hero.role} class="meta-icon" title={hero.role} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.role}>?</span>}
-                </div>
-                <h3 class="spotlight-name">{hero.displayName}</h3>
-                <p class="hero-role">{hero.role}</p>
-                </div>
-              {hero.pullQuality && (
-                <div class={`pull-badge pull-badge-corner ${hero.pullQuality.className}`}>{hero.pullQuality.label}</div>
-              )}
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
-
     <!-- FULL TIMELINE -->
     <section class="section">
-      <h2 class="section-title">
-        <span class="section-dot dot-all"></span>
-        Full Release Timeline
-      </h2>
+      <div class="calendar-section-heading">
+        <div>
+          <span class="section-label">Complete sequence</span>
+          <h2>Release Timeline</h2>
+        </div>
+        <span>{schedule.length} heroes tracked</span>
+      </div>
       <div class="timeline">
         <!-- released group -->
         <div class="timeline-group-label">
@@ -397,9 +351,78 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
 
 <style>
   .page-wrap {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 32px 20px 80px;
+    width: 100%;
+    max-width: var(--page-max-width);
+    padding: 0 var(--page-gutter) var(--space-20);
+  }
+
+  .calendar-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+  }
+
+  .calendar-intro > div:first-child {
+    max-width: 720px;
+  }
+
+  .calendar-intro h2,
+  .calendar-section-heading h2 {
+    margin: var(--space-2) 0 0;
+    color: var(--text-bright);
+    font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+  }
+
+  .calendar-intro p {
+    margin: var(--space-4) 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-base);
+    line-height: var(--leading-loose);
+  }
+
+  .forecast-key {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+
+  .forecast-key span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .forecast-key i {
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-full);
+  }
+
+  .soon-key {
+    background: var(--accent-gold);
+  }
+
+  .future-key {
+    background: var(--accent-purple);
+  }
+
+  .calendar-section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .calendar-section-heading > span {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
   }
 
   /* ---- Header ---- */
@@ -519,6 +542,26 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
+  }
+
+  .spotlight-grid .spotlight-card:first-child {
+    display: grid;
+    grid-column: span 2;
+    grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.1fr);
+  }
+
+  .spotlight-grid .spotlight-card:first-child .spotlight-img-wrap {
+    min-height: 300px;
+    padding-top: 0;
+  }
+
+  .spotlight-grid .spotlight-card:first-child .spotlight-body {
+    justify-content: center;
+    padding: var(--space-8);
+  }
+
+  .spotlight-grid .spotlight-card:first-child .spotlight-name {
+    font-size: var(--text-3xl);
   }
 
   .spotlight-card {
@@ -901,8 +944,40 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
 
   /* ---- Responsive ---- */
   @media (max-width: 600px) {
+    .calendar-intro {
+      align-items: flex-start;
+      flex-direction: column;
+      margin-bottom: var(--space-10);
+    }
+
+    .forecast-key {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .calendar-section-heading {
+      align-items: flex-start;
+    }
+
     .spotlight-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    .spotlight-grid .spotlight-card:first-child {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(130px, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    .spotlight-grid .spotlight-card:first-child .spotlight-img-wrap {
+      min-height: 220px;
+    }
+
+    .spotlight-grid .spotlight-card:first-child .spotlight-body {
+      padding: var(--space-5);
+    }
+
+    .spotlight-grid .spotlight-card:first-child .spotlight-name {
+      font-size: var(--text-xl);
     }
 
     .timeline-row {
@@ -928,6 +1003,14 @@ const farFuture = schedule.filter(e => e.status === "far-future").map(resolveEnt
   @media (max-width: 400px) {
     .spotlight-grid {
       grid-template-columns: 1fr;
+    }
+
+    .spotlight-grid .spotlight-card:first-child {
+      grid-template-columns: 1fr;
+    }
+
+    .spotlight-grid .spotlight-card:first-child .spotlight-img-wrap {
+      min-height: 240px;
     }
   }
 </style>

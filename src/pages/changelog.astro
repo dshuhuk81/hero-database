@@ -27,7 +27,7 @@ function formatDate(dateStr: string) {
       subtitle="All recent changes & fixes"
     />
 
-    <main class="changelog-page">
+    <main class="changelog-page page-content">
 
       <div class="timeline-container">
         {changelogEntries.map((entry, index) => (
@@ -73,8 +73,9 @@ function formatDate(dateStr: string) {
      PAGE LAYOUT
      =============================== */
   .changelog-page {
-    padding: 80px 24px 120px;
-    max-width: 900px;
+    width: 100%;
+    max-width: var(--page-max-width);
+    padding: var(--space-20) var(--page-gutter) var(--space-24);
     margin-left: auto;
     margin-right: auto;
   }
@@ -263,7 +264,7 @@ function formatDate(dateStr: string) {
      =============================== */
   @media (max-width: 768px) {
     .changelog-page {
-      padding: 40px 16px 100px;
+      padding: var(--space-10) var(--space-4) var(--space-20);
     }
 
     .page-header h1 {
@@ -295,6 +296,13 @@ function formatDate(dateStr: string) {
 
     .change-item {
       padding: 10px 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .changelog-page {
+      padding-right: var(--space-3);
+      padding-left: var(--space-3);
     }
   }
 </style>

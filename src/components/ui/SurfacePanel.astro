@@ -1,0 +1,36 @@
+---
+interface Props {
+  as?: "div" | "section" | "article" | "aside";
+  variant?: "raised" | "quiet";
+  padding?: "tight" | "default" | "spacious";
+  id?: string;
+  class?: string;
+  labelledby?: string;
+}
+
+const {
+  as = "div",
+  variant = "raised",
+  padding = "default",
+  id,
+  class: className,
+  labelledby,
+} = Astro.props;
+
+const Element = as;
+---
+
+<Element
+  id={id}
+  aria-labelledby={labelledby}
+  class:list={[
+    "surface-panel",
+    variant === "quiet" && "surface-panel--quiet",
+    padding === "tight" && "surface-panel--tight",
+    padding === "spacious" && "surface-panel--spacious",
+    className,
+  ]}
+>
+  <slot />
+</Element>
+

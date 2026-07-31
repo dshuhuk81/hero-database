@@ -5,7 +5,6 @@ import Base from "../../layouts/Base.astro";
 import PageHero from "../PageHero.astro";
 import "../../styles/events.css";
 import "../../styles/components.css";
-import { getPageUpdate } from "../../utils/getPageUpdate";
 import allHeroes from "../../data/all_heroes_db.json";
 import eventsData from "../../data/events.json";
 import { defaultLocale, type Locale } from "../../i18n/config";
@@ -17,7 +16,6 @@ interface Props {
 }
 
 const { locale = defaultLocale } = Astro.props;
-const pageUpdate = getPageUpdate("events");
 const frontLabel = t(locale, "common", "front");
 const backLabel = t(locale, "common", "back");
 
@@ -70,11 +68,10 @@ const campaigns = eventsData.campaigns.map((campaign) => {
   tag={t(locale, "events", "tag")}
   headline={t(locale, "events", "headline")}
   subtitle={t(locale, "events", "subtitle")}
-  pageUpdate={pageUpdate}
   locale={locale}
 />
 
-<div class="page-wrapper">
+<div class="page-wrapper page-content">
   <div class="content-wrapper">
 
     <!-- Campaign slides -->
@@ -182,4 +179,3 @@ const campaigns = eventsData.campaigns.map((campaign) => {
 </div>
 
 </Base>
-

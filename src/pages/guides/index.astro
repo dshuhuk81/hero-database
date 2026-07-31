@@ -51,6 +51,11 @@ const cards = guides
       portrait: guide.heroId ? heroCardImage(guide.heroId, 360) : guide.image ?? "",
     };
   });
+
+const featuredMode = modeCards[0];
+const modeDirectory = modeCards.slice(1);
+const featuredHero = cards[0];
+const heroDirectory = cards.slice(1);
 ---
 
 <Base
@@ -64,58 +69,414 @@ const cards = guides
     subtitle="Deep-dive hero guides and game mode guides for Motto Immortal"
   />
 
-  <div class="page-wrapper">
-    <h2 class="guides-index-section-title">Game Mode Guides</h2>
-    <div class="guides-mode-grid">
-      {modeCards.map((entry) => (
-        <a
-          class:list={["guides-mode-card", { "guides-mode-card--badged": entry.activeBadge }]}
-          href={entry.href}
-        >
-          <div class="guides-mode-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
-          </div>
-          <div class="guides-mode-text">
-            <h3 class="guides-mode-title">{entry.displayLabel}</h3>
-            {entry.description && <p class="guides-mode-hook">{pickLang(entry.description, "en")}</p>}
-          </div>
-          {entry.activeBadge && (
-            <span
-              class="guides-mode-badge"
-              style={entry.activeBadge.color ? `background-color: ${entry.activeBadge.color};` : undefined}
-            >
-              {pickLang(entry.activeBadge.text, "en")}
-            </span>
-          )}
-        </a>
-      ))}
-    </div>
+  <div class="page-wrapper page-content">
+    <header class="guide-directory-intro">
+      <p class="guide-directory-kicker">Choose what you need</p>
+      <h2>Strategies without the filler</h2>
+      <p>Start with a game mode or go directly to a hero. Each guide leads with the recommendation, then explains the decisions behind it.</p>
+    </header>
 
-    <h2 class="guides-index-section-title">Hero Guides</h2>
-    <div class="guides-mode-grid">
-      {cards.map((card, index) => (
-        <a class="guides-mode-card guides-mode-card--hero" href={card.href}>
+    {featuredMode && (
+      <section class="guide-directory-section" aria-labelledby="mode-guides-title">
+        <div class="guide-directory-heading">
+          <div>
+            <p class="guide-directory-kicker">Play better</p>
+            <h2 id="mode-guides-title">Game Mode Guides</h2>
+          </div>
+          <span>{modeCards.length} guides</span>
+        </div>
+
+        <a class="guide-feature guide-feature--mode" href={featuredMode.href}>
+          <div class="guide-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={featuredMode.icon} />
+          </div>
+          <div class="guide-feature-copy">
+            <span class="guide-feature-label">Featured strategy</span>
+            <h3>{featuredMode.displayLabel}</h3>
+            {featuredMode.description && <p>{pickLang(featuredMode.description, "en")}</p>}
+            <span class="guide-feature-cta">Open guide <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <div class="guide-directory-list">
+          {modeDirectory.map((entry) => (
+            <a class="guide-directory-row" href={entry.href}>
+              <span class="guide-directory-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
+              </span>
+              <span class="guide-directory-row-copy">
+                <strong>{entry.displayLabel}</strong>
+                {entry.description && <small>{pickLang(entry.description, "en")}</small>}
+              </span>
+              {entry.activeBadge && (
+                <span
+                  class="guide-directory-badge"
+                  style={entry.activeBadge.color ? `--badge-color: ${entry.activeBadge.color};` : undefined}
+                >
+                  {pickLang(entry.activeBadge.text, "en")}
+                </span>
+              )}
+              <span class="guide-directory-arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {featuredHero && (
+      <section class="guide-directory-section" aria-labelledby="hero-guides-title">
+        <div class="guide-directory-heading">
+          <div>
+            <p class="guide-directory-kicker">Master a hero</p>
+            <h2 id="hero-guides-title">Hero Guides</h2>
+          </div>
+          <span>{cards.length} guides</span>
+        </div>
+
+        <a class="guide-feature guide-feature--hero" href={featuredHero.href}>
           <div
-            class="guides-mode-portrait"
-            style={`background-image: url('${card.portrait}')`}
+            class="guide-feature-portrait"
+            style={`background-image: url('${featuredHero.portrait}')`}
             role="img"
-            aria-label={card.heroName}
-          >
+            aria-label={featuredHero.heroName}
+          ></div>
+          <div class="guide-feature-copy">
+            <span class="guide-feature-label">Featured hero guide</span>
+            <h3>{featuredHero.title}</h3>
+            <p>{featuredHero.hook}</p>
+            <span class="guide-feature-cta">Read guide <span aria-hidden="true">→</span></span>
           </div>
-          <div class="guides-mode-text">
-            <h3 class="guides-mode-title">{card.title}</h3>
-            <p class="guides-mode-hook">{card.hook}</p>
-          </div>
-          {index === 0 && guidesBadge && (
+          {guidesBadge && (
             <span
-              class="guides-mode-badge"
-              style={guidesBadge.color ? `background-color: ${guidesBadge.color};` : undefined}
+              class="guide-directory-badge guide-directory-badge--feature"
+              style={guidesBadge.color ? `--badge-color: ${guidesBadge.color};` : undefined}
             >
               {pickLang(guidesBadge.text, "en")}
             </span>
           )}
         </a>
-      ))}
-    </div>
+
+        <div class="guide-hero-directory">
+          {heroDirectory.map((card) => (
+            <a class="guide-hero-row" href={card.href}>
+              <div
+                class="guide-hero-row-portrait"
+                style={`background-image: url('${card.portrait}')`}
+                role="img"
+                aria-label={card.heroName}
+              ></div>
+              <span>
+                <strong>{card.title}</strong>
+                <small>{card.hook}</small>
+              </span>
+              <span class="guide-directory-arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
   </div>
 </Base>
+
+<style>
+  .guide-directory-intro {
+    max-width: 720px;
+    margin-bottom: var(--space-12);
+  }
+
+  .guide-directory-kicker,
+  .guide-feature-label {
+    margin: 0 0 var(--space-2);
+    color: var(--accent-purple);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  .guide-directory-intro h2,
+  .guide-directory-heading h2 {
+    margin: 0;
+    color: var(--text-bright);
+    font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+  }
+
+  .guide-directory-intro > p:last-child {
+    margin: var(--space-4) 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-lg);
+    line-height: var(--leading-loose);
+  }
+
+  .guide-directory-section + .guide-directory-section {
+    margin-top: var(--space-16);
+  }
+
+  .guide-directory-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .guide-directory-heading > span {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .guide-feature {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(150px, 0.38fr) minmax(0, 1fr);
+    min-height: 260px;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(circle at 16% 10%, var(--accent-purple-dim), transparent 42%),
+      var(--bg-surface);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+
+  .guide-feature:hover {
+    border-color: var(--accent-purple);
+    transform: translateY(-2px);
+  }
+
+  .guide-feature-icon {
+    display: grid;
+    place-items: center;
+    color: var(--accent-purple);
+  }
+
+  .guide-feature-icon svg {
+    width: clamp(88px, 12vw, 140px);
+    height: clamp(88px, 12vw, 140px);
+  }
+
+  .guide-feature-copy {
+    align-self: center;
+    padding: var(--space-8);
+  }
+
+  .guide-feature-copy h3 {
+    margin: 0;
+    color: var(--text-bright);
+    font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+    line-height: var(--leading-tight);
+  }
+
+  .guide-feature-copy p {
+    max-width: 640px;
+    margin: var(--space-3) 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-base);
+    line-height: var(--leading-loose);
+  }
+
+  .guide-feature-cta {
+    display: inline-flex;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    color: var(--accent-purple);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+  }
+
+  .guide-feature-portrait {
+    min-height: 260px;
+    background-position: center 12%;
+    background-size: cover;
+  }
+
+  .guide-directory-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: var(--space-4);
+    border-top: 1px solid var(--border-faint);
+  }
+
+  .guide-directory-row,
+  .guide-hero-row {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 84px;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--border-faint);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .guide-directory-row:nth-child(odd) {
+    border-right: 1px solid var(--border-faint);
+  }
+
+  .guide-directory-row:hover,
+  .guide-hero-row:hover {
+    background: var(--bg-surface);
+  }
+
+  .guide-directory-row-icon {
+    display: grid;
+    flex: 0 0 40px;
+    place-items: center;
+    color: var(--accent-purple);
+  }
+
+  .guide-directory-row-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .guide-directory-row-copy,
+  .guide-hero-row > span:nth-child(2) {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .guide-directory-row strong,
+  .guide-hero-row strong {
+    color: var(--text-primary);
+    font-size: var(--text-base);
+  }
+
+  .guide-directory-row small,
+  .guide-hero-row small {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .guide-directory-badge {
+    flex: 0 0 auto;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid color-mix(in srgb, var(--badge-color, var(--accent-purple)) 45%, transparent);
+    border-radius: var(--radius-full);
+    color: var(--text-bright);
+    background: color-mix(in srgb, var(--badge-color, var(--accent-purple)) 22%, var(--bg-base));
+    font-size: 10px;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .guide-directory-badge--feature {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+  }
+
+  .guide-directory-arrow {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .guide-hero-directory {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--space-5);
+    margin-top: var(--space-4);
+    border-top: 1px solid var(--border-faint);
+  }
+
+  .guide-hero-row-portrait {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    background-color: var(--bg-raised);
+    background-position: center top;
+    background-size: cover;
+  }
+
+  @media (max-width: 900px) {
+    .guide-hero-directory {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .guide-directory-intro {
+      margin-bottom: var(--space-10);
+    }
+
+    .guide-directory-section + .guide-directory-section {
+      margin-top: var(--space-12);
+    }
+
+    .guide-feature {
+      grid-template-columns: 112px minmax(0, 1fr);
+      min-height: 220px;
+    }
+
+    .guide-feature-copy {
+      padding: var(--space-6) var(--space-5);
+    }
+
+    .guide-feature-portrait {
+      min-height: 220px;
+    }
+
+    .guide-directory-list,
+    .guide-hero-directory {
+      grid-template-columns: 1fr;
+    }
+
+    .guide-directory-row:nth-child(odd) {
+      border-right: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .guide-directory-heading {
+      align-items: flex-start;
+    }
+
+    .guide-feature {
+      grid-template-columns: 1fr;
+    }
+
+    .guide-feature--mode .guide-feature-icon {
+      display: none;
+    }
+
+    .guide-feature-copy {
+      padding: var(--space-6);
+    }
+
+    .guide-feature-portrait {
+      min-height: 180px;
+      background-position: center 16%;
+    }
+
+    .guide-feature--hero .guide-feature-copy {
+      padding-top: var(--space-5);
+    }
+
+    .guide-directory-row,
+    .guide-hero-row {
+      min-height: 76px;
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    .guide-directory-badge {
+      display: none;
+    }
+  }
+</style>

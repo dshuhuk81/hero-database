@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import allHeroes from "../../data/all_heroes_db.json";
 import divineThroneData from "../../data/divine-throne.json";
 
@@ -178,6 +179,7 @@ const firstWaveHeroes = [
 
     <div class="divine-throne-body-bg">
   <div class="guide-body guide-body--divine-throne">
+    <GuideSectionNav />
     <section class="guide-section">
       <h2 class="guide-section-title">Quick Read</h2>
       <div class="guide-card divine-overview-card">

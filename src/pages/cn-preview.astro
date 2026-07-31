@@ -34,16 +34,16 @@ const CHANGE_LABEL: Record<string, string> = {
     subtitle="Compare original Chinese skills with the Global build to spot balance differences, data gaps, and likely future changes."
   />
 
-  <main class="page-wrap">
-
-    <div class="disclaimer">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/>
-      </svg>
-      CN data is manually read from the Chinese client. Numbers are language-agnostic; structural and damage-type differences are flagged and may instead be Global data errors. Treat as a forecast, not a guarantee.
+  <main class="page-wrap page-content">
+    <div class="content-heading">
+      <div class="content-heading-copy">
+        <p class="content-heading-kicker">Balance forecast</p>
+        <h2 class="content-heading-title">What could change next</h2>
+        <p class="content-heading-description">CN is the source version of the game. Differences can reveal likely Global balance changes, but should guide decisions rather than guarantee them.</p>
+      </div>
     </div>
 
-    <section class="section">
+    <section class="section cn-overview-panel surface-panel" aria-label="Comparison overview">
       <div class="cn-overview">
         <div class="cn-stat">
           <span class="cn-stat-num">{overview.changedHeroes}</span>
@@ -70,6 +70,13 @@ const CHANGE_LABEL: Record<string, string> = {
       </div>
     </section>
 
+    <div class="disclaimer">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/>
+      </svg>
+      CN data is manually read from the Chinese client. Numbers are language-agnostic; structural and damage-type differences are flagged and may instead be Global data errors. Treat as a forecast, not a guarantee.
+    </div>
+
     {cnHeroes.length === 0 && (
       <section class="section">
         <p class="cn-empty">No CN comparison data yet. Add a <code>cn</code> block to a hero JSON to populate this page.</p>
@@ -77,6 +84,13 @@ const CHANGE_LABEL: Record<string, string> = {
     )}
 
     <section class="section">
+      <div class="cn-list-heading">
+        <div>
+          <p class="content-heading-kicker">Changed heroes</p>
+          <h2>Compare the values</h2>
+        </div>
+        <span>{cnHeroes.length} heroes</span>
+      </div>
       <div class="cn-hero-list">
         {cnHeroes.map((hero) => (
           <article class="cn-hero-card">
@@ -121,11 +135,11 @@ const CHANGE_LABEL: Record<string, string> = {
                   {hero.summary.skills.flatMap((skill: any) =>
                     skill.changedRows.map((row: any) => (
                       <tr>
-                        <td class="cn-cell-skill cn-td-skill">{skill.name}</td>
-                        <td class="cn-cell-value">{row.label}</td>
-                        <td class="cn-cell-global cn-td-global">{formatCnValue(row.global, row.unit)}</td>
-                        <td class="cn-cell-cn cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
-                        <td class="cn-cell-change">
+                        <td class="cn-cell-skill cn-td-skill" data-label="Skill">{skill.name}</td>
+                        <td class="cn-cell-value" data-label="Value">{row.label}</td>
+                        <td class="cn-cell-global cn-td-global" data-label="Global">{formatCnValue(row.global, row.unit)}</td>
+                        <td class="cn-cell-cn cn-td-cn" data-label="CN">{formatCnValue(row.cn, row.unit)}</td>
+                        <td class="cn-cell-change" data-label="Change">
                           <span class={`cn-tag cn-tag-${row.change}`}>{CHANGE_LABEL[row.change] || row.change}</span>
                           {row.movement && (
                             <span class={`cn-move cn-move-${row.movement.direction}`} title={`Global is ${row.movement.label} vs CN`}>
@@ -166,7 +180,7 @@ const CHANGE_LABEL: Record<string, string> = {
 <style>
   .page-wrap {
     width: 100%;
-    max-width: 1080px;
+    max-width: var(--page-max-width);
     margin: 0 auto;
     padding: var(--space-8) var(--page-gutter) var(--space-20);
   }
@@ -178,11 +192,11 @@ const CHANGE_LABEL: Record<string, string> = {
     gap: var(--space-2);
     margin-bottom: var(--space-8);
     padding: var(--space-3) var(--space-4);
-    color: rgba(250, 204, 21, 0.78);
+    color: var(--accent-gold-light);
     font-size: var(--text-xs);
     line-height: var(--leading-normal);
-    background: rgba(250, 204, 21, 0.05);
-    border: 1px solid rgba(250, 204, 21, 0.14);
+    background: var(--accent-gold-dim);
+    border: 1px solid color-mix(in srgb, var(--accent-gold) 24%, transparent);
     border-radius: var(--radius-md);
   }
 
@@ -194,6 +208,13 @@ const CHANGE_LABEL: Record<string, string> = {
   .section {
     margin-bottom: var(--space-8);
   }
+
+  .cn-overview-panel { padding: var(--space-4); }
+  .cn-overview-panel .cn-stat { border: 0; background: transparent; }
+  .cn-list-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+  .cn-list-heading h2 { margin: var(--space-2) 0 0; color: var(--text-bright); font-size: var(--text-2xl); }
+  .cn-list-heading > span { color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; }
+  .cn-hero-card { border-top-color: var(--border-medium); }
 
   .cn-compare-table {
     --cn-table-skill: 16%;
@@ -238,9 +259,28 @@ const CHANGE_LABEL: Record<string, string> = {
       padding: var(--space-5) var(--space-4) var(--space-16);
     }
 
+    .cn-overview-panel { padding: var(--space-3); }
+    .cn-compare-table { min-width: 0; }
+    .cn-compare-table thead { display: none; }
+    .cn-compare-table,
+    .cn-compare-table tbody,
+    .cn-compare-table tr,
+    .cn-compare-table td { display: block; width: 100%; }
+    .cn-compare-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: var(--space-4); border-bottom: 1px solid var(--border-subtle); }
+    .cn-compare-table tr:last-child { border-bottom: 0; }
+    .cn-compare-table td { padding: var(--space-2) 0; border: 0; white-space: normal; }
+    .cn-compare-table td::before { display: block; margin-bottom: var(--space-1); color: var(--text-muted); content: attr(data-label); font-size: var(--text-xs); font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+    .cn-compare-table .cn-cell-skill,
+    .cn-compare-table .cn-cell-value { grid-column: 1 / -1; }
+    .cn-compare-table .cn-cell-change { grid-column: 1 / -1; }
   }
 
   @media (max-width: 520px) {
+    .page-wrap {
+      padding-right: var(--space-3);
+      padding-left: var(--space-3);
+    }
+
     .cn-hero-head {
       align-items: flex-start;
       flex-wrap: wrap;

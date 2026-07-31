@@ -46,7 +46,7 @@ const heroCardSrcset = (id: string) =>
     subtitle="Turn your saved resources into a clear picture of your odds before you pull."
   />
 
-  <main class="page-wrapper sc-page">
+  <main class="page-wrapper sc-page page-content">
     <section class="sc-intro" aria-labelledby="sc-intro-title">
       <div>
         <span class="section-label">Plan your summons</span>
@@ -126,11 +126,14 @@ const heroCardSrcset = (id: string) =>
             </span>
           </div>
 
-          <div class="sc-pity-counters">
-            <div class="sc-pity-heading">
-              <span class="sc-field-label">Current pity</span>
-              <span class="sc-field-help">Draws remaining until the next guaranteed Epic on each banner</span>
-            </div>
+          <details class="sc-pity-counters">
+            <summary class="sc-pity-heading">
+              <span>
+                <span class="sc-field-label">Advanced: current pity</span>
+                <span class="sc-field-help">Add your exact counters for a more accurate forecast</span>
+              </span>
+              <span class="sc-pity-toggle" aria-hidden="true">Adjust</span>
+            </summary>
             <div class="sc-pity-grid">
               <div class="sc-pity-card">
                 <span>
@@ -155,7 +158,7 @@ const heroCardSrcset = (id: string) =>
                 </span>
               </div>
             </div>
-          </div>
+          </details>
         </div>
 
         <div class="sc-field-group">

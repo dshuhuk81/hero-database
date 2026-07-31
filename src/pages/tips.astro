@@ -8,6 +8,7 @@ import TipsMidLate from "../components/tips/TipsMidLate.astro";
 import TipsTeams from "../components/tips/TipsTeams.astro";
 import "../styles/tips.css";
 import { defaultLocale, type Locale } from "../i18n/config";
+import { pickLang, type LocalizedString } from "../i18n/helpers";
 import { t } from "../i18n/ui";
 
 interface Props {
@@ -15,6 +16,75 @@ interface Props {
 }
 
 const { locale = defaultLocale } = Astro.props as Props;
+
+const startCopy = {
+  kicker: {
+    en: "Start here",
+    de: "Hier starten",
+    es: "Empieza aquí",
+    ru: "Начни здесь",
+  },
+  title: {
+    en: "Your F2P start plan",
+    de: "Dein F2P-Startplan",
+    es: "Tu plan inicial F2P",
+    ru: "Твой стартовый F2P-план",
+  },
+  intro: {
+    en: "Progress comes from focus, not from building everything at once. These three decisions give a new account the strongest start.",
+    de: "Fortschritt entsteht durch Fokus, nicht dadurch, alles gleichzeitig auszubauen. Diese drei Entscheidungen geben einem neuen Account den stärksten Start.",
+    es: "El progreso viene de concentrarse, no de mejorar todo a la vez. Estas tres decisiones dan a una cuenta nueva el mejor comienzo.",
+    ru: "Прогресс приходит благодаря фокусу, а не попыткам развивать всё сразу. Эти три решения дадут новому аккаунту лучший старт.",
+  },
+  teamTitle: {
+    en: "Build one team",
+    de: "Baue ein Team",
+    es: "Construye un equipo",
+    ru: "Собери одну команду",
+  },
+  teamBody: {
+    en: "Choose 1–2 damage carries and use the rest of the team to keep them alive, funded and casting.",
+    de: "Wähle 1–2 Schadens-Carrys und nutze den Rest des Teams, um sie am Leben, versorgt und aktiv zu halten.",
+    es: "Elige 1–2 carries de daño y usa el resto del equipo para mantenerlos vivos, con energía y lanzando habilidades.",
+    ru: "Выбери 1–2 основных дамагеров, а остальной командой поддерживай их жизнь, энергию и частое применение навыков.",
+  },
+  unlockTitle: {
+    en: "Push key unlocks",
+    de: "Wichtige Inhalte freischalten",
+    es: "Avanza hasta los desbloqueos clave",
+    ru: "Открывай ключевые режимы",
+  },
+  unlockBody: {
+    en: "Advance Odyssey until you are stuck and complete Torment Rift every week. Account-wide systems matter more than side projects.",
+    de: "Treibe Odyssey voran, bis du festhängst, und schließe Torment Rift jede Woche ab. Accountweite Systeme sind wichtiger als Nebenprojekte.",
+    es: "Avanza en Odyssey hasta atascarte y completa Torment Rift cada semana. Los sistemas de toda la cuenta importan más que los proyectos secundarios.",
+    ru: "Продвигайся в Odyssey до упора и закрывай Torment Rift каждую неделю. Общие усиления аккаунта важнее побочных целей.",
+  },
+  spendTitle: {
+    en: "Spend with purpose",
+    de: "Investiere mit Ziel",
+    es: "Gasta con intención",
+    ru: "Трать ресурсы осознанно",
+  },
+  spendBody: {
+    en: "Use early summons to establish a roster, set the Wish List quickly, then save premium resources for meaningful targets.",
+    de: "Nutze frühe Beschwörungen für dein Roster, stelle die Wish List schnell ein und spare Premium-Ressourcen danach für wichtige Ziele.",
+    es: "Usa las primeras invocaciones para formar tu plantel, configura pronto la Wish List y después guarda los recursos premium para objetivos importantes.",
+    ru: "Ранними призывами собери основу ростера, быстро настрой Wish List, а затем копи премиальные ресурсы на важные цели.",
+  },
+  warning: {
+    en: "The most common early mistake is splitting investment across too many heroes. Finish the core of one team before funding a second.",
+    de: "Der häufigste frühe Fehler ist, Investitionen auf zu viele Helden zu verteilen. Stelle den Kern eines Teams fertig, bevor du ein zweites finanzierst.",
+    es: "El error inicial más común es repartir la inversión entre demasiados héroes. Termina el núcleo de un equipo antes de financiar un segundo.",
+    ru: "Самая частая ошибка в начале — распределять ресурсы между слишком многими героями. Сначала закончи основу одной команды.",
+  },
+  readGuide: {
+    en: "Read the guide",
+    de: "Guide lesen",
+    es: "Leer la guía",
+    ru: "Читать раздел",
+  },
+} satisfies Record<string, LocalizedString>;
 ---
 
 <Base title={t(locale, "tips", "metaTitle")} description={t(locale, "tips", "metaDescription")} locale={locale}>
@@ -24,17 +94,53 @@ const { locale = defaultLocale } = Astro.props as Props;
     subtitle={t(locale, "tips", "subtitle")}
     locale={locale}
   />
-  <div class="page-wrapper tips-page">
-    <div class="tips-meta">
-      <p class="tips-last-updated">{t(locale, "tips", "lastUpdated")}: 2026-06-25</p>
-    </div>
+  <div class="page-wrapper tips-page page-content">
+    <section class="tips-start" aria-labelledby="tips-start-title">
+      <div class="tips-start-heading">
+        <div>
+          <p class="tips-start-kicker">{pickLang(startCopy.kicker, locale)}</p>
+          <h2 id="tips-start-title">{pickLang(startCopy.title, locale)}</h2>
+          <p class="tips-start-intro">{pickLang(startCopy.intro, locale)}</p>
+        </div>
+        <p class="tips-last-updated">{t(locale, "tips", "lastUpdated")}: 2026-06-25</p>
+      </div>
+
+      <div class="tips-start-grid">
+        <a class="tips-start-step" href="#section-first">
+          <span class="tips-start-number">01</span>
+          <span class="tips-start-copy">
+            <strong>{pickLang(startCopy.teamTitle, locale)}</strong>
+            <span>{pickLang(startCopy.teamBody, locale)}</span>
+            <em>{pickLang(startCopy.readGuide, locale)} →</em>
+          </span>
+        </a>
+        <a class="tips-start-step" href="#section-odyssey">
+          <span class="tips-start-number">02</span>
+          <span class="tips-start-copy">
+            <strong>{pickLang(startCopy.unlockTitle, locale)}</strong>
+            <span>{pickLang(startCopy.unlockBody, locale)}</span>
+            <em>{pickLang(startCopy.readGuide, locale)} →</em>
+          </span>
+        </a>
+        <a class="tips-start-step" href="#section-summons">
+          <span class="tips-start-number">03</span>
+          <span class="tips-start-copy">
+            <strong>{pickLang(startCopy.spendTitle, locale)}</strong>
+            <span>{pickLang(startCopy.spendBody, locale)}</span>
+            <em>{pickLang(startCopy.readGuide, locale)} →</em>
+          </span>
+        </a>
+      </div>
+
+      <p class="tips-start-warning">{pickLang(startCopy.warning, locale)}</p>
+    </section>
 
     <div class="tips-content">
       <div class="tips-subnav" role="tablist" aria-label={t(locale, "tips", "headline")}>
-        <button id="subtab-btn-mechanics" class="tips-subnav-btn is-active" data-subtab="mechanics" role="tab" aria-controls="subtab-mechanics" aria-selected="true">{t(locale, "tips", "subnavMechanics")}</button>
-        <button id="subtab-btn-early" class="tips-subnav-btn" data-subtab="early" role="tab" aria-controls="subtab-early" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavEarly")}</button>
+        <button id="subtab-btn-early" class="tips-subnav-btn is-active" data-subtab="early" role="tab" aria-controls="subtab-early" aria-selected="true">{t(locale, "tips", "subnavEarly")}</button>
         <button id="subtab-btn-midlate" class="tips-subnav-btn" data-subtab="midlate" role="tab" aria-controls="subtab-midlate" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavMidLate")}</button>
         <button id="subtab-btn-teams" class="tips-subnav-btn" data-subtab="teams" role="tab" aria-controls="subtab-teams" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavTeams")}</button>
+        <button id="subtab-btn-mechanics" class="tips-subnav-btn" data-subtab="mechanics" role="tab" aria-controls="subtab-mechanics" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavMechanics")}</button>
       </div>
 
       <TipsEarly locale={locale} />

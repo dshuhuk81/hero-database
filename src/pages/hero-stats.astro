@@ -51,34 +51,47 @@ function fmt(value: number, percent: boolean): string {
     subtitle="All heroes, all combat stats - sort any column"
   />
 
-  <div class="page-wrapper">
-    <div class="hstats-toolbar">
-      <input
-        type="search"
-        id="hstatsSearch"
-        class="hstats-search"
-        placeholder="Search hero by name..."
-        aria-label="Search hero by name"
-        autocomplete="off"
-      />
-      <p class="hstats-count" id="hstatsCount">{rows.length} heroes</p>
+  <div class="page-wrapper page-content">
+    <div class="content-heading">
+      <div class="content-heading-copy">
+        <p class="content-heading-kicker">Divine V comparison</p>
+        <h2 class="content-heading-title">Find the statistical leaders</h2>
+        <p class="content-heading-description">Sort any column to compare heroes at the same progression point. On smaller screens, the essential combat stats are shown first.</p>
+      </div>
     </div>
 
-    <div class="hstats-scroll">
+    <div class="hstats-toolbar control-toolbar">
+      <div class="control-toolbar-group control-toolbar-group--grow">
+        <input
+          type="search"
+          id="hstatsSearch"
+          class="hstats-search"
+          placeholder="Search hero by name..."
+          aria-label="Search hero by name"
+          autocomplete="off"
+        />
+      </div>
+      <div class="control-toolbar-group">
+        <button class="hstats-view-toggle action-button action-button--quiet" id="hstatsViewToggle" type="button" aria-pressed="false">All stats</button>
+        <p class="hstats-count control-toolbar-meta" id="hstatsCount">{rows.length} heroes</p>
+      </div>
+    </div>
+
+    <div class="hstats-scroll" id="hstatsScroll">
       <table class="hstats-table" id="hstatsTable">
         <thead>
           <tr>
             <th class="hstats-th hstats-th-hero" data-key="name" data-type="text" scope="col">
               <span>Hero</span><span class="hstats-arrow"></span>
             </th>
-            <th class="hstats-th" data-key="class" data-type="text" scope="col">
+            <th class="hstats-th" data-column="secondary" data-key="class" data-type="text" scope="col">
               <span>Class</span><span class="hstats-arrow"></span>
             </th>
-            <th class="hstats-th" data-key="faction" data-type="text" scope="col">
+            <th class="hstats-th" data-column="secondary" data-key="faction" data-type="text" scope="col">
               <span>Faction</span><span class="hstats-arrow"></span>
             </th>
             {STAT_COLUMNS.map((col) => (
-              <th class="hstats-th hstats-th-num" data-key={col.key} data-type="num" scope="col">
+              <th class="hstats-th hstats-th-num" data-column={["might", "hp", "atk"].includes(col.key) ? "essential" : "secondary"} data-key={col.key} data-type="num" scope="col">
                 <span>{col.label}</span><span class="hstats-arrow"></span>
               </th>
             ))}
@@ -97,12 +110,12 @@ function fmt(value: number, percent: boolean): string {
                   <span class="hstats-name">{hero.name}</span>
                 </a>
               </td>
-              <td class="hstats-td" data-sort={hero.class ?? ""}>{hero.class ?? "-"}</td>
-              <td class="hstats-td" data-sort={hero.faction ?? ""}>{hero.faction ?? "-"}</td>
+              <td class="hstats-td" data-column="secondary" data-sort={hero.class ?? ""}>{hero.class ?? "-"}</td>
+              <td class="hstats-td" data-column="secondary" data-sort={hero.faction ?? ""}>{hero.faction ?? "-"}</td>
               {STAT_COLUMNS.map((col) => {
                 const raw = statVal(hero, col.key);
                 return (
-                  <td class="hstats-td hstats-td-num" data-sort={raw}>
+                  <td class="hstats-td hstats-td-num" data-column={["might", "hp", "atk"].includes(col.key) ? "essential" : "secondary"} data-sort={raw}>
                     {fmt(raw, col.percent)}
                   </td>
                 );
@@ -120,6 +133,8 @@ function fmt(value: number, percent: boolean): string {
       const body = document.getElementById("hstatsBody");
       const search = document.getElementById("hstatsSearch");
       const count = document.getElementById("hstatsCount");
+      const scroll = document.getElementById("hstatsScroll");
+      const viewToggle = document.getElementById("hstatsViewToggle");
       if (!table || !body) return;
 
       const headers = Array.from(table.querySelectorAll("th.hstats-th"));
@@ -167,12 +182,22 @@ function fmt(value: number, percent: boolean): string {
 
         headers.forEach((h) => {
           h.classList.remove("is-asc", "is-desc");
+          h.setAttribute("aria-sort", "none");
         });
         th.classList.add(sortDir === 1 ? "is-asc" : "is-desc");
+        th.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
       }
 
       headers.forEach((th) => {
+        th.setAttribute("tabindex", "0");
+        th.setAttribute("aria-sort", "none");
         th.addEventListener("click", () => sortBy(th));
+        th.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            sortBy(th);
+          }
+        });
       });
 
       function applySearch() {
@@ -192,6 +217,34 @@ function fmt(value: number, percent: boolean): string {
       }
 
       if (search) search.addEventListener("input", applySearch);
+
+      if (viewToggle && scroll) {
+        viewToggle.addEventListener("click", () => {
+          const expanded = scroll.classList.toggle("hstats-advanced");
+          viewToggle.setAttribute("aria-pressed", String(expanded));
+          viewToggle.textContent = expanded ? "Essential stats" : "All stats";
+        });
+      }
     })();
   </script>
 </Base>
+
+<style>
+  .hstats-toolbar { margin-bottom: var(--space-6); }
+  .hstats-view-toggle { display: none; }
+  .hstats-scroll { border-top-color: var(--border-medium); }
+
+  @media (max-width: 900px) {
+    .hstats-view-toggle { display: inline-flex; }
+    .hstats-scroll:not(.hstats-advanced) [data-column="secondary"] { display: none; }
+    .hstats-scroll:not(.hstats-advanced) .hstats-table { min-width: 620px; }
+    .hstats-scroll.hstats-advanced .hstats-table { min-width: 1500px; }
+  }
+
+  @media (max-width: 600px) {
+    .hstats-toolbar .control-toolbar-group { width: 100%; }
+    .hstats-toolbar .control-toolbar-group:last-child { justify-content: space-between; }
+    .hstats-search { max-width: none; }
+    .hstats-scroll:not(.hstats-advanced) .hstats-table { min-width: 560px; }
+  }
+</style>

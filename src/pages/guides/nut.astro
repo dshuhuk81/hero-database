@@ -2,6 +2,7 @@
 export const prerender = true;
 import Base from "../../layouts/Base.astro";
 import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
@@ -228,6 +229,7 @@ const combatPhases = [
 
   <!-- BODY -->
   <div class="guide-body">
+    <GuideSectionNav />
 
     <!-- QUICK OVERVIEW -->
     <section class="guide-section">

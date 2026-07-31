@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  role?: "status" | "alert";
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  role = "status",
+  class: className,
+} = Astro.props;
+
+const hasIcon = Astro.slots.has("icon");
+const hasActions = Astro.slots.has("actions");
+---
+
+<div class:list={["content-state", className]} role={role}>
+  <div class="content-state-inner">
+    {hasIcon && <div class="content-state-icon" aria-hidden="true"><slot name="icon" /></div>}
+    <h2 class="content-state-title">{title}</h2>
+    {description && <p class="content-state-description">{description}</p>}
+    {hasActions && <div class="content-heading-actions"><slot name="actions" /></div>}
+  </div>
+</div>
+
