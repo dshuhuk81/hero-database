@@ -170,7 +170,7 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M3 15.5h18l-2.5 4H6z"/><path d="M7 15.5V9h9v6.5M10 9V4l5 3-5 2z"/><path d="M4 22c1.5-1 3-1 4.5 0s3 1 4.5 0 3-1 4.5 0"/>`,
   },
   {
-  label: "Events",
+  label: "Timed Challenge",
   href: "/events",
   group: "content",
   sidebar: false,

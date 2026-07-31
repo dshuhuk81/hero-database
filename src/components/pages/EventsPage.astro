@@ -7,7 +7,7 @@ import "../../styles/events.css";
 import "../../styles/components.css";
 import allHeroes from "../../data/all_heroes_db.json";
 import eventsData from "../../data/events.json";
-import { defaultLocale, type Locale } from "../../i18n/config";
+import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { t } from "../../i18n/ui";
 
@@ -41,10 +41,6 @@ function getHero(heroId: string) {
     ?? allHeroes[rawId as keyof typeof allHeroes];
 }
 
-function campaignFactionIcon(faction: string) {
-  return `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${String(faction || "").toLowerCase()}.webp`;
-}
-
 const campaigns = eventsData.campaigns.map((campaign) => {
   const campaignHero = getHero(campaign.hero);
 
@@ -53,6 +49,7 @@ const campaigns = eventsData.campaigns.map((campaign) => {
     displayName: pickLang(campaign.name, locale),
     displayDescription: pickLang(campaign.description, locale),
     heroId: campaignHero?.id ?? campaign.hero,
+    heroName: campaignHero?.name ?? campaign.hero,
     stages: campaign.stages.map((stage) => ({
       ...stage,
       displayName: pickLang(stage.name, locale),
@@ -61,6 +58,16 @@ const campaigns = eventsData.campaigns.map((campaign) => {
     })),
   };
 });
+
+const stageCount = campaigns.reduce((total, campaign) => total + campaign.stages.length, 0);
+const copy = {
+  directoryKicker: { en: "Team directory", de: "Team-Verzeichnis", es: "Directorio de equipos", ru: "Каталог команд", zh: "阵容目录" },
+  directoryTitle: { en: "Clear every stage with a proven setup", de: "Bewährte Aufstellungen für jede Stufe", es: "Supera cada etapa con una formación probada", ru: "Проверенные составы для каждого этапа", zh: "使用可靠阵容通关每个关卡" },
+  directoryBody: { en: "Choose the stage you are stuck on and copy the formation. Front and Back rows are separated so positioning remains clear on every screen size.", de: "Wähle die Stufe, an der du festhängst, und übernimm die Formation. Vorder- und Hinterreihe bleiben auf jeder Bildschirmgröße klar getrennt.", es: "Elige la etapa donde estás atascado y copia la formación. Las filas delantera y trasera permanecen claramente separadas en cualquier pantalla.", ru: "Выберите сложный этап и скопируйте расстановку. Передний и задний ряды разделены на экране любого размера.", zh: "选择卡关关卡并复制阵容。前排与后排在任何屏幕尺寸下都清晰分开。" },
+  stages: { en: "stage setups", de: "Stufenaufstellungen", es: "formaciones", ru: "составов", zh: "套关卡阵容" },
+  recommended: { en: "Recommended formation", de: "Empfohlene Formation", es: "Formación recomendada", ru: "Рекомендуемая расстановка", zh: "推荐阵容" },
+  openSlot: { en: "Open slot", de: "Freier Platz", es: "Espacio libre", ru: "Свободное место", zh: "空位" },
+};
 ---
 
 <Base title={t(locale, "events", "metaTitle")} description={t(locale, "events", "metaDescription")} locale={locale}>
@@ -71,111 +78,109 @@ const campaigns = eventsData.campaigns.map((campaign) => {
   locale={locale}
 />
 
-<div class="page-wrapper page-content">
-  <div class="content-wrapper">
+<main class="page-wrapper events-page page-content">
+  <section class="events-intro" aria-labelledby="events-intro-title">
+    <div>
+      <span class="section-label">{pickLang(copy.directoryKicker, locale)}</span>
+      <h2 id="events-intro-title">{pickLang(copy.directoryTitle, locale)}</h2>
+      <p>{pickLang(copy.directoryBody, locale)}</p>
+    </div>
+    <span class="events-count"><strong>{stageCount}</strong> {pickLang(copy.stages, locale)}</span>
+  </section>
 
-    <!-- Campaign slides -->
-    <main class="events-main">
-      {campaigns.map((campaign) => (
-        <div class="event-slide is-active" id={campaign.id}>
-          <h2 class="guides-index-section-title event-section-title">{campaign.displayName}</h2>
-          <!-- STAGES LIST -->
-          <div class="stages-container">
-            {campaign.stages.map((stage) => (
-              <div class="stage-card">
-                <div class="stage-header">
-                  <h3 class="stage-title">{stage.displayName}</h3>
+  <div class="events-main">
+    {campaigns.map((campaign) => (
+      <section class="challenge" id={campaign.id} aria-labelledby={`${campaign.id}-title`}>
+        <header class="challenge-header">
+          <div class="challenge-portrait">
+            <img
+              src={heroCardSrc(campaign.heroId, 360)}
+              srcset={heroCardSrcset(campaign.heroId)}
+              sizes="(max-width: 720px) 112px, 180px"
+              alt={campaign.heroName}
+              width="360"
+              height="360"
+              decoding="async"
+            />
+          </div>
+          <div class="challenge-copy">
+            <span class="section-label">{pickLang(copy.recommended, locale)}</span>
+            <h2 id={`${campaign.id}-title`}>{campaign.displayName}</h2>
+            <p>{campaign.displayDescription}</p>
+          </div>
+          <span class="challenge-stage-count">{campaign.stages.length} {pickLang(copy.stages, locale)}</span>
+        </header>
+
+        <div class="stages-container">
+          {campaign.stages.map((stage) => (
+            <article class="stage-card">
+              <header class="stage-header">
+                <span class="stage-number">{String(stage.id).padStart(2, "0")}</span>
+                <div>
+                  <span>{pickLang(copy.recommended, locale)}</span>
+                  <h3 class="stage-title">{stage.displayName.replace(/^\d+\.\s*/, "")}</h3>
+                </div>
+              </header>
+
+              <div class="formation-board">
+                <div class="formation-group formation-group--front">
+                  <span class="formation-label">{frontLabel}</span>
+                  <div class="formation-slots formation-slots--front">
+                    {stage.frontHeroes.map((hero) => (
+                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
+                        <div class="event-hero-image">
+                          <img
+                            src={heroCardSrc(hero.id, 240)}
+                            srcset={heroCardSrcset(hero.id)}
+                            sizes="(max-width: 480px) 42vw, (max-width: 900px) 30vw, 180px"
+                            alt={hero.name}
+                            loading="lazy"
+                            decoding="async"
+                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                          />
+                        </div>
+                        <strong>{hero.name}</strong>
+                      </a>
+                    ))}
+                    {Array.from({ length: Math.max(0, 2 - stage.frontHeroes.length) }).map(() => (
+                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
+                    ))}
+                  </div>
                 </div>
 
-                <!-- TEAM COMPOSITION -->
-                <div class="formation-grid">
-                  <!-- SINGLE ROW: 2 FRONT + 3 BACK -->
-                  <div class="formation-row full-team">
-                    {/* Front heroes */}
-                    {stage.frontHeroes.map((hero) => (
-                      <a class="hero-card" href={`/heroes/${hero.id}`}>
-                        <div class="position-badge front">{frontLabel}</div>
-                        <div class="hero-card-inner">
-                          <div class="hero-image-wrapper">
-                            <img
-                              src={heroCardSrc(hero.id, 240)}
-                              srcset={heroCardSrcset(hero.id)}
-                              sizes="(max-width: 768px) 20vw, 220px"
-                              alt={hero.name}
-                              class="hero-image"
-                              loading="lazy"
-                              decoding="async"
-                              onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
-                            />
-                          </div>
-                          <div class="hero-info">
-                            <h4 class="hero-name">{hero.name}</h4>
-                            <div class="hero-meta">
-                              <img
-                                src={campaignFactionIcon(hero.faction)}
-                                alt={hero.faction}
-                                class="faction-icon-small"
-                                title={hero.faction}
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </a>
-                    ))}
-                    {/* Fill empty front slots if less than 2 */}
-                    {Array.from({ length: 2 - stage.frontHeroes.length }).map(() => (
-                      <div class="hero-card-slot empty"></div>
-                    ))}
+                <div class="formation-divider" aria-hidden="true"></div>
 
-                    {/* Back heroes */}
+                <div class="formation-group formation-group--back">
+                  <span class="formation-label">{backLabel}</span>
+                  <div class="formation-slots formation-slots--back">
                     {stage.backHeroes.map((hero) => (
-                      <a class="hero-card" href={`/heroes/${hero.id}`}>
-                        <div class="position-badge back">{backLabel}</div>
-                        <div class="hero-card-inner">
-                          <div class="hero-image-wrapper">
-                            <img
-                              src={heroCardSrc(hero.id, 240)}
-                              srcset={heroCardSrcset(hero.id)}
-                              sizes="(max-width: 768px) 20vw, 220px"
-                              alt={hero.name}
-                              class="hero-image"
-                              loading="lazy"
-                              decoding="async"
-                              onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
-                            />
-                          </div>
-                          <div class="hero-info">
-                            <h4 class="hero-name">{hero.name}</h4>
-                            <div class="hero-meta">
-                              <img
-                                src={campaignFactionIcon(hero.faction)}
-                                alt={hero.faction}
-                                class="faction-icon-small"
-                                title={hero.faction}
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </div>
-                          </div>
+                      <a class="event-hero" href={localizePath(`/heroes/${hero.id}`, locale)}>
+                        <div class="event-hero-image">
+                          <img
+                            src={heroCardSrc(hero.id, 240)}
+                            srcset={heroCardSrcset(hero.id)}
+                            sizes="(max-width: 480px) 28vw, (max-width: 900px) 20vw, 180px"
+                            alt={hero.name}
+                            loading="lazy"
+                            decoding="async"
+                            onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
+                          />
                         </div>
+                        <strong>{hero.name}</strong>
                       </a>
                     ))}
-                    {/* Fill empty back slots if less than 3 */}
-                    {Array.from({ length: 3 - stage.backHeroes.length }).map(() => (
-                      <div class="hero-card-slot empty"></div>
+                    {Array.from({ length: Math.max(0, 3 - stage.backHeroes.length) }).map(() => (
+                      <div class="event-hero event-hero--empty"><span>{pickLang(copy.openSlot, locale)}</span></div>
                     ))}
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
         </div>
-      ))}
-    </main>
-
+      </section>
+    ))}
   </div>
-</div>
+</main>
 
 </Base>
