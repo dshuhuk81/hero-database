@@ -39,7 +39,7 @@ and token alignment.
 | 3 | Database pages | Approved and complete | Modernize Totems, Hero Stats, Relic Investment, and CN Preview |
 | 4 | Guides | Approved and complete | Standardize the guides hub, hero guides, and game-mode guides |
 | 5 | Tools | Approved and complete | Align calculators, calendars, Wishlist, and Virtue Wizard |
-| 6 | Large specialist pages | Planned | Carefully simplify Bosses, Events, Delusions Den, and Virtues |
+| 6 | Large specialist pages | In progress | Carefully simplify Bosses, Events, Delusions Den, and Virtues |
 | 7 | Meta pages | Planned | Refresh About, Changelog, Privacy, and Status last |
 
 ## Phase 1: Shared foundations
@@ -261,15 +261,29 @@ Recommended changes:
 
 ### Virtues
 
-`src/pages/virtues.astro` is another major outlier.
+**Status: approved and completed on 31 July 2026.**
 
-Recommended changes:
+Implemented changes:
 
-- Separate the "Learn," "Find a set," and "Database" journeys
-- Avoid placing the entire guide and database in one continuous page
-- Strengthen virtue imagery and rarity language
-- Use shared filters and database cards
-- Consider moving the database into its own route or tab
+- Added one dominant F2P verdict focused on useful 2-piece bonuses
+- Prioritized Fervor II + III, free unequipping, and protecting Epic and
+  Legendary pieces
+- Removed the duplicated rarity overview and repeated Fervor callout
+- Reduced farming guidance to the actionable Blue and Red cube decisions while
+  retaining the pity track and shard formula
+- Replaced the complete star-level table with the essential level-40 upgrade
+  rule
+- Removed low-value Realm Rover facts while retaining unlock requirements,
+  relevant rewards, the efficient Top 20% target, and shop priorities
+- Removed Singular filler pieces and individual BP/base-stat noise from the
+  primary database experience
+- Retained set artwork, rarity, piece names, and the effects players use to
+  make build decisions
+- Added an accessible search that matches set names and bonus effects
+- Improved tab semantics, active states, keyboard focus, content width,
+  typography, spacing, and token usage
+- Verified all 16 set families, search results, no-match handling, tabs, and
+  desktop/mobile layouts without horizontal overflow or browser errors
 
 ### Bosses and Events
 

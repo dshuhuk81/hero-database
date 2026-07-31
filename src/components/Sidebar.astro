@@ -66,6 +66,7 @@ function getLabel(item: NavEntry) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
             {isActive(item.href) && !disabled && <span class="active-pill" />}
           </div>
+          <span class="rail-label">{label}</span>
         </>
       );
 
@@ -93,6 +94,7 @@ function getLabel(item: NavEntry) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
             {isActive(item.href) && !disabled && <span class="active-pill" />}
           </div>
+          <span class="rail-label">{label}</span>
         </>
       );
 
@@ -120,6 +122,7 @@ function getLabel(item: NavEntry) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
             {isActive(item.href) && !disabled && <span class="active-pill" />}
           </div>
+          <span class="rail-label">{label}</span>
         </>
       );
 
@@ -147,6 +150,7 @@ function getLabel(item: NavEntry) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" set:html={getIcon(item)} />
             {isActive(item.href) && !disabled && <span class="active-pill" />}
           </div>
+          <span class="rail-label">{label}</span>
         </>
       );
 
@@ -171,6 +175,7 @@ function getLabel(item: NavEntry) {
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </div>
+      <span class="rail-label">{t(locale, "common", "support")}</span>
     </a>
   </div>
 </aside>
@@ -358,7 +363,7 @@ function getLabel(item: NavEntry) {
     left: 0;
     top: 0;
     bottom: 0;
-    width: 48px;
+    width: var(--sidebar-width);
     background: rgba(5, 5, 8, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -370,12 +375,20 @@ function getLabel(item: NavEntry) {
     padding: 16px 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    transition: width var(--duration-normal) var(--ease-out);
+  }
+
+  .rail:hover,
+  .rail:focus-within {
+    width: 224px;
+    box-shadow: 18px 0 36px rgba(0, 0, 0, 0.28);
   }
 
   .rail-nav {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 2px;
   }
 
@@ -384,14 +397,17 @@ function getLabel(item: NavEntry) {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 36px;
+    justify-content: flex-start;
+    gap: 12px;
+    width: calc(100% - 12px);
     height: 36px;
+    margin-inline: 6px;
+    padding-inline: 8px;
     border-radius: 8px;
     text-decoration: none;
     color: rgba(230, 230, 235, 0.45);
     transition: background 0.15s ease, color 0.15s ease;
-    contain: layout style;
+    overflow: hidden;
   }
 
   .rail-item:hover:not(.active) {
@@ -412,29 +428,22 @@ function getLabel(item: NavEntry) {
     opacity: 0.55;
   }
 
-  /* ─── Tooltip on hover ─── */
-  .rail-item::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: calc(100% + 10px);
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 6px 10px;
-    background: rgba(18, 16, 26, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: #e6e6eb;
-    font-size: 0.75rem;
-    font-weight: 500;
+  .rail-label {
+    min-width: 0;
+    color: currentColor;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
     white-space: nowrap;
-    pointer-events: none;
     opacity: 0;
-    transition: opacity 0.15s ease;
-    z-index: 200;
+    transform: translateX(-4px);
+    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
   }
 
-  .rail-item:hover::after {
+  .rail:hover .rail-label,
+  .rail:focus-within .rail-label {
     opacity: 1;
+    transform: translateX(0);
+    transition-delay: 60ms;
   }
 
   /* ─── Icon (SVG) ─── */
@@ -469,7 +478,7 @@ function getLabel(item: NavEntry) {
 
   /* ─── Section dividers ─── */
   .rail-divider {
-    width: 20px;
+    width: calc(100% - 24px);
     height: 1px;
     background: rgba(255, 255, 255, 0.08);
     margin: 6px auto;
@@ -503,7 +512,7 @@ function getLabel(item: NavEntry) {
   .rail-support-wrap {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 8px;
   }
 
@@ -788,6 +797,13 @@ function getLabel(item: NavEntry) {
     .mobile-bar,
     .more-sheet-backdrop {
       display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rail,
+    .rail-label {
+      transition: none;
     }
   }
 

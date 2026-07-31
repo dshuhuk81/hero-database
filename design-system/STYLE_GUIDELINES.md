@@ -150,6 +150,17 @@ Do not copy raw color values from another page. Add or reuse a semantic token.
 - Do not hide essential information inside accordions without a real density
   problem.
 
+For compact desktop navigation rails:
+
+- Keep the icon rail compact at rest, but reveal all navigation labels together
+  when the rail is hovered or contains keyboard focus.
+- Expand as an overlay so navigation discovery does not shift page content.
+- Keep the expanded region stable under the pointer; do not require users to
+  move through a gap between the rail and its labels.
+- Individual tooltips may supplement status details, but should not be the only
+  way to identify navigation destinations.
+- Preserve visible labels in mobile navigation, where hover is unavailable.
+
 ### 10. Data states are part of the design
 
 Every component should intentionally handle:
@@ -249,4 +260,3 @@ A page fits this system when:
 - Its optional and missing-data states are deliberate.
 - It feels related to the hero detail experience without copying its exact
   layout unnecessarily.
-

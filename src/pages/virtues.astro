@@ -8,31 +8,14 @@ const virtues = allVirtues as any[];
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 
 const bySet: Record<string, any[]> = {};
-const singulars: any[] = [];
 
 for (const v of virtues) {
-  if (v.type === "singular") {
-    singulars.push(v);
-  } else {
+  if (v.type !== "singular") {
     const key = v.set ?? "Unknown";
     if (!bySet[key]) bySet[key] = [];
     bySet[key].push(v);
   }
 }
-
-const STAT_LABELS: Record<string, string> = {
-  hp: "HP", atk: "ATK", armor: "Armor", magicRes: "M-Res",
-  dodgeRate: "Dodge", critRate: "Crit Rate", critDmgBonus: "Crit DMG",
-  critRes: "Crit RES", critDmgRed: "Crit Red", energy: "Energy",
-  cooldownHaste: "Cooldown Haste", atkSpdBonus: "ATK SPD",
-  pDmgBonus: "Phys DMG Bonus", pDmgRed: "Phys DMG Red",
-  mDmgBonus: "Magic DMG Bonus", mDmgRed: "Magic DMG Red",
-  healEff: "Heal Eff", rechargeEff: "Recharge Eff",
-  lifestealEff: "Lifesteal", reflectEff: "Reflect Eff",
-  effectRes: "Effect RES", effectHit: "Effect Hit",
-  controlRes: "Control RES", controlBonus: "Control Bonus",
-  normalSkillPWR: "Normal Skill PWR", ultimatePWR: "Ultimate PWR",
-};
 
 function rarityLabel(r: string) {
   const map: Record<string, string> = {
@@ -76,93 +59,29 @@ function virtueAssetUrl(name: string, rarity?: string) {
     <!-- ── GUIDE SECTION ── -->
     <section class="guide-section">
 
-      <!-- QUICK GLANCE BAR -->
-      <div class="quick-glance">
-        <div class="qg-pill">
-          <svg class="qg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="7" rx="1"/><rect x="18" y="14" width="3" height="3" rx="1"/></svg>
-          <div class="qg-content">
-            <span class="qg-label">Tetris Grid System</span>
-            <span class="qg-value">slots scale with Ascension</span>
-          </div>
+      <div class="virtue-verdict">
+        <div class="virtue-verdict-copy">
+          <span class="section-label">F2P priority</span>
+          <h2>Build useful 2-piece bonuses first</h2>
+          <p>Complete effects matter more than filling every grid cell. Save Epic and Legendary pieces, target Fervor II + III for energy carries, and only chase 4-piece sets when the hero has enough space.</p>
         </div>
-        <div class="qg-divider"></div>
-        <div class="qg-pill">
-          <svg class="qg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-          <div class="qg-content">
-            <span class="qg-label">4th Optimization Axis</span>
-            <span class="qg-value">alongside Skills, Relics, Stats</span>
-          </div>
-        </div>
-        <div class="qg-divider"></div>
-        <div class="qg-pill">
-          <svg class="qg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-          <div class="qg-content">
-            <span class="qg-label">Set Bonuses</span>
-            <span class="qg-value">2-piece and 4-piece thresholds</span>
-          </div>
-        </div>
-        <div class="qg-divider"></div>
-        <div class="qg-pill">
-          <svg class="qg-icon qg-icon--green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <div class="qg-content">
-            <span class="qg-label">Free to Unequip</span>
-            <span class="qg-value">remove from hero anytime</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- RARITY STRIP -->
-      <div class="rarity-strip">
-        <div class="rarity-strip-label">Rarities</div>
-        <div class="rarity-strip-items">
-          <div class="rs-item rs-blue">
-            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/faithI_rare.png`} alt="Common Virtue example" loading="lazy" decoding="async" />
-            <span class="rs-dot"></span>
-            <div class="rs-info">
-              <span class="rs-name">Common</span>
-              <span class="rs-sub">Blue Cube - 300 Gems</span>
-            </div>
-          </div>
-          <svg class="rs-arrow" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0l2 6h6l-5 4 2 6-5-4-5 4 2-6L0 6h6z" opacity="0"/><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-          <div class="rs-item rs-purple">
-            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/faithI_epic.png`} alt="Rare Virtue example" loading="lazy" decoding="async" />
-            <span class="rs-dot"></span>
-            <div class="rs-info">
-              <span class="rs-name">Rare</span>
-              <span class="rs-sub">Purple Cube - via pity</span>
-            </div>
-          </div>
-          <svg class="rs-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-          <div class="rs-item rs-gold">
-            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/sacrificeI_elite.png`} alt="Epic Virtue example" loading="lazy" decoding="async" />
-            <span class="rs-dot"></span>
-            <div class="rs-info">
-              <span class="rs-name">Epic</span>
-              <span class="rs-sub">Gold Cube - via pity</span>
-            </div>
-          </div>
-          <svg class="rs-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-          <div class="rs-item rs-red">
-            <img class="rs-virtue-thumb" src={`${R2_BASE}/images/virtues/defianceI_legendary.png`} alt="Legendary Virtue example" loading="lazy" decoding="async" />
-            <span class="rs-dot"></span>
-            <div class="rs-info">
-              <span class="rs-name">Legendary</span>
-              <span class="rs-sub">Red Cube - 1 per 10 summons</span>
-            </div>
-          </div>
+        <div class="virtue-verdict-rules" aria-label="Essential Virtue rules">
+          <span><strong>2 pieces</strong> first useful breakpoint</span>
+          <span><strong>Free</strong> to unequip anytime</span>
+          <span><strong>Never feed</strong> Epic or Legendary pieces</span>
         </div>
       </div>
 
       <!-- TABS -->
       <div class="gtabs">
-        <div class="gtab-bar">
-          <button class="gtab-btn is-active" data-gtab="farming">Farming</button>
-          <button class="gtab-btn" data-gtab="sets">Sets &amp; Upgrading</button>
-          <button class="gtab-btn" data-gtab="rover">Realm Rover</button>
+        <div class="gtab-bar" role="tablist" aria-label="Virtue guide topics">
+          <button class="gtab-btn is-active" type="button" role="tab" aria-selected="true" aria-controls="gtab-farming" data-gtab="farming">Farming</button>
+          <button class="gtab-btn" type="button" role="tab" aria-selected="false" aria-controls="gtab-sets" data-gtab="sets">Set Rules</button>
+          <button class="gtab-btn" type="button" role="tab" aria-selected="false" aria-controls="gtab-rover" data-gtab="rover">Realm Rover</button>
         </div>
 
         <!-- TAB: FARMING -->
-        <div class="gtab-panel is-active" id="gtab-farming">
+        <div class="gtab-panel is-active" id="gtab-farming" role="tabpanel">
           <div class="farming-layout">
 
             <div class="farming-sources">
@@ -171,28 +90,14 @@ function virtueAssetUrl(name: string, rarity?: string) {
                   <span class="fsource-cube rarity-blue">Blue Cube</span>
                   <span class="fsource-cost">300 Gems</span>
                 </div>
-                <p class="fsource-desc">Purchasable directly. Drops Common, Rare, and Epic pieces. Your primary consistent source.</p>
-              </div>
-              <div class="fsource fsource--purple">
-                <div class="fsource-header">
-                  <span class="fsource-cube rarity-purple">Purple Cube</span>
-                  <span class="fsource-cost">via pity bar</span>
-                </div>
-                <p class="fsource-desc">Unlocked through point progression. Not sold directly.</p>
-              </div>
-              <div class="fsource fsource--gold">
-                <div class="fsource-header">
-                  <span class="fsource-cube rarity-gold">Gold Cube</span>
-                  <span class="fsource-cost">via pity bar</span>
-                </div>
-                <p class="fsource-desc">30% whole Virtue / 70% shard drop. Strong source of Epic gear.</p>
+                <p class="fsource-desc">The repeatable gem purchase and your main source of summon progress. Purple and Gold cubes arrive through its pity track.</p>
               </div>
               <div class="fsource fsource--red">
                 <div class="fsource-header">
                   <span class="fsource-cube rarity-red">Red Cube</span>
                   <span class="fsource-cost">1 per 10 summons</span>
                 </div>
-                <p class="fsource-desc">80% Epic / 20% Legendary drop rate. Guaranteed once per 10 summons.</p>
+                <p class="fsource-desc">Guaranteed every 10 summons, with an 80% Epic and 20% Legendary result.</p>
               </div>
             </div>
 
@@ -250,7 +155,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
         </div>
 
         <!-- TAB: SETS & UPGRADING -->
-        <div class="gtab-panel" id="gtab-sets">
+        <div class="gtab-panel" id="gtab-sets" role="tabpanel">
           <div class="sets-layout">
 
             <div class="set-rules-block">
@@ -303,24 +208,14 @@ function virtueAssetUrl(name: string, rarity?: string) {
             </div>
 
             <div class="upgrade-block">
-              <div class="upg-title">Enhance &amp; Ascend</div>
-              <div class="ascend-table">
-                <div class="at-head">
-                  <span>Stars</span>
-                  <span>Level Cap</span>
-                </div>
-                <div class="at-row"><span class="at-stars">0 stars</span><span class="at-cap">20</span></div>
-                <div class="at-row"><span class="at-stars">1 star</span><span class="at-cap">24</span></div>
-                <div class="at-row"><span class="at-stars">2 stars</span><span class="at-cap">28</span></div>
-                <div class="at-row"><span class="at-stars">3 stars</span><span class="at-cap">32</span></div>
-                <div class="at-row"><span class="at-stars">4 stars</span><span class="at-cap">36</span></div>
-                <div class="at-row at-highlight-row"><span class="at-stars">5 stars (max)</span><span class="at-cap">40</span></div>
-                <div class="at-row at-note-row"><span class="at-stars">+4 levels per star</span><span class="at-cap">Blue cap</span></div>
+              <div class="upg-title">Upgrade only what you will keep</div>
+              <div class="upgrade-summary">
+                <span class="upgrade-summary-value">40</span>
+                <span><strong>Maximum level</strong> at 5 stars. Each star adds four levels above the initial level-20 cap.</span>
               </div>
               <div class="upg-rules">
                 <div class="ur-row ur-good">Enhance with Shards or low-rarity Virtues as material</div>
                 <div class="ur-row ur-bad">Never use Gold or Red Virtues as Enhance material</div>
-                <div class="ur-row ur-good">Virtues can be removed from a hero at any time at no cost</div>
               </div>
             </div>
 
@@ -328,7 +223,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
         </div>
 
         <!-- TAB: REALM ROVER -->
-        <div class="gtab-panel" id="gtab-rover">
+        <div class="gtab-panel" id="gtab-rover" role="tabpanel">
           <div class="rover-layout">
 
             <div class="rover-info">
@@ -340,38 +235,11 @@ function virtueAssetUrl(name: string, rarity?: string) {
               <div class="rover-facts">
                 <div class="rf-item">
                   <span class="rf-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                  </span>
-                  <div class="rf-text">
-                    <span class="rf-label">Season Length</span>
-                    <span class="rf-val">7 days per season</span>
-                  </div>
-                </div>
-                <div class="rf-item">
-                  <span class="rf-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                   </span>
                   <div class="rf-text">
                     <span class="rf-label">Rewards</span>
                     <span class="rf-val">Lost Coins, Virtues, Totem Summon Keys</span>
-                  </div>
-                </div>
-                <div class="rf-item">
-                  <span class="rf-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-                  </span>
-                  <div class="rf-text">
-                    <span class="rf-label">Divisions</span>
-                    <span class="rf-val">Bronze / Silver / Gold / Gem / Mythic</span>
-                  </div>
-                </div>
-                <div class="rf-item">
-                  <span class="rf-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  </span>
-                  <div class="rf-text">
-                    <span class="rf-label">Region Bonus</span>
-                    <span class="rf-val">e.g. Lava Zone = +500 Energy Bonus</span>
                   </div>
                 </div>
               </div>
@@ -391,7 +259,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
                 <div class="lcb-title">Lost Coins Shop</div>
                 <div class="lcb-priority">
                   <span class="lcp-label">Priority 1</span>
-                  <span class="lcp-name">Far 2 / Far 3</span>
+                  <span class="lcp-name">Fervor II + III</span>
                   <span class="lcp-effect">+10% Energy Regen at combat start</span>
                 </div>
                 <div class="lcb-priority lcb-priority--2">
@@ -406,30 +274,24 @@ function virtueAssetUrl(name: string, rarity?: string) {
         </div>
       </div>
 
-      <!-- META TIP CALLOUT -->
-      <div class="meta-tip">
-        <div class="mt-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div class="mt-body">
-          <span class="mt-title">Meta Tip - Fervor 2 / Fervor 3</span>
-          <span class="mt-text">The universal 2-piece pick for energy-dependent carries. +10% Energy Regen at combat start accelerates every ultimate-reliant hero. Buy from Lost Coins shop first, always.</span>
-        </div>
-        <div class="mt-tags">
-          <span class="mt-tag">Energy Carries</span>
-          <span class="mt-tag">2-Piece</span>
-          <span class="mt-tag">Realm Rover</span>
-        </div>
-      </div>
-
     </section>
 
     <!-- ── VIRTUE DATABASE ── -->
     <section class="virtue-db-section">
-      <h2 class="guide-heading">Virtue Database</h2>
-      <p class="guide-text guide-text--muted">
-        This list covers all set-based Virtues. Additional singular stat pieces exist in-game but are not listed here as they serve only as slot fillers with no set bonuses. Hero-specific recommendations are shown on each hero's detail page.
-      </p>
+      <div class="virtue-db-heading">
+        <div>
+          <span class="section-label">Set reference</span>
+          <h2 class="guide-heading">Find the effect you need</h2>
+          <p class="guide-text guide-text--muted">Browse set bonuses here; hero-specific recommendations remain on each hero detail page. Singular stat fillers are intentionally omitted.</p>
+        </div>
+        <span class="virtue-set-count">{Object.keys(bySet).length} sets</span>
+      </div>
+
+      <label class="virtue-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <span class="sr-only">Search Virtue sets</span>
+        <input id="virtue-search" type="search" placeholder="Search by set name or effect..." autocomplete="off" />
+      </label>
 
       <!-- Sets -->
       {Object.keys(bySet).length > 0 && (
@@ -439,7 +301,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
             const bonus2 = sample?.setBonuses?.["2"] ?? "";
             const bonus4 = sample?.setBonuses?.["4"] ?? "";
             return (
-              <div class="set-group">
+              <div class="set-group" data-virtue-set data-search={`${setName} ${bonus2} ${bonus4}`.toLowerCase()}>
                 <div class="set-group-header">
                   <span class="set-group-name">{setName}</span>
                   <span class={`set-rarity-badge rarity-${sample?.rarity ?? "blue"}`}>{rarityLabel(sample?.rarity ?? "blue")}</span>
@@ -480,12 +342,6 @@ function virtueAssetUrl(name: string, rarity?: string) {
                         )}
                       </div>
                       <span class="virtue-pill-name">{v.name}</span>
-                      {v.bp > 0 && <span class="virtue-pill-bp">BP +{v.bp.toLocaleString()}</span>}
-                      {(v.stats ?? []).filter((s: any) => s.base > 0).map((s: any) => (
-                        <span class="virtue-pill-stat">
-                          {STAT_LABELS[s.key] ?? s.key} {s.bonus > 0 ? `${s.base.toLocaleString()}+${s.bonus.toLocaleString()}` : s.base.toLocaleString()}
-                        </span>
-                      ))}
                     </div>
                   ))}
                 </div>
@@ -495,40 +351,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
         </div>
       )}
 
-      <!-- Singulars -->
-      {singulars.length > 0 && (
-        <div class="singulars-section">
-          <div class="singulars-header">Singular Pieces</div>
-          <div class="singulars-grid">
-            {singulars.map((v: any) => (
-              <div class={`virtue-pill rarity-${v.rarity ?? "blue"}`}>
-                <div class="virtue-pill-media-wrap">
-                  {virtueAssetUrl(v.name, v.rarity) ? (
-                    <img
-                      class="virtue-pill-media"
-                      src={virtueAssetUrl(v.name, v.rarity)}
-                      alt={`${v.name} virtue asset`}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : (
-                    <div class="virtue-pill-media virtue-pill-media--missing" aria-hidden="true">
-                      <span>No asset</span>
-                    </div>
-                  )}
-                </div>
-                <span class="virtue-pill-name">{v.name}</span>
-                {v.bp > 0 && <span class="virtue-pill-bp">BP +{v.bp.toLocaleString()}</span>}
-                {(v.stats ?? []).filter((s: any) => s.base > 0).map((s: any) => (
-                  <span class="virtue-pill-stat">
-                    {STAT_LABELS[s.key] ?? s.key} {s.bonus > 0 ? `${s.base.toLocaleString()}+${s.bonus.toLocaleString()}` : s.base.toLocaleString()}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <p class="virtue-empty" id="virtue-empty" hidden>No sets match that search.</p>
 
       {virtues.length === 0 && (
         <p class="guide-text guide-text--muted">No Virtues added yet. Data will appear here once the database is populated.</p>
@@ -541,14 +364,15 @@ function virtueAssetUrl(name: string, rarity?: string) {
 
 <style>
 .page-wrapper {
-  max-width: 1200px;
+  width: 100%;
+  max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: 0 20px 80px;
+  padding: 0 var(--page-gutter) var(--space-20);
 }
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  gap: var(--space-16);
 }
 
 /* ── GUIDE ── */
@@ -556,11 +380,52 @@ function virtueAssetUrl(name: string, rarity?: string) {
 .virtue-db-section {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: var(--space-8);
 }
-.guide-text { font-size: 0.92rem; line-height: 1.7; color: rgba(255,255,255,0.7); margin: 0; max-width: 780px; }
-.guide-text--muted { color: rgba(255,255,255,0.45); }
-.guide-heading { font-size: 1.4rem; font-weight: 800; color: #e0dff0; margin: 0; }
+.guide-text { font-size: var(--text-base); line-height: var(--leading-loose); color: var(--text-secondary); margin: 0; max-width: 780px; }
+.guide-text--muted { color: var(--text-muted); }
+.guide-heading { font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl)); font-weight: var(--weight-bold); color: var(--text-bright); margin: var(--space-2) 0 0; }
+
+.virtue-verdict {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: var(--space-8);
+  padding: var(--space-8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 10% 0, var(--accent-purple-dim), transparent 42%),
+    var(--bg-surface);
+}
+.virtue-verdict h2 {
+  margin: var(--space-2) 0 0;
+  color: var(--text-bright);
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+  line-height: var(--leading-tight);
+}
+.virtue-verdict p {
+  max-width: 720px;
+  margin: var(--space-4) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  line-height: var(--leading-loose);
+}
+.virtue-verdict-rules {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.virtue-verdict-rules span {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-faint);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+.virtue-verdict-rules span:last-child { border-bottom: 0; }
+.virtue-verdict-rules strong { color: var(--accent-purple); font-size: var(--text-base); }
 
 /* ── QUICK GLANCE ── */
 .quick-glance {
@@ -958,6 +823,25 @@ function virtueAssetUrl(name: string, rarity?: string) {
   flex-direction: column;
   gap: 6px;
 }
+.upgrade-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+.upgrade-summary-value {
+  color: var(--accent-purple);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-black);
+  line-height: 1;
+}
+.upgrade-summary strong { color: var(--text-bright); }
 .ur-row {
   font-size: 0.78rem;
   padding: 8px 12px;
@@ -1195,19 +1079,74 @@ function virtueAssetUrl(name: string, rarity?: string) {
 }
 
 /* ── VIRTUE DB ── */
+.virtue-db-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+.virtue-set-count {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+.virtue-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: min(100%, 620px);
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+.virtue-search:focus-within {
+  border-color: var(--accent-purple);
+  outline: 2px solid var(--accent-purple-dim);
+}
+.virtue-search svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 1.8;
+}
+.virtue-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text-bright);
+  font: inherit;
+  font-size: var(--text-sm);
+}
+.virtue-search input::placeholder { color: var(--text-muted); }
+.virtue-empty {
+  margin: 0;
+  padding: var(--space-8);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  text-align: center;
+}
 .set-groups {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 .set-group {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
-  padding: 18px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+.set-group[hidden] {
+  display: none;
 }
 .set-group-header {
   display: flex;
@@ -1266,9 +1205,9 @@ function virtueAssetUrl(name: string, rarity?: string) {
 }
 
 .set-pieces-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: var(--space-2);
 }
 
 /* Virtue pill (used in set rows and singulars grid) */
@@ -1280,7 +1219,9 @@ function virtueAssetUrl(name: string, rarity?: string) {
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.04);
-  min-width: 140px;
+  min-width: 0;
+  align-items: center;
+  text-align: center;
 }
 .virtue-pill-media-wrap {
   display: flex;
@@ -1316,6 +1257,7 @@ function virtueAssetUrl(name: string, rarity?: string) {
   font-size: 0.82rem;
   font-weight: 700;
   color: #e0dff0;
+  line-height: var(--leading-snug);
 }
 .virtue-pill.rarity-blue   .virtue-pill-name { color: #60a5fa; }
 .virtue-pill.rarity-purple .virtue-pill-name { color: #a78bfa; }
@@ -1350,13 +1292,15 @@ function virtueAssetUrl(name: string, rarity?: string) {
   .farming-layout,
   .sets-layout,
   .rover-layout { grid-template-columns: 1fr; }
+  .virtue-verdict { grid-template-columns: 1fr; padding: var(--space-6); }
+  .virtue-db-heading { align-items: flex-start; }
   .quick-glance { gap: 8px; }
   .qg-divider { display: none; }
   .meta-tip { flex-direction: column; }
   .mt-tags { flex-direction: row; align-items: flex-start; }
 }
 @media (max-width: 640px) {
-  .set-pieces-row { flex-direction: column; }
+  .set-pieces-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pity-track { gap: 2px; }
   .pt-line { min-width: 4px; }
   .rarity-strip { flex-direction: column; align-items: flex-start; gap: 8px; }
@@ -1374,11 +1318,30 @@ function virtueAssetUrl(name: string, rarity?: string) {
   document.querySelectorAll(".gtab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const target = (btn as HTMLElement).dataset.gtab;
-      document.querySelectorAll(".gtab-btn").forEach(b => b.classList.remove("is-active"));
+      document.querySelectorAll(".gtab-btn").forEach(b => {
+        b.classList.remove("is-active");
+        b.setAttribute("aria-selected", "false");
+      });
       document.querySelectorAll(".gtab-panel").forEach(p => p.classList.remove("is-active"));
       btn.classList.add("is-active");
+      btn.setAttribute("aria-selected", "true");
       const panel = document.getElementById("gtab-" + target);
       if (panel) panel.classList.add("is-active");
     });
+  });
+
+  const virtueSearch = document.getElementById("virtue-search") as HTMLInputElement | null;
+  const virtueSets = Array.from(document.querySelectorAll<HTMLElement>("[data-virtue-set]"));
+  const virtueEmpty = document.getElementById("virtue-empty");
+
+  virtueSearch?.addEventListener("input", () => {
+    const query = virtueSearch.value.trim().toLowerCase();
+    let visible = 0;
+    for (const set of virtueSets) {
+      const matches = !query || (set.dataset.search ?? "").includes(query);
+      set.hidden = !matches;
+      if (matches) visible++;
+    }
+    if (virtueEmpty) virtueEmpty.hidden = visible > 0;
   });
 </script>
