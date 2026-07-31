@@ -50,7 +50,9 @@ const HERO_CARD_IMAGE_VERSION = "2026-06-08-portrait";
   height: 380px;
 
   position: relative;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
+  clip-path: inset(0 round var(--radius-lg));
+  isolation: isolate;
 
   background-color: #0d1624;
   background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
@@ -59,7 +61,7 @@ const HERO_CARD_IMAGE_VERSION = "2026-06-08-portrait";
   color: #fff;
   text-decoration: none;
 
-  overflow: hidden; /* NUR HIER */
+  overflow: hidden;
 }
 
 .hero-card-image {

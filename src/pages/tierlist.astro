@@ -16,7 +16,7 @@ const sortedHeroes = [...heroes]
   .filter(hero => import.meta.env.DEV || hero.release !== false)
   .sort((a, b) => compareNewFirst(a, b) || a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
 
-const tierOrder = ["S+", "S", "A+", "A", "B", "C", "D", "N/A"];
+const tierOrder = ["S+", "S", "A+", "A", "B", "C", "D"];
 const tierGroups = tierOrder
   .map((tier, rank) => ({
     tier,
@@ -192,7 +192,7 @@ const jsonLd = {
     background: var(--input-bg);
   }
 
-  .tier-label[data-tier="S+"] { background: linear-gradient(145deg, var(--tier-sss-from), var(--tier-sss-to)); }
+  .tier-label[data-tier="S+"] { background: linear-gradient(145deg, var(--tier-splus-from), var(--tier-splus-to)); }
   .tier-label[data-tier="S"] { background: linear-gradient(145deg, var(--tier-s-from), var(--tier-s-to)); }
   .tier-label[data-tier="A+"] { background: linear-gradient(145deg, var(--tier-a-from), var(--tier-s-to)); }
   .tier-label[data-tier="A"] { background: linear-gradient(145deg, var(--tier-a-from), var(--tier-a-to)); }
@@ -231,7 +231,8 @@ const jsonLd = {
 
   .hero-wrapper {
     position: relative;
-    border-radius: var(--radius-md);
+    overflow: hidden;
+    border-radius: var(--radius-lg);
     min-width: 0;
   }
 
