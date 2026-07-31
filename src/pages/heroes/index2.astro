@@ -1,50 +1,18 @@
 ---
-export const prerender = true;
-
+ 
 import Base from "../../layouts/Base.astro";
 import HeroDivineThrone from "../../components/HeroDivineThrone.astro";
-import { heroes, getHeroById } from "../../data/heroes/withRatings";
-import { localizeHeroData } from "../../data/heroes/localize";
-import { getLocaleFromPathname, localizePath, type Locale } from "../../i18n/config";
-import { pickLang } from "../../i18n/helpers";
+import heroJson from "../../data/heroes/caishen.json";
 import ratings from "../../data/ratings/hero-ratings.json";
 import invest from "../../data/ratings/invest.json";
 import divineThroneData from "../../data/divine-throne.json";
-import allVirtues from "../../data/virtues.json";
 import db from "../../data/all_heroes_db.json";
 
 const R2 = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
-const VIRTUE_RARITY_SUFFIX: Record<string, string> = {
-  blue: "_rare",
-  purple: "_epic",
-  gold: "_elite",
-  red: "_legendary",
-};
 
-export function getStaticPaths() {
-  return heroes
-    .filter((entry) => import.meta.env.DEV || (entry as any).release !== false)
-    .map((entry) => ({ params: { id: entry.id } }));
-}
-
-interface Props {
-  id?: string;
-  locale?: Locale;
-}
-
-const { id: propId, locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props as Props;
-const routeId = propId ?? Astro.params.id;
-const hero = localizeHeroData(getHeroById(routeId) as any, locale);
-
-if (!hero) {
-  throw new Error(`Hero with id "${routeId}" not found`);
-}
-
+const hero = heroJson as any;
 const rating = (ratings as any)[hero.id] ?? {};
 const heroInvest = (invest as any)[hero.id] ?? null;
-const f2pInvestmentLabel = heroInvest?.f2pInvestment
-  ? pickLang(heroInvest.f2pInvestment, locale)
-  : "";
 const divineThroneEntry =
   (divineThroneData as any).heroes.find((entry: any) => entry.heroId === hero.id) ?? null;
 
@@ -96,8 +64,9 @@ const statEntries = Object.entries(hero.stats ?? {}).map(([key, raw]) => {
 const activeStats = statEntries.filter((s) => s.value > 0);
 
 // ---------------------------------------------------------------------- ratings
-// Render only grades that exist in hero-ratings.json rather than inventing
-// unsupported mode-specific categories.
+// Only the grades that actually exist in hero-ratings.json. Caishen has three.
+// The reference page has ~25 mode-specific grades; we do not, so the panel shows
+// what we have and says so rather than inventing categories.
 const RATING_FIELDS: Array<{ key: string; label: string }> = [
   { key: "pvp", label: "PvP" },
   { key: "pve", label: "PvE" },
@@ -107,39 +76,6 @@ const RATING_FIELDS: Array<{ key: string; label: string }> = [
 const subRatings = RATING_FIELDS
   .filter((f) => rating[f.key])
   .map((f) => ({ ...f, grade: String(rating[f.key]) }));
-
-const RATING_GROUPS = [
-  {
-    title: "Grim Surge",
-    modes: [
-      { key: "grimSurgeBoss1", label: "Spirit of the Night Hag" },
-      { key: "grimSurgeBoss2", label: "Epica" },
-    ],
-  },
-  {
-    title: "Others",
-    modes: [
-      { key: "odyssey", label: "Odyssey" },
-      { key: "spire", label: "Spire" },
-      { key: "delusionsDen", label: "Delusions Den" },
-      { key: "realmRover", label: "Realm Rover" },
-    ],
-  },
-  {
-    title: "Torment Rift",
-    modes: [
-      { key: "tormentRiftBaphomet", label: "Baphomet" },
-      { key: "tormentRiftLilith", label: "Lilith" },
-      { key: "tormentRiftBoss3", label: "Isthar IV" },
-    ],
-  },
-].map((group) => ({
-  ...group,
-  modes: group.modes.map((mode) => ({
-    ...mode,
-    grade: rating[mode.key] ? String(rating[mode.key]) : "",
-  })),
-}));
 
 // ----------------------------------------------------------------------- skills
 function escapeHtml(text: string): string {
@@ -161,7 +97,7 @@ const skillCards = [
       kind: s.isUltimate ? "Ultimate" : "",
       description: s.description ?? "",
       upgrades: Object.entries(s.upgrades ?? {}) as Array<[string, string]>,
-      icon: s.image || `${R2}/skills/${hero.id}_${s.id ?? `skill_${i + 1}`}.webp`,
+      icon: `${R2}/skills/${hero.id}_${s.id ?? `skill_${i + 1}`}.webp`,
       originalIndex: i,
       isUltimate: Boolean(s.isUltimate),
     }))
@@ -173,7 +109,7 @@ const skillCards = [
         kind: "Relic",
         description: hero.relic.description ?? "",
         upgrades: Object.entries(hero.relic.upgrades ?? {}) as Array<[string, string]>,
-        icon: hero.relic.image || `${R2}/skills/${hero.id}_relic.webp`,
+        icon: `${R2}/skills/${hero.id}_relic.webp`,
       }]
     : []),
 ];
@@ -183,32 +119,17 @@ function prettyTag(tag: string): string {
   return tag.replace(/^(TEAM|SELF|ENEMY|PLAYSTYLE)_/, "").replace(/_/g, " ")
     .toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
-
-function virtueAssetUrl(name: string, rarity?: string): string {
-  const compact = name.replace(/\s+/g, "").replace(/[^a-zA-Z0-9]/g, "");
-  if (!compact) return "";
-  const baseName = compact.charAt(0).toLowerCase() + compact.slice(1);
-  const suffix = VIRTUE_RARITY_SUFFIX[rarity ?? "gold"] ?? VIRTUE_RARITY_SUFFIX.gold;
-  return `${R2}/images/virtues/${baseName}${suffix}.png`;
-}
 // Dedupe: TEAM_HEAL and SELF_HEAL both flatten to "Heal", so the raw list
 // renders the same chip twice.
 const tagChips = [...new Set(((hero.synergies ?? []) as string[]).map(prettyTag))].slice(0, 6);
 
 const partners = (hero.synergyPartners ?? []).map((p: any) => ({
   id: p.heroId,
-  name: localizeHeroData(getHeroById(p.heroId) as any, locale)?.name
-    ?? allHeroes.find((h) => h.id === p.heroId)?.name
-    ?? p.heroId,
+  name: allHeroes.find((h) => h.id === p.heroId)?.name ?? p.heroId,
   image: `${R2}/heroes/thumbs/${p.heroId}-96.webp`,
 }));
 
-const virtueSets = (hero.virtueSets ?? []).map((set: any) => ({
-  ...set,
-  virtues: (set.virtues ?? [])
-    .map((virtueId: string) => (allVirtues as any[]).find((virtue) => virtue.id === virtueId))
-    .filter(Boolean),
-}));
+const virtueSets = hero.virtueSets ?? [];
 
 const tabs = [
   { id: "sec-overview", label: "Ratings" },
@@ -222,18 +143,20 @@ const tabs = [
 ---
 
 <Base
-  title={`${hero.name} | Motto Immortal Hero Database`}
-  description={`${hero.name} hero details, ratings, stats, skills, virtues, synergies, Divine Throne, and investment recommendations.`}
+  title={`${hero.name} – Alternate Hero Detail | Motto Immortal`}
+  description={`Alternate hero detail layout for ${hero.name}, using real ratings, stats, skills, virtues, synergies, and investment data.`}
   image={`${R2}/heroes/${hero.id}.webp`}
-  locale={locale}
 >
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
     <div class="lt-page">
       <!-- ============================================================ BANNER -->
       <header class="lt-banner">
         <div class="lt-banner-art" style={`background-image:url(${R2}/heroes/${hero.id}.webp)`}></div>
         <div class="lt-banner-veil"></div>
 
-        <a class="lt-back" href={localizePath("/heroes", locale)}>&larr; All Heroes</a>
+        <a class="lt-back" href="/heroes">&larr; All Heroes</a>
 
         <div class="lt-banner-inner">
           <div class="lt-portrait">
@@ -250,8 +173,8 @@ const tabs = [
             <h1 class="lt-name">{hero.name}</h1>
 
             <div class="lt-headline">
-              <span class="lt-grade" data-tier={String(rating.overall || "N/A")}>
-                {rating.overall || "N/A"}
+              <span class="lt-grade" data-tier={String(rating.overall ?? "C")}>
+                {rating.overall ?? "-"}
               </span>
               <span class="lt-might">
                 {Number(hero.stats?.might ?? 0).toLocaleString("en-US")}
@@ -305,36 +228,18 @@ const tabs = [
             <div class="lt-panel">
               <div class="lt-overall">
                 <span class="lt-overall-label">Overall</span>
-                <span class="lt-grade" data-tier={String(rating.overall || "N/A")}>
-                  {rating.overall || "N/A"}
+                <span class="lt-grade" data-tier={String(rating.overall ?? "C")}>
+                  {rating.overall ?? "-"}
                 </span>
               </div>
 
-              <h3 class="lt-rating-group-title">Modes</h3>
+              <p class="lt-sublabel">Modes</p>
               <div class="lt-grade-grid">
                 {subRatings.map((r) => (
                   <div class="lt-grade-tile">
                     <span class="lt-grade-tile-label">{r.label}</span>
                     <span class="lt-grade-tile-value" data-tier={r.grade}>{r.grade}</span>
                   </div>
-                ))}
-              </div>
-
-              <div class="lt-rating-groups">
-                {RATING_GROUPS.map((group) => (
-                  <section class="lt-rating-group" aria-label={group.title}>
-                    <h3 class="lt-rating-group-title">{group.title}</h3>
-                    <div class="lt-grade-grid">
-                      {group.modes.map((mode) => (
-                        <div class={`lt-grade-tile${mode.grade ? "" : " is-placeholder"}`}>
-                          <span class="lt-grade-tile-label">{mode.label}</span>
-                          <span class="lt-grade-tile-value" data-tier={mode.grade || "N/A"}>
-                            {mode.grade || "N/A"}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
                 ))}
               </div>
 
@@ -439,7 +344,7 @@ const tabs = [
           <section class="lt-section" id="sec-divine-throne">
             <h2 class="lt-h2 lt-h2-center">Divine Throne</h2>
             <div class="lt-flourish lt-flourish-center"></div>
-            <HeroDivineThrone entry={divineThroneEntry} heroName={hero.name} locale={locale} />
+            <HeroDivineThrone entry={divineThroneEntry} heroName={hero.name} locale="en" />
           </section>
         )}
 
@@ -453,17 +358,8 @@ const tabs = [
                 <div class="lt-panel lt-virtue">
                   <h3 class="lt-virtue-label">{set.label}</h3>
                   <div class="lt-virtue-pieces">
-                    {(set.virtues ?? []).map((virtue: any) => (
-                      <div class={`lt-virtue-card virtue-rarity-${virtue.rarity ?? "blue"}`}>
-                        <img
-                          class="lt-virtue-image"
-                          src={virtueAssetUrl(virtue.name, virtue.rarity)}
-                          alt={`${virtue.name} virtue`}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                        <span class="lt-virtue-name">{virtue.name}</span>
-                      </div>
+                    {(set.virtues ?? []).map((v: string) => (
+                      <span class="lt-idle-chip">{prettyTag(v).replace(/ (\d)$/, " $1")}</span>
                     ))}
                   </div>
                   {set.comment && <p class="lt-body">{set.comment}</p>}
@@ -504,13 +400,17 @@ const tabs = [
               {heroInvest.f2pInvestment && (
                 <div class="lt-panel lt-invest-cell">
                   <p class="lt-sublabel">F2P Target</p>
-                  <p class="lt-invest-value">{f2pInvestmentLabel}</p>
+                  <p class="lt-invest-value">{heroInvest.f2pInvestment}</p>
                 </div>
               )}
             </div>
           </section>
         )}
 
+        <p class="lt-footer">
+          Layout test page. Not linked in navigation. Data is real, taken from
+          <code>src/data/heroes/{hero.id}.json</code> and the ratings files.
+        </p>
       </main>
     </div>
 
@@ -593,11 +493,9 @@ const tabs = [
       }
       .lt-portrait { display: flex; justify-content: center; }
       .lt-portrait img {
-        width: auto;
+        width: 100%;
         max-width: 400px;
         height: auto;
-        max-height: 550px;
-        object-fit: contain;
         display: block;
         margin-bottom: -18px;
         filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.72));
@@ -821,18 +719,16 @@ const tabs = [
         color: var(--accent-gold);
       }
       .lt-grade-grid {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
         gap: 10px;
       }
       .lt-grade-tile {
-        flex: 0 1 auto;
-        min-width: 74px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 6px;
-        padding: 9px var(--space-3) 11px;
+        padding: 9px 6px 11px;
         background: var(--bg-surface);
         border: 1px solid var(--border-subtle);
         border-radius: var(--radius-md);
@@ -842,7 +738,6 @@ const tabs = [
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--text-muted);
-        white-space: nowrap;
       }
       .lt-grade-tile-value {
         font-size: 26px;
@@ -852,27 +747,6 @@ const tabs = [
         padding: var(--space-1) var(--space-2);
         border-radius: var(--radius-sm);
         text-align: center;
-      }
-      .lt-rating-groups {
-        display: grid;
-        gap: var(--space-6);
-        margin-top: var(--space-6);
-      }
-      .lt-rating-group-title {
-        margin: 0 0 var(--space-3);
-        color: var(--text-secondary);
-        font-size: var(--text-xs);
-        font-weight: var(--weight-black);
-        letter-spacing: var(--tracking-widest);
-        text-transform: uppercase;
-      }
-      .lt-grade-tile.is-placeholder {
-        border-style: dashed;
-        background: color-mix(in srgb, var(--bg-surface) 72%, transparent);
-      }
-      .lt-grade-tile.is-placeholder .lt-grade-tile-value {
-        color: var(--text-disabled);
-        font-size: var(--text-base);
       }
 
       /* -------------------------------------------------------------- stats */
@@ -1050,51 +924,11 @@ const tabs = [
       .lt-virtue-label {
         margin: 0 0 12px;
         font-family: var(--font-base);
-        font-weight: var(--weight-bold);
+        font-weight: 400;
         font-size: 19px;
         color: var(--accent-gold-light);
       }
-      .lt-virtue-pieces {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
-        gap: var(--space-2);
-      }
-      .lt-virtue-card {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: var(--space-2);
-        padding: var(--space-3) var(--space-2);
-        border: 1px solid var(--border-faint);
-        border-radius: var(--radius-md);
-        background: var(--bg-surface);
-      }
-      .lt-virtue-image {
-        width: 58px;
-        height: 74px;
-        object-fit: contain;
-        filter: drop-shadow(0 8px 13px rgba(0, 0, 0, 0.3));
-      }
-      .lt-virtue-name {
-        overflow: hidden;
-        width: 100%;
-        color: var(--text-secondary);
-        font-size: var(--text-xs);
-        font-weight: var(--weight-bold);
-        line-height: var(--leading-snug);
-        text-align: center;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .lt-virtue-card.virtue-rarity-blue { border-color: var(--rarity-rare-border); }
-      .lt-virtue-card.virtue-rarity-purple { border-color: var(--rarity-epic-border); }
-      .lt-virtue-card.virtue-rarity-gold { border-color: var(--rarity-legendary-border); }
-      .lt-virtue-card.virtue-rarity-red { border-color: rgba(239, 68, 68, 0.45); }
-      .virtue-rarity-blue .lt-virtue-name { color: #60a5fa; }
-      .virtue-rarity-purple .lt-virtue-name { color: #a78bfa; }
-      .virtue-rarity-gold .lt-virtue-name { color: #eab308; }
-      .virtue-rarity-red .lt-virtue-name { color: #ef4444; }
+      .lt-virtue-pieces { display: flex; flex-wrap: wrap; gap: 6px; }
 
       .lt-partners {
         display: grid;
@@ -1164,11 +998,7 @@ const tabs = [
         /* The desktop art deliberately bleeds down past its column; in the
            single-column stack that same offset would sit on top of the class
            row, so it is reset here. */
-        .lt-portrait img {
-          max-width: 250px;
-          max-height: 280px;
-          margin-bottom: 0;
-        }
+        .lt-portrait img { max-width: 250px; margin-bottom: 0; }
         .lt-ident { text-align: center; padding-bottom: 4px; }
         .lt-headline, .lt-hero-meta, .lt-chips { justify-content: center; }
         .lt-main { padding: 32px 18px 70px; }

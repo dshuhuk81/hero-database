@@ -232,6 +232,20 @@ const allNavEntries: NavEntry[] = [
     icon: `<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/><line x1="3" y1="20" x2="21" y2="20"/>`,
   },
   {
+    label: "Tier List",
+    href: "/tierlist",
+    group: "primary",
+    teaser: true,
+    description: {
+      en: "Browse hero rankings in a visual gallery",
+      de: "Heldenbewertungen in einer visuellen Galerie ansehen",
+      es: "Explora las valoraciones de héroes en una galería visual",
+      ru: "Просматривайте рейтинги героев в наглядной галерее",
+      zh: "在可视化图鉴中浏览英雄评级",
+    },
+    icon: `<path d="M4 18h4"/><path d="M4 12h9"/><path d="M4 6h14"/><path d="m16 15 3 3 3-3"/><path d="M19 10v8"/>`,
+  },
+  {
     label: "Relic Investment",
     href: "/relic-investment",
     group: "primary",

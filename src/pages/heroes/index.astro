@@ -100,44 +100,46 @@ const jsonLd = {
     {sortedHeroes.map(hero => (
       <div
         class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
-          data-name={hero.name.toLowerCase()}
-          data-class={hero.class.toLowerCase()}
-          data-role={hero.role.toLowerCase()}
-          data-faction={hero.faction.toLowerCase()}
-          data-rarity={hero.rarity.toLowerCase()}
-          data-tags={hero.synergies?.join("|").toLowerCase() || ""}
-          data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
-          data-new={hero.newHero ? "true" : "false"}
+        data-name={hero.name.toLowerCase()}
+        data-class={hero.class.toLowerCase()}
+        data-role={hero.role.toLowerCase()}
+        data-faction={hero.faction.toLowerCase()}
+        data-rarity={hero.rarity.toLowerCase()}
+        data-tags={hero.synergies?.join("|").toLowerCase() || ""}
+        data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
+        data-new={hero.newHero ? "true" : "false"}
       >
         <div class="icon-stack">
-            <div class="icon-stack-bg">
+          <div class="icon-stack-bg">
             <img
-              src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${hero.faction.toLowerCase()}.webp`}
+              src={`${R2_BASE}/icons/factions/${hero.faction.toLowerCase()}.webp`}
               alt=""
               width="20"
               height="20"
               loading="lazy"
               decoding="async"
             />
-            </div>
-            <div class="icon-stack-bg">
-            <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${hero.role.toLowerCase()}.webp`}
-            alt=""
-            width="20"
-            height="20"
-            loading="lazy"
-            decoding="async"
-          />
           </div>
           <div class="icon-stack-bg">
-          <img
-            src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${hero.class.toLowerCase()}.webp`}
-            alt=""
-            width="20"
-            height="20"
-            loading="lazy"
-            decoding="async"
-          /></div>
+            <img
+              src={`${R2_BASE}/icons/roles/${hero.role.toLowerCase()}.webp`}
+              alt=""
+              width="20"
+              height="20"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div class="icon-stack-bg">
+            <img
+              src={`${R2_BASE}/icons/classes/${hero.class.toLowerCase()}.webp`}
+              alt=""
+              width="20"
+              height="20"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
         <HeroCard hero={hero} />
       </div>
@@ -339,10 +341,10 @@ const jsonLd = {
 }
 
 .grid {
-  --overflow-safe: 28px;
+  --overflow-safe: 18px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: var(--space-3);
   justify-content: center;
   padding: var(--overflow-safe);
   margin: calc(var(--overflow-safe) * -1);
@@ -356,16 +358,26 @@ const jsonLd = {
   border-radius: var(--radius-md);
 }
 
+.hero-wrapper :global(.hero-card) {
+  height: 250px;
+}
+
 @media (max-width: 600px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: var(--space-2);
   }
+
   .hero-wrapper {
     width: 100%;
   }
+
+  .hero-wrapper :global(.hero-card) {
+    height: 220px;
+  }
+
   .icon-stack {
-    left: 0;
+    left: -6px;
   }
 
   .hero-wrapper::before {
@@ -416,38 +428,37 @@ const jsonLd = {
   opacity: 0.6;
 }
 
-.hero-wrapper.rarity-legendary .hero-card:hover::before {
-  transform: scale(1.18);
-}
-
 .hero-wrapper.rarity-legendary:hover::before {
   opacity: 1;
   filter: blur(26px);
 }
 
 /* ICON STACK */
+
 .icon-stack {
   position: absolute;
-  top: var(--space-3);
-  left: -14px;
+  top: var(--space-2);
+  left: -10px;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
   z-index: 10;
 }
+
 .icon-stack-bg {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .icon-stack img {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   display: block;
   flex-shrink: 0;
+  object-fit: contain;
 }
 
 /* LIST VIEW TABLE */
@@ -640,11 +651,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const listRows = document.querySelectorAll<HTMLElement>(".hero-row");
   const classChips = document.querySelectorAll(".class-chip");
   const rarityChips = document.querySelectorAll(".rarity-chip");
-  const tagChips = document.querySelectorAll(".tag-chip");
 
   const RARITY_ORDER: Record<string, number> = { legendary: 3, epic: 2, common: 1 };
 
-  let activeTag: string | null = null;
   let activeRoles = new Set<string>();
   let activeClasses = new Set<string>();
   let activeRarities = new Set<string>();
@@ -654,10 +663,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentView: "grid" | "list" = (localStorage.getItem("heroView") as "grid" | "list") || "grid";
 
-  function setView(v: "grid" | "list") {
-    currentView = v;
-    localStorage.setItem("heroView", v);
-    if (v === "grid") {
+  function setView(view: "grid" | "list") {
+    currentView = view;
+    localStorage.setItem("heroView", view);
+    if (view === "grid") {
       heroGrid.style.display = "";
       heroList.style.display = "none";
       viewGridBtn.classList.add("active");
@@ -672,8 +681,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   viewGridBtn.addEventListener("click", () => setView("grid"));
   viewListBtn.addEventListener("click", () => setView("list"));
-
-  // apply persisted view on load
   setView(currentView);
 
   // ---- Filtering ----
@@ -685,10 +692,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const role = el.dataset.role || "";
     const rarity = el.dataset.rarity || "";
     const faction = el.dataset.faction || "";
-    const tags = el.dataset.tags || "";
 
     return (
-      (!activeTag || tags.includes(activeTag)) &&
       (!query || name.includes(query) || cls.includes(query) || role.includes(query) || faction.includes(query) || rarity.includes(query)) &&
       (activeClasses.size === 0 || activeClasses.has(cls)) &&
       (activeRoles.size === 0 || activeRoles.has(role)) &&
@@ -705,7 +710,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (show) visible++;
     });
     listRows.forEach(row => {
-      row.style.display = matchesFilters(row) ? "" : "none";
+      const show = matchesFilters(row);
+      row.style.display = show ? "" : "none";
     });
     heroCounter!.textContent = `${visible} Heroes shown`;
   }
@@ -848,30 +854,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  tagChips.forEach(chip => {
-    chip.addEventListener("click", () => {
-      const t = ((chip as HTMLElement).dataset.tag || "").toLowerCase();
-      if (activeTag === t) {
-        activeTag = null;
-        chip.classList.remove("active");
-      } else {
-        activeTag = t;
-        tagChips.forEach(x => x.classList.remove("active"));
-        chip.classList.add("active");
-      }
-      applyFilters();
-    });
-  });
-
   resetButton!.addEventListener("click", () => {
     searchInput.value = "";
     activeClasses.clear();
     activeRarities.clear();
     activeRoles.clear();
     activeFactions.clear();
-    activeTag = null;
     document.querySelectorAll(".chip.active, .role-chip.active").forEach(c => c.classList.remove("active"));
-    tagChips.forEach(x => x.classList.remove("active"));
     sortSelect.value = "rating-desc";
     sortHeroes();
     applyFilters();
@@ -919,7 +908,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateFabBadge() {
-    const count = activeClasses.size + activeRoles.size + activeRarities.size + activeFactions.size + (activeTag ? 1 : 0) + (searchInput.value.trim() ? 1 : 0);
+    const count = activeClasses.size + activeRoles.size + activeRarities.size + activeFactions.size + (searchInput.value.trim() ? 1 : 0);
     if (filterFabBadge) {
       filterFabBadge.textContent = count > 0 ? String(count) : "";
     }
@@ -937,7 +926,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // patch all chip listeners to also update badge
-  document.querySelectorAll(".chip, .role-chip, .class-chip, .rarity-chip, .faction-chip, .tag-chip").forEach(chip => {
+  document.querySelectorAll(".chip, .role-chip, .class-chip, .rarity-chip, .faction-chip").forEach(chip => {
     chip.addEventListener("click", updateFabBadge);
   });
   searchInput.addEventListener("input", updateFabBadge);

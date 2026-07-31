@@ -1,5 +1,5 @@
 ---
-const { hero } = Astro.props;
+const { hero, showRating = true, showNewBadge = true } = Astro.props;
 const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_CARD_IMAGE_VERSION = "2026-06-08-portrait";
@@ -24,11 +24,11 @@ const HERO_CARD_IMAGE_VERSION = "2026-06-08-portrait";
     onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
   />
 
-  {hero.newHero && (
+  {showNewBadge && hero.newHero && (
     <div class="hero-flag-badge hero-flag-badge-new">NEW</div>
   )}
 
-  {overallRating && (
+  {showRating && overallRating && (
     <div class="rating-badge" data-tier={overallRating}>
       {overallRating}
     </div>

@@ -1,0 +1,2201 @@
+---
+export const prerender = true;
+import { heroes, getHeroById, statMaxima } from "../../data/heroes/withRatings";
+import { localizeHeroData } from "../../data/heroes/localize";
+import Base from "../../layouts/Base.astro";
+import HeroCompositions from '../../components/HeroCompositions.astro';
+import StrengthWeakness from '../../components/StrengthWeakness.astro';
+import RelicInvestment from '../../components/RelicInvestment.astro';
+import F2pInvestment from '../../components/F2pInvestment.astro';
+import RatingTiles from '../../components/RatingTiles.astro';
+import HeroDivineThrone from '../../components/HeroDivineThrone.astro';
+import allVirtues from "../../data/virtues.json";
+import allInvest from "../../data/ratings/invest.json";
+import divineThroneData from "../../data/divine-throne.json";
+import { getLocaleFromPathname, localizePath, type Locale } from "../../i18n/config";
+import { t } from "../../i18n/ui";
+import { getTagLabelTranslation } from "../../i18n/tags";
+import { getCnSummary, formatCnValue } from "../../utils/cnDiff.js";
+import { guides } from "../../data/guides";
+/* STATIC PATHS */
+export function getStaticPaths() {
+  return heroes
+    .filter((hero) => import.meta.env.DEV || (hero as any).release !== false)
+    .map((hero) => ({
+      params: { id: hero.id },
+    }));
+}
+
+interface Props {
+  id?: string;
+  locale?: Locale;
+}
+
+const { id: propId, locale = getLocaleFromPathname(Astro.url.pathname) } = Astro.props as Props;
+const routeId = propId ?? Astro.params.id;
+const baseHero = getHeroById(routeId);
+const hero = localizeHeroData(baseHero as any, locale);
+// Prev/next must only walk heroes that actually have a page (same filter as
+// getStaticPaths), otherwise arrows 404 in production next to unreleased heroes.
+const navHeroes = heroes.filter((entry) => import.meta.env.DEV || (entry as any).release !== false);
+const heroIndex = navHeroes.findIndex((entry) => entry.id === routeId);
+const heroTeamComps = (hero as any)?.teamComps;
+const hasComps = heroTeamComps && Object.values(heroTeamComps).some((arr) => Array.isArray(arr) && arr.length > 0);
+const heroStrengths: string[] = (hero as any).strengths ?? [];
+const heroWeaknesses: string[] = (hero as any).weaknesses ?? [];
+
+type VirtueSet = { label: string; comment?: string; virtues: string[] };
+const heroVirtueSets: VirtueSet[] = (hero as any).virtueSets ?? [];
+const resolvedVirtueSets = heroVirtueSets.map((vs) => ({
+  label: vs.label,
+  comment: vs.comment ?? "",
+  virtues: vs.virtues
+    .map((vid) => (allVirtues as any[]).find((v) => v.id === vid))
+    .filter(Boolean),
+})).map((recommendation) => ({
+  ...recommendation,
+  sets: Object.values(
+    recommendation.virtues.reduce((groups: Record<string, { name: string; virtues: any[] }>, virtue: any) => {
+      const setName = virtue.set ?? virtue.name;
+      groups[setName] ??= { name: setName, virtues: [] };
+      groups[setName].virtues.push(virtue);
+      return groups;
+    }, {})
+  ),
+}));
+const hasVirtues = resolvedVirtueSets.length > 0;
+const heroInvest = (allInvest as any)[routeId] ?? null;
+const heroGuide = guides.find(
+  (g) => g.heroId === routeId && (import.meta.env.DEV || !g.localOnly)
+) ?? null;
+const cnSummary = getCnSummary(hero as any);
+const prevHero = heroIndex > 0 ? navHeroes[heroIndex - 1] : null;
+const nextHero = heroIndex >= 0 && heroIndex < navHeroes.length - 1 ? navHeroes[heroIndex + 1] : null;
+const divineThroneEntry =
+  (divineThroneData as any).heroes.find((entry: any) => entry.heroId === routeId) ?? null;
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const raritySuffixMap: Record<string, string> = {
+  blue: "_rare",
+  purple: "_epic",
+  gold: "_elite",
+  red: "_legendary"
+};
+
+function virtueAssetBaseName(name: string): string {
+  const compact = name.replace(/\s+/g, "").replace(/[^a-zA-Z0-9]/g, "");
+  return compact ? compact.charAt(0).toLowerCase() + compact.slice(1) : "";
+}
+
+function virtueAssetUrl(name: string, rarity?: string): string {
+  const baseName = virtueAssetBaseName(name);
+  const suffix = raritySuffixMap[rarity ?? "gold"] ?? raritySuffixMap.gold;
+  return baseName ? `${R2_BASE}/images/virtues/${baseName}${suffix}.png` : "";
+}
+
+if (!hero) {
+  throw new Error(`Hero with id "${routeId}" not found`);
+}
+
+const heroPortraitUrl = `${R2_BASE}/heroes/${routeId}.webp`;
+const heroJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", Astro.site).href },
+      { "@type": "ListItem", position: 2, name: "Heroes", item: new URL("/heroes/", Astro.site).href },
+      { "@type": "ListItem", position: 3, name: hero.name, item: new URL(Astro.url.pathname, Astro.site).href },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    contentUrl: heroPortraitUrl,
+    name: hero.name,
+    representativeOfPage: true,
+  },
+];
+
+const PERCENT_STATS = new Set([
+  "dodgeRate", "hitBonus", "critRate", "critRes", "critDmgBonus", "critDmgRed",
+  "cooldownHaste", "atkSpdBonus", "pDmgBonus", "pDmgRed", "mDmgBonus", "mDmgRed",
+  "healEff", "rechargeEff", "lifestealEff", "reflectEff", "effectRes", "effectHit",
+  "controlRes", "controlBonus", "normalSkillPWR", "ultimatePWR"
+]);
+
+// Stat grouping
+const OFFENSIVE_STATS = ["atk", "critRate", "critDmgBonus", "atkSpdBonus", "pDmgBonus", "mDmgBonus", "normalSkillPWR", "ultimatePWR"];
+const DEFENSIVE_STATS = ["hp", "armor", "magicRes", "dodgeRate", "critRes", "critDmgRed", "pDmgRed", "mDmgRed", "controlRes"];
+const UTILITY_STATS = ["hitBonus", "energy", "cooldownHaste", "healEff", "rechargeEff", "lifestealEff", "reflectEff", "effectRes", "effectHit", "controlBonus"];
+
+// Key stats for the at-a-glance strip
+const KEY_STATS = ["might", "atk", "hp", "armor", "magicRes", "critRate"];
+
+// Faction color mapping
+const FACTION_COLORS: Record<string, { a: string; b: string; glow: string }> = {
+  "Starglint": { a: "#5b9cf6", b: "#facc15", glow: "rgba(91,156,246,0.18)" },
+  "Wildfire":  { a: "#f97316", b: "#dc2626", glow: "rgba(249,115,22,0.18)" },
+  "Deepwater": { a: "#22d3ee", b: "#0ea5e9", glow: "rgba(34,211,238,0.18)" },
+  "Spades":    { a: "#a78bfa", b: "#7c3aed", glow: "rgba(167,139,250,0.18)" },
+};
+const factionColor = FACTION_COLORS[hero.faction] ?? { a: "#a8844a", b: "#7c6e4a", glow: "rgba(168,132,74,0.18)" };
+
+function formatStatVal(key: string, val: number): string {
+  if (val === 0) return "0";
+  if (PERCENT_STATS.has(key)) return val + "%";
+  if (val >= 1_000_000) return (val / 1_000_000).toFixed(2) + "M";
+  if (val >= 1_000) return (val / 1_000).toFixed(1) + "K";
+  return String(val);
+}
+
+function statBarWidth(key: string, val: number): number {
+  const max = (statMaxima as Record<string, number>)[key];
+  if (!max || val === 0) return 0;
+  return Math.min((val / max) * 100, 100);
+}
+
+function statRank(key: string, val: number): number | null {
+  if (!Number.isFinite(val) || val <= 0) return null;
+  const rank = Number(((hero as any).rankings ?? {})[key]);
+  return Number.isFinite(rank) && rank > 0 ? rank : null;
+}
+
+// Tag label display: localized where available, else SNAKE_CASE -> Title Case
+function tagLabel(tag: unknown): string {
+  const s = String(tag ?? "");
+  const translated = getTagLabelTranslation(s, locale);
+  if (translated) return translated;
+  const acronyms = new Set(["ATK", "SPD", "HP", "DMG", "CC", "CDR", "AOE"]);
+  return s
+    .split("_")
+    .filter(Boolean)
+    .map((part) => {
+      if (acronyms.has(part)) return part;
+      const lower = part.toLowerCase();
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(" ");
+}
+
+function resolveSkillVideoSrc(video: unknown): string {
+  const value = String(video ?? "").trim();
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) return value;
+  if (value.startsWith("/")) return value;
+  return `/skills/${value}`;
+}
+
+function heroHref(id: string): string {
+  return localizePath(`/heroes/${id}`, locale);
+}
+
+function statLabel(key: string): string {
+  return t(locale, "hero", key);
+}
+
+function localizedHeroName(id: string): string {
+  const targetHero = localizeHeroData(getHeroById(id) as any, locale);
+  return targetHero?.name ?? id;
+}
+
+// Dot nav sections
+const dotSections = [
+  { id: "section-profile",    label: t(locale, "hero", "profile") },
+  { id: "skills",             label: t(locale, "hero", "skillsAbilities") },
+  ...(divineThroneEntry ? [{ id: "section-divine-throne", label: t(locale, "hero", "divineThrone") }] : []),
+  ...(cnSummary && cnSummary.hasChanges ? [{ id: "section-cn", label: t(locale, "hero", "cnVsGlobal") }] : []),
+  { id: "section-ratings",    label: t(locale, "hero", "metaRatings") },
+  { id: "section-stats",      label: t(locale, "hero", "combatStatistics") },
+  { id: "section-synergies",  label: t(locale, "hero", "synergyNetwork") },
+  ...(hasComps ? [{ id: "section-comps", label: t(locale, "common", "compositions") }] : []),
+  ...(heroInvest ? [{ id: "section-investment", label: t(locale, "hero", "investmentGuide") }] : []),
+  ...(hasVirtues ? [{ id: "section-virtues", label: t(locale, "hero", "recommendedVirtues") }] : []),
+];
+---
+
+<Base
+  title={hero ? t(locale, "hero", "metaTitle").replaceAll("{name}", hero.name) : "Hero | Motto Immortal"}
+  description={hero ? t(locale, "hero", "metaDescription").replaceAll("{name}", hero.name).replaceAll("{class}", String(hero.class ?? "")).replaceAll("{role}", String(hero.role ?? "")) : undefined}
+  locale={locale}
+  image={heroPortraitUrl}
+  jsonLd={heroJsonLd}
+>
+<div
+  class="hero-page"
+  data-faction={hero.faction}
+  style={`--faction-a:${factionColor.a};--faction-b:${factionColor.b};--faction-glow:${factionColor.glow};`}
+>
+
+  <!-- ===================== STICKY THIN HEADER ===================== -->
+  <header class="hero-page-header">
+    <a href="/heroes" class="page-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span>{t(locale, "hero", "backToHeroes")}</span>
+    </a>
+    <span class="page-hero-name">{hero.name}</span>
+    <div class="hero-page-header-right">
+      {hero.ratings?.overall && hero.ratings.overall !== "" && (
+        <span class="hdr-rating" data-tier={hero.ratings.overall ?? ""}>{hero.ratings.overall}</span>
+      )}
+    </div>
+  </header>
+
+  <!-- ===================== CINEMATIC SHOWCASE ===================== -->
+  <section class="showcase" aria-label={hero.name}>
+    <div class="showcase-bg"></div>
+    <div
+      class="showcase-art"
+      style={`background-image:url(${hero.image});${(hero as any).imgY ? `--hero-img-y:${(hero as any).imgY};` : ''}`}
+      role="img"
+      aria-label={hero.name}
+    ></div>
+    <div class="showcase-overlay"></div>
+
+    <!-- Prev / Next arrows on image -->
+    {prevHero ? (
+      <a class="showcase-nav prev" href={heroHref(prevHero.id)} aria-label={`${t(locale, "hero", "previousHero")}: ${localizedHeroName(prevHero.id)}`} title={localizedHeroName(prevHero.id)}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+    ) : (
+      <span class="showcase-nav prev disabled" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </span>
+    )}
+    {nextHero ? (
+      <a class="showcase-nav next" href={heroHref(nextHero.id)} aria-label={`${t(locale, "hero", "nextHero")}: ${localizedHeroName(nextHero.id)}`} title={localizedHeroName(nextHero.id)}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </a>
+    ) : (
+      <span class="showcase-nav next disabled" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </span>
+    )}
+
+    <!-- Bottom identity and at-a-glance rating block -->
+    <div class="showcase-identity">
+      <div class="showcase-identity-copy">
+        <h1 class="showcase-name">{hero.name}</h1>
+        <div class="showcase-badges">
+          <span class="id-badge">
+            <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/${hero.faction.toLowerCase()}.webp`} alt={hero.faction} class="id-badge-icon" />
+            {hero.faction}
+          </span>
+          <span class="id-badge">
+            <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${hero.class.toLowerCase()}.webp`} alt={hero.class} class="id-badge-icon" />
+            {hero.class}
+          </span>
+          <span class="id-badge">
+            <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${hero.role.toLowerCase()}.webp`} alt={hero.role} class="id-badge-icon" />
+            {hero.role}
+          </span>
+          <span class="id-badge rarity-badge">{hero.rarity}</span>
+        </div>
+        {hero.synergies && hero.synergies.length > 0 && (
+          <div class="showcase-tags">
+            {hero.synergies.map((tag: string) => (
+              <span class="showcase-tag">{tagLabel(tag)}</span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <a class="showcase-ratings" href="#section-ratings" aria-label={t(locale, "hero", "metaRatings")}>
+        <div class="showcase-rating-overall">
+          <span class="showcase-rating-label">{t(locale, "hero", "overall")}</span>
+          <strong data-tier={hero.ratings?.overall || "N/A"}>{hero.ratings?.overall || "N/A"}</strong>
+        </div>
+        <div class="showcase-rating-modes">
+          <div class="showcase-rating-mode">
+            <span>{t(locale, "hero", "pvp")}</span>
+            <strong data-tier={hero.ratings?.pvp || "N/A"}>{hero.ratings?.pvp || "N/A"}</strong>
+          </div>
+          <div class="showcase-rating-mode">
+            <span>{t(locale, "hero", "pve")}</span>
+            <strong data-tier={hero.ratings?.pve || "N/A"}>{hero.ratings?.pve || "N/A"}</strong>
+          </div>
+        </div>
+        <svg class="showcase-rating-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </a>
+    </div>
+
+    <div class="showcase-scroll-hint" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- ===================== FLOATING DOT NAV (desktop) ===================== -->
+    <nav class="dot-nav" aria-label="Page sections">
+    {dotSections.map((s) => (
+      <a class="dot-nav-item" href={`#${s.id}`} data-section={s.id} title={s.label} aria-label={s.label}>
+        <span class="dot"></span>
+        <span class="dot-label">{s.label}</span>
+      </a>
+    ))}
+  </nav>
+
+  <!-- ===================== MAIN SCROLL CONTENT ===================== -->
+  <main class="scroll-content">
+
+    {heroGuide && (
+      <a class="hero-guide-link" href={heroGuide.href}>
+        <div class="hero-guide-link-text">
+          <span class="hero-guide-link-eyebrow">{t(locale, "hero", "deepDiveGuideTitle")}</span>
+          <span class="hero-guide-link-title">{heroGuide.title}</span>
+          <span class="hero-guide-link-hook">{heroGuide.hook}</span>
+        </div>
+        <span class="hero-guide-link-cta">
+          {t(locale, "hero", "deepDiveGuideCta")}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+    )}
+
+    <!-- ── SECTION 1: PROFILE ── -->
+    <section class="content-section" id="section-profile">
+      <div class="section-label">{t(locale, "hero", "profile")}</div>
+
+      <div class="profile-grid">
+        <!-- Description + Core Mechanic -->
+        <div class="profile-left">
+          {hero.description && (
+            <p class="hero-description">{hero.description}</p>
+          )}
+          {(hero as any).coreMechanic && (
+            <div class="mechanic-card">
+              <div class="mechanic-header">
+                <span class="mechanic-title">{t(locale, "hero", "coreMechanic")}</span>
+                <span class={`depth-badge depth-${(hero as any).coreMechanic.depthRating}`}>
+                  {(hero as any).coreMechanic.depthRating} {t(locale, "hero", "depth")}
+                </span>
+              </div>
+              <p class="mechanic-summary">{(hero as any).coreMechanic.summary}</p>
+            </div>
+          )}
+        </div>
+
+        <!-- Key stats at a glance -->
+        <div class="profile-right">
+          <div class="key-stats-label">{t(locale, "hero", "atAGlance")}  <span class="key-stats-sub">(Lv. {hero.level}, {hero.evolution})</span></div>
+          <div class="key-stats-grid">
+            {KEY_STATS.map(key => {
+              const val = Number((hero.stats as any)[key] ?? 0);
+              const rank = statRank(key, val);
+              return (
+                <div class="key-stat-block">
+                <div class="key-stat-topline">
+                  <span class="key-stat-value">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
+                  </div>
+                <span class="key-stat-label">{statLabel(key)}</span>
+                  <div class="key-stat-bar">
+                    <div class="key-stat-bar-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 2: SKILLS ── -->
+    <section class="content-section" id="skills">
+      <div class="section-label">{t(locale, "hero", "skillsAbilities")}</div>
+
+      <!-- Skill tab strip -->
+      <div class="skill-tabs" role="tablist">
+        {hero.skills && hero.skills.map((skill: any, i: number) => (
+          <button
+            class={`skill-tab${i === 0 ? " active" : ""}${skill.isUltimate ? " is-ultimate" : ""}`}
+            data-skill-tab={i}
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+          >
+            <div class="skill-tab-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
+            <span class="skill-tab-label">{skill.isUltimate ? t(locale, "hero", "ultimate") : `${t(locale, "hero", "skill")} ${i+1}`}</span>
+            {skill.damageType && (
+              <span class={`dmg-type-chip dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
+            )}
+          </button>
+        ))}
+        {hero.relic && (
+          <button class="skill-tab is-relic" data-skill-tab="relic" role="tab" aria-selected="false">
+            <div class="skill-tab-icon" style={`background-image:url(${hero.relic.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_relic.webp`})`}></div>
+            <span class="skill-tab-label">{t(locale, "hero", "relic")}</span>
+          </button>
+        )}
+      </div>
+
+      <!-- Skill panels -->
+      <div class="skill-panels">
+        {hero.skills && hero.skills.map((skill: any, i: number) => (
+          <div class={`skill-panel${i === 0 ? " active" : ""}`} data-skill-panel={i} role="tabpanel">
+            <div class="skill-panel-inner">
+              <div class="skill-body">
+                <div class="skill-text">
+                  <div class="skill-panel-header">
+                    <div class="skill-panel-icon" style={`background-image:url(${skill.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_skill_${i+1}.webp`})`}></div>
+                    <div class="skill-panel-meta">
+                      <h3 class="skill-panel-name">{skill.name}</h3>
+                      <div class="skill-panel-badges">
+                        <span class="skill-panel-type">{skill.isUltimate ? t(locale, "hero", "ultimate") : `${t(locale, "hero", "skill")} ${i+1}`}</span>
+                        {skill.damageType && (
+                          <span class={`dmg-badge dmg-${(skill.damageType as string).toLowerCase()}`}>{skill.damageType}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <p class="skill-panel-desc">{skill.description}</p>
+                  {(skill.upgrades?.level2 || skill.upgrades?.level3 || skill.upgrades?.level4) && (
+                    <div class="skill-upgrades">
+                      {skill.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{skill.upgrades.level2}</span></div>}
+                      {skill.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{skill.upgrades.level3}</span></div>}
+                      {skill.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{skill.upgrades.level4}</span></div>}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {hero.relic && (
+          <div class="skill-panel is-relic-panel" data-skill-panel="relic" role="tabpanel">
+            <div class="skill-panel-inner">
+              <div class="skill-panel-header">
+                <div class="skill-panel-icon is-relic-icon" style={`background-image:url(${hero.relic.image || `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/${hero.id}_relic.webp`})`}></div>
+                <div class="skill-panel-meta">
+                  <h3 class="skill-panel-name">{hero.relic.name}</h3>
+                  <div class="skill-panel-badges">
+                    <span class="skill-panel-type">{t(locale, "hero", "relic")}</span>
+                  </div>
+                </div>
+              </div>
+              <p class="skill-panel-desc">{hero.relic.description}</p>
+              {(hero.relic.upgrades?.level2 || hero.relic.upgrades?.level3 || hero.relic.upgrades?.level4) && (
+                <div class="skill-upgrades">
+                  {hero.relic.upgrades.level2 && <div class="upgrade-row"><span class="upgrade-lv">Lv 2</span><span class="upgrade-text">{hero.relic.upgrades.level2}</span></div>}
+                  {hero.relic.upgrades.level3 && <div class="upgrade-row"><span class="upgrade-lv">Lv 3</span><span class="upgrade-text">{hero.relic.upgrades.level3}</span></div>}
+                  {hero.relic.upgrades.level4 && <div class="upgrade-row"><span class="upgrade-lv">Lv 4</span><span class="upgrade-text">{hero.relic.upgrades.level4}</span></div>}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- __ SECTION: DIVINE THRONE __ -->
+    {divineThroneEntry && (
+      <section class="content-section" id="section-divine-throne">
+        <div class="section-label">{t(locale, "hero", "divineThrone")}</div>
+        <HeroDivineThrone entry={divineThroneEntry} heroName={hero.name} locale={locale} />
+      </section>
+    )}
+
+    <!-- ── SECTION: CN vs GLOBAL ── -->
+    {cnSummary && cnSummary.hasChanges && (
+      <section class="content-section" id="section-cn">
+        <div class="section-label">
+          <span>{t(locale, "hero", "cnVsGlobal")}</span>
+          {cnSummary.captured && <span class="section-sub">{t(locale, "hero", "cnSnapshot")} {cnSummary.captured}</span>}
+        </div>
+
+        <div class="cn-detail-summary">
+          {cnSummary.totals.buff > 0 && <span class="cn-badge cn-badge-buff">{cnSummary.totals.buff} {t(locale, "hero", "buff")}</span>}
+          {cnSummary.totals.nerf > 0 && <span class="cn-badge cn-badge-nerf">{cnSummary.totals.nerf} {t(locale, "hero", "nerf")}</span>}
+          {cnSummary.totals.diff > 0 && <span class="cn-badge cn-badge-diff">{cnSummary.totals.diff} {t(locale, "hero", "different")}</span>}
+          <a href="/cn-preview" class="cn-detail-link">{t(locale, "hero", "allHeroes")} &rarr;</a>
+        </div>
+
+        <div class="cn-table-wrap">
+          <table class="cn-table">
+            <thead>
+              <tr>
+                <th>{t(locale, "hero", "tableSkill")}</th>
+                <th>{t(locale, "hero", "tableValue")}</th>
+                <th>{t(locale, "hero", "tableGlobal")}</th>
+                <th>{t(locale, "hero", "tableCn")}</th>
+                <th>{t(locale, "hero", "tableChange")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cnSummary.skills.flatMap((skill: any) =>
+                skill.changedRows.map((row: any) => (
+                  <tr class="cn-row-changed">
+                    <td class="cn-td-skill">{skill.name}</td>
+                    <td>{row.label}</td>
+                    <td class="cn-td-global">{formatCnValue(row.global, row.unit)}</td>
+                    <td class="cn-td-cn">{formatCnValue(row.cn, row.unit)}</td>
+                    <td>
+                      <span class={`cn-tag cn-tag-${row.change}`}>{row.change === "buff" ? t(locale, "hero", "buff") : row.change === "nerf" ? t(locale, "hero", "nerf") : t(locale, "hero", "different")}</span>
+                      {row.movement && (
+                        <span class={`cn-move cn-move-${row.movement.direction}`} title={`${t(locale, "hero", "globalIs")} ${row.movement.label} vs CN`}>
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            {row.movement.direction === "up" ? (
+                              <><path d="M3 17l6-6 4 4 7-7"/><path d="M14 8h6v6"/></>
+                            ) : (
+                              <><path d="M3 7l6 6 4-4 7 7"/><path d="M14 16h6v-6"/></>
+                            )}
+                          </svg>
+                          <span>{row.movement.label}</span>
+                        </span>
+                      )}
+                      {row.verified === false && <span class="cn-tag cn-tag-unverified">{t(locale, "hero", "unconfirmed")}</span>}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {cnSummary.skills.some((s: any) => s.changedRows.length > 0 && s.notes.length > 0) && (
+          <ul class="cn-notes">
+            {cnSummary.skills
+              .filter((s: any) => s.changedRows.length > 0)
+              .flatMap((s: any) => s.notes.map((n: string) => <li><strong>{s.name}:</strong> {n}</li>))}
+          </ul>
+        )}
+      </section>
+    )}
+
+    <!-- ── SECTION 3: RATINGS ── -->
+    <section class="content-section" id="section-ratings">
+      <div class="section-label">{t(locale, "hero", "metaRatings")}</div>
+
+      <RatingTiles ratings={hero.ratings} locale={locale} />
+    </section>
+
+    <!-- ── SECTION 4: STATS ── -->
+    <section class="content-section" id="section-stats">
+      <div class="section-label"><span>{t(locale, "hero", "combatStatistics")}</span> <span class="section-sub">Lv. {hero.level} &middot; {hero.evolution}</span></div>
+
+      <div class="stat-columns">
+        <!-- Offensive -->
+        <div class="stat-column">
+          <div class="stat-col-header offensive-hdr">{t(locale, "hero", "offensive")}</div>
+          {OFFENSIVE_STATS.map(key => {
+            const val = Number((hero.stats as any)[key] ?? 0);
+            const rank = statRank(key, val);
+            return (
+              <div class="stat-entry">
+                <span class="stat-entry-label">{statLabel(key)}</span>
+                <div class="stat-entry-right">
+                  <div class="stat-entry-meta">
+                    <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
+                  </div>
+                  <div class="stat-entry-bar">
+                    <div class="stat-entry-fill offensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- Defensive -->
+        <div class="stat-column">
+          <div class="stat-col-header defensive-hdr">{t(locale, "hero", "defensive")}</div>
+          {DEFENSIVE_STATS.map(key => {
+            const val = Number((hero.stats as any)[key] ?? 0);
+            const rank = statRank(key, val);
+            return (
+              <div class="stat-entry">
+                <span class="stat-entry-label">{statLabel(key)}</span>
+                <div class="stat-entry-right">
+                  <div class="stat-entry-meta">
+                    <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
+                  </div>
+                  <div class="stat-entry-bar">
+                    <div class="stat-entry-fill defensive-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- Utility -->
+        <div class="stat-column">
+          <div class="stat-col-header utility-hdr">{t(locale, "hero", "utility")}</div>
+          {UTILITY_STATS.map(key => {
+            const val = Number((hero.stats as any)[key] ?? 0);
+            const rank = statRank(key, val);
+            return (
+              <div class="stat-entry">
+                <span class="stat-entry-label">{statLabel(key)}</span>
+                <div class="stat-entry-right">
+                  <div class="stat-entry-meta">
+                    <span class="stat-entry-val">{formatStatVal(key, val)}</span>
+                    {rank && <span class="stat-rank">{t(locale, "hero", "rank")} {rank}</span>}
+                  </div>
+                  <div class="stat-entry-bar">
+                    <div class="stat-entry-fill utility-fill" style={`width:${statBarWidth(key, val)}%`}></div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 5: SYNERGIES ── -->
+    <section class="content-section" id="section-synergies">
+      <div class="section-label">{t(locale, "hero", "synergyNetwork")}</div>
+
+      <!-- Hero synergy links -->
+      {(hero as any).synergyLinks && (hero as any).synergyLinks.length > 0 && (
+        <div class="syn-links-grid">
+          {(hero as any).synergyLinks.map((link: { heroId: string; type: string; description: string }) => (
+            <a href={heroHref(link.heroId)} class={`syn-link-card syn-${link.type}`}>
+              <div class="syn-link-portrait" style={`background-image:url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${link.heroId}.webp)`} role="img" aria-label={link.heroId}></div>
+              <div class="syn-link-body">
+                <div class="syn-link-row">
+                  <span class="syn-link-name">{localizedHeroName(link.heroId)}</span>
+                  <span class={`syn-link-badge syn-badge-${link.type}`}>{link.type}</span>
+                </div>
+                <p class="syn-link-desc">{link.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+
+      <!-- Boosted By: heroes whose kit synergizes with / buffs this hero -->
+      {(hero as any).synergyPartners && (hero as any).synergyPartners.length > 0 && (
+            <div class="syn-partners-block">
+          <div class="tag-cloud-label">{t(locale, "hero", "boostedBy")}</div>
+          <div class="syn-links-grid">
+            {(hero as any).synergyPartners.map((p: { heroId: string; via: string[] }) => (
+              <a href={heroHref(p.heroId)} class="syn-link-card syn-synergy">
+                <div class="syn-link-portrait" style={`background-image:url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${p.heroId}.webp)`} role="img" aria-label={p.heroId}></div>
+                <div class="syn-link-body">
+                  <div class="syn-link-row">
+                  <span class="syn-link-name">{localizedHeroName(p.heroId)}</span>
+                  </div>
+                  <p class="syn-link-desc">{t(locale, "hero", "boostsVia")} {(p.via || []).map((t) => tagLabel(t)).join(", ")}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Tag chips -->
+      {hero.synergies && hero.synergies.length > 0 && (
+        <div class="tag-cloud">
+          <div class="tag-cloud-label">{t(locale, "hero", "abilityTags")}</div>
+          <div class="tag-chips">
+            {hero.synergies.map((tag: string) => (
+              <span class="tag-chip">{tagLabel(tag)}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+
+    <!-- ── SECTION 5a: COMPOSITIONS ── -->
+    {hasComps && (
+      <section class="content-section" id="section-comps">
+        <div class="section-label">{t(locale, "common", "compositions")}</div>
+        <HeroCompositions heroId={routeId} locale={locale} />
+      </section>
+    )}
+
+    <!-- __ SECTION 5b: STRENGTHS & WEAKNESSES __ -->
+    {(heroStrengths.length > 0 || heroWeaknesses.length > 0) && (
+      <section class="content-section" id="section-strengths">
+        <div class="section-label">{t(locale, "hero", "strengthsWeaknesses")}</div>
+        <StrengthWeakness strengths={heroStrengths} weaknesses={heroWeaknesses} locale={locale} />
+      </section>
+    )}
+
+    <!-- ── SECTION 6: INVESTMENT GUIDE ── -->
+    {heroInvest && (
+      <section class="content-section" id="section-investment">
+        <div class="section-label">{t(locale, "hero", "investmentGuide")}</div>
+        <div class="investment-cards">
+          <RelicInvestment
+            relicRecommendation={heroInvest.relicRecommendation}
+            usedIn={heroInvest.usedIn}
+            explanation={heroInvest.explanation}
+            locale={locale}
+          /> 
+          <F2pInvestment 
+            f2pInvestment={heroInvest.f2pInvestment}
+            locale={locale}
+          />
+        </div>
+      </section>
+    )}
+
+    <!-- __ SECTION 7: VIRTUES __ -->
+    {hasVirtues && (
+      <section class="content-section" id="section-virtues">
+        <div class="section-label">{t(locale, "hero", "recommendedVirtues")}</div>
+        <div class="virtue-sets-row">
+          {resolvedVirtueSets.map((vs, recommendationIndex) => (
+            <article class="virtue-recommendation">
+              <div class="virtue-recommendation-header">
+                <div>
+                  <span class="virtue-build-kicker">
+                    {resolvedVirtueSets.length > 1
+                      ? `Build ${String(recommendationIndex + 1).padStart(2, "0")}`
+                      : t(locale, "hero", "recommendedVirtues")}
+                  </span>
+                  <h3 class="virtue-set-title">{vs.label}</h3>
+                </div>
+                <span class="virtue-set-count">{vs.virtues.length} {t(locale, "hero", "piece")}</span>
+              </div>
+
+              <div class="virtue-set-groups">
+                {vs.sets.map((setGroup: any, setIndex: number) => {
+                  const setBonuses = setGroup.virtues[0]?.setBonuses;
+                  const activeBonus = setBonuses?.[String(setGroup.virtues.length)];
+                  return (
+                    <>
+                      {setIndex > 0 && <span class="virtue-combo-plus" aria-hidden="true">+</span>}
+                      <section class={`virtue-set-group virtue-set-group--${setGroup.virtues.length}`}>
+                        <div class="virtue-group-header">
+                          <span class="virtue-group-name">{setGroup.name}</span>
+                          <span class="virtue-group-count">{setGroup.virtues.length}×</span>
+                        </div>
+                        <div class="virtue-pieces">
+                          {setGroup.virtues.map((v: any) => {
+                            const virtueStats: { key: string; base: number; bonus: number }[] = v.stats ?? [];
+                            return (
+                              <div class={`virtue-card virtue-rarity-${v.rarity ?? "blue"}`}>
+                                <div class="virtue-card-media-wrap">
+                                  {virtueAssetUrl(v.name, v.rarity) ? (
+                                    <img
+                                      class="virtue-card-media"
+                                      src={virtueAssetUrl(v.name, v.rarity)}
+                                      alt={`${v.name} virtue asset`}
+                                      loading="lazy"
+                                      decoding="async"
+                                    />
+                                  ) : (
+                              <div class="virtue-card-media virtue-card-media--missing" aria-hidden="true">
+                                      <span>{t(locale, "hero", "noAsset")}</span>
+                                    </div>
+                                  )}
+                                </div>
+                                <span class="virtue-name">{v.name}</span>
+                                {virtueStats.length > 0 && (
+                                  <div class="virtue-stats-list">
+                                    {virtueStats.map((s: { key: string; base: number; bonus: number }) => {
+                                      const label = statLabel(s.key);
+                                      if (!s.base && !s.bonus) return <span class="virtue-stat">{label}</span>;
+                                      const val = s.bonus > 0
+                                        ? `${s.base.toLocaleString()} + ${s.bonus.toLocaleString()}`
+                                        : s.base.toLocaleString();
+                                      return <span class="virtue-stat">{label} {val}</span>;
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                        {activeBonus && (
+                          <div class="virtue-bonus-row">
+                            <span class="virtue-bonus-label">{setGroup.virtues.length} {t(locale, "hero", "piece")}</span>
+                            <span class="virtue-bonus-text">{activeBonus}</span>
+                          </div>
+                        )}
+                      </section>
+                    </>
+                  );
+                })}
+              </div>
+              {vs.comment && (
+                <div class="virtue-comment">{vs.comment}</div>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+
+  </main>
+</div>
+</Base>
+
+<style>
+/* =============================================
+   CSS CUSTOM PROPERTIES & RESET
+   ============================================= */
+.hero-page {
+  --faction-a: #a8844a;
+  --faction-b: #7c6e4a;
+  --faction-glow: rgba(168,132,74,0.15);
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+/* =============================================
+   HERO PAGE HEADER (sticky, 52px)
+   ============================================= */
+.hero-page-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-overlay);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  background: rgba(7, 6, 12, 0.82);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-faint);
+}
+
+.page-back {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: var(--transition-colors);
+  flex-shrink: 0;
+}
+.page-back svg { width: 16px; height: 16px; }
+.page-back:hover { color: var(--text-primary); }
+
+.page-hero-name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  text-align: center;
+  flex: 1;
+  padding: 0 var(--space-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-page-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.hdr-rating {
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-wide);
+}
+/* tier colors handled by [data-tier] selectors in components.css */
+
+.hdr-calc-link {
+  font-size: 0.78rem;
+  font-weight: var(--weight-semibold);
+  color: var(--faction-a);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--faction-a);
+  border-radius: var(--radius-md);
+  opacity: 0.85;
+  transition: var(--transition-colors);
+}
+.hdr-calc-link:hover { opacity: 1; background: var(--bg-raised); }
+
+/* =============================================
+   CINEMATIC SHOWCASE
+   ============================================= */
+.showcase {
+  position: relative;
+  width: 100%;
+  height: 88vh;
+  min-height: 520px;
+  max-height: 900px;
+  overflow: hidden;
+}
+
+.showcase-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url(https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/hall.webp);
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+.showcase-art {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center var(--hero-img-y, 14%);
+  background-repeat: no-repeat;
+  transform: scale(1);
+  transition: transform 8s ease-out;
+}
+.showcase:hover .showcase-art { transform: scale(1.04); }
+
+
+.showcase-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(7,6,12,0.25) 0%, transparent 30%, transparent 50%, rgba(7,6,12,0.92) 85%, rgba(7,6,12,1) 100%),
+    linear-gradient(to right, rgba(7,6,12,0.35) 0%, transparent 40%);
+}
+
+/* Prev / Next arrows */
+.showcase-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7,6,12,0.55);
+  border: 1px solid var(--border-medium);
+  backdrop-filter: blur(10px);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition-all);
+  pointer-events: auto;
+}
+.showcase-nav svg { width: 20px; height: 20px; }
+.showcase-nav.prev { left: 88px; }
+.showcase-nav.next { right: 88px; }
+.showcase-nav:hover { background: rgba(30,30,40,0.85); border-color: var(--faction-a); color: var(--faction-a); transform: translateY(-50%) scale(1.08); }
+.showcase-nav.disabled { opacity: 0.2; pointer-events: none; }
+
+/* Identity block at bottom of showcase */
+.showcase-identity {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 0 var(--space-10) var(--space-10);
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.showcase-identity-copy { min-width: 0; }
+
+.showcase-name {
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: var(--weight-black);
+  line-height: 1.0;
+  color: var(--text-bright);
+  margin: 0 0 var(--space-4);
+  text-shadow: 0 4px 32px rgba(0,0,0,0.6);
+  letter-spacing: -0.02em;
+}
+
+.showcase-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  background: rgba(0,0,0,0.45);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-bright);
+  backdrop-filter: blur(8px);
+}
+.id-badge-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+.rarity-badge {
+  border-color: var(--faction-a);
+  color: var(--faction-a);
+}
+
+.showcase-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.showcase-tag {
+  padding: var(--space-1) var(--space-3);
+  background: var(--chip-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  backdrop-filter: blur(6px);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.showcase-ratings {
+  width: min(320px, 34vw);
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(112px, 1.15fr) 1fr 20px;
+  align-items: stretch;
+  color: var(--text-primary);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--faction-a) 35%, var(--border-subtle));
+  border-radius: var(--radius-xl);
+  background: rgba(7, 6, 12, 0.72);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+  transition: transform var(--duration-fast), border-color var(--duration-fast);
+}
+.showcase-ratings:hover {
+  transform: translateY(-3px);
+  border-color: var(--faction-a);
+}
+.showcase-ratings:focus-visible {
+  outline: 2px solid var(--faction-a);
+  outline-offset: 3px;
+}
+.showcase-rating-overall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: var(--space-4);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--faction-a) 17%, transparent), transparent);
+  border-right: 1px solid var(--border-subtle);
+}
+.showcase-rating-label,
+.showcase-rating-mode span {
+  font-size: 0.6rem;
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.showcase-rating-overall strong {
+  font-size: 2.35rem;
+  line-height: 1;
+  font-weight: var(--weight-black);
+  min-width: 58px;
+  padding: 5px var(--space-2);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+.showcase-rating-modes {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+}
+.showcase-rating-mode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+}
+.showcase-rating-mode + .showcase-rating-mode { border-top: 1px solid var(--border-faint); }
+.showcase-rating-mode strong {
+  font-size: 1.15rem;
+  line-height: 1;
+  font-weight: var(--weight-black);
+  min-width: 38px;
+  padding: 3px var(--space-1);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+.showcase-rating-arrow {
+  width: 16px;
+  align-self: center;
+  color: var(--text-disabled);
+}
+
+.showcase-scroll-hint {
+  position: absolute;
+  bottom: var(--space-4);
+  right: var(--space-10);
+  z-index: 10;
+  animation: bounce 2s ease-in-out infinite;
+  color: var(--text-disabled);
+}
+.showcase-scroll-hint svg { width: 20px; height: 20px; }
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* =============================================
+   FLOATING DOT NAV
+   ============================================= */
+.dot-nav {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-sticky);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dot-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  flex-direction: row-reverse;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--border-medium);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--duration-fast) ease;
+  flex-shrink: 0;
+}
+
+.dot-label {
+  font-size: 0.72rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  background: rgba(0,0,0,0.7);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
+  pointer-events: none;
+}
+
+.dot-nav-item:hover .dot-label,
+.dot-nav-item.active .dot-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.dot-nav-item:hover .dot,
+.dot-nav-item.active .dot {
+  background: var(--faction-a);
+  border-color: var(--faction-a);
+  box-shadow: 0 0 8px var(--faction-a);
+}
+
+@media (max-width: 1100px) {
+  .dot-nav { display: none; }
+}
+
+/* =============================================
+   SCROLL CONTENT
+   ============================================= */
+.scroll-content {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6) 100px;
+}
+
+/* =============================================
+   CONTENT SECTIONS
+   ============================================= */
+.content-section {
+  scroll-margin-top: 72px;
+  padding: 64px 0 var(--space-4);
+  border-bottom: 1px solid var(--border-faint);
+}
+.content-section:last-child { border-bottom: none; }
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--faction-a);
+  margin-bottom: var(--space-7);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--faction-a), transparent);
+  opacity: 0.35;
+}
+.section-sub {
+  font-size: 0.65rem;
+  font-weight: var(--weight-medium);
+  color: var(--text-disabled);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* =============================================
+   SECTION 1: PROFILE
+   ============================================= */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  align-items: start;
+}
+
+.hero-description {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-6);
+}
+
+.mechanic-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--faction-a);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.mechanic-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+.mechanic-title {
+  font-size: 0.72rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--faction-a);
+}
+.mechanic-summary {
+  margin: 0;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.depth-badge {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.depth-high { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #d8b4fe; }
+.depth-mid  { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
+.depth-low  { background: rgba(107,114,128,0.15); border: 1px solid rgba(107,114,128,0.35); color: #d1d5db; }
+
+/* Key Stats Grid */
+.key-stats-label {
+  font-size: 0.72rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-disabled);
+  margin-bottom: var(--space-4);
+}
+.key-stats-sub { font-size: 0.65rem; font-weight: var(--weight-medium); text-transform: none; letter-spacing: 0; color: var(--text-disabled); }
+
+.key-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.key-stat-block {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  transition: var(--transition-colors);
+}
+.key-stat-block:hover { border-color: var(--border-subtle); }
+
+.key-stat-topline,
+.stat-entry-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.key-stat-value {
+  font-size: 1.15rem;
+  font-weight: var(--weight-black);
+  color: var(--text-bright);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+}
+.key-stat-label {
+  font-size: 0.68rem;
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-muted);
+}
+.stat-rank {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 2px var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--faction-a) 45%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--faction-a) 12%, transparent);
+  color: var(--faction-a);
+  font-size: 0.62rem;
+  font-weight: var(--weight-black);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.key-stat-bar {
+  margin-top: var(--space-2);
+  height: 3px;
+  background: var(--border-faint);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.key-stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--faction-a), var(--faction-b));
+  border-radius: 2px;
+  transition: width var(--duration-slow) ease;
+}
+
+/* =============================================
+   SECTION 2: SKILLS
+   ============================================= */
+.skill-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: 0;
+  overflow-x: auto;
+  padding-bottom: 0;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border-faint);
+}
+.skill-tabs::-webkit-scrollbar { display: none; }
+
+.skill-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: var(--transition-all);
+  white-space: nowrap;
+  min-width: 80px;
+  position: relative;
+  bottom: -1px;
+}
+.skill-tab:hover { color: var(--text-secondary); }
+.skill-tab.active {
+  color: var(--text-bright);
+  border-bottom-color: var(--faction-a);
+}
+.skill-tab.is-ultimate.active { border-bottom-color: #fbbf24; }
+.skill-tab.is-relic.active { border-bottom-color: #a78bfa; }
+
+.skill-tab-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background-size: cover;
+  background-position: center;
+  border: 2px solid var(--border-subtle);
+  transition: var(--transition-colors);
+}
+.skill-tab.active .skill-tab-icon { border-color: var(--faction-a); box-shadow: 0 0 12px var(--faction-glow); }
+.skill-tab.is-ultimate.active .skill-tab-icon { border-color: #fbbf24; box-shadow: 0 0 14px rgba(251,191,36,0.4); }
+.skill-tab.is-relic.active .skill-tab-icon { border-color: #a78bfa; box-shadow: 0 0 12px rgba(167,139,250,0.4); }
+
+.skill-tab-label {
+  font-size: 0.68rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.dmg-type-chip {
+  font-size: 0.58rem;
+  font-weight: var(--weight-bold);
+  padding: 1px var(--space-1);
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.dmg-type-chip.dmg-magical  { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+.dmg-type-chip.dmg-physical { background: rgba(249,115,22,0.2); color: #fdba74; border: 1px solid rgba(249,115,22,0.3); }
+.dmg-type-chip.dmg-true     { background: var(--chip-bg); color: #e5e7eb; border: 1px solid var(--border-medium); }
+
+/* Skill Panels */
+.skill-panels { margin-top: 0; }
+
+.skill-panel { display: none; }
+.skill-panel.active { display: block; }
+
+.skill-panel-inner {
+  padding: var(--space-7);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-faint);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+.is-relic-panel .skill-panel-inner { border-color: rgba(167,139,250,0.15); }
+
+.skill-panel-header {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+  margin-bottom: var(--space-5);
+}
+
+.skill-panel-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
+  background-size: cover;
+  background-position: center;
+  border: 2px solid var(--border-medium);
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.is-relic-icon { border-color: rgba(167,139,250,0.35); box-shadow: 0 0 16px rgba(167,139,250,0.2); }
+
+.skill-panel-meta { display: flex; flex-direction: column; gap: var(--space-2); }
+.skill-panel-name { font-size: 1.4rem; font-weight: var(--weight-bold); color: var(--text-bright); margin: 0; }
+.skill-panel-badges { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
+
+.skill-panel-type {
+  padding: 3px var(--space-3);
+  background: var(--chip-bg);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  font-size: 0.68rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-secondary);
+}
+
+.ultimate-glow-badge {
+  padding: 3px var(--space-3);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #1a1a1a;
+  border-radius: var(--radius-md);
+  font-size: 0.68rem;
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-normal);
+  box-shadow: 0 0 14px rgba(251,191,36,0.5);
+}
+
+.dmg-badge {
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: 0.68rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.dmg-badge.dmg-magical  { background: rgba(59,130,246,0.18); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
+.dmg-badge.dmg-physical { background: rgba(249,115,22,0.18); border: 1px solid rgba(249,115,22,0.35); color: #fdba74; }
+.dmg-badge.dmg-true     { background: var(--border-faint); border: 1px solid var(--border-medium); color: #e5e7eb; }
+
+.skill-body {
+  display: block;
+}
+
+.skill-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.skill-panel-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-5);
+}
+
+.skill-upgrades { display: flex; flex-direction: column; gap: var(--space-2); }
+/* .upgrade-row / .upgrade-lv / .upgrade-text defined in components.css */
+
+/* Scenario grid */
+.scenario-block { margin-bottom: var(--space-6); }
+.scenario-block-label {
+  font-size: 0.68rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+  margin-bottom: var(--space-3);
+}
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-3);
+}
+.scenario-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-faint);
+  background: var(--bg-raised);
+  transition: transform var(--duration-fast);
+}
+.scenario-tile:hover { transform: translateY(-2px); }
+.scenario-val { font-size: 1.5rem; font-weight: var(--weight-black); color: var(--text-bright); }
+.scenario-name { font-size: 0.65rem; font-weight: var(--weight-semibold); text-transform: uppercase; letter-spacing: var(--tracking-normal); color: var(--text-muted); text-align: center; }
+
+/* Community */
+.community-block {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-faint);
+}
+.community-block-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.68rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+  margin-bottom: var(--space-3);
+}
+.verified-tag {
+  font-size: 0.65rem;
+  font-weight: var(--weight-medium);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-disabled);
+  font-style: italic;
+}
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.community-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+.community-source {
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-disabled);
+}
+.community-val {
+  font-size: 1.1rem;
+  font-weight: var(--weight-black);
+  color: var(--text-bright);
+}
+
+/* =============================================
+   SECTION 4: STATS
+   ============================================= */
+.stat-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.stat-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.stat-col-header {
+  font-size: 0.68rem;
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  padding: var(--space-2) 0 var(--space-3);
+  margin-bottom: var(--space-1);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.offensive-hdr { color: #fdba74; border-bottom-color: rgba(249,115,22,0.3); }
+.defensive-hdr  { color: #86efac; border-bottom-color: rgba(34,197,94,0.3); }
+.utility-hdr    { color: #93c5fd; border-bottom-color: rgba(59,130,246,0.3); }
+
+.stat-entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
+}
+
+.stat-entry-label {
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+}
+.stat-entry-right { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space-1); 
+  width: 100%;}
+
+.stat-entry-val {
+  font-size: 0.88rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+}
+.stat-entry-bar {
+  height: 3px;
+  background: var(--border-faint);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.stat-entry-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width var(--duration-slow) ease;
+}
+.offensive-fill { background: linear-gradient(90deg,#f97316,#fb923c); }
+.defensive-fill  { background: linear-gradient(90deg,#22c55e,#4ade80); }
+.utility-fill    { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
+
+/* =============================================
+   SECTION 5: SYNERGIES
+   ============================================= */
+.syn-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.syn-link-card {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-raised);
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-all);
+  align-items: flex-start;
+}
+.syn-link-card:hover { background: var(--chip-bg); transform: translateY(-2px); }
+.syn-link-card.syn-core { border-color: rgba(168,85,247,0.25); }
+.syn-link-card.syn-core:hover { border-color: rgba(168,85,247,0.45); background: rgba(168,85,247,0.06); }
+.syn-link-card.syn-conditional { border-color: rgba(59,130,246,0.2); }
+.syn-link-card.syn-conditional:hover { border-color: rgba(59,130,246,0.4); }
+
+.syn-link-portrait {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background-size: cover;
+  background-position: top center;
+  border: 2px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+.syn-core .syn-link-portrait { border-color: rgba(168,85,247,0.4); }
+
+.syn-link-body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.syn-link-row { display: flex; align-items: center; gap: var(--space-2); }
+.syn-link-name {
+  font-size: 0.85rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-bright);
+  text-transform: capitalize;
+}
+.syn-link-badge {
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 0.62rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.syn-badge-core        { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #d8b4fe; }
+.syn-badge-conditional { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.35); color: #93c5fd; }
+.syn-link-desc { font-size: 0.78rem; line-height: 1.5; color: var(--text-secondary); margin: 0; }
+
+/* Tag cloud */
+.tag-cloud { padding-top: var(--space-2); }
+.tag-cloud-label {
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-disabled);
+  margin-bottom: var(--space-3);
+}
+.tag-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.tag-chip {
+  padding: var(--space-1) var(--space-3);
+  background: var(--chip-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  transition: var(--transition-all);
+}
+.tag-chip:hover { background: var(--chip-bg-hover); border-color: var(--border-medium); color: var(--text-primary); }
+
+/* =============================================
+   SECTION 6: COMPOSITIONS
+   ============================================= */
+.comp-mode-tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+.comp-mode-tab {
+  padding: var(--space-2) var(--space-5);
+  background: var(--chip-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  transition: var(--transition-all);
+}
+.comp-mode-tab:hover { background: var(--chip-bg-hover); color: var(--text-primary); }
+.comp-mode-tab.active {
+  background: var(--chip-bg-hover);
+  border-color: var(--faction-a);
+  color: var(--faction-a);
+}
+
+.comp-panel { display: none; }
+.comp-panel.active { display: block; }
+
+/* =============================================
+   SECTION 7: INVESTMENT GUIDE
+   ============================================= */
+.investment-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* =============================================
+   SECTION 8: VIRTUES
+   ============================================= */
+.virtue-sets-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+.virtue-recommendation {
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 0 0, color-mix(in srgb, var(--faction-a) 10%, transparent), transparent 42%),
+    var(--bg-surface);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.16);
+}
+.virtue-recommendation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.virtue-build-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--faction-a);
+  font-size: 0.65rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.virtue-set-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.virtue-set-count {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: var(--weight-semibold);
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--chip-bg);
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+.virtue-set-groups {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+.virtue-set-group {
+  min-width: 0;
+  flex: 1 1 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.018);
+}
+.virtue-set-group--4 { flex-grow: 2; }
+.virtue-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.virtue-group-name {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.virtue-group-count {
+  color: var(--text-disabled);
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+}
+.virtue-combo-plus {
+  align-self: center;
+  flex: 0 0 26px;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: var(--weight-bold);
+}
+.virtue-pieces {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
+  gap: var(--space-2);
+}
+.virtue-card {
+  background: var(--chip-bg);
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+.virtue-card-media-wrap {
+  display: flex;
+  justify-content: center;
+}
+.virtue-card-media {
+  width: 52px;
+  height: 66px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 13px rgba(0,0,0,0.3));
+}
+.virtue-card-media--missing {
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.virtue-card-media--missing span {
+  font-size: 0.62rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-disabled);
+}
+.virtue-name {
+  overflow: hidden;
+  width: 100%;
+  font-size: 0.72rem;
+  font-weight: var(--weight-bold);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.virtue-rarity-blue   { border-color: var(--rarity-rare-border); }
+.virtue-rarity-purple { border-color: var(--rarity-epic-border); }
+.virtue-rarity-gold   { border-color: var(--rarity-legendary-border); }
+.virtue-rarity-red    { border-color: rgba(239,68,68,0.45); }
+.virtue-rarity-blue   .virtue-name { color: #60a5fa; }
+.virtue-rarity-purple .virtue-name { color: #a78bfa; }
+.virtue-rarity-gold   .virtue-name { color: #eab308; }
+.virtue-rarity-red    .virtue-name { color: #ef4444; }
+
+.virtue-stats-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 1em;
+}
+.virtue-stat {
+  font-size: 0.67rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  text-align: center;
+}
+.virtue-bonus-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-faint);
+}
+.virtue-bonus-label {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  font-weight: var(--weight-bold);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--chip-bg);
+  color: var(--faction-a);
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+.virtue-bonus-text {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.virtue-comment {
+  margin: 0 var(--space-5) var(--space-5);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-muted);
+  font-style: italic;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-3);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) {
+  .stat-columns { grid-template-columns: 1fr 1fr; }
+  .investment-cards { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+  .showcase-ratings { width: min(290px, 40vw); }
+}
+
+@media (max-width: 768px) {
+  .page-hero-name { display: none; }
+  .showcase { height: 72vh; min-height: 520px; }
+  .showcase-name { font-size: clamp(2rem, 8vw, 3rem); }
+  .showcase-identity {
+    padding: 0 var(--space-5) var(--space-7);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4);
+  }
+  .showcase-ratings {
+    width: 100%;
+    max-width: 360px;
+    grid-template-columns: minmax(100px, 1fr) 1.25fr 20px;
+  }
+  .showcase-rating-overall { padding: var(--space-3); }
+  .showcase-rating-overall strong { font-size: 2rem; }
+  .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-columns { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+  .scroll-content { padding: 0 var(--space-4) 80px; }
+  .syn-links-grid { grid-template-columns: 1fr; }
+  .skill-panel-inner { padding: var(--space-4); }
+  .showcase-nav { width: 38px; height: 38px; }
+  .showcase-nav.prev { left: 12px; }
+  .showcase-nav.next { right: 12px; }
+  .virtue-sets-row { grid-template-columns: 1fr; gap: var(--space-3); }
+}
+
+@media (max-width: 480px) {
+  .key-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .skill-tab { min-width: 70px; padding: var(--space-2) var(--space-3) var(--space-3); }
+  .skill-tab-icon { width: 36px; height: 36px; }
+  .stat-columns { grid-template-columns: repeat(2, 1fr); gap: var(--space-2); }
+  .virtue-sets-row { grid-template-columns: 1fr; gap: var(--space-3); }
+  .virtue-recommendation-header { padding: var(--space-4); align-items: flex-start; }
+  .virtue-set-title { font-size: 0.95rem; }
+  .virtue-set-groups { flex-direction: column; padding: var(--space-4); }
+  .virtue-combo-plus { align-self: center; margin: -2px 0; }
+  .virtue-pieces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .virtue-set-group--4 .virtue-pieces { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .virtue-card { padding: 6px 4px; }
+  .virtue-card-media { width: 42px; height: 54px; }
+  .virtue-name { font-size: 0.62rem; }
+  .virtue-stat { font-size: 0.6rem; }
+}
+</style>
+
+<script>
+  // ── Skill tab switching ──
+  const skillTabs = document.querySelectorAll('.skill-tab');
+  const skillPanels = document.querySelectorAll('.skill-panel');
+
+  skillTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const idx = tab.getAttribute('data-skill-tab');
+      skillTabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      skillPanels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      const panel = document.querySelector(`.skill-panel[data-skill-panel="${idx}"]`);
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // Arrow key cycling through skill tabs
+  document.addEventListener('keydown', (e) => {
+    const active = document.querySelector('.skill-tab.active');
+    if (!active) return;
+    const tabs = Array.from(skillTabs) as HTMLElement[];
+    const i = tabs.indexOf(active as HTMLElement);
+    if (e.key === 'ArrowRight' && i < tabs.length - 1) tabs[i+1].click();
+    if (e.key === 'ArrowLeft'  && i > 0)               tabs[i-1].click();
+  });
+
+  // ── Composition mode tabs ──
+  const compTabs = document.querySelectorAll('.comp-mode-tab');
+  const compPanels = document.querySelectorAll('.comp-panel');
+
+  function setCompMode(mode: string) {
+    compTabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-comp-mode') === mode));
+    compPanels.forEach(p => {
+      const isMatch = p.getAttribute('data-comp-panel') === mode;
+      (p as HTMLElement).style.display = isMatch ? 'block' : 'none';
+      p.classList.toggle('active', isMatch);
+    });
+    try { localStorage.setItem('heroCompMode', mode); } catch {}
+  }
+
+  // Restore from localStorage
+  let initMode = 'general';
+  try {
+    const saved = localStorage.getItem('heroCompMode');
+    if (saved && ['general','pve','pvp'].includes(saved)) initMode = saved;
+  } catch {}
+  setCompMode(initMode);
+
+  compTabs.forEach(tab => {
+    tab.addEventListener('click', () => setCompMode(tab.getAttribute('data-comp-mode') ?? 'general'));
+  });
+
+  // ── Dot nav: IntersectionObserver ──
+  const dotItems = document.querySelectorAll('.dot-nav-item');
+  const sections = document.querySelectorAll('.content-section[id]');
+
+  if (dotItems.length > 0 && sections.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          dotItems.forEach(d => d.classList.toggle('active', d.getAttribute('data-section') === id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
+  }
+
+  // Smooth scroll for dot nav
+  dotItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = item.getAttribute('data-section') ?? '';
+      const target = document.getElementById(targetId);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+<script>
+  function initVideos(container: Element | Document = document) {
+    container.querySelectorAll<HTMLVideoElement>('video[data-video-src]').forEach(video => {
+      if (!video.src) {
+        video.src = video.dataset.videoSrc!;
+        video.load();
+      }
+    });
+  }
+
+  // Init videos in the initially active panel
+  initVideos();
+
+  // When switching tabs, init + play video in the newly active panel
+  document.querySelectorAll('[data-skill-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const panel = document.querySelector('.skill-panel.active');
+      if (panel) {
+        initVideos(panel);
+        panel.querySelectorAll<HTMLVideoElement>('video').forEach(v => v.play());
+      }
+    });
+  });
+</script>

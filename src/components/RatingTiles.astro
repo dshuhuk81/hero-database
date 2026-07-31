@@ -26,10 +26,11 @@ function tierClass(value: string) {
 ---
 
 <div class="big-rating-tiles">
-  {singleCategories.map((cat) => {
+  {singleCategories.map((cat, index) => {
     const val = ratings?.[cat.key] || "";
     return (
-      <div class={`big-rating-tile rating-tile-${tierClass(val)}`}>
+      <div class={`big-rating-tile ${index === 0 ? "is-overall" : "is-mode"} rating-tile-${tierClass(val)}`}>
+        {index === 0 && <span class="big-rating-eyebrow">{t(locale, "hero", "metaRatings")}</span>}
         <span class="big-rating-val">{val || "N/A"}</span>
         <span class="big-rating-label">{cat.label}</span>
       </div>
@@ -40,7 +41,7 @@ function tierClass(value: string) {
 <style>
   .big-rating-tiles {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: minmax(220px, 1.35fr) repeat(2, minmax(150px, 1fr));
     gap: var(--space-4);
     margin-bottom: var(--space-6);
   }
@@ -59,8 +60,31 @@ function tierClass(value: string) {
     transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
   }
 
+  .big-rating-tile.is-overall {
+    position: relative;
+    padding-block: var(--space-9);
+    border-width: 2px;
+    box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+  }
+
+  .big-rating-tile.is-mode {
+    align-self: center;
+    min-height: 78%;
+  }
+
+  .big-rating-eyebrow {
+    position: absolute;
+    top: var(--space-4);
+    font-size: 0.58rem;
+    font-weight: var(--weight-black);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--text-disabled);
+  }
+
   .big-rating-tile:hover {
     transform: translateY(-3px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.24);
   }
 
   /* value row */
@@ -71,6 +95,7 @@ function tierClass(value: string) {
     line-height: 1;
     letter-spacing: 0;
   }
+  .is-overall .big-rating-val { font-size: 4rem; }
 
   /* label row */
   .big-rating-label {
@@ -145,7 +170,7 @@ function tierClass(value: string) {
 
   @media (max-width: 768px) {
     .big-rating-tiles {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1.25fr repeat(2, 1fr);
       gap: var(--space-2);
     }
 
@@ -157,6 +182,7 @@ function tierClass(value: string) {
     .big-rating-val {
       font-size: 2rem;
     }
+    .is-overall .big-rating-val { font-size: 2.8rem; }
 
     .big-rating-label {
       font-size: 0.58rem;
@@ -166,9 +192,12 @@ function tierClass(value: string) {
 
   @media (max-width: 480px) {
     .big-rating-tiles {
+      grid-template-columns: repeat(2, 1fr);
       gap: var(--space-2);
     }
 
+    .big-rating-tile.is-overall { grid-column: 1 / -1; }
+    .big-rating-tile.is-mode { min-height: auto; }
     .big-rating-label {
       font-size: 0.5rem;
     }

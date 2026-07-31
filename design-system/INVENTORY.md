@@ -1,4 +1,7 @@
 # Design System Inventory
+
+> For the current product-wide visual direction and the checklist used to build or
+> audit pages, see [STYLE_GUIDELINES.md](./STYLE_GUIDELINES.md).
 Phase 0 - READ ONLY Audit
 
 ---
