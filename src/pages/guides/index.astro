@@ -13,11 +13,6 @@ const MODE_GUIDE_HREFS = ["/events", "/guides/hallowed-arklash", "/guides/divine
 const MODE_GUIDE_LABELS: Record<string, string> = {
   "/events": "Timed Challenge",
 };
-const MODE_GUIDES_WITHOUT_BADGE = new Set([
-  "/guides/golden-arcanum",
-  "/guides/votive-festival",
-  "/guides/benevolent-feast",
-]);
 const modeCards = MODE_GUIDE_HREFS
   .map((href) => navEntries.find((entry) => entry.href === href))
   .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
@@ -25,7 +20,7 @@ const modeCards = MODE_GUIDE_HREFS
   .map((entry) => ({
     ...entry,
     displayLabel: MODE_GUIDE_LABELS[entry.href] ?? entry.label,
-    activeBadge: MODE_GUIDES_WITHOUT_BADGE.has(entry.href) ? undefined : activeBadge(entry),
+    activeBadge: entry.href === "/events" ? undefined : activeBadge(entry),
   }));
 const guidesBadge = activeBadge(navEntries.find((entry) => entry.href === "/guides")!);
 
@@ -496,6 +491,12 @@ const heroDirectory = cards.slice(1);
     -webkit-line-clamp: 1;
   }
 
+  .guide-directory-arrow {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
   .guide-directory-badge {
     flex: 0 0 auto;
     padding: var(--space-1) var(--space-2);
@@ -513,12 +514,6 @@ const heroDirectory = cards.slice(1);
     position: absolute;
     top: var(--space-4);
     right: var(--space-4);
-  }
-
-  .guide-directory-arrow {
-    flex: 0 0 auto;
-    color: var(--text-muted);
-    font-size: var(--text-lg);
   }
 
   .guide-hero-directory {
@@ -628,5 +623,6 @@ const heroDirectory = cards.slice(1);
     .guide-directory-badge {
       display: none;
     }
+
   }
 </style>
