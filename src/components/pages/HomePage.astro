@@ -30,6 +30,11 @@ const jsonLd = {
 };
 
 const hrefFor = (href: string) => localizePath(href, locale);
+const featuredImageFor = (href: string) => href === "/heroes"
+  ? "/teaser/herolist.webp"
+  : href === "/tierlist"
+    ? "/teaser/tierlist.webp"
+    : undefined;
 ---
 
 <Base
@@ -110,11 +115,24 @@ const hrefFor = (href: string) => localizePath(href, locale);
         <div class="featured-grid">
           {featured.map((entry, index) => {
             const badge = activeBadge(entry);
+            const featuredImage = featuredImageFor(entry.href);
             return (
-              <a class={`featured-card featured-card-${index + 1}`} href={hrefFor(entry.href)}>
-                <div class="featured-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
-                </div>
+              <a class={`featured-card featured-card-${index + 1}${featuredImage ? " featured-card-image" : ""}`} href={hrefFor(entry.href)}>
+                {featuredImage ? (
+                  <div class="featured-image-wrap">
+                    <img
+                      class="featured-image"
+                      src={featuredImage}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                ) : (
+                  <div class="featured-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={entry.icon} />
+                  </div>
+                )}
                 <div class="featured-copy">
                   <div class="featured-title-row">
                     <h3>{navLabel(entry.href, entry.label, locale)}</h3>
@@ -142,11 +160,14 @@ const hrefFor = (href: string) => localizePath(href, locale);
           <p>{t(locale, "home", "supportCompactBody")}</p>
         </div>
         <div class="support-actions">
-          <a href="https://ko-fi.com/dsfrieren" target="_blank" rel="noopener noreferrer" class="support-primary">
-            {t(locale, "home", "supportKofi")}
+          <a href="https://buymeacoffee.com/dshuhuk1" target="_blank" rel="noopener noreferrer" class="support-primary">
+            {t(locale, "home", "supportBuyMeCoffee")}
           </a>
           <a href="https://www.paypal.com/donate/?hosted_button_id=EEMDMAMUL8P8A" target="_blank" rel="noopener noreferrer" class="support-secondary">
             {t(locale, "home", "supportPaypal")}
+          </a>
+          <a href="https://ko-fi.com/dsfrieren" target="_blank" rel="noopener noreferrer" class="support-secondary">
+            {t(locale, "home", "supportKofi")}
           </a>
         </div>
       </aside>
@@ -464,6 +485,42 @@ const hrefFor = (href: string) => localizePath(href, locale);
     border-color: var(--border-medium);
   }
 
+  .featured-card-image {
+    padding-top: 0;
+  }
+
+  .featured-image-wrap {
+    position: relative;
+    z-index: 1;
+    width: calc(100% + (2 * var(--space-6)));
+    height: 238px;
+    margin: 0 calc(-1 * var(--space-6));
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+  }
+
+  .featured-image-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 68%, rgba(7, 6, 12, 0.42));
+    pointer-events: none;
+  }
+
+  .featured-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: left center;
+    transition: transform 280ms ease;
+  }
+
+  .featured-card-image:hover .featured-image {
+    transform: scale(1.025);
+  }
+
   .featured-icon {
     width: 58px;
     height: 58px;
@@ -485,6 +542,10 @@ const hrefFor = (href: string) => localizePath(href, locale);
     z-index: 1;
     max-width: 420px;
     margin-top: var(--space-10);
+  }
+
+  .featured-card-image .featured-copy {
+    margin-top: var(--space-5);
   }
 
   .featured-title-row,
@@ -671,20 +732,41 @@ const hrefFor = (href: string) => localizePath(href, locale);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: 0 var(--space-5);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
     font-size: var(--text-sm);
     font-weight: var(--weight-bold);
     text-decoration: none;
+    transition: var(--transition-transform), var(--transition-colors);
   }
 
   .support-primary {
-    padding: 0 var(--space-5);
-    border-radius: var(--radius-md);
+    border-color: var(--accent-gold);
     background: var(--accent-gold);
     color: var(--bg-base);
   }
 
   .support-secondary {
+    border-color: color-mix(in srgb, var(--accent-gold) 55%, var(--border-medium));
+    background: color-mix(in srgb, var(--accent-gold) 5%, transparent);
     color: var(--accent-gold-light);
+  }
+
+  .support-primary:hover,
+  .support-secondary:hover {
+    transform: translateY(-2px);
+  }
+
+  .support-primary:hover {
+    border-color: var(--accent-gold-light);
+    background: var(--accent-gold-light);
+  }
+
+  .support-secondary:hover {
+    border-color: var(--accent-gold);
+    background: var(--accent-gold-dim);
+    color: var(--accent-gold);
   }
 
   .language-notice {
@@ -825,6 +907,7 @@ const hrefFor = (href: string) => localizePath(href, locale);
       align-items: flex-start;
       flex-direction: column;
     }
+
   }
 
   @media (max-width: 768px) {
@@ -894,6 +977,16 @@ const hrefFor = (href: string) => localizePath(href, locale);
       padding: var(--space-5);
     }
 
+    .featured-card-image {
+      padding-top: 0;
+    }
+
+    .featured-image-wrap {
+      width: calc(100% + (2 * var(--space-5)));
+      height: 190px;
+      margin-inline: calc(-1 * var(--space-5));
+    }
+
     .featured-arrow {
       top: var(--space-5);
       right: var(--space-5);
@@ -935,8 +1028,11 @@ const hrefFor = (href: string) => localizePath(href, locale);
   @media (prefers-reduced-motion: reduce) {
     .home-action,
     .featured-card,
+    .featured-image,
     .featured-arrow,
-    .link-arrow {
+    .link-arrow,
+    .support-primary,
+    .support-secondary {
       transition: none;
     }
   }

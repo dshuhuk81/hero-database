@@ -207,6 +207,13 @@ const translations: TranslationTree = {
       ru: "Сайт создаётся одним человеком, бесплатен и оплачивается из личных средств. Небольшая поддержка помогает хостингу, обновлениям данных и новым инструментам.",
       zh: "个人开发、免费使用，并由自己承担费用。小额支持能帮助维持托管、数据更新和新工具开发。",
     },
+    supportBuyMeCoffee: {
+      en: "Buy me a coffee",
+      de: "Spendiere mir einen Kaffee",
+      es: "Invítame a un café",
+      ru: "Угостить меня кофе",
+      zh: "请我喝杯咖啡",
+    },
     supportKofi: { en: "Support on Ko-fi", de: "Auf Ko-fi unterstützen", es: "Apoyar en Ko-fi", ru: "Поддержать на Ko-fi", zh: "在 Ko-fi 上支持" },
     supportPaypal: { en: "Donate via PayPal", de: "Per PayPal spenden", es: "Donar por PayPal", ru: "Пожертвовать через PayPal", zh: "通过 PayPal 捐助" },
     languageNoticeEyebrow: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" },
