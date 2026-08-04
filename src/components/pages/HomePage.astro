@@ -34,7 +34,9 @@ const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
   : href === "/tierlist"
     ? "/teaser/tierlist.webp"
-    : undefined;
+    : href === "/guides"
+      ? "/teaser/guides.png"
+      : undefined;
 ---
 
 <Base
@@ -106,6 +108,31 @@ const featuredImageFor = (href: string) => href === "/heroes"
     </section>
 
     <main class="home-main">
+      <aside class="launch-card" aria-labelledby="launchTitle">
+        <div class="launch-copy">
+          <p class="launch-kicker">
+            <span class="launch-dot" aria-hidden="true"></span>
+            {t(locale, "home", "latestUpdateEyebrow")}
+          </p>
+          <h2 id="launchTitle">{t(locale, "home", "latestUpdateTitle")}</h2>
+          <p>{t(locale, "home", "latestUpdateBody")}</p>
+          <a href={hrefFor("/heroes/audhumla")}>
+            {t(locale, "home", "latestUpdateAction")}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+        <div class="launch-art" aria-hidden="true">
+          <img
+            src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/audhumla.webp"
+            alt=""
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </aside>
+
       <section class="home-section" aria-labelledby="startTitle">
         <header class="section-heading">
           <p class="section-kicker">{t(locale, "home", "exploreHeadline")}</p>
@@ -121,7 +148,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
                 {featuredImage ? (
                   <div class="featured-image-wrap">
                     <img
-                      class="featured-image"
+                      class={`featured-image${entry.href === "/guides" ? " featured-image-centered" : ""}`}
                       src={featuredImage}
                       alt=""
                       loading="lazy"
@@ -423,6 +450,112 @@ const featuredImageFor = (href: string) => href === "/heroes"
     margin-top: var(--space-20);
   }
 
+  .launch-card + .home-section {
+    margin-top: var(--space-16);
+  }
+
+  .launch-card {
+    position: relative;
+    min-height: 250px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(500px 260px at 82% 40%, var(--accent-purple-dim), transparent 72%),
+      var(--bg-raised);
+  }
+
+  .launch-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    padding: var(--space-8);
+  }
+
+  .launch-kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-3);
+    color: var(--accent-gold-light);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  .launch-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-full);
+    background: var(--accent-gold);
+    box-shadow: 0 0 0 4px var(--accent-gold-dim);
+  }
+
+  .launch-card h2 {
+    margin: 0;
+    color: var(--text-bright);
+    font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl));
+    font-weight: var(--weight-black);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .launch-copy > p:not(.launch-kicker) {
+    max-width: 580px;
+    margin: var(--space-3) 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .launch-copy a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    color: var(--accent-gold-light);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+  }
+
+  .launch-copy a svg {
+    width: 18px;
+    height: 18px;
+    transition: var(--transition-transform);
+  }
+
+  .launch-copy a:hover svg {
+    transform: translateX(var(--space-1));
+  }
+
+  .launch-art {
+    position: relative;
+    min-height: 250px;
+    overflow: hidden;
+  }
+
+  .launch-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--bg-raised), transparent 45%);
+  }
+
+  .launch-art img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center top;
+  }
+
   .support-card + .home-section {
     margin-top: var(--space-20);
   }
@@ -515,6 +648,10 @@ const featuredImageFor = (href: string) => href === "/heroes"
     object-fit: cover;
     object-position: left center;
     transition: transform 280ms ease;
+  }
+
+  .featured-image-centered {
+    object-position: 50% 50%;
   }
 
   .featured-card-image:hover .featured-image {
@@ -944,6 +1081,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     }
 
     .home-section + .home-section,
+    .launch-card + .home-section,
     .support-card + .home-section,
     .support-card {
       margin-top: var(--space-16);
@@ -962,6 +1100,24 @@ const featuredImageFor = (href: string) => href === "/heroes"
     .home-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
+    }
+
+    .launch-card {
+      min-height: 0;
+      grid-template-columns: 1fr;
+    }
+
+    .launch-copy {
+      padding: var(--space-5);
+    }
+
+    .launch-art {
+      min-height: 190px;
+      grid-row: 1;
+    }
+
+    .launch-art::after {
+      background: linear-gradient(0deg, var(--bg-raised), transparent 55%);
     }
 
     .featured-grid {
@@ -1027,6 +1183,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   @media (prefers-reduced-motion: reduce) {
     .home-action,
+    .launch-copy a svg,
     .featured-card,
     .featured-image,
     .featured-arrow,
