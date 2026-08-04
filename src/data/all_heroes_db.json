@@ -1438,7 +1438,8 @@
     "id": "audhumla",
     "name": "Audhumla",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/audhumla.webp",
-    "release": false,
+    "release": true,
+    "newHero": true,
     "faction": "Diamonds",
     "role": "Nimble",
     "class": "Archer",
@@ -1524,8 +1525,8 @@
       }
     ],
     "relic": {
-      "name": "Vortex of Grace",
-      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "name": "",
+      "description": "",
       "upgrades": {
         "level2": "",
         "level3": "",
@@ -4780,7 +4781,7 @@
     "name": "Hades",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hades.webp",
     "release": true,
-    "newHero": true,
+    "newHero": false,
     "faction": "Starglint",
     "role": "Nimble",
     "class": "Warrior",
@@ -7058,7 +7059,7 @@
     "name": "Idunn",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/idunn.webp",
     "release": true,
-    "newHero": true,
+    "newHero": false,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Support",

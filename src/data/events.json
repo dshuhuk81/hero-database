@@ -1,188 +1,93 @@
 {
   "campaigns": [
     {
-      "id": "idunn-event",
+      "id": "audhumla-event",
       "name": {
-        "en": "Idunn Timed Challenge",
-        "de": "Idunn-Zeit-Herausforderung",
-        "es": "Desafío temporal de Idunn",
-        "ru": "Временное испытание Идунн",
-        "zh": "伊登限时挑战"
+        "en": "Timed Challenge",
+        "de": "Zeit-Herausforderung",
+        "es": "Desafío temporal",
+        "ru": "Временное испытание",
+        "zh": "限时挑战"
       },
-      "hero": "idunn",
-      "startDate": "2026-07-22",
-      "endDate": "2026-08-04",
+      "hero": "audhumla",
+      "startDate": "2026-08-05",
+      "endDate": "2026-08-18",
       "description": {
-        "en": "Recommended team compositions for every Idunn challenge stage.",
-        "de": "Empfohlene Teamaufstellungen für jede Stufe der Idunn-Herausforderung.",
-        "es": "Composiciones recomendadas para cada etapa del desafío de Idunn.",
-        "ru": "Рекомендуемые составы для каждого этапа испытания Идунн.",
-        "zh": "伊登挑战每个关卡的推荐阵容。"
+        "en": "Recommended team compositions for timed challenge stages.",
+        "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
+        "es": "Composiciones de equipo recomendadas para las etapas del desafío temporal.",
+        "ru": "Рекомендуемые составы команд для этапов временного испытания.",
+        "zh": "限时挑战关卡的推荐阵容。"
       },
       "stages": [
         {
           "id": 1,
           "name": {
-            "en": "1. Depths of the Clamor",
-            "de": "1. Tiefen des Getöses",
-            "es": "1. Profundidades del clamor",
-            "ru": "1. Глубины гула",
-            "zh": "1. 喧嚣深处"
+            "en": "",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
           },
           "composition": {
-            "front": [
-              "aries"
-            ],
-            "back": [
-              "idunn"
-            ]
+            "front": [],
+            "back": []
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "2. The Shadow Behind the Spotlight",
-            "de": "2. Der Schatten hinter dem Rampenlicht",
-            "es": "2. La sombra tras los focos",
-            "ru": "2. Тень за софитами",
-            "zh": "2. 聚光灯后的影子"
+            "en": "",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
           },
           "composition": {
-            "front": [
-              "hladgunnr",
-              "taurus"
-            ],
-            "back": [
-              "idunn",
-              "caishen",
-              "isis"
-            ]
+            "front": ["prometheus", "caishen"],
+            "back": ["mengpo", "yanluo", "audhumla"]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "3. Refined Love",
-            "de": "3. Veredelte Liebe",
-            "es": "3. Amor refinado",
-            "ru": "3. Утонченная любовь",
-            "zh": "3. 淬炼的爱"
+            "en": "",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
           },
           "composition": {
-            "front": [
-              "isis",
-              "prometheus"
-            ],
-            "back": [
-              "taurus",
-              "idunn",
-              "yuelao"
-            ]
+            "front": ["nuwa", "demeter"],
+            "back": ["audhumla", "jormungandr" ,"wenshen"]
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "4. Spring Never Arrived",
-            "de": "4. Der Frühling kam nie",
-            "es": "4. La primavera nunca llegó",
-            "ru": "4. Весна так и не пришла",
-            "zh": "4. 春天从未到来"
+            "en": "",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
           },
           "composition": {
-            "front": [
-              "isis",
-              "hladgunnr"
-            ],
-            "back": [
-              "idunn",
-              "caishen",
-              "yuelao"
-            ]
+            "front": ["poseidon", "khepri"],
+            "back": ["audhumla", "skadi", "momus"]
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "5. The True Arc",
-            "de": "5. Der wahre Bogen",
-            "es": "5. El arco verdadero",
-            "ru": "5. Истинная арка",
-            "zh": "5. 真正的弧光"
+            "en": "",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
           },
           "composition": {
-            "front": [
-              "hladgunnr",
-              "ullr"
-            ],
-            "back": [
-              "idunn",
-              "caishen",
-              "yuelao"
-            ]
-          }
-        },
-        {
-          "id": 6,
-          "name": {
-            "en": "6. I Loved a Mistake",
-            "de": "6. Ich liebte einen Fehler",
-            "es": "6. Amé un error",
-            "ru": "6. Я любила ошибку",
-            "zh": "6. 我爱上了一个错误"
-          },
-          "composition": {
-            "front": [
-              "hladgunnr",
-              "prometheus"
-            ],
-            "back": [
-              "idunn",
-              "caishen",
-              "yuelao"
-            ]
-          }
-        },
-        {
-          "id": 7,
-          "name": {
-            "en": "7. Spring Breeze Brushes the Scars",
-            "de": "7. Frühlingsbrise streift die Narben",
-            "es": "7. La brisa primaveral roza las cicatrices",
-            "ru": "7. Весенний ветер касается шрамов",
-            "zh": "7. 春风拂过伤痕"
-          },
-          "composition": {
-            "front": [
-              "prometheus",
-              "hladgunnr"
-            ],
-            "back": [
-              "yuelao",
-              "caishen",
-              "idunn"
-            ]
-          }
-        },
-        {
-          "id": 8,
-          "name": {
-            "en": "8. Crunch, Crunch, Take a Bite",
-            "de": "8. Knack, knack, beiß hinein",
-            "es": "8. Ñam, ñam, dale un mordisco",
-            "ru": "8. Хрусть, хрусть, откуси кусочек",
-            "zh": "8. 咔嚓咔嚓，咬一口"
-          },
-          "composition": {
-            "front": [
-              "anubis",
-              "heracles"
-            ],
-            "back": [
-              "diana",
-              "idunn",
-              "wenshen"
-            ]
+            "front": ["ares", "athena"],
+            "back": ["audhumla", "meret", "set"]
           }
         }
       ]
