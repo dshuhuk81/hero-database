@@ -1,14 +1,10 @@
 import heroRatings from "../ratings/hero-ratings.json";
+import { HERO_RATING_KEYS } from "../ratings/heroRatingFields.js";
 import { heroes as baseHeroes, getHeroById as getBaseHeroById, statMaxima } from "./index.js";
 
 function ratingsForHeroId(id) {
   const r = heroRatings?.[id];
-  if (!r) return { overall: null, pvp: null, pve: null };
-  return {
-    overall: r.overall ?? null,
-    pvp: r.pvp ?? null,
-    pve: r.pve ?? null,
-  };
+  return Object.fromEntries(HERO_RATING_KEYS.map((key) => [key, r?.[key] ?? null]));
 }
 
 function withRatings(hero) {
@@ -26,4 +22,3 @@ export function getHeroById(id) {
 }
 
 export { statMaxima };
-

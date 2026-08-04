@@ -2,6 +2,7 @@
 // CMS Backend für Synergy Tag Management
 
 import express from 'express';
+import { HERO_RATING_KEYS } from '../src/data/ratings/heroRatingFields.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
@@ -345,12 +346,10 @@ app.get('/api/admin/heroes/:id', async (req, res) => {
 
     res.json({
       hero,
-      ratings: ratings[id] || {
-        name: hero.name,
-        overall: '',
-        pvp: '',
-        pve: '',
-      },
+      ratings: ratings[id] || Object.fromEntries([
+        ['name', hero.name],
+        ...HERO_RATING_KEYS.map((key) => [key, '']),
+      ]),
       investment: invest[id] || {
         relicRecommendation: '',
         usedIn: '',
@@ -412,14 +411,18 @@ app.patch('/api/admin/ratings/:id', async (req, res) => {
     const ratings = await readJson(HERO_RATINGS_FILE);
     const hasExistingRating = Boolean(ratings[id]);
     const current = ratings[id] || { name: hero.name };
-    const next = {
-      name: hero.name,
-      overall: sanitizeRating(req.body.overall ?? current.overall ?? ''),
-      pvp: sanitizeRating(req.body.pvp ?? current.pvp ?? ''),
-      pve: sanitizeRating(req.body.pve ?? current.pve ?? ''),
-    };
+    const unsupportedFields = Object.keys(req.body || {}).filter((field) => !HERO_RATING_KEYS.includes(field));
+    if (unsupportedFields.length > 0) {
+      const err = new Error(`Unsupported rating fields: ${unsupportedFields.join(', ')}`);
+      err.statusCode = 400;
+      throw err;
+    }
+    const next = Object.fromEntries([
+      ['name', hero.name],
+      ...HERO_RATING_KEYS.map((key) => [key, sanitizeRating(req.body[key] ?? current[key] ?? '')]),
+    ]);
 
-    if (!hasExistingRating && !next.overall && !next.pvp && !next.pve) {
+    if (!hasExistingRating && !HERO_RATING_KEYS.some((key) => next[key])) {
       return res.json({ success: true, skipped: true, ratings: next, changedFiles: [] });
     }
 

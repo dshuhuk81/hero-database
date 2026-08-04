@@ -3,6 +3,7 @@ export const prerender = true;
 
 import Base from "../layouts/Base.astro";
 import { getProjectStatus } from "../utils/projectStatus.js";
+import { HERO_RATING_FIELDS } from "../data/ratings/heroRatingFields.js";
 
 const status = getProjectStatus();
 const generatedDate = new Intl.DateTimeFormat("en", {
@@ -320,7 +321,7 @@ const kpis = [
         </button>
       </div>
 
-      <form class="edit-form" id="heroEditForm">
+      <form class="edit-form" id="heroEditForm" data-rating-fields={JSON.stringify(HERO_RATING_FIELDS.map(({ key }) => key))}>
         <input type="hidden" name="id" />
 
         <section class="edit-section">
@@ -361,10 +362,10 @@ const kpis = [
         <section class="edit-section">
           <h3>Ratings</h3>
           <div class="rating-grid">
-            {["overall", "pvp", "pve"].map((field) => (
+            {HERO_RATING_FIELDS.map((field) => (
               <label>
-                <span>{field}</span>
-                <select name={field}>
+                <span>{field.label}</span>
+                <select name={field.key}>
                   <option value="">Missing</option>
                   <option value="S+">S+</option>
                   <option value="S">S</option>
@@ -1058,7 +1059,7 @@ const kpis = [
       setEditorialLists(hero);
       renderPartnerList();
 
-      for (const field of ["overall", "pvp", "pve"]) {
+      for (const field of JSON.parse(editForm.dataset.ratingFields || "[]")) {
         setField(field, ratings?.[field] || "");
       }
 
@@ -1195,11 +1196,9 @@ const kpis = [
 
         saveResponses.push(await apiFetch(`/api/admin/ratings/${heroId}`, {
           method: "PATCH",
-          body: JSON.stringify({
-            overall: getField("overall"),
-            pvp: getField("pvp"),
-            pve: getField("pve"),
-          }),
+          body: JSON.stringify(Object.fromEntries(
+            JSON.parse(editForm.dataset.ratingFields || "[]").map((field) => [field, getField(field)]),
+          )),
         }));
 
         saveResponses.push(await apiFetch(`/api/admin/invest/${heroId}`, {

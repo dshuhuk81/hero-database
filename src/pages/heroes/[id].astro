@@ -12,6 +12,7 @@ import invest from "../../data/ratings/invest.json";
 import divineThroneData from "../../data/divine-throne.json";
 import allVirtues from "../../data/virtues.json";
 import db from "../../data/all_heroes_db.json";
+import { HERO_RATING_FIELDS } from "../../data/ratings/heroRatingFields.js";
 
 const R2 = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const VIRTUE_RARITY_SUFFIX: Record<string, string> = {
@@ -96,42 +97,22 @@ const statEntries = Object.entries(hero.stats ?? {}).map(([key, raw]) => {
 const activeStats = statEntries.filter((s) => s.value > 0);
 
 // ---------------------------------------------------------------------- ratings
-// Render only grades that exist in hero-ratings.json rather than inventing
-// unsupported mode-specific categories.
-const RATING_FIELDS: Array<{ key: string; label: string }> = [
-  { key: "pvp", label: "PvP" },
-  { key: "pve", label: "PvE" },
-  { key: "pveEarly", label: "PvE Early" },
-  { key: "pveLate", label: "PvE Late" },
-];
-const subRatings = RATING_FIELDS
-  .filter((f) => rating[f.key])
-  .map((f) => ({ ...f, grade: String(rating[f.key]) }));
+const subRatings = HERO_RATING_FIELDS
+  .filter((field) => field.group === "Modes")
+  .map((field) => ({ ...field, grade: rating[field.key] ? String(rating[field.key]) : "" }));
 
 const RATING_GROUPS = [
   {
     title: "Grim Surge",
-    modes: [
-      { key: "grimSurgeBoss1", label: "Spirit of the Night Hag" },
-      { key: "grimSurgeBoss2", label: "Epica" },
-    ],
+    modes: HERO_RATING_FIELDS.filter((field) => field.group === "Grim Surge"),
   },
   {
     title: "Others",
-    modes: [
-      { key: "odyssey", label: "Odyssey" },
-      { key: "spire", label: "Spire" },
-      { key: "delusionsDen", label: "Delusions Den" },
-      { key: "realmRover", label: "Realm Rover" },
-    ],
+    modes: HERO_RATING_FIELDS.filter((field) => field.group === "Others"),
   },
   {
     title: "Torment Rift",
-    modes: [
-      { key: "tormentRiftBaphomet", label: "Baphomet" },
-      { key: "tormentRiftLilith", label: "Lilith" },
-      { key: "tormentRiftBoss3", label: "Isthar IV" },
-    ],
+    modes: HERO_RATING_FIELDS.filter((field) => field.group === "Torment Rift"),
   },
 ].map((group) => ({
   ...group,
@@ -313,9 +294,9 @@ const tabs = [
               <h3 class="lt-rating-group-title">Modes</h3>
               <div class="lt-grade-grid">
                 {subRatings.map((r) => (
-                  <div class="lt-grade-tile">
+                  <div class={`lt-grade-tile${r.grade ? "" : " is-placeholder"}`}>
                     <span class="lt-grade-tile-label">{r.label}</span>
-                    <span class="lt-grade-tile-value" data-tier={r.grade}>{r.grade}</span>
+                    <span class="lt-grade-tile-value" data-tier={r.grade || "N/A"}>{r.grade || "N/A"}</span>
                   </div>
                 ))}
               </div>
