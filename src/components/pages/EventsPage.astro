@@ -96,7 +96,7 @@ const copy = {
             <img
               src={heroCardSrc(campaign.heroId, 360)}
               srcset={heroCardSrcset(campaign.heroId)}
-              sizes="(max-width: 720px) 112px, 180px"
+              sizes="(max-width: 480px) calc(100vw - 72px), (max-width: 720px) 112px, 38vw"
               alt={campaign.heroName}
               width="360"
               height="360"
