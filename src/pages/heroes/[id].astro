@@ -593,15 +593,14 @@ const tabs = [
       }
       .lt-portrait { display: flex; justify-content: center; }
       .lt-portrait img {
-
-        width: auto; */
-    max-width: 640px;
-    height: auto;
-    display: block;
-    margin-bottom: -18px;
-    filter: drop-shadow(0 26px 46px rgba(0, 0, 0, .72));
-    position: absolute;
-    top: 0;
+        width: auto;
+        max-width: 640px;
+        height: auto;
+        display: block;
+        margin-bottom: -18px;
+        filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.72));
+        position: absolute;
+        top: 0;
       }
 
       .lt-ident { text-align: right; padding-bottom: var(--space-10); }
@@ -1151,6 +1150,7 @@ const tabs = [
 
       /* --------------------------------------------------------- responsive */
       @media (max-width: 1000px) {
+        .lt-portrait img { max-width: 400px; }
         .lt-duo { grid-template-columns: minmax(0, 1fr); gap: 52px; }
         .lt-skills { grid-template-columns: minmax(0, 1fr); }
         .lt-skill-list { order: -1; }
@@ -1166,9 +1166,11 @@ const tabs = [
            single-column stack that same offset would sit on top of the class
            row, so it is reset here. */
         .lt-portrait img {
+          position: static;
+          width: auto;
           max-width: 250px;
           max-height: 280px;
-          margin-bottom: 0;
+          margin: 0 auto;
         }
         .lt-ident { text-align: center; padding-bottom: 4px; }
         .lt-headline, .lt-hero-meta, .lt-chips { justify-content: center; }
