@@ -23,49 +23,35 @@
         {
           "id": 1,
           "name": {
-            "en": "",
+            "en": "Imhotep on the Tip of the Tongue",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
           "composition": {
-            "front": [],
-            "back": []
+            "front": ["prometheus"],
+            "back": ["audhumla"]
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "",
+            "en": "A Taste of Imhotep",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
           "composition": {
-            "front": ["prometheus", "caishen"],
-            "back": ["mengpo", "yanluo", "audhumla"]
+            "front": ["audhumla"],
+            "back": [""]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
-          },
-          "composition": {
-            "front": ["nuba", "demeter"],
-            "back": ["audhumla", "jormungandr" ,"wenshen"]
-          }
-        },
-        {
-          "id": 4,
-          "name": {
-            "en": "",
+            "en": "Tasting through the Forest",
             "de": "",
             "es": "",
             "ru": "",
@@ -77,17 +63,59 @@
           }
         },
         {
-          "id": 5,
+          "id": 4,
           "name": {
-            "en": "",
+            "en": "A Feast to Remember",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
           "composition": {
-            "front": ["ares", "athena"],
-            "back": ["audhumla", "meret", "set"]
+            "front": [],
+            "back": []
+          }
+        },
+        {
+          "id": 5,
+          "name": {
+            "en": "Full Belly, No Worries",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
+          },
+        "composition": {
+            "front": [],
+            "back": []
+          }
+        },
+        {
+          "id": 6,
+          "name": {
+            "en": "The Joy of Plenty",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
+          },
+       "composition": {
+            "front": [],
+            "back": []
+          }
+        },
+        {
+          "id": 7,
+          "name": {
+            "en": "A Regret of Favor",
+            "de": "",
+            "es": "",
+            "ru": "",
+            "zh": ""
+          },
+         "composition": {
+            "front": [],
+            "back": []
           }
         }
       ]
