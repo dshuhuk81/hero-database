@@ -78,30 +78,29 @@ const relic = {
 };
 
 const guideRatings = [
-  { label: "Overall", value: "A" },
-  { label: "Campaign", value: "A" },
-  { label: "Diamond Tower", value: "A" },
-  { label: "PvP", value: "B" },
+  { label: "Overall", value: "C" },
+  { label: "Campaign", value: "C" },
+  { label: "Diamond Tower", value: "C" },
+  { label: "Solo Boss", value: "B" },
 ];
 
 const strengths = [
-  "Repeated max-HP damage gives her a clear job against one durable enemy",
+  "A stationary solo boss lets her keep one target and complete her attack sequence",
   "Builds up to 300% ATK Speed by herself instead of demanding a speed-focused support",
   "The Relic guarantees a ten-second final damage window after the first lethal hit",
-  "Relic 10 is a practical budget breakpoint; Relic 30 raises her damage ceiling sharply",
-  "Relic 20 prevents Control from wasting the most important Overload window",
-  "Can be revived after the Relic's forced death",
-  "Close-range knockback gives an Archer some protection against approaching enemies",
+  "Can temporarily fill an empty Diamond damage slot when stronger options are unavailable",
+  "May substitute for Isis in early solo-boss teams if you do not own her yet",
 ];
 
 const weaknesses = [
+  "Level suppression reduces the True Damage that is supposed to justify using her",
+  "Her endgame Campaign damage is generally too low to earn a stable team slot",
   "Changing targets removes both her ATK-Speed build-up and progress toward the third hit",
   "Invisible, untargetable, or dying enemies can break her best damage window",
-  "Her True Damage loses most of its impact when she fights far above her own level",
+  "She is outclassed by better dedicated damage dealers in most modes",
   "The Ultimate locks her out of active skills for eight seconds",
   "Overload ends in a forced death that immunity cannot prevent",
   "She can still be controlled during Overload before Relic 20",
-  "Backline dives can force her into survival mode before she has built momentum",
   "She has no established PvP niche and offers little team-wide utility",
 ];
 
@@ -139,21 +138,21 @@ const synergies = [
       <h2 class="guide-section-title">Meet Audhumla</h2>
       <div class="guide-card">
         <h3 class="guide-card-heading">Pick one target and never let go</h3>
-        <p class="guide-card-subheading">Audhumla is a specialized physical Archer for Campaign and Diamond Tower. She accelerates while hitting the same enemy, triggers max-HP True Damage on every third consecutive normal attack, and turns her first lethal hit into ten more seconds of firing. She looks like a universal tank killer, but target changes and high level deficits can remove much of that promise.</p>
+        <p class="guide-card-subheading">Audhumla is a Diamond Archer whose kit promises repeated max-HP True Damage, but level suppression reduces that defining mechanic to a small part of her real output. Her remaining physical damage is usually not enough to compensate. She can fill an empty damage slot early on or cover solo-boss fights when Isis is unavailable, but she should not be treated as a long-term carry.</p>
       </div>
     </section>
 
     <section class="guide-section">
       <h2 class="guide-section-title">Quick Overview</h2>
       <div class="guide-card">
-        <h3 class="guide-card-heading">A formation-dependent PvE specialist</h3>
+        <h3 class="guide-card-heading">An early filler, not a long-term damage dealer</h3>
         <div class="guide-overview-grid">
           <div class="guide-overview-item"><div class="guide-overview-label">Role</div><div class="guide-overview-value">Sustained single-target DPS</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Best in</div><div class="guide-overview-value">Campaign and Diamond Tower</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Needs</div><div class="guide-overview-value">Stable targeting, frontline protection, long-lived enemies</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Relic</div><div class="guide-overview-value">10 budget, 20 safety, 30 damage ceiling</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Best case</div><div class="guide-overview-value">Early solo-boss filler for a Diamond team without Isis</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Main problem</div><div class="guide-overview-value">Suppression minimizes the True Damage her kit is built around</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Investment</div><div class="guide-overview-value">Keep it low unless your roster forces you to use her</div></div>
         </div>
-        <p class="guide-quick-verdict">Pick Audhumla to add damage against a durable target in PvE. Skip her if you need an all-purpose carry, a PvP hero, or reliable True Damage while pushing stages far above your level.</p>
+        <p class="guide-quick-verdict">Use Audhumla only when you are missing a better Diamond damage dealer. Her narrow fallback case is an early-game team fighting one stationary boss, especially before you obtain Isis. In Campaign and endgame progression, stronger heroes should replace her as soon as they are available.</p>
         <div class="guide-rating-grid" aria-label="Audhumla ratings">
           {guideRatings.map((rating) => (
             <div class="guide-rating-tile" data-rating={rating.value}>
@@ -223,34 +222,36 @@ const synergies = [
         <div class="guide-apple-breakpoint"><span>Relic 20</span><strong>Reliable Overload</strong><p>Super Armor prevents Control from consuming most of her fixed final window.</p></div>
         <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Relic 30</span><strong>Damage ceiling</strong><p>The third hit rises to 25% max HP and its cap jumps from 1,800% to 4,000% ATK.</p></div>
       </div>
-      <div class="guide-callout"><strong>Investment rule:</strong> Relic 10 is enough for the budget version. Relic 30 is the major offensive finish, but it does not fix target resets or the level penalty on True Damage.</div>
+      <div class="guide-callout"><strong>Investment rule:</strong> do not chase Relic 30 expecting it to repair her role. It raises the listed ceiling, but suppression and target resets still undermine the mechanic. Relic 10 is the most reasonable stopping point if you must use her as a temporary filler.</div>
     </section>
 
     <section class="guide-section">
       <h2 class="guide-section-title">True Damage Reality</h2>
-      <div class="guide-card">
-        <h3 class="guide-card-heading">It bypasses defense, not the whole damage system</h3>
-        <p class="guide-card-subheading">Audhumla's third hit skips the defense calculation, but shields, invulnerability, general damage modifiers, damage caps, and—most importantly—the level difference still affect the result. It also does not critically strike or gain the usual type and faction modifiers.</p>
-        <div class="guide-overview-grid">
-          <div class="guide-overview-item"><div class="guide-overview-label">30 levels behind</div><div class="guide-overview-value">20% True-Damage reduction</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">50 levels behind</div><div class="guide-overview-value">40% True-Damage reduction</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">70 levels behind</div><div class="guide-overview-value">60% True-Damage reduction</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">100+ levels behind</div><div class="guide-overview-value">90% True-Damage reduction</div></div>
+      <div class="guide-td-dashboard">
+        <div class="guide-td-dashboard__header">
+          <div>
+            <span class="guide-td-dashboard__eyebrow">High level-deficit PvE</span>
+            <h3 class="guide-td-dashboard__title">Suppression can heavily reduce her signature damage</h3>
+          </div>
+          <span class="guide-td-dashboard__status"><span aria-hidden="true"></span>Suppression active</span>
         </div>
-        <div class="guide-callout"><strong>Why this changes the verdict:</strong> at a 100-level deficit, only one tenth of the calculated True Damage remains before later filters. Audhumla can still contribute through her fast physical attacks, but her signature third hit is weakest in the deepest level-deficit pushes.</div>
-        <div class="guide-callout"><strong>ATK cap at the listed Lv300 stats:</strong> with 232,292 ATK, Skill Lv4 caps one proc at 4,181,256 damage. Relic 30 raises the cap to 9,291,680. Battle ATK buffs can increase both caps.</div>
+
+
+        <div class="guide-td-dashboard__footer">
+            <p><strong>This is the kit issue:</strong> her third-hit payoff is designed around True Damage, yet heavy level suppression can reduce it to a minor part of her output. It bypasses Defense—not suppression.</p>
+        </div>
       </div>
     </section>
 
     <section class="guide-section">
       <h2 class="guide-section-title">Where She Works</h2>
       <div class="guide-card">
-        <h3 class="guide-card-heading">Best when one tough enemy stays in front of her</h3>
+        <h3 class="guide-card-heading">A narrow fallback with no strong endgame home</h3>
         <div class="guide-overview-grid">
-          <div class="guide-overview-item"><div class="guide-overview-label">Campaign &middot; A</div><div class="guide-overview-value">Her clearest use. She adds sustained damage to a durable frontline shell, but formations with backline access, frequent summons, or disappearing targets can break her sequence.</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Diamond Tower &middot; A</div><div class="guide-overview-value">Strong into large, durable frontliners when positioned safely. Some floors are poor matches and may still call for a different damage dealer.</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Boss &amp; Rift &middot; B</div><div class="guide-overview-value">A stationary single target suits her mechanics, but she is not automatically a top boss pick. Level deficit, ATK caps, and boss-specific behavior decide her value.</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Arena &middot; C</div><div class="guide-overview-value">Fast deaths, target changes, untargetable effects, Control, and backline pressure all punish her. She has no established PvP role.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Campaign &middot; C</div><div class="guide-overview-value">A roster filler at most. Suppression leaves her with too little damage for a dependable endgame role, while target changes make her sequence even less reliable.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Diamond Tower &middot; C</div><div class="guide-overview-value">Usable when faction restrictions leave an empty slot, but she is not a reason to build a team around her and should be replaced by stronger Diamond options.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Solo Boss &middot; B</div><div class="guide-overview-value">Her one credible fallback role. A stationary target preserves her sequence, so she can cover an early Diamond damage slot when you do not have Isis.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Arena &middot; C</div><div class="guide-overview-value">Fast deaths, target changes, untargetable effects, Control, and backline pressure all punish her. She offers little reason to use her in PvP.</div></div>
         </div>
       </div>
     </section>
@@ -271,7 +272,7 @@ const synergies = [
           </div>
         ))}
       </div>
-      <div class="guide-callout"><strong>Reliable Campaign shell:</strong> Heracles + Meng Po + Bastet + Phoenix + Audhumla. Heracles holds the frontline, Audhumla supplies the extra damage, and Meng Po can bring her back after the Relic's forced death.</div>
+      <div class="guide-callout"><strong>Fallback shell only:</strong> Heracles + Meng Po + Bastet + Phoenix can carry Audhumla through earlier content when your Diamond roster is incomplete. This does not make her an endgame Campaign recommendation; replace her with a stronger damage dealer when possible.</div>
       <div class="guide-callout"><strong>Positioning rule:</strong> keep Audhumla away from the first dive and line her up with the durable enemy you want her to attack. Do not let an immortality effect reach her too early: it cannot cancel the Relic's forced death and may be wasted before Overload begins.</div>
     </section>
 
@@ -298,8 +299,8 @@ const synergies = [
       <h2 class="guide-section-title">Pick or Skip?</h2>
       <div class="guide-card">
         <div class="guide-overview-grid">
-          <div class="guide-overview-item"><div class="guide-overview-label">Pick Audhumla</div><div class="guide-overview-value">Campaign or Diamond Tower is your priority, you use a durable frontline shell, and you want extra damage into enemies that remain visible and alive long enough for her sequence.</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Skip Audhumla</div><div class="guide-overview-value">You need a universal carry, mainly play PvP, push at extreme level deficits, or cannot protect a backline Archer from dives and target disruption.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Pick only if</div><div class="guide-overview-value">Your early Diamond roster lacks a damage dealer and you need a temporary option for a stationary solo boss before obtaining Isis.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Skip in most cases</div><div class="guide-overview-value">You already own a stronger damage dealer, are planning for endgame Campaign, or would need to invest heavily to make her usable.</div></div>
         </div>
       </div>
     </section>
@@ -307,8 +308,8 @@ const synergies = [
     <section class="guide-section">
       <h2 class="guide-section-title">Verdict</h2>
       <div class="guide-verdict-box">
-        <h3 class="guide-verdict-heading">Useful specialist, not a must-pull</h3>
-        <p class="guide-verdict-text">Audhumla has a coherent and satisfying job: stay on one durable target, accelerate, trigger every-third-hit damage, and turn her first death into one final barrage. That makes her a useful Campaign and Diamond Tower option, especially beside Heracles and Meng Po. It does not make her universal. A single target change resets both of her core passives, PvP naturally creates those resets, and large level deficits heavily reduce the True Damage that defines her ceiling. Relic 10 is the sensible budget goal; Relic 20 protects Overload; Relic 30 is the luxury damage spike. Pull her if that narrow PvE role solves a real problem in your roster—not because “max-HP True Damage” sounds like an automatic answer to every tank.</p>
+        <h3 class="guide-verdict-heading">Generally skip—use only as a temporary filler</h3>
+        <p class="guide-verdict-text">Audhumla is not a strong long-term hero. Her kit depends on True Damage being a meaningful third-hit payoff, yet level suppression reduces that contribution to a minimum in the content where players most need damage. Target changes then reset both her proc count and built-up speed, while her ordinary physical output does not establish a good endgame role on its own. Her practical use is narrow: if your early Diamond roster lacks a damage dealer and you do not have Isis, Audhumla can temporarily fill the slot against a stationary solo boss. She may also occupy an empty Campaign or Tower slot while your account is still developing. Beyond that, there are better heroes, and she should be replaced rather than heavily invested in.</p>
       </div>
     </section>
   </div>
