@@ -29,6 +29,7 @@ const jsonLd = {
   url: new URL("/", Astro.site).href,
 };
 
+
 const hrefFor = (href: string) => localizePath(href, locale);
 const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
@@ -334,7 +335,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
   .home-hero-art {
     position: absolute;
     inset: 0;
-    background-image: url("/features/home-hero-divine-citadel.webp");
+    background-image: url("https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/features/home-hero-divine-citadel.webp");
     background-size: cover;
     background-position: 62% center;
     transform: scale(1.02);

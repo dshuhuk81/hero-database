@@ -15,7 +15,7 @@ const skillImage = (id: string) => `${R2_BASE}/skills/audhumla_${id}.webp`;
 const skills = [
   {
     id: "skill_1",
-    name: "Final Oathbind",
+    name: "Final Oathbinding",
     badge: "Skill 1 - Ultimate",
     isUlt: true,
     description: "Audhumla naturally attacks with a shorter interval. When cast, she locks onto the nearest enemy for 8s, gains 100% ATK Speed, and cannot use active skills. She moves into range if needed and only changes targets if the locked enemy becomes invisible, untargetable, or dies.",
@@ -40,7 +40,7 @@ const skills = [
   },
   {
     id: "skill_3",
-    name: "Judgment of Three Lives",
+    name: "Triple-Fate Verdict",
     badge: "Skill 3 - Passive",
     description: "Every third consecutive normal attack against the same enemy deals True Damage based on that enemy's max HP. At Lv4 it deals 18% max HP, capped at 1,800% of Audhumla's ATK. Changing targets removes the stored attack count.",
     takeaway: "The max-HP percentage pressures durable enemies, but the ATK cap and the game's True-Damage rules decide what actually lands. Fast attacks only matter if the third hit reaches the same target.",
@@ -52,7 +52,7 @@ const skills = [
   },
   {
     id: "skill_4",
-    name: "Unbroken Sequence",
+    name: "Eternal Chainstrike",
     badge: "Skill 4 - Passive",
     description: "Each attack against the same target heats Audhumla's weapon and grants ATK Speed, up to 300%. At Lv4 she gains 60% per attack and reaches the maximum after five attacks. Changing targets removes the entire bonus.",
     takeaway: "She supplies her own speed and does not need a dedicated ATK-Speed support. Protecting target uptime is more valuable than blindly stacking even more speed.",
@@ -65,7 +65,7 @@ const skills = [
 ];
 
 const relic = {
-  name: "Finality",
+  name: "Endbringer",
   badge: "Relic",
   levelBadge: "Rec. Relic 10 / 30",
   description: "When Audhumla would die, she enters Overload for 10s. She cannot die during this state and gains 100% ATK Speed, but dies unavoidably when it ends. She remains targetable, can take damage, and can be controlled. The final death cannot be prevented by immunity, but she can be revived afterward.",
@@ -73,7 +73,7 @@ const relic = {
   upgrades: [
     { level: "Relic 10", text: "Overload immediately starts at the full 300% ATK-Speed bonus." },
     { level: "Relic 20", text: "Audhumla gains Super Armor during Overload." },
-    { level: "Relic 30", text: "Judgment deals 25% max-HP True Damage with a much higher 4,000% ATK cap." },
+    { level: "Relic 30", text: "Triple-Fate Verdict deals 25% max-HP True Damage with a much higher 4,000% ATK cap." },
   ],
 };
 
@@ -227,19 +227,30 @@ const synergies = [
 
     <section class="guide-section">
       <h2 class="guide-section-title">True Damage Reality</h2>
-      <div class="guide-td-dashboard">
-        <div class="guide-td-dashboard__header">
-          <div>
-            <span class="guide-td-dashboard__eyebrow">High level-deficit PvE</span>
-            <h3 class="guide-td-dashboard__title">Suppression can heavily reduce her signature damage</h3>
+      <div class="guide-td-slider-card">
+        <div class="guide-td-slider-card__heading">
+          <span>Projected damage</span>
+          <h3>What Audhumla dealt vs. what she could have dealt</h3>
+        </div>
+        <div class="guide-td-slider" role="img" aria-label="Audhumla dealt 35.0 billion total damage in the tested fight. Using the Chinese version's 47.1% True Damage share with the same physical damage projects 60.6 billion total damage">
+          <div class="guide-td-slider__labels">
+            <div class="guide-td-slider__label guide-td-slider__label--actual">
+              <strong>35.0B</strong>
+              <span>Tested output</span>
+            </div>
+            <div class="guide-td-slider__label guide-td-slider__label--potential">
+              <strong>60.6B</strong>
+              <span>Projection</span>
+            </div>
           </div>
-          <span class="guide-td-dashboard__status"><span aria-hidden="true"></span>Suppression active</span>
+          <div class="guide-td-slider__track">
+            <span class="guide-td-slider__potential"></span>
+            <span class="guide-td-slider__actual"></span>
+          </div>
+          <div class="guide-td-slider__scale" aria-hidden="true"><span>0</span><span>30B</span><span>65B damage</span></div>
         </div>
 
-
-        <div class="guide-td-dashboard__footer">
-            <p><strong>This is the kit issue:</strong> her third-hit payoff is designed around True Damage, yet heavy level suppression can reduce it to a minor part of her output. It bypasses Defense—not suppression.</p>
-        </div>
+        <p class="guide-td-slider-card__note"><strong>That is about 73% more total damage.</strong>This was in a test fight scenario with the trial version of Audhumla. Suppression was at around a 89-90 level deficit. </p>
       </div>
     </section>
 
@@ -250,7 +261,7 @@ const synergies = [
         <div class="guide-overview-grid">
           <div class="guide-overview-item"><div class="guide-overview-label">Campaign &middot; C</div><div class="guide-overview-value">A roster filler at most. Suppression leaves her with too little damage for a dependable endgame role, while target changes make her sequence even less reliable.</div></div>
           <div class="guide-overview-item"><div class="guide-overview-label">Diamond Tower &middot; C</div><div class="guide-overview-value">Usable when faction restrictions leave an empty slot, but she is not a reason to build a team around her and should be replaced by stronger Diamond options.</div></div>
-          <div class="guide-overview-item"><div class="guide-overview-label">Solo Boss &middot; B</div><div class="guide-overview-value">Her one credible fallback role. A stationary target preserves her sequence, so she can cover an early Diamond damage slot when you do not have Isis.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Solo Boss &middot; C</div><div class="guide-overview-value">Her one credible fallback role. A stationary target preserves her sequence, so she can cover an early Diamond damage slot when you do not have Isis.</div></div>
           <div class="guide-overview-item"><div class="guide-overview-label">Arena &middot; C</div><div class="guide-overview-value">Fast deaths, target changes, untargetable effects, Control, and backline pressure all punish her. She offers little reason to use her in PvP.</div></div>
         </div>
       </div>
@@ -290,7 +301,7 @@ const synergies = [
           <span class="guide-stat-pill">Situational ATK Speed</span>
         </div>
         <div class="guide-callout"><strong>Why ATK comes first:</strong> it raises the hard ceiling on every third-hit True-Damage proc and also scales her physical attacks and active skill.</div>
-        <div class="guide-callout"><strong>Do not overbuild speed:</strong> Unbroken Sequence already supplies up to 300%, the Ultimate adds another speed window, and Relic 10 starts Overload fully stacked. Extra speed may help her opening, but target stability and survival are the safer priorities.</div>
+        <div class="guide-callout"><strong>Do not overbuild speed:</strong> Eternal Chainstrike already supplies up to 300%, the Ultimate adds another speed window, and Relic 10 starts Overload fully stacked. Extra speed may help her opening, but target stability and survival are the safer priorities.</div>
         <div class="guide-callout"><strong>No fake precision:</strong> there is not enough reliable evidence to rank CRIT, Physical Damage, Hit, and exact gear sets universally. Use the strongest ATK-focused pieces you can support, then adjust defense to the stage.</div>
       </div>
     </section>
