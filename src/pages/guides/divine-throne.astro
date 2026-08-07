@@ -5,11 +5,11 @@ import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
 import allHeroes from "../../data/all_heroes_db.json";
 import divineThroneData from "../../data/divine-throne.json";
 
-const FEATURE_ASSET_BASE = "/features/divine-throne";
+const FEATURE_ASSET_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/features/divine-throne";
 
 const featureAsset = (name: string) => `${FEATURE_ASSET_BASE}/${name}`;
 const factionOrder = ["Starglint", "Hearts", "Clubs", "Diamonds", "Spades"];
-const recommendedHeroOrder = ["zeus", "dionysus", "nyx", "amunra", "bastet", "phoenix", "set"];
+const recommendedHeroOrder = ["zeus", "dionysus", "nyx", "amunra", "bastet", "phoenix", "set", "jingwei"];
 const recommendedHeroRank = new Map(recommendedHeroOrder.map((id, index) => [id, index]));
 
 const overview = [
@@ -167,7 +167,7 @@ const firstWaveHeroes = [
   <div class="divine-throne-parallax">
     <div class="divine-throne-hero-media" aria-hidden="true">
       <div class="divine-throne-hero-backdrop"></div>
-      <img src="/features/divine-throne/zeus.png" alt="" fetchpriority="high" />
+      <img src={featureAsset("zeus.png")} alt="" fetchpriority="high" />
     </div>
     <div class="divine-throne-hero-stage">
       <div class="divine-throne-hero-text">
