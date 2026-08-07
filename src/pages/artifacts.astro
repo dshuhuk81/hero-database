@@ -73,6 +73,14 @@ const guideContent = refinementGuide
     top: 0;
   }
 
+  .artifacts-page .wrap,
+  .artifacts-page .wide {
+    width: 100%;
+    max-width: var(--page-max-width);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+  }
+
   .artifacts-page .plate {
     border-radius: var(--radius-lg);
     overflow: hidden;
@@ -87,6 +95,18 @@ const guideContent = refinementGuide
   @media (max-width: 768px) {
     .artifacts-page .jump {
       top: auto;
+    }
+
+    .artifacts-page .wrap,
+    .artifacts-page .wide {
+      padding-inline: var(--space-4);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .artifacts-page .wrap,
+    .artifacts-page .wide {
+      padding-inline: var(--space-3);
     }
   }
 </style>
