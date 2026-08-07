@@ -1,0 +1,190 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
+import heketData from "../../data/heroes/heket.json";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const skillImage = (id: string) => `${R2_BASE}/skills/heket_${id}.webp`;
+
+const takeaways: Record<string, string> = {
+  skill_1: "The Ultimate adds another frog to the engine. Its main value is battlefield presence: one more summon means another body, another possible croak, and another source of Symbiotic Blessing.",
+  skill_2: "This is the center of the kit. It creates frogs, shields every friendly summon, and makes nearby enemies less accurate. Because croaks synchronize, several frogs can apply the Hit Rate debuff quickly.",
+  skill_3: "Heket begins producing value immediately instead of waiting for her Ultimate. At Lv4 she starts with two durable frogs, raises the cap by two, and reduces Toad Pact's cooldown to 8 seconds.",
+  skill_4: "At Lv3, every living frog grants all friendly summons 40% ATK. Keeping frogs alive therefore matters more than their personal damage; Lv4 also doubles Heket's periodic self-heal to 30% ATK.",
+};
+
+const skills = heketData.skills.map((skill) => ({
+  ...skill,
+  badge: skill.isUltimate ? "Skill 1 - Ultimate" : `Skill ${skill.id.replace("skill_", "")}`,
+  takeaway: takeaways[skill.id],
+  upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({
+    level: level.replace("level", "Lv "),
+    text,
+  })),
+}));
+
+const relic = {
+  ...heketData.relic,
+  badge: "Relic",
+  levelBadge: "Strong at base",
+  takeaway: "The survival mechanic is available immediately: if a frog exists, Heket can erase one lethal damage instance and replace that frog with a large personal Shield. Later levels only increase the Shield amount.",
+  upgrades: Object.entries(heketData.relic.upgrades).map(([level, text]) => ({
+    level: level.replace("level", "Lv "),
+    text,
+  })),
+};
+
+const strengths = [
+  "Each frog grants all friendly summons up to 40% ATK at Skill Lv3",
+  "Ten Thousand Toads shields every allied summon for up to 400% of Heket's ATK",
+  "Synchronized croaks can rapidly stack a 25% Hit Rate reduction up to five times",
+  "Starts the battle with frogs and can raise the maximum number allowed on the field",
+  "Restores her own HP every two seconds without depending on Ultimate casts",
+  "Toad Pact sacrifices a frog to ignore lethal damage and grants a massive Shield",
+];
+
+const weaknesses = [
+  "Most of her major benefits apply only to summons, not directly to allied heroes",
+  "Offers limited personal damage because frogs do not perform basic attacks",
+  "Losing frogs reduces the summon ATK bonus, synchronized croaks, and sacrifice options",
+  "Her team value is much lower outside a summon-focused composition",
+  "Toad Pact needs a frog on the field and has a cooldown, so it is not unconditional immortality",
+  "Current skill text does not confirm whether Heket or her frogs receive her own summon buffs",
+];
+---
+
+<Base title="Heket Guide - Frog & Summon Support | Motto Immortal" description="Heket guide covering frogs, summon ATK buffs and Shields, synchronized croaks, Toad Pact, team fit, strengths, weaknesses, and confirmed mechanics.">
+  <div class="guide-banner guide-banner--heket">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("heket")}'); --guide-banner-y: 12%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span>Guides</span>
+    </a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Heket</h1>
+      <p class="guide-hero-subtitle">Frog Summoner &middot; Summon Support</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/clubs.webp`} alt="Clubs" />Clubs</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/support.webp`} alt="Support" />Support</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--heket">
+    <GuideSectionNav />
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Meet Heket</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">A summon amplifier, not a traditional healer</h3>
+        <p class="guide-card-subheading">Heket is a Clubs Support whose frogs power almost every part of her kit. They increase the ATK of all friendly summons, spread stacking Hit Rate reduction, trigger team-wide summon Shields, and can be sacrificed to prevent Heket's defeat. Her value comes from maintaining battlefield presence rather than repeatedly casting her Ultimate.</p>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Quick Overview</h2>
+      <div class="guide-card">
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Role</div><div class="guide-overview-value">Summon buffer, sustain support, Hit Rate debuffer</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Best in</div><div class="guide-overview-value">Teams built around multiple allied summons</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Core resource</div><div class="guide-overview-value">Living frogs on the battlefield</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Relic</div><div class="guide-overview-value">Core survival effect works at its first level</div></div>
+        </div>
+        <p class="guide-quick-verdict">Build Heket when your composition can exploit effects that target <em>all friendly summons</em>. She is a specialist rather than a universal support: without other summoners, much of her offensive and defensive amplification has far fewer useful targets.</p>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">The Frog Engine</h2>
+      <div class="guide-card guide-apple-card">
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">1 &middot; Establish</div><div class="guide-overview-value">Primordial Molt starts the fight with frogs and raises the cap, so Heket's engine is already running.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">2 &middot; Amplify</div><div class="guide-overview-value">Every living frog grants ATK to all friendly summons—up to 40% per frog at Skill Lv3.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">3 &middot; Disrupt</div><div class="guide-overview-value">One frog's croak makes the others croak in sync, spreading damage and stacking Hit Rate reduction.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">4 &middot; Survive</div><div class="guide-overview-value">When Heket would fall, Toad Pact can consume a frog to ignore that hit and create a large Shield.</div></div>
+        </div>
+        <div class="guide-callout"><strong>Management rule:</strong> frogs are not primarily damage dealers. They are the resource behind Heket's summon buffs, debuffs, and emergency protection, so removing one weakens several parts of the kit at once.</div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Skills: What They Mean</h2>
+      <div class="guide-skills-grid">
+        {skills.map((skill) => (
+          <div class="guide-skill-card">
+            <div class="guide-skill-header">
+              <div class="guide-skill-icon" style={`background-image: url('${skillImage(skill.id)}');`} role="img" aria-label={skill.name}></div>
+              <div class="guide-skill-meta"><div class="guide-skill-name">{skill.name}</div><span class={`guide-skill-badge${skill.isUltimate ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div>
+            </div>
+            <p class="guide-skill-desc">{skill.description}</p>
+            <div class="guide-skill-upgrades">{skill.upgrades.map((u) => <div class="guide-upgrade"><span class="guide-upgrade-chip">{u.level}</span><span class="guide-upgrade-text">{u.text}</span></div>)}</div>
+            <div class="guide-skill-caption"><strong>In practice:</strong> {skill.takeaway}</div>
+          </div>
+        ))}
+      </div>
+      <div class="guide-skill-card guide-skill-card--relic">
+        <div class="guide-skill-header">
+          <div class="guide-skill-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label={relic.name}></div>
+          <div class="guide-skill-meta"><div class="guide-skill-name">{relic.name}</div><div class="guide-relic-badges"><span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span><span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span></div></div>
+        </div>
+        <div class="guide-skill-relic-body">
+          <p class="guide-skill-desc">{relic.description}</p>
+          <div class="guide-skill-upgrades guide-skill-upgrades--relic">{relic.upgrades.map((u) => <div class="guide-upgrade guide-upgrade--relic"><span class="guide-upgrade-chip">{u.level}</span><span class="guide-upgrade-text">{u.text}</span></div>)}</div>
+          <div class="guide-skill-caption"><strong>In practice:</strong> {relic.takeaway}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Relic Investment</h2>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Base Relic</span><strong>The important mechanic is already active</strong><p>One frog can be sacrificed to ignore an otherwise lethal damage instance. Heket then receives a Shield equal to 500% ATK.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv2</span><strong>600% ATK Shield</strong><p>More protection after the save, but no new behavior.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv3</span><strong>700% ATK Shield</strong><p>Another survivability increase without changing how the Relic is used.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv4</span><strong>800% ATK Shield</strong><p>The strongest listed Shield; the sacrifice, immunity, and cooldown remain the same.</p></div>
+      </div>
+      <div class="guide-callout"><strong>Investment takeaway:</strong> Heket does not need a later Relic level to unlock her emergency save. Further investment improves the Shield after it triggers, so it raises consistency rather than changing her gameplay.</div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Strengths &amp; Weaknesses</h2>
+      <StrengthWeakness strengths={strengths} weaknesses={weaknesses} />
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Team Building</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Pair her with summoners, not one assumed partner</h3>
+        <div class="guide-overview-grid">
+          <div class="guide-overview-item"><div class="guide-overview-label">Confirmed synergy</div><div class="guide-overview-value">Any hero that creates friendly summons can receive Heket's summon ATK buff and the Shield from Ten Thousand Toads.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">What she adds</div><div class="guide-overview-value">Summon ATK, summon Shields, extra battlefield bodies, Hit Rate reduction, and personal staying power.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Avoid assuming</div><div class="guide-overview-value">Her current skills do not name Hades, undead units, spirits, clones, or any single summon hero.</div></div>
+          <div class="guide-overview-item"><div class="guide-overview-label">Roster rule</div><div class="guide-overview-value">The more meaningful allied summons you field, the more targets receive her two major team-wide effects.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Unconfirmed Interaction</h2>
+      <div class="guide-card">
+        <h3 class="guide-card-heading">Does Heket buff herself and her own frogs?</h3>
+        <p class="guide-card-subheading">Ten Thousand Toads explicitly treats Heket as both a divine unit and a summon unit. That suggests she may qualify for effects aimed at “all friendly summons,” and her frogs may qualify as well. However, the current descriptions do not explicitly confirm whether Heket and the frogs receive her own summon ATK buff or summon Shield, or whether self-generated units are internally excluded. Treat this as an inference until it is verified in combat.</p>
+      </div>
+    </section>
+
+    <section class="guide-section">
+      <h2 class="guide-section-title">Verdict</h2>
+      <div class="guide-verdict-box">
+        <h3 class="guide-verdict-heading">A foundation piece for summon teams</h3>
+        <p class="guide-verdict-text">Heket introduces a support style based on persistent summon amplification rather than broad healing or crowd control. Living frogs scale the ATK of every allied summon, synchronize stacking accuracy debuffs, and give Heket a resource she can trade for survival. Ten Thousand Toads also supplies a substantial Shield to all friendly summons. That makes her potentially excellent in the archetype she was built for and much less compelling outside it. Nothing in the current skill text ties her to one specific hero: her confirmed value is broad support for any composition that can keep useful summons on the field.</p>
+      </div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+</Base>

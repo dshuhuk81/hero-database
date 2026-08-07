@@ -22,6 +22,13 @@ export interface GuideEntry {
 /** Newest guide first - drives display order on /guides. */
 export const guides: GuideEntry[] = [
   {
+    heroId: "heket",
+    href: "/guides/heket",
+    title: "Heket",
+    hook: "Frog-powered summon support: amplify allied summons, stack Hit Rate debuffs, and turn frogs into emergency protection.",
+    updated: "2026-08-06",
+  },
+  {
     heroId: "audhumla",
     href: "/guides/audhumla",
     title: "Audhumla",

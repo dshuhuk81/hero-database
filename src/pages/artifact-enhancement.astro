@@ -1,0 +1,194 @@
+---
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import "../styles/artifact-enhancement.css";
+
+const attributes = [
+  ["1901", "ATK", "D"], ["1902", "HP", "D"], ["1941", "Armor", "C"], ["1942", "M-RES", "C"],
+  ["904", "Dodge Rate", "B"], ["905", "Hit Bonus", "B"], ["906", "CRIT Rate", "B"], ["907", "CRIT RES", "B"],
+  ["908", "M-DMG RED Rate", "C"], ["909", "P-DMG RED Rate", "C"], ["918", "Lifesteal Effectiveness", "B"],
+  ["919", "CRIT DMG Bonus", "A"], ["924", "M-DMG Bonus", "C"], ["925", "P-DMG Bonus", "C"],
+  ["926", "Cooldown Haste", "D"], ["927", "Healing Effectiveness", "B"], ["928", "Recharge Effectiveness", "B"],
+  ["929", "Control RES", "A"], ["932", "Control Bonus", "A"], ["940", "CRIT DMG RED", "A"],
+  ["944", "Effect RES", "A"], ["945", "Effect Hit", "A"], ["915", "ATK SPD Bonus", "D"], ["949", "Ultimate Power", "D"],
+];
+---
+
+<Base title="Artifact Enhancement Tool | Motto Immortal" description="Calculate Artifact Enhancement Stone success rates and preview success or failure for every awakened effect.">
+  <PageHero id="artifact-enhancement" tag="Tools" headline="Artifact Enhancement Tool" subtitle="Choose an awakened effect, set its level and see exactly what one enhancement attempt can change." />
+
+  <main class="page-wrapper page-content ae-page">
+    <section class="ae-intro" aria-labelledby="ae-intro-title">
+      <div>
+        <span class="section-label">Enhanced effect</span>
+        <h2 id="ae-intro-title">Plan every stone before you commit</h2>
+        <p>More stones improve one attempt’s success chance. Success raises the selected effect by one level; failure lowers it by one.</p>
+      </div>
+      <div class="ae-session">
+        <div><span>Stones used</span><strong id="ae-stones-used">0</strong></div>
+        <button id="ae-reset" type="button">Reset</button>
+      </div>
+    </section>
+
+    <div class="ae-workspace">
+      <section class="ae-panel ae-controls" aria-labelledby="ae-setup-title">
+        <div class="ae-heading"><span class="ae-step">01</span><div><span class="section-label">Attempt setup</span><h2 id="ae-setup-title">Select your effect</h2></div></div>
+
+        <label class="ae-field">
+          <span>Attribute</span>
+          <select id="ae-attribute">
+            {attributes.map(([id, name, tier]) => <option value={id} data-tier={tier} selected={id === "949"}>{name}</option>)}
+          </select>
+        </label>
+
+        <div class="ae-field">
+          <span>Current level</span>
+          <div class="ae-level-control">
+            <button type="button" id="ae-level-down" aria-label="Lower current level">−</button>
+            <input id="ae-level" type="number" inputmode="numeric" min="1" max="20" value="1" aria-label="Current enhancement level" />
+            <button type="button" id="ae-level-up" aria-label="Raise current level">+</button>
+          </div>
+        </div>
+
+        <div class="ae-field">
+          <span>Stones in this attempt</span>
+          <div class="ae-stone-control">
+            <button type="button" id="ae-stones-down" aria-label="Use one fewer stone">−</button>
+            <div><strong id="ae-stones">1</strong><small>Enhancement Stone</small></div>
+            <button type="button" id="ae-stones-up" aria-label="Use one more stone">+</button>
+          </div>
+        </div>
+
+        <button class="ae-optimal" id="ae-use-optimal" type="button"><span>Use recommended amount</span><strong id="ae-optimal-count">1 stone</strong></button>
+        <p class="ae-note">All committed stones are consumed in one atomic attempt, regardless of the result.</p>
+
+      </section>
+
+      <section class="ae-panel ae-preview" aria-labelledby="ae-preview-title">
+        <div class="ae-heading"><span class="ae-step">02</span><div><span class="section-label">Live outcome</span><h2 id="ae-preview-title">Enhancement preview</h2></div></div>
+
+        <div class="ae-effect-card">
+          <div class="ae-effect-title"><span id="ae-attr-name">Ultimate Power</span><span id="ae-level-label">Lv. 1</span></div>
+          <div class="ae-values">
+            <div><span>Last level</span><strong id="ae-last-value">1.0%</strong><small id="ae-last-level">Protected floor</small></div>
+            <div class="is-current"><span>Current</span><strong id="ae-current-value">1.0%</strong><small>Now</small></div>
+            <div><span>Next level</span><strong id="ae-next-value">1.2%</strong><small id="ae-next-level">Lv. 2</small></div>
+          </div>
+        </div>
+
+        <div class="ae-rate">
+          <div class="ae-rate-ring" id="ae-rate-ring"><strong id="ae-rate">100%</strong><span>success</span></div>
+          <div><span class="section-label">This attempt</span><h3 id="ae-rate-copy">100% displayed chance to improve</h3><p id="ae-rate-detail">The game displays 100%. Exact probability: 100.00%.</p></div>
+        </div>
+
+        <div class="ae-outcomes">
+          <article class="ae-outcome ae-success"><span class="ae-outcome-icon">↑</span><div><span>On success</span><strong id="ae-success-main">Lv. 2 · 1.2%</strong><small id="ae-success-chance">100.00% chance</small></div></article>
+          <article class="ae-outcome ae-failure"><span class="ae-outcome-icon">↓</span><div><span>On failure</span><strong id="ae-failure-main">Lv. 1 · 1.0%</strong><small id="ae-failure-chance">0.00% chance</small></div></article>
+        </div>
+
+        <button class="ae-enhance" id="ae-enhance" type="button"><span>Simulate enhancement</span><small id="ae-button-cost">Use 1 stone</small></button>
+        <div class="ae-result" id="ae-result" role="status" aria-live="polite" hidden></div>
+      </section>
+    </div>
+
+    <section class="ae-explainer" aria-labelledby="ae-explainer-title">
+      <div><span class="section-label">How enhancement works</span><h2 id="ae-explainer-title">One attempt, two outcomes</h2></div>
+      <div class="ae-facts">
+        <p><strong>Stacking stones</strong><span>Chance = 1 − (1 − base chance)<sup>stones</sup>. More stones improve a single roll.</span></p>
+        <p><strong>Failure penalty</strong><span>A failed attempt always loses one level, never one level per stone. Level 1 is protected.</span></p>
+        <p><strong>Efficient target</strong><span>The research-backed strategy generally aims for about 75–80% success at higher levels.</span></p>
+      </div>
+    </section>
+  </main>
+
+  <script is:inline type="application/json" id="ae-attribute-data" set:html={JSON.stringify(attributes)}></script>
+</Base>
+
+<script>
+  const SUCCESS = [0, 100, 100, 100, 95, 95, 90, 80, 70, 60, 50, 40, 35, 30, 25, 20, 16, 12, 8, 4, 0];
+  const VALUES: Record<string, number[]> = {
+    A: [0,1,1.2,1.5,2,2.5,4.5,6.5,8.5,10.5,12.5,15,17.5,20,22.5,25,30,35,40,45,50],
+    B: [0,1,1.2,1.5,2,2.5,4,5.5,7,8.5,10,12,14,16,18,20,24,28,32,36,40],
+    C: [0,1,1.2,1.5,2,2.5,3.5,4.5,5.5,6.5,7.5,9,10.5,12,13.5,15,18,21,24,27,30],
+    D: [0,1,1.2,1.5,2,2.5,3,3.5,4,4.5,5,6,7,8,9,10,12,14,16,18,20],
+  };
+  const OPTIMAL = [0,1,1,1,1,1,1,1,1,2,2,3,4,4,5,7,9,11,17,30,0];
+  const data = JSON.parse(document.getElementById("ae-attribute-data")?.textContent || "[]") as string[][];
+  const select = document.getElementById("ae-attribute") as HTMLSelectElement;
+  const levelInput = document.getElementById("ae-level") as HTMLInputElement;
+  let stones = 1;
+  let stonesUsed = 0;
+
+  const byId = (id: string) => document.getElementById(id) as HTMLElement;
+  const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+  const fmt = (n: number) => `${n.toFixed(1)}%`;
+  const exactProbability = (level: number, count: number) => 1 - Math.pow(1 - SUCCESS[level] / 100, count);
+
+  function state() {
+    const level = clamp(Number(levelInput.value) || 1, 1, 20);
+    const attribute = data.find((row) => row[0] === select.value) || data[0];
+    return { level, attribute, values: VALUES[attribute[2]] };
+  }
+
+  function render() {
+    const { level, attribute, values } = state();
+    levelInput.value = String(level);
+    const previous = Math.max(1, level - 1);
+    const next = Math.min(20, level + 1);
+    const p = level === 20 ? 0 : exactProbability(level, stones);
+    const shown = Math.trunc(p * 100);
+    const optimal = OPTIMAL[level];
+    byId("ae-attr-name").textContent = attribute[1];
+    byId("ae-level-label").textContent = `Lv. ${level}`;
+    byId("ae-last-value").textContent = fmt(values[previous]);
+    byId("ae-last-level").textContent = level === 1 ? "Protected floor" : `Lv. ${previous}`;
+    byId("ae-current-value").textContent = fmt(values[level]);
+    byId("ae-next-value").textContent = fmt(values[next]);
+    byId("ae-next-level").textContent = level === 20 ? "Maximum" : `Lv. ${next}`;
+    byId("ae-stones").textContent = String(stones);
+    byId("ae-stones-used").textContent = String(stonesUsed);
+    byId("ae-rate").textContent = level === 20 ? "MAX" : `${shown}%`;
+    byId("ae-rate-ring").style.setProperty("--rate", `${p * 360}deg`);
+    byId("ae-rate-copy").textContent = level === 20 ? "Maximum level reached" : `${shown}% displayed chance to improve`;
+    byId("ae-rate-detail").textContent = level === 20 ? "This effect cannot be enhanced further." : `The game displays ${shown}%. Exact probability: ${(p * 100).toFixed(2)}%.`;
+    byId("ae-success-main").textContent = level === 20 ? "Already at maximum" : `Lv. ${next} · ${fmt(values[next])}`;
+    byId("ae-success-chance").textContent = `${(p * 100).toFixed(2)}% chance`;
+    byId("ae-failure-main").textContent = `Lv. ${previous} · ${fmt(values[previous])}`;
+    byId("ae-failure-chance").textContent = level === 20 ? "No attempt available" : `${((1 - p) * 100).toFixed(2)}% chance`;
+    byId("ae-optimal-count").textContent = level === 20 ? "Maximum level" : `${optimal} ${optimal === 1 ? "stone" : "stones"}`;
+    byId("ae-button-cost").textContent = `Use ${stones} ${stones === 1 ? "stone" : "stones"}`;
+    (byId("ae-enhance") as HTMLButtonElement).disabled = level === 20;
+    (byId("ae-use-optimal") as HTMLButtonElement).disabled = level === 20;
+  }
+
+  select.addEventListener("change", render);
+  levelInput.addEventListener("input", () => { byId("ae-result").hidden = true; render(); });
+  byId("ae-level-down").addEventListener("click", () => { levelInput.value = String(state().level - 1); render(); });
+  byId("ae-level-up").addEventListener("click", () => { levelInput.value = String(state().level + 1); render(); });
+  byId("ae-stones-down").addEventListener("click", () => { stones = clamp(stones - 1, 1, 999); render(); });
+  byId("ae-stones-up").addEventListener("click", () => { stones = clamp(stones + 1, 1, 999); render(); });
+  byId("ae-use-optimal").addEventListener("click", () => { stones = OPTIMAL[state().level] || 1; render(); });
+  byId("ae-reset").addEventListener("click", () => {
+    select.value = "949";
+    levelInput.value = "1";
+    stones = 1;
+    stonesUsed = 0;
+    byId("ae-result").hidden = true;
+    render();
+  });
+  byId("ae-enhance").addEventListener("click", () => {
+    const { level, attribute, values } = state();
+    const success = Math.random() < exactProbability(level, stones);
+    const newLevel = success ? Math.min(20, level + 1) : Math.max(1, level - 1);
+    stonesUsed += stones;
+    const result = byId("ae-result");
+    result.className = `ae-result ${success ? "is-success" : "is-failure"}`;
+    result.textContent = `${success ? "Success" : "Failed"} — ${attribute[1]} is now Lv. ${newLevel} (${fmt(values[newLevel])}). ${stones} ${stones === 1 ? "stone was" : "stones were"} consumed.`;
+    result.hidden = false;
+    levelInput.value = String(newLevel);
+    render();
+  });
+  render();
+</script>

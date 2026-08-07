@@ -304,6 +304,21 @@ const allNavEntries: NavEntry[] = [
     icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="12" y1="15" x2="12" y2="15"/><path d="M15 14l2 2 3-4"/>`,
   },
   {
+    label: "Artifact Enhancement Tool",
+    href: "/artifact-enhancement",
+    group: "tools",
+    teaser: true,
+    description: {
+      en: "Preview awakened-effect values and enhancement success rates",
+      de: "Vorschau auf Werte und Erfolgschancen bei Artefaktverbesserungen",
+      es: "Previsualiza valores y probabilidades de mejora de artefactos",
+      ru: "Просмотр значений и шансов усиления эффектов артефакта",
+      zh: "预览神器强化效果数值与成功率",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-10-01" },
+    icon: `<path d="M14.5 4.5 19 9l-9.8 9.8a2.8 2.8 0 0 1-4 0 2.8 2.8 0 0 1 0-4z"/><path d="m12 7 4 4"/><path d="M18 2v3M21 5h-3"/><path d="M4 10H2M3 9v2"/>`,
+  },
+  {
     label: "Wishlist",
     href: "/wishlisht",
     group: "tools",
