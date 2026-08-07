@@ -1,0 +1,92 @@
+---
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+import refinementGuide from "../../data/artifact/refine-guide.html?raw";
+
+const styleMatch = refinementGuide.match(/<style>([\s\S]*?)<\/style>/i);
+const scriptMatch = refinementGuide.match(/<script>([\s\S]*?)<\/script>/i);
+
+const guideStyles = (styleMatch?.[1] ?? "")
+  .replace("body{", ".artifacts-page{");
+
+const guideContent = refinementGuide
+  .slice(refinementGuide.indexOf("</style>") + "</style>".length, refinementGuide.indexOf("<script>"))
+  .replace(/<header class="masthead">[\s\S]*?<\/header>/i, "")
+  .replace(/\s*<a href="#notes">Notes<\/a>/i, "")
+  .replace(/<section id="notes">[\s\S]*?<\/section>/i, "")
+  .replace(/<footer>[\s\S]*?<\/footer>/i, "");
+---
+
+<Base
+  title="Artifact Refinement Guide | Motto Immortal"
+  description="Understand Artifact Awakening and Refinement, compare stat pools and materials, and plan a refinement with the interactive simulator."
+>
+  <Fragment slot="head">
+    <style is:inline set:html={guideStyles}></style>
+  </Fragment>
+
+  <main class="artifacts-page">
+    <Fragment set:html={guideContent} />
+  </main>
+
+  <script is:inline set:html={scriptMatch?.[1] ?? ""}></script>
+</Base>
+
+<style is:global>
+  .artifacts-page {
+    --paper: var(--bg-base);
+    --plate: var(--bg-surface);
+    --plate-2: var(--bg-raised);
+    --ink: var(--text-primary);
+    --ink-soft: var(--text-secondary);
+    --ink-faint: var(--text-muted);
+    --rule: var(--border-medium);
+    --rule-soft: var(--border-subtle);
+    --brass: var(--accent-gold);
+    --brass-lit: var(--accent-gold-light);
+    --brass-wash: var(--accent-gold-dim);
+    --verdigris: var(--accent-teal);
+    --verdigris-wash: var(--accent-teal-dim);
+    --oxide: var(--tier-splus-from);
+    --oxide-wash: var(--rarity-legendary-glow);
+    --bar: var(--border-strong);
+    --bar-hi: var(--accent-gold);
+    --focus: var(--accent-purple);
+    --shadow: none;
+    --display: var(--font-base);
+    --sans: var(--font-base);
+    --mono: var(--font-mono);
+    --s1: var(--space-1);
+    --s2: var(--space-2);
+    --s3: var(--space-4);
+    --s4: var(--space-6);
+    --s5: var(--space-10);
+    --s6: var(--space-16);
+    width: 100%;
+    min-height: 100vh;
+    color: var(--text-primary);
+    background: transparent;
+  }
+
+  .artifacts-page .jump {
+    top: 0;
+  }
+
+  .artifacts-page .plate {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .artifacts-page button,
+  .artifacts-page select,
+  .artifacts-page input {
+    min-height: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .artifacts-page .jump {
+      top: auto;
+    }
+  }
+</style>

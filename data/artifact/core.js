@@ -1,0 +1,72 @@
+
+/* ═══════════════════════════════ data ═══════════════════════════════════ */
+const D = {"POOLS":{"1":[1901,905,906,918,919,924,925,926,932,945,915,949],"2":[1902,1941,1942,904,907,908,909,927,928,929,940,944],"3":[1901,1942,904,907,908,909,918,926,932,940,945,949],"4":[1902,1941,905,906,919,924,925,927,928,929,944,915]},"FAM":[{"k":"11","t":"Hefty","s":1,"el":"Wind","p2":[918,926],"p1":[906,929],"m2":[905,919],"id13":130101},{"k":"12","t":"Hefty","s":2,"el":"Water","p2":[1902,908],"p1":[927,928],"m2":[906,915],"id13":130102},{"k":"13","t":"Hefty","s":3,"el":"Flame","p2":[1942,905],"p1":[918,940],"m2":[926,944],"id13":130103},{"k":"14","t":"Hefty","s":4,"el":"Terra","p2":[1941,907],"p1":[1902,909],"m2":[1901,949],"id13":130104},{"k":"21","t":"Nimble","s":1,"el":"Wind","p2":[1901,925],"p1":[926,915],"m2":[1942,924],"id13":130201},{"k":"22","t":"Nimble","s":2,"el":"Water","p2":[904,927],"p1":[925,932],"m2":[908,929],"id13":130202},{"k":"23","t":"Nimble","s":3,"el":"Flame","p2":[928,915],"p1":[905,919],"m2":[1902,907],"id13":130203},{"k":"24","t":"Nimble","s":4,"el":"Terra","p2":[909,940],"p1":[1941,945],"m2":[927,928],"id13":130204},{"k":"31","t":"Arcane","s":1,"el":"Wind","p2":[906,949],"p1":[1901,924],"m2":[1941,925],"id13":130301},{"k":"32","t":"Arcane","s":2,"el":"Water","p2":[929,945],"p1":[904,944],"m2":[932,940],"id13":130302},{"k":"33","t":"Arcane","s":3,"el":"Flame","p2":[919,924],"p1":[1942,949],"m2":[909,918],"id13":130303},{"k":"34","t":"Arcane","s":4,"el":"Terra","p2":[932,944],"p1":[907,908],"m2":[904,945],"id13":130304}],"STAT":{"904":{"n":"Dodge Rate","cap":40,"slots":[2,3],"p2":"22","p1":"32","m2":"34","st":[4105,4205,4305,4405,4505]},"905":{"n":"Hit Bonus","cap":40,"slots":[1,4],"p2":"13","p1":"23","m2":"11","st":[4106,4206,4306,4406,4506]},"906":{"n":"CRIT Rate","cap":40,"slots":[1,4],"p2":"31","p1":"11","m2":"12","st":[4107,4207,4307,4407,4507]},"907":{"n":"CRIT RES","cap":40,"slots":[2,3],"p2":"14","p1":"34","m2":"23","st":[4108,4208,4308,4408,4508]},"908":{"n":"M-DMG RED Rate","cap":30,"slots":[2,3],"p2":"12","p1":"34","m2":"22","st":[4109,4209,4309,4409,4509]},"909":{"n":"P-DMG RED Rate","cap":30,"slots":[2,3],"p2":"24","p1":"14","m2":"33","st":[4110,4210,4310,4410,4510]},"915":{"n":"ATK SPD Bonus","cap":20,"slots":[1,4],"p2":"23","p1":"21","m2":"12","st":[4123,4223,4323,4423,4523]},"918":{"n":"Lifesteal Effectiveness","cap":40,"slots":[1,3],"p2":"11","p1":"13","m2":"33","st":[4111,4211,4311,4411,4511]},"919":{"n":"CRIT DMG Bonus","cap":50,"slots":[1,4],"p2":"33","p1":"23","m2":"11","st":[4112,4212,4312,4412,4512]},"924":{"n":"M-DMG Bonus","cap":30,"slots":[1,4],"p2":"33","p1":"31","m2":"21","st":[4113,4213,4313,4413,4513]},"925":{"n":"P-DMG Bonus","cap":30,"slots":[1,4],"p2":"21","p1":"22","m2":"31","st":[4114,4214,4314,4414,4514]},"926":{"n":"Cooldown Haste","cap":20,"slots":[1,3],"p2":"11","p1":"21","m2":"13","st":[4115,4215,4315,4415,4515]},"927":{"n":"Healing Effectiveness","cap":40,"slots":[2,4],"p2":"22","p1":"12","m2":"24","st":[4116,4216,4316,4416,4516]},"928":{"n":"Recharge Effectiveness","cap":40,"slots":[2,4],"p2":"23","p1":"12","m2":"24","st":[4117,4217,4317,4417,4517]},"929":{"n":"Control RES","cap":50,"slots":[2,4],"p2":"32","p1":"11","m2":"22","st":[4118,4218,4318,4418,4518]},"932":{"n":"Control Bonus","cap":50,"slots":[1,3],"p2":"34","p1":"22","m2":"32","st":[4119,4219,4319,4419,4519]},"940":{"n":"CRIT DMG RED","cap":50,"slots":[2,3],"p2":"24","p1":"13","m2":"32","st":[4120,4220,4320,4420,4520]},"944":{"n":"Effect RES","cap":50,"slots":[2,4],"p2":"34","p1":"32","m2":"13","st":[4121,4221,4321,4421,4521]},"945":{"n":"Effect Hit","cap":50,"slots":[1,3],"p2":"32","p1":"24","m2":"34","st":[4122,4222,4322,4422,4522]},"949":{"n":"Ultimate Power","cap":20,"slots":[1,3],"p2":"31","p1":"33","m2":"14","st":[4124,4224,4324,4424,4524]},"1901":{"n":"ATK %","cap":20,"slots":[1,3],"p2":"21","p1":"31","m2":"14","st":[4101,4201,4301,4401,4501]},"1902":{"n":"HP %","cap":20,"slots":[2,4],"p2":"12","p1":"14","m2":"23","st":[4102,4202,4302,4402,4502]},"1941":{"n":"Armor %","cap":30,"slots":[2,4],"p2":"14","p1":"24","m2":"31","st":[4103,4203,4303,4403,4503]},"1942":{"n":"M-RES %","cap":30,"slots":[2,3],"p2":"13","p1":"33","m2":"21","st":[4104,4204,4304,4404,4504]}},"QS":{"1":[2,1,-2,0],"2":[4,2,-4,0],"3":[6,3,-6,0],"4":[8,4,-8,-1],"5":[10,5,-10,-2],"6":[20,10,-20,-4],"7":[30,15,-30,-6],"8":[40,20,-40,-8],"9":[60,30,-60,-12],"10":[80,40,-80,-16],"11":[100,50,-100,-20],"12":[150,75,-150,-30],"13":[200,100,-200,-40]},"STONE_ADD":{"1":1000,"2":2000,"3":4000,"4":8000,"5":100000}};
+
+const SLOT_NAME = {1:"Wind",2:"Water",3:"Flame",4:"Terra"};
+const FAM_BY_KEY = Object.fromEntries(D.FAM.map(f => [f.k, f]));
+const ALL_IDS = Object.keys(D.STAT).map(Number);
+const BASE_W = 1000, MIN_PROB = 0.01, MAX_PROB = 1;
+
+/* ═══════════════════════════ the game's calculator ══════════════════════ */
+/* Faithful port of EquipAwakeAttrProbCalculator.calcInner, including the
+   shipped behaviour where a stone's `reduce` value never reaches the pool. */
+function calcPool(attrIds, deltas, locked, openSlots){
+  const w = new Map(attrIds.map(a => [a, BASE_W]));
+  for (const key in deltas){
+    const id = +key;
+    if (w.has(id)) w.set(id, Math.max(w.get(id) + deltas[key], 0));
+  }
+  const out = new Map();
+  let total = 0;
+  for (const a of [...w.keys()]){
+    if (locked.includes(a)){ out.set(a, 1); w.delete(a); continue; }
+    total += w.get(a);
+  }
+  let n = openSlots;
+  while (n > 0){
+    let found = false;
+    const snap = total;
+    for (const [a, ww] of [...w]){
+      if (snap <= 0 || (ww * n) / snap < MIN_PROB){ total -= ww; w.delete(a); }
+    }
+    for (const [a, ww] of [...w]){
+      if (total <= 0 || (ww * n) / total >= MAX_PROB){
+        out.set(a, 1); total -= ww; w.delete(a); n--; found = true; break;
+      }
+    }
+    if (found) continue;
+    for (const [a, ww] of w) out.set(a, total > 0 ? (ww * n) / total : 0);
+    break;
+  }
+  return out;
+}
+
+/* weight deltas from a material load-out */
+function buildDeltas(stones, stoneTier, fodder, quality){
+  const d = {};
+  const add = (id, v) => { d[id] = (d[id] || 0) + v; };
+  for (const id in stones){
+    if (stones[id] > 0) add(id, D.STONE_ADD[stoneTier] * stones[id]);
+  }
+  const [p2, p1, m2, gen] = D.QS[quality];
+  for (const key in fodder){
+    const n = fodder[key];
+    if (!n) continue;
+    const f = FAM_BY_KEY[key];
+    const special = new Set([...f.p2, ...f.p1, ...f.m2]);
+    f.p2.forEach(id => add(id, p2 * n));
+    f.p1.forEach(id => add(id, p1 * n));
+    f.m2.forEach(id => add(id, m2 * n));
+    ALL_IDS.forEach(id => { if (!special.has(id)) add(id, gen * n); });
+  }
+  return d;
+}
+function weightsOf(attrIds, deltas){
+  const w = {};
+  attrIds.forEach(a => { w[a] = Math.max(BASE_W + (deltas[a] || 0), 0); });
+  return w;
+}
+const pct = p => (p >= 1 ? "100" : (p * 100).toFixed(1)) + "%";
+
+
+module.exports={D,calcPool,buildDeltas,weightsOf};

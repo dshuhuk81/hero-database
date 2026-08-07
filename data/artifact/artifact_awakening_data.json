@@ -1,0 +1,9919 @@
+{
+ "source": {
+  "client": "GLOBAL (com.goatgames.mot.gb.gp)",
+  "config_run": "live_extractions/20260807_093439/unpacked/region_02/client/config",
+  "logic_run": "live_extractions/20260731_115343/unpacked/region_04/client/dist/default/equipment/equip-awake",
+  "note": "equip_awake configs byte-identical across every Global run since 2026-06-12 AND identical in CN."
+ },
+ "constants": {
+  "UNLOCK_EQUIP_AWAKE_QUALITY": 13,
+  "EQUIP_AWAKE_ATTR_WEIGHT": 1000,
+  "EQUIP_AWAKE_UPGRADE_ITEM": [
+   103,
+   1200,
+   1
+  ],
+  "EQUIP_AWAKE_LOCK_ITEM": [
+   103,
+   1035,
+   1
+  ],
+  "EQUIP_AWAKE_REFRESH_ITEM": [
+   103,
+   1034,
+   1
+  ],
+  "EQUIP_AWAKE_REFRESH_MIN_PROB": 0.01,
+  "EQUIP_AWAKE_SHRINE_LEVEL_LIMIT": [
+   0,
+   22,
+   25,
+   27
+  ],
+  "EQUIP_AWAKE_UPGRADE_MUST_PROB": 0.99,
+  "EQUIP_AWAKE_REFRESH_MAX_PROB": 1
+ },
+ "levels": [
+  {
+   "level": 1,
+   "success_pct": 100,
+   "values": {
+    "904": 0.01,
+    "905": 0.01,
+    "906": 0.01,
+    "907": 0.01,
+    "908": 0.01,
+    "909": 0.01,
+    "915": 0.01,
+    "918": 0.01,
+    "919": 0.01,
+    "924": 0.01,
+    "925": 0.01,
+    "926": 0.01,
+    "927": 0.01,
+    "928": 0.01,
+    "929": 0.01,
+    "932": 0.01,
+    "940": 0.01,
+    "944": 0.01,
+    "945": 0.01,
+    "949": 0.01,
+    "1901": 0.01,
+    "1902": 0.01,
+    "1941": 0.01,
+    "1942": 0.01
+   }
+  },
+  {
+   "level": 2,
+   "success_pct": 100,
+   "values": {
+    "904": 0.012,
+    "905": 0.012,
+    "906": 0.012,
+    "907": 0.012,
+    "908": 0.012,
+    "909": 0.012,
+    "915": 0.012,
+    "918": 0.012,
+    "919": 0.012,
+    "924": 0.012,
+    "925": 0.012,
+    "926": 0.012,
+    "927": 0.012,
+    "928": 0.012,
+    "929": 0.012,
+    "932": 0.012,
+    "940": 0.012,
+    "944": 0.012,
+    "945": 0.012,
+    "949": 0.012,
+    "1901": 0.012,
+    "1902": 0.012,
+    "1941": 0.012,
+    "1942": 0.012
+   }
+  },
+  {
+   "level": 3,
+   "success_pct": 100,
+   "values": {
+    "904": 0.015,
+    "905": 0.015,
+    "906": 0.015,
+    "907": 0.015,
+    "908": 0.015,
+    "909": 0.015,
+    "915": 0.015,
+    "918": 0.015,
+    "919": 0.015,
+    "924": 0.015,
+    "925": 0.015,
+    "926": 0.015,
+    "927": 0.015,
+    "928": 0.015,
+    "929": 0.015,
+    "932": 0.015,
+    "940": 0.015,
+    "944": 0.015,
+    "945": 0.015,
+    "949": 0.015,
+    "1901": 0.015,
+    "1902": 0.015,
+    "1941": 0.015,
+    "1942": 0.015
+   }
+  },
+  {
+   "level": 4,
+   "success_pct": 95,
+   "values": {
+    "904": 0.02,
+    "905": 0.02,
+    "906": 0.02,
+    "907": 0.02,
+    "908": 0.02,
+    "909": 0.02,
+    "915": 0.02,
+    "918": 0.02,
+    "919": 0.02,
+    "924": 0.02,
+    "925": 0.02,
+    "926": 0.02,
+    "927": 0.02,
+    "928": 0.02,
+    "929": 0.02,
+    "932": 0.02,
+    "940": 0.02,
+    "944": 0.02,
+    "945": 0.02,
+    "949": 0.02,
+    "1901": 0.02,
+    "1902": 0.02,
+    "1941": 0.02,
+    "1942": 0.02
+   }
+  },
+  {
+   "level": 5,
+   "success_pct": 95,
+   "values": {
+    "904": 0.025,
+    "905": 0.025,
+    "906": 0.025,
+    "907": 0.025,
+    "908": 0.025,
+    "909": 0.025,
+    "915": 0.025,
+    "918": 0.025,
+    "919": 0.025,
+    "924": 0.025,
+    "925": 0.025,
+    "926": 0.025,
+    "927": 0.025,
+    "928": 0.025,
+    "929": 0.025,
+    "932": 0.025,
+    "940": 0.025,
+    "944": 0.025,
+    "945": 0.025,
+    "949": 0.025,
+    "1901": 0.025,
+    "1902": 0.025,
+    "1941": 0.025,
+    "1942": 0.025
+   }
+  },
+  {
+   "level": 6,
+   "success_pct": 90,
+   "values": {
+    "904": 0.04,
+    "905": 0.04,
+    "906": 0.04,
+    "907": 0.04,
+    "908": 0.035,
+    "909": 0.035,
+    "915": 0.03,
+    "918": 0.04,
+    "919": 0.045,
+    "924": 0.035,
+    "925": 0.035,
+    "926": 0.03,
+    "927": 0.04,
+    "928": 0.04,
+    "929": 0.045,
+    "932": 0.045,
+    "940": 0.045,
+    "944": 0.045,
+    "945": 0.045,
+    "949": 0.03,
+    "1901": 0.03,
+    "1902": 0.03,
+    "1941": 0.035,
+    "1942": 0.035
+   }
+  },
+  {
+   "level": 7,
+   "success_pct": 80,
+   "values": {
+    "904": 0.055,
+    "905": 0.055,
+    "906": 0.055,
+    "907": 0.055,
+    "908": 0.045,
+    "909": 0.045,
+    "915": 0.035,
+    "918": 0.055,
+    "919": 0.065,
+    "924": 0.045,
+    "925": 0.045,
+    "926": 0.035,
+    "927": 0.055,
+    "928": 0.055,
+    "929": 0.065,
+    "932": 0.065,
+    "940": 0.065,
+    "944": 0.065,
+    "945": 0.065,
+    "949": 0.035,
+    "1901": 0.035,
+    "1902": 0.035,
+    "1941": 0.045,
+    "1942": 0.045
+   }
+  },
+  {
+   "level": 8,
+   "success_pct": 70,
+   "values": {
+    "904": 0.07,
+    "905": 0.07,
+    "906": 0.07,
+    "907": 0.07,
+    "908": 0.055,
+    "909": 0.055,
+    "915": 0.04,
+    "918": 0.07,
+    "919": 0.085,
+    "924": 0.055,
+    "925": 0.055,
+    "926": 0.04,
+    "927": 0.07,
+    "928": 0.07,
+    "929": 0.085,
+    "932": 0.085,
+    "940": 0.085,
+    "944": 0.085,
+    "945": 0.085,
+    "949": 0.04,
+    "1901": 0.04,
+    "1902": 0.04,
+    "1941": 0.055,
+    "1942": 0.055
+   }
+  },
+  {
+   "level": 9,
+   "success_pct": 60,
+   "values": {
+    "904": 0.085,
+    "905": 0.085,
+    "906": 0.085,
+    "907": 0.085,
+    "908": 0.065,
+    "909": 0.065,
+    "915": 0.045,
+    "918": 0.085,
+    "919": 0.105,
+    "924": 0.065,
+    "925": 0.065,
+    "926": 0.045,
+    "927": 0.085,
+    "928": 0.085,
+    "929": 0.105,
+    "932": 0.105,
+    "940": 0.105,
+    "944": 0.105,
+    "945": 0.105,
+    "949": 0.045,
+    "1901": 0.045,
+    "1902": 0.045,
+    "1941": 0.065,
+    "1942": 0.065
+   }
+  },
+  {
+   "level": 10,
+   "success_pct": 50,
+   "values": {
+    "904": 0.1,
+    "905": 0.1,
+    "906": 0.1,
+    "907": 0.1,
+    "908": 0.075,
+    "909": 0.075,
+    "915": 0.05,
+    "918": 0.1,
+    "919": 0.125,
+    "924": 0.075,
+    "925": 0.075,
+    "926": 0.05,
+    "927": 0.1,
+    "928": 0.1,
+    "929": 0.125,
+    "932": 0.125,
+    "940": 0.125,
+    "944": 0.125,
+    "945": 0.125,
+    "949": 0.05,
+    "1901": 0.05,
+    "1902": 0.05,
+    "1941": 0.075,
+    "1942": 0.075
+   }
+  },
+  {
+   "level": 11,
+   "success_pct": 40,
+   "values": {
+    "904": 0.12,
+    "905": 0.12,
+    "906": 0.12,
+    "907": 0.12,
+    "908": 0.09,
+    "909": 0.09,
+    "915": 0.06,
+    "918": 0.12,
+    "919": 0.15,
+    "924": 0.09,
+    "925": 0.09,
+    "926": 0.06,
+    "927": 0.12,
+    "928": 0.12,
+    "929": 0.15,
+    "932": 0.15,
+    "940": 0.15,
+    "944": 0.15,
+    "945": 0.15,
+    "949": 0.06,
+    "1901": 0.06,
+    "1902": 0.06,
+    "1941": 0.09,
+    "1942": 0.09
+   }
+  },
+  {
+   "level": 12,
+   "success_pct": 35,
+   "values": {
+    "904": 0.14,
+    "905": 0.14,
+    "906": 0.14,
+    "907": 0.14,
+    "908": 0.105,
+    "909": 0.105,
+    "915": 0.07,
+    "918": 0.14,
+    "919": 0.175,
+    "924": 0.105,
+    "925": 0.105,
+    "926": 0.07,
+    "927": 0.14,
+    "928": 0.14,
+    "929": 0.175,
+    "932": 0.175,
+    "940": 0.175,
+    "944": 0.175,
+    "945": 0.175,
+    "949": 0.07,
+    "1901": 0.07,
+    "1902": 0.07,
+    "1941": 0.105,
+    "1942": 0.105
+   }
+  },
+  {
+   "level": 13,
+   "success_pct": 30,
+   "values": {
+    "904": 0.16,
+    "905": 0.16,
+    "906": 0.16,
+    "907": 0.16,
+    "908": 0.12,
+    "909": 0.12,
+    "915": 0.08,
+    "918": 0.16,
+    "919": 0.2,
+    "924": 0.12,
+    "925": 0.12,
+    "926": 0.08,
+    "927": 0.16,
+    "928": 0.16,
+    "929": 0.2,
+    "932": 0.2,
+    "940": 0.2,
+    "944": 0.2,
+    "945": 0.2,
+    "949": 0.08,
+    "1901": 0.08,
+    "1902": 0.08,
+    "1941": 0.12,
+    "1942": 0.12
+   }
+  },
+  {
+   "level": 14,
+   "success_pct": 25,
+   "values": {
+    "904": 0.18,
+    "905": 0.18,
+    "906": 0.18,
+    "907": 0.18,
+    "908": 0.135,
+    "909": 0.135,
+    "915": 0.09,
+    "918": 0.18,
+    "919": 0.225,
+    "924": 0.135,
+    "925": 0.135,
+    "926": 0.09,
+    "927": 0.18,
+    "928": 0.18,
+    "929": 0.225,
+    "932": 0.225,
+    "940": 0.225,
+    "944": 0.225,
+    "945": 0.225,
+    "949": 0.09,
+    "1901": 0.09,
+    "1902": 0.09,
+    "1941": 0.135,
+    "1942": 0.135
+   }
+  },
+  {
+   "level": 15,
+   "success_pct": 20,
+   "values": {
+    "904": 0.2,
+    "905": 0.2,
+    "906": 0.2,
+    "907": 0.2,
+    "908": 0.15,
+    "909": 0.15,
+    "915": 0.1,
+    "918": 0.2,
+    "919": 0.25,
+    "924": 0.15,
+    "925": 0.15,
+    "926": 0.1,
+    "927": 0.2,
+    "928": 0.2,
+    "929": 0.25,
+    "932": 0.25,
+    "940": 0.25,
+    "944": 0.25,
+    "945": 0.25,
+    "949": 0.1,
+    "1901": 0.1,
+    "1902": 0.1,
+    "1941": 0.15,
+    "1942": 0.15
+   }
+  },
+  {
+   "level": 16,
+   "success_pct": 16,
+   "values": {
+    "904": 0.24,
+    "905": 0.24,
+    "906": 0.24,
+    "907": 0.24,
+    "908": 0.18,
+    "909": 0.18,
+    "915": 0.12,
+    "918": 0.24,
+    "919": 0.3,
+    "924": 0.18,
+    "925": 0.18,
+    "926": 0.12,
+    "927": 0.24,
+    "928": 0.24,
+    "929": 0.3,
+    "932": 0.3,
+    "940": 0.3,
+    "944": 0.3,
+    "945": 0.3,
+    "949": 0.12,
+    "1901": 0.12,
+    "1902": 0.12,
+    "1941": 0.18,
+    "1942": 0.18
+   }
+  },
+  {
+   "level": 17,
+   "success_pct": 12,
+   "values": {
+    "904": 0.28,
+    "905": 0.28,
+    "906": 0.28,
+    "907": 0.28,
+    "908": 0.21,
+    "909": 0.21,
+    "915": 0.14,
+    "918": 0.28,
+    "919": 0.35,
+    "924": 0.21,
+    "925": 0.21,
+    "926": 0.14,
+    "927": 0.28,
+    "928": 0.28,
+    "929": 0.35,
+    "932": 0.35,
+    "940": 0.35,
+    "944": 0.35,
+    "945": 0.35,
+    "949": 0.14,
+    "1901": 0.14,
+    "1902": 0.14,
+    "1941": 0.21,
+    "1942": 0.21
+   }
+  },
+  {
+   "level": 18,
+   "success_pct": 8,
+   "values": {
+    "904": 0.32,
+    "905": 0.32,
+    "906": 0.32,
+    "907": 0.32,
+    "908": 0.24,
+    "909": 0.24,
+    "915": 0.16,
+    "918": 0.32,
+    "919": 0.4,
+    "924": 0.24,
+    "925": 0.24,
+    "926": 0.16,
+    "927": 0.32,
+    "928": 0.32,
+    "929": 0.4,
+    "932": 0.4,
+    "940": 0.4,
+    "944": 0.4,
+    "945": 0.4,
+    "949": 0.16,
+    "1901": 0.16,
+    "1902": 0.16,
+    "1941": 0.24,
+    "1942": 0.24
+   }
+  },
+  {
+   "level": 19,
+   "success_pct": 4,
+   "values": {
+    "904": 0.36,
+    "905": 0.36,
+    "906": 0.36,
+    "907": 0.36,
+    "908": 0.27,
+    "909": 0.27,
+    "915": 0.18,
+    "918": 0.36,
+    "919": 0.45,
+    "924": 0.27,
+    "925": 0.27,
+    "926": 0.18,
+    "927": 0.36,
+    "928": 0.36,
+    "929": 0.45,
+    "932": 0.45,
+    "940": 0.45,
+    "944": 0.45,
+    "945": 0.45,
+    "949": 0.18,
+    "1901": 0.18,
+    "1902": 0.18,
+    "1941": 0.27,
+    "1942": 0.27
+   }
+  },
+  {
+   "level": 20,
+   "success_pct": 0,
+   "values": {
+    "904": 0.4,
+    "905": 0.4,
+    "906": 0.4,
+    "907": 0.4,
+    "908": 0.3,
+    "909": 0.3,
+    "915": 0.2,
+    "918": 0.4,
+    "919": 0.5,
+    "924": 0.3,
+    "925": 0.3,
+    "926": 0.2,
+    "927": 0.4,
+    "928": 0.4,
+    "929": 0.5,
+    "932": 0.5,
+    "940": 0.5,
+    "944": 0.5,
+    "945": 0.5,
+    "949": 0.2,
+    "1901": 0.2,
+    "1902": 0.2,
+    "1941": 0.3,
+    "1942": 0.3
+   }
+  }
+ ],
+ "attributes": {
+  "1901": {
+   "en": "ATK",
+   "zh": "攻击百分比加成",
+   "user_key": "atkper",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_1901",
+   "base_on_id": 901
+  },
+  "905": {
+   "en": "Hit Bonus",
+   "zh": "命中加成",
+   "user_key": "hr",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_905",
+   "base_on_id": 0
+  },
+  "906": {
+   "en": "CRIT Rate",
+   "zh": "会心率",
+   "user_key": "critrate",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_906",
+   "base_on_id": 0
+  },
+  "918": {
+   "en": "Lifesteal Effectiveness",
+   "zh": "吸血效果",
+   "user_key": "leeching",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_918",
+   "base_on_id": 0
+  },
+  "919": {
+   "en": "CRIT DMG Bonus",
+   "zh": "会心增伤",
+   "user_key": "crit",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_919",
+   "base_on_id": 0
+  },
+  "924": {
+   "en": "M-DMG Bonus",
+   "zh": "魔法增伤率",
+   "user_key": "magicdamage",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_924",
+   "base_on_id": 0
+  },
+  "925": {
+   "en": "P-DMG Bonus",
+   "zh": "物理增伤率",
+   "user_key": "physicaldamage",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_925",
+   "base_on_id": 0
+  },
+  "926": {
+   "en": "Cooldown Haste",
+   "zh": "冷却加速",
+   "user_key": "cdup",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_926",
+   "base_on_id": 0
+  },
+  "932": {
+   "en": "Control Bonus",
+   "zh": "控制加成",
+   "user_key": "rediscontrol",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_932",
+   "base_on_id": 0
+  },
+  "945": {
+   "en": "Effect Hit",
+   "zh": "效果命中",
+   "user_key": "ctrlRotio",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_945",
+   "base_on_id": 0
+  },
+  "915": {
+   "en": "ATK SPD Bonus",
+   "zh": "攻速加成",
+   "user_key": "haste",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_915",
+   "base_on_id": 0
+  },
+  "949": {
+   "en": "Ultimate Power",
+   "zh": "终结技强度",
+   "user_key": "utRotio",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_949",
+   "base_on_id": 0
+  },
+  "1902": {
+   "en": "HP",
+   "zh": "生命百分比加成",
+   "user_key": "hpper",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_1902",
+   "base_on_id": 902
+  },
+  "1941": {
+   "en": "Armor",
+   "zh": "护甲百分比加成",
+   "user_key": "armorRotio",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_1905",
+   "base_on_id": 941
+  },
+  "1942": {
+   "en": "M-RES",
+   "zh": "魔抗百分比加成",
+   "user_key": "antimagRotio",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_1906",
+   "base_on_id": 942
+  },
+  "904": {
+   "en": "Dodge Rate",
+   "zh": "闪避率",
+   "user_key": "dodge",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_904",
+   "base_on_id": 0
+  },
+  "907": {
+   "en": "CRIT RES",
+   "zh": "会心抵抗率",
+   "user_key": "resi",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_907",
+   "base_on_id": 0
+  },
+  "908": {
+   "en": "M-DMG RED Rate",
+   "zh": "魔法减伤率",
+   "user_key": "res",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_908",
+   "base_on_id": 0
+  },
+  "909": {
+   "en": "P-DMG RED Rate",
+   "zh": "物理减伤率",
+   "user_key": "atd",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_909",
+   "base_on_id": 0
+  },
+  "927": {
+   "en": "Healing Effectiveness",
+   "zh": "治疗效果",
+   "user_key": "cureRate",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_927",
+   "base_on_id": 0
+  },
+  "928": {
+   "en": "Recharge Effectiveness",
+   "zh": "恢复效果",
+   "user_key": "hpRecover",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_928",
+   "base_on_id": 0
+  },
+  "929": {
+   "en": "Control RES",
+   "zh": "控制抗性",
+   "user_key": "discontrol",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_929",
+   "base_on_id": 0
+  },
+  "940": {
+   "en": "CRIT DMG RED",
+   "zh": "会心减伤",
+   "user_key": "discrit",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_940",
+   "base_on_id": 0
+  },
+  "944": {
+   "en": "Effect RES",
+   "zh": "效果抵抗",
+   "user_key": "antiCtrlRotio",
+   "is_percent": true,
+   "l10n_key": "tid#HeroEnumerationName_944",
+   "base_on_id": 0
+  }
+ },
+ "value_tiers": [
+  {
+   "tier": "A",
+   "max_at_lv20": 0.5,
+   "attr_ids": [
+    919,
+    929,
+    932,
+    940,
+    944,
+    945
+   ],
+   "curve": [
+    0.01,
+    0.012,
+    0.015,
+    0.02,
+    0.025,
+    0.045,
+    0.065,
+    0.085,
+    0.105,
+    0.125,
+    0.15,
+    0.175,
+    0.2,
+    0.225,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5
+   ]
+  },
+  {
+   "tier": "B",
+   "max_at_lv20": 0.4,
+   "attr_ids": [
+    904,
+    905,
+    906,
+    907,
+    918,
+    927,
+    928
+   ],
+   "curve": [
+    0.01,
+    0.012,
+    0.015,
+    0.02,
+    0.025,
+    0.04,
+    0.055,
+    0.07,
+    0.085,
+    0.1,
+    0.12,
+    0.14,
+    0.16,
+    0.18,
+    0.2,
+    0.24,
+    0.28,
+    0.32,
+    0.36,
+    0.4
+   ]
+  },
+  {
+   "tier": "C",
+   "max_at_lv20": 0.3,
+   "attr_ids": [
+    908,
+    909,
+    924,
+    925,
+    1941,
+    1942
+   ],
+   "curve": [
+    0.01,
+    0.012,
+    0.015,
+    0.02,
+    0.025,
+    0.035,
+    0.045,
+    0.055,
+    0.065,
+    0.075,
+    0.09,
+    0.105,
+    0.12,
+    0.135,
+    0.15,
+    0.18,
+    0.21,
+    0.24,
+    0.27,
+    0.3
+   ]
+  },
+  {
+   "tier": "D",
+   "max_at_lv20": 0.2,
+   "attr_ids": [
+    915,
+    926,
+    949,
+    1901,
+    1902
+   ],
+   "curve": [
+    0.01,
+    0.012,
+    0.015,
+    0.02,
+    0.025,
+    0.03,
+    0.035,
+    0.04,
+    0.045,
+    0.05,
+    0.06,
+    0.07,
+    0.08,
+    0.09,
+    0.1,
+    0.12,
+    0.14,
+    0.16,
+    0.18,
+    0.2
+   ]
+  }
+ ],
+ "awake_templates": [
+  {
+   "awake_id": 111,
+   "l10n_name": "tid#EquipName_Awake101",
+   "icon": "A_UI_Equipment_Wind_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 1,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 140000
+    },
+    {
+     "id": 941,
+     "value": 20000
+    },
+    {
+     "id": 942,
+     "value": 20000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1201,
+    1
+   ],
+   "next_awake_id": 211
+  },
+  {
+   "awake_id": 112,
+   "l10n_name": "tid#EquipName_Awake102",
+   "icon": "A_UI_Equipment_Water_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 2,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 1800000
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    },
+    {
+     "id": 908,
+     "value": 0.12
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1201,
+    1
+   ],
+   "next_awake_id": 212
+  },
+  {
+   "awake_id": 113,
+   "l10n_name": "tid#EquipName_Awake103",
+   "icon": "A_UI_Equipment_Flame_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 3,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 40000
+    },
+    {
+     "id": 942,
+     "value": 40000
+    },
+    {
+     "id": 905,
+     "value": 0.18
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1201,
+    1
+   ],
+   "next_awake_id": 213
+  },
+  {
+   "awake_id": 114,
+   "l10n_name": "tid#EquipName_Awake104",
+   "icon": "A_UI_Equipment_Terra_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 4,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 400000
+    },
+    {
+     "id": 941,
+     "value": 40000
+    },
+    {
+     "id": 907,
+     "value": 0.18
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1201,
+    1
+   ],
+   "next_awake_id": 214
+  },
+  {
+   "awake_id": 121,
+   "l10n_name": "tid#EquipName_Awake201",
+   "icon": "A_UI_Equipment_Wind_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 1,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 180000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1211,
+    1
+   ],
+   "next_awake_id": 221
+  },
+  {
+   "awake_id": 122,
+   "l10n_name": "tid#EquipName_Awake202",
+   "icon": "A_UI_Equipment_Water_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 2,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 1200000
+    },
+    {
+     "id": 904,
+     "value": 0.18
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1211,
+    1
+   ],
+   "next_awake_id": 222
+  },
+  {
+   "awake_id": 123,
+   "l10n_name": "tid#EquipName_Awake203",
+   "icon": "A_UI_Equipment_Flame_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 3,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 200000
+    },
+    {
+     "id": 901,
+     "value": 60000
+    },
+    {
+     "id": 942,
+     "value": 20000
+    },
+    {
+     "id": 905,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1211,
+    1
+   ],
+   "next_awake_id": 223
+  },
+  {
+   "awake_id": 124,
+   "l10n_name": "tid#EquipName_Awake204",
+   "icon": "A_UI_Equipment_Terra_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 4,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 400000
+    },
+    {
+     "id": 941,
+     "value": 32000
+    },
+    {
+     "id": 907,
+     "value": 0.09
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1211,
+    1
+   ],
+   "next_awake_id": 224
+  },
+  {
+   "awake_id": 131,
+   "l10n_name": "tid#EquipName_Awake301",
+   "icon": "A_UI_Equipment_Wind_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 1,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 160000
+    },
+    {
+     "id": 906,
+     "value": 0.18
+    },
+    {
+     "id": 924,
+     "value": 0.038
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1221,
+    1
+   ],
+   "next_awake_id": 231
+  },
+  {
+   "awake_id": 132,
+   "l10n_name": "tid#EquipName_Awake302",
+   "icon": "A_UI_Equipment_Water_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 2,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 1400000
+    },
+    {
+     "id": 904,
+     "value": 0.09
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1221,
+    1
+   ],
+   "next_awake_id": 232
+  },
+  {
+   "awake_id": 133,
+   "l10n_name": "tid#EquipName_Awake303",
+   "icon": "A_UI_Equipment_Flame_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 3,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 80000
+    },
+    {
+     "id": 942,
+     "value": 32000
+    },
+    {
+     "id": 905,
+     "value": 0.09
+    },
+    {
+     "id": 924,
+     "value": 0.113
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1221,
+    1
+   ],
+   "next_awake_id": 233
+  },
+  {
+   "awake_id": 134,
+   "l10n_name": "tid#EquipName_Awake304",
+   "icon": "A_UI_Equipment_Terra_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 4,
+   "tier": 1,
+   "attr_slots": 1,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 400000
+    },
+    {
+     "id": 941,
+     "value": 20000
+    },
+    {
+     "id": 907,
+     "value": 0.108
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1221,
+    1
+   ],
+   "next_awake_id": 234
+  },
+  {
+   "awake_id": 211,
+   "l10n_name": "tid#EquipName_Awake101",
+   "icon": "A_UI_Equipment_Wind_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 1,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 210000
+    },
+    {
+     "id": 941,
+     "value": 30000
+    },
+    {
+     "id": 942,
+     "value": 30000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1202,
+    1
+   ],
+   "next_awake_id": 311
+  },
+  {
+   "awake_id": 212,
+   "l10n_name": "tid#EquipName_Awake102",
+   "icon": "A_UI_Equipment_Water_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 2,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 2700000
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    },
+    {
+     "id": 908,
+     "value": 0.12
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1202,
+    1
+   ],
+   "next_awake_id": 312
+  },
+  {
+   "awake_id": 213,
+   "l10n_name": "tid#EquipName_Awake103",
+   "icon": "A_UI_Equipment_Flame_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 3,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 60000
+    },
+    {
+     "id": 942,
+     "value": 60000
+    },
+    {
+     "id": 905,
+     "value": 0.18
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1202,
+    1
+   ],
+   "next_awake_id": 313
+  },
+  {
+   "awake_id": 214,
+   "l10n_name": "tid#EquipName_Awake104",
+   "icon": "A_UI_Equipment_Terra_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 4,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 600000
+    },
+    {
+     "id": 941,
+     "value": 60000
+    },
+    {
+     "id": 907,
+     "value": 0.18
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1202,
+    1
+   ],
+   "next_awake_id": 314
+  },
+  {
+   "awake_id": 221,
+   "l10n_name": "tid#EquipName_Awake201",
+   "icon": "A_UI_Equipment_Wind_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 1,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 270000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1212,
+    1
+   ],
+   "next_awake_id": 321
+  },
+  {
+   "awake_id": 222,
+   "l10n_name": "tid#EquipName_Awake202",
+   "icon": "A_UI_Equipment_Water_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 2,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 1800000
+    },
+    {
+     "id": 904,
+     "value": 0.18
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1212,
+    1
+   ],
+   "next_awake_id": 322
+  },
+  {
+   "awake_id": 223,
+   "l10n_name": "tid#EquipName_Awake203",
+   "icon": "A_UI_Equipment_Flame_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 3,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 300000
+    },
+    {
+     "id": 901,
+     "value": 90000
+    },
+    {
+     "id": 942,
+     "value": 30000
+    },
+    {
+     "id": 905,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1212,
+    1
+   ],
+   "next_awake_id": 323
+  },
+  {
+   "awake_id": 224,
+   "l10n_name": "tid#EquipName_Awake204",
+   "icon": "A_UI_Equipment_Terra_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 4,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 600000
+    },
+    {
+     "id": 941,
+     "value": 48000
+    },
+    {
+     "id": 907,
+     "value": 0.09
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1212,
+    1
+   ],
+   "next_awake_id": 324
+  },
+  {
+   "awake_id": 231,
+   "l10n_name": "tid#EquipName_Awake301",
+   "icon": "A_UI_Equipment_Wind_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 1,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 240000
+    },
+    {
+     "id": 906,
+     "value": 0.18
+    },
+    {
+     "id": 924,
+     "value": 0.038
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1222,
+    1
+   ],
+   "next_awake_id": 331
+  },
+  {
+   "awake_id": 232,
+   "l10n_name": "tid#EquipName_Awake302",
+   "icon": "A_UI_Equipment_Water_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 2,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 2100000
+    },
+    {
+     "id": 904,
+     "value": 0.09
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1222,
+    1
+   ],
+   "next_awake_id": 332
+  },
+  {
+   "awake_id": 233,
+   "l10n_name": "tid#EquipName_Awake303",
+   "icon": "A_UI_Equipment_Flame_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 3,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 120000
+    },
+    {
+     "id": 942,
+     "value": 48000
+    },
+    {
+     "id": 905,
+     "value": 0.09
+    },
+    {
+     "id": 924,
+     "value": 0.113
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1222,
+    1
+   ],
+   "next_awake_id": 333
+  },
+  {
+   "awake_id": 234,
+   "l10n_name": "tid#EquipName_Awake304",
+   "icon": "A_UI_Equipment_Terra_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 4,
+   "tier": 2,
+   "attr_slots": 2,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 600000
+    },
+    {
+     "id": 941,
+     "value": 30000
+    },
+    {
+     "id": 907,
+     "value": 0.108
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1222,
+    1
+   ],
+   "next_awake_id": 334
+  },
+  {
+   "awake_id": 311,
+   "l10n_name": "tid#EquipName_Awake101",
+   "icon": "A_UI_Equipment_Wind_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 1,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 280000
+    },
+    {
+     "id": 941,
+     "value": 40000
+    },
+    {
+     "id": 942,
+     "value": 40000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1203,
+    1
+   ],
+   "next_awake_id": 411
+  },
+  {
+   "awake_id": 312,
+   "l10n_name": "tid#EquipName_Awake102",
+   "icon": "A_UI_Equipment_Water_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 2,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 3600000
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    },
+    {
+     "id": 908,
+     "value": 0.12
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1203,
+    1
+   ],
+   "next_awake_id": 412
+  },
+  {
+   "awake_id": 313,
+   "l10n_name": "tid#EquipName_Awake103",
+   "icon": "A_UI_Equipment_Flame_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 3,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 80000
+    },
+    {
+     "id": 942,
+     "value": 80000
+    },
+    {
+     "id": 905,
+     "value": 0.18
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1203,
+    1
+   ],
+   "next_awake_id": 413
+  },
+  {
+   "awake_id": 314,
+   "l10n_name": "tid#EquipName_Awake104",
+   "icon": "A_UI_Equipment_Terra_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 4,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 800000
+    },
+    {
+     "id": 941,
+     "value": 80000
+    },
+    {
+     "id": 907,
+     "value": 0.18
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1203,
+    1
+   ],
+   "next_awake_id": 414
+  },
+  {
+   "awake_id": 321,
+   "l10n_name": "tid#EquipName_Awake201",
+   "icon": "A_UI_Equipment_Wind_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 1,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 360000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1213,
+    1
+   ],
+   "next_awake_id": 421
+  },
+  {
+   "awake_id": 322,
+   "l10n_name": "tid#EquipName_Awake202",
+   "icon": "A_UI_Equipment_Water_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 2,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 2400000
+    },
+    {
+     "id": 904,
+     "value": 0.18
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1213,
+    1
+   ],
+   "next_awake_id": 422
+  },
+  {
+   "awake_id": 323,
+   "l10n_name": "tid#EquipName_Awake203",
+   "icon": "A_UI_Equipment_Flame_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 3,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 400000
+    },
+    {
+     "id": 901,
+     "value": 120000
+    },
+    {
+     "id": 942,
+     "value": 40000
+    },
+    {
+     "id": 905,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1213,
+    1
+   ],
+   "next_awake_id": 423
+  },
+  {
+   "awake_id": 324,
+   "l10n_name": "tid#EquipName_Awake204",
+   "icon": "A_UI_Equipment_Terra_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 4,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 800000
+    },
+    {
+     "id": 941,
+     "value": 64000
+    },
+    {
+     "id": 907,
+     "value": 0.09
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1213,
+    1
+   ],
+   "next_awake_id": 424
+  },
+  {
+   "awake_id": 331,
+   "l10n_name": "tid#EquipName_Awake301",
+   "icon": "A_UI_Equipment_Wind_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 1,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 320000
+    },
+    {
+     "id": 906,
+     "value": 0.18
+    },
+    {
+     "id": 924,
+     "value": 0.038
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1223,
+    1
+   ],
+   "next_awake_id": 431
+  },
+  {
+   "awake_id": 332,
+   "l10n_name": "tid#EquipName_Awake302",
+   "icon": "A_UI_Equipment_Water_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 2,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 2800000
+    },
+    {
+     "id": 904,
+     "value": 0.09
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1223,
+    1
+   ],
+   "next_awake_id": 432
+  },
+  {
+   "awake_id": 333,
+   "l10n_name": "tid#EquipName_Awake303",
+   "icon": "A_UI_Equipment_Flame_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 3,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 160000
+    },
+    {
+     "id": 942,
+     "value": 64000
+    },
+    {
+     "id": 905,
+     "value": 0.09
+    },
+    {
+     "id": 924,
+     "value": 0.113
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1223,
+    1
+   ],
+   "next_awake_id": 433
+  },
+  {
+   "awake_id": 334,
+   "l10n_name": "tid#EquipName_Awake304",
+   "icon": "A_UI_Equipment_Terra_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 4,
+   "tier": 3,
+   "attr_slots": 3,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 800000
+    },
+    {
+     "id": 941,
+     "value": 40000
+    },
+    {
+     "id": 907,
+     "value": 0.108
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1223,
+    1
+   ],
+   "next_awake_id": 434
+  },
+  {
+   "awake_id": 411,
+   "l10n_name": "tid#EquipName_Awake101",
+   "icon": "A_UI_Equipment_Wind_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 1,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 350000
+    },
+    {
+     "id": 941,
+     "value": 50000
+    },
+    {
+     "id": 942,
+     "value": 50000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1204,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 412,
+   "l10n_name": "tid#EquipName_Awake102",
+   "icon": "A_UI_Equipment_Water_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 2,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 4500000
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    },
+    {
+     "id": 908,
+     "value": 0.12
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1204,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 413,
+   "l10n_name": "tid#EquipName_Awake103",
+   "icon": "A_UI_Equipment_Flame_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 3,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 100000
+    },
+    {
+     "id": 942,
+     "value": 100000
+    },
+    {
+     "id": 905,
+     "value": 0.18
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1204,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 414,
+   "l10n_name": "tid#EquipName_Awake104",
+   "icon": "A_UI_Equipment_Terra_Thick_Awake",
+   "artifact_type": 1,
+   "slot_pos": 4,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 1000000
+    },
+    {
+     "id": 941,
+     "value": 100000
+    },
+    {
+     "id": 907,
+     "value": 0.18
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1204,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 421,
+   "l10n_name": "tid#EquipName_Awake201",
+   "icon": "A_UI_Equipment_Wind_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 1,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 450000
+    },
+    {
+     "id": 906,
+     "value": 0.144
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1214,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 422,
+   "l10n_name": "tid#EquipName_Awake202",
+   "icon": "A_UI_Equipment_Water_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 2,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 3000000
+    },
+    {
+     "id": 904,
+     "value": 0.18
+    },
+    {
+     "id": 925,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1214,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 423,
+   "l10n_name": "tid#EquipName_Awake203",
+   "icon": "A_UI_Equipment_Flame_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 3,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 500000
+    },
+    {
+     "id": 901,
+     "value": 150000
+    },
+    {
+     "id": 942,
+     "value": 50000
+    },
+    {
+     "id": 905,
+     "value": 0.144
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1214,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 424,
+   "l10n_name": "tid#EquipName_Awake204",
+   "icon": "A_UI_Equipment_Terra_Swift_Awake",
+   "artifact_type": 2,
+   "slot_pos": 4,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 1000000
+    },
+    {
+     "id": 941,
+     "value": 80000
+    },
+    {
+     "id": 907,
+     "value": 0.09
+    },
+    {
+     "id": 909,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1214,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 431,
+   "l10n_name": "tid#EquipName_Awake301",
+   "icon": "A_UI_Equipment_Wind_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 1,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 400000
+    },
+    {
+     "id": 906,
+     "value": 0.18
+    },
+    {
+     "id": 924,
+     "value": 0.038
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    905,
+    906,
+    918,
+    919,
+    924,
+    925,
+    926,
+    932,
+    945,
+    915,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1224,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 432,
+   "l10n_name": "tid#EquipName_Awake302",
+   "icon": "A_UI_Equipment_Water_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 2,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 3500000
+    },
+    {
+     "id": 904,
+     "value": 0.09
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    927,
+    928,
+    929,
+    940,
+    944
+   ],
+   "upgrade_cost_item": [
+    103,
+    1224,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 433,
+   "l10n_name": "tid#EquipName_Awake303",
+   "icon": "A_UI_Equipment_Flame_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 3,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 901,
+     "value": 200000
+    },
+    {
+     "id": 942,
+     "value": 80000
+    },
+    {
+     "id": 905,
+     "value": 0.09
+    },
+    {
+     "id": 924,
+     "value": 0.113
+    }
+   ],
+   "candidate_attrs": [
+    1901,
+    1942,
+    904,
+    907,
+    908,
+    909,
+    918,
+    926,
+    932,
+    940,
+    945,
+    949
+   ],
+   "upgrade_cost_item": [
+    103,
+    1224,
+    1
+   ],
+   "next_awake_id": null
+  },
+  {
+   "awake_id": 434,
+   "l10n_name": "tid#EquipName_Awake304",
+   "icon": "A_UI_Equipment_Terra_Mystery_Awake",
+   "artifact_type": 3,
+   "slot_pos": 4,
+   "tier": 4,
+   "attr_slots": 4,
+   "base_attr": [
+    {
+     "id": 902,
+     "value": 1000000
+    },
+    {
+     "id": 941,
+     "value": 50000
+    },
+    {
+     "id": 907,
+     "value": 0.108
+    },
+    {
+     "id": 908,
+     "value": 0.075
+    }
+   ],
+   "candidate_attrs": [
+    1902,
+    1941,
+    905,
+    906,
+    919,
+    924,
+    925,
+    927,
+    928,
+    929,
+    944,
+    915
+   ],
+   "upgrade_cost_item": [
+    103,
+    1224,
+    1
+   ],
+   "next_awake_id": null
+  }
+ ],
+ "refine_material_items": [
+  {
+   "item_id": 4101,
+   "quality": 4,
+   "l10n_name": "tid#itemName4101",
+   "target_attr": 1901,
+   "target_attr_en": "ATK",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4102,
+   "quality": 4,
+   "l10n_name": "tid#itemName4102",
+   "target_attr": 1902,
+   "target_attr_en": "HP",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4103,
+   "quality": 4,
+   "l10n_name": "tid#itemName4103",
+   "target_attr": 1941,
+   "target_attr_en": "Armor",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4104,
+   "quality": 4,
+   "l10n_name": "tid#itemName4104",
+   "target_attr": 1942,
+   "target_attr_en": "M-RES",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4105,
+   "quality": 4,
+   "l10n_name": "tid#itemName4105",
+   "target_attr": 904,
+   "target_attr_en": "Dodge Rate",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4106,
+   "quality": 4,
+   "l10n_name": "tid#itemName4106",
+   "target_attr": 905,
+   "target_attr_en": "Hit Bonus",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4107,
+   "quality": 4,
+   "l10n_name": "tid#itemName4107",
+   "target_attr": 906,
+   "target_attr_en": "CRIT Rate",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4108,
+   "quality": 4,
+   "l10n_name": "tid#itemName4108",
+   "target_attr": 907,
+   "target_attr_en": "CRIT RES",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4109,
+   "quality": 4,
+   "l10n_name": "tid#itemName4109",
+   "target_attr": 908,
+   "target_attr_en": "M-DMG RED Rate",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4110,
+   "quality": 4,
+   "l10n_name": "tid#itemName4110",
+   "target_attr": 909,
+   "target_attr_en": "P-DMG RED Rate",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4111,
+   "quality": 4,
+   "l10n_name": "tid#itemName4111",
+   "target_attr": 918,
+   "target_attr_en": "Lifesteal Effectiveness",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4112,
+   "quality": 4,
+   "l10n_name": "tid#itemName4112",
+   "target_attr": 919,
+   "target_attr_en": "CRIT DMG Bonus",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4113,
+   "quality": 4,
+   "l10n_name": "tid#itemName4113",
+   "target_attr": 924,
+   "target_attr_en": "M-DMG Bonus",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4114,
+   "quality": 4,
+   "l10n_name": "tid#itemName4114",
+   "target_attr": 925,
+   "target_attr_en": "P-DMG Bonus",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4115,
+   "quality": 4,
+   "l10n_name": "tid#itemName4115",
+   "target_attr": 926,
+   "target_attr_en": "Cooldown Haste",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4116,
+   "quality": 4,
+   "l10n_name": "tid#itemName4116",
+   "target_attr": 927,
+   "target_attr_en": "Healing Effectiveness",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4117,
+   "quality": 4,
+   "l10n_name": "tid#itemName4117",
+   "target_attr": 928,
+   "target_attr_en": "Recharge Effectiveness",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4118,
+   "quality": 4,
+   "l10n_name": "tid#itemName4118",
+   "target_attr": 929,
+   "target_attr_en": "Control RES",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4119,
+   "quality": 4,
+   "l10n_name": "tid#itemName4119",
+   "target_attr": 932,
+   "target_attr_en": "Control Bonus",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4120,
+   "quality": 4,
+   "l10n_name": "tid#itemName4120",
+   "target_attr": 940,
+   "target_attr_en": "CRIT DMG RED",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4121,
+   "quality": 4,
+   "l10n_name": "tid#itemName4121",
+   "target_attr": 944,
+   "target_attr_en": "Effect RES",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4122,
+   "quality": 4,
+   "l10n_name": "tid#itemName4122",
+   "target_attr": 945,
+   "target_attr_en": "Effect Hit",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4123,
+   "quality": 4,
+   "l10n_name": "tid#itemName4123",
+   "target_attr": 915,
+   "target_attr_en": "ATK SPD Bonus",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4124,
+   "quality": 4,
+   "l10n_name": "tid#itemName4124",
+   "target_attr": 949,
+   "target_attr_en": "Ultimate Power",
+   "add_weight": 1000,
+   "reduce_weight_others": -50
+  },
+  {
+   "item_id": 4201,
+   "quality": 6,
+   "l10n_name": "tid#itemName4201",
+   "target_attr": 1901,
+   "target_attr_en": "ATK",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4202,
+   "quality": 6,
+   "l10n_name": "tid#itemName4202",
+   "target_attr": 1902,
+   "target_attr_en": "HP",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4203,
+   "quality": 6,
+   "l10n_name": "tid#itemName4203",
+   "target_attr": 1941,
+   "target_attr_en": "Armor",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4204,
+   "quality": 6,
+   "l10n_name": "tid#itemName4204",
+   "target_attr": 1942,
+   "target_attr_en": "M-RES",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4205,
+   "quality": 6,
+   "l10n_name": "tid#itemName4205",
+   "target_attr": 904,
+   "target_attr_en": "Dodge Rate",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4206,
+   "quality": 6,
+   "l10n_name": "tid#itemName4206",
+   "target_attr": 905,
+   "target_attr_en": "Hit Bonus",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4207,
+   "quality": 6,
+   "l10n_name": "tid#itemName4207",
+   "target_attr": 906,
+   "target_attr_en": "CRIT Rate",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4208,
+   "quality": 6,
+   "l10n_name": "tid#itemName4208",
+   "target_attr": 907,
+   "target_attr_en": "CRIT RES",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4209,
+   "quality": 6,
+   "l10n_name": "tid#itemName4209",
+   "target_attr": 908,
+   "target_attr_en": "M-DMG RED Rate",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4210,
+   "quality": 6,
+   "l10n_name": "tid#itemName4210",
+   "target_attr": 909,
+   "target_attr_en": "P-DMG RED Rate",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4211,
+   "quality": 6,
+   "l10n_name": "tid#itemName4211",
+   "target_attr": 918,
+   "target_attr_en": "Lifesteal Effectiveness",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4212,
+   "quality": 6,
+   "l10n_name": "tid#itemName4212",
+   "target_attr": 919,
+   "target_attr_en": "CRIT DMG Bonus",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4213,
+   "quality": 6,
+   "l10n_name": "tid#itemName4213",
+   "target_attr": 924,
+   "target_attr_en": "M-DMG Bonus",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4214,
+   "quality": 6,
+   "l10n_name": "tid#itemName4214",
+   "target_attr": 925,
+   "target_attr_en": "P-DMG Bonus",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4215,
+   "quality": 6,
+   "l10n_name": "tid#itemName4215",
+   "target_attr": 926,
+   "target_attr_en": "Cooldown Haste",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4216,
+   "quality": 6,
+   "l10n_name": "tid#itemName4216",
+   "target_attr": 927,
+   "target_attr_en": "Healing Effectiveness",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4217,
+   "quality": 6,
+   "l10n_name": "tid#itemName4217",
+   "target_attr": 928,
+   "target_attr_en": "Recharge Effectiveness",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4218,
+   "quality": 6,
+   "l10n_name": "tid#itemName4218",
+   "target_attr": 929,
+   "target_attr_en": "Control RES",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4219,
+   "quality": 6,
+   "l10n_name": "tid#itemName4219",
+   "target_attr": 932,
+   "target_attr_en": "Control Bonus",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4220,
+   "quality": 6,
+   "l10n_name": "tid#itemName4220",
+   "target_attr": 940,
+   "target_attr_en": "CRIT DMG RED",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4221,
+   "quality": 6,
+   "l10n_name": "tid#itemName4221",
+   "target_attr": 944,
+   "target_attr_en": "Effect RES",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4222,
+   "quality": 6,
+   "l10n_name": "tid#itemName4222",
+   "target_attr": 945,
+   "target_attr_en": "Effect Hit",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4223,
+   "quality": 6,
+   "l10n_name": "tid#itemName4223",
+   "target_attr": 915,
+   "target_attr_en": "ATK SPD Bonus",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4224,
+   "quality": 6,
+   "l10n_name": "tid#itemName4224",
+   "target_attr": 949,
+   "target_attr_en": "Ultimate Power",
+   "add_weight": 2000,
+   "reduce_weight_others": -100
+  },
+  {
+   "item_id": 4301,
+   "quality": 8,
+   "l10n_name": "tid#itemName4301",
+   "target_attr": 1901,
+   "target_attr_en": "ATK",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4302,
+   "quality": 8,
+   "l10n_name": "tid#itemName4302",
+   "target_attr": 1902,
+   "target_attr_en": "HP",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4303,
+   "quality": 8,
+   "l10n_name": "tid#itemName4303",
+   "target_attr": 1941,
+   "target_attr_en": "Armor",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4304,
+   "quality": 8,
+   "l10n_name": "tid#itemName4304",
+   "target_attr": 1942,
+   "target_attr_en": "M-RES",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4305,
+   "quality": 8,
+   "l10n_name": "tid#itemName4305",
+   "target_attr": 904,
+   "target_attr_en": "Dodge Rate",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4306,
+   "quality": 8,
+   "l10n_name": "tid#itemName4306",
+   "target_attr": 905,
+   "target_attr_en": "Hit Bonus",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4307,
+   "quality": 8,
+   "l10n_name": "tid#itemName4307",
+   "target_attr": 906,
+   "target_attr_en": "CRIT Rate",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4308,
+   "quality": 8,
+   "l10n_name": "tid#itemName4308",
+   "target_attr": 907,
+   "target_attr_en": "CRIT RES",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4309,
+   "quality": 8,
+   "l10n_name": "tid#itemName4309",
+   "target_attr": 908,
+   "target_attr_en": "M-DMG RED Rate",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4310,
+   "quality": 8,
+   "l10n_name": "tid#itemName4310",
+   "target_attr": 909,
+   "target_attr_en": "P-DMG RED Rate",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4311,
+   "quality": 8,
+   "l10n_name": "tid#itemName4311",
+   "target_attr": 918,
+   "target_attr_en": "Lifesteal Effectiveness",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4312,
+   "quality": 8,
+   "l10n_name": "tid#itemName4312",
+   "target_attr": 919,
+   "target_attr_en": "CRIT DMG Bonus",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4313,
+   "quality": 8,
+   "l10n_name": "tid#itemName4313",
+   "target_attr": 924,
+   "target_attr_en": "M-DMG Bonus",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4314,
+   "quality": 8,
+   "l10n_name": "tid#itemName4314",
+   "target_attr": 925,
+   "target_attr_en": "P-DMG Bonus",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4315,
+   "quality": 8,
+   "l10n_name": "tid#itemName4315",
+   "target_attr": 926,
+   "target_attr_en": "Cooldown Haste",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4316,
+   "quality": 8,
+   "l10n_name": "tid#itemName4316",
+   "target_attr": 927,
+   "target_attr_en": "Healing Effectiveness",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4317,
+   "quality": 8,
+   "l10n_name": "tid#itemName4317",
+   "target_attr": 928,
+   "target_attr_en": "Recharge Effectiveness",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4318,
+   "quality": 8,
+   "l10n_name": "tid#itemName4318",
+   "target_attr": 929,
+   "target_attr_en": "Control RES",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4319,
+   "quality": 8,
+   "l10n_name": "tid#itemName4319",
+   "target_attr": 932,
+   "target_attr_en": "Control Bonus",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4320,
+   "quality": 8,
+   "l10n_name": "tid#itemName4320",
+   "target_attr": 940,
+   "target_attr_en": "CRIT DMG RED",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4321,
+   "quality": 8,
+   "l10n_name": "tid#itemName4321",
+   "target_attr": 944,
+   "target_attr_en": "Effect RES",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4322,
+   "quality": 8,
+   "l10n_name": "tid#itemName4322",
+   "target_attr": 945,
+   "target_attr_en": "Effect Hit",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4323,
+   "quality": 8,
+   "l10n_name": "tid#itemName4323",
+   "target_attr": 915,
+   "target_attr_en": "ATK SPD Bonus",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4324,
+   "quality": 8,
+   "l10n_name": "tid#itemName4324",
+   "target_attr": 949,
+   "target_attr_en": "Ultimate Power",
+   "add_weight": 4000,
+   "reduce_weight_others": -200
+  },
+  {
+   "item_id": 4401,
+   "quality": 10,
+   "l10n_name": "tid#itemName4401",
+   "target_attr": 1901,
+   "target_attr_en": "ATK",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4402,
+   "quality": 10,
+   "l10n_name": "tid#itemName4402",
+   "target_attr": 1902,
+   "target_attr_en": "HP",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4403,
+   "quality": 10,
+   "l10n_name": "tid#itemName4403",
+   "target_attr": 1941,
+   "target_attr_en": "Armor",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4404,
+   "quality": 10,
+   "l10n_name": "tid#itemName4404",
+   "target_attr": 1942,
+   "target_attr_en": "M-RES",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4405,
+   "quality": 10,
+   "l10n_name": "tid#itemName4405",
+   "target_attr": 904,
+   "target_attr_en": "Dodge Rate",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4406,
+   "quality": 10,
+   "l10n_name": "tid#itemName4406",
+   "target_attr": 905,
+   "target_attr_en": "Hit Bonus",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4407,
+   "quality": 10,
+   "l10n_name": "tid#itemName4407",
+   "target_attr": 906,
+   "target_attr_en": "CRIT Rate",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4408,
+   "quality": 10,
+   "l10n_name": "tid#itemName4408",
+   "target_attr": 907,
+   "target_attr_en": "CRIT RES",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4409,
+   "quality": 10,
+   "l10n_name": "tid#itemName4409",
+   "target_attr": 908,
+   "target_attr_en": "M-DMG RED Rate",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4410,
+   "quality": 10,
+   "l10n_name": "tid#itemName4410",
+   "target_attr": 909,
+   "target_attr_en": "P-DMG RED Rate",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4411,
+   "quality": 10,
+   "l10n_name": "tid#itemName4411",
+   "target_attr": 918,
+   "target_attr_en": "Lifesteal Effectiveness",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4412,
+   "quality": 10,
+   "l10n_name": "tid#itemName4412",
+   "target_attr": 919,
+   "target_attr_en": "CRIT DMG Bonus",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4413,
+   "quality": 10,
+   "l10n_name": "tid#itemName4413",
+   "target_attr": 924,
+   "target_attr_en": "M-DMG Bonus",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4414,
+   "quality": 10,
+   "l10n_name": "tid#itemName4414",
+   "target_attr": 925,
+   "target_attr_en": "P-DMG Bonus",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4415,
+   "quality": 10,
+   "l10n_name": "tid#itemName4415",
+   "target_attr": 926,
+   "target_attr_en": "Cooldown Haste",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4416,
+   "quality": 10,
+   "l10n_name": "tid#itemName4416",
+   "target_attr": 927,
+   "target_attr_en": "Healing Effectiveness",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4417,
+   "quality": 10,
+   "l10n_name": "tid#itemName4417",
+   "target_attr": 928,
+   "target_attr_en": "Recharge Effectiveness",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4418,
+   "quality": 10,
+   "l10n_name": "tid#itemName4418",
+   "target_attr": 929,
+   "target_attr_en": "Control RES",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4419,
+   "quality": 10,
+   "l10n_name": "tid#itemName4419",
+   "target_attr": 932,
+   "target_attr_en": "Control Bonus",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4420,
+   "quality": 10,
+   "l10n_name": "tid#itemName4420",
+   "target_attr": 940,
+   "target_attr_en": "CRIT DMG RED",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4421,
+   "quality": 10,
+   "l10n_name": "tid#itemName4421",
+   "target_attr": 944,
+   "target_attr_en": "Effect RES",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4422,
+   "quality": 10,
+   "l10n_name": "tid#itemName4422",
+   "target_attr": 945,
+   "target_attr_en": "Effect Hit",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4423,
+   "quality": 10,
+   "l10n_name": "tid#itemName4423",
+   "target_attr": 915,
+   "target_attr_en": "ATK SPD Bonus",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4424,
+   "quality": 10,
+   "l10n_name": "tid#itemName4424",
+   "target_attr": 949,
+   "target_attr_en": "Ultimate Power",
+   "add_weight": 8000,
+   "reduce_weight_others": -400
+  },
+  {
+   "item_id": 4501,
+   "quality": 13,
+   "l10n_name": "tid#itemName4501",
+   "target_attr": 1901,
+   "target_attr_en": "ATK",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4502,
+   "quality": 13,
+   "l10n_name": "tid#itemName4502",
+   "target_attr": 1902,
+   "target_attr_en": "HP",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4503,
+   "quality": 13,
+   "l10n_name": "tid#itemName4503",
+   "target_attr": 1941,
+   "target_attr_en": "Armor",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4504,
+   "quality": 13,
+   "l10n_name": "tid#itemName4504",
+   "target_attr": 1942,
+   "target_attr_en": "M-RES",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4505,
+   "quality": 13,
+   "l10n_name": "tid#itemName4505",
+   "target_attr": 904,
+   "target_attr_en": "Dodge Rate",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4506,
+   "quality": 13,
+   "l10n_name": "tid#itemName4506",
+   "target_attr": 905,
+   "target_attr_en": "Hit Bonus",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4507,
+   "quality": 13,
+   "l10n_name": "tid#itemName4507",
+   "target_attr": 906,
+   "target_attr_en": "CRIT Rate",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4508,
+   "quality": 13,
+   "l10n_name": "tid#itemName4508",
+   "target_attr": 907,
+   "target_attr_en": "CRIT RES",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4509,
+   "quality": 13,
+   "l10n_name": "tid#itemName4509",
+   "target_attr": 908,
+   "target_attr_en": "M-DMG RED Rate",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4510,
+   "quality": 13,
+   "l10n_name": "tid#itemName4510",
+   "target_attr": 909,
+   "target_attr_en": "P-DMG RED Rate",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4511,
+   "quality": 13,
+   "l10n_name": "tid#itemName4511",
+   "target_attr": 918,
+   "target_attr_en": "Lifesteal Effectiveness",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4512,
+   "quality": 13,
+   "l10n_name": "tid#itemName4512",
+   "target_attr": 919,
+   "target_attr_en": "CRIT DMG Bonus",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4513,
+   "quality": 13,
+   "l10n_name": "tid#itemName4513",
+   "target_attr": 924,
+   "target_attr_en": "M-DMG Bonus",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4514,
+   "quality": 13,
+   "l10n_name": "tid#itemName4514",
+   "target_attr": 925,
+   "target_attr_en": "P-DMG Bonus",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4515,
+   "quality": 13,
+   "l10n_name": "tid#itemName4515",
+   "target_attr": 926,
+   "target_attr_en": "Cooldown Haste",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4516,
+   "quality": 13,
+   "l10n_name": "tid#itemName4516",
+   "target_attr": 927,
+   "target_attr_en": "Healing Effectiveness",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4517,
+   "quality": 13,
+   "l10n_name": "tid#itemName4517",
+   "target_attr": 928,
+   "target_attr_en": "Recharge Effectiveness",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4518,
+   "quality": 13,
+   "l10n_name": "tid#itemName4518",
+   "target_attr": 929,
+   "target_attr_en": "Control RES",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4519,
+   "quality": 13,
+   "l10n_name": "tid#itemName4519",
+   "target_attr": 932,
+   "target_attr_en": "Control Bonus",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4520,
+   "quality": 13,
+   "l10n_name": "tid#itemName4520",
+   "target_attr": 940,
+   "target_attr_en": "CRIT DMG RED",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4521,
+   "quality": 13,
+   "l10n_name": "tid#itemName4521",
+   "target_attr": 944,
+   "target_attr_en": "Effect RES",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4522,
+   "quality": 13,
+   "l10n_name": "tid#itemName4522",
+   "target_attr": 945,
+   "target_attr_en": "Effect Hit",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4523,
+   "quality": 13,
+   "l10n_name": "tid#itemName4523",
+   "target_attr": 915,
+   "target_attr_en": "ATK SPD Bonus",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  },
+  {
+   "item_id": 4524,
+   "quality": 13,
+   "l10n_name": "tid#itemName4524",
+   "target_attr": 949,
+   "target_attr_en": "Ultimate Power",
+   "add_weight": 100000,
+   "reduce_weight_others": 0
+  }
+ ],
+ "equips": [
+  {
+   "equip_id": 10101,
+   "l10n_name": "tid#EquipName10101",
+   "type": 1,
+   "pos": 1,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 2,
+    "926": 2,
+    "906": 1,
+    "929": 1,
+    "905": -2,
+    "919": -2
+   }
+  },
+  {
+   "equip_id": 10102,
+   "l10n_name": "tid#EquipName10102",
+   "type": 1,
+   "pos": 2,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 2,
+    "908": 2,
+    "927": 1,
+    "928": 1,
+    "906": -2,
+    "915": -2
+   }
+  },
+  {
+   "equip_id": 10103,
+   "l10n_name": "tid#EquipName10103",
+   "type": 1,
+   "pos": 3,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 2,
+    "905": 2,
+    "918": 1,
+    "940": 1,
+    "926": -2,
+    "944": -2
+   }
+  },
+  {
+   "equip_id": 10104,
+   "l10n_name": "tid#EquipName10104",
+   "type": 1,
+   "pos": 4,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 2,
+    "907": 2,
+    "1902": 1,
+    "909": 1,
+    "1901": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 10201,
+   "l10n_name": "tid#EquipName10201",
+   "type": 2,
+   "pos": 1,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 2,
+    "925": 2,
+    "926": 1,
+    "915": 1,
+    "1942": -2,
+    "924": -2
+   }
+  },
+  {
+   "equip_id": 10202,
+   "l10n_name": "tid#EquipName10202",
+   "type": 2,
+   "pos": 2,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 2,
+    "927": 2,
+    "925": 1,
+    "932": 1,
+    "908": -2,
+    "929": -2
+   }
+  },
+  {
+   "equip_id": 10203,
+   "l10n_name": "tid#EquipName10203",
+   "type": 2,
+   "pos": 3,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 2,
+    "915": 2,
+    "905": 1,
+    "919": 1,
+    "1902": -2,
+    "907": -2
+   }
+  },
+  {
+   "equip_id": 10204,
+   "l10n_name": "tid#EquipName10204",
+   "type": 2,
+   "pos": 4,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 2,
+    "940": 2,
+    "1941": 1,
+    "945": 1,
+    "927": -2,
+    "928": -2
+   }
+  },
+  {
+   "equip_id": 10301,
+   "l10n_name": "tid#EquipName10301",
+   "type": 3,
+   "pos": 1,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 2,
+    "949": 2,
+    "1901": 1,
+    "924": 1,
+    "1941": -2,
+    "925": -2
+   }
+  },
+  {
+   "equip_id": 10302,
+   "l10n_name": "tid#EquipName10302",
+   "type": 3,
+   "pos": 2,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 2,
+    "945": 2,
+    "904": 1,
+    "944": 1,
+    "932": -2,
+    "940": -2
+   }
+  },
+  {
+   "equip_id": 10303,
+   "l10n_name": "tid#EquipName10303",
+   "type": 3,
+   "pos": 3,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 2,
+    "924": 2,
+    "1942": 1,
+    "949": 1,
+    "909": -2,
+    "918": -2
+   }
+  },
+  {
+   "equip_id": 10304,
+   "l10n_name": "tid#EquipName10304",
+   "type": 3,
+   "pos": 4,
+   "quality": 1,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 2,
+    "944": 2,
+    "907": 1,
+    "908": 1,
+    "904": -2,
+    "945": -2
+   }
+  },
+  {
+   "equip_id": 20101,
+   "l10n_name": "tid#EquipName20101",
+   "type": 1,
+   "pos": 1,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 4,
+    "926": 4,
+    "906": 2,
+    "929": 2,
+    "905": -4,
+    "919": -4
+   }
+  },
+  {
+   "equip_id": 20102,
+   "l10n_name": "tid#EquipName20102",
+   "type": 1,
+   "pos": 2,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 4,
+    "908": 4,
+    "927": 2,
+    "928": 2,
+    "906": -4,
+    "915": -4
+   }
+  },
+  {
+   "equip_id": 20103,
+   "l10n_name": "tid#EquipName20103",
+   "type": 1,
+   "pos": 3,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 4,
+    "905": 4,
+    "918": 2,
+    "940": 2,
+    "926": -4,
+    "944": -4
+   }
+  },
+  {
+   "equip_id": 20104,
+   "l10n_name": "tid#EquipName20104",
+   "type": 1,
+   "pos": 4,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 4,
+    "907": 4,
+    "1902": 2,
+    "909": 2,
+    "1901": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 20201,
+   "l10n_name": "tid#EquipName20201",
+   "type": 2,
+   "pos": 1,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 4,
+    "925": 4,
+    "926": 2,
+    "915": 2,
+    "1942": -4,
+    "924": -4
+   }
+  },
+  {
+   "equip_id": 20202,
+   "l10n_name": "tid#EquipName20202",
+   "type": 2,
+   "pos": 2,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 4,
+    "927": 4,
+    "925": 2,
+    "932": 2,
+    "908": -4,
+    "929": -4
+   }
+  },
+  {
+   "equip_id": 20203,
+   "l10n_name": "tid#EquipName20203",
+   "type": 2,
+   "pos": 3,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 4,
+    "915": 4,
+    "905": 2,
+    "919": 2,
+    "1902": -4,
+    "907": -4
+   }
+  },
+  {
+   "equip_id": 20204,
+   "l10n_name": "tid#EquipName20204",
+   "type": 2,
+   "pos": 4,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 4,
+    "940": 4,
+    "1941": 2,
+    "945": 2,
+    "927": -4,
+    "928": -4
+   }
+  },
+  {
+   "equip_id": 20301,
+   "l10n_name": "tid#EquipName20301",
+   "type": 3,
+   "pos": 1,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 4,
+    "949": 4,
+    "1901": 2,
+    "924": 2,
+    "1941": -4,
+    "925": -4
+   }
+  },
+  {
+   "equip_id": 20302,
+   "l10n_name": "tid#EquipName20302",
+   "type": 3,
+   "pos": 2,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 4,
+    "945": 4,
+    "904": 2,
+    "944": 2,
+    "932": -4,
+    "940": -4
+   }
+  },
+  {
+   "equip_id": 20303,
+   "l10n_name": "tid#EquipName20303",
+   "type": 3,
+   "pos": 3,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 4,
+    "924": 4,
+    "1942": 2,
+    "949": 2,
+    "909": -4,
+    "918": -4
+   }
+  },
+  {
+   "equip_id": 20304,
+   "l10n_name": "tid#EquipName20304",
+   "type": 3,
+   "pos": 4,
+   "quality": 2,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 4,
+    "944": 4,
+    "907": 2,
+    "908": 2,
+    "904": -4,
+    "945": -4
+   }
+  },
+  {
+   "equip_id": 30101,
+   "l10n_name": "tid#EquipName30101",
+   "type": 1,
+   "pos": 1,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 6,
+    "926": 6,
+    "906": 3,
+    "929": 3,
+    "905": -6,
+    "919": -6
+   }
+  },
+  {
+   "equip_id": 30102,
+   "l10n_name": "tid#EquipName30102",
+   "type": 1,
+   "pos": 2,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 6,
+    "908": 6,
+    "927": 3,
+    "928": 3,
+    "906": -6,
+    "915": -6
+   }
+  },
+  {
+   "equip_id": 30103,
+   "l10n_name": "tid#EquipName30103",
+   "type": 1,
+   "pos": 3,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 6,
+    "905": 6,
+    "918": 3,
+    "940": 3,
+    "926": -6,
+    "944": -6
+   }
+  },
+  {
+   "equip_id": 30104,
+   "l10n_name": "tid#EquipName30104",
+   "type": 1,
+   "pos": 4,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 6,
+    "907": 6,
+    "1902": 3,
+    "909": 3,
+    "1901": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 30201,
+   "l10n_name": "tid#EquipName30201",
+   "type": 2,
+   "pos": 1,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 6,
+    "925": 6,
+    "926": 3,
+    "915": 3,
+    "1942": -6,
+    "924": -6
+   }
+  },
+  {
+   "equip_id": 30202,
+   "l10n_name": "tid#EquipName30202",
+   "type": 2,
+   "pos": 2,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 6,
+    "927": 6,
+    "925": 3,
+    "932": 3,
+    "908": -6,
+    "929": -6
+   }
+  },
+  {
+   "equip_id": 30203,
+   "l10n_name": "tid#EquipName30203",
+   "type": 2,
+   "pos": 3,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 6,
+    "915": 6,
+    "905": 3,
+    "919": 3,
+    "1902": -6,
+    "907": -6
+   }
+  },
+  {
+   "equip_id": 30204,
+   "l10n_name": "tid#EquipName30204",
+   "type": 2,
+   "pos": 4,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 6,
+    "940": 6,
+    "1941": 3,
+    "945": 3,
+    "927": -6,
+    "928": -6
+   }
+  },
+  {
+   "equip_id": 30301,
+   "l10n_name": "tid#EquipName30301",
+   "type": 3,
+   "pos": 1,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 6,
+    "949": 6,
+    "1901": 3,
+    "924": 3,
+    "1941": -6,
+    "925": -6
+   }
+  },
+  {
+   "equip_id": 30302,
+   "l10n_name": "tid#EquipName30302",
+   "type": 3,
+   "pos": 2,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 6,
+    "945": 6,
+    "904": 3,
+    "944": 3,
+    "932": -6,
+    "940": -6
+   }
+  },
+  {
+   "equip_id": 30303,
+   "l10n_name": "tid#EquipName30303",
+   "type": 3,
+   "pos": 3,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 6,
+    "924": 6,
+    "1942": 3,
+    "949": 3,
+    "909": -6,
+    "918": -6
+   }
+  },
+  {
+   "equip_id": 30304,
+   "l10n_name": "tid#EquipName30304",
+   "type": 3,
+   "pos": 4,
+   "quality": 3,
+   "lv_limit": 0,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 6,
+    "944": 6,
+    "907": 3,
+    "908": 3,
+    "904": -6,
+    "945": -6
+   }
+  },
+  {
+   "equip_id": 40101,
+   "l10n_name": "tid#EquipName40101",
+   "type": 1,
+   "pos": 1,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 8,
+    "926": 8,
+    "906": 4,
+    "929": 4,
+    "905": -8,
+    "919": -8,
+    "1901": -1,
+    "1902": -1,
+    "1941": -1,
+    "1942": -1,
+    "904": -1,
+    "907": -1,
+    "908": -1,
+    "909": -1,
+    "924": -1,
+    "925": -1,
+    "927": -1,
+    "928": -1,
+    "932": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "915": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40102,
+   "l10n_name": "tid#EquipName40102",
+   "type": 1,
+   "pos": 2,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 8,
+    "908": 8,
+    "927": 4,
+    "928": 4,
+    "906": -8,
+    "915": -8,
+    "1901": -1,
+    "1941": -1,
+    "1942": -1,
+    "904": -1,
+    "905": -1,
+    "907": -1,
+    "909": -1,
+    "918": -1,
+    "919": -1,
+    "924": -1,
+    "925": -1,
+    "926": -1,
+    "929": -1,
+    "932": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40103,
+   "l10n_name": "tid#EquipName40103",
+   "type": 1,
+   "pos": 3,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 8,
+    "905": 8,
+    "918": 4,
+    "940": 4,
+    "926": -8,
+    "944": -8,
+    "1901": -1,
+    "1902": -1,
+    "1941": -1,
+    "904": -1,
+    "906": -1,
+    "907": -1,
+    "908": -1,
+    "909": -1,
+    "919": -1,
+    "924": -1,
+    "925": -1,
+    "927": -1,
+    "928": -1,
+    "929": -1,
+    "932": -1,
+    "945": -1,
+    "915": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40104,
+   "l10n_name": "tid#EquipName40104",
+   "type": 1,
+   "pos": 4,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 8,
+    "907": 8,
+    "1902": 4,
+    "909": 4,
+    "1901": -8,
+    "949": -8,
+    "1942": -1,
+    "904": -1,
+    "905": -1,
+    "906": -1,
+    "908": -1,
+    "918": -1,
+    "919": -1,
+    "924": -1,
+    "925": -1,
+    "926": -1,
+    "927": -1,
+    "928": -1,
+    "929": -1,
+    "932": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "915": -1
+   }
+  },
+  {
+   "equip_id": 40201,
+   "l10n_name": "tid#EquipName40201",
+   "type": 2,
+   "pos": 1,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 8,
+    "925": 8,
+    "926": 4,
+    "915": 4,
+    "1942": -8,
+    "924": -8,
+    "1902": -1,
+    "1941": -1,
+    "904": -1,
+    "905": -1,
+    "906": -1,
+    "907": -1,
+    "908": -1,
+    "909": -1,
+    "918": -1,
+    "919": -1,
+    "927": -1,
+    "928": -1,
+    "929": -1,
+    "932": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40202,
+   "l10n_name": "tid#EquipName40202",
+   "type": 2,
+   "pos": 2,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 8,
+    "927": 8,
+    "925": 4,
+    "932": 4,
+    "908": -8,
+    "929": -8,
+    "1901": -1,
+    "1902": -1,
+    "1941": -1,
+    "1942": -1,
+    "905": -1,
+    "906": -1,
+    "907": -1,
+    "909": -1,
+    "918": -1,
+    "919": -1,
+    "924": -1,
+    "926": -1,
+    "928": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "915": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40203,
+   "l10n_name": "tid#EquipName40203",
+   "type": 2,
+   "pos": 3,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 8,
+    "915": 8,
+    "905": 4,
+    "919": 4,
+    "1902": -8,
+    "907": -8,
+    "1901": -1,
+    "1941": -1,
+    "1942": -1,
+    "904": -1,
+    "906": -1,
+    "908": -1,
+    "909": -1,
+    "918": -1,
+    "924": -1,
+    "925": -1,
+    "926": -1,
+    "927": -1,
+    "929": -1,
+    "932": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40204,
+   "l10n_name": "tid#EquipName40204",
+   "type": 2,
+   "pos": 4,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 8,
+    "940": 8,
+    "1941": 4,
+    "945": 4,
+    "927": -8,
+    "928": -8,
+    "1901": -1,
+    "1902": -1,
+    "1942": -1,
+    "904": -1,
+    "905": -1,
+    "906": -1,
+    "907": -1,
+    "908": -1,
+    "918": -1,
+    "919": -1,
+    "924": -1,
+    "925": -1,
+    "926": -1,
+    "929": -1,
+    "932": -1,
+    "944": -1,
+    "915": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40301,
+   "l10n_name": "tid#EquipName40301",
+   "type": 3,
+   "pos": 1,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 8,
+    "949": 8,
+    "1901": 4,
+    "924": 4,
+    "1941": -8,
+    "925": -8,
+    "1902": -1,
+    "1942": -1,
+    "904": -1,
+    "905": -1,
+    "907": -1,
+    "908": -1,
+    "909": -1,
+    "918": -1,
+    "919": -1,
+    "926": -1,
+    "927": -1,
+    "928": -1,
+    "929": -1,
+    "932": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "915": -1
+   }
+  },
+  {
+   "equip_id": 40302,
+   "l10n_name": "tid#EquipName40302",
+   "type": 3,
+   "pos": 2,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 8,
+    "945": 8,
+    "904": 4,
+    "944": 4,
+    "932": -8,
+    "940": -8,
+    "1901": -1,
+    "1902": -1,
+    "1941": -1,
+    "1942": -1,
+    "905": -1,
+    "906": -1,
+    "907": -1,
+    "908": -1,
+    "909": -1,
+    "918": -1,
+    "919": -1,
+    "924": -1,
+    "925": -1,
+    "926": -1,
+    "927": -1,
+    "928": -1,
+    "915": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 40303,
+   "l10n_name": "tid#EquipName40303",
+   "type": 3,
+   "pos": 3,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 8,
+    "924": 8,
+    "1942": 4,
+    "949": 4,
+    "909": -8,
+    "918": -8,
+    "1901": -1,
+    "1902": -1,
+    "1941": -1,
+    "904": -1,
+    "905": -1,
+    "906": -1,
+    "907": -1,
+    "908": -1,
+    "925": -1,
+    "926": -1,
+    "927": -1,
+    "928": -1,
+    "929": -1,
+    "932": -1,
+    "940": -1,
+    "944": -1,
+    "945": -1,
+    "915": -1
+   }
+  },
+  {
+   "equip_id": 40304,
+   "l10n_name": "tid#EquipName40304",
+   "type": 3,
+   "pos": 4,
+   "quality": 4,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 8,
+    "944": 8,
+    "907": 4,
+    "908": 4,
+    "904": -8,
+    "945": -8,
+    "1901": -1,
+    "1902": -1,
+    "1941": -1,
+    "1942": -1,
+    "905": -1,
+    "906": -1,
+    "909": -1,
+    "918": -1,
+    "919": -1,
+    "924": -1,
+    "925": -1,
+    "926": -1,
+    "927": -1,
+    "928": -1,
+    "929": -1,
+    "940": -1,
+    "915": -1,
+    "949": -1
+   }
+  },
+  {
+   "equip_id": 50101,
+   "l10n_name": "tid#EquipName50101",
+   "type": 1,
+   "pos": 1,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 10,
+    "926": 10,
+    "906": 5,
+    "929": 5,
+    "905": -10,
+    "919": -10,
+    "1901": -2,
+    "1902": -2,
+    "1941": -2,
+    "1942": -2,
+    "904": -2,
+    "907": -2,
+    "908": -2,
+    "909": -2,
+    "924": -2,
+    "925": -2,
+    "927": -2,
+    "928": -2,
+    "932": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "915": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50102,
+   "l10n_name": "tid#EquipName50102",
+   "type": 1,
+   "pos": 2,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 10,
+    "908": 10,
+    "927": 5,
+    "928": 5,
+    "906": -10,
+    "915": -10,
+    "1901": -2,
+    "1941": -2,
+    "1942": -2,
+    "904": -2,
+    "905": -2,
+    "907": -2,
+    "909": -2,
+    "918": -2,
+    "919": -2,
+    "924": -2,
+    "925": -2,
+    "926": -2,
+    "929": -2,
+    "932": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50103,
+   "l10n_name": "tid#EquipName50103",
+   "type": 1,
+   "pos": 3,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 10,
+    "905": 10,
+    "918": 5,
+    "940": 5,
+    "926": -10,
+    "944": -10,
+    "1901": -2,
+    "1902": -2,
+    "1941": -2,
+    "904": -2,
+    "906": -2,
+    "907": -2,
+    "908": -2,
+    "909": -2,
+    "919": -2,
+    "924": -2,
+    "925": -2,
+    "927": -2,
+    "928": -2,
+    "929": -2,
+    "932": -2,
+    "945": -2,
+    "915": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50104,
+   "l10n_name": "tid#EquipName50104",
+   "type": 1,
+   "pos": 4,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 10,
+    "907": 10,
+    "1902": 5,
+    "909": 5,
+    "1901": -10,
+    "949": -10,
+    "1942": -2,
+    "904": -2,
+    "905": -2,
+    "906": -2,
+    "908": -2,
+    "918": -2,
+    "919": -2,
+    "924": -2,
+    "925": -2,
+    "926": -2,
+    "927": -2,
+    "928": -2,
+    "929": -2,
+    "932": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "915": -2
+   }
+  },
+  {
+   "equip_id": 50201,
+   "l10n_name": "tid#EquipName50201",
+   "type": 2,
+   "pos": 1,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 10,
+    "925": 10,
+    "926": 5,
+    "915": 5,
+    "1942": -10,
+    "924": -10,
+    "1902": -2,
+    "1941": -2,
+    "904": -2,
+    "905": -2,
+    "906": -2,
+    "907": -2,
+    "908": -2,
+    "909": -2,
+    "918": -2,
+    "919": -2,
+    "927": -2,
+    "928": -2,
+    "929": -2,
+    "932": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50202,
+   "l10n_name": "tid#EquipName50202",
+   "type": 2,
+   "pos": 2,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 10,
+    "927": 10,
+    "925": 5,
+    "932": 5,
+    "908": -10,
+    "929": -10,
+    "1901": -2,
+    "1902": -2,
+    "1941": -2,
+    "1942": -2,
+    "905": -2,
+    "906": -2,
+    "907": -2,
+    "909": -2,
+    "918": -2,
+    "919": -2,
+    "924": -2,
+    "926": -2,
+    "928": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "915": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50203,
+   "l10n_name": "tid#EquipName50203",
+   "type": 2,
+   "pos": 3,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 10,
+    "915": 10,
+    "905": 5,
+    "919": 5,
+    "1902": -10,
+    "907": -10,
+    "1901": -2,
+    "1941": -2,
+    "1942": -2,
+    "904": -2,
+    "906": -2,
+    "908": -2,
+    "909": -2,
+    "918": -2,
+    "924": -2,
+    "925": -2,
+    "926": -2,
+    "927": -2,
+    "929": -2,
+    "932": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50204,
+   "l10n_name": "tid#EquipName50204",
+   "type": 2,
+   "pos": 4,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 10,
+    "940": 10,
+    "1941": 5,
+    "945": 5,
+    "927": -10,
+    "928": -10,
+    "1901": -2,
+    "1902": -2,
+    "1942": -2,
+    "904": -2,
+    "905": -2,
+    "906": -2,
+    "907": -2,
+    "908": -2,
+    "918": -2,
+    "919": -2,
+    "924": -2,
+    "925": -2,
+    "926": -2,
+    "929": -2,
+    "932": -2,
+    "944": -2,
+    "915": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50301,
+   "l10n_name": "tid#EquipName50301",
+   "type": 3,
+   "pos": 1,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 10,
+    "949": 10,
+    "1901": 5,
+    "924": 5,
+    "1941": -10,
+    "925": -10,
+    "1902": -2,
+    "1942": -2,
+    "904": -2,
+    "905": -2,
+    "907": -2,
+    "908": -2,
+    "909": -2,
+    "918": -2,
+    "919": -2,
+    "926": -2,
+    "927": -2,
+    "928": -2,
+    "929": -2,
+    "932": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "915": -2
+   }
+  },
+  {
+   "equip_id": 50302,
+   "l10n_name": "tid#EquipName50302",
+   "type": 3,
+   "pos": 2,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 10,
+    "945": 10,
+    "904": 5,
+    "944": 5,
+    "932": -10,
+    "940": -10,
+    "1901": -2,
+    "1902": -2,
+    "1941": -2,
+    "1942": -2,
+    "905": -2,
+    "906": -2,
+    "907": -2,
+    "908": -2,
+    "909": -2,
+    "918": -2,
+    "919": -2,
+    "924": -2,
+    "925": -2,
+    "926": -2,
+    "927": -2,
+    "928": -2,
+    "915": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 50303,
+   "l10n_name": "tid#EquipName50303",
+   "type": 3,
+   "pos": 3,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 10,
+    "924": 10,
+    "1942": 5,
+    "949": 5,
+    "909": -10,
+    "918": -10,
+    "1901": -2,
+    "1902": -2,
+    "1941": -2,
+    "904": -2,
+    "905": -2,
+    "906": -2,
+    "907": -2,
+    "908": -2,
+    "925": -2,
+    "926": -2,
+    "927": -2,
+    "928": -2,
+    "929": -2,
+    "932": -2,
+    "940": -2,
+    "944": -2,
+    "945": -2,
+    "915": -2
+   }
+  },
+  {
+   "equip_id": 50304,
+   "l10n_name": "tid#EquipName50304",
+   "type": 3,
+   "pos": 4,
+   "quality": 5,
+   "lv_limit": 3,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 10,
+    "944": 10,
+    "907": 5,
+    "908": 5,
+    "904": -10,
+    "945": -10,
+    "1901": -2,
+    "1902": -2,
+    "1941": -2,
+    "1942": -2,
+    "905": -2,
+    "906": -2,
+    "909": -2,
+    "918": -2,
+    "919": -2,
+    "924": -2,
+    "925": -2,
+    "926": -2,
+    "927": -2,
+    "928": -2,
+    "929": -2,
+    "940": -2,
+    "915": -2,
+    "949": -2
+   }
+  },
+  {
+   "equip_id": 60101,
+   "l10n_name": "tid#EquipName60101",
+   "type": 1,
+   "pos": 1,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 20,
+    "926": 20,
+    "906": 10,
+    "929": 10,
+    "905": -20,
+    "919": -20,
+    "1901": -4,
+    "1902": -4,
+    "1941": -4,
+    "1942": -4,
+    "904": -4,
+    "907": -4,
+    "908": -4,
+    "909": -4,
+    "924": -4,
+    "925": -4,
+    "927": -4,
+    "928": -4,
+    "932": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "915": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60102,
+   "l10n_name": "tid#EquipName60102",
+   "type": 1,
+   "pos": 2,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 20,
+    "908": 20,
+    "927": 10,
+    "928": 10,
+    "906": -20,
+    "915": -20,
+    "1901": -4,
+    "1941": -4,
+    "1942": -4,
+    "904": -4,
+    "905": -4,
+    "907": -4,
+    "909": -4,
+    "918": -4,
+    "919": -4,
+    "924": -4,
+    "925": -4,
+    "926": -4,
+    "929": -4,
+    "932": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60103,
+   "l10n_name": "tid#EquipName60103",
+   "type": 1,
+   "pos": 3,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 20,
+    "905": 20,
+    "918": 10,
+    "940": 10,
+    "926": -20,
+    "944": -20,
+    "1901": -4,
+    "1902": -4,
+    "1941": -4,
+    "904": -4,
+    "906": -4,
+    "907": -4,
+    "908": -4,
+    "909": -4,
+    "919": -4,
+    "924": -4,
+    "925": -4,
+    "927": -4,
+    "928": -4,
+    "929": -4,
+    "932": -4,
+    "945": -4,
+    "915": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60104,
+   "l10n_name": "tid#EquipName60104",
+   "type": 1,
+   "pos": 4,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 20,
+    "907": 20,
+    "1902": 10,
+    "909": 10,
+    "1901": -20,
+    "949": -20,
+    "1942": -4,
+    "904": -4,
+    "905": -4,
+    "906": -4,
+    "908": -4,
+    "918": -4,
+    "919": -4,
+    "924": -4,
+    "925": -4,
+    "926": -4,
+    "927": -4,
+    "928": -4,
+    "929": -4,
+    "932": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "915": -4
+   }
+  },
+  {
+   "equip_id": 60201,
+   "l10n_name": "tid#EquipName60201",
+   "type": 2,
+   "pos": 1,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 20,
+    "925": 20,
+    "926": 10,
+    "915": 10,
+    "1942": -20,
+    "924": -20,
+    "1902": -4,
+    "1941": -4,
+    "904": -4,
+    "905": -4,
+    "906": -4,
+    "907": -4,
+    "908": -4,
+    "909": -4,
+    "918": -4,
+    "919": -4,
+    "927": -4,
+    "928": -4,
+    "929": -4,
+    "932": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60202,
+   "l10n_name": "tid#EquipName60202",
+   "type": 2,
+   "pos": 2,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 20,
+    "927": 20,
+    "925": 10,
+    "932": 10,
+    "908": -20,
+    "929": -20,
+    "1901": -4,
+    "1902": -4,
+    "1941": -4,
+    "1942": -4,
+    "905": -4,
+    "906": -4,
+    "907": -4,
+    "909": -4,
+    "918": -4,
+    "919": -4,
+    "924": -4,
+    "926": -4,
+    "928": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "915": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60203,
+   "l10n_name": "tid#EquipName60203",
+   "type": 2,
+   "pos": 3,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 20,
+    "915": 20,
+    "905": 10,
+    "919": 10,
+    "1902": -20,
+    "907": -20,
+    "1901": -4,
+    "1941": -4,
+    "1942": -4,
+    "904": -4,
+    "906": -4,
+    "908": -4,
+    "909": -4,
+    "918": -4,
+    "924": -4,
+    "925": -4,
+    "926": -4,
+    "927": -4,
+    "929": -4,
+    "932": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60204,
+   "l10n_name": "tid#EquipName60204",
+   "type": 2,
+   "pos": 4,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 20,
+    "940": 20,
+    "1941": 10,
+    "945": 10,
+    "927": -20,
+    "928": -20,
+    "1901": -4,
+    "1902": -4,
+    "1942": -4,
+    "904": -4,
+    "905": -4,
+    "906": -4,
+    "907": -4,
+    "908": -4,
+    "918": -4,
+    "919": -4,
+    "924": -4,
+    "925": -4,
+    "926": -4,
+    "929": -4,
+    "932": -4,
+    "944": -4,
+    "915": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60301,
+   "l10n_name": "tid#EquipName60301",
+   "type": 3,
+   "pos": 1,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 20,
+    "949": 20,
+    "1901": 10,
+    "924": 10,
+    "1941": -20,
+    "925": -20,
+    "1902": -4,
+    "1942": -4,
+    "904": -4,
+    "905": -4,
+    "907": -4,
+    "908": -4,
+    "909": -4,
+    "918": -4,
+    "919": -4,
+    "926": -4,
+    "927": -4,
+    "928": -4,
+    "929": -4,
+    "932": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "915": -4
+   }
+  },
+  {
+   "equip_id": 60302,
+   "l10n_name": "tid#EquipName60302",
+   "type": 3,
+   "pos": 2,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 20,
+    "945": 20,
+    "904": 10,
+    "944": 10,
+    "932": -20,
+    "940": -20,
+    "1901": -4,
+    "1902": -4,
+    "1941": -4,
+    "1942": -4,
+    "905": -4,
+    "906": -4,
+    "907": -4,
+    "908": -4,
+    "909": -4,
+    "918": -4,
+    "919": -4,
+    "924": -4,
+    "925": -4,
+    "926": -4,
+    "927": -4,
+    "928": -4,
+    "915": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 60303,
+   "l10n_name": "tid#EquipName60303",
+   "type": 3,
+   "pos": 3,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 20,
+    "924": 20,
+    "1942": 10,
+    "949": 10,
+    "909": -20,
+    "918": -20,
+    "1901": -4,
+    "1902": -4,
+    "1941": -4,
+    "904": -4,
+    "905": -4,
+    "906": -4,
+    "907": -4,
+    "908": -4,
+    "925": -4,
+    "926": -4,
+    "927": -4,
+    "928": -4,
+    "929": -4,
+    "932": -4,
+    "940": -4,
+    "944": -4,
+    "945": -4,
+    "915": -4
+   }
+  },
+  {
+   "equip_id": 60304,
+   "l10n_name": "tid#EquipName60304",
+   "type": 3,
+   "pos": 4,
+   "quality": 6,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 20,
+    "944": 20,
+    "907": 10,
+    "908": 10,
+    "904": -20,
+    "945": -20,
+    "1901": -4,
+    "1902": -4,
+    "1941": -4,
+    "1942": -4,
+    "905": -4,
+    "906": -4,
+    "909": -4,
+    "918": -4,
+    "919": -4,
+    "924": -4,
+    "925": -4,
+    "926": -4,
+    "927": -4,
+    "928": -4,
+    "929": -4,
+    "940": -4,
+    "915": -4,
+    "949": -4
+   }
+  },
+  {
+   "equip_id": 70101,
+   "l10n_name": "tid#EquipName70101",
+   "type": 1,
+   "pos": 1,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 30,
+    "926": 30,
+    "906": 15,
+    "929": 15,
+    "905": -30,
+    "919": -30,
+    "1901": -6,
+    "1902": -6,
+    "1941": -6,
+    "1942": -6,
+    "904": -6,
+    "907": -6,
+    "908": -6,
+    "909": -6,
+    "924": -6,
+    "925": -6,
+    "927": -6,
+    "928": -6,
+    "932": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "915": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70102,
+   "l10n_name": "tid#EquipName70102",
+   "type": 1,
+   "pos": 2,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 30,
+    "908": 30,
+    "927": 15,
+    "928": 15,
+    "906": -30,
+    "915": -30,
+    "1901": -6,
+    "1941": -6,
+    "1942": -6,
+    "904": -6,
+    "905": -6,
+    "907": -6,
+    "909": -6,
+    "918": -6,
+    "919": -6,
+    "924": -6,
+    "925": -6,
+    "926": -6,
+    "929": -6,
+    "932": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70103,
+   "l10n_name": "tid#EquipName70103",
+   "type": 1,
+   "pos": 3,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 30,
+    "905": 30,
+    "918": 15,
+    "940": 15,
+    "926": -30,
+    "944": -30,
+    "1901": -6,
+    "1902": -6,
+    "1941": -6,
+    "904": -6,
+    "906": -6,
+    "907": -6,
+    "908": -6,
+    "909": -6,
+    "919": -6,
+    "924": -6,
+    "925": -6,
+    "927": -6,
+    "928": -6,
+    "929": -6,
+    "932": -6,
+    "945": -6,
+    "915": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70104,
+   "l10n_name": "tid#EquipName70104",
+   "type": 1,
+   "pos": 4,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 30,
+    "907": 30,
+    "1902": 15,
+    "909": 15,
+    "1901": -30,
+    "949": -30,
+    "1942": -6,
+    "904": -6,
+    "905": -6,
+    "906": -6,
+    "908": -6,
+    "918": -6,
+    "919": -6,
+    "924": -6,
+    "925": -6,
+    "926": -6,
+    "927": -6,
+    "928": -6,
+    "929": -6,
+    "932": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "915": -6
+   }
+  },
+  {
+   "equip_id": 70201,
+   "l10n_name": "tid#EquipName70201",
+   "type": 2,
+   "pos": 1,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 30,
+    "925": 30,
+    "926": 15,
+    "915": 15,
+    "1942": -30,
+    "924": -30,
+    "1902": -6,
+    "1941": -6,
+    "904": -6,
+    "905": -6,
+    "906": -6,
+    "907": -6,
+    "908": -6,
+    "909": -6,
+    "918": -6,
+    "919": -6,
+    "927": -6,
+    "928": -6,
+    "929": -6,
+    "932": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70202,
+   "l10n_name": "tid#EquipName70202",
+   "type": 2,
+   "pos": 2,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 30,
+    "927": 30,
+    "925": 15,
+    "932": 15,
+    "908": -30,
+    "929": -30,
+    "1901": -6,
+    "1902": -6,
+    "1941": -6,
+    "1942": -6,
+    "905": -6,
+    "906": -6,
+    "907": -6,
+    "909": -6,
+    "918": -6,
+    "919": -6,
+    "924": -6,
+    "926": -6,
+    "928": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "915": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70203,
+   "l10n_name": "tid#EquipName70203",
+   "type": 2,
+   "pos": 3,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 30,
+    "915": 30,
+    "905": 15,
+    "919": 15,
+    "1902": -30,
+    "907": -30,
+    "1901": -6,
+    "1941": -6,
+    "1942": -6,
+    "904": -6,
+    "906": -6,
+    "908": -6,
+    "909": -6,
+    "918": -6,
+    "924": -6,
+    "925": -6,
+    "926": -6,
+    "927": -6,
+    "929": -6,
+    "932": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70204,
+   "l10n_name": "tid#EquipName70204",
+   "type": 2,
+   "pos": 4,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 30,
+    "940": 30,
+    "1941": 15,
+    "945": 15,
+    "927": -30,
+    "928": -30,
+    "1901": -6,
+    "1902": -6,
+    "1942": -6,
+    "904": -6,
+    "905": -6,
+    "906": -6,
+    "907": -6,
+    "908": -6,
+    "918": -6,
+    "919": -6,
+    "924": -6,
+    "925": -6,
+    "926": -6,
+    "929": -6,
+    "932": -6,
+    "944": -6,
+    "915": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70301,
+   "l10n_name": "tid#EquipName70301",
+   "type": 3,
+   "pos": 1,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 30,
+    "949": 30,
+    "1901": 15,
+    "924": 15,
+    "1941": -30,
+    "925": -30,
+    "1902": -6,
+    "1942": -6,
+    "904": -6,
+    "905": -6,
+    "907": -6,
+    "908": -6,
+    "909": -6,
+    "918": -6,
+    "919": -6,
+    "926": -6,
+    "927": -6,
+    "928": -6,
+    "929": -6,
+    "932": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "915": -6
+   }
+  },
+  {
+   "equip_id": 70302,
+   "l10n_name": "tid#EquipName70302",
+   "type": 3,
+   "pos": 2,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 30,
+    "945": 30,
+    "904": 15,
+    "944": 15,
+    "932": -30,
+    "940": -30,
+    "1901": -6,
+    "1902": -6,
+    "1941": -6,
+    "1942": -6,
+    "905": -6,
+    "906": -6,
+    "907": -6,
+    "908": -6,
+    "909": -6,
+    "918": -6,
+    "919": -6,
+    "924": -6,
+    "925": -6,
+    "926": -6,
+    "927": -6,
+    "928": -6,
+    "915": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 70303,
+   "l10n_name": "tid#EquipName70303",
+   "type": 3,
+   "pos": 3,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 30,
+    "924": 30,
+    "1942": 15,
+    "949": 15,
+    "909": -30,
+    "918": -30,
+    "1901": -6,
+    "1902": -6,
+    "1941": -6,
+    "904": -6,
+    "905": -6,
+    "906": -6,
+    "907": -6,
+    "908": -6,
+    "925": -6,
+    "926": -6,
+    "927": -6,
+    "928": -6,
+    "929": -6,
+    "932": -6,
+    "940": -6,
+    "944": -6,
+    "945": -6,
+    "915": -6
+   }
+  },
+  {
+   "equip_id": 70304,
+   "l10n_name": "tid#EquipName70304",
+   "type": 3,
+   "pos": 4,
+   "quality": 7,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 30,
+    "944": 30,
+    "907": 15,
+    "908": 15,
+    "904": -30,
+    "945": -30,
+    "1901": -6,
+    "1902": -6,
+    "1941": -6,
+    "1942": -6,
+    "905": -6,
+    "906": -6,
+    "909": -6,
+    "918": -6,
+    "919": -6,
+    "924": -6,
+    "925": -6,
+    "926": -6,
+    "927": -6,
+    "928": -6,
+    "929": -6,
+    "940": -6,
+    "915": -6,
+    "949": -6
+   }
+  },
+  {
+   "equip_id": 80101,
+   "l10n_name": "tid#EquipName80101",
+   "type": 1,
+   "pos": 1,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 40,
+    "926": 40,
+    "906": 20,
+    "929": 20,
+    "905": -40,
+    "919": -40,
+    "1901": -8,
+    "1902": -8,
+    "1941": -8,
+    "1942": -8,
+    "904": -8,
+    "907": -8,
+    "908": -8,
+    "909": -8,
+    "924": -8,
+    "925": -8,
+    "927": -8,
+    "928": -8,
+    "932": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "915": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80102,
+   "l10n_name": "tid#EquipName80102",
+   "type": 1,
+   "pos": 2,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 40,
+    "908": 40,
+    "927": 20,
+    "928": 20,
+    "906": -40,
+    "915": -40,
+    "1901": -8,
+    "1941": -8,
+    "1942": -8,
+    "904": -8,
+    "905": -8,
+    "907": -8,
+    "909": -8,
+    "918": -8,
+    "919": -8,
+    "924": -8,
+    "925": -8,
+    "926": -8,
+    "929": -8,
+    "932": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80103,
+   "l10n_name": "tid#EquipName80103",
+   "type": 1,
+   "pos": 3,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 40,
+    "905": 40,
+    "918": 20,
+    "940": 20,
+    "926": -40,
+    "944": -40,
+    "1901": -8,
+    "1902": -8,
+    "1941": -8,
+    "904": -8,
+    "906": -8,
+    "907": -8,
+    "908": -8,
+    "909": -8,
+    "919": -8,
+    "924": -8,
+    "925": -8,
+    "927": -8,
+    "928": -8,
+    "929": -8,
+    "932": -8,
+    "945": -8,
+    "915": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80104,
+   "l10n_name": "tid#EquipName80104",
+   "type": 1,
+   "pos": 4,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 40,
+    "907": 40,
+    "1902": 20,
+    "909": 20,
+    "1901": -40,
+    "949": -40,
+    "1942": -8,
+    "904": -8,
+    "905": -8,
+    "906": -8,
+    "908": -8,
+    "918": -8,
+    "919": -8,
+    "924": -8,
+    "925": -8,
+    "926": -8,
+    "927": -8,
+    "928": -8,
+    "929": -8,
+    "932": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "915": -8
+   }
+  },
+  {
+   "equip_id": 80201,
+   "l10n_name": "tid#EquipName80201",
+   "type": 2,
+   "pos": 1,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 40,
+    "925": 40,
+    "926": 20,
+    "915": 20,
+    "1942": -40,
+    "924": -40,
+    "1902": -8,
+    "1941": -8,
+    "904": -8,
+    "905": -8,
+    "906": -8,
+    "907": -8,
+    "908": -8,
+    "909": -8,
+    "918": -8,
+    "919": -8,
+    "927": -8,
+    "928": -8,
+    "929": -8,
+    "932": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80202,
+   "l10n_name": "tid#EquipName80202",
+   "type": 2,
+   "pos": 2,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 40,
+    "927": 40,
+    "925": 20,
+    "932": 20,
+    "908": -40,
+    "929": -40,
+    "1901": -8,
+    "1902": -8,
+    "1941": -8,
+    "1942": -8,
+    "905": -8,
+    "906": -8,
+    "907": -8,
+    "909": -8,
+    "918": -8,
+    "919": -8,
+    "924": -8,
+    "926": -8,
+    "928": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "915": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80203,
+   "l10n_name": "tid#EquipName80203",
+   "type": 2,
+   "pos": 3,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 40,
+    "915": 40,
+    "905": 20,
+    "919": 20,
+    "1902": -40,
+    "907": -40,
+    "1901": -8,
+    "1941": -8,
+    "1942": -8,
+    "904": -8,
+    "906": -8,
+    "908": -8,
+    "909": -8,
+    "918": -8,
+    "924": -8,
+    "925": -8,
+    "926": -8,
+    "927": -8,
+    "929": -8,
+    "932": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80204,
+   "l10n_name": "tid#EquipName80204",
+   "type": 2,
+   "pos": 4,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 40,
+    "940": 40,
+    "1941": 20,
+    "945": 20,
+    "927": -40,
+    "928": -40,
+    "1901": -8,
+    "1902": -8,
+    "1942": -8,
+    "904": -8,
+    "905": -8,
+    "906": -8,
+    "907": -8,
+    "908": -8,
+    "918": -8,
+    "919": -8,
+    "924": -8,
+    "925": -8,
+    "926": -8,
+    "929": -8,
+    "932": -8,
+    "944": -8,
+    "915": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80301,
+   "l10n_name": "tid#EquipName80301",
+   "type": 3,
+   "pos": 1,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 40,
+    "949": 40,
+    "1901": 20,
+    "924": 20,
+    "1941": -40,
+    "925": -40,
+    "1902": -8,
+    "1942": -8,
+    "904": -8,
+    "905": -8,
+    "907": -8,
+    "908": -8,
+    "909": -8,
+    "918": -8,
+    "919": -8,
+    "926": -8,
+    "927": -8,
+    "928": -8,
+    "929": -8,
+    "932": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "915": -8
+   }
+  },
+  {
+   "equip_id": 80302,
+   "l10n_name": "tid#EquipName80302",
+   "type": 3,
+   "pos": 2,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 40,
+    "945": 40,
+    "904": 20,
+    "944": 20,
+    "932": -40,
+    "940": -40,
+    "1901": -8,
+    "1902": -8,
+    "1941": -8,
+    "1942": -8,
+    "905": -8,
+    "906": -8,
+    "907": -8,
+    "908": -8,
+    "909": -8,
+    "918": -8,
+    "919": -8,
+    "924": -8,
+    "925": -8,
+    "926": -8,
+    "927": -8,
+    "928": -8,
+    "915": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 80303,
+   "l10n_name": "tid#EquipName80303",
+   "type": 3,
+   "pos": 3,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 40,
+    "924": 40,
+    "1942": 20,
+    "949": 20,
+    "909": -40,
+    "918": -40,
+    "1901": -8,
+    "1902": -8,
+    "1941": -8,
+    "904": -8,
+    "905": -8,
+    "906": -8,
+    "907": -8,
+    "908": -8,
+    "925": -8,
+    "926": -8,
+    "927": -8,
+    "928": -8,
+    "929": -8,
+    "932": -8,
+    "940": -8,
+    "944": -8,
+    "945": -8,
+    "915": -8
+   }
+  },
+  {
+   "equip_id": 80304,
+   "l10n_name": "tid#EquipName80304",
+   "type": 3,
+   "pos": 4,
+   "quality": 8,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 40,
+    "944": 40,
+    "907": 20,
+    "908": 20,
+    "904": -40,
+    "945": -40,
+    "1901": -8,
+    "1902": -8,
+    "1941": -8,
+    "1942": -8,
+    "905": -8,
+    "906": -8,
+    "909": -8,
+    "918": -8,
+    "919": -8,
+    "924": -8,
+    "925": -8,
+    "926": -8,
+    "927": -8,
+    "928": -8,
+    "929": -8,
+    "940": -8,
+    "915": -8,
+    "949": -8
+   }
+  },
+  {
+   "equip_id": 90101,
+   "l10n_name": "tid#EquipName90101",
+   "type": 1,
+   "pos": 1,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 60,
+    "926": 60,
+    "906": 30,
+    "929": 30,
+    "905": -60,
+    "919": -60,
+    "1901": -12,
+    "1902": -12,
+    "1941": -12,
+    "1942": -12,
+    "904": -12,
+    "907": -12,
+    "908": -12,
+    "909": -12,
+    "924": -12,
+    "925": -12,
+    "927": -12,
+    "928": -12,
+    "932": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "915": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90102,
+   "l10n_name": "tid#EquipName90102",
+   "type": 1,
+   "pos": 2,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 60,
+    "908": 60,
+    "927": 30,
+    "928": 30,
+    "906": -60,
+    "915": -60,
+    "1901": -12,
+    "1941": -12,
+    "1942": -12,
+    "904": -12,
+    "905": -12,
+    "907": -12,
+    "909": -12,
+    "918": -12,
+    "919": -12,
+    "924": -12,
+    "925": -12,
+    "926": -12,
+    "929": -12,
+    "932": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90103,
+   "l10n_name": "tid#EquipName90103",
+   "type": 1,
+   "pos": 3,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 60,
+    "905": 60,
+    "918": 30,
+    "940": 30,
+    "926": -60,
+    "944": -60,
+    "1901": -12,
+    "1902": -12,
+    "1941": -12,
+    "904": -12,
+    "906": -12,
+    "907": -12,
+    "908": -12,
+    "909": -12,
+    "919": -12,
+    "924": -12,
+    "925": -12,
+    "927": -12,
+    "928": -12,
+    "929": -12,
+    "932": -12,
+    "945": -12,
+    "915": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90104,
+   "l10n_name": "tid#EquipName90104",
+   "type": 1,
+   "pos": 4,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 60,
+    "907": 60,
+    "1902": 30,
+    "909": 30,
+    "1901": -60,
+    "949": -60,
+    "1942": -12,
+    "904": -12,
+    "905": -12,
+    "906": -12,
+    "908": -12,
+    "918": -12,
+    "919": -12,
+    "924": -12,
+    "925": -12,
+    "926": -12,
+    "927": -12,
+    "928": -12,
+    "929": -12,
+    "932": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "915": -12
+   }
+  },
+  {
+   "equip_id": 90201,
+   "l10n_name": "tid#EquipName90201",
+   "type": 2,
+   "pos": 1,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 60,
+    "925": 60,
+    "926": 30,
+    "915": 30,
+    "1942": -60,
+    "924": -60,
+    "1902": -12,
+    "1941": -12,
+    "904": -12,
+    "905": -12,
+    "906": -12,
+    "907": -12,
+    "908": -12,
+    "909": -12,
+    "918": -12,
+    "919": -12,
+    "927": -12,
+    "928": -12,
+    "929": -12,
+    "932": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90202,
+   "l10n_name": "tid#EquipName90202",
+   "type": 2,
+   "pos": 2,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 60,
+    "927": 60,
+    "925": 30,
+    "932": 30,
+    "908": -60,
+    "929": -60,
+    "1901": -12,
+    "1902": -12,
+    "1941": -12,
+    "1942": -12,
+    "905": -12,
+    "906": -12,
+    "907": -12,
+    "909": -12,
+    "918": -12,
+    "919": -12,
+    "924": -12,
+    "926": -12,
+    "928": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "915": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90203,
+   "l10n_name": "tid#EquipName90203",
+   "type": 2,
+   "pos": 3,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 60,
+    "915": 60,
+    "905": 30,
+    "919": 30,
+    "1902": -60,
+    "907": -60,
+    "1901": -12,
+    "1941": -12,
+    "1942": -12,
+    "904": -12,
+    "906": -12,
+    "908": -12,
+    "909": -12,
+    "918": -12,
+    "924": -12,
+    "925": -12,
+    "926": -12,
+    "927": -12,
+    "929": -12,
+    "932": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90204,
+   "l10n_name": "tid#EquipName90204",
+   "type": 2,
+   "pos": 4,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 60,
+    "940": 60,
+    "1941": 30,
+    "945": 30,
+    "927": -60,
+    "928": -60,
+    "1901": -12,
+    "1902": -12,
+    "1942": -12,
+    "904": -12,
+    "905": -12,
+    "906": -12,
+    "907": -12,
+    "908": -12,
+    "918": -12,
+    "919": -12,
+    "924": -12,
+    "925": -12,
+    "926": -12,
+    "929": -12,
+    "932": -12,
+    "944": -12,
+    "915": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90301,
+   "l10n_name": "tid#EquipName90301",
+   "type": 3,
+   "pos": 1,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 60,
+    "949": 60,
+    "1901": 30,
+    "924": 30,
+    "1941": -60,
+    "925": -60,
+    "1902": -12,
+    "1942": -12,
+    "904": -12,
+    "905": -12,
+    "907": -12,
+    "908": -12,
+    "909": -12,
+    "918": -12,
+    "919": -12,
+    "926": -12,
+    "927": -12,
+    "928": -12,
+    "929": -12,
+    "932": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "915": -12
+   }
+  },
+  {
+   "equip_id": 90302,
+   "l10n_name": "tid#EquipName90302",
+   "type": 3,
+   "pos": 2,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 60,
+    "945": 60,
+    "904": 30,
+    "944": 30,
+    "932": -60,
+    "940": -60,
+    "1901": -12,
+    "1902": -12,
+    "1941": -12,
+    "1942": -12,
+    "905": -12,
+    "906": -12,
+    "907": -12,
+    "908": -12,
+    "909": -12,
+    "918": -12,
+    "919": -12,
+    "924": -12,
+    "925": -12,
+    "926": -12,
+    "927": -12,
+    "928": -12,
+    "915": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 90303,
+   "l10n_name": "tid#EquipName90303",
+   "type": 3,
+   "pos": 3,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 60,
+    "924": 60,
+    "1942": 30,
+    "949": 30,
+    "909": -60,
+    "918": -60,
+    "1901": -12,
+    "1902": -12,
+    "1941": -12,
+    "904": -12,
+    "905": -12,
+    "906": -12,
+    "907": -12,
+    "908": -12,
+    "925": -12,
+    "926": -12,
+    "927": -12,
+    "928": -12,
+    "929": -12,
+    "932": -12,
+    "940": -12,
+    "944": -12,
+    "945": -12,
+    "915": -12
+   }
+  },
+  {
+   "equip_id": 90304,
+   "l10n_name": "tid#EquipName90304",
+   "type": 3,
+   "pos": 4,
+   "quality": 9,
+   "lv_limit": 4,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 60,
+    "944": 60,
+    "907": 30,
+    "908": 30,
+    "904": -60,
+    "945": -60,
+    "1901": -12,
+    "1902": -12,
+    "1941": -12,
+    "1942": -12,
+    "905": -12,
+    "906": -12,
+    "909": -12,
+    "918": -12,
+    "919": -12,
+    "924": -12,
+    "925": -12,
+    "926": -12,
+    "927": -12,
+    "928": -12,
+    "929": -12,
+    "940": -12,
+    "915": -12,
+    "949": -12
+   }
+  },
+  {
+   "equip_id": 100101,
+   "l10n_name": "tid#EquipName100101",
+   "type": 1,
+   "pos": 1,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 80,
+    "926": 80,
+    "906": 40,
+    "929": 40,
+    "905": -80,
+    "919": -80,
+    "1901": -16,
+    "1902": -16,
+    "1941": -16,
+    "1942": -16,
+    "904": -16,
+    "907": -16,
+    "908": -16,
+    "909": -16,
+    "924": -16,
+    "925": -16,
+    "927": -16,
+    "928": -16,
+    "932": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "915": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100102,
+   "l10n_name": "tid#EquipName100102",
+   "type": 1,
+   "pos": 2,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 80,
+    "908": 80,
+    "927": 40,
+    "928": 40,
+    "906": -80,
+    "915": -80,
+    "1901": -16,
+    "1941": -16,
+    "1942": -16,
+    "904": -16,
+    "905": -16,
+    "907": -16,
+    "909": -16,
+    "918": -16,
+    "919": -16,
+    "924": -16,
+    "925": -16,
+    "926": -16,
+    "929": -16,
+    "932": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100103,
+   "l10n_name": "tid#EquipName100103",
+   "type": 1,
+   "pos": 3,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 80,
+    "905": 80,
+    "918": 40,
+    "940": 40,
+    "926": -80,
+    "944": -80,
+    "1901": -16,
+    "1902": -16,
+    "1941": -16,
+    "904": -16,
+    "906": -16,
+    "907": -16,
+    "908": -16,
+    "909": -16,
+    "919": -16,
+    "924": -16,
+    "925": -16,
+    "927": -16,
+    "928": -16,
+    "929": -16,
+    "932": -16,
+    "945": -16,
+    "915": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100104,
+   "l10n_name": "tid#EquipName100104",
+   "type": 1,
+   "pos": 4,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 80,
+    "907": 80,
+    "1902": 40,
+    "909": 40,
+    "1901": -80,
+    "949": -80,
+    "1942": -16,
+    "904": -16,
+    "905": -16,
+    "906": -16,
+    "908": -16,
+    "918": -16,
+    "919": -16,
+    "924": -16,
+    "925": -16,
+    "926": -16,
+    "927": -16,
+    "928": -16,
+    "929": -16,
+    "932": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "915": -16
+   }
+  },
+  {
+   "equip_id": 100201,
+   "l10n_name": "tid#EquipName100201",
+   "type": 2,
+   "pos": 1,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 80,
+    "925": 80,
+    "926": 40,
+    "915": 40,
+    "1942": -80,
+    "924": -80,
+    "1902": -16,
+    "1941": -16,
+    "904": -16,
+    "905": -16,
+    "906": -16,
+    "907": -16,
+    "908": -16,
+    "909": -16,
+    "918": -16,
+    "919": -16,
+    "927": -16,
+    "928": -16,
+    "929": -16,
+    "932": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100202,
+   "l10n_name": "tid#EquipName100202",
+   "type": 2,
+   "pos": 2,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 80,
+    "927": 80,
+    "925": 40,
+    "932": 40,
+    "908": -80,
+    "929": -80,
+    "1901": -16,
+    "1902": -16,
+    "1941": -16,
+    "1942": -16,
+    "905": -16,
+    "906": -16,
+    "907": -16,
+    "909": -16,
+    "918": -16,
+    "919": -16,
+    "924": -16,
+    "926": -16,
+    "928": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "915": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100203,
+   "l10n_name": "tid#EquipName100203",
+   "type": 2,
+   "pos": 3,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 80,
+    "915": 80,
+    "905": 40,
+    "919": 40,
+    "1902": -80,
+    "907": -80,
+    "1901": -16,
+    "1941": -16,
+    "1942": -16,
+    "904": -16,
+    "906": -16,
+    "908": -16,
+    "909": -16,
+    "918": -16,
+    "924": -16,
+    "925": -16,
+    "926": -16,
+    "927": -16,
+    "929": -16,
+    "932": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100204,
+   "l10n_name": "tid#EquipName100204",
+   "type": 2,
+   "pos": 4,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 80,
+    "940": 80,
+    "1941": 40,
+    "945": 40,
+    "927": -80,
+    "928": -80,
+    "1901": -16,
+    "1902": -16,
+    "1942": -16,
+    "904": -16,
+    "905": -16,
+    "906": -16,
+    "907": -16,
+    "908": -16,
+    "918": -16,
+    "919": -16,
+    "924": -16,
+    "925": -16,
+    "926": -16,
+    "929": -16,
+    "932": -16,
+    "944": -16,
+    "915": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100301,
+   "l10n_name": "tid#EquipName100301",
+   "type": 3,
+   "pos": 1,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 80,
+    "949": 80,
+    "1901": 40,
+    "924": 40,
+    "1941": -80,
+    "925": -80,
+    "1902": -16,
+    "1942": -16,
+    "904": -16,
+    "905": -16,
+    "907": -16,
+    "908": -16,
+    "909": -16,
+    "918": -16,
+    "919": -16,
+    "926": -16,
+    "927": -16,
+    "928": -16,
+    "929": -16,
+    "932": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "915": -16
+   }
+  },
+  {
+   "equip_id": 100302,
+   "l10n_name": "tid#EquipName100302",
+   "type": 3,
+   "pos": 2,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 80,
+    "945": 80,
+    "904": 40,
+    "944": 40,
+    "932": -80,
+    "940": -80,
+    "1901": -16,
+    "1902": -16,
+    "1941": -16,
+    "1942": -16,
+    "905": -16,
+    "906": -16,
+    "907": -16,
+    "908": -16,
+    "909": -16,
+    "918": -16,
+    "919": -16,
+    "924": -16,
+    "925": -16,
+    "926": -16,
+    "927": -16,
+    "928": -16,
+    "915": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 100303,
+   "l10n_name": "tid#EquipName100303",
+   "type": 3,
+   "pos": 3,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 80,
+    "924": 80,
+    "1942": 40,
+    "949": 40,
+    "909": -80,
+    "918": -80,
+    "1901": -16,
+    "1902": -16,
+    "1941": -16,
+    "904": -16,
+    "905": -16,
+    "906": -16,
+    "907": -16,
+    "908": -16,
+    "925": -16,
+    "926": -16,
+    "927": -16,
+    "928": -16,
+    "929": -16,
+    "932": -16,
+    "940": -16,
+    "944": -16,
+    "945": -16,
+    "915": -16
+   }
+  },
+  {
+   "equip_id": 100304,
+   "l10n_name": "tid#EquipName100304",
+   "type": 3,
+   "pos": 4,
+   "quality": 10,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 80,
+    "944": 80,
+    "907": 40,
+    "908": 40,
+    "904": -80,
+    "945": -80,
+    "1901": -16,
+    "1902": -16,
+    "1941": -16,
+    "1942": -16,
+    "905": -16,
+    "906": -16,
+    "909": -16,
+    "918": -16,
+    "919": -16,
+    "924": -16,
+    "925": -16,
+    "926": -16,
+    "927": -16,
+    "928": -16,
+    "929": -16,
+    "940": -16,
+    "915": -16,
+    "949": -16
+   }
+  },
+  {
+   "equip_id": 110101,
+   "l10n_name": "tid#EquipName110101",
+   "type": 1,
+   "pos": 1,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 100,
+    "926": 100,
+    "906": 50,
+    "929": 50,
+    "905": -100,
+    "919": -100,
+    "1901": -20,
+    "1902": -20,
+    "1941": -20,
+    "1942": -20,
+    "904": -20,
+    "907": -20,
+    "908": -20,
+    "909": -20,
+    "924": -20,
+    "925": -20,
+    "927": -20,
+    "928": -20,
+    "932": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "915": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110102,
+   "l10n_name": "tid#EquipName110102",
+   "type": 1,
+   "pos": 2,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 100,
+    "908": 100,
+    "927": 50,
+    "928": 50,
+    "906": -100,
+    "915": -100,
+    "1901": -20,
+    "1941": -20,
+    "1942": -20,
+    "904": -20,
+    "905": -20,
+    "907": -20,
+    "909": -20,
+    "918": -20,
+    "919": -20,
+    "924": -20,
+    "925": -20,
+    "926": -20,
+    "929": -20,
+    "932": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110103,
+   "l10n_name": "tid#EquipName110103",
+   "type": 1,
+   "pos": 3,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 100,
+    "905": 100,
+    "918": 50,
+    "940": 50,
+    "926": -100,
+    "944": -100,
+    "1901": -20,
+    "1902": -20,
+    "1941": -20,
+    "904": -20,
+    "906": -20,
+    "907": -20,
+    "908": -20,
+    "909": -20,
+    "919": -20,
+    "924": -20,
+    "925": -20,
+    "927": -20,
+    "928": -20,
+    "929": -20,
+    "932": -20,
+    "945": -20,
+    "915": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110104,
+   "l10n_name": "tid#EquipName110104",
+   "type": 1,
+   "pos": 4,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 100,
+    "907": 100,
+    "1902": 50,
+    "909": 50,
+    "1901": -100,
+    "949": -100,
+    "1942": -20,
+    "904": -20,
+    "905": -20,
+    "906": -20,
+    "908": -20,
+    "918": -20,
+    "919": -20,
+    "924": -20,
+    "925": -20,
+    "926": -20,
+    "927": -20,
+    "928": -20,
+    "929": -20,
+    "932": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "915": -20
+   }
+  },
+  {
+   "equip_id": 110201,
+   "l10n_name": "tid#EquipName110201",
+   "type": 2,
+   "pos": 1,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 100,
+    "925": 100,
+    "926": 50,
+    "915": 50,
+    "1942": -100,
+    "924": -100,
+    "1902": -20,
+    "1941": -20,
+    "904": -20,
+    "905": -20,
+    "906": -20,
+    "907": -20,
+    "908": -20,
+    "909": -20,
+    "918": -20,
+    "919": -20,
+    "927": -20,
+    "928": -20,
+    "929": -20,
+    "932": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110202,
+   "l10n_name": "tid#EquipName110202",
+   "type": 2,
+   "pos": 2,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 100,
+    "927": 100,
+    "925": 50,
+    "932": 50,
+    "908": -100,
+    "929": -100,
+    "1901": -20,
+    "1902": -20,
+    "1941": -20,
+    "1942": -20,
+    "905": -20,
+    "906": -20,
+    "907": -20,
+    "909": -20,
+    "918": -20,
+    "919": -20,
+    "924": -20,
+    "926": -20,
+    "928": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "915": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110203,
+   "l10n_name": "tid#EquipName110203",
+   "type": 2,
+   "pos": 3,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 100,
+    "915": 100,
+    "905": 50,
+    "919": 50,
+    "1902": -100,
+    "907": -100,
+    "1901": -20,
+    "1941": -20,
+    "1942": -20,
+    "904": -20,
+    "906": -20,
+    "908": -20,
+    "909": -20,
+    "918": -20,
+    "924": -20,
+    "925": -20,
+    "926": -20,
+    "927": -20,
+    "929": -20,
+    "932": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110204,
+   "l10n_name": "tid#EquipName110204",
+   "type": 2,
+   "pos": 4,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 100,
+    "940": 100,
+    "1941": 50,
+    "945": 50,
+    "927": -100,
+    "928": -100,
+    "1901": -20,
+    "1902": -20,
+    "1942": -20,
+    "904": -20,
+    "905": -20,
+    "906": -20,
+    "907": -20,
+    "908": -20,
+    "918": -20,
+    "919": -20,
+    "924": -20,
+    "925": -20,
+    "926": -20,
+    "929": -20,
+    "932": -20,
+    "944": -20,
+    "915": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110301,
+   "l10n_name": "tid#EquipName110301",
+   "type": 3,
+   "pos": 1,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 100,
+    "949": 100,
+    "1901": 50,
+    "924": 50,
+    "1941": -100,
+    "925": -100,
+    "1902": -20,
+    "1942": -20,
+    "904": -20,
+    "905": -20,
+    "907": -20,
+    "908": -20,
+    "909": -20,
+    "918": -20,
+    "919": -20,
+    "926": -20,
+    "927": -20,
+    "928": -20,
+    "929": -20,
+    "932": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "915": -20
+   }
+  },
+  {
+   "equip_id": 110302,
+   "l10n_name": "tid#EquipName110302",
+   "type": 3,
+   "pos": 2,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 100,
+    "945": 100,
+    "904": 50,
+    "944": 50,
+    "932": -100,
+    "940": -100,
+    "1901": -20,
+    "1902": -20,
+    "1941": -20,
+    "1942": -20,
+    "905": -20,
+    "906": -20,
+    "907": -20,
+    "908": -20,
+    "909": -20,
+    "918": -20,
+    "919": -20,
+    "924": -20,
+    "925": -20,
+    "926": -20,
+    "927": -20,
+    "928": -20,
+    "915": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 110303,
+   "l10n_name": "tid#EquipName110303",
+   "type": 3,
+   "pos": 3,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 100,
+    "924": 100,
+    "1942": 50,
+    "949": 50,
+    "909": -100,
+    "918": -100,
+    "1901": -20,
+    "1902": -20,
+    "1941": -20,
+    "904": -20,
+    "905": -20,
+    "906": -20,
+    "907": -20,
+    "908": -20,
+    "925": -20,
+    "926": -20,
+    "927": -20,
+    "928": -20,
+    "929": -20,
+    "932": -20,
+    "940": -20,
+    "944": -20,
+    "945": -20,
+    "915": -20
+   }
+  },
+  {
+   "equip_id": 110304,
+   "l10n_name": "tid#EquipName110304",
+   "type": 3,
+   "pos": 4,
+   "quality": 11,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 100,
+    "944": 100,
+    "907": 50,
+    "908": 50,
+    "904": -100,
+    "945": -100,
+    "1901": -20,
+    "1902": -20,
+    "1941": -20,
+    "1942": -20,
+    "905": -20,
+    "906": -20,
+    "909": -20,
+    "918": -20,
+    "919": -20,
+    "924": -20,
+    "925": -20,
+    "926": -20,
+    "927": -20,
+    "928": -20,
+    "929": -20,
+    "940": -20,
+    "915": -20,
+    "949": -20
+   }
+  },
+  {
+   "equip_id": 120101,
+   "l10n_name": "tid#EquipName120101",
+   "type": 1,
+   "pos": 1,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "918": 150,
+    "926": 150,
+    "906": 75,
+    "929": 75,
+    "905": -150,
+    "919": -150,
+    "1901": -30,
+    "1902": -30,
+    "1941": -30,
+    "1942": -30,
+    "904": -30,
+    "907": -30,
+    "908": -30,
+    "909": -30,
+    "924": -30,
+    "925": -30,
+    "927": -30,
+    "928": -30,
+    "932": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "915": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120102,
+   "l10n_name": "tid#EquipName120102",
+   "type": 1,
+   "pos": 2,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1902": 150,
+    "908": 150,
+    "927": 75,
+    "928": 75,
+    "906": -150,
+    "915": -150,
+    "1901": -30,
+    "1941": -30,
+    "1942": -30,
+    "904": -30,
+    "905": -30,
+    "907": -30,
+    "909": -30,
+    "918": -30,
+    "919": -30,
+    "924": -30,
+    "925": -30,
+    "926": -30,
+    "929": -30,
+    "932": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120103,
+   "l10n_name": "tid#EquipName120103",
+   "type": 1,
+   "pos": 3,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1942": 150,
+    "905": 150,
+    "918": 75,
+    "940": 75,
+    "926": -150,
+    "944": -150,
+    "1901": -30,
+    "1902": -30,
+    "1941": -30,
+    "904": -30,
+    "906": -30,
+    "907": -30,
+    "908": -30,
+    "909": -30,
+    "919": -30,
+    "924": -30,
+    "925": -30,
+    "927": -30,
+    "928": -30,
+    "929": -30,
+    "932": -30,
+    "945": -30,
+    "915": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120104,
+   "l10n_name": "tid#EquipName120104",
+   "type": 1,
+   "pos": 4,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1941": 150,
+    "907": 150,
+    "1902": 75,
+    "909": 75,
+    "1901": -150,
+    "949": -150,
+    "1942": -30,
+    "904": -30,
+    "905": -30,
+    "906": -30,
+    "908": -30,
+    "918": -30,
+    "919": -30,
+    "924": -30,
+    "925": -30,
+    "926": -30,
+    "927": -30,
+    "928": -30,
+    "929": -30,
+    "932": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "915": -30
+   }
+  },
+  {
+   "equip_id": 120201,
+   "l10n_name": "tid#EquipName120201",
+   "type": 2,
+   "pos": 1,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "1901": 150,
+    "925": 150,
+    "926": 75,
+    "915": 75,
+    "1942": -150,
+    "924": -150,
+    "1902": -30,
+    "1941": -30,
+    "904": -30,
+    "905": -30,
+    "906": -30,
+    "907": -30,
+    "908": -30,
+    "909": -30,
+    "918": -30,
+    "919": -30,
+    "927": -30,
+    "928": -30,
+    "929": -30,
+    "932": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120202,
+   "l10n_name": "tid#EquipName120202",
+   "type": 2,
+   "pos": 2,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "904": 150,
+    "927": 150,
+    "925": 75,
+    "932": 75,
+    "908": -150,
+    "929": -150,
+    "1901": -30,
+    "1902": -30,
+    "1941": -30,
+    "1942": -30,
+    "905": -30,
+    "906": -30,
+    "907": -30,
+    "909": -30,
+    "918": -30,
+    "919": -30,
+    "924": -30,
+    "926": -30,
+    "928": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "915": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120203,
+   "l10n_name": "tid#EquipName120203",
+   "type": 2,
+   "pos": 3,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "928": 150,
+    "915": 150,
+    "905": 75,
+    "919": 75,
+    "1902": -150,
+    "907": -150,
+    "1901": -30,
+    "1941": -30,
+    "1942": -30,
+    "904": -30,
+    "906": -30,
+    "908": -30,
+    "909": -30,
+    "918": -30,
+    "924": -30,
+    "925": -30,
+    "926": -30,
+    "927": -30,
+    "929": -30,
+    "932": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120204,
+   "l10n_name": "tid#EquipName120204",
+   "type": 2,
+   "pos": 4,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "909": 150,
+    "940": 150,
+    "1941": 75,
+    "945": 75,
+    "927": -150,
+    "928": -150,
+    "1901": -30,
+    "1902": -30,
+    "1942": -30,
+    "904": -30,
+    "905": -30,
+    "906": -30,
+    "907": -30,
+    "908": -30,
+    "918": -30,
+    "919": -30,
+    "924": -30,
+    "925": -30,
+    "926": -30,
+    "929": -30,
+    "932": -30,
+    "944": -30,
+    "915": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120301,
+   "l10n_name": "tid#EquipName120301",
+   "type": 3,
+   "pos": 1,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "906": 150,
+    "949": 150,
+    "1901": 75,
+    "924": 75,
+    "1941": -150,
+    "925": -150,
+    "1902": -30,
+    "1942": -30,
+    "904": -30,
+    "905": -30,
+    "907": -30,
+    "908": -30,
+    "909": -30,
+    "918": -30,
+    "919": -30,
+    "926": -30,
+    "927": -30,
+    "928": -30,
+    "929": -30,
+    "932": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "915": -30
+   }
+  },
+  {
+   "equip_id": 120302,
+   "l10n_name": "tid#EquipName120302",
+   "type": 3,
+   "pos": 2,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "929": 150,
+    "945": 150,
+    "904": 75,
+    "944": 75,
+    "932": -150,
+    "940": -150,
+    "1901": -30,
+    "1902": -30,
+    "1941": -30,
+    "1942": -30,
+    "905": -30,
+    "906": -30,
+    "907": -30,
+    "908": -30,
+    "909": -30,
+    "918": -30,
+    "919": -30,
+    "924": -30,
+    "925": -30,
+    "926": -30,
+    "927": -30,
+    "928": -30,
+    "915": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 120303,
+   "l10n_name": "tid#EquipName120303",
+   "type": 3,
+   "pos": 3,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "919": 150,
+    "924": 150,
+    "1942": 75,
+    "949": 75,
+    "909": -150,
+    "918": -150,
+    "1901": -30,
+    "1902": -30,
+    "1941": -30,
+    "904": -30,
+    "905": -30,
+    "906": -30,
+    "907": -30,
+    "908": -30,
+    "925": -30,
+    "926": -30,
+    "927": -30,
+    "928": -30,
+    "929": -30,
+    "932": -30,
+    "940": -30,
+    "944": -30,
+    "945": -30,
+    "915": -30
+   }
+  },
+  {
+   "equip_id": 120304,
+   "l10n_name": "tid#EquipName120304",
+   "type": 3,
+   "pos": 4,
+   "quality": 12,
+   "lv_limit": 5,
+   "awake_id": null,
+   "affect_weight": {
+    "932": 150,
+    "944": 150,
+    "907": 75,
+    "908": 75,
+    "904": -150,
+    "945": -150,
+    "1901": -30,
+    "1902": -30,
+    "1941": -30,
+    "1942": -30,
+    "905": -30,
+    "906": -30,
+    "909": -30,
+    "918": -30,
+    "919": -30,
+    "924": -30,
+    "925": -30,
+    "926": -30,
+    "927": -30,
+    "928": -30,
+    "929": -30,
+    "940": -30,
+    "915": -30,
+    "949": -30
+   }
+  },
+  {
+   "equip_id": 130101,
+   "l10n_name": "tid#EquipName130101",
+   "type": 1,
+   "pos": 1,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 111,
+   "affect_weight": {
+    "918": 200,
+    "926": 200,
+    "906": 100,
+    "929": 100,
+    "905": -200,
+    "919": -200,
+    "1901": -40,
+    "1902": -40,
+    "1941": -40,
+    "1942": -40,
+    "904": -40,
+    "907": -40,
+    "908": -40,
+    "909": -40,
+    "924": -40,
+    "925": -40,
+    "927": -40,
+    "928": -40,
+    "932": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "915": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130102,
+   "l10n_name": "tid#EquipName130102",
+   "type": 1,
+   "pos": 2,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 112,
+   "affect_weight": {
+    "1902": 200,
+    "908": 200,
+    "927": 100,
+    "928": 100,
+    "906": -200,
+    "915": -200,
+    "1901": -40,
+    "1941": -40,
+    "1942": -40,
+    "904": -40,
+    "905": -40,
+    "907": -40,
+    "909": -40,
+    "918": -40,
+    "919": -40,
+    "924": -40,
+    "925": -40,
+    "926": -40,
+    "929": -40,
+    "932": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130103,
+   "l10n_name": "tid#EquipName130103",
+   "type": 1,
+   "pos": 3,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 113,
+   "affect_weight": {
+    "1942": 200,
+    "905": 200,
+    "918": 100,
+    "940": 100,
+    "926": -200,
+    "944": -200,
+    "1901": -40,
+    "1902": -40,
+    "1941": -40,
+    "904": -40,
+    "906": -40,
+    "907": -40,
+    "908": -40,
+    "909": -40,
+    "919": -40,
+    "924": -40,
+    "925": -40,
+    "927": -40,
+    "928": -40,
+    "929": -40,
+    "932": -40,
+    "945": -40,
+    "915": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130104,
+   "l10n_name": "tid#EquipName130104",
+   "type": 1,
+   "pos": 4,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 114,
+   "affect_weight": {
+    "1941": 200,
+    "907": 200,
+    "1902": 100,
+    "909": 100,
+    "1901": -200,
+    "949": -200,
+    "1942": -40,
+    "904": -40,
+    "905": -40,
+    "906": -40,
+    "908": -40,
+    "918": -40,
+    "919": -40,
+    "924": -40,
+    "925": -40,
+    "926": -40,
+    "927": -40,
+    "928": -40,
+    "929": -40,
+    "932": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "915": -40
+   }
+  },
+  {
+   "equip_id": 130201,
+   "l10n_name": "tid#EquipName130201",
+   "type": 2,
+   "pos": 1,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 121,
+   "affect_weight": {
+    "1901": 200,
+    "925": 200,
+    "926": 100,
+    "915": 100,
+    "1942": -200,
+    "924": -200,
+    "1902": -40,
+    "1941": -40,
+    "904": -40,
+    "905": -40,
+    "906": -40,
+    "907": -40,
+    "908": -40,
+    "909": -40,
+    "918": -40,
+    "919": -40,
+    "927": -40,
+    "928": -40,
+    "929": -40,
+    "932": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130202,
+   "l10n_name": "tid#EquipName130202",
+   "type": 2,
+   "pos": 2,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 122,
+   "affect_weight": {
+    "904": 200,
+    "927": 200,
+    "925": 100,
+    "932": 100,
+    "908": -200,
+    "929": -200,
+    "1901": -40,
+    "1902": -40,
+    "1941": -40,
+    "1942": -40,
+    "905": -40,
+    "906": -40,
+    "907": -40,
+    "909": -40,
+    "918": -40,
+    "919": -40,
+    "924": -40,
+    "926": -40,
+    "928": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "915": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130203,
+   "l10n_name": "tid#EquipName130203",
+   "type": 2,
+   "pos": 3,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 123,
+   "affect_weight": {
+    "928": 200,
+    "915": 200,
+    "905": 100,
+    "919": 100,
+    "1902": -200,
+    "907": -200,
+    "1901": -40,
+    "1941": -40,
+    "1942": -40,
+    "904": -40,
+    "906": -40,
+    "908": -40,
+    "909": -40,
+    "918": -40,
+    "924": -40,
+    "925": -40,
+    "926": -40,
+    "927": -40,
+    "929": -40,
+    "932": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130204,
+   "l10n_name": "tid#EquipName130204",
+   "type": 2,
+   "pos": 4,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 124,
+   "affect_weight": {
+    "909": 200,
+    "940": 200,
+    "1941": 100,
+    "945": 100,
+    "927": -200,
+    "928": -200,
+    "1901": -40,
+    "1902": -40,
+    "1942": -40,
+    "904": -40,
+    "905": -40,
+    "906": -40,
+    "907": -40,
+    "908": -40,
+    "918": -40,
+    "919": -40,
+    "924": -40,
+    "925": -40,
+    "926": -40,
+    "929": -40,
+    "932": -40,
+    "944": -40,
+    "915": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130301,
+   "l10n_name": "tid#EquipName130301",
+   "type": 3,
+   "pos": 1,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 131,
+   "affect_weight": {
+    "906": 200,
+    "949": 200,
+    "1901": 100,
+    "924": 100,
+    "1941": -200,
+    "925": -200,
+    "1902": -40,
+    "1942": -40,
+    "904": -40,
+    "905": -40,
+    "907": -40,
+    "908": -40,
+    "909": -40,
+    "918": -40,
+    "919": -40,
+    "926": -40,
+    "927": -40,
+    "928": -40,
+    "929": -40,
+    "932": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "915": -40
+   }
+  },
+  {
+   "equip_id": 130302,
+   "l10n_name": "tid#EquipName130302",
+   "type": 3,
+   "pos": 2,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 132,
+   "affect_weight": {
+    "929": 200,
+    "945": 200,
+    "904": 100,
+    "944": 100,
+    "932": -200,
+    "940": -200,
+    "1901": -40,
+    "1902": -40,
+    "1941": -40,
+    "1942": -40,
+    "905": -40,
+    "906": -40,
+    "907": -40,
+    "908": -40,
+    "909": -40,
+    "918": -40,
+    "919": -40,
+    "924": -40,
+    "925": -40,
+    "926": -40,
+    "927": -40,
+    "928": -40,
+    "915": -40,
+    "949": -40
+   }
+  },
+  {
+   "equip_id": 130303,
+   "l10n_name": "tid#EquipName130303",
+   "type": 3,
+   "pos": 3,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 133,
+   "affect_weight": {
+    "919": 200,
+    "924": 200,
+    "1942": 100,
+    "949": 100,
+    "909": -200,
+    "918": -200,
+    "1901": -40,
+    "1902": -40,
+    "1941": -40,
+    "904": -40,
+    "905": -40,
+    "906": -40,
+    "907": -40,
+    "908": -40,
+    "925": -40,
+    "926": -40,
+    "927": -40,
+    "928": -40,
+    "929": -40,
+    "932": -40,
+    "940": -40,
+    "944": -40,
+    "945": -40,
+    "915": -40
+   }
+  },
+  {
+   "equip_id": 130304,
+   "l10n_name": "tid#EquipName130304",
+   "type": 3,
+   "pos": 4,
+   "quality": 13,
+   "lv_limit": 5,
+   "awake_id": 134,
+   "affect_weight": {
+    "932": 200,
+    "944": 200,
+    "907": 100,
+    "908": 100,
+    "904": -200,
+    "945": -200,
+    "1901": -40,
+    "1902": -40,
+    "1941": -40,
+    "1942": -40,
+    "905": -40,
+    "906": -40,
+    "909": -40,
+    "918": -40,
+    "919": -40,
+    "924": -40,
+    "925": -40,
+    "926": -40,
+    "927": -40,
+    "928": -40,
+    "929": -40,
+    "940": -40,
+    "915": -40,
+    "949": -40
+   }
+  }
+ ],
+ "key_items": {
+  "1200": {
+   "l10n_name": "tid#itemName1200",
+   "l10n_des": "tid#itemDes1200",
+   "quality": 12,
+   "icon": "A_UI_Props_StrengthenStone",
+   "en_name": "Artifact Enhancement Stone",
+   "en_des": "Used to enhance Awakened Artifact. Each enhancement attempt has a chance to fail. On failure, the affected attribute's level -1."
+  },
+  "1034": {
+   "l10n_name": "tid#itemName1034",
+   "l10n_des": "tid#itemDes1034",
+   "quality": 6,
+   "icon": "A_UI_Props_RefreshStone",
+   "en_name": "Refining Stone"
+  },
+  "1035": {
+   "l10n_name": "tid#itemName1035",
+   "l10n_des": "tid#itemDes1035",
+   "quality": 6,
+   "icon": "A_UI_Props_EntryLock",
+   "en_name": "Fate lock"
+  },
+  "1201": {
+   "l10n_name": "tid#itemName1201",
+   "l10n_des": "tid#itemDes1201",
+   "quality": 6,
+   "icon": "A_UI_Props_AwakeThick01"
+  },
+  "1202": {
+   "l10n_name": "tid#itemName1202",
+   "l10n_des": "tid#itemDes1202",
+   "quality": 8,
+   "icon": "A_UI_Props_AwakeThick02"
+  },
+  "1203": {
+   "l10n_name": "tid#itemName1203",
+   "l10n_des": "tid#itemDes1203",
+   "quality": 10,
+   "icon": "A_UI_Props_AwakeThick03"
+  },
+  "1204": {
+   "l10n_name": "tid#itemName1204",
+   "l10n_des": "tid#itemDes1204",
+   "quality": 12,
+   "icon": "A_UI_Props_AwakeThick04"
+  },
+  "1211": {
+   "l10n_name": "tid#itemName1211",
+   "l10n_des": "tid#itemDes1211",
+   "quality": 6,
+   "icon": "A_UI_Props_AwakeSwift01"
+  },
+  "1212": {
+   "l10n_name": "tid#itemName1212",
+   "l10n_des": "tid#itemDes1212",
+   "quality": 8,
+   "icon": "A_UI_Props_AwakeSwift02"
+  },
+  "1213": {
+   "l10n_name": "tid#itemName1213",
+   "l10n_des": "tid#itemDes1213",
+   "quality": 10,
+   "icon": "A_UI_Props_AwakeSwift03"
+  },
+  "1214": {
+   "l10n_name": "tid#itemName1214",
+   "l10n_des": "tid#itemDes1214",
+   "quality": 12,
+   "icon": "A_UI_Props_AwakeSwift04"
+  },
+  "1221": {
+   "l10n_name": "tid#itemName1221",
+   "l10n_des": "tid#itemDes1221",
+   "quality": 6,
+   "icon": "A_UI_Props_AwakeMystery01"
+  },
+  "1222": {
+   "l10n_name": "tid#itemName1222",
+   "l10n_des": "tid#itemDes1222",
+   "quality": 8,
+   "icon": "A_UI_Props_AwakeMystery02"
+  },
+  "1223": {
+   "l10n_name": "tid#itemName1223",
+   "l10n_des": "tid#itemDes1223",
+   "quality": 10,
+   "icon": "A_UI_Props_AwakeMystery03"
+  },
+  "1224": {
+   "l10n_name": "tid#itemName1224",
+   "l10n_des": "tid#itemDes1224",
+   "quality": 12,
+   "icon": "A_UI_Props_AwakeMystery04"
+  }
+ },
+ "formulas": {
+  "enhance_success": "P(n) = 1 - (1 - success[level]/100)^n   # n = stones spent in ONE attempt",
+  "enhance_display": "client renders Math.trunc of the IEEE754 double -> 20% shows as 19%, 36% as 35%",
+  "refine_weight": "w[a] = 1000 + sum(material_delta[a]); locked attrs -> p=1 and removed from pool",
+  "refine_prob": "p[a] = w[a] * randomAttrNum / sum(w); iterative clamp: drop a if p<0.01, force p=1 if p>=1",
+  "enhance_failure": "failure moves the attribute EXACTLY -1 level, independent of n; floor at level 1; all n stones are consumed. CONFIRMED by live test on Global 2026-08-07: n=1 Lv10->Lv9, n=2 Lv11->Lv10.",
+  "enhance_attempt_model": "n stones = ONE atomic attempt (one C2SEquipUpgradeAttrRequest, one result). NOT n sequential rolls.",
+  "refine_level_reroll": "A refined stat gets a RANDOMISED level, capped at the current level. Working model: uniform 1..currentLevel. Server-side, in no config. Evidence: 7 samples from a Lv10 source -> 10,5,1,4,2,2,10; none above 10 (p=0.78% if the draw were 1..20). Exact shape inside the range unconfirmed at n=7. The current stat is NOT excluded from the pool - it can re-roll into itself at a different level."
+ },
+ "observations_live": {
+  "client": "GLOBAL, 2026-08-07, emulator",
+  "enhance_prob_display": {
+   "1": 19,
+   "2": 35,
+   "3": 48,
+   "4": 59,
+   "5": 67,
+   "6": 73,
+   "7": 79,
+   "8": 83,
+   "9": 86,
+   "10": 89,
+   "11": 91
+  },
+  "enhance_prob_display_context": "attr 1901 ATK% at level 15 (base success 20)",
+  "enhance_failure_samples": [
+   {
+    "stones": 1,
+    "from_level": 10,
+    "to_level": 9,
+    "attr": 932
+   },
+   {
+    "stones": 2,
+    "from_level": 11,
+    "to_level": 10,
+    "attr": 932
+   }
+  ],
+  "refine_level_samples": [
+   {
+    "from_attr": 932,
+    "from_level": 10,
+    "to_attr": 904,
+    "to_level": 10
+   },
+   {
+    "from_attr": 904,
+    "from_level": 10,
+    "to_attr": 907,
+    "to_level": 5
+   },
+   {
+    "from_attr": 904,
+    "from_level": 10,
+    "to_attr": 918,
+    "to_level": 1
+   },
+   {
+    "from_attr": 904,
+    "from_level": 10,
+    "to_attr": 949,
+    "to_level": 4
+   },
+   {
+    "from_attr": 904,
+    "from_level": 10,
+    "to_attr": 904,
+    "to_level": 2
+   },
+   {
+    "from_attr": 904,
+    "from_level": 10,
+    "to_attr": 945,
+    "to_level": 2
+   },
+   {
+    "from_attr": 904,
+    "from_level": 10,
+    "to_attr": 1942,
+    "to_level": 10
+   }
+  ],
+  "refine_prob_check": {
+   "setup": "slot-2 pool, 1 open slot, one equip 130101 as material",
+   "expected": {
+    "929": 0.09434,
+    "others": 0.08233
+   },
+   "observed": {
+    "929": "9.4%",
+    "others": "8.2%"
+   }
+  },
+  "refine_level_stats": {
+   "n": 7,
+   "source_level": 10,
+   "max_observed": 10,
+   "mean": 4.86,
+   "P_all_le_10_if_uniform_1_20": 0.0078,
+   "bayes_factor_capped_vs_uncapped": 128
+  }
+ },
+ "item_names_en": {
+  "4101": {
+   "en_name": "T1 ATK Stone",
+   "attr_id": 1901,
+   "observed_in_ram": true
+  },
+  "4102": {
+   "en_name": "T1 HP Stone",
+   "attr_id": 1902,
+   "observed_in_ram": true
+  },
+  "4103": {
+   "en_name": "T1 Armor Stone",
+   "attr_id": 1941,
+   "observed_in_ram": true
+  },
+  "4104": {
+   "en_name": "T1 Magical RES Stone",
+   "attr_id": 1942,
+   "observed_in_ram": true
+  },
+  "4105": {
+   "en_name": "T1 Dodge Stone",
+   "attr_id": 904,
+   "observed_in_ram": true
+  },
+  "4106": {
+   "en_name": "T1 Hit Rate Stone",
+   "attr_id": 905,
+   "observed_in_ram": true
+  },
+  "4107": {
+   "en_name": "T1 CRIT Stone",
+   "attr_id": 906,
+   "observed_in_ram": true
+  },
+  "4108": {
+   "en_name": "T1 CRIT RES Stone",
+   "attr_id": 907,
+   "observed_in_ram": true
+  },
+  "4109": {
+   "en_name": "T1 Magical DMG RED Stone",
+   "attr_id": 908,
+   "observed_in_ram": true
+  },
+  "4110": {
+   "en_name": "T1 Physical DMG RED Stone",
+   "attr_id": 909,
+   "observed_in_ram": true
+  },
+  "4111": {
+   "en_name": "T1 Lifesteal Stone",
+   "attr_id": 918,
+   "observed_in_ram": true
+  },
+  "4112": {
+   "en_name": "T1 CRIT DMG Stone",
+   "attr_id": 919,
+   "observed_in_ram": true
+  },
+  "4113": {
+   "en_name": "T1 Magical DMG Bonus Stone",
+   "attr_id": 924,
+   "observed_in_ram": true
+  },
+  "4114": {
+   "en_name": "T1 Physical DMG Bonus Stone",
+   "attr_id": 925,
+   "observed_in_ram": true
+  },
+  "4115": {
+   "en_name": "T1 Skill Cooldown Stone",
+   "attr_id": 926,
+   "observed_in_ram": true
+  },
+  "4116": {
+   "en_name": "T1 Healing Stone",
+   "attr_id": 927,
+   "observed_in_ram": true
+  },
+  "4117": {
+   "en_name": "T1 Recharge Stone",
+   "attr_id": 928,
+   "observed_in_ram": true
+  },
+  "4118": {
+   "en_name": "T1 Control RES Stone",
+   "attr_id": 929,
+   "observed_in_ram": true
+  },
+  "4119": {
+   "en_name": "T1 Control Bonus Stone",
+   "attr_id": 932,
+   "observed_in_ram": true
+  },
+  "4120": {
+   "en_name": "T1 CRIT DMG RED Stone",
+   "attr_id": 940,
+   "observed_in_ram": true
+  },
+  "4121": {
+   "en_name": "T1 Effect RES Stone",
+   "attr_id": 944,
+   "observed_in_ram": true
+  },
+  "4122": {
+   "en_name": "T1 Effect Hit Rate Stone",
+   "attr_id": 945,
+   "observed_in_ram": true
+  },
+  "4123": {
+   "en_name": "T1 ATK SPD Stone",
+   "attr_id": 915,
+   "observed_in_ram": true
+  },
+  "4124": {
+   "en_name": "T1 Ultimate Stone",
+   "attr_id": 949,
+   "observed_in_ram": true
+  },
+  "4201": {
+   "en_name": "T2 ATK Stone",
+   "attr_id": 1901,
+   "observed_in_ram": true
+  },
+  "4202": {
+   "en_name": "T2 HP Stone",
+   "attr_id": 1902,
+   "observed_in_ram": true
+  },
+  "4203": {
+   "en_name": "T2 Armor Stone",
+   "attr_id": 1941,
+   "observed_in_ram": true
+  },
+  "4204": {
+   "en_name": "T2 Magical RES Stone",
+   "attr_id": 1942,
+   "observed_in_ram": true
+  },
+  "4205": {
+   "en_name": "T2 Dodge Stone",
+   "attr_id": 904,
+   "observed_in_ram": true
+  },
+  "4206": {
+   "en_name": "T2 Hit Rate Stone",
+   "attr_id": 905,
+   "observed_in_ram": true
+  },
+  "4207": {
+   "en_name": "T2 CRIT Stone",
+   "attr_id": 906,
+   "observed_in_ram": true
+  },
+  "4208": {
+   "en_name": "T2 CRIT RES Stone",
+   "attr_id": 907,
+   "observed_in_ram": true
+  },
+  "4209": {
+   "en_name": "T2 Magical DMG RED Stone",
+   "attr_id": 908,
+   "observed_in_ram": false
+  },
+  "4210": {
+   "en_name": "T2 Physical DMG RED Stone",
+   "attr_id": 909,
+   "observed_in_ram": true
+  },
+  "4211": {
+   "en_name": "T2 Lifesteal Stone",
+   "attr_id": 918,
+   "observed_in_ram": true
+  },
+  "4212": {
+   "en_name": "T2 CRIT DMG Stone",
+   "attr_id": 919,
+   "observed_in_ram": true
+  },
+  "4213": {
+   "en_name": "T2 Magical DMG Bonus Stone",
+   "attr_id": 924,
+   "observed_in_ram": true
+  },
+  "4214": {
+   "en_name": "T2 Physical DMG Bonus Stone",
+   "attr_id": 925,
+   "observed_in_ram": true
+  },
+  "4215": {
+   "en_name": "T2 Skill Cooldown Stone",
+   "attr_id": 926,
+   "observed_in_ram": true
+  },
+  "4216": {
+   "en_name": "T2 Healing Stone",
+   "attr_id": 927,
+   "observed_in_ram": true
+  },
+  "4217": {
+   "en_name": "T2 Recharge Stone",
+   "attr_id": 928,
+   "observed_in_ram": true
+  },
+  "4218": {
+   "en_name": "T2 Control RES Stone",
+   "attr_id": 929,
+   "observed_in_ram": true
+  },
+  "4219": {
+   "en_name": "T2 Control Bonus Stone",
+   "attr_id": 932,
+   "observed_in_ram": true
+  },
+  "4220": {
+   "en_name": "T2 CRIT DMG RED Stone",
+   "attr_id": 940,
+   "observed_in_ram": true
+  },
+  "4221": {
+   "en_name": "T2 Effect RES Stone",
+   "attr_id": 944,
+   "observed_in_ram": true
+  },
+  "4222": {
+   "en_name": "T2 Effect Hit Rate Stone",
+   "attr_id": 945,
+   "observed_in_ram": true
+  },
+  "4223": {
+   "en_name": "T2 ATK SPD Stone",
+   "attr_id": 915,
+   "observed_in_ram": true
+  },
+  "4224": {
+   "en_name": "T2 Ultimate Stone",
+   "attr_id": 949,
+   "observed_in_ram": true
+  },
+  "4301": {
+   "en_name": "T3 ATK Stone",
+   "attr_id": 1901,
+   "observed_in_ram": true
+  },
+  "4302": {
+   "en_name": "T3 HP Stone",
+   "attr_id": 1902,
+   "observed_in_ram": true
+  },
+  "4303": {
+   "en_name": "T3 Armor Stone",
+   "attr_id": 1941,
+   "observed_in_ram": true
+  },
+  "4304": {
+   "en_name": "T3 Magical RES Stone",
+   "attr_id": 1942,
+   "observed_in_ram": true
+  },
+  "4305": {
+   "en_name": "T3 Dodge Stone",
+   "attr_id": 904,
+   "observed_in_ram": true
+  },
+  "4306": {
+   "en_name": "T3 Hit Rate Stone",
+   "attr_id": 905,
+   "observed_in_ram": true
+  },
+  "4307": {
+   "en_name": "T3 CRIT Stone",
+   "attr_id": 906,
+   "observed_in_ram": true
+  },
+  "4308": {
+   "en_name": "T3 CRIT RES Stone",
+   "attr_id": 907,
+   "observed_in_ram": true
+  },
+  "4309": {
+   "en_name": "T3 Magical DMG RED Stone",
+   "attr_id": 908,
+   "observed_in_ram": true
+  },
+  "4310": {
+   "en_name": "T3 Physical DMG RED Stone",
+   "attr_id": 909,
+   "observed_in_ram": true
+  },
+  "4311": {
+   "en_name": "T3 Lifesteal Stone",
+   "attr_id": 918,
+   "observed_in_ram": true
+  },
+  "4312": {
+   "en_name": "T3 CRIT DMG Stone",
+   "attr_id": 919,
+   "observed_in_ram": true
+  },
+  "4313": {
+   "en_name": "T3 Magical DMG Bonus Stone",
+   "attr_id": 924,
+   "observed_in_ram": true
+  },
+  "4314": {
+   "en_name": "T3 Physical DMG Bonus Stone",
+   "attr_id": 925,
+   "observed_in_ram": true
+  },
+  "4315": {
+   "en_name": "T3 Skill Cooldown Stone",
+   "attr_id": 926,
+   "observed_in_ram": true
+  },
+  "4316": {
+   "en_name": "T3 Healing Stone",
+   "attr_id": 927,
+   "observed_in_ram": true
+  },
+  "4317": {
+   "en_name": "T3 Recharge Stone",
+   "attr_id": 928,
+   "observed_in_ram": true
+  },
+  "4318": {
+   "en_name": "T3 Control RES Stone",
+   "attr_id": 929,
+   "observed_in_ram": false
+  },
+  "4319": {
+   "en_name": "T3 Control Bonus Stone",
+   "attr_id": 932,
+   "observed_in_ram": false
+  },
+  "4320": {
+   "en_name": "T3 CRIT DMG RED Stone",
+   "attr_id": 940,
+   "observed_in_ram": true
+  },
+  "4321": {
+   "en_name": "T3 Effect RES Stone",
+   "attr_id": 944,
+   "observed_in_ram": true
+  },
+  "4322": {
+   "en_name": "T3 Effect Hit Rate Stone",
+   "attr_id": 945,
+   "observed_in_ram": true
+  },
+  "4323": {
+   "en_name": "T3 ATK SPD Stone",
+   "attr_id": 915,
+   "observed_in_ram": false
+  },
+  "4324": {
+   "en_name": "T3 Ultimate Stone",
+   "attr_id": 949,
+   "observed_in_ram": false
+  },
+  "4401": {
+   "en_name": "T4 ATK Stone",
+   "attr_id": 1901,
+   "observed_in_ram": false
+  },
+  "4402": {
+   "en_name": "T4 HP Stone",
+   "attr_id": 1902,
+   "observed_in_ram": false
+  },
+  "4403": {
+   "en_name": "T4 Armor Stone",
+   "attr_id": 1941,
+   "observed_in_ram": false
+  },
+  "4404": {
+   "en_name": "T4 Magical RES Stone",
+   "attr_id": 1942,
+   "observed_in_ram": false
+  },
+  "4405": {
+   "en_name": "T4 Dodge Stone",
+   "attr_id": 904,
+   "observed_in_ram": false
+  },
+  "4406": {
+   "en_name": "T4 Hit Rate Stone",
+   "attr_id": 905,
+   "observed_in_ram": false
+  },
+  "4407": {
+   "en_name": "T4 CRIT Stone",
+   "attr_id": 906,
+   "observed_in_ram": false
+  },
+  "4408": {
+   "en_name": "T4 CRIT RES Stone",
+   "attr_id": 907,
+   "observed_in_ram": false
+  },
+  "4409": {
+   "en_name": "T4 Magical DMG RED Stone",
+   "attr_id": 908,
+   "observed_in_ram": false
+  },
+  "4410": {
+   "en_name": "T4 Physical DMG RED Stone",
+   "attr_id": 909,
+   "observed_in_ram": false
+  },
+  "4411": {
+   "en_name": "T4 Lifesteal Stone",
+   "attr_id": 918,
+   "observed_in_ram": false
+  },
+  "4412": {
+   "en_name": "T4 CRIT DMG Stone",
+   "attr_id": 919,
+   "observed_in_ram": false
+  },
+  "4413": {
+   "en_name": "T4 Magical DMG Bonus Stone",
+   "attr_id": 924,
+   "observed_in_ram": false
+  },
+  "4414": {
+   "en_name": "T4 Physical DMG Bonus Stone",
+   "attr_id": 925,
+   "observed_in_ram": false
+  },
+  "4415": {
+   "en_name": "T4 Skill Cooldown Stone",
+   "attr_id": 926,
+   "observed_in_ram": false
+  },
+  "4416": {
+   "en_name": "T4 Healing Stone",
+   "attr_id": 927,
+   "observed_in_ram": false
+  },
+  "4417": {
+   "en_name": "T4 Recharge Stone",
+   "attr_id": 928,
+   "observed_in_ram": false
+  },
+  "4418": {
+   "en_name": "T4 Control RES Stone",
+   "attr_id": 929,
+   "observed_in_ram": false
+  },
+  "4419": {
+   "en_name": "T4 Control Bonus Stone",
+   "attr_id": 932,
+   "observed_in_ram": false
+  },
+  "4420": {
+   "en_name": "T4 CRIT DMG RED Stone",
+   "attr_id": 940,
+   "observed_in_ram": false
+  },
+  "4421": {
+   "en_name": "T4 Effect RES Stone",
+   "attr_id": 944,
+   "observed_in_ram": false
+  },
+  "4422": {
+   "en_name": "T4 Effect Hit Rate Stone",
+   "attr_id": 945,
+   "observed_in_ram": false
+  },
+  "4423": {
+   "en_name": "T4 ATK SPD Stone",
+   "attr_id": 915,
+   "observed_in_ram": false
+  },
+  "4424": {
+   "en_name": "T4 Ultimate Stone",
+   "attr_id": 949,
+   "observed_in_ram": false
+  },
+  "4501": {
+   "en_name": "T5 ATK Stone",
+   "attr_id": 1901,
+   "observed_in_ram": false
+  },
+  "4502": {
+   "en_name": "T5 HP Stone",
+   "attr_id": 1902,
+   "observed_in_ram": false
+  },
+  "4503": {
+   "en_name": "T5 Armor Stone",
+   "attr_id": 1941,
+   "observed_in_ram": false
+  },
+  "4504": {
+   "en_name": "T5 Magical RES Stone",
+   "attr_id": 1942,
+   "observed_in_ram": false
+  },
+  "4505": {
+   "en_name": "T5 Dodge Stone",
+   "attr_id": 904,
+   "observed_in_ram": false
+  },
+  "4506": {
+   "en_name": "T5 Hit Rate Stone",
+   "attr_id": 905,
+   "observed_in_ram": false
+  },
+  "4507": {
+   "en_name": "T5 CRIT Stone",
+   "attr_id": 906,
+   "observed_in_ram": false
+  },
+  "4508": {
+   "en_name": "T5 CRIT RES Stone",
+   "attr_id": 907,
+   "observed_in_ram": false
+  },
+  "4509": {
+   "en_name": "T5 Magical DMG RED Stone",
+   "attr_id": 908,
+   "observed_in_ram": false
+  },
+  "4510": {
+   "en_name": "T5 Physical DMG RED Stone",
+   "attr_id": 909,
+   "observed_in_ram": false
+  },
+  "4511": {
+   "en_name": "T5 Lifesteal Stone",
+   "attr_id": 918,
+   "observed_in_ram": false
+  },
+  "4512": {
+   "en_name": "T5 CRIT DMG Stone",
+   "attr_id": 919,
+   "observed_in_ram": false
+  },
+  "4513": {
+   "en_name": "T5 Magical DMG Bonus Stone",
+   "attr_id": 924,
+   "observed_in_ram": false
+  },
+  "4514": {
+   "en_name": "T5 Physical DMG Bonus Stone",
+   "attr_id": 925,
+   "observed_in_ram": false
+  },
+  "4515": {
+   "en_name": "T5 Skill Cooldown Stone",
+   "attr_id": 926,
+   "observed_in_ram": false
+  },
+  "4516": {
+   "en_name": "T5 Healing Stone",
+   "attr_id": 927,
+   "observed_in_ram": false
+  },
+  "4517": {
+   "en_name": "T5 Recharge Stone",
+   "attr_id": 928,
+   "observed_in_ram": false
+  },
+  "4518": {
+   "en_name": "T5 Control RES Stone",
+   "attr_id": 929,
+   "observed_in_ram": false
+  },
+  "4519": {
+   "en_name": "T5 Control Bonus Stone",
+   "attr_id": 932,
+   "observed_in_ram": false
+  },
+  "4520": {
+   "en_name": "T5 CRIT DMG RED Stone",
+   "attr_id": 940,
+   "observed_in_ram": false
+  },
+  "4521": {
+   "en_name": "T5 Effect RES Stone",
+   "attr_id": 944,
+   "observed_in_ram": false
+  },
+  "4522": {
+   "en_name": "T5 Effect Hit Rate Stone",
+   "attr_id": 945,
+   "observed_in_ram": false
+  },
+  "4523": {
+   "en_name": "T5 ATK SPD Stone",
+   "attr_id": 915,
+   "observed_in_ram": false
+  },
+  "4524": {
+   "en_name": "T5 Ultimate Stone",
+   "attr_id": 949,
+   "observed_in_ram": false
+  },
+  "1201": {
+   "en_name": "T1 Hefty Awakening Stone",
+   "artifact_type": 1,
+   "awaken_tier": 1,
+   "observed_in_ram": true
+  },
+  "1202": {
+   "en_name": "T2 Hefty Awakening Stone",
+   "artifact_type": 1,
+   "awaken_tier": 2,
+   "observed_in_ram": false
+  },
+  "1203": {
+   "en_name": "T3 Hefty Awakening Stone",
+   "artifact_type": 1,
+   "awaken_tier": 3,
+   "observed_in_ram": false
+  },
+  "1204": {
+   "en_name": "T4 Hefty Awakening Stone",
+   "artifact_type": 1,
+   "awaken_tier": 4,
+   "observed_in_ram": true
+  },
+  "1211": {
+   "en_name": "T1 Nimble Awakening Stone",
+   "artifact_type": 2,
+   "awaken_tier": 1,
+   "observed_in_ram": true
+  },
+  "1212": {
+   "en_name": "T2 Nimble Awakening Stone",
+   "artifact_type": 2,
+   "awaken_tier": 2,
+   "observed_in_ram": true
+  },
+  "1213": {
+   "en_name": "T3 Nimble Awakening Stone",
+   "artifact_type": 2,
+   "awaken_tier": 3,
+   "observed_in_ram": true
+  },
+  "1214": {
+   "en_name": "T4 Nimble Awakening Stone",
+   "artifact_type": 2,
+   "awaken_tier": 4,
+   "observed_in_ram": true
+  },
+  "1221": {
+   "en_name": "T1 Arcane Awakening Stone",
+   "artifact_type": 3,
+   "awaken_tier": 1,
+   "observed_in_ram": true
+  },
+  "1222": {
+   "en_name": "T2 Arcane Awakening Stone",
+   "artifact_type": 3,
+   "awaken_tier": 2,
+   "observed_in_ram": true
+  },
+  "1223": {
+   "en_name": "T3 Arcane Awakening Stone",
+   "artifact_type": 3,
+   "awaken_tier": 3,
+   "observed_in_ram": true
+  },
+  "1224": {
+   "en_name": "T4 Arcane Awakening Stone",
+   "artifact_type": 3,
+   "awaken_tier": 4,
+   "observed_in_ram": true
+  },
+  "1200": {
+   "en_name": "Artifact Enhancement Stone",
+   "observed_in_ram": true
+  },
+  "1034": {
+   "en_name": "Refining Stone",
+   "observed_in_ram": true
+  },
+  "1035": {
+   "en_name": "Fate lock",
+   "observed_in_ram": false,
+   "source": "user-supplied from the live Global client 2026-08-07 (not resident during the RAM harvest); exact capitalisation unverified"
+  }
+ },
+ "artifact_type_names_en": {
+  "1": "Hefty",
+  "2": "Nimble",
+  "3": "Arcane"
+ }
+}

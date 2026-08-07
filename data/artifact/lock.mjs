@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const c = await b.newContext({ colorScheme:"dark", viewport:{width:1280,height:900} });
+const p = await c.newPage();
+p.on("pageerror", e=>console.log("PAGEERROR:", e.message));
+await p.goto("file://"+process.cwd()+"/preview.html");
+await p.waitForTimeout(400);
+await p.locator("#simTier button", {hasText:"Tier 4"}).click();
+// lock two effects, confirm k drops
+const rows = p.locator("#simPan .pan-row");
+await rows.nth(0).locator(".lockbtn").click();
+await rows.nth(2).locator(".lockbtn").click();
+await p.waitForTimeout(300);
+console.log(await p.locator("#simReadout").innerText());
+console.log("note:", await p.locator("#simNote").innerText());
+await p.locator("#simPan").scrollIntoViewIfNeeded();
+await p.waitForTimeout(300);
+const box = await p.locator("#simPan").boundingBox();
+await p.screenshot({path:"shot-lock.png", clip:{x:box.x,y:box.y,width:box.width,height:Math.min(box.height,470)}});
+await b.close();

@@ -1,0 +1,6554 @@
+{
+ "source": {
+  "client": "GLOBAL (com.goatgames.mot.gb.gp)",
+  "config_run": "live_extractions/20260807_093439/unpacked/region_02/client/config",
+  "logic_run": "live_extractions/20260731_115343/unpacked/region_04/client/dist/default/equipment/equip-awake",
+  "note": "equip_awake*.json byte-identical across all Global runs since 2026-06-12 and identical in CN. The refine UI logic (incl. the reduce-weight bug) is identical in Global and CN."
+ },
+ "constants": {
+  "UNLOCK_EQUIP_AWAKE_QUALITY": 13,
+  "EQUIP_AWAKE_ATTR_WEIGHT": 1000,
+  "EQUIP_AWAKE_UPGRADE_ITEM": [
+   103,
+   1200,
+   1
+  ],
+  "EQUIP_AWAKE_LOCK_ITEM": [
+   103,
+   1035,
+   1
+  ],
+  "EQUIP_AWAKE_REFRESH_ITEM": [
+   103,
+   1034,
+   1
+  ],
+  "EQUIP_AWAKE_REFRESH_MIN_PROB": 0.01,
+  "EQUIP_AWAKE_SHRINE_LEVEL_LIMIT": [
+   0,
+   22,
+   25,
+   27
+  ],
+  "EQUIP_AWAKE_UPGRADE_MUST_PROB": 0.99,
+  "EQUIP_AWAKE_REFRESH_MAX_PROB": 1
+ },
+ "attribute_names_en": {
+  "1901": "ATK %",
+  "1902": "HP %",
+  "1941": "Armor %",
+  "1942": "M-RES %",
+  "904": "Dodge Rate",
+  "905": "Hit Bonus",
+  "906": "CRIT Rate",
+  "907": "CRIT RES",
+  "908": "M-DMG RED Rate",
+  "909": "P-DMG RED Rate",
+  "915": "ATK SPD Bonus",
+  "918": "Lifesteal Effectiveness",
+  "919": "CRIT DMG Bonus",
+  "924": "M-DMG Bonus",
+  "925": "P-DMG Bonus",
+  "926": "Cooldown Haste",
+  "927": "Healing Effectiveness",
+  "928": "Recharge Effectiveness",
+  "929": "Control RES",
+  "932": "Control Bonus",
+  "940": "CRIT DMG RED",
+  "944": "Effect RES",
+  "945": "Effect Hit",
+  "949": "Ultimate Power"
+ },
+ "attribute_max_at_lv20": {
+  "904": 0.4,
+  "905": 0.4,
+  "906": 0.4,
+  "907": 0.4,
+  "908": 0.3,
+  "909": 0.3,
+  "915": 0.2,
+  "918": 0.4,
+  "919": 0.5,
+  "924": 0.3,
+  "925": 0.3,
+  "926": 0.2,
+  "927": 0.4,
+  "928": 0.4,
+  "929": 0.5,
+  "932": 0.5,
+  "940": 0.5,
+  "944": 0.5,
+  "945": 0.5,
+  "949": 0.2,
+  "1901": 0.2,
+  "1902": 0.2,
+  "1941": 0.3,
+  "1942": 0.3
+ },
+ "enhance_success_ladder": {
+  "1": 100,
+  "2": 100,
+  "3": 100,
+  "4": 95,
+  "5": 95,
+  "6": 90,
+  "7": 80,
+  "8": 70,
+  "9": 60,
+  "10": 50,
+  "11": 40,
+  "12": 35,
+  "13": 30,
+  "14": 25,
+  "15": 20,
+  "16": 16,
+  "17": 12,
+  "18": 8,
+  "19": 4,
+  "20": 0
+ },
+ "artifact_type_names_en": {
+  "1": "Hefty",
+  "2": "Nimble",
+  "3": "Arcane"
+ },
+ "artifact_slot_elements": {
+  "1": "Wind",
+  "2": "Water",
+  "3": "Flame",
+  "4": "Terra"
+ },
+ "pools_by_artifact_slot": {
+  "1": [
+   1901,
+   905,
+   906,
+   918,
+   919,
+   924,
+   925,
+   926,
+   932,
+   945,
+   915,
+   949
+  ],
+  "2": [
+   1902,
+   1941,
+   1942,
+   904,
+   907,
+   908,
+   909,
+   927,
+   928,
+   929,
+   940,
+   944
+  ],
+  "3": [
+   1901,
+   1942,
+   904,
+   907,
+   908,
+   909,
+   918,
+   926,
+   932,
+   940,
+   945,
+   949
+  ],
+  "4": [
+   1902,
+   1941,
+   905,
+   906,
+   919,
+   924,
+   925,
+   927,
+   928,
+   929,
+   944,
+   915
+  ]
+ },
+ "pool_note": "The 12-candidate pool is fixed by the artifact's EQUIP SLOT (pos 1-4). It is identical for Hefty/Nimble/Arcane and identical for Tier 1-4. The Awakened Tier only sets how many of the 12 you hold (num_attr = 1..4).",
+ "equip_families": [
+  {
+   "type": 1,
+   "type_en": "Hefty",
+   "slot": 1,
+   "element": "Wind",
+   "icon": "A_UI_Equipment_Wind_Thick",
+   "ids_by_quality": {
+    "1": 10101,
+    "2": 20101,
+    "3": 30101,
+    "4": 40101,
+    "5": 50101,
+    "6": 60101,
+    "7": 70101,
+    "8": 80101,
+    "9": 90101,
+    "10": 100101,
+    "11": 110101,
+    "12": 120101,
+    "13": 130101
+   },
+   "plus2w": [
+    918,
+    926
+   ],
+   "plus1w": [
+    906,
+    929
+   ],
+   "minus2w": [
+    905,
+    919
+   ]
+  },
+  {
+   "type": 1,
+   "type_en": "Hefty",
+   "slot": 2,
+   "element": "Water",
+   "icon": "A_UI_Equipment_Water_Thick",
+   "ids_by_quality": {
+    "1": 10102,
+    "2": 20102,
+    "3": 30102,
+    "4": 40102,
+    "5": 50102,
+    "6": 60102,
+    "7": 70102,
+    "8": 80102,
+    "9": 90102,
+    "10": 100102,
+    "11": 110102,
+    "12": 120102,
+    "13": 130102
+   },
+   "plus2w": [
+    1902,
+    908
+   ],
+   "plus1w": [
+    927,
+    928
+   ],
+   "minus2w": [
+    906,
+    915
+   ]
+  },
+  {
+   "type": 1,
+   "type_en": "Hefty",
+   "slot": 3,
+   "element": "Flame",
+   "icon": "A_UI_Equipment_Flame_Thick",
+   "ids_by_quality": {
+    "1": 10103,
+    "2": 20103,
+    "3": 30103,
+    "4": 40103,
+    "5": 50103,
+    "6": 60103,
+    "7": 70103,
+    "8": 80103,
+    "9": 90103,
+    "10": 100103,
+    "11": 110103,
+    "12": 120103,
+    "13": 130103
+   },
+   "plus2w": [
+    1942,
+    905
+   ],
+   "plus1w": [
+    918,
+    940
+   ],
+   "minus2w": [
+    926,
+    944
+   ]
+  },
+  {
+   "type": 1,
+   "type_en": "Hefty",
+   "slot": 4,
+   "element": "Terra",
+   "icon": "A_UI_Equipment_Terra_Thick",
+   "ids_by_quality": {
+    "1": 10104,
+    "2": 20104,
+    "3": 30104,
+    "4": 40104,
+    "5": 50104,
+    "6": 60104,
+    "7": 70104,
+    "8": 80104,
+    "9": 90104,
+    "10": 100104,
+    "11": 110104,
+    "12": 120104,
+    "13": 130104
+   },
+   "plus2w": [
+    1941,
+    907
+   ],
+   "plus1w": [
+    1902,
+    909
+   ],
+   "minus2w": [
+    1901,
+    949
+   ]
+  },
+  {
+   "type": 2,
+   "type_en": "Nimble",
+   "slot": 1,
+   "element": "Wind",
+   "icon": "A_UI_Equipment_Wind_Swift",
+   "ids_by_quality": {
+    "1": 10201,
+    "2": 20201,
+    "3": 30201,
+    "4": 40201,
+    "5": 50201,
+    "6": 60201,
+    "7": 70201,
+    "8": 80201,
+    "9": 90201,
+    "10": 100201,
+    "11": 110201,
+    "12": 120201,
+    "13": 130201
+   },
+   "plus2w": [
+    1901,
+    925
+   ],
+   "plus1w": [
+    926,
+    915
+   ],
+   "minus2w": [
+    1942,
+    924
+   ]
+  },
+  {
+   "type": 2,
+   "type_en": "Nimble",
+   "slot": 2,
+   "element": "Water",
+   "icon": "A_UI_Equipment_Water_Swift",
+   "ids_by_quality": {
+    "1": 10202,
+    "2": 20202,
+    "3": 30202,
+    "4": 40202,
+    "5": 50202,
+    "6": 60202,
+    "7": 70202,
+    "8": 80202,
+    "9": 90202,
+    "10": 100202,
+    "11": 110202,
+    "12": 120202,
+    "13": 130202
+   },
+   "plus2w": [
+    904,
+    927
+   ],
+   "plus1w": [
+    925,
+    932
+   ],
+   "minus2w": [
+    908,
+    929
+   ]
+  },
+  {
+   "type": 2,
+   "type_en": "Nimble",
+   "slot": 3,
+   "element": "Flame",
+   "icon": "A_UI_Equipment_Flame_Swift",
+   "ids_by_quality": {
+    "1": 10203,
+    "2": 20203,
+    "3": 30203,
+    "4": 40203,
+    "5": 50203,
+    "6": 60203,
+    "7": 70203,
+    "8": 80203,
+    "9": 90203,
+    "10": 100203,
+    "11": 110203,
+    "12": 120203,
+    "13": 130203
+   },
+   "plus2w": [
+    928,
+    915
+   ],
+   "plus1w": [
+    905,
+    919
+   ],
+   "minus2w": [
+    1902,
+    907
+   ]
+  },
+  {
+   "type": 2,
+   "type_en": "Nimble",
+   "slot": 4,
+   "element": "Terra",
+   "icon": "A_UI_Equipment_Terra_Swift",
+   "ids_by_quality": {
+    "1": 10204,
+    "2": 20204,
+    "3": 30204,
+    "4": 40204,
+    "5": 50204,
+    "6": 60204,
+    "7": 70204,
+    "8": 80204,
+    "9": 90204,
+    "10": 100204,
+    "11": 110204,
+    "12": 120204,
+    "13": 130204
+   },
+   "plus2w": [
+    909,
+    940
+   ],
+   "plus1w": [
+    1941,
+    945
+   ],
+   "minus2w": [
+    927,
+    928
+   ]
+  },
+  {
+   "type": 3,
+   "type_en": "Arcane",
+   "slot": 1,
+   "element": "Wind",
+   "icon": "A_UI_Equipment_Wind_Mystery",
+   "ids_by_quality": {
+    "1": 10301,
+    "2": 20301,
+    "3": 30301,
+    "4": 40301,
+    "5": 50301,
+    "6": 60301,
+    "7": 70301,
+    "8": 80301,
+    "9": 90301,
+    "10": 100301,
+    "11": 110301,
+    "12": 120301,
+    "13": 130301
+   },
+   "plus2w": [
+    906,
+    949
+   ],
+   "plus1w": [
+    1901,
+    924
+   ],
+   "minus2w": [
+    1941,
+    925
+   ]
+  },
+  {
+   "type": 3,
+   "type_en": "Arcane",
+   "slot": 2,
+   "element": "Water",
+   "icon": "A_UI_Equipment_Water_Mystery",
+   "ids_by_quality": {
+    "1": 10302,
+    "2": 20302,
+    "3": 30302,
+    "4": 40302,
+    "5": 50302,
+    "6": 60302,
+    "7": 70302,
+    "8": 80302,
+    "9": 90302,
+    "10": 100302,
+    "11": 110302,
+    "12": 120302,
+    "13": 130302
+   },
+   "plus2w": [
+    929,
+    945
+   ],
+   "plus1w": [
+    904,
+    944
+   ],
+   "minus2w": [
+    932,
+    940
+   ]
+  },
+  {
+   "type": 3,
+   "type_en": "Arcane",
+   "slot": 3,
+   "element": "Flame",
+   "icon": "A_UI_Equipment_Flame_Mystery",
+   "ids_by_quality": {
+    "1": 10303,
+    "2": 20303,
+    "3": 30303,
+    "4": 40303,
+    "5": 50303,
+    "6": 60303,
+    "7": 70303,
+    "8": 80303,
+    "9": 90303,
+    "10": 100303,
+    "11": 110303,
+    "12": 120303,
+    "13": 130303
+   },
+   "plus2w": [
+    919,
+    924
+   ],
+   "plus1w": [
+    1942,
+    949
+   ],
+   "minus2w": [
+    909,
+    918
+   ]
+  },
+  {
+   "type": 3,
+   "type_en": "Arcane",
+   "slot": 4,
+   "element": "Terra",
+   "icon": "A_UI_Equipment_Terra_Mystery",
+   "ids_by_quality": {
+    "1": 10304,
+    "2": 20304,
+    "3": 30304,
+    "4": 40304,
+    "5": 50304,
+    "6": 60304,
+    "7": 70304,
+    "8": 80304,
+    "9": 90304,
+    "10": 100304,
+    "11": 110304,
+    "12": 120304,
+    "13": 130304
+   },
+   "plus2w": [
+    932,
+    944
+   ],
+   "plus1w": [
+    907,
+    908
+   ],
+   "minus2w": [
+    904,
+    945
+   ]
+  }
+ ],
+ "equip_weight_scale_by_quality": {
+  "1": {
+   "plus2w": 2,
+   "plus1w": 1,
+   "minus2w": -2,
+   "generic": 0
+  },
+  "2": {
+   "plus2w": 4,
+   "plus1w": 2,
+   "minus2w": -4,
+   "generic": 0
+  },
+  "3": {
+   "plus2w": 6,
+   "plus1w": 3,
+   "minus2w": -6,
+   "generic": 0
+  },
+  "4": {
+   "plus2w": 8,
+   "plus1w": 4,
+   "minus2w": -8,
+   "generic": -1
+  },
+  "5": {
+   "plus2w": 10,
+   "plus1w": 5,
+   "minus2w": -10,
+   "generic": -2
+  },
+  "6": {
+   "plus2w": 20,
+   "plus1w": 10,
+   "minus2w": -20,
+   "generic": -4
+  },
+  "7": {
+   "plus2w": 30,
+   "plus1w": 15,
+   "minus2w": -30,
+   "generic": -6
+  },
+  "8": {
+   "plus2w": 40,
+   "plus1w": 20,
+   "minus2w": -40,
+   "generic": -8
+  },
+  "9": {
+   "plus2w": 60,
+   "plus1w": 30,
+   "minus2w": -60,
+   "generic": -12
+  },
+  "10": {
+   "plus2w": 80,
+   "plus1w": 40,
+   "minus2w": -80,
+   "generic": -16
+  },
+  "11": {
+   "plus2w": 100,
+   "plus1w": 50,
+   "minus2w": -100,
+   "generic": -20
+  },
+  "12": {
+   "plus2w": 150,
+   "plus1w": 75,
+   "minus2w": -150,
+   "generic": -30
+  },
+  "13": {
+   "plus2w": 200,
+   "plus1w": 100,
+   "minus2w": -200,
+   "generic": -40
+  }
+ },
+ "stat_index": {
+  "904": {
+   "en": "Dodge Rate",
+   "max_at_lv20_pct": 40.0,
+   "artifact_slots": [
+    2,
+    3
+   ],
+   "plus2w_family": [
+    2,
+    2
+   ],
+   "plus1w_family": [
+    3,
+    2
+   ],
+   "minus2w_family": [
+    3,
+    4
+   ],
+   "stones": {
+    "1": 4105,
+    "2": 4205,
+    "3": 4305,
+    "4": 4405,
+    "5": 4505
+   }
+  },
+  "905": {
+   "en": "Hit Bonus",
+   "max_at_lv20_pct": 40.0,
+   "artifact_slots": [
+    1,
+    4
+   ],
+   "plus2w_family": [
+    1,
+    3
+   ],
+   "plus1w_family": [
+    2,
+    3
+   ],
+   "minus2w_family": [
+    1,
+    1
+   ],
+   "stones": {
+    "1": 4106,
+    "2": 4206,
+    "3": 4306,
+    "4": 4406,
+    "5": 4506
+   }
+  },
+  "906": {
+   "en": "CRIT Rate",
+   "max_at_lv20_pct": 40.0,
+   "artifact_slots": [
+    1,
+    4
+   ],
+   "plus2w_family": [
+    3,
+    1
+   ],
+   "plus1w_family": [
+    1,
+    1
+   ],
+   "minus2w_family": [
+    1,
+    2
+   ],
+   "stones": {
+    "1": 4107,
+    "2": 4207,
+    "3": 4307,
+    "4": 4407,
+    "5": 4507
+   }
+  },
+  "907": {
+   "en": "CRIT RES",
+   "max_at_lv20_pct": 40.0,
+   "artifact_slots": [
+    2,
+    3
+   ],
+   "plus2w_family": [
+    1,
+    4
+   ],
+   "plus1w_family": [
+    3,
+    4
+   ],
+   "minus2w_family": [
+    2,
+    3
+   ],
+   "stones": {
+    "1": 4108,
+    "2": 4208,
+    "3": 4308,
+    "4": 4408,
+    "5": 4508
+   }
+  },
+  "908": {
+   "en": "M-DMG RED Rate",
+   "max_at_lv20_pct": 30.0,
+   "artifact_slots": [
+    2,
+    3
+   ],
+   "plus2w_family": [
+    1,
+    2
+   ],
+   "plus1w_family": [
+    3,
+    4
+   ],
+   "minus2w_family": [
+    2,
+    2
+   ],
+   "stones": {
+    "1": 4109,
+    "2": 4209,
+    "3": 4309,
+    "4": 4409,
+    "5": 4509
+   }
+  },
+  "909": {
+   "en": "P-DMG RED Rate",
+   "max_at_lv20_pct": 30.0,
+   "artifact_slots": [
+    2,
+    3
+   ],
+   "plus2w_family": [
+    2,
+    4
+   ],
+   "plus1w_family": [
+    1,
+    4
+   ],
+   "minus2w_family": [
+    3,
+    3
+   ],
+   "stones": {
+    "1": 4110,
+    "2": 4210,
+    "3": 4310,
+    "4": 4410,
+    "5": 4510
+   }
+  },
+  "915": {
+   "en": "ATK SPD Bonus",
+   "max_at_lv20_pct": 20.0,
+   "artifact_slots": [
+    1,
+    4
+   ],
+   "plus2w_family": [
+    2,
+    3
+   ],
+   "plus1w_family": [
+    2,
+    1
+   ],
+   "minus2w_family": [
+    1,
+    2
+   ],
+   "stones": {
+    "1": 4123,
+    "2": 4223,
+    "3": 4323,
+    "4": 4423,
+    "5": 4523
+   }
+  },
+  "918": {
+   "en": "Lifesteal Effectiveness",
+   "max_at_lv20_pct": 40.0,
+   "artifact_slots": [
+    1,
+    3
+   ],
+   "plus2w_family": [
+    1,
+    1
+   ],
+   "plus1w_family": [
+    1,
+    3
+   ],
+   "minus2w_family": [
+    3,
+    3
+   ],
+   "stones": {
+    "1": 4111,
+    "2": 4211,
+    "3": 4311,
+    "4": 4411,
+    "5": 4511
+   }
+  },
+  "919": {
+   "en": "CRIT DMG Bonus",
+   "max_at_lv20_pct": 50.0,
+   "artifact_slots": [
+    1,
+    4
+   ],
+   "plus2w_family": [
+    3,
+    3
+   ],
+   "plus1w_family": [
+    2,
+    3
+   ],
+   "minus2w_family": [
+    1,
+    1
+   ],
+   "stones": {
+    "1": 4112,
+    "2": 4212,
+    "3": 4312,
+    "4": 4412,
+    "5": 4512
+   }
+  },
+  "924": {
+   "en": "M-DMG Bonus",
+   "max_at_lv20_pct": 30.0,
+   "artifact_slots": [
+    1,
+    4
+   ],
+   "plus2w_family": [
+    3,
+    3
+   ],
+   "plus1w_family": [
+    3,
+    1
+   ],
+   "minus2w_family": [
+    2,
+    1
+   ],
+   "stones": {
+    "1": 4113,
+    "2": 4213,
+    "3": 4313,
+    "4": 4413,
+    "5": 4513
+   }
+  },
+  "925": {
+   "en": "P-DMG Bonus",
+   "max_at_lv20_pct": 30.0,
+   "artifact_slots": [
+    1,
+    4
+   ],
+   "plus2w_family": [
+    2,
+    1
+   ],
+   "plus1w_family": [
+    2,
+    2
+   ],
+   "minus2w_family": [
+    3,
+    1
+   ],
+   "stones": {
+    "1": 4114,
+    "2": 4214,
+    "3": 4314,
+    "4": 4414,
+    "5": 4514
+   }
+  },
+  "926": {
+   "en": "Cooldown Haste",
+   "max_at_lv20_pct": 20.0,
+   "artifact_slots": [
+    1,
+    3
+   ],
+   "plus2w_family": [
+    1,
+    1
+   ],
+   "plus1w_family": [
+    2,
+    1
+   ],
+   "minus2w_family": [
+    1,
+    3
+   ],
+   "stones": {
+    "1": 4115,
+    "2": 4215,
+    "3": 4315,
+    "4": 4415,
+    "5": 4515
+   }
+  },
+  "927": {
+   "en": "Healing Effectiveness",
+   "max_at_lv20_pct": 40.0,
+   "artifact_slots": [
+    2,
+    4
+   ],
+   "plus2w_family": [
+    2,
+    2
+   ],
+   "plus1w_family": [
+    1,
+    2
+   ],
+   "minus2w_family": [
+    2,
+    4
+   ],
+   "stones": {
+    "1": 4116,
+    "2": 4216,
+    "3": 4316,
+    "4": 4416,
+    "5": 4516
+   }
+  },
+  "928": {
+   "en": "Recharge Effectiveness",
+   "max_at_lv20_pct": 40.0,
+   "artifact_slots": [
+    2,
+    4
+   ],
+   "plus2w_family": [
+    2,
+    3
+   ],
+   "plus1w_family": [
+    1,
+    2
+   ],
+   "minus2w_family": [
+    2,
+    4
+   ],
+   "stones": {
+    "1": 4117,
+    "2": 4217,
+    "3": 4317,
+    "4": 4417,
+    "5": 4517
+   }
+  },
+  "929": {
+   "en": "Control RES",
+   "max_at_lv20_pct": 50.0,
+   "artifact_slots": [
+    2,
+    4
+   ],
+   "plus2w_family": [
+    3,
+    2
+   ],
+   "plus1w_family": [
+    1,
+    1
+   ],
+   "minus2w_family": [
+    2,
+    2
+   ],
+   "stones": {
+    "1": 4118,
+    "2": 4218,
+    "3": 4318,
+    "4": 4418,
+    "5": 4518
+   }
+  },
+  "932": {
+   "en": "Control Bonus",
+   "max_at_lv20_pct": 50.0,
+   "artifact_slots": [
+    1,
+    3
+   ],
+   "plus2w_family": [
+    3,
+    4
+   ],
+   "plus1w_family": [
+    2,
+    2
+   ],
+   "minus2w_family": [
+    3,
+    2
+   ],
+   "stones": {
+    "1": 4119,
+    "2": 4219,
+    "3": 4319,
+    "4": 4419,
+    "5": 4519
+   }
+  },
+  "940": {
+   "en": "CRIT DMG RED",
+   "max_at_lv20_pct": 50.0,
+   "artifact_slots": [
+    2,
+    3
+   ],
+   "plus2w_family": [
+    2,
+    4
+   ],
+   "plus1w_family": [
+    1,
+    3
+   ],
+   "minus2w_family": [
+    3,
+    2
+   ],
+   "stones": {
+    "1": 4120,
+    "2": 4220,
+    "3": 4320,
+    "4": 4420,
+    "5": 4520
+   }
+  },
+  "944": {
+   "en": "Effect RES",
+   "max_at_lv20_pct": 50.0,
+   "artifact_slots": [
+    2,
+    4
+   ],
+   "plus2w_family": [
+    3,
+    4
+   ],
+   "plus1w_family": [
+    3,
+    2
+   ],
+   "minus2w_family": [
+    1,
+    3
+   ],
+   "stones": {
+    "1": 4121,
+    "2": 4221,
+    "3": 4321,
+    "4": 4421,
+    "5": 4521
+   }
+  },
+  "945": {
+   "en": "Effect Hit",
+   "max_at_lv20_pct": 50.0,
+   "artifact_slots": [
+    1,
+    3
+   ],
+   "plus2w_family": [
+    3,
+    2
+   ],
+   "plus1w_family": [
+    2,
+    4
+   ],
+   "minus2w_family": [
+    3,
+    4
+   ],
+   "stones": {
+    "1": 4122,
+    "2": 4222,
+    "3": 4322,
+    "4": 4422,
+    "5": 4522
+   }
+  },
+  "949": {
+   "en": "Ultimate Power",
+   "max_at_lv20_pct": 20.0,
+   "artifact_slots": [
+    1,
+    3
+   ],
+   "plus2w_family": [
+    3,
+    1
+   ],
+   "plus1w_family": [
+    3,
+    3
+   ],
+   "minus2w_family": [
+    1,
+    4
+   ],
+   "stones": {
+    "1": 4124,
+    "2": 4224,
+    "3": 4324,
+    "4": 4424,
+    "5": 4524
+   }
+  },
+  "1901": {
+   "en": "ATK %",
+   "max_at_lv20_pct": 20.0,
+   "artifact_slots": [
+    1,
+    3
+   ],
+   "plus2w_family": [
+    2,
+    1
+   ],
+   "plus1w_family": [
+    3,
+    1
+   ],
+   "minus2w_family": [
+    1,
+    4
+   ],
+   "stones": {
+    "1": 4101,
+    "2": 4201,
+    "3": 4301,
+    "4": 4401,
+    "5": 4501
+   }
+  },
+  "1902": {
+   "en": "HP %",
+   "max_at_lv20_pct": 20.0,
+   "artifact_slots": [
+    2,
+    4
+   ],
+   "plus2w_family": [
+    1,
+    2
+   ],
+   "plus1w_family": [
+    1,
+    4
+   ],
+   "minus2w_family": [
+    2,
+    3
+   ],
+   "stones": {
+    "1": 4102,
+    "2": 4202,
+    "3": 4302,
+    "4": 4402,
+    "5": 4502
+   }
+  },
+  "1941": {
+   "en": "Armor %",
+   "max_at_lv20_pct": 30.0,
+   "artifact_slots": [
+    2,
+    4
+   ],
+   "plus2w_family": [
+    1,
+    4
+   ],
+   "plus1w_family": [
+    2,
+    4
+   ],
+   "minus2w_family": [
+    3,
+    1
+   ],
+   "stones": {
+    "1": 4103,
+    "2": 4203,
+    "3": 4303,
+    "4": 4403,
+    "5": 4503
+   }
+  },
+  "1942": {
+   "en": "M-RES %",
+   "max_at_lv20_pct": 30.0,
+   "artifact_slots": [
+    2,
+    3
+   ],
+   "plus2w_family": [
+    1,
+    3
+   ],
+   "plus1w_family": [
+    3,
+    3
+   ],
+   "minus2w_family": [
+    2,
+    1
+   ],
+   "stones": {
+    "1": 4104,
+    "2": 4204,
+    "3": 4304,
+    "4": 4404,
+    "5": 4504
+   }
+  }
+ },
+ "refine_stones": {
+  "4101": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 1901,
+   "en_name": "T1 ATK Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4102": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 1902,
+   "en_name": "T1 HP Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4103": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 1941,
+   "en_name": "T1 Armor Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4104": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 1942,
+   "en_name": "T1 Magical RES Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4105": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 904,
+   "en_name": "T1 Dodge Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4106": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 905,
+   "en_name": "T1 Hit Rate Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4107": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 906,
+   "en_name": "T1 CRIT Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4108": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 907,
+   "en_name": "T1 CRIT RES Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4109": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 908,
+   "en_name": "T1 Magical DMG RED Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4110": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 909,
+   "en_name": "T1 Physical DMG RED Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4111": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 918,
+   "en_name": "T1 Lifesteal Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4112": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 919,
+   "en_name": "T1 CRIT DMG Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4113": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 924,
+   "en_name": "T1 Magical DMG Bonus Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4114": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 925,
+   "en_name": "T1 Physical DMG Bonus Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4115": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 926,
+   "en_name": "T1 Skill Cooldown Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4116": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 927,
+   "en_name": "T1 Healing Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4117": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 928,
+   "en_name": "T1 Recharge Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4118": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 929,
+   "en_name": "T1 Control RES Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4119": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 932,
+   "en_name": "T1 Control Bonus Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4120": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 940,
+   "en_name": "T1 CRIT DMG RED Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4121": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 944,
+   "en_name": "T1 Effect RES Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4122": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 945,
+   "en_name": "T1 Effect Hit Rate Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4123": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 915,
+   "en_name": "T1 ATK SPD Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4124": {
+   "tier": 1,
+   "quality": 4,
+   "attr": 949,
+   "en_name": "T1 Ultimate Stone",
+   "add_weight": 1000,
+   "reduce_weight_others_designed": -50,
+   "reduce_applied_by_client": false
+  },
+  "4201": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 1901,
+   "en_name": "T2 ATK Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4202": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 1902,
+   "en_name": "T2 HP Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4203": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 1941,
+   "en_name": "T2 Armor Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4204": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 1942,
+   "en_name": "T2 Magical RES Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4205": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 904,
+   "en_name": "T2 Dodge Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4206": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 905,
+   "en_name": "T2 Hit Rate Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4207": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 906,
+   "en_name": "T2 CRIT Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4208": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 907,
+   "en_name": "T2 CRIT RES Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4209": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 908,
+   "en_name": "T2 Magical DMG RED Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4210": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 909,
+   "en_name": "T2 Physical DMG RED Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4211": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 918,
+   "en_name": "T2 Lifesteal Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4212": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 919,
+   "en_name": "T2 CRIT DMG Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4213": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 924,
+   "en_name": "T2 Magical DMG Bonus Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4214": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 925,
+   "en_name": "T2 Physical DMG Bonus Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4215": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 926,
+   "en_name": "T2 Skill Cooldown Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4216": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 927,
+   "en_name": "T2 Healing Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4217": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 928,
+   "en_name": "T2 Recharge Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4218": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 929,
+   "en_name": "T2 Control RES Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4219": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 932,
+   "en_name": "T2 Control Bonus Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4220": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 940,
+   "en_name": "T2 CRIT DMG RED Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4221": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 944,
+   "en_name": "T2 Effect RES Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4222": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 945,
+   "en_name": "T2 Effect Hit Rate Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4223": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 915,
+   "en_name": "T2 ATK SPD Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4224": {
+   "tier": 2,
+   "quality": 6,
+   "attr": 949,
+   "en_name": "T2 Ultimate Stone",
+   "add_weight": 2000,
+   "reduce_weight_others_designed": -100,
+   "reduce_applied_by_client": false
+  },
+  "4301": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 1901,
+   "en_name": "T3 ATK Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4302": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 1902,
+   "en_name": "T3 HP Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4303": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 1941,
+   "en_name": "T3 Armor Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4304": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 1942,
+   "en_name": "T3 Magical RES Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4305": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 904,
+   "en_name": "T3 Dodge Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4306": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 905,
+   "en_name": "T3 Hit Rate Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4307": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 906,
+   "en_name": "T3 CRIT Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4308": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 907,
+   "en_name": "T3 CRIT RES Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4309": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 908,
+   "en_name": "T3 Magical DMG RED Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4310": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 909,
+   "en_name": "T3 Physical DMG RED Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4311": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 918,
+   "en_name": "T3 Lifesteal Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4312": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 919,
+   "en_name": "T3 CRIT DMG Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4313": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 924,
+   "en_name": "T3 Magical DMG Bonus Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4314": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 925,
+   "en_name": "T3 Physical DMG Bonus Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4315": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 926,
+   "en_name": "T3 Skill Cooldown Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4316": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 927,
+   "en_name": "T3 Healing Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4317": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 928,
+   "en_name": "T3 Recharge Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4318": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 929,
+   "en_name": "T3 Control RES Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4319": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 932,
+   "en_name": "T3 Control Bonus Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4320": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 940,
+   "en_name": "T3 CRIT DMG RED Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4321": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 944,
+   "en_name": "T3 Effect RES Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4322": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 945,
+   "en_name": "T3 Effect Hit Rate Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4323": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 915,
+   "en_name": "T3 ATK SPD Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4324": {
+   "tier": 3,
+   "quality": 8,
+   "attr": 949,
+   "en_name": "T3 Ultimate Stone",
+   "add_weight": 4000,
+   "reduce_weight_others_designed": -200,
+   "reduce_applied_by_client": false
+  },
+  "4401": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 1901,
+   "en_name": "T4 ATK Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4402": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 1902,
+   "en_name": "T4 HP Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4403": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 1941,
+   "en_name": "T4 Armor Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4404": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 1942,
+   "en_name": "T4 Magical RES Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4405": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 904,
+   "en_name": "T4 Dodge Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4406": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 905,
+   "en_name": "T4 Hit Rate Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4407": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 906,
+   "en_name": "T4 CRIT Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4408": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 907,
+   "en_name": "T4 CRIT RES Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4409": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 908,
+   "en_name": "T4 Magical DMG RED Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4410": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 909,
+   "en_name": "T4 Physical DMG RED Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4411": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 918,
+   "en_name": "T4 Lifesteal Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4412": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 919,
+   "en_name": "T4 CRIT DMG Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4413": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 924,
+   "en_name": "T4 Magical DMG Bonus Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4414": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 925,
+   "en_name": "T4 Physical DMG Bonus Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4415": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 926,
+   "en_name": "T4 Skill Cooldown Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4416": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 927,
+   "en_name": "T4 Healing Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4417": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 928,
+   "en_name": "T4 Recharge Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4418": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 929,
+   "en_name": "T4 Control RES Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4419": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 932,
+   "en_name": "T4 Control Bonus Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4420": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 940,
+   "en_name": "T4 CRIT DMG RED Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4421": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 944,
+   "en_name": "T4 Effect RES Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4422": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 945,
+   "en_name": "T4 Effect Hit Rate Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4423": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 915,
+   "en_name": "T4 ATK SPD Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4424": {
+   "tier": 4,
+   "quality": 10,
+   "attr": 949,
+   "en_name": "T4 Ultimate Stone",
+   "add_weight": 8000,
+   "reduce_weight_others_designed": -400,
+   "reduce_applied_by_client": false
+  },
+  "4501": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 1901,
+   "en_name": "T5 ATK Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4502": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 1902,
+   "en_name": "T5 HP Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4503": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 1941,
+   "en_name": "T5 Armor Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4504": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 1942,
+   "en_name": "T5 Magical RES Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4505": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 904,
+   "en_name": "T5 Dodge Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4506": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 905,
+   "en_name": "T5 Hit Rate Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4507": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 906,
+   "en_name": "T5 CRIT Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4508": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 907,
+   "en_name": "T5 CRIT RES Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4509": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 908,
+   "en_name": "T5 Magical DMG RED Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4510": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 909,
+   "en_name": "T5 Physical DMG RED Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4511": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 918,
+   "en_name": "T5 Lifesteal Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4512": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 919,
+   "en_name": "T5 CRIT DMG Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4513": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 924,
+   "en_name": "T5 Magical DMG Bonus Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4514": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 925,
+   "en_name": "T5 Physical DMG Bonus Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4515": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 926,
+   "en_name": "T5 Skill Cooldown Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4516": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 927,
+   "en_name": "T5 Healing Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4517": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 928,
+   "en_name": "T5 Recharge Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4518": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 929,
+   "en_name": "T5 Control RES Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4519": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 932,
+   "en_name": "T5 Control Bonus Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4520": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 940,
+   "en_name": "T5 CRIT DMG RED Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4521": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 944,
+   "en_name": "T5 Effect RES Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4522": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 945,
+   "en_name": "T5 Effect Hit Rate Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4523": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 915,
+   "en_name": "T5 ATK SPD Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  },
+  "4524": {
+   "tier": 5,
+   "quality": 13,
+   "attr": 949,
+   "en_name": "T5 Ultimate Stone",
+   "add_weight": 100000,
+   "reduce_weight_others_designed": 0,
+   "reduce_applied_by_client": false
+  }
+ },
+ "formulas": {
+  "weight_start": "every candidate stat of the slot starts at EQUIP_AWAKE_ATTR_WEIGHT = 1000",
+  "material_delta": "w += sum(addWeights*count) + sum(reduceWeights*count); clamped at >= 0",
+  "marginal": "p_i = w_i * k / SUM(w)   where k = number of UNLOCKED awakened effects",
+  "min_floor": "if p_i < EQUIP_AWAKE_REFRESH_MIN_PROB (0.01) the stat is dropped from the pool",
+  "max_lock": "if p_i >= EQUIP_AWAKE_REFRESH_MAX_PROB (1) the stat is pinned, removed, k -= 1, loop again",
+  "guarantee_threshold_k_ge_2": "W_target >= 11000/(k-1)   (12-stat pool, rivals untouched at 1000)",
+  "guarantee_threshold_k_eq_1": "W_target >= 89001         (all 11 rivals must fall under the 1% floor)"
+ },
+ "client_bug_item_reduce": {
+  "file": "ui/UIEquipmentAwakeAttrsRefresh.js",
+  "line_2026_07_31_build": 454,
+  "code": "store.detailResultAttrNodes.forEach((_, id) => id !== attrId && reduceWeights.set(id, reduceWeight));",
+  "problem": "detailResultAttrNodes is an Array, so the callback's 2nd arg is the array INDEX 0..11, not the attribute id. reduceWeights ends up keyed 0..11, which calcInner strips because those keys are not in attrIds. The `reduce` column of items 4101-4524 therefore never applies.",
+  "affects": "Global and CN, every build from 2026-06-18 to 2026-08-07.",
+  "equips_unaffected": "Equip materials build reduceWeights from affect_weight ids, so their negatives DO apply (live-verified against the in-game panel).",
+  "status": "client-side confirmed by code; server-side behaviour untested."
+ },
+ "live_verification_20260807": {
+  "setup": "Tier-1 artifact in slot 4 (pool = pos 4), 1 unlocked Awakened Effect, 4x quality-13 Hefty/Water artifact (equip 130102) loaded as material",
+  "observed_panel": {
+   "1902": 16.5,
+   "1941": 7.7,
+   "905": 7.7,
+   "906": 1.8,
+   "919": 7.7,
+   "924": 7.7,
+   "925": 7.7,
+   "927": 12.9,
+   "928": 12.9,
+   "929": 7.7,
+   "944": 7.7,
+   "915": 1.8
+  },
+  "model_weights": {
+   "1902": 1800,
+   "1941": 840,
+   "905": 840,
+   "906": 200,
+   "919": 840,
+   "924": 840,
+   "925": 840,
+   "927": 1400,
+   "928": 1400,
+   "929": 840,
+   "944": 840,
+   "915": 200
+  },
+  "model_output_pct": {
+   "1902": 16.544,
+   "1941": 7.721,
+   "905": 7.721,
+   "906": 1.838,
+   "919": 7.721,
+   "924": 7.721,
+   "925": 7.721,
+   "927": 12.868,
+   "928": 12.868,
+   "929": 7.721,
+   "944": 7.721,
+   "915": 1.838
+  },
+  "result": "12/12 exact match after rounding to 0.1%",
+  "baseline_no_material": "all twelve at 8.3% (= 1/12), also observed"
+ },
+ "stone_prob_single_target": {
+  "note": "12-stat pool, target boosted by n stones of one tier, nothing else loaded. `shipped` = what the game computes today (reduce dead). `designed` = if the reduce column were applied.",
+  "shipped": {
+   "1": {
+    "1": [
+     0.083333,
+     0.153846,
+     0.214286,
+     0.266667,
+     0.3125,
+     0.352941,
+     0.388889,
+     0.421053,
+     0.45,
+     0.47619,
+     0.5,
+     0.521739,
+     0.541667,
+     0.56,
+     0.576923,
+     0.592593,
+     0.607143,
+     0.62069,
+     0.633333,
+     0.645161,
+     0.65625,
+     0.666667,
+     0.676471,
+     0.685714,
+     0.694444,
+     0.702703
+    ],
+    "2": [
+     0.083333,
+     0.214286,
+     0.3125,
+     0.388889,
+     0.45,
+     0.5,
+     0.541667,
+     0.576923,
+     0.607143,
+     0.633333,
+     0.65625,
+     0.676471,
+     0.694444,
+     0.710526,
+     0.725,
+     0.738095,
+     0.75,
+     0.76087,
+     0.770833,
+     0.78,
+     0.788462,
+     0.796296,
+     0.803571,
+     0.810345,
+     0.816667,
+     0.822581
+    ],
+    "3": [
+     0.083333,
+     0.3125,
+     0.45,
+     0.541667,
+     0.607143,
+     0.65625,
+     0.694444,
+     0.725,
+     0.75,
+     0.770833,
+     0.788462,
+     0.803571,
+     0.816667,
+     0.828125,
+     0.838235,
+     0.847222,
+     0.855263,
+     0.8625,
+     0.869048,
+     0.875,
+     0.880435,
+     0.885417,
+     0.89,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.083333,
+     0.45,
+     0.607143,
+     0.694444,
+     0.75,
+     0.788462,
+     0.816667,
+     0.838235,
+     0.855263,
+     0.869048,
+     0.880435,
+     0.89,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.083333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "2": {
+    "1": [
+     0.166667,
+     0.307692,
+     0.428571,
+     0.533333,
+     0.625,
+     0.705882,
+     0.777778,
+     0.842105,
+     0.9,
+     0.952381,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "2": [
+     0.166667,
+     0.428571,
+     0.625,
+     0.777778,
+     0.9,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "3": [
+     0.166667,
+     0.625,
+     0.9,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.166667,
+     0.9,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.166667,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "3": {
+    "1": [
+     0.25,
+     0.461538,
+     0.642857,
+     0.8,
+     0.9375,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "2": [
+     0.25,
+     0.642857,
+     0.9375,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "3": [
+     0.25,
+     0.9375,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.25,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.25,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "4": {
+    "1": [
+     0.333333,
+     0.615385,
+     0.857143,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "2": [
+     0.333333,
+     0.857143,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "3": [
+     0.333333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.333333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.333333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "designed": {
+   "1": {
+    "1": [
+     0.083333,
+     0.160643,
+     0.232558,
+     0.299625,
+     0.362319,
+     0.421053,
+     0.47619,
+     0.528053,
+     0.576923,
+     0.623053,
+     0.666667,
+     0.707965,
+     0.747126,
+     0.784314,
+     0.819672,
+     0.853333,
+     0.885417,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "2": [
+     0.083333,
+     0.232558,
+     0.362319,
+     0.47619,
+     0.576923,
+     0.666667,
+     0.747126,
+     0.819672,
+     0.885417,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "3": [
+     0.083333,
+     0.362319,
+     0.576923,
+     0.747126,
+     0.885417,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.083333,
+     0.576923,
+     0.885417,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.083333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "2": {
+    "1": [
+     0.166667,
+     0.321285,
+     0.465116,
+     0.599251,
+     0.724638,
+     0.842105,
+     0.952381,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "2": [
+     0.166667,
+     0.465116,
+     0.724638,
+     0.952381,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "3": [
+     0.166667,
+     0.724638,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.166667,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.166667,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "3": {
+    "1": [
+     0.25,
+     0.481928,
+     0.697674,
+     0.898876,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "2": [
+     0.25,
+     0.697674,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "3": [
+     0.25,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.25,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.25,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "4": {
+    "1": [
+     0.333333,
+     0.64257,
+     0.930233,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "2": [
+     0.333333,
+     0.930233,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "3": [
+     0.333333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "4": [
+     0.333333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "5": [
+     0.333333,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  }
+ },
+ "stones_to_pin": {
+  "note": "stones PER TARGET needed so that every listed target reaches 100% (p = 1). k = unlocked awakened effects at refine time; m = how many stats you pin.",
+  "shipped": {
+   "k1_m1": {
+    "1": 89,
+    "2": 45,
+    "3": 23,
+    "4": 12,
+    "5": 1
+   },
+   "k2_m1": {
+    "1": 10,
+    "2": 5,
+    "3": 3,
+    "4": 2,
+    "5": 1
+   },
+   "k2_m2": {
+    "1": 95,
+    "2": 48,
+    "3": 24,
+    "4": 12,
+    "5": 1
+   },
+   "k3_m1": {
+    "1": 5,
+    "2": 3,
+    "3": 2,
+    "4": 1,
+    "5": 1
+   },
+   "k3_m2": {
+    "1": 9,
+    "2": 5,
+    "3": 3,
+    "4": 2,
+    "5": 1
+   },
+   "k3_m3": {
+    "1": 97,
+    "2": 49,
+    "3": 25,
+    "4": 13,
+    "5": 1
+   },
+   "k4_m1": {
+    "1": 3,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   },
+   "k4_m2": {
+    "1": 4,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   },
+   "k4_m3": {
+    "1": 8,
+    "2": 4,
+    "3": 2,
+    "4": 1,
+    "5": 1
+   },
+   "k4_m4": {
+    "1": 98,
+    "2": 49,
+    "3": 25,
+    "4": 13,
+    "5": 1
+   }
+  },
+  "designed": {
+   "k1_m1": {
+    "1": 17,
+    "2": 9,
+    "3": 5,
+    "4": 3,
+    "5": 1
+   },
+   "k2_m1": {
+    "1": 7,
+    "2": 4,
+    "3": 2,
+    "4": 1,
+    "5": 1
+   },
+   "k2_m2": {
+    "1": 9,
+    "2": 5,
+    "3": 3,
+    "4": 2,
+    "5": 1
+   },
+   "k3_m1": {
+    "1": 4,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   },
+   "k3_m2": {
+    "1": 5,
+    "2": 3,
+    "3": 2,
+    "4": 1,
+    "5": 1
+   },
+   "k3_m3": {
+    "1": 7,
+    "2": 4,
+    "3": 2,
+    "4": 1,
+    "5": 1
+   },
+   "k4_m1": {
+    "1": 3,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   },
+   "k4_m2": {
+    "1": 3,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   },
+   "k4_m3": {
+    "1": 4,
+    "2": 2,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   },
+   "k4_m4": {
+    "1": 5,
+    "2": 3,
+    "3": 2,
+    "4": 1,
+    "5": 1
+   }
+  }
+ },
+ "equip_only_prob": {
+  "note": "n copies of the +2w family for the target, no stones, by artifact slot and k.",
+  "pos1": {
+   "1901": {
+    "k1": [
+     0.083333,
+     0.09901,
+     0.114379,
+     0.12945,
+     0.144231,
+     0.15873,
+     0.170279,
+     0.181269,
+     0.19174,
+     0.201729,
+     0.211268
+    ],
+    "k2": [
+     0.166667,
+     0.19802,
+     0.228758,
+     0.2589,
+     0.288462,
+     0.31746,
+     0.340557,
+     0.362538,
+     0.383481,
+     0.403458,
+     0.422535
+    ],
+    "k3": [
+     0.25,
+     0.29703,
+     0.343137,
+     0.38835,
+     0.432692,
+     0.47619,
+     0.510836,
+     0.543807,
+     0.575221,
+     0.605187,
+     0.633803
+    ],
+    "k4": [
+     0.333333,
+     0.39604,
+     0.457516,
+     0.517799,
+     0.576923,
+     0.634921,
+     0.681115,
+     0.725076,
+     0.766962,
+     0.806916,
+     0.84507
+    ]
+   },
+   "905": {
+    "k1": [
+     0.083333,
+     0.102215,
+     0.121951,
+     0.142602,
+     0.164234,
+     0.186916,
+     0.206767,
+     0.226843,
+     0.247148,
+     0.267686,
+     0.288462
+    ],
+    "k2": [
+     0.166667,
+     0.204429,
+     0.243902,
+     0.285205,
+     0.328467,
+     0.373832,
+     0.413534,
+     0.453686,
+     0.494297,
+     0.535373,
+     0.576923
+    ],
+    "k3": [
+     0.25,
+     0.306644,
+     0.365854,
+     0.427807,
+     0.492701,
+     0.560748,
+     0.620301,
+     0.680529,
+     0.741445,
+     0.803059,
+     0.865385
+    ],
+    "k4": [
+     0.333333,
+     0.408859,
+     0.487805,
+     0.57041,
+     0.656934,
+     0.747664,
+     0.827068,
+     0.907372,
+     0.988593,
+     1.0,
+     1.0
+    ]
+   },
+   "906": {
+    "k1": [
+     0.083333,
+     0.09901,
+     0.114379,
+     0.12945,
+     0.144231,
+     0.15873,
+     0.170279,
+     0.181269,
+     0.19174,
+     0.201729,
+     0.211268
+    ],
+    "k2": [
+     0.166667,
+     0.19802,
+     0.228758,
+     0.2589,
+     0.288462,
+     0.31746,
+     0.340557,
+     0.362538,
+     0.383481,
+     0.403458,
+     0.422535
+    ],
+    "k3": [
+     0.25,
+     0.29703,
+     0.343137,
+     0.38835,
+     0.432692,
+     0.47619,
+     0.510836,
+     0.543807,
+     0.575221,
+     0.605187,
+     0.633803
+    ],
+    "k4": [
+     0.333333,
+     0.39604,
+     0.457516,
+     0.517799,
+     0.576923,
+     0.634921,
+     0.681115,
+     0.725076,
+     0.766962,
+     0.806916,
+     0.84507
+    ]
+   },
+   "918": {
+    "k1": [
+     0.083333,
+     0.101523,
+     0.120275,
+     0.139616,
+     0.159574,
+     0.18018,
+     0.194346,
+     0.207972,
+     0.221088,
+     0.233723,
+     0.245902
+    ],
+    "k2": [
+     0.166667,
+     0.203046,
+     0.24055,
+     0.279232,
+     0.319149,
+     0.36036,
+     0.388693,
+     0.415945,
+     0.442177,
+     0.467446,
+     0.491803
+    ],
+    "k3": [
+     0.25,
+     0.304569,
+     0.360825,
+     0.418848,
+     0.478723,
+     0.540541,
+     0.583039,
+     0.623917,
+     0.663265,
+     0.701169,
+     0.737705
+    ],
+    "k4": [
+     0.333333,
+     0.406091,
+     0.4811,
+     0.558464,
+     0.638298,
+     0.720721,
+     0.777385,
+     0.831889,
+     0.884354,
+     0.934891,
+     0.983607
+    ]
+   },
+   "919": {
+    "k1": [
+     0.083333,
+     0.100167,
+     0.117057,
+     0.134003,
+     0.151007,
+     0.168067,
+     0.182119,
+     0.195759,
+     0.209003,
+     0.22187,
+     0.234375
+    ],
+    "k2": [
+     0.166667,
+     0.200334,
+     0.234114,
+     0.268007,
+     0.302013,
+     0.336134,
+     0.364238,
+     0.391517,
+     0.418006,
+     0.44374,
+     0.46875
+    ],
+    "k3": [
+     0.25,
+     0.300501,
+     0.351171,
+     0.40201,
+     0.45302,
+     0.504202,
+     0.546358,
+     0.587276,
+     0.62701,
+     0.66561,
+     0.703125
+    ],
+    "k4": [
+     0.333333,
+     0.400668,
+     0.468227,
+     0.536013,
+     0.604027,
+     0.672269,
+     0.728477,
+     0.783034,
+     0.836013,
+     0.88748,
+     0.9375
+    ]
+   },
+   "924": {
+    "k1": [
+     0.083333,
+     0.100167,
+     0.117057,
+     0.134003,
+     0.151007,
+     0.168067,
+     0.182119,
+     0.195759,
+     0.209003,
+     0.22187,
+     0.234375
+    ],
+    "k2": [
+     0.166667,
+     0.200334,
+     0.234114,
+     0.268007,
+     0.302013,
+     0.336134,
+     0.364238,
+     0.391517,
+     0.418006,
+     0.44374,
+     0.46875
+    ],
+    "k3": [
+     0.25,
+     0.300501,
+     0.351171,
+     0.40201,
+     0.45302,
+     0.504202,
+     0.546358,
+     0.587276,
+     0.62701,
+     0.66561,
+     0.703125
+    ],
+    "k4": [
+     0.333333,
+     0.400668,
+     0.468227,
+     0.536013,
+     0.604027,
+     0.672269,
+     0.728477,
+     0.783034,
+     0.836013,
+     0.88748,
+     0.9375
+    ]
+   },
+   "925": {
+    "k1": [
+     0.083333,
+     0.09901,
+     0.114379,
+     0.12945,
+     0.144231,
+     0.15873,
+     0.170279,
+     0.181269,
+     0.19174,
+     0.201729,
+     0.211268
+    ],
+    "k2": [
+     0.166667,
+     0.19802,
+     0.228758,
+     0.2589,
+     0.288462,
+     0.31746,
+     0.340557,
+     0.362538,
+     0.383481,
+     0.403458,
+     0.422535
+    ],
+    "k3": [
+     0.25,
+     0.29703,
+     0.343137,
+     0.38835,
+     0.432692,
+     0.47619,
+     0.510836,
+     0.543807,
+     0.575221,
+     0.605187,
+     0.633803
+    ],
+    "k4": [
+     0.333333,
+     0.39604,
+     0.457516,
+     0.517799,
+     0.576923,
+     0.634921,
+     0.681115,
+     0.725076,
+     0.766962,
+     0.806916,
+     0.84507
+    ]
+   },
+   "926": {
+    "k1": [
+     0.083333,
+     0.101523,
+     0.120275,
+     0.139616,
+     0.159574,
+     0.18018,
+     0.194346,
+     0.207972,
+     0.221088,
+     0.233723,
+     0.245902
+    ],
+    "k2": [
+     0.166667,
+     0.203046,
+     0.24055,
+     0.279232,
+     0.319149,
+     0.36036,
+     0.388693,
+     0.415945,
+     0.442177,
+     0.467446,
+     0.491803
+    ],
+    "k3": [
+     0.25,
+     0.304569,
+     0.360825,
+     0.418848,
+     0.478723,
+     0.540541,
+     0.583039,
+     0.623917,
+     0.663265,
+     0.701169,
+     0.737705
+    ],
+    "k4": [
+     0.333333,
+     0.406091,
+     0.4811,
+     0.558464,
+     0.638298,
+     0.720721,
+     0.777385,
+     0.831889,
+     0.884354,
+     0.934891,
+     0.983607
+    ]
+   },
+   "932": {
+    "k1": [
+     0.083333,
+     0.103448,
+     0.125,
+     0.148148,
+     0.173077,
+     0.2,
+     0.22449,
+     0.25,
+     0.276596,
+     0.304348,
+     0.333333
+    ],
+    "k2": [
+     0.166667,
+     0.206897,
+     0.25,
+     0.296296,
+     0.346154,
+     0.4,
+     0.44898,
+     0.5,
+     0.553191,
+     0.608696,
+     0.666667
+    ],
+    "k3": [
+     0.25,
+     0.310345,
+     0.375,
+     0.444444,
+     0.519231,
+     0.6,
+     0.673469,
+     0.75,
+     0.829787,
+     0.913043,
+     1.0
+    ],
+    "k4": [
+     0.333333,
+     0.413793,
+     0.5,
+     0.592593,
+     0.692308,
+     0.8,
+     0.897959,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "945": {
+    "k1": [
+     0.083333,
+     0.103448,
+     0.125,
+     0.148148,
+     0.173077,
+     0.2,
+     0.22449,
+     0.25,
+     0.276596,
+     0.304348,
+     0.333333
+    ],
+    "k2": [
+     0.166667,
+     0.206897,
+     0.25,
+     0.296296,
+     0.346154,
+     0.4,
+     0.44898,
+     0.5,
+     0.553191,
+     0.608696,
+     0.666667
+    ],
+    "k3": [
+     0.25,
+     0.310345,
+     0.375,
+     0.444444,
+     0.519231,
+     0.6,
+     0.673469,
+     0.75,
+     0.829787,
+     0.913043,
+     1.0
+    ],
+    "k4": [
+     0.333333,
+     0.413793,
+     0.5,
+     0.592593,
+     0.692308,
+     0.8,
+     0.897959,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "915": {
+    "k1": [
+     0.083333,
+     0.099668,
+     0.115894,
+     0.132013,
+     0.148026,
+     0.163934,
+     0.179739,
+     0.19544,
+     0.211039,
+     0.226537,
+     0.241935
+    ],
+    "k2": [
+     0.166667,
+     0.199336,
+     0.231788,
+     0.264026,
+     0.296053,
+     0.327869,
+     0.359477,
+     0.390879,
+     0.422078,
+     0.453074,
+     0.483871
+    ],
+    "k3": [
+     0.25,
+     0.299003,
+     0.347682,
+     0.39604,
+     0.444079,
+     0.491803,
+     0.539216,
+     0.586319,
+     0.633117,
+     0.679612,
+     0.725806
+    ],
+    "k4": [
+     0.333333,
+     0.398671,
+     0.463576,
+     0.528053,
+     0.592105,
+     0.655738,
+     0.718954,
+     0.781759,
+     0.844156,
+     0.906149,
+     0.967742
+    ]
+   },
+   "949": {
+    "k1": [
+     0.083333,
+     0.09901,
+     0.114379,
+     0.12945,
+     0.144231,
+     0.15873,
+     0.170279,
+     0.181269,
+     0.19174,
+     0.201729,
+     0.211268
+    ],
+    "k2": [
+     0.166667,
+     0.19802,
+     0.228758,
+     0.2589,
+     0.288462,
+     0.31746,
+     0.340557,
+     0.362538,
+     0.383481,
+     0.403458,
+     0.422535
+    ],
+    "k3": [
+     0.25,
+     0.29703,
+     0.343137,
+     0.38835,
+     0.432692,
+     0.47619,
+     0.510836,
+     0.543807,
+     0.575221,
+     0.605187,
+     0.633803
+    ],
+    "k4": [
+     0.333333,
+     0.39604,
+     0.457516,
+     0.517799,
+     0.576923,
+     0.634921,
+     0.681115,
+     0.725076,
+     0.766962,
+     0.806916,
+     0.84507
+    ]
+   }
+  },
+  "pos2": {
+   "1902": {
+    "k1": [
+     0.083333,
+     0.09772,
+     0.111465,
+     0.124611,
+     0.137195,
+     0.149254,
+     0.160819,
+     0.17192,
+     0.182584,
+     0.192837,
+     0.202703
+    ],
+    "k2": [
+     0.166667,
+     0.19544,
+     0.22293,
+     0.249221,
+     0.27439,
+     0.298507,
+     0.321637,
+     0.34384,
+     0.365169,
+     0.385675,
+     0.405405
+    ],
+    "k3": [
+     0.25,
+     0.29316,
+     0.334395,
+     0.373832,
+     0.411585,
+     0.447761,
+     0.482456,
+     0.515759,
+     0.547753,
+     0.578512,
+     0.608108
+    ],
+    "k4": [
+     0.333333,
+     0.390879,
+     0.44586,
+     0.498442,
+     0.54878,
+     0.597015,
+     0.643275,
+     0.687679,
+     0.730337,
+     0.77135,
+     0.810811
+    ]
+   },
+   "1941": {
+    "k1": [
+     0.083333,
+     0.09772,
+     0.111465,
+     0.124611,
+     0.137195,
+     0.149254,
+     0.160819,
+     0.17192,
+     0.182584,
+     0.192837,
+     0.202703
+    ],
+    "k2": [
+     0.166667,
+     0.19544,
+     0.22293,
+     0.249221,
+     0.27439,
+     0.298507,
+     0.321637,
+     0.34384,
+     0.365169,
+     0.385675,
+     0.405405
+    ],
+    "k3": [
+     0.25,
+     0.29316,
+     0.334395,
+     0.373832,
+     0.411585,
+     0.447761,
+     0.482456,
+     0.515759,
+     0.547753,
+     0.578512,
+     0.608108
+    ],
+    "k4": [
+     0.333333,
+     0.390879,
+     0.44586,
+     0.498442,
+     0.54878,
+     0.597015,
+     0.643275,
+     0.687679,
+     0.730337,
+     0.77135,
+     0.810811
+    ]
+   },
+   "1942": {
+    "k1": [
+     0.083333,
+     0.102215,
+     0.121951,
+     0.142602,
+     0.164234,
+     0.186916,
+     0.206767,
+     0.226843,
+     0.247148,
+     0.267686,
+     0.288462
+    ],
+    "k2": [
+     0.166667,
+     0.204429,
+     0.243902,
+     0.285205,
+     0.328467,
+     0.373832,
+     0.413534,
+     0.453686,
+     0.494297,
+     0.535373,
+     0.576923
+    ],
+    "k3": [
+     0.25,
+     0.306644,
+     0.365854,
+     0.427807,
+     0.492701,
+     0.560748,
+     0.620301,
+     0.680529,
+     0.741445,
+     0.803059,
+     0.865385
+    ],
+    "k4": [
+     0.333333,
+     0.408859,
+     0.487805,
+     0.57041,
+     0.656934,
+     0.747664,
+     0.827068,
+     0.907372,
+     0.988593,
+     1.0,
+     1.0
+    ]
+   },
+   "904": {
+    "k1": [
+     0.083333,
+     0.10274,
+     0.123239,
+     0.144928,
+     0.16791,
+     0.192308,
+     0.209924,
+     0.227273,
+     0.244361,
+     0.261194,
+     0.277778
+    ],
+    "k2": [
+     0.166667,
+     0.205479,
+     0.246479,
+     0.289855,
+     0.335821,
+     0.384615,
+     0.419847,
+     0.454545,
+     0.488722,
+     0.522388,
+     0.555556
+    ],
+    "k3": [
+     0.25,
+     0.308219,
+     0.369718,
+     0.434783,
+     0.503731,
+     0.576923,
+     0.629771,
+     0.681818,
+     0.733083,
+     0.783582,
+     0.833333
+    ],
+    "k4": [
+     0.333333,
+     0.410959,
+     0.492958,
+     0.57971,
+     0.671642,
+     0.769231,
+     0.839695,
+     0.909091,
+     0.977444,
+     1.0,
+     1.0
+    ]
+   },
+   "907": {
+    "k1": [
+     0.083333,
+     0.09772,
+     0.111465,
+     0.124611,
+     0.137195,
+     0.149254,
+     0.160819,
+     0.17192,
+     0.182584,
+     0.192837,
+     0.202703
+    ],
+    "k2": [
+     0.166667,
+     0.19544,
+     0.22293,
+     0.249221,
+     0.27439,
+     0.298507,
+     0.321637,
+     0.34384,
+     0.365169,
+     0.385675,
+     0.405405
+    ],
+    "k3": [
+     0.25,
+     0.29316,
+     0.334395,
+     0.373832,
+     0.411585,
+     0.447761,
+     0.482456,
+     0.515759,
+     0.547753,
+     0.578512,
+     0.608108
+    ],
+    "k4": [
+     0.333333,
+     0.390879,
+     0.44586,
+     0.498442,
+     0.54878,
+     0.597015,
+     0.643275,
+     0.687679,
+     0.730337,
+     0.77135,
+     0.810811
+    ]
+   },
+   "908": {
+    "k1": [
+     0.083333,
+     0.09772,
+     0.111465,
+     0.124611,
+     0.137195,
+     0.149254,
+     0.160819,
+     0.17192,
+     0.182584,
+     0.192837,
+     0.202703
+    ],
+    "k2": [
+     0.166667,
+     0.19544,
+     0.22293,
+     0.249221,
+     0.27439,
+     0.298507,
+     0.321637,
+     0.34384,
+     0.365169,
+     0.385675,
+     0.405405
+    ],
+    "k3": [
+     0.25,
+     0.29316,
+     0.334395,
+     0.373832,
+     0.411585,
+     0.447761,
+     0.482456,
+     0.515759,
+     0.547753,
+     0.578512,
+     0.608108
+    ],
+    "k4": [
+     0.333333,
+     0.390879,
+     0.44586,
+     0.498442,
+     0.54878,
+     0.597015,
+     0.643275,
+     0.687679,
+     0.730337,
+     0.77135,
+     0.810811
+    ]
+   },
+   "909": {
+    "k1": [
+     0.083333,
+     0.101523,
+     0.120275,
+     0.139616,
+     0.159574,
+     0.18018,
+     0.194346,
+     0.207972,
+     0.221088,
+     0.233723,
+     0.245902
+    ],
+    "k2": [
+     0.166667,
+     0.203046,
+     0.24055,
+     0.279232,
+     0.319149,
+     0.36036,
+     0.388693,
+     0.415945,
+     0.442177,
+     0.467446,
+     0.491803
+    ],
+    "k3": [
+     0.25,
+     0.304569,
+     0.360825,
+     0.418848,
+     0.478723,
+     0.540541,
+     0.583039,
+     0.623917,
+     0.663265,
+     0.701169,
+     0.737705
+    ],
+    "k4": [
+     0.333333,
+     0.406091,
+     0.4811,
+     0.558464,
+     0.638298,
+     0.720721,
+     0.777385,
+     0.831889,
+     0.884354,
+     0.934891,
+     0.983607
+    ]
+   },
+   "927": {
+    "k1": [
+     0.083333,
+     0.10274,
+     0.123239,
+     0.144928,
+     0.16791,
+     0.192308,
+     0.209924,
+     0.227273,
+     0.244361,
+     0.261194,
+     0.277778
+    ],
+    "k2": [
+     0.166667,
+     0.205479,
+     0.246479,
+     0.289855,
+     0.335821,
+     0.384615,
+     0.419847,
+     0.454545,
+     0.488722,
+     0.522388,
+     0.555556
+    ],
+    "k3": [
+     0.25,
+     0.308219,
+     0.369718,
+     0.434783,
+     0.503731,
+     0.576923,
+     0.629771,
+     0.681818,
+     0.733083,
+     0.783582,
+     0.833333
+    ],
+    "k4": [
+     0.333333,
+     0.410959,
+     0.492958,
+     0.57971,
+     0.671642,
+     0.769231,
+     0.839695,
+     0.909091,
+     0.977444,
+     1.0,
+     1.0
+    ]
+   },
+   "928": {
+    "k1": [
+     0.083333,
+     0.104895,
+     0.128676,
+     0.155039,
+     0.184426,
+     0.217391,
+     0.243363,
+     0.27027,
+     0.298165,
+     0.327103,
+     0.357143
+    ],
+    "k2": [
+     0.166667,
+     0.20979,
+     0.257353,
+     0.310078,
+     0.368852,
+     0.434783,
+     0.486726,
+     0.540541,
+     0.59633,
+     0.654206,
+     0.714286
+    ],
+    "k3": [
+     0.25,
+     0.314685,
+     0.386029,
+     0.465116,
+     0.553279,
+     0.652174,
+     0.730088,
+     0.810811,
+     0.894495,
+     0.981308,
+     1.0
+    ],
+    "k4": [
+     0.333333,
+     0.41958,
+     0.514706,
+     0.620155,
+     0.737705,
+     0.869565,
+     0.973451,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "929": {
+    "k1": [
+     0.083333,
+     0.10101,
+     0.119048,
+     0.137457,
+     0.15625,
+     0.175439,
+     0.191638,
+     0.207612,
+     0.223368,
+     0.238908,
+     0.254237
+    ],
+    "k2": [
+     0.166667,
+     0.20202,
+     0.238095,
+     0.274914,
+     0.3125,
+     0.350877,
+     0.383275,
+     0.415225,
+     0.446735,
+     0.477816,
+     0.508475
+    ],
+    "k3": [
+     0.25,
+     0.30303,
+     0.357143,
+     0.412371,
+     0.46875,
+     0.526316,
+     0.574913,
+     0.622837,
+     0.670103,
+     0.716724,
+     0.762712
+    ],
+    "k4": [
+     0.333333,
+     0.40404,
+     0.47619,
+     0.549828,
+     0.625,
+     0.701754,
+     0.766551,
+     0.83045,
+     0.893471,
+     0.955631,
+     1.0
+    ]
+   },
+   "940": {
+    "k1": [
+     0.083333,
+     0.101523,
+     0.120275,
+     0.139616,
+     0.159574,
+     0.18018,
+     0.194346,
+     0.207972,
+     0.221088,
+     0.233723,
+     0.245902
+    ],
+    "k2": [
+     0.166667,
+     0.203046,
+     0.24055,
+     0.279232,
+     0.319149,
+     0.36036,
+     0.388693,
+     0.415945,
+     0.442177,
+     0.467446,
+     0.491803
+    ],
+    "k3": [
+     0.25,
+     0.304569,
+     0.360825,
+     0.418848,
+     0.478723,
+     0.540541,
+     0.583039,
+     0.623917,
+     0.663265,
+     0.701169,
+     0.737705
+    ],
+    "k4": [
+     0.333333,
+     0.406091,
+     0.4811,
+     0.558464,
+     0.638298,
+     0.720721,
+     0.777385,
+     0.831889,
+     0.884354,
+     0.934891,
+     0.983607
+    ]
+   },
+   "944": {
+    "k1": [
+     0.083333,
+     0.10101,
+     0.119048,
+     0.137457,
+     0.15625,
+     0.175439,
+     0.191638,
+     0.207612,
+     0.223368,
+     0.238908,
+     0.254237
+    ],
+    "k2": [
+     0.166667,
+     0.20202,
+     0.238095,
+     0.274914,
+     0.3125,
+     0.350877,
+     0.383275,
+     0.415225,
+     0.446735,
+     0.477816,
+     0.508475
+    ],
+    "k3": [
+     0.25,
+     0.30303,
+     0.357143,
+     0.412371,
+     0.46875,
+     0.526316,
+     0.574913,
+     0.622837,
+     0.670103,
+     0.716724,
+     0.762712
+    ],
+    "k4": [
+     0.333333,
+     0.40404,
+     0.47619,
+     0.549828,
+     0.625,
+     0.701754,
+     0.766551,
+     0.83045,
+     0.893471,
+     0.955631,
+     1.0
+    ]
+   }
+  },
+  "pos3": {
+   "1901": {
+    "k1": [
+     0.083333,
+     0.102215,
+     0.121951,
+     0.142602,
+     0.164234,
+     0.186916,
+     0.206767,
+     0.226843,
+     0.247148,
+     0.267686,
+     0.288462
+    ],
+    "k2": [
+     0.166667,
+     0.204429,
+     0.243902,
+     0.285205,
+     0.328467,
+     0.373832,
+     0.413534,
+     0.453686,
+     0.494297,
+     0.535373,
+     0.576923
+    ],
+    "k3": [
+     0.25,
+     0.306644,
+     0.365854,
+     0.427807,
+     0.492701,
+     0.560748,
+     0.620301,
+     0.680529,
+     0.741445,
+     0.803059,
+     0.865385
+    ],
+    "k4": [
+     0.333333,
+     0.408859,
+     0.487805,
+     0.57041,
+     0.656934,
+     0.747664,
+     0.827068,
+     0.907372,
+     0.988593,
+     1.0,
+     1.0
+    ]
+   },
+   "1942": {
+    "k1": [
+     0.083333,
+     0.10101,
+     0.119048,
+     0.137457,
+     0.15625,
+     0.175439,
+     0.191638,
+     0.207612,
+     0.223368,
+     0.238908,
+     0.254237
+    ],
+    "k2": [
+     0.166667,
+     0.20202,
+     0.238095,
+     0.274914,
+     0.3125,
+     0.350877,
+     0.383275,
+     0.415225,
+     0.446735,
+     0.477816,
+     0.508475
+    ],
+    "k3": [
+     0.25,
+     0.30303,
+     0.357143,
+     0.412371,
+     0.46875,
+     0.526316,
+     0.574913,
+     0.622837,
+     0.670103,
+     0.716724,
+     0.762712
+    ],
+    "k4": [
+     0.333333,
+     0.40404,
+     0.47619,
+     0.549828,
+     0.625,
+     0.701754,
+     0.766551,
+     0.83045,
+     0.893471,
+     0.955631,
+     1.0
+    ]
+   },
+   "904": {
+    "k1": [
+     0.083333,
+     0.102215,
+     0.121951,
+     0.142602,
+     0.164234,
+     0.186916,
+     0.206767,
+     0.226843,
+     0.247148,
+     0.267686,
+     0.288462
+    ],
+    "k2": [
+     0.166667,
+     0.204429,
+     0.243902,
+     0.285205,
+     0.328467,
+     0.373832,
+     0.413534,
+     0.453686,
+     0.494297,
+     0.535373,
+     0.576923
+    ],
+    "k3": [
+     0.25,
+     0.306644,
+     0.365854,
+     0.427807,
+     0.492701,
+     0.560748,
+     0.620301,
+     0.680529,
+     0.741445,
+     0.803059,
+     0.865385
+    ],
+    "k4": [
+     0.333333,
+     0.408859,
+     0.487805,
+     0.57041,
+     0.656934,
+     0.747664,
+     0.827068,
+     0.907372,
+     0.988593,
+     1.0,
+     1.0
+    ]
+   },
+   "907": {
+    "k1": [
+     0.083333,
+     0.103627,
+     0.125448,
+     0.148976,
+     0.174419,
+     0.20202,
+     0.222672,
+     0.243408,
+     0.264228,
+     0.285132,
+     0.306122
+    ],
+    "k2": [
+     0.166667,
+     0.207254,
+     0.250896,
+     0.297952,
+     0.348837,
+     0.40404,
+     0.445344,
+     0.486815,
+     0.528455,
+     0.570265,
+     0.612245
+    ],
+    "k3": [
+     0.25,
+     0.310881,
+     0.376344,
+     0.446927,
+     0.523256,
+     0.606061,
+     0.668016,
+     0.730223,
+     0.792683,
+     0.855397,
+     0.918367
+    ],
+    "k4": [
+     0.333333,
+     0.414508,
+     0.501792,
+     0.595903,
+     0.697674,
+     0.808081,
+     0.890688,
+     0.973631,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "908": {
+    "k1": [
+     0.083333,
+     0.102041,
+     0.121528,
+     0.141844,
+     0.163043,
+     0.185185,
+     0.208333,
+     0.232558,
+     0.257937,
+     0.284553,
+     0.3125
+    ],
+    "k2": [
+     0.166667,
+     0.204082,
+     0.243056,
+     0.283688,
+     0.326087,
+     0.37037,
+     0.416667,
+     0.465116,
+     0.515873,
+     0.569106,
+     0.625
+    ],
+    "k3": [
+     0.25,
+     0.306122,
+     0.364583,
+     0.425532,
+     0.48913,
+     0.555556,
+     0.625,
+     0.697674,
+     0.77381,
+     0.853659,
+     0.9375
+    ],
+    "k4": [
+     0.333333,
+     0.408163,
+     0.486111,
+     0.567376,
+     0.652174,
+     0.740741,
+     0.833333,
+     0.930233,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "909": {
+    "k1": [
+     0.083333,
+     0.098847,
+     0.114007,
+     0.128824,
+     0.143312,
+     0.15748,
+     0.17134,
+     0.1849,
+     0.198171,
+     0.211161,
+     0.223881
+    ],
+    "k2": [
+     0.166667,
+     0.197694,
+     0.228013,
+     0.257649,
+     0.286624,
+     0.314961,
+     0.342679,
+     0.3698,
+     0.396341,
+     0.422323,
+     0.447761
+    ],
+    "k3": [
+     0.25,
+     0.29654,
+     0.34202,
+     0.386473,
+     0.429936,
+     0.472441,
+     0.514019,
+     0.5547,
+     0.594512,
+     0.633484,
+     0.671642
+    ],
+    "k4": [
+     0.333333,
+     0.395387,
+     0.456026,
+     0.515298,
+     0.573248,
+     0.629921,
+     0.685358,
+     0.739599,
+     0.792683,
+     0.844646,
+     0.895522
+    ]
+   },
+   "918": {
+    "k1": [
+     0.083333,
+     0.1,
+     0.116667,
+     0.133333,
+     0.15,
+     0.166667,
+     0.183333,
+     0.2,
+     0.216667,
+     0.233333,
+     0.25
+    ],
+    "k2": [
+     0.166667,
+     0.2,
+     0.233333,
+     0.266667,
+     0.3,
+     0.333333,
+     0.366667,
+     0.4,
+     0.433333,
+     0.466667,
+     0.5
+    ],
+    "k3": [
+     0.25,
+     0.3,
+     0.35,
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75
+    ],
+    "k4": [
+     0.333333,
+     0.4,
+     0.466667,
+     0.533333,
+     0.6,
+     0.666667,
+     0.733333,
+     0.8,
+     0.866667,
+     0.933333,
+     1.0
+    ]
+   },
+   "926": {
+    "k1": [
+     0.083333,
+     0.1,
+     0.116667,
+     0.133333,
+     0.15,
+     0.166667,
+     0.183333,
+     0.2,
+     0.216667,
+     0.233333,
+     0.25
+    ],
+    "k2": [
+     0.166667,
+     0.2,
+     0.233333,
+     0.266667,
+     0.3,
+     0.333333,
+     0.366667,
+     0.4,
+     0.433333,
+     0.466667,
+     0.5
+    ],
+    "k3": [
+     0.25,
+     0.3,
+     0.35,
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75
+    ],
+    "k4": [
+     0.333333,
+     0.4,
+     0.466667,
+     0.533333,
+     0.6,
+     0.666667,
+     0.733333,
+     0.8,
+     0.866667,
+     0.933333,
+     1.0
+    ]
+   },
+   "932": {
+    "k1": [
+     0.083333,
+     0.102389,
+     0.122378,
+     0.143369,
+     0.165441,
+     0.188679,
+     0.205224,
+     0.221402,
+     0.237226,
+     0.252708,
+     0.267857
+    ],
+    "k2": [
+     0.166667,
+     0.204778,
+     0.244755,
+     0.286738,
+     0.330882,
+     0.377358,
+     0.410448,
+     0.442804,
+     0.474453,
+     0.505415,
+     0.535714
+    ],
+    "k3": [
+     0.25,
+     0.307167,
+     0.367133,
+     0.430108,
+     0.496324,
+     0.566038,
+     0.615672,
+     0.664207,
+     0.711679,
+     0.758123,
+     0.803571
+    ],
+    "k4": [
+     0.333333,
+     0.409556,
+     0.48951,
+     0.573477,
+     0.661765,
+     0.754717,
+     0.820896,
+     0.885609,
+     0.948905,
+     1.0,
+     1.0
+    ]
+   },
+   "940": {
+    "k1": [
+     0.083333,
+     0.098847,
+     0.114007,
+     0.128824,
+     0.143312,
+     0.15748,
+     0.17134,
+     0.1849,
+     0.198171,
+     0.211161,
+     0.223881
+    ],
+    "k2": [
+     0.166667,
+     0.197694,
+     0.228013,
+     0.257649,
+     0.286624,
+     0.314961,
+     0.342679,
+     0.3698,
+     0.396341,
+     0.422323,
+     0.447761
+    ],
+    "k3": [
+     0.25,
+     0.29654,
+     0.34202,
+     0.386473,
+     0.429936,
+     0.472441,
+     0.514019,
+     0.5547,
+     0.594512,
+     0.633484,
+     0.671642
+    ],
+    "k4": [
+     0.333333,
+     0.395387,
+     0.456026,
+     0.515298,
+     0.573248,
+     0.629921,
+     0.685358,
+     0.739599,
+     0.792683,
+     0.844646,
+     0.895522
+    ]
+   },
+   "945": {
+    "k1": [
+     0.083333,
+     0.103627,
+     0.125448,
+     0.148976,
+     0.174419,
+     0.20202,
+     0.222672,
+     0.243408,
+     0.264228,
+     0.285132,
+     0.306122
+    ],
+    "k2": [
+     0.166667,
+     0.207254,
+     0.250896,
+     0.297952,
+     0.348837,
+     0.40404,
+     0.445344,
+     0.486815,
+     0.528455,
+     0.570265,
+     0.612245
+    ],
+    "k3": [
+     0.25,
+     0.310881,
+     0.376344,
+     0.446927,
+     0.523256,
+     0.606061,
+     0.668016,
+     0.730223,
+     0.792683,
+     0.855397,
+     0.918367
+    ],
+    "k4": [
+     0.333333,
+     0.414508,
+     0.501792,
+     0.595903,
+     0.697674,
+     0.808081,
+     0.890688,
+     0.973631,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "949": {
+    "k1": [
+     0.083333,
+     0.10084,
+     0.118644,
+     0.136752,
+     0.155172,
+     0.173913,
+     0.192982,
+     0.212389,
+     0.232143,
+     0.252252,
+     0.272727
+    ],
+    "k2": [
+     0.166667,
+     0.201681,
+     0.237288,
+     0.273504,
+     0.310345,
+     0.347826,
+     0.385965,
+     0.424779,
+     0.464286,
+     0.504505,
+     0.545455
+    ],
+    "k3": [
+     0.25,
+     0.302521,
+     0.355932,
+     0.410256,
+     0.465517,
+     0.521739,
+     0.578947,
+     0.637168,
+     0.696429,
+     0.756757,
+     0.818182
+    ],
+    "k4": [
+     0.333333,
+     0.403361,
+     0.474576,
+     0.547009,
+     0.62069,
+     0.695652,
+     0.77193,
+     0.849558,
+     0.928571,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "pos4": {
+   "1902": {
+    "k1": [
+     0.083333,
+     0.102389,
+     0.122378,
+     0.143369,
+     0.165441,
+     0.188679,
+     0.205224,
+     0.221402,
+     0.237226,
+     0.252708,
+     0.267857
+    ],
+    "k2": [
+     0.166667,
+     0.204778,
+     0.244755,
+     0.286738,
+     0.330882,
+     0.377358,
+     0.410448,
+     0.442804,
+     0.474453,
+     0.505415,
+     0.535714
+    ],
+    "k3": [
+     0.25,
+     0.307167,
+     0.367133,
+     0.430108,
+     0.496324,
+     0.566038,
+     0.615672,
+     0.664207,
+     0.711679,
+     0.758123,
+     0.803571
+    ],
+    "k4": [
+     0.333333,
+     0.409556,
+     0.48951,
+     0.573477,
+     0.661765,
+     0.754717,
+     0.820896,
+     0.885609,
+     0.948905,
+     1.0,
+     1.0
+    ]
+   },
+   "1941": {
+    "k1": [
+     0.083333,
+     0.10084,
+     0.118644,
+     0.136752,
+     0.155172,
+     0.173913,
+     0.192982,
+     0.212389,
+     0.232143,
+     0.252252,
+     0.272727
+    ],
+    "k2": [
+     0.166667,
+     0.201681,
+     0.237288,
+     0.273504,
+     0.310345,
+     0.347826,
+     0.385965,
+     0.424779,
+     0.464286,
+     0.504505,
+     0.545455
+    ],
+    "k3": [
+     0.25,
+     0.302521,
+     0.355932,
+     0.410256,
+     0.465517,
+     0.521739,
+     0.578947,
+     0.637168,
+     0.696429,
+     0.756757,
+     0.818182
+    ],
+    "k4": [
+     0.333333,
+     0.403361,
+     0.474576,
+     0.547009,
+     0.62069,
+     0.695652,
+     0.77193,
+     0.849558,
+     0.928571,
+     1.0,
+     1.0
+    ]
+   },
+   "905": {
+    "k1": [
+     0.083333,
+     0.103448,
+     0.125,
+     0.148148,
+     0.173077,
+     0.2,
+     0.22449,
+     0.25,
+     0.276596,
+     0.304348,
+     0.333333
+    ],
+    "k2": [
+     0.166667,
+     0.206897,
+     0.25,
+     0.296296,
+     0.346154,
+     0.4,
+     0.44898,
+     0.5,
+     0.553191,
+     0.608696,
+     0.666667
+    ],
+    "k3": [
+     0.25,
+     0.310345,
+     0.375,
+     0.444444,
+     0.519231,
+     0.6,
+     0.673469,
+     0.75,
+     0.829787,
+     0.913043,
+     1.0
+    ],
+    "k4": [
+     0.333333,
+     0.413793,
+     0.5,
+     0.592593,
+     0.692308,
+     0.8,
+     0.897959,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "906": {
+    "k1": [
+     0.083333,
+     0.103627,
+     0.125448,
+     0.148976,
+     0.174419,
+     0.20202,
+     0.222672,
+     0.243408,
+     0.264228,
+     0.285132,
+     0.306122
+    ],
+    "k2": [
+     0.166667,
+     0.207254,
+     0.250896,
+     0.297952,
+     0.348837,
+     0.40404,
+     0.445344,
+     0.486815,
+     0.528455,
+     0.570265,
+     0.612245
+    ],
+    "k3": [
+     0.25,
+     0.310881,
+     0.376344,
+     0.446927,
+     0.523256,
+     0.606061,
+     0.668016,
+     0.730223,
+     0.792683,
+     0.855397,
+     0.918367
+    ],
+    "k4": [
+     0.333333,
+     0.414508,
+     0.501792,
+     0.595903,
+     0.697674,
+     0.808081,
+     0.890688,
+     0.973631,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "919": {
+    "k1": [
+     0.083333,
+     0.1,
+     0.116667,
+     0.133333,
+     0.15,
+     0.166667,
+     0.183333,
+     0.2,
+     0.216667,
+     0.233333,
+     0.25
+    ],
+    "k2": [
+     0.166667,
+     0.2,
+     0.233333,
+     0.266667,
+     0.3,
+     0.333333,
+     0.366667,
+     0.4,
+     0.433333,
+     0.466667,
+     0.5
+    ],
+    "k3": [
+     0.25,
+     0.3,
+     0.35,
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75
+    ],
+    "k4": [
+     0.333333,
+     0.4,
+     0.466667,
+     0.533333,
+     0.6,
+     0.666667,
+     0.733333,
+     0.8,
+     0.866667,
+     0.933333,
+     1.0
+    ]
+   },
+   "924": {
+    "k1": [
+     0.083333,
+     0.1,
+     0.116667,
+     0.133333,
+     0.15,
+     0.166667,
+     0.183333,
+     0.2,
+     0.216667,
+     0.233333,
+     0.25
+    ],
+    "k2": [
+     0.166667,
+     0.2,
+     0.233333,
+     0.266667,
+     0.3,
+     0.333333,
+     0.366667,
+     0.4,
+     0.433333,
+     0.466667,
+     0.5
+    ],
+    "k3": [
+     0.25,
+     0.3,
+     0.35,
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75
+    ],
+    "k4": [
+     0.333333,
+     0.4,
+     0.466667,
+     0.533333,
+     0.6,
+     0.666667,
+     0.733333,
+     0.8,
+     0.866667,
+     0.933333,
+     1.0
+    ]
+   },
+   "925": {
+    "k1": [
+     0.083333,
+     0.102215,
+     0.121951,
+     0.142602,
+     0.164234,
+     0.186916,
+     0.206767,
+     0.226843,
+     0.247148,
+     0.267686,
+     0.288462
+    ],
+    "k2": [
+     0.166667,
+     0.204429,
+     0.243902,
+     0.285205,
+     0.328467,
+     0.373832,
+     0.413534,
+     0.453686,
+     0.494297,
+     0.535373,
+     0.576923
+    ],
+    "k3": [
+     0.25,
+     0.306644,
+     0.365854,
+     0.427807,
+     0.492701,
+     0.560748,
+     0.620301,
+     0.680529,
+     0.741445,
+     0.803059,
+     0.865385
+    ],
+    "k4": [
+     0.333333,
+     0.408859,
+     0.487805,
+     0.57041,
+     0.656934,
+     0.747664,
+     0.827068,
+     0.907372,
+     0.988593,
+     1.0,
+     1.0
+    ]
+   },
+   "927": {
+    "k1": [
+     0.083333,
+     0.102215,
+     0.121951,
+     0.142602,
+     0.164234,
+     0.186916,
+     0.206767,
+     0.226843,
+     0.247148,
+     0.267686,
+     0.288462
+    ],
+    "k2": [
+     0.166667,
+     0.204429,
+     0.243902,
+     0.285205,
+     0.328467,
+     0.373832,
+     0.413534,
+     0.453686,
+     0.494297,
+     0.535373,
+     0.576923
+    ],
+    "k3": [
+     0.25,
+     0.306644,
+     0.365854,
+     0.427807,
+     0.492701,
+     0.560748,
+     0.620301,
+     0.680529,
+     0.741445,
+     0.803059,
+     0.865385
+    ],
+    "k4": [
+     0.333333,
+     0.408859,
+     0.487805,
+     0.57041,
+     0.656934,
+     0.747664,
+     0.827068,
+     0.907372,
+     0.988593,
+     1.0,
+     1.0
+    ]
+   },
+   "928": {
+    "k1": [
+     0.083333,
+     0.09901,
+     0.114379,
+     0.12945,
+     0.144231,
+     0.15873,
+     0.170279,
+     0.181269,
+     0.19174,
+     0.201729,
+     0.211268
+    ],
+    "k2": [
+     0.166667,
+     0.19802,
+     0.228758,
+     0.2589,
+     0.288462,
+     0.31746,
+     0.340557,
+     0.362538,
+     0.383481,
+     0.403458,
+     0.422535
+    ],
+    "k3": [
+     0.25,
+     0.29703,
+     0.343137,
+     0.38835,
+     0.432692,
+     0.47619,
+     0.510836,
+     0.543807,
+     0.575221,
+     0.605187,
+     0.633803
+    ],
+    "k4": [
+     0.333333,
+     0.39604,
+     0.457516,
+     0.517799,
+     0.576923,
+     0.634921,
+     0.681115,
+     0.725076,
+     0.766962,
+     0.806916,
+     0.84507
+    ]
+   },
+   "929": {
+    "k1": [
+     0.083333,
+     0.10084,
+     0.118644,
+     0.136752,
+     0.155172,
+     0.173913,
+     0.192982,
+     0.212389,
+     0.232143,
+     0.252252,
+     0.272727
+    ],
+    "k2": [
+     0.166667,
+     0.201681,
+     0.237288,
+     0.273504,
+     0.310345,
+     0.347826,
+     0.385965,
+     0.424779,
+     0.464286,
+     0.504505,
+     0.545455
+    ],
+    "k3": [
+     0.25,
+     0.302521,
+     0.355932,
+     0.410256,
+     0.465517,
+     0.521739,
+     0.578947,
+     0.637168,
+     0.696429,
+     0.756757,
+     0.818182
+    ],
+    "k4": [
+     0.333333,
+     0.403361,
+     0.474576,
+     0.547009,
+     0.62069,
+     0.695652,
+     0.77193,
+     0.849558,
+     0.928571,
+     1.0,
+     1.0
+    ]
+   },
+   "944": {
+    "k1": [
+     0.083333,
+     0.102041,
+     0.121528,
+     0.141844,
+     0.163043,
+     0.185185,
+     0.208333,
+     0.232558,
+     0.257937,
+     0.284553,
+     0.3125
+    ],
+    "k2": [
+     0.166667,
+     0.204082,
+     0.243056,
+     0.283688,
+     0.326087,
+     0.37037,
+     0.416667,
+     0.465116,
+     0.515873,
+     0.569106,
+     0.625
+    ],
+    "k3": [
+     0.25,
+     0.306122,
+     0.364583,
+     0.425532,
+     0.48913,
+     0.555556,
+     0.625,
+     0.697674,
+     0.77381,
+     0.853659,
+     0.9375
+    ],
+    "k4": [
+     0.333333,
+     0.408163,
+     0.486111,
+     0.567376,
+     0.652174,
+     0.740741,
+     0.833333,
+     0.930233,
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "915": {
+    "k1": [
+     0.083333,
+     0.09901,
+     0.114379,
+     0.12945,
+     0.144231,
+     0.15873,
+     0.170279,
+     0.181269,
+     0.19174,
+     0.201729,
+     0.211268
+    ],
+    "k2": [
+     0.166667,
+     0.19802,
+     0.228758,
+     0.2589,
+     0.288462,
+     0.31746,
+     0.340557,
+     0.362538,
+     0.383481,
+     0.403458,
+     0.422535
+    ],
+    "k3": [
+     0.25,
+     0.29703,
+     0.343137,
+     0.38835,
+     0.432692,
+     0.47619,
+     0.510836,
+     0.543807,
+     0.575221,
+     0.605187,
+     0.633803
+    ],
+    "k4": [
+     0.333333,
+     0.39604,
+     0.457516,
+     0.517799,
+     0.576923,
+     0.634921,
+     0.681115,
+     0.725076,
+     0.766962,
+     0.806916,
+     0.84507
+    ]
+   }
+  }
+ },
+ "routes_four_chosen_stats_pos1": {
+  "T1": {
+   "one_refine_pin_all_4": {
+    "per_target": 98,
+    "total_stones": 392,
+    "refining_stones": 1,
+    "fate_locks": 0
+   },
+   "staged_pin3_lock3_pin1": {
+    "stage1_per_target": 8,
+    "stage2": 89,
+    "total_stones": 113,
+    "refining_stones": 2,
+    "fate_locks": 3
+   }
+  },
+  "T2": {
+   "one_refine_pin_all_4": {
+    "per_target": 49,
+    "total_stones": 196,
+    "refining_stones": 1,
+    "fate_locks": 0
+   },
+   "staged_pin3_lock3_pin1": {
+    "stage1_per_target": 4,
+    "stage2": 45,
+    "total_stones": 57,
+    "refining_stones": 2,
+    "fate_locks": 3
+   }
+  },
+  "T3": {
+   "one_refine_pin_all_4": {
+    "per_target": 25,
+    "total_stones": 100,
+    "refining_stones": 1,
+    "fate_locks": 0
+   },
+   "staged_pin3_lock3_pin1": {
+    "stage1_per_target": 2,
+    "stage2": 23,
+    "total_stones": 29,
+    "refining_stones": 2,
+    "fate_locks": 3
+   }
+  },
+  "T4": {
+   "one_refine_pin_all_4": {
+    "per_target": 13,
+    "total_stones": 52,
+    "refining_stones": 1,
+    "fate_locks": 0
+   },
+   "staged_pin3_lock3_pin1": {
+    "stage1_per_target": 1,
+    "stage2": 12,
+    "total_stones": 15,
+    "refining_stones": 2,
+    "fate_locks": 3
+   }
+  },
+  "T5": {
+   "one_refine_pin_all_4": {
+    "per_target": 1,
+    "total_stones": 4,
+    "refining_stones": 1,
+    "fate_locks": 0
+   },
+   "staged_pin3_lock3_pin1": {
+    "stage1_per_target": 1,
+    "stage2": 1,
+    "total_stones": 4,
+    "refining_stones": 2,
+    "fate_locks": 3
+   }
+  }
+ },
+ "sampling_models": {
+  "note": "calcInner returns MARGINALS. How the server realises k draws from them is not in the client. Any stat the calculator pins at p=1 is deterministic under every scheme, so the `stones_to_pin` numbers are model-independent. Sub-100% numbers are scheme-dependent.",
+  "example_pos1_4slots_T4x2_each_on_4_targets": {
+   "client_marginal_pct": 89.47,
+   "sequential_without_replacement_marginal_pct": 83.19,
+   "P_all_four_land_sequential_pct": 42.57
+  }
+ },
+ "open_questions": {
+  "R1": "Does the SERVER apply the `reduce` column of items 4101-4524? The client cannot (bug above). One-shot test: load exactly 1x T1 stone for any stat on a Tier-1 artifact and read the panel. 15.4% => shipped/no-reduce model. 16.1% => the client would have to be showing the designed model.",
+  "R2": "RESOLVED for T1-T3: player-reported drop from Odyssey (2026-08-07); grant is server-side, nothing in bag_battle config. Still open: which chapter/wave, per-run vs per-clear, drop rate; and any source for T4/T5.",
+  "R3": "EN display names of the 12 artifact families. The RAM harvest is alphabetically sorted, so tid#EquipName1301xx cannot be mapped from it. One set_text capture on the refine material list fixes this.",
+  "R4": "Level re-roll on refine: working model from the awakening report is uniform 1..current level (7 samples). Unchanged here."
+ },
+ "stone_sources": {
+  "status": "T1-T3 confirmed obtainable (player report 2026-08-07: Odyssey). Grant is server-side.",
+  "config_scan": {
+   "reward_shape_scan": "0 hits for [103,4xxx,n] and {type:103,id:4xxx,num:..} across 11 Global + 2 CN snapshots",
+   "exhaustive_integer_scan": "every hit in every config file is a numeric collision",
+   "collisions_checked": {
+    "alliance/alliance_wandering_shop.json": "goods:[4101,4201,4301,4401] are shop_goods_info ROW ids",
+    "shop/shop_goods_info.json": "rows id 4101-4424 grant [107,0,80] = 80 gems, not stones",
+    "active/active_mystery_shop/active_gacha_mystery_goods.json": "goods_id 4111.. are mystery-shop row ids, reward is item 1013",
+    "CAMPAIGN_ODYSSEY_UNLOCK_OVERVIEW.md": "the 4101/4201/4301/4401/4501 column is 'first stage from stage_map index', i.e. stage ids"
+   },
+   "odyssey_reward_surface": {
+    "feature": "bag-battle (client/dist/default/bag-battle/, config bag_battle/ + active/active_bagbattle/)",
+    "bag_battle_wave.rewards": {
+     "103:1009": 64,
+     "103:1010": 10,
+     "103:1013": 130,
+     "103:1025": 415,
+     "107:0": 3000
+    },
+    "bag_battle_chapter.json": "no reward field",
+    "conclusion": "no 4xxx anywhere in the feature's config"
+   }
+  },
+  "craftable": false,
+  "synthesis_note": "item_synthesis.json holds only the 1201-1224 awakening-stone chain (3x lower tier + catalyst)",
+  "T4_T5": "no reported source, no config source. T5 (+100000, the one-stone guarantee) should be treated as unavailable for planning.",
+  "still_open": "which Odyssey chapter/wave, per-run vs per-chapter-clear, drop rate"
+ },
+ "routes_T3_only_pos1": {
+  "note": "the realistic plan: T1-T3 are the farmable tiers. pos 1, four chosen stats, Tier-4 artifact.",
+  "step2_pin3_at_k4": {
+   "stones_per_target": 2,
+   "total": 6
+  },
+  "step4_last_at_k1": {
+   "guarantee": {
+    "stones": 23,
+    "refining_stones": 1
+   },
+   "retry_policy": [
+    {
+     "stones_per_attempt": 1,
+     "hit_rate": 0.3125,
+     "E_stones": 3.2,
+     "E_refining_stones": 3.2
+    },
+    {
+     "stones_per_attempt": 2,
+     "hit_rate": 0.45,
+     "E_stones": 4.4,
+     "E_refining_stones": 2.22
+    },
+    {
+     "stones_per_attempt": 3,
+     "hit_rate": 0.5417,
+     "E_stones": 5.5,
+     "E_refining_stones": 1.85
+    },
+    {
+     "stones_per_attempt": 5,
+     "hit_rate": 0.6563,
+     "E_stones": 7.6,
+     "E_refining_stones": 1.52
+    },
+    {
+     "stones_per_attempt": 8,
+     "hit_rate": 0.75,
+     "E_stones": 10.7,
+     "E_refining_stones": 1.33
+    },
+    {
+     "stones_per_attempt": 12,
+     "hit_rate": 0.8167,
+     "E_stones": 14.7,
+     "E_refining_stones": 1.22
+    }
+   ]
+  },
+  "totals": {
+   "guaranteed": {
+    "T3_stones": 29,
+    "refining_stones": 2,
+    "fate_locks": 3
+   },
+   "retry_n1": {
+    "T3_stones": 9.2,
+    "refining_stones": 4.2,
+    "fate_locks": 3
+   },
+   "retry_n3": {
+    "T3_stones": 11.5,
+    "refining_stones": 2.9,
+    "fate_locks": 3
+   },
+   "retry_n8": {
+    "T3_stones": 16.7,
+    "refining_stones": 2.3,
+    "fate_locks": 3
+   }
+  },
+  "tradeoff": "stones-per-success is minimised at n=1; Refining-Stones-per-success is minimised by stacking. Pick by whichever is scarcer."
+ }
+}
