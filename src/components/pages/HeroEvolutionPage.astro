@@ -13,33 +13,48 @@ const copy = {
   zh: { tag: "升阶指南", title: "英雄进化", subtitle: "查看从基础本体到最高进化的每一个配方。", regular: "常规", starglint: "星辉", same: "同名英雄", faction: "同阵营英雄", copies: "个", step: "步骤", note: "材料卡必须达到所示品阶。“同名英雄”必须是相同英雄；“同阵营英雄”可使用该阵营任意符合条件的英雄。", max: "已达到最高进化" },
 }[locale] ?? null;
 const c = copy ?? copy.en;
-const asset = (name: string) => `/hero-evolution/${name}.png`;
-
 const ranks = {
   green: { label: "Rare", tone: "green" }, blue: { label: "Rare+", tone: "blue" }, bluePlus: { label: "Elite", tone: "blue" },
-  purple: { label: "Epic", tone: "purple" }, purplePlus: { label: "Epic+", tone: "purple" }, gold: { label: "Legendary", tone: "gold" },
-  goldPlus: { label: "Legendary+", tone: "gold" }, red: { label: "Exalted", tone: "rainbow" }, redPlus: { label: "Exalted+", tone: "rainbow" },
-  rainbow: { label: "Mythic", tone: "red" }, diamond: { label: "Divine", tone: "diamond" },
+  purple: { label: "Elite", tone: "purple" }, purplePlus: { label: "Elite+", tone: "purple" }, gold: { label: "Epic", tone: "gold" },
+  goldPlus: { label: "Epic+", tone: "gold" }, red: { label: "Legendary", tone: "rainbow" }, redPlus: { label: "Legendary+", tone: "gold" },
+  rainbow: { label: "Mythic", tone: "rainbow" }, diamond: { label: "Divine", tone: "diamond" },
 };
 type RankKey = keyof typeof ranks;
 type Recipe = { from: RankKey; material: RankKey; count?: number; kind: "same" | "faction"; to: RankKey; stars?: number; resultStars?: number };
 const cardDecoration = (rank: RankKey) => {
   const decoration: Record<RankKey, string> = {
-    green: "Purple", blue: "Purple", bluePlus: "Purple",
-    purple: "Purple", purplePlus: "PurplePlus",
-    gold: "Golden", goldPlus: "GoldenPlus",
-    red: "Red", redPlus: "RedPlus",
-    rainbow: "Color", diamond: "Diamond",
+    green: "elite", blue: "elite", bluePlus: "elite",
+    purple: "elite", purplePlus: "elite-plus",
+    gold: "epic", goldPlus: "epic-plus",
+    red: "legendary", redPlus: "legendary-plus",
+    rainbow: "mythic", diamond: "divine",
   };
-  return `/evolutions/A_UI_ItemDecorator_HeroCardFront_${decoration[rank]}.png`;
+  return `/evolutions/card-frame-${decoration[rank]}.png`;
 };
+const cardBackground = (rank: RankKey) => {
+  const background: Record<RankKey, string> = {
+    green: "green", blue: "blue", bluePlus: "blue-plus",
+    purple: "elite", purplePlus: "elite",
+    gold: "epic", goldPlus: "epic",
+    red: "legendary", redPlus: "legendary",
+    rainbow: "mythic", diamond: "divine",
+  };
+  return `/evolutions/card-background-${background[rank]}.png`;
+};
+const heroPortrait = (tab: "regular" | "starglint") => `/evolutions/${tab === "starglint" ? "starglint" : "regular"}-hero.png`;
+const factionIcon = (tab: "regular" | "starglint") => tab === "starglint"
+  ? "/evolutions/faction-starglint.png"
+  : "/evolutions/faction-hearts.png";
+const roleIcon = (tab: "regular" | "starglint") => tab === "starglint"
+  ? "/evolutions/role-support.png"
+  : "/evolutions/role-marksman.png";
 const regular: Recipe[] = [
   { from:"purple",material:"purple",count:2,kind:"same",to:"purplePlus" }, { from:"purplePlus",material:"purplePlus",kind:"same",to:"gold" },
   { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, { from:"goldPlus",material:"goldPlus",count:2,kind:"faction",to:"red" },
   { from:"red",material:"goldPlus",kind:"same",to:"redPlus" }, { from:"redPlus",material:"redPlus",kind:"faction",to:"rainbow" },
   { from:"rainbow",material:"redPlus",kind:"faction",to:"diamond" }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 },
   { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:1,resultStars:2 }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:2,resultStars:3 },
-  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:3,resultStars:4 }, { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:4,resultStars:5 },
+  { from:"diamond",material:"redPlus",kind:"same",to:"diamond",stars:3,resultStars:4 }, { from:"diamond",material:"redPlus",count:2,kind:"same",to:"diamond",stars:4,resultStars:5 },
 ];
 const starglint: Recipe[] = [
   { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, { from:"goldPlus",material:"goldPlus",kind:"same",to:"red" }, { from:"red",material:"goldPlus",kind:"same",to:"redPlus" },
@@ -68,29 +83,28 @@ const starglint: Recipe[] = [
             return <article class="recipe">
               <span class="step-number"><small>{c.step}</small>{String(index + 1).padStart(2, '0')}</span>
               <div class={`rank-card tone-${from.tone}`}>
-                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /></span><strong>{from.label}</strong>
-                {recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}
+                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.from)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}</span><strong>{from.label}</strong>
               </div>
-              <span class="operator" aria-hidden="true"><img src="/evolutions/A_UI_HeroEvolution_PlusbBig_Icon.png" alt="" /></span>
+              <span class="operator" aria-hidden="true"><img src="/evolutions/operator-plus.png" alt="" /></span>
               <div class={`material-requirement tone-${material.tone}`}>
                 <div class="material-cards" aria-hidden="true">
                   {Array.from({ length: recipe.count ?? 1 }).map(() => (
                     <span class={`material-card ${recipe.kind === 'faction' ? 'is-fodder' : 'is-copy'}`}>
+                      <img class="card-background" src={cardBackground(recipe.material)} alt="" />
                       {recipe.kind === 'same'
-                        ? <img class="material-portrait" src="/heroes/cards/zaojun-240.webp" alt="" />
-                        : <img class="fodder-silhouette" src="/evolutions/A_UI_HeadPortrait_CommonTemp02_Img.png" alt="" />}
+                        ? <img class="material-portrait" src={heroPortrait(id)} alt="" />
+                        : <img class="fodder-silhouette" src="/evolutions/fodder-silhouette.png" alt="" />}
                       <img class="card-decoration" src={cardDecoration(recipe.material)} alt="" />
-                      <img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" />
-                      <img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" />
+                      <img class="card-faction" src={factionIcon(id)} alt="" />
+                      <img class="card-class" src={roleIcon(id)} alt="" />
                     </span>
                   ))}
                 </div>
-                <span class="material-copy"><strong>{material.label}</strong>{recipe.kind === 'faction' ? <small>{c.faction}</small> : null}</span>
+                <span class="material-copy"><strong>{material.label}</strong></span>
               </div>
-              <span class="operator equals" aria-hidden="true"><img src="/evolutions/A_UI_HeroEvolution_Equal_Icon.png" alt="" /></span>
+              <span class="operator equals" aria-hidden="true"><img src="/evolutions/operator-equals.png" alt="" /></span>
               <div class={`rank-card result tone-${result.tone}`}>
-                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /></span><strong>{result.label}</strong>
-                {recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}
+                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.to)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}</span><strong>{result.label}</strong>
               </div>
             </article>;
           })}
@@ -156,8 +170,12 @@ const starglint: Recipe[] = [
 
 <style>
   .recipe {
-    grid-template-columns: 58px 110px 38px minmax(180px, 240px) 38px 110px;
+    grid-template-columns: 58px max-content 38px max-content 38px max-content;
     justify-content: center;
+    justify-self: center;
+    width: max-content;
+    max-width: calc(100% - 96px);
+    margin-inline: 48px;
     gap: .75rem;
     padding-block: 1rem;
     border: 0 !important;
@@ -175,6 +193,8 @@ const starglint: Recipe[] = [
     border: 0 !important;
     background: none !important;
     box-shadow: none !important;
+    width: min-content;
+    justify-self: center;
   }
   .hero-card {
     position: relative;
@@ -188,22 +208,29 @@ const starglint: Recipe[] = [
     box-shadow: 0 0 14px color-mix(in srgb, var(--tone) 25%, transparent), 0 5px 12px rgba(0,0,0,.5);
   }
   .rank-card .hero-card-portrait {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: 50% 18%;
     filter: none;
   }
-  .rank-card .hero-card-rank {
+  .rank-card .hero-card .card-background,
+  .material-card .card-background {
     position: absolute;
-    top: 4px;
-    right: 4px;
-    left: auto !important;
-    width: 25px;
-    height: 25px;
-    object-fit: contain;
-    filter: drop-shadow(0 1px 4px #000);
-    z-index: 4;
+    z-index: 0;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    filter: none;
+    pointer-events: none;
+  }
+  .material-card .material-portrait,
+  .material-card .fodder-silhouette {
+    position: relative;
+    z-index: 1;
   }
   .rank-card > strong, .material-copy strong { display: block; width: 100%; margin-top: .45rem !important; font-size: .78rem; text-align: center; }
   .material-requirement {
@@ -220,12 +247,10 @@ const starglint: Recipe[] = [
   .material-card {
     width: 82px !important;
     height: 110px !important;
-    border: 0;
+    border: 0 !important;
     border-radius: 7px;
     box-shadow: 0 0 12px color-mix(in srgb, var(--tone) 20%, transparent), 0 4px 10px rgba(0,0,0,.45);
   }
-  .material-rank { width: 22px; height: 22px; top: 3px; left: 3px; z-index: 4; }
-  .material-rank { left: auto; right: 3px; }
   .card-quality {
     position: absolute;
     z-index: 1;
@@ -236,46 +261,64 @@ const starglint: Recipe[] = [
     object-fit: fill;
     pointer-events: none;
   }
-  .card-decoration {
+  .rank-card .hero-card .card-decoration,
+  .material-card .card-decoration {
     position: absolute;
     z-index: 2;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: fill;
     pointer-events: none;
   }
-  .card-faction, .card-class {
+  .rank-card .hero-card .card-faction,
+  .rank-card .hero-card .card-class,
+  .material-card .card-faction,
+  .material-card .card-class {
     position: absolute;
     z-index: 2;
     left: 1px;
-    width: 20px;
-    height: 23px;
+    width: 20px !important;
+    height: 23px !important;
     object-fit: contain;
     filter: drop-shadow(0 1px 3px #000);
   }
-  .card-faction { top: 0; }
-  .card-class { top: 27px; }
+  .hero-card .card-faction, .material-card .card-faction { top: 0; }
+  .hero-card .card-class, .material-card .card-class { top: 27px; }
   .material-copy { align-items: center; width: 100%; flex: 0 0 auto; text-align: center; }
   .material-copy strong { margin-top: 0 !important; }
   .material-copy small { display: block; width: 100%; text-align: center; }
-  .stars { grid-column: auto; min-height: .7rem; }
+  .hero-card .stars {
+    position: absolute;
+    z-index: 3;
+    left: 6px;
+    bottom: 5px;
+    min-height: 0;
+    color: #bffaff;
+    font-size: 8px;
+    line-height: 1;
+    letter-spacing: 1px;
+    text-shadow: 0 0 3px #5de9ff, 0 0 7px #388fff;
+  }
   .operator { display: flex; align-items: center; justify-content: center; font-size: 0; }
   .operator img { display: block; width: 28px; height: 28px; object-fit: contain; }
   .equals img { width: 31px; height: 22px; }
-  .is-fodder { background: #050509 url('/evolutions/A_UI_HeroEvolution_CardOther_Bg.png') center / 100% 100% no-repeat; }
+  .is-fodder { background: #050509 url('/evolutions/fodder-card-background.png') center / 100% 100% no-repeat; }
   .is-fodder .fodder-silhouette { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .tone-diamond { --tone: #625aa8; }
 
   @media (max-width: 700px) {
-    .recipe { grid-template-columns: 25px 82px 22px minmax(100px, 1fr); gap: .35rem; }
+    .recipe { grid-template-columns: 25px 82px 22px minmax(100px, 1fr); width: 100%; max-width: 100%; margin-inline: 0; gap: .35rem; }
     .hero-card { width: 64px; height: 86px; }
-    .rank-card .hero-card-rank { width: 19px; height: 19px; }
     .material-requirement { min-height: 112px; padding: 0 !important; }
     .material-card { width: 64px !important; height: 86px !important; }
-    .material-rank { width: 16px; height: 16px; }
-    .card-faction, .card-class { width: 16px; height: 18px; left: 1px; }
-    .card-faction { top: 0; }
-    .card-class { top: 21px; }
+    .rank-card .hero-card .card-faction,
+    .rank-card .hero-card .card-class,
+    .material-card .card-faction,
+    .material-card .card-class { width: 16px !important; height: 18px !important; left: 1px; }
+    .hero-card .card-faction, .material-card .card-faction { top: 0; }
+    .hero-card .card-class, .material-card .card-class { top: 21px; }
+    .hero-card .stars { left: 5px; bottom: 4px; font-size: 6px; letter-spacing: .5px; }
     .result { grid-column: 2 / 5; margin-top: .45rem; }
   }
 </style>
