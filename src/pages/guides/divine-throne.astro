@@ -11,6 +11,7 @@ const featureAsset = (name: string) => `${FEATURE_ASSET_BASE}/${name}`;
 const factionOrder = ["Starglint", "Hearts", "Clubs", "Diamonds", "Spades"];
 const recommendedHeroOrder = ["zeus", "dionysus", "nyx", "amunra", "bastet", "phoenix", "set", "jingwei"];
 const recommendedHeroRank = new Map(recommendedHeroOrder.map((id, index) => [id, index]));
+const interestingHeroIds = new Set(["fengyi"]);
 
 const overview = [
   { label: "Unlock", value: "Clear Journey 25-3 and raise the hero to the required rank" },
@@ -147,6 +148,7 @@ const firstWaveHeroes = [
   throneAssetId:
     divineThroneData.heroes.find((entry) => entry.heroId === hero.id)?.throneAssetId ?? hero.id,
   recommended: recommendedHeroRank.has(hero.id),
+  interesting: interestingHeroIds.has(hero.id),
 })).sort((a, b) => {
   const recommendationDifference =
     (recommendedHeroRank.get(a.id) ?? recommendedHeroOrder.length) -
@@ -343,7 +345,12 @@ const firstWaveHeroes = [
         <div class="divine-roster-grid">
           {firstWaveHeroes.map((hero) => (
             <article class:list={["divine-roster-card", { "divine-roster-card--recommended": hero.recommended }]}>
-              {hero.recommended && <span class="divine-roster-recommended">Recommended</span>}
+              {(hero.recommended || hero.interesting) && (
+                <div class="divine-roster-badges">
+                  {hero.recommended && <span class="divine-roster-badge divine-roster-badge--recommended">Recommended</span>}
+                  {hero.interesting && <span class="divine-roster-badge divine-roster-badge--interesting">Interesting</span>}
+                </div>
+              )}
               <a class="divine-roster-hero" href={`/heroes/${hero.id}`}>
                 <img
                   class="divine-roster-throne"
@@ -578,18 +585,34 @@ const firstWaveHeroes = [
     border-color: rgba(255, 208, 74, 0.42);
   }
 
-  .divine-roster-recommended {
+  .divine-roster-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
     align-self: flex-start;
+  }
+
+  .divine-roster-badge {
     padding: 0.2rem 0.55rem;
-    border: 1px solid rgba(255, 208, 74, 0.42);
+    border: 1px solid;
     border-radius: 999px;
-    color: var(--accent-gold);
-    background: rgba(255, 208, 74, 0.1);
     font-size: 0.65rem;
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-wide);
     line-height: 1.2;
     text-transform: uppercase;
+  }
+
+  .divine-roster-badge--recommended {
+    border-color: rgba(255, 208, 74, 0.42);
+    color: var(--accent-gold);
+    background: rgba(255, 208, 74, 0.1);
+  }
+
+  .divine-roster-badge--interesting {
+    border-color: color-mix(in srgb, var(--accent-purple) 55%, transparent);
+    color: var(--accent-purple-light, var(--accent-purple));
+    background: color-mix(in srgb, var(--accent-purple) 14%, transparent);
   }
 
   .divine-roster-hero {
