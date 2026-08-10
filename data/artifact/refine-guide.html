@@ -370,8 +370,7 @@ footer{border-top:1px solid var(--rule); background:var(--plate); padding-block:
         <div class="scroll"><table id="poolTable">
           <thead><tr><th>Stat</th><th class="num">Ceiling</th><th>Also on slot</th>
             <th>Best fodder <span style="text-transform:none">(+200)</span></th>
-            <th>Never feed <span style="text-transform:none">(−200)</span></th>
-            <th class="num">Stone ids T1–T5</th></tr></thead>
+            <th>Never feed <span style="text-transform:none">(−200)</span></th></tr></thead>
           <tbody></tbody>
         </table></div>
       </div>
@@ -955,8 +954,7 @@ function renderPan(host, attrIds, weights, probs, opts = {}){
         '<td class="num">' + s.cap + " %</td>" +
         "<td>" + (other.length ? other.map(o => o + " · " + SLOT_NAME[o]).join(", ") : "—") + "</td>" +
         "<td>" + fam(s.p2, "up") + "</td>" +
-        "<td>" + fam(s.m2, "dn") + "</td>" +
-        '<td class="num">' + s.st.join(" ") + "</td>";
+        "<td>" + fam(s.m2, "dn") + "</td>";
       tbody.appendChild(tr);
     });
   };
@@ -1004,7 +1002,7 @@ function renderPan(host, attrIds, weights, probs, opts = {}){
     const tr = document.createElement("tr");
     tr.innerHTML =
       '<td><span class="art"><img class="ico" src="' + ICON[f.k] + '" alt="">' +
-        "<span><b>" + f.t + " · " + f.el + "</b><small>slot " + f.s + " · id " + f.id13 + "</small></span></span></td>" +
+        "<span><b>" + f.t + " · " + f.el + "</b><small>slot " + f.s + "</small></span></span></td>" +
       '<td><span class="chip up">' + names(f.p2) + "</span></td>" +
       "<td>" + names(f.p1) + "</td>" +
       '<td><span class="chip dn">' + names(f.m2) + "</span></td>";
@@ -1117,8 +1115,7 @@ function renderPan(host, attrIds, weights, probs, opts = {}){
       const tr = document.createElement("tr");
       const c1 = document.createElement("td");
       c1.innerHTML = '<span class="art"><img class="ico ico-sm" src="' + ICON.refine + '" alt="">' +
-        '<span>' + s.n + ' <span style="color:var(--ink-faint);font-family:var(--mono);font-size:.72rem">' +
-        s.st[state.stoneTier - 1] + "</span></span></span>";
+        "<span>" + s.n + "</span></span>";
       const c2 = document.createElement("td");
       c2.style.textAlign = "right";
       c2.appendChild(stepper(state.stones[a] || 0, v => { state.stones[a] = v; draw(); }, 400));
