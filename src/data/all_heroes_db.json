@@ -5001,57 +5001,57 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "",
-        "description": "",
+        "name": "Raging Torrent",
+        "description": "Deals DMG equal to 500% ATK to enemies in a dense cluster within a 3-meter radius. Deals 30% increased DMG to enemies with HP below 50%.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Crit DMG increased by 50% on critical hits.",
+          "level3": "DMG increased to 600% ATK.",
+          "level4": "DMG dealt to enemies with HP below 50% increased by 50%."
         },
-        "damageType": "",
+        "damageType": "Physical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "",
-        "description": "",
+        "name": "Wave-Chasing Slash",
+        "description": "Dashes through the enemy 4 times consecutively. The first 3 hits deal 120%, 150%, and 180% ATK as DMG respectively. The final hit deals DMG equal to 250% ATK and knocks down hit enemies.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "DMG increased to 130%, 160%, 190%, and 270% ATK.",
+          "level3": "Each complete cast increases ATK by 25% for 6s.",
+          "level4": "DMG increased to 140%, 170%, 200%, and 300% ATK."
         },
-        "damageType": ""
+        "damageType": "Physical"
       },
       {
         "id": "skill_3",
-        "name": "",
-        "description": "",
+        "name": "Wave-Surge Blade",
+        "description": "Passive: Each time [Wave-Chasing Slash] deals DMG, Hebo gains one stack of [Surge]. Each stack of [Surge] increases his Crit Rate by 6% for 10s.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Each stack of [Surge] increases Crit Rate by 8%.",
+          "level3": "Duration increased to 12s.",
+          "level4": "Each stack of [Surge] increases Crit Rate by 10%."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "",
-        "description": "",
+        "name": "Mirror of Still Water",
+        "description": "Passive: While Hebo is casting [Wave-Chasing Slash], DMG taken is reduced by 40% and increases by 5% every 2s. After [Wave-Chasing Slash] ends, the DMG reduction effect is retained for 3s.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "DMG taken during [Wave-Chasing Slash] reduced by 60%.",
+          "level3": "Upon completing [Wave-Chasing Slash], gains a Shield equal to 400% ATK.",
+          "level4": "DMG reduction increases by 7% every 2s."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Vortex of Grace",
-      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "name": "Return to the Vast Deep",
+      "description": "[Wave-Chasing Slash] restores 200 Energy each time it is fully cast.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "[Wave-Chasing Slash] permanently increases Hebo's ATK by 25% each time it is fully cast, stacking up to 3 times.",
+        "level3": "[Wave-Chasing Slash] restores 300 Energy each time it is fully cast.",
+        "level4": "[Wave-Chasing Slash] permanently increases Hebo's ATK by 40% each time it is fully cast, stacking up to 3 times."
       }
     },
     "synergies": [],
@@ -17104,57 +17104,57 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "",
-        "description": "",
+        "name": "Wildfire Spreading",
+        "description": "Passive: Zaojun collects 20% of Energy consumed by friendly units and stores it as Incense Smoke, storing up to 1200 Incense Smoke. Active: Deals DMG equal to 400% ATK to 3 nearby targets and surrounding units. For every 300 Incense Smoke stored, consumes that amount to hit one additional unit. Target selection: selects from farthest to nearest, prioritizing heroes over summons. If the number of targets is less than the amount of Incense Smoke available, targets are reselected.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Hits one additional unit for every 240 Incense Smoke.",
+          "level3": "Hits one additional unit for every 200 Incense Smoke.",
+          "level4": "Hits one additional unit for every 150 Incense Smoke."
         },
-        "damageType": "",
+        "damageType": "Magical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "",
-        "description": "",
+        "name": "Food Offering",
+        "description": "Throws food to restore HP equal to 200% ATK to the frontmost friendly unit. The projectile then ricochets to hit enemy units, dealing DMG equal to 50% ATK + 20% max HP to front-row enemies.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Ricocheting projectile deals DMG equal to 80% ATK + 20% max HP to front-row enemies.",
+          "level3": "Ricocheting projectile deals DMG equal to 80% ATK + 25% max HP to front-row enemies.",
+          "level4": "Ricocheting projectile deals DMG equal to 100% ATK + 30% max HP to front-row enemies."
         },
-        "damageType": ""
+        "damageType": "Magical"
       },
       {
         "id": "skill_3",
-        "name": "",
-        "description": "",
+        "name": "Hearth Fire Rising",
+        "description": "Passive: Zaojun no longer performs basic attacks. Instead, every 3s restores 80 Energy to herself and gains up to 10 stacks of 10% ATK.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Gains up to 10 stacks of 15% ATK.",
+          "level3": "Restores 120 Energy every 3s.",
+          "level4": "Gains up to 10 stacks of 20% ATK."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "",
-        "description": "",
+        "name": "Fire Bond Shelter",
+        "description": "Upon entering battle, establishes a [Fire Bond] with the friendly unit with the highest HP on the field. Fire Bond: The bonded ally receives 15% DMG reduction. Zaojun continuously sacrifices her own HP to ensure the bonded ally's HP never drops below Zaojun's own HP.",
         "upgrades": {
-          "level2": "",
-          "level3": "",
-          "level4": ""
+          "level2": "Bonded ally receives 19% DMG reduction.",
+          "level3": "Bonded ally receives 23% DMG reduction.",
+          "level4": "Bonded ally receives 27% DMG reduction."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Vortex of Grace",
-      "description": "Releases Great Rising Gale to create 1 whirlwind.",
+      "name": "Blessed Fire Grace",
+      "description": "[Fire Bond] allies have 30% of their Energy consumption stored by Zaojun.",
       "upgrades": {
-        "level2": "",
-        "level3": "",
-        "level4": ""
+        "level2": "15% of DMG dealt by Zaojun heals [Fire Bond] allies.",
+        "level3": "25% of DMG dealt by Zaojun heals [Fire Bond] allies.",
+        "level4": "[Fire Bond] allies have 80% of their Energy consumption stored by Zaojun."
       }
     },
     "synergies": [],

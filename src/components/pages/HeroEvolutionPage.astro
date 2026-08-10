@@ -1,0 +1,282 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHero from "../PageHero.astro";
+import type { Locale } from "../../i18n/config";
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props as Props;
+const copy = {
+  en: { tag: "Ascension guide", title: "Hero Evolution", subtitle: "Follow every recipe from your first base copy to the highest evolution.", regular: "Regular", starglint: "Starglint", same: "same hero", faction: "same-faction hero", copies: "copies", step: "Step", note: "The material cards must have the shown rank. “Same hero” means an exact duplicate; “same-faction hero” can be any eligible hero from that faction.", max: "Maximum evolution reached" },
+  de: { tag: "Aufstiegs-Guide", title: "Helden-Evolution", subtitle: "Alle Rezepte von der ersten Basiskopie bis zur höchsten Evolution auf einen Blick.", regular: "Regulär", starglint: "Starglint", same: "gleicher Held", faction: "Held derselben Fraktion", copies: "Kopien", step: "Schritt", note: "Materialkarten müssen den gezeigten Rang haben. „Gleicher Held“ bedeutet eine exakte Kopie; „Held derselben Fraktion“ kann jeder geeignete Held dieser Fraktion sein.", max: "Höchste Evolution erreicht" },
+  es: { tag: "Guía de ascensión", title: "Evolución de héroes", subtitle: "Sigue cada receta desde la primera copia hasta la evolución máxima.", regular: "Regular", starglint: "Starglint", same: "mismo héroe", faction: "héroe de la misma facción", copies: "copias", step: "Paso", note: "Las cartas de material deben tener el rango indicado. «Mismo héroe» significa una copia exacta; la otra opción acepta cualquier héroe válido de esa facción.", max: "Evolución máxima alcanzada" },
+  ru: { tag: "Гайд по возвышению", title: "Эволюция героев", subtitle: "Все рецепты — от первой базовой копии до максимальной эволюции.", regular: "Обычные", starglint: "Starglint", same: "тот же герой", faction: "герой той же фракции", copies: "копии", step: "Шаг", note: "Материалы должны иметь указанный ранг. «Тот же герой» — точная копия; герой фракции может быть любым подходящим героем этой фракции.", max: "Максимальная эволюция достигнута" },
+  zh: { tag: "升阶指南", title: "英雄进化", subtitle: "查看从基础本体到最高进化的每一个配方。", regular: "常规", starglint: "星辉", same: "同名英雄", faction: "同阵营英雄", copies: "个", step: "步骤", note: "材料卡必须达到所示品阶。“同名英雄”必须是相同英雄；“同阵营英雄”可使用该阵营任意符合条件的英雄。", max: "已达到最高进化" },
+}[locale] ?? null;
+const c = copy ?? copy.en;
+const asset = (name: string) => `/hero-evolution/${name}.png`;
+
+const ranks = {
+  green: { label: "Rare", icon: asset("A_UI_Common_EvoGreen_Icon"), tone: "green" }, blue: { label: "Rare+", icon: asset("A_UI_Common_EvoBlueness_Icon"), tone: "blue" }, bluePlus: { label: "Elite", icon: asset("A_UI_Common_EvoBluenessPlus_Icon"), tone: "blue" },
+  purple: { label: "Epic", icon: asset("A_UI_Common_EvoPurple_Icon"), tone: "purple" }, purplePlus: { label: "Epic+", icon: asset("A_UI_Common_EvoPurplePlus_Icon"), tone: "purple" }, gold: { label: "Legendary", icon: asset("A_UI_Common_EvoGolden_Icon"), tone: "gold" },
+  goldPlus: { label: "Legendary+", icon: asset("A_UI_Common_EvoGoldenPlus_Icon"), tone: "gold" }, red: { label: "Exalted", icon: asset("A_UI_Common_EvoRed_Icon"), tone: "rainbow" }, redPlus: { label: "Exalted+", icon: asset("A_UI_Common_EvoRedPlus_Icon"), tone: "rainbow" },
+  rainbow: { label: "Mythic", icon: asset("A_UI_Common_EvoColor_Icon"), tone: "red" }, diamond: { label: "Divine", icon: asset("A_UI_Common_EvoDiamond_Icon"), tone: "diamond" },
+};
+type RankKey = keyof typeof ranks;
+type Recipe = { from: RankKey; material: RankKey; count?: number; kind: "same" | "faction"; to: RankKey; stars?: number; resultStars?: number };
+const cardDecoration = (rank: RankKey) => {
+  const decoration: Record<RankKey, string> = {
+    green: "Purple", blue: "Purple", bluePlus: "Purple",
+    purple: "Purple", purplePlus: "PurplePlus",
+    gold: "Golden", goldPlus: "GoldenPlus",
+    red: "Red", redPlus: "RedPlus",
+    rainbow: "Color", diamond: "Diamond",
+  };
+  return `/evolutions/A_UI_ItemDecorator_HeroCardFront_${decoration[rank]}.png`;
+};
+const regular: Recipe[] = [
+  { from:"purple",material:"purple",count:2,kind:"same",to:"purplePlus" }, { from:"purplePlus",material:"purplePlus",kind:"same",to:"gold" },
+  { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, { from:"goldPlus",material:"goldPlus",count:2,kind:"faction",to:"red" },
+  { from:"red",material:"goldPlus",kind:"same",to:"redPlus" }, { from:"redPlus",material:"redPlus",kind:"faction",to:"rainbow" },
+  { from:"rainbow",material:"redPlus",kind:"faction",to:"diamond" }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 },
+  { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:1,resultStars:2 }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:2,resultStars:3 },
+  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:3,resultStars:4 }, { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:4,resultStars:5 },
+];
+const starglint: Recipe[] = [
+  { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, { from:"goldPlus",material:"goldPlus",kind:"same",to:"red" }, { from:"red",material:"goldPlus",kind:"same",to:"redPlus" },
+  { from:"redPlus",material:"goldPlus",kind:"same",to:"rainbow" }, { from:"rainbow",material:"goldPlus",kind:"same",to:"diamond" },
+  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:1,resultStars:2 },
+  { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:2,resultStars:3 }, { from:"diamond",material:"redPlus",kind:"same",to:"diamond",stars:3,resultStars:4 },
+  { from:"diamond",material:"redPlus",count:2,kind:"same",to:"diamond",stars:4,resultStars:5 },
+];
+---
+
+<Base title={`${c.title} | Motto Immortal Database`} description={c.subtitle} locale={locale}>
+  <PageHero tag={c.tag} headline={c.title} subtitle={c.subtitle} locale={locale} />
+  <nav class="lt-tabs" aria-label={c.title}>
+    <div class="lt-tabs-inner" role="tablist">
+      <button class="lt-tab is-active" id="tab-regular" role="tab" aria-selected="true" aria-controls="panel-regular" data-tab="regular">{c.regular}</button>
+      <button class="lt-tab" id="tab-starglint" role="tab" aria-selected="false" aria-controls="panel-starglint" data-tab="starglint" tabindex="-1">{c.starglint}</button>
+    </div>
+  </nav>
+  <main class="evolution-page page-wrapper page-content">
+    <p class="evolution-note">{c.note}</p>
+    {([['regular', regular], ['starglint', starglint]] as const).map(([id, recipes]) => (
+      <section class="evolution-panel" id={`panel-${id}`} role="tabpanel" aria-labelledby={`tab-${id}`} hidden={id !== 'regular'}>
+        <div class="recipe-list">
+          {recipes.map((recipe, index) => {
+            const from = ranks[recipe.from], material = ranks[recipe.material], result = ranks[recipe.to];
+            return <article class="recipe">
+              <span class="step-number"><small>{c.step}</small>{String(index + 1).padStart(2, '0')}</span>
+              <div class={`rank-card tone-${from.tone}`}>
+                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /><img class="hero-card-rank" src={from.icon} alt="" /></span><strong>{from.label}</strong>
+                {recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}
+              </div>
+              <span class="operator" aria-hidden="true"><img src="/evolutions/A_UI_HeroEvolution_PlusbBig_Icon.png" alt="" /></span>
+              <div class={`material-requirement tone-${material.tone}`}>
+                <div class="material-cards" aria-hidden="true">
+                  {Array.from({ length: recipe.count ?? 1 }).map(() => (
+                    <span class={`material-card ${recipe.kind === 'faction' ? 'is-fodder' : 'is-copy'}`}>
+                      {recipe.kind === 'same'
+                        ? <img class="material-portrait" src="/heroes/cards/zaojun-240.webp" alt="" />
+                        : <img class="fodder-silhouette" src="/evolutions/A_UI_HeadPortrait_CommonTemp02_Img.png" alt="" />}
+                      <img class="material-rank" src={material.icon} alt="" />
+                      <img class="card-decoration" src={cardDecoration(recipe.material)} alt="" />
+                      <img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" />
+                      <img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" />
+                    </span>
+                  ))}
+                </div>
+                <span class="material-copy"><strong>{material.label}</strong>{recipe.kind === 'faction' ? <small>{c.faction}</small> : null}</span>
+              </div>
+              <span class="operator equals" aria-hidden="true"><img src="/evolutions/A_UI_HeroEvolution_Equal_Icon.png" alt="" /></span>
+              <div class={`rank-card result tone-${result.tone}`}>
+                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /><img class="hero-card-rank" src={result.icon} alt="" /></span><strong>{result.label}</strong>
+                {recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}
+              </div>
+            </article>;
+          })}
+        </div>
+        <div class="max-rank"><span aria-hidden="true">✦</span>{c.max}<span aria-hidden="true">✦</span></div>
+      </section>
+    ))}
+  </main>
+</Base>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.lt-tab'));
+  const activate = (tab: HTMLButtonElement) => {
+    tabs.forEach((item) => { const active = item === tab; item.classList.toggle('is-active', active); item.setAttribute('aria-selected', String(active)); item.tabIndex = active ? 0 : -1; document.getElementById(`panel-${item.dataset.tab}`)?.toggleAttribute('hidden', !active); });
+  };
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('keydown', (event) => { if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return; event.preventDefault(); const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length; tabs[next]?.focus(); if (tabs[next]) activate(tabs[next]); });
+  });
+</script>
+
+<style>
+  .lt-tabs {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
+    border-top: 1px solid var(--border-faint);
+    border-bottom: 1px solid var(--border-subtle);
+    backdrop-filter: blur(20px);
+  }
+  .lt-tabs-inner {
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 12px;
+  }
+  .lt-tabs-inner::-webkit-scrollbar { display: none; }
+  .lt-tab {
+    flex: 0 0 auto;
+    padding: 16px 20px 14px;
+    font-family: var(--font-base);
+    font-size: 15px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .lt-tab:hover { color: var(--text-bright); }
+  .lt-tab.is-active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+  .evolution-page { margin-top: 48px; }
+  .evolution-note { margin-top: 0; }
+  .evolution-page{max-width:1080px;padding-bottom:5rem}.evolution-tabs{display:grid;grid-template-columns:1fr 1fr;max-width:680px;margin:-1.4rem auto 1.4rem;padding:.35rem;border:1px solid rgba(203,171,95,.32);border-radius:16px;background:rgba(10,13,26,.92);box-shadow:0 14px 40px rgba(0,0,0,.28);position:relative;z-index:2}.evolution-tab{border:0;border-radius:12px;padding:1rem;color:var(--text-secondary);background:transparent;font:700 .85rem/1 Inter,sans-serif;letter-spacing:.15em;text-transform:uppercase;cursor:pointer}.evolution-tab.is-active{color:#17120a;background:linear-gradient(135deg,#f8e7a7,#b98a34);box-shadow:0 5px 18px rgba(208,162,66,.25)}.evolution-note{max-width:790px;margin:0 auto 1.8rem;text-align:center;color:var(--text-secondary);font-size:.9rem;line-height:1.65}.recipe-list{display:grid;gap:.75rem}.recipe{display:grid;grid-template-columns:62px minmax(130px,1fr) 36px minmax(180px,1.25fr) 36px minmax(130px,1fr);align-items:center;gap:.55rem;padding:.75rem 1rem;border:1px solid rgba(150,160,196,.14);border-radius:14px;background:linear-gradient(110deg,rgba(19,23,41,.96),rgba(12,15,29,.92));box-shadow:0 10px 28px rgba(0,0,0,.18)}.step-number{color:#d8bc72;font-size:1.05rem;font-weight:700;letter-spacing:.06em}.step-number small{display:block;color:var(--text-muted);font-size:.58rem;text-transform:uppercase;letter-spacing:.12em}.rank-card{position:relative;display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;align-items:center;gap:0 .65rem;min-height:70px;padding:.65rem .8rem;border:1px solid color-mix(in srgb,var(--tone) 55%,transparent);border-radius:10px;background:linear-gradient(120deg,color-mix(in srgb,var(--tone) 15%,transparent),rgba(255,255,255,.025))}.rank-card img{grid-row:1/3;width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 6px var(--tone))}.rank-card strong,.material-copy strong{font-size:.88rem;color:var(--text-primary)}.rank-card small,.material-copy small{font-size:.67rem;color:var(--text-muted);line-height:1.2}.material-requirement{display:flex;align-items:center;gap:.65rem;min-height:70px;padding:.4rem .6rem;border:1px solid color-mix(in srgb,var(--tone) 55%,transparent);border-radius:10px;background:linear-gradient(120deg,color-mix(in srgb,var(--tone) 15%,transparent),rgba(255,255,255,.025))}.material-cards{display:flex;gap:.3rem;flex:none}.material-card{position:relative;display:block;width:42px;height:56px;overflow:hidden;border:2px solid var(--tone);border-radius:5px;background:#080a10;box-shadow:0 2px 8px rgba(0,0,0,.45)}.material-portrait{width:100%;height:100%;object-fit:cover;object-position:50% 18%}.material-rank{position:absolute;top:2px;left:2px;width:16px;height:16px;object-fit:contain;filter:drop-shadow(0 1px 3px #000)}.is-fodder{background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--tone) 18%,#080a10),#030407 72%)}.fodder-silhouette{width:100%;height:100%;fill:#020204;stroke:#1d202a;stroke-width:1}.material-copy{display:flex;min-width:0;flex-direction:column;gap:.2rem}.operator{color:#d9bd72;font:300 1.8rem/1 Georgia,serif;text-align:center}.equals{font-size:1.5rem}.result{box-shadow:inset 0 0 18px color-mix(in srgb,var(--tone) 10%,transparent)}.stars{grid-column:2;color:#d9e7ff;font-size:.62rem;letter-spacing:.08em;text-shadow:0 0 8px #7fcaff;white-space:nowrap}.tone-green{--tone:#62b879}.tone-blue{--tone:#5f9de0}.tone-purple{--tone:#a66be3}.tone-gold{--tone:#d9a73b}.tone-red{--tone:#d0575d}.tone-rainbow{--tone:#61d8d0}.tone-diamond{--tone:#bfa0ff}.max-rank{display:flex;align-items:center;justify-content:center;gap:.75rem;margin:1.5rem auto 0;padding:1rem;color:#e4c978;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.max-rank span{font-size:1.2rem}[hidden]{display:none!important}@media(max-width:700px){.evolution-page{padding-inline:.75rem}.evolution-tabs{margin-top:-.7rem}.recipe{grid-template-columns:30px 1fr 22px 1.15fr;gap:.4rem;padding:.65rem}.step-number{grid-row:1/3}.equals{display:none}.result{grid-column:2/5;margin-top:.15rem}.result:before{content:'=';position:absolute;left:-25px;color:#d9bd72;font:1.3rem Georgia}.rank-card{grid-template-columns:30px 1fr;min-height:60px;padding:.5rem}.rank-card img{width:28px;height:28px}.rank-card strong,.material-copy strong{font-size:.72rem}.material-requirement{min-height:60px;padding:.3rem}.material-card{width:30px;height:42px}.material-rank{width:12px;height:12px}.material-copy small{font-size:.57rem}.operator{font-size:1.35rem}.evolution-note{font-size:.8rem}.stars{font-size:.5rem}}
+</style>
+
+<style>
+  .recipe {
+    grid-template-columns: 58px 110px 38px minmax(180px, 240px) 38px 110px;
+    justify-content: center;
+    gap: .75rem;
+    padding-block: 1rem;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .rank-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: .55rem;
+    min-height: 0;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  .hero-card {
+    position: relative;
+    display: block;
+    width: 82px;
+    height: 110px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 7px;
+    background: #080a10;
+    box-shadow: 0 0 14px color-mix(in srgb, var(--tone) 25%, transparent), 0 5px 12px rgba(0,0,0,.5);
+  }
+  .rank-card .hero-card-portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    filter: none;
+  }
+  .rank-card .hero-card-rank {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    left: auto !important;
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 4px #000);
+    z-index: 4;
+  }
+  .rank-card > strong, .material-copy strong { display: block; width: 100%; margin-top: .45rem !important; font-size: .78rem; text-align: center; }
+  .material-requirement {
+    flex-direction: column !important;
+    justify-content: center;
+    gap: .55rem;
+    min-height: 142px;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+  }
+  .material-cards { justify-content: center; gap: .45rem; }
+  .material-card {
+    width: 82px !important;
+    height: 110px !important;
+    border: 0;
+    border-radius: 7px;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--tone) 20%, transparent), 0 4px 10px rgba(0,0,0,.45);
+  }
+  .material-rank { width: 22px; height: 22px; top: 3px; left: 3px; z-index: 4; }
+  .material-rank { left: auto; right: 3px; }
+  .card-quality {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 52%;
+    object-fit: fill;
+    pointer-events: none;
+  }
+  .card-decoration {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+  }
+  .card-faction, .card-class {
+    position: absolute;
+    z-index: 2;
+    left: 1px;
+    width: 20px;
+    height: 23px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 3px #000);
+  }
+  .card-faction { top: 0; }
+  .card-class { top: 27px; }
+  .material-copy { align-items: center; width: 100%; flex: 0 0 auto; text-align: center; }
+  .material-copy strong { margin-top: 0 !important; }
+  .material-copy small { display: block; width: 100%; text-align: center; }
+  .stars { grid-column: auto; min-height: .7rem; }
+  .operator { display: flex; align-items: center; justify-content: center; font-size: 0; }
+  .operator img { display: block; width: 28px; height: 28px; object-fit: contain; }
+  .equals img { width: 31px; height: 22px; }
+  .is-fodder { background: #050509 url('/evolutions/A_UI_HeroEvolution_CardOther_Bg.png') center / 100% 100% no-repeat; }
+  .is-fodder .fodder-silhouette { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+
+  @media (max-width: 700px) {
+    .recipe { grid-template-columns: 25px 82px 22px minmax(100px, 1fr); gap: .35rem; }
+    .hero-card { width: 64px; height: 86px; }
+    .rank-card .hero-card-rank { width: 19px; height: 19px; }
+    .material-requirement { min-height: 112px; padding: 0 !important; }
+    .material-card { width: 64px !important; height: 86px !important; }
+    .material-rank { width: 16px; height: 16px; }
+    .card-faction, .card-class { width: 16px; height: 18px; left: 1px; }
+    .card-faction { top: 0; }
+    .card-class { top: 21px; }
+    .result { grid-column: 2 / 5; margin-top: .45rem; }
+  }
+</style>

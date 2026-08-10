@@ -276,6 +276,22 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
   },
   {
+    label: "Hero Evolution",
+    href: "/hero-evolution",
+    group: "content",
+    teaser: true,
+    sidebar: false,
+    description: {
+      en: "Every ascension step from a base copy to the highest evolution",
+      de: "Alle Aufstiegsschritte von der Basiskopie bis zur höchsten Evolution",
+      es: "Cada paso de ascensión desde una copia base hasta la evolución máxima",
+      ru: "Все этапы возвышения от базовой копии до максимальной эволюции",
+      zh: "从基础本体到最高进化的全部升阶步骤",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-10-01" },
+    icon: `<path d="M12 2l2.2 4.8L19 9l-4.8 2.2L12 16l-2.2-4.8L5 9l4.8-2.2z"/><path d="M5 15l1.2 2.8L9 19l-2.8 1.2L5 23l-1.2-2.8L1 19l2.8-1.2z"/><path d="M19 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>`,
+  },
+  {
     label: "Totems",
     href: "/totems",
     group: "content",
