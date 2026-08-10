@@ -11098,6 +11098,123 @@
       }
     ]
   },
+  "nidhogg": {
+    "id": "nidhogg",
+    "name": "Nidhogg",
+    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/nidhogg.webp",
+    "release": false,
+    "newHero": false,
+    "faction": "Starglint",
+    "role": "Nimble",
+    "class": "Archer",
+    "rarity": "Legendary",
+    "recommendedRelicLevel": 30,
+    "evolution": "Divine V",
+    "level": 300,
+    "stats": {
+      "might": 824000,
+      "hp": 2304340,
+      "atk": 298661,
+      "armor": 42634,
+      "magicRes": 39749,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 10,
+      "critRes": 0,
+      "critDmgBonus": 0,
+      "critDmgRed": 0,
+      "energy": 0,
+      "cooldownHaste": 0,
+      "atkSpdBonus": 0,
+      "pDmgBonus": 0,
+      "pDmgRed": 0,
+      "mDmgBonus": 0,
+      "mDmgRed": 0,
+      "healEff": 4,
+      "rechargeEff": 0,
+      "lifestealEff": 0,
+      "reflectEff": 0,
+      "effectRes": 0,
+      "effectHit": 0,
+      "controlRes": 0,
+      "controlBonus": 0,
+      "normalSkillPWR": 0,
+      "ultimatePWR": 0
+    },
+    "skills": [
+      {
+        "id": "skill_1",
+        "name": "Black Dragon Form",
+        "description": "Passive: Nidhogg possesses dragon bloodline and cannot be attached to by any unit. Active: Transforms into [Black Dragon Form], increasing ATK and max HP by 100%, dealing DMG equal to 400% ATK to all enemies, and silencing them for 5s via dragon might. Upon transforming, clears all positive and negative effects from himself. For each positive effect cleared, ATK and max HP increase by 40%, stacking up to 3 times. During [Black Dragon Form], ATK SPD increases by 150%, 40% of DMG dealt is converted to True DMG, and basic attacks hit all enemies in a frontal fan-shaped area for 150% ATK, adding [Dragon Rage] to hit enemies. Dragon Rage: each stack increases the target's DMG taken from Nidhogg by 3%, stacking up to 10 times. This form continuously drains Energy; when Energy is depleted, [Black Dragon Form] ends.",
+        "upgrades": {
+          "level2": "Deals DMG equal to 500% ATK to all enemies upon transformation.",
+          "level3": "Deals DMG equal to 600% ATK to all enemies upon transformation.",
+          "level4": "Each [Dragon Rage] stack increases the target's DMG taken from Nidhogg by 5%, stacking up to 10 times."
+        },
+        "damageType": "Physical",
+        "isUltimate": true
+      },
+      {
+        "id": "skill_2",
+        "name": "Root-Scorching Dragon Flame",
+        "description": "Deals DMG equal to 200% ATK to the nearest enemy and all enemies within 3 meters, reducing their Armor and M-RES by 20% for 12s. While in [Black Dragon Form], breathes dragon fire in a frontal fan-shaped area, dealing DMG equal to 250% ATK and burning enemies. During the burn, reduces Armor and M-RES by 30% and deals 50% ATK as burn DMG per sec for 8s.",
+        "upgrades": {
+          "level2": "Armor and M-RES reduction increased to 25% in normal state and 35% in [Black Dragon Form].",
+          "level3": "DMG increased to 250% ATK in normal state and 300% ATK in [Black Dragon Form].",
+          "level4": "Burn DMG in [Black Dragon Form] increased to 80% ATK per sec."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_3",
+        "name": "End-Time Dragon Might",
+        "description": "Passive: During [Black Dragon Form], when any unit approaches within 3 meters of Nidhogg, deals DMG equal to 250% ATK to all enemies within 5 meters and inflicts [Terror] on them for 2.5s. Terrified enemies additionally receive 3 stacks of [Dragon Rage]. This effect can only trigger once every 18s.",
+        "upgrades": {
+          "level2": "This effect can only trigger once every 16s. [Terror] duration increased to 3s.",
+          "level3": "Terrified enemies receive 15% increased DMG for 5s.",
+          "level4": "This effect can only trigger once every 14s."
+        },
+        "damageType": "Physical"
+      },
+      {
+        "id": "skill_4",
+        "name": "Abyssal Dragon Surge",
+        "description": "Deals DMG equal to 200% ATK to the nearest enemy and knocks them down. While in [Black Dragon Form], summons a ground eruption dealing DMG equal to 250% ATK to the nearest enemy and all enemies within 3 meters, knocking them down.",
+        "upgrades": {
+          "level2": "DMG increased to 225% ATK in normal state and 275% ATK in [Black Dragon Form].",
+          "level3": "In [Black Dragon Form], hit enemies receive 15% increased DMG for 6s.",
+          "level4": "DMG increased to 250% ATK in normal state and 300% ATK in [Black Dragon Form]."
+        },
+        "damageType": "Physical"
+      }
+    ],
+    "relic": {
+      "name": "Undying Dragon Scale",
+      "description": "Each time the Ultimate is cast, gains a Shield equal to 80% of max HP. While the Shield is active, DMG taken is reduced by 40%.",
+      "upgrades": {
+        "level2": "While the Shield generated by the Ultimate is active, Nidhogg is immune to control effects.",
+        "level3": "For every 3 [Dragon Rage] stacks applied to an enemy, that enemy is stunned for 2s. If the target is immune to control effects, instead deals True DMG equal to 200% ATK.",
+        "level4": "During [Black Dragon Form], 60% of DMG dealt is converted to True DMG."
+      }
+    },
+    "synergies": [],
+    "baseAttackRate": 0,
+    "bossUltimatesPer90s": 0,
+    "coreMechanic": {
+      "summary": "",
+      "depthRating": "",
+      "commonlyMisunderstood": false
+    },
+    "synergyLinks": [],
+    "virtueSets": [
+      {
+        "label": "",
+        "comment": "",
+        "virtues": []
+      }
+    ],
+    "synergyPartners": []
+  },
   "nuba": {
     "id": "nuba",
     "name": "Nuba",

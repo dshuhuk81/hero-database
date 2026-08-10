@@ -938,7 +938,7 @@ function renderPan(host, attrIds, weights, probs, opts = {}){
   const seg = document.getElementById("poolSeg");
   const tbody = document.querySelector("#poolTable tbody");
   let slot = 1;
-  const famLabel = k => FAM_BY_KEY[k].t + " · " + FAM_BY_KEY[k].el;
+  const famLabel = k => FAM_BY_KEY[k].t + " · Slot " + FAM_BY_KEY[k].s;
   const draw = () => {
     segment(seg, [1,2,3,4].map(s => ({ label: "Slot " + s, value: s })), slot, v => { slot = v; draw(); });
     tbody.textContent = "";
