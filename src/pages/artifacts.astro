@@ -1,112 +1,1275 @@
 ---
 export const prerender = true;
-
 import Base from "../layouts/Base.astro";
-import refinementGuide from "../../data/artifact/refine-guide.html?raw";
-
-const styleMatch = refinementGuide.match(/<style>([\s\S]*?)<\/style>/i);
-const scriptMatch = refinementGuide.match(/<script>([\s\S]*?)<\/script>/i);
-
-const guideStyles = (styleMatch?.[1] ?? "")
-  .replace("body{", ".artifacts-page{");
-
-const guideContent = refinementGuide
-  .slice(refinementGuide.indexOf("</style>") + "</style>".length, refinementGuide.indexOf("<script>"))
-  .replace(/<header class="masthead">[\s\S]*?<\/header>/i, "")
-  .replace(/\s*<a href="#notes">Notes<\/a>/i, "")
-  .replace(/<section id="notes">[\s\S]*?<\/section>/i, "")
-  .replace(/<footer>[\s\S]*?<\/footer>/i, "");
 ---
 
 <Base
   title="Artifact Refinement Guide | Motto Immortal"
-  description="Understand Artifact Awakening and Refinement, compare stat pools and materials, and plan a refinement with the interactive simulator."
+  description="Choose artifact effects for a hero build, understand Awakening and Refinement, and plan exact materials with the interactive simulator."
 >
-  <Fragment slot="head">
-    <style is:inline set:html={guideStyles}></style>
-  </Fragment>
-
   <main class="artifacts-page">
-    <Fragment set:html={guideContent} />
+
+
+
+
+<nav class="jump" aria-label="Sections">
+  <div class="wide">
+    <a href="#start">Start here</a>
+    <a href="#how">How it works</a>
+    <a href="#slots">Slots &amp; stats</a>
+    <a href="#materials">Materials</a>
+    <a href="#planner">Zeus plan</a>
+    <a href="#sim">Advanced calculator</a>
+    <a href="#plan">The plan</a>
+    <a href="#dont">Pitfalls</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════ HERO ══ -->
+<div class="hero">
+  <div class="wide hero-grid">
+    <div>
+      <span class="eyebrow">Refinement Effect</span>
+      <h1>Every refine is a <em>weighing</em>, not a dice roll.</h1>
+      <p class="lede">Your artifact's twelve possible stats each sit on a scale at weight&nbsp;1000.
+        Materials add and subtract weight. The game then hands out your Awakened Effects in
+        proportion. Understand the scale and the whole system stops being random.</p>
+      <div class="hero-facts">
+        <div class="fact"><span class="n">12</span><span class="l">candidate stats, fixed by artifact slot</span></div>
+        <div class="fact"><span class="n">1000</span><span class="l">starting weight, every candidate</span></div>
+        <div class="fact"><span class="n">23×</span><span class="l">what the last open slot costs vs. the first</span></div>
+      </div>
+    </div>
+    <div class="plate" id="heroPlate">
+      <div class="plate-hd">
+        <h3>The scale, live</h3>
+        <span class="note" id="heroNote">no materials</span>
+      </div>
+      <div class="plate-bd" style="padding:.5rem">
+        <div class="pan" id="heroPan"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="start">
+  <div class="wrap sec-hd">
+    <span class="eyebrow">Start with your hero</span>
+    <h2>Choose the result first, then refine</h2>
+    <p>You do not need to identify an invisible “Tier 1 artifact” in your inventory. Use the artifact’s equipped position and count its visible Awakened Effects.</p>
+  </div>
+  <div class="wide stack">
+    <div class="term-grid" aria-label="Artifact terms used in this guide">
+      <article class="plate term-card">
+        <span class="term-number">1–4</span>
+        <h3>Equipped position</h3>
+        <p>The artifact’s place on the hero. This decides which 12 effects can appear. We call these <b>Slot 1</b> through <b>Slot 4</b>.</p>
+      </article>
+      <article class="plate term-card">
+        <span class="term-number">●●●○</span>
+        <h3>Awakened Effect count</h3>
+        <p>Count the effect lines shown on the artifact. One line means 1 effect; four lines means 4 effects. Elsewhere, the game and this tool may call that Tier 1–4.</p>
+      </article>
+      <article class="plate term-card">
+        <span class="term-number">T1–T5</span>
+        <h3>Material strength</h3>
+        <p>A stone’s tier only tells you how strongly that material changes the odds. It is not the artifact’s equipped position or an effect label.</p>
+      </article>
+    </div>
+
+    <article class="zeus-planner" id="planner">
+      <div class="zeus-stage">
+        <img src="/features/divine-throne/zeus.png" alt="Zeus" />
+        <div class="zeus-stage-copy">
+          <span class="eyebrow">Example build</span>
+          <h3>Zeus · maximum DPS</h3>
+          <p>Build damage on positions 1, 3 and 4. Position 2 cannot roll offensive effects, so use it to keep Zeus alive.</p>
+        </div>
+      </div>
+
+      <div class="unlock-path" aria-labelledby="unlock-title">
+        <div>
+          <span class="section-label">Do this first</span>
+          <h3 id="unlock-title">Make four effect lines visible</h3>
+          <p>Use the Awakening Stone that matches your artifact’s Hefty, Nimble or Arcane type. Identify the next stone by its frame—not by guessing the artifact’s tier.</p>
+        </div>
+        <ol class="stone-path" aria-label="Awakening Stone order">
+          <li><img src="/artifacts/artifact-awakeT1.png" alt="First Awakening Stone, triangular frame" /><span>1st effect</span></li>
+          <li><img src="/artifacts/artifact-awakeT2.png" alt="Second Awakening Stone, diamond frame" /><span>2nd effect</span></li>
+          <li><img src="/artifacts/artifact-awakeT3.png" alt="Third Awakening Stone, pentagonal frame" /><span>3rd effect</span></li>
+          <li><img src="/artifacts/artifact-awakeT4.png" alt="Fourth Awakening Stone, star frame" /><span>4th effect</span></li>
+        </ol>
+      </div>
+
+      <div class="loadout-grid">
+        <article class="loadout-card">
+          <header><span class="slot-badge">01</span><div><span>Equipped position</span><h3>Core damage</h3></div></header>
+          <ul class="target-effects"><li>ATK %</li><li>CRIT Rate</li><li>CRIT DMG</li><li>M-DMG</li></ul>
+          <div class="material-picks">
+            <span>Feed quality 12–13</span>
+            <figure><img src="/artifacts/artifact-31.png" alt="Arcane artifact from position 1" /><figcaption>Arcane · 1</figcaption></figure>
+            <figure><img src="/artifacts/artifact-33.png" alt="Arcane artifact from position 3" /><figcaption>Arcane · 3</figcaption></figure>
+          </div>
+        </article>
+        <article class="loadout-card">
+          <header><span class="slot-badge">02</span><div><span>Equipped position</span><h3>Survival</h3></div></header>
+          <ul class="target-effects"><li>HP %</li><li>Armor %</li><li>M-RES %</li><li>CRIT DMG RED</li></ul>
+          <div class="material-picks">
+            <span>Feed quality 12–13</span>
+            <figure><img src="/artifacts/artifact-14.png" alt="Hefty artifact from position 4" /><figcaption>Hefty · 4</figcaption></figure>
+            <figure><img src="/artifacts/artifact-13.png" alt="Hefty artifact from position 3" /><figcaption>Hefty · 3</figcaption></figure>
+            <figure><img src="/artifacts/artifact-24.png" alt="Nimble artifact from position 4" /><figcaption>Nimble · 4</figcaption></figure>
+          </div>
+        </article>
+        <article class="loadout-card">
+          <header><span class="slot-badge">03</span><div><span>Equipped position</span><h3>Ultimate cycle</h3></div></header>
+          <ul class="target-effects"><li>ATK %</li><li>Ultimate Power</li><li>Cooldown Haste</li><li>Effect Hit</li></ul>
+          <div class="material-picks">
+            <span>Feed quality 12–13</span>
+            <figure><img src="/artifacts/artifact-31.png" alt="Arcane artifact from position 1" /><figcaption>Arcane · 1</figcaption></figure>
+            <figure><img src="/artifacts/artifact-21.png" alt="Nimble artifact from position 1" /><figcaption>Nimble · 1</figcaption></figure>
+            <figure><img src="/artifacts/artifact-32.png" alt="Arcane artifact from position 2" /><figcaption>Arcane · 2</figcaption></figure>
+          </div>
+        </article>
+        <article class="loadout-card">
+          <header><span class="slot-badge">04</span><div><span>Equipped position</span><h3>Crit damage</h3></div></header>
+          <ul class="target-effects"><li>CRIT Rate</li><li>CRIT DMG</li><li>M-DMG</li><li>ATK SPD</li></ul>
+          <div class="material-picks">
+            <span>Feed quality 12–13</span>
+            <figure><img src="/artifacts/artifact-33.png" alt="Arcane artifact from position 3" /><figcaption>Arcane · 3</figcaption></figure>
+            <figure><img src="/artifacts/artifact-31.png" alt="Arcane artifact from position 1" /><figcaption>Arcane · 1</figcaption></figure>
+            <figure><img src="/artifacts/artifact-23.png" alt="Nimble artifact from position 3" /><figcaption>Nimble · 3</figcaption></figure>
+          </div>
+        </article>
+      </div>
+
+      <p class="planner-limit"><b>What this plan guarantees:</b> the fodder shown supports the listed targets without a major penalty to another listed target. Spare artifacts still change odds rather than guarantee all four effects, so there is no honest fixed quantity to display. Use more quality 12–13 copies when available, then keep the best roll.</p>
+
+      <div class="finish-path">
+        <div><img src="/artifacts/refining-stone.png" alt="Refining Stone" /><span><b>Refine</b> with one Refining Stone per attempt</span></div>
+        <span aria-hidden="true">→</span>
+        <div><img src="/artifacts/fate-lock.png" alt="Fate lock" /><span><b>Lock</b> only the result you will keep</span></div>
+        <span aria-hidden="true">→</span>
+        <div><img src="/artifacts/enhancement-hammer.png" alt="Enhancement Hammer" /><span><b>Enhance last</b>, after effect names are final</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ HOW ══ -->
+<section id="how">
+  <div class="wrap sec-hd">
+    <span class="eyebrow">The mechanism</span>
+    <h2>One formula runs the entire system</h2>
+    <p>There is no hidden pity, no streak protection, no per-material RNG. There is a weight per stat,
+      and a division.</p>
+  </div>
+  <div class="wrap stack mechanism-stack">
+    <div class="callout">
+      <b>chance of a stat = its weight × open slots ÷ total weight</b><br>
+      <span style="color:var(--ink-soft)">“Open effects” is the number of visible Awakened Effects minus the effects you've
+      locked. An artifact with four visible effects and nothing locked has 4 open effects, so all twelve chances add up
+      to 400&nbsp;%&thinsp;— you are drawing four stats, not one.</span>
+    </div>
+    <p>Two rules bend that formula at the extremes, and between them they explain every strange number
+      you have seen in the game:</p>
+    <div class="grid2">
+      <div class="plate"><div class="plate-hd"><h3>The 1&nbsp;% floor</h3></div>
+        <div class="plate-bd">
+          <p style="font-size:.94rem">Any stat that falls below <b>1&nbsp;%</b> is removed from the pool
+          entirely. Its weight leaves the total, so everything else gets more likely. This is how a
+          single strong material can force a guaranteed result — not by being big, but by making its
+          rivals irrelevant.</p>
+        </div>
+      </div>
+      <div class="plate"><div class="plate-hd"><h3>The 100&nbsp;% pin</h3></div>
+        <div class="plate-bd">
+          <p style="font-size:.94rem">Any stat that reaches <b>100&nbsp;%</b> is locked in, removed from
+          the pool, and the open-slot count drops by one. The formula then runs again for the stats
+          that are left. Pinning is sequential, which is why the <em>last</em> slot behaves so
+          differently from the first.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ SLOTS ══ -->
+<section id="slots">
+  <div class="wrap sec-hd">
+    <span class="eyebrow">Rule one</span>
+    <h2>Your artifact's slot decides which stats exist</h2>
+    <p>Not the number of Awakened Effects. Not whether it is Hefty, Nimble or Arcane. <b>The equipped slot, and only the equipped slot.</b>
+      An artifact equipped in Slot 2 has no CRIT Rate in its pool — no amount of refining will ever produce it.
+      The visible Awakened Effect count only decides <em>how many</em> of the twelve you get to hold.</p>
+  </div>
+  <div class="wide stack">
+    <div class="plate">
+      <div class="plate-hd">
+        <h3>The four pools</h3>
+        <span class="note">ceiling = value at enhancement level 20</span>
+      </div>
+      <div class="plate-bd">
+        <div class="ctl-row" style="margin-bottom:var(--s3)">
+          <div class="ctl"><label for="poolSeg">Artifact slot</label>
+            <div class="seg" id="poolSeg" role="group" aria-label="Artifact slot"></div>
+          </div>
+        </div>
+        <div class="scroll"><table id="poolTable">
+          <thead><tr><th>Stat</th><th class="num">Ceiling</th><th>Also on slot</th>
+            <th>Best fodder <span style="text-transform:none">(+200)</span></th>
+            <th>Never feed <span style="text-transform:none">(−200)</span></th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </div>
+    <div class="grid3 key-facts">
+      <div><b>Slot 1</b> is the only slot that can hold ATK&nbsp;%, CRIT Rate,
+        CRIT DMG and P‑DMG at the same time. The physical-DPS slot.</div>
+      <div><b>Slot 4</b> has the crit package but no ATK&nbsp;% — its fourth
+        offensive stat is ATK SPD or Hit Bonus instead.</div>
+      <div><b>Slots 2 &amp; 4</b> carry HP, Armor, Healing and Recharge.
+        <b>Slots 2 &amp; 3</b> cannot hold a crit stat at all.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ MATERIALS ══ -->
+<section id="materials">
+  <div class="wrap sec-hd">
+    <span class="eyebrow">Rule two</span>
+    <h2>Two kinds of material, wildly different power</h2>
+    <p>Spare artifacts nudge the scale. Refine stones move it. Knowing the ratio saves you from
+      feeding your inventory into a rounding error.</p>
+  </div>
+  <div class="wide stack">
+
+    <div class="plate">
+      <div class="plate-hd"><h3>The twelve artifacts</h3>
+        <span class="note">quality 13 art · this is the whole roster</span></div>
+      <div class="plate-bd" style="padding:1px">
+        <div class="artgrid" id="artGrid"></div>
+      </div>
+    </div>
+
+
+    <div class="plate">
+      <div class="plate-hd"><h3>Awakening stones — the other family</h3>
+        <span class="note">these unlock the slots · fully sourced</span></div>
+      <div class="plate-bd">
+        <div class="scroll"><table>
+          <thead><tr><th>Item</th><th>What it does</th><th>Where it comes from</th></tr></thead>
+          <tbody id="awakeItemRows"></tbody>
+        </table></div>
+        <p style="font-size:.88rem;color:var(--ink-soft);margin-top:var(--s3)">
+          Each comes in a Hefty / Nimble / Arcane version matching the artifact's type — red for Hefty,
+          green for Nimble, blue for Arcane, with the frame growing triangle → diamond → pentagon → star
+          from T1 to T4. The idle chests (the <code>?</code> ones) roll one of the three at equal odds.
+          Crafting is 3 lower-tier stones plus a catalyst.
+          <b>Because Refining Stones are an idle drop, rejecting a bad refine is cheap</b> — that
+          changes the whole strategy below.</p>
+      </div>
+    </div>
+
+    <div class="plate">
+      <div class="plate-hd"><h3>Spare artifacts as fodder</h3>
+        <span class="note">12 profiles · quality only scales them</span></div>
+      <div class="plate-bd">
+        <p style="font-size:.94rem; margin-bottom:var(--s3)">Every artifact pushes <b>two stats up hard</b>,
+          two up gently, and <b>two down hard</b> — determined purely by its type and slot. There are only
+          twelve distinct profiles in the whole game. At quality 13 that is +200 / +100 / −200, with
+          −40 to everything else.</p>
+        <div class="scroll"><table id="famTable">
+          <thead><tr><th>Artifact</th><th>Pushes up hard +200</th>
+            <th>Pushes up +100</th><th>Pushes down −200</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <p style="font-size:.82rem;color:var(--ink-faint);margin-top:var(--s2)">
+          Icons are the quality‑13 art. Lower qualities are the same object in a plainer frame, with
+          proportionally smaller weights.</p>
+      </div>
+    </div>
+
+    <div class="grid2 key-facts key-facts-warn">
+      <div><b>Below quality 12, don't bother.</b> A quality‑8 artifact moves a stat
+        by roughly one percentage point. Twenty quality‑13 artifacts raise your expected hits on a
+        four-stat goal from 1.33 to about 2.07 — real, but nowhere near a guarantee.</div>
+      <div><b>CRIT Rate and P‑DMG fight each other.</b> An Arcane artifact from Slot&nbsp;1 is the
+        only +200 source for CRIT Rate and it is −200 on P‑DMG. The +100 alternative,
+        Hefty artifact from Slot&nbsp;1, is −200 on CRIT DMG. No fodder raises CRIT Rate for free.</div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ══════════════════════════════════════════════════ SIMULATOR ══ -->
+<section id="sim">
+  <div class="wrap sec-hd">
+    <span class="eyebrow">Optional advanced tool</span>
+    <h2>Calculate a custom inventory</h2>
+    <p>The Zeus plan above is enough for the normal use case. Open this calculator only when you want exact odds for different effects or materials you already own.</p>
+  </div>
+
+  <div class="wide">
+    <details class="advanced-tool">
+      <summary><span>Open the exact refinement calculator</span><small>For custom builds and unusual inventories</small></summary>
+    <div class="plate">
+      <div class="plate-hd">
+        <h3>Setup</h3>
+        <span class="note" id="simNote"></span>
+      </div>
+      <div class="plate-bd">
+        <div class="ctl-row">
+          <div class="ctl"><label for="simSlot">Artifact slot</label>
+            <div class="seg" id="simSlot" role="group" aria-label="Artifact slot"></div></div>
+          <div class="ctl"><label for="simTier">Visible Awakened Effects</label>
+            <div class="seg" id="simTier" role="group" aria-label="Visible Awakened Effect count"></div></div>
+          <div class="ctl"><label for="simStone">Targeting Stone · match the frame</label>
+            <div class="seg" id="simStone" role="group" aria-label="Targeting Stone strength by frame"></div></div>
+          <div class="ctl"><label for="simQual">Fodder quality</label>
+            <div class="seg" id="simQual" role="group" aria-label="Fodder quality"></div></div>
+          <div class="ctl"><label>&nbsp;</label>
+            <div class="seg"><button type="button" id="simReset">Clear all</button></div></div>
+        </div>
+      </div>
+
+      <div class="plate-hd" style="border-top:1px solid var(--rule)">
+        <h3>Result</h3>
+        <span class="note">click the padlock to lock an effect · locking costs one open slot</span>
+      </div>
+      <div class="plate-bd" style="padding:.5rem">
+        <div class="pan" id="simPan"></div>
+      </div>
+      <div class="readout" id="simReadout"></div>
+
+      <div class="plate-hd" style="border-top:1px solid var(--rule)"><h3>Load materials</h3></div>
+      <div class="plate-bd">
+        <div class="grid2">
+          <div>
+            <p style="font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+              text-transform:uppercase;color:var(--ink-faint);margin-bottom:var(--s2)">
+              Refine stones <span id="stoneTierLabel"></span></p>
+            <div class="scroll"><table id="stoneTable"><tbody></tbody></table></div>
+          </div>
+          <div id="simulator-fodder">
+            <p style="font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+              text-transform:uppercase;color:var(--ink-faint);margin-bottom:var(--s2)">
+              Spare artifacts <span id="qualLabel"></span></p>
+            <div class="scroll"><table id="fodderTable"><tbody></tbody></table></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plate-hd" style="border-top:1px solid var(--rule)">
+        <h3>Goal planner</h3>
+        <span class="note">tick the stats you want, get the exact stone count</span>
+      </div>
+      <div class="plate-bd">
+        <div id="goalPicker" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:var(--s3)"></div>
+        <div id="goalOut"></div>
+      </div>
+    </div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ PLAN ══ -->
+<section id="plan">
+  <div class="wrap sec-hd">
+    <span class="eyebrow">The playbook</span>
+    <h2>How to actually build the artifact you want</h2>
+    <p>Two routes, because nobody has confirmed a source for refine stones. Start with the one you can
+      run today.</p>
+  </div>
+  <div class="wrap stack">
+
+    <div class="plate">
+      <div class="plate-hd"><h3>Route A — spare artifacts only</h3>
+        <span class="note">works today · no refine stones needed</span></div>
+      <div class="plate-bd">
+        <ol class="steps">
+          <li><div><h4>Unlock four Awakened Effects before you refine anything</h4>
+            <p>This is free value and the biggest single lever on the page. Four open slots put every
+            target at 33.3&nbsp;% before you add one material — with one visible effect it is 8.3&nbsp;%. Awakening
+            Stones come from idle drops; craft upward 3-to-1 if you are short of the next stone.</p></div></li>
+          <li><div><h4>Feed only quality 12–13 fodder, and only families that agree with each other</h4>
+            <p>For a Slot&nbsp;1 physical DPS, use a <b>Nimble artifact from Slot&nbsp;1</b>: +200 to ATK&nbsp;% and
+            +200 to P‑DMG at once, with both of its penalties landing on stats you weren't chasing.
+            Ten of them puts ATK&nbsp;% and P‑DMG at <b>84.5&nbsp;% each</b> with four slots open.</p></div></li>
+          <li><div><h4>Reject rolls you don't like</h4>
+            <p>Refining Stones drop from idle rewards from campaign stage 3001, so retrying is cheap.
+            You lose the loaded fodder, not your progress.</p></div></li>
+          <li><div><h4>Lock last, not first</h4>
+            <p>Every Fate lock costs you an open slot and makes what remains far harder. Lock only when
+            you have stopped refining that artifact.</p></div></li>
+          <li><div><h4>Only now spend Hammers on levels</h4>
+            <p>Refining re-rolls each effect's enhancement level, drawn from 1 up to its current value.
+            Every level bought before the stats are final is thrown away.</p></div></li>
+        </ol>
+        <p class="expectation">
+          <b>Honest expectation:</b> around <b>two of four</b> target stats. Twenty quality‑13 artifacts
+          move the expected hit count from 1.33 to 2.07. Fodder is a nudge, and the nudge has a ceiling.
+        </p>
+      </div>
+    </div>
+
+    <div class="plate">
+      <div class="plate-hd"><h3>Route B — if refine stones ever become available</h3>
+        <span class="note">example uses the pentagon-framed T3 Targeting Stone</span></div>
+      <div class="plate-bd">
+        <ol class="steps">
+          <li><div><h4>Unlock four effects first, same as above</h4>
+            <p>Pinning one stat needs 1 T3 stone at four open slots, and 23 at one open slot.</p></div></li>
+          <li><div><h4>Refine with stones on three of your four targets</h4>
+            <p>Two T3 stones per target — six total — pins all three at 100&nbsp;%. The fourth effect is
+            a free random draw from the nine left over.</p></div></li>
+          <li><div><h4>Fate-lock those three</h4>
+            <p>Three of item 1035, refunded when you unlock. Effectively free; you just need three at once.</p></div></li>
+          <li><div><h4>Refine again for the fourth</h4>
+            <p>One slot open, so this is the expensive one — 23 T3 stones guaranteed, or fewer and retry.</p></div></li>
+        </ol>
+        <div class="scroll" style="margin-top:var(--s3)"><table>
+          <thead><tr><th>Policy for the last stat</th><th class="num">Hit rate</th>
+            <th class="num">T3 stones, whole artifact</th><th class="num">Refining Stones</th></tr></thead>
+          <tbody>
+            <tr><td class="t-strong">1 stone per attempt, retry</td><td class="num">31.2 %</td><td class="num t-strong">9.2</td><td class="num">4.2</td></tr>
+            <tr><td>3 stones per attempt, retry</td><td class="num">54.2 %</td><td class="num">11.5</td><td class="num">2.9</td></tr>
+            <tr><td>8 stones per attempt, retry</td><td class="num">75.0 %</td><td class="num">16.7</td><td class="num">2.3</td></tr>
+            <tr><td>23 stones, guaranteed</td><td class="num">100 %</td><td class="num">29.0</td><td class="num t-strong">2.0</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:.9rem;color:var(--ink-soft);margin-top:var(--s3)">
+          The two costs pull opposite ways: <b>stones are cheapest at one per attempt, Refining Stones
+          are cheapest by stacking.</b> Since Refining Stones are farmable and stones are not, the
+          one-per-attempt row is almost always right. Note this is the opposite of Hammer enhancement,
+          where a failure costs you a level — a failed refine costs only the materials.</p>
+      </div>
+    </div>
+
+    <div class="plate" style="margin-top:var(--s3)">
+      <div class="plate-hd"><h3>Target sets worth building</h3></div>
+      <div class="plate-bd"><div class="scroll"><table>
+        <thead><tr><th>Role</th><th>Slot</th><th>The four to pin</th></tr></thead>
+        <tbody>
+          <tr><td class="t-strong">Physical DPS</td><td>Slot 1</td><td>ATK %, CRIT Rate, CRIT DMG Bonus, P‑DMG Bonus</td></tr>
+          <tr><td class="t-strong">Physical DPS</td><td>Slot 4</td><td>CRIT Rate, CRIT DMG Bonus, P‑DMG Bonus, ATK SPD Bonus</td></tr>
+          <tr><td class="t-strong">Magic DPS</td><td>Slot 1</td><td>ATK %, CRIT Rate, CRIT DMG Bonus, M‑DMG Bonus</td></tr>
+          <tr><td class="t-strong">Ult cycler</td><td>Slot 1 or Slot 3</td><td>Ultimate Power, Cooldown Haste, ATK %, Effect Hit</td></tr>
+          <tr><td class="t-strong">Controller</td><td>Slot 3</td><td>Control Bonus, Effect Hit, ATK %, Cooldown Haste</td></tr>
+          <tr><td class="t-strong">Tank</td><td>Slot 2</td><td>HP %, Armor %, M‑RES %, CRIT DMG RED</td></tr>
+          <tr><td class="t-strong">Healer</td><td>Slot 2</td><td>Healing Eff., Recharge Eff., HP %, Control RES</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:.9rem;color:var(--ink-soft);margin-top:var(--s3)">
+        If you can only force three, <b>drop ATK&nbsp;% first</b> — it caps at 20&nbsp;% at level 20,
+        while CRIT DMG Bonus caps at 50&nbsp;%.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ DON'TS ══ -->
+<section id="dont">
+  <div class="wrap sec-hd">
+    <span class="eyebrow">Pitfalls</span>
+    <h2>Four ways to waste a lot of material</h2>
+  </div>
+  <div class="wrap">
+    <ul class="donts">
+      <li><b>Don't lock early.</b> Every Fate lock removes one open slot, and fewer open slots make
+        everything that remains dramatically more expensive. Lock only between the two staged refines.</li>
+      <li><b>Don't refine an artifact you've already enhanced.</b> Refining re-rolls each effect's
+        level, drawn from 1 up to its current level — so it halves your invested Hammers on average
+        and can never raise them.</li>
+      <li><b>Don't trust the Quick Apply button.</b> It optimises only the stat you have filtered and
+        happily loads fodder that pushes your three other targets down.</li>
+      <li><b>Don't read “89&nbsp;% each” as “89&nbsp;% for the set”.</b> Those are per-stat chances.
+        Eight T4 stones spread across four targets shows 89&nbsp;% per stat but lands all four together
+        only about 43&nbsp;% of the time.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════ NOTES ══ -->
+
+
+
+
+
   </main>
 
-  <script is:inline set:html={scriptMatch?.[1] ?? ""}></script>
+  <script is:inline>
+
+/* ═══════════════════════════════ data ═══════════════════════════════════ */
+const D = {"POOLS":{"1":[1901,905,906,918,919,924,925,926,932,945,915,949],"2":[1902,1941,1942,904,907,908,909,927,928,929,940,944],"3":[1901,1942,904,907,908,909,918,926,932,940,945,949],"4":[1902,1941,905,906,919,924,925,927,928,929,944,915]},"FAM":[{"k":"11","t":"Hefty","s":1,"el":"Wind","p2":[918,926],"p1":[906,929],"m2":[905,919],"id13":130101},{"k":"12","t":"Hefty","s":2,"el":"Water","p2":[1902,908],"p1":[927,928],"m2":[906,915],"id13":130102},{"k":"13","t":"Hefty","s":3,"el":"Flame","p2":[1942,905],"p1":[918,940],"m2":[926,944],"id13":130103},{"k":"14","t":"Hefty","s":4,"el":"Terra","p2":[1941,907],"p1":[1902,909],"m2":[1901,949],"id13":130104},{"k":"21","t":"Nimble","s":1,"el":"Wind","p2":[1901,925],"p1":[926,915],"m2":[1942,924],"id13":130201},{"k":"22","t":"Nimble","s":2,"el":"Water","p2":[904,927],"p1":[925,932],"m2":[908,929],"id13":130202},{"k":"23","t":"Nimble","s":3,"el":"Flame","p2":[928,915],"p1":[905,919],"m2":[1902,907],"id13":130203},{"k":"24","t":"Nimble","s":4,"el":"Terra","p2":[909,940],"p1":[1941,945],"m2":[927,928],"id13":130204},{"k":"31","t":"Arcane","s":1,"el":"Wind","p2":[906,949],"p1":[1901,924],"m2":[1941,925],"id13":130301},{"k":"32","t":"Arcane","s":2,"el":"Water","p2":[929,945],"p1":[904,944],"m2":[932,940],"id13":130302},{"k":"33","t":"Arcane","s":3,"el":"Flame","p2":[919,924],"p1":[1942,949],"m2":[909,918],"id13":130303},{"k":"34","t":"Arcane","s":4,"el":"Terra","p2":[932,944],"p1":[907,908],"m2":[904,945],"id13":130304}],"STAT":{"904":{"n":"Dodge Rate","cap":40,"slots":[2,3],"p2":"22","p1":"32","m2":"34","st":[4105,4205,4305,4405,4505]},"905":{"n":"Hit Bonus","cap":40,"slots":[1,4],"p2":"13","p1":"23","m2":"11","st":[4106,4206,4306,4406,4506]},"906":{"n":"CRIT Rate","cap":40,"slots":[1,4],"p2":"31","p1":"11","m2":"12","st":[4107,4207,4307,4407,4507]},"907":{"n":"CRIT RES","cap":40,"slots":[2,3],"p2":"14","p1":"34","m2":"23","st":[4108,4208,4308,4408,4508]},"908":{"n":"M-DMG RED Rate","cap":30,"slots":[2,3],"p2":"12","p1":"34","m2":"22","st":[4109,4209,4309,4409,4509]},"909":{"n":"P-DMG RED Rate","cap":30,"slots":[2,3],"p2":"24","p1":"14","m2":"33","st":[4110,4210,4310,4410,4510]},"915":{"n":"ATK SPD Bonus","cap":20,"slots":[1,4],"p2":"23","p1":"21","m2":"12","st":[4123,4223,4323,4423,4523]},"918":{"n":"Lifesteal Effectiveness","cap":40,"slots":[1,3],"p2":"11","p1":"13","m2":"33","st":[4111,4211,4311,4411,4511]},"919":{"n":"CRIT DMG Bonus","cap":50,"slots":[1,4],"p2":"33","p1":"23","m2":"11","st":[4112,4212,4312,4412,4512]},"924":{"n":"M-DMG Bonus","cap":30,"slots":[1,4],"p2":"33","p1":"31","m2":"21","st":[4113,4213,4313,4413,4513]},"925":{"n":"P-DMG Bonus","cap":30,"slots":[1,4],"p2":"21","p1":"22","m2":"31","st":[4114,4214,4314,4414,4514]},"926":{"n":"Cooldown Haste","cap":20,"slots":[1,3],"p2":"11","p1":"21","m2":"13","st":[4115,4215,4315,4415,4515]},"927":{"n":"Healing Effectiveness","cap":40,"slots":[2,4],"p2":"22","p1":"12","m2":"24","st":[4116,4216,4316,4416,4516]},"928":{"n":"Recharge Effectiveness","cap":40,"slots":[2,4],"p2":"23","p1":"12","m2":"24","st":[4117,4217,4317,4417,4517]},"929":{"n":"Control RES","cap":50,"slots":[2,4],"p2":"32","p1":"11","m2":"22","st":[4118,4218,4318,4418,4518]},"932":{"n":"Control Bonus","cap":50,"slots":[1,3],"p2":"34","p1":"22","m2":"32","st":[4119,4219,4319,4419,4519]},"940":{"n":"CRIT DMG RED","cap":50,"slots":[2,3],"p2":"24","p1":"13","m2":"32","st":[4120,4220,4320,4420,4520]},"944":{"n":"Effect RES","cap":50,"slots":[2,4],"p2":"34","p1":"32","m2":"13","st":[4121,4221,4321,4421,4521]},"945":{"n":"Effect Hit","cap":50,"slots":[1,3],"p2":"32","p1":"24","m2":"34","st":[4122,4222,4322,4422,4522]},"949":{"n":"Ultimate Power","cap":20,"slots":[1,3],"p2":"31","p1":"33","m2":"14","st":[4124,4224,4324,4424,4524]},"1901":{"n":"ATK %","cap":20,"slots":[1,3],"p2":"21","p1":"31","m2":"14","st":[4101,4201,4301,4401,4501]},"1902":{"n":"HP %","cap":20,"slots":[2,4],"p2":"12","p1":"14","m2":"23","st":[4102,4202,4302,4402,4502]},"1941":{"n":"Armor %","cap":30,"slots":[2,4],"p2":"14","p1":"24","m2":"31","st":[4103,4203,4303,4403,4503]},"1942":{"n":"M-RES %","cap":30,"slots":[2,3],"p2":"13","p1":"33","m2":"21","st":[4104,4204,4304,4404,4504]}},"QS":{"1":[2,1,-2,0],"2":[4,2,-4,0],"3":[6,3,-6,0],"4":[8,4,-8,-1],"5":[10,5,-10,-2],"6":[20,10,-20,-4],"7":[30,15,-30,-6],"8":[40,20,-40,-8],"9":[60,30,-60,-12],"10":[80,40,-80,-16],"11":[100,50,-100,-20],"12":[150,75,-150,-30],"13":[200,100,-200,-40]},"STONE_ADD":{"1":1000,"2":2000,"3":4000,"4":8000,"5":100000}};
+
+const ICON = {"11":"/artifacts/artifact-11.png","21":"/artifacts/artifact-21.png","31":"/artifacts/artifact-31.png","12":"/artifacts/artifact-12.png","22":"/artifacts/artifact-22.png","32":"/artifacts/artifact-32.png","13":"/artifacts/artifact-13.png","23":"/artifacts/artifact-23.png","33":"/artifacts/artifact-33.png","14":"/artifacts/artifact-14.png","24":"/artifacts/artifact-24.png","34":"/artifacts/artifact-34.png","awakeT1":"/artifacts/artifact-awakeT1.png","awakeT2":"/artifacts/artifact-awakeT2.png","awakeT3":"/artifacts/artifact-awakeT3.png","awakeT4":"/artifacts/artifact-awakeT4.png","awakeNimble":"/artifacts/artifact-awakeNimble.png","awakeArcane":"/artifacts/artifact-awakeArcane.png","chest":"/artifacts/artifact-chest.png","refine":"/artifacts/refine-stone.png","refresh":"/artifacts/refining-stone.png","lock":"/artifacts/fate-lock.png","hammer":"/artifacts/enhancement-hammer.png"};
+const FAM_BY_KEY = Object.fromEntries(D.FAM.map(f => [f.k, f]));
+const ALL_IDS = Object.keys(D.STAT).map(Number);
+const BASE_W = 1000, MIN_PROB = 0.01, MAX_PROB = 1;
+
+/* ═══════════════════════════ the game's calculator ══════════════════════ */
+/* Faithful port of EquipAwakeAttrProbCalculator.calcInner, including the
+   shipped behaviour where a stone's `reduce` value never reaches the pool. */
+function calcPool(attrIds, deltas, locked, openSlots){
+  const w = new Map(attrIds.map(a => [a, BASE_W]));
+  for (const key in deltas){
+    const id = +key;
+    if (w.has(id)) w.set(id, Math.max(w.get(id) + deltas[key], 0));
+  }
+  const out = new Map();
+  let total = 0;
+  for (const a of [...w.keys()]){
+    if (locked.includes(a)){ out.set(a, 1); w.delete(a); continue; }
+    total += w.get(a);
+  }
+  let n = openSlots;
+  while (n > 0){
+    let found = false;
+    const snap = total;
+    for (const [a, ww] of [...w]){
+      if (snap <= 0 || (ww * n) / snap < MIN_PROB){ total -= ww; w.delete(a); }
+    }
+    for (const [a, ww] of [...w]){
+      if (total <= 0 || (ww * n) / total >= MAX_PROB){
+        out.set(a, 1); total -= ww; w.delete(a); n--; found = true; break;
+      }
+    }
+    if (found) continue;
+    for (const [a, ww] of w) out.set(a, total > 0 ? (ww * n) / total : 0);
+    break;
+  }
+  return out;
+}
+
+/* weight deltas from a material load-out */
+function buildDeltas(stones, stoneTier, fodder, quality){
+  const d = {};
+  const add = (id, v) => { d[id] = (d[id] || 0) + v; };
+  for (const id in stones){
+    if (stones[id] > 0) add(id, D.STONE_ADD[stoneTier] * stones[id]);
+  }
+  const [p2, p1, m2, gen] = D.QS[quality];
+  for (const key in fodder){
+    const n = fodder[key];
+    if (!n) continue;
+    const f = FAM_BY_KEY[key];
+    const special = new Set([...f.p2, ...f.p1, ...f.m2]);
+    f.p2.forEach(id => add(id, p2 * n));
+    f.p1.forEach(id => add(id, p1 * n));
+    f.m2.forEach(id => add(id, m2 * n));
+    ALL_IDS.forEach(id => { if (!special.has(id)) add(id, gen * n); });
+  }
+  return d;
+}
+function weightsOf(attrIds, deltas){
+  const w = {};
+  attrIds.forEach(a => { w[a] = Math.max(BASE_W + (deltas[a] || 0), 0); });
+  return w;
+}
+const pct = p => (p >= 1 ? "100" : (p * 100).toFixed(1)) + "%";
+
+/* ═══════════════════════════ small builders ═════════════════════════════ */
+function segment(host, items, current, onPick){
+  host.textContent = "";
+  items.forEach(it => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = it.label;
+    b.setAttribute("aria-pressed", String(it.value === current));
+    b.addEventListener("click", () => onPick(it.value));
+    host.appendChild(b);
+  });
+}
+function stepper(value, onChange, max){
+  const box = document.createElement("span");
+  box.className = "step" + (value > 0 ? " on" : "");
+  const mk = (txt, delta, label) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = txt;
+    b.setAttribute("aria-label", label);
+    b.addEventListener("click", () => onChange(Math.max(0, Math.min(max ?? 999, value + delta))));
+    return b;
+  };
+  const out = document.createElement("output");
+  out.textContent = value;
+  box.append(mk("−", -1, "one fewer"), out, mk("+", +1, "one more"));
+  return box;
+}
+
+/* ═══════════════════════════ pan renderer ═══════════════════════════════ */
+function renderPan(host, attrIds, weights, probs, opts = {}){
+  const { locked = [], onLock = null, boosted = new Set() } = opts;
+  const maxW = Math.max(...attrIds.map(a => weights[a]), 1);
+  host.textContent = "";
+  attrIds.forEach(a => {
+    const s = D.STAT[a], p = probs.get(a) ?? 0, w = weights[a];
+    const row = document.createElement("div");
+    row.className = "pan-row";
+    if (locked.includes(a)) row.classList.add("locked");
+    else if (p >= 1) row.classList.add("pin");
+    else if (!probs.has(a)) row.classList.add("drop");
+    else if (boosted.has(a)) row.classList.add("boost");
+
+    if (onLock){
+      const lk = document.createElement("button");
+      lk.type = "button"; lk.className = "lockbtn";
+      lk.innerHTML =
+        '<svg viewBox="0 0 16 16" aria-hidden="true">' +
+        '<rect x="3.2" y="7.4" width="9.6" height="6.4" rx="1"></rect>' +
+        '<path class="shackle-open" d="M5.6 7.4V5a2.4 2.4 0 0 1 4.8 0"></path>' +
+        '<path class="shackle-shut" d="M5.6 7.4V5a2.4 2.4 0 0 1 4.8 0v2.4"></path>' +
+        "</svg>";
+      lk.setAttribute("aria-pressed", String(locked.includes(a)));
+      lk.setAttribute("aria-label",
+        (locked.includes(a) ? "Unlock " : "Fate-lock ") + s.n);
+      lk.title = (locked.includes(a) ? "Unlock " : "Fate-lock ") + s.n;
+      lk.addEventListener("click", () => onLock(a));
+      row.appendChild(lk);
+    } else {
+      row.appendChild(document.createElement("span"));
+    }
+
+    const nm = document.createElement("span");
+    nm.className = "nm"; nm.textContent = s.n;
+    row.appendChild(nm);
+
+    const wt = document.createElement("span");
+    wt.className = "wt"; wt.textContent = w.toLocaleString("en-US");
+    row.appendChild(wt);
+
+    const tr = document.createElement("span");
+    tr.className = "track";
+    const fill = document.createElement("i");
+    fill.style.width = Math.max(2, (w / maxW) * 100) + "%";
+    tr.appendChild(fill);
+    row.appendChild(tr);
+
+    const pc = document.createElement("span");
+    pc.className = "pct";
+    pc.textContent = locked.includes(a) ? "LOCK" : (probs.has(a) ? pct(p) : "—");
+    row.appendChild(pc);
+
+    host.appendChild(row);
+  });
+}
+
+/* ═══════════════════════════ hero demo ══════════════════════════════════ */
+(function heroDemo(){
+  const pan = document.getElementById("heroPan");
+  const note = document.getElementById("heroNote");
+  const ids = D.POOLS["1"];
+  const scenes = [
+    { label: "no materials · 1 open slot", stones: {}, fodder: {}, k: 1 },
+    { label: "+ 2× T3 CRIT Rate stone", stones: { 906: 2 }, fodder: {}, k: 1 },
+    { label: "+ 4× Arcane Slot 1 fodder", stones: { 906: 2 }, fodder: { "31": 4 }, k: 1 },
+    { label: "same load · 4 open effects", stones: { 906: 2 }, fodder: { "31": 4 }, k: 4 }
+  ];
+  let i = 0;
+  const draw = () => {
+    const sc = scenes[i];
+    const deltas = buildDeltas(sc.stones, 3, sc.fodder, 13);
+    const w = weightsOf(ids, deltas);
+    renderPan(pan, ids, w, calcPool(ids, deltas, [], sc.k), { boosted: new Set([906]) });
+    note.textContent = sc.label;
+  };
+  draw();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (!reduce.matches){
+    setInterval(() => { i = (i + 1) % scenes.length; draw(); }, 3200);
+  }
+})();
+
+/* ═══════════════════════════ pool browser ═══════════════════════════════ */
+(function poolBrowser(){
+  const seg = document.getElementById("poolSeg");
+  const tbody = document.querySelector("#poolTable tbody");
+  let slot = 1;
+  const famLabel = k => FAM_BY_KEY[k].t + " · Slot " + FAM_BY_KEY[k].s;
+  const draw = () => {
+    segment(seg, [1,2,3,4].map(s => ({ label: "Slot " + s, value: s })), slot, v => { slot = v; draw(); });
+    tbody.textContent = "";
+    D.POOLS[slot].forEach(a => {
+      const s = D.STAT[a];
+      const tr = document.createElement("tr");
+      const other = s.slots.filter(x => x !== slot);
+      const fam = (k, cls) => '<span class="art"><img class="ico ico-sm" src="' + ICON[k] +
+        '" alt=""><span class="chip ' + cls + '">' + famLabel(k) + "</span></span>";
+      tr.innerHTML =
+        '<td class="t-strong">' + s.n + "</td>" +
+        '<td class="num">' + s.cap + " %</td>" +
+        "<td>" + (other.length ? other.map(o => "Slot " + o).join(", ") : "—") + "</td>" +
+        "<td>" + fam(s.p2, "up") + "</td>" +
+        "<td>" + fam(s.m2, "dn") + "</td>";
+      tbody.appendChild(tr);
+    });
+  };
+  draw();
+})();
+
+/* ═══════════════════════════ family table ═══════════════════════════════ */
+(function awakeItems(){
+  const host = document.getElementById("awakeItemRows");
+  const rows = [
+    ["awakeT1", "T1 Awakening Stone", "Unlocks the first Awakened Effect", "", "Idle drops · Conquest auction"],
+    ["awakeT2", "T2 Awakening Stone", "Unlocks the second Awakened Effect", "Shrine 22", "Idle drops · craft 3× T1"],
+    ["awakeT3", "T3 Awakening Stone", "Unlocks the third Awakened Effect", "Shrine 25", "Idle drops · craft 3× T2"],
+    ["awakeT4", "T4 Awakening Stone", "Unlocks the fourth Awakened Effect", "Shrine 27", "Idle drops · craft 3× T3"],
+    ["refresh", "Refining Stone", "1 per refine attempt", "", "Idle drops · 1 200 gems · Conquest auction"],
+    ["lock", "Fate lock", "Freezes one effect · refunded on unlock", "", "7 500 gems"]
+  ];
+  rows.forEach(([ic, name, what, gate, where]) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td><span class="art"><img class="ico" src="' + ICON[ic] + '" alt=""><b>' + name + "</b></span></td>" +
+      "<td>" + what + (gate ? ' <span class="chip mut">' + gate + "</span>" : "") + "</td>" +
+      "<td>" + where + "</td>";
+    host.appendChild(tr);
+  });
+})();
+
+(function artGrid(){
+  const host = document.getElementById("artGrid");
+  /* ordered by type so the three rows read Hefty / Nimble / Arcane */
+  [...D.FAM].sort((a, b) => a.k.localeCompare(b.k)).forEach(f => {
+    const cell = document.createElement("div");
+    cell.className = "artcell";
+    cell.innerHTML = '<img src="' + ICON[f.k] + '" alt="' + f.t + " artifact from Slot " + f.s + '">' +
+      '<span class="t">' + f.t + " · Slot " + f.s + "</span>" +
+      '<span class="s">slot ' + f.s + "</span>";
+    host.appendChild(cell);
+  });
+})();
+
+(function famTable(){
+  const tbody = document.querySelector("#famTable tbody");
+  const names = ids => ids.map(i => D.STAT[i].n).join(", ");
+  D.FAM.forEach(f => {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td><span class="art"><img class="ico" src="' + ICON[f.k] + '" alt="">' +
+        "<span><b>" + f.t + " · Slot " + f.s + "</b></span></span></td>" +
+      '<td><span class="chip up">' + names(f.p2) + "</span></td>" +
+      "<td>" + names(f.p1) + "</td>" +
+      '<td><span class="chip dn">' + names(f.m2) + "</span></td>";
+    tbody.appendChild(tr);
+  });
+})();
+
+/* ═══════════════════════════ simulator ══════════════════════════════════ */
+(function simulator(){
+  const state = { slot: 1, tier: 4, stoneTier: 3, quality: 13, stones: {}, fodder: {}, locked: [], goals: [] };
+
+  const el = {
+    slot: document.getElementById("simSlot"),
+    tier: document.getElementById("simTier"),
+    stone: document.getElementById("simStone"),
+    qual: document.getElementById("simQual"),
+    reset: document.getElementById("simReset"),
+    pan: document.getElementById("simPan"),
+    readout: document.getElementById("simReadout"),
+    stoneTbl: document.querySelector("#stoneTable tbody"),
+    fodderTbl: document.querySelector("#fodderTable tbody"),
+    goalPick: document.getElementById("goalPicker"),
+    goalOut: document.getElementById("goalOut"),
+    note: document.getElementById("simNote"),
+    stoneLabel: document.getElementById("stoneTierLabel"),
+    qualLabel: document.getElementById("qualLabel")
+  };
+
+  const pool = () => D.POOLS[state.slot];
+  const openSlots = () => Math.max(0, state.tier - state.locked.length);
+
+  /* fodder families that the game would actually offer for this slot */
+  const offeredFams = () => {
+    const p = new Set(pool());
+    return D.FAM.filter(f => [...f.p2, ...f.p1].some(id => p.has(id)));
+  };
+
+  /* smallest stone count per target that pins every goal at 100 % */
+  function minStonesToPin(goals, tier, k){
+    if (!goals.length || k <= 0) return null;
+    for (let n = 1; n <= 400; n++){
+      const stones = {};
+      goals.forEach(g => stones[g] = n);
+      const probs = calcPool(pool(), buildDeltas(stones, tier, {}, 13), state.locked, k);
+      if (goals.every(g => (probs.get(g) ?? 0) >= 1 - 1e-12)) return n;
+    }
+    return null;
+  }
+
+  function draw(){
+    /* --- controls --- */
+    segment(el.slot, [1,2,3,4].map(s => ({ label: "Slot " + s, value: s })),
+      state.slot, v => { state.slot = v; state.stones = {}; state.locked = []; state.goals = []; draw(); });
+    segment(el.tier, [1,2,3,4].map(t => ({ label: t + (t === 1 ? " effect" : " effects"), value: t })),
+      state.tier, v => { state.tier = v; state.locked = state.locked.slice(0, v - 1); draw(); });
+    const stoneFrames = ["△ T1", "◇ T2", "⬠ T3", "★ T4", "✦ T5"];
+    segment(el.stone, [1,2,3,4,5].map(t => ({ label: stoneFrames[t - 1], value: t })),
+      state.stoneTier, v => { state.stoneTier = v; draw(); });
+    segment(el.qual, [8,10,12,13].map(q => ({ label: "q" + q, value: q })),
+      state.quality, v => { state.quality = v; draw(); });
+
+    el.stoneLabel.textContent = "· T" + state.stoneTier + " (+" +
+      D.STONE_ADD[state.stoneTier].toLocaleString("en-US") + " each)";
+    el.qualLabel.textContent = "· quality " + state.quality + " (±" + D.QS[state.quality][0] + ")";
+
+    /* --- maths --- */
+    const ids = pool();
+    const deltas = buildDeltas(state.stones, state.stoneTier, state.fodder, state.quality);
+    const weights = weightsOf(ids, deltas);
+    const k = openSlots();
+    const probs = calcPool(ids, deltas, state.locked, k);
+    const boosted = new Set(Object.keys(state.stones).filter(i => state.stones[i] > 0).map(Number));
+
+    renderPan(el.pan, ids, weights, probs, {
+      locked: state.locked,
+      boosted,
+      onLock: a => {
+        const i = state.locked.indexOf(a);
+        if (i >= 0) state.locked.splice(i, 1);
+        else if (state.locked.length < state.tier) state.locked.push(a);
+        draw();
+      }
+    });
+
+    /* --- readout --- */
+    const stoneCount = Object.values(state.stones).reduce((x, y) => x + y, 0);
+    const fodderCount = Object.values(state.fodder).reduce((x, y) => x + y, 0);
+    const pinned = ids.filter(a => (probs.get(a) ?? 0) >= 1 && !state.locked.includes(a)).length;
+    const dropped = ids.filter(a => !probs.has(a) && !state.locked.includes(a)).length;
+    const rows = [
+      ["Open slots", k + " of " + state.tier],
+      ["Guaranteed this roll", pinned],
+      ["Below the 1 % floor", dropped],
+      ["Total weight", Object.values(weights).reduce((x, y) => x + y, 0).toLocaleString("en-US")],
+      ["Cost", "1 Refining Stone · " + stoneCount + " stones · " + fodderCount + " artifacts"]
+    ];
+    el.readout.textContent = "";
+    rows.forEach(([kk, vv]) => {
+      const d = document.createElement("div");
+      d.innerHTML = '<span class="k">' + kk + '</span><span class="v">' + vv + "</span>";
+      el.readout.appendChild(d);
+    });
+    el.note.textContent = k === 0
+      ? "every effect is locked — nothing can be refined"
+      : k + (k === 1 ? " effect will re-roll" : " effects will re-roll together");
+
+    /* --- stone tray --- */
+    el.stoneTbl.textContent = "";
+    ids.forEach(a => {
+      const s = D.STAT[a];
+      const tr = document.createElement("tr");
+      const c1 = document.createElement("td");
+      c1.innerHTML = '<span class="art"><img class="ico ico-sm" src="' + ICON.refine + '" alt="">' +
+        "<span>" + s.n + "</span></span>";
+      const c2 = document.createElement("td");
+      c2.style.textAlign = "right";
+      c2.appendChild(stepper(state.stones[a] || 0, v => { state.stones[a] = v; draw(); }, 400));
+      tr.append(c1, c2);
+      el.stoneTbl.appendChild(tr);
+    });
+
+    /* --- fodder tray --- */
+    el.fodderTbl.textContent = "";
+    offeredFams().forEach(f => {
+      const inPool = id => ids.includes(id);
+      const up = f.p2.filter(inPool).map(i => D.STAT[i].n);
+      const mid = f.p1.filter(inPool).map(i => D.STAT[i].n);
+      const dn = f.m2.filter(inPool).map(i => D.STAT[i].n);
+      const tr = document.createElement("tr");
+      const c1 = document.createElement("td");
+      c1.innerHTML = '<span class="art"><img class="ico" src="' + ICON[f.k] + '" alt="">' +
+        "<span><b>" + f.t + " · Slot " + f.s + "</b><br>" +
+        (up.length ? '<span class="chip up">↑↑ ' + up.join(", ") + "</span> " : "") +
+        (mid.length ? '<span class="chip mut">↑ ' + mid.join(", ") + "</span> " : "") +
+        (dn.length ? '<span class="chip dn">↓↓ ' + dn.join(", ") + "</span>" : "") +
+        "</span></span>";
+      const c2 = document.createElement("td");
+      c2.style.textAlign = "right";
+      c2.appendChild(stepper(state.fodder[f.k] || 0, v => { state.fodder[f.k] = v; draw(); }, 99));
+      tr.append(c1, c2);
+      el.fodderTbl.appendChild(tr);
+    });
+
+    /* --- goal planner --- */
+    el.goalPick.textContent = "";
+    ids.forEach(a => {
+      const on = state.goals.includes(a);
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip " + (on ? "br" : "mut");
+      b.style.cssText = "cursor:pointer;background:" + (on ? "var(--brass-wash)" : "transparent") +
+        ";padding:.3rem .55rem;font-size:.72rem";
+      b.setAttribute("aria-pressed", String(on));
+      b.textContent = D.STAT[a].n;
+      b.addEventListener("click", () => {
+        const i = state.goals.indexOf(a);
+        if (i >= 0) state.goals.splice(i, 1);
+        else if (state.goals.length < 4) state.goals.push(a);
+        draw();
+      });
+      el.goalPick.appendChild(b);
+    });
+
+    el.goalOut.textContent = "";
+    if (!state.goals.length){
+      el.goalOut.innerHTML = '<p style="color:var(--ink-faint);font-size:.9rem">' +
+        "Pick up to four stats above. The planner works out the cheapest guaranteed route " +
+        "and the shortcut that beats it.</p>";
+    } else if (state.goals.length > k){
+      el.goalOut.innerHTML = '<div class="callout warn">You picked <b>' + state.goals.length +
+        "</b> stats but only <b>" + k + "</b> " + (k === 1 ? "slot is" : "slots are") +
+        " open. Raise the Tier, or unlock an effect.</div>";
+    } else {
+      const tier = state.stoneTier, label = "T" + tier;
+      const allAtOnce = minStonesToPin(state.goals, tier, k);
+      const g = state.goals;
+      let html = "";
+
+      if (allAtOnce === null){
+        html += '<div class="callout warn">No number of ' + label +
+          " stones pins all of these at once with " + k + " open slots. Use a higher tier, " +
+          "or stage it as below.</div>";
+      } else {
+        html += '<div class="callout"><b>All in one refine:</b> ' + allAtOnce + "× " + label +
+          " stone on <em>each</em> of the " + g.length + " targets — <b>" + (allAtOnce * g.length) +
+          " stones</b> total, plus 1 Refining Stone.</div>";
+      }
+
+      if (g.length === k && k > 1){
+        const first = minStonesToPin(g.slice(0, k - 1), tier, k);
+        const last = minStonesToPin(g.slice(k - 1), tier, 1);
+        if (first !== null && last !== null){
+          const staged = first * (k - 1) + last;
+          html += '<div class="callout good" style="margin-top:var(--s2)"><b>Staged — usually far cheaper:</b>' +
+            "<br>Refine once with " + first + "× " + label + " on each of the first " + (k - 1) +
+            " (<b>" + first * (k - 1) + " stones</b>), Fate-lock those " + (k - 1) +
+            ", then refine again for the last with <b>" + last + " stones</b>." +
+            "<br><b>Total " + staged + " stones</b>, 2 Refining Stones, " + (k - 1) + " Fate locks" +
+            (allAtOnce !== null && staged < allAtOnce * g.length
+              ? " — saves " + (allAtOnce * g.length - staged) + " stones."
+              : ".") + "</div>";
+        }
+      }
+      html += '<p style="font-size:.86rem;color:var(--ink-faint);margin-top:var(--s2)">' +
+        "Counts are exact, not estimates — each is the smallest number at which the game's own " +
+        "calculator returns 100 %.</p>";
+      el.goalOut.innerHTML = html;
+    }
+  }
+
+  el.reset.addEventListener("click", () => {
+    state.stones = {}; state.fodder = {}; state.locked = []; state.goals = []; draw();
+  });
+  draw();
+})();
+
+  </script>
 </Base>
 
 <style is:global>
-  .artifacts-page {
-    --paper: var(--bg-base);
-    --plate: var(--bg-surface);
-    --plate-2: var(--bg-raised);
-    --ink: var(--text-primary);
-    --ink-soft: var(--text-secondary);
-    --ink-faint: var(--text-muted);
-    --rule: var(--border-medium);
-    --rule-soft: var(--border-subtle);
-    --brass: var(--accent-gold);
-    --brass-lit: var(--accent-gold-light);
-    --brass-wash: var(--accent-gold-dim);
-    --verdigris: var(--accent-teal);
-    --verdigris-wash: var(--accent-teal-dim);
-    --oxide: var(--tier-splus-from);
-    --oxide-wash: var(--rarity-legendary-glow);
-    --bar: var(--border-strong);
-    --bar-hi: var(--accent-gold);
-    --focus: var(--accent-purple);
-    --shadow: none;
-    --display: var(--font-base);
-    --sans: var(--font-base);
-    --mono: var(--font-mono);
-    --s1: var(--space-1);
-    --s2: var(--space-2);
-    --s3: var(--space-4);
-    --s4: var(--space-6);
-    --s5: var(--space-10);
-    --s6: var(--space-16);
-    width: 100%;
-    min-height: 100vh;
-    color: var(--text-primary);
-    background: transparent;
-  }
 
-  .artifacts-page .jump {
-    top: 0;
-  }
+.artifacts-page{
+  --paper:var(--bg-base);--plate:var(--bg-surface);--plate-2:var(--bg-raised);
+  --ink:var(--text-primary);--ink-soft:var(--text-secondary);--ink-faint:var(--text-muted);
+  --rule:var(--border-medium);--rule-soft:var(--border-subtle);
+  --brass:var(--accent-gold);--brass-lit:var(--accent-gold-light);--brass-wash:var(--accent-gold-dim);
+  --verdigris:var(--accent-teal);--verdigris-wash:var(--accent-teal-dim);
+  --oxide:var(--tier-splus-from);--oxide-wash:var(--rarity-legendary-glow);
+  --bar:var(--border-strong);--bar-hi:var(--accent-gold);--focus:var(--accent-purple);--shadow:none;
+  --display:var(--font-base);--sans:var(--font-base);--mono:var(--font-mono);
+  --measure:69ch;--s1:var(--space-1);--s2:var(--space-2);--s3:var(--space-4);
+  --s4:var(--space-6);--s5:var(--space-10);--s6:var(--space-16);
+  width:100%;min-height:100vh;color:var(--text-primary);background:transparent;
+}
+/* ══ base ═══════════════════════════════════════════════════════════════ */
+.artifacts-page *{box-sizing:border-box}
+.artifacts-page{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:16.5px; line-height:1.62;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+.artifacts-page a{color:var(--brass); text-underline-offset:.18em; text-decoration-thickness:.06em}
+.artifacts-page a:hover{color:var(--ink)}
+.artifacts-page :focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:1px}
+.artifacts-page h1,.artifacts-page h2,.artifacts-page h3,.artifacts-page h4{font-family:var(--display); font-weight:600; text-wrap:balance; margin:0; letter-spacing:-.012em}
+.artifacts-page p{margin:0}
+.artifacts-page code,kbd{font-family:var(--mono); font-size:.86em; background:var(--plate-2); padding:.1em .34em; border-radius:2px}
+.artifacts-page sup{font-size:.66em; line-height:0; font-family:var(--mono); color:var(--brass); padding-left:.15em}
 
-  .artifacts-page .wrap,
-  .artifacts-page .wide {
-    width: 100%;
-    max-width: var(--page-max-width);
-    margin-inline: auto;
-    padding-inline: var(--page-gutter);
-  }
+.wrap,.wide{width:100%;max-width:var(--page-max-width);margin-inline:auto;padding-inline:var(--page-gutter)}
+.stack{display:flex; flex-direction:column}
+.stack>*{min-width:0}
+.stack>*+*{margin-top:var(--space-10)}
 
-  .artifacts-page .plate {
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
+/* ══ masthead ═══════════════════════════════════════════════════════════ */
+.masthead{border-bottom:1px solid var(--rule); background:var(--plate)}
+.masthead .wide{display:flex; align-items:baseline; gap:var(--s3); flex-wrap:wrap;
+  padding-block:var(--s2)}
+.wordmark{font-family:var(--display); font-size:1rem; letter-spacing:.02em}
+.wordmark b{font-weight:600}
+.masthead .meta{font-family:var(--mono); font-size:.72rem; color:var(--ink-faint);
+  letter-spacing:.04em; margin-left:auto; text-transform:uppercase}
 
-  .artifacts-page button,
-  .artifacts-page select,
-  .artifacts-page input {
-    min-height: 40px;
-  }
+/* ══ jump nav ═══════════════════════════════════════════════════════════ */
+.jump{position:sticky; top:0; z-index:40; background:color-mix(in oklab,var(--paper) 88%,transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--rule-soft)}
+.jump .wide{display:flex; gap:0; overflow-x:auto; scrollbar-width:none}
+.jump .wide::-webkit-scrollbar{display:none}
+.jump a{display:block; white-space:nowrap; font-family:var(--mono); font-size:.7rem;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint);
+  text-decoration:none; padding:.72rem .85rem; border-bottom:2px solid transparent}
+.jump a:first-child{padding-left:0}
+.jump a:hover{color:var(--ink); border-bottom-color:var(--brass)}
 
-  @media (max-width: 768px) {
-    .artifacts-page .jump {
-      top: auto;
-    }
+/* ══ hero ═══════════════════════════════════════════════════════════════ */
+.hero{padding-block:var(--space-20); border-bottom:1px solid var(--rule)}
+.hero-grid{display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:var(--s5); align-items:center}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr; gap:var(--s4)}}
+.eyebrow{font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--brass); display:flex; align-items:center; gap:.6rem}
+.eyebrow::after{content:""; flex:1; height:1px; background:var(--rule)}
+.artifacts-page h1{font-size:clamp(2.4rem,5.4vw,3.9rem); line-height:1.02; margin-top:var(--s3)}
+.artifacts-page h1 em{font-style:italic; color:var(--brass)}
+.lede{font-size:1.12rem; color:var(--ink-soft); max-width:52ch; margin-top:var(--s3)}
+.hero-facts{display:flex; gap:var(--s4); flex-wrap:wrap; margin-top:var(--s4);
+  padding-top:var(--s3); border-top:1px solid var(--rule)}
+.fact .n{font-family:var(--display); font-size:1.9rem; line-height:1; font-variant-numeric:tabular-nums}
+.fact .l{font-family:var(--mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-faint); margin-top:.35rem; max-width:19ch; display:block}
 
-    .artifacts-page .wrap,
-    .artifacts-page .wide {
-      padding-inline: var(--space-4);
-    }
-  }
+/* ══ plates (full-width instrument panels) ══════════════════════════════ */
+.plate{background:var(--plate); border:1px solid var(--rule); box-shadow:var(--shadow)}
+.plate-hd{display:flex; align-items:baseline; gap:var(--s2); flex-wrap:wrap;
+  padding:var(--s3); border-bottom:1px solid var(--rule); background:var(--plate-2)}
+.plate-hd h3{font-size:1.05rem}
+.plate-hd .note{font-family:var(--mono); font-size:.7rem; color:var(--ink-faint);
+  letter-spacing:.04em; margin-left:auto}
+.plate-bd{padding:var(--s3)}
 
-  @media (max-width: 480px) {
-    .artifacts-page .wrap,
-    .artifacts-page .wide {
-      padding-inline: var(--space-3);
-    }
-  }
+/* ══ sections ═══════════════════════════════════════════════════════════ */
+.artifacts-page section{padding-block:var(--space-24) 0}
+.artifacts-page section:last-of-type{padding-bottom:var(--space-24)}
+.sec-hd{margin-bottom:var(--space-10)}
+.sec-hd h2{font-size:clamp(1.7rem,3.2vw,2.35rem); line-height:1.1; margin-top:var(--s2)}
+.sec-hd p{color:var(--ink-soft); max-width:58ch; margin-top:var(--s2)}
+
+/* ══ controls ═══════════════════════════════════════════════════════════ */
+.seg{display:inline-flex; border:1px solid var(--rule); background:var(--paper); flex-wrap:wrap}
+.seg button{appearance:none; border:0; background:transparent; color:var(--ink-soft);
+  font-family:var(--mono); font-size:.74rem; letter-spacing:.06em; text-transform:uppercase;
+  padding:.5rem .82rem; cursor:pointer; border-right:1px solid var(--rule-soft)}
+.seg button:last-child{border-right:0}
+.seg button:hover{color:var(--ink); background:var(--plate-2)}
+.seg button[aria-pressed="true"]{background:var(--brass); color:var(--paper); font-weight:600}
+.ctl-row{display:flex; gap:var(--s3) var(--s4); flex-wrap:wrap; align-items:center}
+.ctl{display:flex; flex-direction:column; gap:.4rem}
+.ctl>label{font-family:var(--mono); font-size:.66rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-faint)}
+
+.step{display:inline-flex; align-items:stretch; border:1px solid var(--rule); background:var(--paper)}
+.step button{appearance:none; border:0; background:transparent; color:var(--ink-soft);
+  font-family:var(--mono); font-size:.9rem; width:1.7rem; cursor:pointer; line-height:1}
+.step button:hover{background:var(--brass); color:var(--paper)}
+.step output{font-family:var(--mono); font-size:.78rem; min-width:1.9rem; text-align:center;
+  align-self:center; font-variant-numeric:tabular-nums}
+.step.on{border-color:var(--brass)}
+.step.on output{color:var(--brass); font-weight:600}
+
+/* ══ tables ═════════════════════════════════════════════════════════════ */
+.scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%}
+.artifacts-page table{border-collapse:collapse; width:100%; font-size:.88rem}
+.artifacts-page th,td{text-align:left; padding:.5rem .7rem; border-bottom:1px solid var(--rule-soft); vertical-align:top}
+.artifacts-page thead th{font-family:var(--mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-faint); border-bottom:1px solid var(--rule); white-space:nowrap; font-weight:400}
+.artifacts-page tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap}
+.artifacts-page tbody tr:hover{background:var(--plate-2)}
+.t-strong{font-weight:600}
+
+/* ══ chips ══════════════════════════════════════════════════════════════ */
+.chip{display:inline-block; font-family:var(--mono); font-size:.66rem; letter-spacing:.05em;
+  padding:.12rem .42rem; border:1px solid currentColor; border-radius:2px; white-space:nowrap}
+/* artifact & item icons */
+.ico{width:34px; height:34px; object-fit:contain; vertical-align:middle; flex:none;
+  image-rendering:auto}
+.ico-lg{width:52px; height:52px}
+.ico-sm{width:22px; height:22px}
+.art{display:flex; align-items:center; gap:.55rem}
+.art b{font-weight:600; line-height:1.2}
+.art small{display:block; color:var(--ink-faint); font-family:var(--mono); font-size:.66rem;
+  letter-spacing:.04em}
+.artgrid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--rule-soft)}
+@media(max-width:700px){.artgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.artcell{background:var(--plate); padding:var(--s2); display:flex; flex-direction:column;
+  align-items:center; gap:.3rem; text-align:center}
+.artcell img{width:60px; height:60px; object-fit:contain}
+.artcell .t{font-size:.78rem; font-weight:600; line-height:1.15}
+.artcell .s{font-family:var(--mono); font-size:.62rem; color:var(--ink-faint); letter-spacing:.05em}
+.chip.up{color:var(--verdigris); background:var(--verdigris-wash)}
+.chip.dn{color:var(--oxide); background:var(--oxide-wash)}
+.chip.br{color:var(--brass); background:var(--brass-wash)}
+.chip.mut{color:var(--ink-faint); border-color:var(--rule)}
+
+/* ══ the pan (weight visualisation) ═════════════════════════════════════ */
+.pan{display:flex; flex-direction:column; gap:1px; background:var(--rule-soft)}
+.pan-row{display:grid; grid-template-columns:1.7rem minmax(8.5rem,1fr) 4.2rem minmax(90px,1fr) 3.6rem;
+  gap:.55rem; align-items:center; background:var(--plate); padding:.34rem .5rem}
+@media(max-width:620px){.pan-row{grid-template-columns:1.5rem 1fr 3.4rem; }
+  .pan-row .track{grid-column:1/-1} .pan-row .wt{display:none}}
+.pan-row .nm{font-size:.83rem; line-height:1.25}
+.pan-row .wt{font-family:var(--mono); font-size:.7rem; color:var(--ink-faint); text-align:right;
+  font-variant-numeric:tabular-nums}
+.track{height:9px; background:var(--plate-2); position:relative; overflow:hidden}
+.track i{display:block; height:100%; background:var(--bar); width:0;
+  transition:width .42s cubic-bezier(.22,.61,.36,1), background-color .3s}
+.pct{font-family:var(--mono); font-size:.8rem; text-align:right; font-variant-numeric:tabular-nums;
+  font-weight:600}
+.pan-row.boost .track i{background:var(--bar-hi)}
+.pan-row.pin .track i{background:var(--verdigris)}
+.pan-row.pin .pct{color:var(--verdigris)}
+.pan-row.drop{opacity:.42}
+.pan-row.drop .pct{color:var(--ink-faint); font-weight:400}
+.pan-row.locked{background:var(--verdigris-wash)}
+.lockbtn{appearance:none; border:1px solid var(--rule); background:var(--paper); cursor:pointer;
+  width:1.55rem; height:1.55rem; color:var(--ink-faint); line-height:0; padding:0;
+  display:inline-flex; align-items:center; justify-content:center}
+.lockbtn svg{width:.85rem; height:.85rem; fill:none; stroke:currentColor; stroke-width:1.6}
+.lockbtn .shackle-open{display:block} .lockbtn .shackle-shut{display:none}
+.lockbtn:hover{border-color:var(--brass); color:var(--brass)}
+.lockbtn[aria-pressed="true"]{background:var(--verdigris); border-color:var(--verdigris); color:var(--paper)}
+.lockbtn[aria-pressed="true"] .shackle-open{display:none}
+.lockbtn[aria-pressed="true"] .shackle-shut{display:block}
+
+/* ══ misc ═══════════════════════════════════════════════════════════════ */
+.grid2{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--space-6)}
+.grid3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-6)}
+.term-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-6)}
+.term-card{padding:var(--s3)}
+.term-card h3{font-size:1.05rem;margin-top:var(--s2)}
+.term-card p{color:var(--ink-soft);font-size:.92rem;margin-top:var(--s2)}
+.term-number{display:block;font-family:var(--mono);font-size:1.2rem;color:var(--brass);letter-spacing:.04em}
+.zeus-plan .steps{max-width:74ch}
+.zeus-planner{display:flex;flex-direction:column;gap:var(--space-10)}
+.zeus-stage{position:relative;display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);min-height:360px;overflow:hidden;border:1px solid var(--rule);background:var(--plate)}
+.zeus-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 20%,var(--plate) 58%);pointer-events:none}
+.zeus-stage>img{width:100%;height:100%;max-height:460px;object-fit:cover;object-position:center 24%}
+.zeus-stage-copy{position:relative;z-index:1;align-self:center;padding:var(--space-12)}
+.zeus-stage-copy h3{font-size:clamp(2rem,4vw,3.4rem);line-height:1;margin-top:var(--space-4)}
+.zeus-stage-copy p{max-width:48ch;color:var(--ink-soft);font-size:1.05rem;margin-top:var(--space-5)}
+.unlock-path{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr);gap:var(--space-10);align-items:center;padding-block:var(--space-8);border-block:1px solid var(--rule)}
+.unlock-path p{max-width:55ch;color:var(--ink-soft);margin-top:var(--space-3)}
+.stone-path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-4);list-style:none;margin:0;padding:0}
+.stone-path li{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--space-2);text-align:center;color:var(--ink-soft);font-size:.78rem}
+.stone-path li:not(:last-child)::after{content:"→";position:absolute;right:calc(var(--space-2) * -1);top:28px;color:var(--brass)}
+.stone-path img{width:64px;height:64px;object-fit:contain}
+.loadout-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6)}
+.loadout-card{border:1px solid var(--rule);background:var(--plate);padding:var(--space-6)}
+.loadout-card header{display:flex;align-items:center;gap:var(--space-4)}
+.loadout-card header>div>span,.material-picks>span{display:block;font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.slot-badge{display:grid;place-items:center;width:48px;height:48px;border:1px solid var(--brass);color:var(--brass);font-family:var(--mono);font-weight:700}
+.target-effects{display:flex;flex-wrap:wrap;gap:var(--space-2);list-style:none;margin:var(--space-6) 0;padding:0}
+.target-effects li{padding:.3rem .55rem;border:1px solid var(--rule);background:var(--paper);font-size:.78rem;font-weight:600}
+.material-picks{display:flex;align-items:end;gap:var(--space-4);padding-top:var(--space-5);border-top:1px solid var(--rule-soft)}
+.material-picks>span{margin-right:auto;align-self:center}
+.material-picks figure{margin:0;text-align:center}
+.material-picks img{width:58px;height:58px;object-fit:contain}
+.material-picks figcaption{font-size:.68rem;color:var(--ink-soft);margin-top:var(--space-1)}
+.planner-limit{max-width:78ch;margin-inline:auto!important;color:var(--ink-soft);text-align:center}
+.planner-limit b{color:var(--ink)}
+.finish-path{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:var(--space-5);padding:var(--space-6);border-block:1px solid var(--rule)}
+.finish-path>div{display:flex;align-items:center;gap:var(--space-4)}
+.finish-path img{width:52px;height:52px;object-fit:contain;flex:none}
+.finish-path span{color:var(--ink-soft);font-size:.9rem}
+.finish-path b{display:block;color:var(--ink)}
+.advanced-tool{border:0;padding:0}
+.advanced-tool>summary{display:flex;justify-content:space-between;align-items:center;gap:var(--space-6);min-height:64px;padding:var(--space-4) var(--space-6);border:1px solid var(--rule);background:var(--plate);color:var(--ink);font-size:1rem;cursor:pointer}
+.advanced-tool>summary::before{content:"+";color:var(--brass);font-family:var(--mono);font-size:1.4rem}
+.advanced-tool[open]>summary::before{content:"−"}
+.advanced-tool>summary small{margin-left:auto;color:var(--ink-faint);font-size:.78rem}
+.advanced-tool>.plate{margin-top:var(--space-6)}
+.key-facts>div{padding-block:var(--space-4);border-block:1px solid var(--rule-soft);color:var(--ink-soft)}
+.key-facts b{color:var(--ink)}
+.key-facts-warn>div{border-top-color:var(--oxide)}
+.expectation{margin-top:var(--space-8)!important;padding-top:var(--space-6);border-top:1px solid var(--rule);color:var(--ink-soft)}
+.grid2>*,.grid3>*{min-width:0}
+@media(max-width:820px){.grid2,.grid3,.term-grid{grid-template-columns:minmax(0,1fr)}}
+.callout{border-left:3px solid var(--brass); background:var(--brass-wash); padding:var(--s3);
+  font-size:.95rem}
+.callout.warn{border-left-color:var(--oxide); background:var(--oxide-wash)}
+.callout.good{border-left-color:var(--verdigris); background:var(--verdigris-wash)}
+.callout b{font-weight:600}
+.mechanism-stack{gap:var(--space-8)}
+.mechanism-stack>*+*{margin-top:0}
+.readout{display:flex; gap:var(--s4); flex-wrap:wrap; padding:var(--s3);
+  border-top:1px solid var(--rule); background:var(--plate-2)}
+.readout div{display:flex; flex-direction:column; gap:.15rem}
+.readout .k{font-family:var(--mono); font-size:.64rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-faint)}
+.readout .v{font-family:var(--mono); font-size:1.05rem; font-variant-numeric:tabular-nums; font-weight:600}
+.steps{counter-reset:st; display:flex; flex-direction:column; gap:var(--s3); list-style:none;
+  padding:0; margin:0}
+.steps li{counter-increment:st; display:grid; grid-template-columns:2.4rem 1fr; gap:var(--s3);
+  padding-bottom:var(--s3); border-bottom:1px solid var(--rule-soft)}
+.steps li:last-child{border-bottom:0; padding-bottom:0}
+.steps li::before{content:counter(st,decimal-leading-zero); font-family:var(--mono); font-size:.8rem;
+  color:var(--brass); padding-top:.22rem; letter-spacing:.04em}
+.steps h4{font-size:1rem; font-family:var(--sans); font-weight:600}
+.steps p{color:var(--ink-soft); font-size:.93rem; margin-top:.25rem}
+.donts{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:var(--s3)}
+.donts li{padding-left:var(--s4); position:relative; font-size:.95rem}
+.donts li::before{content:"✕"; position:absolute; left:0; top:0; color:var(--oxide);
+  font-family:var(--mono); font-size:.85rem}
+.artifacts-page details{border-top:1px solid var(--rule-soft); padding-block:var(--s2)}
+details summary{cursor:pointer; font-family:var(--mono); font-size:.75rem; letter-spacing:.05em;
+  color:var(--ink-soft); list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+ "; color:var(--brass)}
+details[open] summary::before{content:"– "}
+.artifacts-page details .body{padding-top:var(--s2); font-size:.9rem; color:var(--ink-soft)}
+.artifacts-page details.advanced-tool{border:0;padding:0}
+.artifacts-page details.advanced-tool>summary{padding:var(--space-4) var(--space-6)}
+.artifacts-page footer{border-top:1px solid var(--rule); background:var(--plate); padding-block:var(--s4);
+  font-size:.82rem; color:var(--ink-faint)}
+.cliff{display:flex; align-items:flex-end; gap:var(--s3); height:190px; padding-top:var(--s3)}
+.cliff .col{flex:1; display:flex; flex-direction:column; align-items:center; gap:.5rem; height:100%;
+  justify-content:flex-end}
+.cliff .bar{width:100%; max-width:74px; background:var(--bar); position:relative}
+.cliff .col.hot .bar{background:var(--oxide)}
+.cliff .v{font-family:var(--mono); font-size:.9rem; font-weight:600; font-variant-numeric:tabular-nums}
+.cliff .lab{font-family:var(--mono); font-size:.66rem; letter-spacing:.06em; color:var(--ink-faint);
+  text-align:center; text-transform:uppercase}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important}
+}
+
+@media(max-width:768px){
+  .wrap,.wide{padding-inline:var(--space-4)}
+  .hero{padding-block:var(--space-16)}
+  .artifacts-page section{padding-block:var(--space-16) 0}
+  .artifacts-page section:last-of-type{padding-bottom:var(--space-16)}
+  .sec-hd{margin-bottom:var(--space-8)}
+  .stack>*+*{margin-top:var(--space-8)}
+  .zeus-stage{grid-template-columns:1fr;min-height:0}
+  .zeus-stage::after{background:linear-gradient(0deg,var(--plate) 0%,color-mix(in oklab,var(--plate) 86%,transparent) 38%,transparent 70%)}
+  .zeus-stage>img{height:300px}
+  .zeus-stage-copy{margin-top:-80px;padding:var(--space-6)}
+  .unlock-path{grid-template-columns:1fr;gap:var(--space-6)}
+  .loadout-grid{grid-template-columns:1fr}
+  .finish-path{grid-template-columns:1fr}
+  .finish-path>span{display:none}
+  .advanced-tool>summary{align-items:flex-start;flex-wrap:wrap}
+  .advanced-tool>summary small{width:100%;margin-left:calc(1.4rem + var(--space-6))}
+}
+
+@media(max-width:480px){
+  .stone-path{gap:var(--space-2)}
+  .stone-path img{width:50px;height:50px}
+  .stone-path li:not(:last-child)::after{display:none}
+  .material-picks{flex-wrap:wrap}
+  .material-picks>span{width:100%;margin:0}
+}
+
 </style>
