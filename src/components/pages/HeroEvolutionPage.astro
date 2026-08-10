@@ -16,10 +16,10 @@ const c = copy ?? copy.en;
 const asset = (name: string) => `/hero-evolution/${name}.png`;
 
 const ranks = {
-  green: { label: "Rare", icon: asset("A_UI_Common_EvoGreen_Icon"), tone: "green" }, blue: { label: "Rare+", icon: asset("A_UI_Common_EvoBlueness_Icon"), tone: "blue" }, bluePlus: { label: "Elite", icon: asset("A_UI_Common_EvoBluenessPlus_Icon"), tone: "blue" },
-  purple: { label: "Epic", icon: asset("A_UI_Common_EvoPurple_Icon"), tone: "purple" }, purplePlus: { label: "Epic+", icon: asset("A_UI_Common_EvoPurplePlus_Icon"), tone: "purple" }, gold: { label: "Legendary", icon: asset("A_UI_Common_EvoGolden_Icon"), tone: "gold" },
-  goldPlus: { label: "Legendary+", icon: asset("A_UI_Common_EvoGoldenPlus_Icon"), tone: "gold" }, red: { label: "Exalted", icon: asset("A_UI_Common_EvoRed_Icon"), tone: "rainbow" }, redPlus: { label: "Exalted+", icon: asset("A_UI_Common_EvoRedPlus_Icon"), tone: "rainbow" },
-  rainbow: { label: "Mythic", icon: asset("A_UI_Common_EvoColor_Icon"), tone: "red" }, diamond: { label: "Divine", icon: asset("A_UI_Common_EvoDiamond_Icon"), tone: "diamond" },
+  green: { label: "Rare", tone: "green" }, blue: { label: "Rare+", tone: "blue" }, bluePlus: { label: "Elite", tone: "blue" },
+  purple: { label: "Epic", tone: "purple" }, purplePlus: { label: "Epic+", tone: "purple" }, gold: { label: "Legendary", tone: "gold" },
+  goldPlus: { label: "Legendary+", tone: "gold" }, red: { label: "Exalted", tone: "rainbow" }, redPlus: { label: "Exalted+", tone: "rainbow" },
+  rainbow: { label: "Mythic", tone: "red" }, diamond: { label: "Divine", tone: "diamond" },
 };
 type RankKey = keyof typeof ranks;
 type Recipe = { from: RankKey; material: RankKey; count?: number; kind: "same" | "faction"; to: RankKey; stars?: number; resultStars?: number };
@@ -68,7 +68,7 @@ const starglint: Recipe[] = [
             return <article class="recipe">
               <span class="step-number"><small>{c.step}</small>{String(index + 1).padStart(2, '0')}</span>
               <div class={`rank-card tone-${from.tone}`}>
-                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /><img class="hero-card-rank" src={from.icon} alt="" /></span><strong>{from.label}</strong>
+                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /></span><strong>{from.label}</strong>
                 {recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}
               </div>
               <span class="operator" aria-hidden="true"><img src="/evolutions/A_UI_HeroEvolution_PlusbBig_Icon.png" alt="" /></span>
@@ -79,7 +79,6 @@ const starglint: Recipe[] = [
                       {recipe.kind === 'same'
                         ? <img class="material-portrait" src="/heroes/cards/zaojun-240.webp" alt="" />
                         : <img class="fodder-silhouette" src="/evolutions/A_UI_HeadPortrait_CommonTemp02_Img.png" alt="" />}
-                      <img class="material-rank" src={material.icon} alt="" />
                       <img class="card-decoration" src={cardDecoration(recipe.material)} alt="" />
                       <img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" />
                       <img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" />
@@ -90,7 +89,7 @@ const starglint: Recipe[] = [
               </div>
               <span class="operator equals" aria-hidden="true"><img src="/evolutions/A_UI_HeroEvolution_Equal_Icon.png" alt="" /></span>
               <div class={`rank-card result tone-${result.tone}`}>
-                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /><img class="hero-card-rank" src={result.icon} alt="" /></span><strong>{result.label}</strong>
+                <span class="hero-card"><img class="hero-card-portrait" src="/heroes/cards/zaojun-240.webp" alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src="/evolutions/A_UI_Common_RaceHearts_Icon.png" alt="" /><img class="card-class" src="/evolutions/A_UI_Common_JobMarksman_Icon.png" alt="" /></span><strong>{result.label}</strong>
                 {recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}
               </div>
             </article>;
