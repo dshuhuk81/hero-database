@@ -126,7 +126,7 @@ const RATING_GROUPS = [
 function escapeHtml(text: string): string {
   return String(text)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    .replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 // The reference highlights every number inside skill text. Escape first, then
 // wrap - the source is our own JSON, but escaping keeps the injection honest.
