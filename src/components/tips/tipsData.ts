@@ -5,7 +5,7 @@ export const WISHLIST_DATA: Record<string, { id: string; image: string }[]> = {
     { id: "caishen", image: `${R2_BASE}/caishen-360.webp` },
     { id: "yuelao", image: `${R2_BASE}/yuelao-360.webp` },
     { id: "mengpo", image: `${R2_BASE}/mengpo-360.webp` },
-    { id: "isis", image: `${R2_BASE}/isis-360.webp` },
+    { id: "idunn", image: `${R2_BASE}/idunn-360.webp` },
 
   ],
   Diamonds: [
