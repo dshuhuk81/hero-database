@@ -2,7 +2,6 @@ import { heroes } from "../data/heroes/withRatings";
 import heroRatings from "../data/ratings/hero-ratings.json";
 import pageUpdates from "../data/pageUpdates.json";
 import { navEntries } from "../data/nav";
-import { getCnHeroes, getCnOverview } from "./cnDiff.js";
 
 const RATING_FIELDS = ["overall", "pvp", "pve"];
 const REQUIRED_FIELDS = ["id", "name", "faction", "role", "class", "rarity"];
@@ -139,9 +138,6 @@ function getHealthScore(metrics) {
 
 export function getProjectStatus() {
   const pageInventory = getPageInventory();
-  const cnHeroes = getCnHeroes(heroes);
-  const cnOverview = getCnOverview(cnHeroes);
-  const nerfedHeroes = cnHeroes.filter((hero) => hero.summary.totals.nerf > 0);
   const heroIds = new Set(heroes.map((hero) => hero.id));
   const ratingIds = Object.keys(heroRatings);
 
@@ -271,10 +267,6 @@ export function getProjectStatus() {
       missingSkills: missingSkills.length,
       strengthWeaknessComplete,
       missingStrengthWeakness: missingStrengthWeakness.length,
-      cnTrackedHeroes: cnOverview.heroes,
-      cnChangedHeroes: cnOverview.changedHeroes,
-      cnNerfedHeroes: nerfedHeroes.length,
-      cnNerfs: cnOverview.nerf,
       orphanRatings: orphanRatings.length,
       stalePageUpdates: pageInventory.stalePageUpdates.length,
       routes: pageInventory.routes.length,

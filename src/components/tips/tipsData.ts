@@ -34,27 +34,27 @@ const R2_ICONS = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/fact
 
 export const FACTION_META: Record<string, { color: string; glow: string; dim: string; icon: string }> = {
   Hearts: {
-    color: "#c0446e",
-    glow: "rgba(192, 68, 110, 0.55)",
-    dim: "rgba(192, 68, 110, 0.12)",
+    color: "#ef4444",
+    glow: "rgba(239, 68, 68, 0.55)",
+    dim: "rgba(239, 68, 68, 0.12)",
     icon: `${R2_ICONS}/hearts.webp`,
   },
   Diamonds: {
-    color: "#5588cc",
-    glow: "rgba(85, 136, 204, 0.55)",
-    dim: "rgba(85, 136, 204, 0.12)",
+    color: "#facc15",
+    glow: "rgba(250, 204, 21, 0.55)",
+    dim: "rgba(250, 204, 21, 0.12)",
     icon: `${R2_ICONS}/diamonds.webp`,
   },
   Spades: {
-    color: "#8899aa",
-    glow: "rgba(136, 153, 170, 0.55)",
-    dim: "rgba(136, 153, 170, 0.12)",
+    color: "#3b82f6",
+    glow: "rgba(59, 130, 246, 0.55)",
+    dim: "rgba(59, 130, 246, 0.12)",
     icon: `${R2_ICONS}/spades.webp`,
   },
   Clubs: {
-    color: "#3a8a4a",
-    glow: "rgba(58, 138, 74, 0.55)",
-    dim: "rgba(58, 138, 74, 0.12)",
+    color: "#22c55e",
+    glow: "rgba(34, 197, 94, 0.55)",
+    dim: "rgba(34, 197, 94, 0.12)",
     icon: `${R2_ICONS}/clubs.webp`,
   },
 };

@@ -39,15 +39,6 @@
     "heroGuideDetail": {
       "sourcePattern": "src/data/guides/{heroId}.json",
       "listingFile": "src/data/hero-guides.json"
-    },
-    "cnComparison": {
-      "storedAt": "src/data/heroes/{heroId}.json under optional `cn` block",
-      "ingestionInput": "data-mine/cn/{heroId}.json (per-hero CN skill text)",
-      "manifest": "data-mine/cn/_manifest.json",
-      "engine": "src/utils/cnDiff.js",
-      "pages": ["src/pages/cn-preview.astro (/cn-preview hub)", "src/pages/heroes/[id].astro (#section-cn block)"],
-      "runtimeAdapter": "src/data/heroes/index.js (passes `cn` field through adaptHero)",
-      "notes": "CN is the canonical base. `change` describes GLOBAL relative to CN: buff = Global better, nerf = Global worse, diff = non-numeric/ambiguous, neutral = equal. Map CN skills to Global by CONTENT, not by id or en-name. Only English skill names render. See .claude/CLAUDE.md `CN vs Global Comparison System` for the authoritative spec."
     }
   },
   "collections": {
@@ -76,8 +67,7 @@
         "relic",
         "synergies",
         "baseAttackRate",
-        "bossUltimatesPer90s",
-        "cn (optional, CN-vs-Global comparison block - see lookupRules.cnComparison)"
+        "bossUltimatesPer90s"
       ],
       "files": [
         { "id": "amunra", "name": "Amunra", "path": "src/data/heroes/amunra.json" },

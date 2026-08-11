@@ -224,16 +224,7 @@ The former `Flags` section was removed from the drawer after reviewing its actua
 
 `src/data/ratings/invest.json` is now the single editable source for relic recommendations and F2P investment guidance. Historical hero JSON fields remain in place for now, but they are no longer read or edited by the application.
 
-### 8. CN Comparison As Inventory
-
-CN comparison data is informational, not a per-hero maintenance requirement. Most heroes are expected to match the CN base version.
-
-- Missing `cn` blocks do not appear in hero `Missing` labels.
-- CN data does not affect per-hero completeness or project health.
-- The dashboard shows a neutral `Heroes nerfed` KPI instead.
-- The KPI links to `/cn-preview` for the detailed comparison.
-
-### 9. Common Hero Expectations
+### 8. Common Hero Expectations
 
 Common heroes intentionally use a smaller dashboard completeness checklist.
 

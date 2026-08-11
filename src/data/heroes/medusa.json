@@ -177,29 +177,5 @@
         "TEAM_BUFF"
       ]
     }
-  ],
-  "cn": {
-    "captured": "2026-07-04",
-    "source": "CN client extracted skill text",
-    "skills": [
-      {
-        "id": "skill_1",
-        "cnName": "石化凝视",
-        "values": [
-          {
-            "label": "Skill DMG (Lv.2)",
-            "field": "atkPct",
-            "global": 340,
-            "cn": 360,
-            "unit": "%",
-            "change": "nerf",
-            "verified": false
-          }
-        ],
-        "notes": [
-          "Auto-detected from CN client capture 2026-07-04; not yet in-game confirmed. Lv.2 skill damage: Global 340% ATK vs CN 360% ATK - Global slightly undertuned."
-        ]
-      }
-    ]
-  }
+  ]
 }

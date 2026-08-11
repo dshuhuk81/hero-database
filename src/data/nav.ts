@@ -65,22 +65,6 @@ const allNavEntries: NavEntry[] = [
     icon: `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
   },
   {
-    label: "CN vs Global",
-    href: "/cn-preview",
-    group: "primary",
-    teaser: true,
-    sidebar: true,
-    localOnly: false,
-    description: {
-      en: "Compare Global hero skills against the Chinese base version",
-      de: "Vergleiche die globalen Heldenfähigkeiten mit der chinesischen Basisversion",
-      es: "Compara las habilidades de los héroes globales con la versión base china",
-      ru: "Сравните навыки глобальных героев с китайской базовой версией",
-      zh: "对比国际服英雄技能与国服基准版本",
-    },
-    icon: `<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M8 7h4"/><path d="M10 5v4"/><path d="M15.5 15h.01"/><path d="M17.5 17h.01"/><path d="M14.5 18.5h.01"/>`,
-  },
-  {
     label: "Delusion Den",
     href: "/delusions-den",
     group: "content",

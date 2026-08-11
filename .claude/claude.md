@@ -77,9 +77,8 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
 
 ### Pages
 - `/heroes` - hero list with card grid + sortable table view incl. tier badges (this IS the tier list view)
-- `/heroes/[id]` - hero detail (profile, skills, CN diff, ratings, stats, synergies, investment, virtues)
+- `/heroes/[id]` - hero detail (profile, skills, ratings, stats, synergies, investment, virtues)
 - `/hero-stats` - stat comparison table
-- `/cn-preview` - CN vs Global divergence hub
 - `/virtues`, `/totems`, `/bosses`, `/events`, `/delusions-den`, `/tips`, `/summon-calendar`, `/summon-calculator` - content/guide pages
 - `/guides` - hub for deep-dive hero guides; `/guides/nephtys`, `/guides/nut`, `/guides/xuannv` public, `/guides/divine-throne` local-only (dev only, deity upgrade pieces feature)
 - `/virtue-wizard` - grid placement tool: pick a hero + Ascension stage to auto-fill their real unlocked grid (from `src/data/virtueGrids.json`), or mark cells by hand; pick up to 3 sets with piece count (2 or 4; solver picks best subset of a 4-set when trying 2), solver places all pieces (in nav + teaser, group "tools"; Epic-rarity heroes excluded - cannot equip Virtues)
@@ -118,35 +117,6 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
 - **Shape**: field `shape`, matrix like `[[1,1],[1,0]]` (rows top to bottom, 1 = occupied). Orientation is FIXED - no rotation in-game. Present on all 52 set pieces (transcribed from the R2 virtue images, pattern chip bottom-left); singulars have no shape yet. Used by `/virtue-wizard`.
 - **Display**: Hero detail page shows Virtue cards under "Recommended Virtues" section (color-coded by rarity) if any are assigned.
 - **Known Sets (partial)**: Sacrifice (gold, 2-piece: +10% HP at combat start), Far 2 / Far 3 (Realm Rover shop, 2-piece: +10% Energy Regen at combat start - considered meta for energy-dependent carries)
-
-#### CN vs Global Comparison System (`src/utils/cnDiff.js`, `src/pages/cn-preview.astro`)
-- **Purpose**: Show where the Global build diverges from the original Chinese (CN) version. CN is the canonical base and never "changes"; Global is a copy that lags or diverges. The feature forecasts pending Global balance fixes and surfaces undertuned/overtuned heroes.
-- **Data source**: Optional `cn` block manually curated into each `src/data/heroes/{hero_id}.json`. Ingestion input is per-hero CN skill text dropped at `data-mine/cn/{hero_id}.json` (hero stats + CN/EN skill text + leveled upgrades). Screenshots were tried and rejected (vision misreads digits - produced a false positive); extracted text is the proven pipeline. Numbers are language-agnostic so Chinese text is never displayed.
-- **Mapping rule**: CN files use their own skill ordering and EN names that differ from Global. Map CN skill -> Global skill by CONTENT (description + values + upgrade structure), never by id or en-name. Display name always comes from the Global hero JSON (English); CN `cnName` is stored for reference only and never rendered.
-- **`cn` block shape** (additive, Global data untouched):
-  ```json
-  "cn": {
-    "captured": "YYYY-MM-DD",
-    "source": "CN client extracted skill text",
-    "skills": [
-      { "id": "<global skill id: skill_1..4 or relic>",
-        "cnName": "<chinese, reference only>",
-        "values": [
-          { "label": "...", "field": "atkPct|pct|seconds|count|meters|damageType",
-            "global": <value>, "cn": <value>, "unit": "%|s|x|m|",
-            "change": "buff|nerf|diff|neutral", "verified": false }
-        ],
-        "notes": ["..."] }
-    ]
-  }
-  ```
-- **`change` semantics (authoritative)**: describes GLOBAL relative to the CN base, by player benefit. `buff` = Global BETTER than CN. `nerf` = Global WORSE than CN. `diff` = non-numeric / direction-ambiguous (e.g. damageType). `neutral` = equal. Direction is stat-aware (more good-effect = better; higher cooldown / longer self-debuff = worse). The ingestion step decides per row.
-- **Text-only differences excluded**: Wording/description diffs (e.g. "evasion" vs "Dodge Rate") do NOT create value rows. Exception: damageType changes always included (e.g. "Physical" vs "Passive"). Structural/label differences go in the `notes` array instead.
-- **`verified: false`**: marks an uncertain row (e.g. a type difference that may be a Global JSON error rather than a real divergence). Renders an "Unconfirmed" tag. Resolve by either fixing the Global value (row auto-drops to neutral) or setting `verified: true`. Never mutate Global combat data from inference alone.
-- **No-diff rendering**: Heroes with zero divergences (all `neutral` rows, no `buff`/`nerf`/`diff`) do NOT render a CN section on detail page. Hub shows "Matches Global" badge instead of a diff table.
-- **Engine**: `src/utils/cnDiff.js` - pure functions only, never invents data. `getCnSummary(hero)`, `getCnHeroes(heroes)`, `getCnOverview(...)`, `formatCnValue(...)`. Header comment in that file is the source of truth for semantics.
-- **UI**: `/cn-preview` hub (every tracked hero, sorted by change count, ASCII-only, styled via `components.css` `.cn-*` classes) + a "CN vs Global" section on the hero detail page (`#section-cn`, dot-nav entry, changed rows only) - both render only when a `cn` block exists and has at least one change.
-- **damageType caveat**: per-skill damage element is NOT reliably in APK configs (effect-chain indirection + missing skill name->ID mapping). Only resolvable empirically (true ignores Armor + M-Res). Treat type diffs as advisory (`verified:false`) until in-game tested. damageType is an exception to the text-only rule and always shown.
 
 ## File Conventions
 
@@ -190,13 +160,12 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
   "coreMechanic": { "summary": "..." },
   "strengths": ["..."],
   "weaknesses": ["..."],
-  "virtueSets": [{ "label": "Desire", "comment": "", "virtues": ["desire_1"] }],
-  "cn": { /* optional CN comparison block, see above */ }
+  "virtueSets": [{ "label": "Desire", "comment": "", "virtues": ["desire_1"] }]
 }
 ```
 
 **Required Fields**: id, name, release, class, role, faction, rarity, evolution, level, stats, skills (4 skills with damageType each), synergies array
-**Optional**: description, recommendedRelicLevel, relic, image, baseAttackRate, bossUltimatesPer90s, coreMechanic, strengths, weaknesses, synergyPartners, synergyLinks, virtueSets, cn
+**Optional**: description, recommendedRelicLevel, relic, image, baseAttackRate, bossUltimatesPer90s, coreMechanic, strengths, weaknesses, synergyPartners, synergyLinks, virtueSets
 **Ratings DO NOT live here** - they live in `src/data/ratings/hero-ratings.json` (see Ratings System).
 
 ## Common Workflows
@@ -227,15 +196,6 @@ A pre-commit hook (`.githooks/pre-commit`, activated via `npm run prepare`) bloc
 1. Export Google Sheet to CSV (Publish to web)
 2. Run `npm run import-attack-rates`
 3. Maps `baseAttackRate` and `bossUltimatesPer90s` directly into hero JSON files
-
-### Ingest CN vs Global Data
-1. Drop per-hero CN skill text at `data-mine/cn/{hero_id}.json` (hero stats + CN/EN skill text + leveled upgrades)
-2. Map each CN skill to the Global skill by CONTENT (not id/en-name); confirm stats match Global as a sanity check
-3. Diff numeric values; write a `cn` block into `src/data/heroes/{hero_id}.json` (see CN vs Global Comparison System for shape + `change` semantics)
-4. **Exclude text-only differences** - wording/label diffs do not create value rows; put them in the `notes` array instead. Exception: damageType changes always included as rows.
-5. Flag uncertain/non-numeric diffs with `verified: false`
-6. Log the hero + skill mapping + result in `data-mine/cn/_manifest.json`
-7. Run `npm run db:merge` then `npm run build`; verify `/cn-preview` and the hero detail `#section-cn`. Heroes with zero changes render "Matches Global" badge; no CN table shown.
 
 ### Validate Data
 - `npm run validate:all` - bosses + hero tags + tag/virtue/comp rule tests
