@@ -98,7 +98,7 @@ function resolveHeroReference(value: string) {
   return heroReferenceLookup.get(normalizeHeroReference(value));
 }
 
-const bossViews = bosses.bosses.map((boss) => {
+const bossViews = bosses.bosses.filter((boss) => boss.id !== "nian_beast").map((boss) => {
   const comps = boss.recommendedComps || [];
   const [main] = comps;
   const beginnerHeroes = ((boss as any).beginnerComp || [])
