@@ -38,21 +38,6 @@ export const guides: GuideEntry[] = [
     updated: "2026-07-27",
   },
   {
-    href: "/guides/golden-arcanum",
-    image: "/features/golden-arcanum/assets/ui/illustration01.png",
-    title: "Golden Arcanum - Event Guide",
-  },
-  {
-    href: "/guides/votive-festival",
-    image: "/features/gold-miner/assets/ui/menu-item.png",
-    title: "Votive Festival - Event Guide",
-  },
-  {
-    href: "/guides/benevolent-feast",
-    image: "/features/water-game/assets/ui/illustration01.png",
-    title: "Benevolent Feast - Event Guide",
-  },
-  {
     heroId: "idunn",
     href: "/guides/idunn",
     title: "Idunn"
