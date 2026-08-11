@@ -5,7 +5,7 @@ import PageHero from "../../components/PageHero.astro";
 import allHeroes from "../../data/all_heroes_db.json";
 import eventsData from "../../data/events.json";
 import { guides } from "../../data/guides";
-import { activeBadge, navEntries } from "../../data/nav";
+import { navEntries } from "../../data/nav";
 import { pickLang } from "../../i18n/helpers";
 import "../../styles/components.css";
 
@@ -20,9 +20,7 @@ const modeCards = MODE_GUIDE_HREFS
   .map((entry) => ({
     ...entry,
     displayLabel: MODE_GUIDE_LABELS[entry.href] ?? entry.label,
-    activeBadge: entry.href === "/events" ? undefined : activeBadge(entry),
   }));
-const guidesBadge = activeBadge(navEntries.find((entry) => entry.href === "/guides")!);
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_ASSET_BASE = `${R2_BASE}/heroes`;
@@ -64,6 +62,12 @@ const activeChallengeDateRange = activeChallenge
 const cards = guides
   .filter((guide) => import.meta.env.DEV || !guide.localOnly)
   .filter((guide) => Boolean(guide.heroId))
+  .filter((guide) => {
+    const hero = allHeroes[guide.heroId as keyof typeof allHeroes] as
+      | { release?: boolean }
+      | undefined;
+    return hero?.release !== false;
+  })
   .map((guide) => {
     const hero = guide.heroId
       ? (allHeroes[guide.heroId as keyof typeof allHeroes] as
@@ -162,14 +166,6 @@ const heroDirectory = cards.slice(1);
                 <strong>{entry.displayLabel}</strong>
                 {entry.description && <small>{pickLang(entry.description, "en")}</small>}
               </span>
-              {entry.activeBadge && (
-                <span
-                  class="guide-directory-badge"
-                  style={entry.activeBadge.color ? `--badge-color: ${entry.activeBadge.color};` : undefined}
-                >
-                  {pickLang(entry.activeBadge.text, "en")}
-                </span>
-              )}
               <span class="guide-directory-arrow" aria-hidden="true">→</span>
             </a>
           ))}
@@ -197,17 +193,8 @@ const heroDirectory = cards.slice(1);
           <div class="guide-feature-copy">
             <span class="guide-feature-label">Featured hero guide</span>
             <h3>{featuredHero.title}</h3>
-            <p>{featuredHero.hook}</p>
             <span class="guide-feature-cta">Read guide <span aria-hidden="true">→</span></span>
           </div>
-          {guidesBadge && (
-            <span
-              class="guide-directory-badge guide-directory-badge--feature"
-              style={guidesBadge.color ? `--badge-color: ${guidesBadge.color};` : undefined}
-            >
-              {pickLang(guidesBadge.text, "en")}
-            </span>
-          )}
         </a>
 
         <div class="guide-hero-directory">
@@ -221,7 +208,6 @@ const heroDirectory = cards.slice(1);
               ></div>
               <span>
                 <strong>{card.title}</strong>
-                <small>{card.hook}</small>
               </span>
               <span class="guide-directory-arrow" aria-hidden="true">→</span>
             </a>
@@ -497,25 +483,6 @@ const heroDirectory = cards.slice(1);
     font-size: var(--text-lg);
   }
 
-  .guide-directory-badge {
-    flex: 0 0 auto;
-    padding: var(--space-1) var(--space-2);
-    border: 1px solid color-mix(in srgb, var(--badge-color, var(--accent-purple)) 45%, transparent);
-    border-radius: var(--radius-full);
-    color: var(--text-bright);
-    background: color-mix(in srgb, var(--badge-color, var(--accent-purple)) 22%, var(--bg-base));
-    font-size: 10px;
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-  }
-
-  .guide-directory-badge--feature {
-    position: absolute;
-    top: var(--space-4);
-    right: var(--space-4);
-  }
-
   .guide-hero-directory {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -618,10 +585,6 @@ const heroDirectory = cards.slice(1);
       min-height: 76px;
       padding-right: 0;
       padding-left: 0;
-    }
-
-    .guide-directory-badge {
-      display: none;
     }
 
   }
