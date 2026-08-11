@@ -17,7 +17,7 @@ export const WISHLIST_DATA: Record<string, { id: string; image: string }[]> = {
   ],
   Spades: [
     { id: "poseidon", image: `${R2_BASE}/poseidon-360.webp` },
-    { id: "tefnut", image: `${R2_BASE}/tefnut-360.webp` },
+    { id: "nut", image: `${R2_BASE}/nut-360.webp` },
     { id: "skadi", image: `${R2_BASE}/skadi-360.webp` },
     { id: "momus", image: `${R2_BASE}/momus-360.webp` },
 
@@ -26,7 +26,7 @@ export const WISHLIST_DATA: Record<string, { id: string; image: string }[]> = {
     { id: "xuannv", image: `${R2_BASE}/xuannv-360.webp` },
     { id: "nuba", image: `${R2_BASE}/nuba-360.webp` },
     { id: "anubis", image: `${R2_BASE}/anubis-360.webp` },
-    { id: "pan", image: `${R2_BASE}/pan-360.webp` },
+    { id: "eris", image: `${R2_BASE}/eris-360.webp` },
   ],
 };
 
