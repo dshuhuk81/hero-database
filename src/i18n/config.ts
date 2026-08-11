@@ -19,7 +19,7 @@ export const localeNames: Record<Locale, string> = {
   zh: "中文（简体）",
 };
 
-const localizedRoutes = new Set(["/", "/events", "/tips", "/totems", "/wishlisht"]);
+const localizedRoutes = new Set(["/", "/events", "/hero-evolution", "/tips", "/totems", "/wishlisht"]);
 
 function isLocalizedHeroDetailRoute(pathname: string): boolean {
   return /^\/heroes\/[^/]+$/.test(pathname);

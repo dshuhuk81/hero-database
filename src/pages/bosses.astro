@@ -109,11 +109,10 @@ const bossViews = bosses.bosses.map((boss) => {
     mainComp: main
       ? {
           label: main.label || "Recommended",
-          reason: main.reason || "",
           heroes: compHeroes(main),
         }
       : null,
-    beginnerSlots: Array.from({ length: 5 }, (_, index) => beginnerHeroes[index] || null),
+    beginnerHeroes,
   };
 });
 ---
@@ -224,7 +223,6 @@ const bossViews = bosses.bosses.map((boss) => {
                 <section class="boss-team-panel" aria-labelledby={`${boss.id}-team-title`}>
                 <div class="boss-section-header">
                   <div>
-                    <p class="boss-section-kicker">Recommended Team</p>
                     <h3 id={`${boss.id}-team-title`}>{boss.mainComp.label}</h3>
                   </div>
                   <span class="boss-section-count">{boss.mainComp.heroes.length} heroes</span>
@@ -260,21 +258,20 @@ const bossViews = bosses.bosses.map((boss) => {
                   ))}
                 </div>
 
-                  {boss.mainComp.reason && <p class="boss-comp-reason">{boss.mainComp.reason}</p>}
                 </section>
               )}
 
-              <section class="boss-team-panel" aria-labelledby={`${boss.id}-beginner-team-title`}>
+              {boss.beginnerHeroes.length > 0 && (
+                <section class="boss-team-panel" aria-labelledby={`${boss.id}-beginner-team-title`}>
                 <div class="boss-section-header">
                   <div>
-                    <p class="boss-section-kicker">Recommended Team</p>
                     <h3 id={`${boss.id}-beginner-team-title`}>Beginner Comp</h3>
                   </div>
-                  <span class="boss-section-count">5 heroes</span>
+                  <span class="boss-section-count">{boss.beginnerHeroes.length} heroes</span>
                 </div>
 
                 <div class="boss-team-row">
-                  {boss.beginnerSlots.map((hero) => hero ? (
+                  {boss.beginnerHeroes.map((hero) => (
                     <a class="boss-team-hero" href={`/heroes/${hero.id}`}>
                       <span class="boss-team-image">
                         <img
@@ -295,16 +292,10 @@ const bossViews = bosses.bosses.map((boss) => {
                         </span>
                       </span>
                     </a>
-                  ) : (
-                    <div class="boss-team-hero boss-team-placeholder">
-                      <span class="boss-team-image" aria-hidden="true">?</span>
-                      <span class="boss-team-copy">
-                        <span class="boss-team-name">To be announced</span>
-                      </span>
-                    </div>
                   ))}
                 </div>
-              </section>
+                </section>
+              )}
             </div>
 
             <section class="boss-guide-panel" aria-labelledby={`${boss.id}-guide-title`}>

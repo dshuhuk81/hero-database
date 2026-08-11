@@ -6,11 +6,11 @@ import type { Locale } from "../../i18n/config";
 interface Props { locale: Locale; }
 const { locale } = Astro.props as Props;
 const copy = {
-  en: { tag: "Ascension guide", title: "Hero Evolution", subtitle: "Follow every recipe from your first base copy to the highest evolution.", regular: "Regular", starglint: "Starglint", same: "same hero", faction: "same-faction hero", copies: "copies", step: "Step", note: "The material cards must have the shown rank. “Same hero” means an exact duplicate; “same-faction hero” can be any eligible hero from that faction.", max: "Maximum evolution reached" },
-  de: { tag: "Aufstiegs-Guide", title: "Helden-Evolution", subtitle: "Alle Rezepte von der ersten Basiskopie bis zur höchsten Evolution auf einen Blick.", regular: "Regulär", starglint: "Starglint", same: "gleicher Held", faction: "Held derselben Fraktion", copies: "Kopien", step: "Schritt", note: "Materialkarten müssen den gezeigten Rang haben. „Gleicher Held“ bedeutet eine exakte Kopie; „Held derselben Fraktion“ kann jeder geeignete Held dieser Fraktion sein.", max: "Höchste Evolution erreicht" },
-  es: { tag: "Guía de ascensión", title: "Evolución de héroes", subtitle: "Sigue cada receta desde la primera copia hasta la evolución máxima.", regular: "Regular", starglint: "Starglint", same: "mismo héroe", faction: "héroe de la misma facción", copies: "copias", step: "Paso", note: "Las cartas de material deben tener el rango indicado. «Mismo héroe» significa una copia exacta; la otra opción acepta cualquier héroe válido de esa facción.", max: "Evolución máxima alcanzada" },
-  ru: { tag: "Гайд по возвышению", title: "Эволюция героев", subtitle: "Все рецепты — от первой базовой копии до максимальной эволюции.", regular: "Обычные", starglint: "Starglint", same: "тот же герой", faction: "герой той же фракции", copies: "копии", step: "Шаг", note: "Материалы должны иметь указанный ранг. «Тот же герой» — точная копия; герой фракции может быть любым подходящим героем этой фракции.", max: "Максимальная эволюция достигнута" },
-  zh: { tag: "升阶指南", title: "英雄进化", subtitle: "查看从基础本体到最高进化的每一个配方。", regular: "常规", starglint: "星辉", same: "同名英雄", faction: "同阵营英雄", copies: "个", step: "步骤", note: "材料卡必须达到所示品阶。“同名英雄”必须是相同英雄；“同阵营英雄”可使用该阵营任意符合条件的英雄。", max: "已达到最高进化" },
+  en: { tag: "Ascension guide", title: "Hero Evolution", subtitle: "Follow every recipe from your first base copy to the highest evolution.", regular: "Regular", starglint: "Starglint", same: "same hero", faction: "same-faction hero", copies: "copies", step: "Step", note: "Note that this only applies to not common heroes. Common heroes only can have an evolution until Legendary+ - with the exception of the one you selected to be you main Zodiac.", max: "Maximum evolution reached" },
+  de: { tag: "Aufstiegs-Guide", title: "Helden-Evolution", subtitle: "Alle Rezepte von der ersten Basiskopie bis zur höchsten Evolution auf einen Blick.", regular: "Regulär", starglint: "Starglint", same: "gleicher Held", faction: "Held derselben Fraktion", copies: "Kopien", step: "Schritt", note: "Hinweis: Dies gilt nur für nicht gewöhnliche Helden. Gewöhnliche Helden können nur bis Legendär+ entwickelt werden – mit Ausnahme des Helden, den du als deinen Haupt-Zodiak ausgewählt hast.", max: "Höchste Evolution erreicht" },
+  es: { tag: "Guía de ascensión", title: "Evolución de héroes", subtitle: "Sigue cada receta desde la primera copia hasta la evolución máxima.", regular: "Regular", starglint: "Starglint", same: "mismo héroe", faction: "héroe de la misma facción", copies: "copias", step: "Paso", note: "Ten en cuenta que esto solo se aplica a los héroes que no son comunes. Los héroes comunes solo pueden evolucionar hasta Legendario+, excepto el que hayas seleccionado como tu Zodiaco principal.", max: "Evolución máxima alcanzada" },
+  ru: { tag: "Гайд по возвышению", title: "Эволюция героев", subtitle: "Все рецепты — от первой базовой копии до максимальной эволюции.", regular: "Обычные", starglint: "Starglint", same: "тот же герой", faction: "герой той же фракции", copies: "копии", step: "Шаг", note: "Обратите внимание: это относится только к героям необычной редкости и выше. Обычных героев можно развить лишь до ранга «Легендарный+», за исключением героя, выбранного вами в качестве основного Зодиака.", max: "Максимальная эволюция достигнута" },
+  zh: { tag: "升阶指南", title: "英雄进化", subtitle: "查看从基础本体到最高进化的每一个配方。", regular: "常规", starglint: "星辉", same: "同名英雄", faction: "同阵营英雄", copies: "个", step: "步骤", note: "请注意，这仅适用于非普通英雄。普通英雄最多只能进化至传奇+，但被选为主星座的英雄除外。", max: "已达到最高进化" },
 }[locale] ?? null;
 const c = copy ?? copy.en;
 const ranks = {
@@ -74,7 +74,7 @@ const starglint: Recipe[] = [
     </div>
   </nav>
   <main class="evolution-page page-wrapper page-content">
-    <p class="evolution-note">{c.note}</p>
+    <p class="evolution-note" id="evolution-note">{c.note}</p>
     {([['regular', regular], ['starglint', starglint]] as const).map(([id, recipes]) => (
       <section class="evolution-panel" id={`panel-${id}`} role="tabpanel" aria-labelledby={`tab-${id}`} hidden={id !== 'regular'}>
         <div class="recipe-list">
@@ -83,7 +83,7 @@ const starglint: Recipe[] = [
             return <article class="recipe">
               <span class="step-number"><small>{c.step}</small>{String(index + 1).padStart(2, '0')}</span>
               <div class={`rank-card tone-${from.tone}`}>
-                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.from)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}</span><strong>{from.label}</strong>
+                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.from)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}</span><strong>{from.label}{recipe.stars ? ` ${recipe.stars}` : ''}</strong>
               </div>
               <span class="operator" aria-hidden="true"><img src="/evolutions/operator-plus.png" alt="" /></span>
               <div class={`material-requirement tone-${material.tone}`}>
@@ -104,7 +104,7 @@ const starglint: Recipe[] = [
               </div>
               <span class="operator equals" aria-hidden="true"><img src="/evolutions/operator-equals.png" alt="" /></span>
               <div class={`rank-card result tone-${result.tone}`}>
-                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.to)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}</span><strong>{result.label}</strong>
+                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.to)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}</span><strong>{result.label}{recipe.resultStars ? ` ${recipe.resultStars}` : ''}</strong>
               </div>
             </article>;
           })}
@@ -119,6 +119,7 @@ const starglint: Recipe[] = [
   const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.lt-tab'));
   const activate = (tab: HTMLButtonElement) => {
     tabs.forEach((item) => { const active = item === tab; item.classList.toggle('is-active', active); item.setAttribute('aria-selected', String(active)); item.tabIndex = active ? 0 : -1; document.getElementById(`panel-${item.dataset.tab}`)?.toggleAttribute('hidden', !active); });
+    document.getElementById('evolution-note')?.toggleAttribute('hidden', tab.dataset.tab === 'starglint');
   };
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => activate(tab));

@@ -1,13 +1,18 @@
 {
   "version": "1.3",
   "autoRules": {
-    "goal": "safe",
-    "notes": "Pick a comp that can survive silences..."
+    "goal": "safe"
   },
   "bosses": [
     {
       "id": "baphomet",
-      "beginnerComp": ["hladgunnr", "isis", "yuelao", "caishen", "dionysus"],
+      "beginnerComp": [
+        "hladgunnr",
+        "isis",
+        "yuelao",
+        "caishen",
+        "dionysus"
+      ],
       "name": "Baphomet",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -90,16 +95,19 @@
             "cronus",
             "idunn",
             "zeus"
-          ],
-          "reason": "",
-          "notes": [],
-          "source": "manual"
+          ]
         }
       ]
     },
     {
       "id": "spirit_of_night_hag",
-      "beginnerComp": ["Isis", "Yuelao", "Caishen", "Dionysus", "Hladgunnr"],
+      "beginnerComp": [
+        "Isis",
+        "Yuelao",
+        "Caishen",
+        "Dionysus",
+        "Hladgunnr"
+      ],
       "name": "Spirit of Night Hag",
       "mode": "Grim Surge",
       "battlepower": "4500M",
@@ -150,23 +158,26 @@
         {
           "id": "demonic_horse_meta",
           "label": "Recommended",
-          "hero-comp": "zeus, hephaestus, caishen, dionysus, idunn",
+          "hero-comp": "zeus, cronus, caishen, dionysus, idunn",
           "heroes": [
             "zeus",
             "idunn",
             "caishen",
             "dionysus",
-            "hephaestus"
-          ],
-          "reason": "",
-          "notes": ["Zeus & Idunn Divine+ and Relic 30+"],
-          "source": "auto"
+            "cronus"
+          ]
         }
       ]
     },
     {
       "id": "epica",
-      "beginnerComp": ["", "", "", "", ""],
+      "beginnerComp": [
+        "Caishen",
+        "Isis",
+        "Dionysus",
+        "Yuelao",
+        "Idunn"
+      ],
       "name": "Epica",
       "mode": "Grim Surge",
       "battlepower": "4500M",
@@ -218,25 +229,28 @@
       ],
       "recommendedComps": [
         {
-          "id": "epica_manual",
+          "id": "epica",
           "label": "Recommended",
-          "hero-comp": "isis, tefnut, yuelao, caishen, dionysus",
+          "hero-comp": "idunn, cronus, zeus, caishen, dionysus",
           "heroes": [
-            "isis",
-            "tefnut",
-            "yuelao",
+            "zeus",
+            "cronus",
+            "idunn",
             "caishen",
             "dionysus"
-          ],
-          "reason": "",
-          "notes": [],
-          "source": "auto"
+          ]
         }
       ]
     },
     {
       "id": "lilith",
-      "beginnerComp": ["", "", "", "", ""],
+      "beginnerComp": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "name": "Lilith",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -320,12 +334,7 @@
             "caishen",
             "cronus",
             "nut"
-          ],
-          "reason": "Most frequent comp in top rankings (7/30 exact matches, dominant in top 14). Zeus clears children with AoE, Cronus adds burst windows to prevent Lilith scaling, Yuelao links both for shared stats.",
-          "notes": [
-            "You can replace Nut with Zeus if he is better build."
-          ],
-          "source": "community"
+          ]
         },
         {
           "id": "lilith_beginner",
@@ -337,20 +346,19 @@
             "caishen",
             "hladgunnr",
             "isis"
-          ],
-          "reason": "Viable comp without Zeus or Cronus (whale-heavy heroes). Hladgunnr provides reliable AoE DPS against Lilith children. Isis adds sustain alongside the quad-support backbone.",
-          "notes": [
-            "Hladgunnr is the budget AoE DPS alternative to Zeus",
-            "Scales well without high relic investment in a single carry",
-            "Dionysus and Caishen are still mandatory"
-          ],
-          "source": "community"
+          ]
         }
       ]
     },
     {
       "id": "isthar_vi",
-      "beginnerComp": ["", "", "", "", ""],
+      "beginnerComp": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "name": "Isthar VI",
       "mode": "Torment Rift",
       "battlepower": "4500M",
@@ -437,10 +445,7 @@
             "caishen",
             "isis",
             "dionysus"
-          ],
-          "reason": "",
-          "notes": [],
-          "source": "auto"
+          ]
         },
         {
           "id": "isthar_vi_2",
@@ -452,16 +457,19 @@
             "caishen",
             "nuwa",
             "dionysus"
-          ],
-          "reason": "",
-          "notes": [],
-          "source": "auto"
+          ]
         }
       ]
     },
     {
       "id": "jackfrost",
-      "beginnerComp": ["", "", "", "", ""],
+      "beginnerComp": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "name": "Jack Frost",
       "mode": "Olds God's Return",
       "battlepower": "33932",
@@ -524,23 +532,26 @@
         {
           "id": "jackfrost_auto",
           "label": "Recommended",
-          "hero-comp": "nezha, hladgunnr, caishen, zeus, dionysus",
+          "hero-comp": "zeus, diana, athena, set, cronus",
           "heroes": [
-            "nezha",
-            "hladgunnr",
-            "caishen",
             "zeus",
-            "dionysus"
-          ],
-          "reason": "",
-          "notes": [],
-          "source": "auto"
+            "diana",
+            "athena",
+            "set",
+            "cronus"
+          ]
         }
       ]
     },
     {
       "id": "typhoon",
-      "beginnerComp": ["", "", "", "", ""],
+      "beginnerComp": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "name": "Typhoon",
       "mode": "Olds God's Return",
       "battlepower": "4500M",
@@ -635,68 +646,26 @@
         {
           "id": "typhoon_balanced",
           "label": "Balanced Mixed Damage",
-          "hero-comp": "ares, hladgunnr, isis, caishen, dionysus",
+          "hero-comp": "zeus, cronus, idunn, caishen, nemesis",
           "heroes": [
-            "ares",
-            "hladgunnr",
-            "isis",
-            "caishen",
-            "dionysus"
-          ],
-          "reason": "Balanced composition exploiting both head vulnerabilities. Ares (melee) targets right head for +25% damage, while Hladgunnr and Isis (ranged) exploit left head weakness. Dionysus provides shields to mitigate heal reduction, and Caishen sustains energy for consistent rotations.",
-          "notes": [
-            "Position Ares or tank in center backline to absorb petrification",
-            "Focus left head first with ranged DPS (easier vulnerability)",
-            "Dionysus shields counter healing reduction better than raw healing",
-            "Save ultimates to burst through multi-part health pools"
-          ],
-          "source": "manual"
-        },
-        {
-          "id": "typhoon_ranged",
-          "label": "Ranged Focus",
-          "hero-comp": "cancer, hladgunnr, isis, zeus, dionysus",
-          "heroes": [
-            "cancer",
-            "hladgunnr",
-            "isis",
             "zeus",
-            "dionysus"
-          ],
-          "reason": "Triple ranged DPS composition to maximize left head vulnerability (+25% damage to all main damage dealers). Cancer tanks center backline petrification while ranged DPS stays safe. Dionysus provides shields and energy sustain.",
-          "notes": [
-            "Position Cancer in center backline to tank petrification",
-            "All DPS exploit left head's ranged vulnerability",
-            "Burn left head first, then focus center/right",
-            "High burst potential with 3 top-tier ranged carries"
-          ],
-          "source": "manual"
-        },
-        {
-          "id": "typhoon_sustain",
-          "label": "Sustained Pressure",
-          "hero-comp": "tefnut, hladgunnr, caishen, yuelao, dionysus",
-          "heroes": [
-            "tefnut",
-            "hladgunnr",
+            "nemesis",
+            "idunn",
             "caishen",
-            "yuelao",
-            "dionysus"
-          ],
-          "reason": "Hybrid warrior-tank in Tefnut provides melee damage against right head while surviving center backline focus. Hladgunnr exploits left head. Double support (Caishen + Yuelao) ensures energy sustain and linking buffs for prolonged multi-part fight.",
-          "notes": [
-            "Tefnut can survive center backline petrification + normal attacks",
-            "Yuelao links Tefnut and Hladgunnr for shared stats",
-            "Extended fight duration benefits from energy sustain",
-            "Dionysus shields mitigate AoE knockback and ultimate"
-          ],
-          "source": "manual"
+            "cronus"
+          ]
         }
       ]
     },
     {
       "id": "nian_beast",
-      "beginnerComp": ["", "", "", "", ""],
+      "beginnerComp": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "name": "Nian Beast",
       "mode": "Olds God's Return",
       "battlepower": "33932",
@@ -772,14 +741,7 @@
             "yuelao",
             "caishen",
             "dionysus"
-          ],
-          "reason": "Only Eastern Deities can be used. Prioritize heroes with short Ultimate cooldowns to reach 30 fireworks quickly.",
-          "notes": [
-            "Only Eastern Deities are eligible for this fight",
-            "Maximize Ultimate cast frequency to light fireworks faster",
-            "Damage ramps 10% per 5s - sustained fights become easier over time"
-          ],
-          "source": "auto"
+          ]
         },
         {
           "id": "nian_beast_2",
@@ -791,10 +753,7 @@
             "isis",
             "meret",
             "cronus"
-          ],
-          "reason": "",
-          "notes": [],
-          "source": "auto"
+          ]
         }
       ]
     }
