@@ -31,11 +31,6 @@ const heroCardImage = (id: string, width = 240) => (
 );
 
 const activeChallenge = eventsData.campaigns[0];
-const activeChallengeHero = activeChallenge
-  ? (allHeroes[activeChallenge.hero as keyof typeof allHeroes] as
-      | { id: string; name: string }
-      | undefined)
-  : undefined;
 
 const formatChallengeDateRange = (startDate?: string, endDate?: string) => {
   if (!startDate || !endDate) return undefined;
@@ -115,28 +110,10 @@ const heroDirectory = cards.slice(1);
           <span>{modeCards.length} guides</span>
         </div>
 
-        <a class:list={["guide-feature", "guide-feature--mode", { "guide-feature--challenge": featuredMode.href === "/events" }]} href={featuredMode.href}>
-          {featuredMode.href === "/events" && activeChallengeHero ? (
-            <div class="guide-feature-challenge-hero">
-              <img
-                src={heroCardImage(activeChallengeHero.id, 360)}
-                srcset={`${heroCardImage(activeChallengeHero.id, 240)} 240w, ${heroCardImage(activeChallengeHero.id, 360)} 360w, ${heroCardImage(activeChallengeHero.id, 480)} 480w`}
-                sizes="(max-width: 480px) 100vw, 38vw"
-                width="360"
-                height="450"
-                alt=""
-                loading="lazy"
-              />
-              <span class="guide-feature-challenge-hero-name">
-                <small>Challenge hero</small>
-                <strong>{activeChallengeHero.name}</strong>
-              </span>
-            </div>
-          ) : (
-            <div class="guide-feature-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={featuredMode.icon} />
-            </div>
-          )}
+        <a class="guide-feature guide-feature--mode" href={featuredMode.href}>
+          <div class="guide-feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={featuredMode.icon} />
+          </div>
           <div class="guide-feature-copy">
             <span class="guide-feature-label">Featured strategy</span>
             <h3>{featuredMode.displayLabel}</h3>
@@ -298,55 +275,6 @@ const heroDirectory = cards.slice(1);
   .guide-feature-icon svg {
     width: clamp(88px, 12vw, 140px);
     height: clamp(88px, 12vw, 140px);
-  }
-
-  .guide-feature-challenge-hero {
-    position: relative;
-    align-self: center;
-    height: 220px;
-    margin-left: var(--space-6);
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    background: var(--bg-raised);
-  }
-
-  .guide-feature-challenge-hero::after {
-    position: absolute;
-    inset: 35% 0 0;
-    background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--bg-base) 94%, transparent));
-    content: "";
-    pointer-events: none;
-  }
-
-  .guide-feature-challenge-hero img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 14%;
-  }
-
-  .guide-feature-challenge-hero-name {
-    position: absolute;
-    z-index: 1;
-    right: var(--space-5);
-    bottom: var(--space-5);
-    left: var(--space-5);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .guide-feature-challenge-hero-name small {
-    color: var(--text-muted);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-  }
-
-  .guide-feature-challenge-hero-name strong {
-    color: var(--text-bright);
-    font-size: var(--text-xl);
   }
 
   .guide-feature-copy {
@@ -529,11 +457,6 @@ const heroDirectory = cards.slice(1);
       min-height: 220px;
     }
 
-    .guide-feature-challenge-hero {
-      height: 190px;
-      margin-left: var(--space-4);
-    }
-
     .guide-directory-list,
     .guide-hero-directory {
       grid-template-columns: 1fr;
@@ -555,16 +478,6 @@ const heroDirectory = cards.slice(1);
 
     .guide-feature--mode .guide-feature-icon {
       display: none;
-    }
-
-    .guide-feature--challenge {
-      grid-template-columns: 1fr;
-    }
-
-    .guide-feature-challenge-hero {
-      width: calc(100% - (2 * var(--space-6)));
-      height: 170px;
-      margin: var(--space-6) var(--space-6) 0;
     }
 
     .guide-feature-copy {
