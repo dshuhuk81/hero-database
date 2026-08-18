@@ -4925,7 +4925,7 @@
   },
   "heket": {
     "id": "heket",
-    "name": "Heket",
+    "name": "Heqet",
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heket.webp",
     "release": false,
     "newHero": false,
@@ -4969,57 +4969,57 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Croaking Calamity",
-        "description": "Summons one frog in front of Heket, inheriting 30% of Heket's ATK and 80% of her max HP.",
+        "name": "Ten Thousand Toads",
+        "description": "Passive: Heqet is simultaneously treated as both a divine unit and a summon unit. Active: Summons 2 frogs in front of herself, each inheriting 50% of her ATK and 125% of her max HP, and grants all friendly summons a Shield equal to 200% ATK. Maximum of 3 frogs can exist at once. When the maximum is reached, the frog with the lowest HP is dismissed and resummoned. Frogs do not perform basic attacks and move toward the nearest enemy. Active: Releases a frog croak, dealing DMG equal to 50% ATK to enemies within 3 meters and reducing their Hit Rate by 25% for 5s, stacking up to 5 times. Passive: When another frog releases a croak, this frog also releases one in sync (synced croaks cannot trigger further chain croaks). Initial CD: 5s, cycle CD: 18s.",
         "upgrades": {
-          "level2": "Inherits 50% of Heket's ATK.",
-          "level3": "Inherits 100% of Heket's max HP.",
-          "level4": "Inherits 125% of Heket's max HP."
+          "level2": "Grants all friendly summons a Shield equal to 300% ATK.",
+          "level3": "Grants all friendly summons a Shield equal to 400% ATK.",
+          "level4": "Summons 3 frogs in front of herself."
         },
         "damageType": "",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Ten Thousand Toads",
-        "description": "Passive: Heket is simultaneously treated as both a divine unit and a summon unit. Active: Summons 2 frogs in front of herself, each inheriting 50% of her ATK and 125% of her max HP, and grants all friendly summons a Shield equal to 200% ATK. Maximum of 3 frogs can exist at once. When the maximum is reached, the frog with the lowest HP is dismissed and resummoned. Frogs do not perform basic attacks and move toward the nearest enemy. Active: Releases a frog croak, dealing DMG equal to 50% ATK to enemies within 3 meters and reducing their Hit Rate by 25% for 5s, stacking up to 5 times. Passive: When another frog releases a croak, this frog also releases one in sync (synced croaks cannot trigger further chain croaks). Initial CD: 5s, cycle CD: 18s.",
+        "name": "Croaking Calamity",
+        "description": "Summons one frog in front of Heqet, inheriting 30% of Heqet's ATK and 80% of her max HP.",
         "upgrades": {
-          "level2": "Grants all friendly summons a Shield equal to 300% ATK.",
-          "level3": "Grants all friendly summons a Shield equal to 400% ATK.",
-          "level4": "Summons 3 frogs in front of herself."
+          "level2": "Inherits 50% of Heqet's ATK.",
+          "level3": "Inherits 100% of Heqet's max HP.",
+          "level4": "Inherits 125% of Heqet's max HP."
         },
         "damageType": ""
       },
       {
         "id": "skill_3",
-        "name": "Primordial Molt",
-        "description": "At the start of battle, summons 1 frog inheriting 30% of her ATK and 100% of her max HP. Frog cap increased by 1.",
+        "name": "Toad Pact",
+        "description": "Passive: When Heqet herself is about to be defeated, sacrifices one frog, making herself immune to that instance of DMG and gaining a Shield equal to 500% ATK. This skill has a 30s CD.",
         "upgrades": {
-          "level2": "[Toad Pact] CD reduced to 15s.",
-          "level3": "[Toad Pact] CD reduced to 8s.",
-          "level4": "At the start of battle, summons 2 frogs inheriting 50% of her ATK and 125% of her max HP. Frog cap increased by 2."
+          "level2": "Gains a Shield equal to 600% ATK.",
+          "level3": "Gains a Shield equal to 700% ATK.",
+          "level4": "Gains a Shield equal to 800% ATK."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
         "name": "Symbiotic Blessing",
-        "description": "Passive: For each frog present, all friendly summons gain 20% ATK, and every 2s Heket restores HP equal to 15% of her ATK.",
+        "description": "Passive: For each frog present, all friendly summons gain 20% ATK, and every 2s Heqet restores HP equal to 15% of her ATK.",
         "upgrades": {
           "level2": "All friendly summons gain 30% ATK.",
           "level3": "All friendly summons gain 40% ATK.",
-          "level4": "Every 2s, Heket restores HP equal to 30% of her ATK."
+          "level4": "Every 2s, Heqet restores HP equal to 30% of her ATK."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Toad Pact",
-      "description": "Passive: When Heket herself is about to be defeated, sacrifices one frog, making herself immune to that instance of DMG and gaining a Shield equal to 500% ATK. This skill has a 30s CD.",
+      "name": "Primordial Molt",
+      "description": "At the start of battle, summons 1 frog inheriting 30% of her ATK and 100% of her max HP. Frog cap increased by 1.",
       "upgrades": {
-        "level2": "Gains a Shield equal to 600% ATK.",
-        "level3": "Gains a Shield equal to 700% ATK.",
-        "level4": "Gains a Shield equal to 800% ATK."
+        "level2": "[Toad Pact] CD reduced to 15s.",
+        "level3": "[Toad Pact] CD reduced to 8s.",
+        "level4": "At the start of battle, summons 2 frogs inheriting 50% of her ATK and 125% of her max HP. Frog cap increased by 2."
       }
     },
     "synergies": [],

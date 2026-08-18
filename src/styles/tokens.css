@@ -40,6 +40,13 @@
   --gold:              #d4af37;
   --accent-new:        #15b109;
 
+  /* Guide faction accents: bright enough for AAA text contrast on guide surfaces. */
+  --guide-accent-hearts:    #ff8f9c;
+  --guide-accent-diamonds:  #78ddff;
+  --guide-accent-clubs:     #82e89a;
+  --guide-accent-spades:    #91baff;
+  --guide-accent-starglint: #ffe28a;
+
   /* Borders (prefer these over box-shadow for separation) */
   --border-faint:  rgba(255, 255, 255, 0.05);
   --border-subtle: rgba(255, 255, 255, 0.08);

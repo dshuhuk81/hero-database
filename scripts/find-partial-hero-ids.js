@@ -3,7 +3,7 @@ const lua = fs.readFileSync('/Users/daschultheiss/hero-database/leak/game_extrac
 
 const names = [
   'anubisi','aruisi','yadianna','basite','keluonuosi','demoteer','gaibui',
-  'shuangzizuo','helakelesi','heladeguna','kaibuli','mengpo','maierte',
+  'shuangzizuo','helakelesi','Hladgunnr','kaibuli','mengpo','maierte',
   'momosi','nvba','feinikesi','puluomixiusi','sheshouzuo','jinniuzuo',
   'taifunute','wuleer'
 ];

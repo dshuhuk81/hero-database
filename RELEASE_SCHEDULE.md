@@ -15,7 +15,7 @@ EN names resolved via: `divination_character_setting.json`
 | enable_time | game_hero_id | en_name | internal_name | In Project? | Notes |
 |-------------|-------------|---------|---------------|-------------|-------|
 | 2025-07-25 | 50001 | ??? | hladgunnr variant | partial | Alternate skin, probably Hladgunnr |
-| 2026-01-21 | 4009 | Heladeguna | hladgunnr | yes (`hladgunnr`) | already released |
+| 2026-01-21 | 4009 | Hladgunnr | hladgunnr | yes (`hladgunnr`) | already released |
 | 2026-02-02 | 5006 | Nezha | nezha | yes (`nezha`) | already released |
 | 2026-02-04 | 1009 | Tefnut | tefnut | yes (`tefnut`) | already released |
 | 2026-02-18 | 2009 | Heracles | heracles | yes (`heracles`) | already released |
@@ -47,7 +47,7 @@ EN names resolved via: `divination_character_setting.json`
 ## Notes
 
 ### Already released (enable_time <= 2026-04-30)
-- **Heladeguna** (4009) - 2026-01-21
+- **Hladgunnr** (4009) - 2026-01-21
 - **Nezha** (5006) - 2026-02-02
 - **Tefnut** (1009) - 2026-02-04
 - **Heracles** (2009) - 2026-02-18

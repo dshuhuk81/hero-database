@@ -232,7 +232,7 @@ Die IDs in dieser Datei entsprechen den Hero-IDs aus `hero_detail.json` und `her
 | 4006 | Prometheus | prometheus |
 | 4007 | Surtur | surtr |
 | 4008 | Ullr | ullr |
-| 4009 | Heladeguna | hladgunnr |
+| 4009 | Hladgunnr | hladgunnr |
 | 4010 | Meng Po | mengpo |
 | 4011 | Hephaestus | hephaestus |
 | 5001 | Amon-Ra | amunra |

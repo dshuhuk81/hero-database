@@ -1,0 +1,197 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
+import zaojunData from "../../data/heroes/zaojun.json";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const skillImage = (id: string) => `${R2_BASE}/skills/zaojun_${id}.webp`;
+
+const takeaways: Record<string, string> = {
+  skill_1: "This is her main source of damage. Whenever an ally uses Energy, Zaojun stores part of it as Incense Smoke. This also works when a skill uses small amounts of Energy several times instead of spending it all at once. Each required amount of Incense Smoke adds another projectile. When Zaojun begins the Ultimate, the stored Incense Smoke is assigned to that cast and the storage becomes empty. Energy used by allies during the animation therefore starts filling the storage for her next Ultimate.",
+  skill_2: "The heal goes to the frontmost friendly non-summon. Its ricochet then uses that ally's current ATK and max HP, making a durable, offensive frontliner the best recipient.",
+  skill_3: "Zaojun never performs basic attacks. Instead, she regularly gains personal Energy and another ATK stack. Attack Speed and effects that require basic attacks therefore have very little value on her.",
+  skill_4: "The friendly non-summon with the highest HP becomes her Fire Bond partner. That ally receives substantial Damage Reduction. Fire Bond can move HP from the partner to Zaojun, so it redistributes existing HP instead of creating free healing for the team.",
+};
+
+const skills = zaojunData.skills.map((skill) => ({
+  ...skill,
+  badge: skill.isUltimate ? "Skill 1 - Ultimate" : `Skill ${skill.id.replace("skill_", "")}`,
+  takeaway: takeaways[skill.id],
+  upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+}));
+
+const relic = {
+  ...zaojunData.relic,
+  upgrades: Object.entries(zaojunData.relic.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+};
+
+const strengths = [
+  "Ultimate contributed over 95% of her damage in every successful observed PvE fight",
+  "Turns allied Energy spending into extra Ultimate projectiles",
+  "Prioritizes distant enemy heroes and deals area damage to enemies standing near them",
+  "Grants the highest-HP ally up to 27% Damage Reduction",
+  "Heals the frontmost ally and converts that ally's ATK and max HP into ricochet damage",
+  "Relic investment can heal the bonded ally for up to 25% of Zaojun's damage",
+  "Builds personal Energy and lasting ATK without relying on basic attacks",
+];
+
+const weaknesses = [
+  "No basic attacks, making Attack Speed and basic-attack effects poor investments",
+  "Can use her Ultimate before enough Incense Smoke is stored, resulting in few or no extra projectiles",
+  "The highest-HP ally is selected automatically, so an unintended hero may receive Fire Bond",
+  "Fire Bond can move HP from its partner to Zaojun, which may leave that ally under pressure",
+  "Scattered enemies reduce the value of her Ultimate's area damage",
+  "Energy drain, anti-heal, heavy early damage, and control during her Ultimate can stop her before she becomes effective",
+  "Provides no team-wide Shield, Cleanse, strong disabling effect, or Energy restoration for the whole team",
+];
+---
+
+<Base title="Zaojun Guide - Firework Ultimate & Fire Bond | Motto Immortal" description="Complete Zaojun guide covering Incense Smoke, Firework Feast, Fire Bond partner selection, relic investment, positioning, builds, strengths, weaknesses, and live-tested mechanics.">
+  <div class="guide-banner guide-banner--hearts">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("zaojun")}'); --guide-banner-y: 12%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>Guides</span></a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Zaojun</h1>
+      <p class="guide-hero-subtitle">Firework Carry &middot; Single-Target Support</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/hearts.webp`} alt="Hearts" />Hearts</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/archer.webp`} alt="Archer" />Archer</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--heket guide-body--hearts">
+    <GuideSectionNav />
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Zaojun at a Glance</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-verdict">
+        <div class="heket-verdict-main">
+          <div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_1")}');`} role="img" aria-label="Wildfire Spreading"></div>
+          <div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Build the team to charge one decisive firework show.</h3><p>Zaojun converts the Energy used by her allies into extra Ultimate shots. At the same time, she protects one high-HP ally through Fire Bond. Her damage and ATK grow as the battle continues, so she is not a conventional auto-attacking Archer.</p></div>
+        </div>
+        <div class="heket-fact-strip"><div><span>Role</span><strong>Ultimate carry</strong></div><div><span>Core resource</span><strong>Incense Smoke</strong></div><div><span>Best fit</span><strong>Fast-casting teams</strong></div></div>
+        <div class="heket-verdict-warning"><strong>Key warning</strong><span>She cannot perform basic attacks. Attack Speed and effects that require basic attacks do not support her actual damage plan.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">The Firework Engine</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-engine">
+        <div class="heket-engine-flow">
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_4")}');`} role="img" aria-label="Fire Bond Shelter"></div><span>Protect</span><strong>Bond with the highest-HP ally</strong><p>The ally with the highest HP automatically receives Fire Bond.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label="Blessed Fire Grace"></div><span>Charge</span><strong>Use Energy as a team</strong><p>Both one-time costs and repeated smaller Energy costs build Incense Smoke.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_3")}');`} role="img" aria-label="Hearth Fire Rising"></div><span>Prepare</span><strong>Gain Energy and ATK</strong><p>Zaojun regularly gains Energy and another ATK stack while the battle continues.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`} role="img" aria-label="Wildfire Spreading"></div><span>Attack</span><strong>Reach distant targets</strong><p>Stored Incense Smoke adds projectiles, and each projectile can damage enemies near its target.</p></div>
+        </div>
+        <div class="heket-engine-return"><span>Charge the next Feast</span></div>
+        <div class="heket-engine-rule"><strong>Energy used during the Ultimate is not wasted.</strong><span>When the Ultimate begins, its Incense Smoke has already been set aside and the storage is empty again. Any Energy used by allies during the animation therefore starts charging Zaojun's next Ultimate.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Skills: What They Mean</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-skill-explorer" data-guide-skill-explorer>
+        <div class="guide-skill-detail">
+          {skills.map((skill, index) => <article class={`guide-skill-panel${index === 0 ? " is-active" : ""}`} data-guide-skill={skill.id}>
+            <header class="guide-skill-panel-head"><div><h3>{skill.name}</h3><span class={`guide-skill-badge${skill.isUltimate ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div><img src={skillImage(skill.id)} alt="" width="72" height="72" loading="lazy" /></header>
+            <p class="guide-skill-panel-text">{skill.description}</p>
+            <div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{skill.upgrades.map((u) => <div><span>{u.level}</span><p>{u.text}</p></div>)}</div>
+            <p class="guide-skill-panel-takeaway"><strong>In practice</strong>{skill.takeaway}</p>
+          </article>)}
+          <article class="guide-skill-panel" data-guide-skill="relic">
+            <header class="guide-skill-panel-head"><div><h3>{relic.name}</h3><div class="guide-relic-badges"><span class="guide-skill-badge guide-skill-badge--relic">Relic</span><span class="guide-skill-badge guide-skill-badge--level">High-impact scaling</span></div></div><img src={skillImage("relic")} alt="" width="72" height="72" loading="lazy" /></header>
+            <p class="guide-skill-panel-text">{relic.description}</p>
+            <div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{relic.upgrades.map((u) => <div><span>{u.level}</span><p>{u.text}</p></div>)}</div>
+            <p class="guide-skill-panel-takeaway"><strong>In practice</strong>The Relic makes Fire Bond work in both directions: Energy used by the partner gives Zaojun Incense Smoke, while Zaojun's damage heals the partner. At maximum level, Zaojun stores a much larger share of that ally's Energy use.</p>
+          </article>
+        </div>
+        <ol class="guide-skill-selector">
+          {skills.map((skill, index) => <li><button class={index === 0 ? "is-active" : ""} type="button" data-guide-skill-button={skill.id} aria-pressed={index === 0 ? "true" : "false"}><img src={skillImage(skill.id)} alt="" width="44" height="44" loading="lazy" /><span><strong>{skill.name}</strong><small>{skill.badge}</small></span></button></li>)}
+          <li><button type="button" data-guide-skill-button="relic" aria-pressed="false"><img src={skillImage("relic")} alt="" width="44" height="44" loading="lazy" /><span><strong>{relic.name}</strong><small>Relic</small></span></button></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Relic Investment</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint"><span>Base Relic</span><strong>More Incense Smoke from the partner</strong><p>Zaojun stores a larger share of the Energy used by her Fire Bond partner.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv2</span><strong>Zaojun's damage heals the partner</strong><p>Each time Zaojun deals damage, part of that damage is returned to her Fire Bond partner as healing.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Lv3 &middot; Key breakpoint</span><strong>25% of damage becomes healing</strong><p>The Fire Bond partner is healed for 25% of Zaojun's damage. Healing beyond the ally's missing HP is wasted, and healing modifiers can change the final amount.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--max"><span>Lv4 &middot; Recommended</span><strong>Stores 80% of the partner's Energy use</strong><p>The Fire Bond partner provides about four times as much Incense Smoke as another ally using the same amount of Energy. This makes extra Ultimate projectiles much easier to unlock.</p></div>
+      </div>
+      <div class="guide-callout"><strong>Investment takeaway:</strong> Lv3 greatly improves how well Zaojun keeps her Fire Bond partner alive. Lv4 is the recommended final level because the partner then generates far more Incense Smoke. Choosing an ally who uses Energy early and often becomes especially important.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Strengths &amp; Weaknesses</h2><div class="lt-flourish lt-flourish-center"></div><StrengthWeakness strengths={strengths} weaknesses={weaknesses} /></section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Team Building</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-partners">
+        <article class="heket-partner-feature">
+          <img src={heroImage("poseidon")} alt="Poseidon" />
+          <div class="heket-partner-feature-content"><span class="heket-partner-label">Best verified standard partner</span><h3>Poseidon</h3><strong>A reliable Fire Bond and Food Offering target</strong><p>Poseidon's high HP repeatedly made him the Fire Bond partner. When he used his Ultimate early, Zaojun gained enough Incense Smoke to add six projectiles to her first Firework Feast. He also survived long enough for Zaojun's healing to restore HP that Fire Bond had moved away from him.</p><div class="heket-partner-tags"><span>High HP</span><span>Uses Energy early</span><span>Frontline value</span></div></div>
+        </article>
+        <div class="heket-partner-options">
+          <article class="heket-partner-option"><img src={heroImage("hladgunnr")} alt="Hladgunnr" /><div><span class="heket-partner-label">Best proof for repeated Energy use</span><h3>Hladgunnr</h3><p>Hladgunnr first used the Energy for her Ultimate and then used four smaller amounts while her skill continued. Every one of those smaller costs also gave Zaojun Incense Smoke. Together, Hladgunnr provided a lot of Energy for the Incense Smoke stored before a Firework Feast with seven extra projectiles.</p></div></article>
+          <article class="heket-partner-option"><img src={heroImage("caishen")} alt="Caishen" /><div><span class="heket-partner-label">Verified Energy support</span><h3>Caishen</h3><p>Whenever Caishen used his Ultimate, his Energy use added Incense Smoke for Zaojun. His Energy support also helps the other allies use their skills sooner. He was present in every successful new PvE team.</p></div></article>
+          <article class="heket-partner-option"><img src={heroImage("jingwei")} alt="Jingwei" /><div><span class="heket-partner-label">Promising, not yet verified</span><h3>Jingwei</h3><p>Jingwei uses Energy repeatedly while her Ultimate continues. Because this worked with Hladgunnr, Jingwei may also generate Incense Smoke several times during one Ultimate. Prometheus, Amun-Ra, and Isis have similar mechanics, but none of these interactions have been confirmed in a recorded fight.</p></div></article>
+        </div>
+        <div class="heket-partner-rule"><span>Formation rule</span><strong>Fire Bond selects highest HP while Food Offering selects the frontmost non-summon. Poseidon filled both roles in the cleanest tests, but Food Offering switched targets when frontline positions changed.</strong></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">PvE or PvP?</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Mode verdict</span><h3>More reliable in PvE - much less predictable in PvP.</h3></div>
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-good"><span>PvE</span><strong>Store Incense Smoke before the first Firework Feast</strong><p>In four successful recorded PvE fights, Zaojun dealt more than 95% of her damage during her Ultimates. When Poseidon or Hladgunnr used Energy early and Caishen supported the team, her stronger Ultimates gained six or seven extra projectiles.</p></div>
+          <div class="heket-matchup-bad"><span>PvP</span><strong>Zaojun must survive long enough to deal damage</strong><p>In one match, Zaojun survived an early Firework Feast with no extra projectiles. She later took over the fight with two Ultimates that each had six extra projectiles. In another match, she died before using her Ultimate and dealt no damage. Giving Fire Bond to an ally with a large HP pool was not enough to keep the team alive.</p></div>
+        </div>
+        <p class="heket-hades-note"><strong>PvP takeaway:</strong> Zaojun can work in PvP, but her results are inconsistent. She needs protection, allies who use Energy before she casts, and enemies close enough for her area damage to hit several targets. An early Ultimate is not automatically good: she needs to survive until enough Incense Smoke is stored for several extra projectiles.</p>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Build, Battle Plan &amp; Counterplay</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Winning pattern</span><h3>Keep her safe, build Incense Smoke, then strike grouped enemies.</h3></div>
+        <div class="heket-tactics">
+          <article><div class="heket-tactic-marker">Place</div><h4>Keep Zaojun in the backline</h4><p>Place the intended Fire Bond partner in front of her. Make sure that ally has the highest HP, and protect Zaojun until she can use a well-charged Ultimate.</p></article>
+          <article><div class="heket-tactic-marker">Build</div><h4>Improve her Ultimate damage</h4><p>Prioritize ATK, Ultimate Damage, or Magic Damage. Energy and cooldown support can help her cast more often. Add enough defensive stats to keep her alive, and treat Attack Speed as the lowest priority.</p></article>
+          <article><div class="heket-tactic-marker">Cast</div><h4>Fill Incense Smoke before she casts</h4><p>Use allies who spend Energy early and regularly. Try to keep enemies close together so the area damage from each projectile can hit several targets.</p></article>
+        </div>
+        <div class="heket-matchup-row">
+          <div class="heket-matchup-good"><span>Favorable fight</span><strong>Longer battles against grouped enemies</strong><p>Regular Energy use by allies gives Zaojun more extra projectiles. A durable Fire Bond partner keeps the team stable, while enemies standing close together take more area damage.</p></div>
+          <div class="heket-matchup-bad"><span>Difficult opponents</span><strong>Energy drain, anti-heal, control, and early burst damage</strong><p>Energy drain delays Zaojun's Ultimate and reduces the Energy her allies can use. Anti-heal weakens the healing from her Relic. Burst damage can kill Zaojun or her Fire Bond partner early, while control can interrupt her most important attack.</p></div>
+        </div>
+        <p class="heket-hades-note"><strong>What the recorded fights showed:</strong> in four successful PvE fights, at least 95% of Zaojun's damage happened during her Ultimates. Skills that use several smaller amounts of Energy can give her Incense Smoke each time. The tests also showed that Zaojun may use another Ultimate immediately, before her allies have provided enough Energy for extra projectiles.</p>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-verdict-box"><h3 class="guide-verdict-heading">An Ultimate carry whose protected ally also powers her strongest attack</h3><p class="guide-verdict-text">Zaojun works best when the team follows a clear plan. A durable ally who uses Energy often should have the highest HP and receive Fire Bond. As the team uses Energy, Zaojun stores Incense Smoke and gains her own Energy and ATK. Firework Feast then targets distant heroes and deals more area damage when enemies stand close together. Poseidon is currently the most reliable partner confirmed across several fights. Hladgunnr proves that skills using several smaller amounts of Energy can generate Incense Smoke each time, while Caishen reliably helps the team use Energy more often. Zaojun's Relic allows her damage to heal her Fire Bond partner, although healing is wasted when that ally is already near full HP.<br><br>Do not build Zaojun like a normal Archer. She does not use basic attacks, and in every successful recorded PvE fight, more than 95% of her damage happened during her Ultimates. She can work in PvP, but only if the team keeps her alive until enough Incense Smoke is stored. In one recorded match she survived and later carried with several Ultimates; in another she died before dealing any damage. Invest in her when you can control who receives Fire Bond, use allies who spend Energy before she casts, and protect her until her strongest Ultimate is ready.</p></div>
+    </section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+  <script>
+    for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {
+      const buttons = Array.from(explorer.querySelectorAll("[data-guide-skill-button]"));
+      const panels = Array.from(explorer.querySelectorAll("[data-guide-skill]"));
+      for (const button of buttons) button.addEventListener("click", () => {
+        const id = button.getAttribute("data-guide-skill-button");
+        for (const other of buttons) { const active = other === button; other.classList.toggle("is-active", active); other.setAttribute("aria-pressed", String(active)); }
+        for (const panel of panels) panel.classList.toggle("is-active", panel.getAttribute("data-guide-skill") === id);
+      });
+    }
+  </script>
+</Base>

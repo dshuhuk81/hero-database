@@ -2711,7 +2711,43 @@ button.content-list-item:hover .content-list-item-action {
   gap: var(--space-12);
 }
 
-/* Heket is the first guide aligned to the hero-detail content geometry. */
+/* Faction themes keep the shared guide components visually consistent. */
+.guide-banner--hearts,
+.guide-body--hearts {
+  --guide-accent: var(--guide-accent-hearts);
+  --guide-accent-dim: color-mix(in srgb, var(--guide-accent-hearts) 15%, transparent);
+  --guide-accent-line: color-mix(in srgb, var(--guide-accent-hearts) 34%, transparent);
+}
+
+.guide-banner--diamonds,
+.guide-body--diamonds {
+  --guide-accent: var(--guide-accent-diamonds);
+  --guide-accent-dim: color-mix(in srgb, var(--guide-accent-diamonds) 15%, transparent);
+  --guide-accent-line: color-mix(in srgb, var(--guide-accent-diamonds) 34%, transparent);
+}
+
+.guide-banner--clubs,
+.guide-body--clubs {
+  --guide-accent: var(--guide-accent-clubs);
+  --guide-accent-dim: color-mix(in srgb, var(--guide-accent-clubs) 15%, transparent);
+  --guide-accent-line: color-mix(in srgb, var(--guide-accent-clubs) 34%, transparent);
+}
+
+.guide-banner--spades,
+.guide-body--spades {
+  --guide-accent: var(--guide-accent-spades);
+  --guide-accent-dim: color-mix(in srgb, var(--guide-accent-spades) 15%, transparent);
+  --guide-accent-line: color-mix(in srgb, var(--guide-accent-spades) 34%, transparent);
+}
+
+.guide-banner--starglint,
+.guide-body--starglint {
+  --guide-accent: var(--guide-accent-starglint);
+  --guide-accent-dim: color-mix(in srgb, var(--guide-accent-starglint) 15%, transparent);
+  --guide-accent-line: color-mix(in srgb, var(--guide-accent-starglint) 34%, transparent);
+}
+
+/* Heqet is the first guide aligned to the hero-detail content geometry. */
 .guide-body--heket {
   width: 100%;
   max-width: var(--page-max-width);
@@ -4600,7 +4636,7 @@ button.content-list-item:hover .content-list-item-action {
   line-height: 1.6;
 }
 
-/* -- Heket: verdict and summon loop -- */
+/* -- Heqet: verdict and summon loop -- */
 .heket-verdict {
   overflow: hidden;
   border: 1px solid var(--guide-accent-line);
@@ -4781,7 +4817,7 @@ button.content-list-item:hover .content-list-item-action {
   color: var(--text-bright);
 }
 
-/* -- Heket: partner showcase -- */
+/* -- Heqet: partner showcase -- */
 .heket-partners {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
@@ -4919,7 +4955,7 @@ button.content-list-item:hover .content-list-item-action {
   font-size: var(--text-sm);
 }
 
-/* -- Heket: battle plan -- */
+/* -- Heqet: battle plan -- */
 .heket-battle-plan {
   overflow: hidden;
   border: 1px solid var(--border-faint);

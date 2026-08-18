@@ -17,8 +17,6 @@
     "db:merge": "node scripts/merge-heroes-db.js",
     "validate:hero-detail-stats": "node scripts/validate-hero-detail-stats.mjs",
     "build:divine-throne-data": "node scripts/build-divine-throne-data.mjs",
-    "import-seawar": "node scripts/import-seawar.mjs",
-    "extract:seawar-assets": "python3 scripts/extract-seawar-assets.py",
     "validate:divine-throne": "node scripts/validate-divine-throne.mjs",
     "sync:cn-hero-table": "node scripts/sync-cn-en-hero-table.mjs",
     "rename:cn-full-skills": "node scripts/rename-cn-full-skills.mjs",

@@ -1,0 +1,168 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import StrengthWeakness from "../../components/StrengthWeakness.astro";
+import GuideSectionNav from "../../components/guides/GuideSectionNav.astro";
+import heboData from "../../data/heroes/hebo.json";
+
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
+const skillImage = (id: string) => `${R2_BASE}/skills/hebo_${id}.webp`;
+
+const takeaways: Record<string, string> = {
+  skill_1: "Raging Torrent is the payoff, not the start of the engine. Aim it at a tightly packed group that has already been softened below half HP; its small radius makes setup more important than raw range.",
+  skill_2: "This four-dash sequence replaces Hebo's normal attacks. The damage rises with each pass, and the final, strongest dash knocks enemies down. Finishing the entire cast matters far more than merely starting it.",
+  skill_3: "Every damaging dash builds Crit Rate for the rest of the sequence. Because the kit supplies substantial Crit Rate by itself, ATK and Crit Damage are generally more valuable offensive complements than stacking Crit Rate alone.",
+  skill_4: "Hebo becomes tougher while dashing, retains the protection briefly afterward, and gains a large ATK-scaling Shield at Skill Lv3—but the Shield only appears after a completed sequence.",
+};
+
+const skills = heboData.skills.map((skill) => ({
+  ...skill,
+  badge: skill.isUltimate ? "Skill 1 - Ultimate" : `Skill ${skill.id.replace("skill_", "")}`,
+  takeaway: takeaways[skill.id],
+  upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+}));
+
+const relic = {
+  ...heboData.relic,
+  badge: "Exclusive Equipment",
+  levelBadge: "Completion payoff",
+  takeaway: "Every benefit is gated behind a full Wave-Chasing Slash. Base and Lv3 accelerate the next Ultimate; Lv2 and Lv4 add permanent offensive scaling over the first three completed cycles.",
+  upgrades: Object.entries(heboData.relic.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+};
+
+const strengths = [
+  "Four mobile area attacks replace basic attacks and pressure clustered formations",
+  "The final dash has the highest coefficient and adds Knockdown",
+  "Repeated dash hits can supply 40 percentage points of Crit Rate across a full four-hit sequence at maximum skill level",
+  "Damage reduction ramps during the sequence and persists briefly after it ends",
+  "A completed sequence grants a Shield equal to 400% of ATK at Skill Lv3",
+  "The Ultimate gains 50% more damage against enemies at or below half HP at maximum level",
+  "Exclusive Equipment rewards repeated completions with Energy and permanent ATK scaling",
+];
+
+const weaknesses = [
+  "Most of the kit shares one failure point: an interrupted or unfinished dash cycle",
+  "He performs no conventional basic attacks, sharply reducing the value of Attack Speed and basic-attack effects",
+  "He needs roughly one full opening rotation before Shield, Energy, and lasting ramp become available",
+  "His movement can carry him out of a protected formation and into enemy burst",
+  "Both the dashes and Ultimate lose value when enemies are spread apart",
+  "The defensive ramp is not invulnerability; recorded fights still showed deaths during later cycles",
+  "He provides little direct team support beyond area pressure and the final Knockdown",
+];
+---
+
+<Base title="Hebo Guide - Wave-Chasing Ramp Warrior | Motto Immortal" description="Complete Hebo guide covering his four-dash rotation, completion rewards, execute Ultimate, Exclusive Equipment, builds, teams, PvE, PvP, strengths, weaknesses, and counterplay.">
+  <div class="guide-banner guide-banner--heket guide-banner--spades">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("hebo")}'); --guide-banner-y: 11%;`}></div>
+    <div class="guide-banner-overlay"></div>
+    <a class="guide-back" href="/guides"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg><span>Guides</span></a>
+    <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
+    <div class="guide-banner-content">
+      <h1 class="guide-hero-name">Hebo</h1>
+      <p class="guide-hero-subtitle">Wave-Chasing Bruiser &middot; Ramp Carry</p>
+      <div class="guide-badge-row">
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/spades.webp`} alt="Spades" />Spades</span>
+        <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/classes/warrior.webp`} alt="Warrior" />Warrior</span>
+        <span class="guide-badge guide-badge--legendary">Legendary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-body guide-body--heket guide-body--spades">
+    <GuideSectionNav />
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Hebo at a Glance</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-verdict">
+        <div class="heket-verdict-main"><div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Wave-Chasing Slash"></div><div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Protect one complete rotation before chasing more damage.</h3><p>Hebo is a mobile Physical bruiser whose Crit, defense, Shield, Energy, permanent scaling, and access to his strongest follow-up all depend on completing Wave-Chasing Slash. He is powerful when allowed to cross a clustered formation and fragile when that sequence is stopped and dies easily.</p></div></div>
+        <div class="heket-fact-strip"><div><span>Role</span><strong>Ramp bruiser</strong></div><div><span>Core condition</span><strong>Complete all four dashes</strong></div><div><span>Best fit</span><strong>Protected cluster fights</strong></div></div>
+        <div class="heket-verdict-warning"><strong>Key warning</strong><span>Wave-Chasing Slash replaces normal attacks. Attack Speed and effects requiring basic attacks do not improve his main loop in the usual way.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">The Wave-Chasing Loop</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-engine">
+        <div class="heket-engine-flow">
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_2")}');`}></div><span>Enter</span><strong>Dash through the cluster</strong><p>Four passes deal rising area damage, ending in the strongest hit and Knockdown.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_3")}');`}></div><span>Ramp</span><strong>Stack Crit while moving</strong><p>Every damaging pass raises Crit Rate, making the later hits increasingly threatening.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_4")}');`}></div><span>Complete</span><strong>Unlock defense and Shield</strong><p>Finishing preserves the damage reduction briefly and unlocks the completion Shield.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`}></div><span>Execute</span><strong>Ultimate the weakened group</strong><p>Raging Torrent rewards dense targets, with extra damage below half HP.</p></div>
+        </div>
+        <div class="heket-engine-return"><span>Start the next rotation stronger</span></div>
+        <div class="heket-engine-rule"><strong>Completion is the real resource.</strong><span>Death, control, a wave transition, or combat ending early can remove the Shield, ATK buff, Exclusive Equipment Energy, and permanent scaling together.</span></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Skills: What They Mean</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-skill-explorer" data-guide-skill-explorer>
+        <div class="guide-skill-detail">
+          {skills.map((skill, index) => <article class={`guide-skill-panel${index === 0 ? " is-active" : ""}`} data-guide-skill={skill.id}><header class="guide-skill-panel-head"><div><h3>{skill.name}</h3><span class={`guide-skill-badge${skill.isUltimate ? " guide-skill-badge--ult" : ""}`}>{skill.badge}</span></div><img src={skillImage(skill.id)} alt="" width="72" height="72" loading="lazy" /></header><p class="guide-skill-panel-text">{skill.description}</p><div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{skill.upgrades.map((u) => <div><span>{u.level}</span><p>{u.text}</p></div>)}</div><p class="guide-skill-panel-takeaway"><strong>In practice</strong>{skill.takeaway}</p></article>)}
+          <article class="guide-skill-panel" data-guide-skill="relic"><header class="guide-skill-panel-head"><div><h3>{relic.name}</h3><div class="guide-relic-badges"><span class="guide-skill-badge guide-skill-badge--relic">{relic.badge}</span><span class="guide-skill-badge guide-skill-badge--level">{relic.levelBadge}</span></div></div><img src={skillImage("relic")} alt="" width="72" height="72" loading="lazy" /></header><p class="guide-skill-panel-text">{relic.description}</p><div class="guide-skill-panel-upgrades"><span class="guide-skill-panel-label">Upgrades</span>{relic.upgrades.map((u) => <div><span>{u.level}</span><p>{u.text}</p></div>)}</div><p class="guide-skill-panel-takeaway"><strong>In practice</strong>{relic.takeaway}</p></article>
+        </div>
+        <ol class="guide-skill-selector">{skills.map((skill, index) => <li><button class={index === 0 ? "is-active" : ""} type="button" data-guide-skill-button={skill.id} aria-pressed={index === 0 ? "true" : "false"}><img src={skillImage(skill.id)} alt="" width="44" height="44" loading="lazy" /><span><strong>{skill.name}</strong><small>{skill.badge}</small></span></button></li>)}<li><button type="button" data-guide-skill-button="relic" aria-pressed="false"><img src={skillImage("relic")} alt="" width="44" height="44" loading="lazy" /><span><strong>{relic.name}</strong><small>{relic.badge}</small></span></button></li></ol>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Exclusive Equipment Investment</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="guide-apple-breakpoints">
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Base</span><strong>Energy after every full sequence</strong><p>The engine begins feeding the next Ultimate as soon as Hebo reliably completes Wave-Chasing Slash.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv2</span><strong>Permanent ATK ramp</strong><p>Each of the first three completed sequences adds 25% ATK, rewarding long PvE fights.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv3</span><strong>50% more completion Energy</strong><p>The Energy payout increases from its base value by half, improving rotation speed without changing the condition.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--max"><span>Lv4 &middot; Premium target</span><strong>40% ATK per stack</strong><p>Three completions can build a listed total of 120% ATK, making this the long-fight ceiling.</p></div>
+      </div>
+      <div class="guide-callout"><strong>Investment takeaway:</strong> base equipment already enables the Energy loop. Lv2 is the first major damage breakpoint; Lv4 is a premium endpoint for players building Hebo as a long-fight carry. No equipment level fixes interrupted casts, so team protection remains the first requirement.</div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Strengths &amp; Weaknesses</h2><div class="lt-flourish lt-flourish-center"></div><StrengthWeakness strengths={strengths} weaknesses={weaknesses} /></section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Team Building</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-partners">
+        <article class="heket-partner-feature"><img src={heroImage("poseidon")} alt="Poseidon" /><div class="heket-partner-feature-content"><span class="heket-partner-label">Frontline archetype</span><h3>Poseidon</h3><strong>Create room for the first complete sequence</strong><p>A durable first-contact tank can absorb the opening pressure while keeping enemies near one another. Poseidon is a mechanically strong example, although the recorded fights did not provide enough ally attribution to prove a single best-in-slot partner.</p><div class="heket-partner-tags"><span>Front anchor</span><span>Cluster control</span><span>Early protection</span></div></div></article>
+        <div class="heket-partner-options">
+          <article class="heket-partner-option"><img src={heroImage("caishen")} alt="Caishen" /><div><span class="heket-partner-label">Energy and ATK option</span><h3>Caishen</h3><p>Energy support can shorten the wait for Raging Torrent, while ATK improves the dashes, Ultimate, and completion Shield at the same time. Solve completion safety before overinvesting in Energy speed.</p></div></article>
+          <article class="heket-partner-option"><img src={heroImage("mengpo")} alt="Mengpo" /><div><span class="heket-partner-label">Sustain and control option</span><h3>Mengpo</h3><p>Sustain and early control address Hebo's most important requirement: surviving uninterrupted until the fourth dash and its rewards.</p></div></article>
+          <article class="heket-partner-option"><img src={heroImage("geb")} alt="Geb" /><div><span class="heket-partner-label">Grouping option</span><h3>Geb</h3><p>Pulls and grouping multiply both the late Wave-Chasing Slash hits and the small-radius Ultimate. Any reliable cluster-maker can fill this role.</p></div></article>
+        </div>
+        <div class="heket-partner-rule"><span>Team rule</span><strong>Give Hebo one sturdy front anchor plus sustain, early control, or grouping. Avoid filling the rest of the team with slow selfish carries that all need the same protection window.</strong></div>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Build, Positioning &amp; Counterplay</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading"><span>Winning pattern</span><h3>Enter second, finish the sequence, execute the cluster.</h3></div>
+        <div class="heket-tactics">
+          <article><div class="heket-tactic-marker">Place</div><h4>Do not use him as the only tank</h4><p>Start him close enough to find a target quickly, but behind or beside a durable first-contact hero so the initial burst lands elsewhere.</p></article>
+          <article><div class="heket-tactic-marker">Build</div><h4>ATK and Crit Damage first</h4><p>ATK scales every major damage source and the Shield. His own passive supplies Crit Rate, making Crit Damage a natural complement. Add enough durability to guarantee completion.</p></article>
+          <article><div class="heket-tactic-marker">Avoid</div><h4>Do not prioritize Attack Speed</h4><p>His normal attacks are replaced by a long skill sequence. Energy and cooldown support matter only after survivability and uninterrupted casting are reliable.</p></article>
+        </div>
+        <div class="heket-matchup-row"><div class="heket-matchup-good"><span>Favorable fights</span><strong>Dense formations and slower opening damage</strong><p>Multiple nearby non-summon targets let each dash and the Ultimate multiply their value. Longer PvE waves also allow Exclusive Equipment stacks to accumulate.</p></div><div class="heket-matchup-bad"><span>Hard counters</span><strong>Early burst, control, displacement, and spacing</strong><p>Silence, Stun, forced movement, or simply killing Hebo before the last dash can deny several rewards at once. Spread formations also reduce both area-damage packages.</p></div></div>
+        <p class="heket-hades-note"><strong>Against summon teams:</strong> Hebo's direct dash targeting prefers non-summons, but the surrounding area damage can still hit summoned bodies. That can create useful collateral damage, yet it may also keep him from reaching a more valuable backline target.</p>
+      </div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">PvE vs PvP</h2><div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan"><div class="heket-matchup-row"><div class="heket-matchup-good"><span>PvE</span><strong>Strongest in durable, grouped waves</strong><p>In the longer analyzed combat openings, Hebo completed his first cycle consistently and his late dashes hit several enemies. The one observed full follow-up showed Raging Torrent contributing nearly half of that wave's damage.</p></div><div class="heket-matchup-bad"><span>PvP</span><strong>Protection is mandatory</strong><p>In an example PvP fight, neither sequence completed and Hebo died before using his Ultimate. He still created area pressure, but received none of the Shield, Energy, or completion payoff that defines his full kit.</p></div></div></div>
+    </section>
+
+    <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div><div class="guide-verdict-box"><h3 class="guide-verdict-heading">A high-upside carry with one shared failure point</h3><p class="guide-verdict-text">Hebo's design is unusually concentrated: mobility, rising Crit Rate, damage reduction, Knockdown, a 400%-ATK Shield, Energy recovery, permanent Exclusive Equipment scaling, and the ideal setup for his execute Ultimate all flow through the same four-dash sequence. When a tank or controller buys him a safe opening against grouped enemies, the late dashes and Raging Torrent can take over a wave. When he is controlled or bursted early, almost the entire engine disappears together.<br><br>Build him first for completion reliability, then ATK and Crit Damage, followed by Energy or cooldown support. He is most convincing in longer PvE encounters and demands much more protection in fast PvP. Players who can supply a strong front anchor and grouping will see his ceiling; teams that cannot protect a full opening rotation should favor a carry with faster, less conditional output. But it must be clear that he performes not really well and is no way a good invest hero at all. If you have enough resources: go for him - if not - skip him as Spades have better dps heroes to shine.</p></div></section>
+  </div>
+  <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
+  <script>
+    for (const explorer of document.querySelectorAll("[data-guide-skill-explorer]")) {
+      const buttons = Array.from(explorer.querySelectorAll("[data-guide-skill-button]"));
+      const panels = Array.from(explorer.querySelectorAll("[data-guide-skill]"));
+      for (const button of buttons) button.addEventListener("click", () => {
+        const id = button.getAttribute("data-guide-skill-button");
+        for (const other of buttons) { const active = other === button; other.classList.toggle("is-active", active); other.setAttribute("aria-pressed", String(active)); }
+        for (const panel of panels) panel.classList.toggle("is-active", panel.getAttribute("data-guide-skill") === id);
+      });
+    }
+  </script>
+</Base>

@@ -10,10 +10,10 @@ const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
 const skillImage = (id: string) => `${R2_BASE}/skills/heket_${id}.webp`;
 
 const takeaways: Record<string, string> = {
-  skill_1: "The Ultimate adds another frog to the engine. If the field is already full, the weakest frog is replaced, turning the cast into a refresh for a damaged frontline body.",
-  skill_2: "This is the center of the kit. It creates frogs, shields every friendly summon—including Heket—and makes nearby enemies less accurate. Because croaks synchronize, several frogs can apply the Hit Rate debuff quickly.",
-  skill_3: "Heket begins producing value immediately instead of waiting for her Ultimate. At Lv4 she starts with two durable frogs, raises the cap by two, and reduces Toad Pact's cooldown to 8 seconds.",
-  skill_4: "Every living frog strengthens the summon-wide ATK bonus and periodic healing. Heket qualifies for these effects herself, so keeping frogs alive sustains both her and the rest of the summon board.",
+  skill_1: "This is the center of the kit. It creates frogs, shields every friendly summon—including Heqet—and makes nearby enemies less accurate. Because croaks synchronize, several frogs can apply the Hit Rate debuff quickly.",
+  skill_2: "This active adds another frog to the engine. If the field is already full, the weakest frog is replaced, turning the cast into a refresh for a damaged frontline body.",
+  skill_3: "If a frog is available, Heqet can sacrifice it to negate one lethal damage instance and gain a large personal Shield. Shield strength increases with this skill's levels; the cooldown is improved by her Relic.",
+  skill_4: "Despite the skill text saying frogs, live testing shows that every friendly summon raises this counter. Heqet and all friendly summons receive the resulting ATK bonus and periodic healing.",
 };
 
 const skills = heketData.skills.map((skill) => ({
@@ -29,8 +29,8 @@ const skills = heketData.skills.map((skill) => ({
 const relic = {
   ...heketData.relic,
   badge: "Relic",
-  levelBadge: "Strong at base",
-  takeaway: "The survival mechanic is available immediately: if a frog exists, Heket can erase one lethal damage instance and replace that frog with a large personal Shield. Later levels only increase the Shield amount.",
+  levelBadge: "High-impact scaling",
+  takeaway: "The base Relic fixes Heqet's slow opening by giving her a frog immediately and raising the cap. Later levels sharply reduce Toad Pact's cooldown, while Lv4 improves both the opening summon and maximum frog count.",
   upgrades: Object.entries(heketData.relic.upgrades).map(([level, text]) => ({
     level: level.replace("level", "Lv "),
     text,
@@ -38,12 +38,12 @@ const relic = {
 };
 
 const strengths = [
-  "Each frog grants all friendly summons up to 40% ATK at Skill Lv3",
-  "Ten Thousand Toads shields every allied summon for up to 400% of Heket's ATK",
+  "Each live friendly summon grants Heqet and all friendly summons up to 40% ATK at Skill Lv3",
+  "Ten Thousand Toads shields every allied summon for up to 400% of Heqet's ATK",
   "Synchronized croaks can rapidly stack a 25% Hit Rate reduction up to five times",
   "Starts the battle with frogs and can raise the maximum number allowed on the field",
-  "Provides recurring healing to herself and friendly summons while frogs remain alive",
-  "Toad Pact sacrifices a frog to ignore lethal damage and grants a massive Shield",
+  "Provides recurring healing to herself and friendly summons while any friendly summons remain alive",
+  "Toad Pact, a normal passive skill, sacrifices a frog to ignore lethal damage and grants a massive Shield",
   "Frog replacements and sacrifices can fuel allies that benefit when units fall",
 ];
 
@@ -57,9 +57,9 @@ const weaknesses = [
 ];
 ---
 
-<Base title="Heket Guide - Frog & Summon Support | Motto Immortal" description="Heket guide covering frogs, summon ATK buffs and Shields, synchronized croaks, Toad Pact, team fit, strengths, weaknesses, and confirmed mechanics.">
-  <div class="guide-banner guide-banner--heket">
-    <div class="guide-banner-bg" style={`background-image: url('${heroImage("heket")}'); --guide-banner-y: 12%;`}></div>
+<Base title="Heqet Guide - Frog & Summon Support | Motto Immortal" description="Heqet guide covering frogs, summon ATK buffs and Shields, synchronized croaks, Toad Pact, team fit, strengths, weaknesses, and confirmed mechanics.">
+  <div class="guide-banner guide-banner--heket guide-banner--clubs">
+    <div class="guide-banner-bg" style={`background-image: url('${heroImage("heket")}'); --guide-banner-y: 15%;`}></div>
     <div class="guide-banner-overlay"></div>
     <a class="guide-back" href="/guides">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
@@ -67,7 +67,7 @@ const weaknesses = [
     </a>
     <p class="guide-meta-label">Motto Immortal &middot; Hero Guide</p>
     <div class="guide-banner-content">
-      <h1 class="guide-hero-name">Heket</h1>
+      <h1 class="guide-hero-name">Heqet</h1>
       <p class="guide-hero-subtitle">Frog Summoner &middot; Summon Support</p>
       <div class="guide-badge-row">
         <span class="guide-badge"><img class="guide-badge-icon" src={`${R2_BASE}/icons/factions/clubs.webp`} alt="Clubs" />Clubs</span>
@@ -77,24 +77,24 @@ const weaknesses = [
     </div>
   </div>
 
-  <div class="guide-body guide-body--heket">
+  <div class="guide-body guide-body--heket guide-body--clubs">
     <GuideSectionNav />
 
     <section class="guide-section guide-section--detail-heading">
-      <h2 class="guide-section-title lt-h2 lt-h2-center">Heket at a Glance</h2>
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Heqet at a Glance</h2>
       <div class="lt-flourish lt-flourish-center"></div>
       <div class="heket-verdict">
         <div class="heket-verdict-main">
-          <div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Ten Thousand Toads"></div>
+          <div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_1")}');`} role="img" aria-label="Ten Thousand Toads"></div>
           <div>
             <span class="heket-verdict-kicker">Team-building verdict</span>
-            <h3>Build Heket around persistent summons.</h3>
-            <p>Her frogs turn battlefield presence into offense, sustain, disruption, and an emergency life reserve. Heket also counts as a summon, so the engine supports its creator.</p>
+            <h3>Build Heqet around persistent summons.</h3>
+            <p>Her frogs turn battlefield presence into offense, sustain, disruption, and an emergency life reserve. Heqet also counts as a summon, so the engine supports its creator.</p>
           </div>
         </div>
         <div class="heket-fact-strip">
           <div><span>Role</span><strong>Summon amplifier</strong></div>
-          <div><span>Core resource</span><strong>Living frogs</strong></div>
+          <div><span>Core resource</span><strong>Living summons</strong></div>
           <div><span>Best fit</span><strong>Persistent summon teams</strong></div>
         </div>
         <div class="heket-verdict-warning"><strong>Specialist warning</strong><span>Without other summon units, much of her team-wide amplification has too few useful targets.</span></div>
@@ -107,7 +107,7 @@ const weaknesses = [
       <div class="heket-engine">
         <div class="heket-engine-flow">
           <div class="heket-engine-step">
-            <div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_3")}');`} role="img" aria-label="Primordial Molt"></div>
+            <div class="heket-engine-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label="Primordial Molt"></div>
             <span>Establish</span>
             <strong>Create the frog line</strong>
             <p>Begin with bodies already protecting the formation.</p>
@@ -116,19 +116,19 @@ const weaknesses = [
             <div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_4")}');`} role="img" aria-label="Symbiotic Blessing"></div>
             <span>Amplify</span>
             <strong>Power every summon</strong>
-            <p>Living frogs strengthen offense and recurring sustain.</p>
+            <p>Every live friendly summon strengthens offense and recurring sustain.</p>
           </div>
           <div class="heket-engine-step">
-            <div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Ten Thousand Toads"></div>
+            <div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`} role="img" aria-label="Ten Thousand Toads"></div>
             <span>Disrupt</span>
             <strong>Synchronize the croaks</strong>
             <p>Nearby enemies face damage and mounting accuracy pressure.</p>
           </div>
           <div class="heket-engine-step">
-            <div class="heket-engine-icon" style={`background-image: url('${skillImage("relic")}');`} role="img" aria-label="Toad Pact"></div>
+            <div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_3")}');`} role="img" aria-label="Toad Pact"></div>
             <span>Survive</span>
             <strong>Trade a frog for life</strong>
-            <p>A living frog can become Heket's emergency protection.</p>
+            <p>A living frog can become Heqet's emergency protection.</p>
           </div>
         </div>
         <div class="heket-engine-return"><span>Rebuild the engine</span></div>
@@ -181,18 +181,46 @@ const weaknesses = [
       <h2 class="guide-section-title lt-h2 lt-h2-center">Relic Investment</h2>
       <div class="lt-flourish lt-flourish-center"></div>
       <div class="guide-apple-breakpoints">
-        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Base Relic</span><strong>The important mechanic is already active</strong><p>One frog can be sacrificed to ignore an otherwise lethal damage instance. Heket then receives a Shield equal to 500% ATK.</p></div>
-        <div class="guide-apple-breakpoint"><span>Lv2</span><strong>600% ATK Shield</strong><p>More protection after the save, but no new behavior.</p></div>
-        <div class="guide-apple-breakpoint"><span>Lv3</span><strong>700% ATK Shield</strong><p>Another survivability increase without changing how the Relic is used.</p></div>
-        <div class="guide-apple-breakpoint guide-apple-breakpoint--max"><span>Lv4 &middot; Recommended</span><strong>800% ATK Shield</strong><p>The preferred survivability target. Heavy burst and damage amplification make the largest available Shield increasingly valuable after Toad Pact saves her.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--key"><span>Base Relic</span><strong>Immediate frog and +1 Frog Limit</strong><p>Heqet starts contributing sooner and gains another body for her aura, synchronized croaks, and lethal protection.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv2</span><strong>15s survival cooldown</strong><p>Toad Pact can become available twice as often, provided Heqet still has a frog to sacrifice.</p></div>
+        <div class="guide-apple-breakpoint"><span>Lv3</span><strong>8s survival cooldown</strong><p>A major survivability breakpoint in sustained fights, though every trigger still consumes part of her frog engine.</p></div>
+        <div class="guide-apple-breakpoint guide-apple-breakpoint--max"><span>Lv4</span><strong>Two stronger opening frogs and +2 Frog Limit</strong><p>The maximum level improves her opening, raises the engine's ceiling, and supplies more potential sacrifice targets.</p></div>
       </div>
-      <div class="guide-callout"><strong>Investment takeaway:</strong> the base Relic unlocks Heket's emergency save, but the highest level is the recommended endpoint. As burst and damage amplification increase, the larger Shield is often what lets her survive the attacks that follow.</div>
     </section>
 
     <section class="guide-section guide-section--detail-heading">
       <h2 class="guide-section-title lt-h2 lt-h2-center">Strengths &amp; Weaknesses</h2>
       <div class="lt-flourish lt-flourish-center"></div>
       <StrengthWeakness strengths={strengths} weaknesses={weaknesses} />
+    </section>
+
+    <section class="guide-section guide-section--detail-heading">
+      <h2 class="guide-section-title lt-h2 lt-h2-center">Where Heqet Actually Fits</h2>
+      <div class="lt-flourish lt-flourish-center"></div>
+      <div class="heket-battle-plan">
+        <div class="heket-battle-heading">
+          <span>Formation value</span>
+          <h3>Self-contained by design, team-wide only with summons.</h3>
+        </div>
+        <div class="heket-tactics">
+          <article>
+            <div class="heket-tactic-marker">Solo engine</div>
+            <h4>Functional without summoner allies</h4>
+            <p>Her own frogs activate her amplification and healing, receive her Shields, and fuel Toad Pact. Their synchronized croaks are her main contribution to a conventional team: three frogs can rapidly apply three 25% Hit Rate reductions, creating nominal −75% Hit Rate pressure for 5 seconds on nearby enemies. This reduces accuracy rather than guaranteeing a 75% miss chance.</p>
+          </article>
+          <article>
+            <div class="heket-tactic-marker">True audience</div>
+            <h4>Allied summons become real beneficiaries</h4>
+            <p>Nuwa's Figurines, Eris's puppets, Serket's scorpions, and Zeus's clone can receive Heqet's ATK amplification, recurring healing, and Ultimate Shield. Their masters do not receive those effects directly.</p>
+          </article>
+          <article>
+            <div class="heket-tactic-marker">Best condition</div>
+            <h4>Persistence matters more than the label</h4>
+            <p>Adding a summoner does not guarantee an earlier start, more personal damage, or better survival. Heqet performs best when summons appear early and remain alive long enough to benefit from repeated healing, Shields, and synchronized croaks.</p>
+          </article>
+        </div>
+        <p class="heket-hades-note"><strong>Roster verdict:</strong> Without summon allies, bring Heqet primarily when synchronized Hit Rate reduction answers the encounter; most of her remaining support stays inside her own frog engine. She becomes a strong conditional support with one reliable summon engine and a core specialist when several persistent summons can stay on the field.</p>
+      </div>
     </section>
 
     <section class="guide-section guide-section--detail-heading">
@@ -205,14 +233,14 @@ const weaknesses = [
             <span class="heket-partner-label">Preferred partner</span>
             <h3>Nuwa</h3>
             <strong>The complete summon-board pairing</strong>
-            <p>Her varied Figurines give Heket's offense, healing, and Shields meaningful targets throughout the fight. Nuwa can also protect newly created allied minions.</p>
+            <p>Her varied Figurines give Heqet's offense, healing, and Shields meaningful targets throughout the fight. Nuwa can also protect newly created allied minions.</p>
             <div class="heket-partner-tags"><span>Persistent bodies</span><span>Mixed utility</span><span>Mutual protection</span></div>
           </div>
         </article>
         <div class="heket-partner-options">
           <article class="heket-partner-option">
             <img src={heroImage("eris")} alt="Eris" />
-            <div><span class="heket-partner-label">Damage option</span><h3>Eris</h3><p>Puppets repeatedly attack while benefiting from Heket's summon amplification.</p></div>
+            <div><span class="heket-partner-label">Damage option</span><h3>Eris</h3><p>Puppets repeatedly attack while benefiting from Heqet's summon amplification.</p></div>
           </article>
           <article class="heket-partner-option">
             <img src={heroImage("serket")} alt="Serket" />
@@ -223,40 +251,7 @@ const weaknesses = [
             <div><span class="heket-partner-label">Death-engine option</span><h3>Hades</h3><p>Frog deaths feed his soul economy, and his pull can bring distant enemies toward the frogs' croak zone.</p></div>
           </article>
         </div>
-        <div class="heket-partner-rule"><span>Roster filter</span><strong>True summoners receive Heket's direct support. Death-payoff heroes such as Hades offer a separate, indirect synergy when frogs are replaced or sacrificed.</strong></div>
-      </div>
-    </section>
-
-    <section class="guide-section guide-section--detail-heading">
-      <h2 class="guide-section-title lt-h2 lt-h2-center">Battle Plan &amp; Counterplay</h2>
-      <div class="lt-flourish lt-flourish-center"></div>
-      <div class="heket-battle-plan">
-        <div class="heket-battle-heading">
-          <span>Winning pattern</span>
-          <h3>Protect the engine. Let it compound.</h3>
-        </div>
-        <div class="heket-tactics">
-          <article>
-            <div class="heket-tactic-marker">Front</div>
-            <h4>Let frogs make contact</h4>
-            <p>They move toward nearby enemies and establish the zone for synchronized croaks.</p>
-          </article>
-          <article>
-            <div class="heket-tactic-marker">Back</div>
-            <h4>Keep Heket protected</h4>
-            <p>A safer position preserves Toad Pact and gives her time to rebuild damaged summons.</p>
-          </article>
-          <article>
-            <div class="heket-tactic-marker">Build</div>
-            <h4>Scale the support engine</h4>
-            <p>Combine ATK with durability and resource generation instead of chasing personal damage.</p>
-          </article>
-        </div>
-        <div class="heket-matchup-row">
-          <div class="heket-matchup-good"><span>Favorable fight</span><strong>Extended pressure with normal hit checks</strong><p>Her recurring sustain, Shields, and accuracy reduction gain value as the fight continues.</p></div>
-          <div class="heket-matchup-bad"><span>Engine breakers</span><strong>Clear the frogs, then burst again</strong><p>Area damage, summon removal, anti-heal, and unavoidable attacks weaken her core loop. Renewed pressure after Toad Pact activates is especially dangerous.</p></div>
-        </div>
-        <p class="heket-hades-note"><strong>With Hades:</strong> let normal frog replacement and Toad Pact feed his souls naturally. Do not throw away a healthy frog board solely to accelerate him—the lost healing, amplification, croaks, and survival stock usually cost Heket more than the extra death is worth.</p>
+        <div class="heket-partner-rule"><span>Roster filter</span><strong>True summoners receive Heqet's direct support. Death-payoff heroes such as Hades offer a separate, indirect synergy when frogs are replaced or sacrificed.</strong></div>
       </div>
     </section>
 
@@ -265,8 +260,8 @@ const weaknesses = [
       <div class="lt-flourish lt-flourish-center"></div>
       <div class="guide-verdict-box">
         <h3 class="guide-verdict-heading">A foundation piece for summon teams</h3>
-        <p class="guide-verdict-text">Heket introduces a support style based on persistent summon amplification rather than broad healing or crowd control. Living frogs scale the ATK and sustain of friendly summons, synchronize stacking accuracy debuffs, and give Heket a resource she can trade for survival. A lot of Toads also supply a substantial Shield to the summon board. Nuwa is the most complete partner on paper because her Figurines give each part of that package a useful target, while Eris and Serket offer more offensive summon pairings. Heket remains much less compelling when a team cannot keep meaningful summons on the field. In some situations she still can be a nice defensive frontline hero with debuffing ability.<br>
-          So if youre already having a solid summoner team or maybe playing a high divine Hades, pull for Heket and invest. If not, this hero might not bring enough to the board to invest all your summoning resources here. Just try to hit her Mythic with no further invest.
+        <p class="guide-verdict-text">Heqet introduces a support style based on persistent summon amplification rather than broad healing or crowd control. Every living friendly summon scales the ATK and sustain of Heqet and the summon board; her frogs also synchronize stacking accuracy debuffs and give her a resource she can trade for survival. Ten Thousand Toads supplies a substantial Shield to the summon board. Nuwa is the most complete partner on paper because her Figurines give each part of that package a useful target, while Eris and Serket offer more offensive summon pairings. Comparison testing confirms that allied summons broaden Heqet's support across the formation, but they do not guarantee an earlier start, more personal damage, or better survival. Without them, she remains functional but much less compelling. In some situations she can still be a useful defensive frontline hero with debuffing ability.<br>
+          So if youre already having a solid summoner team or maybe playing a high divine Hades, pull for Heqet and invest. If not, this hero might not bring enough to the board to invest all your summoning resources here. Just try to hit her Mythic with no further invest.
         </p>
       </div>
     </section>
