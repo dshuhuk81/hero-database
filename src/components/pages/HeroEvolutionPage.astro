@@ -17,6 +17,7 @@ const ranks = {
   green: { label: "Rare", tone: "green" }, blue: { label: "Rare+", tone: "blue" }, bluePlus: { label: "Elite", tone: "blue" },
   purple: { label: "Elite", tone: "purple" }, purplePlus: { label: "Elite+", tone: "purple" }, gold: { label: "Epic", tone: "gold" },
   goldPlus: { label: "Epic+", tone: "gold" }, red: { label: "Legendary", tone: "rainbow" }, redPlus: { label: "Legendary+", tone: "gold" },
+  exalted: { label: "Exalted", tone: "rainbow" }, exaltedPlus: { label: "Exalted+", tone: "rainbow" },
   rainbow: { label: "Mythic", tone: "rainbow" }, diamond: { label: "Divine", tone: "diamond" },
 };
 type RankKey = keyof typeof ranks;
@@ -26,7 +27,7 @@ const cardDecoration = (rank: RankKey) => {
     green: "elite", blue: "elite", bluePlus: "elite",
     purple: "elite", purplePlus: "elite-plus",
     gold: "epic", goldPlus: "epic-plus",
-    red: "legendary", redPlus: "legendary-plus",
+    red: "legendary", redPlus: "legendary-plus", exalted: "mythic", exaltedPlus: "mythic",
     rainbow: "mythic", diamond: "divine",
   };
   return `/evolutions/card-frame-${decoration[rank]}.png`;
@@ -36,7 +37,7 @@ const cardBackground = (rank: RankKey) => {
     green: "green", blue: "blue", bluePlus: "blue-plus",
     purple: "elite", purplePlus: "elite",
     gold: "epic", goldPlus: "epic",
-    red: "legendary", redPlus: "legendary",
+    red: "legendary", redPlus: "legendary", exalted: "mythic", exaltedPlus: "mythic",
     rainbow: "mythic", diamond: "divine",
   };
   return `/evolutions/card-background-${background[rank]}.png`;
@@ -51,9 +52,11 @@ const roleIcon = (tab: "regular" | "starglint") => tab === "starglint"
 const regular: Recipe[] = [
   { from:"purple",material:"purple",count:2,kind:"same",to:"purplePlus" }, { from:"purplePlus",material:"purplePlus",kind:"same",to:"gold" },
   { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, { from:"goldPlus",material:"goldPlus",count:2,kind:"faction",to:"red" },
-  { from:"red",material:"goldPlus",kind:"same",to:"redPlus" }, { from:"redPlus",material:"redPlus",kind:"faction",to:"rainbow" },
-  { from:"rainbow",material:"redPlus",kind:"faction",to:"diamond" }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 },
-  { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:1,resultStars:2 }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:2,resultStars:3 },
+  { from:"red",material:"goldPlus",kind:"same",to:"redPlus" }, { from:"redPlus",material:"redPlus",kind:"faction",to:"exalted" },
+  { from:"exalted",material:"goldPlus",kind:"same",to:"exaltedPlus" }, { from:"exaltedPlus",material:"redPlus",kind:"faction",to:"rainbow" },
+  { from:"rainbow",material:"goldPlus",count:2,kind:"same",to:"diamond" },
+  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 },
+  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:1,resultStars:2 }, { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:2,resultStars:3 },
   { from:"diamond",material:"redPlus",kind:"same",to:"diamond",stars:3,resultStars:4 }, { from:"diamond",material:"redPlus",count:2,kind:"same",to:"diamond",stars:4,resultStars:5 },
 ];
 const starglint: Recipe[] = [
