@@ -1,7 +1,7 @@
 {
   "campaigns": [
     {
-      "id": "audhumla-event",
+      "id": "heqet-event",
       "name": {
         "en": "Timed Challenge",
         "de": "Zeit-Herausforderung",
@@ -9,9 +9,9 @@
         "ru": "Временное испытание",
         "zh": "限时挑战"
       },
-      "hero": "audhumla",
-      "startDate": "2026-08-05",
-      "endDate": "2026-08-18",
+      "hero": "heqet",
+      "startDate": "2026-08-19",
+      "endDate": "2026-09-02",
       "description": {
         "en": "Recommended team compositions for timed challenge stages.",
         "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
@@ -23,99 +23,99 @@
         {
           "id": 1,
           "name": {
-            "en": "Imhotep on the Tip of the Tongue",
+            "en": "",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
           "composition": {
-            "front": ["prometheus"],
-            "back": ["audhumla"]
+            "front": "",
+            "back": ""
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "A Taste of Imhotep",
+            "en": "",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
           "composition": {
-            "front": ["audhumla"],
-            "back": [""]
+            "front": "",
+            "back": ""
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "Tasting through the Forest",
+            "en": "",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
           "composition": {
-            "front": ["poseidon", "khepri"],
-            "back": ["audhumla", "skadi", "momus"]
+            "front": "",
+            "back": ""
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "A Feast to Remember",
+            "en": "",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
           "composition": {
-            "front": ["prometheus", "caishen"],
-            "back": ["mengpo", "yanluo", "audhumla"]
+            "front": "",
+            "back": ""
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "Full Belly, No Worries",
+            "en": "",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
-        "composition": {
-            "front": ["nuba", "demeter"],
-            "back": ["audhumla", "jormungandr", "wenshen"]
+          "composition": {
+            "front": "",
+            "back": ""
           }
         },
         {
           "id": 6,
           "name": {
-            "en": "The Joy of Plenty",
+            "en": "",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
-       "composition": {
-            "front": ["poseidon", "khepri"],
-            "back": ["audhumla", "skadi", "momus"]
+          "composition": {
+            "front": "",
+            "back": ""
           }
         },
         {
           "id": 7,
           "name": {
-            "en": "A Regret of Favor",
+            "en": "",
             "de": "",
             "es": "",
             "ru": "",
             "zh": ""
           },
-         "composition": {
-            "front": ["bastet", "geb"],
-            "back": ["audhumla", "meret", "set"]
+          "composition": {
+            "front": "",
+            "back": ""
           }
         }
       ]
