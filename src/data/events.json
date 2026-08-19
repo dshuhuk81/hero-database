@@ -1,7 +1,7 @@
 {
   "campaigns": [
     {
-      "id": "heqet-event",
+      "id": "heket-event",
       "name": {
         "en": "Timed Challenge",
         "de": "Zeit-Herausforderung",
@@ -9,7 +9,7 @@
         "ru": "Временное испытание",
         "zh": "限时挑战"
       },
-      "hero": "heqet",
+      "hero": "heket",
       "startDate": "2026-08-19",
       "endDate": "2026-09-02",
       "description": {
@@ -30,8 +30,8 @@
             "zh": ""
           },
           "composition": {
-            "front": "heqet",
-            "back": ""
+            "front": ["heket"],
+            "back": []
           }
         },
         {
@@ -44,8 +44,8 @@
             "zh": ""
           },
           "composition": {
-            "front": "gemini",
-            "back": "heqet"
+            "front": ["gemini"],
+            "back": ["heket"]
           }
         },
         {
@@ -73,7 +73,7 @@
           },
           "composition": {
             "front": ["serket", "nuwa"],
-            "back": ["gemini", "heqet", "eris"]
+            "back": ["gemini", "heket", "eris"]
           }
         },
         {
@@ -87,7 +87,7 @@
           },
           "composition": {
             "front": ["serket", "gemini"],
-            "back": ["nuwa", "heqet", "eris"]
+            "back": ["nuwa", "heket", "eris"]
           }
         },
         {
@@ -101,7 +101,7 @@
           },
           "composition": {
             "front": ["eris", "nuwa"],
-            "back": ["serket", "heqet", "gemini"]
+            "back": ["serket", "heket", "gemini"]
           }
         },
         {
@@ -115,7 +115,7 @@
           },
           "composition": {
             "front": ["hades", "serket"],
-            "back": ["nuwa", "heqet", "eris"]
+            "back": ["nuwa", "heket", "eris"]
           }
         }
       ]
