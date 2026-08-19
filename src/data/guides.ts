@@ -35,7 +35,7 @@ export const guides: GuideEntry[] = [
     heroId: "heket",
     href: "/guides/heket",
     title: "Heqet",
-    updated: "2026-08-06",
+    updated: "2026-08-19",
   },
   {
     heroId: "audhumla",
