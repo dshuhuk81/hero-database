@@ -211,7 +211,10 @@ const tabs = [
     <div class="lt-page">
       <!-- ============================================================ BANNER -->
       <header class="lt-banner">
-        <div class="lt-banner-art" style={`background-image:url(${R2}/heroes/${hero.id}.webp)`}></div>
+        <div
+          class="lt-banner-art"
+          style={`background-image:url(${R2}/heroes/${hero.id}.webp);${hero.imgY ? `--hero-img-y:${hero.imgY};` : ''}`}
+        ></div>
         <div class="lt-banner-veil"></div>
 
         <a class="lt-back" href={localizePath("/heroes", locale)}>&larr; All Heroes</a>
@@ -224,6 +227,7 @@ const tabs = [
               width="480"
               height="480"
               loading="eager"
+              style={hero.imgY ? `--hero-img-y:${hero.imgY};` : undefined}
             />
           </div>
 
@@ -529,7 +533,7 @@ const tabs = [
         position: absolute;
         inset: -40px;
         background-size: cover;
-        background-position: 50% 30%;
+        background-position: 50% var(--hero-img-y, 30%);
         filter: blur(56px) saturate(1.4) brightness(0.55);
         opacity: 0.75;
         transform: scale(1.2);
@@ -581,7 +585,7 @@ const tabs = [
         margin-bottom: -18px;
         filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.72));
         position: absolute;
-        top: 0;
+        top: var(--hero-img-y, 0%);
       }
 
       .lt-ident { text-align: right; padding-bottom: var(--space-10); }
@@ -589,7 +593,7 @@ const tabs = [
         margin: 0;
         font-family: var(--font-base);
         font-weight: var(--weight-black);
-        font-size: clamp(38px, 6.4vw, 92px);
+        font-size: clamp(38px, 6.0vw, 80px);
         line-height: 0.98;
         letter-spacing: var(--tracking-tight);
         text-transform: uppercase;
@@ -1152,6 +1156,7 @@ const tabs = [
           max-width: 250px;
           max-height: 280px;
           margin: 0 auto;
+          transform: translateY(var(--hero-img-y, 0));
         }
         .lt-ident { text-align: center; padding-bottom: 4px; }
         .lt-headline, .lt-hero-meta, .lt-chips { justify-content: center; }
