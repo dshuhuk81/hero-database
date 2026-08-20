@@ -5,6 +5,8 @@ import { teaserEntries as teasers, defaultMaintenanceTooltip, activeBadge, type 
 import { defaultLocale, localizePath, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
 import { navLabel, t } from "../../i18n/ui";
+import HeroCard from "../HeroCard.astro";
+import { getHeroById } from "../../data/heroes/withRatings";
 
 interface Props {
   locale?: Locale;
@@ -31,6 +33,7 @@ const jsonLd = {
 
 
 const hrefFor = (href: string) => localizePath(href, locale);
+const launchHero = getHeroById("heket");
 const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
   : href === "/tierlist"
@@ -109,30 +112,34 @@ const featuredImageFor = (href: string) => href === "/heroes"
     </section>
 
     <main class="home-main">
-      <aside class="launch-card" aria-labelledby="launchTitle">
-        <div class="launch-copy">
-          <p class="launch-kicker">
-            <span class="launch-dot" aria-hidden="true"></span>
-            {t(locale, "home", "latestUpdateEyebrow")}
-          </p>
-          <h2 id="launchTitle">{t(locale, "home", "latestUpdateTitle")}</h2>
-          <p>{t(locale, "home", "latestUpdateBody")}</p>
-          <a href={hrefFor("/heroes/heket")}>
-            {t(locale, "home", "latestUpdateAction")}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </a>
-        </div>
-        <div class="launch-art" aria-hidden="true">
-          <img
-            src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/heket.webp"
-            alt=""
-            loading="eager"
-            decoding="async"
-          />
-        </div>
-      </aside>
+      <section class="launch-section" aria-labelledby="launchTitle">
+        <header class="section-heading launch-heading">
+          <h2 id="launchTitle">Latest Banner</h2>
+        </header>
+
+        <aside class="launch-card">
+          <div class="launch-backdrop" aria-hidden="true"></div>
+          <div class="launch-content">
+            <div class="launch-character" aria-label="Heqet hero card">
+              <div class="launch-character-icons" aria-label={`${launchHero?.role}, ${launchHero?.class}`}>
+                <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${launchHero?.role.toLowerCase()}.webp`} alt={launchHero?.role} width="20" height="20" />
+                <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${launchHero?.class.toLowerCase()}.webp`} alt={launchHero?.class} width="20" height="20" />
+              </div>
+              {launchHero && <HeroCard hero={launchHero} />}
+            </div>
+          </div>
+          <div class="launch-meta">
+            <strong class="launch-meta-name">Heqet</strong>
+            <a class="launch-meta-action" href={hrefFor("/heroes/heket")}>
+              Explore the hero
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </a>
+            <span class="launch-date"><span aria-hidden="true">◷</span> Aug 19 — Sep 2, 2026 <span class="launch-age" data-banner-start="2026-08-19">· 1 day ago</span></span>
+          </div>
+        </aside>
+      </section>
 
       <section class="home-section" aria-labelledby="startTitle">
         <header class="section-heading">
@@ -451,110 +458,141 @@ const featuredImageFor = (href: string) => href === "/heroes"
     margin-top: var(--space-20);
   }
 
-  .launch-card + .home-section {
+  .launch-section + .home-section {
     margin-top: var(--space-16);
+  }
+
+  .launch-heading {
+    margin-bottom: var(--space-8);
   }
 
   .launch-card {
     position: relative;
-    min-height: 250px;
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    min-height: 390px;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
-    background:
-      radial-gradient(500px 260px at 82% 40%, var(--accent-purple-dim), transparent 72%),
-      var(--bg-raised);
+    background: #12101a;
+    isolation: isolate;
   }
 
-  .launch-copy {
+  .launch-backdrop {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(9, 8, 15, .5), rgba(13, 11, 22, .18) 60%, rgba(13, 11, 22, .3)), url('/banners/heqet.png');
+  }
+
+  .launch-card::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(7, 6, 12, .92), transparent 38%);
+    pointer-events: none;
+  }
+
+  .launch-content {
     position: relative;
     z-index: 1;
-    max-width: 680px;
-    padding: var(--space-8);
-  }
-
-  .launch-kicker {
+    flex: 1;
     display: flex;
     align-items: center;
-    gap: var(--space-2);
-    margin: 0 0 var(--space-3);
-    color: var(--accent-gold-light);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
+    padding: clamp(var(--space-8), 4vw, var(--space-12));
   }
 
-  .launch-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: var(--radius-full);
-    background: var(--accent-gold);
-    box-shadow: 0 0 0 4px var(--accent-gold-dim);
+  .launch-character {
+    --launch-character-image-position: center top;
+    position: relative;
+    z-index: 1;
+    width: 200px;
+    height: 250px;
+    overflow: hidden;
+    border: 1px solid rgba(241, 185, 255, .42);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(28, 19, 40, .54), rgba(10, 8, 14, .92));
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .34);
   }
 
-  .launch-card h2 {
-    margin: 0;
-    color: var(--text-bright);
-    font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl));
-    font-weight: var(--weight-black);
-    letter-spacing: var(--tracking-tight);
-    line-height: var(--leading-tight);
+  .launch-character-icons {
+    position: absolute;
+    z-index: 4;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
-  .launch-copy > p:not(.launch-kicker) {
-    max-width: 580px;
-    margin: var(--space-3) 0 0;
-    color: var(--text-secondary);
-    font-size: var(--text-sm);
-    line-height: var(--leading-normal);
+  .launch-character-icons img {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-sm);
+    background: rgba(8, 7, 12, .72);
   }
 
-  .launch-copy a {
+  .launch-character :global(.hero-card) {
+    height: 250px;
+  }
+
+  .launch-character :global(.hero-card-image) {
+    object-position: var(--launch-character-image-position) !important;
+  }
+
+  .launch-meta-action {
     min-height: 44px;
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    margin-top: var(--space-5);
     color: var(--accent-gold-light);
     font-size: var(--text-sm);
     font-weight: var(--weight-bold);
     text-decoration: none;
   }
 
-  .launch-copy a svg {
+  .launch-meta-action svg {
     width: 18px;
     height: 18px;
     transition: var(--transition-transform);
   }
 
-  .launch-copy a:hover svg {
+  .launch-meta-action:hover svg {
     transform: translateX(var(--space-1));
   }
 
-  .launch-art {
+  .launch-meta {
     position: relative;
-    min-height: 250px;
-    overflow: hidden;
-  }
-
-  .launch-art::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, var(--bg-raised), transparent 45%);
-  }
-
-  .launch-art img {
-    position: absolute;
-    inset: 0;
+    z-index: 1;
     width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    object-position: center 15%;
+    display: flex;
+    align-items: center;
+    gap: clamp(var(--space-5), 4vw, var(--space-10));
+    margin-top: 8px;
+    padding: 8px clamp(var(--space-5), 4vw, var(--space-10));
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    background: rgba(10, 8, 14, .7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .launch-meta-name {
+    color: var(--text-bright);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-black);
+  }
+
+  .launch-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .launch-age {
+    color: var(--text-bright);
   }
 
   .support-card + .home-section {
@@ -1082,7 +1120,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     }
 
     .home-section + .home-section,
-    .launch-card + .home-section,
+    .launch-section + .home-section,
     .support-card + .home-section,
     .support-card {
       margin-top: var(--space-16);
@@ -1104,21 +1142,39 @@ const featuredImageFor = (href: string) => href === "/heroes"
     }
 
     .launch-card {
-      min-height: 0;
-      grid-template-columns: 1fr;
+      min-height: 360px;
+      padding: 0;
     }
 
-    .launch-copy {
+    .launch-content {
       padding: var(--space-5);
     }
 
-    .launch-art {
-      min-height: 190px;
-      grid-row: 1;
+    .launch-backdrop {
+      background-position: 63% center;
     }
 
-    .launch-art::after {
-      background: linear-gradient(0deg, var(--bg-raised), transparent 55%);
+    .launch-character {
+      width: 150px;
+      height: 220px;
+    }
+
+    .launch-character :global(.hero-card) {
+      height: 220px;
+    }
+
+    .launch-meta {
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: var(--space-1) var(--space-4);
+      padding: 8px var(--space-5);
+    }
+
+    .launch-date {
+      width: 100%;
+      margin-left: 0;
+      flex-wrap: wrap;
+      justify-content: flex-start;
     }
 
     .featured-grid {
@@ -1184,7 +1240,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
 
   @media (prefers-reduced-motion: reduce) {
     .home-action,
-    .launch-copy a svg,
+    .launch-meta-action svg,
     .featured-card,
     .featured-image,
     .featured-arrow,
@@ -1195,3 +1251,12 @@ const featuredImageFor = (href: string) => href === "/heroes"
     }
   }
 </style>
+
+<script>
+  const bannerAge = document.querySelector<HTMLElement>("[data-banner-start]");
+  if (bannerAge) {
+    const startedAt = new Date(`${bannerAge.dataset.bannerStart}T00:00:00`);
+    const days = Math.max(0, Math.floor((Date.now() - startedAt.getTime()) / 86400000));
+    bannerAge.textContent = `· ${days} ${days === 1 ? "day" : "days"} ago`;
+  }
+</script>

@@ -50,20 +50,31 @@ const roleIcon = (tab: "regular" | "starglint") => tab === "starglint"
   ? "/evolutions/role-support.png"
   : "/evolutions/role-marksman.png";
 const regular: Recipe[] = [
-  { from:"purple",material:"purple",count:2,kind:"same",to:"purplePlus" }, { from:"purplePlus",material:"purplePlus",kind:"same",to:"gold" },
-  { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, { from:"goldPlus",material:"goldPlus",count:2,kind:"faction",to:"red" },
-  { from:"red",material:"goldPlus",kind:"same",to:"redPlus" }, { from:"redPlus",material:"redPlus",kind:"faction",to:"exalted" },
-  { from:"exalted",material:"goldPlus",kind:"same",to:"exaltedPlus" }, { from:"exaltedPlus",material:"redPlus",kind:"faction",to:"rainbow" },
+  { from:"purple",material:"purple",count:2,kind:"same",to:"purplePlus" }, 
+  { from:"purplePlus",material:"purplePlus",kind:"same",to:"gold" },
+  { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, 
+  { from:"goldPlus",material:"goldPlus",count:2,kind:"faction",to:"red" },
+  { from:"red",material:"goldPlus",kind:"same",to:"redPlus" }, 
+  { from:"redPlus",material:"redPlus",kind:"faction",to:"exalted" },
+  { from:"exalted",material:"goldPlus",kind:"same",to:"exaltedPlus" }, 
+  { from:"exaltedPlus",material:"redPlus",kind:"faction",to:"rainbow" },
   { from:"rainbow",material:"goldPlus",count:2,kind:"same",to:"diamond" },
   { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 },
   { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:1,resultStars:2 }, { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:2,resultStars:3 },
   { from:"diamond",material:"redPlus",kind:"same",to:"diamond",stars:3,resultStars:4 }, { from:"diamond",material:"redPlus",count:2,kind:"same",to:"diamond",stars:4,resultStars:5 },
 ];
 const starglint: Recipe[] = [
-  { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, { from:"goldPlus",material:"goldPlus",kind:"same",to:"red" }, { from:"red",material:"goldPlus",kind:"same",to:"redPlus" },
-  { from:"redPlus",material:"goldPlus",kind:"same",to:"rainbow" }, { from:"rainbow",material:"goldPlus",kind:"same",to:"diamond" },
-  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 }, { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:1,resultStars:2 },
-  { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:2,resultStars:3 }, { from:"diamond",material:"redPlus",kind:"same",to:"diamond",stars:3,resultStars:4 },
+  { from:"gold",material:"gold",kind:"same",to:"goldPlus" }, 
+  { from:"goldPlus",material:"goldPlus",kind:"same",to:"red" }, 
+  { from:"red",material:"goldPlus",kind:"same",to:"redPlus" },
+  { from:"redPlus",material:"goldPlus",kind:"same",to:"exalted" },
+  { from:"exalted",material:"goldPlus",kind:"same",to:"exaltedPlus" }, 
+  { from:"exaltedPlus",material:"goldPlus",kind:"same",to:"rainbow" },
+  { from:"rainbow",material:"goldPlus",kind:"same",to:"diamond" },
+  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",resultStars:1 }, 
+  { from:"diamond",material:"goldPlus",kind:"same",to:"diamond",stars:1,resultStars:2 },
+  { from:"diamond",material:"goldPlus",count:2,kind:"same",to:"diamond",stars:2,resultStars:3 }, 
+  { from:"diamond",material:"redPlus",kind:"same",to:"diamond",stars:3,resultStars:4 },
   { from:"diamond",material:"redPlus",count:2,kind:"same",to:"diamond",stars:4,resultStars:5 },
 ];
 ---
