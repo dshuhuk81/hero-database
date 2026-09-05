@@ -10,25 +10,71 @@ const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
 const skillImage = (id: string) => `${R2_BASE}/skills/hebo_${id}.webp`;
 
 const takeaways: Record<string, string> = {
-  skill_1: "Raging Torrent is the payoff, not the start of the engine. Aim it at a tightly packed group that has already been softened below half HP; its small radius makes setup more important than raw range.",
+  skill_1: "Sunstrike Tide Rage is the payoff, not the start of the engine. Aim it at a tightly packed group that has already been softened below half HP; its small radius makes setup more important than raw range.",
   skill_2: "This four-dash sequence replaces Hebo's normal attacks. The damage rises with each pass, and the final, strongest dash knocks enemies down. Finishing the entire cast matters far more than merely starting it.",
-  skill_3: "Every damaging dash builds Crit Rate for the rest of the sequence. Because the kit supplies substantial Crit Rate by itself, ATK and Crit Damage are generally more valuable offensive complements than stacking Crit Rate alone.",
+  skill_3: "Every damaging dash grants a stack of Overlapping Waves, building Crit Rate for the rest of the sequence. Because the kit supplies substantial Crit Rate by itself, ATK and Crit Damage are generally more valuable offensive complements than stacking Crit Rate alone.",
   skill_4: "Hebo becomes tougher while dashing, retains the protection briefly afterward, and gains a large ATK-scaling Shield at Skill Lv3—but the Shield only appears after a completed sequence.",
+};
+
+const officialSkills: Record<string, { name: string; description: string; upgrades: Record<string, string> }> = {
+  skill_1: {
+    name: "Sunstrike Tide Rage",
+    description: "Deals DMG equal to 500% of ATK to enemies in a dense area within a 3-meter radius. DMG to enemies with HP below 50% increases by 30%.",
+    upgrades: {
+      level2: "Increases CRIT DMG by 50% when triggering CRIT.",
+      level3: "Increases DMG dealt to 600% of ATK.",
+      level4: "DMG to enemies with HP below 50% increases by 50%.",
+    },
+  },
+  skill_2: {
+    name: "Wave-Chasing Slash",
+    description: "Swims through enemies 4 times consecutively. The first 3 times deal DMG equal to 120%, 150%, and 180% of ATK. The final hit deals DMG equal to 250% of ATK and knocks down enemies that are hit.",
+    upgrades: {
+      level2: "Increases DMG to 130%, 160%, 190%, and 270% of ATK.",
+      level3: "Each full cast increases ATK by 25% for 6s.",
+      level4: "Increases DMG to 140%, 170%, 200%, and 300% of ATK.",
+    },
+  },
+  skill_3: {
+    name: "Wavecrest Blade",
+    description: "Passive: Each time Wave-Chasing Slash deals DMG, gains 1 stack of Overlapping Waves. Each stack of Overlapping Waves increases CRIT Rate by 6% for 10s.",
+    upgrades: {
+      level2: "Each stack of Overlapping Waves increases CRIT Rate by 8%.",
+      level3: "Duration extends to 12s.",
+      level4: "Each stack of Overlapping Waves increases CRIT Rate by 10%.",
+    },
+  },
+  skill_4: {
+    name: "Breath of the Water Mirror",
+    description: "Passive: Hebo takes 40% less DMG while swimming during Wave-Chasing Slash. This effect increases by 5% every 2s, and remains for 3s after Wave-Chasing Slash ends.",
+    upgrades: {
+      level2: "Takes 60% less DMG while swimming during Wave-Chasing Slash.",
+      level3: "Gains a Shield equal to 400% of ATK after fully casting Wave-Chasing Slash.",
+      level4: "Increases the DMG taken reduction effect by 7% every 2s.",
+    },
+  },
 };
 
 const skills = heboData.skills.map((skill) => ({
   ...skill,
+  ...officialSkills[skill.id],
   badge: skill.isUltimate ? "Skill 1 - Ultimate" : `Skill ${skill.id.replace("skill_", "")}`,
   takeaway: takeaways[skill.id],
-  upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+  upgrades: Object.entries(officialSkills[skill.id]?.upgrades ?? skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
 }));
 
 const relic = {
   ...heboData.relic,
+  name: "Tides of Origin",
+  description: "Each full cast of Wave-Chasing Slash grants 200 Energy.",
+  upgrades: [
+    { level: "Lv 2", text: "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 25%, up to 3 stacks." },
+    { level: "Lv 3", text: "Each full cast of Wave-Chasing Slash grants 300 Energy." },
+    { level: "Lv 4", text: "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 40%, up to 3 stacks." },
+  ],
   badge: "Exclusive Equipment",
   levelBadge: "Completion payoff",
   takeaway: "Every benefit is gated behind a full Wave-Chasing Slash. Base and Lv3 accelerate the next Ultimate; Lv2 and Lv4 add permanent offensive scaling over the first three completed cycles.",
-  upgrades: Object.entries(heboData.relic.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
 };
 
 const strengths = [
@@ -75,7 +121,7 @@ const weaknesses = [
     <section class="guide-section guide-section--detail-heading">
       <h2 class="guide-section-title lt-h2 lt-h2-center">Hebo at a Glance</h2><div class="lt-flourish lt-flourish-center"></div>
       <div class="heket-verdict">
-        <div class="heket-verdict-main"><div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Wave-Chasing Slash"></div><div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Protect one complete rotation before chasing more damage.</h3><p>Hebo is a mobile Physical bruiser whose Crit, defense, Shield, Energy, permanent scaling, and access to his strongest follow-up all depend on completing Wave-Chasing Slash. He is powerful when allowed to cross a clustered formation and fragile when that sequence is stopped and dies easily.</p></div></div>
+        <div class="heket-verdict-main"><div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Wave-Chasing Slash"></div><div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Protect one complete rotation before chasing more damage.</h3><p>Hebo, the God of the Yellow River, translates the relentless movement and force of flowing water directly into his combat style. He is a mobile Physical bruiser whose CRIT Rate, defense, Shield, Energy, permanent scaling, and access to his strongest follow-up all depend on completing Wave-Chasing Slash. Rather than relying on conventional basic attacks, he repeatedly surges through enemy formations, builds momentum through Overlapping Waves, and finishes weakened groups with Sunstrike Tide Rage. He is powerful when allowed to cross a clustered formation, but fragile when that sequence is interrupted.</p></div></div>
         <div class="heket-fact-strip"><div><span>Role</span><strong>Ramp bruiser</strong></div><div><span>Core condition</span><strong>Complete all four dashes</strong></div><div><span>Best fit</span><strong>Protected cluster fights</strong></div></div>
         <div class="heket-verdict-warning"><strong>Key warning</strong><span>Wave-Chasing Slash replaces normal attacks. Attack Speed and effects requiring basic attacks do not improve his main loop in the usual way.</span></div>
       </div>
@@ -86,9 +132,9 @@ const weaknesses = [
       <div class="heket-engine">
         <div class="heket-engine-flow">
           <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_2")}');`}></div><span>Enter</span><strong>Dash through the cluster</strong><p>Four passes deal rising area damage, ending in the strongest hit and Knockdown.</p></div>
-          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_3")}');`}></div><span>Ramp</span><strong>Stack Crit while moving</strong><p>Every damaging pass raises Crit Rate, making the later hits increasingly threatening.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_3")}');`}></div><span>Ramp</span><strong>Stack Crit while moving</strong><p>Every damaging pass grants Overlapping Waves, raising CRIT Rate and making the later hits increasingly threatening.</p></div>
           <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_4")}');`}></div><span>Complete</span><strong>Unlock defense and Shield</strong><p>Finishing preserves the damage reduction briefly and unlocks the completion Shield.</p></div>
-          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`}></div><span>Execute</span><strong>Ultimate the weakened group</strong><p>Raging Torrent rewards dense targets, with extra damage below half HP.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`}></div><span>Execute</span><strong>Ultimate the weakened group</strong><p>Sunstrike Tide Rage rewards dense targets, with extra damage below half HP.</p></div>
         </div>
         <div class="heket-engine-return"><span>Start the next rotation stronger</span></div>
         <div class="heket-engine-rule"><strong>Completion is the real resource.</strong><span>Death, control, a wave transition, or combat ending early can remove the Shield, ATK buff, Exclusive Equipment Energy, and permanent scaling together.</span></div>
@@ -124,7 +170,7 @@ const weaknesses = [
       <div class="heket-partners">
         <article class="heket-partner-feature"><img src={heroImage("poseidon")} alt="Poseidon" /><div class="heket-partner-feature-content"><span class="heket-partner-label">Frontline archetype</span><h3>Poseidon</h3><strong>Create room for the first complete sequence</strong><p>A durable first-contact tank can absorb the opening pressure while keeping enemies near one another. Poseidon is a mechanically strong example, although the recorded fights did not provide enough ally attribution to prove a single best-in-slot partner.</p><div class="heket-partner-tags"><span>Front anchor</span><span>Cluster control</span><span>Early protection</span></div></div></article>
         <div class="heket-partner-options">
-          <article class="heket-partner-option"><img src={heroImage("caishen")} alt="Caishen" /><div><span class="heket-partner-label">Energy and ATK option</span><h3>Caishen</h3><p>Energy support can shorten the wait for Raging Torrent, while ATK improves the dashes, Ultimate, and completion Shield at the same time. Solve completion safety before overinvesting in Energy speed.</p></div></article>
+          <article class="heket-partner-option"><img src={heroImage("caishen")} alt="Caishen" /><div><span class="heket-partner-label">Energy and ATK option</span><h3>Caishen</h3><p>Energy support can shorten the wait for Sunstrike Tide Rage, while ATK improves the dashes, Ultimate, and completion Shield at the same time. Solve completion safety before overinvesting in Energy speed.</p></div></article>
           <article class="heket-partner-option"><img src={heroImage("mengpo")} alt="Mengpo" /><div><span class="heket-partner-label">Sustain and control option</span><h3>Mengpo</h3><p>Sustain and early control address Hebo's most important requirement: surviving uninterrupted until the fourth dash and its rewards.</p></div></article>
           <article class="heket-partner-option"><img src={heroImage("geb")} alt="Geb" /><div><span class="heket-partner-label">Grouping option</span><h3>Geb</h3><p>Pulls and grouping multiply both the late Wave-Chasing Slash hits and the small-radius Ultimate. Any reliable cluster-maker can fill this role.</p></div></article>
         </div>
@@ -148,10 +194,10 @@ const weaknesses = [
 
     <section class="guide-section guide-section--detail-heading">
       <h2 class="guide-section-title lt-h2 lt-h2-center">PvE vs PvP</h2><div class="lt-flourish lt-flourish-center"></div>
-      <div class="heket-battle-plan"><div class="heket-matchup-row"><div class="heket-matchup-good"><span>PvE</span><strong>Strongest in durable, grouped waves</strong><p>In the longer analyzed combat openings, Hebo completed his first cycle consistently and his late dashes hit several enemies. The one observed full follow-up showed Raging Torrent contributing nearly half of that wave's damage.</p></div><div class="heket-matchup-bad"><span>PvP</span><strong>Protection is mandatory</strong><p>In an example PvP fight, neither sequence completed and Hebo died before using his Ultimate. He still created area pressure, but received none of the Shield, Energy, or completion payoff that defines his full kit.</p></div></div></div>
+      <div class="heket-battle-plan"><div class="heket-matchup-row"><div class="heket-matchup-good"><span>PvE</span><strong>Strongest in durable, grouped waves</strong><p>In the longer analyzed combat openings, Hebo completed his first cycle consistently and his late dashes hit several enemies. The one observed full follow-up showed Sunstrike Tide Rage contributing nearly half of that wave's damage.</p></div><div class="heket-matchup-bad"><span>PvP</span><strong>Protection is mandatory</strong><p>In an example PvP fight, neither sequence completed and Hebo died before using his Ultimate. He still created area pressure, but received none of the Shield, Energy, or completion payoff that defines his full kit.</p></div></div></div>
     </section>
 
-    <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div><div class="guide-verdict-box"><h3 class="guide-verdict-heading">A high-upside carry with one shared failure point</h3><p class="guide-verdict-text">Hebo's design is unusually concentrated: mobility, rising Crit Rate, damage reduction, Knockdown, a 400%-ATK Shield, Energy recovery, permanent Exclusive Equipment scaling, and the ideal setup for his execute Ultimate all flow through the same four-dash sequence. When a tank or controller buys him a safe opening against grouped enemies, the late dashes and Raging Torrent can take over a wave. When he is controlled or bursted early, almost the entire engine disappears together.<br><br>Build him first for completion reliability, then ATK and Crit Damage, followed by Energy or cooldown support. He is most convincing in longer PvE encounters and demands much more protection in fast PvP. Players who can supply a strong front anchor and grouping will see his ceiling; teams that cannot protect a full opening rotation should favor a carry with faster, less conditional output. But it must be clear that he performes not really well and is no way a good invest hero at all. If you have enough resources: go for him - if not - skip him as Spades have better dps heroes to shine.</p></div></section>
+    <section class="guide-section guide-section--detail-heading"><h2 class="guide-section-title lt-h2 lt-h2-center">Verdict</h2><div class="lt-flourish lt-flourish-center"></div><div class="guide-verdict-box"><h3 class="guide-verdict-heading">A high-upside carry with one shared failure point</h3><p class="guide-verdict-text">Hebo's design is unusually concentrated: mobility, rising Crit Rate, damage reduction, Knockdown, a 400%-ATK Shield, Energy recovery, permanent Exclusive Equipment scaling, and the ideal setup for his execute Ultimate all flow through the same four-dash sequence. When a tank or controller buys him a safe opening against grouped enemies, the late dashes and Sunstrike Tide Rage can take over a wave. When he is controlled or bursted early, almost the entire engine disappears together.<br><br>Build him first for completion reliability, then ATK and Crit Damage, followed by Energy or cooldown support. He is most convincing in longer PvE encounters and demands much more protection in fast PvP. Players who can supply a strong front anchor and grouping will see his ceiling; teams that cannot protect a full opening rotation should favor a carry with faster, less conditional output. But it must be clear that he performes not really well and is no way a good invest hero at all. If you have enough resources: go for him - if not - skip him as Spades have better dps heroes to shine.</p></div></section>
   </div>
   <p class="guide-page-footer">Guides &amp; More: motto-immortal-db.com</p>
   <script>
