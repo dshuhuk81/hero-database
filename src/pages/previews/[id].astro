@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import { heroPreviews, getPreviewHero, type HeroPreview } from '../../data/heroPreviews';
+import { getHeroById } from '../../data/heroes/withRatings';
+
+export const prerender = true;
+export function getStaticPaths() {
+  return heroPreviews.map(preview => ({ params: { id: preview.heroId }, props: { preview } }));
+}
+interface Props { preview: HeroPreview }
+const { preview } = Astro.props;
+const hero = getPreviewHero(preview);
+const detailHero = getHeroById(hero.id);
+const detailAvailable = detailHero && (detailHero as any).release !== false;
+const primaryHref = preview.status === 'released' && detailAvailable ? `/heroes/${hero.id}` : preview.guideHref;
+const primaryLabel = preview.status === 'released' && detailAvailable ? 'Explore the hero' : 'Read the full guide';
+---
+<Base title={`${hero.name} Preview | Motto Immortal`} description={preview.introduction} image={preview.artwork}>
+  <main class="preview-page">
+    <header class="reveal" style={`--art-position: ${preview.artworkPosition ?? 'center'};`}>
+      <img class="reveal-art" src={preview.artwork} alt="" fetchpriority="high" />
+      <div class="reveal-shade" aria-hidden="true"></div>
+      <div class="reveal-inner">
+        <a class="back" href="/">← Home</a>
+        <p class="eyebrow">Hero preview · {preview.status === 'released' ? 'Now available' : 'Coming soon'}</p>
+        <h1>{hero.name}</h1>
+        <p class="headline">{preview.headline}</p>
+        <p class="metadata">{hero.faction} · {hero.class} · {hero.role}</p>
+      </div>
+    </header>
+    <div class="preview-body">
+      <section aria-labelledby="mechanic-title">
+        <p class="eyebrow">What makes {hero.name} different</p>
+        <h2 id="mechanic-title">{preview.mechanic.title}</h2>
+        <p class="intro">{preview.introduction}</p>
+        <ol class="mechanic">
+          {preview.mechanic.steps.map((step, i) => <li><span class="step-number" aria-hidden="true">0{i + 1}</span><h3>{step.title}</h3><p>{step.text}</p></li>)}
+        </ol>
+        {preview.highlights.length > 0 && <div class="highlights">{preview.highlights.map(item => <article><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>}
+      </section>
+      <section class="fit" aria-labelledby="fit-title">
+        <p class="eyebrow">First look</p>
+        <h2 id="fit-title">A fit for your team?</h2>
+        <div class="fit-columns">
+          <div><h3>Worth a closer look if…</h3><p>{preview.goodFit}</p></div>
+          <div><h3>Before you commit</h3><p>{preview.watchOut}</p></div>
+        </div>
+      </section>
+      <footer class="next">
+        <div><h2>Take a closer look.</h2><p>Plan your next summon with the full picture.</p><small>Updated <time datetime={preview.updatedAt}>{new Date(`${preview.updatedAt}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })}</time></small></div>
+        <div class="actions">
+          {primaryHref && <a class="primary" href={primaryHref}>{primaryLabel} <span aria-hidden="true">→</span></a>}
+          <a href="/summon-calendar">Summon Calendar <span aria-hidden="true">→</span></a>
+        </div>
+      </footer>
+    </div>
+  </main>
+</Base>
+<style>
+  .preview-page { background: var(--bg-base); color: var(--text-primary); }
+  .reveal { position: relative; isolation: isolate; overflow: hidden; }
+  .reveal-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--art-position); z-index: -2; }
+  .reveal-shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, var(--bg-base), transparent 95%); }
+  .reveal-inner { height: 560px; box-sizing: border-box; max-width: var(--page-max-width); margin: auto; padding: var(--space-8) var(--page-gutter); display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; }
+  .back { margin-bottom: auto; }
+  a { display: inline-flex; align-items: center; gap: var(--space-3); min-height: 44px; color: var(--accent-gold-light); text-decoration: none; transition: var(--transition-colors); }
+  a:hover { color: var(--text-bright); }
+  a:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 4px; border-radius: var(--radius-sm); }
+  .eyebrow { color: var(--accent-gold); font-size: var(--text-xs); font-weight: var(--weight-bold); letter-spacing: .16em; text-transform: uppercase; margin: 0 0 var(--space-3); }
+  h1 { font-size: calc(var(--text-4xl) * 1.5); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); margin: 0; color: var(--text-bright); overflow-wrap: anywhere; }
+  .headline { max-width: 24ch; font-size: var(--text-2xl); line-height: var(--leading-tight); color: var(--text-bright); margin: var(--space-4) 0; }
+  .metadata { color: var(--text-secondary); font-size: var(--text-sm); margin: 0; }
+  .preview-body { max-width: var(--page-max-width); margin: auto; padding: var(--space-16) var(--page-gutter) var(--space-20); }
+  h2 { font-size: var(--text-3xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); color: var(--text-bright); margin: 0; }
+  h3 { font-size: var(--text-lg); line-height: var(--leading-normal); color: var(--text-bright); margin: 0; }
+  p { line-height: var(--leading-loose); }
+  .intro { max-width: 72ch; margin: var(--space-5) 0 var(--space-8); color: var(--text-secondary); }
+  .mechanic { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-6); }
+  .mechanic li { border-top: 1px solid var(--border-medium); padding-top: var(--space-5); }
+  .step-number { display: block; color: var(--accent-gold); font-size: var(--text-sm); margin-bottom: var(--space-3); }
+  .mechanic p, .highlights p, .fit-columns p { color: var(--text-secondary); margin: var(--space-3) 0 0; }
+  .highlights { display: grid; gap: var(--space-6); margin-top: var(--space-10); }
+  .fit { margin-top: var(--space-16); padding: var(--space-6); background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+  .fit-columns { display: grid; gap: var(--space-8); margin-top: var(--space-6); }
+  .next { display: flex; flex-direction: column; gap: var(--space-6); margin-top: var(--space-16); }
+  .next p, .next small { color: var(--text-secondary); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-5); }
+  .primary { background: var(--accent-gold); color: var(--bg-base); padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); font-weight: var(--weight-bold); }
+  .primary:hover { background: var(--accent-gold-light); color: var(--bg-base); }
+  @media (min-width: 768px) {
+    .reveal-inner { height: 560px; padding-bottom: var(--space-16); }
+    .reveal-shade { background: linear-gradient(90deg, var(--bg-base), transparent), linear-gradient(0deg, var(--bg-base), transparent 60%); }
+    h1 { font-size: calc(var(--text-4xl) * 2.5); }
+    h2 { font-size: var(--text-4xl); }
+    .mechanic { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-8); }
+    .highlights, .fit-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .fit { padding: var(--space-8); margin-top: var(--space-20); }
+    .next { margin-top: var(--space-20); }
+  }
+  @media (min-width: 1024px) { .next { flex-direction: row; align-items: center; justify-content: space-between; } }
+  @media (prefers-reduced-motion: reduce) { a { transition: none; } }
+</style>

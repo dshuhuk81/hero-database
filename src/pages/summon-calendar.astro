@@ -5,17 +5,7 @@ import PageHero from "../components/PageHero.astro";
 import allHeroes from "../data/all_heroes_db.json";
 import heroRatings from "../data/ratings/hero-ratings.json";
 import { heroes as heroPages } from "../data/heroes/withRatings";
-
-type Status = "released" | "upcoming";
-type PullQuality = "pull" | "optional" | "whales-only" | "skip" | "unsure";
-
-interface ScheduleEntry {
-  id: string;
-  displayName?: string;
-  status: Status;
-  order: number;
-  pullQuality?: PullQuality;
-}
+import { summonSchedule as schedule, type PullQuality, type ScheduleEntry } from "../data/summonSchedule";
 
 const PULL_QUALITY_META: Record<PullQuality, { label: string; className: string }> = {
   "pull":   { label: "Pull",   className: "pull-must" },
@@ -25,7 +15,8 @@ const PULL_QUALITY_META: Record<PullQuality, { label: string; className: string 
   "skip":        { label: "Skip",        className: "pull-skip" },
 };
 
-const schedule: ScheduleEntry[] = [
+/* schedule lives in src/data/summonSchedule.ts so other surfaces can stay in sync. */
+/*
   { id: "hladgunnr",     status: "released",    order: 1 },
   { id: "nezha",         status: "released",    order: 2 },
   { id: "tefnut",        status: "released",    order: 3 },
@@ -57,8 +48,7 @@ const schedule: ScheduleEntry[] = [
   { id: "nidhogg",      status: "upcoming", order: 29, pullQuality: "whales-only" },
   { id: "venus",        status: "upcoming", order: 30, pullQuality: "pull" },
   { id: "chaos",        status: "upcoming", order: 31, pullQuality: "whales-only" }
-  
-];
+*/
 
 const heroMap = new Map(Object.values(allHeroes as Record<string, any>).map((h: any) => [h.id, h]));
 const heroPageIds = new Set((heroPages as any[]).map((h) => h.id));
