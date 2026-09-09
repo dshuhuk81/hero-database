@@ -106,5 +106,55 @@
     "summary": "",
     "depthRating": "",
     "commonlyMisunderstood": false
-  }
+  },
+  "synergyPartners": [
+    {
+      "heroId": "poseidon",
+      "via": [
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ATK_DOWN",
+        "ENEMY_ATK_SPD_DOWN"
+      ]
+    },
+    {
+      "heroId": "tefnut",
+      "via": [
+        "TEAM_HEAL",
+        "TEAM_SHIELD",
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_DEBUFF_CLEANSE",
+        "ENEMY_ATK_DOWN",
+        "ENEMY_CROWD_CONTROL"
+      ]
+    },
+    {
+      "heroId": "yuelao",
+      "via": [
+        "TEAM_BUFF",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "TEAM_DAMAGE_REDUCTION"
+      ]
+    },
+    {
+      "heroId": "hephaestus",
+      "via": [
+        "TEAM_DAMAGE_REDUCTION",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL",
+        "ENEMY_ATK_DOWN",
+        "ENEMY_ATK_SPD_DOWN",
+        "ENEMY_CROWD_CONTROL",
+        "ENEMY_ARMOR_REDUCTION"
+      ]
+    },
+    {
+      "heroId": "caishen",
+      "via": [
+        "TEAM_BUFF",
+        "TEAM_ENERGY_RESTORE",
+        "TEAM_HEAL"
+      ]
+    }
+  ]
 }
