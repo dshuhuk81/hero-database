@@ -504,11 +504,11 @@ const featuredImageFor = (href: string) => href === "/heroes"
   .preview-card:hover { transform: translateY(-3px); border-color: var(--accent-gold); }
   .preview-card::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg, rgba(7, 6, 12, .58), transparent 58%); pointer-events: none; }
   .preview-art { position: absolute; z-index: -2; inset: 0; background-size: cover; background-repeat: no-repeat; }
-  .preview-copy { max-width: 430px; padding: clamp(var(--space-8), 4vw, var(--space-12)); }
+  .preview-copy { width: 100%; max-width: 430px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; padding: clamp(var(--space-8), 4vw, var(--space-12)); padding-bottom: 8px; }
   .preview-label { color: var(--accent-gold-light); font-size: var(--text-xs); font-weight: var(--weight-bold); letter-spacing: .18em; text-transform: uppercase; }
   .preview-copy h3 { margin: var(--space-3) 0 0; color: var(--text-bright); font-size: clamp(42px, 7vw, 76px); line-height: .95; letter-spacing: var(--tracking-tight); }
   .preview-copy p { margin: var(--space-4) 0 0; color: var(--text-secondary); font-size: var(--text-md); }
-  .preview-cta { display: inline-flex; gap: var(--space-2); margin-top: var(--space-8); color: var(--accent-gold-light); font-size: var(--text-sm); font-weight: var(--weight-bold); }
+  .preview-cta { min-height: 44px; display: inline-flex; align-items: center; gap: var(--space-2); margin-top: auto; color: var(--accent-gold-light); font-size: var(--text-sm); font-weight: var(--weight-bold); }
 
   @media (max-width: 860px) {
     .release-grid { grid-template-columns: 1fr; }
