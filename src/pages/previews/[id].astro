@@ -12,8 +12,7 @@ const { preview } = Astro.props;
 const hero = getPreviewHero(preview);
 const detailHero = getHeroById(hero.id);
 const detailAvailable = detailHero && (detailHero as any).release !== false;
-const primaryHref = preview.status === 'released' && detailAvailable ? `/heroes/${hero.id}` : preview.guideHref;
-const primaryLabel = preview.status === 'released' && detailAvailable ? 'Explore the hero' : 'Read the full guide';
+const primaryHref = preview.status === 'released' && detailAvailable ? `/heroes/${hero.id}` : undefined;
 ---
 <Base title={`${hero.name} Preview | Motto Immortal`} description={preview.introduction} image={preview.artwork}>
   <main class="preview-page">
@@ -49,7 +48,7 @@ const primaryLabel = preview.status === 'released' && detailAvailable ? 'Explore
       <footer class="next">
         <div><h2>Take a closer look.</h2><p>Plan your next summon with the full picture.</p><small>Updated <time datetime={preview.updatedAt}>{new Date(`${preview.updatedAt}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })}</time></small></div>
         <div class="actions">
-          {primaryHref && <a class="primary" href={primaryHref}>{primaryLabel} <span aria-hidden="true">→</span></a>}
+          {primaryHref && <a class="primary" href={primaryHref}>Explore the hero <span aria-hidden="true">→</span></a>}
           <a href="/summon-calendar">Summon Calendar <span aria-hidden="true">→</span></a>
         </div>
       </footer>
