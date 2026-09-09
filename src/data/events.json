@@ -1,7 +1,7 @@
 {
   "campaigns": [
     {
-      "id": "heket-event",
+      "id": "hebo-event",
       "name": {
         "en": "Timed Challenge",
         "de": "Zeit-Herausforderung",
@@ -9,9 +9,9 @@
         "ru": "Временное испытание",
         "zh": "限时挑战"
       },
-      "hero": "heket",
-      "startDate": "2026-08-19",
-      "endDate": "2026-09-02",
+      "hero": "hebo",
+      "startDate": "2026-09-02",
+      "endDate": "2026-09-15",
       "description": {
         "en": "Recommended team compositions for timed challenge stages.",
         "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
@@ -23,99 +23,113 @@
         {
           "id": 1,
           "name": {
-            "en": "A Frog's Grand Plan",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
+            "en": "Slaying Wicked Bugs in the Green Veil",
+            "de": "Böse Käfer im grünen Schleier erschlagen",
+            "es": "Aniquilando insectos malvados en el velo verde",
+            "ru": "Истребление злых жуков в зелёной вуали",
+            "zh": "斩杀绿幕中的邪恶虫群"
           },
           "composition": {
-            "front": ["heket"],
+            "front": ["hebo"],
             "back": []
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "A Frog's Experience",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
+            "en": "Where the Hoe Falls, Pests Flee",
+            "de": "Wo die Hacke fällt, fliehen die Schädlinge",
+            "es": "Donde cae la azada, huyen las plagas",
+            "ru": "Там, где падает мотыга, вредители бегут",
+            "zh": "锄头落下之处，害虫四散"
           },
           "composition": {
-            "front": ["gemini"],
-            "back": ["heket"]
+            "front": ["poseidon", "gemini"],
+            "back": ["hebo", "libra", "camcer"]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "Check In! The First Wave of Visitors",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
+            "en": "Bugs Vanish, and Grain Grows Green",
+            "de": "Die Käfer verschwinden und das Korn wird grün",
+            "es": "Los insectos desaparecen y el grano reverdece",
+            "ru": "Жуки исчезают, а зерно зеленеет",
+            "zh": "虫群消散，谷物泛绿"
           },
           "composition": {
-            "front": ["caishen", "skadi"],
-            "back": ["nut", "heracles", "meret"]
+            "front": ["hebo", "aquarius"],
+            "back": ["sagittarius", "camcer", "pisces"]
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "Divert! Queue Wars",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
+            "en": "A Libation to the Passing River",
+            "de": "Eine Trankspende für den vorbeiziehenden Fluss",
+            "es": "Una libación para el río que pasa",
+            "ru": "Возлияние проходящей реке",
+            "zh": "献酒于逝去之河"
           },
           "composition": {
-            "front": ["serket", "nuwa"],
-            "back": ["gemini", "heket", "eris"]
+            "front": ["hebo", "poseidon"],
+            "back": ["khepri", "tefnut", "skadi"]
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "No Visitors Beyond This Point",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
+            "en": "Slaying the River Monsters",
+            "de": "Die Flussmonster erschlagen",
+            "es": "Aniquilando a los monstruos del río",
+            "ru": "Истребление речных чудовищ",
+            "zh": "斩杀河中怪物"
           },
           "composition": {
-            "front": ["serket", "gemini"],
-            "back": ["nuwa", "heket", "eris"]
+            "front": ["hebo", "poseidon"],
+            "back": ["khepri", "tefnut", "skadi"]
           }
         },
         {
           "id": 6,
           "name": {
-            "en": "Detour for Check-Ins",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
+            "en": "The Eight Claws' Joyful Offerings",
+            "de": "Die freudigen Opfergaben der acht Klauen",
+            "es": "Las alegres ofrendas de las Ocho Garras",
+            "ru": "Радостные подношения Восьми Когтей",
+            "zh": "八爪的欢喜供奉"
           },
           "composition": {
-            "front": ["eris", "nuwa"],
-            "back": ["serket", "heket", "gemini"]
+            "front": ["hebo", "poseidon"],
+            "back": ["khepri", "tefnut", "skadi"]
           }
         },
         {
           "id": 7,
           "name": {
-            "en": "A Life in Constant Flow",
-            "de": "",
-            "es": "",
-            "ru": "",
-            "zh": ""
+            "en": "Ripples Cutting the Dark Scales",
+            "de": "Wellen schneiden durch die dunklen Schuppen",
+            "es": "Las ondas cortan las escamas oscuras",
+            "ru": "Рябь рассекает тёмную чешую",
+            "zh": "涟漪割裂黑暗鳞片"
           },
           "composition": {
-            "front": ["hades", "serket"],
-            "back": ["nuwa", "heket", "eris"]
+            "front": ["hebo", "poseidon"],
+            "back": ["khepri", "tefnut", "skadi"]
+          }
+        },
+        {
+          "id": 8,
+          "name": {
+            "en": "Waters Surge; Yet the Flame Endures",
+            "de": "Die Wasser schwellen, doch die Flamme bleibt bestehen",
+            "es": "Las aguas crecen, pero la llama perdura",
+            "ru": "Воды бушуют, но пламя не угасает",
+            "zh": "水势汹涌，火焰长存"
+          },
+          "composition": {
+            "front": [],
+            "back": []
           }
         }
       ]

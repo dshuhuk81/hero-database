@@ -2046,44 +2046,7 @@
         "description": "Super armor helps Meng Po frontline survive long enough for revive proc."
       }
     ],
-    "virtueSets": [
-      {
-        "label": "Sacrifice",
-        "comment": "",
-        "virtues": [
-          "sacrifice_1",
-          "sacrifice_2",
-          "sacrifice_3",
-          "sacrifice_4"
-        ]
-      },
-      {
-        "label": "Stoic",
-        "comment": "",
-        "virtues": [
-          "stoic_1",
-          "stoic_2"
-        ]
-      },
-      {
-        "label": "Defiance",
-        "comment": "",
-        "virtues": [
-          "defiance_1",
-          "defiance_2"
-        ]
-      },
-      {
-        "label": "Grace",
-        "comment": "",
-        "virtues": [
-          "grace_1",
-          "grace_2",
-          "grace_3",
-          "grace_4"
-        ]
-      }
-    ],
+    "virtueSets": [],
     "synergyPartners": [
       {
         "heroId": "dionysus",
@@ -4651,7 +4614,8 @@
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/hebo.webp",
     "imgY": "-30%",
     "cardImgY": "0%",
-    "release": false,
+    "release": true,
+    "newHero": true,
     "faction": "Spades",
     "role": "Hefty",
     "class": "Warrior",
@@ -4998,7 +4962,7 @@
     "imgY": "-20%",
     "cardImgY": "0%",
     "release": true,
-    "newHero": true,
+    "newHero": false,
     "faction": "Clubs",
     "role": "Arcane",
     "class": "Support",
