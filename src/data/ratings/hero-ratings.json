@@ -1,47 +1,58 @@
 {  "hebo": {
     "name": "Hebo",
     "overall": "B",
-    "pvp": "C",
-    "pve": "B"
+    "pveentry": "D",
+    "pvemax": "B",
+    "pvpentry": "D",
+    "pvpmax": "B"
   },
   "audhumla": {
     "name": "Audhumla",
     "overall": "D",
-    "pvp": "C",
-    "pve": "D",
-    "tormentRiftBaphomet": "C",
-    "grimSurgeBoss1": "B",
-    "pveEarly": "C"
+    "pveentry": "D",
+    "pvemax": "B",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "heket": {
     "name": "Heqet",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "D",
+    "pvemax": "B",
+    "pvpentry": "D",
+    "pvpmax": "A"
   },
   "hades": {
     "name": "Hades",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S"
+    "pveentry": "D",
+    "pvemax": "S",
+    "pvpentry": "D",
+    "pvpmax": "S"
   },
   "nephtys": {
     "name": "Nephtys",
     "overall": "D",
-    "pvp": "B",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "C",
+    "pvpentry": "D",
+    "pvpmax": "B"
   },
   "amunra": {
     "name": "Amunra",
     "overall": "A",
-    "pvp": "S",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "D",
+    "pvpmax": "A"
   },
   "anubis": {
     "name": "Anubis",
     "overall": "A",
-    "pvp": "S",
-    "pve": "A"
+    "pveentry": "B",
+    "pvemax": "A",
+    "pvpentry": "C",
+    "pvpmax": "A"
   },
   "aquarius": {
     "name": "Aquarius",
@@ -52,8 +63,10 @@
   "ares": {
     "name": "Ares",
     "overall": "C",
-    "pvp": "C",
-    "pve": "C"
+    "pveentry": "D",
+    "pvemax": "C",
+    "pvpentry": "C",
+    "pvpmax": "C"
   },
   "aries": {
     "name": "Aries",
@@ -64,36 +77,42 @@
   "artemis": {
     "name": "Artemis",
     "overall": "D",
-    "pvp": "C",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "D",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "athena": {
     "name": "Athena",
     "overall": "B",
-    "pvp": "B",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "C",
+    "pvpmax": "B"
   },
   "bastet": {
     "name": "Bastet",
     "overall": "S",
-    "pvp": "S",
-    "pve": "S"
+    "pveentry": "C",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "S"
   },
   "caishen": {
     "name": "Caishen",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S",
-    "grimSurgeBoss1": "S",
-    "grimSurgeBoss2": "S",
-    "delusionsDen": "A",
-    "tormentRiftLilith": "S"
+    "pveentry": "S",
+    "pvemax": "S",
+    "pvpentry": "A",
+    "pvpmax": "S"
   },
   "cancer": {
     "name": "Cancer",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S"
+    "pveentry": "B",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "A"
   },
   "canopicjar": {
     "name": "Canopic Jar",
@@ -110,56 +129,66 @@
   "cronus": {
     "name": "Cronus",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S",
-    "grimSurgeBoss1": "S",
-    "grimSurgeBoss2": "A"
+    "pveentry": "A",
+    "pvemax": "S",
+    "pvpentry": "A",
+    "pvpmax": "S"
   },
   "demeter": {
     "name": "Demeter",
     "overall": "D",
-    "pvp": "D",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "C",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "diana": {
     "name": "Diana",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "A",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "dionysus": {
     "name": "Dionysus",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A",
-    "grimSurgeBoss1": "S",
-    "delusionsDen": "S",
-    "tormentRiftLilith": "S"
+    "pveentry": "B",
+    "pvemax": "A",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "eris": {
     "name": "Eris",
     "overall": "S",
-    "pvp": "B",
-    "pve": "S"
+    "pveentry": "C",
+    "pvemax": "S",
+    "pvpentry": "D",
+    "pvpmax": "S"
   },
   "fengyi": {
     "name": "Fengyi",
     "overall": "D",
-    "pvp": "B",
-    "pve": "D",
-    "delusionsDen": "C"
+    "pveentry": "B",
+    "pvemax": "C",
+    "pvpentry": "B",
+    "pvpmax": "D"
   },
   "freya": {
     "name": "Freya",
     "overall": "D",
-    "pvp": "D",
-    "pve": "D"
+    "pveentry": "C",
+    "pvemax": "D",
+    "pvpentry": "C",
+    "pvpmax": "D"
   },
   "geb": {
     "name": "Geb",
     "overall": "C",
-    "pvp": "C",
-    "pve": "B"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "C",
+    "pvpmax": "C"
   },
   "gemini": {
     "name": "Gemini",
@@ -170,74 +199,82 @@
   "hecate": {
     "name": "Hecate",
     "overall": "S",
-    "pvp": "B",
-    "pve": "B",
-    "delusionsDen": "A"
+    "pveentry": "D",
+    "pvemax": "S",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "hela": {
     "name": "Hela",
     "overall": "D",
-    "pvp": "D",
-    "pve": "C"
+    "pveentry": "D",
+    "pvemax": "C",
+    "pvpentry": "C",
+    "pvpmax": "C"
   },
   "hephaestus": {
     "name": "Hephaestus",
     "overall": "S",
-    "pvp": "B",
-    "pve": "S",
-     "grimSurgeBoss2": "S",
-     "tormentRiftLilith": "S"
+    "pveentry": "C",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "A"
   },
   "hera": {
     "name": "Hera",
     "overall": "A",
-    "pvp": "S",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "C",
+    "pvpmax": "A"
   },
   "heracles": {
     "name": "Heracles",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A",
-    "delusionsDen": "B"
+    "pveentry": "C",
+    "pvemax": "A",
+    "pvpentry": "B",
+    "pvpmax": "A"
   },
   "hladgunnr": {
     "name": "Hladgunnr",
     "overall": "C",
-    "pvp": "B",
-    "pve": "B",
-    "delusionsDen": "C",
-    "tormentRiftLilith": "C"
+    "pveentry": "B",
+    "pvemax": "C",
+    "pvpentry": "B",
+    "pvpmax": "C"
   },
   "horus": {
     "name": "Horus",
     "overall": "D",
-    "pvp": "D",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "D",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "idunn": {
     "name": "Idunn",
     "overall": "S",
-    "pvp": "A",
-    "pve": "A",
-    "grimSurgeBoss1": "S",
-    "grimSurgeBoss2": "S",
-    "tormentRiftLilith": "S"
+    "pveentry": "B",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "A"
   },
   "iris": {
     "name": "Iris",
     "overall": "B",
-    "pvp": "A",
-    "pve": "B"
+    "pveentry": "D",
+    "pvemax": "B",
+    "pvpentry": "D",
+    "pvpmax": "D"
   },
   "isis": {
     "name": "Isis",
     "overall": "D",
-    "pvp": "D",
-    "pve": "C",
-    "grimSurgeBoss1": "A",
-    "delusionsDen": "C",
-    "tormentRiftLilith": "C"
+    "pveentry": "B",
+    "pvemax": "C",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "jinchan": {
     "name": "Jinchan",
@@ -248,29 +285,35 @@
   "jingwei": {
     "name": "Jingwei",
     "overall": "B",
-    "pvp": "B",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "C",
+    "pvpmax": "B"
   },
   "xuannv": {
     "name": "Xuannv",
     "overall": "S+",
-    "pvp": "A-",
-    "pve": "S",
-    "grimSurgeBoss1": "S",
-    "grimSurgeBoss2": "A"
+    "pveentry": "B",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "A"
 
   },
   "jormungandr": {
     "name": "Jormungandr",
     "overall": "D",
-    "pvp": "C",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "C",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "khepri": {
     "name": "Khepri",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "A",
+    "pvpentry": "B",
+    "pvpmax": "A"
   },
   "kraken": {
     "name": "Kraken",
@@ -293,60 +336,74 @@
   "medusa": {
     "name": "Medusa",
     "overall": "D",
-    "pvp": "D",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "D",
+    "pvpentry": "D",
+    "pvpmax": "D"
   },
   "mengpo": {
     "name": "Mengpo",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S"
+    "pveentry": "A",
+    "pvemax": "S",
+    "pvpentry": "A",
+    "pvpmax": "S"
   },
   "meret": {
     "name": "Meret",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S",
-    "grimSurgeBoss1": "S",
-     "grimSurgeBoss2": "S"
+    "pveentry": "B",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "A"
   },
   "momus": {
     "name": "Momus",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "B",
+    "pvemax": "A",
+    "pvpentry": "B",
+    "pvpmax": "A"
   },
   "nemesis": {
     "name": "Nemesis",
     "overall": "B",
-    "pvp": "B",
-    "pve": "C"
+    "pveentry": "B",
+    "pvemax": "B",
+    "pvpentry": "B",
+    "pvpmax": "C"
   },
   "nezha": {
     "name": "Nezha",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S"
+    "pveentry": "A",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "S"
   },
   "nuba": {
     "name": "Nuba",
     "overall": "A",
-    "pvp": "S",
-    "pve": "A",
-    "delusionsDen": "B"
+    "pveentry": "B",
+    "pvemax": "A",
+    "pvpentry": "B",
+    "pvpmax": "A"
   },
   "nut": {
     "name": "Nut",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S",
-    "tormentRiftLilith": "S"
+    "pveentry": "A",
+    "pvemax": "S",
+    "pvpentry": "S",
+    "pvpmax": "A"
   },
   "nuwa": {
     "name": "Nuwa",
     "overall": "A",
-    "pvp": "A",
-    "pve": "S"
+    "pveentry": "A",
+    "pvemax": "A",
+    "pvpentry": "A",
+    "pvpmax": "B"
   },
   "nymphia": {
     "name": "Nymphia",
@@ -357,21 +414,26 @@
   "nyx": {
     "name": "Nyx",
     "overall": "A",
-    "pvp": "A",
-    "pve": "B"
+    "pveentry": "B",
+    "pvemax": "A",
+    "pvpentry": "B",
+    "pvpmax": "A"
   },
   "pan": {
     "name": "Pan",
     "overall": "B",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "B",
+    "pvpmax": "B"
   },
   "phoenix": {
     "name": "Phoenix",
     "overall": "B",
-    "pvp": "A",
-    "pve": "B",
-    "delusionsDen": "A"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "C",
+    "pvpmax": "C"
   },
   "pisces": {
     "name": "Pisces",
@@ -382,15 +444,18 @@
   "poseidon": {
     "name": "Poseidon",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S",
-    "delusionsDen": "A"
+    "pveentry": "A",
+    "pvemax": "S",
+    "pvpentry": "B",
+    "pvpmax": "A"
   },
   "prometheus": {
     "name": "Prometheus",
     "overall": "C",
-    "pvp": "B",
-    "pve": "B"
+    "pveentry": "D",
+    "pvemax": "C",
+    "pvpentry": "D",
+    "pvpmax": "C"
   },
   "ratatoskr": {
     "name": "Ratatoskr",
@@ -413,34 +478,42 @@
   "sekhmet": {
     "name": "Sekhmet",
     "overall": "D",
-    "pvp": "C",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "C",
+    "pvpentry": "D",
+    "pvpmax": "D"
   },
   "serket": {
     "name": "Serket",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "B",
+    "pvemax": "A",
+    "pvpentry": "B",
+    "pvpmax": "A"
   },
   "set": {
     "name": "Set",
     "overall": "A",
-    "pvp": "B",
-    "pve": "A"
+    "pveentry": "B",
+    "pvemax": "A",
+    "pvpentry": "C",
+    "pvpmax": "B"
   },
   "skadi": {
     "name": "Skadi",
     "overall": "S",
-    "pveEarly": "S+",
-    "pvp": "S",
-    "pve": "S",
-    "delusionsDen": "S"
+    "pveentry": "A",
+    "pvemax": "S",
+    "pvpentry": "A",
+    "pvpmax": "S"
   },
   "surtr": {
     "name": "Surtr",
     "overall": "D",
-    "pvp": "D",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "D",
+    "pvpentry": "D",
+    "pvpmax": "D"
   },
   "tailao": {
     "name": "Tailao",
@@ -457,8 +530,10 @@
   "tefnut": {
     "name": "Tefnut",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "A",
+    "pvpentry": "C",
+    "pvpmax": "B"
   },
   "treant": {
     "name": "Treant",
@@ -469,8 +544,10 @@
   "ullr": {
     "name": "Ullr",
     "overall": "D",
-    "pvp": "B",
-    "pve": "D"
+    "pveentry": "D",
+    "pvemax": "D",
+    "pvpentry": "D",
+    "pvpmax": "D"
   },
   "ushabti": {
     "name": "Ushabti",
@@ -487,30 +564,33 @@
   "wenshen": {
     "name": "Wen-Shen",
     "overall": "A",
-    "pvp": "A",
-    "pve": "A"
+    "pveentry": "C",
+    "pvemax": "A",
+    "pvpentry": "C",
+    "pvpmax": "A"
   },
   "yanluo": {
     "name": "Yanluo",
     "overall": "B",
-    "pvp": "A",
-    "pve": "B"
+    "pveentry": "C",
+    "pvemax": "B",
+    "pvpentry": "C",
+    "pvpmax": "B"
   },
   "yuelao": {
     "name": "Yuelao",
     "overall": "S",
-    "pvp": "S",
-    "pve": "S",
-    "grimSurgeBoss1": "A",
-    "delusionsDen": "A"
+    "pveentry": "A",
+    "pvemax": "S",
+    "pvpentry": "A",
+    "pvpmax": "A"
   },
   "zeus": {
     "name": "Zeus",
     "overall": "S+",
-    "pvp": "S",
-    "pve": "S",
-    "grimSurgeBoss1": "S",
-    "grimSurgeBoss2": "S",
-    "delusionsDen": "S"
+    "pveentry": "C",
+    "pvemax": "S",
+    "pvpentry": "C",
+    "pvpmax": "S"
   }
 }
