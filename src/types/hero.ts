@@ -31,19 +31,10 @@ export interface HeroStats {
 
 export interface HeroRatings {
   overall: string;
-  pvp: string;
-  pve: string;
-  pveEarly?: string;
-  pveLate?: string;
-  grimSurgeBoss1?: string;
-  grimSurgeBoss2?: string;
-  odyssey?: string;
-  spire?: string;
-  delusionsDen?: string;
-  realmRover?: string;
-  tormentRiftBaphomet?: string;
-  tormentRiftLilith?: string;
-  tormentRiftBoss3?: string;
+  pveentry: string;
+  pvpentry: string;
+  pvemax: string;
+  pvpmax: string;
 }
 
 export interface SkillUpgrades {

@@ -97,30 +97,20 @@ const statEntries = Object.entries(hero.stats ?? {}).map(([key, raw]) => {
 const activeStats = statEntries.filter((s) => s.value > 0);
 
 // ---------------------------------------------------------------------- ratings
-const subRatings = HERO_RATING_FIELDS
-  .filter((field) => field.group === "Modes")
-  .map((field) => ({ ...field, grade: rating[field.key] ? String(rating[field.key]) : "" }));
-
-const RATING_GROUPS = [
-  {
-    title: "Grim Surge",
-    modes: HERO_RATING_FIELDS.filter((field) => field.group === "Grim Surge"),
-  },
-  {
-    title: "Others",
-    modes: HERO_RATING_FIELDS.filter((field) => field.group === "Others"),
-  },
-  {
-    title: "Torment Rift",
-    modes: HERO_RATING_FIELDS.filter((field) => field.group === "Torment Rift"),
-  },
-].map((group) => ({
-  ...group,
-  modes: group.modes.map((mode) => ({
-    ...mode,
-    grade: rating[mode.key] ? String(rating[mode.key]) : "",
-  })),
-}));
+const RATING_GROUPS = Array.from(
+  HERO_RATING_FIELDS
+    .filter((field) => field.key !== "overall")
+    .reduce((groups, field) => {
+      const group = groups.get(field.group) ?? [];
+      group.push({
+        ...field,
+        grade: rating[field.key] ? String(rating[field.key]) : "",
+      });
+      groups.set(field.group, group);
+      return groups;
+    }, new Map<string, Array<(typeof HERO_RATING_FIELDS)[number] & { grade: string }>>()),
+  ([title, modes]) => ({ title, modes }),
+);
 
 // ----------------------------------------------------------------------- skills
 function escapeHtml(text: string): string {
@@ -293,16 +283,6 @@ const tabs = [
                 <span class="lt-grade" data-tier={String(rating.overall || "N/A")}>
                   {rating.overall || "N/A"}
                 </span>
-              </div>
-
-              <h3 class="lt-rating-group-title">Modes</h3>
-              <div class="lt-grade-grid">
-                {subRatings.map((r) => (
-                  <div class={`lt-grade-tile${r.grade ? "" : " is-placeholder"}`}>
-                    <span class="lt-grade-tile-label">{r.label}</span>
-                    <span class="lt-grade-tile-value" data-tier={r.grade || "N/A"}>{r.grade || "N/A"}</span>
-                  </div>
-                ))}
               </div>
 
               <div class="lt-rating-groups">
