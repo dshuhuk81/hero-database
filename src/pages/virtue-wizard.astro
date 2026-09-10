@@ -375,9 +375,28 @@ const heroOptions = (heroes as any[])
     return shape.reduce((sum, row) => sum + row.reduce((a, b) => a + b, 0), 0);
   }
 
-  function pieceLabel(piece: any) {
+  function pieceNameParts(piece: any) {
     const parts = String(piece.name).split(" ");
-    return parts[parts.length - 1];
+    return {
+      set: parts.slice(0, -1).join(" ") || String(piece.name),
+      tier: parts.length > 1 ? parts[parts.length - 1] : "",
+    };
+  }
+
+  function labelCellFor(pieceCells: string[]) {
+    const points = pieceCells.map((k) => k.split(",").map(Number));
+    const centerRow = points.reduce((sum, point) => sum + point[0], 0) / points.length;
+    const centerCol = points.reduce((sum, point) => sum + point[1], 0) / points.length;
+    let best = pieceCells[0];
+    let bestDistance = Infinity;
+    for (let i = 0; i < points.length; i++) {
+      const distance = Math.pow(points[i][0] - centerRow, 2) + Math.pow(points[i][1] - centerCol, 2);
+      if (distance < bestDistance) {
+        best = pieceCells[i];
+        bestDistance = distance;
+      }
+    }
+    return best;
   }
 
   type Group = { name: string; pieces: any[]; quota: number };
@@ -463,6 +482,10 @@ const heroOptions = (heroes as any[])
       const k = cell.dataset.k as string;
       cell.classList.toggle("is-open", open.has(k));
       cell.textContent = "";
+      cell.removeAttribute("title");
+      const [r, c] = k.split(",").map(Number);
+      cell.setAttribute("aria-label", `Cell row ${r + 1}, column ${c + 1}`);
+      cell.classList.remove("vwz-join-up", "vwz-join-right", "vwz-join-down", "vwz-join-left");
       for (let i = 0; i < PIECE_COLORS; i++) cell.classList.remove(`vwz-pc${i}`);
     }
 
@@ -472,13 +495,39 @@ const heroOptions = (heroes as any[])
     const usedCells = placements.reduce((a, pl) => a + pl.cells.length, 0);
 
     legendEl.innerHTML = "";
-    placements.forEach((pl, i) => {
-      const colorClass = `vwz-pc${i % PIECE_COLORS}`;
+    placements.forEach((pl) => {
+      // Color communicates the set. Individual virtues are distinguished by their
+      // connected silhouette and direct label, just as they are in the game.
+      const colorClass = `vwz-pc${pl.g % PIECE_COLORS}`;
+      const pieceCells = new Set(pl.cells);
+      const labelCell = labelCellFor(pl.cells);
+      const name = pieceNameParts(pl.piece);
       for (const k of pl.cells) {
         const cell = cells.find((c) => c.dataset.k === k);
         if (cell) {
           cell.classList.add(colorClass);
-          cell.textContent = pieceLabel(pl.piece);
+          const [r, c] = k.split(",").map(Number);
+          cell.classList.toggle("vwz-join-up", pieceCells.has(`${r - 1},${c}`));
+          cell.classList.toggle("vwz-join-right", pieceCells.has(`${r},${c + 1}`));
+          cell.classList.toggle("vwz-join-down", pieceCells.has(`${r + 1},${c}`));
+          cell.classList.toggle("vwz-join-left", pieceCells.has(`${r},${c - 1}`));
+          cell.title = pl.piece.name;
+          cell.setAttribute("aria-label", `${pl.piece.name}, row ${r + 1}, column ${c + 1}`);
+          if (k === labelCell) {
+            const label = document.createElement("span");
+            label.className = "vwz-piece-label";
+            const setLabel = document.createElement("span");
+            setLabel.className = "vwz-piece-label-set";
+            setLabel.textContent = name.set;
+            label.appendChild(setLabel);
+            if (name.tier) {
+              const tierLabel = document.createElement("span");
+              tierLabel.className = "vwz-piece-label-tier";
+              tierLabel.textContent = name.tier;
+              label.appendChild(tierLabel);
+            }
+            cell.appendChild(label);
+          }
         }
       }
       const item = document.createElement("span");
