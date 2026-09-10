@@ -1,596 +1,792 @@
-{  "hebo": {
+{
+  "hebo": {
     "name": "Hebo",
     "overall": "B",
-    "pveentry": "D",
-    "pvemax": "B",
-    "pvpentry": "D",
-    "pvpmax": "B"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "audhumla": {
     "name": "Audhumla",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "B",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "heket": {
     "name": "Heqet",
     "overall": "A",
-    "pveentry": "D",
-    "pvemax": "B",
-    "pvpentry": "D",
-    "pvpmax": "A"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "hades": {
     "name": "Hades",
     "overall": "S+",
-    "pveentry": "D",
-    "pvemax": "S",
-    "pvpentry": "D",
-    "pvpmax": "S"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "nephtys": {
     "name": "Nephtys",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "C",
-    "pvpentry": "D",
-    "pvpmax": "B"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "amunra": {
     "name": "Amunra",
     "overall": "A",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "D",
-    "pvpmax": "A"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "anubis": {
     "name": "Anubis",
     "overall": "A",
-    "pveentry": "B",
-    "pvemax": "A",
-    "pvpentry": "C",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "aquarius": {
     "name": "Aquarius",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "ares": {
     "name": "Ares",
     "overall": "C",
-    "pveentry": "D",
-    "pvemax": "C",
-    "pvpentry": "C",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "aries": {
     "name": "Aries",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "artemis": {
     "name": "Artemis",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "D",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "D",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "athena": {
     "name": "Athena",
     "overall": "B",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "C",
-    "pvpmax": "B"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "bastet": {
     "name": "Bastet",
     "overall": "S",
-    "pveentry": "C",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "S"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "caishen": {
     "name": "Caishen",
     "overall": "S+",
-    "pveentry": "S",
-    "pvemax": "S",
-    "pvpentry": "A",
-    "pvpmax": "S"
+    "pveearly": "S",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "A",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "cancer": {
     "name": "Cancer",
     "overall": "S+",
-    "pveentry": "B",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "canopicjar": {
     "name": "Canopic Jar",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "capricorn": {
     "name": "Capricorn",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "cronus": {
     "name": "Cronus",
     "overall": "S+",
-    "pveentry": "A",
-    "pvemax": "S",
-    "pvpentry": "A",
-    "pvpmax": "S"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "A",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "demeter": {
     "name": "Demeter",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "C",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "diana": {
     "name": "Diana",
     "overall": "A",
-    "pveentry": "C",
-    "pvemax": "A",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "dionysus": {
     "name": "Dionysus",
     "overall": "A",
-    "pveentry": "B",
-    "pvemax": "A",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "eris": {
     "name": "Eris",
     "overall": "S",
-    "pveentry": "C",
-    "pvemax": "S",
-    "pvpentry": "D",
-    "pvpmax": "S"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "fengyi": {
     "name": "Fengyi",
     "overall": "D",
-    "pveentry": "B",
-    "pvemax": "C",
-    "pvpentry": "B",
-    "pvpmax": "D"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "D"
   },
   "freya": {
     "name": "Freya",
     "overall": "D",
-    "pveentry": "C",
-    "pvemax": "D",
-    "pvpentry": "C",
-    "pvpmax": "D"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "D",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "D"
   },
   "geb": {
     "name": "Geb",
     "overall": "C",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "C",
-    "pvpmax": "C"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "gemini": {
     "name": "Gemini",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "hecate": {
     "name": "Hecate",
     "overall": "S",
-    "pveentry": "D",
-    "pvemax": "S",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "hela": {
     "name": "Hela",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "C",
-    "pvpentry": "C",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "hephaestus": {
     "name": "Hephaestus",
     "overall": "S",
-    "pveentry": "C",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "A"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "hera": {
     "name": "Hera",
     "overall": "A",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "C",
-    "pvpmax": "A"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "heracles": {
     "name": "Heracles",
     "overall": "A",
-    "pveentry": "C",
-    "pvemax": "A",
-    "pvpentry": "B",
-    "pvpmax": "A"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "hladgunnr": {
     "name": "Hladgunnr",
     "overall": "C",
-    "pveentry": "B",
-    "pvemax": "C",
-    "pvpentry": "B",
-    "pvpmax": "C"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "horus": {
     "name": "Horus",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "D",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "D",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "idunn": {
     "name": "Idunn",
     "overall": "S",
-    "pveentry": "B",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "iris": {
     "name": "Iris",
     "overall": "B",
-    "pveentry": "D",
-    "pvemax": "B",
-    "pvpentry": "D",
-    "pvpmax": "D"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "D"
   },
   "isis": {
     "name": "Isis",
     "overall": "D",
-    "pveentry": "B",
-    "pvemax": "C",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "jinchan": {
     "name": "Jinchan",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "jingwei": {
     "name": "Jingwei",
     "overall": "B",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "C",
-    "pvpmax": "B"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "xuannv": {
     "name": "Xuannv",
     "overall": "S+",
-    "pveentry": "B",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "A"
-
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "jormungandr": {
     "name": "Jormungandr",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "C",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "khepri": {
     "name": "Khepri",
     "overall": "A",
-    "pveentry": "C",
-    "pvemax": "A",
-    "pvpentry": "B",
-    "pvpmax": "A"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "kraken": {
     "name": "Kraken",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "leo": {
     "name": "Leo",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "libra": {
     "name": "Libra",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "medusa": {
     "name": "Medusa",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "D",
-    "pvpentry": "D",
-    "pvpmax": "D"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "D",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "D"
   },
   "mengpo": {
     "name": "Mengpo",
     "overall": "S+",
-    "pveentry": "A",
-    "pvemax": "S",
-    "pvpentry": "A",
-    "pvpmax": "S"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "A",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "meret": {
     "name": "Meret",
     "overall": "S+",
-    "pveentry": "B",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "momus": {
     "name": "Momus",
     "overall": "A",
-    "pveentry": "B",
-    "pvemax": "A",
-    "pvpentry": "B",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "nemesis": {
     "name": "Nemesis",
     "overall": "B",
-    "pveentry": "B",
-    "pvemax": "B",
-    "pvpentry": "B",
-    "pvpmax": "C"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "nezha": {
     "name": "Nezha",
     "overall": "S+",
-    "pveentry": "A",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "S"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "nuba": {
     "name": "Nuba",
     "overall": "A",
-    "pveentry": "B",
-    "pvemax": "A",
-    "pvpentry": "B",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "nut": {
     "name": "Nut",
     "overall": "S+",
-    "pveentry": "A",
-    "pvemax": "S",
-    "pvpentry": "S",
-    "pvpmax": "A"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "S",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "nuwa": {
     "name": "Nuwa",
     "overall": "A",
-    "pveentry": "A",
-    "pvemax": "A",
-    "pvpentry": "A",
-    "pvpmax": "B"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "A",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "nymphia": {
     "name": "Nymphia",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "nyx": {
     "name": "Nyx",
     "overall": "A",
-    "pveentry": "B",
-    "pvemax": "A",
-    "pvpentry": "B",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "pan": {
     "name": "Pan",
     "overall": "B",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "B",
-    "pvpmax": "B"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "phoenix": {
     "name": "Phoenix",
     "overall": "B",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "C",
-    "pvpmax": "C"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "pisces": {
     "name": "Pisces",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "poseidon": {
     "name": "Poseidon",
     "overall": "S+",
-    "pveentry": "A",
-    "pvemax": "S",
-    "pvpentry": "B",
-    "pvpmax": "A"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "prometheus": {
     "name": "Prometheus",
     "overall": "C",
-    "pveentry": "D",
-    "pvemax": "C",
-    "pvpentry": "D",
-    "pvpmax": "C"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "C"
   },
   "ratatoskr": {
     "name": "Ratatoskr",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "sagittarius": {
     "name": "Sagittarius",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "scorpio": {
     "name": "Scorpio",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "sekhmet": {
     "name": "Sekhmet",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "C",
-    "pvpentry": "D",
-    "pvpmax": "D"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "C",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "D"
   },
   "serket": {
     "name": "Serket",
     "overall": "A",
-    "pveentry": "B",
-    "pvemax": "A",
-    "pvpentry": "B",
-    "pvpmax": "A"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "B",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "set": {
     "name": "Set",
     "overall": "A",
-    "pveentry": "B",
-    "pvemax": "A",
-    "pvpentry": "C",
-    "pvpmax": "B"
+    "pveearly": "B",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "skadi": {
     "name": "Skadi",
     "overall": "S",
-    "pveentry": "A",
-    "pvemax": "S",
-    "pvpentry": "A",
-    "pvpmax": "S"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "A",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   },
   "surtr": {
     "name": "Surtr",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "D",
-    "pvpentry": "D",
-    "pvpmax": "D"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "D",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "D"
   },
   "tailao": {
     "name": "Tailao",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "taurus": {
     "name": "Taurus",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "tefnut": {
     "name": "Tefnut",
     "overall": "A",
-    "pveentry": "C",
-    "pvemax": "A",
-    "pvpentry": "C",
-    "pvpmax": "B"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "treant": {
     "name": "Treant",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "ullr": {
     "name": "Ullr",
     "overall": "D",
-    "pveentry": "D",
-    "pvemax": "D",
-    "pvpentry": "D",
-    "pvpmax": "D"
+    "pveearly": "D",
+    "pvemidgame": "",
+    "pveendgame": "D",
+    "pvpearly": "D",
+    "pvpmidgame": "",
+    "pvpendgame": "D"
   },
   "ushabti": {
     "name": "Ushabti",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "virgo": {
     "name": "Virgo",
     "overall": "",
-    "pvp": "",
-    "pve": ""
+    "pveearly": "",
+    "pvemidgame": "",
+    "pveendgame": "",
+    "pvpearly": "",
+    "pvpmidgame": "",
+    "pvpendgame": ""
   },
   "wenshen": {
     "name": "Wen-Shen",
     "overall": "A",
-    "pveentry": "C",
-    "pvemax": "A",
-    "pvpentry": "C",
-    "pvpmax": "A"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "A",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "yanluo": {
     "name": "Yanluo",
     "overall": "B",
-    "pveentry": "C",
-    "pvemax": "B",
-    "pvpentry": "C",
-    "pvpmax": "B"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "B",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "B"
   },
   "yuelao": {
     "name": "Yuelao",
     "overall": "S",
-    "pveentry": "A",
-    "pvemax": "S",
-    "pvpentry": "A",
-    "pvpmax": "A"
+    "pveearly": "A",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "A",
+    "pvpmidgame": "",
+    "pvpendgame": "A"
   },
   "zeus": {
     "name": "Zeus",
     "overall": "S+",
-    "pveentry": "C",
-    "pvemax": "S",
-    "pvpentry": "C",
-    "pvpmax": "S"
+    "pveearly": "C",
+    "pvemidgame": "",
+    "pveendgame": "S",
+    "pvpearly": "C",
+    "pvpmidgame": "",
+    "pvpendgame": "S"
   }
 }

@@ -1,9 +1,11 @@
 export const HERO_RATING_FIELDS = [
   { key: "overall", label: "Overall", group: "Core" },
-  { key: "pveentry", label: "PvE", group: "Entry" },
-  { key: "pvpentry", label: "PvP", group: "Entry" },
-  { key: "pvemax", label: "PvE", group: "Maximum" },
-  { key: "pvpmax", label: "PvP", group: "Maximum" },
+  { key: "pveearly", label: "Early", group: "PvE" },
+  { key: "pvemidgame", label: "Midgame", group: "PvE" },
+  { key: "pveendgame", label: "Endgame", group: "PvE" },
+  { key: "pvpearly", label: "Early", group: "PvP" },
+  { key: "pvpmidgame", label: "Midgame", group: "PvP" },
+  { key: "pvpendgame", label: "Endgame", group: "PvP" },
 ];
 
 export const HERO_RATING_KEYS = HERO_RATING_FIELDS.map(({ key }) => key);

@@ -31,10 +31,12 @@ export interface HeroStats {
 
 export interface HeroRatings {
   overall: string;
-  pveentry: string;
-  pvpentry: string;
-  pvemax: string;
-  pvpmax: string;
+  pveearly: string;
+  pvemidgame: string;
+  pveendgame: string;
+  pvpearly: string;
+  pvpmidgame: string;
+  pvpendgame: string;
 }
 
 export interface SkillUpgrades {
