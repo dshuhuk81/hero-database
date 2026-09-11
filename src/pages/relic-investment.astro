@@ -76,11 +76,11 @@ const rows = heroes
                 <small>{hero.class} · {hero.faction}</small>
               </span>
             </a>
-            <div class="ri-value ri-relic">
+            <div class="ri-value">
               <span class="ri-mobile-label">Minimum relic</span>
               <strong>{minimumRelic}</strong>
             </div>
-            <div class="ri-value">
+            <div class="ri-value ri-recommendation">
               <span class="ri-mobile-label">Relic recommendation</span>
               <strong>{relicRecommendation}</strong>
             </div>
@@ -142,7 +142,7 @@ const rows = heroes
   .ri-identity small { color: var(--text-muted); font-size: .72rem; margin-top: .15rem; }
   .ri-value { min-width: 0; padding: var(--space-3) var(--space-4); color: var(--text-primary); font-size: .84rem; line-height: 1.45; }
   .ri-value strong { font-weight: var(--weight-bold); }
-  .ri-relic strong { display: inline-block; padding: .42rem .7rem; border-radius: 999px; background: var(--accent-gold-dim); border: 1px solid color-mix(in srgb, var(--accent-gold) 38%, transparent); color: var(--accent-gold-light); font-weight: var(--weight-black); }
+  .ri-recommendation strong { display: inline-block; padding: .42rem .7rem; border-radius: 999px; background: var(--accent-gold-dim); border: 1px solid color-mix(in srgb, var(--accent-gold) 38%, transparent); color: var(--accent-gold-light); font-weight: var(--weight-black); }
   .ri-mobile-label { display: none; }
   .ri-empty { padding: var(--space-10); text-align: center; color: var(--text-muted); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -160,7 +160,7 @@ const rows = heroes
     .ri-value { display: flex; flex-direction: column; gap: .35rem; padding: var(--space-3); }
     .ri-value + .ri-value { border-left: 1px solid var(--border-faint); }
     .ri-mobile-label { display: block; color: var(--text-muted); font-size: .62rem; font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-    .ri-relic strong { align-self: flex-start; padding: .32rem .55rem; }
+    .ri-recommendation strong { align-self: flex-start; padding: .32rem .55rem; }
   }
   @media (max-width: 480px) {
     .ri-page { padding-right: var(--space-3); padding-left: var(--space-3); }
