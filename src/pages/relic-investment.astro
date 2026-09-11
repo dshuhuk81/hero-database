@@ -62,7 +62,7 @@ const rows = heroes
     <div id="riGrid" class="ri-list">
       {rows.map(({ hero, investment: entry }) => {
         const minimumRelic = english(entry.relicMin);
-        const relicRecommendation = entry.relicRec ? english(entry.relicRec) : "—";
+        const relicRecommendation = entry.relicRec ? english(entry.relicRec) : "";
         const heroInvestment = entry.f2pInvestment ? english(entry.f2pInvestment) : "—";
         return (
           <article
@@ -76,13 +76,13 @@ const rows = heroes
                 <small>{hero.class} · {hero.faction}</small>
               </span>
             </a>
-            <div class="ri-value">
+            <div class="ri-value ri-relic-value">
               <span class="ri-mobile-label">Minimum relic</span>
-              <strong>{minimumRelic}</strong>
+              {minimumRelic && <strong>{minimumRelic}</strong>}
             </div>
-            <div class="ri-value ri-recommendation">
+            <div class="ri-value ri-relic-value ri-recommendation">
               <span class="ri-mobile-label">Relic recommendation</span>
-              <strong>{relicRecommendation}</strong>
+              {relicRecommendation && <strong>{relicRecommendation}</strong>}
             </div>
             <div class="ri-value">
               <span class="ri-mobile-label">F2P target</span>
@@ -142,6 +142,7 @@ const rows = heroes
   .ri-identity small { color: var(--text-muted); font-size: .72rem; margin-top: .15rem; }
   .ri-value { min-width: 0; padding: var(--space-3) var(--space-4); color: var(--text-primary); font-size: .84rem; line-height: 1.45; }
   .ri-value strong { font-weight: var(--weight-bold); }
+  .ri-relic-value strong { font-size: .84rem; }
   .ri-recommendation strong { display: inline-block; padding: .42rem .7rem; border-radius: 999px; background: var(--accent-gold-dim); border: 1px solid color-mix(in srgb, var(--accent-gold) 38%, transparent); color: var(--accent-gold-light); font-weight: var(--weight-black); }
   .ri-mobile-label { display: none; }
   .ri-empty { padding: var(--space-10); text-align: center; color: var(--text-muted); }
