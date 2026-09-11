@@ -315,7 +315,7 @@ const translations: TranslationTree = {
     "/bosses": { en: "Boss Encounters", de: "Bosskämpfe", es: "Encuentros con jefes", ru: "Бои с боссами", zh: "Boss 战" },
     "/events": { en: "Events", de: "Events", es: "Eventos", ru: "События", zh: "活动" },
     "/totems": { en: "Totems", de: "Totems", es: "Tótems", ru: "Тотемы", zh: "图腾" },
-    "/summon-calendar": { en: "Summon Calendar", de: "Beschwörungskalender", es: "Calendario de invocaciones", ru: "Календарь призывов", zh: "召唤日历" },
+    "/summon-calendar": { en: "Hero Roadmap", de: "Helden-Roadmap", es: "Hoja de ruta de héroes", ru: "План выхода героев", zh: "英雄路线图" },
     "/summon-calculator": { en: "Summon Calculator", de: "Beschwörungsrechner", es: "Calculadora de invocaciones", ru: "Калькулятор призывов", zh: "召唤计算器" },
     "/wishlisht": { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List", zh: "心愿单" },
     "/status": { en: "Status", de: "Status", es: "Estado", ru: "Статус", zh: "状态" },

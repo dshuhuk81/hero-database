@@ -259,7 +259,7 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M12 21s-7-4.6-9.2-9.1C1 8.2 3.2 4 7.3 4c2 0 3.7 1.1 4.7 2.6C13 5.1 14.7 4 16.7 4c4.1 0 6.3 4.2 4.5 7.9C19 16.4 12 21 12 21z"/><path d="m16.5 7 .5 1.5 1.5.5-1.5.5-.5 1.5-.5-1.5-1.5-.5 1.5-.5z"/>`,
   },
   {
-    label: "Release Calendar",
+    label: "Hero Roadmap",
     href: "/summon-calendar",
     group: "tools",
     teaser: true,
