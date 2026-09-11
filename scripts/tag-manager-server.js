@@ -351,7 +351,8 @@ app.get('/api/admin/heroes/:id', async (req, res) => {
         ...HERO_RATING_KEYS.map((key) => [key, '']),
       ]),
       investment: invest[id] || {
-        relicRecommendation: '',
+        relicMin: '',
+        relicRec: '',
         usedIn: '',
         explanation: '',
         f2pInvestment: '',
@@ -444,13 +445,14 @@ app.patch('/api/admin/invest/:id', async (req, res) => {
     const current = invest[id] || {};
 
     const next = {
-      relicRecommendation: normalizeString(req.body.relicRecommendation ?? current.relicRecommendation),
+      relicMin: normalizeString(req.body.relicMin ?? current.relicMin),
+      relicRec: normalizeString(req.body.relicRec ?? current.relicRec),
       usedIn: normalizeString(req.body.usedIn ?? current.usedIn),
       explanation: normalizeString(req.body.explanation ?? current.explanation),
       f2pInvestment: normalizeString(req.body.f2pInvestment ?? current.f2pInvestment),
     };
 
-    if (!hasExistingInvestment && !next.relicRecommendation && !next.usedIn && !next.explanation && !next.f2pInvestment) {
+    if (!hasExistingInvestment && !next.relicMin && !next.relicRec && !next.usedIn && !next.explanation && !next.f2pInvestment) {
       return res.json({ success: true, skipped: true, investment: next, changedFiles: [] });
     }
 

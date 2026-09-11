@@ -174,7 +174,7 @@ for (const sheetName of SUIT_SHEETS) {
     };
 
     investUpdates[key] = {
-      relicRecommendation: cleanList(row[COL.relic]),
+      relicMin: cleanList(row[COL.relic]),
       usedIn: cleanList(row[COL.usedIn]),
       explanation: cleanProse(row[COL.explanation]),
       f2pInvestment: cleanList(row[COL.f2p]),
@@ -212,12 +212,15 @@ let iUpdated = 0;
 let iAdded = 0;
 for (const key of Object.keys(investUpdates)) {
   if (invest[key]) iUpdated++; else iAdded++;
+  investUpdates[key].relicRec = invest[key]?.relicRec || '';
   invest[key] = investUpdates[key];
 }
 // Drop invest entries no longer present in source
 let iRemoved = 0;
 for (const key of Object.keys(invest)) {
-  if (!investUpdates[key]) { delete invest[key]; iRemoved++; }
+  // Keep manually curated relic recommendations even when an unreleased hero
+  // is not present in the spreadsheet yet.
+  if (!investUpdates[key] && !invest[key]?.relicRec) { delete invest[key]; iRemoved++; }
 }
 fs.writeFileSync(investPath, JSON.stringify(invest, null, 2) + '\n');
 

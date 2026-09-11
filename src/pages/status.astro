@@ -453,8 +453,12 @@ const kpis = [
           <h3>Investment</h3>
           <div class="two-field-grid">
             <label>
+              <span>Minimum relic</span>
+              <input name="relicMin" type="text" placeholder="0, 1, 10..." />
+            </label>
+            <label>
               <span>Relic recommendation</span>
-              <input name="relicRecommendation" type="text" placeholder="30, 30-50, Early 10..." />
+              <input name="relicRec" type="text" placeholder="20, 30..." />
             </label>
             <label>
               <span>Used in</span>
@@ -1056,7 +1060,8 @@ const kpis = [
         setField(field, ratings?.[field] || "");
       }
 
-      setField("relicRecommendation", investment?.relicRecommendation || "");
+      setField("relicMin", investment?.relicMin || "");
+      setField("relicRec", investment?.relicRec || "");
       setField("usedIn", investment?.usedIn || "");
       setField("investmentF2p", investment?.f2pInvestment || "");
       setField("investmentExplanation", investment?.explanation || "");
@@ -1197,7 +1202,8 @@ const kpis = [
         saveResponses.push(await apiFetch(`/api/admin/invest/${heroId}`, {
           method: "PATCH",
           body: JSON.stringify({
-            relicRecommendation: getField("relicRecommendation"),
+            relicMin: getField("relicMin"),
+            relicRec: getField("relicRec"),
             usedIn: getField("usedIn"),
             f2pInvestment: getField("investmentF2p"),
             explanation: getField("investmentExplanation"),

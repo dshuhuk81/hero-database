@@ -391,10 +391,16 @@ const tabs = [
             <h2 class="lt-h2 lt-h2-center">Investment</h2>
             <div class="lt-flourish lt-flourish-center"></div>
             <div class="lt-invest">
-              {heroInvest.relicRecommendation && (
+              {heroInvest.relicMin && (
                 <div class="lt-panel lt-invest-cell">
-                  <p class="lt-sublabel">Relic</p>
-                  <p class="lt-invest-value">{heroInvest.relicRecommendation}</p>
+                  <p class="lt-sublabel">Minimum Relic</p>
+                  <p class="lt-invest-value">{heroInvest.relicMin}</p>
+                </div>
+              )}
+              {heroInvest.relicRec && (
+                <div class="lt-panel lt-invest-cell">
+                  <p class="lt-sublabel">Relic Recommendation</p>
+                  <p class="lt-invest-value">{heroInvest.relicRec}</p>
                 </div>
               )}
               {heroInvest.f2pInvestment && (
