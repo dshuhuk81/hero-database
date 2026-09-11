@@ -311,7 +311,6 @@ const translations: TranslationTree = {
     "/relic-investment": { en: "Relic Investment", de: "Relikt-Investition", es: "Inversión de reliquia", ru: "Вложения в реликвии", zh: "圣物培养" },
     "/virtues": { en: "Virtue Guide", de: "Tugenden-Guide", es: "Guía de virtudes", ru: "Гайд по добродетелям", zh: "美德指南" },
     "/guides": { en: "Guides", de: "Guides", es: "Guías", ru: "Гайды", zh: "攻略" },
-    "/delusions-den": { en: "Delusion Den Guide", de: "Guide für die Höhle der Täuschung", es: "Guía de la Cueva del Engaño", ru: "Гайд по Пещере иллюзий", zh: "幻境攻略" },
     "/tips": { en: "Tips", de: "Tipps", es: "Consejos", ru: "Советы", zh: "攻略技巧" },
     "/bosses": { en: "Boss Encounters", de: "Bosskämpfe", es: "Encuentros con jefes", ru: "Бои с боссами", zh: "Boss 战" },
     "/events": { en: "Events", de: "Events", es: "Eventos", ru: "События", zh: "活动" },

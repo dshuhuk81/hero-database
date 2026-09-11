@@ -287,21 +287,6 @@
           ]
         },
         {
-          "path": "src/data/delusions-den.json",
-          "shape": "object with blessings and buffs arrays",
-          "recordCounts": {
-            "blessings": 5,
-            "buffs": 55
-          },
-          "contains": [
-            "blessing effects",
-            "recommendations",
-            "tips",
-            "buff categories",
-            "buff effects"
-          ]
-        },
-        {
           "path": "src/data/shrineSetups.json",
           "shape": "array",
           "recordCount": 2,

@@ -65,20 +65,6 @@ const allNavEntries: NavEntry[] = [
     icon: `<circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v-4a8 8 0 1 1 8 0v4"/><path d="M12 20v-2"/><path d="M8 20h8"/>`,
   },
   {
-    label: "Delusion Den",
-    href: "/delusions-den",
-    group: "content",
-    sidebar: false,
-    description: {
-      en: "Recommended teams and strategy for each stage",
-      de: "Empfohlene Teams und Strategien für jede Stufe",
-      es: "Equipos recomendados y estrategias para cada etapa",
-      ru: "Рекомендованные команды и стратегия для каждого этапа",
-      zh: "每个关卡的推荐队伍与打法思路",
-    },
-    icon: `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`,
-  },
-  {
     label: "Divine Throne",
     href: "/guides/divine-throne",
     group: "content",
