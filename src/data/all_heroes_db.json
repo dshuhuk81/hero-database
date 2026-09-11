@@ -4644,12 +4644,12 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Raging Torrent",
-        "description": "Deals DMG equal to 500% ATK to enemies in a dense cluster within a 3-meter radius. Deals 30% increased DMG to enemies with HP below 50%.",
+        "name": "Sunstrike Tide Range",
+        "description": "Deals DMG equal to 500% of ATK to enemies in a dense area within a 3-meter radius. DMG to enemies with HP below 50% increases by 30%.",
         "upgrades": {
-          "level2": "Crit DMG increased by 50% on critical hits.",
-          "level3": "DMG increased to 600% ATK.",
-          "level4": "DMG dealt to enemies with HP below 50% increased by 50%."
+          "level2": "Increases CRIT DMG by 50% when triggering CRIT.",
+          "level3": "Increases DMG dealt to 600%.",
+          "level4": "DMG to enemies with HP below 50% increases by 50%."
         },
         "damageType": "Physical",
         "isUltimate": true
@@ -4657,44 +4657,44 @@
       {
         "id": "skill_2",
         "name": "Wave-Chasing Slash",
-        "description": "Dashes through the enemy 4 times consecutively. The first 3 hits deal 120%, 150%, and 180% ATK as DMG respectively. The final hit deals DMG equal to 250% ATK and knocks down hit enemies.",
+        "description": "Swims through enemies 4 times consecutively. The first 3 times deal DMG equal to 120%, 150%, and 180% of ATK. The final hit deals DMG equal to 250% of ATK and knocks down enemies that are hit.",
         "upgrades": {
-          "level2": "DMG increased to 130%, 160%, 190%, and 270% ATK.",
-          "level3": "Each complete cast increases ATK by 25% for 6s.",
-          "level4": "DMG increased to 140%, 170%, 200%, and 300% ATK."
+          "level2": "Increases DMG to 130%, 160%, 190%, and 270% of ATK.",
+          "level3": "Each full cast increases ATK by 25% for 6s.",
+          "level4": "Increases DMG to 140%, 170%, 200%, and 300% of ATK."
         },
         "damageType": "Physical"
       },
       {
         "id": "skill_3",
-        "name": "Wave-Surge Blade",
-        "description": "Passive: Each time [Wave-Chasing Slash] deals DMG, Hebo gains one stack of [Surge]. Each stack of [Surge] increases his Crit Rate by 6% for 10s.",
+        "name": "Wavecrest Blade",
+        "description": "Passive: Each time Wave-Chasing Slash deals DMG, gains 1 stack of Overlapping Waves. Each stack of Overlapping Waves increases CRIT Rate by 6% for 10s.",
         "upgrades": {
-          "level2": "Each stack of [Surge] increases Crit Rate by 8%.",
-          "level3": "Duration increased to 12s.",
-          "level4": "Each stack of [Surge] increases Crit Rate by 10%."
+          "level2": "Each stack of Overlapping Waves increases CRIT Rate by 8%.",
+          "level3": "Duration extends to 12s.",
+          "level4": "Each stack of Overlapping Waves increases CRIT Rate by 10%."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "Mirror of Still Water",
-        "description": "Passive: While Hebo is casting [Wave-Chasing Slash], DMG taken is reduced by 40% and increases by 5% every 2s. After [Wave-Chasing Slash] ends, the DMG reduction effect is retained for 3s.",
+        "name": "Breath of the Water Mirror",
+        "description": "Passive: Hebo takes 40% less DMG while swimming during Wave-Chasing Slash. This effect increases by 5% every 2s, and remains for 3s after Wave-Chasing Slash ends.",
         "upgrades": {
-          "level2": "DMG taken during [Wave-Chasing Slash] reduced by 60%.",
-          "level3": "Upon completing [Wave-Chasing Slash], gains a Shield equal to 400% ATK.",
-          "level4": "DMG reduction increases by 7% every 2s."
+          "level2": "Takes 60% less DMG while swimming during Wave-Chasing Slash.",
+          "level3": "Gains a Shield equal to 400% of ATK after fully casting Wave-Chasing Slash.",
+          "level4": "Increases the DMG taken reduction effect by 7% every 2s."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Return to the Vast Deep",
-      "description": "[Wave-Chasing Slash] restores 200 Energy each time it is fully cast.",
+      "name": "Tides of Origin",
+      "description": "Each full cast of Wave-Chasing Slash grants 200 Energy.",
       "upgrades": {
-        "level2": "[Wave-Chasing Slash] permanently increases Hebo's ATK by 25% each time it is fully cast, stacking up to 3 times.",
-        "level3": "[Wave-Chasing Slash] restores 300 Energy each time it is fully cast.",
-        "level4": "[Wave-Chasing Slash] permanently increases Hebo's ATK by 40% each time it is fully cast, stacking up to 3 times."
+        "level2": "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 25%, up to 3 stacks.",
+        "level3": "Each full cast of Wave-Chasing Slash grants 300 Energy.",
+        "level4": "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 40%, up to 3 stacks."
       }
     },
     "synergies": [],

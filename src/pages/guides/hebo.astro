@@ -10,68 +10,22 @@ const heroImage = (id: string) => `${R2_BASE}/heroes/${id}.webp`;
 const skillImage = (id: string) => `${R2_BASE}/skills/hebo_${id}.webp`;
 
 const takeaways: Record<string, string> = {
-  skill_1: "Sunstrike Tide Rage is the payoff, not the start of the engine. Aim it at a tightly packed group that has already been softened below half HP; its small radius makes setup more important than raw range.",
+  skill_1: "Sunstrike Tide Range is the payoff, not the start of the engine. Aim it at a tightly packed group that has already been softened below half HP; its small radius makes setup more important than raw range.",
   skill_2: "This four-dash sequence replaces Hebo's normal attacks. The damage rises with each pass, and the final, strongest dash knocks enemies down. Finishing the entire cast matters far more than merely starting it.",
   skill_3: "Every damaging dash grants a stack of Overlapping Waves, building Crit Rate for the rest of the sequence. Because the kit supplies substantial Crit Rate by itself, ATK and Crit Damage are generally more valuable offensive complements than stacking Crit Rate alone.",
   skill_4: "Hebo becomes tougher while dashing, retains the protection briefly afterward, and gains a large ATK-scaling Shield at Skill Lv3—but the Shield only appears after a completed sequence.",
 };
 
-const officialSkills: Record<string, { name: string; description: string; upgrades: Record<string, string> }> = {
-  skill_1: {
-    name: "Sunstrike Tide Rage",
-    description: "Deals DMG equal to 500% of ATK to enemies in a dense area within a 3-meter radius. DMG to enemies with HP below 50% increases by 30%.",
-    upgrades: {
-      level2: "Increases CRIT DMG by 50% when triggering CRIT.",
-      level3: "Increases DMG dealt to 600% of ATK.",
-      level4: "DMG to enemies with HP below 50% increases by 50%.",
-    },
-  },
-  skill_2: {
-    name: "Wave-Chasing Slash",
-    description: "Swims through enemies 4 times consecutively. The first 3 times deal DMG equal to 120%, 150%, and 180% of ATK. The final hit deals DMG equal to 250% of ATK and knocks down enemies that are hit.",
-    upgrades: {
-      level2: "Increases DMG to 130%, 160%, 190%, and 270% of ATK.",
-      level3: "Each full cast increases ATK by 25% for 6s.",
-      level4: "Increases DMG to 140%, 170%, 200%, and 300% of ATK.",
-    },
-  },
-  skill_3: {
-    name: "Wavecrest Blade",
-    description: "Passive: Each time Wave-Chasing Slash deals DMG, gains 1 stack of Overlapping Waves. Each stack of Overlapping Waves increases CRIT Rate by 6% for 10s.",
-    upgrades: {
-      level2: "Each stack of Overlapping Waves increases CRIT Rate by 8%.",
-      level3: "Duration extends to 12s.",
-      level4: "Each stack of Overlapping Waves increases CRIT Rate by 10%.",
-    },
-  },
-  skill_4: {
-    name: "Breath of the Water Mirror",
-    description: "Passive: Hebo takes 40% less DMG while swimming during Wave-Chasing Slash. This effect increases by 5% every 2s, and remains for 3s after Wave-Chasing Slash ends.",
-    upgrades: {
-      level2: "Takes 60% less DMG while swimming during Wave-Chasing Slash.",
-      level3: "Gains a Shield equal to 400% of ATK after fully casting Wave-Chasing Slash.",
-      level4: "Increases the DMG taken reduction effect by 7% every 2s.",
-    },
-  },
-};
-
 const skills = heboData.skills.map((skill) => ({
   ...skill,
-  ...officialSkills[skill.id],
   badge: skill.isUltimate ? "Skill 1 - Ultimate" : `Skill ${skill.id.replace("skill_", "")}`,
   takeaway: takeaways[skill.id],
-  upgrades: Object.entries(officialSkills[skill.id]?.upgrades ?? skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
+  upgrades: Object.entries(skill.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
 }));
 
 const relic = {
   ...heboData.relic,
-  name: "Tides of Origin",
-  description: "Each full cast of Wave-Chasing Slash grants 200 Energy.",
-  upgrades: [
-    { level: "Lv 2", text: "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 25%, up to 3 stacks." },
-    { level: "Lv 3", text: "Each full cast of Wave-Chasing Slash grants 300 Energy." },
-    { level: "Lv 4", text: "Each full cast of Wave-Chasing Slash permanently increases Hebo's ATK by 40%, up to 3 stacks." },
-  ],
+  upgrades: Object.entries(heboData.relic.upgrades).map(([level, text]) => ({ level: level.replace("level", "Lv "), text })),
   badge: "Exclusive Equipment",
   levelBadge: "Completion payoff",
   takeaway: "Every equipment benefit requires a full Wave-Chasing Slash. Base and Lv3 help refill Energy, but extra Energy has limited value while the bar is full and Hebo is waiting to cast. Lv2 and Lv4 add permanent offensive scaling over the first three completed cycles.",
@@ -124,7 +78,7 @@ const weaknesses = [
     <section class="guide-section guide-section--detail-heading">
       <h2 class="guide-section-title lt-h2 lt-h2-center">Hebo at a Glance</h2><div class="lt-flourish lt-flourish-center"></div>
       <div class="heket-verdict">
-        <div class="heket-verdict-main"><div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Wave-Chasing Slash"></div><div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Protect repeated rotations and give his Ultimate valuable targets.</h3><p>Hebo, the God of the Yellow River, is a mobile Physical bruiser and supported PvE carry. Wave-Chasing Slash replaces his basic attacks, building CRIT Rate and damage reduction during its four dashes. Completing the sequence adds a Shield, an ATK buff, and Exclusive Equipment rewards. He can carry against large level gaps when allies sustain this loop and keep weakened enemies within reach of Sunstrike Tide Rage. His protection remains vulnerable to concentrated burst, and losing key supports can stop him from turning strong damage into a win.</p></div></div>
+      <div class="heket-verdict-main"><div class="heket-verdict-icon" style={`background-image: url('${skillImage("skill_2")}');`} role="img" aria-label="Wave-Chasing Slash"></div><div><span class="heket-verdict-kicker">Team-building verdict</span><h3>Protect repeated rotations and give his Ultimate valuable targets.</h3><p>Hebo, the God of the Yellow River, is a mobile Physical bruiser and supported PvE carry. Wave-Chasing Slash replaces his basic attacks, building CRIT Rate and damage reduction during its four dashes. Completing the sequence adds a Shield, an ATK buff, and Exclusive Equipment rewards. He can carry against large level gaps when allies sustain this loop and keep weakened enemies within reach of Sunstrike Tide Range. His protection remains vulnerable to concentrated burst, and losing key supports can stop him from turning strong damage into a win.</p></div></div>
         <div class="heket-fact-strip"><div><span>Role</span><strong>Ramp bruiser</strong></div><div><span>Core condition</span><strong>Complete all four dashes</strong></div><div><span>Best fit</span><strong>Protected cluster fights</strong></div></div>
         <div class="heket-verdict-warning"><strong>Key warning</strong><span>Wave-Chasing Slash replaces normal attacks. Attack Speed and effects requiring basic attacks do not improve his main loop in the usual way.</span></div>
       </div>
@@ -137,7 +91,7 @@ const weaknesses = [
           <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_2")}');`}></div><span>Enter</span><strong>Dash through the cluster</strong><p>Four passes deal rising area damage, ending in the strongest hit and Knockdown.</p></div>
           <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_3")}');`}></div><span>Ramp</span><strong>Stack Crit while moving</strong><p>Every damaging pass grants Overlapping Waves, raising CRIT Rate and making the later hits increasingly threatening.</p></div>
           <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_4")}');`}></div><span>Complete</span><strong>Gain the Shield and rewards</strong><p>Damage reduction builds during the dashes and lingers after they end. A full sequence grants the Shield and completion rewards.</p></div>
-          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`}></div><span>Execute</span><strong>Ultimate the weakened group</strong><p>Sunstrike Tide Rage rewards dense targets, with extra damage below half HP.</p></div>
+          <div class="heket-engine-step"><div class="heket-engine-icon" style={`background-image: url('${skillImage("skill_1")}');`}></div><span>Execute</span><strong>Ultimate the weakened group</strong><p>Sunstrike Tide Range rewards dense targets, with extra damage below half HP.</p></div>
         </div>
         <div class="heket-engine-return"><span>Start the next rotation stronger</span></div>
         <div class="heket-engine-rule"><strong>Completion starts the next opportunity.</strong><span>An unfinished sequence denies its Shield, ATK buff, and equipment rewards. After completion, Hebo still needs protection, living supports, and useful Ultimate targets to keep the next rotation productive.</span></div>
