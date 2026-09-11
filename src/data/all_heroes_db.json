@@ -5066,23 +5066,23 @@
       },
       {
         "id": "skill_3",
-        "name": "Toad Creed Crossing",
-        "description": "Passive: When Heqet is about to fall, sacrifices 1 frog, becomes immune to this instance of DMG, and gains a Shield equal to 500% of ATK. This skill has a 30s CD.",
-        "upgrades": {
-          "level2": "Shield equal to 600% of ATK.",
-          "level3": "Shield equal to 700% of ATK.",
-          "level4": "Shield equal to 800% of ATK."
-        },
-        "damageType": ""
-      },
-      {
-        "id": "skill_4",
         "name": "Symbiotic Blessing",
         "description": "Passive: For each frog present, all allied minions gain 20% ATK, and restore HP equal to 15% of ATK every 2s.",
         "upgrades": {
           "level2": "All allied minions gain 30% ATK.",
           "level3": "All allied minions gain 40% ATK.",
           "level4": "Restore HP equal to 30% of ATK every 2s."
+        },
+        "damageType": ""
+      },
+      {
+        "id": "skill_4",
+        "name": "Toad Creed Crossing",
+        "description": "Passive: When Heqet is about to fall, sacrifices 1 frog, becomes immune to this instance of DMG, and gains a Shield equal to 500% of ATK. This skill has a 30s CD.",
+        "upgrades": {
+          "level2": "Shield equal to 600% of ATK.",
+          "level3": "Shield equal to 700% of ATK.",
+          "level4": "Shield equal to 800% of ATK."
         },
         "damageType": ""
       }
