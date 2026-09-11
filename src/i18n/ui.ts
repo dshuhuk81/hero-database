@@ -319,7 +319,6 @@ const translations: TranslationTree = {
     "/summon-calendar": { en: "Summon Calendar", de: "Beschwörungskalender", es: "Calendario de invocaciones", ru: "Календарь призывов", zh: "召唤日历" },
     "/summon-calculator": { en: "Summon Calculator", de: "Beschwörungsrechner", es: "Calculadora de invocaciones", ru: "Калькулятор призывов", zh: "召唤计算器" },
     "/wishlisht": { en: "Wishlist", de: "Wish List", es: "Lista de deseos", ru: "Wish List", zh: "心愿单" },
-    "/changelog": { en: "Changes", de: "Änderungen", es: "Cambios", ru: "Изменения", zh: "更新记录" },
     "/status": { en: "Status", de: "Status", es: "Estado", ru: "Статус", zh: "状态" },
     "/about": { en: "About", de: "Über diese Seite", es: "Acerca de esta página", ru: "О сайте", zh: "关于" },
   },

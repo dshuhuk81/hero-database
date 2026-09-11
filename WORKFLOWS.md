@@ -128,8 +128,6 @@ Siehe auch: `STATUS_DASHBOARD.md`
 | `npm run validate:hero-detail-stats` | Hero-Stats gegen `hero_detail.json` pruefen |
 | `npm run validate:tags` | Nur Tags validieren |
 | `npm run validate:all` | Alle Validierungen |
-| `npm run changelog:add` | Changelog-Eintrag hinzufuegen |
-
 ---
 
 ## Game-Asset-Pipeline (aus leak/game_extracted und leak/game_graphics)

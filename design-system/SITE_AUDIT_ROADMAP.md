@@ -40,7 +40,7 @@ and token alignment.
 | 4 | Guides | Approved and complete | Standardize the guides hub, hero guides, and game-mode guides |
 | 5 | Tools | Approved and complete | Align calculators, calendars, Wishlist, and Virtue Wizard |
 | 6 | Large specialist pages | In progress | Carefully simplify Bosses, Events, Delusions Den, and Virtues |
-| 7 | Meta pages | Planned | Refresh About, Changelog, Privacy, and Status last |
+| 7 | Meta pages | Planned | Refresh About, Privacy, and Status last |
 
 ## Phase 1: Shared foundations
 
@@ -56,7 +56,7 @@ Implemented foundations:
   states
 - Added a design-system showcase for reviewing the shared primitives
 - Standardized the content width of Relic Investment, CN Preview, Tips, Summon
-  Calculator, Wishlist, Virtue Wizard, Changelog, and About
+  Calculator, Wishlist, Virtue Wizard, and About
 - Added `--page-content-start` and the shared `.page-content` convention so all
   current `PageHero` pages begin their content at the same vertical position
 - Removed page-specific first-content offsets that conflicted with the shared
@@ -300,7 +300,7 @@ Recommended changes:
 
 ## Phase 7: Meta pages
 
-About, Changelog, and Privacy should use the same typography, page width, and
+About and Privacy should use the same typography, page width, and
 surface styling, but they are lower priority than player-facing content.
 
 `src/pages/status.astro` is extremely large and appears closer to internal
@@ -321,7 +321,7 @@ improvements.
 10. Summon Calculator and Virtue Wizard
 11. Delusions Den
 12. Virtues
-13. About, Changelog, and remaining utility pages
+13. About and remaining utility pages
 
 ## Implementation method
 

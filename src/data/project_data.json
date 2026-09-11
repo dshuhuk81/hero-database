@@ -383,19 +383,8 @@
       ]
     },
     "siteMetadata": {
-      "description": "Data used for site chrome, page update labels, changelog, supporters, and external asset mapping.",
+      "description": "Data used for site chrome, page update labels, supporters, and external asset mapping.",
       "files": [
-        {
-          "path": "src/data/changelog.json",
-          "shape": "array",
-          "recordCount": 22,
-          "contains": [
-            "date",
-            "version",
-            "title",
-            "change list"
-          ]
-        },
         {
           "path": "src/data/pageUpdates.json",
           "shape": "object keyed by page id",

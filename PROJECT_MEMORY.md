@@ -88,7 +88,6 @@ Current top-level pages include:
 - `/guides`: hero guide content.
 - `/tips`: general tips.
 - `/hero-upgrades`: progression and upgrade guidance.
-- `/changelog`: changelog page.
 - `/design-system`: design system preview.
 
 There is also `src/pages/tips copy.astro`, currently untracked in git status. Do not assume it is intentional without asking.

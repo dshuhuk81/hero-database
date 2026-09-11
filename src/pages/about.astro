@@ -4,16 +4,6 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 
-// Helper für Datums-Formatierung
-function formatDate(dateStr: string) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('de-DE', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
-}
-
 ---
 
 <Base
@@ -507,10 +497,6 @@ function formatDate(dateStr: string) {
      RESPONSIVE
      =============================== */
   @media (max-width: 768px) {
-    .changelog-page {
-      padding: 40px 16px 100px;
-    }
-
     .page-header h1 {
       font-size: 2.5rem;
     }
