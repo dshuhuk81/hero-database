@@ -86,6 +86,7 @@ export interface TeamComps {
 
 export interface Hero {
   id: string;
+  heroID: number | null;
   name: string;
   image: string;
   faction: string;

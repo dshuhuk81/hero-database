@@ -49,6 +49,7 @@ const RANKABLE_STATS = [
 function adaptHero(raw) {
   return {
     id: raw.id,
+    heroID: raw.heroID ?? null,
     name: raw.name,
     image: raw.image ?? `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/${raw.id}.webp`,
     release: raw.release ?? true,
