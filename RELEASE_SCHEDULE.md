@@ -34,7 +34,6 @@ EN names resolved via: `divination_character_setting.json`
 | 2026-07-08 | 1011 | Nephthys B | sikadi | no | ✅ released; reales Datum (war 2099-Platzhalter) |
 | 2026-07-22 | 4012 | Idun | ??? | no | ✅ released; is_visible=1 (war 0); vo=Vo_PanCi_CJian |
 | 2026-07-27 | 5009 | Hades | ??? | no | ✅ released; Launch über SeaWar-Event 201160001, nicht new_card_push |
-| **2026-05-01** | **3012** | **Heket** 海奎特 | heket | no | ⚠️ **sofort live** — Datum rückdatiert, Banner läuft aber erst ab 2026-08-19. Siehe Anomalie unten |
 | **2026-08-05** | **2012** | **Audhumla** 欧德姆布拉 | Audhumla | no | coming_soon; war 2027-12-26; Banner `new_card_push_19` |
 | **2026-08-19** | **3012** | **Heket** (Banner) | heket | no | `new_card_push_20` — der eigentliche Release-Slot |
 | **2026-09-02** | **1013** | **He Bo** 河伯 | Hebo | no | coming_soon; war 2029-05-15; Banner `new_card_push_21` |

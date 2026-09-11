@@ -15,41 +15,6 @@ const PULL_QUALITY_META: Record<PullQuality, { label: string; className: string 
   "skip":        { label: "Skip",        className: "pull-skip" },
 };
 
-/* schedule lives in src/data/summonSchedule.ts so other surfaces can stay in sync. */
-/*
-  { id: "hladgunnr",     status: "released",    order: 1 },
-  { id: "nezha",         status: "released",    order: 2 },
-  { id: "tefnut",        status: "released",    order: 3 },
-  { id: "heracles",      status: "released",    order: 4 },
-  { id: "nuba",          status: "released",    order: 5 },
-  { id: "mengpo",        status: "released",    order: 6 },
-  { id: "skadi",         status: "released",    order: 7 },
-  { id: "cronus",        status: "released",    order: 8 },
-  { id: "wenshen",       status: "released",    order: 9 },
-  { id: "meret",         status: "released",    order: 10 },
-  { id: "hephaestus",    status: "released", order: 11 },
-  { id: "serket",        status: "released", order: 12 },
-  { id: "hera",          status: "released", order: 13 },
-  { id: "eris",          status: "released", order: 14 },
-  { id: "nut",          status: "released", order: 15 },
-  { id: "xuannv",       status: "released", order: 16 },
-  { id: "nephtys",          status: "released", order: 17 },
-  { id: "idunn",     status: "released", order: 18 },
-  { id: "hades",      status: "released", order: 19, pullQuality: "whales-only" },
-  { id: "audhumla",         status: "released", order: 20, pullQuality: "optional"},
-  { id: "heket",         status: "released", order: 21, pullQuality: "pull" },
-  { id: "hebo",         status: "upcoming", order: 22, pullQuality: "skip" },
-  { id: "zaojun",       status: "upcoming", order: 23, pullQuality: "pull" },
-  { id: "yaoji",        status: "upcoming", order: 24, pullQuality: "pull" },
-  { id: "mazu",         status: "upcoming", order: 25, pullQuality: "optional" },
-  { id: "gaiya",        status: "upcoming", order: 26, pullQuality: "whales-only" },
-  { id: "charon",       status: "upcoming", order: 27, pullQuality: "optional" },
-  { id: "ananke",       status: "upcoming", order: 28, pullQuality: "optional" },
-  { id: "nidhogg",      status: "upcoming", order: 29, pullQuality: "whales-only" },
-  { id: "venus",        status: "upcoming", order: 30, pullQuality: "pull" },
-  { id: "chaos",        status: "upcoming", order: 31, pullQuality: "whales-only" }
-*/
-
 const heroMap = new Map(Object.values(allHeroes as Record<string, any>).map((h: any) => [h.id, h]));
 const heroPageIds = new Set((heroPages as any[]).map((h) => h.id));
 
@@ -80,6 +45,13 @@ function heroThumbImg(id: string): string {
 const iconUrl = (type: string, value: string) =>
   value ? `${R2_BASE}/icons/${type}/${value.toLowerCase()}.webp` : null;
 
+const RELEASE_DATE_PLACEHOLDERS = new Set(["tbd", "tba", "unknown", "n/a", "na", "none", "-", "—", "?", "placeholder"]);
+
+function visibleReleaseDate(value?: string): string | null {
+  const date = value?.trim();
+  return date && !RELEASE_DATE_PLACEHOLDERS.has(date.toLowerCase()) ? date : null;
+}
+
 function resolveEntry(entry: ScheduleEntry) {
   const h = heroMap.get(entry.id) || {};
   const r = (heroRatings as Record<string, any>)?.[entry.id] ?? {};
@@ -101,6 +73,7 @@ function resolveEntry(entry: ScheduleEntry) {
     pveRating: r.pve || "?",
     status: entry.status,
     order: entry.order,
+    releaseDate: visibleReleaseDate(entry.releaseDate),
     hasDetailPage: heroPageIds.has(entry.id),
     pullQuality: entry.pullQuality ? PULL_QUALITY_META[entry.pullQuality] : null,
   };
@@ -127,7 +100,7 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
       <div>
         <span class="section-label">Release forecast</span>
         <h2>What should you save for next?</h2>
-        <p>The closest releases matter most. Later entries are useful planning signals, but their order can still change.</p>
+        <p>The closest releases matter most. Later entries are useful planning signals, but their order can still change. Dates are guessed.</p>
       </div>
     </section>
 
@@ -169,7 +142,10 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
                 {hero.roleIconUrl ? <img src={hero.roleIconUrl} alt={hero.role} class="meta-icon" title={hero.role} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.role}>?</span>}
               </div>
               <h3 class="spotlight-name">{hero.displayName}</h3>
-              <p class="hero-role">{hero.role}</p>
+              <div class="hero-detail-row">
+                <p class="hero-role">{hero.role}</p>
+                {hero.releaseDate && <time class="hero-release-date">{hero.releaseDate}</time>}
+              </div>
             </div>
 
           </a>
@@ -197,7 +173,13 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
           <a href={`/heroes/${hero.id}`} class="timeline-row released-row">
             <div class="tl-order">{hero.order}</div>
             <img class="tl-portrait" src={heroThumbImg(hero.id)} alt={hero.displayName} width="44" height="44" loading="lazy" decoding="async" onerror={`this.onerror=()=>{this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\\'tl-portrait tl-portrait-missing\\'>?</div>')};this.src='${heroImg(hero.id)}'`} />
-            <div class="tl-info"><span class="tl-name">{hero.displayName}</span><span class="tl-sub">{hero.role}</span></div>
+            <div class="tl-info">
+              <span class="tl-name">{hero.displayName}</span>
+              <span class="tl-sub">
+                {hero.role}
+                {hero.releaseDate && <><span aria-hidden="true"> · </span><time class="tl-release-date">{hero.releaseDate}</time></>}
+              </span>
+            </div>
             <div class="tl-faction">{hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="tl-icon" /> : null}</div>
             <div class="tl-ratings"><span class="tl-pill" data-tier={hero.overallRating}>{hero.overallRating}</span></div>
             <div class="tl-status-badge released-badge">Released</div>
@@ -405,26 +387,6 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
     gap: 16px;
   }
 
-  .spotlight-grid .spotlight-card:first-child {
-    display: grid;
-    grid-column: span 2;
-    grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.1fr);
-  }
-
-  .spotlight-grid .spotlight-card:first-child .spotlight-img-wrap {
-    min-height: 300px;
-    padding-top: 0;
-  }
-
-  .spotlight-grid .spotlight-card:first-child .spotlight-body {
-    justify-content: center;
-    padding: var(--space-8);
-  }
-
-  .spotlight-grid .spotlight-card:first-child .spotlight-name {
-    font-size: var(--text-3xl);
-  }
-
   .spotlight-card {
     position: relative;
     background: var(--bg-surface);
@@ -587,6 +549,21 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
     margin: 0;
   }
 
+  .hero-detail-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .hero-release-date {
+    margin-left: auto;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--accent-gold);
+    white-space: nowrap;
+  }
+
   .hero-note {
     font-size: 0.7rem;
     color: rgba(168, 85, 247, 0.8);
@@ -740,6 +717,11 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
     display: flex;
     align-items: center;
     gap: 4px;
+    font-size: var(--text-sm);
+  }
+
+  .tl-release-date {
+    color: var(--accent-gold);
   }
 
   .tl-faction {
@@ -824,23 +806,6 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .spotlight-grid .spotlight-card:first-child {
-      grid-column: 1 / -1;
-      grid-template-columns: minmax(130px, 0.8fr) minmax(0, 1.2fr);
-    }
-
-    .spotlight-grid .spotlight-card:first-child .spotlight-img-wrap {
-      min-height: 220px;
-    }
-
-    .spotlight-grid .spotlight-card:first-child .spotlight-body {
-      padding: var(--space-5);
-    }
-
-    .spotlight-grid .spotlight-card:first-child .spotlight-name {
-      font-size: var(--text-xl);
-    }
-
     .timeline-row {
       grid-template-columns: 24px 40px 1fr auto;
       gap: 8px;
@@ -866,12 +831,5 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
       grid-template-columns: 1fr;
     }
 
-    .spotlight-grid .spotlight-card:first-child {
-      grid-template-columns: 1fr;
-    }
-
-    .spotlight-grid .spotlight-card:first-child .spotlight-img-wrap {
-      min-height: 240px;
-    }
   }
 </style>
