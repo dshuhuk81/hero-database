@@ -477,7 +477,7 @@ const jsonLd = {
       tierSections.forEach(section => {
         const count = section.querySelectorAll(".hero-wrapper").length;
         const tier = section.querySelector<HTMLElement>(".tier-label")?.dataset.tier;
-        section.hidden = count === 0;
+        section.hidden = tier === "N/A" || count === 0;
         if (tier !== "N/A") rated += count;
         const countElement = section.querySelector("[data-tier-count]");
         if (countElement) countElement.textContent = String(count);
@@ -485,8 +485,7 @@ const jsonLd = {
 
       if (rankingTitle) rankingTitle.textContent = labels[field] || "Overall";
       if (heroCounter) {
-        const unrated = heroCards.length - rated;
-        heroCounter.textContent = `${heroCards.length} heroes · ${rated} rated${unrated ? ` · ${unrated} unrated` : ""}`;
+        heroCounter.textContent = `${rated} ${rated === 1 ? "hero" : "heroes"}`;
       }
 
       const url = new URL(window.location.href);
