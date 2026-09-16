@@ -2379,14 +2379,14 @@
     "level": 300,
     "stats": {
       "might": 824000,
-      "hp": 2986616,
-      "atk": 260090,
-      "armor": 53152,
-      "magicRes": 60077,
-      "dodgeRate": 0,
-      "hitBonus": 10,
-      "critRate": 6,
-      "critRes": 0,
+      "hp": 2649960,
+      "atk": 268651,
+      "armor": 52229,
+      "magicRes": 59924,
+      "dodgeRate": 6,
+      "hitBonus": 0,
+      "critRate": 4,
+      "critRes": 6,
       "critDmgBonus": 0,
       "critDmgRed": 0,
       "energy": 0,
@@ -4603,7 +4603,7 @@
     "imgY": "-30%",
     "cardImgY": "0%",
     "release": true,
-    "newHero": true,
+    "newHero": false,
     "faction": "Spades",
     "role": "Hefty",
     "class": "Warrior",
@@ -15000,7 +15000,8 @@
     "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/zaojun.webp",
     "imgY": "-30%",
     "cardImgY": "0%",
-    "release": false,
+    "release": true,
+    "newHero": true,
     "faction": "Hearts",
     "role": "Arcane",
     "class": "Archer",
@@ -15041,57 +15042,57 @@
     "skills": [
       {
         "id": "skill_1",
-        "name": "Wildfire Spreading",
-        "description": "Passive: Zaojun collects 20% of Energy consumed by friendly units and stores it as Incense Smoke, storing up to 1200 Incense Smoke. Active: Deals DMG equal to 400% ATK to 3 nearby targets and surrounding units. For every 300 Incense Smoke stored, consumes that amount to hit one additional unit. Target selection: selects from farthest to nearest, prioritizing heroes over summons. If the number of targets is less than the amount of Incense Smoke available, targets are reselected.",
+        "name": "Unbound Blaze of Kindling",
+        "description": "Passive: Zaojun collects 20% of the Energy consumed by allied units and stores it as Hearthfires, up to 1200 Hearthfires can be stored. Active: Deals DMG equal to 400% of ATK to 3 units and nearby units. For every 300 Hearthfires she has, consumes the same amount of Hearthfires to make this skill hit 1 additional unit. (Target selection rules: Selects targets in order from farthest to nearest. Prioritizes Deities over Minions. If the number of targets is less than the amount of Hearthfires, targets may be selected repeatedly.)",
         "upgrades": {
-          "level2": "Hits one additional unit for every 240 Incense Smoke.",
-          "level3": "Hits one additional unit for every 200 Incense Smoke.",
-          "level4": "Hits one additional unit for every 150 Incense Smoke."
+          "level2": "For every 240 Hearthfires she has, this skill hits 1 additional unit.",
+          "level3": "For every 200 Hearthfires she has, this skill hits 1 additional unit.",
+          "level4": "For every 150 Hearthfires she has, this skill hits 1 additional unit."
         },
         "damageType": "Magical",
         "isUltimate": true
       },
       {
         "id": "skill_2",
-        "name": "Food Offering",
-        "description": "Throws food to restore HP equal to 200% ATK to the frontmost friendly unit. The projectile then ricochets to hit enemy units, dealing DMG equal to 50% ATK + 20% max HP to front-row enemies.",
+        "name": "Feast of Warding",
+        "description": "Throws food to restore HP equal to 200% ATK to the frontmost allied unit. After the projectile hits, it ricochets to enemy units, dealing DMG equal to 50% of the front-row ally's ATK + 20% of their max HP.",
         "upgrades": {
-          "level2": "Ricocheting projectile deals DMG equal to 80% ATK + 20% max HP to front-row enemies.",
-          "level3": "Ricocheting projectile deals DMG equal to 80% ATK + 25% max HP to front-row enemies.",
-          "level4": "Ricocheting projectile deals DMG equal to 100% ATK + 30% max HP to front-row enemies."
+          "level2": "Deals DMG equal to 80% of this front-row ally's ATK + 20% of their Max HP.",
+          "level3": "Deals DMG equal to 80% of this front-row ally's ATK + 25% of their Max HP.",
+          "level4": "Deals DMG equal to 100% of this front-row ally's ATK + 30% of their Max HP."
         },
         "damageType": "Magical"
       },
       {
         "id": "skill_3",
-        "name": "Hearth Fire Rising",
-        "description": "Passive: Zaojun no longer performs basic attacks. Instead, every 3s restores 80 Energy to herself and gains up to 10 stacks of 10% ATK.",
+        "name": "Everburning Hearthfire",
+        "description": "Passive: Zaojun no longer deals Normal Attacks, but restores 80 Energy to herself every 3s and gains 10% ATK, up to 10 stacks.",
         "upgrades": {
-          "level2": "Gains up to 10 stacks of 15% ATK.",
-          "level3": "Restores 120 Energy every 3s.",
-          "level4": "Gains up to 10 stacks of 20% ATK."
+          "level2": "Gains 15% ATK, up to 10 stacks.",
+          "level3": "Restores 120 Energy to herself.",
+          "level4": "Gains 20% ATK, up to 10 stacks."
         },
         "damageType": ""
       },
       {
         "id": "skill_4",
-        "name": "Fire Bond Shelter",
-        "description": "Upon entering battle, establishes a [Fire Bond] with the friendly unit with the highest HP on the field. Fire Bond: The bonded ally receives 15% DMG reduction. Zaojun continuously sacrifices her own HP to ensure the bonded ally's HP never drops below Zaojun's own HP.",
+        "name": "Hearthbound Protection",
+        "description": "Upon entering battle, forms a Fire Pact with the allied unit with the highest HP. Fire Pact: The bound ally gains 15% DMG RED, and continuously sacrifices their own HP to keep Zaojun's HP no lower than their own.",
         "upgrades": {
-          "level2": "Bonded ally receives 19% DMG reduction.",
-          "level3": "Bonded ally receives 23% DMG reduction.",
-          "level4": "Bonded ally receives 27% DMG reduction."
+          "level2": "The bound ally gains 19% DMG RED.",
+          "level3": "The bound ally gains 23% DMG RED.",
+          "level4": "The bound ally gains 27% DMG RED."
         },
         "damageType": ""
       }
     ],
     "relic": {
-      "name": "Blessed Fire Grace",
-      "description": "[Fire Bond] allies have 30% of their Energy consumption stored by Zaojun.",
+      "name": "Fire of Lasting Grace",
+      "description": "30% of the Energy consumed by the Fire Pact-bound ally will be stored by Zaojun.",
       "upgrades": {
-        "level2": "15% of DMG dealt by Zaojun heals [Fire Bond] allies.",
-        "level3": "25% of DMG dealt by Zaojun heals [Fire Bond] allies.",
-        "level4": "[Fire Bond] allies have 80% of their Energy consumption stored by Zaojun."
+        "level2": "15% of the DMG dealt by Zaojun will heal the Fire Pact-bound ally.",
+        "level3": "25% of the DMG dealt by Zaojun will heal the Fire Pact-bound ally.",
+        "level4": "80% of the Energy consumed by the Fire Pact-bound ally will be stored by Zaojun."
       }
     },
     "synergies": [],
@@ -15102,7 +15103,6 @@
       "depthRating": "",
       "commonlyMisunderstood": false
     },
-    "newHero": false,
     "virtueSets": [
       {
         "label": "Desire (4) + Clarity (2)",
