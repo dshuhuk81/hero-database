@@ -1,0 +1,124 @@
+---
+import PageHero from "../PageHero.astro";
+import ContentState from "../ui/ContentState.astro";
+import { localizePath, type Locale } from "../../i18n/config";
+import { pickLang, type LocalizedString } from "../../i18n/helpers";
+
+interface Props {
+  pageName: string;
+  locale: Locale;
+}
+
+const { pageName, locale } = Astro.props;
+
+const copy = {
+  status: {
+    en: "Page refresh",
+    de: "Seite wird überarbeitet",
+    es: "Página en renovación",
+    ru: "Обновление страницы",
+    zh: "页面更新",
+  },
+  headline: {
+    en: "Under construction",
+    de: "In Bearbeitung",
+    es: "En construcción",
+    ru: "Страница обновляется",
+    zh: "页面建设中",
+  },
+  subtitle: {
+    en: "We’re rebuilding {page} to make it clearer, more useful, and easier to use.",
+    de: "Wir überarbeiten {page}, damit die Seite klarer, hilfreicher und einfacher zu nutzen ist.",
+    es: "Estamos renovando {page} para que sea más clara, útil y fácil de usar.",
+    ru: "Мы обновляем раздел «{page}», чтобы сделать его понятнее, полезнее и удобнее.",
+    zh: "我们正在重新制作“{page}”，让内容更清晰、更实用，也更易于使用。",
+  },
+  title: {
+    en: "A better version is on the way",
+    de: "Eine bessere Version ist unterwegs",
+    es: "Una versión mejor está en camino",
+    ru: "Скоро появится улучшенная версия",
+    zh: "更好的版本即将上线",
+  },
+  description: {
+    en: "This page is temporarily unavailable while the new content is being prepared. Please check back soon.",
+    de: "Diese Seite ist vorübergehend nicht verfügbar, während die neuen Inhalte vorbereitet werden. Schau bald wieder vorbei.",
+    es: "Esta página no está disponible temporalmente mientras preparamos el nuevo contenido. Vuelve pronto.",
+    ru: "Страница временно недоступна, пока мы готовим новые материалы. Загляните сюда позже.",
+    zh: "新内容准备期间，此页面暂时不可用。请稍后再来查看。",
+  },
+  home: {
+    en: "Back to home",
+    de: "Zur Startseite",
+    es: "Volver al inicio",
+    ru: "На главную",
+    zh: "返回首页",
+  },
+} satisfies Record<string, LocalizedString>;
+
+const format = (value: LocalizedString) => pickLang(value, locale).replace("{page}", pageName);
+---
+
+<PageHero
+  id="under-construction"
+  tag={`${pageName} · ${pickLang(copy.status, locale)}`}
+  headline={pickLang(copy.headline, locale)}
+  subtitle={format(copy.subtitle)}
+  locale={locale}
+/>
+
+<main class="construction-page page-content">
+  <ContentState
+    title={pickLang(copy.title, locale)}
+    description={pickLang(copy.description, locale)}
+  >
+    <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3h4l1 4H9l1-4Z" />
+      <path d="m8 9-3 11h14L16 9" />
+      <path d="M7 14h10" />
+      <path d="M6 17h12" />
+    </svg>
+    <a slot="actions" class="action-button action-button--primary" href={localizePath("/", locale)}>
+      {pickLang(copy.home, locale)}
+    </a>
+  </ContentState>
+</main>
+
+<style>
+  .construction-page {
+    width: 100%;
+    max-width: 920px;
+    min-height: 360px;
+    margin: 0 auto;
+    padding: var(--space-12) var(--page-gutter) var(--space-24);
+  }
+
+  .construction-page :global(.content-state) {
+    min-height: 300px;
+    border-style: solid;
+    background:
+      radial-gradient(circle at 50% 0%, var(--accent-gold-dim), transparent 58%),
+      var(--bg-surface);
+  }
+
+  .construction-page :global(.content-state-icon) {
+    width: 56px;
+    height: 56px;
+    background: var(--accent-gold-dim);
+    color: var(--accent-gold);
+  }
+
+  @media (max-width: 768px) {
+    .construction-page {
+      min-height: 320px;
+      padding: var(--space-8) var(--space-4) var(--space-20);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .construction-page {
+      padding-right: var(--space-3);
+      padding-left: var(--space-3);
+    }
+  }
+</style>

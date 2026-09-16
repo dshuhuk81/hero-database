@@ -97,13 +97,13 @@ const starglint: Recipe[] = [
             return <article class="recipe">
               <span class="step-number"><small>{c.step}</small>{String(index + 1).padStart(2, '0')}</span>
               <div class={`rank-card tone-${from.tone}`}>
-                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.from)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}</span><strong>{from.label}{recipe.stars ? ` ${recipe.stars}` : ''}</strong>
+                <span class={`hero-card${recipe.from === 'exaltedPlus' ? ' has-gold-ornament' : ''}`}><img class="card-background" src={cardBackground(recipe.from)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.from)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.stars ? <span class="stars">{'◆'.repeat(recipe.stars)}</span> : null}</span><strong>{from.label}{recipe.stars ? ` ${recipe.stars}` : ''}</strong>
               </div>
               <span class="operator" aria-hidden="true"><img src="/evolutions/operator-plus.png" alt="" /></span>
               <div class={`material-requirement tone-${material.tone}`}>
                 <div class="material-cards" aria-hidden="true">
                   {Array.from({ length: recipe.count ?? 1 }).map(() => (
-                    <span class={`material-card ${recipe.kind === 'faction' ? 'is-fodder' : 'is-copy'}`}>
+                    <span class={`material-card ${recipe.kind === 'faction' ? 'is-fodder' : 'is-copy'}${recipe.material === 'exaltedPlus' ? ' has-gold-ornament' : ''}`}>
                       <img class="card-background" src={cardBackground(recipe.material)} alt="" />
                       {recipe.kind === 'same'
                         ? <img class="material-portrait" src={heroPortrait(id)} alt="" />
@@ -118,7 +118,7 @@ const starglint: Recipe[] = [
               </div>
               <span class="operator equals" aria-hidden="true"><img src="/evolutions/operator-equals.png" alt="" /></span>
               <div class={`rank-card result tone-${result.tone}`}>
-                <span class="hero-card"><img class="card-background" src={cardBackground(recipe.to)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}</span><strong>{result.label}{recipe.resultStars ? ` ${recipe.resultStars}` : ''}</strong>
+                <span class={`hero-card${recipe.to === 'exaltedPlus' ? ' has-gold-ornament' : ''}`}><img class="card-background" src={cardBackground(recipe.to)} alt="" /><img class="hero-card-portrait" src={heroPortrait(id)} alt="" /><img class="card-decoration" src={cardDecoration(recipe.to)} alt="" /><img class="card-faction" src={factionIcon(id)} alt="" /><img class="card-class" src={roleIcon(id)} alt="" />{recipe.resultStars ? <span class="stars">{'◆'.repeat(recipe.resultStars)}</span> : null}</span><strong>{result.label}{recipe.resultStars ? ` ${recipe.resultStars}` : ''}</strong>
               </div>
             </article>;
           })}
@@ -286,12 +286,21 @@ const starglint: Recipe[] = [
     object-fit: fill;
     pointer-events: none;
   }
+  .has-gold-ornament::after {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    content: "";
+    background: url('/evolutions/card-frame-epic-plus.png') 0 0 / 100% 100% no-repeat;
+    clip-path: polygon(0 0, 78% 0, 43% 50%, 0 60%);
+    pointer-events: none;
+  }
   .rank-card .hero-card .card-faction,
   .rank-card .hero-card .card-class,
   .material-card .card-faction,
   .material-card .card-class {
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     left: 1px;
     width: 20px !important;
     height: 23px !important;
