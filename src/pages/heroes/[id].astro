@@ -1134,16 +1134,39 @@ const tabs = [
           padding: 74px 18px 22px;
           gap: 6px;
         }
-        /* The desktop art deliberately bleeds down past its column; in the
-           single-column stack that same offset would sit on top of the class
-           row, so it is reset here. */
+        /* Mobile uses a self-contained art stage. Desktop imgY values are
+           intentionally ignored here: translating an in-flow image left its
+           original space behind and could move heroes up by an entire image
+           height. A consistent upper-body crop gives tall character cutouts
+           more presence without letting them collide with the identity row. */
+        .lt-portrait {
+          position: relative;
+          height: clamp(280px, 76vw, 330px);
+          overflow: hidden;
+          isolation: isolate;
+        }
+        .lt-portrait::after {
+          content: "";
+          position: absolute;
+          z-index: 2;
+          inset: auto 0 0;
+          height: 25%;
+          background: linear-gradient(to bottom, transparent, var(--bg-base));
+          pointer-events: none;
+        }
         .lt-portrait img {
-          position: static;
+          position: absolute;
+          z-index: 1;
+          top: -4%;
+          left: 50%;
           width: auto;
-          max-width: 250px;
-          max-height: 280px;
-          margin: 0 auto;
-          transform: translateY(var(--hero-img-y, 0));
+          height: 138%;
+          max-width: 94vw;
+          max-height: none;
+          margin: 0;
+          object-fit: contain;
+          object-position: center top;
+          transform: translateX(-50%);
         }
         .lt-ident { text-align: center; padding-bottom: 4px; }
         .lt-headline, .lt-hero-meta, .lt-chips { justify-content: center; }
