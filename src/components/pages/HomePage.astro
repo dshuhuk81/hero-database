@@ -7,7 +7,6 @@ import { pickLang } from "../../i18n/helpers";
 import { navLabel, t } from "../../i18n/ui";
 import HeroCard from "../HeroCard.astro";
 import { getHeroById } from "../../data/heroes/withRatings";
-import { activeHeroPreview, getPreviewHero } from "../../data/heroPreviews";
 
 interface Props {
   locale?: Locale;
@@ -34,8 +33,7 @@ const jsonLd = {
 
 
 const hrefFor = (href: string) => localizePath(href, locale);
-const launchHero = getHeroById("hebo");
-const previewHero = activeHeroPreview ? getPreviewHero(activeHeroPreview) : undefined;
+const launchHero = getHeroById("zaojun");
 const featuredImageFor = (href: string) => href === "/heroes"
   ? "/teaser/herolist.webp"
   : href === "/tierlist"
@@ -114,24 +112,6 @@ const featuredImageFor = (href: string) => href === "/heroes"
     </section>
 
     <main class="home-main">
-      <div class="release-grid">
-      {previewHero && (
-        <section class="home-section preview-section" aria-labelledby="previewTitle">
-          <header class="section-heading preview-heading">
-            <p class="section-kicker">Next up</p>
-            <h2 id="previewTitle">Hero Preview</h2>
-          </header>
-          <a class="preview-card" href={`/previews/${previewHero.id}`}>
-            <div class="preview-art" style={`background-image: linear-gradient(90deg, var(--bg-base), transparent), url('${activeHeroPreview!.artwork}'); background-position: ${activeHeroPreview!.artworkPosition ?? 'center'};`} aria-hidden="true"></div>
-            <div class="preview-copy">
-              <span class="preview-label">Preview · {activeHeroPreview!.status === 'released' ? 'Now available' : 'Coming soon'}</span>
-              <h3>{previewHero.name}</h3>
-              <p>{previewHero.role} · {previewHero.class} · {previewHero.faction}</p>
-              <span class="preview-cta">Read the preview <span aria-hidden="true">→</span></span>
-            </div>
-          </a>
-        </section>
-      )}
       <section class="launch-section" aria-labelledby="launchTitle">
         <header class="section-heading launch-heading">
           <p class="section-kicker">Current release</p>
@@ -141,7 +121,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
         <aside class="launch-card">
           <div class="launch-backdrop" aria-hidden="true"></div>
           <div class="launch-content">
-            <div class="launch-character" aria-label="Hebo hero card">
+            <div class="launch-character" aria-label="Zaojun hero card">
               <div class="launch-character-icons" aria-label={`${launchHero?.role}, ${launchHero?.class}`}>
                 <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/${launchHero?.role.toLowerCase()}.webp`} alt={launchHero?.role} width="20" height="20" />
                 <img src={`https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/${launchHero?.class.toLowerCase()}.webp`} alt={launchHero?.class} width="20" height="20" />
@@ -150,19 +130,18 @@ const featuredImageFor = (href: string) => href === "/heroes"
             </div>
           </div>
           <div class="launch-meta">
-            <strong class="launch-meta-name">Hebo</strong>
-            <a class="launch-meta-action" href={hrefFor("/heroes/hebo")}>
+            <strong class="launch-meta-name">Zaojun</strong>
+            <a class="launch-meta-action" href={hrefFor("/heroes/zaojun")}>
               Explore the hero
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </a>
-            <span class="launch-date"><span aria-hidden="true">◷</span> Sep 2 — Sep 15, 2026 <span class="launch-age" data-banner-start="2026-09-02">· 7 days ago</span></span>
+            <span class="launch-date"><span aria-hidden="true">◷</span> Sep 16 — Sep 29, 2026 <span class="launch-age" data-banner-start="2026-09-16">· today</span></span>
           </div>
         </aside>
 
       </section>
-      </div>
 
       <aside id="support" class="support-card" aria-labelledby="supportTitle">
         <div>
@@ -494,29 +473,9 @@ const featuredImageFor = (href: string) => href === "/heroes"
     margin-bottom: var(--space-8);
   }
 
-  .preview-heading { margin-bottom: var(--space-8); }
-  .release-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); align-items: start; }
-  .release-grid .home-section,
-  .release-grid .launch-section { min-width: 0; margin: 0; }
-  .preview-card,
-  .release-grid .launch-card { height: 416px; box-sizing: border-box; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); box-shadow: 0 18px 40px rgba(0, 0, 0, .16); }
-  .preview-card { position: relative; min-height: 0; display: flex; overflow: hidden; color: inherit; text-decoration: none; background: #11111c; isolation: isolate; transition: var(--transition-transform), var(--transition-colors); }
-  .preview-card:hover { transform: translateY(-3px); border-color: var(--accent-gold); }
-  .preview-card::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(0deg, rgba(7, 6, 12, .58), transparent 58%); pointer-events: none; }
-  .preview-art { position: absolute; z-index: -2; inset: 0; background-size: cover; background-repeat: no-repeat; }
-  .preview-copy { width: 100%; max-width: 430px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; padding: clamp(var(--space-8), 4vw, var(--space-12)); padding-bottom: 8px; }
-  .preview-label { color: var(--accent-gold-light); font-size: var(--text-xs); font-weight: var(--weight-bold); letter-spacing: .18em; text-transform: uppercase; }
-  .preview-copy h3 { margin: var(--space-3) 0 0; color: var(--text-bright); font-size: clamp(42px, 7vw, 76px); line-height: .95; letter-spacing: var(--tracking-tight); }
-  .preview-copy p { margin: var(--space-4) 0 0; color: var(--text-secondary); font-size: var(--text-md); }
-  .preview-cta { min-height: 44px; display: inline-flex; align-items: center; gap: var(--space-2); margin-top: auto; color: var(--accent-gold-light); font-size: var(--text-sm); font-weight: var(--weight-bold); }
-
-  @media (max-width: 860px) {
-    .release-grid { grid-template-columns: 1fr; }
-  }
-
   .launch-card {
     position: relative;
-    min-height: 0;
+    min-height: 390px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -532,7 +491,7 @@ const featuredImageFor = (href: string) => href === "/heroes"
     inset: 0;
     background:
       linear-gradient(90deg, rgba(5, 11, 20, .62), rgba(7, 20, 32, .12) 55%, rgba(4, 10, 18, .38)),
-      url('/banners/hebobanner.png') center / cover no-repeat;
+      url('/banners/zaojun-preview.png') center / cover no-repeat;
   }
 
   .launch-card::after {

@@ -1,7 +1,7 @@
 {
   "campaigns": [
     {
-      "id": "hebo-event",
+      "id": "zaojun-event",
       "name": {
         "en": "Timed Challenge",
         "de": "Zeit-Herausforderung",
@@ -9,9 +9,9 @@
         "ru": "Временное испытание",
         "zh": "限时挑战"
       },
-      "hero": "hebo",
-      "startDate": "2026-09-02",
-      "endDate": "2026-09-15",
+      "hero": "zaojun",
+      "startDate": "2026-09-16",
+      "endDate": "2026-09-29",
       "description": {
         "en": "Recommended team compositions for timed challenge stages.",
         "de": "Empfohlene Teamaufstellungen für zeitlich begrenzte Herausforderungsstufen.",
@@ -23,113 +23,99 @@
         {
           "id": 1,
           "name": {
-            "en": "Slaying Wicked Bugs in the Green Veil",
-            "de": "Böse Käfer im grünen Schleier erschlagen",
-            "es": "Aniquilando insectos malvados en el velo verde",
-            "ru": "Истребление злых жуков в зелёной вуали",
-            "zh": "斩杀绿幕中的邪恶虫群"
+            "en": "Deep in the Forest",
+            "de": "Tief im Wald",
+            "es": "En lo profundo del bosque",
+            "ru": "В глубине леса",
+            "zh": "森林深处"
           },
           "composition": {
-            "front": ["hebo"],
-            "back": []
+            "front": ["traurus", "caishen"],
+            "back": ["zaojun"]
           }
         },
         {
           "id": 2,
           "name": {
-            "en": "Where the Hoe Falls, Pests Flee",
-            "de": "Wo die Hacke fällt, fliehen die Schädlinge",
-            "es": "Donde cae la azada, huyen las plagas",
-            "ru": "Там, где падает мотыга, вредители бегут",
-            "zh": "锄头落下之处，害虫四散"
+            "en": "Swirling Hearthsmoke",
+            "de": "Wirbelnder Herdrauch",
+            "es": "Humo del hogar arremolinado",
+            "ru": "Клубящийся дым очага",
+            "zh": "袅袅炉烟"
           },
           "composition": {
-            "front": ["poseidon", "gemini"],
-            "back": ["hebo", "libra", "camcer"]
+            "front": ["taurus"],
+            "back": ["zaojun", "caishen"]
           }
         },
         {
           "id": 3,
           "name": {
-            "en": "Bugs Vanish, and Grain Grows Green",
-            "de": "Die Käfer verschwinden und das Korn wird grün",
-            "es": "Los insectos desaparecen y el grano reverdece",
-            "ru": "Жуки исчезают, а зерно зеленеет",
-            "zh": "虫群消散，谷物泛绿"
+            "en": "Chill of the Night",
+            "de": "Kühle der Nacht",
+            "es": "El frío de la noche",
+            "ru": "Ночная прохлада",
+            "zh": "夜之寒意"
           },
           "composition": {
-            "front": ["hebo", "aquarius"],
-            "back": ["sagittarius", "camcer", "pisces"]
+            "front": ["idunn", "nut"],
+            "back": ["mengpo", "caishen", "cronus"]
           }
         },
         {
           "id": 4,
           "name": {
-            "en": "A Libation to the Passing River",
-            "de": "Eine Trankspende für den vorbeiziehenden Fluss",
-            "es": "Una libación para el río que pasa",
-            "ru": "Возлияние проходящей реке",
-            "zh": "献酒于逝去之河"
+            "en": "One Bite to Soothe the Weary",
+            "de": "Ein Bissen, um die Müden zu besänftigen",
+            "es": "Un bocado para aliviar a los cansados",
+            "ru": "Один кусочек, чтобы утешить утомлённых",
+            "zh": "一口慰疲惫"
           },
           "composition": {
-            "front": ["hebo", "poseidon"],
-            "back": ["khepri", "tefnut", "skadi"]
+            "front": ["hladgunnr", "mengpo"],
+            "back": ["zaojun", "caishen", "yuelao"]
           }
         },
         {
           "id": 5,
           "name": {
-            "en": "Slaying the River Monsters",
-            "de": "Die Flussmonster erschlagen",
-            "es": "Aniquilando a los monstruos del río",
-            "ru": "Истребление речных чудовищ",
-            "zh": "斩杀河中怪物"
+            "en": "Chopsticks Stir Spring Ripples",
+            "de": "Essstäbchen wirbeln Frühlingswellen auf",
+            "es": "Los palillos agitan las ondas primaverales",
+            "ru": "Палочки будоражат весеннюю рябь",
+            "zh": "箸搅春波"
           },
           "composition": {
-            "front": ["hebo", "poseidon"],
-            "back": ["khepri", "tefnut", "skadi"]
+            "front": ["hladgunnr", "mengpo"],
+            "back": ["zaojun", "caishen", "yuelao"]
           }
         },
         {
           "id": 6,
           "name": {
-            "en": "The Eight Claws' Joyful Offerings",
-            "de": "Die freudigen Opfergaben der acht Klauen",
-            "es": "Las alegres ofrendas de las Ocho Garras",
-            "ru": "Радостные подношения Восьми Когтей",
-            "zh": "八爪的欢喜供奉"
+            "en": "The Lingering Flavor",
+            "de": "Der nachklingende Geschmack",
+            "es": "El sabor persistente",
+            "ru": "Долгое послевкусие",
+            "zh": "余味悠长"
           },
           "composition": {
-            "front": ["hebo", "poseidon"],
-            "back": ["khepri", "tefnut", "skadi"]
+            "front": ["hladgunnr", "mengpo"],
+            "back": ["yuelao", "caishen", "zaojun"]
           }
         },
         {
           "id": 7,
           "name": {
-            "en": "Ripples Cutting the Dark Scales",
-            "de": "Wellen schneiden durch die dunklen Schuppen",
-            "es": "Las ondas cortan las escamas oscuras",
-            "ru": "Рябь рассекает тёмную чешую",
-            "zh": "涟漪割裂黑暗鳞片"
+            "en": "Warmth of a Thousand Homes",
+            "de": "Die Wärme tausender Heime",
+            "es": "El calor de mil hogares",
+            "ru": "Тепло тысячи домов",
+            "zh": "千家暖意"
           },
           "composition": {
-            "front": ["hebo", "poseidon"],
-            "back": ["khepri", "tefnut", "skadi"]
-          }
-        },
-        {
-          "id": 8,
-          "name": {
-            "en": "Waters Surge; Yet the Flame Endures",
-            "de": "Die Wasser schwellen, doch die Flamme bleibt bestehen",
-            "es": "Las aguas crecen, pero la llama perdura",
-            "ru": "Воды бушуют, но пламя не угасает",
-            "zh": "水势汹涌，火焰长存"
-          },
-          "composition": {
-            "front": ["poseidon", "khepri"],
-            "back": ["hebo", "skadi", "tefnut"]
+            "front": ["hladgunnr", "mengpo"],
+            "back": ["yuelao", "caishen", "zaojun"]
           }
         }
       ]

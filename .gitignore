@@ -43,4 +43,8 @@ google_credentials.json*
 token.json*
 export_ratings_to_sheets.py*
 *.py
+!hero_combat_capture.py
+!combat_analysis.py
+!tests/
+!tests/test_combat_analysis.py
 .env*.local
