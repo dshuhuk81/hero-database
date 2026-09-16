@@ -169,7 +169,7 @@ export const summonSchedule: ScheduleEntry[] = [
   },
   {
     id: "zaojun",
-    status: "upcoming",
+    status: "released",
     order: 23,
     releaseDate: "September 16, 2026",
     pullQuality: "pull",
