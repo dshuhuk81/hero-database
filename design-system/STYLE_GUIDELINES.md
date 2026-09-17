@@ -125,6 +125,8 @@ Use cards when their boundaries clarify a reusable or comparable unit.
 - Prefer borders and surface changes over heavy shadows.
 - Use the shared radius scale.
 - Keep comparable cards structurally consistent.
+- Do not use colored top borders as decorative card accents. Express categories
+  through content, labels, imagery, or meaningful status color instead.
 - Let card width follow content when equal width adds unnecessary empty space.
 - Do not put a card inside another card without a clear hierarchy.
 

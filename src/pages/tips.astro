@@ -1,287 +1,160 @@
 ---
 export const prerender = true;
 import Base from "../layouts/Base.astro";
-import PageHero from "../components/PageHero.astro";
-import TipsMechanics from "../components/tips/TipsMechanics.astro";
-import TipsEarly from "../components/tips/TipsEarly.astro";
-import TipsMidLate from "../components/tips/TipsMidLate.astro";
-import TipsTeams from "../components/tips/TipsTeams.astro";
-import "../styles/tips.css";
-import { defaultLocale, type Locale } from "../i18n/config";
+import { defaultLocale, localizePath, type Locale } from "../i18n/config";
 import { pickLang, type LocalizedString } from "../i18n/helpers";
 import { t } from "../i18n/ui";
+import { navEntries } from "../data/nav";
+import "../styles/tips.css";
 
-interface Props {
-  locale?: Locale;
-}
-
+interface Props { locale?: Locale; }
 const { locale = defaultLocale } = Astro.props as Props;
+const pick = (value: LocalizedString) => pickLang(value, locale);
+const link = (path: string) => localizePath(path, locale);
 
-const startCopy = {
-  kicker: {
-    en: "Start here",
-    de: "Hier starten",
-    es: "Empieza aquí",
-    ru: "Начни здесь",
-  },
-  title: {
-    en: "Your F2P start plan",
-    de: "Dein F2P-Startplan",
-    es: "Tu plan inicial F2P",
-    ru: "Твой стартовый F2P-план",
-  },
-  intro: {
-    en: "Progress comes from focus, not from building everything at once. These three decisions give a new account the strongest start.",
-    de: "Fortschritt entsteht durch Fokus, nicht dadurch, alles gleichzeitig auszubauen. Diese drei Entscheidungen geben einem neuen Account den stärksten Start.",
-    es: "El progreso viene de concentrarse, no de mejorar todo a la vez. Estas tres decisiones dan a una cuenta nueva el mejor comienzo.",
-    ru: "Прогресс приходит благодаря фокусу, а не попыткам развивать всё сразу. Эти три решения дадут новому аккаунту лучший старт.",
-  },
-  teamTitle: {
-    en: "Build one team",
-    de: "Baue ein Team",
-    es: "Construye un equipo",
-    ru: "Собери одну команду",
-  },
-  teamBody: {
-    en: "Choose 1–2 damage carries and use the rest of the team to keep them alive, funded and casting.",
-    de: "Wähle 1–2 Schadens-Carrys und nutze den Rest des Teams, um sie am Leben, versorgt und aktiv zu halten.",
-    es: "Elige 1–2 carries de daño y usa el resto del equipo para mantenerlos vivos, con energía y lanzando habilidades.",
-    ru: "Выбери 1–2 основных дамагеров, а остальной командой поддерживай их жизнь, энергию и частое применение навыков.",
-  },
-  unlockTitle: {
-    en: "Push key unlocks",
-    de: "Wichtige Inhalte freischalten",
-    es: "Avanza hasta los desbloqueos clave",
-    ru: "Открывай ключевые режимы",
-  },
-  unlockBody: {
-    en: "Advance Odyssey until you are stuck and complete Torment Rift every week. Account-wide systems matter more than side projects.",
-    de: "Treibe Odyssey voran, bis du festhängst, und schließe Torment Rift jede Woche ab. Accountweite Systeme sind wichtiger als Nebenprojekte.",
-    es: "Avanza en Odyssey hasta atascarte y completa Torment Rift cada semana. Los sistemas de toda la cuenta importan más que los proyectos secundarios.",
-    ru: "Продвигайся в Odyssey до упора и закрывай Torment Rift каждую неделю. Общие усиления аккаунта важнее побочных целей.",
-  },
-  spendTitle: {
-    en: "Spend with purpose",
-    de: "Investiere mit Ziel",
-    es: "Gasta con intención",
-    ru: "Трать ресурсы осознанно",
-  },
-  spendBody: {
-    en: "Use early summons to establish a roster, set the Wish List quickly, then save premium resources for meaningful targets.",
-    de: "Nutze frühe Beschwörungen für dein Roster, stelle die Wish List schnell ein und spare Premium-Ressourcen danach für wichtige Ziele.",
-    es: "Usa las primeras invocaciones para formar tu plantel, configura pronto la Wish List y después guarda los recursos premium para objetivos importantes.",
-    ru: "Ранними призывами собери основу ростера, быстро настрой Wish List, а затем копи премиальные ресурсы на важные цели.",
-  },
-  warning: {
-    en: "The most common early mistake is splitting investment across too many heroes. Finish the core of one team before funding a second.",
-    de: "Der häufigste frühe Fehler ist, Investitionen auf zu viele Helden zu verteilen. Stelle den Kern eines Teams fertig, bevor du ein zweites finanzierst.",
-    es: "El error inicial más común es repartir la inversión entre demasiados héroes. Termina el núcleo de un equipo antes de financiar un segundo.",
-    ru: "Самая частая ошибка в начале — распределять ресурсы между слишком многими героями. Сначала закончи основу одной команды.",
-  },
-  readGuide: {
-    en: "Read the guide",
-    de: "Guide lesen",
-    es: "Leer la guía",
-    ru: "Читать раздел",
-  },
+const copy = {
+  eyebrow: { en: "Beginner guide", de: "Einsteiger-Guide" },
+  title: { en: "Start strong. Waste less.", de: "Stark starten. Weniger verschwenden." },
+  intro: { en: "A practical route through your first weeks: what to build, what to save, and what to change when progress stops.", de: "Ein klarer Weg durch deine ersten Wochen: Was du ausbaust, was du sparst und was du änderst, wenn der Fortschritt stoppt." },
+  checked: { en: "Advice reviewed", de: "Empfehlungen geprüft" },
+  startCta: { en: "Start checklist", de: "Zur Start-Checkliste" },
+  stuckCta: { en: "I am stuck", de: "Ich stecke fest" },
+  rulesLabel: { en: "The five rules", de: "Die fünf Regeln" },
+  checklistLabel: { en: "Your route", de: "Dein Fahrplan" },
+  checklistTitle: { en: "Do these things first", de: "Das solltest du zuerst tun" },
+  checklistIntro: { en: "Progress in order. You do not need to optimize every system on day one.", de: "Gehe der Reihe nach vor. Du musst nicht jedes System am ersten Tag optimieren." },
+  now: { en: "Right now", de: "Sofort" }, unlocked: { en: "As they unlock", de: "Sobald freigeschaltet" }, later: { en: "Leave for later", de: "Später angehen" },
+  teamLabel: { en: "First team", de: "Erstes Team" },
+  teamTitle: { en: "Build functions, not five tier-list ranks", de: "Baue Funktionen, nicht fünf Tier-List-Plätze" },
+  teamIntro: { en: "One supported carry usually progresses faster than five heroes competing for the same resources.", de: "Ein gut unterstützter Carry bringt dich meist weiter als fünf Helden, die um dieselben Ressourcen konkurrieren." },
+  pullRuleTitle: { en: "Use what you pull", de: "Spiele mit dem, was du ziehst" },
+  pullRuleBody: { en: "Meta heroes are goals, not entry requirements. Hladgunnr and Isis can carry early chapters. Use them, but keep rare long-term resources flexible.", de: "Meta-Helden sind Ziele, keine Eintrittskarte. Hladgunnr und Isis können frühe Kapitel tragen. Nutze sie, aber halte seltene Langzeitressourcen flexibel." },
+  tierCta: { en: "Compare heroes", de: "Helden vergleichen" }, wishlistCta: { en: "Open Wishlist", de: "Wishlist öffnen" },
+  investLabel: { en: "Resources", de: "Ressourcen" }, investTitle: { en: "Invest without regret", de: "Investieren ohne Reue" },
+  investIntro: { en: "Early power comes from concentration. Put replaceable resources into progress and protect the scarce ones.", de: "Frühe Stärke entsteht durch Fokus. Nutze ersetzbare Ressourcen für Fortschritt und schütze die seltenen." },
+  doTitle: { en: "Do", de: "Tun" }, avoidTitle: { en: "Avoid", de: "Vermeiden" },
+  relicTitle: { en: "Build relic power in the right order", de: "Reliktstärke in der richtigen Reihenfolge aufbauen" },
+  relicIntro: { en: "Carries to R20 → supports to R10 → your main carry to R30", de: "Carries auf R20 → Supports auf R10 → deinen Haupt-Carry auf R30" },
+  relicTargets: { en: "Strong first Relic 20 targets", de: "Starke erste Relikt-20-Ziele" },
+  eventsLabel: { en: "Weekly selection events", de: "Wöchentliche Auswahl-Events" },
+  eventsTitle: { en: "Single pulls protect your best reward", de: "Einzelzüge schützen deine beste Belohnung" },
+  eventsBody: { en: "Select the red relic elixirs (Apotheosis Elixir), pull one at a time, and stop when you get the target. Ten-pulls spend attempts clearing rewards you do not need.", de: "Wähle die roten Relikt-Elixiere (Apotheosis Elixir), ziehe einzeln und stoppe nach dem Ziel. 10er-Züge verbrauchen Versuche für Belohnungen, die du nicht brauchst." },
+  eventsExamples: { en: "Examples: Votive Festival · Golden Arcanum · Benevolent Feast", de: "Beispiele: Votive Festival · Golden Arcanum · Benevolent Feast" },
+  summonsLabel: { en: "Summons", de: "Beschwörungen" }, summonsTitle: { en: "Wishlist in 60 seconds", de: "Wishlist in 60 Sekunden" },
+  summonsIntro: { en: "Build toward these heroes, but do not wait for a perfect account before playing.", de: "Arbeite auf diese Helden hin, aber warte nicht auf den perfekten Account, bevor du spielst." },
+  carries: { en: "Carry core", de: "Carry-Kern" }, supports: { en: "Support core", de: "Support-Kern" }, situational: { en: "Useful context", de: "Wichtiger Kontext" },
+  summonRule1: { en: "Fill the Wishlist as soon as it unlocks.", de: "Fülle die Wishlist, sobald sie freigeschaltet wird." },
+  summonRule2: { en: "Stabilize your core before starting another project.", de: "Stabilisiere deinen Kern, bevor du ein neues Projekt beginnst." },
+  summonRule3: { en: "Rate-up does not automatically mean must-pull.", de: "Rate-up bedeutet nicht automatisch Must-pull." },
+  poseidon: { en: "Especially useful at Relic 10.", de: "Besonders mit Relikt 10 interessant." },
+  caishen: { en: "Excellent, but early events and shops can supply him.", de: "Stark, kann aber früh über Events und Shops kommen." },
+  calendarCta: { en: "Hero roadmap", de: "Hero Roadmap" }, calculatorCta: { en: "Summon calculator", de: "Summon Calculator" },
+  stuckLabel: { en: "Troubleshooting", de: "Problemlösung" }, stuckTitle: { en: "Stuck? Diagnose before spending", de: "Festgefahren? Erst prüfen, dann investieren" },
+  stuckIntro: { en: "Most walls are solved by one focused change, not by upgrading everything.", de: "Die meisten Hürden löst eine gezielte Änderung – nicht das Aufwerten von allem." },
+  problem: { en: "What happens", de: "Was passiert" }, check: { en: "Check first", de: "Zuerst prüfen" },
+  stuckRule: { en: "Change formation or one support slot first. Spend resources only after you understand the failure.", de: "Ändere zuerst die Formation oder einen Support-Slot. Investiere erst, wenn du die Ursache verstanden hast." },
+  combatLabel: { en: "Combat", de: "Kampf" }, combatTitle: { en: "Three mechanics that change decisions", de: "Drei Mechaniken, die Entscheidungen verändern" },
+  combatIntro: { en: "You do not need an encyclopedia. These three ideas win fights.", de: "Du brauchst kein Lexikon. Diese drei Ideen entscheiden Kämpfe." },
+  accountLabel: { en: "Account choices", de: "Account-Entscheidungen" }, accountTitle: { en: "Two choices, no guesswork", de: "Zwei Entscheidungen, kein Rätselraten" },
+  cancerTitle: { en: "Choose Cancer", de: "Wähle Cancer" }, cancerBody: { en: "Cancer is the default Destined Zodiac recommendation for a new account.", de: "Cancer ist die klare Destined-Zodiac-Empfehlung für einen neuen Account." },
+  mindseaTitle: { en: "Join an active Mindsea", de: "Tritt einer aktiven Mindsea bei" }, mindseaBody: { en: "Prioritize Zeus copies in the shop. A first Dionysus copy is also a good pickup.", de: "Priorisiere Zeus-Kopien im Shop. Eine erste Dionysus-Kopie ist ebenfalls sinnvoll." },
+  nextLabel: { en: "Keep going", de: "Weiter geht’s" }, nextTitle: { en: "Use the right guide for the next decision", de: "Nutze den passenden Guide für die nächste Entscheidung" },
+  nextIntro: { en: "The beginner route ends here. These pages handle the details without bloating this guide.", de: "Der Einsteigerpfad endet hier. Diese Seiten erklären die Details, ohne diesen Guide aufzublähen." },
+  openGuide: { en: "Open guide", de: "Guide öffnen" }, navStart: { en: "Start", de: "Start" }, navTeam: { en: "Team", de: "Team" }, navInvest: { en: "Invest", de: "Investieren" }, navSummons: { en: "Wishlist", de: "Wishlist" }, navStuck: { en: "Stuck?", de: "Festgefahren?" }, navCombat: { en: "Combat", de: "Kampf" },
 } satisfies Record<string, LocalizedString>;
+
+const rules = [
+  [{ en: "Push Odyssey", de: "Odyssey vorantreiben" }, { en: "Advance until the game stops you. It unlocks the systems that make the account stronger.", de: "Spiele weiter, bis das Spiel dich stoppt. So schaltest du die Systeme frei, die deinen Account stärken." }, "#start"],
+  [{ en: "Build one core", de: "Einen Kern bauen" }, { en: "Start with one functional team and one or two damage dealers.", de: "Beginne mit einem funktionierenden Team und ein bis zwei Damage Dealern." }, "#team"],
+  [{ en: "Level only five", de: "Nur fünf leveln" }, { en: "Your Resonating Altar shares the fifth hero's level with the rest.", de: "Der Resonating Altar überträgt das Level des fünften Helden auf den Rest." }, "#invest"],
+  [{ en: "Set the Wishlist", de: "Wishlist setzen" }, { en: "Fill it early and pull with a plan instead of chasing every banner.", de: "Fülle sie früh und beschwöre mit Plan, statt jedem Banner zu folgen." }, "#summons"],
+  [{ en: "Fund damage first", de: "Schaden zuerst" }, { en: "Relics are a major power source. Concentrate rare materials on your carries first.", de: "Relikte sind eine zentrale Stärkequelle. Konzentriere seltene Materialien zuerst auf deine Carries." }, "#relics"],
+] as const;
+
+const checklist = [
+  { tone: "now", number: "01", title: copy.now, items: [{ en: "Finish the tutorial and claim mail and launch rewards.", de: "Schließe das Tutorial ab und hole Post- sowie Startbelohnungen ab." }, { en: "Push Odyssey until you are blocked.", de: "Treibe Odyssey voran, bis du festhängst." }, { en: "Check the official community for active codes.", de: "Prüfe die offizielle Community auf aktive Codes." }] },
+  { tone: "soon", number: "02", title: copy.unlocked, items: [{ en: "Fill the Wishlist and choose Cancer as your Zodiac.", de: "Fülle die Wishlist und wähle Cancer als Zodiac." }, { en: "Join an active Mindsea and use the Resonating Altar.", de: "Tritt einer aktiven Mindsea bei und nutze den Resonating Altar." }, { en: "Complete the weekly Torment Rift.", de: "Schließe den wöchentlichen Torment Rift ab." }] },
+  { tone: "later", number: "03", title: copy.later, items: [{ en: "Multiple full teams and competitive PvP.", de: "Mehrere vollständige Teams und kompetitives PvP." }, { en: "Artifact ascension — level them, but save ascension for later.", de: "Artifact-Ascension – leveln ja, Ascension später." }, { en: "Spending rare materials without a defined target.", de: "Seltene Materialien ohne klares Ziel ausgeben." }] },
+];
+
+const roles = [
+  ["DPS", { en: "Main carry", de: "Haupt-Carry" }, { en: "Primary damage and first investment target.", de: "Hauptschaden und erstes Investitionsziel." }, "carry"],
+  ["FRONT", { en: "Frontliner", de: "Frontliner" }, { en: "Absorbs pressure or controls the opening.", de: "Fängt Druck ab oder kontrolliert den Kampfbeginn." }, "front"],
+  ["SUSTAIN", { en: "Sustain", de: "Sustain" }, { en: "Healing, shields or damage reduction.", de: "Heilung, Schilde oder Schadensreduktion." }, "sustain"],
+  ["TEMPO", { en: "Tempo / control", de: "Tempo / Control" }, { en: "Energy, buffs, debuffs or crowd control.", de: "Energie, Buffs, Debuffs oder Crowd Control." }, "tempo"],
+  ["FLEX", { en: "Flex slot", de: "Flex-Slot" }, { en: "Second DPS or answer to the current mode.", de: "Zweiter DPS oder Antwort auf den aktuellen Modus." }, "flex"],
+] as const;
+
+const doItems: LocalizedString[] = [{ en: "Level five heroes; synchronize the rest through the Altar.", de: "Levele fünf Helden; synchronisiere den Rest über den Altar." }, { en: "Raise one or two damage dealers high enough to unlock relics.", de: "Bringe ein bis zwei Damage Dealer hoch genug für den Reliktzugang." }, { en: "Keep currency in reserve for future core heroes.", de: "Halte Währung für zukünftige Kernhelden zurück." }, { en: "Test new heroes before committing rare materials.", de: "Teste neue Helden, bevor du seltene Materialien bindest." }];
+const avoidItems: LocalizedString[] = [{ en: "Spreading levels, gear and copies across every hero.", de: "Level, Ausrüstung und Kopien auf alle Helden verteilen." }, { en: "Using valuable named-hero copies as fodder too early.", de: "Wertvolle Named-Hero-Kopien zu früh als Fodder verwenden." }, { en: "Splitting red relic materials evenly across the roster.", de: "Rote Reliktmaterialien gleichmäßig im Roster verteilen." }, { en: "Treating popularity as a universal tier list.", de: "Popularity als allgemeingültige Tier List behandeln." }];
+const relicSteps = [["R20", { en: "Carries first", de: "Carries zuerst" }, { en: "Bring the damage core to its first major breakpoint.", de: "Bringe deinen Schadenskern an den ersten großen Breakpoint." }], ["R10", { en: "Enable supports", de: "Supports aktivieren" }, { en: "Unlock effects that accelerate or protect the carry.", de: "Aktiviere Effekte, die deinen Carry beschleunigen oder schützen." }], ["R30", { en: "Finish the carry", de: "Carry abschließen" }, { en: "Then push the most important carry to the premium breakpoint.", de: "Danach geht dein wichtigster Carry an den Premium-Breakpoint." }]] as const;
+
+const heroBase = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/thumbs";
+const carries = ["xuannv", "nut", "skadi", "zaojun", "bastet"];
+const supports = ["hephaestus", "yuelao", "mengpo", "meret"];
+const displayName: Record<string, string> = { xuannv: "Xuannv", nut: "Nut", skadi: "Skadi", zaojun: "Zaojun", bastet: "Bastet", hephaestus: "Hephaestus", yuelao: "Yuelao", mengpo: "Mengpo", meret: "Meret" };
+
+const problems = [
+  ["01", { en: "Frontline dies instantly", de: "Frontline stirbt sofort" }, { en: "Formation, tank or sustain, enemy opening burst", de: "Formation, Tank oder Sustain, gegnerischer Burst" }],
+  ["02", { en: "The timer runs out", de: "Die Zeit läuft ab" }, { en: "Carry investment, energy support, automatic ultimate cycle", de: "Carry-Investment, Energie-Support, automatischer Ultimate-Zyklus" }],
+  ["03", { en: "Backline gets deleted", de: "Backline wird gelöscht" }, { en: "Swap positions and control the diver or assassin", de: "Positionen tauschen und Diver oder Assassin kontrollieren" }],
+  ["04", { en: "Enemy heals too much", de: "Gegner heilt zu viel" }, { en: "Burst window, heal reduction or target priority", de: "Burst-Fenster, Heal Reduction oder Zielpriorität" }],
+  ["05", { en: "Power is far too low", de: "Kampfkraft ist deutlich zu niedrig" }, { en: "AFK resources, Altar and account-wide upgrades", de: "AFK-Ressourcen, Altar und accountweite Upgrades" }],
+  ["06", { en: "Only one mode fails", de: "Nur ein Modus klappt nicht" }, { en: "Use a mode-specific team instead of forcing one lineup", de: "Modusspezifisches Team statt eine Aufstellung zu erzwingen" }],
+] as const;
+const mechanics = [["01", { en: "Front and back", de: "Front und Back" }, { en: "Put durable heroes in the path of the first hit. Protect the carry from dives and line attacks.", de: "Stelle robuste Helden in den ersten Treffer. Schütze den Carry vor Dives und Linienangriffen." }], ["02", { en: "Energy and control", de: "Energie und Control" }, { en: "A faster, well-timed ultimate can matter more than another small stat increase.", de: "Eine schnellere, gut getimte Ultimate kann wichtiger sein als ein kleiner weiterer Stat-Bonus." }], ["03", { en: "Faction context", de: "Fraktions-Kontext" }, { en: "Use faction synergy when it fits, but do not sacrifice essential roles just for a bonus.", de: "Nutze Fraktionssynergie, wenn sie passt, aber opfere dafür keine wichtige Rolle." }]] as const;
+const nextGuides = [["/hero-evolution", { en: "Hero Evolution", de: "Hero Evolution" }, { en: "Copies and ascension steps", de: "Kopien und Aufstiegsstufen" }], ["/relic-investment", { en: "Relic Investment", de: "Relikt-Investition" }, { en: "Breakpoints by hero", de: "Breakpoints je Held" }], ["/virtues", { en: "Virtues", de: "Virtues" }, { en: "Sets, grids and farming", de: "Sets, Grids und Farming" }], ["/totems", { en: "Totems", de: "Totems" }, { en: "Effects, tags and ratings", de: "Effekte, Tags und Bewertungen" }], ["/guides", { en: "All Guides", de: "Alle Guides" }, { en: "Heroes and game modes", de: "Helden und Spielmodi" }]] as const;
+const guideIcons = Object.fromEntries(navEntries.map((entry) => [entry.href, entry.icon]));
 ---
 
 <Base title={t(locale, "tips", "metaTitle")} description={t(locale, "tips", "metaDescription")} locale={locale}>
-  <PageHero
-    tag={t(locale, "tips", "tag")}
-    headline={t(locale, "tips", "headline")}
-    subtitle={t(locale, "tips", "subtitle")}
-    locale={locale}
-  />
-  <div class="page-wrapper tips-page page-content">
-    <section class="tips-start" aria-labelledby="tips-start-title">
-      <div class="tips-start-heading">
-        <div>
-          <p class="tips-start-kicker">{pickLang(startCopy.kicker, locale)}</p>
-          <h2 id="tips-start-title">{pickLang(startCopy.title, locale)}</h2>
-          <p class="tips-start-intro">{pickLang(startCopy.intro, locale)}</p>
-        </div>
-        <p class="tips-last-updated">{t(locale, "tips", "lastUpdated")}: 2026-06-25</p>
+  <header class="tips-hero" id="top">
+    <div class="tips-hero-glow" aria-hidden="true"></div>
+    <div class="tips-hero-inner">
+      <div class="tips-hero-copy">
+        <p class="tips-kicker">{pick(copy.eyebrow)}</p><h1>{pick(copy.title)}</h1><p class="tips-hero-intro">{pick(copy.intro)}</p>
+        <div class="tips-hero-actions"><a class="action-button action-button--primary" href="#start">{pick(copy.startCta)} <span aria-hidden="true">↓</span></a><a class="action-button action-button--quiet" href="#stuck">{pick(copy.stuckCta)} <span aria-hidden="true">→</span></a></div>
+        <p class="tips-reviewed"><span aria-hidden="true"></span>{pick(copy.checked)} · 17.09.2026</p>
       </div>
-
-      <div class="tips-start-grid">
-        <a class="tips-start-step" href="#section-first">
-          <span class="tips-start-number">01</span>
-          <span class="tips-start-copy">
-            <strong>{pickLang(startCopy.teamTitle, locale)}</strong>
-            <span>{pickLang(startCopy.teamBody, locale)}</span>
-            <em>{pickLang(startCopy.readGuide, locale)} →</em>
-          </span>
-        </a>
-        <a class="tips-start-step" href="#section-odyssey">
-          <span class="tips-start-number">02</span>
-          <span class="tips-start-copy">
-            <strong>{pickLang(startCopy.unlockTitle, locale)}</strong>
-            <span>{pickLang(startCopy.unlockBody, locale)}</span>
-            <em>{pickLang(startCopy.readGuide, locale)} →</em>
-          </span>
-        </a>
-        <a class="tips-start-step" href="#section-summons">
-          <span class="tips-start-number">03</span>
-          <span class="tips-start-copy">
-            <strong>{pickLang(startCopy.spendTitle, locale)}</strong>
-            <span>{pickLang(startCopy.spendBody, locale)}</span>
-            <em>{pickLang(startCopy.readGuide, locale)} →</em>
-          </span>
-        </a>
+      <div class="tips-hero-route" aria-label={pick(copy.rulesLabel)}>
+        {rules.map((rule, index) => <a class="tips-route-item" href={rule[2]}><span class="tips-route-number">0{index + 1}</span><span class="tips-route-copy"><strong>{pick(rule[0])}</strong><span>{pick(rule[1])}</span></span></a>)}
       </div>
+    </div>
+  </header>
 
-      <p class="tips-start-warning">{pickLang(startCopy.warning, locale)}</p>
+  <nav class="tips-anchor-nav" aria-label={pick(copy.rulesLabel)}><div class="tips-anchor-nav-inner"><a href="#start">{pick(copy.navStart)}</a><a href="#team">{pick(copy.navTeam)}</a><a href="#invest">{pick(copy.navInvest)}</a><a href="#summons">{pick(copy.navSummons)}</a><a href="#stuck">{pick(copy.navStuck)}</a><a href="#combat">{pick(copy.navCombat)}</a></div></nav>
+
+  <main class="tips-onepage">
+    <section class="tips-section" id="start" aria-labelledby="start-title">
+      <header class="tips-section-heading"><p>{pick(copy.checklistLabel)}</p><h2 id="start-title">{pick(copy.checklistTitle)}</h2><span>{pick(copy.checklistIntro)}</span></header>
+      <div class="tips-roadmap">{checklist.map((phase) => <article class:list={["tips-roadmap-step", `is-${phase.tone}`]}><div class="tips-roadmap-marker"><span>{phase.number}</span></div><div class="tips-roadmap-body"><h3>{pick(phase.title)}</h3><ul>{phase.items.map((item) => <li>{pick(item)}</li>)}</ul></div></article>)}</div>
     </section>
 
-    <div class="tips-content">
-      <div class="tips-subnav" role="tablist" aria-label={t(locale, "tips", "headline")}>
-        <button id="subtab-btn-early" class="tips-subnav-btn is-active" data-subtab="early" role="tab" aria-controls="subtab-early" aria-selected="true">{t(locale, "tips", "subnavEarly")}</button>
-        <button id="subtab-btn-midlate" class="tips-subnav-btn" data-subtab="midlate" role="tab" aria-controls="subtab-midlate" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavMidLate")}</button>
-        <button id="subtab-btn-teams" class="tips-subnav-btn" data-subtab="teams" role="tab" aria-controls="subtab-teams" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavTeams")}</button>
-        <button id="subtab-btn-mechanics" class="tips-subnav-btn" data-subtab="mechanics" role="tab" aria-controls="subtab-mechanics" aria-selected="false" tabindex="-1">{t(locale, "tips", "subnavMechanics")}</button>
-      </div>
+    <section class="tips-section tips-section--wide" id="team" aria-labelledby="team-title">
+      <header class="tips-section-heading"><p>{pick(copy.teamLabel)}</p><h2 id="team-title">{pick(copy.teamTitle)}</h2><span>{pick(copy.teamIntro)}</span></header>
+      <div class="tips-formation" aria-label={pick(copy.teamTitle)}><div class="tips-field-label tips-field-label--front">FRONT</div><div class="tips-field-label tips-field-label--back">BACK</div>{roles.map((role, index) => <article class:list={["tips-role", `tips-role--${role[3]}`]} style={`--role-index:${index}`}><span class="tips-role-symbol" aria-hidden="true">{role[0]}</span><div><h3>{pick(role[1])}</h3><p>{pick(role[2])}</p></div></article>)}</div>
+      <div class="tips-insight-row"><div class="tips-insight-icon" aria-hidden="true">↻</div><div><strong>{pick(copy.pullRuleTitle)}</strong><p>{pick(copy.pullRuleBody)}</p></div><div class="tips-inline-actions"><a href={link("/tierlist")}>{pick(copy.tierCta)} →</a><a href={link("/wishlisht")}>{pick(copy.wishlistCta)} →</a></div></div>
+    </section>
 
-      <TipsEarly locale={locale} />
-      <TipsMidLate locale={locale} />
-      <TipsTeams locale={locale} />
-      <TipsMechanics locale={locale} />
-    </div>
+    <section class="tips-section" id="invest" aria-labelledby="invest-title">
+      <header class="tips-section-heading"><p>{pick(copy.investLabel)}</p><h2 id="invest-title">{pick(copy.investTitle)}</h2><span>{pick(copy.investIntro)}</span></header>
+      <div class="tips-do-dont"><article class="tips-list-panel tips-list-panel--do"><h3><span aria-hidden="true">✓</span>{pick(copy.doTitle)}</h3><ul>{doItems.map((item) => <li>{pick(item)}</li>)}</ul></article><article class="tips-list-panel tips-list-panel--avoid"><h3><span aria-hidden="true">×</span>{pick(copy.avoidTitle)}</h3><ul>{avoidItems.map((item) => <li>{pick(item)}</li>)}</ul></article></div>
+      <div class="tips-relic-block" id="relics"><div class="tips-relic-heading"><div><h3>{pick(copy.relicTitle)}</h3><span>{pick(copy.relicIntro)}</span></div><a href={link("/relic-investment")}>{pick(copy.openGuide)} →</a></div><div class="tips-relic-path">{relicSteps.map((step, index) => <article class="tips-relic-step"><div class="tips-relic-level">{step[0]}</div><span class="tips-relic-index">0{index + 1}</span><h4>{pick(step[1])}</h4><p>{pick(step[2])}</p></article>)}</div><div class="tips-target-strip"><div><span>{pick(copy.relicTargets)}</span><strong>Bastet · Xuannv · Nut · Zaojun · Skadi</strong></div></div></div>
+      <aside class="tips-event-tip" aria-labelledby="event-tip-title"><div class="tips-event-visual"><img class="tips-potion-image" src="/items/apotheosis-elixir.png" alt="" loading="lazy" /><span class="tips-pull-count" aria-hidden="true">×1</span></div><div class="tips-event-copy"><p>{pick(copy.eventsLabel)}</p><h3 id="event-tip-title">{pick(copy.eventsTitle)}</h3><span>{pick(copy.eventsBody)}</span><small>{pick(copy.eventsExamples)}</small></div><div class="tips-event-warning"><span aria-hidden="true">×10</span><strong>{pick(copy.avoidTitle)}</strong></div></aside>
+    </section>
 
-    <script>
-      function setupRovingTabs(tabs: NodeListOf<Element>, getId: (el: Element) => string | undefined, activate: (id: string) => void) {
-        const list = Array.from(tabs) as HTMLElement[];
-        list.forEach((tabEl, idx) => {
-          tabEl.addEventListener('keydown', (e: KeyboardEvent) => {
-            const key = e.key;
-            const horizontalNext = key === 'ArrowRight' || key === 'ArrowDown';
-            const horizontalPrev = key === 'ArrowLeft' || key === 'ArrowUp';
-            if (horizontalNext || horizontalPrev || key === 'Home' || key === 'End') {
-              e.preventDefault();
-              const nextIdx = key === 'Home'
-                ? 0
-                : key === 'End'
-                  ? list.length - 1
-                  : (idx + (horizontalNext ? 1 : -1) + list.length) % list.length;
-              list[nextIdx]?.focus();
-              return;
-            }
+    <section class="tips-section tips-section--wide" id="summons" aria-labelledby="summons-title">
+      <header class="tips-section-heading tips-section-heading--split"><div><p>{pick(copy.summonsLabel)}</p><h2 id="summons-title">{pick(copy.summonsTitle)}</h2><span>{pick(copy.summonsIntro)}</span></div><ul class="tips-mini-rules"><li>{pick(copy.summonRule1)}</li><li>{pick(copy.summonRule2)}</li><li>{pick(copy.summonRule3)}</li></ul></header>
+      <div class="tips-wishlist-grid"><article class="tips-wishlist-group"><div class="tips-wishlist-group-title"><span>DPS</span><h3>{pick(copy.carries)}</h3></div><div class="tips-portrait-row">{carries.map((id) => <a class="tips-portrait" href={link(`/heroes/${id}`)}><img src={`${heroBase}/${id}-96.webp`} alt="" loading="lazy" /><span>{displayName[id]}</span></a>)}</div></article><article class="tips-wishlist-group"><div class="tips-wishlist-group-title"><span>SUP</span><h3>{pick(copy.supports)}</h3></div><div class="tips-portrait-row">{supports.map((id) => <a class="tips-portrait" href={link(`/heroes/${id}`)}><img src={`${heroBase}/${id}-96.webp`} alt="" loading="lazy" /><span>{displayName[id]}</span></a>)}</div></article><article class="tips-wishlist-context"><h3>{pick(copy.situational)}</h3><p><strong>Poseidon R10</strong> — {pick(copy.poseidon)}</p><p><strong>Caishen</strong> — {pick(copy.caishen)}</p></article></div>
+      <div class="tips-tool-links"><a href={link("/wishlisht")}><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={guideIcons["/wishlisht"]}></svg></span><strong>{pick(copy.wishlistCta)}</strong><small>{pick(copy.openGuide)} →</small></a><a href={link("/summon-calendar")}><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={guideIcons["/summon-calendar"]}></svg></span><strong>{pick(copy.calendarCta)}</strong><small>{pick(copy.openGuide)} →</small></a><a href={link("/summon-calculator")}><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={guideIcons["/summon-calculator"]}></svg></span><strong>{pick(copy.calculatorCta)}</strong><small>{pick(copy.openGuide)} →</small></a></div>
+    </section>
 
-            if (key === 'Enter' || key === ' ') {
-              e.preventDefault();
-              const id = getId(tabEl);
-              if (id) activate(id);
-            }
-          });
-        });
-      }
+    <section class="tips-section" id="stuck" aria-labelledby="stuck-title"><header class="tips-section-heading"><p>{pick(copy.stuckLabel)}</p><h2 id="stuck-title">{pick(copy.stuckTitle)}</h2><span>{pick(copy.stuckIntro)}</span></header><div class="tips-diagnostic"><div class="tips-diagnostic-head"><span>{pick(copy.problem)}</span><span>{pick(copy.check)}</span></div>{problems.map((item) => <article class="tips-diagnostic-row"><div class="tips-diagnostic-problem"><span aria-hidden="true">{item[0]}</span><strong>{pick(item[1])}</strong></div><p>{pick(item[2])}</p></article>)}</div><div class="tips-stuck-rule"><span aria-hidden="true">1</span><p>{pick(copy.stuckRule)}</p></div></section>
 
-      function getHashId() {
-        return decodeURIComponent((location.hash || '').replace('#', ''));
-      }
+    <section class="tips-section tips-section--wide" id="combat" aria-labelledby="combat-title"><header class="tips-section-heading"><p>{pick(copy.combatLabel)}</p><h2 id="combat-title">{pick(copy.combatTitle)}</h2><span>{pick(copy.combatIntro)}</span></header><div class="tips-mechanics-grid">{mechanics.map((item) => <article class="tips-mechanic-card"><span>{item[0]}</span><h3>{pick(item[1])}</h3><p>{pick(item[2])}</p></article>)}</div></section>
 
-      function showForTargetId(targetId: string) {
-        if (!targetId) return false;
+    <section class="tips-section" id="account" aria-labelledby="account-title"><header class="tips-section-heading"><p>{pick(copy.accountLabel)}</p><h2 id="account-title">{pick(copy.accountTitle)}</h2></header><div class="tips-account-grid"><article class="tips-account-card tips-account-card--cancer"><div class="tips-account-visual"><img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/cards/cancer-240.webp" alt="" loading="lazy" /></div><div><span>DESTINED ZODIAC</span><h3>{pick(copy.cancerTitle)}</h3><p>{pick(copy.cancerBody)}</p></div></article><article class="tips-account-card tips-account-card--mindsea"><div class="tips-account-visual"><img src="/tips/mindsea.png" alt="" loading="lazy" /></div><div><span>MINDSEA</span><h3>{pick(copy.mindseaTitle)}</h3><p>{pick(copy.mindseaBody)}</p></div></article></div></section>
 
-        if (['mechanics', 'early', 'midlate', 'teams'].includes(targetId)) {
-          switchSubTab(targetId);
-          return true;
-        }
-
-        const target = document.getElementById(targetId);
-        if (!target) return false;
-
-        const panel = target.closest('.tips-panel') as HTMLElement | null;
-        if (panel?.id?.startsWith('subtab-')) {
-          const subtabId = panel.id.replace('subtab-', '');
-          if (subtabId) switchSubTab(subtabId);
-        }
-
-        target.scrollIntoView({ block: 'start' });
-        return true;
-      }
-
-      document.addEventListener('click', (e) => {
-        const a = (e.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
-        if (!a) return;
-        const href = a.getAttribute('href');
-        if (!href) return;
-        const targetId = decodeURIComponent(href.replace('#', ''));
-        if (!targetId) return;
-        if (!document.getElementById(targetId)) return;
-        e.preventDefault();
-        history.replaceState(null, '', '#' + targetId);
-        showForTargetId(targetId);
-      });
-
-      const subTabs = document.querySelectorAll('.tips-subnav-btn');
-      const subPanels = document.querySelectorAll('.tips-panel');
-
-      function switchSubTab(subtabId: string) {
-        subTabs.forEach(t => {
-          const isActive = (t as HTMLElement).dataset.subtab === subtabId;
-          (t as HTMLElement).classList.toggle('is-active', isActive);
-          (t as HTMLElement).setAttribute('aria-selected', String(isActive));
-          (t as HTMLElement).setAttribute('tabindex', isActive ? '0' : '-1');
-        });
-        subPanels.forEach(p => {
-          const shouldShow = (p as HTMLElement).id === 'subtab-' + subtabId;
-          (p as HTMLElement).classList.toggle('is-active', shouldShow);
-          (p as HTMLElement).toggleAttribute('hidden', !shouldShow);
-        });
-      }
-
-      subTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const id = (tab as HTMLElement).dataset.subtab;
-          if (id) switchSubTab(id);
-        });
-      });
-
-      setupRovingTabs(subTabs, (el) => (el as HTMLElement).dataset.subtab, (id) => switchSubTab(id));
-      showForTargetId(getHashId());
-      window.addEventListener('hashchange', () => showForTargetId(getHashId()));
-
-      function setupJumpbars() {
-        const jumpbars = document.querySelectorAll('.tips-jumpbar');
-        jumpbars.forEach((jumpbar) => {
-          const links = Array.from(jumpbar.querySelectorAll('a[href^="#"]')) as HTMLAnchorElement[];
-          const targets = links
-            .map((a) => decodeURIComponent((a.getAttribute('href') || '').replace('#', '')))
-            .map((id) => ({ id, el: id ? document.getElementById(id) : null }))
-            .filter((t) => t.el);
-
-          if (!targets.length) return;
-
-          const panel = (jumpbar as HTMLElement).closest('.tips-panel');
-          let activeId: string | null = null;
-
-          function setActive(id: string) {
-            if (activeId === id) return;
-            activeId = id;
-            links.forEach((a) => {
-              const linkId = decodeURIComponent((a.getAttribute('href') || '').replace('#', ''));
-              a.classList.toggle('is-active', linkId === id);
-            });
-          }
-
-          const observer = new IntersectionObserver((entries) => {
-            if (panel && !panel.classList.contains('is-active')) return;
-            const visible = entries
-              .filter((e) => e.isIntersecting)
-              .sort((a, b) => (a.boundingClientRect.top - b.boundingClientRect.top));
-            const best = visible[0]?.target as HTMLElement | undefined;
-            if (best?.id) setActive(best.id);
-          }, { root: null, rootMargin: '-20% 0px -75% 0px', threshold: [0, 0.1, 0.25] });
-
-          targets.forEach((t) => observer.observe(t.el as Element));
-          const initial = targets.find((t) => t.id === getHashId())?.id || targets[0].id;
-          if (initial) setActive(initial);
-        });
-      }
-
-      setupJumpbars();
-    </script>
-  </div>
+    <section class="tips-section tips-section--next" id="next" aria-labelledby="next-title"><header class="tips-section-heading"><p>{pick(copy.nextLabel)}</p><h2 id="next-title">{pick(copy.nextTitle)}</h2><span>{pick(copy.nextIntro)}</span></header><div class="tips-next-grid">{nextGuides.map((guide) => <a class="tips-next-card" href={link(guide[0])}><span class="tips-next-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={guideIcons[guide[0]]}></svg></span><div><strong>{pick(guide[1])}</strong><small>{pick(guide[2])}</small></div><span class="tips-next-arrow" aria-hidden="true">→</span></a>)}</div></section>
+  </main>
 </Base>
