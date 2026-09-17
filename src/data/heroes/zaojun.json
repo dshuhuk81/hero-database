@@ -48,11 +48,11 @@
     {
       "id": "skill_1",
       "name": "Unbound Blaze of Kindling",
-      "description": "Passive: Zaojun collects 20% of the Energy consumed by allied units and stores it as Hearthfires, up to 1200 Hearthfires can be stored. Active: Deals DMG equal to 400% of ATK to 3 units and nearby units. For every 300 Hearthfires she has, consumes the same amount of Hearthfires to make this skill hit 1 additional unit. (Target selection rules: Selects targets in order from farthest to nearest. Prioritizes Deities over Minions. If the number of targets is less than the amount of Hearthfires, targets may be selected repeatedly.)",
+      "description": "Passive: Zaojun collects 20% of the Energy consumed by allied units and stores it as Hearthfire, up to 1200 Hearthfire can be stored. Active: Deals DMG equal to 400% of ATK to 3 units and nearby units. For every 300 Hearthfire she has, consumes the same amount of Hearthfire to make this skill hit 1 additional unit. (Target selection rules: Selects targets in order from farthest to nearest. Prioritizes Deities over Minions. If the number of targets is less than the amount of Hearthfire available, targets may be selected repeatedly.)",
       "upgrades": {
-        "level2": "For every 240 Hearthfires she has, this skill hits 1 additional unit.",
-        "level3": "For every 200 Hearthfires she has, this skill hits 1 additional unit.",
-        "level4": "For every 150 Hearthfires she has, this skill hits 1 additional unit."
+        "level2": "For every 240 Hearthfire she has, this skill hits 1 additional unit.",
+        "level3": "For every 200 Hearthfire she has, this skill hits 1 additional unit.",
+        "level4": "For every 150 Hearthfire she has, this skill hits 1 additional unit."
       },
       "damageType": "Magical",
       "isUltimate": true
