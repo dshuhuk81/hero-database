@@ -36,6 +36,17 @@ const copy = {
   relicTitle: { en: "Build relic power in the right order", de: "Reliktstärke in der richtigen Reihenfolge aufbauen" },
   relicIntro: { en: "Carries to R20 → supports to R10 → your main carry to R30", de: "Carries auf R20 → Supports auf R10 → deinen Haupt-Carry auf R30" },
   relicTargets: { en: "Strong first Relic 20 targets", de: "Starke erste Relikt-20-Ziele" },
+  costLabel: { en: "Relic cost planner", de: "Relikt-Kostenplaner" },
+  costTitle: { en: "Plan your next upgrade", de: "Plane dein nächstes Upgrade" },
+  currentLevel: { en: "Current level", de: "Aktuelles Level" },
+  targetLevel: { en: "Target level", de: "Ziellevel" },
+  upgradeCost: { en: "Upgrade cost", de: "Upgradekosten" },
+  chooseHigher: { en: "Choose a target above your current level.", de: "Wähle ein Ziel über deinem aktuellen Level." },
+  costOverview: { en: "Cost by level range", de: "Kosten nach Levelbereich" },
+  fullCost: { en: "Total R0 → R50", de: "Gesamt R0 → R50" },
+  showCosts: { en: "Show cost per level", de: "Kosten je Level anzeigen" },
+  levelUpgrade: { en: "Upgrade", de: "Upgrade" },
+  material: { en: "Material", de: "Material" },
   eventsLabel: { en: "Weekly selection events", de: "Wöchentliche Auswahl-Events" },
   eventsTitle: { en: "Single pulls protect your best reward", de: "Einzelzüge schützen deine beste Belohnung" },
   eventsBody: { en: "Select the red relic elixirs (Apotheosis Elixir), pull one at a time, and stop when you get the target. Ten-pulls spend attempts clearing rewards you do not need.", de: "Wähle die roten Relikt-Elixiere (Apotheosis Elixir), ziehe einzeln und stoppe nach dem Ziel. 10er-Züge verbrauchen Versuche für Belohnungen, die du nicht brauchst." },
@@ -89,6 +100,19 @@ const doItems: LocalizedString[] = [{ en: "Level five heroes; synchronize the re
 const avoidItems: LocalizedString[] = [{ en: "Spreading levels, gear and copies across every hero.", de: "Level, Ausrüstung und Kopien auf alle Helden verteilen." }, { en: "Using valuable named-hero copies as fodder too early.", de: "Wertvolle Named-Hero-Kopien zu früh als Fodder verwenden." }, { en: "Splitting red relic materials evenly across the roster.", de: "Rote Reliktmaterialien gleichmäßig im Roster verteilen." }, { en: "Treating popularity as a universal tier list.", de: "Popularity als allgemeingültige Tier List behandeln." }];
 const relicSteps = [["R20", { en: "Carries first", de: "Carries zuerst" }, { en: "Bring the damage core to its first major breakpoint.", de: "Bringe deinen Schadenskern an den ersten großen Breakpoint." }], ["R10", { en: "Enable supports", de: "Supports aktivieren" }, { en: "Unlock effects that accelerate or protect the carry.", de: "Aktiviere Effekte, die deinen Carry beschleunigen oder schützen." }], ["R30", { en: "Finish the carry", de: "Carry abschließen" }, { en: "Then push the most important carry to the premium breakpoint.", de: "Danach geht dein wichtigster Carry an den Premium-Breakpoint." }]] as const;
 
+type RelicMaterial = "Genesis" | "Apotheosis" | "Eternity";
+const relicCosts = Array.from({ length: 50 }, (_, level): { from: number; to: number; amount: number; material: RelicMaterial } => {
+  if (level === 0) return { from: 0, to: 1, amount: 50, material: "Genesis" };
+  if (level < 10) return { from: level, to: level + 1, amount: (level + 1) * 5, material: "Genesis" };
+  if (level < 30) return { from: level, to: level + 1, amount: Math.ceil((level - 9) / 2) * 5, material: "Apotheosis" };
+  return { from: level, to: level + 1, amount: level < 40 ? (level - 29) * 10 : 100, material: "Eternity" };
+});
+const relicCostRanges = [
+  ["0 → 1", 50, "Genesis"], ["1 → 10", 270, "Genesis"],
+  ["10 → 20", 150, "Apotheosis"], ["20 → 30", 400, "Apotheosis"],
+  ["30 → 40", 550, "Eternity"], ["40 → 50", 1000, "Eternity"],
+] as const;
+
 const heroBase = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/thumbs";
 const carries = ["xuannv", "nut", "skadi", "zaojun", "bastet"];
 const supports = ["hephaestus", "yuelao", "mengpo", "meret"];
@@ -139,7 +163,26 @@ const guideIcons = Object.fromEntries(navEntries.map((entry) => [entry.href, ent
     <section class="tips-section" id="invest" aria-labelledby="invest-title">
       <header class="tips-section-heading"><p>{pick(copy.investLabel)}</p><h2 id="invest-title">{pick(copy.investTitle)}</h2><span>{pick(copy.investIntro)}</span></header>
       <div class="tips-do-dont"><article class="tips-list-panel tips-list-panel--do"><h3><span aria-hidden="true">✓</span>{pick(copy.doTitle)}</h3><ul>{doItems.map((item) => <li>{pick(item)}</li>)}</ul></article><article class="tips-list-panel tips-list-panel--avoid"><h3><span aria-hidden="true">×</span>{pick(copy.avoidTitle)}</h3><ul>{avoidItems.map((item) => <li>{pick(item)}</li>)}</ul></article></div>
-      <div class="tips-relic-block" id="relics"><div class="tips-relic-heading"><div><h3>{pick(copy.relicTitle)}</h3><span>{pick(copy.relicIntro)}</span></div><a href={link("/relic-investment")}>{pick(copy.openGuide)} →</a></div><div class="tips-relic-path">{relicSteps.map((step, index) => <article class="tips-relic-step"><div class="tips-relic-level">{step[0]}</div><span class="tips-relic-index">0{index + 1}</span><h4>{pick(step[1])}</h4><p>{pick(step[2])}</p></article>)}</div><div class="tips-target-strip"><div><span>{pick(copy.relicTargets)}</span><strong>Bastet · Xuannv · Nut · Zaojun · Skadi</strong></div></div></div>
+      <div class="tips-relic-block" id="relics">
+        <div class="tips-relic-heading"><div><h3>{pick(copy.relicTitle)}</h3><span>{pick(copy.relicIntro)}</span></div><a href={link("/relic-investment")}>{pick(copy.openGuide)} →</a></div>
+        <div class="tips-relic-path">{relicSteps.map((step, index) => <article class="tips-relic-step"><div class="tips-relic-level">{step[0]}</div><span class="tips-relic-index">0{index + 1}</span><h4>{pick(step[1])}</h4><p>{pick(step[2])}</p></article>)}</div>
+        <div class="tips-target-strip"><div><span>{pick(copy.relicTargets)}</span><strong>Bastet · Xuannv · Nut · Zaojun · Skadi</strong></div></div>
+        <section class="tips-relic-calculator" id="relic-cost-planner" aria-labelledby="relic-cost-title" data-costs={JSON.stringify(relicCosts)}>
+          <header class="tips-cost-heading"><div><p>{pick(copy.costLabel)}</p><h4 id="relic-cost-title">{pick(copy.costTitle)}</h4></div></header>
+          <div class="tips-cost-tool">
+            <div class="tips-cost-controls">
+              <label><span>{pick(copy.currentLevel)}</span><input id="relic-current" type="number" min="0" max="49" value="0" inputmode="numeric" /></label>
+              <label><span>{pick(copy.targetLevel)}</span><input id="relic-target" type="number" min="1" max="50" value="30" inputmode="numeric" /></label>
+            </div>
+            <div class="tips-cost-result" aria-live="polite">
+              <div class="tips-cost-result-head"><span>{pick(copy.upgradeCost)}</span></div>
+              <p id="relic-cost-empty" hidden>{pick(copy.chooseHigher)}</p>
+              <div class="tips-cost-materials" id="relic-cost-materials">{(["Genesis", "Apotheosis", "Eternity"] as const).map((material) => <div class="tips-cost-material" data-material={material.toLowerCase()}><img src={`/items/${material.toLowerCase()}-elixir.png`} alt="" /><div><span>{material} Elixir</span><strong data-cost-output={material}>0</strong></div></div>)}</div>
+            </div>
+          </div>
+          <details class="tips-cost-details"><summary>{pick(copy.showCosts)} <span aria-hidden="true">＋</span></summary><div class="tips-cost-extra"><div class="tips-cost-ranges" aria-label={pick(copy.costOverview)}>{relicCostRanges.map(([range, amount, material]) => <div><span>{range}</span><strong>{amount.toLocaleString(locale)} <small>{material}</small></strong></div>)}</div><div class="tips-cost-total"><span>{pick(copy.fullCost)}</span><strong>320 Genesis <i>·</i> 550 Apotheosis <i>·</i> {(1550).toLocaleString(locale)} Eternity</strong></div><div class="tips-cost-table-wrap"><table><thead><tr><th>{pick(copy.levelUpgrade)}</th><th>{pick(copy.material)}</th></tr></thead><tbody>{relicCosts.map((cost) => <tr><td>{cost.from} → {cost.to}</td><td><strong>{cost.amount}</strong> {cost.material}</td></tr>)}</tbody></table></div></div></details>
+        </section>
+      </div>
       <aside class="tips-event-tip" aria-labelledby="event-tip-title"><div class="tips-event-visual"><img class="tips-potion-image" src="/items/apotheosis-elixir.png" alt="" loading="lazy" /><span class="tips-pull-count" aria-hidden="true">×1</span></div><div class="tips-event-copy"><p>{pick(copy.eventsLabel)}</p><h3 id="event-tip-title">{pick(copy.eventsTitle)}</h3><span>{pick(copy.eventsBody)}</span><small>{pick(copy.eventsExamples)}</small></div><div class="tips-event-warning"><span aria-hidden="true">×10</span><strong>{pick(copy.avoidTitle)}</strong></div></aside>
     </section>
 
@@ -157,4 +200,41 @@ const guideIcons = Object.fromEntries(navEntries.map((entry) => [entry.href, ent
 
     <section class="tips-section tips-section--next" id="next" aria-labelledby="next-title"><header class="tips-section-heading"><p>{pick(copy.nextLabel)}</p><h2 id="next-title">{pick(copy.nextTitle)}</h2><span>{pick(copy.nextIntro)}</span></header><div class="tips-next-grid">{nextGuides.map((guide) => <a class="tips-next-card" href={link(guide[0])}><span class="tips-next-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={guideIcons[guide[0]]}></svg></span><div><strong>{pick(guide[1])}</strong><small>{pick(guide[2])}</small></div><span class="tips-next-arrow" aria-hidden="true">→</span></a>)}</div></section>
   </main>
+
+  <script is:inline>
+    (() => {
+      const planner = document.getElementById("relic-cost-planner");
+      const currentInput = document.getElementById("relic-current");
+      const targetInput = document.getElementById("relic-target");
+      if (!planner || !currentInput || !targetInput) return;
+
+      const costs = JSON.parse(planner.dataset.costs || "[]");
+      const materials = document.getElementById("relic-cost-materials");
+      const emptyResult = document.getElementById("relic-cost-empty");
+      const numberFormat = new Intl.NumberFormat(document.documentElement.lang || "en");
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, Number.isFinite(value) ? value : min));
+
+      const updateCosts = () => {
+        const current = clamp(Math.trunc(Number(currentInput.value)), 0, 49);
+        const target = clamp(Math.trunc(Number(targetInput.value)), 1, 50);
+        currentInput.value = current;
+        targetInput.value = target;
+        const totals = { Genesis: 0, Apotheosis: 0, Eternity: 0 };
+        if (target > current) costs.slice(current, target).forEach((cost) => { totals[cost.material] += cost.amount; });
+        const valid = target > current;
+        materials.hidden = !valid;
+        emptyResult.hidden = valid;
+        Object.entries(totals).forEach(([material, amount]) => {
+          const output = planner.querySelector(`[data-cost-output="${material}"]`);
+          const card = output?.closest(".tips-cost-material");
+          if (output) output.textContent = numberFormat.format(amount);
+          if (card) card.hidden = amount === 0;
+        });
+      };
+
+      currentInput.addEventListener("input", updateCosts);
+      targetInput.addEventListener("input", updateCosts);
+      updateCosts();
+    })();
+  </script>
 </Base>
