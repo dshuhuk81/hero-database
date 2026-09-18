@@ -7,7 +7,6 @@ import { heroes, getHeroById } from "../../data/heroes/withRatings";
 import { localizeHeroData } from "../../data/heroes/localize";
 import { getLocaleFromPathname, localizePath, type Locale } from "../../i18n/config";
 import { pickLang } from "../../i18n/helpers";
-import ratings from "../../data/ratings/hero-ratings.json";
 import invest from "../../data/ratings/invest.json";
 import divineThroneData from "../../data/divine-throne.json";
 import allVirtues from "../../data/virtues.json";
@@ -41,11 +40,8 @@ if (!hero) {
   throw new Error(`Hero with id "${routeId}" not found`);
 }
 
-const rating = (ratings as any)[hero.id] ?? {};
+const rating = (hero.ratings as any) ?? {};
 const heroInvest = (invest as any)[hero.id] ?? null;
-const f2pInvestmentLabel = heroInvest?.f2pInvestment
-  ? pickLang(heroInvest.f2pInvestment, locale)
-  : "";
 const divineThroneEntry =
   (divineThroneData as any).heroes.find((entry: any) => entry.heroId === hero.id) ?? null;
 
@@ -279,7 +275,7 @@ const tabs = [
 
             <div class="lt-panel">
               <div class="lt-overall">
-                <span class="lt-overall-label">Overall</span>
+                <span class="lt-overall-label">Overall account value</span>
                 <span class="lt-grade" data-tier={String(rating.overall || "N/A")}>
                   {rating.overall || "N/A"}
                 </span>
@@ -303,7 +299,9 @@ const tabs = [
                 ))}
               </div>
             <div class="lt-rating-groups">
-              <p class="lt-body">Brief explanation: Early <span class="num">(Ch. 1 - 40)</span>, Midgame <span class="num">(40 - 55)</span>, Endgame <span class="num">(55+)</span></p></div>
+              <p class="lt-body">Early <span class="num">(Ch. 1–39, Relic 0–10)</span> assumes limited investment; Midgame <span class="num">(Ch. 40–54, Relic 10–30)</span> selective investment; Endgame <span class="num">(Ch. 55+, Relic 30+)</span> high to maximum investment.</p>
+              {rating.overallReason && <p class="lt-body"><strong>Overall adjustment:</strong> {rating.overallReason}</p>}
+            </div>
             </div>
 
             {hero.coreMechanic?.summary && (
@@ -471,12 +469,6 @@ const tabs = [
                 <div class="lt-panel lt-invest-cell">
                   <p class="lt-sublabel">Relic Recommendation</p>
                   <p class="lt-invest-value">{heroInvest.relicRec}</p>
-                </div>
-              )}
-              {heroInvest.f2pInvestment && (
-                <div class="lt-panel lt-invest-cell">
-                  <p class="lt-sublabel">F2P Target</p>
-                  <p class="lt-invest-value">{f2pInvestmentLabel}</p>
                 </div>
               )}
             </div>
@@ -777,9 +769,10 @@ const tabs = [
 
       /* ------------------------------------------------------------ ratings */
       .lt-overall {
-        display: flex;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
-        justify-content: space-between;
+        column-gap: var(--space-5);
         padding: 14px 20px;
         margin-bottom: 22px;
         border: 1px solid var(--accent-gold-dim);
@@ -791,6 +784,9 @@ const tabs = [
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: var(--accent-gold);
+      }
+      .lt-overall > .lt-grade {
+        justify-self: end;
       }
       .lt-grade-grid {
         display: flex;

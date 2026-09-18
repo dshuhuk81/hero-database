@@ -3,7 +3,7 @@ export const prerender = true;
 
 import Base from "../layouts/Base.astro";
 import { getProjectStatus } from "../utils/projectStatus.js";
-import { HERO_RATING_FIELDS } from "../data/ratings/heroRatingFields.js";
+import { HERO_MANUAL_RATING_FIELDS } from "../data/ratings/heroRatingFields.js";
 
 const status = getProjectStatus();
 const generatedDate = new Intl.DateTimeFormat("en", {
@@ -314,7 +314,7 @@ const kpis = [
         </button>
       </div>
 
-      <form class="edit-form" id="heroEditForm" data-rating-fields={JSON.stringify(HERO_RATING_FIELDS.map(({ key }) => key))}>
+      <form class="edit-form" id="heroEditForm" data-rating-fields={JSON.stringify(HERO_MANUAL_RATING_FIELDS.map(({ key }) => key))}>
         <input type="hidden" name="id" />
 
         <section class="edit-section">
@@ -354,23 +354,37 @@ const kpis = [
 
         <section class="edit-section">
           <h3>Ratings</h3>
+          <p>Overall is calculated automatically from the six contextual ratings.</p>
+          <p><strong>Current Overall: <span id="calculatedOverall">N/A</span></strong></p>
           <div class="rating-grid">
-            {HERO_RATING_FIELDS.map((field) => (
+            {HERO_MANUAL_RATING_FIELDS.map((field) => (
               <label>
-                <span>{field.label}</span>
+                <span>{field.group} · {field.label}</span>
                 <select name={field.key}>
                   <option value="">Missing</option>
                   <option value="S+">S+</option>
                   <option value="S">S</option>
-                  <option value="A+">A+</option>
                   <option value="A">A</option>
-                  <option value="B+">B+</option>
                   <option value="B">B</option>
                   <option value="C">C</option>
                   <option value="D">D</option>
                 </select>
               </label>
             ))}
+          </div>
+          <div class="two-field-grid">
+            <label>
+              <span>Exceptional Overall adjustment</span>
+              <select name="overallAdjustment">
+                <option value="0">None</option>
+                <option value="1">Up one tier</option>
+                <option value="-1">Down one tier</option>
+              </select>
+            </label>
+            <label>
+              <span>Required reason for adjustment</span>
+              <input name="overallReason" type="text" placeholder="Exceptional account impact or limitation" />
+            </label>
           </div>
         </section>
 
@@ -465,10 +479,6 @@ const kpis = [
               <input name="usedIn" type="text" placeholder="PvP / Odyssey / Spire" />
             </label>
           </div>
-          <label>
-            <span>F2P investment</span>
-            <input name="investmentF2p" type="text" placeholder="Base dupe, Divine, tbd..." />
-          </label>
           <label>
             <span>Investment explanation</span>
             <textarea name="investmentExplanation" rows="4" placeholder="Why and when to invest"></textarea>
@@ -1059,11 +1069,14 @@ const kpis = [
       for (const field of JSON.parse(editForm.dataset.ratingFields || "[]")) {
         setField(field, ratings?.[field] || "");
       }
+      setField("overallAdjustment", ratings?.overallAdjustment || 0);
+      setField("overallReason", ratings?.overallReason || "");
+      const calculatedOverall = document.getElementById("calculatedOverall");
+      if (calculatedOverall) calculatedOverall.textContent = ratings?.overall || "N/A";
 
       setField("relicMin", investment?.relicMin || "");
       setField("relicRec", investment?.relicRec || "");
       setField("usedIn", investment?.usedIn || "");
-      setField("investmentF2p", investment?.f2pInvestment || "");
       setField("investmentExplanation", investment?.explanation || "");
       renderTagPicker(tagSearch?.value || "");
     }
@@ -1094,11 +1107,10 @@ const kpis = [
       }
     }
 
-    function updateVisibleRow(heroId) {
+    function updateVisibleRow(heroId, overall) {
       const row = rows.find((item) => item.querySelector(`[data-edit-hero="${heroId}"]`));
       if (!row) return;
       const release = getField("release");
-      const overall = getField("overall");
       const releaseCell = row.children[2];
       const ratingCell = row.querySelector("[data-rating-cell]");
       const enrichmentCell = row.querySelector("[data-enrichment-cell]");
@@ -1194,9 +1206,13 @@ const kpis = [
 
         saveResponses.push(await apiFetch(`/api/admin/ratings/${heroId}`, {
           method: "PATCH",
-          body: JSON.stringify(Object.fromEntries(
-            JSON.parse(editForm.dataset.ratingFields || "[]").map((field) => [field, getField(field)]),
-          )),
+          body: JSON.stringify({
+            ...Object.fromEntries(
+              JSON.parse(editForm.dataset.ratingFields || "[]").map((field) => [field, getField(field)]),
+            ),
+            overallAdjustment: Number(getField("overallAdjustment")),
+            overallReason: getField("overallReason"),
+          }),
         }));
 
         saveResponses.push(await apiFetch(`/api/admin/invest/${heroId}`, {
@@ -1205,7 +1221,6 @@ const kpis = [
             relicMin: getField("relicMin"),
             relicRec: getField("relicRec"),
             usedIn: getField("usedIn"),
-            f2pInvestment: getField("investmentF2p"),
             explanation: getField("investmentExplanation"),
           }),
         }));
@@ -1222,12 +1237,12 @@ const kpis = [
           body: JSON.stringify({ partners: synergyPartners }),
         }));
 
-        updateVisibleRow(heroId);
+        updateVisibleRow(heroId, saveResponses[1]?.ratings?.overall || "");
         const changedFiles = uniqueList(saveResponses.flatMap((response) => response.changedFiles || []));
         setEditStatus("Saved. Running validation...");
         const validation = await apiFetch("/api/admin/validate", {
           method: "POST",
-          body: JSON.stringify({ checks: ["tags"] }),
+          body: JSON.stringify({ checks: ["ratings", "tags"] }),
         });
         renderSaveSummary(changedFiles, validation);
       } catch (error) {

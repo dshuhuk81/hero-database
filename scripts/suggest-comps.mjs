@@ -27,6 +27,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { filterHeroesByQuery, getHeroQuery } from "./hero-cli-filter.mjs";
 import { loadRules as loadVirtueDrivers, detectDrivers } from "./suggest-virtues.mjs";
+import { calculateOverall, RATING_SCORES } from "../src/data/ratings/ratingSystem.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -37,8 +38,6 @@ const HERO_RATINGS_FILE = path.join(ROOT, "src/data/ratings/hero-ratings.json");
 const OUT_FILE = path.join(ROOT, "scripts/output/suggestionsComps.json");
 
 const PARTNER_COUNT = 5; // 5 enabler partners (the hero itself is not its own partner)
-// Ratings live in ratings/hero-ratings.json (vocab: S+ S A+ A B+ B C D), not raw hero JSON.
-const RATING_RANK = { "S+": 8, S: 7, "A+": 6, A: 5, "B+": 4, B: 3, C: 2, D: 1, "": 0 };
 
 export function loadRatings() {
   try {
@@ -93,7 +92,7 @@ export function rankPartners(target, heroes, virtueDrivers, rules, ratings = {})
     candidates.push({
       id: s.id,
       name: s.name,
-      rating: ratings[s.id]?.overall || "",
+      rating: calculateOverall(ratings[s.id]).tier || "",
       matched,
       score: matched.length,
     });
@@ -102,7 +101,7 @@ export function rankPartners(target, heroes, virtueDrivers, rules, ratings = {})
   candidates.sort(
     (a, b) =>
       b.score - a.score ||
-      (RATING_RANK[b.rating] || 0) - (RATING_RANK[a.rating] || 0) ||
+      (RATING_SCORES[b.rating] || 0) - (RATING_SCORES[a.rating] || 0) ||
       a.name.localeCompare(b.name)
   );
 

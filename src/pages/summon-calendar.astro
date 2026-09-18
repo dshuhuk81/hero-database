@@ -3,7 +3,6 @@ export const prerender = true;
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import allHeroes from "../data/all_heroes_db.json";
-import heroRatings from "../data/ratings/hero-ratings.json";
 import { heroes as heroPages } from "../data/heroes/withRatings";
 import { summonSchedule as schedule, type PullQuality, type ScheduleEntry } from "../data/summonSchedule";
 
@@ -17,6 +16,7 @@ const PULL_QUALITY_META: Record<PullQuality, { label: string; className: string 
 
 const heroMap = new Map(Object.values(allHeroes as Record<string, any>).map((h: any) => [h.id, h]));
 const heroPageIds = new Set((heroPages as any[]).map((h) => h.id));
+const ratedHeroMap = new Map((heroPages as any[]).map((hero) => [hero.id, hero]));
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_PLACEHOLDER = `${R2_BASE}/heroes/placeholder.png`;
@@ -54,7 +54,7 @@ function visibleReleaseDate(value?: string): string | null {
 
 function resolveEntry(entry: ScheduleEntry) {
   const h = heroMap.get(entry.id) || {};
-  const r = (heroRatings as Record<string, any>)?.[entry.id] ?? {};
+  const r = ratedHeroMap.get(entry.id)?.ratings ?? {};
   const faction = h.faction || "";
   const heroClass = h.class || "";
   const role = h.role || "";
@@ -69,8 +69,8 @@ function resolveEntry(entry: ScheduleEntry) {
     roleIconUrl: role ? iconUrl("roles", role) : null,
     rarity: h.rarity || "Legendary",
     overallRating: r.overall || "?",
-    pvpRating: r.pvp || "?",
-    pveRating: r.pve || "?",
+    pvpRating: r.pvpendgame || "?",
+    pveRating: r.pveendgame || "?",
     status: entry.status,
     order: entry.order,
     releaseDate: visibleReleaseDate(entry.releaseDate),

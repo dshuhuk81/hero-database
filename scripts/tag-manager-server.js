@@ -2,7 +2,11 @@
 // CMS Backend für Synergy Tag Management
 
 import express from 'express';
-import { HERO_RATING_KEYS } from '../src/data/ratings/heroRatingFields.js';
+import {
+  HERO_MANUAL_RATING_KEYS,
+  HERO_RATING_DATA_KEYS,
+  resolveHeroRatings,
+} from '../src/data/ratings/ratingSystem.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
@@ -28,6 +32,11 @@ const COMP_SUGGEST_SCRIPT = path.join(__dirname, 'suggest-comps.mjs');
 const execFileAsync = promisify(execFile);
 
 const VALIDATION_CHECKS = {
+  ratings: {
+    label: 'Hero ratings',
+    command: 'npm',
+    args: ['run', 'validate:ratings'],
+  },
   tags: {
     label: 'Synergy tags',
     command: 'npm',
@@ -41,7 +50,7 @@ const VALIDATION_CHECKS = {
 };
 const ADMIN_CAPABILITIES = {
   apiVersion: 2,
-  features: ['strengthsWeaknesses', 'investmentSingleSource'],
+  features: ['strengthsWeaknesses', 'investmentSingleSource', 'calculatedOverallRating'],
 };
 
 const app = express();
@@ -153,13 +162,23 @@ function normalizeBool(value) {
 
 function sanitizeRating(value) {
   const rating = normalizeString(value);
-  const allowed = new Set(['', 'S+', 'S', 'A+', 'A', 'B+', 'B', 'C', 'D']);
+  const allowed = new Set(['', 'S+', 'S', 'A', 'B', 'C', 'D']);
   if (!allowed.has(rating)) {
     const err = new Error(`Invalid rating value: ${rating}`);
     err.statusCode = 400;
     throw err;
   }
   return rating;
+}
+
+function sanitizeOverallAdjustment(value) {
+  const adjustment = Number.parseInt(value, 10) || 0;
+  if (![-1, 0, 1].includes(adjustment)) {
+    const err = new Error('Overall adjustment must be -1, 0, or 1.');
+    err.statusCode = 400;
+    throw err;
+  }
+  return adjustment;
 }
 
 function normalizeCoreMechanic(value) {
@@ -344,18 +363,21 @@ app.get('/api/admin/heroes/:id', async (req, res) => {
     const ratings = await readJson(HERO_RATINGS_FILE);
     const invest = await readJson(INVEST_FILE);
 
+    const rawRatings = ratings[id] || Object.fromEntries([
+      ['name', hero.name],
+      ...HERO_MANUAL_RATING_KEYS.map((key) => [key, '']),
+      ['overallAdjustment', 0],
+      ['overallReason', ''],
+    ]);
+
     res.json({
       hero,
-      ratings: ratings[id] || Object.fromEntries([
-        ['name', hero.name],
-        ...HERO_RATING_KEYS.map((key) => [key, '']),
-      ]),
+      ratings: { ...rawRatings, ...resolveHeroRatings(rawRatings) },
       investment: invest[id] || {
         relicMin: '',
         relicRec: '',
         usedIn: '',
         explanation: '',
-        f2pInvestment: '',
       },
     });
   } catch (err) {
@@ -412,24 +434,39 @@ app.patch('/api/admin/ratings/:id', async (req, res) => {
     const ratings = await readJson(HERO_RATINGS_FILE);
     const hasExistingRating = Boolean(ratings[id]);
     const current = ratings[id] || { name: hero.name };
-    const unsupportedFields = Object.keys(req.body || {}).filter((field) => !HERO_RATING_KEYS.includes(field));
+    const unsupportedFields = Object.keys(req.body || {}).filter((field) => !HERO_RATING_DATA_KEYS.includes(field));
     if (unsupportedFields.length > 0) {
       const err = new Error(`Unsupported rating fields: ${unsupportedFields.join(', ')}`);
       err.statusCode = 400;
       throw err;
     }
-    const next = Object.fromEntries([
-      ['name', hero.name],
-      ...HERO_RATING_KEYS.map((key) => [key, sanitizeRating(req.body[key] ?? current[key] ?? '')]),
-    ]);
+    const next = {
+      name: hero.name,
+      ...Object.fromEntries(HERO_MANUAL_RATING_KEYS.map((key) => [
+        key,
+        sanitizeRating(req.body[key] ?? current[key] ?? ''),
+      ])),
+      overallAdjustment: sanitizeOverallAdjustment(req.body.overallAdjustment ?? current.overallAdjustment ?? 0),
+      overallReason: normalizeString(req.body.overallReason ?? current.overallReason ?? ''),
+    };
 
-    if (!hasExistingRating && !HERO_RATING_KEYS.some((key) => next[key])) {
+    if (next.overallAdjustment !== 0 && !next.overallReason) {
+      const err = new Error('An Overall adjustment requires a short reason.');
+      err.statusCode = 400;
+      throw err;
+    }
+
+    if (!hasExistingRating && !HERO_MANUAL_RATING_KEYS.some((key) => next[key])) {
       return res.json({ success: true, skipped: true, ratings: next, changedFiles: [] });
     }
 
     ratings[id] = next;
     await writeJson(HERO_RATINGS_FILE, ratings);
-    res.json({ success: true, ratings: ratings[id], changedFiles: [relativePath(HERO_RATINGS_FILE)] });
+    res.json({
+      success: true,
+      ratings: { ...ratings[id], ...resolveHeroRatings(ratings[id]) },
+      changedFiles: [relativePath(HERO_RATINGS_FILE)],
+    });
   } catch (err) {
     sendError(res, err);
   }
@@ -449,10 +486,9 @@ app.patch('/api/admin/invest/:id', async (req, res) => {
       relicRec: normalizeString(req.body.relicRec ?? current.relicRec),
       usedIn: normalizeString(req.body.usedIn ?? current.usedIn),
       explanation: normalizeString(req.body.explanation ?? current.explanation),
-      f2pInvestment: normalizeString(req.body.f2pInvestment ?? current.f2pInvestment),
     };
 
-    if (!hasExistingInvestment && !next.relicMin && !next.relicRec && !next.usedIn && !next.explanation && !next.f2pInvestment) {
+    if (!hasExistingInvestment && !next.relicMin && !next.relicRec && !next.usedIn && !next.explanation) {
       return res.json({ success: true, skipped: true, investment: next, changedFiles: [] });
     }
 

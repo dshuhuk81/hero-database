@@ -11,7 +11,6 @@ const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const investment = allInvest as Record<string, {
   relicMin: LocalizedString;
   relicRec?: LocalizedString;
-  f2pInvestment?: LocalizedString;
 }>;
 const english = (value: LocalizedString) => pickLang(value, "en");
 
@@ -37,7 +36,7 @@ const rows = heroes
       <div class="content-heading-copy">
         <p class="content-heading-kicker">Investment guide</p>
         <h2 class="content-heading-title">Recommended targets</h2>
-        <p class="content-heading-description">Prioritize the relic breakpoint that changes how a hero performs. The F2P target shows how far the hero is worth building before resources are better spent elsewhere.</p>
+        <p class="content-heading-description">Prioritize the relic breakpoint that changes how a hero performs and use the recommended target to plan your resources.</p>
       </div>
     </div>
 
@@ -56,14 +55,12 @@ const rows = heroes
       <span>Hero</span>
       <span>Minimum relic</span>
       <span>Relic recommendation</span>
-      <span>F2P target</span>
     </div>
 
     <div id="riGrid" class="ri-list">
       {rows.map(({ hero, investment: entry }) => {
         const minimumRelic = english(entry.relicMin);
         const relicRecommendation = entry.relicRec ? english(entry.relicRec) : "";
-        const heroInvestment = entry.f2pInvestment ? english(entry.f2pInvestment) : "—";
         return (
           <article
             class="ri-row"
@@ -83,10 +80,6 @@ const rows = heroes
             <div class="ri-value ri-relic-value ri-recommendation">
               <span class="ri-mobile-label">Relic recommendation</span>
               {relicRecommendation && <strong>{relicRecommendation}</strong>}
-            </div>
-            <div class="ri-value">
-              <span class="ri-mobile-label">F2P target</span>
-              <strong>{heroInvestment}</strong>
             </div>
           </article>
         );
@@ -127,7 +120,7 @@ const rows = heroes
   .ri-search { width: 100%; padding: .85rem 1rem .85rem 2.8rem; color: var(--text-primary); background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font: inherit; outline: none; }
   .ri-search:focus { border-color: var(--accent-gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-gold) 18%, transparent); }
   .ri-count { margin: 0; color: var(--text-muted); font-size: .85rem; white-space: nowrap; }
-  .ri-list-head, .ri-row { display: grid; grid-template-columns: minmax(240px, 1.2fr) repeat(3, minmax(150px, .8fr)); align-items: center; }
+  .ri-list-head, .ri-row { display: grid; grid-template-columns: minmax(240px, 1.2fr) repeat(2, minmax(150px, .8fr)); align-items: center; }
   .ri-list-head { padding: 0 var(--space-4) var(--space-2); color: var(--text-muted); font-size: .67rem; font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
   .ri-list { overflow: hidden; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-top-color: var(--border-medium); border-radius: var(--radius-lg); }
   .ri-row { min-height: 76px; border-bottom: 1px solid var(--border-faint); }
@@ -154,7 +147,7 @@ const rows = heroes
     .ri-count { align-self: flex-end; }
     .ri-list-head { display: none; }
     .ri-list { display: grid; gap: var(--space-2); overflow: visible; background: transparent; border: 0; border-radius: 0; }
-    .ri-row { display: grid; grid-template-columns: repeat(3, 1fr); min-height: 0; overflow: hidden; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+    .ri-row { display: grid; grid-template-columns: repeat(2, 1fr); min-height: 0; overflow: hidden; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
     .ri-row:last-child { border-bottom: 1px solid var(--border-subtle); }
     .ri-hero { grid-column: 1 / -1; padding: var(--space-3); background: var(--chip-bg); border-bottom: 1px solid var(--border-faint); }
     .ri-avatar { width: 44px; height: 44px; flex-basis: 44px; border-radius: 10px; }

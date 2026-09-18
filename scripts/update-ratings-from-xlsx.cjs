@@ -15,29 +15,7 @@ const COL = {
   pveLate: 5,
   pvp: 6,
   overall: 7,
-  f2p: 8,
 };
-
-// Overall T-tier -> letter grade (from ratings-interpreter.json)
-function convertTier(tier) {
-  if (!tier) return '';
-  const t = tier.toString().trim().toLowerCase();
-  // Range like T0.5-T1 -> take lower bound
-  const rangeMatch = t.match(/^t(\d+(?:\.\d+)?)-t(\d+(?:\.\d+)?)/);
-  if (rangeMatch) return convertTier('T' + rangeMatch[1]);
-  const numMatch = t.match(/^t(\d+(?:\.\d+)?)/);
-  if (!numMatch) return '';
-  const num = parseFloat(numMatch[1]);
-  if (num === 0) return 'S+';
-  if (num === 0.5) return 'S';
-  if (num === 1) return 'A+';
-  if (num === 2) return 'A';
-  if (num === 3) return 'B+';
-  if (num >= 4 && num <= 5) return 'B';
-  if (num >= 6 && num <= 8) return 'C';
-  if (num >= 9 && num <= 10) return 'D';
-  return '';
-}
 
 // PvE Early / PvE Late / PvP cells are already letter grades. Pass through.
 function cleanGrade(v) {
@@ -47,7 +25,7 @@ function cleanGrade(v) {
   return s;
 }
 
-// Line-list fields (relic / used-in / f2p): newline -> " / "
+// Line-list fields (relic / used-in): newline -> " / "
 function cleanList(v) {
   if (v === null || v === undefined) return '';
   let s = v.toString()
@@ -165,19 +143,18 @@ for (const sheetName of SUIT_SHEETS) {
     const pveEarly = cleanGrade(row[COL.pveEarly]);
     const pveLate = cleanGrade(row[COL.pveLate]);
     const pvp = cleanGrade(row[COL.pvp]);
-    const overall = convertTier((row[COL.overall] || '').toString());
-
+    // The legacy workbook has no Midgame columns and only one PvP column.
+    // Import only the contexts it can represent; preserve all other ratings.
     ratingUpdates[key] = {
-      overall,
-      pvp,
-      pve: pveLate || pveEarly, // sheet still splits early/late; collapse to endgame value
+      pveearly: pveEarly,
+      pveendgame: pveLate,
+      pvpendgame: pvp,
     };
 
     investUpdates[key] = {
       relicMin: cleanList(row[COL.relic]),
       usedIn: cleanList(row[COL.usedIn]),
       explanation: cleanProse(row[COL.explanation]),
-      f2pInvestment: cleanList(row[COL.f2p]),
     };
   }
 }
@@ -187,20 +164,12 @@ const ratingsPath = path.join(root, 'src', 'data', 'ratings', 'hero-ratings.json
 const ratings = JSON.parse(fs.readFileSync(ratingsPath, 'utf8'));
 
 let rUpdated = 0;
-let rCleared = 0;
-for (const key of Object.keys(ratings)) {
-  const u = ratingUpdates[key];
-  if (u) {
-    ratings[key].overall = u.overall;
-    ratings[key].pvp = u.pvp;
-    ratings[key].pve = u.pve;
-    rUpdated++;
-  } else {
-    ratings[key].overall = '';
-    ratings[key].pvp = '';
-    ratings[key].pve = '';
-    rCleared++;
+for (const [key, u] of Object.entries(ratingUpdates)) {
+  if (!ratings[key]) continue;
+  for (const [field, value] of Object.entries(u)) {
+    if (value) ratings[key][field] = value;
   }
+  rUpdated++;
 }
 fs.writeFileSync(ratingsPath, JSON.stringify(ratings, null, 2) + '\n');
 
@@ -224,10 +193,10 @@ for (const key of Object.keys(invest)) {
 }
 fs.writeFileSync(investPath, JSON.stringify(invest, null, 2) + '\n');
 
-console.log('hero-ratings.json  updated:', rUpdated, 'cleared:', rCleared);
+console.log('hero-ratings.json  context rows updated:', rUpdated);
 console.log('invest.json        updated:', iUpdated, 'added:', iAdded, 'removed:', iRemoved);
 const unmatched = Object.keys(ratings).filter(k => !ratingUpdates[k]);
-console.log('Cleared (not in xlsx):', unmatched.join(', ') || '(none)');
+console.log('Not present in xlsx (preserved):', unmatched.join(', ') || '(none)');
 if (warnings.length) {
   console.log('\nWARNINGS:');
   warnings.forEach(w => console.log(' -', w));

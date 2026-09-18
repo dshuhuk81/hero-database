@@ -2,8 +2,9 @@ import { heroes } from "../data/heroes/withRatings";
 import heroRatings from "../data/ratings/hero-ratings.json";
 import pageUpdates from "../data/pageUpdates.json";
 import { navEntries } from "../data/nav";
+import { HERO_MANUAL_RATING_KEYS } from "../data/ratings/ratingSystem.js";
 
-const RATING_FIELDS = ["overall", "pvp", "pve"];
+const RATING_FIELDS = HERO_MANUAL_RATING_KEYS;
 const REQUIRED_FIELDS = ["id", "name", "faction", "role", "class", "rarity"];
 const INTERNAL_ROUTES = new Set(["/design-system", "/privacy", "/status"]);
 const pageModules = import.meta.glob(["../pages/**/*.astro", "!../pages/status.astro"]);
@@ -210,7 +211,7 @@ export function getProjectStatus() {
 
   const actionQueue = [
     {
-      label: "Add missing overall ratings",
+      label: "Add ratings needed for Overall",
       count: missingRatings.length,
       severity: missingRatings.length ? "critical" : "ok",
       detail: missingRatings.slice(0, 8).map((hero) => hero.name).join(", "),

@@ -26,7 +26,7 @@
       "sourcePattern": "src/data/heroes/{heroId}.json",
       "aggregateCopy": "src/data/all_heroes_db.json",
       "runtimeAdapter": "src/data/heroes/index.js",
-      "notes": "Hero JSON files no longer contain ratings. Runtime hero data is assembled in src/data/heroes/index.js; pages that need ratings should additionally merge src/data/ratings/hero-ratings.json (see src/data/heroes/withRatings.js)."
+      "notes": "Hero JSON files no longer contain ratings. Use src/data/heroes/withRatings.js so Overall is calculated consistently from the contextual ratings."
     },
     "heroRatings": {
       "path": "src/data/ratings/hero-ratings.json",
@@ -148,17 +148,17 @@
       ]
     },
     "ratings": {
-      "description": "Centralized ranking and investment recommendation data.",
+      "description": "Centralized contextual ratings with an automatically calculated Overall account-value recommendation.",
       "files": [
         {
           "path": "src/data/ratings/hero-ratings.json",
           "shape": "object keyed by heroId",
-          "recordCount": 75,
+          "recordCount": 80,
           "contains": [
             "display name",
-            "overall rating",
-            "pvp rating",
-            "pve rating"
+            "six PvE/PvP progression ratings",
+            "optional one-tier Overall adjustment",
+            "required adjustment reason"
           ]
         },
         {
@@ -168,8 +168,7 @@
           "contains": [
             "relic recommendation",
             "where the hero is used",
-            "investment explanation",
-            "free-to-play investment guidance"
+            "investment explanation"
           ]
         },
         {

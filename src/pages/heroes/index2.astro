@@ -4,6 +4,7 @@ import Base from "../../layouts/Base.astro";
 import HeroDivineThrone from "../../components/HeroDivineThrone.astro";
 import heroJson from "../../data/heroes/caishen.json";
 import ratings from "../../data/ratings/hero-ratings.json";
+import { resolveHeroRatings } from "../../data/ratings/ratingSystem.js";
 import invest from "../../data/ratings/invest.json";
 import divineThroneData from "../../data/divine-throne.json";
 import db from "../../data/all_heroes_db.json";
@@ -11,7 +12,7 @@ import db from "../../data/all_heroes_db.json";
 const R2 = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 
 const hero = heroJson as any;
-const rating = (ratings as any)[hero.id] ?? {};
+const rating = resolveHeroRatings((ratings as any)[hero.id] ?? {});
 const heroInvest = (invest as any)[hero.id] ?? null;
 const divineThroneEntry =
   (divineThroneData as any).heroes.find((entry: any) => entry.heroId === hero.id) ?? null;
@@ -401,12 +402,6 @@ const tabs = [
                 <div class="lt-panel lt-invest-cell">
                   <p class="lt-sublabel">Relic Recommendation</p>
                   <p class="lt-invest-value">{heroInvest.relicRec}</p>
-                </div>
-              )}
-              {heroInvest.f2pInvestment && (
-                <div class="lt-panel lt-invest-cell">
-                  <p class="lt-sublabel">F2P Target</p>
-                  <p class="lt-invest-value">{heroInvest.f2pInvestment}</p>
                 </div>
               )}
             </div>

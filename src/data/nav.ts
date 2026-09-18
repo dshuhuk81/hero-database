@@ -80,6 +80,21 @@ const allNavEntries: NavEntry[] = [
     icon: `<path d="M8.5 5.5c1.2-1.5 5.8-1.5 7 0"/><path d="M12 1.5v1.25M6.5 3l1 1M17.5 3l-1 1"/><path d="M8 9.5c0-1.4 1-2.5 2.3-2.5h3.4C15 7 16 8.1 16 9.5V16H8z"/><path d="M8 13H6.5A1.5 1.5 0 0 0 5 14.5V17h3M16 13h1.5a1.5 1.5 0 0 1 1.5 1.5V17h-3"/><path d="M7 17v4M17 17v4M7 19h10"/>`,
   },
   {
+    label: "Infinite Labyrinth",
+    href: "/guides/infinite-labyrinth",
+    group: "content",
+    sidebar: false,
+    description: {
+      en: "Chapters, Temporal Relics, teams, rewards and merge-board strategy",
+      de: "Kapitel, Temporal Relics, Teams, Belohnungen und Merge-Board-Strategie",
+      es: "Capítulos, Reliquias Temporales, equipos, recompensas y estrategia de fusión",
+      ru: "Главы, временные реликвии, команды, награды и стратегия объединения",
+      zh: "章节、时序遗物、阵容、奖励与合成策略",
+    },
+    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2026-10-18" },
+    icon: `<path d="M4 4h16v16H4zM8 4v12h8V8H8v4h4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>`,
+  },
+  {
   label: "Timed Challenge",
   href: "/events",
   group: "content",

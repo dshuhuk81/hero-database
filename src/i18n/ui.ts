@@ -29,7 +29,6 @@ const translations: TranslationTree = {
     noStrengths: { en: "No strengths listed yet.", de: "Noch keine Stärken eingetragen.", es: "Todavía no hay fortalezas listadas.", ru: "Пока не указаны сильные стороны.", zh: "暂未列出优势。" },
     noWeaknesses: { en: "No weaknesses listed yet.", de: "Noch keine Schwächen eingetragen.", es: "Todavía no hay debilidades listadas.", ru: "Пока не указаны слабые стороны.", zh: "暂未列出劣势。" },
     relicInvestment: { en: "Relic Investment", de: "Relikt-Investition", es: "Inversión de reliquia", ru: "Вложение в реликвию", zh: "圣物培养" },
-    f2pInvestment: { en: "F2P Investment", de: "F2P-Investition", es: "Inversión F2P", ru: "F2P-вложение", zh: "零氪培养" },
     recommendation: { en: "Recommendation", de: "Empfehlung", es: "Recomendación", ru: "Рекомендация", zh: "推荐" },
     usedIn: { en: "Used In", de: "Verwendet in", es: "Usado en", ru: "Используется в", zh: "出场阵容" },
   },
