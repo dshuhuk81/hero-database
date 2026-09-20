@@ -56,6 +56,7 @@ function adaptHero(raw) {
     faction: raw.faction,
     role: raw.role,
     class: raw.class,
+    tierClass: raw.tierClass ?? "Other",
     rarity: raw.rarity,
     description: raw.description ?? "",
     // ✅ Stats 1:1 aus Hero-JSON (Divine 5 raw in-game stats, not normalized)
