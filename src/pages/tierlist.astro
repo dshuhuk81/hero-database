@@ -48,9 +48,9 @@ const ratingFields = [
 
 const tierClasses = [
   { value: "carry", label: "Carries" },
+  { value: "utility", label: "Utility" },
   { value: "supports", label: "Supports" },
   { value: "tanks", label: "Tanks" },
-  { value: "utility", label: "Utility" },
   { value: "other", label: "Other" },
 ];
 
@@ -105,21 +105,6 @@ const jsonLd = {
           </div>
         </fieldset>
 
-        <fieldset class="rating-picker-group role-picker">
-          <legend>Role</legend>
-          <div class="rating-options rating-options-role">
-            {tierClasses.map(tierClass => (
-              <button
-                class="rating-option role-option"
-                type="button"
-                data-tier-class={tierClass.value}
-                aria-pressed="false"
-              >
-                <span>{tierClass.label}</span>
-              </button>
-            ))}
-          </div>
-        </fieldset>
       </section>
 
       <div class="sort-bar">
@@ -127,46 +112,58 @@ const jsonLd = {
           <p class="ranking-kicker"><span id="rankingTitle">PvE · Early</span> ranking</p>
           <p id="heroCounter" class="hero-counter">{sortedHeroes.length} heroes</p>
         </div>
-        <div class="sort-controls">
-          <button id="rankDirection" class="rank-direction" type="button" aria-label="Show lowest rankings first">
-            <span>Best first</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M12 5v14"/><path d="m7 14 5 5 5-5"/>
-            </svg>
-          </button>
-        </div>
       </div>
 
       <div class="tier-list" id="tierList">
+        <div class="tier-class-headings" aria-hidden="true">
+          <span></span>
+          {tierClasses.map(tierClass => (
+            <span class={`tier-class-heading tier-class-${tierClass.value}`}>{tierClass.label}</span>
+          ))}
+        </div>
+
         {tierGroups.map(group => (
           <section class="tier-row" data-tier-section data-rank={group.rank} hidden={group.heroes.length === 0}>
             <header class="tier-label" data-tier={group.tier}>
               <span class="tier-name">{group.tier}</span>
               <span class="tier-count" data-tier-count>{group.heroes.length}</span>
             </header>
-            <div class="tier-heroes">
-              {group.heroes.map(hero => (
-                <div
-                  class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
-                  data-sort-order={sortedHeroes.indexOf(hero)}
-                  data-name={hero.name.toLowerCase()}
-                  data-class={hero.class.toLowerCase()}
-                  data-role={hero.role.toLowerCase()}
-                  data-tier-class={hero.tierClass.toLowerCase()}
-                  data-faction={hero.faction.toLowerCase()}
-                  data-rarity={hero.rarity.toLowerCase()}
-                  data-tags={hero.synergies?.join("|").toLowerCase() || ""}
-                  data-rating-overall={hero.ratings?.overall || "N/A"}
-                  data-rating-pveearly={hero.ratings?.pveearly || "N/A"}
-                  data-rating-pvemidgame={hero.ratings?.pvemidgame || "N/A"}
-                  data-rating-pveendgame={hero.ratings?.pveendgame || "N/A"}
-                  data-rating-pvpearly={hero.ratings?.pvpearly || "N/A"}
-                  data-rating-pvpmidgame={hero.ratings?.pvpmidgame || "N/A"}
-                  data-rating-pvpendgame={hero.ratings?.pvpendgame || "N/A"}
-                >
-                  <HeroCard hero={hero} showRating={false} showNewBadge={false} />
-                </div>
-              ))}
+            <div class="tier-class-columns">
+              {tierClasses.map(tierClass => {
+                const classHeroes = group.heroes.filter(hero => hero.tierClass.toLowerCase() === tierClass.value);
+                return (
+                  <section
+                    class={`tier-class-column tier-class-${tierClass.value}${classHeroes.length === 0 ? " is-empty" : ""}`}
+                    data-tier-class-column={tierClass.value}
+                  >
+                    <h3 class="tier-class-title">{tierClass.label}</h3>
+                    <div class="tier-class-heroes">
+                      {classHeroes.map(hero => (
+                        <div
+                          class={`hero-wrapper rarity-${hero.rarity.toLowerCase()}`}
+                          data-sort-order={sortedHeroes.indexOf(hero)}
+                          data-name={hero.name.toLowerCase()}
+                          data-class={hero.class.toLowerCase()}
+                          data-role={hero.role.toLowerCase()}
+                          data-tier-class={hero.tierClass.toLowerCase()}
+                          data-faction={hero.faction.toLowerCase()}
+                          data-rarity={hero.rarity.toLowerCase()}
+                          data-tags={hero.synergies?.join("|").toLowerCase() || ""}
+                          data-rating-overall={hero.ratings?.overall || "N/A"}
+                          data-rating-pveearly={hero.ratings?.pveearly || "N/A"}
+                          data-rating-pvemidgame={hero.ratings?.pvemidgame || "N/A"}
+                          data-rating-pveendgame={hero.ratings?.pveendgame || "N/A"}
+                          data-rating-pvpearly={hero.ratings?.pvpearly || "N/A"}
+                          data-rating-pvpmidgame={hero.ratings?.pvpmidgame || "N/A"}
+                          data-rating-pvpendgame={hero.ratings?.pvpendgame || "N/A"}
+                        >
+                          <HeroCard hero={hero} showRating={false} showNewBadge={false} />
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
             </div>
           </section>
         ))}
@@ -210,12 +207,6 @@ const jsonLd = {
     text-transform: uppercase;
   }
 
-  .role-picker {
-    margin-top: var(--space-4);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--border-subtle);
-  }
-
   .rating-options {
     display: grid;
     gap: var(--space-2);
@@ -225,20 +216,9 @@ const jsonLd = {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .rating-options-role {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-
   .rating-option {
     min-width: 0;
     cursor: pointer;
-  }
-
-  button.rating-option {
-    padding: 0;
-    border: 0;
-    background: none;
-    font: inherit;
   }
 
   .rating-option input {
@@ -273,19 +253,7 @@ const jsonLd = {
     outline-offset: 2px;
   }
 
-  .role-option:focus-visible span {
-    outline: 2px solid var(--accent-gold);
-    outline-offset: 2px;
-  }
-
   .rating-option input:checked + span {
-    border-color: var(--accent-gold);
-    background: color-mix(in srgb, var(--accent-gold) 14%, var(--input-bg));
-    color: var(--text-bright);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-gold) 28%, transparent);
-  }
-
-  .role-option[aria-pressed="true"] span {
     border-color: var(--accent-gold);
     background: color-mix(in srgb, var(--accent-gold) 14%, var(--input-bg));
     color: var(--text-bright);
@@ -314,43 +282,44 @@ const jsonLd = {
     font-weight: var(--weight-semibold);
   }
 
-  .sort-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
-
-  .rank-direction {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    background: var(--input-bg);
-    color: var(--text-bright);
-    padding: 9px var(--space-3);
-    font: inherit;
-    cursor: pointer;
-  }
-
-  .rank-direction:hover {
-    background: var(--chip-bg-hover);
-  }
-
-  .rank-direction svg {
-    width: 16px;
-    height: 16px;
-    transition: transform var(--duration-normal) var(--ease-out);
-  }
-
-  .rank-direction.reversed svg {
-    transform: rotate(180deg);
-  }
-
   .tier-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
+  }
+
+  .tier-class-headings {
+    display: grid;
+    grid-template-columns: 104px repeat(5, minmax(0, 1fr));
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--bg-surface);
+  }
+
+  .tier-class-heading {
+    display: flex;
+    min-height: 58px;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3);
+    border-left: 1px solid var(--border-subtle);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .tier-class-carry { --tier-class-color: #ff4d5f; }
+  .tier-class-utility { --tier-class-color: #c66af4; }
+  .tier-class-supports { --tier-class-color: #7be49b; }
+  .tier-class-tanks { --tier-class-color: #ffc21c; }
+  .tier-class-other { --tier-class-color: var(--text-secondary); }
+
+  .tier-class-heading,
+  .tier-class-title {
+    color: var(--tier-class-color);
   }
 
   .tier-row {
@@ -375,6 +344,32 @@ const jsonLd = {
     gap: var(--space-2);
     border-right: 1px solid rgba(255, 255, 255, 0.12);
     background: var(--input-bg);
+  }
+
+  .tier-class-columns {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-width: 0;
+  }
+
+  .tier-class-column {
+    min-width: 0;
+    padding: var(--space-3);
+    border-left: 1px solid var(--border-subtle);
+    background: color-mix(in srgb, var(--bg-surface) 86%, transparent);
+  }
+
+  .tier-class-column:nth-child(even) {
+    background: color-mix(in srgb, var(--input-bg) 78%, transparent);
+  }
+
+  .tier-class-title {
+    display: none;
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
   }
 
   .tier-label[data-tier="S+"] { background: linear-gradient(145deg, var(--tier-splus-from), var(--tier-splus-to)); }
@@ -407,11 +402,10 @@ const jsonLd = {
     font-weight: var(--weight-semibold);
   }
 
-  .tier-heroes {
+  .tier-class-heroes {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
     gap: var(--space-3);
-    padding: var(--space-4);
   }
 
   .hero-wrapper {
@@ -429,6 +423,32 @@ const jsonLd = {
     height: 190px;
   }
 
+  @media (max-width: 1100px) {
+    .tier-class-headings { display: none; }
+    .tier-row { display: block; }
+    .tier-label {
+      min-height: 76px;
+      border-right: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .tier-class-columns { display: block; }
+    .tier-class-column {
+      padding: var(--space-4);
+      border-top: 1px solid var(--border-subtle);
+      border-left: 0;
+    }
+    .tier-class-column:first-child { border-top: 0; }
+    .tier-class-column.is-empty { display: none; }
+    .tier-class-title {
+      display: block;
+      margin-bottom: var(--space-3);
+      text-align: center;
+    }
+    .tier-class-heroes {
+      grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    }
+  }
+
   @media (max-width: 600px) {
     .rating-picker {
       padding: var(--space-4);
@@ -438,20 +458,15 @@ const jsonLd = {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .rating-options-role {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .tier-row {
-      grid-template-columns: 58px minmax(0, 1fr);
       min-height: 160px;
     }
 
     .tier-name { font-size: 1.65rem; }
-    .tier-heroes {
+    .tier-class-column { padding: var(--space-3); }
+    .tier-class-heroes {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--space-2);
-      padding: var(--space-2);
     }
     .hero-wrapper :global(.hero-card) { height: 170px; }
   }
@@ -461,10 +476,7 @@ const jsonLd = {
   document.addEventListener("DOMContentLoaded", () => {
     const heroCounter = document.getElementById("heroCounter");
     const rankingTitle = document.getElementById("rankingTitle");
-    const tierList = document.getElementById("tierList") as HTMLElement;
     const tierSections = Array.from(document.querySelectorAll<HTMLElement>("[data-tier-section]"));
-    const rankDirection = document.getElementById("rankDirection") as HTMLButtonElement;
-    const roleOptions = Array.from(document.querySelectorAll<HTMLButtonElement>(".role-option[data-tier-class]"));
     const heroCards = Array.from(document.querySelectorAll<HTMLElement>(".hero-wrapper"))
       .sort((a, b) => Number(a.dataset.sortOrder) - Number(b.dataset.sortOrder));
     const ratingInputs = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="tier-rating"]'));
@@ -475,42 +487,25 @@ const jsonLd = {
       pveendgame: "PvE · Lategame",
     };
 
-    let reversed = false;
-    let activeRole = "";
-    let activeField = "pveearly";
-
-    function orderSections() {
-      [...tierSections]
-        .sort((a, b) => {
-          const aRank = Number(a.dataset.rank);
-          const bRank = Number(b.dataset.rank);
-          const unratedRank = tierSections.length - 1;
-          if (aRank === unratedRank) return 1;
-          if (bRank === unratedRank) return -1;
-          const difference = aRank - bRank;
-          return reversed ? -difference : difference;
-        })
-        .forEach(section => tierList.appendChild(section));
-    }
-
     function applyRating(field: string) {
-      activeField = field;
-
       heroCards.forEach(card => {
         const tier = card.getAttribute(`data-rating-${field}`) || "N/A";
         const section = sectionByTier.get(tier) ?? sectionByTier.get("N/A");
-        section?.querySelector(".tier-heroes")?.appendChild(card);
-        card.hidden = Boolean(activeRole) && card.dataset.tierClass !== activeRole;
+        const tierClass = card.dataset.tierClass || "other";
+        section?.querySelector(`[data-tier-class-column="${tierClass}"] .tier-class-heroes`)?.appendChild(card);
       });
 
       let rated = 0;
       tierSections.forEach(section => {
-        const count = section.querySelectorAll(".hero-wrapper:not([hidden])").length;
+        const count = section.querySelectorAll(".hero-wrapper").length;
         const tier = section.querySelector<HTMLElement>(".tier-label")?.dataset.tier;
         section.hidden = tier === "N/A" || count === 0;
         if (tier !== "N/A") rated += count;
         const countElement = section.querySelector("[data-tier-count]");
         if (countElement) countElement.textContent = String(count);
+        section.querySelectorAll<HTMLElement>("[data-tier-class-column]").forEach(column => {
+          column.classList.toggle("is-empty", !column.querySelector(".hero-wrapper"));
+        });
       });
 
       if (rankingTitle) rankingTitle.textContent = labels[field] || "Overall";
@@ -520,39 +515,15 @@ const jsonLd = {
 
       const url = new URL(window.location.href);
       field === "pveearly" ? url.searchParams.delete("rating") : url.searchParams.set("rating", field);
-      if (!activeRole) url.searchParams.delete("role");
-      else url.searchParams.set("role", activeRole);
+      url.searchParams.delete("role");
       window.history.replaceState({}, "", url);
-      orderSections();
     }
 
-    rankDirection.addEventListener("click", () => {
-      reversed = !reversed;
-      orderSections();
-      rankDirection.classList.toggle("reversed", reversed);
-      rankDirection.querySelector("span")!.textContent = reversed ? "Lowest first" : "Best first";
-      rankDirection.setAttribute("aria-label", reversed ? "Show best rankings first" : "Show lowest rankings first");
-    });
-
     ratingInputs.forEach(input => input.addEventListener("change", () => applyRating(input.value)));
-
-    roleOptions.forEach(option => {
-      option.addEventListener("click", () => {
-        const selectedRole = option.dataset.tierClass || "";
-        activeRole = activeRole === selectedRole ? "" : selectedRole;
-        roleOptions.forEach(item => item.setAttribute("aria-pressed", String(item.dataset.tierClass === activeRole)));
-        applyRating(activeField);
-      });
-    });
 
     const url = new URL(window.location.href);
     const requestedField = url.searchParams.get("rating") || "pveearly";
     const initialInput = ratingInputs.find(input => input.value === requestedField) ?? ratingInputs[0];
-    const requestedRole = url.searchParams.get("role") || "";
-    if (roleOptions.some(option => option.dataset.tierClass === requestedRole)) {
-      activeRole = requestedRole;
-      roleOptions.forEach(item => item.setAttribute("aria-pressed", String(item.dataset.tierClass === activeRole)));
-    }
     if (initialInput) {
       initialInput.checked = true;
       applyRating(initialInput.value);
