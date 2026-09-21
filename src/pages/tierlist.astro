@@ -41,9 +41,9 @@ const tierGroups = tierOrder.map((tier, rank) => ({
   }));
 
 const ratingFields = [
-  { key: "pveearly", label: "Early" },
-  { key: "pvemidgame", label: "Mid" },
-  { key: "pveendgame", label: "Lategame" },
+  { key: "pveearly", label: "Early (Ch.1-39)" },
+  { key: "pvemidgame", label: "Mid (Ch.40-55)" },
+  { key: "pveendgame", label: "Lategame (Ch.55+" },
 ];
 
 const tierClasses = [
@@ -83,10 +83,6 @@ const jsonLd = {
 
   <div class="page-wrapper heros-page-wrapper page-content">
     <div class="resultcontent">
-      <p class="rating-coverage">
-        Fehlende Heldeninfos: PvE ({missingPveCount}), PvP ({missingPvpCount})
-      </p>
-
       <section class="rating-picker" aria-label="Ranking filter">
         <fieldset class="rating-picker-group">
           <legend>Ranking</legend>
