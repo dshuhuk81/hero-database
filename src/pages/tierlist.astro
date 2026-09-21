@@ -127,7 +127,7 @@ const jsonLd = {
 
       <div class="sort-bar">
         <div>
-          <p class="ranking-kicker"><span id="rankingTitle">PvE · Early</span> ranking</p>
+          <p class="ranking-kicker">PVE Ranking</p>
           <p class="ranking-relic-range" id="rankingRelicRange">Relic Level 0-10</p>
         </div>
       </div>
@@ -592,19 +592,12 @@ const jsonLd = {
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const heroCounter = document.getElementById("heroCounter");
-    const rankingTitle = document.getElementById("rankingTitle");
     const rankingRelicRange = document.getElementById("rankingRelicRange");
     const tierSections = Array.from(document.querySelectorAll<HTMLElement>("[data-tier-section]"));
     const heroCards = Array.from(document.querySelectorAll<HTMLElement>(".hero-wrapper"))
       .sort((a, b) => Number(a.dataset.sortOrder) - Number(b.dataset.sortOrder));
     const ratingTabs = Array.from(document.querySelectorAll<HTMLButtonElement>(".tl-tab[data-rating]"));
     const sectionByTier = new Map(tierSections.map(section => [section.querySelector<HTMLElement>(".tier-label")?.dataset.tier || "N/A", section]));
-    const labels: Record<string, string> = {
-      pveearly: "PvE · Early",
-      pvemidgame: "PvE · Mid",
-      pveendgame: "PvE · Lategame",
-    };
     const relicRanges: Record<string, string> = {
       pveearly: "Chapters 1-39 and Relic Level 0-10",
       pvemidgame: "Chapters 40-55 and Relic Level 10-30",
@@ -619,24 +612,16 @@ const jsonLd = {
         section?.querySelector(`[data-tier-class-column="${tierClass}"] .tier-class-heroes`)?.appendChild(card);
       });
 
-      let rated = 0;
       tierSections.forEach(section => {
         const count = section.querySelectorAll(".hero-wrapper").length;
         const tier = section.querySelector<HTMLElement>(".tier-label")?.dataset.tier;
         section.hidden = tier === "N/A" || count === 0;
-        if (tier !== "N/A") rated += count;
-        const countElement = section.querySelector("[data-tier-count]");
-        if (countElement) countElement.textContent = String(count);
         section.querySelectorAll<HTMLElement>("[data-tier-class-column]").forEach(column => {
           column.classList.toggle("is-empty", !column.querySelector(".hero-wrapper"));
         });
       });
 
-      if (rankingTitle) rankingTitle.textContent = labels[field] || "Overall";
       if (rankingRelicRange) rankingRelicRange.textContent = relicRanges[field] || "";
-      if (heroCounter) {
-        heroCounter.textContent = `${rated} ${rated === 1 ? "hero" : "heroes"}`;
-      }
 
       const url = new URL(window.location.href);
       field === "pveearly" ? url.searchParams.delete("rating") : url.searchParams.set("rating", field);
