@@ -41,9 +41,9 @@ const tierGroups = tierOrder.map((tier, rank) => ({
   }));
 
 const ratingFields = [
-  { key: "pveearly", label: "Early (Ch.1-39)" },
-  { key: "pvemidgame", label: "Mid (Ch.40-55)" },
-  { key: "pveendgame", label: "Lategame (Ch.55+" },
+  { key: "pveearly", label: "Early Game" },
+  { key: "pvemidgame", label: "Mid Game" },
+  { key: "pveendgame", label: "Late Game" },
 ];
 
 const tierClasses = [
@@ -106,6 +106,7 @@ const jsonLd = {
       <div class="sort-bar">
         <div>
           <p class="ranking-kicker"><span id="rankingTitle">PvE · Early</span> ranking</p>
+          <p class="ranking-relic-range" id="rankingRelicRange">Relikt-Level 0 - 10</p>
         </div>
       </div>
 
@@ -274,6 +275,12 @@ const jsonLd = {
     color: var(--text-bright);
     font-size: var(--text-xl);
     font-weight: var(--weight-semibold);
+  }
+
+  .ranking-relic-range {
+    margin: var(--space-1) 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
   }
 
   .tier-list {
@@ -484,6 +491,7 @@ const jsonLd = {
   document.addEventListener("DOMContentLoaded", () => {
     const heroCounter = document.getElementById("heroCounter");
     const rankingTitle = document.getElementById("rankingTitle");
+    const rankingRelicRange = document.getElementById("rankingRelicRange");
     const tierSections = Array.from(document.querySelectorAll<HTMLElement>("[data-tier-section]"));
     const heroCards = Array.from(document.querySelectorAll<HTMLElement>(".hero-wrapper"))
       .sort((a, b) => Number(a.dataset.sortOrder) - Number(b.dataset.sortOrder));
@@ -493,6 +501,11 @@ const jsonLd = {
       pveearly: "PvE · Early",
       pvemidgame: "PvE · Mid",
       pveendgame: "PvE · Lategame",
+    };
+    const relicRanges: Record<string, string> = {
+      pveearly: "Chapters 1-39 and Relic-Level 0 - 10",
+      pvemidgame: "Chapters 40-55 and Relic-Level 10 - 30",
+      pveendgame: "Chapters 55+ and Relic-Level 30+",
     };
 
     function applyRating(field: string) {
@@ -517,6 +530,7 @@ const jsonLd = {
       });
 
       if (rankingTitle) rankingTitle.textContent = labels[field] || "Overall";
+      if (rankingRelicRange) rankingRelicRange.textContent = relicRanges[field] || "";
       if (heroCounter) {
         heroCounter.textContent = `${rated} ${rated === 1 ? "hero" : "heroes"}`;
       }
