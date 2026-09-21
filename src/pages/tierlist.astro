@@ -106,7 +106,6 @@ const jsonLd = {
       <div class="sort-bar">
         <div>
           <p class="ranking-kicker"><span id="rankingTitle">PvE · Early</span> ranking</p>
-          <p id="heroCounter" class="hero-counter">{sortedHeroes.length} heroes</p>
         </div>
       </div>
 
@@ -122,7 +121,6 @@ const jsonLd = {
           <section class="tier-row" data-tier-section data-rank={group.rank} hidden={group.heroes.length === 0}>
             <header class="tier-label" data-tier={group.tier}>
               <span class="tier-name">{group.tier}</span>
-              <span class="tier-count" data-tier-count>{group.heroes.length}</span>
             </header>
             <div class="tier-class-columns">
               {tierClasses.map(tierClass => {
