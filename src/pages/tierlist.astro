@@ -33,7 +33,7 @@ const sortedHeroes = [...eligibleHeroes]
   .filter(hasCompletePveRatings)
   .sort((a, b) => compareNewFirst(a, b) || a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
 
-const tierOrder = ["S+", "S", "A", "B", "C", "D", "N/A"];
+const tierOrder = ["S", "A", "B", "C", "D", "N/A"];
 const tierGroups = tierOrder.map((tier, rank) => ({
     tier,
     rank,
@@ -47,10 +47,10 @@ const ratingFields = [
 ];
 
 const tierClasses = [
-  { value: "carry", label: "Carries" },
+  { value: "carry", label: "Carry" },
   { value: "utility", label: "Utility" },
-  { value: "supports", label: "Supports" },
-  { value: "tanks", label: "Tanks" },
+  { value: "supports", label: "Support" },
+  { value: "tanks", label: "Tank" },
   { value: "other", label: "Other" },
 ];
 
@@ -83,6 +83,7 @@ const jsonLd = {
 
   <div class="page-wrapper heros-page-wrapper page-content">
     <div class="resultcontent">
+
       <div class="tl-accordions">
         <details class="tl-accordion">
           <summary>
@@ -108,21 +109,6 @@ const jsonLd = {
             </ul>
           </div>
         </details>
-
-        <details class="tl-accordion">
-          <summary>
-            <span>Changelog</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-          </summary>
-          <div class="tl-accordion-body">
-            <ul class="tl-changelog">
-              <li>
-                <time datetime="2026-09-21">2026-09-21</time>
-                <span>Added hero roles and define ratings for early-, mid-, and late game.</span>
-              </li>
-            </ul>
-          </div>
-        </details>
       </div>
 
       <nav class="tl-tabs" aria-label="Ranking filter">
@@ -142,7 +128,7 @@ const jsonLd = {
       <div class="sort-bar">
         <div>
           <p class="ranking-kicker"><span id="rankingTitle">PvE · Early</span> ranking</p>
-          <p class="ranking-relic-range" id="rankingRelicRange">Relikt-Level 0 - 10</p>
+          <p class="ranking-relic-range" id="rankingRelicRange">Relic Level 0-10</p>
         </div>
       </div>
 
@@ -199,6 +185,23 @@ const jsonLd = {
           </section>
         ))}
       </div>
+       <div class="tl-accordions">
+               <details class="tl-accordion">
+          <summary>
+            <span>Changelog</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="tl-accordion-body">
+            <ul class="tl-changelog">
+              <li>
+                <time datetime="2026-09-21">2026-09-21</time>
+                <span>Added hero roles and define ratings for early-, mid-, and late game.</span>
+              </li>
+            </ul>
+          </div>
+        </details>
+       </div>
+
     </div>
   </div>
 </Base>
@@ -206,12 +209,6 @@ const jsonLd = {
 <style>
   .resultcontent {
     width: 100%;
-  }
-
-  .rating-coverage {
-    margin: var(--space-8) 0 0;
-    color: var(--text-muted);
-    font-size: var(--text-sm);
   }
 
   .tl-accordions {
@@ -380,12 +377,6 @@ const jsonLd = {
     gap: var(--space-3);
   }
 
-  .hero-counter {
-    margin: var(--space-1) 0 0;
-    color: var(--text-muted);
-    font-size: var(--text-sm);
-  }
-
   .ranking-kicker {
     margin: 0;
     color: var(--text-bright);
@@ -505,20 +496,6 @@ const jsonLd = {
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
   }
 
-  .tier-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 26px;
-    height: 24px;
-    padding: 0 var(--space-2);
-    border-radius: var(--radius-full);
-    background: rgba(0, 0, 0, 0.24);
-    color: rgba(255, 255, 255, 0.86);
-    font-size: var(--text-xs);
-    font-weight: var(--weight-semibold);
-  }
-
   .tier-class-heroes {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(91px, 110px));
@@ -629,9 +606,9 @@ const jsonLd = {
       pveendgame: "PvE · Lategame",
     };
     const relicRanges: Record<string, string> = {
-      pveearly: "Chapters 1-39 and Relic-Level 0 - 10",
-      pvemidgame: "Chapters 40-55 and Relic-Level 10 - 30",
-      pveendgame: "Chapters 55+ and Relic-Level 30+",
+      pveearly: "Chapters 1-39 and Relic Level 0-10",
+      pvemidgame: "Chapters 40-55 and Relic Level 10-30",
+      pveendgame: "Chapters 55+ and Relic Level 30+",
     };
 
     function applyRating(field: string) {
