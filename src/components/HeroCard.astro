@@ -1,5 +1,5 @@
 ---
-const { hero, showRating = true, showNewBadge = true } = Astro.props;
+const { hero, showRating = true, showNewBadge = true, showFactionIcon = false } = Astro.props;
 const overallRating = hero?.ratings?.overall ?? hero?.rating ?? "";
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const HERO_CARD_IMAGE_VERSION = "2026-06-08-portrait";
@@ -23,6 +23,19 @@ const HERO_CARD_IMAGE_VERSION = "2026-06-08-portrait";
     fetchpriority="low"
     onerror={`this.onerror=null;this.srcset='';this.src='${R2_BASE}/heroes/${hero.id}.webp'`}
   />
+
+  {showFactionIcon && hero.faction && (
+    <img
+      class="hero-faction-icon"
+      src={`${R2_BASE}/icons/factions/${hero.faction.toLowerCase()}.webp`}
+      alt={`${hero.faction} faction`}
+      title={hero.faction}
+      width="20"
+      height="20"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
 
   {showRating && overallRating && (
     <div class="rating-badge" data-tier={overallRating}>
@@ -71,6 +84,16 @@ const HERO_CARD_IMAGE_VERSION = "2026-06-08-portrait";
   object-position: center var(--hero-img-y, top);
   transition: transform 0.45s cubic-bezier(.2,.8,.2,1);
   z-index: 0;
+}
+
+.hero-faction-icon {
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.65));
+  z-index: 4;
 }
 
 /* Hover Zoom */
