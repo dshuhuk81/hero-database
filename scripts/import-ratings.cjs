@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQhEoBsd7thoXZOjsykAV_oDiHB-e1x2c6t3LiKSSRKritGxq39kS0xU_LgGBew7StjZR4LY94CMYt2/pub?gid=212086981&single=true&output=csv';
 const ROOT = path.join(__dirname, '..');
@@ -14,8 +15,18 @@ const RATING_FIELDS = [
   'pvpmidgame',
   'pvpendgame',
 ];
-const REQUIRED_COLUMNS = ['id', 'name', ...RATING_FIELDS, 'overallAdjustment', 'overallReason'];
+const REQUIRED_COLUMNS = ['id', 'name', 'role', ...RATING_FIELDS, 'overallAdjustment', 'overallReason'];
 const VALID_TIERS = new Set(['D', 'C', 'B', 'A', 'S', 'S+']);
+const ROLE_TO_TIER_CLASS = {
+  carry: 'Carry',
+  support: 'Supports',
+  supports: 'Supports',
+  utility: 'Utility',
+  tank: 'Tanks',
+  tanks: 'Tanks',
+  other: 'Other',
+  others: 'Other',
+};
 
 function parseCsv(text) {
   const rows = [];
@@ -78,6 +89,13 @@ function cleanAdjustment(value, context) {
   return adjustment;
 }
 
+function cleanTierClass(value, context) {
+  const role = String(value ?? '').trim().toLowerCase();
+  const tierClass = ROLE_TO_TIER_CLASS[role];
+  if (!tierClass) throw new Error(`${context}: invalid or empty role "${value}".`);
+  return tierClass;
+}
+
 function changedFields(before, after) {
   return [...RATING_FIELDS, 'overallAdjustment', 'overallReason']
     .filter((field) => before[field] !== after[field]);
@@ -111,13 +129,18 @@ async function run() {
   if (missingColumns.length) throw new Error(`Missing required column(s): ${missingColumns.join(', ')}.`);
 
   const ratings = JSON.parse(fs.readFileSync(RATINGS_PATH, 'utf8'));
-  const heroIds = new Set(
+  const heroes = new Map(
     fs.readdirSync(HEROES_DIR)
       .filter((file) => file.endsWith('.json'))
-      .map((file) => JSON.parse(fs.readFileSync(path.join(HEROES_DIR, file), 'utf8')).id),
+      .map((file) => {
+        const filePath = path.join(HEROES_DIR, file);
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        return [data.id, { data, filePath }];
+      }),
   );
   const seenIds = new Set();
   const changes = [];
+  const tierClassChanges = [];
 
   for (const cells of rows.slice(headerIndex + 1)) {
     const source = Object.fromEntries(headers.map((header, index) => [header, cells[index] ?? '']));
@@ -126,7 +149,7 @@ async function run() {
     if (!/^[a-z0-9]+$/.test(id)) throw new Error(`Invalid hero id "${source.id}".`);
     if (seenIds.has(id)) throw new Error(`Duplicate hero id "${id}" in Google Sheets.`);
     seenIds.add(id);
-    if (!heroIds.has(id)) throw new Error(`${id}: hero JSON does not exist.`);
+    if (!heroes.has(id)) throw new Error(`${id}: hero JSON does not exist.`);
     if (!ratings[id]) throw new Error(`${id}: hero-ratings.json entry does not exist.`);
 
     const next = { ...ratings[id] };
@@ -137,6 +160,13 @@ async function run() {
     next.overallReason = String(source.overallReason ?? '').trim();
     if (next.overallAdjustment !== 0 && !next.overallReason) {
       throw new Error(`${id}: an Overall adjustment requires overallReason.`);
+    }
+
+    const hero = heroes.get(id);
+    const tierClass = cleanTierClass(source.role, `${id}.role`);
+    if (hero.data.tierClass !== tierClass) {
+      tierClassChanges.push({ id, before: hero.data.tierClass ?? '', after: tierClass });
+      hero.data.tierClass = tierClass;
     }
 
     const fields = changedFields(ratings[id], next);
@@ -153,8 +183,13 @@ async function run() {
   if (changes.length) {
     for (const change of changes) console.log(`  ${change.id}: ${change.fields.join(', ')}`);
   }
+  console.log(`${tierClassChanges.length} heroes have a changed tierClass.`);
+  if (tierClassChanges.length) {
+    for (const change of tierClassChanges) {
+      console.log(`  ${change.id}: ${change.before || '(empty)'} -> ${change.after}`);
+    }
+  }
   console.log(`Not present in sheet (preserved): ${missingFromSheet.join(', ') || '(none)'}`);
-  console.log('The sheet role column is intentionally ignored; tierClass remains manually curated.');
 
   if (dryRun) {
     console.log('Dry run complete. No files were written.');
@@ -162,7 +197,13 @@ async function run() {
   }
 
   fs.writeFileSync(RATINGS_PATH, `${JSON.stringify(ratings, null, 2)}\n`, 'utf8');
+  for (const change of tierClassChanges) {
+    const hero = heroes.get(change.id);
+    fs.writeFileSync(hero.filePath, `${JSON.stringify(hero.data, null, 2)}\n`, 'utf8');
+  }
   console.log(`Updated ${path.relative(ROOT, RATINGS_PATH)}.`);
+  console.log(`Updated tierClass in ${tierClassChanges.length} hero JSON files.`);
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/merge-heroes-db.js')], { stdio: 'inherit' });
 }
 
 run().catch((error) => {
