@@ -46,39 +46,36 @@
   "skills": [
     {
       "id": "skill_1",
-      "name": "Fall to Shadow!",
-      "description": "Gains 200 Energy upon entering battle.",
-      "upgrades": {
-        "level2": "She steals 2% max HP and 2% ATK from all enemies when casting her Ultimate, up to 100% of her ATK and HP. She grows in size with each steal. (Unlock at Relic Lv.10)",
-        "level3": "Plunders 3% of the max HP and ATK. (Unlock at Relic Lv.20)",
-        "level4": "Plunders 4% of the max HP and ATK. (Unlock at Relic Lv.30)"
-      },
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_1.webp",
-      "damageType": "Magical",
-      "isUltimate": true
-    },
-    {
-      "id": "skill_2",
       "name": "The World's Dark Half",
-      "description": "Hecate summons nether flames to attack all enemies, dealing DMG equal to 100% of ATK every 2s for 10s. She restores HP equal to 50% of the DMG dealt when the skill ends. If the Ultimate is cast again before the previous one ends, it immediately restores HP based on the DMG dealt so far and resets the DMG timer.",
+      "description": "Hecate summons nether flames to attack all enemies, dealing DMG equal to 100% of ATK every 2s for 10s. She restores HP equal to 50% of the DMG dealt when the skill ends. If the Ultimate is cast again before the previous one ends, immediately restores HP based on the DMG dealt so far and resets the DMG timer.",
       "upgrades": {
         "level2": "Increases DMG per sec to 120% ATK.",
         "level3": "Restores HP equal to 50% of the DMG immediately upon dealing DMG.",
         "level4": "Increases DMG per sec to 150% ATK."
       },
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_2.webp",
+      "damageType": "Magical",
+      "isUltimate": true
+    },
+    {
+      "id": "skill_2",
+      "name": "Soul Drain",
+      "description": "Hecate continously deals DMG equal to 50% of ATK to the nearest enemy every 0.5s and gains 50% Lifesteal for 2.5s.",
+      "upgrades": {
+        "level2": "Increases Lifesteal to 100%.",
+        "level3": "Increases DMG dealt by 75% ATK every 0.5s.",
+        "level4": "Increases DMG dealt to 90% ATK every 0.5s."
+      },
       "damageType": "Magical"
     },
     {
       "id": "skill_3",
-      "name": "Soul Drain",
-      "description": "Hecate continuously deals DMG equal to 50% of ATK to the nearest enemy every 0.5s and gains 50% Lifesteal for 2.5s.",
+      "name": "Irresistable Force",
+      "description": "The ATK she received grows as her current HP increases. It reaches the max bonus ATK of 30% at 80% HP.",
       "upgrades": {
-        "level2": "Increases Lifesteal to 100%.",
-        "level3": "Increases DMG dealt to 75% ATK every 0.5s.",
-        "level4": "Increases DMG dealt to 90% ATK every 0.5s."
+        "level2": "Upon casting the Ultimate, she gains the max bonus ATK regardless of her HP.",
+        "level3": "Increases CRIT Rate by an additional 15%.",
+        "level4": "Increases the bonus ATK to 50%."
       },
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_3.webp",
       "damageType": ""
     },
     {
@@ -88,31 +85,21 @@
       "upgrades": {
         "level2": "Increases DMG dealt to 240% ATK.",
         "level3": "Increases DMG dealt to 260% ATK.",
-        "level4": "Increases DMG dealt to 280% ATK and stun duration to 3s. (Unlocks at Lv.281)"
+        "level4": "Increases DMG dealt to 280% of ATK and stun duration to 3s."
       },
-      "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_skill_4.webp",
       "damageType": "Magical"
     }
   ],
-  "passive": {
-    "name": "Irresistible Force",
-    "description": "The ATK she receives grows as her current HP increases. It reaches the maximum bonus ATK of 30% at 80% HP.",
-    "upgrades": {
-      "level2": "Upon casting the Ultimate, she gains the max bonus ATK regardless of her HP.",
-      "level3": "Increases CRIT Rate by an additional 15%.",
-      "level4": "Increases the bonus ATK to 50%. (Unlocks at Lv.261)"
-    }
-  },
   "relic": {
     "name": "Fall to Shadow!",
-    "description": "Enhances Fall to Shadow!, enabling HP and ATK plunder when casting the Ultimate.",
-    "damageType": "True",
+    "description": "Gains 200 Energy upon entering battle.",
     "upgrades": {
-      "level2": "Unlocks HP & ATK steal at 2%. (Relic Lv.10)",
-      "level3": "Increases plunder to 3%. (Relic Lv.20)",
-      "level4": "Increases plunder to 4%. (Relic Lv.30)"
+      "level2": "She steals 2% max HP and 2% ATK from all enemies when casting her Ultimate, up to 100% of her ATK and HP. She grows in size with each steal.",
+      "level3": "Plunders 3% of the max HP and ATK.",
+      "level4": "Plunders 4% of the max HP and ATK."
     },
-    "image": "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/skills/hecate_relic.webp"
+    "damageType": "true"
+
   },
   "synergies": [
     "ENEMY_CROWD_CONTROL",
