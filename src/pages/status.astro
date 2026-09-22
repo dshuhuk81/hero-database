@@ -468,11 +468,15 @@ const kpis = [
           <div class="two-field-grid">
             <label>
               <span>Minimum relic</span>
-              <input name="relicMin" type="text" placeholder="0, 1, 10..." />
+              <input name="relicMin" type="number" min="0" step="1" placeholder="0, 1, 10..." />
             </label>
             <label>
               <span>Relic recommendation</span>
-              <input name="relicRec" type="text" placeholder="20, 30..." />
+              <input name="relicRec" type="number" min="0" step="1" placeholder="20, 30..." />
+            </label>
+            <label>
+              <span>Throne upgrade</span>
+              <input name="throne" type="number" min="0" step="1" placeholder="0, 10, 20..." />
             </label>
             <label>
               <span>Used in</span>
@@ -1074,8 +1078,9 @@ const kpis = [
       const calculatedOverall = document.getElementById("calculatedOverall");
       if (calculatedOverall) calculatedOverall.textContent = ratings?.overall || "N/A";
 
-      setField("relicMin", investment?.relicMin || "");
-      setField("relicRec", investment?.relicRec || "");
+      setField("relicMin", investment?.relicMin ?? 0);
+      setField("relicRec", investment?.relicRec ?? 0);
+      setField("throne", investment?.throne ?? 0);
       setField("usedIn", investment?.usedIn || "");
       setField("investmentExplanation", investment?.explanation || "");
       renderTagPicker(tagSearch?.value || "");
@@ -1220,6 +1225,7 @@ const kpis = [
           body: JSON.stringify({
             relicMin: getField("relicMin"),
             relicRec: getField("relicRec"),
+            throne: getField("throne"),
             usedIn: getField("usedIn"),
             explanation: getField("investmentExplanation"),
           }),

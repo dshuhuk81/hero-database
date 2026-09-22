@@ -3,16 +3,15 @@ export const prerender = true;
 
 import { heroes } from "../data/heroes/withRatings";
 import allInvest from "../data/ratings/invest.json";
-import { pickLang, type LocalizedString } from "../i18n/helpers";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 
 const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
 const investment = allInvest as Record<string, {
-  relicMin: LocalizedString;
-  relicRec?: LocalizedString;
+  relicMin: number;
+  relicRec: number;
+  throne: number;
 }>;
-const english = (value: LocalizedString) => pickLang(value, "en");
 
 const rows = heroes
   .filter((hero) => (import.meta.env.DEV || hero.release !== false) && investment[hero.id])
@@ -59,8 +58,6 @@ const rows = heroes
 
     <div id="riGrid" class="ri-list">
       {rows.map(({ hero, investment: entry }) => {
-        const minimumRelic = english(entry.relicMin);
-        const relicRecommendation = entry.relicRec ? english(entry.relicRec) : "";
         return (
           <article
             class="ri-row"
@@ -75,11 +72,11 @@ const rows = heroes
             </a>
             <div class="ri-value ri-relic-value">
               <span class="ri-mobile-label">Minimum relic</span>
-              {minimumRelic && <strong>{minimumRelic}</strong>}
+              <strong>{entry.relicMin ?? 0}</strong>
             </div>
             <div class="ri-value ri-relic-value ri-recommendation">
               <span class="ri-mobile-label">Relic recommendation</span>
-              {relicRecommendation && <strong>{relicRecommendation}</strong>}
+              <strong>{entry.relicRec ?? 0}</strong>
             </div>
           </article>
         );

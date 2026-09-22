@@ -13,16 +13,6 @@ export type ContentPageStatus = {
  * Remove an entry when its replacement content is ready to publish.
  */
 export const pageStatuses: Record<string, ContentPageStatus> = {
-  "/relic-investment": {
-    state: "under-construction",
-    name: {
-      en: "Relic Recommendations",
-      de: "Relikt-Empfehlungen",
-      es: "Recomendaciones de reliquias",
-      ru: "Рекомендации по реликвиям",
-      zh: "圣物推荐",
-    },
-  },
 };
 
 export const underConstructionMeta = {

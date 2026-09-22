@@ -154,6 +154,13 @@ function normalizeString(value) {
   return String(value).trim();
 }
 
+function normalizeInvestmentLevel(value) {
+  const level = normalizeString(value);
+  if (!/^\d+$/.test(level)) return 0;
+  const parsed = Number(level);
+  return Number.isSafeInteger(parsed) ? parsed : 0;
+}
+
 function normalizeBool(value) {
   if (value === true || value === 'true') return true;
   if (value === false || value === 'false') return false;
@@ -374,8 +381,9 @@ app.get('/api/admin/heroes/:id', async (req, res) => {
       hero,
       ratings: { ...rawRatings, ...resolveHeroRatings(rawRatings) },
       investment: invest[id] || {
-        relicMin: '',
-        relicRec: '',
+        relicMin: 0,
+        relicRec: 0,
+        throne: 0,
         usedIn: '',
         explanation: '',
       },
@@ -482,13 +490,14 @@ app.patch('/api/admin/invest/:id', async (req, res) => {
     const current = invest[id] || {};
 
     const next = {
-      relicMin: normalizeString(req.body.relicMin ?? current.relicMin),
-      relicRec: normalizeString(req.body.relicRec ?? current.relicRec),
+      relicMin: normalizeInvestmentLevel(req.body.relicMin ?? current.relicMin),
+      relicRec: normalizeInvestmentLevel(req.body.relicRec ?? current.relicRec),
+      throne: normalizeInvestmentLevel(req.body.throne ?? current.throne),
       usedIn: normalizeString(req.body.usedIn ?? current.usedIn),
       explanation: normalizeString(req.body.explanation ?? current.explanation),
     };
 
-    if (!hasExistingInvestment && !next.relicMin && !next.relicRec && !next.usedIn && !next.explanation) {
+    if (!hasExistingInvestment && !next.relicMin && !next.relicRec && !next.throne && !next.usedIn && !next.explanation) {
       return res.json({ success: true, skipped: true, investment: next, changedFiles: [] });
     }
 

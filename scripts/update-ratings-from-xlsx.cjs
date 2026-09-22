@@ -41,6 +41,14 @@ function cleanList(v) {
   return s;
 }
 
+function cleanInvestmentLevel(value) {
+  const level = value === null || value === undefined ? '' : String(value).trim();
+  const numericValue = level.match(/^(\d+)(?:\s*[-–—]\s*\d+)?$/);
+  if (!numericValue) return 0;
+  const parsed = Number(numericValue[1]);
+  return Number.isSafeInteger(parsed) ? parsed : 0;
+}
+
 // Prose field (explanation): newline -> sentence break unless already terminated
 function cleanProse(v) {
   if (v === null || v === undefined) return '';
@@ -152,7 +160,7 @@ for (const sheetName of SUIT_SHEETS) {
     };
 
     investUpdates[key] = {
-      relicMin: cleanList(row[COL.relic]),
+      relicMin: cleanInvestmentLevel(row[COL.relic]),
       usedIn: cleanList(row[COL.usedIn]),
       explanation: cleanProse(row[COL.explanation]),
     };
@@ -181,7 +189,8 @@ let iUpdated = 0;
 let iAdded = 0;
 for (const key of Object.keys(investUpdates)) {
   if (invest[key]) iUpdated++; else iAdded++;
-  investUpdates[key].relicRec = invest[key]?.relicRec || '';
+  investUpdates[key].relicRec = cleanInvestmentLevel(invest[key]?.relicRec);
+  investUpdates[key].throne = cleanInvestmentLevel(invest[key]?.throne);
   invest[key] = investUpdates[key];
 }
 // Drop invest entries no longer present in source

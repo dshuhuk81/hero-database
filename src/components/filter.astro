@@ -1,5 +1,54 @@
+---
+const R2_BASE = "https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev";
+
+const CLASSES = [
+  { id: "tank", label: "Tank" },
+  { id: "warrior", label: "Warrior" },
+  { id: "archer", label: "Archer" },
+  { id: "mage", label: "Mage" },
+  { id: "support", label: "Support" },
+  { id: "assassin", label: "Assassin" },
+];
+
+const ROLES = [
+  { id: "nimble", label: "Nimble" },
+  { id: "arcane", label: "Arcane" },
+  { id: "hefty", label: "Hefty" },
+];
+
+const FACTIONS = [
+  { id: "hearts", label: "Hearts" },
+  { id: "clubs", label: "Clubs" },
+  { id: "diamonds", label: "Diamonds" },
+  { id: "spades", label: "Spades" },
+  { id: "starglint", label: "Starglint" },
+];
+
+const RARITIES = [
+  { id: "common", label: "Common" },
+  { id: "epic", label: "Epic" },
+  { id: "legendary", label: "Legendary" },
+];
+
+const STAR_PATH = "M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z";
+---
+
+<!-- Mobile filter FAB (visible only on mobile, opens overlay) -->
+<button class="filter-fab" id="filterFab" type="button" aria-label="Open filters">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+    <line x1="11" y1="18" x2="13" y2="18"/>
+  </svg>
+  Filter
+  <span class="filter-fab-badge" id="filterFabBadge"></span>
+</button>
+
+<!-- Mobile filter overlay backdrop -->
+<div class="filter-overlay-backdrop" id="filterOverlayBackdrop"></div>
+
 <!-- ═══════════════════════════════════
-     FILTER BAR (styled like newer variant)
+     FILTER BAR (single-row, Prydwen style)
      Keeps all functional hooks (ids/classes/data-*)
 ════════════════════════════════════ -->
 <section class="filters filter-bar" id="filterBar">
@@ -10,220 +59,152 @@
     <button class="filter-overlay-close" id="filterOverlayClose" type="button" aria-label="Close filters">&#x2715;</button>
   </div>
 
-  <!-- ROW 1: Class · Role · Rarity · Search · Reset -->
-  <div class="filter-row filter-row--main">
-
-    <!-- CLASS FILTER -->
-    <div class="filter-group">
-      <span class="filter-label">Class</span>
-      <div class="chip-row">
-        <button class="chip class-chip" data-class="tank" title="Tank">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/tank.webp" alt="Tank" />
-        </button>
-
-        <button class="chip class-chip" data-class="warrior" title="Warrior">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/warrior.webp" alt="Warrior" />
-        </button>
-
-        <button class="chip class-chip" data-class="archer" title="Archer">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/archer.webp" alt="Archer" />
-        </button>
-
-        <button class="chip class-chip" data-class="mage" title="Mage">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/mage.webp" alt="Mage" />
-        </button>
-
-        <button class="chip class-chip" data-class="support" title="Support">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/support.webp" alt="Support" />
-        </button>
-
-        <button class="chip class-chip" data-class="assassin" title="Assassin">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/classes/assassin.webp" alt="Assassin" />
-        </button>
-      </div>
-    </div>
-
-    <div class="filter-divider"></div>
-
-    <!-- ROLE FILTER -->
-    <div class="filter-group">
-      <span class="filter-label">Role</span>
-      <div class="chip-row">
-        <button class="chip role-chip" data-role="nimble" title="Nimble">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/nimble.webp" alt="Nimble" />
-        </button>
-
-        <button class="chip role-chip" data-role="arcane" title="Arcane">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/arcane.webp" alt="Arcane" />
-        </button>
-
-        <button class="chip role-chip" data-role="hefty" title="Hefty">
-          <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/roles/hefty.webp" alt="Hefty" />
-        </button>
-      </div>
-    </div>
-
-    <div class="filter-divider"></div>
-
-    <!-- RARITY FILTER -->
-    <div class="filter-group">
-      <span class="filter-label">Rarity</span>
-      <div class="chip-row">
-        <button class="chip rarity-chip common" data-rarity="common" title="Common">
-          <svg viewBox="0 0 24 24" class="rarity-star">
-            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-          </svg>
-          <span class="rarity-name">Common</span>
-        </button>
-
-        <button class="chip rarity-chip epic" data-rarity="epic" title="Epic">
-          <svg viewBox="0 0 24 24" class="rarity-star">
-            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-          </svg>
-          <span class="rarity-name">Epic</span>
-        </button>
-
-        <button class="chip rarity-chip legendary" data-rarity="legendary" title="Legendary">
-          <svg viewBox="0 0 24 24" class="rarity-star">
-            <path d="M12 2l2.9 6.1 6.7.6-5 4.5 1.5 6.6L12 16.8 5.9 19.8 7.4 13.2 2.4 8.7l6.7-.6L12 2z"/>
-          </svg>
-          <span class="rarity-name">Legendary</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="filter-divider"></div>
+  <div class="filter-row">
 
     <!-- SEARCH -->
     <div class="filter-group filter-group--search">
-      <span class="filter-label">Search</span>
       <div class="search-wrapper">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
         <input
           type="text"
           id="searchInput"
-          placeholder="Search hero..."
+          placeholder="Search heroes..."
           class="search-input"
+          aria-label="Search heroes"
         />
-        <!-- optional: falls dein JS das nutzt (stört sonst nicht) -->
-        <button class="search-clear" id="searchClear" aria-label="Clear search" type="button">×</button>
+        <button class="search-clear" id="searchClear" aria-label="Clear search" type="button">&#x2715;</button>
       </div>
     </div>
 
+    <div class="filter-divider" aria-hidden="true"></div>
+
+    <!-- CLASS -->
+    <div class="filter-group">
+      <span class="filter-label" id="filterLabelClass">Class</span>
+      <div class="chip-row" role="group" aria-labelledby="filterLabelClass">
+        <button class="chip all-chip" data-group="class" title="All classes" aria-label="All classes" type="button">
+          <svg viewBox="0 0 24 24" class="all-star" aria-hidden="true"><path d={STAR_PATH}/></svg>
+        </button>
+        {CLASSES.map(c => (
+          <button class="chip class-chip" data-class={c.id} title={c.label} aria-label={c.label} type="button">
+            <img src={`${R2_BASE}/icons/classes/${c.id}.webp`} alt="" width="22" height="22" loading="lazy" decoding="async" />
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="filter-divider" aria-hidden="true"></div>
+
+    <!-- ROLE -->
+    <div class="filter-group">
+      <span class="filter-label" id="filterLabelRole">Role</span>
+      <div class="chip-row" role="group" aria-labelledby="filterLabelRole">
+        <button class="chip all-chip" data-group="role" title="All roles" aria-label="All roles" type="button">
+          <svg viewBox="0 0 24 24" class="all-star" aria-hidden="true"><path d={STAR_PATH}/></svg>
+        </button>
+        {ROLES.map(r => (
+          <button class="chip role-chip" data-role={r.id} title={r.label} aria-label={r.label} type="button">
+            <img src={`${R2_BASE}/icons/roles/${r.id}.webp`} alt="" width="22" height="22" loading="lazy" decoding="async" />
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="filter-divider" aria-hidden="true"></div>
+
+    <!-- FACTION -->
+    <div class="filter-group">
+      <span class="filter-label" id="filterLabelFaction">Faction</span>
+      <div class="chip-row" role="group" aria-labelledby="filterLabelFaction">
+        <button class="chip all-chip" data-group="faction" title="All factions" aria-label="All factions" type="button">
+          <svg viewBox="0 0 24 24" class="all-star" aria-hidden="true"><path d={STAR_PATH}/></svg>
+        </button>
+        {FACTIONS.map(f => (
+          <button class="chip faction-chip" data-faction={f.id} title={f.label} aria-label={f.label} type="button">
+            <img src={`${R2_BASE}/icons/factions/${f.id}.webp`} alt="" width="22" height="22" loading="lazy" decoding="async" />
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="filter-divider" aria-hidden="true"></div>
+
+    <!-- RARITY -->
+    <div class="filter-group">
+      <span class="filter-label" id="filterLabelRarity">Rarity</span>
+      <div class="chip-row" role="group" aria-labelledby="filterLabelRarity">
+        <button class="chip all-chip" data-group="rarity" title="All rarities" aria-label="All rarities" type="button">
+          <svg viewBox="0 0 24 24" class="all-star" aria-hidden="true"><path d={STAR_PATH}/></svg>
+        </button>
+        {RARITIES.map(r => (
+          <button class={`chip rarity-chip ${r.id}`} data-rarity={r.id} title={r.label} aria-label={r.label} type="button">
+            <svg viewBox="0 0 24 24" class="rarity-star" aria-hidden="true"><path d={STAR_PATH}/></svg>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="filter-spacer" aria-hidden="true"></div>
+
     <!-- RESET -->
     <div class="filter-group filter-group--reset">
-      <span class="filter-label">&nbsp;</span>
       <button id="resetFilters" class="reset-button" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12"/>
         </svg>
-        Reset Filters
+        Reset
       </button>
     </div>
 
   </div>
 
-  <!-- ROW 2: Faction -->
-  <div class="filter-row filter-row--faction">
-    <div class="filter-group">
-      <span class="filter-label">Faction</span>
-        <div class="chip-row">
-          <button class="chip faction-chip" data-faction="hearts" title="hearts">
-            <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/hearts.webp" alt="hearts" />
-            <span class="faction-name">Hearts</span>
-          </button>
-
-          <button class="chip faction-chip" data-faction="clubs" title="clubs">
-            <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/clubs.webp" alt="clubs" />
-            <span class="faction-name">Clubs</span>
-          </button>
-
-          <button class="chip faction-chip" data-faction="diamonds" title="diamonds">
-            <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/diamonds.webp" alt="diamonds" />
-            <span class="faction-name">Diamonds</span>
-          </button>
-
-          <button class="chip faction-chip" data-faction="spades" title="spades">
-            <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/spades.webp" alt="spades" />
-            <span class="faction-name">Spades</span>
-          </button>
-
-          <button class="chip faction-chip" data-faction="starglint" title="starglint">
-            <img src="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/icons/factions/starglint.webp" alt="starglint" />
-            <span class="faction-name">Starglint</span>
-          </button>
-        </div>
-        </div>
-  </div>
-
 </section>
 
 <style>
-
 /* ── FILTER BAR ───────────────────────────────────────── */
 .filter-bar {
-  --filter-option-icon-size: 26px;
+  --filter-option-icon-size: 22px;
+  --filter-accent: #4c8dff;
   position: relative;
   background: var(--bg-raised);
-  padding: var(--space-5);
+  padding: 10px var(--space-4);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
   z-index: var(--z-dropdown);
   margin-top: var(--space-6);
 }
 
 .filter-row {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 4px 16px;
-  overflow: visible;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-
-.filter-row--faction {
-  display: flex;
-  flex-wrap: nowrap;          /* verhindert Umbruch */
-  align-items: flex-start;
-  gap: 16px;
-  margin-top: var(--space-4);
-  overflow: visible;
-}
-
-.filter-row--faction > .filter-group {
-  flex: 0 0 auto;             /* keine 100%-Basis */
-  min-width: 0;               /* wichtig für overflow children */
+  gap: 8px 10px;
 }
 
 /* ── GROUPS ───────────────────────────────────────────── */
 .filter-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .filter-group--search {
-  flex: 1;
-  min-width: 180px;
+  flex: 1 1 200px;
+  min-width: 170px;
+  max-width: 300px;
 }
 
 .filter-group--reset {
   flex-shrink: 0;
 }
 
-.filter-group--wide {
-  width: 100%;
-}
-
 .filter-label {
-  font-size: var(--text-sm);
+  display: none; /* labels only shown in the mobile overlay */
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -236,124 +217,106 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .filter-divider {
   width: 1px;
-  height: 36px;
+  height: 26px;
   background: rgba(255,255,255,0.08);
-  align-self: flex-end;
-  margin-bottom: 4px;
   flex-shrink: 0;
+}
+
+.filter-spacer {
+  flex: 1 1 auto;
+  min-width: 4px;
 }
 
 /* ── BASE CHIP ────────────────────────────────────────── */
 .chip {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
-  padding: 5px;
+  padding: 0;
   cursor: pointer;
   color: #e6e6eb;
-  opacity: 0.65;
-  transition: opacity 0.18s, transform 0.15s, border-color 0.18s, box-shadow 0.18s, background 0.18s;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  opacity: 1;
+  transition: transform 0.15s, border-color 0.18s, box-shadow 0.18s, background 0.18s;
+  flex-shrink: 0;
 }
 
 .chip:hover {
-  opacity: 0.85;
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.22);
 }
 
 .chip.active {
-  opacity: 1;
   border-color: rgba(255,255,255,0.35);
   background: rgba(255,255,255,0.09);
   box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 4px 12px rgba(0,0,0,0.4);
 }
 
-/* ── CLASS & ROLE CHIPS ───────────────────────────────── */
+.chip:active { transform: scale(0.94); }
+
+/* ── ALL CHIP (Prydwen "All" star) ────────────────────── */
+.all-star {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  transition: fill 0.18s, stroke 0.18s;
+}
+
+.all-chip.active {
+  background: var(--filter-accent);
+  border-color: var(--filter-accent);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(76,141,255,0.35);
+}
+
+.all-chip.active .all-star {
+  fill: #fff;
+  stroke: #fff;
+}
+
+/* ── CLASS / ROLE / FACTION ICON CHIPS ────────────────── */
 .class-chip img,
-.role-chip img {
-  width: var(--filter-option-icon-size);
-  height: var(--filter-option-icon-size);
-  object-fit: contain;
-  filter: grayscale(100%) brightness(1.1);
-  transition: filter 0.18s;
-}
-
-.class-chip:hover img, .class-chip.active img,
-.role-chip:hover img,  .role-chip.active img {
-  filter: brightness(1.4);
-}
-
-/* ── FACTION CHIPS ────────────────────────────────────── */
-.faction-chip {
-  border-radius: 20px;
-  padding: 4px 10px 4px 5px;
-}
-
+.role-chip img,
 .faction-chip img {
   width: var(--filter-option-icon-size);
   height: var(--filter-option-icon-size);
   object-fit: contain;
-  filter: grayscale(60%) brightness(1.1);
   transition: filter 0.18s;
-  border-radius: 50%;
+  pointer-events: none;
 }
 
-.faction-chip:hover img,
-.faction-chip.active img {
-  filter: brightness(1.3) saturate(1.2);
-}
+.chip.active img { filter: brightness(1.2); }
 
-.faction-name {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  color: #e6e6eb;
-  opacity: 0.9;
-  white-space: nowrap;
-}
+.faction-chip img { border-radius: 50%; }
 
 /* ── RARITY CHIPS ─────────────────────────────────────── */
 .rarity-star {
-  width: var(--filter-option-icon-size);
-  height: var(--filter-option-icon-size);
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.2;
+  stroke-width: 1.3;
   transition: fill 0.2s, filter 0.2s;
-}
-
-.rarity-chip {
-  min-height: 32px;
-  padding: var(--space-1) var(--space-2);
-}
-
-.rarity-name {
-  color: currentColor;
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-wide);
-  white-space: nowrap;
 }
 
 .rarity-chip.common    { color: #4ade80; }
 .rarity-chip.epic      { color: #a855f7; }
 .rarity-chip.legendary { color: #facc15; }
 
-.rarity-chip.active .rarity-star,
-.rarity-chip:hover .rarity-star {
+.rarity-chip.active .rarity-star {
   fill: currentColor;
+  filter: drop-shadow(0 0 6px currentColor);
 }
-
-.rarity-chip.active .rarity-star { filter: drop-shadow(0 0 6px currentColor); }
-.rarity-chip:hover .rarity-star  { opacity: 0.6; }
-.rarity-chip.active:hover .rarity-star { opacity: 1; }
 
 /* ── SEARCH ───────────────────────────────────────────── */
 .search-wrapper {
@@ -365,7 +328,7 @@
 
 .search-icon {
   position: absolute;
-  left: 9px;
+  left: 10px;
   width: 14px;
   height: 14px;
   color: rgba(230,230,235,0.45);
@@ -375,7 +338,7 @@
 .search-input {
   width: 100%;
   height: 36px;
-  padding: 0 30px 0 30px;
+  padding: 0 30px 0 32px;
   border-radius: 8px;
   color: #e6e6eb;
   background: rgba(255,255,255,0.05);
@@ -401,7 +364,7 @@
   cursor: pointer;
   font-size: 0.7rem;
   padding: 2px;
-  display: none; /* can be toggled by your existing JS (if any) */
+  display: none;
   line-height: 1;
 }
 
@@ -411,7 +374,7 @@
 /* ── RESET BUTTON ─────────────────────────────────────── */
 .reset-button {
   height: 36px;
-  padding: 0 14px;
+  padding: 0 12px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -426,32 +389,30 @@
   white-space: nowrap;
 }
 
+.reset-button svg {
+  width: 12px;
+  height: 12px;
+}
+
 .reset-button:hover {
   color: #e6e6eb;
   border-color: rgba(255,255,255,0.28);
   background: rgba(255,255,255,0.06);
 }
 
-/* If your JS toggles something like .has-active, keep this hook */
-.reset-button.has-active {
-  color: #e6e6eb;
-  border-color: rgba(255,255,255,0.25);
+/* ── RESPONSIVE (tablet) ──────────────────────────────── */
+@media (max-width: 1100px) {
+  .filter-group--search { max-width: 100%; }
+  .filter-spacer { display: none; }
 }
 
-/* ── RESPONSIVE ───────────────────────────────────────── */
-@media (max-width: 900px) {
-  .filter-divider        { display: none; }
-  .filter-row--main      { gap: 10px 12px; }
-  .filter-group--search  { max-width: 100%; }
-}
-
-/* Mobile overlay header: hidden by default, shown when overlay is active */
+/* ── MOBILE FILTER OVERLAY ────────────────────────────── */
 .filter-mobile-header {
   display: none;
 }
 
 @media (max-width: 768px) {
-  /* Hide filter bar on mobile by default */
+  /* Hide filter bar on mobile by default; shown as full-screen overlay */
   .filter-bar {
     display: none;
     position: fixed;
@@ -459,7 +420,6 @@
     z-index: 201;
     border-radius: 0;
     margin: 0;
-    max-height: 100dvh;
     overflow-y: auto;
     padding: var(--space-5) var(--space-4) 100px;
     border: none;
@@ -467,7 +427,6 @@
     transition: transform 0.3s var(--ease-out, cubic-bezier(0.25,0.46,0.45,0.94));
   }
 
-  /* When overlay is open */
   .filter-bar.filter-overlay-open {
     display: flex;
     transform: translateY(0);
@@ -482,20 +441,12 @@
   }
 
   .filter-row {
-    overflow: visible;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .filter-row--main,
-  .filter-row--faction {
     flex-direction: column;
-    flex-wrap: nowrap;
     align-items: stretch;
+    gap: var(--space-5);
   }
 
-  .filter-row--main > .filter-group,
-  .filter-row--faction > .filter-group,
+  .filter-row > .filter-group,
   .filter-group--search,
   .filter-group--reset {
     flex: 0 0 auto;
@@ -503,36 +454,53 @@
     min-width: 0;
   }
 
-  .filter-group--search {
-    max-width: 100%;
+  .filter-label {
+    display: block;
   }
 
-  .search-input {
-    width: 100%;
-  }
-
-  .filter-group--reset .filter-label {
+  .filter-divider,
+  .filter-spacer {
     display: none;
+  }
+
+  .chip-row {
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    width: 40px;
+    height: 40px;
   }
 
   .reset-button {
     width: 100%;
     justify-content: center;
   }
-
-  .filter-row--faction > .filter-group {
-    flex: 0 0 auto;
-    min-width: 0;
-  }
-
-  .filter-row--faction {
-    flex-wrap: nowrap;
-  }
-
-  /* Faction row: allow wrapping so all chips show */
-  .filter-row--faction {
-    flex-wrap: nowrap;
-    overflow: visible;
-  }
 }
 </style>
+
+<script>
+  // Mobile filter overlay: open/close wiring (works on every page using <Filter />)
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterFab = document.getElementById("filterFab");
+    const filterBar = document.getElementById("filterBar");
+    const filterOverlayBackdrop = document.getElementById("filterOverlayBackdrop");
+    const filterOverlayClose = document.getElementById("filterOverlayClose");
+
+    function openFilterOverlay() {
+      filterBar?.classList.add("filter-overlay-open");
+      filterOverlayBackdrop?.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeFilterOverlay() {
+      filterBar?.classList.remove("filter-overlay-open");
+      filterOverlayBackdrop?.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+
+    filterFab?.addEventListener("click", openFilterOverlay);
+    filterOverlayClose?.addEventListener("click", closeFilterOverlay);
+    filterOverlayBackdrop?.addEventListener("click", closeFilterOverlay);
+  });
+</script>

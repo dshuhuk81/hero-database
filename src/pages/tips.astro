@@ -24,6 +24,13 @@ const copy = {
   checklistTitle: { en: "Do these things first", de: "Das solltest du zuerst tun" },
   checklistIntro: { en: "Progress in order. You do not need to optimize every system on day one.", de: "Gehe der Reihe nach vor. Du musst nicht jedes System am ersten Tag optimieren." },
   now: { en: "Right now", de: "Sofort" }, unlocked: { en: "As they unlock", de: "Sobald freigeschaltet" }, later: { en: "Leave for later", de: "Später angehen" },
+  bountyLabel: { en: "Daily resources", de: "Tägliche Ressourcen" },
+  bountyTitle: { en: "Turn the Bounty Pool into daily Elysian Gems", de: "Mache den Bounty Pool zur täglichen Quelle für Elysian Gems" },
+  bountyIntro: { en: "Bounties are timed assignments: heroes are dispatched in the background and return with the shown reward. Configure the pool once, then target Elysian Gem missions every day.", de: "Bounties sind zeitbasierte Aufträge: Helden werden im Hintergrund losgeschickt und kehren mit der angezeigten Belohnung zurück. Richte den Pool einmal ein und priorisiere danach täglich Aufträge mit Elysian Gems." },
+  bountyYieldLabel: { en: "Possible later on", de: "Später möglich" },
+  bountyYieldAmount: { en: "~1,000–2,000", de: "~1.000–2.000" },
+  bountyYield: { en: "Elysian Gems per day", de: "Elysian Gems pro Tag" },
+  bountyYieldNote: { en: "Depends on progress and available refreshes.", de: "Abhängig von Fortschritt und verfügbaren Refreshes." },
   teamLabel: { en: "First team", de: "Erstes Team" },
   teamTitle: { en: "Build functions, not five tier-list ranks", de: "Baue Funktionen, nicht fünf Tier-List-Plätze" },
   teamIntro: { en: "One supported carry usually progresses faster than five heroes competing for the same resources.", de: "Ein gut unterstützter Carry bringt dich meist weiter als fünf Helden, die um dieselben Ressourcen konkurrieren." },
@@ -71,7 +78,7 @@ const copy = {
   mindseaTitle: { en: "Join an active Mindsea", de: "Tritt einer aktiven Mindsea bei" }, mindseaBody: { en: "Prioritize Zeus copies in the shop. A first Dionysus copy is also a good pickup.", de: "Priorisiere Zeus-Kopien im Shop. Eine erste Dionysus-Kopie ist ebenfalls sinnvoll." },
   nextLabel: { en: "Keep going", de: "Weiter geht’s" }, nextTitle: { en: "Use the right guide for the next decision", de: "Nutze den passenden Guide für die nächste Entscheidung" },
   nextIntro: { en: "The beginner route ends here. These pages handle the details without bloating this guide.", de: "Der Einsteigerpfad endet hier. Diese Seiten erklären die Details, ohne diesen Guide aufzublähen." },
-  openGuide: { en: "Open guide", de: "Guide öffnen" }, navStart: { en: "Start", de: "Start" }, navTeam: { en: "Team", de: "Team" }, navInvest: { en: "Invest", de: "Investieren" }, navSummons: { en: "Wishlist", de: "Wishlist" }, navStuck: { en: "Stuck?", de: "Festgefahren?" }, navCombat: { en: "Combat", de: "Kampf" }, navAccount: { en: "Account", de: "Account" },
+  openGuide: { en: "Open guide", de: "Guide öffnen" }, navStart: { en: "Start", de: "Start" }, navBounty: { en: "Bounty Pool", de: "Bounty Pool" }, navTeam: { en: "Team", de: "Team" }, navInvest: { en: "Invest", de: "Investieren" }, navSummons: { en: "Wishlist", de: "Wishlist" }, navStuck: { en: "Stuck?", de: "Festgefahren?" }, navCombat: { en: "Combat", de: "Kampf" }, navAccount: { en: "Account", de: "Account" },
 } satisfies Record<string, LocalizedString>;
 
 const rules = [
@@ -84,9 +91,15 @@ const rules = [
 
 const checklist = [
   { tone: "now", number: "01", title: copy.now, items: [{ en: "Finish the tutorial and claim mail and launch rewards.", de: "Schließe das Tutorial ab und hole Post- sowie Startbelohnungen ab." }, { en: "Push Odyssey, the main campaign, until you are blocked.", de: "Treibe Odyssey, die Hauptkampagne, voran, bis du festhängst." }, { en: "Check the official community for active codes.", de: "Prüfe die offizielle Community auf aktive Codes." }] },
-  { tone: "soon", number: "02", title: copy.unlocked, items: [{ en: "After 30 summons, fill the Wishlist so selected heroes are more likely to appear.", de: "Fülle nach 30 Beschwörungen die Wishlist, damit ausgewählte Helden mit höherer Wahrscheinlichkeit erscheinen." }, { en: "At Stage 3-9, join a Mindsea—the game's guild—and look for an active one.", de: "Tritt ab Stage 3-9 einer Mindsea – der Gilde des Spiels – bei und suche eine aktive." }, { en: "At Stage 5-1, choose Cancer as your Destined Zodiac; at Stage 5-3, place extra heroes in the Resonating Altar to share levels.", de: "Wähle ab Stage 5-1 Cancer als deinen Destined Zodiac; setze ab Stage 5-3 weitere Helden in den Resonating Altar, damit sie Level teilen." }, { en: "At Stage 8-30, begin the weekly Torment Rift for lasting account-wide progress.", de: "Beginne ab Stage 8-30 mit dem wöchentlichen Torment Rift für dauerhaften accountweiten Fortschritt." }] },
+  { tone: "soon", number: "02", title: copy.unlocked, items: [{ en: "After 30 summons, fill the Wishlist so selected heroes are more likely to appear.", de: "Fülle nach 30 Beschwörungen die Wishlist, damit ausgewählte Helden mit höherer Wahrscheinlichkeit erscheinen." }, { en: "Once the Bounty Pool unlocks, set Nemesis and Bastet and target Elysian Gems.", de: "Sobald der Bounty Pool freigeschaltet ist, wähle Nemesis und Bastet und priorisiere Elysian Gems." }, { en: "At Stage 3-9, join a Mindsea—the game's guild—and look for an active one.", de: "Tritt ab Stage 3-9 einer Mindsea – der Gilde des Spiels – bei und suche eine aktive." }, { en: "At Stage 5-1, choose Cancer as your Destined Zodiac; at Stage 5-3, place extra heroes in the Resonating Altar to share levels.", de: "Wähle ab Stage 5-1 Cancer als deinen Destined Zodiac; setze ab Stage 5-3 weitere Helden in den Resonating Altar, damit sie Level teilen." }, { en: "At Stage 8-30, begin the weekly Torment Rift for lasting account-wide progress.", de: "Beginne ab Stage 8-30 mit dem wöchentlichen Torment Rift für dauerhaften accountweiten Fortschritt." }] },
   { tone: "later", number: "03", title: copy.later, items: [{ en: "Multiple full teams and competitive PvP.", de: "Mehrere vollständige Teams und kompetitives PvP." }, { en: "Artifact ascension — level them, but save ascension for later.", de: "Artifact-Ascension – leveln ja, Ascension später." }, { en: "Spending rare materials without a defined target.", de: "Seltene Materialien ohne klares Ziel ausgeben." }] },
 ];
+
+const bountySteps = [
+  { number: "01", image: "/tips/bounty-pool-heroes.jpg", focus: "heroes", title: { en: "Choose Nemesis + Bastet", de: "Wähle Nemesis + Bastet" }, body: { en: "Set these two heroes in the Bounty Pool. Together they increase the appearance rate of Elysian Gem bounties by 60%.", de: "Setze diese beiden Helden im Bounty Pool ein. Gemeinsam erhöhen sie die Erscheinungsrate von Bounties mit Elysian Gems um 60 %." } },
+  { number: "02", image: "/tips/bounty-pool-reward.jpg", focus: "reward", title: { en: "Set Elysian Gem as the reward", de: "Wähle Elysian Gem als Belohnung" }, body: { en: "Tap the gear in the bottom-right corner, change Reward type to Elysian Gem, and confirm the selection.", de: "Tippe unten rechts auf das Zahnrad, stelle den Reward type auf Elysian Gem und bestätige die Auswahl." } },
+  { number: "03", image: "/tips/bounty-pool-refresh.jpg", focus: "refresh", title: { en: "Refresh, then dispatch", de: "Refreshen und losschicken" }, body: { en: "Refresh the Bounty Pool until Elysian Gem missions appear, select them, and dispatch heroes. Each refresh consumes one Renewal Jug.", de: "Refreshe den Bounty Pool, bis Aufträge mit Elysian Gems erscheinen, wähle sie aus und schicke Helden los. Jeder Refresh verbraucht einen Renewal Jug." } },
+] as const;
 
 const roles = [
   ["DPS", { en: "Main carry", de: "Haupt-Carry" }, { en: "Primary damage and first investment target.", de: "Hauptschaden und erstes Investitionsziel." }, "carry"],
@@ -146,12 +159,22 @@ const guideIcons = Object.fromEntries(navEntries.map((entry) => [entry.href, ent
     </div>
   </header>
 
-  <nav class="tips-anchor-nav" aria-label={pick(copy.rulesLabel)}><div class="tips-anchor-nav-inner"><a href="#start">{pick(copy.navStart)}</a><a href="#team">{pick(copy.navTeam)}</a><a href="#invest">{pick(copy.navInvest)}</a><a href="#summons">{pick(copy.navSummons)}</a><a href="#combat">{pick(copy.navCombat)}</a><a href="#stuck">{pick(copy.navStuck)}</a><a href="#account">{pick(copy.navAccount)}</a></div></nav>
+  <nav class="tips-anchor-nav" aria-label={pick(copy.rulesLabel)}><div class="tips-anchor-nav-inner"><a href="#start">{pick(copy.navStart)}</a><a href="#bounty-pool">{pick(copy.navBounty)}</a><a href="#team">{pick(copy.navTeam)}</a><a href="#invest">{pick(copy.navInvest)}</a><a href="#summons">{pick(copy.navSummons)}</a><a href="#combat">{pick(copy.navCombat)}</a><a href="#stuck">{pick(copy.navStuck)}</a><a href="#account">{pick(copy.navAccount)}</a></div></nav>
 
   <main class="tips-onepage">
     <section class="tips-section" id="start" aria-labelledby="start-title">
       <header class="tips-section-heading"><p>{pick(copy.checklistLabel)}</p><h2 id="start-title">{pick(copy.checklistTitle)}</h2><span>{pick(copy.checklistIntro)}</span></header>
       <div class="tips-roadmap">{checklist.map((phase) => <article class:list={["tips-roadmap-step", `is-${phase.tone}`]}><div class="tips-roadmap-marker"><span>{phase.number}</span></div><div class="tips-roadmap-body"><h3>{pick(phase.title)}</h3><ul>{phase.items.map((item) => <li>{pick(item)}</li>)}</ul></div></article>)}</div>
+    </section>
+
+    <section class="tips-section tips-section--wide" id="bounty-pool" aria-labelledby="bounty-title">
+      <header class="tips-section-heading tips-section-heading--split">
+        <div><p>{pick(copy.bountyLabel)}</p><h2 id="bounty-title">{pick(copy.bountyTitle)}</h2><span>{pick(copy.bountyIntro)}</span></div>
+        <aside class="tips-bounty-yield"><span>{pick(copy.bountyYieldLabel)}</span><strong>{pick(copy.bountyYieldAmount)}</strong><p>{pick(copy.bountyYield)}</p><small>{pick(copy.bountyYieldNote)}</small></aside>
+      </header>
+      <div class="tips-bounty-steps">
+        {bountySteps.map((step) => <article class="tips-bounty-step"><div class="tips-bounty-copy"><span>{step.number}</span><h3>{pick(step.title)}</h3><p>{pick(step.body)}</p></div><figure class:list={["tips-bounty-image", `is-${step.focus}`]}><img src={step.image} alt={pick(step.title)} loading="lazy" /></figure></article>)}
+      </div>
     </section>
 
     <section class="tips-section tips-section--wide" id="team" aria-labelledby="team-title">

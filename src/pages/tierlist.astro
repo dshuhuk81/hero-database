@@ -4,6 +4,7 @@ export const prerender = true;
 import HeroCard from "../components/HeroCard.astro";
 import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
+import Filter from "../components/filter.astro";
 import { heroes } from "../data/heroes/withRatings";
 
 const compareNewFirst = (a, b) => {
@@ -79,6 +80,7 @@ const jsonLd = {
   />
 
   <div class="page-wrapper heros-page-wrapper page-content">
+
     <div class="resultcontent">
 
       <div class="tl-accordions">
@@ -122,10 +124,19 @@ const jsonLd = {
         </div>
       </nav>
 
+      <Filter />
+
       <div class="sort-bar">
-        <div>
-          <p class="ranking-kicker">PVE Ranking</p>
-          <p class="ranking-relic-range" id="rankingRelicRange">Relic Level 0-10</p>
+        <div class="ranking-head">
+          <div class="mode-switch" role="group" aria-label="Ranking mode">
+            <button type="button" class="mode-btn is-active" data-mode="pve">PvE</button>
+            <button type="button" class="mode-btn" data-mode="pvp">PvP</button>
+          </div>
+          <div>
+            <p class="ranking-kicker" id="rankingKicker">PVE Ranking</p>
+            <p class="ranking-relic-range" id="rankingRelicRange">Relic Level 0-10</p>
+
+          </div>
         </div>
       </div>
 
@@ -374,6 +385,59 @@ const jsonLd = {
     gap: var(--space-3);
   }
 
+  .ranking-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .mode-switch {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--chip-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+  }
+
+  .mode-btn {
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 12px var(--space-5);
+    border-radius: var(--radius-full);
+    font-family: var(--font-base);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition-colors);
+  }
+
+  .mode-btn:hover { color: var(--text-bright); }
+
+  .mode-btn:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
+  .mode-btn.is-active {
+    background: var(--accent-gold);
+    color: var(--bg-base);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mode-btn { transition: none; }
+  }
+
+  .ranking-coverage {
+    margin: var(--space-1) 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+
   .ranking-kicker {
     margin: 0;
     color: var(--text-bright);
@@ -595,13 +659,154 @@ const jsonLd = {
       .sort((a, b) => Number(a.dataset.sortOrder) - Number(b.dataset.sortOrder));
     const ratingTabs = Array.from(document.querySelectorAll<HTMLButtonElement>(".tl-tab[data-rating]"));
     const sectionByTier = new Map(tierSections.map(section => [section.querySelector<HTMLElement>(".tier-label")?.dataset.tier || "N/A", section]));
+    const rankingKicker = document.getElementById("rankingKicker");
+    const rankingCoverage = document.getElementById("rankingCoverage");
+    const modeBtns = Array.from(document.querySelectorAll<HTMLButtonElement>(".mode-btn[data-mode]"));
     const relicRanges: Record<string, string> = {
       pveearly: "Chapters 1-39 and Relic Level 0-10",
       pvemidgame: "Chapters 40-55 and Relic Level 10-30",
       pveendgame: "Chapters 55+ and Relic Level 30+",
+      pvpearly: "Early PVP · Relic Level 0-10",
+      pvpmidgame: "Mid PVP · Relic Level 10-30",
+      pvpendgame: "Late PVP · Relic Level 30+",
     };
 
+    let currentField = "pveearly";
+
+    function currentMode(): "pve" | "pvp" {
+      return currentField.startsWith("pvp") ? "pvp" : "pve";
+    }
+
+    // ---- Filter bar (search + single-select chip clusters) ----
+
+    const searchInput = document.getElementById("searchInput") as HTMLInputElement | null;
+    const resetButton = document.getElementById("resetFilters");
+    const filterFabBadge = document.getElementById("filterFabBadge");
+    const searchClear = document.getElementById("searchClear") as HTMLButtonElement | null;
+    const roleChips = document.querySelectorAll(".role-chip");
+    const classChips = document.querySelectorAll(".class-chip");
+    const factionChips = document.querySelectorAll(".faction-chip");
+    const rarityChips = document.querySelectorAll(".rarity-chip");
+    const allChips = document.querySelectorAll<HTMLElement>(".all-chip");
+
+    let activeRoles = new Set<string>();
+    let activeClasses = new Set<string>();
+    let activeRarities = new Set<string>();
+    let activeFactions = new Set<string>();
+
+    const filterSets: Record<string, Set<string> | undefined> = {
+      class: activeClasses,
+      role: activeRoles,
+      rarity: activeRarities,
+      faction: activeFactions,
+    };
+
+    function syncAllChips() {
+      allChips.forEach(chip => {
+        const set = filterSets[chip.dataset.group || ""];
+        chip.classList.toggle("active", !set || set.size === 0);
+      });
+    }
+
+    function matchesFilters(el: HTMLElement): boolean {
+      const query = ((searchInput as HTMLInputElement)?.value || "").toLowerCase();
+      const name = el.dataset.name || "";
+      const cls = el.dataset.class || "";
+      const role = el.dataset.role || "";
+      const rarity = el.dataset.rarity || "";
+      const faction = el.dataset.faction || "";
+
+      return (
+        (!query || name.includes(query) || cls.includes(query) || role.includes(query) || faction.includes(query) || rarity.includes(query)) &&
+        (activeClasses.size === 0 || activeClasses.has(cls)) &&
+        (activeRoles.size === 0 || activeRoles.has(role)) &&
+        (activeRarities.size === 0 || activeRarities.has(rarity)) &&
+        (activeFactions.size === 0 || activeFactions.has(faction))
+      );
+    }
+
+    function applyFilters() {
+      syncAllChips();
+      heroCards.forEach(card => {
+        card.style.display = matchesFilters(card) ? "" : "none";
+      });
+      tierSections.forEach(section => {
+        const visible = Array.from(section.querySelectorAll<HTMLElement>(".hero-wrapper"))
+          .filter(card => card.style.display !== "none").length;
+        section.hidden = section.dataset.baseHidden === "true" || visible === 0;
+        section.querySelectorAll<HTMLElement>("[data-tier-class-column]").forEach(column => {
+          const columnVisible = Array.from(column.querySelectorAll<HTMLElement>(".hero-wrapper"))
+            .some(card => card.style.display !== "none");
+          column.classList.toggle("is-empty", !columnVisible);
+        });
+      });
+      updateFabBadge();
+    }
+
+    function updateFabBadge() {
+      const count = activeClasses.size + activeRoles.size + activeRarities.size + activeFactions.size + ((searchInput as HTMLInputElement)?.value.trim() ? 1 : 0);
+      if (filterFabBadge) {
+        filterFabBadge.textContent = count > 0 ? String(count) : "";
+      }
+    }
+
+    // Single-select within each cluster: clicking an option swaps the selection
+    // to that option; clicking the active option again deselects it (back to "All").
+    function bindSingleSelect(chips: NodeListOf<Element>, set: Set<string>, valueAttr: string) {
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          const value = (chip as HTMLElement).dataset[valueAttr] || "";
+          if (set.has(value)) {
+            set.delete(value);
+            chip.classList.remove("active");
+          } else {
+            set.clear();
+            chips.forEach(c => c.classList.remove("active"));
+            set.add(value);
+            chip.classList.add("active");
+          }
+          applyFilters();
+        });
+      });
+    }
+
+    bindSingleSelect(classChips, activeClasses, "class");
+    bindSingleSelect(roleChips, activeRoles, "role");
+    bindSingleSelect(factionChips, activeFactions, "faction");
+    bindSingleSelect(rarityChips, activeRarities, "rarity");
+
+    // "All" chips: clear the specific selection of their group
+    allChips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const group = chip.dataset.group || "";
+        const set = filterSets[group];
+        if (!set || set.size === 0) return;
+        set.clear();
+        document.querySelectorAll(`.${group}-chip`).forEach(c => c.classList.remove("active"));
+        applyFilters();
+      });
+    });
+
+    searchInput?.addEventListener("input", applyFilters);
+
+    searchClear?.addEventListener("click", () => {
+      (searchInput as HTMLInputElement).value = "";
+      searchInput?.dispatchEvent(new Event("input"));
+      searchInput?.focus();
+    });
+
+    resetButton?.addEventListener("click", () => {
+      (searchInput as HTMLInputElement).value = "";
+      activeClasses.clear();
+      activeRarities.clear();
+      activeRoles.clear();
+      activeFactions.clear();
+      document.querySelectorAll(".chip.active, .role-chip.active").forEach(c => c.classList.remove("active"));
+      applyRating(currentField);
+    });
+
     function applyRating(field: string) {
+      currentField = field;
       heroCards.forEach(card => {
         const tier = card.getAttribute(`data-rating-${field}`) || "N/A";
         const section = sectionByTier.get(tier) ?? sectionByTier.get("N/A");
@@ -612,30 +817,63 @@ const jsonLd = {
       tierSections.forEach(section => {
         const count = section.querySelectorAll(".hero-wrapper").length;
         const tier = section.querySelector<HTMLElement>(".tier-label")?.dataset.tier;
-        section.hidden = tier === "N/A" || count === 0;
+        const baseHidden = tier === "N/A" || count === 0;
+        section.dataset.baseHidden = String(baseHidden);
+        section.hidden = baseHidden;
         section.querySelectorAll<HTMLElement>("[data-tier-class-column]").forEach(column => {
           column.classList.toggle("is-empty", !column.querySelector(".hero-wrapper"));
         });
       });
 
+      applyFilters();
+
+      if (rankingKicker) rankingKicker.textContent = currentMode() === "pvp" ? "PVP Ranking" : "PVE Ranking";
       if (rankingRelicRange) rankingRelicRange.textContent = relicRanges[field] || "";
 
+      if (rankingCoverage) {
+        const total = Number(rankingCoverage.dataset.total || "0");
+        const missing = Number(rankingCoverage.dataset.missing || "0");
+        const showCoverage = currentMode() === "pvp" && missing > 0;
+        rankingCoverage.hidden = !showCoverage;
+        if (showCoverage) {
+          rankingCoverage.textContent = `PVP ratings available for ${total - missing} of ${total} heroes`;
+        }
+      }
+
+      modeBtns.forEach(btn => btn.classList.toggle("is-active", btn.dataset.mode === currentMode()));
+
+      const stage = field.replace(/^(pve|pvp)/, "");
       const url = new URL(window.location.href);
-      field === "pveearly" ? url.searchParams.delete("rating") : url.searchParams.set("rating", field);
+      currentMode() === "pve" ? url.searchParams.delete("mode") : url.searchParams.set("mode", "pvp");
+      stage === "early" ? url.searchParams.delete("stage") : url.searchParams.set("stage", stage);
+      url.searchParams.delete("rating");
       url.searchParams.delete("role");
       window.history.replaceState({}, "", url);
     }
 
     function selectRating(field: string) {
-      ratingTabs.forEach(tab => tab.classList.toggle("is-active", tab.dataset.rating === field));
+      const stage = field.replace(/^(pve|pvp)/, "");
+      ratingTabs.forEach(tab => tab.classList.toggle("is-active", tab.dataset.rating === `pve${stage}`));
       applyRating(field);
     }
 
-    ratingTabs.forEach(tab => tab.addEventListener("click", () => selectRating(tab.dataset.rating || "pveearly")));
+    ratingTabs.forEach(tab => tab.addEventListener("click", () => {
+      selectRating(`${currentMode()}${(tab.dataset.rating || "pveearly").replace(/^pve|pvp/, "")}`);
+    }));
 
+    modeBtns.forEach(btn => btn.addEventListener("click", () => {
+      const mode = btn.dataset.mode || "pve";
+      if (mode === currentMode()) return;
+      selectRating(currentField.replace(/^(pve|pvp)/, mode));
+    }));
+
+    // Initial state: ?mode=pvp&stage=midgame (legacy ?rating=pvemidgame still read)
     const url = new URL(window.location.href);
-    const requestedField = url.searchParams.get("rating") || "pveearly";
-    const initialField = ratingTabs.some(tab => tab.dataset.rating === requestedField) ? requestedField : "pveearly";
+    const modeParam = url.searchParams.get("mode") === "pvp" ? "pvp" : "pve";
+    const stageParam = url.searchParams.get("stage") || (url.searchParams.get("rating") || "").replace(/^(pve|pvp)/, "") || "early";
+    const requestedField = modeParam + stageParam;
+    const validStages = ratingTabs.map(tab => (tab.dataset.rating || "").replace(/^pve|pvp/, ""));
+    const initialField = validStages.includes(stageParam) ? requestedField : `${modeParam}early`;
     selectRating(initialField);
   });
 </script>

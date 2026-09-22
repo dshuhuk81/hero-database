@@ -12,6 +12,7 @@
     "tag-manager": "node scripts/tag-manager-server.js",
     "mergeHeroes": "node scripts/merge-heroes-db.js",
     "import-attack-rates": "node scripts/import-attack-rates.cjs",
+    "import-investment": "node scripts/import-investment.cjs",
     "import-ratings": "node scripts/import-ratings.cjs",
     "db:merge": "node scripts/merge-heroes-db.js",
     "validate:tags": "node scripts/test-hero-tags.js",
