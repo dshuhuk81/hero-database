@@ -107,6 +107,9 @@ const featuredImageFor = (href: string) => href === "/heroes"
           <a class="home-action home-action-secondary" href={hrefFor("/tierlist")}>
             {navLabel("/tierlist", "Tier List", locale)}
           </a>
+          <a class="home-action home-action-secondary" href={hrefFor("/relic-investment")}>
+            {t(locale, "home", "heroInvestmentCta")}
+          </a>
         </div>
       </div>
     </section>

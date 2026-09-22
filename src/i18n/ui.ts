@@ -143,6 +143,13 @@ const translations: TranslationTree = {
       ru: "Рейтинги героев, характеристики, гайды и инструменты для эффективного развития состава.",
       zh: "英雄评级、属性、攻略与实用工具，帮助你做出更好的阵容决策。",
     },
+    heroInvestmentCta: {
+      en: "Hero Investment",
+      de: "Helden-Investition",
+      es: "Inversión en héroes",
+      ru: "Развитие героев",
+      zh: "英雄培养",
+    },
     startHereHeadline: {
       en: "Start with what matters",
       de: "Starte mit dem Wesentlichen",
@@ -308,7 +315,7 @@ const translations: TranslationTree = {
     "/tierlist": { en: "Tier List", de: "Tier-Liste", es: "Lista de niveles", ru: "Тир-лист", zh: "英雄梯队" },
     "/hero-stats": { en: "Hero Stats", de: "Heldenattribute", es: "Atributos de héroes", ru: "Характеристики героев", zh: "英雄属性" },
     "/relic-investment": { en: "Relic Investment", de: "Relikt-Investition", es: "Inversión de reliquia", ru: "Вложения в реликвии", zh: "圣物培养" },
-    "/virtues": { en: "Virtue Guide", de: "Tugenden-Guide", es: "Guía de virtudes", ru: "Гайд по добродетелям", zh: "美德指南" },
+    "/virtues": { en: "Virtue List", de: "Tugendenliste", es: "Lista de virtudes", ru: "Список добродетелей", zh: "美德列表" },
     "/guides": { en: "Guides", de: "Guides", es: "Guías", ru: "Гайды", zh: "攻略" },
     "/tips": { en: "Tips", de: "Tipps", es: "Consejos", ru: "Советы", zh: "攻略技巧" },
     "/bosses": { en: "Boss Encounters", de: "Bosskämpfe", es: "Encuentros con jefes", ru: "Бои с боссами", zh: "Boss 战" },
