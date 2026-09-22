@@ -3,6 +3,7 @@ export const prerender = true;
 
 import { heroes } from "../data/heroes/withRatings";
 import allInvest from "../data/ratings/invest.json";
+import divineThroneData from "../data/divine-throne.json";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 
@@ -12,22 +13,27 @@ const investment = allInvest as Record<string, {
   relicRec: number;
   throne: number;
 }>;
+const throneHeroIds = new Set(divineThroneData.heroes.map((entry) => entry.heroId));
 
 const rows = heroes
   .filter((hero) => (import.meta.env.DEV || hero.release !== false) && investment[hero.id])
-  .map((hero) => ({ hero, investment: investment[hero.id] }))
+  .map((hero) => ({
+    hero,
+    investment: investment[hero.id],
+    hasThrone: throneHeroIds.has(hero.id),
+  }))
   .sort((a, b) => a.hero.name.localeCompare(b.hero.name));
 ---
 
 <Base
-  title="Relic Investment | Motto Immortal Database"
-  description="See the recommended relic and hero investment for every rated Motto Immortal hero."
+  title="Hero Investment Guide | Motto Immortal Database"
+  description="Compare recommended relic and Divine Throne investment targets for every rated Motto Immortal hero."
 >
   <PageHero
     id="relic-investment"
     tag="Hero Development"
-    headline="Relic Investment"
-    subtitle="The investment each hero needs, at a glance"
+    headline="Hero Investment"
+    subtitle="Relic and Divine Throne targets at a glance"
   />
 
   <main class="ri-page page-content">
@@ -35,7 +41,7 @@ const rows = heroes
       <div class="content-heading-copy">
         <p class="content-heading-kicker">Investment guide</p>
         <h2 class="content-heading-title">Recommended targets</h2>
-        <p class="content-heading-description">Prioritize the relic breakpoint that changes how a hero performs and use the recommended target to plan your resources.</p>
+        <p class="content-heading-description">Compare the relic breakpoint each hero needs with the recommended long-term relic and Divine Throne targets.</p>
       </div>
     </div>
 
@@ -46,38 +52,79 @@ const rows = heroes
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
           <input id="riSearch" class="ri-search" type="search" placeholder="Search hero..." autocomplete="off" />
         </label>
+        <div class="ri-filters" role="group" aria-label="Investment priority">
+          <button class="ri-filter is-active" type="button" data-priority="all" aria-pressed="true">All</button>
+          <button class="ri-filter" type="button" data-priority="relic" aria-pressed="false">Relic priority</button>
+          <button class="ri-filter" type="button" data-priority="throne" aria-pressed="false">Throne priority</button>
+        </div>
       </div>
-      <p id="riCount" class="ri-count control-toolbar-meta">{rows.length} heroes</p>
+      <div class="ri-toolbar-meta">
+        <label class="ri-sort-label" for="riSort">Sort</label>
+        <select id="riSort" class="ri-sort">
+          <option value="name">Hero name</option>
+          <option value="relic">Relic target</option>
+          <option value="throne">Throne target</option>
+        </select>
+        <p id="riCount" class="ri-count control-toolbar-meta">{rows.length} heroes</p>
+      </div>
     </div>
 
     <div class="ri-list-head" aria-hidden="true">
       <span>Hero</span>
       <span>Minimum relic</span>
-      <span>Relic recommendation</span>
+      <span>Recommended relic</span>
+      <span>Recommended throne</span>
     </div>
 
     <div id="riGrid" class="ri-list">
-      {rows.map(({ hero, investment: entry }) => {
+      {rows.map(({ hero, investment: entry, hasThrone }) => {
+        const hasRelicPriority = (entry.relicMin ?? 0) > 0 || (entry.relicRec ?? 0) > 0;
+        const hasThronePriority = (entry.throne ?? 0) > 0;
         return (
           <article
             class="ri-row"
             data-search={hero.name.toLowerCase()}
+            data-name={hero.name.toLowerCase()}
+            data-relic={entry.relicRec ?? 0}
+            data-throne={entry.throne ?? 0}
+            data-relic-priority={String(hasRelicPriority)}
+            data-throne-priority={String(hasThronePriority)}
           >
             <a class="ri-hero" href={`/heroes/${hero.id}`}>
-              <span class="ri-avatar" style={`background-image:url(${R2_BASE}/heroes/${hero.id}.webp)`}></span>
+              <span class="ri-avatar" style={`background-image:url(${R2_BASE}/heroes/cards/${hero.id}-240.webp)`}></span>
               <span class="ri-identity">
                 <strong>{hero.name}</strong>
                 <small>{hero.class} · {hero.faction}</small>
               </span>
+              <svg class="ri-hero-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
-            <div class="ri-value ri-relic-value">
+            <div class="ri-value ri-minimum">
               <span class="ri-mobile-label">Minimum relic</span>
-              <strong>{entry.relicMin ?? 0}</strong>
+              <strong class="ri-level-badge"><small>R</small>{entry.relicMin ?? 0}</strong>
+              <span class="ri-value-note">Key breakpoint</span>
             </div>
-            <div class="ri-value ri-relic-value ri-recommendation">
-              <span class="ri-mobile-label">Relic recommendation</span>
-              <strong>{entry.relicRec ?? 0}</strong>
+            <div class="ri-value ri-recommendation">
+              <span class="ri-mobile-label">Recommended relic</span>
+              <strong class="ri-level-badge"><small>R</small>{entry.relicRec ?? 0}</strong>
+              <span class="ri-value-note">Long-term target</span>
             </div>
+            {hasThrone ? (
+              <a class={`ri-value ri-throne${hasThronePriority ? " has-priority" : ""}`} href={`/heroes/${hero.id}#sec-divine-throne`}>
+                <span class="ri-mobile-label">Recommended throne</span>
+                {hasThronePriority ? (
+                  <strong class="ri-level-badge"><small>T</small>{entry.throne}</strong>
+                ) : (
+                  <strong class="ri-state">No priority</strong>
+                )}
+                <span class="ri-value-note">View throne effects <span aria-hidden="true">→</span></span>
+              </a>
+            ) : (
+              <div class="ri-value ri-throne is-unavailable">
+                <span class="ri-mobile-label">Recommended throne</span>
+                <strong class="ri-state">Unavailable</strong>
+                <span class="ri-value-note">No throne data</span>
+              </div>
+            )}
           </article>
         );
       })}
@@ -91,19 +138,49 @@ const rows = heroes
       const cards = Array.from(document.querySelectorAll(".ri-row"));
       const count = document.getElementById("riCount");
       const empty = document.getElementById("riEmpty");
+      const grid = document.getElementById("riGrid");
+      const sort = document.getElementById("riSort");
+      const filters = Array.from(document.querySelectorAll(".ri-filter"));
+      let priority = "all";
       if (!search) return;
 
-      search.addEventListener("input", () => {
+      const update = () => {
         const terms = search.value.toLowerCase().trim().split(/[&,;|]+/).map((term) => term.trim()).filter(Boolean);
         let shown = 0;
         cards.forEach((card) => {
           const haystack = card.getAttribute("data-search") || "";
-          const match = terms.length === 0 || terms.some((term) => haystack.includes(term));
+          const matchesSearch = terms.length === 0 || terms.some((term) => haystack.includes(term));
+          const matchesPriority = priority === "all" || card.getAttribute(`data-${priority}-priority`) === "true";
+          const match = matchesSearch && matchesPriority;
           card.hidden = !match;
           if (match) shown++;
         });
         count.textContent = shown === cards.length ? `${cards.length} heroes` : `${shown} of ${cards.length} heroes`;
         empty.hidden = shown !== 0;
+      };
+
+      const sortCards = () => {
+        const mode = sort?.value || "name";
+        cards.sort((a, b) => {
+          if (mode === "name") return (a.dataset.name || "").localeCompare(b.dataset.name || "");
+          const difference = Number(b.dataset[mode] || 0) - Number(a.dataset[mode] || 0);
+          return difference || (a.dataset.name || "").localeCompare(b.dataset.name || "");
+        });
+        cards.forEach((card) => grid?.appendChild(card));
+      };
+
+      search.addEventListener("input", update);
+      sort?.addEventListener("change", sortCards);
+      filters.forEach((filter) => {
+        filter.addEventListener("click", () => {
+          priority = filter.dataset.priority || "all";
+          filters.forEach((button) => {
+            const active = button === filter;
+            button.classList.toggle("is-active", active);
+            button.setAttribute("aria-pressed", String(active));
+          });
+          update();
+        });
       });
     })();
   </script>
@@ -111,49 +188,75 @@ const rows = heroes
 
 <style>
   .ri-page { width: 100%; max-width: var(--page-max-width); margin: 0 auto; padding: var(--space-8) var(--page-gutter) var(--space-12); }
-  .ri-toolbar { margin-bottom: var(--space-6); }
+  .ri-toolbar { align-items: flex-end; margin-bottom: var(--space-6); }
+  .ri-toolbar .control-toolbar-group { align-items: flex-end; flex-wrap: wrap; gap: var(--space-3); }
   .ri-search-wrap { position: relative; display: block; width: min(100%, 460px); }
   .ri-search-wrap svg { position: absolute; left: 1rem; top: 50%; width: 18px; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
   .ri-search { width: 100%; padding: .85rem 1rem .85rem 2.8rem; color: var(--text-primary); background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font: inherit; outline: none; }
   .ri-search:focus { border-color: var(--accent-gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-gold) 18%, transparent); }
+  .ri-filters { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .ri-filter { min-height: 42px; padding: 0 var(--space-3); color: var(--text-secondary); background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 999px; font: inherit; font-size: .76rem; font-weight: var(--weight-bold); cursor: pointer; transition: color .2s ease, border-color .2s ease, background .2s ease; }
+  .ri-filter:hover { color: var(--text-primary); border-color: var(--border-medium); }
+  .ri-filter.is-active { color: var(--accent-gold-light); border-color: color-mix(in srgb, var(--accent-gold) 46%, transparent); background: var(--accent-gold-dim); }
+  .ri-toolbar-meta { display: flex; align-items: center; gap: var(--space-2); }
+  .ri-sort-label { color: var(--text-muted); font-size: .7rem; font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+  .ri-sort { min-height: 42px; padding: 0 2.2rem 0 .8rem; color: var(--text-primary); background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font: inherit; font-size: .78rem; }
   .ri-count { margin: 0; color: var(--text-muted); font-size: .85rem; white-space: nowrap; }
-  .ri-list-head, .ri-row { display: grid; grid-template-columns: minmax(240px, 1.2fr) repeat(2, minmax(150px, .8fr)); align-items: center; }
+  .ri-list-head, .ri-row { display: grid; grid-template-columns: minmax(250px, 1.35fr) repeat(3, minmax(145px, .75fr)); align-items: stretch; }
   .ri-list-head { padding: 0 var(--space-4) var(--space-2); color: var(--text-muted); font-size: .67rem; font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-  .ri-list { overflow: hidden; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-top-color: var(--border-medium); border-radius: var(--radius-lg); }
-  .ri-row { min-height: 76px; border-bottom: 1px solid var(--border-faint); }
+  .ri-list { display: flex; flex-direction: column; gap: var(--space-2); }
+  .ri-row { min-height: 92px; overflow: hidden; background: color-mix(in srgb, var(--bg-surface) 88%, transparent); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); transition: transform .2s ease, border-color .2s ease, background .2s ease; }
   .ri-row:last-child { border-bottom: 0; }
   .ri-row[hidden] { display: none; }
-  .ri-row:hover { background: var(--bg-raised); }
+  .ri-row:hover { transform: translateY(-1px); background: var(--bg-raised); border-color: var(--border-medium); }
   .ri-hero { display: flex; align-items: center; align-self: stretch; gap: var(--space-3); padding: var(--space-3) var(--space-4); color: inherit; text-decoration: none; }
   .ri-hero:hover .ri-identity strong { color: var(--accent-gold); }
-  .ri-avatar { width: 50px; height: 50px; flex: 0 0 50px; border-radius: 12px; background-size: cover; background-position: center top; border: 1px solid var(--border-subtle); }
+  .ri-avatar { width: 64px; height: 64px; flex: 0 0 64px; border-radius: var(--radius-md); background-color: var(--input-bg); background-size: cover; background-position: center top; border: 1px solid var(--border-medium); box-shadow: 0 8px 20px rgba(0, 0, 0, .24); }
   .ri-identity { min-width: 0; display: flex; flex-direction: column; }
-  .ri-identity strong { color: var(--text-primary); font-size: 1rem; transition: color .2s ease; }
+  .ri-identity strong { color: var(--text-bright); font-size: 1rem; transition: color .2s ease; }
   .ri-identity small { color: var(--text-muted); font-size: .72rem; margin-top: .15rem; }
-  .ri-value { min-width: 0; padding: var(--space-3) var(--space-4); color: var(--text-primary); font-size: .84rem; line-height: 1.45; }
-  .ri-value strong { font-weight: var(--weight-bold); }
-  .ri-relic-value strong { font-size: .84rem; }
-  .ri-recommendation strong { display: inline-block; padding: .42rem .7rem; border-radius: 999px; background: var(--accent-gold-dim); border: 1px solid color-mix(in srgb, var(--accent-gold) 38%, transparent); color: var(--accent-gold-light); font-weight: var(--weight-black); }
+  .ri-hero-arrow { width: 17px; height: 17px; margin-left: auto; fill: none; stroke: var(--text-muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s ease, stroke .2s ease; }
+  .ri-hero:hover .ri-hero-arrow { transform: translateX(2px); stroke: var(--accent-gold); }
+  .ri-value { min-width: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: .35rem; padding: var(--space-3) var(--space-4); color: var(--text-primary); border-left: 1px solid var(--border-faint); font-size: .84rem; line-height: 1.35; text-decoration: none; }
+  .ri-value:nth-child(even) { background: color-mix(in srgb, var(--input-bg) 50%, transparent); }
+  .ri-level-badge { display: inline-flex; align-items: baseline; gap: .18rem; min-width: 52px; padding: .4rem .65rem; border: 1px solid var(--border-medium); border-radius: 999px; color: var(--text-bright); background: rgba(255,255,255,.045); font-size: 1rem; font-weight: var(--weight-black); }
+  .ri-level-badge small { color: var(--text-muted); font-size: .63rem; letter-spacing: .04em; }
+  .ri-recommendation .ri-level-badge { color: var(--accent-gold-light); border-color: color-mix(in srgb, var(--accent-gold) 42%, transparent); background: var(--accent-gold-dim); }
+  .ri-throne.has-priority .ri-level-badge { color: #a6eaff; border-color: rgba(92, 207, 241, .4); background: rgba(62, 180, 218, .12); }
+  .ri-throne.has-priority .ri-level-badge small { color: #72cde8; }
+  .ri-value-note { color: var(--text-muted); font-size: .67rem; }
+  a.ri-throne:hover .ri-value-note { color: var(--text-primary); }
+  .ri-state { color: var(--text-secondary); font-size: .78rem; font-weight: var(--weight-bold); }
+  .ri-throne.is-unavailable { opacity: .58; }
   .ri-mobile-label { display: none; }
   .ri-empty { padding: var(--space-10); text-align: center; color: var(--text-muted); }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   @media (max-width: 760px) {
     .ri-page { width: 100%; padding: var(--space-5) var(--space-4) var(--space-12); }
-    .ri-toolbar { align-items: stretch; flex-direction: column; gap: var(--space-2); }
+    .ri-toolbar { align-items: stretch; flex-direction: column; gap: var(--space-3); }
+    .ri-toolbar .control-toolbar-group { align-items: stretch; }
     .ri-search-wrap { width: 100%; }
-    .ri-count { align-self: flex-end; }
+    .ri-filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+    .ri-filter { flex: 0 0 auto; }
+    .ri-toolbar-meta { justify-content: space-between; }
     .ri-list-head { display: none; }
     .ri-list { display: grid; gap: var(--space-2); overflow: visible; background: transparent; border: 0; border-radius: 0; }
-    .ri-row { display: grid; grid-template-columns: repeat(2, 1fr); min-height: 0; overflow: hidden; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+    .ri-row { display: grid; grid-template-columns: repeat(3, 1fr); min-height: 0; overflow: hidden; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
     .ri-row:last-child { border-bottom: 1px solid var(--border-subtle); }
     .ri-hero { grid-column: 1 / -1; padding: var(--space-3); background: var(--chip-bg); border-bottom: 1px solid var(--border-faint); }
-    .ri-avatar { width: 44px; height: 44px; flex-basis: 44px; border-radius: 10px; }
+    .ri-avatar { width: 52px; height: 52px; flex-basis: 52px; border-radius: 10px; }
     .ri-value { display: flex; flex-direction: column; gap: .35rem; padding: var(--space-3); }
     .ri-value + .ri-value { border-left: 1px solid var(--border-faint); }
     .ri-mobile-label { display: block; color: var(--text-muted); font-size: .62rem; font-weight: var(--weight-bold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
-    .ri-recommendation strong { align-self: flex-start; padding: .32rem .55rem; }
+    .ri-level-badge { min-width: 0; padding: .32rem .55rem; }
   }
   @media (max-width: 480px) {
     .ri-page { padding-right: var(--space-3); padding-left: var(--space-3); }
+    .ri-row { grid-template-columns: 1fr; }
+    .ri-value { min-height: 78px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .25rem var(--space-3); border-left: 0; }
+    .ri-value + .ri-value { border-top: 1px solid var(--border-faint); border-left: 0; }
+    .ri-value .ri-mobile-label { align-self: end; }
+    .ri-value .ri-level-badge, .ri-value .ri-state { grid-column: 2; grid-row: 1 / span 2; }
+    .ri-value-note { align-self: start; }
   }
 </style>
