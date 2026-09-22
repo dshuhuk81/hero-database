@@ -6,8 +6,6 @@ import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
 import { heroes } from "../data/heroes/withRatings";
 
-const isSharedPreview = Astro.url.pathname.replace(/\/+$/, "") === "/previews/tierlist";
-
 const compareNewFirst = (a, b) => {
   if (a.newHero === b.newHero) return 0;
   return a.newHero ? -1 : 1;
@@ -72,7 +70,6 @@ const jsonLd = {
   title="Hero Tier List | Motto Immortal Database"
   description="Compare Motto Immortal heroes by PvE ratings across early, mid and endgame progression."
   jsonLd={jsonLd}
-  robots={isSharedPreview ? "noindex, nofollow" : undefined}
 >
   <PageHero
     id="tierlist"

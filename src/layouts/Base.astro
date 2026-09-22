@@ -13,7 +13,6 @@ interface Props {
   image?: string;
   locale?: Locale;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
-  robots?: string;
 }
 
 const {
@@ -22,7 +21,6 @@ const {
   image = "/og-default.png",
   locale = getLocaleFromPathname(Astro.url.pathname),
   jsonLd,
-  robots,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -45,7 +43,6 @@ const documentDescription = isUnderConstruction
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={documentDescription} />
-  {robots && <meta name="robots" content={robots} />}
   <meta name="google-site-verification" content="t6k7HFdRY9c1Q_Rb80K63Aguqwr8zctSXQ28Oa2W9s4" />
   <link rel="canonical" href={canonicalURL} />
   {alternateLinks.map((entry) => (

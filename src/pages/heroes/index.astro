@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import HeroCard from "../../components/HeroCard.astro";
-import { heroes } from "../../data/heroes/withRatings";
+import { heroes } from "../../data/heroes";
 import Base from "../../layouts/Base.astro";
 import PageHero from "../../components/PageHero.astro";
 import Filter from "../../components/filter.astro";
@@ -38,7 +38,7 @@ const jsonLd = {
 
 <Base
   title="Heroes | Motto Immortal Database"
-  description="Browse all heroes in Motto Immortal. Filter by class, faction, role and ratings. View stats, skills and tier rankings for every hero."
+  description="Browse all heroes in Motto Immortal. Filter by class, faction and role. View stats and skills for every hero."
   jsonLd={jsonLd}
 >
 <PageHero
@@ -74,9 +74,7 @@ const jsonLd = {
     <div class="sort-controls">
       <label for="sortSelect" class="sort-label">Sort by</label>
       <select id="sortSelect" class="sort-select">
-        <option value="rating-desc" selected>Rating (best first)</option>
-        <option value="rating-asc">Rating (worst first)</option>
-        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-asc" selected>Name (A-Z)</option>
         <option value="name-desc">Name (Z-A)</option>
         <option value="class">Class</option>
         <option value="rarity-desc">Rarity (highest first)</option>
@@ -106,7 +104,6 @@ const jsonLd = {
         data-faction={hero.faction.toLowerCase()}
         data-rarity={hero.rarity.toLowerCase()}
         data-tags={hero.synergies?.join("|").toLowerCase() || ""}
-        data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
         data-new={hero.newHero ? "true" : "false"}
       >
         <div class="icon-stack">
@@ -141,7 +138,7 @@ const jsonLd = {
             />
           </div>
         </div>
-        <HeroCard hero={hero} />
+        <HeroCard hero={hero} showRating={false} />
       </div>
     ))}
   </div>
@@ -152,9 +149,6 @@ const jsonLd = {
         <tr>
           <th class="col-portrait"></th>
           <th class="col-name col-sortable" data-col="name">Hero <span class="sort-indicator"></span></th>
-          <th class="col-rating col-sortable" data-col="overall">Overall <span class="sort-indicator"></span></th>
-          <th class="col-rating col-sortable" data-col="pvp">PvP <span class="sort-indicator"></span></th>
-          <th class="col-rating col-sortable" data-col="pve">PvE <span class="sort-indicator"></span></th>
           <th class="col-class">Class</th>
           <th class="col-faction">Faction</th>
         </tr>
@@ -169,9 +163,6 @@ const jsonLd = {
             data-faction={hero.faction.toLowerCase()}
             data-rarity={hero.rarity.toLowerCase()}
             data-tags={hero.synergies?.join("|").toLowerCase() || ""}
-            data-rating={hero.ratings?.overall?.toLowerCase() || "n/a"}
-            data-pvp={hero.ratings?.pvp?.toLowerCase() || "n/a"}
-            data-pve={hero.ratings?.pve?.toLowerCase() || "n/a"}
             data-new={hero.newHero ? "true" : "false"}
           >
             <td class="col-portrait">
@@ -192,24 +183,6 @@ const jsonLd = {
               <a href={`/heroes/${hero.id}`} class="list-hero-name">
                 {hero.name}
               </a>
-            </td>
-            <td class="col-rating">
-              {hero.ratings?.overall
-                ? <span class="list-badge" data-tier={hero.ratings.overall}>{hero.ratings.overall}</span>
-                : <span class="list-badge-empty">-</span>
-              }
-            </td>
-            <td class="col-rating">
-              {hero.ratings?.pvp
-                ? <span class="list-badge" data-tier={hero.ratings.pvp}>{hero.ratings.pvp}</span>
-                : <span class="list-badge-empty">-</span>
-              }
-            </td>
-            <td class="col-rating">
-              {hero.ratings?.pve
-                ? <span class="list-badge" data-tier={hero.ratings.pve}>{hero.ratings.pve}</span>
-                : <span class="list-badge-empty">-</span>
-              }
             </td>
             <td class="col-class">
               <span class="list-meta">{hero.class}</span>
@@ -543,17 +516,8 @@ const jsonLd = {
 
 .col-name,
 .col-class,
-.col-faction,
-.col-rating {
-  width: calc((100% - 52px) / 6);
-}
-
-.col-rating {
-  text-align: center !important;
-}
-
-.hero-table .col-rating {
-  text-align: center;
+.col-faction {
+  width: calc((100% - 52px) / 3);
 }
 
 .list-portrait-link {
@@ -596,28 +560,6 @@ const jsonLd = {
   font-size: var(--text-sm);
 }
 
-.list-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  height: 30px;
-  padding: 0 var(--space-2);
-  font-size: var(--text-base);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-normal);
-  text-transform: uppercase;
-  border-radius: var(--radius-md);
-  white-space: nowrap;
-}
-
-/* tier colors handled by [data-tier] selectors in components.css */
-
-.list-badge-empty {
-  color: var(--text-disabled);
-  font-size: var(--text-sm);
-}
-
 @media (max-width: 600px) {
   .col-class,
   .col-faction {
@@ -632,8 +574,6 @@ const jsonLd = {
 </style>
 
 <script>
-import { RATING_ORDER } from "../../utils/ratingScale";
-
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput") as HTMLInputElement;
   const resetButton = document.getElementById("resetFilters");
@@ -718,7 +658,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---- Sorting ----
 
-  const ratingVal  = (el: HTMLElement) => RATING_ORDER[el.dataset.rating || ""] ?? 0;
   const rarityVal  = (el: HTMLElement) => RARITY_ORDER[el.dataset.rarity || ""] ?? 0;
   const nameVal    = (el: HTMLElement) => el.dataset.name || "";
   const newVal     = (el: HTMLElement) => el.dataset.new === "true" ? 1 : 0;
@@ -732,8 +671,6 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (value) {
       case "name-asc":    return nameVal(a).localeCompare(nameVal(b));
       case "name-desc":   return nameVal(b).localeCompare(nameVal(a));
-      case "rating-desc": { const d = ratingVal(b) - ratingVal(a); return d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)); }
-      case "rating-asc":  { const d = ratingVal(a) - ratingVal(b); return d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)); }
       case "class":       return (a.dataset.class || "").localeCompare(b.dataset.class || "");
       case "rarity-desc": { const d = rarityVal(b) - rarityVal(a); return d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)); }
       default: return 0;
@@ -776,7 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
       listSortDir = listSortDir === "asc" ? "desc" : "asc";
     } else {
       listSortCol = col;
-      listSortDir = col === "overall" || col === "pvp" || col === "pve" ? "desc" : "asc";
+      listSortDir = "asc";
     }
 
     const dir = listSortDir === "asc" ? 1 : -1;
@@ -789,18 +726,6 @@ document.addEventListener("DOMContentLoaded", () => {
         switch (col) {
           case "name":
             return dir * nameVal(a).localeCompare(nameVal(b));
-          case "overall": {
-            const d = (RATING_ORDER[a.dataset.rating || ""] ?? 0) - (RATING_ORDER[b.dataset.rating || ""] ?? 0);
-            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
-          }
-          case "pvp": {
-            const d = (RATING_ORDER[a.dataset.pvp || ""] ?? 0) - (RATING_ORDER[b.dataset.pvp || ""] ?? 0);
-            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
-          }
-          case "pve": {
-            const d = (RATING_ORDER[a.dataset.pve || ""] ?? 0) - (RATING_ORDER[b.dataset.pve || ""] ?? 0);
-            return dir * (d !== 0 ? d : nameVal(a).localeCompare(nameVal(b)));
-          }
           default: return 0;
         }
       })
@@ -861,7 +786,7 @@ document.addEventListener("DOMContentLoaded", () => {
     activeRoles.clear();
     activeFactions.clear();
     document.querySelectorAll(".chip.active, .role-chip.active").forEach(c => c.classList.remove("active"));
-    sortSelect.value = "rating-desc";
+    sortSelect.value = "name-asc";
     sortHeroes();
     applyFilters();
   });
@@ -883,7 +808,7 @@ document.addEventListener("DOMContentLoaded", () => {
   searchInput.addEventListener("input", syncSearchClear);
   syncSearchClear();
 
-  // Initial order: server renders alphabetically, default select is rating-desc
+  // Initial order: server renders alphabetically, default select is name-asc
   sortHeroes();
   applyFilters();
 

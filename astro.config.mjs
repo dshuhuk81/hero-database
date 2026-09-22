@@ -3,7 +3,6 @@ import sitemap from '@astrojs/sitemap';
 import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
 
 const LOCAL_ONLY_ROUTES = ['/status'];
-const SITEMAP_EXCLUDED_ROUTES = [...LOCAL_ONLY_ROUTES, '/previews/tierlist'];
 const SITE = 'https://motto-immortal-db.com';
 
 function localOnlyRoutes() {
@@ -28,7 +27,7 @@ function localOnlyRoutes() {
         for (const file of sitemapFiles) {
           const sitemapPath = new URL(file, dir);
           let content = await readFile(sitemapPath, 'utf8');
-          for (const route of SITEMAP_EXCLUDED_ROUTES) {
+          for (const route of LOCAL_ONLY_ROUTES) {
             const url = new URL(`${route.replace(/^\/|\/$/g, '')}/`, SITE).href;
             content = content.replace(`<url><loc>${url}</loc></url>`, '');
           }

@@ -13,16 +13,6 @@ export type ContentPageStatus = {
  * Remove an entry when its replacement content is ready to publish.
  */
 export const pageStatuses: Record<string, ContentPageStatus> = {
-  "/tierlist": {
-    state: "under-construction",
-    name: {
-      en: "Tier List",
-      de: "Tierliste",
-      es: "Lista de niveles",
-      ru: "Рейтинг героев",
-      zh: "英雄梯度榜",
-    },
-  },
   "/relic-investment": {
     state: "under-construction",
     name: {
