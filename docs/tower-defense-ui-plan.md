@@ -31,13 +31,13 @@ Added after the plan (user requests):
 
 ## M4: Live readiness (open)
 
-1. R2 CORS policy: the bucket sends no CORS headers, so WebGL textures (hero thumbnails, boss, all `td/` assets) and audio fetches fail on the live site. Apply with `node scripts/r2-cors.mjs --apply` using a token with bucket admin rights, or set it in the Cloudflare dashboard. Deploy the R2 asset switch only after this is in place.
+1. Done: R2 CORS policy set (GET/HEAD for motto-immortal-db.com, www and localhost:4321); verified the site origin receives `Access-Control-Allow-Origin`, other origins do not.
 2. `npm run build` (run by the user). `astro check`: done. Tower defense files have 0 errors (one fix in `audio.ts`). The earlier hang was an install prompt: `@astrojs/check` and `typescript` are not in `devDependencies`. The rest of the site has 2,049 existing errors, mostly `src/pages/heroes/[id].astro` (1,955) and `src/pages/status.astro` (81); out of scope for this plan.
-3. Real phone check in landscape with browser chrome visible (plan acceptance criterion).
-4. Difficulty: `td:sweep` shows 3 of 5 squads winning flawlessly at x1.0 enemy HP; candidates are x1.75 to x2.0. Confirm by play with the debug panel, then set `difficulty` in `gameBalance.tuning.json`. The "road wall" squad loses at every level; review it separately.
-5. `scripts/test-td-sim.mjs` "mid-wave upgrade rejected" fails (also on HEAD before this work): decide whether upgrades are allowed during waves and fix either the test or the simulator.
+3. Done: real phone check by the user.
+4. Done: enemy HP 2x via `"difficulty": { "enemyHp": 2 }` in `gameBalance.tuning.json` (base HP values restored to the originals, so the knob is the single source). At 2x, `test:td-balance` wins 3 of 10 runs, none flawless; its threshold is now at least 1 winning squad per map. The "road wall" squad loses at every level; review it separately.
+5. Done: upgrades are allowed during waves. `test-td-sim.mjs` updated for current design: mid-wave upgrades, Favor tier requirements read from the tree, Medusa's petrify (was a slow), full-run mechanics check at base difficulty. Nyx's Shadow Step now targets the lowest-HP enemy anywhere on the map (`findUltTarget`); her normal attacks stay within range. All TD suites pass.
 6. Full-map white wash observed a few seconds into waves in headless screenshots (pre-existing); check on a real GPU, likely an additive glow effect.
-7. Split `TowerDefensePage.astro` (about 1,600 lines) into `src/components/td/` pieces and controller modules under `src/game/td/`, as suggested in the original plan.
+7. Done: page split into modules. Logic in `src/game/td/page/` (`context.ts` shared context, state and late-bound actions; `save.ts`, `boons.ts`, `results.ts`, `debug.ts`, `hud.ts`, `popover.ts`, `recruit.ts`, `panels.ts`, `session.ts`), markup in `src/components/td/` (`TdLobby`, `TdPlayScreen`, `TdOverlays`, `TdDebugPanel`, `TdPanels`). `TowerDefensePage.astro` is about 190 lines of wiring; rendered HTML verified identical to the pre-split version.
 8. WebP sources now exist only on R2 (originals are in git history). Keep a local source copy if the images will be edited again. R2 objects are cached for one year (`immutable`), so changed files need a new file name.
 
 ## Scope and evidence

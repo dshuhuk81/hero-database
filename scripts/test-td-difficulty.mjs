@@ -5,7 +5,9 @@ import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
 import waves from "../src/data/tdWaves.json" with { type: "json" };
 
-const make = (difficulty) => new TowerDefenseGame({ heroes, tuning: difficulty ? { ...tuning, difficulty } : tuning, map: maps[0], waves, seed: 9 });
+// Tests start from the sim defaults; the shipped tuning.difficulty is checked separately below.
+const { difficulty: shipped, ...baseTuning } = tuning;
+const make = (difficulty) => new TowerDefenseGame({ heroes, tuning: difficulty ? { ...baseTuning, difficulty } : baseTuning, map: maps[0], waves, seed: 9 });
 
 // Defaults keep today's numbers.
 {
@@ -46,6 +48,15 @@ const make = (difficulty) => new TowerDefenseGame({ heroes, tuning: difficulty ?
   const lives = game.lives;
   game.step(1 / 60);
   assert.equal(game.lives, lives, "invincible ignores leaks");
+}
+
+// Shipped difficulty from gameBalance.tuning.json is applied (enemy HP 2x).
+{
+  const game = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 9 });
+  assert.equal(game.difficulty.enemyHp, shipped?.enemyHp ?? 1, "shipped enemyHp applied");
+  game.wave = 1;
+  game.spawnEnemy("grunt");
+  assert.equal(game.enemies[0].maxHp, tuning.enemies.grunt.hp * (shipped?.enemyHp ?? 1), "shipped HP multiplier on spawn");
 }
 
 console.log("Tower defense difficulty checks passed.");

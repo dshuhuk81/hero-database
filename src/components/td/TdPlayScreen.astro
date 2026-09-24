@@ -1,0 +1,47 @@
+---
+// Play screen: top bar (stats, speed, pause, menu), stage with the canvas and
+// overlays, bottom bar (Blessings, deck, wave button).
+import TdOverlays from "./TdOverlays.astro";
+import TdDebugPanel from "./TdDebugPanel.astro";
+interface Props { waveCount: number; isDev: boolean; }
+const { waveCount, isDev } = Astro.props;
+---
+
+<section class="td-play" data-td-play aria-label="Tower defense game" hidden>
+  <div class="td-topbar">
+    <div class="td-stats">
+      <div class="td-stat"><span>Gold</span><strong data-td-gold>0</strong></div>
+      <div class="td-stat"><span>Lives</span><strong data-td-lives>0</strong></div>
+      <div class="td-stat"><span>Wave</span><strong><span data-td-wave>0</span>/{waveCount}</strong></div>
+    </div>
+    <div class="td-top-actions">
+      <button class="td-icon-button" type="button" data-td-speed aria-label="Game speed 1x">1x</button>
+      <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game" aria-pressed="false">
+        <svg class="td-icon td-icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+        <svg class="td-icon td-icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5l11 7-11 7z" /></svg>
+      </button>
+      {isDev && <button class="td-icon-button td-debug-toggle" type="button" data-td-debug-toggle aria-label="Toggle debug panel" aria-pressed="false">DBG</button>}
+      <button class="td-icon-button" type="button" data-td-open="menu" aria-label="Open menu">
+        <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="6" width="16" height="2" rx="1" /><rect x="4" y="11" width="16" height="2" rx="1" /><rect x="4" y="16" width="16" height="2" rx="1" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="td-stage" data-td-stage>
+    <p class="td-stage-loading" data-td-loading hidden>Preparing battlefield</p>
+    <div class="td-wave-preview" data-td-preview hidden></div>
+    <div class="td-buffs" data-td-buffs role="group" aria-label="Active run blessings" hidden></div>
+    <p class="td-notice" data-td-notice role="status" aria-live="polite"></p>
+
+
+    <TdOverlays>
+      {isDev && <TdDebugPanel waveCount={waveCount} />}
+    </TdOverlays>
+  </div>
+
+  <div class="td-bottombar">
+    <button class="action-button action-button--quiet td-blessings-button" type="button" data-td-open="blessings">Blessings</button>
+    <div class="td-deck" data-td-deck role="group" aria-label="Your heroes"></div>
+    <button class="action-button action-button--primary td-main-action" type="button" data-td-main-action disabled>Deploy a hero</button>
+  </div>
+</section>

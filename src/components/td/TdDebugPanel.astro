@@ -1,0 +1,37 @@
+---
+// Debug panel (dev builds only): difficulty knobs and shortcuts. Controlled by src/game/td/page/debug.ts.
+interface Props { waveCount: number; }
+const { waveCount } = Astro.props;
+---
+
+<section class="td-debug" data-td-debug aria-label="Debug panel" hidden>
+  <div class="td-debug-head">
+    <strong>Debug</strong>
+    <span>Runs with debug changes are not recorded.</span>
+  </div>
+  <label class="td-debug-row">Enemy HP <output data-debug-out="enemyHp">x1.00</output>
+    <input type="range" min="0.25" max="3" step="0.05" value="1" data-debug-knob="enemyHp" />
+  </label>
+  <label class="td-debug-row">HP growth per wave <output data-debug-out="waveHpScale">15%</output>
+    <input type="range" min="0" max="0.4" step="0.01" value="0.15" data-debug-knob="waveHpScale" />
+  </label>
+  <label class="td-debug-row">Enemy speed <output data-debug-out="enemySpeed">x1.00</output>
+    <input type="range" min="0.5" max="2" step="0.05" value="1" data-debug-knob="enemySpeed" />
+  </label>
+  <label class="td-debug-row">Kill gold <output data-debug-out="killGold">x1.00</output>
+    <input type="range" min="0.5" max="2" step="0.05" value="1" data-debug-knob="killGold" />
+  </label>
+  <label class="td-debug-check"><input type="checkbox" data-debug-invincible /> Invincible lives</label>
+  <dl class="td-debug-stats" data-debug-stats></dl>
+  <div class="td-debug-actions">
+    <button type="button" data-debug-action="gold">+500 gold</button>
+    <button type="button" data-debug-action="favor">+500 Favor</button>
+    <label class="td-debug-wave">Wave <input type="number" min="1" max={waveCount} value="1" data-debug-wave /></label>
+    <button type="button" data-debug-action="jump">Jump</button>
+    <button type="button" data-debug-action="win">Win now</button>
+    <button type="button" data-debug-action="lose">Lose now</button>
+    <button type="button" data-debug-action="reset">Reset knobs</button>
+    <button type="button" data-debug-action="copy">Copy values</button>
+  </div>
+  <output class="td-debug-copy" data-debug-copy></output>
+</section>

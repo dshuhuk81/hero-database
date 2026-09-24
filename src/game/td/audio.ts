@@ -21,7 +21,10 @@ const HERO_SOUNDS: Record<string, { voice?: string; attack?: string; ultimate?: 
   poseidon: { voice: "poseidon_voice", attack: "poseidon_attack", ultimate: "poseidon_ultimate" },
   diana: { voice: "diana_voice", attack: "diana_attack", ultimate: "diana_ultimate" },
   anubis: { voice: "anubis_voice", attack: "anubis_attack", ultimate: "anubis_ultimate" },
-};const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
+  fengyi: { voice: "fengyi_voice", attack: "fengyi_attack", ultimate: "fengyi_ultimate" },
+};
+
+const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
 const MAX_WITHIN_WINDOW = { hit: { count: 3, windowMs: 600 } };
 
 export function createAudio() {
@@ -113,7 +116,7 @@ export function createMusic() {
   let context: AudioContext | null = null;
   let gain: GainNode | null = null;
   let track = "";
-  let volume = 0.5;
+  let volume = 0.05;
   let muted = false;
 
   try {

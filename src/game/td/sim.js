@@ -353,8 +353,9 @@ export class TowerDefenseGame {
         this.hit(target, resolveDamage(this.attackValue(hero), resistance, hero.damageType, this.rng() < hero.critChance + mods.crit), hero);
         hero.attackClock = 1 / hero.aps;
       }
-      if (target && hero.ultClock >= hero.ultCooldown / this.ultChargeRate()) {
-        if (this.castUltimate(hero, target) !== false) hero.ultClock = 0;
+      const ultTarget = this.findUltTarget(hero, target);
+      if (ultTarget && hero.ultClock >= hero.ultCooldown / this.ultChargeRate()) {
+        if (this.castUltimate(hero, ultTarget) !== false) hero.ultClock = 0;
       }
     }
 
@@ -482,6 +483,15 @@ export class TowerDefenseGame {
       this.team = this.team.filter((id) => id !== hero.id);
       this.onChange("death", this);
     }
+  }
+
+  // Ultimate target: normally the attack target. Nyx's Shadow Step phases to the
+  // lowest-HP reachable enemy anywhere on the map (road heroes still cannot hit flyers).
+  findUltTarget(hero, attackTarget = this.findTarget(hero)) {
+    if (hero.variant !== "shadow_step") return attackTarget;
+    const alive = this.enemies.filter((e) => !e.dead && !(e.flying && hero.slotType === "road"));
+    alive.sort((a, b) => a.hp - b.hp);
+    return alive[0] ?? null;
   }
 
   findTarget(hero) {

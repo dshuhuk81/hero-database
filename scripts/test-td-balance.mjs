@@ -20,7 +20,7 @@ for (const map of maps) {
       `${run.won ? (run.perfect ? "PERFECT" : "win    ") : "loss   "} ${String(run.lives).padStart(5)}  ${String(run.leaks).padStart(5)}  ${String(run.score).padStart(5)}  ${String(run.spent).padStart(5)}  ${run.seconds}s`,
     );
   }
-  if (mapWins < 2) throw new Error(`Balance: expected at least 2 winning squads on ${map.id}, got ${mapWins}`);
+  if (mapWins < 1) throw new Error(`Balance: expected at least 1 winning squad on ${map.id}, got ${mapWins}`);
 }
 if (imperfect < 1) throw new Error("Balance: every win was perfect — the run is too easy");
 console.log("Tower defense balance checks passed");

@@ -1,0 +1,56 @@
+---
+// Lobby screen: map cards with path previews, personal bests, play and panel buttons.
+interface Props { maps: any[]; maxTeam: number; waveCount: number; bossName: string; }
+const { maps, maxTeam, waveCount, bossName } = Astro.props;
+const previews = maps.map((entry: any) => ({
+  id: entry.id,
+  name: entry.name,
+  points: entry.path.map(([x, y]: number[]) => `${x},${y}`).join(" "),
+  road: entry.roadSlots.map(([x, y]: number[]) => ({ x, y })),
+  platform: entry.platformSlots.map(([x, y]: number[]) => ({ x, y })),
+}));
+---
+
+<section class="td-lobby" data-td-lobby aria-labelledby="td-lobby-title">
+  <div class="td-lobby-inner">
+    <header class="td-lobby-head">
+      <a class="action-button action-button--quiet td-back" href="/">Back to database</a>
+      <div class="td-best" aria-label="Personal best">
+        <span>Personal best</span>
+        <strong data-td-best>0</strong>
+        <span class="td-perfect" data-td-perfect hidden>Perfect defense</span>
+      </div>
+    </header>
+
+    <div class="td-lobby-copy">
+      <p class="td-kicker">Motto Immortal - Field exercise</p>
+      <h1 id="td-lobby-title">Tower Defense</h1>
+      <p>Deploy up to {maxTeam} heroes and survive {waveCount} waves. {bossName} arrives in the last one.</p>
+    </div>
+
+    <div class="td-map-cards" role="group" aria-label="Choose battlefield" data-td-maps>
+      {previews.map((preview: any) => (
+        <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
+          <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
+            <polyline class="td-map-preview-path" points={preview.points} />
+            {preview.road.map((ring: any) => <circle class="td-map-preview-road" cx={ring.x} cy={ring.y} r="20" />)}
+            {preview.platform.map((ring: any) => <circle class="td-map-preview-platform" cx={ring.x} cy={ring.y} r="20" />)}
+          </svg>
+          <span class="td-map-card-copy">
+            <strong>{preview.name}</strong>
+            <small data-map-best={preview.id}>No runs yet</small>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div class="td-lobby-actions">
+      <button class="action-button action-button--primary td-play-button" type="button" data-td-play-start>Play</button>
+      <button class="action-button action-button--quiet" type="button" data-td-open="blessings">Divine Blessings <span class="td-favor-count" data-td-favor-count></span></button>
+      <button class="action-button action-button--quiet" type="button" data-td-open="help">How to play</button>
+      <button class="action-button action-button--quiet" type="button" data-td-open="save">Save data</button>
+    </div>
+
+    <p class="td-disclaimer">Minigame balance values are made up for fun and do not reflect in-game numbers.</p>
+  </div>
+</section>

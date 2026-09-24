@@ -38,7 +38,7 @@ assert.ok(favorTree.every(isFavorNodeActive), "all favor nodes active");
 {
   assert.equal(make().wavePreview(2).totalHp, undefined, "no HP without Horus");
   const preview = make(["showHp"]).wavePreview(2);
-  const scale = 1 + (3 - 1) * 0.15;
+  const scale = (1 + (3 - 1) * 0.15) * (tuning.difficulty?.enemyHp ?? 1);
   const expected = Math.round(waves[2].spawns.reduce((sum, group) => sum + group.count * tuning.enemies[group.kind].hp * scale, 0));
   assert.equal(preview.totalHp, expected, "wave 3 total HP");
 }

@@ -142,8 +142,9 @@ assert.equal(game.wave, 1, "wave advances once");
 }
 
 // Full run, win: a fully deployed squad survives all ten waves, upgrading between waves.
+// Mechanics check at base difficulty; balance at the shipped difficulty is covered by test:td-balance.
 {
-  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 21 });
+  const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, difficulty: { enemyHp: 1 } }, map: maps[0], waves, seed: 21 });
   g.setTeam(["nuwa", "poseidon", "zeus", "diana", "caishen"]);
   g.gold = 10000;
   g.place("nuwa", "road", 0); g.place("poseidon", "road", 3);
@@ -340,7 +341,7 @@ function runWaveOne(g) {
   assert.equal(nuwa.hpLeft, 200 + (expectedHp - nuwa.baseHp), "max health gain granted without full heal");
 }
 
-// Rejections carry reasons: insufficient funds, mid-wave, level cap.
+// Rejections carry reasons: insufficient funds, level cap. Upgrades are allowed mid-wave.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 32 });
   g.setTeam(["nuwa", "zeus", "diana", "caishen", "poseidon"]);
@@ -352,9 +353,10 @@ function runWaveOne(g) {
   assert.equal(g.gold, tuning.upgrades.costs[1] - 1, "failed purchase keeps gold");
   g.gold = 10000;
   g.startWave();
-  assert.equal(g.upgrade(nuwa.entityId).ok, false, "mid-wave upgrade rejected");
+  assert.equal(g.upgrade(nuwa.entityId).ok, true, "mid-wave upgrade allowed");
+  assert.equal(nuwa.level, 2, "mid-wave upgrade applied");
   g.enemies = []; g.spawnQueue = []; g.step(1 / 60);
-  assert.equal(g.running, false, "wave cleared for further upgrades");
+  assert.equal(g.running, false, "wave cleared");
   g.upgrade(nuwa.entityId); g.upgrade(nuwa.entityId); g.upgrade(nuwa.entityId);
   assert.equal(nuwa.level, tuning.upgrades.maxLevel, "level cap reached");
   const capped = g.upgrade(nuwa.entityId);
@@ -415,10 +417,13 @@ function runWaveOne(g) {
   assert.equal(adjustedGold, 365, "startingGold 340 + 25 = 365");
 }
 
-// favor_tree_requires: Tier 2 node locked with 0 Tier 1 nodes unlocked.
+// favor_tree_requires: a node unlocks once requiresMin of its required nodes are owned (value read from the tree).
 {
+  const node = favorTreeData.find((entry) => entry.id === "nuwa_wall");
+  const need = node.requiresMin;
   assert.equal(canUnlock("nuwa_wall", [], favorTreeData), false, "tier 2 node blocked with no tier 1 nodes");
-  assert.equal(canUnlock("nuwa_wall", ["demeter_bounty"], favorTreeData), true, "tier 2 unlockable with 1 tier 1 node");
+  assert.equal(canUnlock("nuwa_wall", node.requires.slice(0, need - 1), favorTreeData), false, `tier 2 blocked with ${need - 1} tier 1 nodes`);
+  assert.equal(canUnlock("nuwa_wall", node.requires.slice(0, need), favorTreeData), true, `tier 2 unlockable with ${need} tier 1 nodes`);
 }
 
 // favor_unknown_id_dropped: unknown ids produce no bonuses.
@@ -710,20 +715,31 @@ function runWaveOne(g) {
   assert.ok(grunt.distance >= 0, "distance cannot go below 0");
 }
 
-// variant_petrify_shot: Medusa applies 0.3 slowFactor.
+// variant_petrify_shot: Medusa petrifies up to petrifyTargets enemies in her facing cone for petrifyDuration seconds.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 82 });
   g.setTeam(["medusa", "nuwa", "zeus", "diana", "caishen"]);
   g.gold = 10000;
   g.place("medusa", "platform", 0);
   g.startWave(); g.enemies = []; g.spawnQueue = [];
-  g.spawnEnemy("grunt");
   const medusa = g.heroes[0];
-  const grunt = g.enemies[0];
-  grunt.x = medusa.x; grunt.y = medusa.y;
-  g.castUltimate(medusa, grunt);
-  assert.ok(grunt.slow > 0, "petrify applies slow");
-  assert.equal(grunt.slowFactor, 0.3, "petrify uses 0.3 slowFactor (70% reduction)");
+  const skill = tuning.heroSkills.medusa;
+  assert.equal(g.castUltimate(medusa, null), false, "no target in the cone keeps the ultimate ready");
+  for (let i = 0; i < skill.petrifyTargets + 1; i += 1) g.spawnEnemy("brute");
+  g.enemies.forEach((enemy, i) => {
+    const reach = 30 + i * 5;
+    enemy.x = medusa.x + Math.cos(medusa.rotation) * reach;
+    enemy.y = medusa.y + Math.sin(medusa.rotation) * reach;
+    enemy.distance = 100 + i;
+  });
+  g.castUltimate(medusa, g.enemies[0]);
+  const stoned = g.enemies.filter((enemy) => (enemy.petrifiedUntil ?? 0) > g.time);
+  assert.equal(stoned.length, skill.petrifyTargets, "petrifies up to petrifyTargets enemies");
+  assert.ok(stoned.every((enemy) => Math.abs(enemy.petrifiedUntil - (g.time + skill.petrifyDuration)) < 1e-9), "petrify lasts petrifyDuration");
+  const target = stoned[0];
+  const before = target.distance;
+  g.step(1 / 60);
+  assert.equal(target.distance, before, "petrified enemy does not move");
 }
 
 // variant_shadow_step: Nyx can target enemies outside normal range.
@@ -738,8 +754,12 @@ function runWaveOne(g) {
   const grunt = g.enemies[0];
   grunt.x = 900; grunt.y = 500; // far away
   grunt.hp = 1; grunt.maxHp = 100;
-  const target = g.findTarget(nyx);
-  assert.ok(target === grunt, "shadow_step targets enemy outside normal range");
+  assert.equal(g.findTarget(nyx), null, "normal attacks stay within range");
+  assert.ok(g.findUltTarget(nyx) === grunt, "shadow_step targets enemy outside normal range");
+  nyx.ultClock = nyx.ultCooldown;
+  g.step(1 / 60);
+  assert.equal(nyx.ultClock < nyx.ultCooldown, true, "ultimate fires with no enemy in normal range");
+  assert.ok(grunt.hp <= 0 || grunt.dead, "far low-HP enemy is executed");
 }
 
 // variant_valkyrie_call: Freya revives a fallen hero.
