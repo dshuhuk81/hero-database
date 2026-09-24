@@ -110,6 +110,9 @@ export function createPopover(ctx: PageContext) {
       const parts = links.map((link: any) => `${link.hero.name} (${link.shared.length} tag${link.shared.length !== 1 ? "s" : ""})`).join(", ");
       lines.push(`<p class="td-aura-line">Synergy +${Math.round(game.synergyBonusFor(unit) * 100)}% attack with ${parts}.</p>`);
     }
+    if (unit.variant === "valkyrie_call") {
+      lines.push(`<p class="td-aura-line">${unit.skillName ?? "Ultimate"}: revives the most recently fallen hero on its free ring at level 1 with half health. Heals nearby allies when nobody can be revived.</p>`);
+    }
     lines.push(`<p>Levels belong to this deployed unit. A fallen hero re-enters at level 1.</p>`);
     return lines.join("");
   }

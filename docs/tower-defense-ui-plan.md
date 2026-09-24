@@ -1,6 +1,6 @@
 # Tower Defense UI audit and rebuild plan
 
-Status: M1-M3 implemented, September 24, 2026. M4 (live readiness) open. The original audit and plan below are kept for reference; the status, decision log and M4 sections are current.
+Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. The original audit and plan below are kept for reference; the status, decision log and M4 sections are current.
 
 ## Status
 
@@ -10,7 +10,7 @@ Status: M1-M3 implemented, September 24, 2026. M4 (live readiness) open. The ori
 | M2 Blessings, pause, settings, help | Done | Blessings panel with Divine Blessings / This run tabs, reason-based pause controller, menu (sound, restart, choose map), help panel. |
 | M3 Transitions, results, a11y | Done | No reloads: one rAF loop, renderer `destroy()`, stale-load guard. Results with Retry / Choose map / Spend Favor. Focus restore, panel focus trap, Escape handling. |
 | Acceptance: viewports | Done (Playwright) | 667x375, 844x390, 915x412, 390x844, 1024x768, 1440x900: no document scroll, all rings reachable, popover inside the stage, panels fit. |
-| Acceptance: real phone | Open | See M4. |
+| Acceptance: real phone | Done | Checked by the user. |
 
 Added after the plan (user requests):
 - Blessing cards with large bonus values, stat icons and colors (choice modal and This run tab).
@@ -29,16 +29,16 @@ Added after the plan (user requests):
 | Styles in a dedicated `src/styles/td.css` loaded by `GameLayout.astro`. | `components.css`. | Game-only styles; the old TD block was removed from `components.css`. |
 | Debug panel only in `npm run dev` builds. | Not planned. | Balance tuning tool, not a player feature. |
 
-## M4: Live readiness (open)
+## M4: Live readiness (done)
 
 1. Done: R2 CORS policy set (GET/HEAD for motto-immortal-db.com, www and localhost:4321); verified the site origin receives `Access-Control-Allow-Origin`, other origins do not.
-2. `npm run build` (run by the user). `astro check`: done. Tower defense files have 0 errors (one fix in `audio.ts`). The earlier hang was an install prompt: `@astrojs/check` and `typescript` are not in `devDependencies`. The rest of the site has 2,049 existing errors, mostly `src/pages/heroes/[id].astro` (1,955) and `src/pages/status.astro` (81); out of scope for this plan.
+2. Done: deployed build verified on the live site (new UI, 45/45 R2 assets, no failed requests or page errors, no debug button). `astro check`: done. Tower defense files have 0 errors (one fix in `audio.ts`). The earlier hang was an install prompt: `@astrojs/check` and `typescript` are not in `devDependencies`. The rest of the site has 2,049 existing errors, mostly `src/pages/heroes/[id].astro` (1,955) and `src/pages/status.astro` (81); out of scope for this plan.
 3. Done: real phone check by the user.
 4. Done: enemy HP 2x via `"difficulty": { "enemyHp": 2 }` in `gameBalance.tuning.json` (base HP values restored to the originals, so the knob is the single source). At 2x, `test:td-balance` wins 3 of 10 runs, none flawless; its threshold is now at least 1 winning squad per map. The "road wall" squad loses at every level; review it separately.
 5. Done: upgrades are allowed during waves. `test-td-sim.mjs` updated for current design: mid-wave upgrades, Favor tier requirements read from the tree, Medusa's petrify (was a slow), full-run mechanics check at base difficulty. Nyx's Shadow Step now targets the lowest-HP enemy anywhere on the map (`findUltTarget`); her normal attacks stay within range. All TD suites pass.
-6. Full-map white wash observed a few seconds into waves in headless screenshots (pre-existing); check on a real GPU, likely an additive glow effect.
+6. Closed: full-map white wash seen only in headless screenshots (pre-existing, likely an additive glow effect under software rendering); not reported on a real device. Reopen if it shows up in play.
 7. Done: page split into modules. Logic in `src/game/td/page/` (`context.ts` shared context, state and late-bound actions; `save.ts`, `boons.ts`, `results.ts`, `debug.ts`, `hud.ts`, `popover.ts`, `recruit.ts`, `panels.ts`, `session.ts`), markup in `src/components/td/` (`TdLobby`, `TdPlayScreen`, `TdOverlays`, `TdDebugPanel`, `TdPanels`). `TowerDefensePage.astro` is about 190 lines of wiring; rendered HTML verified identical to the pre-split version.
-8. WebP sources now exist only on R2 (originals are in git history). Keep a local source copy if the images will be edited again. R2 objects are cached for one year (`immutable`), so changed files need a new file name.
+8. Closed (note): WebP sources exist only on R2 (originals are in git history). Keep a local source copy if the images will be edited again. R2 objects are cached for one year (`immutable`), so changed files need a new file name.
 
 ## Scope and evidence
 
@@ -50,6 +50,8 @@ Source locations:
 - `src/layouts/Base.astro`: shared site navigation and footer.
 - `src/game/td/render.js`: canvas sizing, coordinate conversion, slot targeting.
 - `src/game/td/sim.js`, `favor.js`, and `src/data/tdMaps.json`: simulation, permanent progression, map geometry.
+
+Follow-up candidates (not scheduled): "road wall" squad loses at every difficulty in `test:td-balance` and `td:sweep`. Analysis (September 24, 2026): every enemy within 42 px attacks the same blocker (up to 6 at once, about 80 damage/s); low-damage tanks (Prometheus, Momus) cannot clear the pile and die every wave from wave 1, and fallen heroes redeploy at full cost. Not a test-bot artifact: a runner change that deploys the full squad before upgrading did not help and was reverted. Blocking has no payoff compared to all-platform squads, which win at every HP level. Candidate game changes: block limit per blocker, cheaper redeploy, damage bonus on held enemies; `@astrojs/check` and `typescript` as devDependencies so `astro check` runs without an install prompt.
 
 ## Findings
 

@@ -494,6 +494,21 @@ export class TowerDefenseGame {
     return alive[0] ?? null;
   }
 
+  // Removes and returns the newest fallen entry that can be revived, or null.
+  takeRevivableFallen() {
+    const teamFull = this.team.length >= (this.tuning.run.maxTeam ?? 5);
+    for (let i = this.fallenHeroes.length - 1; i >= 0; i -= 1) {
+      const entry = this.fallenHeroes[i];
+      const onField = this.heroes.some((h) => h.id === entry.id);
+      const ringTaken = this.heroes.some((h) => h.slotType === entry.slotType && h.slotIndex === entry.slotIndex);
+      const needsTeamSpot = !this.team.includes(entry.id);
+      if (onField || ringTaken || (needsTeamSpot && teamFull)) continue;
+      this.fallenHeroes.splice(i, 1);
+      return entry;
+    }
+    return null;
+  }
+
   findTarget(hero) {
     if (hero.variant === "shadow_step") {
       const alive = this.enemies.filter((e) => !e.dead && !(e.flying && hero.slotType === "road") && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range);
@@ -543,8 +558,9 @@ export class TowerDefenseGame {
       this.hit(target, target.hp / target.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
       this.enemies.filter((e) => !e.dead && Math.hypot(target.x - e.x, target.y - e.y) <= 70).forEach((e) => { e.slow = 2; });
     } else if (variant === "valkyrie_call") {
-      // Freya: revive most recent fallen hero at 50% HP; fallback heal if none
-      const fallen = this.fallenHeroes.pop();
+      // Freya: revive the most recent eligible fallen hero at 50% HP; fallback heal if none.
+      // Eligible: not already back on the field, ring still free, and room in the team.
+      const fallen = this.takeRevivableFallen();
       if (fallen) {
         const base = this.heroesById.get(fallen.id);
         const slotArr = fallen.slotType === "road" ? this.map.roadSlots : this.map.platformSlots;
@@ -552,6 +568,8 @@ export class TowerDefenseGame {
         const fullHp = this.maxHpFor(base.hp, 1, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
         this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * 0.5), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null });
+        if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
+        this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
         this.onChange("revive", this);
       } else {

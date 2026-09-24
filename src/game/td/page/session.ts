@@ -129,6 +129,11 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const hero = fallen && heroById.get(fallen.id);
       if (hero) ctx.notice(`${hero.name} has fallen. Tap the empty ring or the deck to redeploy.`);
     }
+    if (type === "revive" && game.lastRevive) {
+      const revived = heroById.get(game.lastRevive.heroId);
+      const reviver = heroById.get(game.lastRevive.by);
+      if (revived) ctx.notice(`${reviver?.name ?? "A hero"} revived ${revived.name} (level 1, half health).`);
+    }
     if (type === "clear" && game.waveStats) {
       const stats = game.waveStats;
       if (stats.leaks === 0) session.perfectWaves += 1;

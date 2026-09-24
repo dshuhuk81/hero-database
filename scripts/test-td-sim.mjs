@@ -785,6 +785,76 @@ function runWaveOne(g) {
   assert.ok(revived.hpLeft >= revived.hp * 0.45, "revived hero has at least 45% HP");
 }
 
+// valkyrie_call edge cases: the revived hero counts toward the team; heroes already
+// back on the field, occupied rings and a full team are skipped (fallback: heal).
+{
+  const make = () => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
+    g.gold = 100000;
+    return g;
+  };
+  const kill = (g, id) => { const unit = g.heroes.find((h) => h.id === id); g.damageHero(unit, unit.hpLeft + 1, null); };
+  const castFreya = (g) => {
+    const freya = g.heroes.find((h) => h.id === "freya");
+    g.startWave(); g.enemies = []; g.spawnQueue = [];
+    g.spawnEnemy("grunt");
+    g.castUltimate(freya, g.enemies[0]);
+  };
+
+  // A: full team, one falls, Freya revives: the team stays at the limit.
+  {
+    const g = make();
+    for (const [id, type, index] of [["freya", "platform", 0], ["nuwa", "road", 0], ["zeus", "platform", 1], ["diana", "platform", 2], ["poseidon", "road", 1]]) g.place(id, type, index);
+    kill(g, "nuwa");
+    castFreya(g);
+    assert.ok(g.heroes.some((h) => h.id === "nuwa"), "A: nuwa revived");
+    assert.ok(g.team.includes("nuwa"), "A: revived hero is back in the team");
+    assert.equal(g.place("caishen", "platform", 3), false, "A: no sixth hero after a revive");
+  }
+
+  // B: the fallen hero was redeployed elsewhere first: no second copy.
+  {
+    const g = make();
+    g.place("freya", "platform", 0); g.place("nuwa", "road", 0);
+    kill(g, "nuwa");
+    g.place("nuwa", "road", 2);
+    castFreya(g);
+    assert.equal(g.heroes.filter((h) => h.id === "nuwa").length, 1, "B: no duplicate hero");
+  }
+
+  // C: another hero took the fallen hero's ring: no stacking on that ring.
+  {
+    const g = make();
+    g.place("freya", "platform", 0); g.place("nuwa", "road", 0);
+    kill(g, "nuwa");
+    g.place("poseidon", "road", 0);
+    castFreya(g);
+    assert.equal(g.heroes.filter((h) => h.slotType === "road" && h.slotIndex === 0).length, 1, "C: one hero per ring");
+    assert.ok(!g.heroes.some((h) => h.id === "nuwa"), "C: nuwa stays fallen");
+  }
+
+  // D: full team of five alive plus a fallen hero: no revive past the limit.
+  {
+    const g = make();
+    g.place("freya", "platform", 0); g.place("nuwa", "road", 0);
+    kill(g, "nuwa");
+    for (const [id, type, index] of [["zeus", "platform", 1], ["diana", "platform", 2], ["poseidon", "road", 1], ["caishen", "platform", 3]]) g.place(id, type, index);
+    castFreya(g);
+    assert.equal(g.heroes.length, 5, "D: team limit respected");
+  }
+
+  // E: an older eligible fallen hero is revived when the newest one is not eligible.
+  {
+    const g = make();
+    g.place("freya", "platform", 0); g.place("nuwa", "road", 0); g.place("poseidon", "road", 1);
+    kill(g, "nuwa");
+    kill(g, "poseidon");
+    g.place("poseidon", "road", 3); // newest fallen is back on the field
+    castFreya(g);
+    assert.ok(g.heroes.some((h) => h.id === "nuwa" && h.slotIndex === 0), "E: older fallen hero revived on its ring");
+  }
+}
+
 // variant_expose: Prometheus-exposed enemies take 30% more damage.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
