@@ -39,14 +39,14 @@
     "build:game-balance": "node scripts/build-game-balance.mjs",
     "test:tower-defense": "node scripts/test-td-ui.mjs && node scripts/test-td-favor.mjs && node scripts/test-td-difficulty.mjs && node scripts/test-td-sim.mjs",
     "test:td-balance": "node scripts/test-td-balance.mjs",
-    "td:sweep": "node scripts/td-balance-sweep.mjs"
+    "td:sweep": "node scripts/td-balance-sweep.mjs",
+    "r2:cors": "node scripts/r2-cors.mjs"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=22.12.0"
   },
   "dependencies": {
     "astro": "^7.3.5",
-    "brew": "^0.0.8",
     "cookie": "^2.0.1",
     "dotenv": "^18.0.3",
     "express": "^4.18.2"
