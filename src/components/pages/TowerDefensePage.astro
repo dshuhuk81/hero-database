@@ -1,0 +1,636 @@
+---
+import favorTree from "../../data/favorTree.json";
+interface Props { heroes: any[]; tuning: any; maps: any[]; waves: any[]; boss?: any; virtueTexts?: Record<string, string>; }
+const { heroes, tuning, maps, waves, boss, virtueTexts = {} } = Astro.props;
+const payload = { heroes, tuning, maps, waves, boss, virtueTexts, favorTree };
+const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
+---
+
+<main class="td-page" data-td-root>
+  <header class="td-hero">
+    <div class="td-hero-copy">
+      <p class="td-kicker">Motto Immortal · Field exercise</p>
+      <h1 data-td-title>Hold Moonlit Pass</h1>
+      <p>Choose five heroes, place them where their class belongs, and survive ten waves.</p>
+      <div class="td-map-picker" data-td-maps role="group" aria-label="Choose battlefield">
+        {maps.map((entry: any) => (
+          <button type="button" class="td-map-button" data-map-id={entry.id}>{entry.name}</button>
+        ))}
+      </div>
+      <details class="td-blessings" data-td-blessings hidden>
+        <summary data-td-blessings-summary>Divine Blessings</summary>
+        <div class="td-blessings-content" data-td-blessings-content></div>
+      </details>
+    </div>
+    <div class="td-best" aria-label="Personal best">
+      <span>Personal best</span>
+      <strong data-td-best>0</strong>
+      <span class="td-perfect" data-td-perfect hidden>🏆 Perfect defense</span>
+    </div>
+  </header>
+
+  <section class="td-game" aria-label="Tower defense game">
+    <div class="td-hud" aria-live="polite">
+      <div class="td-stat"><span>Gold</span><strong data-td-gold>260</strong></div>
+      <div class="td-stat"><span>Lives</span><strong data-td-lives>25</strong></div>
+      <div class="td-stat"><span>Wave</span><strong><span data-td-wave>0</span>/10</strong></div>
+      <div class="td-stat"><span>Score</span><strong data-td-score>0</strong></div>
+      <div class="td-stat" data-td-synergy-stat hidden><span>Synergies</span><strong data-td-synergy-count>0</strong></div>
+      <div class="td-hud-actions">
+        <input class="td-volume" type="range" min="0" max="100" value="70" data-td-volume aria-label="Sound volume" />
+        <button class="td-icon-button" type="button" data-td-mute aria-label="Mute sounds">♪</button>
+        <button class="td-icon-button" type="button" data-td-speed aria-label="Set game speed to 2x">1×</button>
+        <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game">Ⅱ</button>
+        <button class="td-icon-button" type="button" data-td-restart aria-label="Restart game">↻</button>
+      </div>
+    </div>
+
+    <div class="td-layout">
+      <div class="td-stage-wrap">
+        <canvas class="td-canvas" width="960" height="540" tabindex="0" data-td-canvas aria-label="Moonlit Pass battlefield. Use left and right arrow keys to choose a placement ring, then Enter to deploy."></canvas>
+        <div class="td-stage-message" data-td-message>
+          <span>Prepare your defense</span>
+          <strong>Select five heroes to begin</strong>
+        </div>
+        <div class="td-result" data-td-result hidden>
+          <span data-td-result-kicker>Run complete</span>
+          <strong data-td-result-title>Moonlit Pass secured</strong>
+          <p data-td-result-copy></p>
+          <div class="td-result-stats" data-td-result-stats hidden></div>
+          <p class="td-result-compare" data-td-result-compare hidden></p>
+          <div class="td-result-achievements" data-td-result-achievements hidden></div>
+          <p data-td-result-favor hidden></p>
+          <button class="action-button action-button--primary" type="button" data-td-play-again>Play again</button>
+        </div>
+      </div>
+
+      <aside class="td-command">
+        <div class="td-command-heading">
+          <div><span class="td-label">Command deck</span><h2 data-td-panel-title>Choose your squad</h2></div>
+          <span class="td-team-count"><b data-td-team-count>0</b>/5</span>
+        </div>
+
+        <div class="td-picker" data-td-picker>
+          {classes.map((className) => (
+            <section class="td-class-group" data-class={className}>
+              <h3>{className}<span>{tuning.classes[className].slot}</span></h3>
+              <div class="td-hero-grid">
+                {heroes.filter((hero) => hero.class === className).map((hero) => (
+                  <button class="td-hero-card" type="button" data-hero-id={hero.id} aria-pressed="false">
+                    <img src={hero.image} alt="" width="48" height="48" loading="eager" />
+                    <span class="td-card-copy"><strong>{hero.name}</strong><small>{hero.cost} gold</small></span>
+                    <span class="td-tier" data-tier={hero.tier}>{hero.tier}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        <div class="td-deck" data-td-deck hidden></div>
+        <div class="td-inspector" data-td-inspector hidden></div>
+        <div class="td-wave-info" data-td-preview hidden></div>
+        <div class="td-virtues" data-td-virtues hidden></div>
+        <p class="td-wave-result" data-td-summary hidden></p>
+        <p class="td-command-note" data-td-command-note>Road heroes block enemies. Platform heroes attack safely from range.</p>
+        <button class="action-button action-button--primary td-main-action" type="button" data-td-main-action disabled>Choose 5 heroes</button>
+      </aside>
+    </div>
+  </section>
+
+  <section class="td-briefing" aria-labelledby="td-briefing-title">
+    <div><span class="td-label" data-td-level-label>Level 01</span><h2 id="td-briefing-title" data-td-briefing-title>Moonlit Pass</h2></div>
+    <div class="td-briefing-grid">
+      <article><strong>Road</strong><p>Gold rings accept Tanks, Warriors, and Assassins. They stop ground enemies and can fall in battle.</p></article>
+      <article><strong>Platforms</strong><p>Purple rings accept Mages, Archers, and Supports. Flyers ignore blockers, so ranged coverage matters.</p></article>
+      <article><strong>Final wave</strong><p>{boss?.name ?? "Baphomet"} arrives with an escort. Its minigame health and speed are tuned for this mode.</p></article>
+    </div>
+  </section>
+
+  <p class="td-disclaimer">Minigame balance values are made up for fun and do not reflect in-game numbers.</p>
+</main>
+
+<script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
+
+<script>
+  import { TowerDefenseGame } from "../../game/td/sim.js";
+  import { canvasPoint, createRenderer, nearestSlot } from "../../game/td/render.js";
+  import { createAudio } from "../../game/td/audio";
+  import { computeFavor, applyFavorTree, canUnlock } from "../../game/td/favor.js";
+
+  const root = document.querySelector<HTMLElement>("[data-td-root]");
+  if (!root) throw new Error("Tower defense root missing");
+  const data = JSON.parse(document.getElementById("td-data")?.textContent || "{}");
+  const canvas = root.querySelector<HTMLCanvasElement>("[data-td-canvas]")!;
+  const picker = root.querySelector<HTMLElement>("[data-td-picker]")!;
+  const deck = root.querySelector<HTMLElement>("[data-td-deck]")!;
+  const inspector = root.querySelector<HTMLElement>("[data-td-inspector]")!;
+  const mainAction = root.querySelector<HTMLButtonElement>("[data-td-main-action]")!;
+  const message = root.querySelector<HTMLElement>("[data-td-message]")!;
+  const result = root.querySelector<HTMLElement>("[data-td-result]")!;
+  const teamCount = root.querySelector<HTMLElement>("[data-td-team-count]")!;
+  const panelTitle = root.querySelector<HTMLElement>("[data-td-panel-title]")!;
+  const commandNote = root.querySelector<HTMLElement>("[data-td-command-note]")!;
+  const preview = root.querySelector<HTMLElement>("[data-td-preview]")!;
+  const summary = root.querySelector<HTMLElement>("[data-td-summary]")!;
+  const virtuesEl = root.querySelector<HTMLElement>("[data-td-virtues]")!;
+  const heroById = new Map<string, any>(data.heroes.map((hero: any) => [hero.id, hero]));
+  const maps: any[] = data.maps;
+  let map = maps[0];
+  try {
+    const savedMapId = localStorage.getItem("td:map");
+    if (savedMapId && maps.some((entry) => entry.id === savedMapId)) map = maps.find((entry) => entry.id === savedMapId);
+  } catch {}
+  let selectedTeam: string[] = [];
+  let selectedHeroId = "";
+  let selectedEntityId: number | null = null;
+  let speed = 1;
+  let started = false;
+  let runPerfectWaves = 0;
+  let saved = { bestScore: 0, bestWave: 0, lastTeam: [] as string[], perfectDefense: false, favor: 0, favTree: [] as string[], mapBests: {} as Record<string, { score: number; wave: number; duration: number; lives: number; leaks: number }> };
+
+  try {
+    const candidate = JSON.parse(localStorage.getItem("td:v1") || "null");
+    if (candidate && Number.isFinite(candidate.bestScore) && Array.isArray(candidate.lastTeam)) {
+      saved = {
+        bestScore: candidate.bestScore,
+        bestWave: Number(candidate.bestWave) || 0,
+        lastTeam: candidate.lastTeam.filter((id: string) => heroById.has(id)).slice(0, 5),
+        perfectDefense: !!candidate.perfectDefense,
+        favor: Number(candidate.favor) || 0,
+        favTree: Array.isArray(candidate.favTree) ? candidate.favTree.filter((id: unknown) => typeof id === "string") : [],
+        mapBests: (candidate.mapBests && typeof candidate.mapBests === "object" && !Array.isArray(candidate.mapBests)) ? candidate.mapBests : {},
+      };
+      selectedTeam = saved.lastTeam.length === 5 ? [...saved.lastTeam] : [];
+    }
+  } catch {}
+
+  const persist = () => { try { localStorage.setItem("td:v1", JSON.stringify(saved)); } catch {} };
+  const favorTreeData: any[] = data.favorTree || [];
+  const favBonuses = applyFavorTree(saved.favTree, data.tuning) as any;
+  const effectiveTuning = {
+    ...data.tuning,
+    run: {
+      ...data.tuning.run,
+      startingGold: data.tuning.run.startingGold + (favBonuses.startingGoldBonus || 0),
+      lives: data.tuning.run.lives + (favBonuses.livesBonus || 0),
+    },
+  };
+  // Attach the UI listener after construction: reset emits synchronously.
+  const game = new TowerDefenseGame({ ...data, tuning: effectiveTuning, map });
+  (window as any).tdGame = game; // debugging/testing handle
+  game.onChange = handleChange;
+  const renderer = await createRenderer(canvas, game, { boss: data.boss });
+  (window as any).tdRenderer = renderer; // debugging/testing handle
+  if (saved.perfectDefense) root.querySelector<HTMLElement>("[data-td-perfect]")!.hidden = false;
+  const audio = createAudio();
+  game.onEffect = (effect: any) => {
+    if (effect.type === "hit") audio.play("hit");
+    else if (effect.type === "ult") audio.play("heavy");
+    else if (effect.type === "boss") audio.play("heavy");
+    else if (effect.type === "shot" && effect.color === "red") audio.play("blocked");
+    else if (effect.type === "heal" || effect.type === "buff") audio.play("place");
+  };
+
+  const muteButton = root.querySelector<HTMLButtonElement>("[data-td-mute]")!;
+  const volumeSlider = root.querySelector<HTMLInputElement>("[data-td-volume]")!;
+  volumeSlider.value = String(Math.round(audio.volume * 100));
+  const syncAudioUi = () => { muteButton.textContent = audio.muted ? "✕" : "♪"; muteButton.setAttribute("aria-label", audio.muted ? "Unmute sounds" : "Mute sounds"); };
+  muteButton.addEventListener("click", () => { audio.toggleMute(); syncAudioUi(); });
+  volumeSlider.addEventListener("input", () => { audio.setVolume(Number(volumeSlider.value) / 100); syncAudioUi(); });
+  syncAudioUi();
+  root.querySelector<HTMLElement>("[data-td-best]")!.textContent = saved.bestScore.toLocaleString();
+
+  // Map selection: switching before a run starts persists and reloads onto the new battlefield.
+  const mapPicker = root.querySelector<HTMLElement>("[data-td-maps]")!;
+  const syncMapUi = () => {
+    mapPicker.querySelectorAll<HTMLButtonElement>("[data-map-id]").forEach((button) => {
+      const active = button.dataset.mapId === map.id;
+      button.classList.toggle("is-selected", active);
+      button.setAttribute("aria-pressed", String(active));
+      button.disabled = started;
+    });
+    root.querySelector<HTMLElement>("[data-td-title]")!.textContent = `Hold ${map.name}`;
+    root.querySelector<HTMLElement>("[data-td-level-label]")!.textContent = `Level ${String(maps.indexOf(map) + 1).padStart(2, "0")}`;
+    root.querySelector<HTMLElement>("[data-td-briefing-title]")!.textContent = map.name;
+    canvas.setAttribute("aria-label", `${map.name} battlefield. Use left and right arrow keys to choose a placement ring, then Enter to deploy.`);
+  };
+  mapPicker.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-map-id]");
+    if (!button || started || button.dataset.mapId === map.id) return;
+    try { localStorage.setItem("td:map", button.dataset.mapId!); } catch {}
+    window.location.reload();
+  });
+  syncMapUi();
+
+  const kindNames: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: data.boss?.name ?? "Boss" };
+
+  function renderPreview() {
+    const info = started && !game.running && !game.complete ? game.wavePreview() : null;
+    if (!info) { preview.hidden = true; return; }
+    preview.hidden = false;
+    preview.innerHTML = `<span class="td-wave-chip">Next wave <b>${info.wave}</b></span>` + Object.entries(info.counts)
+      .map(([kind, count]) => `<span class="td-wave-chip">${count}× <b>${kindNames[kind] ?? kind}</b></span>`).join("");
+  }
+
+  function renderSummary() {
+    const stats = game.waveStats;
+    if (!stats || game.running) { summary.hidden = true; return; }
+    summary.hidden = false;
+    const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
+    summary.textContent = `Wave ${stats.wave} cleared: ${stats.kills} kills · ${leakText} · ${stats.goldEarned} gold earned.`;
+  }
+
+  function renderVirtues() {
+    const blessings = data.tuning.virtueBlessings || {};
+    const offer = game.virtueOffer;
+    if (offer && !game.running && !game.complete) {
+      virtuesEl.hidden = false;
+      virtuesEl.innerHTML = `<span class="td-label">Choose one blessing</span><div class="td-virtue-grid">` + offer.map((name: string) => {
+        const effect = data.tuning.virtueEffects[name];
+        const heroName = blessings[name] ?? name;
+        return `<button class="td-virtue-card" type="button" data-virtue="${name}"><strong>${heroName}</strong><small>${data.virtueTexts[name] ?? ""}</small><em>Minigame effect: ${effect?.label ?? ""}</em></button>`;
+      }).join("") + `</div>`;
+    } else if ((game.virtues.length || (game.activePairs?.length ?? 0)) && started && !game.complete) {
+      virtuesEl.hidden = false;
+      const activeChips = game.virtues.map((name: string) => `<span class="td-wave-chip"><b>${blessings[name] ?? name}</b></span>`).join("");
+      const pairChips = (game.activePairs ?? []).map((pair: any) => `<span class="td-wave-chip td-wave-chip--pair"><b>${pair.name}</b> ${pair.label}</span>`).join("");
+      virtuesEl.innerHTML = `<span class="td-label">Active blessings</span><div class="td-virtue-grid td-virtue-grid--active">${activeChips}${pairChips}</div>`;
+    } else {
+      virtuesEl.hidden = true;
+    }
+  }
+
+  virtuesEl.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-virtue]");
+    if (!button) return;
+    const blessings = data.tuning.virtueBlessings || {};
+    const heroName = blessings[button.dataset.virtue!] ?? button.dataset.virtue;
+    if (game.chooseVirtue(button.dataset.virtue!)) {
+      const triggered = (game.activePairs ?? []).find((p: any) => p.virtues.includes(button.dataset.virtue!));
+      commandNote.textContent = triggered
+        ? `${heroName} activates ${triggered.name} - ${triggered.label}`
+        : `${heroName} blesses your squad for the rest of this run.`;
+    }
+  });
+
+  const blessingsEl = root.querySelector<HTMLElement>("[data-td-blessings]");
+  const blessingsContent = root.querySelector<HTMLElement>("[data-td-blessings-content]");
+  const blessingsSummary = root.querySelector<HTMLElement>("[data-td-blessings-summary]");
+
+  function computeAvailableFavor() {
+    const spent = saved.favTree.reduce((sum: number, id: string) => {
+      const node = favorTreeData.find((n: any) => n.id === id);
+      return sum + (node ? node.cost : 0);
+    }, 0);
+    return (saved.favor || 0) - spent;
+  }
+
+  function renderBlessings() {
+    if (!blessingsEl || started) return;
+    blessingsEl.hidden = false;
+    const available = computeAvailableFavor();
+    if (blessingsSummary) blessingsSummary.textContent = `Divine Blessings - ${available} Favor available`;
+    if (!blessingsContent) return;
+    const tiers = [1, 2, 3];
+    blessingsContent.innerHTML = tiers.map((tier: number) => {
+      const nodes = favorTreeData.filter((n: any) => n.tier === tier);
+      return `<div class="td-blessings-tier"><span class="td-label">Tier ${tier}</span>` +
+        nodes.map((node: any) => {
+          const unlocked = saved.favTree.includes(node.id);
+          const reqMet = canUnlock(node.id, saved.favTree, favorTreeData) || unlocked;
+          const canAfford = available >= node.cost;
+          return `<div class="td-blessing-node${unlocked ? " is-unlocked" : ""}">` +
+            `<strong>${node.name}</strong>` +
+            `<small>${node.description}</small>` +
+            (unlocked
+              ? `<span class="td-wave-chip">Unlocked</span>`
+              : `<button class="action-button action-button--primary" type="button" data-unlock="${node.id}"${reqMet && canAfford ? "" : " disabled"}>${node.cost} Favor</button>`) +
+            `</div>`;
+        }).join("") + `</div>`;
+    }).join("") +
+      (saved.favTree.length > 0 ? `<button type="button" class="td-respec" data-td-respec>Respec (refund all)</button>` : "");
+  }
+
+  if (blessingsEl) {
+    blessingsEl.addEventListener("click", (event) => {
+      const unlock = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-unlock]");
+      if (unlock) {
+        const id = unlock.dataset.unlock!;
+        if (!saved.favTree.includes(id) && canUnlock(id, saved.favTree, favorTreeData) && computeAvailableFavor() >= (favorTreeData.find((n: any) => n.id === id)?.cost || 0)) {
+          saved.favTree = [...saved.favTree, id];
+          persist();
+          renderBlessings();
+        }
+        return;
+      }
+      if ((event.target as HTMLElement).closest("[data-td-respec]")) {
+        saved.favTree = [];
+        persist();
+        renderBlessings();
+      }
+    });
+  }
+
+  function handleChange(type: string) {
+    updateHud();
+    if (type === "leak") {
+      audio.play("error");
+      commandNote.textContent = game.lives > 0 ? `An enemy broke through. ${game.lives} lives remain.` : "";
+    }
+    if (type === "clear") audio.play("clear");
+    if (type === "virtue") audio.play("upgrade");
+    if (type === "death") audio.play("blocked");
+    if (type === "death" && selectedEntityId !== null) {
+      const alive = game.heroes.find((hero: any) => hero.entityId === selectedEntityId);
+      if (!alive) {
+        inspector.innerHTML = `<span class="td-label">Fallen</span><p>Your hero has fallen. You can recruit them again from the deck.</p>`;
+        selectedEntityId = null;
+        game.uiSelected = null;
+        renderDeck();
+      }
+    }
+    if (type === "clear") {
+      if (game.waveStats && game.waveStats.leaks === 0) runPerfectWaves += 1;
+      mainAction.disabled = false;
+      mainAction.textContent = game.wave === 9 ? "Face Baphomet" : `Start wave ${game.wave + 1}`;
+      commandNote.textContent = `Wave ${game.wave} cleared. Reinforce your formation before continuing.`;
+    }
+    if (type === "finish") finishRun();
+    if (selectedEntityId !== null && !inspector.hidden) {
+      const unit = game.heroes.find((hero: any) => hero.entityId === selectedEntityId);
+      if (unit) renderInspector(unit);
+    }
+    renderPreview();
+    renderSummary();
+    renderVirtues();
+  }
+
+  function updateHud() {
+    root.querySelector<HTMLElement>("[data-td-gold]")!.textContent = String(game.gold);
+    root.querySelector<HTMLElement>("[data-td-lives]")!.textContent = String(game.lives);
+    root.querySelector<HTMLElement>("[data-td-wave]")!.textContent = String(game.wave);
+    root.querySelector<HTMLElement>("[data-td-score]")!.textContent = game.score.toLocaleString();
+    const synergyCount = game.activeSynergyCount();
+    const synStat = root.querySelector<HTMLElement>("[data-td-synergy-stat]")!;
+    synStat.hidden = synergyCount === 0;
+    synStat.querySelector<HTMLElement>("[data-td-synergy-count]")!.textContent = String(synergyCount);
+    renderDeck();
+  }
+
+  function updatePicker() {
+    picker.querySelectorAll<HTMLButtonElement>("[data-hero-id]").forEach((button) => {
+      const active = selectedTeam.includes(button.dataset.heroId || "");
+      button.classList.toggle("is-selected", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    teamCount.textContent = String(selectedTeam.length);
+    mainAction.disabled = selectedTeam.length !== 5;
+    mainAction.textContent = selectedTeam.length === 5 ? "Defend the pass" : `Choose ${5 - selectedTeam.length} more`;
+  }
+
+  picker.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-hero-id]");
+    if (!button || started) return;
+    const id = button.dataset.heroId!;
+    audio.play("select");
+    selectedTeam = selectedTeam.includes(id) ? selectedTeam.filter((entry) => entry !== id) : selectedTeam.length < 5 ? [...selectedTeam, id] : selectedTeam;
+    updatePicker();
+  });
+
+  function renderDeck() {
+    if (!started) return;
+    deck.innerHTML = game.team.map((id: string) => {
+      const hero = heroById.get(id);
+      const affordable = game.gold >= hero.cost;
+      return `<button type="button" class="td-deck-card${selectedHeroId === id ? " is-selected" : ""}" data-deploy="${id}" ${affordable ? "" : "disabled"}><img src="${hero.image}" alt="" width="42" height="42"><span><strong>${hero.name}</strong><small>${hero.slot} · ${hero.cost} gold</small></span><b data-tier="${hero.tier}">${hero.tier}</b></button>`;
+    }).join("");
+  }
+
+  deck.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-deploy]");
+    if (!button) return;
+    selectedHeroId = button.dataset.deploy || "";
+    audio.play("select");
+    selectedEntityId = null;
+    game.uiSelected = null;
+    const hero = heroById.get(selectedHeroId);
+    inspector.hidden = false;
+    inspector.innerHTML = `<span class="td-label">Ready to deploy</span><strong>${hero.name}</strong><p>${hero.class} · ${hero.ability} ultimate · ${hero.range}px range</p>`;
+    commandNote.textContent = `Tap an empty ${hero.slot} ring to deploy ${hero.name}.`;
+    renderDeck();
+  });
+
+  mainAction.addEventListener("click", () => {
+    if (!started) {
+      if (!game.setTeam(selectedTeam)) return;
+      started = true;
+      syncMapUi();
+      saved.lastTeam = [...selectedTeam]; persist();
+      if (blessingsEl) blessingsEl.hidden = true;
+      picker.hidden = true; deck.hidden = false; message.hidden = true;
+      panelTitle.textContent = "Deploy your heroes";
+      teamCount.parentElement!.hidden = true;
+      mainAction.textContent = "Start wave 1";
+      mainAction.disabled = false;
+      commandNote.textContent = "Select a hero, then tap a matching ring on the field.";
+      renderDeck(); renderPreview(); return;
+    }
+    if (!game.running) {
+      game.startWave();
+      mainAction.disabled = true;
+      mainAction.textContent = game.wave === 10 ? "Final wave underway" : `Wave ${game.wave} underway`;
+      commandNote.textContent = game.wave === 10 ? `Baphomet has entered ${map.name}.` : "Heroes attack automatically. You can still deploy reinforcements.";
+    }
+  });
+
+  function renderInspector(unit: any) {
+    const info = game.upgradeInfo(unit.entityId);
+    const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
+    let supportLine = "";
+    if (unit.ability === "aura") {
+      const allies = game.heroes.filter((ally: any) => ally !== unit && Math.hypot(unit.x - ally.x, unit.y - ally.y) <= unit.range);
+      supportLine = allies.length
+        ? `<p class="td-aura-line">Aura: ${allies.map((ally: any) => ally.name).join(", ")} gain${allies.length === 1 ? "s" : ""} +${auraPct}% attack inside the ring.</p>`
+        : `<p class="td-aura-line">Aura: no allies inside the ring — the +${auraPct}% attack bonus is positional.</p>`;
+    } else {
+      const aura = game.supportAuraFor(unit);
+      if (aura) supportLine = `<p class="td-aura-line">Receiving +${auraPct}% attack from ${aura.source.name}'s aura.</p>`;
+    }
+    let upgradeBlock = "";
+    if (info.ok) {
+      upgradeBlock = `<button class="action-button action-button--primary td-upgrade-button" type="button" data-td-upgrade>Upgrade to level ${unit.level + 1} · ${info.cost} gold</button>
+        <p class="td-upgrade-detail">Attack ${unit.atk} → ${info.nextAtk} · Max health ${unit.hp} → ${info.nextHp}</p>`;
+    } else {
+      const atCap = unit.level >= (data.tuning.upgrades?.maxLevel ?? 4);
+      upgradeBlock = `<button class="action-button action-button--primary td-upgrade-button" type="button" disabled>${atCap ? "Level cap reached" : "Upgrade unavailable"}</button>
+        <p class="td-upgrade-detail">${info.reason}</p>`;
+    }
+    const synLinks = game.synergyLinksFor(unit);
+    const synBonus = game.synergyBonusFor(unit);
+    let synergyLine = "";
+    if (synLinks.length) {
+      const parts = synLinks.map((l: any) => `${l.hero.name} (${l.shared.length} tag${l.shared.length !== 1 ? "s" : ""})`).join(", ");
+      synergyLine = `<p class="td-aura-line">Synergy +${Math.round(synBonus * 100)}% attack with ${parts}.</p>`;
+    }
+    inspector.innerHTML = `<span class="td-label">On the field · Level ${unit.level}</span><strong>${unit.name}</strong>
+      <p>${unit.atk} attack · ${Math.ceil(unit.hpLeft)} / ${unit.hp} health · ${unit.range}px range · Press R to rotate</p>
+      ${supportLine}
+      ${synergyLine}
+      ${upgradeBlock}
+      <p class="td-upgrade-detail">Levels belong to this deployed unit — a fallen hero re-enters at level 1.</p>`;
+  }
+
+  inspector.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-td-upgrade]");
+    if (!button || selectedEntityId === null) return;
+    const result = game.upgrade(selectedEntityId);
+    if (result.ok) audio.play("upgrade");
+    else { audio.play("error"); commandNote.textContent = result.reason || "Upgrade unavailable."; }
+  });
+
+  function activateSlot(slot: { type: string; index: number } | null) {
+    if (!started || !slot) return;
+    const occupied = game.heroes.find((hero: any) => hero.slotType === slot.type && hero.slotIndex === slot.index);
+    if (occupied) {
+      selectedEntityId = occupied.entityId; selectedHeroId = "";
+      game.uiSelected = selectedEntityId; game.uiPlacement = null;
+      inspector.hidden = false;
+      renderInspector(occupied);
+      renderDeck(); return;
+    }
+    if (!selectedHeroId) { commandNote.textContent = "Select a hero from your command deck first."; return; }
+    const hero = heroById.get(selectedHeroId);
+    if (hero.slot !== slot.type) { commandNote.textContent = `${hero.name} needs a ${hero.slot} ring.`; return; }
+    if (game.place(selectedHeroId, slot.type, slot.index)) {
+      audio.play("place");
+      selectedHeroId = ""; game.uiPlacement = null; commandNote.textContent = "Hero deployed. Select another hero or begin the wave."; renderDeck();
+    } else { audio.play("error"); commandNote.textContent = `You need ${hero.cost} gold to deploy ${hero.name}, or that hero is already deployed.`; }
+  }
+
+  canvas.addEventListener("mousemove", (event) => {
+    if (!started || !selectedHeroId) { game.uiPlacement = null; return; }
+    const hero = heroById.get(selectedHeroId);
+    const slot = nearestSlot(map, canvasPoint(canvas, event));
+    game.uiPlacement = slot && slot.type === hero.slot
+      ? { x: (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index][0], y: (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index][1], range: hero.range, type: slot.type }
+      : null;
+  });
+  canvas.addEventListener("mouseleave", () => { game.uiPlacement = null; });
+
+  canvas.addEventListener("click", (event) => {
+    const slot = nearestSlot(map, canvasPoint(canvas, event));
+    if (slot) game.focusedSlot = { type: slot.type, index: slot.index };
+    activateSlot(slot);
+  });
+
+  const keyboardSlots = [
+    ...map.roadSlots.map((_: any, index: number) => ({ type: "road", index })),
+    ...map.platformSlots.map((_: any, index: number) => ({ type: "platform", index })),
+  ];
+  let keyboardSlotIndex = 0;
+  canvas.addEventListener("focus", () => { game.focusedSlot = keyboardSlots[keyboardSlotIndex]; });
+  canvas.addEventListener("blur", () => { game.focusedSlot = null; });
+  canvas.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      keyboardSlotIndex = (keyboardSlotIndex + (event.key === "ArrowRight" ? 1 : -1) + keyboardSlots.length) % keyboardSlots.length;
+      game.focusedSlot = keyboardSlots[keyboardSlotIndex];
+      const slot = game.focusedSlot;
+      commandNote.textContent = `${slot.type === "road" ? "Road" : "Platform"} ring ${slot.index + 1} selected. Press Enter to use it.`;
+    } else activateSlot(game.focusedSlot);
+  });
+  window.addEventListener("keydown", (event) => { if (event.key.toLowerCase() === "r" && selectedEntityId) game.rotate(selectedEntityId); });
+  root.querySelector<HTMLButtonElement>("[data-td-speed]")!.addEventListener("click", (event) => { speed = speed === 1 ? 2 : 1; (event.currentTarget as HTMLButtonElement).textContent = `${speed}×`; });
+  root.querySelector<HTMLButtonElement>("[data-td-pause]")!.addEventListener("click", (event) => { game.paused = !game.paused; (event.currentTarget as HTMLButtonElement).textContent = game.paused ? "▶" : "Ⅱ"; });
+  root.querySelector<HTMLButtonElement>("[data-td-restart]")!.addEventListener("click", () => window.location.reload());
+  root.querySelector<HTMLButtonElement>("[data-td-play-again]")!.addEventListener("click", () => window.location.reload());
+
+  function fmtDuration(seconds: number) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return m > 0 ? `${m}m ${s}s` : `${s}s`;
+  }
+
+  function finishRun() {
+    if (game.perfect) saved.perfectDefense = true;
+    saved.bestScore = Math.max(saved.bestScore, game.score); saved.bestWave = Math.max(saved.bestWave, game.wave);
+    const runStats = { waves: game.wave, perfectWaves: runPerfectWaves, bossKilled: !!game.won, livesLeft: game.lives };
+    const earnedFavor = computeFavor(runStats, data.tuning);
+    saved.favor = (saved.favor || 0) + earnedFavor;
+
+    const g = game as any;
+    const prevBest = saved.mapBests[map.id] || null;
+    saved.mapBests[map.id] = { score: g.score ?? 0, wave: g.wave ?? 0, duration: Math.round(g.runDuration ?? 0), lives: g.lives ?? 0, leaks: g.totalLeaks ?? 0 };
+    persist();
+
+    root!.querySelector<HTMLElement>("[data-td-best]")!.textContent = saved.bestScore.toLocaleString();
+    if (saved.perfectDefense) root!.querySelector<HTMLElement>("[data-td-perfect]")!.hidden = false;
+    root!.querySelector<HTMLElement>("[data-td-result-kicker]")!.textContent = g.perfect ? "Perfect defense" : g.won ? "Victory" : "Defense broken";
+    root!.querySelector<HTMLElement>("[data-td-result-title]")!.textContent = g.won ? `${map.name} secured` : `${map.name} fell`;
+    root!.querySelector<HTMLElement>("[data-td-result-copy]")!.textContent = g.perfect
+      ? `${(g.score ?? 0).toLocaleString()} points · All 10 waves · ${g.lives ?? 0} lives left · not a single enemy broke through`
+      : `${(g.score ?? 0).toLocaleString()} points · Wave ${g.wave ?? 0} · ${g.lives ?? 0} lives left · ${g.totalLeaks ?? 0} leaks`;
+
+    // MVP hero: hero with most kills
+    const killEntries = Object.values(g.heroKills ?? {}) as { name: string; kills: number }[];
+    killEntries.sort((a, b) => b.kills - a.kills);
+    const mvp = killEntries[0] ?? null;
+
+    // Stats grid
+    const statsEl = root!.querySelector<HTMLElement>("[data-td-result-stats]")!;
+    const blessings = data.tuning.virtueBlessings || {};
+    const virtues: string[] = g.virtues ?? [];
+    const activePairs: any[] = g.activePairs ?? [];
+    const bestVirtueName = activePairs.length
+      ? activePairs[0].name
+      : (virtues.length ? (blessings[virtues[0]] ?? virtues[0]) : null);
+    const statsHtml = [
+      mvp ? `<div class="td-result-stat"><span>MVP</span><strong>${mvp.name}</strong><small>${mvp.kills} kills</small></div>` : "",
+      `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(g.runDuration ?? 0)}</strong></div>`,
+      `<div class="td-result-stat"><span>Gold left</span><strong>${g.gold ?? 0}</strong><small>of ~${Math.round((g.totalGoldEarned ?? 0) + data.tuning.run.startingGold)} earned</small></div>`,
+      `<div class="td-result-stat"><span>Spent</span><strong>${g.totalGoldSpent ?? 0}</strong></div>`,
+      bestVirtueName ? `<div class="td-result-stat"><span>Best blessing</span><strong>${bestVirtueName}</strong></div>` : "",
+    ].filter(Boolean).join("");
+    statsEl.innerHTML = statsHtml;
+    statsEl.hidden = false;
+
+    // Comparison vs previous best on this map
+    const compareEl = root!.querySelector<HTMLElement>("[data-td-result-compare]")!;
+    if (prevBest) {
+      const improvements: string[] = [];
+      if ((g.score ?? 0) > prevBest.score) improvements.push(`higher score (+${((g.score ?? 0) - prevBest.score).toLocaleString()})`);
+      if ((g.lives ?? 0) > prevBest.lives) improvements.push(`more lives left (+${(g.lives ?? 0) - prevBest.lives})`);
+      if ((g.totalLeaks ?? 0) < prevBest.leaks) improvements.push(`fewer leaks (-${prevBest.leaks - (g.totalLeaks ?? 0)})`);
+      if (g.won && (prevBest.duration ?? 0) > 0 && (g.runDuration ?? 0) < (prevBest.duration ?? 0)) improvements.push(`faster run (-${fmtDuration((prevBest.duration ?? 0) - (g.runDuration ?? 0))})`);
+      if (improvements.length) {
+        compareEl.textContent = `Better than last time: ${improvements.join(", ")}.`;
+        compareEl.hidden = false;
+      }
+    }
+
+    // Achievements
+    const earned: string[] = [];
+    if (g.perfect) earned.push("Perfect Defense");
+    if (g.won && (g.gold ?? 0) >= 150) earned.push("Hoarder");
+    if (g.won && (g.runDuration ?? 0) <= 300) earned.push("Speed Run");
+    const achieveEl = root!.querySelector<HTMLElement>("[data-td-result-achievements]")!;
+    if (earned.length) {
+      achieveEl.innerHTML = earned.map((a) => `<span class="td-achievement">${a}</span>`).join("");
+      achieveEl.hidden = false;
+    }
+
+    const favorEl = root!.querySelector<HTMLElement>("[data-td-result-favor]");
+    if (favorEl) { favorEl.textContent = `+${earnedFavor} Divine Favor earned. Total: ${saved.favor} Favor.`; favorEl.hidden = false; }
+    result.hidden = false;
+  }
+
+  let last = performance.now();
+  function frame(now: number) {
+    const delta = (now - last) / 1000; last = now;
+    game.advance(delta * speed); renderer.draw(now); requestAnimationFrame(frame);
+  }
+  new ResizeObserver(renderer.resize).observe(canvas);
+  updatePicker(); updateHud(); renderBlessings(); requestAnimationFrame(frame);
+</script>

@@ -1,0 +1,33 @@
+---
+export const prerender = true;
+import Base from "../../layouts/Base.astro";
+import TowerDefensePage from "../../components/pages/TowerDefensePage.astro";
+import heroes from "../../data/gameBalance.json";
+import tuning from "../../data/gameBalance.tuning.json";
+import maps from "../../data/tdMaps.json";
+import waves from "../../data/tdWaves.json";
+import bosses from "../../data/bosses.json";
+import virtues from "../../data/virtues.json";
+
+const baphomet = bosses.bosses.find((boss) => boss.id === "baphomet");
+const virtueTexts: Record<string, string> = {};
+for (const piece of virtues as any[]) {
+  const bonus = piece.setBonuses?.["2"];
+  if (bonus && tuning.virtueEffects[piece.set] && !virtueTexts[piece.set]) virtueTexts[piece.set] = bonus;
+}
+---
+
+<Base
+  title="Tower Defense | Motto Immortal"
+  description="Command Motto Immortal heroes in a compact, ten-wave browser tower defense challenge."
+>
+  <Fragment slot="head">
+    <script type="importmap" is:inline>{
+      "imports": {
+        "pixi.js": "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.mjs",
+        "@pixi/filter-glow": "https://cdn.jsdelivr.net/npm/@pixi/filter-glow@5/dist/filter-glow.mjs"
+      }
+    }</script>
+  </Fragment>
+  <TowerDefensePage heroes={heroes} tuning={tuning} maps={maps} waves={waves} boss={baphomet} virtueTexts={virtueTexts} />
+</Base>

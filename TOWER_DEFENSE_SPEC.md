@@ -1,6 +1,12 @@
 # Tower Defense Minigame - Spec and Task Split
 
-Status: proposal, not implemented. Reference: https://fastidious.gg/games/tower-defense
+Status: first one-map prototype implemented; user confirmed completing all ten waves
+and beating the boss on September 23, 2026. The full spec remains partially implemented.
+Next increments and research decisions: [TOWER_DEFENSE_ROADMAP.md](TOWER_DEFENSE_ROADMAP.md).
+The roadmap governs current scope and delivery order. Sections below preserve the
+original target design; their task descriptions are not completion claims. The
+current scope is one map; the original second map is deferred.
+Reference: https://fastidious.gg/games/tower-defense
 
 ## 1. Goal
 
@@ -496,8 +502,9 @@ Manual
 | 3 | 10 waves, single boss on wave 10 |
 | 4 | Persistence: `localStorage` only, one `td:v1` key. No leaderboard, no Worker, no D1 |
 
-Nothing is blocking. T1 is ready to implement and its output is already verified against
-live data (section 5).
+The balance generator is implemented. The table in section 5 is a historical
+prototype reference; current ratings and generated costs must be checked against
+today's data. Remaining implementation and verification are tracked in the roadmap.
 
 ### Deferred, not rejected
 
