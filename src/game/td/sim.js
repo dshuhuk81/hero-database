@@ -57,6 +57,8 @@ export class TowerDefenseGame {
     this.map = map;
     this.waves = waves;
     this.rng = createRng(seed);
+    // Quests draw from their own stream so combat randomness is unchanged by them.
+    this.questRng = createRng((seed ^ 0x7a3d9c1) >>> 0);
     this.onChange = onChange;
     this.onEffect = null; // optional hook (effect) => void, used for audio
     this.path = pathMetrics(map.path);
@@ -85,6 +87,8 @@ export class TowerDefenseGame {
     this.virtues = [];
     this.activePairs = [];
     this.virtueOffer = null;
+    this.quest = null;
+    this.questsDone = 0;
     this.totalLeaks = 0;
     this.perfect = false;
     this.fallenHeroes = [];
@@ -93,6 +97,9 @@ export class TowerDefenseGame {
     this.totalGoldSpent = 0;
     this.goldCarry = 0; // fractional kill-gold bonus not yet paid out
     this.runDuration = 0;
+    // Virtue shard (6C): the run starts with this virtue already chosen.
+    const startVirtue = this.tuning.run.startVirtue;
+    if (startVirtue && this.virtueEffects[startVirtue]) this.addVirtue(startVirtue);
     this.onChange("reset", this);
   }
 
@@ -182,9 +189,15 @@ export class TowerDefenseGame {
 
   chooseVirtue(name) {
     if (!this.virtueOffer || !this.virtueOffer.includes(name) || this.virtues.includes(name)) return false;
+    this.virtueOffer = null;
+    this.addVirtue(name);
+    this.onChange("virtue", this);
+    return true;
+  }
+
+  addVirtue(name) {
     const before = this.modifiers().hp;
     this.virtues.push(name);
-    this.virtueOffer = null;
     const pairs = this.tuning.virtuePairs || [];
     for (const pair of pairs) {
       if (!this.activePairs.find((p) => p.name === pair.name) && pair.virtues.every((v) => this.virtues.includes(v))) {
@@ -200,8 +213,6 @@ export class TowerDefenseGame {
         hero.hp = next;
       }
     }
-    this.onChange("virtue", this);
-    return true;
   }
 
   upgradeInfo(entityId) {
@@ -279,8 +290,9 @@ export class TowerDefenseGame {
     if (this.running || this.complete || this.wave >= this.waves.length) return false;
     const wave = this.waves[this.wave];
     this.wave += 1;
-    this.waveStats = { wave: this.wave, kills: 0, leaks: 0, goldEarned: 0 };
+    this.waveStats = { wave: this.wave, kills: 0, leaks: 0, goldEarned: 0, heroDeaths: 0, lastSpawnAt: null };
     this.virtueOffer = null; // unclaimed offers expire when the next wave starts
+    this.quest = this.rollQuest();
     this.spawnQueue = [];
     let at = 0;
     for (const group of wave.spawns) {
@@ -310,7 +322,11 @@ export class TowerDefenseGame {
     if (!this.running) return;
     this.time += dt;
     this.spawnClock += dt;
-    while (this.spawnQueue.length && this.spawnQueue[0].at <= this.spawnClock) this.spawnEnemy(this.spawnQueue.shift().kind);
+    while (this.spawnQueue.length && this.spawnQueue[0].at <= this.spawnClock) {
+      this.spawnEnemy(this.spawnQueue.shift().kind);
+      if (!this.spawnQueue.length && this.waveStats) this.waveStats.lastSpawnAt = this.time;
+    }
+    this.checkQuestClock();
 
     for (const enemy of this.enemies) {
       if (enemy.dead) continue;
@@ -337,6 +353,7 @@ export class TowerDefenseGame {
           if (!this.difficulty.invincible) this.lives = Math.max(0, this.lives - enemy.damage);
           if (this.waveStats) this.waveStats.leaks += 1;
           this.totalLeaks += 1;
+          if (this.quest?.type === "noLeaks") this.failQuest();
           this.onChange("leak", this);
           if (this.lives === 0) this.finish(false);
         }
@@ -350,7 +367,8 @@ export class TowerDefenseGame {
       const mods = this.modifiers();
       if (target && hero.attackClock <= 0) {
         const resistance = hero.damageType === "magical" ? target.magicRes : target.armor;
-        this.hit(target, resolveDamage(this.attackValue(hero), resistance, hero.damageType, this.rng() < hero.critChance + mods.crit), hero);
+        const crit = this.rng() < hero.critChance + mods.crit;
+        this.hit(target, resolveDamage(this.attackValue(hero), resistance, hero.damageType, crit), hero, { crit });
         hero.attackClock = 1 / hero.aps;
       }
       const ultTarget = this.findUltTarget(hero, target);
@@ -374,6 +392,7 @@ export class TowerDefenseGame {
           if (this.waveStats) this.waveStats.goldEarned += amount;
           this.totalGoldEarned += amount;
         }
+        this.completeQuest();
         this.offerVirtues(); this.onChange("clear", this);
       }
     }
@@ -481,6 +500,8 @@ export class TowerDefenseGame {
       this.fallenHeroes.push({ id: hero.id, slotType: hero.slotType, slotIndex: hero.slotIndex });
       this.heroes = this.heroes.filter((entry) => entry !== hero);
       this.team = this.team.filter((id) => id !== hero.id);
+      if (this.waveStats) this.waveStats.heroDeaths += 1;
+      if (this.quest?.type === "heroSurvival") this.failQuest();
       this.onChange("death", this);
     }
   }
@@ -521,14 +542,15 @@ export class TowerDefenseGame {
     return targets[0] ?? null;
   }
 
-  hit(enemy, amount, hero, { showShot = true } = {}) {
+  hit(enemy, amount, hero, { showShot = true, crit = false } = {}) {
     if (enemy.dead) return;
     const vuln = (enemy.exposed && enemy.exposed > this.time) ? 1.2 : 1;
     enemy.hp -= amount * vuln;
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
-    this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", heroVariant: hero.variant ?? null });
+    this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
     if (enemy.hp <= 0) {
       enemy.dead = true;
+      if (enemy.kind === "boss") this.emit({ type: "bossDown", x: enemy.x, y: enemy.y, life: 1.2, color: "red" });
       const reward = this.killReward(enemy.reward);
       this.gold += reward;
       this.score += Math.round(enemy.maxHp + enemy.reward * 4);
@@ -738,6 +760,49 @@ export class TowerDefenseGame {
       }
     }
     this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null });
+  }
+
+  // Run quests (6B): one objective per wave, except the final wave where gold
+  // has no use. Pays tuning.quests gold at wave clear; no config means no quests.
+  rollQuest() {
+    const cfg = this.tuning.quests;
+    if (!cfg || this.wave >= this.waves.length) return null;
+    const types = ["noLeaks", "speedClear"];
+    // Only road heroes take hits; without one, survival would be free gold.
+    if (this.heroes.some((hero) => hero.slotType === "road")) types.push("heroSurvival");
+    const type = types[Math.floor(this.questRng() * types.length)];
+    const quest = { type, wave: this.wave, status: "active", gold: cfg.goldBase + cfg.goldPerWave * (this.wave - 1) };
+    if (type === "speedClear") {
+      // Scaled to the slowest enemy's time to walk the whole path, so the limit
+      // fits the map length and wave mix instead of one fixed number.
+      const spawns = this.waves[this.wave - 1].spawns;
+      const slowest = Math.min(...spawns.map((group) => this.tuning.enemies[group.kind]?.speed ?? Infinity)) * this.difficulty.enemySpeed;
+      quest.seconds = Math.round((this.path.total / slowest) * cfg.speedClearTravel);
+    }
+    return quest;
+  }
+
+  failQuest() {
+    if (this.quest?.status !== "active") return;
+    this.quest.status = "failed";
+    this.onChange("quest", this);
+  }
+
+  checkQuestClock() {
+    const quest = this.quest;
+    const lastSpawnAt = this.waveStats?.lastSpawnAt;
+    if (quest?.type !== "speedClear" || quest.status !== "active" || lastSpawnAt == null) return;
+    if (this.time - lastSpawnAt > quest.seconds) this.failQuest();
+  }
+
+  completeQuest() {
+    const quest = this.quest;
+    if (quest?.status !== "active") return;
+    quest.status = "done";
+    this.questsDone += 1;
+    this.gold += quest.gold;
+    if (this.waveStats) this.waveStats.goldEarned += quest.gold;
+    this.totalGoldEarned += quest.gold;
   }
 
   finish(won) {

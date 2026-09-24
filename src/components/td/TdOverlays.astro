@@ -17,6 +17,12 @@
     <progress class="td-hp" data-pop-hp-bar max="1" value="1"></progress>
     <small data-pop-hp></small>
   </div>
+  <dl class="td-pop-stats">
+    <div><dt>Attack</dt><dd data-pop-atk></dd></div>
+    <div><dt>Speed</dt><dd data-pop-aps></dd></div>
+    <div><dt>Range</dt><dd data-pop-range></dd></div>
+    <div><dt>Crit</dt><dd data-pop-crit></dd></div>
+  </dl>
   <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade>
     <span data-pop-upgrade-label>Upgrade</span>
     <span class="td-pop-cost" data-pop-cost></span>
@@ -62,6 +68,7 @@
     <p class="td-result-compare" data-td-result-compare hidden></p>
     <div class="td-result-achievements" data-td-result-achievements hidden></div>
     <p class="td-result-favor" data-td-result-favor hidden></p>
+    <div class="td-result-shards" data-td-result-shards hidden></div>
     <div class="td-result-actions">
       <button class="action-button action-button--primary" type="button" data-td-retry>Retry</button>
       <button class="action-button action-button--quiet td-spend-button" type="button" data-td-open="blessings" data-td-spend>Spend Favor <span class="td-favor-count" data-td-spend-count></span></button>

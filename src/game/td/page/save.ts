@@ -3,6 +3,9 @@ import type { PageContext } from "./context";
 
 export type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number };
 
+// Pending run-end shard (6C) for the next run; cleared when that run's first wave starts.
+export type RunBoost = { type: "gold"; gold: number } | { type: "virtue"; virtue: string };
+
 export type SaveData = {
   bestScore: number;
   bestWave: number;
@@ -12,6 +15,7 @@ export type SaveData = {
   favTree: string[];
   mapBests: Record<string, MapRun>;
   mapTop: Record<string, { score: number; wave: number }>;
+  nextRunBoost: RunBoost | null;
 };
 
 export type SaveStore = { data: SaveData; persist(): void };
@@ -27,7 +31,14 @@ const hasScore = (run: unknown): run is { score: number } => isRecord(run) && Nu
 const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
 
 export function emptySave(): SaveData {
-  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favTree: [], mapBests: {}, mapTop: {} };
+  return { bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favTree: [], mapBests: {}, mapTop: {}, nextRunBoost: null };
+}
+
+function sanitizeBoost(value: unknown): RunBoost | null {
+  if (!isRecord(value)) return null;
+  if (value.type === "gold" && Number.isFinite(value.gold) && value.gold > 0) return { type: "gold", gold: value.gold };
+  if (value.type === "virtue" && typeof value.virtue === "string") return { type: "virtue", virtue: value.virtue };
+  return null;
 }
 
 // Shared by the localStorage load and the save-code import. Returns null when the data is not a td:v1 save.
@@ -42,6 +53,7 @@ export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | n
     favTree: Array.isArray(candidate.favTree) ? [...new Set<string>(candidate.favTree.filter((id: unknown) => typeof id === "string"))] : [],
     mapBests: pickRuns(candidate.mapBests),
     mapTop: pickRuns(candidate.mapTop),
+    nextRunBoost: sanitizeBoost(candidate.nextRunBoost),
   };
   // Older saves only kept the last run per map; it is a lower bound for the record.
   for (const [id, run] of Object.entries(clean.mapBests)) {

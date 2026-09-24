@@ -43,4 +43,14 @@ assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore reject
   assert.equal(availableFavor({ ...emptySave(), favor: 40, favTree: ["gone"] }, tree), 40, "unknown node ignored");
 }
 
+// Pending shard boost survives a save round trip; junk is dropped.
+{
+  const withBoost = (nextRunBoost) => sanitizeSave({ ...emptySave(), nextRunBoost }, rules)?.nextRunBoost;
+  assert.deepEqual(withBoost({ type: "gold", gold: 60 }), { type: "gold", gold: 60 }, "gold boost kept");
+  assert.deepEqual(withBoost({ type: "virtue", virtue: "Grace" }), { type: "virtue", virtue: "Grace" }, "virtue boost kept");
+  assert.equal(withBoost({ type: "gold", gold: -5 }), null, "negative gold dropped");
+  assert.equal(withBoost({ type: "other" }), null, "unknown type dropped");
+  assert.equal(sanitizeSave({ bestScore: 0 }, rules).nextRunBoost, null, "old saves have no boost");
+}
+
 console.log("Tower defense save checks passed.");

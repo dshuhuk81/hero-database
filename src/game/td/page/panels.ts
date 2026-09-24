@@ -82,36 +82,58 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
     q("[data-td-favor-note]").textContent = !now
       ? session?.game.complete ? "Purchases apply from your next run. Retry to use them." : "Run in progress: purchases apply from your next run."
       : session ? "Purchases apply to this run right away." : "Purchases apply when your next run starts.";
+    const owned: string[] = store.data.favTree;
     const tiers = [...new Set(favorTreeData.map((node: any) => node.tier))].sort((a, b) => a - b);
-    const columns = tiers.map((tier: number) => {
+    const icon = (path: string) => `<svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${path}" /></svg>`;
+    const lockIcon = icon("M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z");
+    const checkIcon = icon("M5 12l5 5L19 7");
+    // Each tier opens once enough nodes of the tier before it are owned; the
+    // connector between columns and the pip meter show that gate.
+    const parts = tiers.map((tier: number, index: number) => {
       const nodes = favorTreeData.filter((node: any) => node.tier === tier);
-      let gate = "";
-      if (tier > tiers[0]) {
-        const prevTier = favorTreeData.filter((node: any) => node.tier === tier - 1);
-        const requiresMin = nodes[0]?.requiresMin ?? 1;
-        const unlockedInPrev = prevTier.filter((node: any) => store.data.favTree.includes(node.id)).length;
-        const satisfied = unlockedInPrev >= requiresMin;
-        gate = `<div class="td-blessing-gate${satisfied ? " is-active" : ""}"><span>Requires ${requiresMin} of Tier ${tier - 1}: ${unlockedInPrev}/${prevTier.length}${satisfied ? " - met" : ""}</span></div>`;
+      const ownedHere = nodes.filter((node: any) => owned.includes(node.id)).length;
+      let open = true;
+      let gate = `<p class="td-tier-gate">No requirement</p>`;
+      let connector = "";
+      if (index > 0) {
+        const prevTier = favorTreeData.filter((node: any) => node.tier === tiers[index - 1]);
+        const requiresMin = nodes[0]?.requiresMin ?? prevTier.length;
+        const have = prevTier.filter((node: any) => owned.includes(node.id)).length;
+        open = have >= requiresMin;
+        const pips = prevTier.map((_: any, pip: number) =>
+          `<i class="td-pip${pip < have ? " is-filled" : ""}${pip === requiresMin - 1 ? " is-goal" : ""}"></i>`).join("");
+        gate = `<p class="td-tier-gate"><span class="td-pips" aria-hidden="true">${pips}</span>` +
+          `${open ? "Opened" : `Own ${requiresMin - have} more from Tier ${tiers[index - 1]}`}<span class="sr-only"> (${have} of ${requiresMin} required)</span></p>`;
+        connector = `<div class="td-tier-link${open ? " is-open" : ""}" aria-hidden="true"><span>${icon("M9 6l6 6-6 6")}</span></div>`;
       }
-      return `<div class="td-blessings-tier"><span class="td-label">Tier ${tier}</span>${gate}` + nodes.map((node: any) => {
-        const unlocked = store.data.favTree.includes(node.id);
+      const cards = nodes.map((node: any) => {
+        const unlocked = owned.includes(node.id);
         const active = isFavorNodeActive(node);
-        const reqMet = canUnlock(node.id, store.data.favTree, favorTreeData);
-        const purchasable = active && reqMet && available >= node.cost;
+        const reqMet = canUnlock(node.id, owned, favorTreeData);
+        const affordable = available >= node.cost;
         const pending = unlocked && !now && !!session && !session.favTree.includes(node.id);
-        const stateClass = unlocked ? " is-unlocked" : !active ? " is-inactive" : purchasable ? "" : " is-unavailable";
+        const status = unlocked ? "is-unlocked" : !active ? "is-inactive" : !reqMet ? "is-locked" : affordable ? "is-available" : "is-short";
+        const badge = unlocked ? `<span class="td-node-badge">${checkIcon}<span class="sr-only">Unlocked</span></span>`
+          : status === "is-locked" ? `<span class="td-node-badge">${lockIcon}<span class="sr-only">Locked</span></span>` : "";
         const chips = [
-          unlocked ? `<span class="td-wave-chip">Unlocked</span>` : "",
           pending ? `<span class="td-wave-chip td-wave-chip--pending">From next run</span>` : "",
           !active ? `<span class="td-wave-chip td-wave-chip--muted">Not active yet</span>` : "",
+          status === "is-locked" ? `<span class="td-wave-chip td-wave-chip--muted">${node.cost} Favor</span>` : "",
         ].join("");
-        const action = unlocked || !active ? ""
-          : `<button class="action-button action-button--primary" type="button" data-unlock="${node.id}"${purchasable ? "" : " disabled"}>${node.cost} Favor</button>`;
-        return `<div class="td-blessing-node${stateClass}" data-node-id="${node.id}" tabindex="-1"><strong>${node.name}</strong><small>${node.description}</small>` +
+        const action = status === "is-available"
+          ? `<button class="action-button action-button--primary" type="button" data-unlock="${node.id}">${node.cost} Favor</button>`
+          : status === "is-short"
+            ? `<button class="action-button action-button--quiet" type="button" data-unlock="${node.id}" disabled>${node.cost} Favor - need ${node.cost - available} more</button>`
+            : "";
+        return `<div class="td-blessing-node ${status}" data-node-id="${node.id}" tabindex="-1">` +
+          `<div class="td-node-head"><strong>${node.name}</strong>${badge}</div><small>${node.description}</small>` +
           (chips ? `<div class="td-blessing-chips">${chips}</div>` : "") + action + `</div>`;
-      }).join("") + `</div>`;
+      }).join("");
+      return connector + `<section class="td-blessings-tier${open ? "" : " is-locked"}" aria-label="Tier ${tier}">` +
+        `<header class="td-tier-head"><span class="td-label">Tier ${tier}</span><span class="td-tier-count">${ownedHere}/${nodes.length}</span></header>` +
+        gate + cards + `</section>`;
     }).join("");
-    q("[data-td-favor-tree]").innerHTML = `<div class="td-blessings-tiers">${columns}</div>` +
+    q("[data-td-favor-tree]").innerHTML = `<div class="td-blessings-tiers">${parts}</div>` +
       (store.data.favTree.length > 0 ? `<button type="button" class="td-respec" data-td-respec>Respec (refund all)</button>` : "");
   }
 
@@ -125,7 +147,7 @@ export function createPanels(ctx: PageContext, deps: { renderSavePanel(): void }
     const session = state.session;
     if (!session || !favorAppliesNow()) return;
     // Nothing is deployed yet, so the run can be rebuilt from the new snapshot.
-    session.game.tuning = buildRunTuning(data.tuning, store.data.favTree);
+    session.game.tuning = buildRunTuning(data.tuning, store.data.favTree, session.boost);
     session.game.reset();
     pause.sync();
     ctx.actions.updateHud();

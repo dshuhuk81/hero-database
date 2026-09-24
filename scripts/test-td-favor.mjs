@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { TowerDefenseGame } from "../src/game/td/sim.js";
-import { buildRunTuning, canUnlock, isFavorNodeActive } from "../src/game/td/favor.js";
+import { buildRunTuning, canUnlock, isFavorNodeActive, shardEligible, shardFavor } from "../src/game/td/favor.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
@@ -128,6 +128,27 @@ assert.ok(favorTree.every(isFavorNodeActive), "all favor nodes active");
 {
   const game = make();
   assert.deepEqual(game.favor, {}, "no favor bonuses by default");
+}
+
+// 6C run-end shards: eligibility, Favor size, and boosts folded into run tuning.
+{
+  const { minWave, favorMin, gold } = tuning.shards;
+  assert.equal(shardEligible(minWave - 1, tuning), false, "early loss earns no shard");
+  assert.equal(shardEligible(minWave, tuning), true, "reaching minWave earns a shard");
+  assert.equal(shardEligible(10, { ...tuning, shards: undefined }), false, "no config, no shards");
+  assert.equal(shardFavor(150, tuning), 15, "10% of run Favor");
+  assert.equal(shardFavor(20, tuning), favorMin, "minimum Favor shard");
+
+  const base = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, []), map: maps[0], waves, seed: 5 });
+  const goldRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, [], { type: "gold", gold }), map: maps[0], waves, seed: 5 });
+  assert.equal(goldRun.gold, base.gold + gold, "gold shard adds starting gold");
+  const virtue = Object.keys(tuning.virtueEffects)[0];
+  const virtueRun = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, [], { type: "virtue", virtue }), map: maps[0], waves, seed: 5 });
+  assert.deepEqual(virtueRun.virtues, [virtue], "virtue shard starts the run with the virtue");
+  virtueRun.reset();
+  assert.deepEqual(virtueRun.virtues, [virtue], "virtue survives a reset (Favor rebuild before wave 1)");
+  const bogus = new TowerDefenseGame({ heroes, tuning: buildRunTuning(tuning, [], { type: "virtue", virtue: "Nope" }), map: maps[0], waves, seed: 5 });
+  assert.deepEqual(bogus.virtues, [], "unknown virtue ignored");
 }
 
 console.log("Tower defense favor checks passed.");

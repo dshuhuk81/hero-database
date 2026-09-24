@@ -6,16 +6,10 @@ Last updated: September 24, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](T
 
 | # | Item | Why |
 |---|------|-----|
-| 1 | **UI Issue 03** - Inspector stats | Show ATK / APS / Range numbers at a glance |
-| 2 | **UI Issue 04** - Favor tree visual graph | Flat list is hard to read; needs tier lines + unlock state |
-| 3 | **6B Run quests** | In-run objectives beyond "survive"; bonus gold / virtue pick on completion |
-| 4 | **P3 Two new maps** | Crimson Forge (parallel lanes) + Frozen Citadel (spiral); add to `tdMaps.json` |
-| 5 | **UI Issue 05** - Range ring glow | Thicker stroke + low-alpha fill, more readable |
-| 6 | **6C Result loot** | Virtue shard pick at run end, feeds Favor pool |
-| 7 | **P5 Effect hierarchy** | Boss entrance cinematic (2.5s nameplate), 3-tier effect scale |
-| 8 | **UI Issue 06** - Level badge | Integrate into hero circle border instead of floating text |
-| 9 | **5E Between-wave pacing** | Wave-clear chime, gold-inflow animation, auto-next countdown |
-| 10 | **AI sprites** | Hand spec at `src/game/td/sprite-spec-for-ai.md` to AI agent; drop into `public/td/enemies/` |
+| 1 | **P3 Two new maps** skip | Crimson Forge (parallel lanes) + Frozen Citadel (spiral); add to `tdMaps.json` |
+| 2 | **UI Issue 06** - Level badge | Integrate into hero circle border instead of floating text |
+| 3 | **5E Between-wave pacing** | Wave-clear chime, gold-inflow animation, auto-next countdown |
+| 4 | **AI sprites** | Hand spec at `src/game/td/sprite-spec-for-ai.md` to AI agent; drop into `public/td/enemies/` or use `https://comfy.org/workflows/templates-sprite_sheet-fe5600667e2c/` or `https://giventofly.github.io/pixelit/` |
 
 ## Dev commands
 
@@ -31,5 +25,6 @@ npm run build:game-balance      # regenerate hero balance
 
 - Favor tree effects beyond startingGold/lives are returned by applyFavorTree but some are no-ops until sim reads them (tank HP, mage range, etc.)
 - Sound variants not listening-pass verified
+- "No hero falls" quest completes only 21% in bot runs because road heroes die often (blocking balance, see M5 in `docs/tower-defense-ui-plan.md`); revisit after that fix. Kill-count quest type was offered and not picked
 - Mobile / landscape layout (large scope, deferred)
 - Endless mode, 20-wave mode, leaderboard, replays (deferred per original spec)

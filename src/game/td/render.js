@@ -35,7 +35,22 @@ const THEMES = {
   verdant: { glow: 0x82e898, trail: 0x82e898 },
 };
 
-const TINTS = { gold: 0xfacc15, purple: 0xa855f7, green: 0x82e89a, red: 0xff6b6b };
+const TINTS = { gold: 0xfacc15, purple: 0xa855f7, green: 0x82e89a, red: 0xff6b6b, white: 0xffffff };
+
+// Effect hierarchy (P5): every effect maps to one of three tiers so the big
+// moments read above the constant combat noise. ring scales hit/ult rings,
+// burst scales particle size; shake (screen px) and vignette only for epic.
+export const FX_TIERS = {
+  minor: { ring: 1, burst: 1, shake: 0, vignette: 0 },
+  major: { ring: 1.6, burst: 1.4, shake: 0, vignette: 0 },
+  epic: { ring: 2.6, burst: 2, shake: 7, vignette: 0.45 },
+};
+
+export function effectTier(effect) {
+  if (effect.type === "boss" || effect.type === "bossDown") return "epic";
+  if (effect.type === "ult" || (effect.type === "hit" && effect.crit)) return "major";
+  return "minor";
+}
 
 export async function createRenderer(canvas, game, options = {}) {
   const [PIXI, glowMod] = await Promise.all([
@@ -336,9 +351,13 @@ export async function createRenderer(canvas, game, options = {}) {
   function drawRangeRing(container, x, y, radius, color) {
     const g = new PIXI.Graphics();
     const c = color === "gold" ? palette.gold : palette.purple;
-    g.circle(x, y, radius).fill({ color: c, alpha: 0.07 });
-    g.setStrokeStyle({ width: 2, color: c, alpha: 0.45 });
-    g.circle(x, y, radius).stroke();
+    g.circle(x, y, radius).fill({ color: c, alpha: 0.08 });
+    // Glow: inner falloff band brightens toward the edge, soft halo outside it, crisp edge on top.
+    g.circle(x, y, radius - 9).stroke({ width: 10, color: c, alpha: 0.05 });
+    g.circle(x, y, radius - 4).stroke({ width: 6, color: c, alpha: 0.08 });
+    g.circle(x, y, radius).stroke({ width: 12, color: c, alpha: 0.10 });
+    g.circle(x, y, radius).stroke({ width: 6, color: c, alpha: 0.18 });
+    g.circle(x, y, radius).stroke({ width: 3, color: c, alpha: 0.9 });
     container.addChild(g);
   }
 
@@ -800,6 +819,16 @@ export async function createRenderer(canvas, game, options = {}) {
     if (reducedMotion) return;
     const rand = (s) => (Math.random() - 0.5) * s;
     const baseTint = effect.color === "purple" ? "purple" : effect.color === "red" ? "red" : "gold";
+    const tier = FX_TIERS[effectTier(effect)];
+    if (tier.shake || tier.vignette) startImpact(tier);
+    if (effect.type === "hit" && effect.crit) {
+      // Crit: white core flash and a wider spark ring on top of the normal hit.
+      spawnParticle("flare_01", effect.x, effect.y, { size: 40 * tier.burst, life: 0.3, tint: "white" });
+      for (let i = 0; i < 5; i++) {
+        const angle = (i / 5) * Math.PI * 2 + Math.random();
+        spawnParticle("spark_04", effect.x, effect.y, { size: 16, life: 0.45, vx: Math.cos(angle) * 170, vy: Math.sin(angle) * 170, tint: baseTint });
+      }
+    }
     if (effect.type === "shot") {
       spawnParticle("trace_01", (effect.x1 + effect.x2) / 2, (effect.y1 + effect.y2) / 2, { size: 26, life: 0.2, tint: baseTint });
     } else if (effect.type === "hit" && effect.melee) {
@@ -817,9 +846,16 @@ export async function createRenderer(canvas, game, options = {}) {
       spawnParticle("twirl_01", effect.x, effect.y, { size: 80, life: 0.8, vr: 6, tint: "purple" });
       spawnParticle("flame_04", effect.x, effect.y, { size: 60, life: 0.75, vy: -60, tint: "gold" });
     } else if (effect.type === "boss") {
-      spawnParticle("flare_01", effect.x, effect.y, { size: 130, life: 1, tint: "red" });
-      spawnParticle("twirl_01", effect.x, effect.y, { size: 100, life: 1.1, vr: 4, tint: "red" });
-      spawnParticle("flame_04", effect.x, effect.y, { size: 88, life: 1, vy: -70, tint: "red" });
+      spawnParticle("flare_01", effect.x, effect.y, { size: 70 * tier.burst, life: 1, tint: "red" });
+      spawnParticle("twirl_01", effect.x, effect.y, { size: 55 * tier.burst, life: 1.1, vr: 4, tint: "red" });
+      spawnParticle("flame_04", effect.x, effect.y, { size: 48 * tier.burst, life: 1, vy: -70, tint: "red" });
+    } else if (effect.type === "bossDown") {
+      spawnParticle("flare_01", effect.x, effect.y, { size: 90 * tier.burst, life: 1.2, tint: "white" });
+      spawnParticle("twirl_01", effect.x, effect.y, { size: 70 * tier.burst, life: 1.3, vr: -5, tint: "gold" });
+      for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2;
+        spawnParticle("spark_04", effect.x, effect.y, { size: 24, life: 1, vx: Math.cos(angle) * 220, vy: Math.sin(angle) * 220, tint: i % 2 ? "gold" : "red" });
+      }
     }
   }
 
@@ -832,6 +868,31 @@ export async function createRenderer(canvas, game, options = {}) {
       p.sp.rotation += p.vr * dt;
       p.sp.alpha = Math.max(0, p.life / p.maxLife);
     }
+  }
+
+  // Epic-tier impact: short screen shake and a red edge vignette that fade out together.
+  const IMPACT_SECONDS = 0.5;
+  let impact = null;
+  const vignette = new PIXI.Graphics();
+  function startImpact(tier) {
+    if (reducedMotion) return;
+    impact = { tier, start: performance.now() };
+  }
+
+  function applyImpact(now) {
+    vignette.clear();
+    if (!impact) return;
+    const t = (now - impact.start) / 1000 / IMPACT_SECONDS;
+    if (t >= 1) { impact = null; stage.position.set(0, 0); return; }
+    const fade = 1 - t;
+    const amp = impact.tier.shake * fade;
+    stage.position.set((Math.random() - 0.5) * 2 * amp, (Math.random() - 0.5) * 2 * amp);
+    if (impact.tier.vignette) {
+      for (let i = 0; i < 4; i++) {
+        vignette.rect(i * 10, i * 10, 960 - i * 20, 540 - i * 20).stroke({ width: 10, color: TINTS.red, alpha: impact.tier.vignette * fade * (1 - i / 4) });
+      }
+    }
+    if (!vignette.parent) stage.addChild(vignette);
   }
 
   function drawEffects(now) {
@@ -858,10 +919,16 @@ export async function createRenderer(canvas, game, options = {}) {
       if (effect.type === "shot") {
         g.moveTo(effect.x1, effect.y1).lineTo(effect.x2, effect.y2).stroke();
       } else {
-        const radius = reducedMotion ? (effect.type === "ult" ? 40 : 10) : effect.type === "ult" ? 55 * (1 - effect.life) + 20 : 14;
-        g.setStrokeStyle({ width: 4, color, alpha: reducedMotion ? 0.35 : effect.life * 1.8 });
+        const tierName = effectTier(effect);
+        const tier = FX_TIERS[tierName];
+        // Expanding rings for ultimates and epic moments, fixed rings for hits.
+        const expanding = effect.type === "ult" || tierName === "epic";
+        const base = expanding ? 55 * (1 - Math.min(1, effect.life)) + 20 : 14;
+        const radius = reducedMotion ? (expanding ? 40 : 10) * tier.ring : base * tier.ring;
+        g.setStrokeStyle({ width: tierName === "minor" ? 4 : 5, color, alpha: reducedMotion ? 0.35 : Math.min(1, effect.life * 1.8) });
         g.arc(effect.x, effect.y, radius, 0, Math.PI * 2).stroke();
-        if (GlowFilter && !reducedMotion && (effect.type === "ult" || effect.type === "boss")) {
+        if (effect.type === "hit" && effect.crit) g.circle(effect.x, effect.y, radius * 0.45).stroke({ width: 2, color: TINTS.white, alpha: Math.min(1, effect.life * 4) });
+        if (GlowFilter && !reducedMotion && tierName !== "minor") {
           g.filters = [new GlowFilter({ distance: 14, outerStrength: 1.5, color })];
         }
       }
@@ -887,6 +954,7 @@ export async function createRenderer(canvas, game, options = {}) {
     syncHeroes();
     drawBars();
     drawEffects(now);
+    applyImpact(now);
     app.renderer.render(stage);
   }
 

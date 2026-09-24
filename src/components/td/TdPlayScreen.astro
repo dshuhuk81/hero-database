@@ -32,6 +32,14 @@ const { waveCount, isDev } = Astro.props;
     <div class="td-wave-preview" data-td-preview hidden></div>
     <div class="td-buffs" data-td-buffs role="group" aria-label="Active run blessings" hidden></div>
     <p class="td-notice" data-td-notice role="status" aria-live="polite"></p>
+    <div class="td-boss-plate" data-td-boss-plate aria-hidden="true" hidden>
+      <img class="td-boss-plate-art" data-td-boss-art alt="" decoding="async" />
+      <div class="td-boss-plate-text">
+        <span>Final wave</span>
+        <strong data-td-boss-name></strong>
+        <small data-td-boss-sub></small>
+      </div>
+    </div>
 
 
     <TdOverlays>

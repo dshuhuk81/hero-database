@@ -894,4 +894,107 @@ function runWaveOne(g) {
   assert.equal(g.place("amunra", "road", 2), true, "replacement hero can now be recruited");
 }
 
+// --- 6B run quests ---
+
+// One quest per wave, none on the final wave, none without tuning.quests.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
+  g.place("zeus", "platform", 0);
+  g.startWave();
+  assert.ok(g.quest, "quest rolled at wave start");
+  assert.equal(g.quest.status, "active");
+  assert.notEqual(g.quest.type, "heroSurvival", "no survival quest without a road hero");
+  assert.equal(g.quest.gold, tuning.quests.goldBase, "wave 1 quest pays goldBase");
+  g.running = false; g.wave = waves.length - 1;
+  g.startWave();
+  assert.equal(g.quest, null, "no quest on the final wave");
+  const off = new TowerDefenseGame({ heroes, tuning: { ...tuning, quests: undefined }, map: maps[0], waves, seed: 91 });
+  off.place("zeus", "platform", 0);
+  off.startWave();
+  assert.equal(off.quest, null, "no quests without config");
+}
+
+// Quests do not touch the combat RNG: same seed, same virtue offer with or without quests.
+{
+  const a = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 92 });
+  const b = new TowerDefenseGame({ heroes, tuning: { ...tuning, quests: undefined }, map: maps[0], waves, seed: 92 });
+  runWaveOne(a); runWaveOne(b);
+  assert.deepEqual(a.virtueOffer, b.virtueOffer, "quest rolls leave combat randomness unchanged");
+}
+
+// Fail and complete paths per quest type.
+{
+  const setup = (type) => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 93 });
+    g.gold = 10000;
+    g.place("nuwa", "road", 0); g.place("zeus", "platform", 0);
+    g.startWave();
+    g.quest = { ...g.quest, type, seconds: 5 };
+    return g;
+  };
+  // A leak fails No leaks.
+  let g = setup("noLeaks");
+  g.spawnQueue = []; g.spawnEnemy("runner"); g.enemies[0].distance = g.path.total - 1;
+  g.heroes = g.heroes.filter((h) => h.slotType !== "road");
+  g.step(1 / 60);
+  assert.equal(g.quest.status, "failed", "leak fails noLeaks");
+  // A fallen hero fails survival.
+  g = setup("heroSurvival");
+  const nuwa = g.heroes.find((h) => h.id === "nuwa");
+  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
+  assert.equal(g.quest.status, "failed", "hero death fails heroSurvival");
+  // Speed clear fails once the clock runs out after the last spawn.
+  g = setup("speedClear");
+  g.spawnQueue = [{ at: 0, kind: "brute" }];
+  g.step(1 / 60);
+  assert.ok(g.waveStats.lastSpawnAt != null, "last spawn time recorded");
+  g.enemies[0].hp = g.enemies[0].maxHp = 1e9; // keep the wave open past the limit
+  for (let i = 0; i < 60 * 6; i += 1) g.step(1 / 60);
+  assert.equal(g.quest.status, "failed", "speedClear fails after its limit");
+  // Clearing the wave with the quest active pays its gold once.
+  g = setup("noLeaks");
+  g.spawnQueue = []; g.enemies = [];
+  const gold = g.gold;
+  const clearBonus = tuning.run.waveClearBonus.base;
+  g.step(1 / 60);
+  assert.equal(g.quest.status, "done", "cleared wave completes the quest");
+  assert.equal(g.gold, gold + clearBonus + g.quest.gold, "quest gold paid on top of the clear bonus");
+  assert.equal(g.questsDone, 1);
+}
+
+// Speed clear limit scales with the map: a longer path gives more time.
+{
+  const limit = (map) => {
+    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 94 });
+    g.startWave();
+    g.quest = null;
+    return Math.round((g.path.total / tuning.enemies.grunt.speed) * tuning.quests.speedClearTravel);
+  };
+  const [short, long] = [...maps].sort((m1, m2) => new TowerDefenseGame({ heroes, tuning, map: m1, waves }).path.total - new TowerDefenseGame({ heroes, tuning, map: m2, waves }).path.total);
+  const g = new TowerDefenseGame({ heroes, tuning, map: long, waves, seed: 94 });
+  g.place("zeus", "platform", 0);
+  for (let seed = 0; seed < 50 && g.quest?.type !== "speedClear"; seed += 1) {
+    g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
+  }
+  assert.equal(g.quest.type, "speedClear", "found a speed clear roll");
+  assert.equal(g.quest.seconds, limit(long), "limit = slowest enemy path time x speedClearTravel");
+  assert.ok(limit(long) > limit(short), "longer map allows more time");
+}
+
+// --- P5 effect hierarchy: sim flags that the renderer tiers on ---
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
+  g.gold = 10000;
+  g.place("zeus", "platform", 0);
+  const zeus = g.heroes[0];
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.spawnEnemy("grunt");
+  g.hit(g.enemies[0], 1, zeus, { crit: true });
+  assert.equal(g.effects.find((e) => e.type === "hit")?.crit, true, "crit flag on hit effect");
+  g.spawnEnemy("boss");
+  const boss = g.enemies.find((e) => e.kind === "boss");
+  g.hit(boss, boss.hp + 1, zeus);
+  assert.ok(g.effects.some((e) => e.type === "bossDown"), "boss kill emits bossDown");
+}
+
 console.log("Tower defense checks passed");

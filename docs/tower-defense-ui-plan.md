@@ -1,6 +1,6 @@
 # Tower Defense UI audit and rebuild plan
 
-Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. The original audit and plan below are kept for reference; the status, decision log and M4 sections are current.
+Status: M1-M4 complete, September 24, 2026. Live on motto-immortal-db.com. M5 (gameplay) open. The original audit and plan below are kept for reference; the status, decision log and M4 sections are current.
 
 ## Status
 
@@ -40,6 +40,13 @@ Added after the plan (user requests):
 7. Done: page split into modules. Logic in `src/game/td/page/` (`context.ts` shared context, state and late-bound actions; `save.ts`, `boons.ts`, `results.ts`, `debug.ts`, `hud.ts`, `popover.ts`, `recruit.ts`, `panels.ts`, `session.ts`), markup in `src/components/td/` (`TdLobby`, `TdPlayScreen`, `TdOverlays`, `TdDebugPanel`, `TdPanels`). `TowerDefensePage.astro` is about 190 lines of wiring; rendered HTML verified identical to the pre-split version.
 8. Closed (note): WebP sources exist only on R2 (originals are in git history). Keep a local source copy if the images will be edited again. R2 objects are cached for one year (`immutable`), so changed files need a new file name.
 
+## M5: Gameplay (open)
+
+1. Ultimates audit. Freya's Valkyrie's Call had three hidden bugs (fixed September 24, 2026: a revive could exceed the 5-hero team, duplicate a hero already redeployed, or stack two heroes on one ring; she now revives the newest eligible fallen hero, the revived hero rejoins the team, a notice names the revive, and her popover details explain the ultimate; tests in `test-td-sim.mjs`). Write the same kind of edge-case tests for the other ultimate variants (Nyx, Medusa, Poseidon, Bastet, Nuwa and the rest): dead or missing target, no enemy in range or cone, full team, end of wave, run over. Fix what they expose.
+2. Blocking balance. The "road wall" squad loses at every difficulty in `test:td-balance` and `td:sweep`. Analysis: every enemy within 42 px attacks the same blocker (up to 6 at once, about 80 damage/s); low-damage tanks (Prometheus, Momus) cannot clear the pile and die every wave from wave 1; fallen heroes redeploy at full cost. Not a test-bot artifact: a runner change that deploys the full squad before upgrading did not help and was reverted. All-platform squads win at every HP level, so blocking has no payoff. Candidate changes, each measured with `td:sweep` before and after and approved with concrete numbers first: block limit per blocker (for example Tank 3, Warrior 2), cheaper redeploy for fallen heroes, damage bonus on held enemies.
+3. Anubis in the tower defense roster (`gameBalance.json`). His sounds are converted, registered and on R2 but never play because he is not a playable hero.
+4. Tooling: add `@astrojs/check` and `typescript` as devDependencies so `astro check` runs without an install prompt.
+
 ## Scope and evidence
 
 Audit of the current working tree, including existing local changes in `TowerDefensePage.astro` and `components.css`. This is a source audit; live browser inspection was unavailable in this session. Visual fit and touch usability must be verified during implementation.
@@ -50,8 +57,6 @@ Source locations:
 - `src/layouts/Base.astro`: shared site navigation and footer.
 - `src/game/td/render.js`: canvas sizing, coordinate conversion, slot targeting.
 - `src/game/td/sim.js`, `favor.js`, and `src/data/tdMaps.json`: simulation, permanent progression, map geometry.
-
-Follow-up candidates (not scheduled): "road wall" squad loses at every difficulty in `test:td-balance` and `td:sweep`. Analysis (September 24, 2026): every enemy within 42 px attacks the same blocker (up to 6 at once, about 80 damage/s); low-damage tanks (Prometheus, Momus) cannot clear the pile and die every wave from wave 1, and fallen heroes redeploy at full cost. Not a test-bot artifact: a runner change that deploys the full squad before upgrading did not help and was reverted. Blocking has no payoff compared to all-platform squads, which win at every HP level. Candidate game changes: block limit per blocker, cheaper redeploy, damage bonus on held enemies; `@astrojs/check` and `typescript` as devDependencies so `astro check` runs without an install prompt.
 
 ## Findings
 

@@ -35,18 +35,28 @@ export function isFavorNodeActive(node) {
 
 // Snapshot of tuning for one run with the unlocked Favor nodes applied.
 // Start resources are folded into run; everything else is read by the
-// simulator from tuning.favor.
-export function buildRunTuning(tuning, unlockedNodes) {
+// simulator from tuning.favor. `boost` is a pending run-end shard (6C):
+// { type: "gold", gold } or { type: "virtue", virtue }.
+export function buildRunTuning(tuning, unlockedNodes, boost = null) {
   const bonuses = applyFavorTree(unlockedNodes, tuning);
-  return {
-    ...tuning,
-    favor: bonuses,
-    run: {
-      ...tuning.run,
-      startingGold: tuning.run.startingGold + (bonuses.startingGoldBonus || 0),
-      lives: tuning.run.lives + (bonuses.livesBonus || 0),
-    },
+  const run = {
+    ...tuning.run,
+    startingGold: tuning.run.startingGold + (bonuses.startingGoldBonus || 0) + (boost?.type === "gold" ? boost.gold : 0),
+    lives: tuning.run.lives + (bonuses.livesBonus || 0),
   };
+  if (boost?.type === "virtue") run.startVirtue = boost.virtue;
+  return { ...tuning, favor: bonuses, run };
+}
+
+// Run-end shards (6C). Runs that reach tuning.shards.minWave earn a pick; the
+// Favor shard is worth favorPct of the run's Favor, at least favorMin.
+export function shardEligible(wave, tuning) {
+  return !!tuning.shards && wave >= tuning.shards.minWave;
+}
+
+export function shardFavor(earnedFavor, tuning) {
+  const cfg = tuning.shards;
+  return Math.max(cfg.favorMin, Math.round(earnedFavor * cfg.favorPct));
 }
 
 export function canUnlock(nodeId, unlockedNodes, nodes) {

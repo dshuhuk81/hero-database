@@ -9,6 +9,7 @@ import type { PageContext, Slot } from "./context";
 type Deps = {
   music: { play(track: string): void; stop(): void };
   speed(): number;
+  hudTick(now: number): void;
   buffBar: { render(): void; reset(): void; position(): void };
   runOffer: { render(): void; reset(): void };
   results: { finishRun(): void; reset(): void };
@@ -55,7 +56,8 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     loadingCanvas = canvas;
 
     const runFavTree = [...store.data.favTree];
-    const game: any = new TowerDefenseGame({ ...data, tuning: buildRunTuning(data.tuning, runFavTree), map });
+    const boost = store.data.nextRunBoost;
+    const game: any = new TowerDefenseGame({ ...data, tuning: buildRunTuning(data.tuning, runFavTree, boost), map });
     let renderer: any;
     try {
       renderer = await createRenderer(canvas, game, { boss: data.boss });
@@ -74,7 +76,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
       ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
     ];
-    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favTree: runFavTree, debug: false };
+    state.session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favTree: runFavTree, boost, debug: false };
     deps.debugPanel?.apply();
     (window as any).tdGame = game; // debugging/testing handle
     (window as any).tdRenderer = renderer; // debugging/testing handle
@@ -85,7 +87,9 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     ctx.actions.syncMainAction();
     ctx.actions.renderPreview();
     deps.buffBar.render();
-    ctx.notice(`Tap a ring on ${map.name} to deploy a hero.`);
+    const boostText = boost?.type === "gold" ? ` Gold shard: +${boost.gold} starting gold.`
+      : boost?.type === "virtue" ? ` Virtue shard: ${ctx.blessingNames[boost.virtue] ?? boost.virtue} is active.` : "";
+    ctx.notice(`Tap a ring on ${map.name} to deploy a hero.${boostText}`);
   }
 
   function end() {
@@ -138,8 +142,10 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       const stats = game.waveStats;
       if (stats.leaks === 0) session.perfectWaves += 1;
       const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
-      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.`);
+      const questText = game.quest?.status === "done" ? ` Quest complete: +${game.quest.gold} gold.` : "";
+      ctx.notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.${questText}`);
     }
+    if (type === "quest" && game.quest?.status === "failed" && game.lives > 0) ctx.notice(`Quest failed: ${ctx.actions.questName(game.quest)}.`);
     if (type === "finish") deps.results.finishRun();
     ctx.actions.renderDeck();
     ctx.actions.syncMainAction();
@@ -216,6 +222,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
       session.renderer.draw(now);
       deps.debugPanel?.tick(now);
       deps.popover.tick(now);
+      deps.hudTick(now);
     }
     requestAnimationFrame(frame);
   }

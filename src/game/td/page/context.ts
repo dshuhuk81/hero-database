@@ -3,7 +3,7 @@
 // ctx.actions, which the page fills once all modules exist; modules only call
 // actions at runtime, never while they are being created.
 import type { createPauseController } from "../ui.js";
-import type { SaveStore } from "./save";
+import type { RunBoost, SaveStore } from "./save";
 
 export type Slot = { type: string; index: number };
 
@@ -16,6 +16,7 @@ export type Session = {
   perfectWaves: number;
   keyboardSlots: Slot[];
   favTree: string[];
+  boost: RunBoost | null; // shard boost this run was built with
   debug: boolean;
 };
 
@@ -38,6 +39,7 @@ export type PageActions = {
   updateHud(): void;
   syncMainAction(): void;
   renderPreview(): void;
+  questName(quest: any): string;
   renderDeck(): void;
   cancelDeploy(): void;
   syncPauseButton(): void;

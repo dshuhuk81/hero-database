@@ -2,6 +2,8 @@
 // and fallen heroes, pause and speed buttons.
 import type { PageContext } from "./context";
 
+const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival: "No hero falls", speedClear: "Speed clear" };
+
 const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes" };
 
 export function createHud(ctx: PageContext) {
@@ -14,6 +16,8 @@ export function createHud(ctx: PageContext) {
   const speedButton = q<HTMLButtonElement>("[data-td-speed]");
   let speed = 1;
   let deckKey = "";
+  let lastQuestTick = 0;
+  let bossPlateTimer = 0;
 
   function update() {
     const game = state.session?.game;
@@ -44,8 +48,31 @@ export function createHud(ctx: PageContext) {
     mainAction.textContent = game.wave === totalWaves - 1 ? `Face ${bossName}` : `Start wave ${game.wave + 1}`;
   }
 
+  const questName = (quest: any) => QUEST_NAMES[quest.type] ?? quest.type;
+
+  function questGoal(quest: any, game: any) {
+    if (quest.type === "noLeaks") return "Let no enemy through";
+    if (quest.type === "heroSurvival") return "Keep every hero alive";
+    const lastSpawnAt = game.waveStats?.lastSpawnAt;
+    if (lastSpawnAt == null) return `Clear within ${quest.seconds}s of the last spawn`;
+    return `${Math.max(0, Math.ceil(quest.seconds - (game.time - lastSpawnAt)))}s left to clear`;
+  }
+
+  // Shown during a wave in place of the next-wave preview.
+  function questChip(game: any) {
+    const quest = game.quest;
+    const status = quest.status === "failed" ? " is-failed" : "";
+    const detail = quest.status === "failed" ? "failed" : `${questGoal(quest, game)} - +${quest.gold} gold`;
+    return `<span class="td-wave-chip td-quest-chip${status}" data-td-quest>Quest <b>${questName(quest)}</b> ${detail}</span>`;
+  }
+
   function renderPreview() {
     const game = state.session?.game;
+    if (game?.running && game.quest) {
+      previewEl.hidden = false;
+      previewEl.innerHTML = questChip(game);
+      return;
+    }
     const info = game && !game.running && !game.complete ? game.wavePreview() : null;
     if (!info) { previewEl.hidden = true; return; }
     previewEl.hidden = false;
@@ -117,6 +144,7 @@ export function createHud(ctx: PageContext) {
     if (!session.started) {
       if (!game.heroes.length) return;
       session.started = true;
+      if (session.boost) store.data.nextRunBoost = null; // shard used up by this run
       store.data.lastTeam = [...game.team];
       store.persist();
     }
@@ -160,5 +188,31 @@ export function createHud(ctx: PageContext) {
     speedButton.setAttribute("aria-label", `Game speed ${speed}x`);
   });
 
-  return { update, syncMainAction, renderPreview, renderDeck, cancelDeploy, syncPauseButton, speed: () => speed };
+  // Speed clear counts down once the last enemy has spawned; 4 text updates a second.
+  function tick(now: number) {
+    const game = state.session?.game;
+    if (!game?.running || game.quest?.type !== "speedClear" || game.quest.status !== "active" || now - lastQuestTick <= 250) return;
+    lastQuestTick = now;
+    previewEl.innerHTML = questChip(game);
+  }
+
+  // Boss entrance (P5): 2.5s nameplate over the map. Visual only; the run keeps
+  // going and the entrance notice covers screen readers.
+  function bossIntro() {
+    const plate = q("[data-td-boss-plate]");
+    const boss = ctx.data.boss;
+    q("[data-td-boss-name]").textContent = bossName;
+    q("[data-td-boss-sub]").textContent = [boss?.faction, boss?.class].filter(Boolean).join(" ");
+    const art = q<HTMLImageElement>("[data-td-boss-art]");
+    art.hidden = !boss?.image;
+    if (boss?.image) art.src = boss.image;
+    plate.hidden = false;
+    plate.classList.remove("is-playing");
+    void plate.offsetWidth; // restart the animation
+    plate.classList.add("is-playing");
+    window.clearTimeout(bossPlateTimer);
+    bossPlateTimer = window.setTimeout(() => { plate.hidden = true; plate.classList.remove("is-playing"); }, 2500);
+  }
+
+  return { update, syncMainAction, renderPreview, questName, tick, bossIntro, renderDeck, cancelDeploy, syncPauseButton, speed: () => speed };
 }

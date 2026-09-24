@@ -92,6 +92,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     if (effect.type === "place") audio.play("voice", effect.heroId);
     else if (effect.type === "hit") audio.play("attack", effect.heroId);
     else if (effect.type === "ult") { audio.play("attack", effect.heroId); audio.play("ultimate", effect.heroId); }
+    else if (effect.type === "boss") hud.bossIntro();
   }
   volumeSlider.value = String(Math.round(audio.volume * 100));
   function syncAudioUi() {
@@ -129,6 +130,10 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     });
     q("[data-td-best]").textContent = store.data.bestScore.toLocaleString();
     q("[data-td-perfect]").hidden = !store.data.perfectDefense;
+    const boost = store.data.nextRunBoost;
+    const boostEl = q("[data-td-next-boost]");
+    boostEl.hidden = !boost;
+    if (boost) boostEl.textContent = boost.type === "gold" ? `Next run: +${boost.gold} gold` : `Next run: ${ctx.blessingNames[boost.virtue] ?? boost.virtue}`;
     q("[data-td-favor-count]").textContent = `(${availableFavor(store.data, data.favorTree || [])})`;
   }
 
@@ -154,7 +159,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
   const popover = createPopover(ctx);
   const recruit = createRecruit(ctx);
   const panels = createPanels(ctx, { renderSavePanel: savePanel.render });
-  const controller = createSessionController(ctx, { music, speed: hud.speed, buffBar, runOffer, results, debugPanel, popover, recruit });
+  const controller = createSessionController(ctx, { music, speed: hud.speed, hudTick: hud.tick, buffBar, runOffer, results, debugPanel, popover, recruit });
 
   Object.assign(actions, {
     startSession: controller.start,
@@ -164,6 +169,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     updateHud: hud.update,
     syncMainAction: hud.syncMainAction,
     renderPreview: hud.renderPreview,
+    questName: hud.questName,
     renderDeck: hud.renderDeck,
     cancelDeploy: hud.cancelDeploy,
     syncPauseButton: hud.syncPauseButton,

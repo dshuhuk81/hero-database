@@ -11,6 +11,10 @@ export function createPopover(ctx: PageContext) {
   const popLevel = q("[data-pop-level]");
   const popHpBar = q<HTMLProgressElement>("[data-pop-hp-bar]");
   const popHp = q("[data-pop-hp]");
+  const popAtk = q("[data-pop-atk]");
+  const popAps = q("[data-pop-aps]");
+  const popRange = q("[data-pop-range]");
+  const popCrit = q("[data-pop-crit]");
   const popUpgrade = q<HTMLButtonElement>("[data-pop-upgrade]");
   const popUpgradeLabel = q("[data-pop-upgrade-label]");
   const popCost = q("[data-pop-cost]");
@@ -60,17 +64,31 @@ export function createPopover(ctx: PageContext) {
     popHp.textContent = `${Math.ceil(Math.max(0, unit.hpLeft))} / ${unit.hp} health`;
   }
 
+  // Attack is the effective value (aura, synergy, ultimate buff, run modifiers), so it moves with positions.
+  function updateStats(unit: any) {
+    const atk = Math.round(state.session!.game.attackValue(unit));
+    popAtk.textContent = String(atk);
+    popAtk.classList.toggle("is-buffed", atk > unit.atk);
+    popAtk.title = atk > unit.atk ? `Base ${unit.atk}, boosted by auras, synergy or buffs` : "";
+    popAps.textContent = `${Math.round(unit.aps * 100) / 100}/s`;
+    popRange.textContent = String(Math.round(unit.range));
+    popCrit.textContent = `${Math.round(unit.critChance * 1000) / 10}%`;
+  }
+
   function update(unit: any) {
     const game = state.session!.game;
     popName.textContent = unit.name;
-    popLevel.textContent = `Level ${unit.level} of ${maxLevel}`;
+    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}`;
     updateHealth(unit);
+    updateStats(unit);
     const info = game.upgradeInfo(unit.entityId);
     if (info.ok) {
       popUpgrade.disabled = false;
       popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
       popCost.textContent = `${info.cost} gold`;
-      popPreview.textContent = `Attack ${unit.atk} to ${info.nextAtk}, health ${unit.hp} to ${info.nextHp}.`;
+      // Same multiplier as the Attack stat so the preview matches the number shown above it.
+      const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
+      popPreview.textContent = `Attack ${Math.round(unit.atk * boost)} to ${Math.round(info.nextAtk * boost)}, health ${unit.hp} to ${info.nextHp}.`;
     } else if (unit.level >= maxLevel) {
       popUpgrade.disabled = true;
       popUpgradeLabel.textContent = "Max level";
@@ -92,9 +110,7 @@ export function createPopover(ctx: PageContext) {
 
   function detailsHtml(unit: any) {
     const game = state.session!.game;
-    const aps = Math.round(unit.aps * 100) / 100;
-    const critPct = Math.round(unit.critChance * 1000) / 10;
-    const lines = [`<p>${unit.class} - ${unit.atk} attack - ${aps} attacks/s - ${unit.range} range - ${critPct}% crit</p>`];
+    const lines: string[] = [];
     const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
     if (unit.ability === "aura") {
       const allies = game.heroes.filter((ally: any) => ally !== unit && Math.hypot(unit.x - ally.x, unit.y - ally.y) <= unit.range);
@@ -150,7 +166,9 @@ export function createPopover(ctx: PageContext) {
     if (popover.hidden || now - lastHealthUpdate <= 250) return;
     lastHealthUpdate = now;
     const unit = findUnit(state.selectedEntityId);
-    if (unit) updateHealth(unit);
+    if (!unit) return;
+    updateHealth(unit);
+    updateStats(unit);
   }
 
   popUpgrade.addEventListener("click", () => {
