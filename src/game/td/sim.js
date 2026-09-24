@@ -117,6 +117,7 @@ export class TowerDefenseGame {
     const hp = this.maxHpFor(base.hp, 1);
     const skill = this.tuning.heroSkills?.[heroId];
     this.heroes.push({ ...base, entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null });
+    this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
     this.onChange("place", this);
     return true;
   }

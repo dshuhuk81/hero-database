@@ -13,6 +13,10 @@ const SOUNDS = {
   error: ["error_001"],
 };
 
+const HERO_SOUNDS: Record<string, { voice?: string; attack?: string; ultimate?: string }> = {
+  zeus: { voice: "zeus_voice", attack: "zeus_attack", ultimate: "zeus_ultimate" },
+};
+
 const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
 const MAX_WITHIN_WINDOW = { hit: { count: 3, windowMs: 600 } };
 
@@ -62,10 +66,21 @@ export function createAudio() {
     return true;
   }
 
-  async function play(kind: keyof typeof SOUNDS) {
+  async function play(kind: keyof typeof SOUNDS | string, heroId?: string) {
     if (muted || !allowed(kind)) return;
-    const variants = SOUNDS[kind];
-    const name = variants[Math.floor(Math.random() * variants.length)];
+    let name: string | undefined;
+
+    if (heroId && kind in { voice: 1, attack: 1, ultimate: 1 }) {
+      const heroSounds = HERO_SOUNDS[heroId];
+      if (heroSounds) name = heroSounds[kind as keyof typeof heroSounds];
+    }
+
+    if (!name) {
+      const variants = SOUNDS[kind as keyof typeof SOUNDS];
+      if (!variants) return;
+      name = variants[Math.floor(Math.random() * variants.length)];
+    }
+
     const data = await buffer(name);
     if (!data || muted) return;
     const ctx = ensureContext();

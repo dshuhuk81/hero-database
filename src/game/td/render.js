@@ -95,7 +95,7 @@ export async function createRenderer(canvas, game, options = {}) {
   const heroFx = createHeroFx(PIXI, layerParts, fxTex, { reducedMotion });
 
   // On-board sprite overrides: keyed by hero id, loaded from /td/
-  const BOARD_SPRITE_OVERRIDES = { zeus: "/td/zeusspritetest.png" };
+  const BOARD_SPRITE_OVERRIDES = {};
   for (const [id, url] of Object.entries(BOARD_SPRITE_OVERRIDES)) {
     PIXI.Assets.load(url).then((tex) => boardSprites.set(id, tex)).catch(() => {});
   }

@@ -39,7 +39,7 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
       <div class="td-hud-actions">
         <input class="td-volume" type="range" min="0" max="100" value="70" data-td-volume aria-label="Sound volume" />
         <button class="td-icon-button" type="button" data-td-mute aria-label="Mute sounds">♪</button>
-        <button class="td-icon-button" type="button" data-td-speed aria-label="Set game speed to 2x">1×</button>
+        <button class="td-icon-button" type="button" data-td-speed aria-label="Set game speed">1×</button>
         <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game">Ⅱ</button>
         <button class="td-icon-button" type="button" data-td-restart aria-label="Restart game">↻</button>
         <button class="action-button action-button--primary td-main-action td-hud-wave-btn" type="button" data-td-main-action disabled>Choose 5 heroes</button>
@@ -195,11 +195,14 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
   if (saved.perfectDefense) root.querySelector<HTMLElement>("[data-td-perfect]")!.hidden = false;
   const audio = createAudio();
   game.onEffect = (effect: any) => {
-    if (effect.type === "hit") audio.play("hit");
-    else if (effect.type === "ult") audio.play("heavy");
-    else if (effect.type === "boss") audio.play("heavy");
-    else if (effect.type === "shot" && effect.color === "red") audio.play("blocked");
-    else if (effect.type === "heal" || effect.type === "buff") audio.play("place");
+    if (effect.type === "place") {
+      audio.play("voice", effect.heroId);
+    } else if (effect.type === "hit") {
+      audio.play("attack", effect.heroId);
+    } else if (effect.type === "ult") {
+      audio.play("attack", effect.heroId);
+      audio.play("ultimate", effect.heroId);
+    }
   };
 
   const muteButton = root.querySelector<HTMLButtonElement>("[data-td-mute]")!;
@@ -351,12 +354,8 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     updateHud();
     if (type === "place" && !started) { message.hidden = true; showPickerPrompt(); }
     if (type === "leak") {
-      audio.play("error");
       commandNote.textContent = game.lives > 0 ? `An enemy broke through. ${game.lives} lives remain.` : "";
     }
-    if (type === "clear") audio.play("clear");
-    if (type === "virtue") audio.play("upgrade");
-    if (type === "death") audio.play("blocked");
     if (type === "death" && selectedEntityId !== null) {
       const alive = game.heroes.find((hero: any) => hero.entityId === selectedEntityId);
       if (!alive) {
@@ -440,7 +439,6 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     if (!button || !pendingSlot) return;
     const heroId = button.dataset.placeHero!;
     if (game.place(heroId, pendingSlot.type, pendingSlot.index)) {
-      audio.play("place");
       if (started) { closeMidGamePicker(); renderDeck(); } else { showPickerPrompt(); }
     } else {
       const hero = heroById.get(heroId);
@@ -461,7 +459,6 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-deploy]");
     if (!button) return;
     selectedHeroId = button.dataset.deploy || "";
-    audio.play("select");
     selectedEntityId = null;
     game.uiSelected = null;
     const hero = heroById.get(selectedHeroId);
@@ -536,10 +533,9 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     if (!button || selectedEntityId === null) return;
     const result = game.upgrade(selectedEntityId);
     if (result.ok) {
-      audio.play("upgrade");
       renderInspector(result.hero);
       renderDeck();
-    } else { audio.play("error"); commandNote.textContent = result.reason || "Upgrade unavailable."; }
+    } else { commandNote.textContent = result.reason || "Upgrade unavailable."; }
   });
 
   function activateSlot(slot: { type: string; index: number } | null) {
@@ -562,9 +558,8 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     const hero = heroById.get(selectedHeroId);
     if (hero.slot !== slot.type) { commandNote.textContent = `${hero.name} needs a ${hero.slot} ring.`; return; }
     if (game.place(selectedHeroId, slot.type, slot.index)) {
-      audio.play("place");
       selectedHeroId = ""; game.uiPlacement = null; commandNote.textContent = "Hero deployed. Select another hero or begin the wave."; renderDeck();
-    } else { audio.play("error"); commandNote.textContent = `You need ${hero.cost} gold to deploy ${hero.name}, or that hero is already deployed.`; }
+    } else { commandNote.textContent = `You need ${hero.cost} gold to deploy ${hero.name}, or that hero is already deployed.`; }
   }
 
   canvas.addEventListener("mousemove", (event) => {
@@ -623,7 +618,7 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     } else activateSlot(game.focusedSlot);
   });
   window.addEventListener("keydown", (event) => { if (event.key.toLowerCase() === "r" && selectedEntityId) game.rotate(selectedEntityId); });
-  root.querySelector<HTMLButtonElement>("[data-td-speed]")!.addEventListener("click", (event) => { speed = speed === 1 ? 2 : 1; (event.currentTarget as HTMLButtonElement).textContent = `${speed}×`; });
+  root.querySelector<HTMLButtonElement>("[data-td-speed]")!.addEventListener("click", (event) => { speed = speed === 1 ? 2 : speed === 2 ? 4 : 1; (event.currentTarget as HTMLButtonElement).textContent = `${speed}×`; });
   root.querySelector<HTMLButtonElement>("[data-td-pause]")!.addEventListener("click", (event) => { game.paused = !game.paused; (event.currentTarget as HTMLButtonElement).textContent = game.paused ? "▶" : "Ⅱ"; });
   root.querySelector<HTMLButtonElement>("[data-td-restart]")!.addEventListener("click", () => window.location.reload());
   root.querySelector<HTMLButtonElement>("[data-td-play-again]")!.addEventListener("click", () => window.location.reload());
