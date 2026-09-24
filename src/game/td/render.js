@@ -2,6 +2,9 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
+import { createZeusFx } from "./zeus-fx.js";
+import { createHeroFx, hasHeroFx } from "./hero-fx.js";
+
 const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.mjs";
 const GLOW_CDN = "https://cdn.jsdelivr.net/npm/@pixi/filter-glow@5/dist/filter-glow.mjs";
 
@@ -12,6 +15,17 @@ const COLORS = {
   archer: 0x82e89a,
   brute:  0xfb923c,
   boss:   0xff4d4d,
+};
+
+// Kenney Micro Roguelike packed sheet: 128x80, 8x8 tiles, no gaps.
+// Tile N -> col=N%16, row=N//16, x=col*8, y=row*8.
+const ENEMY_TILES = {
+  grunt:  { x:  40, y: 0, w: 8, h: 8 },
+  runner: { x:  48, y: 0, w: 8, h: 8 },
+  flyer:  { x: 112, y: 0, w: 8, h: 8 },
+  archer: { x:  48, y: 8, w: 8, h: 8 },
+  brute:  { x: 104, y: 0, w: 8, h: 8 },
+  boss:   { x:  88, y: 0, w: 8, h: 8 },
 };
 
 const THEMES = {
@@ -57,6 +71,7 @@ export async function createRenderer(canvas, game, options = {}) {
   app.ticker.stop();
 
   // Layer order (added in order = drawn back to front)
+  const layerBgTex  = new PIXI.Container(); // game-art background panels
   const layerBg     = new PIXI.Container(); // path, grid
   const layerSlots  = new PIXI.Container(); // slot rings
   const layerRanges = new PIXI.Container(); // range preview rings
@@ -66,15 +81,24 @@ export async function createRenderer(canvas, game, options = {}) {
   const layerFx     = new PIXI.Container(); // shot tracers, hit rings
   const layerParts  = new PIXI.Container(); // particles
   const layerHud    = new PIXI.Container(); // portals, labels
-  for (const l of [layerBg, layerSlots, layerRanges, layerLinks, layerUnits, layerBars, layerFx, layerParts, layerHud]) {
+  for (const l of [layerBgTex, layerBg, layerSlots, layerRanges, layerLinks, layerUnits, layerBars, layerFx, layerParts, layerHud]) {
     stage.addChild(l);
   }
 
   // ------------------------------------------------------------------
   // Sprite cache: hero thumbnails + boss + FX textures
   // ------------------------------------------------------------------
-  const sprites  = new Map(); // id -> PIXI.Texture
+  const zeusFx = createZeusFx(PIXI, layerParts, { reducedMotion });
+  const sprites     = new Map(); // id -> PIXI.Texture (UI/selection portraits from CDN)
+  const boardSprites = new Map(); // id -> PIXI.Texture (on-board overrides, e.g. pixel sprites)
   const fxTex    = new Map(); // name -> PIXI.Texture
+  const heroFx = createHeroFx(PIXI, layerParts, fxTex, { reducedMotion });
+
+  // On-board sprite overrides: keyed by hero id, loaded from /td/
+  const BOARD_SPRITE_OVERRIDES = { zeus: "/td/zeusspritetest.png" };
+  for (const [id, url] of Object.entries(BOARD_SPRITE_OVERRIDES)) {
+    PIXI.Assets.load(url).then((tex) => boardSprites.set(id, tex)).catch(() => {});
+  }
 
   async function loadTexture(key, url) {
     try {
@@ -98,6 +122,38 @@ export async function createRenderer(canvas, game, options = {}) {
       .catch(() => {});
   }
 
+  // Enemy sprite textures sliced from the Kenney packed sheet (fallback).
+  const enemyTextures = new Map(); // kind -> PIXI.Texture
+  PIXI.Assets.load("/td/kenney_enemies.png")
+    .then((baseTex) => {
+      baseTex.source.scaleMode = "nearest";
+      for (const [kind, f] of Object.entries(ENEMY_TILES)) {
+        enemyTextures.set(kind, new PIXI.Texture({
+          source: baseTex.source,
+          frame: new PIXI.Rectangle(f.x, f.y, f.w, f.h),
+        }));
+      }
+    })
+    .catch(() => {});
+
+  // In-game portrait sprites per enemy kind (primary, loads async).
+  const portraitTextures = new Map(); // kind -> PIXI.Texture
+  const PORTRAIT_KINDS = ["grunt", "runner", "flyer", "archer", "brute"];
+  for (const kind of PORTRAIT_KINDS) {
+    PIXI.Assets.load(`/td/enemies/${kind}.png`)
+      .then((tex) => portraitTextures.set(kind, tex))
+      .catch(() => {});
+  }
+
+  // Slot art sprites (road = gold glow, platform = purple glow). Falls back to Graphics if absent.
+  const slotTextures = new Map(); // "road" | "platform" -> PIXI.Texture
+  PIXI.Assets.load("/td/spritePlatform.png").then((t) => slotTextures.set("road", t)).catch(() => {});
+  PIXI.Assets.load("/td/sprite.png").then((t) => slotTextures.set("platform", t)).catch(() => {});
+
+  // Path tile texture (mossy stone, seamless). Rebuilds bg once when it loads.
+  let pathTileTex = null;
+  PIXI.Assets.load("/td/spriteRoad.png").then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
+
   // ------------------------------------------------------------------
   // Resize: scale stage so 960x540 logical coords fill the canvas CSS box
   // ------------------------------------------------------------------
@@ -117,42 +173,71 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   function buildBg() {
     layerBg.removeChildren();
-    const g = new PIXI.Graphics();
 
-    // Background fill
-    g.rect(0, 0, 960, 540).fill({ color: palette.surface });
-
-    // Theme radial glow (approximated as a large soft circle)
-    const theme = THEMES[game.map.theme] || THEMES.moonlit;
-    const glow = new PIXI.Graphics();
-    glow.circle(480, 270, 520).fill({ color: theme.glow, alpha: 0.07 });
-    layerBg.addChild(glow);
-
-    // Grid
+    // Grid (very subtle - bg art provides the visual depth)
     const grid = new PIXI.Graphics();
-    grid.setStrokeStyle({ width: 1, color: 0xffffff, alpha: 0.025 });
+    grid.setStrokeStyle({ width: 1, color: 0xffffff, alpha: 0.012 });
     for (let x = 0; x <= 960; x += 48) { grid.moveTo(x, 0).lineTo(x, 540); }
     for (let y = 0; y <= 540; y += 48) { grid.moveTo(0, y).lineTo(960, y); }
     grid.stroke();
-    layerBg.addChild(g);
     layerBg.addChild(grid);
 
-    // Path
-    const pathLine = new PIXI.Graphics();
+    // Path: tiled stone texture (when loaded) or 4-layer Graphics fallback
     const pts = game.map.path;
-    // Wide ghost track
-    pathLine.setStrokeStyle({ width: 72, color: 0xffffff, alpha: 0.055, cap: "round", join: "round" });
-    pathLine.moveTo(pts[0][0], pts[0][1]);
-    for (let i = 1; i < pts.length; i++) pathLine.lineTo(pts[i][0], pts[i][1]);
-    pathLine.stroke();
-    // Thin accent trail
-    const trail = new PIXI.Graphics();
-    trail.setStrokeStyle({ width: 3, color: theme.trail, alpha: 0.13, cap: "round", join: "round" });
-    trail.moveTo(pts[0][0], pts[0][1]);
-    for (let i = 1; i < pts.length; i++) trail.lineTo(pts[i][0], pts[i][1]);
-    trail.stroke();
-    layerBg.addChild(pathLine);
-    layerBg.addChild(trail);
+
+    function pathStroke(width, color, alpha) {
+      const g = new PIXI.Graphics();
+      g.setStrokeStyle({ width, color, alpha, cap: "round", join: "round" });
+      g.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+      g.stroke();
+      layerBg.addChild(g);
+      return g;
+    }
+
+    if (pathTileTex) {
+      // Gold border aura (peeks out past tile mask edges)
+      pathStroke(88, 0xc9a227, 0.22);
+      // TilingSprite masked to path shape
+      const pathMask = new PIXI.Graphics();
+      pathMask.setStrokeStyle({ width: 74, color: 0xffffff, alpha: 1, cap: "round", join: "round" });
+      pathMask.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length; i++) pathMask.lineTo(pts[i][0], pts[i][1]);
+      pathMask.stroke();
+      const ts = new PIXI.TilingSprite({ texture: pathTileTex, width: 960, height: 540 });
+      ts.tileScale.set(0.12); // ~2-3 stones visible across 74px path width
+      ts.mask = pathMask;
+      layerBg.addChild(ts);
+      // Thin gold center accent on top
+      pathStroke(3, 0xfacc15, 0.52);
+    } else {
+      // Fallback: pure Graphics layers
+      pathStroke(86, 0xc9a227, 0.24);
+      pathStroke(74, 0x000000, 0.65);
+      pathStroke(46, 0x040210, 0.50);
+      pathStroke(3, 0xfacc15, 0.55);
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Background art panels (game-extracted stage textures, async)
+  // ------------------------------------------------------------------
+  async function buildBgTexture() {
+    // World map 2048x2048: scale width to 960, crop height to show mountains + city
+    try {
+      const tex = await PIXI.Assets.load("/td/bg/worldmap.jpg");
+      const spr = new PIXI.Sprite(tex);
+      const scale = 960 / 2048;
+      spr.width = 960;
+      spr.height = 2048 * scale; // 960px tall
+      spr.position.set(0, -40); // show upper portion: dramatic sky, mountains, glowing city
+      layerBgTex.addChild(spr);
+    } catch {}
+
+    // Dark overlay for gameplay readability
+    const overlay = new PIXI.Graphics();
+    overlay.rect(0, 0, 960, 540).fill({ color: 0x000000, alpha: 0.38 });
+    layerBgTex.addChild(overlay);
   }
 
   // ------------------------------------------------------------------
@@ -173,21 +258,55 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function drawSlot(container, x, y, type, occupied, highlighted) {
-    const g = new PIXI.Graphics();
-    const radius = type === "road" ? 27 : 24;
     const color  = type === "road" ? palette.gold : palette.purple;
-    const fillAlpha = occupied ? 0.08 : type === "road" ? 0.16 : 0.18;
-    g.circle(x, y, radius).fill({ color, alpha: fillAlpha });
-    const borderColor = highlighted ? 0xffffff : occupied ? 0xffffff : color;
-    const borderAlpha = highlighted ? 1 : occupied ? 0.08 : 1;
-    const borderWidth = highlighted ? 4 : 2;
-    if (!occupied && !highlighted) {
-      // dashed border via alternating arcs is expensive; use a low-alpha solid ring instead
-      g.setStrokeStyle({ width: borderWidth, color: borderColor, alpha: 0.5 });
-    } else {
-      g.setStrokeStyle({ width: borderWidth, color: borderColor, alpha: borderAlpha });
+    const radius = type === "road" ? 27 : 24;
+    const tex    = slotTextures.get(type);
+
+    if (tex) {
+      const size = type === "road" ? 72 : 64;
+      const spr = new PIXI.Sprite(tex);
+      spr.anchor.set(0.5);
+      spr.width = size;
+      spr.height = size;
+      spr.position.set(x, y);
+      spr.alpha = occupied ? 0.45 : 1;
+      container.addChild(spr);
+      if (highlighted) {
+        const ring = new PIXI.Graphics();
+        ring.setStrokeStyle({ width: 3, color: 0xffffff, alpha: 0.9 });
+        ring.circle(x, y, size / 2 + 4).stroke();
+        container.addChild(ring);
+      }
+      return;
     }
+
+    // Fallback: Graphics approach
+    const g = new PIXI.Graphics();
+
+    // Outer ambient glow
+    g.circle(x, y, radius + 11).fill({ color, alpha: 0.06 });
+
+    // Dark carved pedestal base
+    g.circle(x, y, radius).fill({ color: 0x000000, alpha: 0.52 });
+    const fillAlpha = occupied ? 0.10 : 0.22;
+    g.circle(x, y, radius).fill({ color, alpha: fillAlpha });
+
+    // Outer border ring
+    const borderColor = highlighted ? 0xffffff : occupied ? 0xffffff : color;
+    const borderAlpha = highlighted ? 1.0 : occupied ? 0.12 : 0.88;
+    const borderWidth = highlighted ? 3 : 2;
+    g.setStrokeStyle({ width: borderWidth, color: borderColor, alpha: borderAlpha });
     g.circle(x, y, radius).stroke();
+
+    if (!occupied) {
+      g.setStrokeStyle({ width: 1, color, alpha: 0.42 });
+      g.circle(x, y, radius - 8).stroke();
+      const d = radius - 4;
+      for (const [dx, dy] of [[d, 0], [-d, 0], [0, d], [0, -d]]) {
+        g.circle(x + dx, y + dy, 2).fill({ color, alpha: 0.85 });
+      }
+    }
+
     container.addChild(g);
   }
 
@@ -318,7 +437,7 @@ export async function createRenderer(canvas, game, options = {}) {
     mask.circle(0, 0, 25).fill(0xffffff);
     container.addChild(mask);
 
-    const tex = sprites.get(unit.id);
+    const tex = boardSprites.get(unit.id) ?? sprites.get(unit.id);
     const sp = new PIXI.Sprite(tex ?? PIXI.Texture.EMPTY);
     sp.anchor.set(0.5);
     sp.width = 50; sp.height = 50;
@@ -351,11 +470,10 @@ export async function createRenderer(canvas, game, options = {}) {
   function updateHeroSprite(unit, container) {
     container.position.set(unit.x, unit.y);
 
-    // Swap texture if it loaded after construction
-    const tex = sprites.get(unit.id);
-    if (tex && container._img.texture === PIXI.Texture.EMPTY) {
+    // Swap texture in once it loads (board override takes priority over CDN portrait)
+    const tex = boardSprites.get(unit.id) ?? sprites.get(unit.id);
+    if (tex && container._img.texture !== tex) {
       container._img.texture = tex;
-      // Rebuild circular mask for the new sprite
       const mask = container.children.find((c) => c instanceof PIXI.Graphics && c !== container._facing && c !== container._ultRing);
       if (mask) { mask.clear(); mask.circle(0, 0, 25).fill(0xffffff); }
     }
@@ -402,23 +520,44 @@ export async function createRenderer(canvas, game, options = {}) {
       updateEnemyContainer(unit, enemyContainers.get(unit.entityId));
     }
     for (const [id, c] of enemyContainers) {
-      if (!seen.has(id)) { layerUnits.removeChild(c); c.destroy({ children: true }); enemyContainers.delete(id); }
+      if (!seen.has(id)) {
+        // Move to dying pool for death-fade instead of instant removal
+        dyingPool.set(id, { c, timer: 0.3 });
+        enemyContainers.delete(id);
+      }
+    }
+  }
+
+  function advanceDying(dt) {
+    for (const [id, d] of dyingPool) {
+      d.timer -= dt;
+      d.c.alpha = Math.max(0, d.timer / 0.3);
+      if (d.timer <= 0) {
+        layerUnits.removeChild(d.c);
+        d.c.destroy({ children: true });
+        dyingPool.delete(id);
+      }
     }
   }
 
   function buildEnemyContainer(unit) {
     const c = new PIXI.Container();
+
+    // Vector shape (fallback, also draws boss ring when sprite present)
     const g = new PIXI.Graphics();
     c._shape = g;
     c.addChild(g);
 
-    if (unit.kind === "boss") {
-      const tex = sprites.get("boss");
-      if (tex) {
+    const kind = unit.kind;
+
+    // Boss: hero image > Kenney tile > vector circle (handled in buildEnemyShape)
+    if (kind === "boss") {
+      const heroTex = sprites.get("boss");
+      if (heroTex) {
         const mask = new PIXI.Graphics();
         mask.circle(0, 0, 28).fill(0xffffff);
         c.addChild(mask);
-        const sp = new PIXI.Sprite(tex);
+        const sp = new PIXI.Sprite(heroTex);
         sp.anchor.set(0.5);
         sp.width = 56; sp.height = 56;
         sp.mask = mask;
@@ -429,6 +568,63 @@ export async function createRenderer(canvas, game, options = {}) {
         }
       }
     }
+
+    // Portrait sprite for non-boss enemies (primary; circular mask like boss portrait)
+    if (kind !== "boss") {
+      const porTex = portraitTextures.get(kind);
+      if (porTex) {
+        const r = kind === "brute" ? 20 : 14;
+        const mask = new PIXI.Graphics();
+        mask.circle(0, 0, r).fill(0xffffff);
+        c.addChild(mask);
+        const sp = new PIXI.Sprite(porTex);
+        sp.anchor.set(0.5);
+        sp.width = r * 2; sp.height = r * 2;
+        sp.mask = mask;
+        c._portraitSprite = sp;
+        c._portraitMask = mask;
+        c.addChild(sp);
+        c._shape.visible = false;
+      }
+    }
+
+    // Kenney tile sprite fallback (non-boss when portrait not yet loaded; boss when no hero image)
+    const kenTex = enemyTextures.get(kind);
+    if (kenTex && !c._portraitSprite && !(kind === "boss" && c._bossSprite)) {
+      const spriteSize = kind === "boss" ? 52 : kind === "brute" ? 40 : 28;
+      const sp = new PIXI.Sprite(kenTex);
+      sp.anchor.set(0.5);
+      sp.width = spriteSize;
+      sp.height = spriteSize;
+      c._enemySprite = sp;
+      c.addChild(sp);
+      if (kind !== "boss") c._shape.visible = false;
+      if (kind === "boss" && GlowFilter && !reducedMotion) {
+        sp.filters = [new GlowFilter({ distance: 18, outerStrength: 1.2, color: 0xff4d4d })];
+      }
+    }
+
+    // White overlay for hit-flash effect
+    const flashR = kind === "boss" ? 29 : kind === "brute" ? 20 : 14;
+    const flash = new PIXI.Graphics();
+    flash.circle(0, 0, flashR).fill({ color: 0xffffff });
+    flash.alpha = 0;
+    c._flashOverlay = flash;
+    c.addChild(flash);
+
+    // Persistent stone shell follows the actual crowd-control timer.
+    const stone = new PIXI.Graphics();
+    stone.circle(0, 0, flashR).fill({ color: 0xa4aaa7, alpha: 0.7 })
+      .stroke({ color: 0xe1e5df, width: 2, alpha: 0.8 });
+    stone.moveTo(-flashR * 0.35, -flashR * 0.85).lineTo(1, -3)
+      .lineTo(-5, 4).lineTo(3, flashR * 0.8)
+      .moveTo(1, -3).lineTo(flashR * 0.65, -flashR * 0.3)
+      .moveTo(-5, 4).lineTo(-flashR * 0.7, flashR * 0.45)
+      .stroke({ color: 0x454e4a, width: 1.5, alpha: 0.9 });
+    stone.visible = false;
+    c._stoneOverlay = stone;
+    c.addChild(stone);
+
     return c;
   }
 
@@ -438,7 +634,7 @@ export async function createRenderer(canvas, game, options = {}) {
     const radius = kind === "boss" ? 26 : kind === "brute" ? 17 : 12;
     const color  = COLORS[kind] ?? 0xffffff;
 
-    if (unit.kind === "boss" && !sprites.get("boss")) {
+    if (unit.kind === "boss" && !sprites.get("boss") && !enemyTextures.get("boss")) {
       g.circle(0, 0, radius).fill({ color }).setStrokeStyle({ width: 3, color: 0x07060c, alpha: 0.8 }).circle(0, 0, radius).stroke();
       return;
     }
@@ -477,22 +673,67 @@ export async function createRenderer(canvas, game, options = {}) {
   // Hit-flash: set on entity, consumed by renderer
   const hitFlash = new Map(); // entityId -> framesLeft
 
+  // Death-fade pool: enemies removed from sim are kept here for ~0.3s
+  const dyingPool = new Map(); // entityId -> { c, timer }
+  let dyingClock = null;
+
   function updateEnemyContainer(unit, c) {
     c.position.set(unit.x, unit.y);
-    buildEnemyShape(c._shape, unit);
 
-    // Hit-flash: white tint for 2 frames (P4)
-    if (unit._hitFlash) { hitFlash.set(unit.entityId, 2); unit._hitFlash = false; }
-    const flashFrames = hitFlash.get(unit.entityId) || 0;
-    if (flashFrames > 0) {
-      if (c._bossSprite) c._bossSprite.tint = 0xffffff;
-      hitFlash.set(unit.entityId, flashFrames - 1);
-    } else {
-      if (c._bossSprite) c._bossSprite.tint = 0xffffff; // boss sprite is always natural color
+    // Upgrade to portrait if it finished loading after container was built
+    if (!c._portraitSprite && unit.kind !== "boss") {
+      const porTex = portraitTextures.get(unit.kind);
+      if (porTex) {
+        const kind = unit.kind;
+        const r = kind === "brute" ? 20 : 14;
+        const mask = new PIXI.Graphics();
+        mask.circle(0, 0, r).fill(0xffffff);
+        c.addChildAt(mask, c.children.length - 1);
+        const sp = new PIXI.Sprite(porTex);
+        sp.anchor.set(0.5);
+        sp.width = r * 2; sp.height = r * 2;
+        sp.mask = mask;
+        c._portraitSprite = sp;
+        c._portraitMask = mask;
+        c.addChildAt(sp, c.children.length - 1);
+        c._shape.visible = false;
+        if (c._enemySprite) { c._enemySprite.visible = false; }
+      }
     }
 
-    // Death fade: sim removes from enemies array before renderer sees it, but
-    // if entity has _dying flag we can fade it (future hook — handled by removal for now)
+    // Upgrade to Kenney sprite if sheet finished loading (fallback when portrait absent)
+    if (!c._enemySprite && !c._portraitSprite && !(unit.kind === "boss" && c._bossSprite)) {
+      const kenTex = enemyTextures.get(unit.kind);
+      if (kenTex) {
+        const kind = unit.kind;
+        const spriteSize = kind === "boss" ? 52 : kind === "brute" ? 40 : 28;
+        const sp = new PIXI.Sprite(kenTex);
+        sp.anchor.set(0.5);
+        sp.width = spriteSize;
+        sp.height = spriteSize;
+        c._enemySprite = sp;
+        c.addChildAt(sp, c.children.length - 1);
+        if (kind !== "boss") c._shape.visible = false;
+        if (kind === "boss" && GlowFilter && !reducedMotion) {
+          sp.filters = [new GlowFilter({ distance: 18, outerStrength: 1.2, color: 0xff4d4d })];
+        }
+      }
+    }
+
+    // Vector shape: only rebuild when used as fallback; boss ring always redrawn
+    if (c._shape.visible || unit.kind === "boss") buildEnemyShape(c._shape, unit);
+
+    const petrified = (unit.petrifiedUntil ?? 0) > game.time;
+    c._stoneOverlay.visible = petrified;
+    for (const sprite of [c._portraitSprite, c._bossSprite, c._enemySprite]) {
+      if (sprite) sprite.tint = petrified ? 0x9ba39f : 0xffffff;
+    }
+
+    // Hit-flash: white overlay for 2 frames
+    if (unit._hitFlash) { hitFlash.set(unit.entityId, 2); unit._hitFlash = false; }
+    const flashFrames = hitFlash.get(unit.entityId) || 0;
+    if (c._flashOverlay) c._flashOverlay.alpha = flashFrames > 0 ? 0.85 : 0;
+    if (flashFrames > 0) hitFlash.set(unit.entityId, flashFrames - 1);
   }
 
   // ------------------------------------------------------------------
@@ -542,6 +783,8 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function spawnParticles(effect) {
+    if (hasHeroFx(effect)) return;
+    if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) return;
     if (reducedMotion) return;
     const rand = (s) => (Math.random() - 0.5) * s;
     const baseTint = effect.color === "purple" ? "purple" : effect.color === "red" ? "red" : "gold";
@@ -589,10 +832,14 @@ export async function createRenderer(canvas, game, options = {}) {
     }
 
     advanceParticles(dt);
+    zeusFx.update(game.effects);
+    heroFx.update(game, dt);
 
     // Draw shot tracers and hit rings as transient Graphics on layerFx
     layerFx.removeChildren();
     for (const effect of game.effects) {
+      if (hasHeroFx(effect)) continue;
+      if (effect.heroVariant === "chain_lightning" && ["shot", "hit", "ult"].includes(effect.type)) continue;
       const color = effect.color === "purple" ? palette.purple : effect.color === "red" ? 0xff6b6b : palette.gold;
       const g = new PIXI.Graphics();
       g.setStrokeStyle({ width: 2, color, alpha: reducedMotion ? 0.5 : Math.min(1, effect.life * 6) });
@@ -617,10 +864,14 @@ export async function createRenderer(canvas, game, options = {}) {
   // can change any tick.
   // ------------------------------------------------------------------
   function draw(now = performance.now()) {
+    const dyingDt = dyingClock === null ? 0 : Math.min((now - dyingClock) / 1000, 0.1);
+    dyingClock = now;
+
     buildSlots();
     buildRanges();
     buildLinks();
     syncEnemies();
+    advanceDying(dyingDt);
     syncHeroes();
     drawBars();
     drawEffects(now);
@@ -631,6 +882,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Initial one-time setup (static layers built here, not in draw loop)
   // ------------------------------------------------------------------
   resize();
+  buildBgTexture(); // fire-and-forget; panels load async behind path layer
   buildBg();
   buildPortals();
 

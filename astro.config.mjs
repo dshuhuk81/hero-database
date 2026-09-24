@@ -38,6 +38,8 @@ function localOnlyRoutes() {
   };
 }
 
+const R2_BASE = 'https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev';
+
 export default defineConfig({
   // Site Configuration
   site: SITE,
@@ -45,4 +47,16 @@ export default defineConfig({
   output: 'static',
 
   integrations: [sitemap(), localOnlyRoutes()],
+
+  vite: {
+    server: {
+      proxy: {
+        '/r2': {
+          target: R2_BASE,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/r2/, ''),
+        },
+      },
+    },
+  },
 });

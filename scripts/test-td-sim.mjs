@@ -667,4 +667,122 @@ function runWaveOne(g) {
   assert.equal(g.synergyBonusFor(g.heroes[0]), 0, "dead hero contributes no synergy");
 }
 
+// --- P2 hero skill variants ---
+
+// variant_loaded: heroSkills merged into placed heroes.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 80 });
+  g.setTeam(["nyx", "poseidon", "zeus", "medusa", "freya"]);
+  g.gold = 10000;
+  g.place("nyx", "road", 0);
+  g.place("poseidon", "road", 1);
+  g.place("medusa", "platform", 0);
+  g.place("freya", "platform", 1);
+  g.place("zeus", "platform", 2);
+  const nyx = g.heroes.find((h) => h.id === "nyx");
+  const poseidon = g.heroes.find((h) => h.id === "poseidon");
+  const medusa = g.heroes.find((h) => h.id === "medusa");
+  const freya = g.heroes.find((h) => h.id === "freya");
+  const zeus = g.heroes.find((h) => h.id === "zeus");
+  assert.equal(nyx.variant, "shadow_step", "nyx variant loaded");
+  assert.equal(poseidon.variant, "knockback", "poseidon variant loaded");
+  assert.equal(medusa.variant, "petrify_shot", "medusa variant loaded");
+  assert.equal(freya.variant, "valkyrie_call", "freya variant loaded");
+  assert.equal(zeus.variant, "chain_lightning", "zeus variant loaded");
+  assert.ok(nyx.skillName, "nyx has skill name");
+  assert.ok(zeus.skillName, "zeus has skill name");
+}
+
+// variant_knockback: Poseidon cleave reduces enemy distance.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 81 });
+  g.setTeam(["poseidon", "nuwa", "zeus", "diana", "caishen"]);
+  g.gold = 10000;
+  g.place("poseidon", "road", 0);
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.spawnEnemy("grunt");
+  const poseidon = g.heroes[0];
+  const grunt = g.enemies[0];
+  grunt.x = poseidon.x; grunt.y = poseidon.y; grunt.distance = 200;
+  const distBefore = grunt.distance;
+  g.castUltimate(poseidon, grunt);
+  assert.ok(grunt.distance < distBefore, "knockback reduces enemy distance");
+  assert.ok(grunt.distance >= 0, "distance cannot go below 0");
+}
+
+// variant_petrify_shot: Medusa applies 0.3 slowFactor.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 82 });
+  g.setTeam(["medusa", "nuwa", "zeus", "diana", "caishen"]);
+  g.gold = 10000;
+  g.place("medusa", "platform", 0);
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.spawnEnemy("grunt");
+  const medusa = g.heroes[0];
+  const grunt = g.enemies[0];
+  grunt.x = medusa.x; grunt.y = medusa.y;
+  g.castUltimate(medusa, grunt);
+  assert.ok(grunt.slow > 0, "petrify applies slow");
+  assert.equal(grunt.slowFactor, 0.3, "petrify uses 0.3 slowFactor (70% reduction)");
+}
+
+// variant_shadow_step: Nyx can target enemies outside normal range.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 83 });
+  g.setTeam(["nyx", "nuwa", "zeus", "diana", "caishen"]);
+  g.gold = 10000;
+  g.place("nyx", "road", 0);
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.spawnEnemy("grunt");
+  const nyx = g.heroes[0];
+  const grunt = g.enemies[0];
+  grunt.x = 900; grunt.y = 500; // far away
+  grunt.hp = 1; grunt.maxHp = 100;
+  const target = g.findTarget(nyx);
+  assert.ok(target === grunt, "shadow_step targets enemy outside normal range");
+}
+
+// variant_valkyrie_call: Freya revives a fallen hero.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 84 });
+  g.setTeam(["freya", "nuwa", "zeus", "diana", "caishen"]);
+  g.gold = 10000;
+  g.place("freya", "platform", 0);
+  g.place("nuwa", "road", 0);
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  const nuwa = g.heroes.find((h) => h.id === "nuwa");
+  const slotType = nuwa.slotType; const slotIndex = nuwa.slotIndex;
+  // Kill nuwa directly
+  g.fallenHeroes.push({ id: "nuwa", slotType, slotIndex });
+  g.heroes = g.heroes.filter((h) => h.id !== "nuwa");
+  assert.equal(g.heroes.filter((h) => h.id === "nuwa").length, 0, "nuwa fallen");
+  const freya = g.heroes.find((h) => h.id === "freya");
+  g.spawnEnemy("grunt");
+  g.castUltimate(freya, g.enemies[0]);
+  const revived = g.heroes.find((h) => h.id === "nuwa");
+  assert.ok(revived, "nuwa revived by valkyrie_call");
+  assert.ok(revived.hpLeft <= revived.hp * 0.55, "revived hero has at most 55% HP");
+  assert.ok(revived.hpLeft >= revived.hp * 0.45, "revived hero has at least 45% HP");
+}
+
+// variant_expose: Prometheus-exposed enemies take 30% more damage.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
+  g.setTeam(["prometheus", "nuwa", "zeus", "diana", "caishen"]);
+  g.gold = 10000;
+  g.place("prometheus", "road", 0);
+  g.startWave(); g.enemies = []; g.spawnQueue = [];
+  g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
+  const prometheus = g.heroes[0];
+  const [g1, g2] = g.enemies;
+  g1.x = prometheus.x; g1.y = prometheus.y;
+  g2.x = 900; g2.y = 500; // far, not exposed
+  g.castUltimate(prometheus, g1);
+  assert.ok(g1.exposed && g1.exposed > g.time, "nearby enemy exposed");
+  assert.equal(g2.exposed, undefined, "far enemy not exposed");
+  const hpBefore = g1.hp;
+  g.hit(g1, 100, prometheus);
+  assert.ok(g1.hp <= hpBefore - 119, "exposed enemy takes at least 120 damage from 100 hit");
+}
+
 console.log("Tower defense checks passed");

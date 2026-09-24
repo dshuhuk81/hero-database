@@ -291,9 +291,11 @@ Enemy kinds (invented stats in tuning file): `grunt`, `runner`, `flyer`, `archer
 (8 available, e.g. `baphomet`), with invented hp/speed. Boss `mechanics[]` text is shown
 in a pre-wave warning popup - real text, invented numbers, no conflict.
 
-Run params: **10 waves**, 25 lives, 260 starting gold, pre-pick 5 heroes from the 20, gold
-from kills, buy between waves. Boss on wave 10 only (the reference's every-5th-wave boss
-does not fit a 10-wave run; wave 5 gets a `brute` pack instead).
+Run params: **10 waves**, 25 lives, 260 starting gold. No pre-pick phase - placement is
+slot-first (see section 9). Team builds up as you place heroes; first placement enlists
+into the run team (capped at `maxTeam`, default 5). Gold from kills, buy between waves.
+Boss on wave 10 only (the reference's every-5th-wave boss does not fit a 10-wave run;
+wave 5 gets a `brute` pack instead).
 
 Wave schedule, condensed from the reference's 20-wave curve:
 
@@ -309,15 +311,41 @@ Wave schedule, condensed from the reference's 20-wave curve:
 
 ## 8. Rendering
 
-- Sprites: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/thumbs/{id}-96.webp`
-  - already on R2 and verified reachable (200 for zeus/athena/nezha). **No new asset
-  pipeline needed.** Local fallback `public/heroes/thumbs/` is nearly empty, so preload
-  from R2 and cache in an `Image` map.
-- Bosses: `bosses.json` already carries absolute R2 `image` URLs.
-- Everything else (path, tiles, hp bars, projectiles) is drawn with canvas primitives
-  using `tokens.css` colors read via `getComputedStyle` on `:root`, so the game matches
-  site theming: `--bg-surface`, `--accent-gold`, `--accent-purple`, `--border-medium`.
-- Sprite draw at `48x48` on the `960x540` field. `devicePixelRatio` aware backing store.
+### Hero sprites
+- Source: `https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev/heroes/thumbs/{id}-96.webp`
+  verified reachable. Loaded via `PIXI.Assets.load()` with a Vite proxy (`/r2 -> R2_BASE`)
+  in dev to bypass CORS (PixiJS WebGL texture upload requires CORS headers; R2 has none
+  without explicit config, so same-origin proxy is the dev-only workaround; production
+  serves from R2 directly which works via HTML `<img>` but requires the proxy for PixiJS).
+- Drawn as circle-masked sprites (circular mask + PIXI.Sprite) on each hero slot.
+
+### Enemy sprites
+Primary sprites are portrait crops extracted from game APK (`extracted/UI_Headportraits/`),
+resized to 128x128 and placed at `public/td/enemies/{kind}.png`. They render as
+circle-masked PIXI.Sprites with radii matching enemy tier.
+
+Mapping (CN portrait name -> TD kind):
+- `Mogu02` (mushroom creature) -> `grunt`
+- `Diediemoou02` (stacked stone blocks) -> `runner`
+- `Hanhuizhihe03` (ice/rock sphere) -> `flyer`
+- `An02` (crystal eye) -> `archer`
+- `Zhizhu03` (spider) -> `brute`
+
+Fallback chain per enemy: portrait PNG -> Kenney Micro Roguelike tileset tile -> vector
+shape. This means the game works even if portrait files are missing.
+
+A full sprite spec for AI-generated replacements (full-body 3/4-view sprites, 256x256
+transparent PNG) lives at `src/game/td/sprite-spec-for-ai.md`. Covers all 6 enemy kinds
++ 7 bosses with visual descriptions, color palettes, and integration instructions.
+
+### Boss
+`bosses.json` carries absolute R2 `image` URLs. Boss portrait is loaded the same as hero
+sprites and rendered as a larger circle-masked sprite with a glow filter.
+
+### General
+Everything else (path, tiles, hp bars, projectiles, particles) is canvas primitives using
+`tokens.css` colors via `getComputedStyle` on `:root`. `devicePixelRatio`-aware backing
+store. Internal coordinate space fixed at `960x540`; CSS-scaled to fit container.
 
 ## 9. UI
 
@@ -327,8 +355,22 @@ the shell, ship data via `<script type="application/json">`, one `<script>` modu
 logic.
 
 HUD: gold, lives, wave `n/10`, score, speed toggle (`1x`/`2x`), start/pause/restart.
-Panels: hero picker (grouped by class, shows **cost + tier badge together** - see the
-cost-curve consequence in section 5), selected-hero inspector, between-wave upgrade choice.
+Panels: slot-picker (context-sensitive hero list for the clicked slot), selected-hero
+inspector, between-wave upgrade choice.
+
+### Placement flow (slot-first)
+The original pre-pick-5 phase is removed. Flow:
+1. Before wave starts: click a ring on the canvas.
+2. Command panel shows heroes filtered by slot type (road rings = Tank/Warrior/Assassin;
+   platform rings = Mage/Archer/Support).
+3. Click a hero card to place them. If they are not in the team yet, they are auto-enlisted
+   (capped at `maxTeam`). Heroes already deployed or unaffordable are shown disabled.
+4. Click empty canvas or a non-slot area to dismiss the picker.
+5. Once at least one hero is placed, the "Start wave" button activates.
+
+During a wave: clicking an occupied slot opens the inspector for that hero (rotate, upgrade,
+see stats). Clicking empty canvas or an empty slot deselects. Clicking empty slot with no
+hero selected deselects the inspector (does not prompt for placement mid-wave).
 
 Upgrades between waves: 3 random picks drawn from `src/data/virtues.json` 2-piece set
 bonuses. Real set names and real bonus text, hand-mapped to a sim effect in the tuning

@@ -42,6 +42,7 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
         <button class="td-icon-button" type="button" data-td-speed aria-label="Set game speed to 2x">1×</button>
         <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game">Ⅱ</button>
         <button class="td-icon-button" type="button" data-td-restart aria-label="Restart game">↻</button>
+        <button class="action-button action-button--primary td-main-action td-hud-wave-btn" type="button" data-td-main-action disabled>Choose 5 heroes</button>
       </div>
     </div>
 
@@ -51,6 +52,12 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
         <div class="td-stage-message" data-td-message>
           <span>Prepare your defense</span>
           <strong>Select five heroes to begin</strong>
+        </div>
+        <div class="td-blessing-modal" data-td-blessing-modal hidden aria-modal="true" role="dialog" aria-label="Choose a blessing">
+          <div class="td-blessing-modal-inner">
+            <span class="td-label">Choose one blessing</span>
+            <div class="td-virtue-grid" data-td-blessing-grid></div>
+          </div>
         </div>
         <div class="td-result" data-td-result hidden>
           <span data-td-result-kicker>Run complete</span>
@@ -66,34 +73,36 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 
       <aside class="td-command">
         <div class="td-command-heading">
-          <div><span class="td-label">Command deck</span><h2 data-td-panel-title>Choose your squad</h2></div>
+          <div><span class="td-label">Command deck</span><h2 data-td-panel-title>Deploy your heroes</h2></div>
           <span class="td-team-count"><b data-td-team-count>0</b>/5</span>
         </div>
 
-        <div class="td-picker" data-td-picker>
-          {classes.map((className) => (
-            <section class="td-class-group" data-class={className}>
-              <h3>{className}<span>{tuning.classes[className].slot}</span></h3>
-              <div class="td-hero-grid">
-                {heroes.filter((hero) => hero.class === className).map((hero) => (
-                  <button class="td-hero-card" type="button" data-hero-id={hero.id} aria-pressed="false">
-                    <img src={hero.image} alt="" width="48" height="48" loading="eager" />
-                    <span class="td-card-copy"><strong>{hero.name}</strong><small>{hero.cost} gold</small></span>
-                    <span class="td-tier" data-tier={hero.tier}>{hero.tier}</span>
-                  </button>
-                ))}
-              </div>
-            </section>
-          ))}
+        <div class="td-command-body">
+          <div class="td-picker" data-td-picker>
+            {classes.map((className) => (
+              <section class="td-class-group" data-class={className}>
+                <h3>{className}<span>{tuning.classes[className].slot}</span></h3>
+                <div class="td-hero-grid">
+                  {heroes.filter((hero) => hero.class === className).map((hero) => (
+                    <button class="td-hero-card" type="button" data-hero-id={hero.id} aria-pressed="false">
+                      <img src={hero.image} alt="" width="48" height="48" loading="eager" />
+                      <span class="td-card-copy"><strong>{hero.name}</strong><small>{hero.cost} gold</small></span>
+                      <span class="td-tier" data-tier={hero.tier}>{hero.tier}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+
+          <div class="td-deck" data-td-deck hidden></div>
+          <div class="td-inspector" data-td-inspector hidden></div>
+          <div class="td-wave-info" data-td-preview hidden></div>
+          <div class="td-virtues" data-td-virtues hidden></div>
+          <p class="td-wave-result" data-td-summary hidden></p>
         </div>
 
-        <div class="td-deck" data-td-deck hidden></div>
-        <div class="td-inspector" data-td-inspector hidden></div>
-        <div class="td-wave-info" data-td-preview hidden></div>
-        <div class="td-virtues" data-td-virtues hidden></div>
-        <p class="td-wave-result" data-td-summary hidden></p>
         <p class="td-command-note" data-td-command-note>Road heroes block enemies. Platform heroes attack safely from range.</p>
-        <button class="action-button action-button--primary td-main-action" type="button" data-td-main-action disabled>Choose 5 heroes</button>
       </aside>
     </div>
   </section>
@@ -134,6 +143,8 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
   const preview = root.querySelector<HTMLElement>("[data-td-preview]")!;
   const summary = root.querySelector<HTMLElement>("[data-td-summary]")!;
   const virtuesEl = root.querySelector<HTMLElement>("[data-td-virtues]")!;
+  const blessingModalEl = root.querySelector<HTMLElement>("[data-td-blessing-modal]")!;
+  const blessingGridEl = root.querySelector<HTMLElement>("[data-td-blessing-grid]")!;
   const heroById = new Map<string, any>(data.heroes.map((hero: any) => [hero.id, hero]));
   const maps: any[] = data.maps;
   let map = maps[0];
@@ -141,7 +152,7 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     const savedMapId = localStorage.getItem("td:map");
     if (savedMapId && maps.some((entry) => entry.id === savedMapId)) map = maps.find((entry) => entry.id === savedMapId);
   } catch {}
-  let selectedTeam: string[] = [];
+  let pendingSlot: { type: string; index: number } | null = null;
   let selectedHeroId = "";
   let selectedEntityId: number | null = null;
   let speed = 1;
@@ -151,17 +162,16 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 
   try {
     const candidate = JSON.parse(localStorage.getItem("td:v1") || "null");
-    if (candidate && Number.isFinite(candidate.bestScore) && Array.isArray(candidate.lastTeam)) {
+    if (candidate && Number.isFinite(candidate.bestScore)) {
       saved = {
         bestScore: candidate.bestScore,
         bestWave: Number(candidate.bestWave) || 0,
-        lastTeam: candidate.lastTeam.filter((id: string) => heroById.has(id)).slice(0, 5),
+        lastTeam: Array.isArray(candidate.lastTeam) ? candidate.lastTeam.filter((id: string) => heroById.has(id)).slice(0, 5) : [],
         perfectDefense: !!candidate.perfectDefense,
         favor: Number(candidate.favor) || 0,
         favTree: Array.isArray(candidate.favTree) ? candidate.favTree.filter((id: unknown) => typeof id === "string") : [],
         mapBests: (candidate.mapBests && typeof candidate.mapBests === "object" && !Array.isArray(candidate.mapBests)) ? candidate.mapBests : {},
       };
-      selectedTeam = saved.lastTeam.length === 5 ? [...saved.lastTeam] : [];
     }
   } catch {}
 
@@ -245,28 +255,33 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     const blessings = data.tuning.virtueBlessings || {};
     const offer = game.virtueOffer;
     if (offer && !game.running && !game.complete) {
-      virtuesEl.hidden = false;
-      virtuesEl.innerHTML = `<span class="td-label">Choose one blessing</span><div class="td-virtue-grid">` + offer.map((name: string) => {
+      blessingGridEl.innerHTML = offer.map((name: string) => {
         const effect = data.tuning.virtueEffects[name];
         const heroName = blessings[name] ?? name;
         return `<button class="td-virtue-card" type="button" data-virtue="${name}"><strong>${heroName}</strong><small>${data.virtueTexts[name] ?? ""}</small><em>Minigame effect: ${effect?.label ?? ""}</em></button>`;
-      }).join("") + `</div>`;
-    } else if ((game.virtues.length || (game.activePairs?.length ?? 0)) && started && !game.complete) {
-      virtuesEl.hidden = false;
-      const activeChips = game.virtues.map((name: string) => `<span class="td-wave-chip"><b>${blessings[name] ?? name}</b></span>`).join("");
-      const pairChips = (game.activePairs ?? []).map((pair: any) => `<span class="td-wave-chip td-wave-chip--pair"><b>${pair.name}</b> ${pair.label}</span>`).join("");
-      virtuesEl.innerHTML = `<span class="td-label">Active blessings</span><div class="td-virtue-grid td-virtue-grid--active">${activeChips}${pairChips}</div>`;
-    } else {
+      }).join("");
+      blessingModalEl.hidden = false;
       virtuesEl.hidden = true;
+    } else {
+      blessingModalEl.hidden = true;
+      if ((game.virtues.length || (game.activePairs?.length ?? 0)) && started && !game.complete) {
+        virtuesEl.hidden = false;
+        const activeChips = game.virtues.map((name: string) => `<span class="td-wave-chip"><b>${blessings[name] ?? name}</b></span>`).join("");
+        const pairChips = (game.activePairs ?? []).map((pair: any) => `<span class="td-wave-chip td-wave-chip--pair"><b>${pair.name}</b> ${pair.label}</span>`).join("");
+        virtuesEl.innerHTML = `<span class="td-label">Active blessings</span><div class="td-virtue-grid td-virtue-grid--active">${activeChips}${pairChips}</div>`;
+      } else {
+        virtuesEl.hidden = true;
+      }
     }
   }
 
-  virtuesEl.addEventListener("click", (event) => {
+  blessingModalEl.addEventListener("click", (event) => {
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-virtue]");
     if (!button) return;
     const blessings = data.tuning.virtueBlessings || {};
     const heroName = blessings[button.dataset.virtue!] ?? button.dataset.virtue;
     if (game.chooseVirtue(button.dataset.virtue!)) {
+      blessingModalEl.hidden = true;
       const triggered = (game.activePairs ?? []).find((p: any) => p.virtues.includes(button.dataset.virtue!));
       commandNote.textContent = triggered
         ? `${heroName} activates ${triggered.name} - ${triggered.label}`
@@ -334,6 +349,7 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 
   function handleChange(type: string) {
     updateHud();
+    if (type === "place" && !started) { message.hidden = true; showPickerPrompt(); }
     if (type === "leak") {
       audio.play("error");
       commandNote.textContent = game.lives > 0 ? `An enemy broke through. ${game.lives} lives remain.` : "";
@@ -378,24 +394,58 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     renderDeck();
   }
 
-  function updatePicker() {
-    picker.querySelectorAll<HTMLButtonElement>("[data-hero-id]").forEach((button) => {
-      const active = selectedTeam.includes(button.dataset.heroId || "");
-      button.classList.toggle("is-selected", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
-    teamCount.textContent = String(selectedTeam.length);
-    mainAction.disabled = selectedTeam.length !== 5;
-    mainAction.textContent = selectedTeam.length === 5 ? "Defend the pass" : `Choose ${5 - selectedTeam.length} more`;
+  const maxTeam: number = data.tuning.run.maxTeam ?? 5;
+
+  function showPickerPrompt() {
+    pendingSlot = null;
+    game.uiPlacement = null;
+    picker.innerHTML = `<p class="td-slot-prompt">Click a ring on the map to place a hero. Gold rings take ground troops (Tank, Warrior, Assassin). Purple rings take ranged heroes (Mage, Archer, Support).</p>`;
+    teamCount.textContent = String(game.team.length);
+    mainAction.disabled = game.heroes.length === 0;
+    mainAction.textContent = game.heroes.length === 0 ? "Place a hero to begin" : "Start wave 1";
+  }
+
+  function showSlotPicker(slot: { type: string; index: number }) {
+    pendingSlot = slot;
+    const eligible = data.heroes.filter((hero: any) => hero.slot === slot.type);
+    const slotLabel = slot.type === "road" ? "Road slot - Tank, Warrior, Assassin" : "Platform slot - Mage, Archer, Support";
+    picker.innerHTML = `<div class="td-slot-picker-header"><span class="td-label">${slotLabel}</span><button type="button" class="td-cancel-slot">Cancel</button></div>` +
+      eligible.map((hero: any) => {
+        const affordable = game.gold >= hero.cost;
+        const alreadyDeployed = game.heroes.some((h: any) => h.id === hero.id);
+        const teamFull = game.team.length >= maxTeam && !game.team.includes(hero.id);
+        const disabled = !affordable || alreadyDeployed || teamFull;
+        const reason = alreadyDeployed ? "deployed" : teamFull ? "team full" : !affordable ? `${hero.cost}g` : "";
+        return `<button class="td-hero-card" type="button" data-place-hero="${hero.id}" ${disabled ? "disabled" : ""}>
+          <img src="${hero.image}" alt="" width="48" height="48">
+          <span class="td-card-copy"><strong>${hero.name}</strong><small>${hero.cost} gold${reason && disabled ? ` · ${reason}` : ""}</small></span>
+          <span class="td-tier" data-tier="${hero.tier}">${hero.tier}</span>
+        </button>`;
+      }).join("");
+  }
+
+  function closeMidGamePicker() {
+    picker.hidden = true;
+    deck.hidden = false;
+    pendingSlot = null;
+    (game as any).uiPlacement = null;
   }
 
   picker.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-hero-id]");
-    if (!button || started) return;
-    const id = button.dataset.heroId!;
-    audio.play("select");
-    selectedTeam = selectedTeam.includes(id) ? selectedTeam.filter((entry) => entry !== id) : selectedTeam.length < 5 ? [...selectedTeam, id] : selectedTeam;
-    updatePicker();
+    if ((event.target as HTMLElement).closest(".td-cancel-slot")) {
+      if (started) { closeMidGamePicker(); } else { showPickerPrompt(); }
+      return;
+    }
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-place-hero]");
+    if (!button || !pendingSlot) return;
+    const heroId = button.dataset.placeHero!;
+    if (game.place(heroId, pendingSlot.type, pendingSlot.index)) {
+      audio.play("place");
+      if (started) { closeMidGamePicker(); renderDeck(); } else { showPickerPrompt(); }
+    } else {
+      const hero = heroById.get(heroId);
+      commandNote.textContent = `Need ${hero?.cost ?? "?"} gold to deploy ${hero?.name ?? heroId}.`;
+    }
   });
 
   function renderDeck() {
@@ -423,17 +473,17 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
 
   mainAction.addEventListener("click", () => {
     if (!started) {
-      if (!game.setTeam(selectedTeam)) return;
       started = true;
       syncMapUi();
-      saved.lastTeam = [...selectedTeam]; persist();
+      saved.lastTeam = [...game.team]; persist();
       if (blessingsEl) blessingsEl.hidden = true;
       picker.hidden = true; deck.hidden = false; message.hidden = true;
-      panelTitle.textContent = "Deploy your heroes";
+      panelTitle.textContent = "Your heroes";
       teamCount.parentElement!.hidden = true;
-      mainAction.textContent = "Start wave 1";
-      mainAction.disabled = false;
-      commandNote.textContent = "Select a hero, then tap a matching ring on the field.";
+      game.startWave();
+      mainAction.disabled = true;
+      mainAction.textContent = "Wave 1 underway";
+      commandNote.textContent = "Heroes attack automatically. You can still deploy reinforcements.";
       renderDeck(); renderPreview(); return;
     }
     if (!game.running) {
@@ -485,8 +535,11 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-td-upgrade]");
     if (!button || selectedEntityId === null) return;
     const result = game.upgrade(selectedEntityId);
-    if (result.ok) audio.play("upgrade");
-    else { audio.play("error"); commandNote.textContent = result.reason || "Upgrade unavailable."; }
+    if (result.ok) {
+      audio.play("upgrade");
+      renderInspector(result.hero);
+      renderDeck();
+    } else { audio.play("error"); commandNote.textContent = result.reason || "Upgrade unavailable."; }
   });
 
   function activateSlot(slot: { type: string; index: number } | null) {
@@ -499,7 +552,13 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
       renderInspector(occupied);
       renderDeck(); return;
     }
-    if (!selectedHeroId) { commandNote.textContent = "Select a hero from your command deck first."; return; }
+    if (!selectedHeroId) {
+      selectedEntityId = null; (game as any).uiSelected = null; inspector.hidden = true;
+      showSlotPicker(slot);
+      picker.hidden = false;
+      deck.hidden = true;
+      return;
+    }
     const hero = heroById.get(selectedHeroId);
     if (hero.slot !== slot.type) { commandNote.textContent = `${hero.name} needs a ${hero.slot} ring.`; return; }
     if (game.place(selectedHeroId, slot.type, slot.index)) {
@@ -518,11 +577,33 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
   });
   canvas.addEventListener("mouseleave", () => { game.uiPlacement = null; });
 
-  canvas.addEventListener("click", (event) => {
-    const slot = nearestSlot(map, canvasPoint(canvas, event));
+  function handleCanvasTap(point: { x: number; y: number }, touchRadius = 38) {
+    const slot = nearestSlot(map, point, touchRadius);
     if (slot) game.focusedSlot = { type: slot.type, index: slot.index };
+    if (!started) {
+      if (slot) {
+        const s = slot as any;
+        if (!(game.heroes as any[]).some((h) => h.slotType === s.type && h.slotIndex === s.index)) showSlotPicker(s);
+      }
+      return;
+    }
+    if (!slot && selectedEntityId !== null) {
+      selectedEntityId = null; (game as any).uiSelected = null; inspector.hidden = true; renderDeck();
+      return;
+    }
     activateSlot(slot);
+  }
+
+  canvas.addEventListener("click", (event) => {
+    handleCanvasTap(canvasPoint(canvas, event));
   });
+
+  canvas.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    const touch = event.changedTouches[0];
+    if (!touch) return;
+    handleCanvasTap(canvasPoint(canvas, touch), 56);
+  }, { passive: false });
 
   const keyboardSlots = [
     ...map.roadSlots.map((_: any, index: number) => ({ type: "road", index })),
@@ -632,5 +713,5 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
     game.advance(delta * speed); renderer.draw(now); requestAnimationFrame(frame);
   }
   new ResizeObserver(renderer.resize).observe(canvas);
-  updatePicker(); updateHud(); renderBlessings(); requestAnimationFrame(frame);
+  showPickerPrompt(); updateHud(); renderBlessings(); requestAnimationFrame(frame);
 </script>

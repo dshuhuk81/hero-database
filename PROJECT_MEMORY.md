@@ -417,6 +417,37 @@ At review time, git status showed:
 
 These were pre-existing changes. Do not revert them unless explicitly asked.
 
+## Tower Defense Minigame
+
+A fully client-side browser tower defense game at `/games/tower-defense`. Completed and
+playable as of September 23, 2026.
+
+Key files:
+- `src/pages/games/tower-defense.astro`: page entry, passes data to component
+- `src/components/pages/TowerDefensePage.astro`: all UI logic (is:inline script)
+- `src/game/td/sim.js`: deterministic fixed-step simulation (1/60s), seeded RNG
+- `src/game/td/render.js`: PixiJS v8 renderer, 960x540 logical space
+- `src/data/gameBalance.tuning.json`: hand-authored balance knobs (enemy stats, hero archetypes, cost curve)
+- `src/data/gameBalance.json`: generated hero stats for the game (run `npm run build:game-balance`)
+- `src/data/tdMaps.json`: map definitions (path, road slots, platform slots)
+- `src/data/tdWaves.json`: wave spawn schedules
+- `public/td/enemies/`: portrait sprites for enemy kinds (extracted from game APK)
+- `src/game/td/bugs.md`: known bugs and UI issues with fix status
+- `src/game/td/sprite-spec-for-ai.md`: spec for AI-generated full-body sprites (future upgrade)
+- `TOWER_DEFENSE_SPEC.md`: full design spec (balance math, roster, placement flow, rendering)
+- `TOWER_DEFENSE_ROADMAP.md`: current status and next priorities (compact, ~70 lines)
+
+Roster: 20 heroes from the Divine Throne subset. Enemy kinds: grunt/runner/flyer/archer/brute/boss.
+
+Architecture notes:
+- Placement is slot-first: click ring on canvas -> filtered hero picker -> place. No pre-pick phase.
+- Heroes auto-enlist into team (cap: maxTeam=5) on first placement.
+- Hero images use a Vite proxy (`/r2 -> R2 CDN`) in dev to bypass CORS for PixiJS WebGL.
+- Enemy sprites are portrait crops from `extracted/UI_Headportraits/`, rendered as circle-masked PIXI.Sprites.
+- Fallback: Kenney Micro Roguelike tileset -> vector shape if portrait not available.
+- Nyx (shadow_step variant) has a range check like all heroes; findTarget uses hero.range.
+- Game balance numbers are invented and must never touch hero JSON, ratings, or bosses.json.
+
 ## Rules For Future Work
 
 - Read the relevant data file before changing game recommendations.

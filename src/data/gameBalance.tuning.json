@@ -55,5 +55,27 @@
   ],
   "run": { "startingGold": 340, "lives": 25, "maxTeam": 5, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
   "favorEarn": { "perWave": 10, "perPerfectWave": 5, "bossKill": 20, "perRemainingLife": 1, "remainingLifeCap": 25 },
-  "synergy": { "bonusPerTag": 0.08, "cap": 0.24, "range": 250 }
+  "synergy": { "bonusPerTag": 0.08, "cap": 0.24, "range": 250 },
+  "heroSkills": {
+    "nuwa":         { "skillName": "Celestial Bulwark",   "variant": "shield_wall" },
+    "prometheus":   { "skillName": "Titan's Expose",      "variant": "expose" },
+    "momus":        { "skillName": "Grand Mockery",        "variant": "mass_taunt" },
+    "demeter":      { "skillName": "Harvest Drain",        "variant": "drain_field" },
+    "poseidon":     { "skillName": "Tidal Surge",          "variant": "knockback" },
+    "amunra":       { "skillName": "Solar War Cry",        "variant": "war_cry" },
+    "set":          { "skillName": "Crimson Cleave",       "variant": "lifesteal_cleave" },
+    "jormungandr":  { "skillName": "Venom Coil",           "variant": "venom_cleave" },
+    "nyx":          { "skillName": "Shadow Step",          "variant": "shadow_step" },
+    "bastet":       { "skillName": "Claw Sweep",           "variant": "claw_sweep" },
+    "horus":        { "skillName": "Rapid Strike",         "variant": "rapid_strike" },
+    "zeus":         { "skillName": "Chain Lightning",      "variant": "chain_lightning" },
+    "phoenix":      { "skillName": "Rebirth Flame",        "variant": "rebirth_flame" },
+    "fengyi":       { "skillName": "Weaken Burst",         "variant": "weaken_burst" },
+    "diana":        { "skillName": "Moon Barrage",         "variant": "moon_barrage" },
+    "artemis":      { "skillName": "Piercing Shot",        "variant": "piercing_shot" },
+    "medusa":       { "skillName": "Petrifying Gaze",      "variant": "petrify_shot", "petrifyTargets": 3, "petrifyDuration": 3 },
+    "caishen":      { "skillName": "Fortune Shower",       "variant": "fortune_shower" },
+    "yuelao":       { "skillName": "Fate Link",            "variant": "fate_link" },
+    "freya":        { "skillName": "Valkyrie's Call",      "variant": "valkyrie_call" }
+  }
 }
