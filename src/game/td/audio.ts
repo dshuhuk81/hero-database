@@ -15,6 +15,7 @@ const SOUNDS = {
 
 const HERO_SOUNDS: Record<string, { voice?: string; attack?: string; ultimate?: string }> = {
   zeus: { voice: "zeus_voice", attack: "zeus_attack", ultimate: "zeus_ultimate" },
+  caishen: { voice: "caishen_voice", attack: "caishen_attack", ultimate: "caishen_ultimate" },
 };
 
 const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };

@@ -51,6 +51,9 @@ export class TowerDefenseGame {
     this.tuning = tuning;
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
     this.virtueEffects = tuning.virtueEffects || {};
+    this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
+    // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
+    this.difficulty = { enemyHp: 1, enemySpeed: 1, killGold: 1, waveHpScale: 0.15, invincible: false, ...(tuning.difficulty || {}) };
     this.map = map;
     this.waves = waves;
     this.rng = createRng(seed);
@@ -88,6 +91,7 @@ export class TowerDefenseGame {
     this.heroKills = {};
     this.totalGoldEarned = 0;
     this.totalGoldSpent = 0;
+    this.goldCarry = 0; // fractional kill-gold bonus not yet paid out
     this.runDuration = 0;
     this.onChange("reset", this);
   }
@@ -114,9 +118,9 @@ export class TowerDefenseGame {
     if (!slot) return false;
     this.gold -= base.cost;
     this.totalGoldSpent += base.cost;
-    const hp = this.maxHpFor(base.hp, 1);
+    const hp = this.maxHpFor(base.hp, 1, base.class);
     const skill = this.tuning.heroSkills?.[heroId];
-    this.heroes.push({ ...base, entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null });
+    this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null });
     this.emit({ type: "place", heroId, x: slot[0], y: slot[1] });
     this.onChange("place", this);
     return true;
@@ -136,9 +140,35 @@ export class TowerDefenseGame {
     return totals;
   }
 
-  maxHpFor(baseHp, level) {
+  maxHpFor(baseHp, level, heroClass) {
     const tuning = this.tuning.upgrades;
-    return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp));
+    const favorHp = (this.favor.heroHpBonus || 0) + (heroClass === "Tank" ? this.favor.tankHpBonus || 0 : 0);
+    return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp) * (1 + favorHp));
+  }
+
+  rangeFor(base) {
+    return base.range + (base.class === "Mage" ? this.favor.mageRangeBonus || 0 : 0);
+  }
+
+  // Kill gold with difficulty and Favor bonus; fractions carry over so small rewards still gain.
+  killReward(reward) {
+    this.goldCarry += reward * this.difficulty.killGold * (1 + (this.favor.killGoldBonus || 0));
+    const paid = Math.floor(this.goldCarry + 1e-9);
+    this.goldCarry -= paid;
+    return paid;
+  }
+
+  executeThreshold(hero) {
+    const raised = hero?.class === "Assassin" ? this.favor.assassinExecuteThreshold || 0 : 0;
+    return Math.max(0.35, raised);
+  }
+
+  ultChargeRate() {
+    return 1 + this.modifiers().regen + (this.favor.ultChargeBonus || 0);
+  }
+
+  synergyPerTag() {
+    return (this.tuning.synergy?.bonusPerTag || 0) + (this.favor.synergyTagBonus || 0);
   }
 
   offerVirtues() {
@@ -165,7 +195,7 @@ export class TowerDefenseGame {
     if (hpGain > 0) {
       // Apply the health bonus to already-deployed heroes, granted as current health.
       for (const hero of this.heroes) {
-        const next = this.maxHpFor(hero.baseHp, hero.level);
+        const next = this.maxHpFor(hero.baseHp, hero.level, hero.class);
         hero.hpLeft += next - hero.hp;
         hero.hp = next;
       }
@@ -182,7 +212,7 @@ export class TowerDefenseGame {
     if (hero.level >= tuning.maxLevel) return { ok: false, reason: `${hero.name} is at the level cap (${tuning.maxLevel}).`, hero };
     const cost = tuning.costs[hero.level];
     const nextAtk = Math.round(hero.baseAtk * (1 + tuning.attackPerLevel * hero.level));
-    const nextHp = this.maxHpFor(hero.baseHp, hero.level + 1);
+    const nextHp = this.maxHpFor(hero.baseHp, hero.level + 1, hero.class);
     if (this.gold < cost) return { ok: false, reason: `Needs ${cost} gold — you have ${this.gold}.`, hero, cost, nextAtk, nextHp };
     return { ok: true, hero, cost, nextAtk, nextHp };
   }
@@ -233,7 +263,16 @@ export class TowerDefenseGame {
     if (!wave) return null;
     const counts = {};
     for (const group of wave.spawns) counts[group.kind] = (counts[group.kind] || 0) + group.count;
-    return { wave: waveIndex + 1, counts };
+    if (!this.favor.showEnemyHp) return { wave: waveIndex + 1, counts };
+    return { wave: waveIndex + 1, counts, totalHp: this.waveTotalHp(waveIndex) };
+  }
+
+  // Total enemy HP of a wave, with the same scaling as spawnEnemy.
+  waveTotalHp(waveIndex = this.wave) {
+    const wave = this.waves[waveIndex];
+    if (!wave) return 0;
+    const scale = (1 + waveIndex * this.difficulty.waveHpScale) * this.difficulty.enemyHp;
+    return Math.round(wave.spawns.reduce((sum, group) => sum + group.count * (this.tuning.enemies[group.kind]?.hp || 0), 0) * scale);
   }
 
   startWave() {
@@ -295,7 +334,7 @@ export class TowerDefenseGame {
         enemy.x = point.x; enemy.y = point.y;
         if (enemy.distance >= this.path.total) {
           enemy.dead = true;
-          this.lives = Math.max(0, this.lives - enemy.damage);
+          if (!this.difficulty.invincible) this.lives = Math.max(0, this.lives - enemy.damage);
           if (this.waveStats) this.waveStats.leaks += 1;
           this.totalLeaks += 1;
           this.onChange("leak", this);
@@ -314,7 +353,7 @@ export class TowerDefenseGame {
         this.hit(target, resolveDamage(this.attackValue(hero), resistance, hero.damageType, this.rng() < hero.critChance + mods.crit), hero);
         hero.attackClock = 1 / hero.aps;
       }
-      if (target && hero.ultClock >= hero.ultCooldown / (1 + mods.regen)) {
+      if (target && hero.ultClock >= hero.ultCooldown / this.ultChargeRate()) {
         if (this.castUltimate(hero, target) !== false) hero.ultClock = 0;
       }
     }
@@ -341,9 +380,11 @@ export class TowerDefenseGame {
 
   spawnEnemy(kind) {
     const base = this.tuning.enemies[kind];
-    const scale = 1 + (this.wave - 1) * 0.15;
+    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp;
     const point = pointOnPath(this.map.path, 0);
-    this.enemies.push({ ...base, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, magicRes: base.armor * 0.8, distance: 0, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0 });
+    const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
+    const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
+    this.enemies.push({ ...base, speed, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, magicRes: base.armor * 0.8, distance: 0, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0 });
     if (kind === "boss") this.emit({ type: "boss", x: point.x, y: point.y, life: 0.9, color: "red" });
   }
 
@@ -361,7 +402,7 @@ export class TowerDefenseGame {
 
   findEnemyTarget(enemy) {
     // Ranged enemies (attackRange) stop and shoot from distance; melee needs contact.
-    const reach = enemy.attackRange ?? 42;
+    const reach = enemy.attackRange ?? 42 + (this.favor.contactRangeBonus || 0);
     let best = null;
     for (const hero of this.heroes) {
       if (hero.slotType !== "road" || hero.hpLeft <= 0) continue;
@@ -389,7 +430,7 @@ export class TowerDefenseGame {
       const dist = Math.hypot(other.x - hero.x, other.y - hero.y);
       if (dist > cfg.range) continue;
       for (const tag of hero.synergies) {
-        if (other.synergies?.includes(tag)) total += cfg.bonusPerTag;
+        if (other.synergies?.includes(tag)) total += this.synergyPerTag();
       }
     }
     return Math.min(total, cfg.cap);
@@ -438,6 +479,7 @@ export class TowerDefenseGame {
     if (hero.hpLeft <= 0) {
       this.fallenHeroes.push({ id: hero.id, slotType: hero.slotType, slotIndex: hero.slotIndex });
       this.heroes = this.heroes.filter((entry) => entry !== hero);
+      this.team = this.team.filter((id) => id !== hero.id);
       this.onChange("death", this);
     }
   }
@@ -462,10 +504,11 @@ export class TowerDefenseGame {
     this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", heroVariant: hero.variant ?? null });
     if (enemy.hp <= 0) {
       enemy.dead = true;
-      this.gold += enemy.reward;
+      const reward = this.killReward(enemy.reward);
+      this.gold += reward;
       this.score += Math.round(enemy.maxHp + enemy.reward * 4);
-      if (this.waveStats) { this.waveStats.kills += 1; this.waveStats.goldEarned += enemy.reward; }
-      this.totalGoldEarned += enemy.reward;
+      if (this.waveStats) { this.waveStats.kills += 1; this.waveStats.goldEarned += reward; }
+      this.totalGoldEarned += reward;
       const slot = this.heroKills[hero.entityId];
       if (slot) slot.kills += 1;
       else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
@@ -487,7 +530,7 @@ export class TowerDefenseGame {
 
     if (variant === "shadow_step") {
       // Nyx: phase to lowest-HP enemy, execute it, slow nearby
-      this.hit(target, target.hp / target.maxHp < 0.35 ? power * 1.8 : power, hero);
+      this.hit(target, target.hp / target.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
       this.enemies.filter((e) => !e.dead && Math.hypot(target.x - e.x, target.y - e.y) <= 70).forEach((e) => { e.slow = 2; });
     } else if (variant === "valkyrie_call") {
       // Freya: revive most recent fallen hero at 50% HP; fallback heal if none
@@ -496,9 +539,9 @@ export class TowerDefenseGame {
         const base = this.heroesById.get(fallen.id);
         const slotArr = fallen.slotType === "road" ? this.map.roadSlots : this.map.platformSlots;
         const slot = slotArr[fallen.slotIndex];
-        const fullHp = this.maxHpFor(base.hp, 1);
+        const fullHp = this.maxHpFor(base.hp, 1, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * 0.5), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null });
+        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * 0.5), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null });
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
         this.onChange("revive", this);
       } else {
@@ -572,10 +615,10 @@ export class TowerDefenseGame {
       (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + 4; });
     } else if (variant === "claw_sweep") {
       // Bastet: execute target + AoE execute around it
-      const execMult = target.hp / target.maxHp < 0.35 ? 1.8 : 1;
+      const execMult = target.hp / target.maxHp < this.executeThreshold(hero) ? 1.8 : 1;
       this.hit(target, power * execMult, hero);
       this.enemies.filter((e) => !e.dead && e !== target && Math.hypot(target.x - e.x, target.y - e.y) <= 55).forEach((e) => {
-        this.hit(e, power * (e.hp / e.maxHp < 0.35 ? 1.8 : 0.7), hero);
+        this.hit(e, power * (e.hp / e.maxHp < this.executeThreshold(hero) ? 1.8 : 0.7), hero);
       });
     } else if (variant === "rapid_strike") {
       // Horus: 3 rapid hits at 50% power
@@ -663,7 +706,7 @@ export class TowerDefenseGame {
         }
         this.hit(target, power * 0.65, hero);
       } else {
-        this.hit(target, target.hp / target.maxHp < 0.35 ? power * 1.8 : power, hero);
+        this.hit(target, target.hp / target.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
       }
     }
     this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null });

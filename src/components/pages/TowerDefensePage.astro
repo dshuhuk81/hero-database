@@ -3,121 +3,263 @@ import favorTree from "../../data/favorTree.json";
 interface Props { heroes: any[]; tuning: any; maps: any[]; waves: any[]; boss?: any; virtueTexts?: Record<string, string>; }
 const { heroes, tuning, maps, waves, boss, virtueTexts = {} } = Astro.props;
 const payload = { heroes, tuning, maps, waves, boss, virtueTexts, favorTree };
-const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
+const bossName = boss?.name ?? "Baphomet";
+const isDev = import.meta.env.DEV; // debug panel exists only in local dev builds
+const maxTeam = tuning.run.maxTeam ?? 5;
+const previews = maps.map((entry: any) => ({
+  id: entry.id,
+  name: entry.name,
+  points: entry.path.map(([x, y]: number[]) => `${x},${y}`).join(" "),
+  road: entry.roadSlots.map(([x, y]: number[]) => ({ x, y })),
+  platform: entry.platformSlots.map(([x, y]: number[]) => ({ x, y })),
+}));
 ---
 
-<main class="td-page" data-td-root>
-  <header class="td-hero">
-    <div class="td-hero-copy">
-      <p class="td-kicker">Motto Immortal · Field exercise</p>
-      <h1 data-td-title>Hold Moonlit Pass</h1>
-      <p>Choose five heroes, place them where their class belongs, and survive ten waves.</p>
-      <div class="td-map-picker" data-td-maps role="group" aria-label="Choose battlefield">
-        {maps.map((entry: any) => (
-          <button type="button" class="td-map-button" data-map-id={entry.id}>{entry.name}</button>
+<div class="td-shell" data-td-root data-screen="lobby">
+  <section class="td-lobby" data-td-lobby aria-labelledby="td-lobby-title">
+    <div class="td-lobby-inner">
+      <header class="td-lobby-head">
+        <a class="action-button action-button--quiet td-back" href="/">Back to database</a>
+        <div class="td-best" aria-label="Personal best">
+          <span>Personal best</span>
+          <strong data-td-best>0</strong>
+          <span class="td-perfect" data-td-perfect hidden>Perfect defense</span>
+        </div>
+      </header>
+
+      <div class="td-lobby-copy">
+        <p class="td-kicker">Motto Immortal - Field exercise</p>
+        <h1 id="td-lobby-title">Tower Defense</h1>
+        <p>Deploy up to {maxTeam} heroes and survive {waves.length} waves. {bossName} arrives in the last one.</p>
+      </div>
+
+      <div class="td-map-cards" role="group" aria-label="Choose battlefield" data-td-maps>
+        {previews.map((preview: any) => (
+          <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
+            <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
+              <polyline class="td-map-preview-path" points={preview.points} />
+              {preview.road.map((ring: any) => <circle class="td-map-preview-road" cx={ring.x} cy={ring.y} r="20" />)}
+              {preview.platform.map((ring: any) => <circle class="td-map-preview-platform" cx={ring.x} cy={ring.y} r="20" />)}
+            </svg>
+            <span class="td-map-card-copy">
+              <strong>{preview.name}</strong>
+              <small data-map-best={preview.id}>No runs yet</small>
+            </span>
+          </button>
         ))}
       </div>
-      <details class="td-blessings" data-td-blessings hidden>
-        <summary data-td-blessings-summary>Divine Blessings</summary>
-        <div class="td-blessings-content" data-td-blessings-content></div>
-      </details>
-    </div>
-    <div class="td-best" aria-label="Personal best">
-      <span>Personal best</span>
-      <strong data-td-best>0</strong>
-      <span class="td-perfect" data-td-perfect hidden>🏆 Perfect defense</span>
-    </div>
-  </header>
 
-  <section class="td-game" aria-label="Tower defense game">
-    <div class="td-hud" aria-live="polite">
-      <div class="td-stat"><span>Gold</span><strong data-td-gold>260</strong></div>
-      <div class="td-stat"><span>Lives</span><strong data-td-lives>25</strong></div>
-      <div class="td-stat"><span>Wave</span><strong><span data-td-wave>0</span>/10</strong></div>
-      <div class="td-stat"><span>Score</span><strong data-td-score>0</strong></div>
-      <div class="td-stat" data-td-synergy-stat hidden><span>Synergies</span><strong data-td-synergy-count>0</strong></div>
-      <div class="td-hud-actions">
-        <input class="td-volume" type="range" min="0" max="100" value="70" data-td-volume aria-label="Sound volume" />
-        <button class="td-icon-button" type="button" data-td-mute aria-label="Mute sounds">♪</button>
-        <button class="td-icon-button" type="button" data-td-speed aria-label="Set game speed">1×</button>
-        <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game">Ⅱ</button>
-        <button class="td-icon-button" type="button" data-td-restart aria-label="Restart game">↻</button>
-        <button class="action-button action-button--primary td-main-action td-hud-wave-btn" type="button" data-td-main-action disabled>Choose 5 heroes</button>
+      <div class="td-lobby-actions">
+        <button class="action-button action-button--primary td-play-button" type="button" data-td-play-start>Play</button>
+        <button class="action-button action-button--quiet" type="button" data-td-open="blessings">Divine Blessings <span class="td-favor-count" data-td-favor-count></span></button>
+        <button class="action-button action-button--quiet" type="button" data-td-open="help">How to play</button>
+      </div>
+
+      <p class="td-disclaimer">Minigame balance values are made up for fun and do not reflect in-game numbers.</p>
+    </div>
+  </section>
+
+  <section class="td-play" data-td-play aria-label="Tower defense game" hidden>
+    <div class="td-topbar">
+      <div class="td-stats">
+        <div class="td-stat"><span>Gold</span><strong data-td-gold>0</strong></div>
+        <div class="td-stat"><span>Lives</span><strong data-td-lives>0</strong></div>
+        <div class="td-stat"><span>Wave</span><strong><span data-td-wave>0</span>/{waves.length}</strong></div>
+      </div>
+      <div class="td-top-actions">
+        <button class="td-icon-button" type="button" data-td-speed aria-label="Game speed 1x">1x</button>
+        <button class="td-icon-button" type="button" data-td-pause aria-label="Pause game" aria-pressed="false">
+          <svg class="td-icon td-icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+          <svg class="td-icon td-icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5l11 7-11 7z" /></svg>
+        </button>
+        {isDev && <button class="td-icon-button td-debug-toggle" type="button" data-td-debug-toggle aria-label="Toggle debug panel" aria-pressed="false">DBG</button>}
+        <button class="td-icon-button" type="button" data-td-open="menu" aria-label="Open menu">
+          <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="6" width="16" height="2" rx="1" /><rect x="4" y="11" width="16" height="2" rx="1" /><rect x="4" y="16" width="16" height="2" rx="1" /></svg>
+        </button>
       </div>
     </div>
 
-    <div class="td-layout">
-      <div class="td-stage-wrap">
-        <canvas class="td-canvas" width="960" height="540" tabindex="0" data-td-canvas aria-label="Moonlit Pass battlefield. Use left and right arrow keys to choose a placement ring, then Enter to deploy."></canvas>
-        <div class="td-stage-message" data-td-message>
-          <span>Prepare your defense</span>
-          <strong>Select five heroes to begin</strong>
-        </div>
-        <div class="td-blessing-modal" data-td-blessing-modal hidden aria-modal="true" role="dialog" aria-label="Choose a blessing">
-          <div class="td-blessing-modal-inner">
-            <span class="td-label">Choose one blessing</span>
-            <div class="td-virtue-grid" data-td-blessing-grid></div>
+    <div class="td-stage" data-td-stage>
+      <p class="td-stage-loading" data-td-loading hidden>Preparing battlefield</p>
+      <div class="td-wave-preview" data-td-preview hidden></div>
+      <div class="td-buffs" data-td-buffs role="group" aria-label="Active run blessings" hidden></div>
+      <p class="td-notice" data-td-notice role="status" aria-live="polite"></p>
+
+      <div class="td-popover" data-td-popover role="dialog" aria-labelledby="td-popover-name" hidden>
+        <div class="td-popover-head">
+          <div class="td-popover-title">
+            <strong id="td-popover-name" data-pop-name></strong>
+            <span data-pop-level></span>
           </div>
+          <button class="td-icon-button td-icon-button--small" type="button" data-pop-close aria-label="Close hero actions">
+            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
         </div>
-        <div class="td-result" data-td-result hidden>
+        <div class="td-popover-hp">
+          <progress class="td-hp" data-pop-hp-bar max="1" value="1"></progress>
+          <small data-pop-hp></small>
+        </div>
+        <button class="action-button action-button--primary td-pop-upgrade" type="button" data-pop-upgrade>
+          <span data-pop-upgrade-label>Upgrade</span>
+          <span class="td-pop-cost" data-pop-cost></span>
+        </button>
+        <p class="td-pop-preview" data-pop-preview></p>
+        <div class="td-pop-actions">
+          <button class="action-button action-button--quiet" type="button" data-pop-rotate>Rotate</button>
+          <button class="action-button action-button--quiet" type="button" data-pop-details aria-expanded="false" aria-controls="td-pop-details">Details</button>
+        </div>
+        <div class="td-pop-details" id="td-pop-details" data-pop-details-body hidden></div>
+      </div>
+
+      {isDev && (
+        <section class="td-debug" data-td-debug aria-label="Debug panel" hidden>
+          <div class="td-debug-head">
+            <strong>Debug</strong>
+            <span>Runs with debug changes are not recorded.</span>
+          </div>
+          <label class="td-debug-row">Enemy HP <output data-debug-out="enemyHp">x1.00</output>
+            <input type="range" min="0.25" max="3" step="0.05" value="1" data-debug-knob="enemyHp" />
+          </label>
+          <label class="td-debug-row">HP growth per wave <output data-debug-out="waveHpScale">15%</output>
+            <input type="range" min="0" max="0.4" step="0.01" value="0.15" data-debug-knob="waveHpScale" />
+          </label>
+          <label class="td-debug-row">Enemy speed <output data-debug-out="enemySpeed">x1.00</output>
+            <input type="range" min="0.5" max="2" step="0.05" value="1" data-debug-knob="enemySpeed" />
+          </label>
+          <label class="td-debug-row">Kill gold <output data-debug-out="killGold">x1.00</output>
+            <input type="range" min="0.5" max="2" step="0.05" value="1" data-debug-knob="killGold" />
+          </label>
+          <label class="td-debug-check"><input type="checkbox" data-debug-invincible /> Invincible lives</label>
+          <dl class="td-debug-stats" data-debug-stats></dl>
+          <div class="td-debug-actions">
+            <button type="button" data-debug-action="gold">+500 gold</button>
+            <button type="button" data-debug-action="favor">+500 Favor</button>
+            <label class="td-debug-wave">Wave <input type="number" min="1" max={waves.length} value="1" data-debug-wave /></label>
+            <button type="button" data-debug-action="jump">Jump</button>
+            <button type="button" data-debug-action="win">Win now</button>
+            <button type="button" data-debug-action="lose">Lose now</button>
+            <button type="button" data-debug-action="reset">Reset knobs</button>
+            <button type="button" data-debug-action="copy">Copy values</button>
+          </div>
+          <output class="td-debug-copy" data-debug-copy></output>
+        </section>
+      )}
+
+      <div class="td-sheet" data-td-sheet role="dialog" aria-labelledby="td-sheet-title" tabindex="-1" hidden>
+        <div class="td-sheet-head">
+          <div>
+            <span class="td-label" data-td-sheet-kicker>Road ring 1</span>
+            <strong id="td-sheet-title">Recruit a hero</strong>
+          </div>
+          <button class="td-icon-button td-icon-button--small" type="button" data-td-sheet-close aria-label="Close recruitment">
+            <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
+          </button>
+        </div>
+        <p class="td-sheet-note" data-td-sheet-note></p>
+        <div class="td-sheet-list" data-td-sheet-list></div>
+      </div>
+
+      <div class="td-blessing-modal" data-td-blessing-modal role="dialog" aria-labelledby="td-blessing-title" hidden>
+        <div class="td-blessing-modal-inner">
+          <h2 class="td-boon-title" id="td-blessing-title">Choose a blessing</h2>
+          <p class="td-blessing-modal-note">Lasts for this run. Starting the next wave without choosing forfeits the offer.</p>
+          <div class="td-boon-row" data-td-blessing-grid></div>
+        </div>
+      </div>
+
+      <div class="td-result" data-td-result role="dialog" aria-modal="true" aria-labelledby="td-result-title" hidden>
+        <div class="td-result-inner">
           <span data-td-result-kicker>Run complete</span>
-          <strong data-td-result-title>Moonlit Pass secured</strong>
+          <strong id="td-result-title" data-td-result-title>Battlefield secured</strong>
           <p data-td-result-copy></p>
           <div class="td-result-stats" data-td-result-stats hidden></div>
           <p class="td-result-compare" data-td-result-compare hidden></p>
           <div class="td-result-achievements" data-td-result-achievements hidden></div>
-          <p data-td-result-favor hidden></p>
-          <button class="action-button action-button--primary" type="button" data-td-play-again>Play again</button>
+          <p class="td-result-favor" data-td-result-favor hidden></p>
+          <div class="td-result-actions">
+            <button class="action-button action-button--primary" type="button" data-td-retry>Retry</button>
+            <button class="action-button action-button--quiet td-spend-button" type="button" data-td-open="blessings" data-td-spend>Spend Favor <span class="td-favor-count" data-td-spend-count></span></button>
+            <button class="action-button action-button--quiet" type="button" data-td-to-lobby>Choose map</button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <aside class="td-command">
-        <div class="td-command-heading">
-          <div><span class="td-label">Command deck</span><h2 data-td-panel-title>Deploy your heroes</h2></div>
-          <span class="td-team-count"><b data-td-team-count>0</b>/5</span>
-        </div>
-
-        <div class="td-command-body">
-          <div class="td-picker" data-td-picker>
-            {classes.map((className) => (
-              <section class="td-class-group" data-class={className}>
-                <h3>{className}<span>{tuning.classes[className].slot}</span></h3>
-                <div class="td-hero-grid">
-                  {heroes.filter((hero) => hero.class === className).map((hero) => (
-                    <button class="td-hero-card" type="button" data-hero-id={hero.id} aria-pressed="false">
-                      <img src={hero.image} alt="" width="48" height="48" loading="eager" />
-                      <span class="td-card-copy"><strong>{hero.name}</strong><small>{hero.cost} gold</small></span>
-                      <span class="td-tier" data-tier={hero.tier}>{hero.tier}</span>
-                    </button>
-                  ))}
-                </div>
-              </section>
-            ))}
-          </div>
-
-          <div class="td-deck" data-td-deck hidden></div>
-          <div class="td-inspector" data-td-inspector hidden></div>
-          <div class="td-wave-info" data-td-preview hidden></div>
-          <div class="td-virtues" data-td-virtues hidden></div>
-          <p class="td-wave-result" data-td-summary hidden></p>
-        </div>
-
-        <p class="td-command-note" data-td-command-note>Road heroes block enemies. Platform heroes attack safely from range.</p>
-      </aside>
+    <div class="td-bottombar">
+      <button class="action-button action-button--quiet td-blessings-button" type="button" data-td-open="blessings">Blessings</button>
+      <div class="td-deck" data-td-deck role="group" aria-label="Your heroes"></div>
+      <button class="action-button action-button--primary td-main-action" type="button" data-td-main-action disabled>Deploy a hero</button>
     </div>
   </section>
 
-  <section class="td-briefing" aria-labelledby="td-briefing-title">
-    <div><span class="td-label" data-td-level-label>Level 01</span><h2 id="td-briefing-title" data-td-briefing-title>Moonlit Pass</h2></div>
-    <div class="td-briefing-grid">
-      <article><strong>Road</strong><p>Gold rings accept Tanks, Warriors, and Assassins. They stop ground enemies and can fall in battle.</p></article>
-      <article><strong>Platforms</strong><p>Purple rings accept Mages, Archers, and Supports. Flyers ignore blockers, so ranged coverage matters.</p></article>
-      <article><strong>Final wave</strong><p>{boss?.name ?? "Baphomet"} arrives with an escort. Its minigame health and speed are tuned for this mode.</p></article>
-    </div>
-  </section>
+  <div class="td-panel-layer" data-td-panel-layer hidden>
+    <section class="td-panel" data-td-panel="menu" role="dialog" aria-modal="true" aria-labelledby="td-menu-title" tabindex="-1" hidden>
+      <div class="td-panel-head">
+        <h2 id="td-menu-title">Paused</h2>
+        <button class="td-icon-button td-icon-button--small" type="button" data-td-close-panel aria-label="Close menu">
+          <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+      <div class="td-panel-body">
+        <div class="td-menu-stats">
+          <div class="td-stat"><span>Score</span><strong data-td-score>0</strong></div>
+          <div class="td-stat"><span>Synergies</span><strong data-td-synergy-count>0</strong></div>
+          <div class="td-stat"><span>Best</span><strong data-td-menu-best>0</strong></div>
+        </div>
+        <div class="td-menu-sound">
+          <button class="action-button action-button--quiet" type="button" data-td-mute aria-pressed="false">Sound on</button>
+          <label class="td-volume-label">Volume <input class="td-volume" type="range" min="0" max="100" value="70" data-td-volume /></label>
+        </div>
+        <div class="td-menu-actions">
+          <button class="action-button action-button--primary" type="button" data-td-close-panel>Resume</button>
+          <button class="action-button action-button--quiet" type="button" data-td-open="help">How to play</button>
+          <button class="action-button action-button--quiet" type="button" data-td-restart>Restart run</button>
+          <button class="action-button action-button--quiet" type="button" data-td-to-lobby>Choose map</button>
+          <a class="action-button action-button--quiet" href="/">Back to database</a>
+        </div>
+      </div>
+    </section>
 
-  <p class="td-disclaimer">Minigame balance values are made up for fun and do not reflect in-game numbers.</p>
-</main>
+    <section class="td-panel td-panel--wide" data-td-panel="blessings" role="dialog" aria-modal="true" aria-labelledby="td-blessings-title" tabindex="-1" hidden>
+      <div class="td-panel-head">
+        <h2 id="td-blessings-title">Blessings</h2>
+        <button class="td-icon-button td-icon-button--small" type="button" data-td-close-panel aria-label="Close blessings">
+          <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+      <div class="td-tabs" role="tablist" aria-label="Blessing types">
+        <button class="td-tab" type="button" role="tab" id="td-tab-favor" aria-controls="td-tabpanel-favor" aria-selected="true" data-td-tab="favor">Divine Blessings</button>
+        <button class="td-tab" type="button" role="tab" id="td-tab-run" aria-controls="td-tabpanel-run" aria-selected="false" tabindex="-1" data-td-tab="run">This run</button>
+      </div>
+      <div class="td-panel-body">
+        <div id="td-tabpanel-favor" role="tabpanel" aria-labelledby="td-tab-favor" data-td-tabpanel="favor">
+          <p class="td-favor-summary"><strong data-td-favor-available>0</strong> Favor available. Permanent upgrades earned by finishing runs.</p>
+          <p class="td-favor-note" data-td-favor-note></p>
+          <div data-td-favor-tree></div>
+        </div>
+        <div id="td-tabpanel-run" role="tabpanel" aria-labelledby="td-tab-run" data-td-tabpanel="run" hidden></div>
+      </div>
+    </section>
+
+    <section class="td-panel td-panel--wide" data-td-panel="help" role="dialog" aria-modal="true" aria-labelledby="td-help-title" tabindex="-1" hidden>
+      <div class="td-panel-head">
+        <h2 id="td-help-title">How to play</h2>
+        <button class="td-icon-button td-icon-button--small" type="button" data-td-close-panel aria-label="Close help">
+          <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+      <div class="td-panel-body td-help">
+        <article><strong>Deploy</strong><p>Tap an empty ring to recruit a hero there. Deploy up to {maxTeam} heroes. You can start wave 1 as soon as one hero is on the field.</p></article>
+        <article><strong>Road</strong><p>Gold rings accept Tanks, Warriors, and Assassins. They stop ground enemies and can fall in battle.</p></article>
+        <article><strong>Platforms</strong><p>Purple rings accept Mages, Archers, and Supports. Flyers ignore blockers, so ranged coverage matters.</p></article>
+        <article><strong>Upgrade</strong><p>Tap a deployed hero to upgrade or rotate it. Levels belong to the deployed unit - a fallen hero re-enters at level 1.</p></article>
+        <article><strong>Divine Blessings</strong><p>Every finished run earns Favor. Spend it any time under Blessings. Purchases made during a run apply from your next run.</p></article>
+        <article><strong>Final wave</strong><p>{bossName} arrives with an escort. Its minigame health and speed are tuned for this mode.</p></article>
+        <article><strong>Keyboard</strong><p>Focus the battlefield, use the left and right arrow keys to choose a ring, and press Enter to use it. R rotates the selected hero, Escape closes panels.</p></article>
+      </div>
+    </section>
+  </div>
+</div>
 
 <script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
 
@@ -125,588 +267,1279 @@ const classes = ["Tank", "Warrior", "Assassin", "Mage", "Archer", "Support"];
   import { TowerDefenseGame } from "../../game/td/sim.js";
   import { canvasPoint, createRenderer, nearestSlot } from "../../game/td/render.js";
   import { createAudio } from "../../game/td/audio";
-  import { computeFavor, applyFavorTree, canUnlock } from "../../game/td/favor.js";
+  import { buildRunTuning, canUnlock, computeFavor, isFavorNodeActive } from "../../game/td/favor.js";
+  import { blessingDisplay, buffChips, createPauseController, placePopover, slotHitRadius, worldToLocal } from "../../game/td/ui.js";
+
+  type Slot = { type: string; index: number };
+  type MapRun = { score: number; wave: number; duration: number; lives: number; leaks: number };
+  type Session = { game: any; renderer: any; canvas: HTMLCanvasElement; map: any; started: boolean; perfectWaves: number; keyboardSlots: Slot[]; favTree: string[]; debug: boolean };
 
   const root = document.querySelector<HTMLElement>("[data-td-root]");
   if (!root) throw new Error("Tower defense root missing");
+  const q = <T extends HTMLElement = HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
   const data = JSON.parse(document.getElementById("td-data")?.textContent || "{}");
-  const canvas = root.querySelector<HTMLCanvasElement>("[data-td-canvas]")!;
-  const picker = root.querySelector<HTMLElement>("[data-td-picker]")!;
-  const deck = root.querySelector<HTMLElement>("[data-td-deck]")!;
-  const inspector = root.querySelector<HTMLElement>("[data-td-inspector]")!;
-  const mainAction = root.querySelector<HTMLButtonElement>("[data-td-main-action]")!;
-  const message = root.querySelector<HTMLElement>("[data-td-message]")!;
-  const result = root.querySelector<HTMLElement>("[data-td-result]")!;
-  const teamCount = root.querySelector<HTMLElement>("[data-td-team-count]")!;
-  const panelTitle = root.querySelector<HTMLElement>("[data-td-panel-title]")!;
-  const commandNote = root.querySelector<HTMLElement>("[data-td-command-note]")!;
-  const preview = root.querySelector<HTMLElement>("[data-td-preview]")!;
-  const summary = root.querySelector<HTMLElement>("[data-td-summary]")!;
-  const virtuesEl = root.querySelector<HTMLElement>("[data-td-virtues]")!;
-  const blessingModalEl = root.querySelector<HTMLElement>("[data-td-blessing-modal]")!;
-  const blessingGridEl = root.querySelector<HTMLElement>("[data-td-blessing-grid]")!;
   const heroById = new Map<string, any>(data.heroes.map((hero: any) => [hero.id, hero]));
   const maps: any[] = data.maps;
-  let map = maps[0];
-  try {
-    const savedMapId = localStorage.getItem("td:map");
-    if (savedMapId && maps.some((entry) => entry.id === savedMapId)) map = maps.find((entry) => entry.id === savedMapId);
-  } catch {}
-  let pendingSlot: { type: string; index: number } | null = null;
-  let selectedHeroId = "";
-  let selectedEntityId: number | null = null;
-  let speed = 1;
-  let started = false;
-  let runPerfectWaves = 0;
-  let saved = { bestScore: 0, bestWave: 0, lastTeam: [] as string[], perfectDefense: false, favor: 0, favTree: [] as string[], mapBests: {} as Record<string, { score: number; wave: number; duration: number; lives: number; leaks: number }> };
+  const favorTreeData: any[] = data.favorTree || [];
+  const maxTeam: number = data.tuning.run.maxTeam ?? 5;
+  const maxLevel: number = data.tuning.upgrades?.maxLevel ?? 4;
+  const totalWaves: number = data.waves.length;
+  const bossName: string = data.boss?.name ?? "Baphomet";
+  const blessingNames: Record<string, string> = data.tuning.virtueBlessings || {};
+  const kindNames: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: bossName };
 
+  const lobbyEl = q("[data-td-lobby]");
+  const playEl = q("[data-td-play]");
+  const stageEl = q("[data-td-stage]");
+  const loadingEl = q("[data-td-loading]");
+  const noticeEl = q("[data-td-notice]");
+  const previewEl = q("[data-td-preview]");
+  const deckEl = q("[data-td-deck]");
+  const mainAction = q<HTMLButtonElement>("[data-td-main-action]");
+  const pauseButton = q<HTMLButtonElement>("[data-td-pause]");
+  const speedButton = q<HTMLButtonElement>("[data-td-speed]");
+  const popover = q("[data-td-popover]");
+  const popName = q("[data-pop-name]");
+  const popLevel = q("[data-pop-level]");
+  const popHpBar = q<HTMLProgressElement>("[data-pop-hp-bar]");
+  const popHp = q("[data-pop-hp]");
+  const popUpgrade = q<HTMLButtonElement>("[data-pop-upgrade]");
+  const popUpgradeLabel = q("[data-pop-upgrade-label]");
+  const popCost = q("[data-pop-cost]");
+  const popPreview = q("[data-pop-preview]");
+  const popDetailsButton = q<HTMLButtonElement>("[data-pop-details]");
+  const popDetails = q("[data-pop-details-body]");
+  const sheetEl = q("[data-td-sheet]");
+  const sheetKicker = q("[data-td-sheet-kicker]");
+  const sheetNote = q("[data-td-sheet-note]");
+  const sheetList = q("[data-td-sheet-list]");
+  const blessingModalEl = q("[data-td-blessing-modal]");
+  const blessingGridEl = q("[data-td-blessing-grid]");
+  const resultEl = q("[data-td-result]");
+  const panelLayer = q("[data-td-panel-layer]");
+  const muteButton = q<HTMLButtonElement>("[data-td-mute]");
+  const volumeSlider = q<HTMLInputElement>("[data-td-volume]");
+
+  // ------------------------------------------------------------------
+  // Saved progress (td:v1 shape kept; mapTop added for per-map records)
+  // ------------------------------------------------------------------
+  let saved = {
+    bestScore: 0, bestWave: 0, lastTeam: [] as string[], perfectDefense: false, favor: 0, favTree: [] as string[],
+    mapBests: {} as Record<string, MapRun>,
+    mapTop: {} as Record<string, { score: number; wave: number }>,
+  };
+  const isRecord = (value: unknown) => !!value && typeof value === "object" && !Array.isArray(value);
   try {
     const candidate = JSON.parse(localStorage.getItem("td:v1") || "null");
     if (candidate && Number.isFinite(candidate.bestScore)) {
       saved = {
         bestScore: candidate.bestScore,
         bestWave: Number(candidate.bestWave) || 0,
-        lastTeam: Array.isArray(candidate.lastTeam) ? candidate.lastTeam.filter((id: string) => heroById.has(id)).slice(0, 5) : [],
+        lastTeam: Array.isArray(candidate.lastTeam) ? candidate.lastTeam.filter((id: string) => heroById.has(id)).slice(0, maxTeam) : [],
         perfectDefense: !!candidate.perfectDefense,
         favor: Number(candidate.favor) || 0,
         favTree: Array.isArray(candidate.favTree) ? candidate.favTree.filter((id: unknown) => typeof id === "string") : [],
-        mapBests: (candidate.mapBests && typeof candidate.mapBests === "object" && !Array.isArray(candidate.mapBests)) ? candidate.mapBests : {},
+        mapBests: isRecord(candidate.mapBests) ? candidate.mapBests : {},
+        mapTop: isRecord(candidate.mapTop) ? candidate.mapTop : {},
       };
     }
   } catch {}
-
+  // Older saves only kept the last run per map; it is a lower bound for the record.
+  for (const [id, run] of Object.entries(saved.mapBests)) {
+    if (!saved.mapTop[id] && run && Number.isFinite(run.score)) saved.mapTop[id] = { score: run.score, wave: Number(run.wave) || 0 };
+  }
   const persist = () => { try { localStorage.setItem("td:v1", JSON.stringify(saved)); } catch {} };
-  const favorTreeData: any[] = data.favorTree || [];
-  const favBonuses = applyFavorTree(saved.favTree, data.tuning) as any;
-  const effectiveTuning = {
-    ...data.tuning,
-    run: {
-      ...data.tuning.run,
-      startingGold: data.tuning.run.startingGold + (favBonuses.startingGoldBonus || 0),
-      lives: data.tuning.run.lives + (favBonuses.livesBonus || 0),
-    },
-  };
-  // Attach the UI listener after construction: reset emits synchronously.
-  const game = new TowerDefenseGame({ ...data, tuning: effectiveTuning, map });
-  (window as any).tdGame = game; // debugging/testing handle
-  game.onChange = handleChange;
-  const renderer = await createRenderer(canvas, game, { boss: data.boss });
-  (window as any).tdRenderer = renderer; // debugging/testing handle
-  if (saved.perfectDefense) root.querySelector<HTMLElement>("[data-td-perfect]")!.hidden = false;
-  const audio = createAudio();
-  game.onEffect = (effect: any) => {
-    if (effect.type === "place") {
-      audio.play("voice", effect.heroId);
-    } else if (effect.type === "hit") {
-      audio.play("attack", effect.heroId);
-    } else if (effect.type === "ult") {
-      audio.play("attack", effect.heroId);
-      audio.play("ultimate", effect.heroId);
-    }
-  };
 
-  const muteButton = root.querySelector<HTMLButtonElement>("[data-td-mute]")!;
-  const volumeSlider = root.querySelector<HTMLInputElement>("[data-td-volume]")!;
+  let selectedMap = maps[0];
+  try {
+    const savedMapId = localStorage.getItem("td:map");
+    selectedMap = maps.find((entry) => entry.id === savedMapId) ?? maps[0];
+  } catch {}
+
+  // ------------------------------------------------------------------
+  // Audio (one instance for the page lifetime)
+  // ------------------------------------------------------------------
+  const audio = createAudio();
+  const playEffect = (effect: any) => {
+    if (effect.type === "place") audio.play("voice", effect.heroId);
+    else if (effect.type === "hit") audio.play("attack", effect.heroId);
+    else if (effect.type === "ult") { audio.play("attack", effect.heroId); audio.play("ultimate", effect.heroId); }
+  };
   volumeSlider.value = String(Math.round(audio.volume * 100));
-  const syncAudioUi = () => { muteButton.textContent = audio.muted ? "✕" : "♪"; muteButton.setAttribute("aria-label", audio.muted ? "Unmute sounds" : "Mute sounds"); };
+  const syncAudioUi = () => {
+    muteButton.textContent = audio.muted ? "Sound off" : "Sound on";
+    muteButton.setAttribute("aria-pressed", String(audio.muted));
+  };
   muteButton.addEventListener("click", () => { audio.toggleMute(); syncAudioUi(); });
   volumeSlider.addEventListener("input", () => { audio.setVolume(Number(volumeSlider.value) / 100); syncAudioUi(); });
   syncAudioUi();
-  root.querySelector<HTMLElement>("[data-td-best]")!.textContent = saved.bestScore.toLocaleString();
 
-  // Map selection: switching before a run starts persists and reloads onto the new battlefield.
-  const mapPicker = root.querySelector<HTMLElement>("[data-td-maps]")!;
-  const syncMapUi = () => {
-    mapPicker.querySelectorAll<HTMLButtonElement>("[data-map-id]").forEach((button) => {
-      const active = button.dataset.mapId === map.id;
-      button.classList.toggle("is-selected", active);
-      button.setAttribute("aria-pressed", String(active));
-      button.disabled = started;
-    });
-    root.querySelector<HTMLElement>("[data-td-title]")!.textContent = `Hold ${map.name}`;
-    root.querySelector<HTMLElement>("[data-td-level-label]")!.textContent = `Level ${String(maps.indexOf(map) + 1).padStart(2, "0")}`;
-    root.querySelector<HTMLElement>("[data-td-briefing-title]")!.textContent = map.name;
-    canvas.setAttribute("aria-label", `${map.name} battlefield. Use left and right arrow keys to choose a placement ring, then Enter to deploy.`);
+  // ------------------------------------------------------------------
+  // Session state: one game + renderer per run, one rAF loop per page
+  // ------------------------------------------------------------------
+  let session: Session | null = null;
+  let sessionToken = 0;
+  let loadingCanvas: HTMLCanvasElement | null = null;
+  let speed = 1;
+  let selectedEntityId: number | null = null;
+  let deployHeroId = "";
+  let pendingSlot: Slot | null = null;
+  let lastPointerType = "mouse";
+  let offerKey = "";
+
+  const pause = createPauseController((paused: boolean) => {
+    if (session) session.game.paused = paused;
+  });
+  const syncPauseButton = () => {
+    const manual = pause.has("manual");
+    pauseButton.setAttribute("aria-pressed", String(manual));
+    pauseButton.setAttribute("aria-label", manual ? "Resume game" : "Pause game");
   };
-  mapPicker.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-map-id]");
-    if (!button || started || button.dataset.mapId === map.id) return;
-    try { localStorage.setItem("td:map", button.dataset.mapId!); } catch {}
-    window.location.reload();
-  });
-  syncMapUi();
 
-  const kindNames: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", boss: data.boss?.name ?? "Boss" };
-
-  function renderPreview() {
-    const info = started && !game.running && !game.complete ? game.wavePreview() : null;
-    if (!info) { preview.hidden = true; return; }
-    preview.hidden = false;
-    preview.innerHTML = `<span class="td-wave-chip">Next wave <b>${info.wave}</b></span>` + Object.entries(info.counts)
-      .map(([kind, count]) => `<span class="td-wave-chip">${count}× <b>${kindNames[kind] ?? kind}</b></span>`).join("");
+  function showScreen(name: "lobby" | "play") {
+    root!.dataset.screen = name;
+    lobbyEl.hidden = name !== "lobby";
+    playEl.hidden = name !== "play";
   }
 
-  function renderSummary() {
-    const stats = game.waveStats;
-    if (!stats || game.running) { summary.hidden = true; return; }
-    summary.hidden = false;
-    const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
-    summary.textContent = `Wave ${stats.wave} cleared: ${stats.kills} kills · ${leakText} · ${stats.goldEarned} gold earned.`;
+  let noticeTimer = 0;
+  function notice(text: string) {
+    noticeEl.textContent = text;
+    noticeEl.classList.add("is-visible");
+    window.clearTimeout(noticeTimer);
+    noticeTimer = window.setTimeout(() => noticeEl.classList.remove("is-visible"), 3800);
   }
 
-  function renderVirtues() {
-    const blessings = data.tuning.virtueBlessings || {};
-    const offer = game.virtueOffer;
-    if (offer && !game.running && !game.complete) {
-      blessingGridEl.innerHTML = offer.map((name: string) => {
-        const effect = data.tuning.virtueEffects[name];
-        const heroName = blessings[name] ?? name;
-        return `<button class="td-virtue-card" type="button" data-virtue="${name}"><strong>${heroName}</strong><small>${data.virtueTexts[name] ?? ""}</small><em>Minigame effect: ${effect?.label ?? ""}</em></button>`;
-      }).join("");
-      blessingModalEl.hidden = false;
-      virtuesEl.hidden = true;
-    } else {
-      blessingModalEl.hidden = true;
-      if ((game.virtues.length || (game.activePairs?.length ?? 0)) && started && !game.complete) {
-        virtuesEl.hidden = false;
-        const activeChips = game.virtues.map((name: string) => `<span class="td-wave-chip"><b>${blessings[name] ?? name}</b></span>`).join("");
-        const pairChips = (game.activePairs ?? []).map((pair: any) => `<span class="td-wave-chip td-wave-chip--pair"><b>${pair.name}</b> ${pair.label}</span>`).join("");
-        virtuesEl.innerHTML = `<span class="td-label">Active blessings</span><div class="td-virtue-grid td-virtue-grid--active">${activeChips}${pairChips}</div>`;
-      } else {
-        virtuesEl.hidden = true;
-      }
+  async function startSession(map: any) {
+    const token = ++sessionToken;
+    endSession();
+    selectedMap = map;
+    try { localStorage.setItem("td:map", map.id); } catch {}
+    showScreen("play");
+    pause.clear();
+    syncPauseButton();
+    resetResult();
+    noticeEl.classList.remove("is-visible");
+    loadingEl.textContent = "Preparing battlefield";
+    loadingEl.hidden = false;
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "td-canvas";
+    canvas.tabIndex = 0;
+    canvas.setAttribute("aria-label", `${map.name} battlefield. Use the left and right arrow keys to choose a ring, then Enter to use it.`);
+    stageEl.prepend(canvas);
+    loadingCanvas = canvas;
+
+    const runFavTree = [...saved.favTree];
+    const game: any = new TowerDefenseGame({ ...data, tuning: buildRunTuning(data.tuning, runFavTree), map });
+    let renderer: any;
+    try {
+      renderer = await createRenderer(canvas, game, { boss: data.boss });
+    } catch (error) {
+      canvas.remove();
+      if (token === sessionToken) loadingEl.textContent = "The battlefield failed to load. Reload the page to try again.";
+      throw error;
     }
+    if (token !== sessionToken) { renderer.destroy(); canvas.remove(); return; }
+    loadingCanvas = null;
+    loadingEl.hidden = true;
+
+    game.onChange = handleChange;
+    game.onEffect = playEffect;
+    const keyboardSlots: Slot[] = [
+      ...map.roadSlots.map((_: unknown, index: number) => ({ type: "road", index })),
+      ...map.platformSlots.map((_: unknown, index: number) => ({ type: "platform", index })),
+    ];
+    session = { game, renderer, canvas, map, started: false, perfectWaves: 0, keyboardSlots, favTree: runFavTree, debug: false };
+    applyDebugKnobs();
+    (window as any).tdGame = game; // debugging/testing handle
+    (window as any).tdRenderer = renderer; // debugging/testing handle
+    bindCanvas(session);
+    pause.sync();
+    updateHud();
+    renderDeck();
+    syncMainAction();
+    renderPreview();
+    renderBuffs();
+    notice(`Tap a ring on ${map.name} to deploy a hero.`);
   }
 
-  blessingModalEl.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-virtue]");
-    if (!button) return;
-    const blessings = data.tuning.virtueBlessings || {};
-    const heroName = blessings[button.dataset.virtue!] ?? button.dataset.virtue;
-    if (game.chooseVirtue(button.dataset.virtue!)) {
-      blessingModalEl.hidden = true;
-      const triggered = (game.activePairs ?? []).find((p: any) => p.virtues.includes(button.dataset.virtue!));
-      commandNote.textContent = triggered
-        ? `${heroName} activates ${triggered.name} - ${triggered.label}`
-        : `${heroName} blesses your squad for the rest of this run.`;
-    }
-  });
+  function endSession() {
+    buffValues = {};
+    buffsEl.hidden = true;
+    closePopover(false);
+    closeSheet(false);
+    cancelDeploy();
+    blessingModalEl.hidden = true;
+    offerKey = "";
+    resultEl.hidden = true;
+    if (loadingCanvas) { loadingCanvas.remove(); loadingCanvas = null; }
+    if (!session) return;
+    session.game.onChange = () => {};
+    session.game.onEffect = null;
+    session.renderer.destroy();
+    session.canvas.remove();
+    session = null;
+    (window as any).tdGame = null;
+    (window as any).tdRenderer = null;
+  }
 
-  const blessingsEl = root.querySelector<HTMLElement>("[data-td-blessings]");
-  const blessingsContent = root.querySelector<HTMLElement>("[data-td-blessings-content]");
-  const blessingsSummary = root.querySelector<HTMLElement>("[data-td-blessings-summary]");
+  function toLobby() {
+    sessionToken += 1; // cancels a battlefield that is still loading
+    closePanel(false);
+    endSession();
+    pause.clear();
+    showScreen("lobby");
+    renderLobby();
+    q<HTMLButtonElement>("[data-td-play-start]").focus({ preventScroll: true });
+  }
 
+  // ------------------------------------------------------------------
+  // Lobby
+  // ------------------------------------------------------------------
   function computeAvailableFavor() {
-    const spent = saved.favTree.reduce((sum: number, id: string) => {
-      const node = favorTreeData.find((n: any) => n.id === id);
-      return sum + (node ? node.cost : 0);
-    }, 0);
+    const spent = saved.favTree.reduce((sum: number, id: string) => sum + (favorTreeData.find((node: any) => node.id === id)?.cost || 0), 0);
     return (saved.favor || 0) - spent;
   }
 
-  function renderBlessings() {
-    if (!blessingsEl || started) return;
-    blessingsEl.hidden = false;
-    const available = computeAvailableFavor();
-    if (blessingsSummary) blessingsSummary.textContent = `Divine Blessings - ${available} Favor available`;
-    if (!blessingsContent) return;
-    const tiers = [1, 2, 3];
-    blessingsContent.innerHTML = tiers.map((tier: number) => {
-      const nodes = favorTreeData.filter((n: any) => n.tier === tier);
-      return `<div class="td-blessings-tier"><span class="td-label">Tier ${tier}</span>` +
-        nodes.map((node: any) => {
-          const unlocked = saved.favTree.includes(node.id);
-          const reqMet = canUnlock(node.id, saved.favTree, favorTreeData) || unlocked;
-          const canAfford = available >= node.cost;
-          return `<div class="td-blessing-node${unlocked ? " is-unlocked" : ""}">` +
-            `<strong>${node.name}</strong>` +
-            `<small>${node.description}</small>` +
-            (unlocked
-              ? `<span class="td-wave-chip">Unlocked</span>`
-              : `<button class="action-button action-button--primary" type="button" data-unlock="${node.id}"${reqMet && canAfford ? "" : " disabled"}>${node.cost} Favor</button>`) +
-            `</div>`;
-        }).join("") + `</div>`;
-    }).join("") +
-      (saved.favTree.length > 0 ? `<button type="button" class="td-respec" data-td-respec>Respec (refund all)</button>` : "");
+  function renderLobby() {
+    root!.querySelectorAll<HTMLButtonElement>("[data-map-id]").forEach((button) => {
+      const active = button.dataset.mapId === selectedMap.id;
+      button.classList.toggle("is-selected", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    root!.querySelectorAll<HTMLElement>("[data-map-best]").forEach((el) => {
+      const top = saved.mapTop[el.dataset.mapBest!];
+      el.textContent = top ? `Best ${top.score.toLocaleString()} - wave ${top.wave}` : "No runs yet";
+    });
+    q("[data-td-best]").textContent = saved.bestScore.toLocaleString();
+    q("[data-td-perfect]").hidden = !saved.perfectDefense;
+    q("[data-td-favor-count]").textContent = `(${computeAvailableFavor()})`;
   }
 
-  if (blessingsEl) {
-    blessingsEl.addEventListener("click", (event) => {
-      const unlock = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-unlock]");
-      if (unlock) {
-        const id = unlock.dataset.unlock!;
-        if (!saved.favTree.includes(id) && canUnlock(id, saved.favTree, favorTreeData) && computeAvailableFavor() >= (favorTreeData.find((n: any) => n.id === id)?.cost || 0)) {
-          saved.favTree = [...saved.favTree, id];
-          persist();
-          renderBlessings();
-        }
-        return;
-      }
-      if ((event.target as HTMLElement).closest("[data-td-respec]")) {
-        saved.favTree = [];
-        persist();
-        renderBlessings();
+  q("[data-td-maps]").addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-map-id]");
+    const map = button && maps.find((entry) => entry.id === button.dataset.mapId);
+    if (!map) return;
+    selectedMap = map;
+    try { localStorage.setItem("td:map", map.id); } catch {}
+    renderLobby();
+  });
+  q("[data-td-play-start]").addEventListener("click", () => { startSession(selectedMap); });
+
+  // ------------------------------------------------------------------
+  // HUD, deck, wave action
+  // ------------------------------------------------------------------
+  function updateHud() {
+    const game = session?.game;
+    if (!game) return;
+    q("[data-td-gold]").textContent = String(game.gold);
+    q("[data-td-lives]").textContent = String(game.lives);
+    q("[data-td-wave]").textContent = String(game.wave);
+    q("[data-td-score]").textContent = game.score.toLocaleString();
+    q("[data-td-synergy-count]").textContent = String(game.activeSynergyCount());
+  }
+
+  function syncMainAction() {
+    const game = session?.game;
+    if (!session || !game) { mainAction.disabled = true; mainAction.textContent = "Deploy a hero"; return; }
+    if (game.complete) { mainAction.disabled = true; mainAction.textContent = "Run complete"; return; }
+    if (!session.started) {
+      mainAction.disabled = game.heroes.length === 0;
+      mainAction.textContent = game.heroes.length === 0 ? "Deploy a hero" : "Start wave 1";
+      return;
+    }
+    if (game.running) {
+      mainAction.disabled = true;
+      mainAction.textContent = game.wave === totalWaves ? "Final wave" : `Wave ${game.wave} underway`;
+      return;
+    }
+    mainAction.disabled = false;
+    mainAction.textContent = game.wave === totalWaves - 1 ? `Face ${bossName}` : `Start wave ${game.wave + 1}`;
+  }
+
+  mainAction.addEventListener("click", () => {
+    if (!session) return;
+    const game = session.game;
+    if (game.running || game.complete) return;
+    if (!session.started) {
+      if (!game.heroes.length) return;
+      session.started = true;
+      saved.lastTeam = [...game.team];
+      persist();
+    }
+    closeSheet(false);
+    cancelDeploy();
+    if (game.startWave()) {
+      pause.remove("manual"); // starting a wave is an explicit resume
+      syncPauseButton();
+      notice(game.wave === totalWaves ? `${bossName} has entered ${session.map.name}.` : `Wave ${game.wave} incoming. Heroes attack automatically.`);
+    }
+    syncMainAction();
+    renderPreview();
+  });
+
+  function renderPreview() {
+    const game = session?.game;
+    const info = game && !game.running && !game.complete ? game.wavePreview() : null;
+    if (!info) { previewEl.hidden = true; return; }
+    previewEl.hidden = false;
+    previewEl.innerHTML = `<span class="td-wave-chip">Next wave <b>${info.wave}</b></span>` + Object.entries(info.counts)
+      .map(([kind, count]) => `<span class="td-wave-chip">${count}x <b>${kindNames[kind] ?? kind}</b></span>`).join("") +
+      (info.totalHp ? `<span class="td-wave-chip td-wave-chip--hp"><b>${info.totalHp.toLocaleString()}</b> enemy HP</span>` : "");
+  }
+
+  let deckKey = "";
+  function deckEntries() {
+    const game = session?.game;
+    if (!game) return [];
+    const units = game.heroes.map((unit: any) => ({ kind: "unit", id: unit.id, unit }));
+    const fallenIds = [...new Set<string>(game.fallenHeroes.map((entry: any) => entry.id))]
+      .filter((id) => !game.heroes.some((unit: any) => unit.id === id));
+    return [...units, ...fallenIds.map((id) => ({ kind: "fallen", id, unit: null as any }))];
+  }
+
+  function renderDeck() {
+    const game = session?.game;
+    const entries = deckEntries();
+    const key = entries.map((entry) => `${entry.kind}:${entry.id}:${entry.unit?.entityId ?? ""}`).join("|");
+    if (key !== deckKey) {
+      deckKey = key;
+      const empties = Math.max(0, maxTeam - entries.length);
+      deckEl.innerHTML = entries.map((entry) => {
+        const hero = heroById.get(entry.id);
+        const data = entry.kind === "unit" ? `data-deck-unit="${entry.unit.entityId}"` : `data-deck-fallen="${entry.id}"`;
+        return `<button type="button" class="td-deck-slot${entry.kind === "fallen" ? " is-fallen" : ""}" ${data}>` +
+          `<img src="${hero.image}" alt="" width="40" height="40"><span class="td-deck-badge" data-deck-badge></span></button>`;
+      }).join("") + `<span class="td-deck-empty" aria-hidden="true"></span>`.repeat(empties);
+    }
+    if (!game) return;
+    deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-unit]").forEach((button) => {
+      const unit = game.heroes.find((entry: any) => entry.entityId === Number(button.dataset.deckUnit));
+      if (!unit) return;
+      button.classList.toggle("is-selected", unit.entityId === selectedEntityId);
+      button.setAttribute("aria-label", `${unit.name}, level ${unit.level}. Show actions.`);
+      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = String(unit.level);
+    });
+    deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-fallen]").forEach((button) => {
+      const hero = heroById.get(button.dataset.deckFallen!);
+      const teamFull = game.team.length >= maxTeam;
+      button.disabled = game.complete || game.gold < hero.cost || teamFull;
+      button.classList.toggle("is-selected", deployHeroId === hero.id);
+      button.setAttribute("aria-label", `${hero.name} has fallen. Redeploy for ${hero.cost} gold${teamFull ? ", team full" : ""}.`);
+      button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = `${hero.cost}g`;
+    });
+  }
+
+  deckEl.addEventListener("click", (event) => {
+    if (!session) return;
+    const target = event.target as HTMLElement;
+    const unitButton = target.closest<HTMLButtonElement>("[data-deck-unit]");
+    if (unitButton) {
+      const unit = session.game.heroes.find((entry: any) => entry.entityId === Number(unitButton.dataset.deckUnit));
+      if (unit) selectUnit(unit);
+      return;
+    }
+    const fallenButton = target.closest<HTMLButtonElement>("[data-deck-fallen]");
+    if (fallenButton && !fallenButton.disabled) {
+      const hero = heroById.get(fallenButton.dataset.deckFallen!);
+      closePopover(false);
+      closeSheet(false);
+      deployHeroId = deployHeroId === hero.id ? "" : hero.id;
+      if (deployHeroId) notice(`Tap an empty ${hero.slot} ring to redeploy ${hero.name}.`);
+      else session.game.uiPlacement = null;
+      renderDeck();
+    }
+  });
+
+  function cancelDeploy() {
+    if (!deployHeroId) return;
+    deployHeroId = "";
+    if (session) session.game.uiPlacement = null;
+    renderDeck();
+  }
+
+  // ------------------------------------------------------------------
+  // Game events
+  // ------------------------------------------------------------------
+  function handleChange(type: string) {
+    if (!session) return;
+    const game = session.game;
+    updateHud();
+    if (type === "leak" && game.lives > 0) notice(`An enemy broke through. ${game.lives} ${game.lives === 1 ? "life" : "lives"} left.`);
+    if (type === "death") {
+      const fallen = game.fallenHeroes.at(-1);
+      const hero = fallen && heroById.get(fallen.id);
+      if (hero) notice(`${hero.name} has fallen. Tap the empty ring or the deck to redeploy.`);
+    }
+    if (type === "clear" && game.waveStats) {
+      const stats = game.waveStats;
+      if (stats.leaks === 0) session.perfectWaves += 1;
+      const leakText = stats.leaks === 0 ? "no leaks" : `${stats.leaks} leak${stats.leaks === 1 ? "" : "s"}`;
+      notice(`Wave ${stats.wave} cleared: ${stats.kills} kills, ${leakText}, ${stats.goldEarned} gold earned.`);
+    }
+    if (type === "finish") finishRun();
+    renderDeck();
+    syncMainAction();
+    renderPreview();
+    renderRunOffer();
+    if (type === "virtue" || type === "reset") renderBuffs();
+    refreshSelection();
+    if (!sheetEl.hidden) updateSheet();
+    if (activePanel?.dataset.tdPanel === "blessings") renderRunTab();
+  }
+
+  // ------------------------------------------------------------------
+  // Hero popover (anchored next to the selected unit)
+  // ------------------------------------------------------------------
+  const findUnit = (entityId: number | null) => session?.game.heroes.find((unit: any) => unit.entityId === entityId);
+
+  function selectUnit(unit: any) {
+    if (!session) return;
+    cancelDeploy();
+    closeSheet(false);
+    selectedEntityId = unit.entityId;
+    session.game.uiSelected = unit.entityId;
+    popDetails.hidden = true;
+    popDetailsButton.setAttribute("aria-expanded", "false");
+    popover.hidden = false;
+    updatePopover(unit);
+    positionPopover();
+    renderDeck();
+  }
+
+  function closePopover(restoreFocus = true) {
+    if (selectedEntityId === null && popover.hidden) return;
+    const hadFocus = popover.contains(document.activeElement);
+    popover.hidden = true;
+    selectedEntityId = null;
+    if (session) session.game.uiSelected = null;
+    renderDeck();
+    if (restoreFocus && hadFocus) session?.canvas.focus({ preventScroll: true });
+  }
+
+  function refreshSelection() {
+    if (selectedEntityId === null) return;
+    const unit = findUnit(selectedEntityId);
+    if (!unit || session?.game.complete) { closePopover(); return; }
+    updatePopover(unit);
+  }
+
+  function updatePopoverHealth(unit: any) {
+    popHpBar.max = unit.hp;
+    popHpBar.value = Math.max(0, unit.hpLeft);
+    popHp.textContent = `${Math.ceil(Math.max(0, unit.hpLeft))} / ${unit.hp} health`;
+  }
+
+  function updatePopover(unit: any) {
+    const game = session!.game;
+    popName.textContent = unit.name;
+    popLevel.textContent = `Level ${unit.level} of ${maxLevel}`;
+    updatePopoverHealth(unit);
+    const info = game.upgradeInfo(unit.entityId);
+    if (info.ok) {
+      popUpgrade.disabled = false;
+      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popCost.textContent = `${info.cost} gold`;
+      popPreview.textContent = `Attack ${unit.atk} to ${info.nextAtk}, health ${unit.hp} to ${info.nextHp}.`;
+    } else if (unit.level >= maxLevel) {
+      popUpgrade.disabled = true;
+      popUpgradeLabel.textContent = "Max level";
+      popCost.textContent = "";
+      popPreview.textContent = "This hero is at the level cap.";
+    } else if (Number.isFinite(info.cost)) {
+      popUpgrade.disabled = true;
+      popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
+      popCost.textContent = `${info.cost} gold`;
+      popPreview.textContent = `Needs ${info.cost} gold, you have ${game.gold}.`;
+    } else {
+      popUpgrade.disabled = true;
+      popUpgradeLabel.textContent = "Upgrade unavailable";
+      popCost.textContent = "";
+      popPreview.textContent = info.reason || "";
+    }
+    if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
+  }
+
+  function detailsHtml(unit: any) {
+    const game = session!.game;
+    const aps = Math.round(unit.aps * 100) / 100;
+    const critPct = Math.round(unit.critChance * 1000) / 10;
+    const lines = [`<p>${unit.class} - ${unit.atk} attack - ${aps} attacks/s - ${unit.range} range - ${critPct}% crit</p>`];
+    const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
+    if (unit.ability === "aura") {
+      const allies = game.heroes.filter((ally: any) => ally !== unit && Math.hypot(unit.x - ally.x, unit.y - ally.y) <= unit.range);
+      lines.push(allies.length
+        ? `<p class="td-aura-line">Aura: ${allies.map((ally: any) => ally.name).join(", ")} gain${allies.length === 1 ? "s" : ""} +${auraPct}% attack inside the ring.</p>`
+        : `<p class="td-aura-line">Aura: no allies inside the ring. The +${auraPct}% attack bonus is positional.</p>`);
+    } else {
+      const aura = game.supportAuraFor(unit);
+      if (aura) lines.push(`<p class="td-aura-line">Receiving +${auraPct}% attack from ${aura.source.name}'s aura.</p>`);
+    }
+    const links = game.synergyLinksFor(unit);
+    if (links.length) {
+      const parts = links.map((link: any) => `${link.hero.name} (${link.shared.length} tag${link.shared.length !== 1 ? "s" : ""})`).join(", ");
+      lines.push(`<p class="td-aura-line">Synergy +${Math.round(game.synergyBonusFor(unit) * 100)}% attack with ${parts}.</p>`);
+    }
+    lines.push(`<p>Levels belong to this deployed unit. A fallen hero re-enters at level 1.</p>`);
+    return lines.join("");
+  }
+
+  // Free stage space under the letterboxed map (portrait screens), in px.
+  function spaceBelowMap() {
+    if (!session) return 0;
+    return stageEl.getBoundingClientRect().bottom - session.canvas.getBoundingClientRect().bottom;
+  }
+
+  function positionPopover() {
+    if (popover.hidden || !session) return;
+    const unit = findUnit(selectedEntityId);
+    if (!unit) return;
+    const canvasRect = session.canvas.getBoundingClientRect();
+    const stageRect = stageEl.getBoundingClientRect();
+    popover.classList.remove("is-sheet");
+    const scale = canvasRect.width / 960;
+    const size = { width: popover.offsetWidth, height: popover.offsetHeight };
+    // A short map would be mostly covered by an anchored popover; use the space below it instead.
+    const dockBelow = canvasRect.height < size.height * 1.5 && spaceBelowMap() >= size.height + 16;
+    const placement = dockBelow ? { mode: "sheet" as const } : placePopover({
+      anchor: worldToLocal(canvasRect, stageRect, unit),
+      size,
+      bounds: { width: stageRect.width, height: stageRect.height },
+      gap: 32 * scale + 8,
+    });
+    if (placement.mode === "sheet") {
+      popover.classList.add("is-sheet");
+      popover.dataset.side = "sheet";
+      return;
+    }
+    popover.style.setProperty("--td-pop-x", `${placement.x}px`);
+    popover.style.setProperty("--td-pop-y", `${placement.y}px`);
+    popover.dataset.side = placement.side;
+  }
+
+  popUpgrade.addEventListener("click", () => {
+    if (!session || selectedEntityId === null) return;
+    const result = session.game.upgrade(selectedEntityId);
+    if (result.ok) notice(`${result.hero.name} reached level ${result.hero.level}.`);
+    else notice(result.reason || "Upgrade unavailable.");
+  });
+  q("[data-pop-rotate]").addEventListener("click", () => {
+    if (session && selectedEntityId !== null) session.game.rotate(selectedEntityId);
+  });
+  q("[data-pop-close]").addEventListener("click", () => closePopover());
+  popDetailsButton.addEventListener("click", () => {
+    const unit = findUnit(selectedEntityId);
+    if (!unit) return;
+    popDetails.hidden = !popDetails.hidden;
+    popDetailsButton.setAttribute("aria-expanded", String(!popDetails.hidden));
+    if (!popDetails.hidden) popDetails.innerHTML = detailsHtml(unit);
+    positionPopover();
+  });
+
+  // ------------------------------------------------------------------
+  // Recruitment sheet (opens from an empty ring)
+  // ------------------------------------------------------------------
+  function openSheet(slot: Slot) {
+    if (!session) return;
+    const game = session.game;
+    closePopover(false);
+    cancelDeploy();
+    pendingSlot = slot;
+    game.focusedSlot = slot;
+    const road = slot.type === "road";
+    sheetKicker.textContent = `${road ? "Road" : "Platform"} ring ${slot.index + 1}`;
+    sheetNote.textContent = road
+      ? "Tanks, Warriors, and Assassins block ground enemies here."
+      : "Mages, Archers, and Supports attack from range here.";
+    sheetList.innerHTML = data.heroes.filter((hero: any) => hero.slot === slot.type).map((hero: any) =>
+      `<button class="td-hero-card" type="button" data-place-hero="${hero.id}">` +
+      `<img src="${hero.image}" alt="" width="44" height="44" loading="lazy">` +
+      `<span class="td-card-copy"><strong>${hero.name}</strong><small data-place-reason></small></span>` +
+      `<span class="td-tier" data-tier="${hero.tier}">${hero.tier}</span></button>`).join("");
+    updateSheet();
+    const [x] = (road ? session.map.roadSlots : session.map.platformSlots)[slot.index];
+    sheetEl.classList.toggle("is-left", x > 480);
+    // Portrait: keep the map visible by docking the list into the space below it.
+    const below = spaceBelowMap();
+    const dockBelow = below >= 220 && stageEl.clientWidth <= 600;
+    sheetEl.classList.toggle("is-below", dockBelow);
+    if (dockBelow) sheetEl.style.setProperty("--td-sheet-top", `${stageEl.clientHeight - below + 8}px`);
+    sheetEl.hidden = false;
+    if (session.started && game.running) pause.add("recruit");
+    (sheetList.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? sheetEl).focus({ preventScroll: true });
+  }
+
+  function updateSheet() {
+    const game = session?.game;
+    if (!game) return;
+    sheetList.querySelectorAll<HTMLButtonElement>("[data-place-hero]").forEach((button) => {
+      const hero = heroById.get(button.dataset.placeHero!);
+      const deployed = game.heroes.some((unit: any) => unit.id === hero.id);
+      const teamFull = game.team.length >= maxTeam && !game.team.includes(hero.id);
+      const affordable = game.gold >= hero.cost;
+      const reason = deployed ? "Already deployed" : teamFull ? `Team full (${maxTeam} of ${maxTeam})` : !affordable ? `Needs ${hero.cost} gold` : "";
+      button.disabled = !!reason || game.complete;
+      button.classList.toggle("is-unavailable", !!reason);
+      button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason ? `${hero.cost} gold - ${reason}` : `${hero.class} - ${hero.cost} gold`;
+    });
+  }
+
+  function closeSheet(restoreFocus = true) {
+    if (sheetEl.hidden && !pendingSlot) return;
+    const hadFocus = sheetEl.contains(document.activeElement);
+    sheetEl.hidden = true;
+    pendingSlot = null;
+    if (session) session.game.focusedSlot = null;
+    pause.remove("recruit");
+    if (restoreFocus && hadFocus) session?.canvas.focus({ preventScroll: true });
+  }
+
+  q("[data-td-sheet-close]").addEventListener("click", () => closeSheet());
+  sheetList.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-place-hero]");
+    if (!button || !pendingSlot || !session) return;
+    const hero = heroById.get(button.dataset.placeHero!);
+    // Placing disables this button, which drops focus; decide on restoring it first.
+    const hadFocus = sheetEl.contains(document.activeElement);
+    if (session.game.place(hero.id, pendingSlot.type, pendingSlot.index)) {
+      closeSheet(false);
+      if (hadFocus) session.canvas.focus({ preventScroll: true });
+      notice(session.started || session.game.heroes.length > 1
+        ? `${hero.name} deployed.`
+        : `${hero.name} deployed. Add up to ${maxTeam - 1} more heroes, then start wave 1.`);
+    } else {
+      updateSheet();
+    }
+  });
+
+  // ------------------------------------------------------------------
+  // Battlefield input (pointer, touch, keyboard share activateSlot)
+  // ------------------------------------------------------------------
+  function activateSlot(slot: Slot) {
+    if (!session || session.game.complete) return;
+    const game = session.game;
+    const occupant = game.heroes.find((unit: any) => unit.slotType === slot.type && unit.slotIndex === slot.index);
+    if (occupant) { selectUnit(occupant); return; }
+    if (deployHeroId) {
+      const hero = heroById.get(deployHeroId);
+      if (hero.slot !== slot.type) { notice(`${hero.name} needs a ${hero.slot} ring.`); return; }
+      if (game.place(hero.id, slot.type, slot.index)) { notice(`${hero.name} redeployed.`); cancelDeploy(); }
+      else notice(game.gold < hero.cost ? `Needs ${hero.cost} gold to redeploy ${hero.name}.` : "Your team is full.");
+      return;
+    }
+    openSheet(slot);
+  }
+
+  function bindCanvas(current: Session) {
+    const { canvas, map, game, keyboardSlots } = current;
+    let keyboardIndex = 0;
+    canvas.addEventListener("pointerdown", (event) => { lastPointerType = event.pointerType || "mouse"; });
+    canvas.addEventListener("click", (event) => {
+      if (session !== current || game.complete) return;
+      const scale = canvas.getBoundingClientRect().width / 960;
+      const slot: any = nearestSlot(map, canvasPoint(canvas, event), slotHitRadius(scale, lastPointerType));
+      if (!slot) { closeSheet(false); closePopover(false); cancelDeploy(); return; }
+      activateSlot({ type: slot.type, index: slot.index });
+    });
+    canvas.addEventListener("pointermove", (event) => {
+      if (!deployHeroId || event.pointerType !== "mouse") return;
+      const hero = heroById.get(deployHeroId);
+      const slot: any = nearestSlot(map, canvasPoint(canvas, event));
+      const point = slot && (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index];
+      game.uiPlacement = slot && slot.type === hero.slot ? { x: point[0], y: point[1], range: hero.range, type: slot.type } : null;
+    });
+    canvas.addEventListener("pointerleave", () => { if (deployHeroId) game.uiPlacement = null; });
+    canvas.addEventListener("focus", () => { if (!pendingSlot) game.focusedSlot = keyboardSlots[keyboardIndex]; });
+    canvas.addEventListener("blur", () => { if (!pendingSlot) game.focusedSlot = null; });
+    canvas.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
+      event.preventDefault();
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        keyboardIndex = (keyboardIndex + (event.key === "ArrowRight" ? 1 : -1) + keyboardSlots.length) % keyboardSlots.length;
+        const slot = keyboardSlots[keyboardIndex];
+        game.focusedSlot = slot;
+        notice(`${slot.type === "road" ? "Road" : "Platform"} ring ${slot.index + 1}. Press Enter to use it.`);
+      } else {
+        activateSlot(keyboardSlots[keyboardIndex]);
       }
     });
   }
 
-  function handleChange(type: string) {
-    updateHud();
-    if (type === "place" && !started) { message.hidden = true; showPickerPrompt(); }
-    if (type === "leak") {
-      commandNote.textContent = game.lives > 0 ? `An enemy broke through. ${game.lives} lives remain.` : "";
-    }
-    if (type === "death" && selectedEntityId !== null) {
-      const alive = game.heroes.find((hero: any) => hero.entityId === selectedEntityId);
-      if (!alive) {
-        inspector.innerHTML = `<span class="td-label">Fallen</span><p>Your hero has fallen. You can recruit them again from the deck.</p>`;
-        selectedEntityId = null;
-        game.uiSelected = null;
-        renderDeck();
-      }
-    }
-    if (type === "clear") {
-      if (game.waveStats && game.waveStats.leaks === 0) runPerfectWaves += 1;
-      mainAction.disabled = false;
-      mainAction.textContent = game.wave === 9 ? "Face Baphomet" : `Start wave ${game.wave + 1}`;
-      commandNote.textContent = `Wave ${game.wave} cleared. Reinforce your formation before continuing.`;
-    }
-    if (type === "finish") finishRun();
-    if (selectedEntityId !== null && !inspector.hidden) {
-      const unit = game.heroes.find((hero: any) => hero.entityId === selectedEntityId);
-      if (unit) renderInspector(unit);
-    }
-    renderPreview();
-    renderSummary();
-    renderVirtues();
-  }
-
-  function updateHud() {
-    root.querySelector<HTMLElement>("[data-td-gold]")!.textContent = String(game.gold);
-    root.querySelector<HTMLElement>("[data-td-lives]")!.textContent = String(game.lives);
-    root.querySelector<HTMLElement>("[data-td-wave]")!.textContent = String(game.wave);
-    root.querySelector<HTMLElement>("[data-td-score]")!.textContent = game.score.toLocaleString();
-    const synergyCount = game.activeSynergyCount();
-    const synStat = root.querySelector<HTMLElement>("[data-td-synergy-stat]")!;
-    synStat.hidden = synergyCount === 0;
-    synStat.querySelector<HTMLElement>("[data-td-synergy-count]")!.textContent = String(synergyCount);
-    renderDeck();
-  }
-
-  const maxTeam: number = data.tuning.run.maxTeam ?? 5;
-
-  function showPickerPrompt() {
-    pendingSlot = null;
-    game.uiPlacement = null;
-    picker.innerHTML = `<p class="td-slot-prompt">Click a ring on the map to place a hero. Gold rings take ground troops (Tank, Warrior, Assassin). Purple rings take ranged heroes (Mage, Archer, Support).</p>`;
-    teamCount.textContent = String(game.team.length);
-    mainAction.disabled = game.heroes.length === 0;
-    mainAction.textContent = game.heroes.length === 0 ? "Place a hero to begin" : "Start wave 1";
-  }
-
-  function showSlotPicker(slot: { type: string; index: number }) {
-    pendingSlot = slot;
-    const eligible = data.heroes.filter((hero: any) => hero.slot === slot.type);
-    const slotLabel = slot.type === "road" ? "Road slot - Tank, Warrior, Assassin" : "Platform slot - Mage, Archer, Support";
-    picker.innerHTML = `<div class="td-slot-picker-header"><span class="td-label">${slotLabel}</span><button type="button" class="td-cancel-slot">Cancel</button></div>` +
-      eligible.map((hero: any) => {
-        const affordable = game.gold >= hero.cost;
-        const alreadyDeployed = game.heroes.some((h: any) => h.id === hero.id);
-        const teamFull = game.team.length >= maxTeam && !game.team.includes(hero.id);
-        const disabled = !affordable || alreadyDeployed || teamFull;
-        const reason = alreadyDeployed ? "deployed" : teamFull ? "team full" : !affordable ? `${hero.cost}g` : "";
-        return `<button class="td-hero-card" type="button" data-place-hero="${hero.id}" ${disabled ? "disabled" : ""}>
-          <img src="${hero.image}" alt="" width="48" height="48">
-          <span class="td-card-copy"><strong>${hero.name}</strong><small>${hero.cost} gold${reason && disabled ? ` · ${reason}` : ""}</small></span>
-          <span class="td-tier" data-tier="${hero.tier}">${hero.tier}</span>
-        </button>`;
-      }).join("");
-  }
-
-  function closeMidGamePicker() {
-    picker.hidden = true;
-    deck.hidden = false;
-    pendingSlot = null;
-    (game as any).uiPlacement = null;
-  }
-
-  picker.addEventListener("click", (event) => {
-    if ((event.target as HTMLElement).closest(".td-cancel-slot")) {
-      if (started) { closeMidGamePicker(); } else { showPickerPrompt(); }
-      return;
-    }
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-place-hero]");
-    if (!button || !pendingSlot) return;
-    const heroId = button.dataset.placeHero!;
-    if (game.place(heroId, pendingSlot.type, pendingSlot.index)) {
-      if (started) { closeMidGamePicker(); renderDeck(); } else { showPickerPrompt(); }
-    } else {
-      const hero = heroById.get(heroId);
-      commandNote.textContent = `Need ${hero?.cost ?? "?"} gold to deploy ${hero?.name ?? heroId}.`;
-    }
+  // Taps on the letterbox around the map dismiss the selection like empty map space.
+  stageEl.addEventListener("click", (event) => {
+    if (event.target !== stageEl) return;
+    closeSheet(false);
+    closePopover(false);
+    cancelDeploy();
   });
 
-  function renderDeck() {
-    if (!started) return;
-    deck.innerHTML = game.team.map((id: string) => {
-      const hero = heroById.get(id);
-      const affordable = game.gold >= hero.cost;
-      return `<button type="button" class="td-deck-card${selectedHeroId === id ? " is-selected" : ""}" data-deploy="${id}" ${affordable ? "" : "disabled"}><img src="${hero.image}" alt="" width="42" height="42"><span><strong>${hero.name}</strong><small>${hero.slot} · ${hero.cost} gold</small></span><b data-tier="${hero.tier}">${hero.tier}</b></button>`;
+  // ------------------------------------------------------------------
+  // Blessing cards: big bonus value, short stat word, stat icon
+  // ------------------------------------------------------------------
+  const BOON_ICONS: Record<string, string> = {
+    atk: '<path d="M14.5 3.5l6 0 0 6-9 9-3-3z" /><path d="M5 14l5 5M3.5 20.5l3-3" />',
+    res: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z" />',
+    hp: '<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0112 7.3 4.3 4.3 0 0119.5 10c0 5.4-7.5 10-7.5 10z" />',
+    heal: '<path d="M9.5 4h5v5.5H20v5h-5.5V20h-5v-5.5H4v-5h5.5z" />',
+    regen: '<path d="M13 2L5 13.5h6L10 22l9-12h-6z" />',
+    crit: '<circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3.5" /><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4" />',
+    dodge: '<path d="M3 8h11a3 3 0 10-3-3M3 12h15a3 3 0 11-3 3M3 16h8" />',
+  };
+
+  function boonCard(options: { tag: "button" | "div"; name: string; effect: any; attrs?: string; badge?: string; cta?: string; compact?: boolean; pair?: boolean }) {
+    const shown = blessingDisplay(options.effect);
+    const icon = BOON_ICONS[shown.tone] ?? "";
+    const classes = ["td-boon", `td-boon--${shown.tone}`, options.compact ? "td-boon--tile" : "", options.pair ? "td-boon--pair" : ""].filter(Boolean).join(" ");
+    const label = `${options.name}: ${options.effect?.label ?? `${shown.value} ${shown.stat}`}`;
+    const type = options.tag === "button" ? ' type="button"' : "";
+    return `<${options.tag} class="${classes}"${type} ${options.attrs ?? ""} aria-label="${label}">` +
+      (options.badge ? `<span class="td-boon-badge">${options.badge}</span>` : "") +
+      `<span class="td-boon-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">${icon}</svg></span>` +
+      `<span class="td-boon-main" aria-hidden="true"><span class="td-boon-value">${shown.value}</span><span class="td-boon-stat">${shown.stat}</span></span>` +
+      `<span class="td-boon-name" aria-hidden="true">${options.name}</span>` +
+      (options.cta ? `<span class="td-boon-cta" aria-hidden="true">${options.cta}</span>` : "") +
+      `</${options.tag}>`;
+  }
+
+  // ------------------------------------------------------------------
+  // Buff bar: summed run blessings shown on the battlefield
+  // ------------------------------------------------------------------
+  const buffsEl = q("[data-td-buffs]");
+  let buffValues: Record<string, string> = {};
+
+  function buffSources(type: string) {
+    const game = session!.game;
+    const parts = game.virtues
+      .filter((name: string) => data.tuning.virtueEffects[name]?.type === type)
+      .map((name: string) => `${blessingNames[name] ?? name} ${blessingDisplay(data.tuning.virtueEffects[name]).value}`);
+    for (const pair of game.activePairs ?? []) {
+      if (pair.effect?.type === type) parts.push(`${pair.name} ${blessingDisplay(pair.effect).value}`);
+    }
+    return parts.join(", ");
+  }
+
+  function renderBuffs() {
+    const chips = session ? buffChips(session.game.modifiers()) : [];
+    buffsEl.hidden = chips.length === 0;
+    buffsEl.innerHTML = chips.map((chip) => {
+      const changed = buffValues[chip.type] !== chip.value;
+      const stat = blessingDisplay({ type: chip.type, value: 0 }).stat;
+      return `<button type="button" class="td-buff td-boon--${chip.type}${changed ? " is-bumped" : ""}" data-td-buff aria-label="${chip.value} ${stat} from ${buffSources(chip.type)}. Show run blessings.">` +
+        `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${BOON_ICONS[chip.type] ?? ""}</svg>` +
+        `<b>${chip.value}</b><span>${chip.short}</span></button>`;
     }).join("");
+    buffValues = Object.fromEntries(chips.map((chip) => [chip.type, chip.value]));
+    positionBuffs();
   }
 
-  deck.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-deploy]");
-    if (!button) return;
-    selectedHeroId = button.dataset.deploy || "";
-    selectedEntityId = null;
-    game.uiSelected = null;
-    const hero = heroById.get(selectedHeroId);
-    inspector.hidden = false;
-    inspector.innerHTML = `<span class="td-label">Ready to deploy</span><strong>${hero.name}</strong><p>${hero.class} · ${hero.ability} ultimate · ${hero.range}px range</p>`;
-    commandNote.textContent = `Tap an empty ${hero.slot} ring to deploy ${hero.name}.`;
-    renderDeck();
-  });
-
-  mainAction.addEventListener("click", () => {
-    if (!started) {
-      started = true;
-      syncMapUi();
-      saved.lastTeam = [...game.team]; persist();
-      if (blessingsEl) blessingsEl.hidden = true;
-      picker.hidden = true; deck.hidden = false; message.hidden = true;
-      panelTitle.textContent = "Your heroes";
-      teamCount.parentElement!.hidden = true;
-      game.startWave();
-      mainAction.disabled = true;
-      mainAction.textContent = "Wave 1 underway";
-      commandNote.textContent = "Heroes attack automatically. You can still deploy reinforcements.";
-      renderDeck(); renderPreview(); return;
-    }
-    if (!game.running) {
-      game.startWave();
-      mainAction.disabled = true;
-      mainAction.textContent = game.wave === 10 ? "Final wave underway" : `Wave ${game.wave} underway`;
-      commandNote.textContent = game.wave === 10 ? `Baphomet has entered ${map.name}.` : "Heroes attack automatically. You can still deploy reinforcements.";
-    }
-  });
-
-  function renderInspector(unit: any) {
-    const info = game.upgradeInfo(unit.entityId);
-    const auraPct = Math.round((data.tuning.support?.passiveAuraBonus ?? 0.1) * 100);
-    let supportLine = "";
-    if (unit.ability === "aura") {
-      const allies = game.heroes.filter((ally: any) => ally !== unit && Math.hypot(unit.x - ally.x, unit.y - ally.y) <= unit.range);
-      supportLine = allies.length
-        ? `<p class="td-aura-line">Aura: ${allies.map((ally: any) => ally.name).join(", ")} gain${allies.length === 1 ? "s" : ""} +${auraPct}% attack inside the ring.</p>`
-        : `<p class="td-aura-line">Aura: no allies inside the ring — the +${auraPct}% attack bonus is positional.</p>`;
-    } else {
-      const aura = game.supportAuraFor(unit);
-      if (aura) supportLine = `<p class="td-aura-line">Receiving +${auraPct}% attack from ${aura.source.name}'s aura.</p>`;
-    }
-    let upgradeBlock = "";
-    if (info.ok) {
-      upgradeBlock = `<button class="action-button action-button--primary td-upgrade-button" type="button" data-td-upgrade>Upgrade to level ${unit.level + 1} · ${info.cost} gold</button>
-        <p class="td-upgrade-detail">Attack ${unit.atk} → ${info.nextAtk} · Max health ${unit.hp} → ${info.nextHp}</p>`;
-    } else {
-      const atCap = unit.level >= (data.tuning.upgrades?.maxLevel ?? 4);
-      upgradeBlock = `<button class="action-button action-button--primary td-upgrade-button" type="button" disabled>${atCap ? "Level cap reached" : "Upgrade unavailable"}</button>
-        <p class="td-upgrade-detail">${info.reason}</p>`;
-    }
-    const synLinks = game.synergyLinksFor(unit);
-    const synBonus = game.synergyBonusFor(unit);
-    let synergyLine = "";
-    if (synLinks.length) {
-      const parts = synLinks.map((l: any) => `${l.hero.name} (${l.shared.length} tag${l.shared.length !== 1 ? "s" : ""})`).join(", ");
-      synergyLine = `<p class="td-aura-line">Synergy +${Math.round(synBonus * 100)}% attack with ${parts}.</p>`;
-    }
-    inspector.innerHTML = `<span class="td-label">On the field · Level ${unit.level}</span><strong>${unit.name}</strong>
-      <p>${unit.atk} attack · ${Math.ceil(unit.hpLeft)} / ${unit.hp} health · ${unit.range}px range · Press R to rotate</p>
-      ${supportLine}
-      ${synergyLine}
-      ${upgradeBlock}
-      <p class="td-upgrade-detail">Levels belong to this deployed unit — a fallen hero re-enters at level 1.</p>`;
+  // Portrait: the map leaves free space below it; the bar sits there instead of over the map.
+  function positionBuffs() {
+    if (buffsEl.hidden || !session) return;
+    const below = spaceBelowMap();
+    const dock = stageEl.clientWidth <= 600 && stageEl.clientHeight > stageEl.clientWidth && below >= 60;
+    buffsEl.classList.toggle("is-below", dock);
+    if (dock) buffsEl.style.setProperty("--td-buffs-top", `${stageEl.clientHeight - below + 8}px`);
   }
 
-  inspector.addEventListener("click", (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-td-upgrade]");
-    if (!button || selectedEntityId === null) return;
-    const result = game.upgrade(selectedEntityId);
-    if (result.ok) {
-      renderInspector(result.hero);
-      renderDeck();
-    } else { commandNote.textContent = result.reason || "Upgrade unavailable."; }
+  buffsEl.addEventListener("click", (event) => {
+    const chip = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-td-buff]");
+    if (!chip) return;
+    openPanel("blessings", chip);
+    selectBlessingsTab("run");
   });
 
-  function activateSlot(slot: { type: string; index: number } | null) {
-    if (!started || !slot) return;
-    const occupied = game.heroes.find((hero: any) => hero.slotType === slot.type && hero.slotIndex === slot.index);
-    if (occupied) {
-      selectedEntityId = occupied.entityId; selectedHeroId = "";
-      game.uiSelected = selectedEntityId; game.uiPlacement = null;
-      inspector.hidden = false;
-      renderInspector(occupied);
-      renderDeck(); return;
-    }
-    if (!selectedHeroId) {
-      selectedEntityId = null; (game as any).uiSelected = null; inspector.hidden = true;
-      showSlotPicker(slot);
-      picker.hidden = false;
-      deck.hidden = true;
-      return;
-    }
-    const hero = heroById.get(selectedHeroId);
-    if (hero.slot !== slot.type) { commandNote.textContent = `${hero.name} needs a ${hero.slot} ring.`; return; }
-    if (game.place(selectedHeroId, slot.type, slot.index)) {
-      selectedHeroId = ""; game.uiPlacement = null; commandNote.textContent = "Hero deployed. Select another hero or begin the wave."; renderDeck();
-    } else { commandNote.textContent = `You need ${hero.cost} gold to deploy ${hero.name}, or that hero is already deployed.`; }
+  // ------------------------------------------------------------------
+  // Run blessing offer (between waves)
+  // ------------------------------------------------------------------
+  function renderRunOffer() {
+    const game = session?.game;
+    const offer: string[] | null = game && !game.running && !game.complete ? game.virtueOffer : null;
+    if (!offer) { blessingModalEl.hidden = true; offerKey = ""; return; }
+    const key = offer.join("|");
+    if (key === offerKey) return;
+    offerKey = key;
+    const owned: string[] = game!.virtues;
+    blessingGridEl.innerHTML = offer.map((name) => {
+      const effect = data.tuning.virtueEffects[name];
+      const pair = (data.tuning.virtuePairs || []).find((entry: any) => entry.virtues.includes(name) && entry.virtues.every((v: string) => v === name || owned.includes(v)));
+      return boonCard({
+        tag: "button",
+        name: blessingNames[name] ?? name,
+        effect,
+        attrs: `data-virtue="${name}"`,
+        badge: pair ? `Completes ${pair.name}` : "",
+        cta: "Select",
+      });
+    }).join("");
+    closePopover(false);
+    closeSheet(false);
+    blessingModalEl.hidden = false;
+    blessingGridEl.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
   }
 
-  canvas.addEventListener("mousemove", (event) => {
-    if (!started || !selectedHeroId) { game.uiPlacement = null; return; }
-    const hero = heroById.get(selectedHeroId);
-    const slot = nearestSlot(map, canvasPoint(canvas, event));
-    game.uiPlacement = slot && slot.type === hero.slot
-      ? { x: (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index][0], y: (slot.type === "road" ? map.roadSlots : map.platformSlots)[slot.index][1], range: hero.range, type: slot.type }
-      : null;
+  blessingGridEl.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-virtue]");
+    if (!button || !session) return;
+    const name = button.dataset.virtue!;
+    if (!session.game.chooseVirtue(name)) return;
+    const triggered = (session.game.activePairs ?? []).find((pair: any) => pair.virtues.includes(name));
+    const heroName = blessingNames[name] ?? name;
+    notice(triggered ? `${heroName} activates ${triggered.name}: ${triggered.label}` : `${heroName} blesses your squad for the rest of this run.`);
+    mainAction.focus({ preventScroll: true });
   });
-  canvas.addEventListener("mouseleave", () => { game.uiPlacement = null; });
 
-  function handleCanvasTap(point: { x: number; y: number }, touchRadius = 38) {
-    const slot = nearestSlot(map, point, touchRadius);
-    if (slot) game.focusedSlot = { type: slot.type, index: slot.index };
-    if (!started) {
-      if (slot) {
-        const s = slot as any;
-        if (!(game.heroes as any[]).some((h) => h.slotType === s.type && h.slotIndex === s.index)) showSlotPicker(s);
+  // ------------------------------------------------------------------
+  // Panels: menu, blessings, help (modal, pause while open)
+  // ------------------------------------------------------------------
+  let activePanel: HTMLElement | null = null;
+  let panelReturnFocus: HTMLElement | null = null;
+  let blessingsTab: "favor" | "run" = "favor";
+
+  function openPanel(name: string, opener?: HTMLElement | null) {
+    const panel = root!.querySelector<HTMLElement>(`[data-td-panel="${name}"]`);
+    if (!panel) return;
+    if (activePanel) activePanel.hidden = true;
+    else panelReturnFocus = opener ?? (document.activeElement as HTMLElement | null);
+    if (name === "menu") renderMenu();
+    if (name === "blessings") renderBlessingsPanel();
+    panelLayer.hidden = false;
+    panel.hidden = false;
+    panel.scrollTop = 0;
+    activePanel = panel;
+    pause.add("panel");
+    panel.focus({ preventScroll: true });
+  }
+
+  function closePanel(restoreFocus = true) {
+    if (!activePanel) return;
+    activePanel.hidden = true;
+    activePanel = null;
+    panelLayer.hidden = true;
+    pause.remove("panel");
+    const target = panelReturnFocus;
+    panelReturnFocus = null;
+    if (restoreFocus && target?.isConnected) target.focus({ preventScroll: true });
+  }
+
+  panelLayer.addEventListener("click", (event) => { if (event.target === panelLayer) closePanel(); });
+
+  function renderMenu() {
+    updateHud();
+    q("[data-td-menu-best]").textContent = saved.bestScore.toLocaleString();
+    q<HTMLButtonElement>("[data-td-restart]").hidden = !session;
+    syncAudioUi();
+  }
+
+  // Favor can always be spent. Before anything is deployed the current run is
+  // rebuilt with it; otherwise it takes effect when the next run starts.
+  function favorAppliesNow() {
+    return !session || (!session.started && session.game.heroes.length === 0);
+  }
+
+  function renderBlessingsPanel() {
+    renderFavorTree();
+    renderRunTab();
+    selectBlessingsTab(session?.started && !session.game.complete ? blessingsTab : "favor");
+  }
+
+  function selectBlessingsTab(tab: "favor" | "run") {
+    blessingsTab = tab;
+    root!.querySelectorAll<HTMLButtonElement>("[data-td-tab]").forEach((button) => {
+      const active = button.dataset.tdTab === tab;
+      button.setAttribute("aria-selected", String(active));
+      button.tabIndex = active ? 0 : -1;
+    });
+    root!.querySelectorAll<HTMLElement>("[data-td-tabpanel]").forEach((panel) => { panel.hidden = panel.dataset.tdTabpanel !== tab; });
+  }
+
+  const tabList = q(".td-tabs");
+  tabList.addEventListener("click", (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-td-tab]");
+    if (button) selectBlessingsTab(button.dataset.tdTab as "favor" | "run");
+  });
+  tabList.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    const next = blessingsTab === "favor" ? "run" : "favor";
+    selectBlessingsTab(next);
+    q<HTMLButtonElement>(`[data-td-tab="${next}"]`).focus();
+  });
+
+  function renderFavorTree() {
+    const available = computeAvailableFavor();
+    const now = favorAppliesNow();
+    q("[data-td-favor-available]").textContent = String(available);
+    q("[data-td-favor-note]").textContent = !now
+      ? session?.game.complete ? "Purchases apply from your next run. Retry to use them." : "Run in progress: purchases apply from your next run."
+      : session ? "Purchases apply to this run right away." : "Purchases apply when your next run starts.";
+    const tiers = [...new Set(favorTreeData.map((node: any) => node.tier))].sort((a, b) => a - b);
+    const columns = tiers.map((tier: number) => {
+      const nodes = favorTreeData.filter((node: any) => node.tier === tier);
+      let gate = "";
+      if (tier > tiers[0]) {
+        const prevTier = favorTreeData.filter((node: any) => node.tier === tier - 1);
+        const requiresMin = nodes[0]?.requiresMin ?? 1;
+        const unlockedInPrev = prevTier.filter((node: any) => saved.favTree.includes(node.id)).length;
+        const satisfied = unlockedInPrev >= requiresMin;
+        gate = `<div class="td-blessing-gate${satisfied ? " is-active" : ""}"><span>${satisfied ? "Unlocked" : "Needs"} ${requiresMin} of Tier ${tier - 1} (${unlockedInPrev}/${prevTier.length})</span></div>`;
       }
-      return;
-    }
-    if (!slot && selectedEntityId !== null) {
-      selectedEntityId = null; (game as any).uiSelected = null; inspector.hidden = true; renderDeck();
-      return;
-    }
-    activateSlot(slot);
+      return `<div class="td-blessings-tier"><span class="td-label">Tier ${tier}</span>${gate}` + nodes.map((node: any) => {
+        const unlocked = saved.favTree.includes(node.id);
+        const active = isFavorNodeActive(node);
+        const reqMet = canUnlock(node.id, saved.favTree, favorTreeData);
+        const purchasable = active && reqMet && available >= node.cost;
+        const pending = unlocked && !now && !!session && !session.favTree.includes(node.id);
+        const stateClass = unlocked ? " is-unlocked" : !active ? " is-inactive" : purchasable ? "" : " is-unavailable";
+        const chips = [
+          unlocked ? `<span class="td-wave-chip">Unlocked</span>` : "",
+          pending ? `<span class="td-wave-chip td-wave-chip--pending">From next run</span>` : "",
+          !active ? `<span class="td-wave-chip td-wave-chip--muted">Not active yet</span>` : "",
+        ].join("");
+        const action = unlocked || !active ? ""
+          : `<button class="action-button action-button--primary" type="button" data-unlock="${node.id}"${purchasable ? "" : " disabled"}>${node.cost} Favor</button>`;
+        return `<div class="td-blessing-node${stateClass}" data-node-id="${node.id}" tabindex="-1"><strong>${node.name}</strong><small>${node.description}</small>` +
+          (chips ? `<div class="td-blessing-chips">${chips}</div>` : "") + action + `</div>`;
+      }).join("") + `</div>`;
+    }).join("");
+    q("[data-td-favor-tree]").innerHTML = `<div class="td-blessings-tiers">${columns}</div>` +
+      (saved.favTree.length > 0 ? `<button type="button" class="td-respec" data-td-respec>Respec (refund all)</button>` : "");
   }
 
-  canvas.addEventListener("click", (event) => {
-    handleCanvasTap(canvasPoint(canvas, event));
+  function syncSpendButton() {
+    const available = computeAvailableFavor();
+    q("[data-td-spend-count]").textContent = `(${available})`;
+    q("[data-td-spend]").hidden = available <= 0;
+  }
+
+  function applyFavorToPreparedRun() {
+    if (!session || !favorAppliesNow()) return;
+    // Nothing is deployed yet, so the run can be rebuilt from the new snapshot.
+    session.game.tuning = buildRunTuning(data.tuning, saved.favTree);
+    session.game.reset();
+    pause.sync();
+    updateHud();
+  }
+
+  q("[data-td-favor-tree]").addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const unlock = target.closest<HTMLButtonElement>("[data-unlock]");
+    if (unlock) {
+      const id = unlock.dataset.unlock!;
+      const node = favorTreeData.find((entry: any) => entry.id === id);
+      if (!node || !isFavorNodeActive(node) || saved.favTree.includes(id)) return;
+      if (!canUnlock(id, saved.favTree, favorTreeData) || computeAvailableFavor() < node.cost) return;
+      saved.favTree = [...saved.favTree, id];
+      persist();
+      applyFavorToPreparedRun();
+      renderFavorTree();
+      renderLobby();
+      syncSpendButton();
+      q(`[data-node-id="${id}"]`).focus({ preventScroll: true });
+      return;
+    }
+    if (target.closest("[data-td-respec]")) {
+      saved.favTree = [];
+      persist();
+      applyFavorToPreparedRun();
+      renderFavorTree();
+      renderLobby();
+      syncSpendButton();
+      activePanel?.focus({ preventScroll: true });
+    }
   });
 
-  canvas.addEventListener("touchend", (event) => {
-    event.preventDefault();
-    const touch = event.changedTouches[0];
-    if (!touch) return;
-    handleCanvasTap(canvasPoint(canvas, touch), 56);
-  }, { passive: false });
+  function renderRunTab() {
+    const panel = q("[data-td-tabpanel='run']");
+    const game = session?.game;
+    const virtues: string[] = game?.virtues ?? [];
+    const pairs: any[] = game?.activePairs ?? [];
+    const synergies = game ? game.activeSynergyCount() : 0;
+    if (!game || (!virtues.length && !pairs.length && !synergies)) {
+      panel.innerHTML = `<p class="td-favor-note">No run blessings yet. Clearing a wave can offer a blessing that lasts for the rest of the run.</p>`;
+      return;
+    }
+    const cards = virtues.map((name) => boonCard({ tag: "div", name: blessingNames[name] ?? name, effect: data.tuning.virtueEffects[name], compact: true })).join("");
+    const pairCards = pairs.map((pair) => boonCard({ tag: "div", name: pair.name, effect: pair.effect, compact: true, pair: true, badge: "Pair bonus" })).join("");
+    panel.innerHTML = `<div class="td-boon-grid">${pairCards}${cards}</div>` +
+      `<p class="td-favor-note">${synergies} active synergy link${synergies === 1 ? "" : "s"} between deployed heroes.</p>`;
+  }
 
-  const keyboardSlots = [
-    ...map.roadSlots.map((_: any, index: number) => ({ type: "road", index })),
-    ...map.platformSlots.map((_: any, index: number) => ({ type: "platform", index })),
-  ];
-  let keyboardSlotIndex = 0;
-  canvas.addEventListener("focus", () => { game.focusedSlot = keyboardSlots[keyboardSlotIndex]; });
-  canvas.addEventListener("blur", () => { game.focusedSlot = null; });
-  canvas.addEventListener("keydown", (event) => {
-    if (!["ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) return;
-    event.preventDefault();
-    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-      keyboardSlotIndex = (keyboardSlotIndex + (event.key === "ArrowRight" ? 1 : -1) + keyboardSlots.length) % keyboardSlots.length;
-      game.focusedSlot = keyboardSlots[keyboardSlotIndex];
-      const slot = game.focusedSlot;
-      commandNote.textContent = `${slot.type === "road" ? "Road" : "Platform"} ring ${slot.index + 1} selected. Press Enter to use it.`;
-    } else activateSlot(game.focusedSlot);
-  });
-  window.addEventListener("keydown", (event) => { if (event.key.toLowerCase() === "r" && selectedEntityId) game.rotate(selectedEntityId); });
-  root.querySelector<HTMLButtonElement>("[data-td-speed]")!.addEventListener("click", (event) => { speed = speed === 1 ? 2 : speed === 2 ? 4 : 1; (event.currentTarget as HTMLButtonElement).textContent = `${speed}×`; });
-  root.querySelector<HTMLButtonElement>("[data-td-pause]")!.addEventListener("click", (event) => { game.paused = !game.paused; (event.currentTarget as HTMLButtonElement).textContent = game.paused ? "▶" : "Ⅱ"; });
-  root.querySelector<HTMLButtonElement>("[data-td-restart]")!.addEventListener("click", () => window.location.reload());
-  root.querySelector<HTMLButtonElement>("[data-td-play-again]")!.addEventListener("click", () => window.location.reload());
-
+  // ------------------------------------------------------------------
+  // Results
+  // ------------------------------------------------------------------
   function fmtDuration(seconds: number) {
-    const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60);
-    return m > 0 ? `${m}m ${s}s` : `${s}s`;
+    const minutes = Math.floor(seconds / 60);
+    const rest = Math.floor(seconds % 60);
+    return minutes > 0 ? `${minutes}m ${rest}s` : `${rest}s`;
+  }
+
+  function resetResult() {
+    resultEl.hidden = true;
+    for (const selector of ["[data-td-result-stats]", "[data-td-result-compare]", "[data-td-result-achievements]", "[data-td-result-favor]"]) q(selector).hidden = true;
   }
 
   function finishRun() {
-    if (game.perfect) saved.perfectDefense = true;
-    saved.bestScore = Math.max(saved.bestScore, game.score); saved.bestWave = Math.max(saved.bestWave, game.wave);
-    const runStats = { waves: game.wave, perfectWaves: runPerfectWaves, bossKilled: !!game.won, livesLeft: game.lives };
-    const earnedFavor = computeFavor(runStats, data.tuning);
-    saved.favor = (saved.favor || 0) + earnedFavor;
+    if (!session) return;
+    const game = session.game;
+    const map = session.map;
+    const earnedFavor = computeFavor({ waves: game.wave, perfectWaves: session.perfectWaves, bossKilled: !!game.won, livesLeft: game.lives }, data.tuning);
+    const prevRun = saved.mapBests[map.id] || null;
+    // Debug runs (changed knobs, jumps, forced results) never touch saved progress.
+    if (!session.debug) {
+      if (game.perfect) saved.perfectDefense = true;
+      saved.bestScore = Math.max(saved.bestScore, game.score);
+      saved.bestWave = Math.max(saved.bestWave, game.wave);
+      saved.favor = (saved.favor || 0) + earnedFavor;
+      saved.mapBests[map.id] = { score: game.score ?? 0, wave: game.wave ?? 0, duration: Math.round(game.runDuration ?? 0), lives: game.lives ?? 0, leaks: game.totalLeaks ?? 0 };
+      const top = saved.mapTop[map.id];
+      if (!top || game.score > top.score) saved.mapTop[map.id] = { score: game.score, wave: game.wave };
+      persist();
+    }
 
-    const g = game as any;
-    const prevBest = saved.mapBests[map.id] || null;
-    saved.mapBests[map.id] = { score: g.score ?? 0, wave: g.wave ?? 0, duration: Math.round(g.runDuration ?? 0), lives: g.lives ?? 0, leaks: g.totalLeaks ?? 0 };
-    persist();
+    closePopover(false);
+    closeSheet(false);
+    cancelDeploy();
+    q("[data-td-result-kicker]").textContent = game.perfect ? "Perfect defense" : game.won ? "Victory" : "Defense broken";
+    q("[data-td-result-title]").textContent = game.won ? `${map.name} secured` : `${map.name} fell`;
+    q("[data-td-result-copy]").textContent = game.perfect
+      ? `${game.score.toLocaleString()} points - all ${totalWaves} waves - ${game.lives} lives left - not a single enemy broke through`
+      : `${game.score.toLocaleString()} points - wave ${game.wave} - ${game.lives} lives left - ${game.totalLeaks} leaks`;
 
-    root!.querySelector<HTMLElement>("[data-td-best]")!.textContent = saved.bestScore.toLocaleString();
-    if (saved.perfectDefense) root!.querySelector<HTMLElement>("[data-td-perfect]")!.hidden = false;
-    root!.querySelector<HTMLElement>("[data-td-result-kicker]")!.textContent = g.perfect ? "Perfect defense" : g.won ? "Victory" : "Defense broken";
-    root!.querySelector<HTMLElement>("[data-td-result-title]")!.textContent = g.won ? `${map.name} secured` : `${map.name} fell`;
-    root!.querySelector<HTMLElement>("[data-td-result-copy]")!.textContent = g.perfect
-      ? `${(g.score ?? 0).toLocaleString()} points · All 10 waves · ${g.lives ?? 0} lives left · not a single enemy broke through`
-      : `${(g.score ?? 0).toLocaleString()} points · Wave ${g.wave ?? 0} · ${g.lives ?? 0} lives left · ${g.totalLeaks ?? 0} leaks`;
-
-    // MVP hero: hero with most kills
-    const killEntries = Object.values(g.heroKills ?? {}) as { name: string; kills: number }[];
-    killEntries.sort((a, b) => b.kills - a.kills);
-    const mvp = killEntries[0] ?? null;
-
-    // Stats grid
-    const statsEl = root!.querySelector<HTMLElement>("[data-td-result-stats]")!;
-    const blessings = data.tuning.virtueBlessings || {};
-    const virtues: string[] = g.virtues ?? [];
-    const activePairs: any[] = g.activePairs ?? [];
-    const bestVirtueName = activePairs.length
-      ? activePairs[0].name
-      : (virtues.length ? (blessings[virtues[0]] ?? virtues[0]) : null);
-    const statsHtml = [
+    const kills = Object.values(game.heroKills ?? {}) as { name: string; kills: number }[];
+    kills.sort((a, b) => b.kills - a.kills);
+    const mvp = kills[0] ?? null;
+    const bestVirtueName = game.activePairs?.length ? game.activePairs[0].name : (game.virtues.length ? (blessingNames[game.virtues[0]] ?? game.virtues[0]) : null);
+    const statsEl = q("[data-td-result-stats]");
+    statsEl.innerHTML = [
       mvp ? `<div class="td-result-stat"><span>MVP</span><strong>${mvp.name}</strong><small>${mvp.kills} kills</small></div>` : "",
-      `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(g.runDuration ?? 0)}</strong></div>`,
-      `<div class="td-result-stat"><span>Gold left</span><strong>${g.gold ?? 0}</strong><small>of ~${Math.round((g.totalGoldEarned ?? 0) + data.tuning.run.startingGold)} earned</small></div>`,
-      `<div class="td-result-stat"><span>Spent</span><strong>${g.totalGoldSpent ?? 0}</strong></div>`,
+      `<div class="td-result-stat"><span>Duration</span><strong>${fmtDuration(game.runDuration ?? 0)}</strong></div>`,
+      `<div class="td-result-stat"><span>Gold left</span><strong>${game.gold}</strong><small>of ~${Math.round((game.totalGoldEarned ?? 0) + game.tuning.run.startingGold)} earned</small></div>`,
+      `<div class="td-result-stat"><span>Spent</span><strong>${game.totalGoldSpent ?? 0}</strong></div>`,
       bestVirtueName ? `<div class="td-result-stat"><span>Best blessing</span><strong>${bestVirtueName}</strong></div>` : "",
-    ].filter(Boolean).join("");
-    statsEl.innerHTML = statsHtml;
+    ].join("");
     statsEl.hidden = false;
 
-    // Comparison vs previous best on this map
-    const compareEl = root!.querySelector<HTMLElement>("[data-td-result-compare]")!;
-    if (prevBest) {
+    const compareEl = q("[data-td-result-compare]");
+    if (prevRun) {
       const improvements: string[] = [];
-      if ((g.score ?? 0) > prevBest.score) improvements.push(`higher score (+${((g.score ?? 0) - prevBest.score).toLocaleString()})`);
-      if ((g.lives ?? 0) > prevBest.lives) improvements.push(`more lives left (+${(g.lives ?? 0) - prevBest.lives})`);
-      if ((g.totalLeaks ?? 0) < prevBest.leaks) improvements.push(`fewer leaks (-${prevBest.leaks - (g.totalLeaks ?? 0)})`);
-      if (g.won && (prevBest.duration ?? 0) > 0 && (g.runDuration ?? 0) < (prevBest.duration ?? 0)) improvements.push(`faster run (-${fmtDuration((prevBest.duration ?? 0) - (g.runDuration ?? 0))})`);
-      if (improvements.length) {
-        compareEl.textContent = `Better than last time: ${improvements.join(", ")}.`;
-        compareEl.hidden = false;
-      }
+      if (game.score > prevRun.score) improvements.push(`higher score (+${(game.score - prevRun.score).toLocaleString()})`);
+      if (game.lives > prevRun.lives) improvements.push(`more lives left (+${game.lives - prevRun.lives})`);
+      if (game.totalLeaks < prevRun.leaks) improvements.push(`fewer leaks (-${prevRun.leaks - game.totalLeaks})`);
+      if (game.won && (prevRun.duration ?? 0) > 0 && game.runDuration < prevRun.duration) improvements.push(`faster run (-${fmtDuration(prevRun.duration - game.runDuration)})`);
+      if (improvements.length) { compareEl.textContent = `Better than last time: ${improvements.join(", ")}.`; compareEl.hidden = false; }
     }
 
-    // Achievements
     const earned: string[] = [];
-    if (g.perfect) earned.push("Perfect Defense");
-    if (g.won && (g.gold ?? 0) >= 150) earned.push("Hoarder");
-    if (g.won && (g.runDuration ?? 0) <= 300) earned.push("Speed Run");
-    const achieveEl = root!.querySelector<HTMLElement>("[data-td-result-achievements]")!;
-    if (earned.length) {
-      achieveEl.innerHTML = earned.map((a) => `<span class="td-achievement">${a}</span>`).join("");
-      achieveEl.hidden = false;
-    }
+    if (game.perfect) earned.push("Perfect Defense");
+    if (game.won && game.gold >= 150) earned.push("Hoarder");
+    if (game.won && game.runDuration <= 300) earned.push("Speed Run");
+    const achieveEl = q("[data-td-result-achievements]");
+    if (earned.length) { achieveEl.innerHTML = earned.map((name) => `<span class="td-achievement">${name}</span>`).join(""); achieveEl.hidden = false; }
 
-    const favorEl = root!.querySelector<HTMLElement>("[data-td-result-favor]");
-    if (favorEl) { favorEl.textContent = `+${earnedFavor} Divine Favor earned. Total: ${saved.favor} Favor.`; favorEl.hidden = false; }
-    result.hidden = false;
+    const favorEl = q("[data-td-result-favor]");
+    favorEl.textContent = session.debug
+      ? "Debug run: score, bests and Favor were not recorded."
+      : `+${earnedFavor} Divine Favor earned. Total: ${saved.favor} Favor.`;
+    favorEl.hidden = false;
+    syncSpendButton();
+    resultEl.hidden = false;
+    resultEl.scrollTop = 0;
+    q<HTMLButtonElement>("[data-td-retry]").focus({ preventScroll: true });
+  }
+
+  // ------------------------------------------------------------------
+  // Global controls
+  // ------------------------------------------------------------------
+  pauseButton.addEventListener("click", () => { pause.toggle("manual"); syncPauseButton(); });
+  speedButton.addEventListener("click", () => {
+    speed = speed === 1 ? 2 : speed === 2 ? 4 : 1;
+    speedButton.textContent = `${speed}x`;
+    speedButton.setAttribute("aria-label", `Game speed ${speed}x`);
+  });
+
+  root.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const opener = target.closest<HTMLElement>("[data-td-open]");
+    if (opener) { openPanel(opener.dataset.tdOpen!, activePanel ? null : opener); return; }
+    if (target.closest("[data-td-close-panel]")) { closePanel(); return; }
+    if (target.closest("[data-td-restart]") || target.closest("[data-td-retry]")) {
+      const map = session?.map ?? selectedMap;
+      closePanel(false);
+      startSession(map);
+      return;
+    }
+    if (target.closest("[data-td-to-lobby]")) toLobby();
+  });
+
+  const isTyping = (target: EventTarget | null) => target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (activePanel) closePanel();
+      else if (!sheetEl.hidden) closeSheet();
+      else if (!popover.hidden) closePopover();
+      else if (deployHeroId) cancelDeploy();
+      else return;
+      event.preventDefault();
+      return;
+    }
+    if (event.key === "Tab" && activePanel) {
+      // Keep focus inside the open panel.
+      const focusables = [...activePanel.querySelectorAll<HTMLElement>("button:not(:disabled), a[href], input, [tabindex='0']")].filter((el) => !el.closest("[hidden]"));
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === activePanel)) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      return;
+    }
+    if (event.key.toLowerCase() === "r" && !event.metaKey && !event.ctrlKey && !activePanel && !isTyping(event.target) && session && selectedEntityId !== null) {
+      session.game.rotate(selectedEntityId);
+    }
+  });
+
+  new ResizeObserver(() => {
+    session?.renderer.resize();
+    positionPopover();
+    positionBuffs();
+  }).observe(stageEl);
+
+  // ------------------------------------------------------------------
+  // Debug panel (dev builds only): live difficulty knobs and shortcuts
+  // ------------------------------------------------------------------
+  const debugEl = root.querySelector<HTMLElement>("[data-td-debug]");
+  const DEBUG_DEFAULTS = { enemyHp: 1, waveHpScale: 0.15, enemySpeed: 1, killGold: 1 };
+  const debugKnobs: Record<string, number> = { ...DEBUG_DEFAULTS, ...(data.tuning.difficulty || {}) };
+  let debugInvincible = false;
+  const knobsChanged = () => Object.entries(DEBUG_DEFAULTS).some(([key, value]) => debugKnobs[key] !== ((data.tuning.difficulty || {})[key] ?? value));
+
+  function formatKnob(key: string, value: number) {
+    return key === "waveHpScale" ? `${Math.round(value * 100)}%` : `x${value.toFixed(2)}`;
+  }
+
+  // Knobs persist across retries in this page; they mark the run as a debug run.
+  function applyDebugKnobs() {
+    if (!debugEl || !session) return;
+    Object.assign(session.game.difficulty, debugKnobs, { invincible: debugInvincible });
+    if (knobsChanged() || debugInvincible) session.debug = true;
+  }
+
+  function syncDebugUi() {
+    if (!debugEl) return;
+    debugEl.querySelectorAll<HTMLInputElement>("[data-debug-knob]").forEach((input) => {
+      const key = input.dataset.debugKnob!;
+      input.value = String(debugKnobs[key]);
+      debugEl.querySelector<HTMLElement>(`[data-debug-out="${key}"]`)!.textContent = formatKnob(key, debugKnobs[key]);
+    });
+    debugEl.querySelector<HTMLInputElement>("[data-debug-invincible]")!.checked = debugInvincible;
+  }
+
+  function renderDebugStats() {
+    if (!debugEl || debugEl.hidden || !session) return;
+    const game = session.game;
+    const mods = game.modifiers();
+    // Rough sustained damage: attack x attacks per second x crit, before enemy armor and ultimates.
+    const dps = game.heroes.reduce((sum: number, unit: any) => sum + game.attackValue(unit) * unit.aps * (1 + Math.min(1, unit.critChance + mods.crit) * 0.5), 0);
+    const waveIndex = game.running ? game.wave - 1 : game.wave;
+    const waveHp = game.waveTotalHp(waveIndex);
+    const alive = game.enemies.filter((enemy: any) => !enemy.dead);
+    const rows = [
+      ["Team DPS (rough)", Math.round(dps).toLocaleString()],
+      [`Wave ${waveIndex + 1} total HP`, waveHp.toLocaleString()],
+      ["HP / DPS", dps > 0 ? `${Math.round(waveHp / dps)}s` : "-"],
+      ["Enemies alive", String(alive.length)],
+      ["Leaks this wave / run", `${game.waveStats?.leaks ?? 0} / ${game.totalLeaks}`],
+    ];
+    debugEl.querySelector<HTMLElement>("[data-debug-stats]")!.innerHTML = rows.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("");
+  }
+
+  if (debugEl) {
+    const toggle = q<HTMLButtonElement>("[data-td-debug-toggle]");
+    toggle.addEventListener("click", () => {
+      debugEl.hidden = !debugEl.hidden;
+      toggle.setAttribute("aria-pressed", String(!debugEl.hidden));
+      syncDebugUi();
+      renderDebugStats();
+    });
+    debugEl.addEventListener("input", (event) => {
+      const input = event.target as HTMLInputElement;
+      if (input.dataset.debugKnob) {
+        debugKnobs[input.dataset.debugKnob] = Number(input.value);
+      } else if (input.matches("[data-debug-invincible]")) {
+        debugInvincible = input.checked;
+      } else return;
+      syncDebugUi();
+      applyDebugKnobs();
+      renderPreview();
+      renderDebugStats();
+    });
+    debugEl.addEventListener("click", async (event) => {
+      const action = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-debug-action]")?.dataset.debugAction;
+      if (!action) return;
+      const copyOut = debugEl.querySelector<HTMLOutputElement>("[data-debug-copy]")!;
+      if (action === "favor") {
+        saved.favor = (saved.favor || 0) + 500;
+        persist();
+        renderLobby();
+        notice("+500 Favor (debug).");
+        return;
+      }
+      if (action === "reset") {
+        Object.assign(debugKnobs, DEBUG_DEFAULTS, data.tuning.difficulty || {});
+        debugInvincible = false;
+        syncDebugUi();
+        applyDebugKnobs();
+        renderPreview();
+        return;
+      }
+      if (action === "copy") {
+        const text = `"difficulty": ${JSON.stringify(debugKnobs)}`;
+        copyOut.textContent = text;
+        try { await navigator.clipboard.writeText(text); notice("Difficulty values copied. Paste into gameBalance.tuning.json."); }
+        catch { notice("Copy blocked by the browser. Values are shown in the debug panel."); }
+        return;
+      }
+      if (!session) { notice("Start a run first."); return; }
+      const game = session.game;
+      session.debug = true;
+      if (action === "gold") { game.gold += 500; handleChange("debug"); }
+      if (action === "win" && !game.complete) { game.running = false; game.finish(true); }
+      if (action === "lose" && !game.complete) { game.running = false; game.lives = 0; game.finish(false); }
+      if (action === "jump") {
+        if (game.running || game.complete) { notice("Jump works between waves."); return; }
+        const target = Math.min(totalWaves, Math.max(1, Number(debugEl.querySelector<HTMLInputElement>("[data-debug-wave]")!.value) || 1));
+        game.wave = target - 1;
+        game.virtueOffer = null;
+        session.started = true;
+        handleChange("debug");
+        notice(`Next wave set to ${target}. Press Start when ready.`);
+      }
+    });
+    syncDebugUi();
   }
 
   let last = performance.now();
+  let lastHealthUpdate = 0;
+  let lastDebugUpdate = 0;
   function frame(now: number) {
-    const delta = (now - last) / 1000; last = now;
-    game.advance(delta * speed); renderer.draw(now); requestAnimationFrame(frame);
+    const delta = (now - last) / 1000;
+    last = now;
+    if (session) {
+      session.game.advance(delta * speed);
+      session.renderer.draw(now);
+      if (debugEl && !debugEl.hidden && now - lastDebugUpdate > 250) {
+        lastDebugUpdate = now;
+        renderDebugStats();
+      }
+      if (!popover.hidden && now - lastHealthUpdate > 250) {
+        lastHealthUpdate = now;
+        const unit = findUnit(selectedEntityId);
+        if (unit) updatePopoverHealth(unit);
+      }
+    }
+    requestAnimationFrame(frame);
   }
-  new ResizeObserver(renderer.resize).observe(canvas);
-  showPickerPrompt(); updateHud(); renderBlessings(); requestAnimationFrame(frame);
+
+  showScreen("lobby");
+  renderLobby();
+  requestAnimationFrame(frame);
 </script>

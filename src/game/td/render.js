@@ -2,6 +2,7 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
+import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
 
@@ -155,11 +156,17 @@ export async function createRenderer(canvas, game, options = {}) {
   PIXI.Assets.load("/td/spriteRoad.png").then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
 
   // ------------------------------------------------------------------
-  // Resize: scale stage so 960x540 logical coords fill the canvas CSS box
+  // Resize: fit the 960x540 world into the parent's width AND height
+  // (letterboxed), then scale the stage to the fitted canvas size.
   // ------------------------------------------------------------------
   function resize() {
-    const w = canvas.clientWidth || 960;
-    const h = w * 0.5625;
+    const box = canvas.parentElement;
+    const style = box ? getComputedStyle(box) : null;
+    const padX = style ? parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) : 0;
+    const padY = style ? parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) : 0;
+    const { width: w, height: h } = fitRect((box?.clientWidth || 960) - padX, (box?.clientHeight || 0) - padY);
+    if (!w || !h) return;
+    canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
     // PixiJS autoDensity handles the backing store; we just update the renderer size.
     app.renderer.resize(w, h);
@@ -886,7 +893,15 @@ export async function createRenderer(canvas, game, options = {}) {
   buildBg();
   buildPortals();
 
-  return { draw, resize, sprites, particles };
+  let destroyed = false;
+  function destroy() {
+    if (destroyed) return;
+    destroyed = true;
+    // Removes the canvas from the DOM; shared textures stay in the Assets cache for the next run.
+    app.destroy({ removeView: true }, { children: true });
+  }
+
+  return { draw, resize, destroy, sprites, particles };
 }
 
 // ------------------------------------------------------------------

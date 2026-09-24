@@ -785,4 +785,23 @@ function runWaveOne(g) {
   assert.ok(g1.hp <= hpBefore - 119, "exposed enemy takes at least 120 damage from 100 hit");
 }
 
+// Bug repro: a dead hero must free its team slot so a 6th distinct hero can be recruited.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
+  g.gold = 10000;
+  assert.equal(g.place("nuwa", "road", 0), true, "enlist 1/5");
+  assert.equal(g.place("poseidon", "road", 1), true, "enlist 2/5");
+  assert.equal(g.place("zeus", "platform", 0), true, "enlist 3/5");
+  assert.equal(g.place("diana", "platform", 1), true, "enlist 4/5");
+  assert.equal(g.place("caishen", "platform", 2), true, "enlist 5/5");
+  assert.equal(g.team.length, 5, "team at cap");
+  assert.equal(g.place("amunra", "road", 2), false, "6th distinct hero blocked at cap, as expected");
+  const nuwa = g.heroes.find((h) => h.id === "nuwa");
+  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
+  assert.equal(g.heroes.some((h) => h.id === "nuwa"), false, "nuwa removed from field");
+  assert.equal(g.team.includes("nuwa"), false, "dead hero freed from team roster");
+  assert.equal(g.team.length, 4, "team cap freed up");
+  assert.equal(g.place("amunra", "road", 2), true, "replacement hero can now be recruited");
+}
+
 console.log("Tower defense checks passed");

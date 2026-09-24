@@ -22,6 +22,33 @@ export function applyFavorTree(unlockedNodes, tuning) {
   return bonuses;
 }
 
+// Effect types the simulator consumes. Nodes with other types are shown as
+// "Not active yet" and cannot be purchased.
+export const ACTIVE_FAVOR_EFFECTS = [
+  "startingGold", "lives", "showHp", "heroHp", "tankHp", "mageRange",
+  "killGold", "assassinExecute", "ultCharge", "synergyTag", "contactRange", "wave1Speed",
+];
+
+export function isFavorNodeActive(node) {
+  return !!node && ACTIVE_FAVOR_EFFECTS.includes(node.effect?.type);
+}
+
+// Snapshot of tuning for one run with the unlocked Favor nodes applied.
+// Start resources are folded into run; everything else is read by the
+// simulator from tuning.favor.
+export function buildRunTuning(tuning, unlockedNodes) {
+  const bonuses = applyFavorTree(unlockedNodes, tuning);
+  return {
+    ...tuning,
+    favor: bonuses,
+    run: {
+      ...tuning.run,
+      startingGold: tuning.run.startingGold + (bonuses.startingGoldBonus || 0),
+      lives: tuning.run.lives + (bonuses.livesBonus || 0),
+    },
+  };
+}
+
 export function canUnlock(nodeId, unlockedNodes, nodes) {
   const src = nodes || tree;
   const node = src.find((n) => n.id === nodeId);

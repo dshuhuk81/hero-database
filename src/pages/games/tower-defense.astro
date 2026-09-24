@@ -1,6 +1,6 @@
 ---
 export const prerender = true;
-import Base from "../../layouts/Base.astro";
+import GameLayout from "../../layouts/GameLayout.astro";
 import TowerDefensePage from "../../components/pages/TowerDefensePage.astro";
 import heroes from "../../data/gameBalance.json";
 import tuning from "../../data/gameBalance.tuning.json";
@@ -26,7 +26,7 @@ for (const piece of virtues as any[]) {
 }
 ---
 
-<Base
+<GameLayout
   title="Tower Defense | Motto Immortal"
   description="Command Motto Immortal heroes in a compact, ten-wave browser tower defense challenge."
 >
@@ -39,4 +39,4 @@ for (const piece of virtues as any[]) {
     }</script>
   </Fragment>
   <TowerDefensePage heroes={heroesForGame} tuning={tuning} maps={maps} waves={waves} boss={baphometForGame} virtueTexts={virtueTexts} />
-</Base>
+</GameLayout>

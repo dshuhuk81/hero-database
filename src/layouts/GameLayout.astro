@@ -1,0 +1,56 @@
+---
+// Full-viewport layout for browser games: shared metadata and global styles,
+// but no site navigation or footer. The game shell provides its own Back link.
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "Motto Immortal Database",
+  description = "The complete hero database for Motto Immortal.",
+  image = "/og-default.png",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#07060c" />
+  <link rel="canonical" href={canonicalURL} />
+  <link rel="preconnect" href="https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(image, Astro.site)} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={new URL(image, Astro.site)} />
+
+  <title>{title}</title>
+  <slot name="head" />
+</head>
+<body class="game-body">
+  <slot />
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/tokens.css';
+  @import '../styles/reset.css';
+  @import '../styles/base.css';
+  @import '../styles/components.css';
+  @import '../styles/td.css';
+</style>

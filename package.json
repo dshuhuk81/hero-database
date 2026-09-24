@@ -37,8 +37,9 @@
     "build:hero-variants": "node scripts/create-hero-image-variants.mjs",
     "prepare-hero-variants": "npm run sync:r2-heroes-down && npm run build:hero-variants",
     "build:game-balance": "node scripts/build-game-balance.mjs",
-    "test:tower-defense": "node scripts/test-td-sim.mjs",
-    "test:td-balance": "node scripts/test-td-balance.mjs"
+    "test:tower-defense": "node scripts/test-td-ui.mjs && node scripts/test-td-favor.mjs && node scripts/test-td-difficulty.mjs && node scripts/test-td-sim.mjs",
+    "test:td-balance": "node scripts/test-td-balance.mjs",
+    "td:sweep": "node scripts/td-balance-sweep.mjs"
   },
   "engines": {
     "node": "20.x"
