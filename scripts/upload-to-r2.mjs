@@ -63,6 +63,7 @@ const MIME_TYPES = {
   ".ogg": "audio/ogg",
   ".wav": "audio/wav",
   ".mp3": "audio/mpeg",
+  ".m4a": "audio/mp4",
   ".webm": "video/webm",
   ".mp4": "video/mp4",
 };

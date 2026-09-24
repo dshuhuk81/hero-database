@@ -208,8 +208,14 @@ const previews = maps.map((entry: any) => ({
           <div class="td-stat"><span>Best</span><strong data-td-menu-best>0</strong></div>
         </div>
         <div class="td-menu-sound">
-          <button class="action-button action-button--quiet" type="button" data-td-mute aria-pressed="false">Sound on</button>
-          <label class="td-volume-label">Volume <input class="td-volume" type="range" min="0" max="100" value="70" data-td-volume /></label>
+          <div class="td-menu-sound-row">
+            <button class="action-button action-button--quiet" type="button" data-td-mute aria-pressed="false">Sound on</button>
+            <label class="td-volume-label">Effects <input class="td-volume" type="range" min="0" max="100" value="70" data-td-volume /></label>
+          </div>
+          <div class="td-menu-sound-row">
+            <button class="action-button action-button--quiet" type="button" data-td-music-mute aria-pressed="false">Music on</button>
+            <label class="td-volume-label">Music <input class="td-volume" type="range" min="0" max="100" value="50" data-td-music-volume /></label>
+          </div>
         </div>
         <div class="td-menu-actions">
           <button class="action-button action-button--primary" type="button" data-td-close-panel>Resume</button>
@@ -298,7 +304,7 @@ const previews = maps.map((entry: any) => ({
 <script>
   import { TowerDefenseGame } from "../../game/td/sim.js";
   import { canvasPoint, createRenderer, nearestSlot } from "../../game/td/render.js";
-  import { createAudio } from "../../game/td/audio";
+  import { createAudio, createMusic } from "../../game/td/audio";
   import { setAssetBase } from "../../game/td/assets.js";
   import { buildRunTuning, canUnlock, computeFavor, isFavorNodeActive } from "../../game/td/favor.js";
   import { blessingDisplay, buffChips, createPauseController, placePopover, slotHitRadius, worldToLocal } from "../../game/td/ui.js";
@@ -353,6 +359,8 @@ const previews = maps.map((entry: any) => ({
   const panelLayer = q("[data-td-panel-layer]");
   const muteButton = q<HTMLButtonElement>("[data-td-mute]");
   const volumeSlider = q<HTMLInputElement>("[data-td-volume]");
+  const musicMuteButton = q<HTMLButtonElement>("[data-td-music-mute]");
+  const musicVolumeSlider = q<HTMLInputElement>("[data-td-music-volume]");
 
   // ------------------------------------------------------------------
   // Saved progress (td:v1 shape kept; mapTop added for per-map records)
@@ -427,6 +435,16 @@ const previews = maps.map((entry: any) => ({
   volumeSlider.addEventListener("input", () => { audio.setVolume(Number(volumeSlider.value) / 100); syncAudioUi(); });
   syncAudioUi();
 
+  const music = createMusic();
+  musicVolumeSlider.value = String(Math.round(music.volume * 100));
+  const syncMusicUi = () => {
+    musicMuteButton.textContent = music.muted ? "Music off" : "Music on";
+    musicMuteButton.setAttribute("aria-pressed", String(music.muted));
+  };
+  musicMuteButton.addEventListener("click", () => { music.toggleMute(); syncMusicUi(); });
+  musicVolumeSlider.addEventListener("input", () => { music.setVolume(Number(musicVolumeSlider.value) / 100); syncMusicUi(); });
+  syncMusicUi();
+
   // ------------------------------------------------------------------
   // Session state: one game + renderer per run, one rAF loop per page
   // ------------------------------------------------------------------
@@ -468,6 +486,7 @@ const previews = maps.map((entry: any) => ({
     endSession();
     selectedMap = map;
     try { localStorage.setItem("td:map", map.id); } catch {}
+    music.play(map.music);
     showScreen("play");
     pause.clear();
     syncPauseButton();
@@ -541,6 +560,7 @@ const previews = maps.map((entry: any) => ({
     sessionToken += 1; // cancels a battlefield that is still loading
     closePanel(false);
     endSession();
+    music.stop();
     pause.clear();
     showScreen("lobby");
     renderLobby();

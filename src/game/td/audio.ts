@@ -1,4 +1,4 @@
-// Minimal WebAudio player for the tower defense minigame.
+// Minimal WebAudio player for the tower defense minigame, plus background music.
 // Kenney impact/interface sounds from td/sfx on R2 (CC0). Volume and mute persist
 // in localStorage; hit sounds are capped so a full wave stays pleasant.
 import { tdAsset } from "./assets.js";
@@ -17,9 +17,11 @@ const SOUNDS = {
 const HERO_SOUNDS: Record<string, { voice?: string; attack?: string; ultimate?: string }> = {
   zeus: { voice: "zeus_voice", attack: "zeus_attack", ultimate: "zeus_ultimate" },
   caishen: { voice: "caishen_voice", attack: "caishen_attack", ultimate: "caishen_ultimate" },
-};
-
-const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
+  demeter: { voice: "demeter_voice", attack: "demeter_attack", ultimate: "demeter_ultimate" },
+  poseidon: { voice: "poseidon_voice", attack: "poseidon_attack", ultimate: "poseidon_ultimate" },
+  diana: { voice: "diana_voice", attack: "diana_attack", ultimate: "diana_ultimate" },
+  anubis: { voice: "anubis_voice", attack: "anubis_attack", ultimate: "anubis_ultimate" },
+};const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
 const MAX_WITHIN_WINDOW = { hit: { count: 3, windowMs: 600 } };
 
 export function createAudio() {
@@ -100,5 +102,81 @@ export function createAudio() {
     get volume() { return volume; },
     toggleMute() { muted = !muted; persist(); return muted; },
     setVolume(value: number) { volume = Math.min(1, Math.max(0, value)); if (volume > 0) muted = false; persist(); },
+  };
+}
+
+// Background music: one looping <audio> element per page, streamed from td/music on
+// R2 and only fetched once a map starts unmuted. Routed through a GainNode because
+// iOS Safari ignores HTMLMediaElement.volume. Own volume/mute, persisted separately.
+export function createMusic() {
+  let element: HTMLAudioElement | null = null;
+  let context: AudioContext | null = null;
+  let gain: GainNode | null = null;
+  let track = "";
+  let volume = 0.5;
+  let muted = false;
+
+  try {
+    const saved = JSON.parse(localStorage.getItem("td:music") || "null");
+    if (saved && typeof saved.volume === "number") volume = Math.min(1, Math.max(0, saved.volume));
+    if (saved) muted = !!saved.muted;
+  } catch {}
+
+  const persist = () => { try { localStorage.setItem("td:music", JSON.stringify({ volume, muted })); } catch {} };
+
+  function ensureElement() {
+    if (element) return element;
+    element = new Audio();
+    element.crossOrigin = "anonymous";
+    element.loop = true;
+    element.preload = "auto";
+    try {
+      context = new (window.AudioContext || (window as any).webkitAudioContext)();
+      gain = context.createGain();
+      context.createMediaElementSource(element).connect(gain).connect(context.destination);
+    } catch {
+      context = null;
+      gain = null;
+    }
+    return element;
+  }
+
+  function applyVolume() {
+    if (gain) gain.gain.value = volume;
+    else if (element) element.volume = volume;
+  }
+
+  function sync() {
+    if (!track || muted || volume === 0 || document.hidden) {
+      element?.pause();
+      return;
+    }
+    const audio = ensureElement();
+    if (audio.dataset.track !== track) {
+      audio.src = tdAsset(`music/${track}.m4a`);
+      audio.dataset.track = track;
+    }
+    applyVolume();
+    if (context?.state === "suspended") context.resume().catch(() => {});
+    audio.play().catch(() => {});
+  }
+
+  document.addEventListener("visibilitychange", sync);
+
+  return {
+    // Same track again (restart run on the same map) keeps playing without a restart.
+    play(name: string) { track = name || ""; sync(); },
+    stop() {
+      track = "";
+      if (!element) return;
+      element.pause();
+      element.removeAttribute("src");
+      delete element.dataset.track;
+      element.load();
+    },
+    get muted() { return muted; },
+    get volume() { return volume; },
+    toggleMute() { muted = !muted; persist(); sync(); return muted; },
+    setVolume(value: number) { volume = Math.min(1, Math.max(0, value)); if (volume > 0) muted = false; persist(); sync(); },
   };
 }
