@@ -1,11 +1,13 @@
 // Zeus-only visual experiment. CC0 textures; no combat changes.
+import { tdAsset } from "./assets.js";
+
 export function createZeusFx(PIXI, parent, { reducedMotion = false } = {}) {
   const layer = new PIXI.Container();
   parent.addChild(layer);
   const active = new Map();
   const textures = [];
   ["lightning_b", "lightning1_b", "lightning2_b", "lightning3_b"].forEach((name, i) => {
-    PIXI.Assets.load(`/td/fx/zeus/${name}.png`).then(t => { textures[i] = t; }).catch(() => {});
+    PIXI.Assets.load(tdAsset(`fx/zeus/${name}.png`)).then(t => { textures[i] = t; }).catch(() => {});
   });
   // Shared soft flash, without a filter for every particle.
   const canvas = document.createElement("canvas");

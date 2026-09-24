@@ -41,7 +41,7 @@
     "tier": 2,
     "cost": 60,
     "requires": ["demeter_bounty", "freya_blessing", "horus_sight", "jormungandr_hide"],
-    "requiresMin": 1,
+    "requiresMin": 3,
     "effect": { "type": "tankHp", "value": 0.10 },
     "description": "Tank class heroes gain +10% max HP."
   },
@@ -51,7 +51,7 @@
     "tier": 2,
     "cost": 60,
     "requires": ["demeter_bounty", "freya_blessing", "horus_sight", "jormungandr_hide"],
-    "requiresMin": 1,
+    "requiresMin": 3,
     "effect": { "type": "mageRange", "value": 15 },
     "description": "Mage class heroes gain +15 px attack range."
   },
@@ -61,7 +61,7 @@
     "tier": 2,
     "cost": 60,
     "requires": ["demeter_bounty", "freya_blessing", "horus_sight", "jormungandr_hide"],
-    "requiresMin": 1,
+    "requiresMin": 3,
     "effect": { "type": "killGold", "value": 0.10 },
     "description": "Kill gold rewards +10%."
   },
@@ -71,7 +71,7 @@
     "tier": 2,
     "cost": 60,
     "requires": ["demeter_bounty", "freya_blessing", "horus_sight", "jormungandr_hide"],
-    "requiresMin": 1,
+    "requiresMin": 3,
     "effect": { "type": "assassinExecute", "value": 0.40 },
     "description": "Assassin execute threshold raised to 40% HP."
   },
@@ -81,7 +81,7 @@
     "tier": 3,
     "cost": 120,
     "requires": ["nuwa_wall", "zeus_dominion", "caishen_treasury", "bastet_edge"],
-    "requiresMin": 2,
+    "requiresMin": 3,
     "effect": { "type": "ultCharge", "value": 0.15 },
     "description": "Ultimates charge 15% faster."
   },
@@ -91,7 +91,7 @@
     "tier": 3,
     "cost": 120,
     "requires": ["nuwa_wall", "zeus_dominion", "caishen_treasury", "bastet_edge"],
-    "requiresMin": 2,
+    "requiresMin": 3,
     "effect": { "type": "synergyTag", "value": 0.02 },
     "description": "Synergy bonus per shared tag +2%."
   },
@@ -101,7 +101,7 @@
     "tier": 3,
     "cost": 120,
     "requires": ["nuwa_wall", "zeus_dominion", "caishen_treasury", "bastet_edge"],
-    "requiresMin": 2,
+    "requiresMin": 3,
     "effect": { "type": "contactRange", "value": 8 },
     "description": "All road blockers gain +8 px contact range."
   },
@@ -111,7 +111,7 @@
     "tier": 3,
     "cost": 120,
     "requires": ["nuwa_wall", "zeus_dominion", "caishen_treasury", "bastet_edge"],
-    "requiresMin": 2,
+    "requiresMin": 3,
     "effect": { "type": "wave1Speed", "value": 0.25 },
     "description": "Wave 1 enemies move 25% slower."
   }

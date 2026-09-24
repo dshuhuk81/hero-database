@@ -60,6 +60,11 @@ const MIME_TYPES = {
   ".css": "text/css",
   ".html": "text/html",
   ".txt": "text/plain",
+  ".ogg": "audio/ogg",
+  ".wav": "audio/wav",
+  ".mp3": "audio/mpeg",
+  ".webm": "video/webm",
+  ".mp4": "video/mp4",
 };
 
 function getAllFiles(dir, files = []) {

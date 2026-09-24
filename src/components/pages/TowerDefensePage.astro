@@ -1,8 +1,8 @@
 ---
 import favorTree from "../../data/favorTree.json";
-interface Props { heroes: any[]; tuning: any; maps: any[]; waves: any[]; boss?: any; virtueTexts?: Record<string, string>; }
-const { heroes, tuning, maps, waves, boss, virtueTexts = {} } = Astro.props;
-const payload = { heroes, tuning, maps, waves, boss, virtueTexts, favorTree };
+interface Props { assetBase: string; heroes: any[]; tuning: any; maps: any[]; waves: any[]; boss?: any; }
+const { assetBase, heroes, tuning, maps, waves, boss } = Astro.props;
+const payload = { assetBase, heroes, tuning, maps, waves, boss, favorTree };
 const bossName = boss?.name ?? "Baphomet";
 const isDev = import.meta.env.DEV; // debug panel exists only in local dev builds
 const maxTeam = tuning.run.maxTeam ?? 5;
@@ -53,6 +53,7 @@ const previews = maps.map((entry: any) => ({
         <button class="action-button action-button--primary td-play-button" type="button" data-td-play-start>Play</button>
         <button class="action-button action-button--quiet" type="button" data-td-open="blessings">Divine Blessings <span class="td-favor-count" data-td-favor-count></span></button>
         <button class="action-button action-button--quiet" type="button" data-td-open="help">How to play</button>
+        <button class="action-button action-button--quiet" type="button" data-td-open="save">Save data</button>
       </div>
 
       <p class="td-disclaimer">Minigame balance values are made up for fun and do not reflect in-game numbers.</p>
@@ -258,6 +259,37 @@ const previews = maps.map((entry: any) => ({
         <article><strong>Keyboard</strong><p>Focus the battlefield, use the left and right arrow keys to choose a ring, and press Enter to use it. R rotates the selected hero, Escape closes panels.</p></article>
       </div>
     </section>
+
+    <section class="td-panel" data-td-panel="save" role="dialog" aria-modal="true" aria-labelledby="td-save-title" tabindex="-1" hidden>
+      <div class="td-panel-head">
+        <h2 id="td-save-title">Save data</h2>
+        <button class="td-icon-button td-icon-button--small" type="button" data-td-close-panel aria-label="Close save data">
+          <svg class="td-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+      <div class="td-panel-body">
+        <p class="td-favor-note">Progress is stored in this browser only. Copy your code to move it to another device or keep a backup. Sound settings are not included.</p>
+        <div class="td-save-block">
+          <label class="td-label" for="td-save-export">Your save code</label>
+          <textarea class="td-save-code" id="td-save-export" rows="3" readonly data-td-save-export></textarea>
+          <div class="td-save-actions">
+            <button class="action-button action-button--quiet" type="button" data-td-save-copy>Copy code</button>
+            <button class="action-button action-button--quiet" type="button" data-td-save-download>Download file</button>
+          </div>
+        </div>
+        <div class="td-save-block">
+          <label class="td-label" for="td-save-import">Load a save</label>
+          <textarea class="td-save-code" id="td-save-import" rows="3" placeholder="Paste a save code" data-td-save-import></textarea>
+          <div class="td-save-actions">
+            <button class="action-button action-button--primary" type="button" data-td-save-load>Load code</button>
+            <button class="action-button action-button--quiet" type="button" data-td-save-file>Load file</button>
+            <input class="td-save-file-input" type="file" accept=".json,application/json" data-td-save-file-input />
+          </div>
+          <p class="td-favor-note">Loading replaces your current progress on this device.</p>
+        </div>
+        <p class="td-save-status" role="status" data-td-save-status></p>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -267,6 +299,7 @@ const previews = maps.map((entry: any) => ({
   import { TowerDefenseGame } from "../../game/td/sim.js";
   import { canvasPoint, createRenderer, nearestSlot } from "../../game/td/render.js";
   import { createAudio } from "../../game/td/audio";
+  import { setAssetBase } from "../../game/td/assets.js";
   import { buildRunTuning, canUnlock, computeFavor, isFavorNodeActive } from "../../game/td/favor.js";
   import { blessingDisplay, buffChips, createPauseController, placePopover, slotHitRadius, worldToLocal } from "../../game/td/ui.js";
 
@@ -278,6 +311,7 @@ const previews = maps.map((entry: any) => ({
   if (!root) throw new Error("Tower defense root missing");
   const q = <T extends HTMLElement = HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
   const data = JSON.parse(document.getElementById("td-data")?.textContent || "{}");
+  setAssetBase(data.assetBase);
   const heroById = new Map<string, any>(data.heroes.map((hero: any) => [hero.id, hero]));
   const maps: any[] = data.maps;
   const favorTreeData: any[] = data.favorTree || [];
@@ -323,32 +357,51 @@ const previews = maps.map((entry: any) => ({
   // ------------------------------------------------------------------
   // Saved progress (td:v1 shape kept; mapTop added for per-map records)
   // ------------------------------------------------------------------
-  let saved = {
-    bestScore: 0, bestWave: 0, lastTeam: [] as string[], perfectDefense: false, favor: 0, favTree: [] as string[],
-    mapBests: {} as Record<string, MapRun>,
-    mapTop: {} as Record<string, { score: number; wave: number }>,
+  type SaveData = {
+    bestScore: number; bestWave: number; lastTeam: string[]; perfectDefense: boolean; favor: number; favTree: string[];
+    mapBests: Record<string, MapRun>;
+    mapTop: Record<string, { score: number; wave: number }>;
   };
-  const isRecord = (value: unknown) => !!value && typeof value === "object" && !Array.isArray(value);
-  try {
-    const candidate = JSON.parse(localStorage.getItem("td:v1") || "null");
-    if (candidate && Number.isFinite(candidate.bestScore)) {
-      saved = {
-        bestScore: candidate.bestScore,
-        bestWave: Number(candidate.bestWave) || 0,
-        lastTeam: Array.isArray(candidate.lastTeam) ? candidate.lastTeam.filter((id: string) => heroById.has(id)).slice(0, maxTeam) : [],
-        perfectDefense: !!candidate.perfectDefense,
-        favor: Number(candidate.favor) || 0,
-        favTree: Array.isArray(candidate.favTree) ? candidate.favTree.filter((id: unknown) => typeof id === "string") : [],
-        mapBests: isRecord(candidate.mapBests) ? candidate.mapBests : {},
-        mapTop: isRecord(candidate.mapTop) ? candidate.mapTop : {},
-      };
+  const isRecord = (value: unknown): value is Record<string, any> => !!value && typeof value === "object" && !Array.isArray(value);
+  const hasScore = (run: unknown): run is { score: number } => isRecord(run) && Number.isFinite(run.score);
+  const pickRuns = (value: unknown) => isRecord(value) ? Object.fromEntries(Object.entries(value).filter(([, run]) => hasScore(run))) : {};
+
+  // Shared by the localStorage load and the save-code import. Returns null when the data is not a td:v1 save.
+  function sanitizeSave(candidate: unknown): SaveData | null {
+    if (!isRecord(candidate) || !Number.isFinite(candidate.bestScore)) return null;
+    const clean: SaveData = {
+      bestScore: candidate.bestScore,
+      bestWave: Number(candidate.bestWave) || 0,
+      lastTeam: Array.isArray(candidate.lastTeam) ? candidate.lastTeam.filter((id: string) => heroById.has(id)).slice(0, maxTeam) : [],
+      perfectDefense: !!candidate.perfectDefense,
+      favor: Number(candidate.favor) || 0,
+      favTree: Array.isArray(candidate.favTree) ? [...new Set<string>(candidate.favTree.filter((id: unknown) => typeof id === "string"))] : [],
+      mapBests: pickRuns(candidate.mapBests),
+      mapTop: pickRuns(candidate.mapTop),
+    };
+    // Older saves only kept the last run per map; it is a lower bound for the record.
+    for (const [id, run] of Object.entries(clean.mapBests)) {
+      if (!clean.mapTop[id]) clean.mapTop[id] = { score: run.score, wave: Number(run.wave) || 0 };
     }
-  } catch {}
-  // Older saves only kept the last run per map; it is a lower bound for the record.
-  for (const [id, run] of Object.entries(saved.mapBests)) {
-    if (!saved.mapTop[id] && run && Number.isFinite(run.score)) saved.mapTop[id] = { score: run.score, wave: Number(run.wave) || 0 };
+    return clean;
   }
-  const persist = () => { try { localStorage.setItem("td:v1", JSON.stringify(saved)); } catch {} };
+
+  let saved: SaveData = {
+    bestScore: 0, bestWave: 0, lastTeam: [], perfectDefense: false, favor: 0, favTree: [],
+    mapBests: {}, mapTop: {},
+  };
+  try {
+    saved = sanitizeSave(JSON.parse(localStorage.getItem("td:v1") || "null")) ?? saved;
+  } catch {}
+  let persistRequested = false;
+  const persist = () => {
+    try { localStorage.setItem("td:v1", JSON.stringify(saved)); } catch {}
+    // Ask once, only after there is progress, so the browser is less likely to evict it.
+    if (!persistRequested) {
+      persistRequested = true;
+      navigator.storage?.persist?.().catch(() => {});
+    }
+  };
 
   let selectedMap = maps[0];
   try {
@@ -1103,6 +1156,7 @@ const previews = maps.map((entry: any) => ({
     else panelReturnFocus = opener ?? (document.activeElement as HTMLElement | null);
     if (name === "menu") renderMenu();
     if (name === "blessings") renderBlessingsPanel();
+    if (name === "save") renderSavePanel();
     panelLayer.hidden = false;
     panel.hidden = false;
     panel.scrollTop = 0;
@@ -1130,6 +1184,89 @@ const previews = maps.map((entry: any) => ({
     q<HTMLButtonElement>("[data-td-restart]").hidden = !session;
     syncAudioUi();
   }
+
+  // ------------------------------------------------------------------
+  // Save data export / import (lobby only; import replaces td:v1)
+  // ------------------------------------------------------------------
+  const saveCodePrefix = "TD1:";
+  const saveFileVersion = 1;
+  const saveExportEl = q<HTMLTextAreaElement>("[data-td-save-export]");
+  const saveImportEl = q<HTMLTextAreaElement>("[data-td-save-import]");
+  const saveFileInput = q<HTMLInputElement>("[data-td-save-file-input]");
+  const saveStatusEl = q("[data-td-save-status]");
+
+  const toBase64 = (text: string) => {
+    let binary = "";
+    for (const byte of new TextEncoder().encode(text)) binary += String.fromCharCode(byte);
+    return btoa(binary);
+  };
+  const fromBase64 = (code: string) => new TextDecoder().decode(Uint8Array.from(atob(code), (char) => char.charCodeAt(0)));
+
+  function setSaveStatus(message: string, isError = false) {
+    saveStatusEl.textContent = message;
+    saveStatusEl.classList.toggle("is-error", isError);
+  }
+
+  function renderSavePanel() {
+    saveExportEl.value = saveCodePrefix + toBase64(JSON.stringify(saved));
+    saveImportEl.value = "";
+    setSaveStatus("");
+  }
+
+  // Accepts a TD1 code or the contents of a downloaded save file.
+  function parseSaveText(text: string): SaveData | null {
+    const trimmed = text.trim();
+    try {
+      if (trimmed.startsWith(saveCodePrefix)) return sanitizeSave(JSON.parse(fromBase64(trimmed.slice(saveCodePrefix.length).replace(/\s+/g, ""))));
+      const file = JSON.parse(trimmed);
+      if (isRecord(file) && file.version === saveFileVersion) return sanitizeSave(file.save);
+    } catch {}
+    return null;
+  }
+
+  function importSave(text: string) {
+    if (!text.trim()) { setSaveStatus("Paste a save code first.", true); return; }
+    const incoming = parseSaveText(text);
+    if (!incoming) { setSaveStatus("This is not a valid save code. Your progress was not changed.", true); return; }
+    const summary = (entry: SaveData) => `best ${entry.bestScore.toLocaleString()}, ${entry.favor.toLocaleString()} Favor earned`;
+    if (!confirm(`Replace your progress on this device?\n\nCurrent: ${summary(saved)}\nImported: ${summary(incoming)}`)) {
+      setSaveStatus("Import cancelled. Your progress was not changed.");
+      return;
+    }
+    saved = incoming;
+    persist();
+    renderLobby();
+    renderSavePanel();
+    setSaveStatus("Save loaded.");
+  }
+
+  q("[data-td-save-copy]").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(saveExportEl.value);
+      setSaveStatus("Code copied.");
+    } catch {
+      saveExportEl.select();
+      setSaveStatus("Copy failed. The code is selected - copy it manually.", true);
+    }
+  });
+  q("[data-td-save-download]").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify({ version: saveFileVersion, save: saved }, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "motto-td-save.json";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+    setSaveStatus("Save file downloaded.");
+  });
+  q("[data-td-save-load]").addEventListener("click", () => { importSave(saveImportEl.value); });
+  q("[data-td-save-file]").addEventListener("click", () => { saveFileInput.click(); });
+  saveFileInput.addEventListener("change", async () => {
+    const file = saveFileInput.files?.[0];
+    saveFileInput.value = ""; // the same file can be picked again
+    if (!file) return;
+    try { importSave(await file.text()); } catch { setSaveStatus("Could not read that file.", true); }
+  });
 
   // Favor can always be spent. Before anything is deployed the current run is
   // rebuilt with it; otherwise it takes effect when the next run starts.
@@ -1181,7 +1318,7 @@ const previews = maps.map((entry: any) => ({
         const requiresMin = nodes[0]?.requiresMin ?? 1;
         const unlockedInPrev = prevTier.filter((node: any) => saved.favTree.includes(node.id)).length;
         const satisfied = unlockedInPrev >= requiresMin;
-        gate = `<div class="td-blessing-gate${satisfied ? " is-active" : ""}"><span>${satisfied ? "Unlocked" : "Needs"} ${requiresMin} of Tier ${tier - 1} (${unlockedInPrev}/${prevTier.length})</span></div>`;
+        gate = `<div class="td-blessing-gate${satisfied ? " is-active" : ""}"><span>Requires ${requiresMin} of Tier ${tier - 1}: ${unlockedInPrev}/${prevTier.length}${satisfied ? " - met" : ""}</span></div>`;
       }
       return `<div class="td-blessings-tier"><span class="td-label">Tier ${tier}</span>${gate}` + nodes.map((node: any) => {
         const unlocked = saved.favTree.includes(node.id);

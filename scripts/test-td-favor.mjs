@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { TowerDefenseGame } from "../src/game/td/sim.js";
-import { buildRunTuning, isFavorNodeActive } from "../src/game/td/favor.js";
+import { buildRunTuning, canUnlock, isFavorNodeActive } from "../src/game/td/favor.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
@@ -23,6 +23,16 @@ const place = (game, hero) => {
 
 // Every node in the tree now has a simulator effect.
 assert.ok(favorTree.every(isFavorNodeActive), "all favor nodes active");
+
+// Tier gates: Tier 2 needs 3 of 4 Tier 1 nodes, Tier 3 needs 3 of 4 Tier 2 nodes.
+{
+  const ids = (tier) => favorTree.filter((entry) => entry.tier === tier).map((entry) => entry.id);
+  const [t1, t2, t3] = [ids(1), ids(2), ids(3)];
+  assert.equal(canUnlock(t2[0], t1.slice(0, 2), favorTree), false, "tier 2 locked with 2 of tier 1");
+  assert.equal(canUnlock(t2[0], t1.slice(0, 3), favorTree), true, "tier 2 open with 3 of tier 1");
+  assert.equal(canUnlock(t3[0], [...t1, ...t2.slice(0, 2)], favorTree), false, "tier 3 locked with 2 of tier 2");
+  assert.equal(canUnlock(t3[0], [...t1, ...t2.slice(0, 3)], favorTree), true, "tier 3 open with 3 of tier 2");
+}
 
 // Horus's Sight: wave preview includes total enemy HP (with per-wave scaling).
 {

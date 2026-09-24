@@ -7,7 +7,6 @@ import tuning from "../../data/gameBalance.tuning.json";
 import maps from "../../data/tdMaps.json";
 import waves from "../../data/tdWaves.json";
 import bosses from "../../data/bosses.json";
-import virtues from "../../data/virtues.json";
 
 const R2_BASE = 'https://pub-a33abfbc3135413881a1d8eb86543559.r2.dev';
 const isDev = import.meta.env.DEV;
@@ -19,11 +18,6 @@ const baphomet = bosses.bosses.find((boss: any) => boss.id === "baphomet");
 const baphometForGame = baphomet && isDev && baphomet.image?.startsWith(R2_BASE)
   ? { ...baphomet, image: baphomet.image.replace(R2_BASE, '/r2') }
   : baphomet;
-const virtueTexts: Record<string, string> = {};
-for (const piece of virtues as any[]) {
-  const bonus = piece.setBonuses?.["2"];
-  if (bonus && tuning.virtueEffects[piece.set] && !virtueTexts[piece.set]) virtueTexts[piece.set] = bonus;
-}
 ---
 
 <GameLayout
@@ -38,5 +32,5 @@ for (const piece of virtues as any[]) {
       }
     }</script>
   </Fragment>
-  <TowerDefensePage heroes={heroesForGame} tuning={tuning} maps={maps} waves={waves} boss={baphometForGame} virtueTexts={virtueTexts} />
+  <TowerDefensePage assetBase={isDev ? "/r2" : R2_BASE} heroes={heroesForGame} tuning={tuning} maps={maps} waves={waves} boss={baphometForGame} />
 </GameLayout>

@@ -1,6 +1,44 @@
 # Tower Defense UI audit and rebuild plan
 
-Status: proposed implementation plan, September 24, 2026. No gameplay/UI changes made.
+Status: M1-M3 implemented, September 24, 2026. M4 (live readiness) open. The original audit and plan below are kept for reference; the status, decision log and M4 sections are current.
+
+## Status
+
+| Milestone | State | Notes |
+| --- | --- | --- |
+| M1 Shell, sizing, on-map actions | Done | `GameLayout.astro` (no site nav/footer, safe areas), world fitted to width and height, recruit sheet from rings, anchored hero popover (sheet fallback, docks below the map in portrait), deck, notices, touch rotation, keyboard setup. |
+| M2 Blessings, pause, settings, help | Done | Blessings panel with Divine Blessings / This run tabs, reason-based pause controller, menu (sound, restart, choose map), help panel. |
+| M3 Transitions, results, a11y | Done | No reloads: one rAF loop, renderer `destroy()`, stale-load guard. Results with Retry / Choose map / Spend Favor. Focus restore, panel focus trap, Escape handling. |
+| Acceptance: viewports | Done (Playwright) | 667x375, 844x390, 915x412, 390x844, 1024x768, 1440x900: no document scroll, all rings reachable, popover inside the stage, panels fit. |
+| Acceptance: real phone | Open | See M4. |
+
+Added after the plan (user requests):
+- Blessing cards with large bonus values, stat icons and colors (choice modal and This run tab).
+- On-map buff bar: run blessings summed per stat (same totals as `sim.modifiers()`, pairs included); tap opens This run.
+- All 12 Divine Blessing (Favor) nodes implemented in the simulator (`tuning.favor`, tests in `scripts/test-td-favor.mjs`).
+- Difficulty knobs (`tuning.difficulty`: enemyHp, enemySpeed, killGold, waveHpScale, invincible), dev-only debug panel (live sliders, wave jump, win/lose, copy values; debug runs are not recorded) and `npm run td:sweep` (win table per HP multiplier).
+- Game assets moved to R2 under `td/` (`src/game/td/assets.js`); large images converted to WebP (9 MB to 1.7 MB); unused images removed; `public/td/` removed.
+
+## Decision log
+
+| Decision | Instead of (plan) | Why |
+| --- | --- | --- |
+| Favor can be bought any time; mid-run purchases apply from the next run ("From next run" chip). Before any deployment they apply immediately. | Purchases only in the lobby or before deployment. | Players did not understand the lock. |
+| All Favor nodes functional. Yuelao's Bond keeps the 24% synergy cap; Poseidon's Tide raises melee contact from 42 to 50 px. | Non-functional nodes labelled "Not active yet". | Nodes were implemented. |
+| Run blessing offer stays optional: starting the next wave forfeits it (stated in the modal). | Open question in the plan. | Keeps the simulator's offer-expiry behavior. |
+| Styles in a dedicated `src/styles/td.css` loaded by `GameLayout.astro`. | `components.css`. | Game-only styles; the old TD block was removed from `components.css`. |
+| Debug panel only in `npm run dev` builds. | Not planned. | Balance tuning tool, not a player feature. |
+
+## M4: Live readiness (open)
+
+1. R2 CORS policy: the bucket sends no CORS headers, so WebGL textures (hero thumbnails, boss, all `td/` assets) and audio fetches fail on the live site. Apply with `node scripts/r2-cors.mjs --apply` using a token with bucket admin rights, or set it in the Cloudflare dashboard. Deploy the R2 asset switch only after this is in place.
+2. `npm run build` (run by the user). `astro check`: done. Tower defense files have 0 errors (one fix in `audio.ts`). The earlier hang was an install prompt: `@astrojs/check` and `typescript` are not in `devDependencies`. The rest of the site has 2,049 existing errors, mostly `src/pages/heroes/[id].astro` (1,955) and `src/pages/status.astro` (81); out of scope for this plan.
+3. Real phone check in landscape with browser chrome visible (plan acceptance criterion).
+4. Difficulty: `td:sweep` shows 3 of 5 squads winning flawlessly at x1.0 enemy HP; candidates are x1.75 to x2.0. Confirm by play with the debug panel, then set `difficulty` in `gameBalance.tuning.json`. The "road wall" squad loses at every level; review it separately.
+5. `scripts/test-td-sim.mjs` "mid-wave upgrade rejected" fails (also on HEAD before this work): decide whether upgrades are allowed during waves and fix either the test or the simulator.
+6. Full-map white wash observed a few seconds into waves in headless screenshots (pre-existing); check on a real GPU, likely an additive glow effect.
+7. Split `TowerDefensePage.astro` (about 1,600 lines) into `src/components/td/` pieces and controller modules under `src/game/td/`, as suggested in the original plan.
+8. WebP sources now exist only on R2 (originals are in git history). Keep a local source copy if the images will be edited again. R2 objects are cached for one year (`immutable`), so changed files need a new file name.
 
 ## Scope and evidence
 

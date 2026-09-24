@@ -2,6 +2,7 @@
 // Async: callers must await createRenderer(...).
 // Logical space is fixed at 960x540; stage.scale maps it to the canvas CSS size.
 
+import { tdAsset } from "./assets.js";
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
@@ -101,9 +102,13 @@ export async function createRenderer(canvas, game, options = {}) {
     PIXI.Assets.load(url).then((tex) => boardSprites.set(id, tex)).catch(() => {});
   }
 
+  // Version query forces a fresh CORS-enabled fetch: browsers may still hold
+  // pre-CORS copies of the immutable R2 hero thumbs, which WebGL rejects.
+  const TEXTURE_CACHE_BUST = "v=cors1";
   async function loadTexture(key, url) {
     try {
-      const tex = await PIXI.Assets.load(url);
+      const busted = `${url}${url.includes("?") ? "&" : "?"}${TEXTURE_CACHE_BUST}`;
+      const tex = await PIXI.Assets.load(busted);
       sprites.set(key, tex);
     } catch {}
   }
@@ -118,14 +123,14 @@ export async function createRenderer(canvas, game, options = {}) {
 
   const FX_NAMES = ["slash_04", "spark_04", "magic_01", "trace_01", "light_01", "star_03", "flame_04", "twirl_01", "flare_01"];
   for (const name of FX_NAMES) {
-    PIXI.Assets.load(`/td/fx/${name}.png`)
+    PIXI.Assets.load(tdAsset(`fx/${name}.png`))
       .then((tex) => fxTex.set(name, tex))
       .catch(() => {});
   }
 
   // Enemy sprite textures sliced from the Kenney packed sheet (fallback).
   const enemyTextures = new Map(); // kind -> PIXI.Texture
-  PIXI.Assets.load("/td/kenney_enemies.png")
+  PIXI.Assets.load(tdAsset("kenney_enemies.png"))
     .then((baseTex) => {
       baseTex.source.scaleMode = "nearest";
       for (const [kind, f] of Object.entries(ENEMY_TILES)) {
@@ -141,19 +146,19 @@ export async function createRenderer(canvas, game, options = {}) {
   const portraitTextures = new Map(); // kind -> PIXI.Texture
   const PORTRAIT_KINDS = ["grunt", "runner", "flyer", "archer", "brute"];
   for (const kind of PORTRAIT_KINDS) {
-    PIXI.Assets.load(`/td/enemies/${kind}.png`)
+    PIXI.Assets.load(tdAsset(`enemies/${kind}.png`))
       .then((tex) => portraitTextures.set(kind, tex))
       .catch(() => {});
   }
 
   // Slot art sprites (road = gold glow, platform = purple glow). Falls back to Graphics if absent.
   const slotTextures = new Map(); // "road" | "platform" -> PIXI.Texture
-  PIXI.Assets.load("/td/spritePlatform.png").then((t) => slotTextures.set("road", t)).catch(() => {});
-  PIXI.Assets.load("/td/sprite.png").then((t) => slotTextures.set("platform", t)).catch(() => {});
+  PIXI.Assets.load(tdAsset("spritePlatform.webp")).then((t) => slotTextures.set("road", t)).catch(() => {});
+  PIXI.Assets.load(tdAsset("sprite.webp")).then((t) => slotTextures.set("platform", t)).catch(() => {});
 
   // Path tile texture (mossy stone, seamless). Rebuilds bg once when it loads.
   let pathTileTex = null;
-  PIXI.Assets.load("/td/spriteRoad.png").then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
+  PIXI.Assets.load(tdAsset("spriteRoad.webp")).then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
 
   // ------------------------------------------------------------------
   // Resize: fit the 960x540 world into the parent's width AND height
@@ -232,7 +237,7 @@ export async function createRenderer(canvas, game, options = {}) {
   async function buildBgTexture() {
     // World map 2048x2048: scale width to 960, crop height to show mountains + city
     try {
-      const tex = await PIXI.Assets.load("/td/bg/worldmap.jpg");
+      const tex = await PIXI.Assets.load(tdAsset("bg/worldmap.webp"));
       const spr = new PIXI.Sprite(tex);
       const scale = 960 / 2048;
       spr.width = 960;

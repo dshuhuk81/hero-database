@@ -1,6 +1,7 @@
 // Minimal WebAudio player for the tower defense minigame.
-// Kenney impact/interface sounds from public/td/sfx (CC0). Volume and mute persist
+// Kenney impact/interface sounds from td/sfx on R2 (CC0). Volume and mute persist
 // in localStorage; hit sounds are capped so a full wave stays pleasant.
+import { tdAsset } from "./assets.js";
 
 const SOUNDS = {
   hit: ["impactGeneric_light_000", "impactGeneric_light_001"],
@@ -22,7 +23,7 @@ const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
 const MAX_WITHIN_WINDOW = { hit: { count: 3, windowMs: 600 } };
 
 export function createAudio() {
-  let context = null;
+  let context: AudioContext | null = null;
   const buffers = new Map();
   const lastPlayedAt = new Map();
   const recentHits: number[] = [];
@@ -45,7 +46,7 @@ export function createAudio() {
 
   async function buffer(name: string) {
     if (buffers.has(name)) return buffers.get(name)!;
-    const promise = fetch(`/td/sfx/${name}.ogg`)
+    const promise = fetch(tdAsset(`sfx/${name}.ogg`))
       .then((response) => response.arrayBuffer())
       .then((data) => ensureContext().decodeAudioData(data))
       .catch(() => null);

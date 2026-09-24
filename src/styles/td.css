@@ -278,6 +278,14 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
 .td-help strong { color: var(--text-bright); }
 .td-help p { margin: var(--space-1) 0 0; color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-normal); }
 
+.td-save-block { display: grid; gap: var(--space-2); }
+.td-save-code { width: 100%; box-sizing: border-box; padding: var(--space-2); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-primary); font: var(--text-xs) var(--font-mono); word-break: break-all; resize: vertical; }
+.td-save-code:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: 1px; }
+.td-save-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.td-save-file-input { display: none; }
+.td-save-status { margin: 0; min-height: 1.5em; color: var(--text-secondary); font-size: var(--text-sm); }
+.td-save-status.is-error { color: var(--accent-gold); }
+
 /* ============================================================
    Responsive layouts
    ============================================================ */
