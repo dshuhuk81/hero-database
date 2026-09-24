@@ -245,21 +245,6 @@ const allNavEntries: NavEntry[] = [
     icon: `<rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="8" y2="15"/><line x1="12" y1="15" x2="12" y2="15"/><path d="M15 14l2 2 3-4"/>`,
   },
   {
-    label: "Tower Defense",
-    href: "/games/tower-defense",
-    group: "tools",
-    teaser: true,
-    description: {
-      en: "Command five heroes through a ten-wave defense of Moonlit Pass",
-      de: "Verteidige den Mondscheinpass mit fünf Helden über zehn Wellen",
-      es: "Defiende el Paso Lunar con cinco héroes durante diez oleadas",
-      ru: "Защитите Лунный перевал пятью героями в десяти волнах",
-      zh: "指挥五位英雄，在十波进攻中守住月光隘口",
-    },
-    badge: { text: { en: "New", de: "Neu", es: "Nuevo", ru: "Новое", zh: "新" }, color: "var(--accent-new)", until: "2027-01-01" },
-    icon: `<path d="M5 21V10l3-3 4 3 4-3 3 3v11"/><path d="M3 21h18M8 7V3h3v5M16 7V3h3v6"/><path d="M10 21v-5a2 2 0 0 1 4 0v5"/>`,
-  },
-  {
     label: "Virtue List",
     href: "/virtues",
     group: "tools",
