@@ -2,6 +2,7 @@
 // Kenney impact/interface sounds from td/sfx on R2 (CC0). Volume and mute persist
 // in localStorage; hit sounds are capped so a full wave stays pleasant.
 import { tdAsset } from "./assets.js";
+import levels from "../../data/tdAudioLevels.json";
 
 const SOUNDS = {
   hit: ["impactGeneric_light_000", "impactGeneric_light_001"],
@@ -40,12 +41,19 @@ const HERO_SOUNDS: Record<string, { voice?: string; attack?: string; ultimate?: 
 
 const MIN_GAP_MS = { hit: 120, blocked: 150, heavy: 150 };
 const MAX_WITHIN_WINDOW = { hit: { count: 3, windowMs: 600 } };
+// Hero attack sounds fire on every hit, so each hero gets a cooldown and all heroes
+// share a cap; ultimates and voices are rare enough to play every time.
+const HERO_ATTACK_GAP_MS = 700;
+const HERO_ATTACK_CAP = { count: 4, windowMs: 1000 };
+// Per-file gain in dB (scripts/td-audio-levels.mjs) evens out loudness per category.
+const LEVELS = levels as Record<string, number>;
 
 export function createAudio() {
   let context: AudioContext | null = null;
   const buffers = new Map();
   const lastPlayedAt = new Map();
   const recentHits: number[] = [];
+  const recentAttacks: number[] = [];
   let volume = 0.7;
   let muted = false;
 
@@ -87,8 +95,20 @@ export function createAudio() {
     return true;
   }
 
+  function heroAttackAllowed(heroId: string) {
+    const now = performance.now();
+    const key = `attack:${heroId}`;
+    if (now - (lastPlayedAt.get(key) || 0) < HERO_ATTACK_GAP_MS) return false;
+    while (recentAttacks.length && now - recentAttacks[0] > HERO_ATTACK_CAP.windowMs) recentAttacks.shift();
+    if (recentAttacks.length >= HERO_ATTACK_CAP.count) return false;
+    recentAttacks.push(now);
+    lastPlayedAt.set(key, now);
+    return true;
+  }
+
   async function play(kind: keyof typeof SOUNDS | string, heroId?: string) {
     if (muted || !allowed(kind)) return;
+    if (kind === "attack" && heroId && HERO_SOUNDS[heroId] && !heroAttackAllowed(heroId)) return;
     let name: string | undefined;
 
     if (heroId && kind in { voice: 1, attack: 1, ultimate: 1 }) {
@@ -107,7 +127,7 @@ export function createAudio() {
     const ctx = ensureContext();
     const source = ctx.createBufferSource();
     const gain = ctx.createGain();
-    gain.gain.value = volume;
+    gain.gain.value = volume * 10 ** ((LEVELS[name] ?? 0) / 20);
     source.buffer = data;
     source.connect(gain).connect(ctx.destination);
     source.start();

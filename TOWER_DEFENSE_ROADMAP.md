@@ -8,7 +8,7 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
-**Status September 25, 2026.** M1, M5, M6 and M7 are done and archived. Next up: M4, then M8 (M9 done, not yet committed). M2 (leaderboard) and M3 (sound pass) come last.
+**Status September 25, 2026.** M1, M5, M6, M7 and M9 are done and archived. Next up: M4, then M8. M3 (sound pass) only needs your listening now; M2 (leaderboard) comes last.
 
 ### M4: Divine Blessings tuning (next)
 
@@ -22,13 +22,6 @@ Map work is handled separately and archived. Only open work is listed here; done
 - we have all class icons (roles are they called in the database) in the correspondent hero json files like e.g. `src/data/heroes/amunra.json`for archer, warrior, tank, mage, support. we can use that and get add them to text labels. e.g. in the Divine Blessing tree. -> Use Icons.
 - The Divine Blessing tree currently has a lot of text issues where text is place inline. In most cases it would be better to make a line break and put text underneath. Analyse the Blessing page for better readability.
 
-### M9: Others (done, uncommitted)
-- It should be possible to remove (sell) heroes from the battlefield.
-- Some enemies just rush through tanks and assassins without being stopped.
-- Done (September 25, 2026), decisions: refund 50% of everything spent, selling allowed anytime, rushers get slowed instead of higher block limits.
-- Sell: `sell(entityId)` / `sellValue` in `sim.js`; each unit tracks `invested` (deploy, upgrades, Awakening), refund `tuning.run.sellRefund` (0.5). A sold hero is not "fallen" (no revive, no redeploy discount); a named kill-quest hero that is sold fails that quest. Popover has a Sell button that needs a second tap ("Confirm +X"). Help text updated.
-- Rushers: the cause was the block limit (a bot-run tally found enemies passing a full blocker in over 99% of cases; the rings sit on the path). Enemies squeezing past a full blocker now move at `tuning.blocking.passSlowFactor` (0.8) for `passSlow` (1.5 s), separate from skill slows. A stronger slow (0.55) made Warriors beat Assassins against runners in the class matrix; 0.8 keeps the M6 picks.
-
 ### M2: Leaderboard (large, needs design first)
 
 - Goal: shared scores across players.
@@ -36,12 +29,18 @@ Map work is handled separately and archived. Only open work is listed here; done
 - Done when: the anti-tamper approach is agreed, then built.
 - Only in Endless Mode maybe?
 
-### M3: Sound variant listening pass (postponed)
+### M3: Sound variant listening pass (ready for listening)
 
-- Postponed until all hero sounds are in. The in-game sound files still carry internal game names, so they have to be sorted and renamed by hand first, then 1 attack and 1 ultimate sound picked per hero from about 8 files.
-- Goal: every sound variant in `src/game/td/audio.ts` has been heard in a real run and judged OK.
-- Scope: play through both maps, trigger each variant, note clipping, volume jumps or repetitive-sounding picks; fix or drop bad variants.
-- Done when: each variant is marked verified (or removed), and the known gap is closed.
+- Goal: every hero sound (voice on placement, attack, ultimate) has been heard in a real run and judged OK.
+- Done when: every hero below is ticked, or a bad file is swapped for another pick from the source folders ([docs/td-hero-audio-map.md](docs/td-hero-audio-map.md)).
+- Done by tooling (September 25, 2026):
+  - All 21 roster heroes have voice, attack and ultimate in `HERO_SOUNDS` (`audio.ts`); all 63 files exist in `public/td/sfx` and on R2 `td/sfx`.
+  - Loudness evened out: `node scripts/td-audio-levels.mjs` measures every file with ffmpeg (EBU R128) and writes per-file gains to `src/data/tdAudioLevels.json` (targets: voice -17, attack -20, ultimate -17 LUFS; boosts capped at -1 dB peak). Before: attacks spread from -15.5 (Bastet, Anubis, Momus) to -22.8 LUFS (Zeus, Caishen). Rerun it after adding or swapping a file.
+  - Clipping: 2 to 4 full-scale samples per file at most, not audible.
+  - Attack sounds were unthrottled (one per hit, every hero). Now each hero plays at most one attack sound per 0.7 s, and all heroes together at most 4 per second.
+- Listen for (things ffmpeg can't judge): wrong character or wrong skill, cut-off starts or ends, and long files that may drag: attacks Fengyi 3.6 s, Phoenix 2.7 s, Medusa 2.3 s, Amunra 2.1 s; ultimates Freya 8.8 s, Set 8.1 s, Momus 7.6 s.
+- Quick way: Play, open DBG, `tdGame.gold = 99999`, place heroes, then `tdGame.castUltimate(tdGame.heroes[0], tdGame.enemies[0])` during a wave.
+- Checklist (voice / attack / ultimate): amunra, anubis, artemis, bastet, caishen, demeter, diana, fengyi, freya, horus, jormungandr, medusa, momus, nuwa, nyx, phoenix, poseidon, prometheus, set, yuelao, zeus.
 
 ## Research notes (September 25, 2026)
 
@@ -58,6 +57,7 @@ npm run test:tower-defense      # headless combat/upgrade/virtue checks
 npm run test:td-balance         # 5-squad balance harness
 npm run td:sweep                # difficulty sweep (enemy HP steps x squads x maps)
 npm run td:classes              # class identity report (M6 criteria: matrix, class removal, one-class squads)
+node scripts/td-audio-levels.mjs                                   # hero sound gains -> src/data/tdAudioLevels.json (needs ffmpeg)
 npm run build:game-balance      # regenerate hero balance (re-ranks all heroes)
 npm run check                   # astro check (TD code is type-clean; rest of site not yet)
 
