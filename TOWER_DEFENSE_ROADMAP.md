@@ -8,9 +8,22 @@ Map implementation must use the asset assignments in [map.md](map.md), including
 
 Map work is handled separately and archived. Only open work is listed here; done milestones move to the archive. Milestones below are in priority order; each one lists what "done" means.
 
-**Status September 25, 2026.** M1, M5, M6, M7 and M9 are done and archived. Next up: M4 (M8 done, not yet committed). M3 (sound pass) only needs your listening now; M2 (leaderboard) comes last.
+### M1: Tuning and Bugfixing (done, uncommitted)
+- Sometime enemies spawn way too close to each other. it looks like a huge asset moving at once. we should add a small delay after one enemy spawned so that they get a bit more space in between. or maybe vary the spawn.
+- in endless mode after wave 22 its only like pressing : NEXT wave but it became too easy. we should do something about it.
+it could be a huge structural change for gameplay but maybe it should be so hard that you need to play another round in order to get something new or unlock a perk.
+- after a hero is awakened you cant do much with the heroes.
+currently you can upgrade ATK HP RANGE after lvl 3. what if you can always upgrade those three everytime but it cost a bit more gold?
+- Done (September 25, 2026), decisions: compounding endless ramp, training only after Awakening, range training capped at 3.
+- Spawn spacing: enemies spawned only 9 to 30 px apart (sprites are 44 px wide; the wave-6 swarm was 9 px). Now enemies on one lane keep at least `waveGen.minSpacing` (18 px) apart, converted per enemy speed, and spread sideways in a fixed pattern (up to 14 px off the path centre, `SWAY` in `sim.js`), so packs read as a crowd. Several entrances already alternate, so multi-lane maps rarely need the extra gap.
+- Endless: from wave 21 enemy HP and attack compound by `waveGen.endlessRamp` (8% per wave; wave 30 about 2.2x, wave 40 about 4.7x). Balanced squad with every blessing maxed: waves 60 to 85 before, 35 to 40 now; without blessings runs end at waves 5 to 33. Going deeper now needs the blessing tree (M4).
+- Training: after Awakening, "Train" offers attack (+8%), health (+12%) or range (+8% of base, at most 3 times); cost 120 gold, x1.3 per training (`tuning.training`). Uses the level-focus picker in the popover; bots spend spare gold on it too.
+- Side effect: the spacing made Warriors and Assassins tie against runners in the class matrix; Assassin `looseBonus` 1.6 -> 2.2 restores the M6 picks.
 
-### M4: Divine Blessings tuning (next)
+### M2: Browser Experience
+- is there a full screen mode available?
+
+### M3: Divine Blessings tuning (next)
 
 - The tree itself shipped (archive, [docs/tower-defense-blessings-research.md](docs/tower-defense-blessings-research.md) section 7). This milestone is the follow-up once endless mode exists.
 - Goal: full progression is needed somewhere. Today the full tree wins at about 4 to 5x enemy HP while the 10-wave mode runs at 2x.
@@ -18,21 +31,14 @@ Map work is handled separately and archived. Only open work is listed here; done
 - Done when: a sweep with bought blessings shows endless runs getting longer with progression, and the 10-wave mode is not trivial before about half the trunk.
 - Also decide: endless earns Favor per wave with no cap (farmable), left open by M1.
 
-### M8: Details in the Game & Divine Blessing tree UX/UI (done, uncommitted)
-- we have all class icons (roles are they called in the database) in the correspondent hero json files like e.g. `src/data/heroes/amunra.json`for archer, warrior, tank, mage, support. we can use that and get add them to text labels. e.g. in the Divine Blessing tree. -> Use Icons.
-- The Divine Blessing tree currently has a lot of text issues where text is place inline. In most cases it would be better to make a line break and put text underneath. Analyse the Blessing page for better readability.
-- Done (September 25, 2026): class icons come from R2 `icons/classes/{class}.webp` (the hexagon icons the boss and summon calendar pages already use; the hero JSON only has the class name). Helpers `classIcon` / `classIconImg` in `assets.js`, loaded through the same R2 base as TD assets.
-- Icons now on: Blessings class branch labels, Insight chips, the detail panel header, the hero popover title and recruit cards.
-- Blessings readability: branch labels show icon, class name and Insight on its own line (the trunk label shows Favor the same way); detail panel puts "Gives", "Now", "Next" and "Locked" labels above their text, so long effects wrap cleanly; lock reasons are a labelled block instead of faint small print. Narrow screens open the tree at a readable zoom on the Divine trunk instead of fitting everything at about 18%; Fit still shows the whole tree.
-
-### M2: Leaderboard (large, needs design first)
+### M4: Leaderboard (large, needs design first)
 
 - Goal: shared scores across players.
 - Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1.
 - Done when: the anti-tamper approach is agreed, then built.
 - Only in Endless Mode maybe?
 
-### M3: Sound variant listening pass (ready for listening)
+### M5: Sound variant listening pass (ready for listening)
 
 - Goal: every hero sound (voice on placement, attack, ultimate) has been heard in a real run and judged OK.
 - Done when: every hero below is ticked, or a bad file is swapped for another pick from the source folders ([docs/td-hero-audio-map.md](docs/td-hero-audio-map.md)).

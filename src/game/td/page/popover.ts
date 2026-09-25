@@ -113,7 +113,8 @@ export function createPopover(ctx: PageContext) {
     const game = state.session!.game;
     popName.textContent = unit.name;
     if (popClassIcon.dataset.cls !== unit.class) { popClassIcon.src = classIcon(unit.class); popClassIcon.dataset.cls = unit.class; }
-    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.awakened ? " - Awakened" : ""}`;
+    const trainings = Object.values(unit.trained || {}).reduce((sum: number, n: any) => sum + n, 0);
+    popLevel.textContent = `${unit.class} - Level ${unit.level} of ${maxLevel}${unit.focus ? ` - ${FOCUS_NAMES[unit.focus]} focus` : ""}${unit.awakened ? " - Awakened" : ""}${trainings ? ` - Trained ${trainings}x` : ""}`;
     const refund = game.sellValue(unit.entityId);
     popSell.textContent = sellArmed ? `Confirm +${refund}` : "Sell";
     popSell.classList.toggle("is-armed", sellArmed);
@@ -122,7 +123,25 @@ export function createPopover(ctx: PageContext) {
     updateStats(unit);
     const info = game.upgradeInfo(unit.entityId);
     const awakenText = AWAKEN_TEXT[unit.variant] ? ` ${unit.skillName ?? "Ultimate"}: ${AWAKEN_TEXT[unit.variant]}.` : "";
-    if (info.awaken) {
+    if (info.train) {
+      // Training after Awakening: the button opens the attack/health/range picker again.
+      const t = data.tuning.training;
+      popUpgrade.disabled = !info.ok;
+      popUpgradeLabel.textContent = "Train";
+      popCost.textContent = `${info.cost} gold`;
+      const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
+      const options = info.focusOptions;
+      const texts: Record<string, string> = {
+        attack: `Attack ${Math.round(unit.atk * boost)} to ${Math.round(options.attack.nextAtk * boost)}`,
+        health: `Health ${unit.hp} to ${options.health.nextHp}`,
+        range: options.range ? `Range ${Math.round(unit.range)} to ${options.range.nextRange} (${unit.trained?.range || 0} of ${t.rangeCap})` : `Range fully trained (${t.rangeCap} of ${t.rangeCap})`,
+      };
+      for (const [stat, text] of Object.entries(texts)) q(`[data-focus-text="${stat}"]`).textContent = text;
+      for (const stat of Object.keys(texts)) q(`[data-focus-bonus="${stat}"]`).textContent = `+${Math.round(t[stat] * 100)}%`;
+      q<HTMLButtonElement>('[data-focus="range"]').disabled = !options.range;
+      popPreview.textContent = !info.ok ? info.reason
+        : focusOpen ? "Pick one. Every training makes the next one pricier." : "Awakened heroes can keep training attack, health or range.";
+    } else if (info.awaken) {
       popUpgrade.disabled = !info.ok;
       popUpgradeLabel.textContent = "Awaken";
       popCost.textContent = `${info.cost} gold`;
@@ -134,6 +153,7 @@ export function createPopover(ctx: PageContext) {
       popUpgrade.disabled = false;
       popUpgradeLabel.textContent = `Upgrade to level ${unit.level + 1}`;
       popCost.textContent = `${info.cost} gold`;
+      q<HTMLButtonElement>('[data-focus="range"]').disabled = false;
       const boost = unit.atk ? game.attackValue(unit) / unit.atk : 1;
       const f = data.tuning.upgrades.focus;
       const texts: Record<string, string> = {
@@ -262,7 +282,8 @@ export function createPopover(ctx: PageContext) {
     const result = session.game.upgrade(state.selectedEntityId, button.dataset.focus);
     focusOpen = false;
     if (result.ok) {
-      ctx.notice(`${result.hero.name} reached level ${result.hero.level} with ${FOCUS_NAMES[result.hero.focus].toLowerCase()} focus.`);
+      ctx.notice(result.train ? `${result.hero.name} trained ${FOCUS_NAMES[button.dataset.focus!].toLowerCase()}.`
+        : `${result.hero.name} reached level ${result.hero.level} with ${FOCUS_NAMES[result.hero.focus].toLowerCase()} focus.`);
       popUpgrade.focus();
     } else ctx.notice(result.reason || "Upgrade unavailable.");
     const unit = findUnit(state.selectedEntityId);

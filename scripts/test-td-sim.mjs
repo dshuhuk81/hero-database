@@ -374,8 +374,9 @@ function runWaveOne(g) {
   g.gold = 10000;
   g.upgrade(nuwa.entityId);
   const done = g.upgrade(nuwa.entityId);
-  assert.equal(done.ok, false, "nothing after Awakening");
-  assert.ok(done.reason.includes("fully upgraded"), "reason is stated");
+  assert.equal(done.ok, false, "after Awakening only training, which needs a stat");
+  assert.equal(done.train, true, "training is offered");
+  assert.ok(done.reason.includes("train"), "reason is stated");
 }
 
 // A fallen hero re-enters at level 1.
@@ -1268,7 +1269,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(g.gold, gold - aw.cost);
   assert.ok(Math.abs(zeus.atk - atk * (1 + aw.attackBonus)) <= 1, "attack bonus");
   assert.ok(Math.abs(zeus.hp - hp * (1 + aw.healthBonus)) <= 1, "health bonus");
-  assert.equal(g.upgradeInfo(zeus.entityId).ok, false, "only once");
+  assert.notEqual(g.upgradeInfo(zeus.entityId).awaken, true, "only once (training follows)");
   g.damageHero(zeus, zeus.hpLeft + 1, null);
   assert.ok(g.place("zeus", "platform", 0));
   const back = g.heroes.find((h) => h.id === "zeus");
@@ -1736,6 +1737,59 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(held.held, true, "the first enemy is held");
   assert.equal(passer.held, false, "the second walks past the full blocker");
   assert.ok(passer.squeeze >= tuning.blocking.passSlow - 1 / 60, "and is slowed while squeezing by");
+}
+
+// --- Tuning M1: spawn spacing, endless ramp, training after Awakening ---
+{
+  // Enemies on one lane spawn at least waveGen.minSpacing px apart and spread sideways.
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves: [{ wave: 1, spawns: [{ kind: "grunt", count: 6, gapMs: 50 }] }], seed: 160 });
+  g.startWave();
+  const gaps = g.spawnQueue.slice(1).map((e, i) => e.at - g.spawnQueue[i].at);
+  const minGap = tuning.waveGen.minSpacing / tuning.enemies.grunt.speed;
+  assert.ok(gaps.every((gap) => gap >= minGap - 1e-9), "tight groups are spread to the minimum spacing");
+  assert.ok(new Set(g.spawnQueue.map((e) => e.sway)).size > 1, "spawns spread sideways");
+  for (let i = 0; i < 60 * 3; i += 1) g.step(1 / 60);
+  const [a, b] = g.enemies;
+  // Spawns land on 1/60 s steps, so allow one step of walking.
+  assert.ok(a.distance - b.distance >= tuning.waveGen.minSpacing - tuning.enemies.grunt.speed / 60 - 1e-6, "neighbours stay apart along the path");
+}
+{
+  const endless = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "endless", seed: 161 });
+  assert.equal(endless.endlessRamp(20), 1, "no ramp up to wave 20");
+  close(endless.endlessRamp(25), (1 + tuning.waveGen.endlessRamp) ** 5, "compounding past wave 20");
+  endless.wave = 24;
+  const boss = endless.spawnEnemy("grunt");
+  const plain = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, mode: "long", seed: 161 });
+  plain.wave = 24;
+  const ref = plain.spawnEnemy("grunt");
+  close(boss.maxHp / ref.maxHp, endless.endlessRamp(24), "HP ramp");
+  close(boss.attack / ref.attack, endless.endlessRamp(24), "attack ramp");
+}
+{
+  const t = tuning.training;
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 162 });
+  g.gold = 1e5;
+  g.place("zeus", "platform", 0);
+  const zeus = g.heroes[0];
+  while (zeus.level < tuning.upgrades.maxLevel) g.upgrade(zeus.entityId, "attack");
+  assert.equal(g.upgradeInfo(zeus.entityId).awaken, true, "Awakening first");
+  g.upgrade(zeus.entityId);
+  const info = g.upgradeInfo(zeus.entityId);
+  assert.equal(info.train, true, "after Awakening the next step is training");
+  assert.equal(info.cost, t.cost);
+  const atk = zeus.atk, hp = zeus.hp, range = zeus.range;
+  assert.equal(g.upgrade(zeus.entityId).ok, false, "training needs a stat");
+  assert.equal(g.upgrade(zeus.entityId, "attack").ok, true);
+  assert.ok(zeus.atk > atk, "attack trained");
+  assert.equal(zeus.trained.attack, 1);
+  assert.equal(g.upgradeInfo(zeus.entityId).cost, Math.round(t.cost * t.costGrowth), "each training costs more");
+  g.upgrade(zeus.entityId, "health");
+  assert.ok(zeus.hp > hp, "health trained");
+  for (let i = 0; i < t.rangeCap; i += 1) assert.equal(g.upgrade(zeus.entityId, "range").ok, true);
+  assert.ok(zeus.range > range, "range trained");
+  assert.equal(g.upgradeInfo(zeus.entityId).focusOptions.range, undefined, "range stops at its cap");
+  assert.equal(g.upgrade(zeus.entityId, "range").ok, false);
+  assert.equal(zeus.level, tuning.upgrades.maxLevel, "training adds no level");
 }
 
 console.log("Tower defense checks passed");

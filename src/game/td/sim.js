@@ -2,6 +2,8 @@ import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
 import { mapLanes } from "./lanes.js";
 
 const K = 260;
+// Sideways spread of spawned enemies (px from the path centre), cycled per spawn.
+const SWAY = [0, 10, -10, 5, -14, 14, -5];
 const STEP = 1 / 60;
 
 export function createRng(seed = 0x51f15e) {
@@ -32,7 +34,8 @@ function pathMetrics(points) {
   return { lengths, total };
 }
 
-export function pointOnPath(points, distance) {
+// `offset` shifts the point sideways from the path centre (px, left of travel direction).
+export function pointOnPath(points, distance, offset = 0) {
   let remaining = distance;
   for (let i = 1; i < points.length; i += 1) {
     const ax = points[i - 1][0]; const ay = points[i - 1][1];
@@ -40,7 +43,9 @@ export function pointOnPath(points, distance) {
     const segment = Math.hypot(bx - ax, by - ay);
     if (remaining <= segment) {
       const t = segment ? remaining / segment : 0;
-      return { x: ax + (bx - ax) * t, y: ay + (by - ay) * t };
+      const nx = segment ? -(by - ay) / segment : 0;
+      const ny = segment ? (bx - ax) / segment : 0;
+      return { x: ax + (bx - ax) * t + nx * offset, y: ay + (by - ay) * t + ny * offset };
     }
     remaining -= segment;
   }
@@ -192,12 +197,24 @@ export class TowerDefenseGame {
     return this.classes[cls] ?? {};
   }
 
-  maxHpFor(baseHp, level, heroClass, awakened = false, focus = null) {
+  maxHpFor(baseHp, level, heroClass, awakened = false, focus = null, trained = null) {
     const tuning = this.tuning.upgrades;
     const cb = this.classBonus(heroClass);
     const favorHp = (this.favor.heroHpBonus || 0) + (cb.hp || 0);
     const awake = awakened ? 1 + (this.tuning.awakening?.healthBonus || 0) + (cb.awakenBonus || 0) : 1;
-    return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp) * (1 + favorHp) * awake * this.focusMult(focus, "health"));
+    return Math.round(baseHp * (1 + tuning.healthPerLevel * (level - 1)) * (1 + this.modifiers().hp) * (1 + favorHp) * awake * this.focusMult(focus, "health") * this.trainMult(trained, "health"));
+  }
+
+  // Training (tuning.training): after Awakening a hero can train attack, health or range
+  // again and again; each training adds its share, range at most rangeCap times.
+  trainMult(trained, stat) {
+    return 1 + (this.tuning.training?.[stat] || 0) * (trained?.[stat] || 0);
+  }
+
+  trainingCost(hero) {
+    const cfg = this.tuning.training;
+    const done = Object.values(hero.trained || {}).reduce((sum, n) => sum + n, 0);
+    return Math.round(cfg.cost * cfg.costGrowth ** done * (1 - (this.favor.upgradeDiscount || 0)));
   }
 
   // Level focus (tuning.upgrades.focus): reaching focus.level asks for attack, health or range.
@@ -206,10 +223,10 @@ export class TowerDefenseGame {
     return focus === stat && bonus ? 1 + bonus : 1;
   }
 
-  atkFor(hero, level, awakened = false, focus = hero.focus) {
+  atkFor(hero, level, awakened = false, focus = hero.focus, trained = hero.trained) {
     const tuning = this.tuning.upgrades;
     const awake = awakened ? 1 + (this.tuning.awakening?.attackBonus || 0) + (this.classBonus(hero).awakenBonus || 0) : 1;
-    return Math.round(hero.baseAtk * (1 + tuning.attackPerLevel * (level - 1)) * awake * this.focusMult(focus, "attack"));
+    return Math.round(hero.baseAtk * (1 + tuning.attackPerLevel * (level - 1)) * awake * this.focusMult(focus, "attack") * this.trainMult(trained, "attack"));
   }
 
   rangeFor(base) {
@@ -267,7 +284,7 @@ export class TowerDefenseGame {
     if (hpGain > 0) {
       // Apply the health bonus to already-deployed heroes, granted as current health.
       for (const hero of this.heroes) {
-        const next = this.maxHpFor(hero.baseHp, hero.level, hero.class, hero.awakened, hero.focus);
+        const next = this.maxHpFor(hero.baseHp, hero.level, hero.class, hero.awakened, hero.focus, hero.trained);
         hero.hpLeft += next - hero.hp;
         hero.hp = next;
       }
@@ -282,6 +299,7 @@ export class TowerDefenseGame {
     if (hero.level >= tuning.maxLevel) {
       // Awakening: one step past the level cap. Lost when the hero falls, like levels.
       const awakening = this.tuning.awakening;
+      if (hero.awakened && this.tuning.training) return this.trainingInfo(hero);
       if (!awakening || hero.awakened) return { ok: false, reason: `${hero.name} is fully upgraded.`, hero };
       const cost = Math.round(awakening.cost * (1 - (this.classBonus(hero).awakenDiscount || 0)));
       const nextAtk = this.atkFor(hero, hero.level, true);
@@ -291,7 +309,7 @@ export class TowerDefenseGame {
     }
     const cost = Math.round(tuning.costs[hero.level] * (1 - (this.favor.upgradeDiscount || 0)));
     const nextAtk = this.atkFor(hero, hero.level + 1);
-    const nextHp = this.maxHpFor(hero.baseHp, hero.level + 1, hero.class, false, hero.focus);
+    const nextHp = this.maxHpFor(hero.baseHp, hero.level + 1, hero.class, false, hero.focus, hero.trained);
     // The step to focus.level needs a choice; each option previews its own numbers.
     const needsFocus = !hero.focus && hero.level + 1 === tuning.focus?.level;
     const focusOptions = needsFocus ? {
@@ -303,14 +321,35 @@ export class TowerDefenseGame {
     return { ok: true, hero, cost, nextAtk, nextHp, needsFocus, focusOptions };
   }
 
+  // Training offer, shaped like the level focus choice (needsFocus + focusOptions), so
+  // upgrade(entityId, stat) and the popover picker handle both. Range drops out at its cap.
+  trainingInfo(hero) {
+    const cfg = this.tuning.training;
+    const cost = this.trainingCost(hero);
+    const trained = hero.trained || {};
+    const plus = (stat) => ({ ...trained, [stat]: (trained[stat] || 0) + 1 });
+    const hp = (t) => this.maxHpFor(hero.baseHp, hero.level, hero.class, true, hero.focus, t);
+    const focusOptions = {
+      attack: { nextAtk: this.atkFor(hero, hero.level, true, hero.focus, plus("attack")), nextHp: hero.hp, nextRange: hero.range },
+      health: { nextAtk: hero.atk, nextHp: hp(plus("health")), nextRange: hero.range },
+    };
+    if ((trained.range || 0) < cfg.rangeCap) {
+      focusOptions.range = { nextAtk: hero.atk, nextHp: hero.hp, nextRange: hero.range + Math.round(this.rangeFor(this.heroesById.get(hero.id)) * cfg.range) };
+    }
+    const info = { train: true, needsFocus: true, focusOptions, hero, cost, nextAtk: hero.atk, nextHp: hero.hp };
+    if (this.gold < cost) return { ...info, ok: false, reason: `Needs ${cost} gold, you have ${this.gold}.` };
+    return { ...info, ok: true };
+  }
+
   upgrade(entityId, focus = null) {
     let info = this.upgradeInfo(entityId);
     if (!info.ok) return info;
     if (info.needsFocus) {
       const option = info.focusOptions[focus];
-      if (!option) return { ...info, ok: false, reason: `Choose a focus for level ${info.hero.level + 1}: attack, health or range.` };
+      if (!option) return { ...info, ok: false, reason: info.train ? "Choose what to train: attack, health or range." : `Choose a focus for level ${info.hero.level + 1}: attack, health or range.` };
       info = { ...info, ...option };
-      info.hero.focus = focus;
+      if (info.train) info.hero.trained = { ...(info.hero.trained || {}), [focus]: (info.hero.trained?.[focus] || 0) + 1 };
+      else info.hero.focus = focus;
       info.hero.range = option.nextRange;
     }
     this.gold -= info.cost;
@@ -319,6 +358,8 @@ export class TowerDefenseGame {
     if (info.awaken) {
       info.hero.awakened = true;
       this.emitHeroEffect(info.hero, { type: "awaken", x: info.hero.x, y: info.hero.y, life: 0.9, color: "gold" });
+    } else if (info.train) {
+      this.emitHeroEffect(info.hero, { type: "buff", x: info.hero.x, y: info.hero.y, life: 0.5, color: "gold" });
     } else info.hero.level += 1;
     const hpGain = info.nextHp - info.hero.hp;
     info.hero.atk = info.nextAtk;
@@ -384,11 +425,18 @@ export class TowerDefenseGame {
     return { wave: waveIndex + 1, counts, totalHp: this.waveTotalHp(waveIndex) };
   }
 
+  // Endless past the 20-wave length: enemy HP and attack compound by waveGen.endlessRamp
+  // per wave, so every endless run ends and going deeper needs Divine Blessings.
+  endlessRamp(waveNumber = this.wave) {
+    const over = this.mode === "endless" ? waveNumber - MODE_WAVES.long : 0;
+    return over > 0 ? (1 + (this.tuning.waveGen?.endlessRamp || 0)) ** over : 1;
+  }
+
   // Total enemy HP of a wave, with the same scaling as spawnEnemy.
   waveTotalHp(waveIndex = this.wave) {
     const wave = this.waves[waveIndex];
     if (!wave) return 0;
-    const scale = (1 + waveIndex * this.difficulty.waveHpScale) * this.difficulty.enemyHp;
+    const scale = (1 + waveIndex * this.difficulty.waveHpScale) * this.difficulty.enemyHp * this.endlessRamp(waveIndex + 1);
     return Math.round(wave.spawns.reduce((sum, group) => sum + group.count * (group.scale ?? 1) * (this.tuning.enemies[group.kind]?.hp || 0), 0) * scale);
   }
 
@@ -407,10 +455,18 @@ export class TowerDefenseGame {
     this.spawnQueue = [];
     let at = 0;
     // Several entrances take turns, so each gate sends an even share of every group.
+    // Enemies on one lane keep at least waveGen.minSpacing px apart (a time gap alone
+    // stacks slow walkers into one blob) and spread sideways in a fixed pattern.
     let lane = 0;
+    const laneFree = this.lanes.map(() => 0);
+    const spacing = this.tuning.waveGen?.minSpacing ?? 0;
     for (const group of wave.spawns) {
+      const speed = (this.tuning.enemies[group.kind]?.speed || 1) * this.difficulty.enemySpeed;
       for (let i = 0; i < group.count; i += 1) {
-        this.spawnQueue.push({ at, kind: group.kind, scale: group.scale ?? 1, lane: lane++ % this.lanes.length });
+        const gate = lane++ % this.lanes.length;
+        at = Math.max(at, laneFree[gate]);
+        this.spawnQueue.push({ at, kind: group.kind, scale: group.scale ?? 1, lane: gate, sway: SWAY[this.spawnQueue.length % SWAY.length] });
+        laneFree[gate] = at + spacing / speed;
         at += group.gapMs / 1000;
       }
       at += 0.8;
@@ -437,7 +493,7 @@ export class TowerDefenseGame {
     this.spawnClock += dt;
     while (this.spawnQueue.length && this.spawnQueue[0].at <= this.spawnClock) {
       const next = this.spawnQueue.shift();
-      this.spawnEnemy(next.kind, { statScale: next.scale ?? 1, lane: next.lane ?? 0 });
+      this.spawnEnemy(next.kind, { statScale: next.scale ?? 1, lane: next.lane ?? 0, sway: next.sway ?? 0 });
       if (!this.spawnQueue.length && this.waveStats) this.waveStats.lastSpawnAt = this.time;
     }
     this.checkQuestClock();
@@ -475,7 +531,7 @@ export class TowerDefenseGame {
         const pace = Math.min(enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1, enemy.squeeze > 0 ? blocking.passSlowFactor ?? 1 : 1);
         enemy.distance += enemy.speed * pace * dt;
         const lane = this.laneOf(enemy);
-        const point = pointOnPath(lane.path, enemy.distance);
+        const point = pointOnPath(lane.path, enemy.distance, enemy.sway);
         enemy.x = point.x; enemy.y = point.y;
         if (enemy.distance >= lane.total) {
           enemy.dead = true;
@@ -545,14 +601,15 @@ export class TowerDefenseGame {
     return this.lanes[enemy.lane] ?? this.lanes[0];
   }
 
-  spawnEnemy(kind, { distance = 0, statScale = 1, lane = 0, extra = null } = {}) {
+  spawnEnemy(kind, { distance = 0, statScale = 1, lane = 0, sway = 0, extra = null } = {}) {
     let base = this.tuning.enemies[kind];
     if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
-    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * statScale;
-    const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance);
+    const ramp = this.endlessRamp();
+    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * statScale * ramp;
+    const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance, sway);
     const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
-    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale * ramp, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, sway, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     this.enemies.push(enemy);
     if (kind === "boss") {
       enemy.bossId = this.bossId;
@@ -984,7 +1041,7 @@ export class TowerDefenseGame {
         this.hit(e, power, hero);
         // Move the body too: a blocked enemy never walks, so only updating distance left it in the pile.
         e.distance = Math.max(0, e.distance - (aw ? 140 : 80));
-        const point = pointOnPath(this.laneOf(e).path, e.distance);
+        const point = pointOnPath(this.laneOf(e).path, e.distance, e.sway);
         e.x = point.x; e.y = point.y;
       });
     } else if (variant === "petrify_shot") {

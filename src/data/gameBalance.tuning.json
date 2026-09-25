@@ -3,7 +3,7 @@
   "classes": {
     "Tank": { "slot": "road", "range": 60, "ability": "taunt", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 0.6, "valueDps": 0.6, "guard": 0.3, "hold": 2 },
     "Warrior": { "slot": "road", "range": 70, "ability": "cleave", "hpMult": 1.2, "armorMult": 1.2, "dpsMult": 1.4, "valueDps": 1.5, "cleave": { "share": 0.7, "radius": 65, "targets": 5 } },
-    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.2, "armorMult": 1.2, "dpsMult": 1.1, "valueDps": 1.3, "dash": 170, "looseBonus": 1.6, "looseSpeed": 76, "veil": { "seconds": 3, "extraTargets": 1 } },
+    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.2, "armorMult": 1.2, "dpsMult": 1.1, "valueDps": 1.3, "dash": 170, "looseBonus": 2.2, "looseSpeed": 76, "veil": { "seconds": 3, "extraTargets": 1 } },
     "Mage": { "slot": "platform", "range": 160, "ability": "nuke", "apsMult": 0.55, "maxAps": 0.75, "dpsMult": 0.6, "damageType": "magical", "valueDps": 1.5, "splash": { "share": 0.35, "radius": 42 }, "chain": { "falloff": [0.6, 0.35], "reach": 110 } },
     "Support": { "slot": "platform", "range": 220, "ability": "aura", "valueDps": 1, "damageShare": 0.35, "heal": 3 },
     "Archer": { "slot": "platform", "range": 210, "ability": "volley", "apsMult": 0.5, "maxAps": 0.7, "valueDps": 1.1, "pierce": 0.35, "crit": 0.1, "airBonus": 1, "target": "strongest" }
@@ -25,6 +25,7 @@
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.35 },
   "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 } },
   "awakening": { "cost": 220, "attackBonus": 0.15, "healthBonus": 0.25 },
+  "training": { "cost": 120, "costGrowth": 1.3, "attack": 0.08, "health": 0.12, "range": 0.08, "rangeCap": 3 },
   "virtueEffects": {
     "Wildness": { "type": "atk", "value": 0.15, "label": "All heroes deal +15% attack damage." },
     "Desire": { "type": "atk", "value": 0.1, "label": "All heroes deal +10% attack damage." },
@@ -60,7 +61,7 @@
     { "virtues": ["Insight", "Gnosis"], "name": "True Sight", "label": "Bastet and Nyx: all heroes gain +5% critical chance.", "effect": { "type": "crit", "value": 0.05 } }
   ],
   "run": { "startingGold": 340, "sellRefund": 0.5, "lives": 25, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
-  "waveGen": { "bossEvery": 5, "midBossScale": 0.4, "countGrowth": 0.02, "gapShrink": 0.02, "gapFloor": 0.55 },
+  "waveGen": { "minSpacing": 18, "endlessRamp": 0.08, "bossEvery": 5, "midBossScale": 0.4, "countGrowth": 0.02, "gapShrink": 0.02, "gapFloor": 0.55 },
   "blocking": { "blockLimit": { "Tank": 3, "Warrior": 2, "Assassin": 1 }, "heldDamageBonus": 0.2, "passSlow": 1.5, "passSlowFactor": 0.8 },
   "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5, "heroKillsShare": 0.6 },
   "shards": { "minWave": 3, "favorPct": 0.1, "favorMin": 5, "gold": 60 },
