@@ -57,7 +57,7 @@
   ],
   "run": { "startingGold": 340, "lives": 25, "maxTeam": 5, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
   "blocking": { "blockLimit": { "Tank": 3, "Warrior": 2, "Assassin": 1 } },
-  "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5 },
+  "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5, "heroKillsShare": 0.8 },
   "shards": { "minWave": 3, "favorPct": 0.1, "favorMin": 5, "gold": 60 },
   "favorEarn": { "perWave": 10, "perPerfectWave": 5, "bossKill": 20, "perRemainingLife": 1, "remainingLifeCap": 25 },
   "synergy": { "bonusPerTag": 0.08, "cap": 0.24, "range": 250 },

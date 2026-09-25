@@ -546,6 +546,7 @@ export class TowerDefenseGame {
       this.team = this.team.filter((id) => id !== hero.id);
       if (this.waveStats) this.waveStats.heroDeaths += 1;
       if (this.quest?.type === "heroSurvival") this.failQuest();
+      if (this.quest?.type === "heroKills" && this.quest.heroEntityId === hero.entityId && this.quest.kills < this.quest.target) this.failQuest();
       this.onChange("death", this);
     }
   }
@@ -604,6 +605,7 @@ export class TowerDefenseGame {
       const slot = this.heroKills[hero.entityId];
       if (slot) slot.kills += 1;
       else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
+      if (this.quest?.type === "heroKills" && this.quest.status === "active" && this.quest.heroEntityId === hero.entityId) this.quest.kills += 1;
       this.onChange("kill", this);
     }
   }
@@ -846,6 +848,8 @@ export class TowerDefenseGame {
     const types = ["noLeaks", "speedClear"];
     // Only road heroes take hits; without one, survival would be free gold.
     if (this.heroes.some((hero) => hero.slotType === "road")) types.push("heroSurvival");
+    // Needs two heroes, or the named hero would simply be the whole team.
+    if (this.heroes.length >= 2) types.push("heroKills");
     const type = types[Math.floor(this.questRng() * types.length)];
     const quest = { type, wave: this.wave, status: "active", gold: cfg.goldBase + cfg.goldPerWave * (this.wave - 1) };
     if (type === "speedClear") {
@@ -854,6 +858,16 @@ export class TowerDefenseGame {
       const spawns = this.waves[this.wave - 1].spawns;
       const slowest = Math.min(...spawns.map((group) => this.tuning.enemies[group.kind]?.speed ?? Infinity)) * this.difficulty.enemySpeed;
       quest.seconds = Math.round((this.path.total / slowest) * cfg.speedClearTravel);
+    }
+    if (type === "heroKills") {
+      // A random deployed hero must land a share of an even split of the wave's kills.
+      const hero = this.heroes[Math.floor(this.questRng() * this.heroes.length)];
+      const enemies = this.waves[this.wave - 1].spawns.reduce((sum, group) => sum + group.count, 0);
+      quest.heroEntityId = hero.entityId;
+      quest.heroId = hero.id;
+      quest.heroName = hero.name;
+      quest.target = Math.max(1, Math.round((enemies / this.heroes.length) * cfg.heroKillsShare));
+      quest.kills = 0;
     }
     return quest;
   }
@@ -874,6 +888,7 @@ export class TowerDefenseGame {
   completeQuest() {
     const quest = this.quest;
     if (quest?.status !== "active") return;
+    if (quest.type === "heroKills" && quest.kills < quest.target) { this.failQuest(); return; }
     quest.status = "done";
     this.questsDone += 1;
     this.gold += quest.gold;

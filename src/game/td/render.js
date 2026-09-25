@@ -6,7 +6,7 @@ import { tdAsset } from "./assets.js";
 import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
-import { createMoonlitScene } from "./moonlit-scene.js";
+import { createMapScene, mapSceneFor } from "./map-scene.js";
 
 const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.mjs";
 const GLOW_CDN = "https://cdn.jsdelivr.net/npm/@pixi/filter-glow@5/dist/filter-glow.mjs";
@@ -54,8 +54,10 @@ export function effectTier(effect) {
 }
 
 export async function createRenderer(canvas, game, options = {}) {
-  const isMoonlit = game.map.art === "moonlit-sanctuary-v1";
-  let moonlitScene = null;
+  // Authored battlefields (Moonlit, Verdant) render through map-scene.js.
+  const sceneArt = mapSceneFor(game.map);
+  const isAuthored = Boolean(sceneArt);
+  let mapScene = null;
   const [PIXI, glowMod] = await Promise.all([
     import(/* @vite-ignore */ PIXI_CDN),
     import(/* @vite-ignore */ GLOW_CDN).catch(() => null),
@@ -184,14 +186,14 @@ export async function createRenderer(canvas, game, options = {}) {
 
   // Slot art sprites (road = gold glow, platform = purple glow). Falls back to Graphics if absent.
   const slotTextures = new Map(); // "road" | "platform" -> PIXI.Texture
-  if (!isMoonlit) {
+  if (!isAuthored) {
     PIXI.Assets.load(tdAsset("spritePlatform.webp")).then((t) => slotTextures.set("road", t)).catch(() => {});
     PIXI.Assets.load(tdAsset("sprite.webp")).then((t) => slotTextures.set("platform", t)).catch(() => {});
   }
 
   // Path tile texture (mossy stone, seamless). Rebuilds bg once when it loads.
   let pathTileTex = null;
-  if (!isMoonlit) PIXI.Assets.load(tdAsset("spriteRoad.webp")).then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
+  if (!isAuthored) PIXI.Assets.load(tdAsset("spriteRoad.webp")).then((t) => { pathTileTex = t; buildBg(); }).catch(() => {});
 
   // ------------------------------------------------------------------
   // Resize: fit the 960x540 world into the parent's width AND height
@@ -217,7 +219,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Static background: grid lines + path
   // ------------------------------------------------------------------
   function buildBg() {
-    if (isMoonlit) return;
+    if (isAuthored) return;
     layerBg.removeChildren();
 
     // Grid (very subtle - bg art provides the visual depth)
@@ -269,20 +271,20 @@ export async function createRenderer(canvas, game, options = {}) {
   // Background art panels (game-extracted stage textures, async)
   // ------------------------------------------------------------------
   async function buildBgTexture() {
-    if (isMoonlit) {
+    if (isAuthored) {
       // Local versioned artwork ships with the page, including localhost previews.
       // Awaited before exposing the playable canvas: no flash of untextured ground.
-      const ground = new PIXI.Graphics().rect(0, 0, 960, 540).fill(0x202e3d);
+      const ground = new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.ground);
       layerBgTex.addChild(ground);
       try {
-        const tex = await PIXI.Assets.load("/td/maps/moonlit-terrain-v1.png");
+        const tex = await PIXI.Assets.load(sceneArt.assets.terrain);
         const spr = new PIXI.Sprite(tex);
         spr.width = 960;
         spr.height = 540;
         layerBgTex.addChild(spr);
-        layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill({ color: 0x08101c, alpha: 0.14 }));
+        layerBgTex.addChild(new PIXI.Graphics().rect(0, 0, 960, 540).fill(sceneArt.grade));
       } catch (error) {
-        console.warn("Moonlit terrain could not load; using the stone ground fallback.", error);
+        console.warn(`${sceneArt.name} terrain could not load; using the stone ground fallback.`, error);
       }
       return;
     }
@@ -308,7 +310,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   let slotState = "";
   function buildSlots() {
-    if (moonlitScene) {
+    if (mapScene) {
       const next = `${game.heroes.map((h) => `${h.slotType}:${h.slotIndex}`).join(",")}|${game.focusedSlot?.type}:${game.focusedSlot?.index}`;
       if (next === slotState) return;
       slotState = next;
@@ -327,7 +329,7 @@ export async function createRenderer(canvas, game, options = {}) {
   }
 
   function drawSlot(container, x, y, type, occupied, highlighted) {
-    if (moonlitScene) { moonlitScene.drawSlot(container, x, y, type, occupied, highlighted); return; }
+    if (mapScene) { mapScene.drawSlot(container, x, y, type, occupied, highlighted); return; }
     const color  = type === "road" ? palette.gold : palette.purple;
     const radius = type === "road" ? 27 : 24;
     const tex    = slotTextures.get(type);
@@ -463,7 +465,7 @@ export async function createRenderer(canvas, game, options = {}) {
   // Portals (entrance / exit)
   // ------------------------------------------------------------------
   function buildPortals() {
-    if (isMoonlit) return;
+    if (isAuthored) return;
     const entrance = game.map.path[0];
     const exit     = game.map.path.at(-1);
     drawPortal(layerHud, entrance[0], entrance[1], 0x82e89a, "ENTRANCE");
@@ -651,7 +653,7 @@ export async function createRenderer(canvas, game, options = {}) {
   function syncEnemies() {
     const seen = new Set();
     for (const unit of game.enemies) {
-      if (isMoonlit && unit.dead && unit.exitReason === "base") continue;
+      if (isAuthored && unit.dead && unit.exitReason === "base") continue;
       seen.add(unit.entityId);
       const existing = enemyContainers.get(unit.entityId);
       // Full-body art that finished loading after this enemy spawned: rebuild so it converges.
@@ -667,14 +669,14 @@ export async function createRenderer(canvas, game, options = {}) {
         } else layerUnits.addChild(c);
       }
       updateEnemyContainer(unit, enemyContainers.get(unit.entityId));
-      if (isMoonlit) {
+      if (isAuthored) {
         // Units emerge from the breach and pass inside the base, instead of dying there.
         enemyContainers.get(unit.entityId).alpha = Math.min(1, Math.max(0, unit.distance / 18), Math.max(0, (game.path.total - unit.distance) / 24));
       }
     }
     for (const [id, c] of enemyContainers) {
       if (!seen.has(id)) {
-        if (isMoonlit && c.tdEnemy?.exitReason === "base") {
+        if (isAuthored && c.tdEnemy?.exitReason === "base") {
           c.destroy({ children: true });
           enemyContainers.delete(id);
           continue;
@@ -1118,7 +1120,7 @@ export async function createRenderer(canvas, game, options = {}) {
     drawBars();
     drawEffects(now);
     applyImpact(now);
-    moonlitScene?.draw(now);
+    mapScene?.draw(now);
     app.renderer.render(stage);
   }
 
@@ -1126,15 +1128,16 @@ export async function createRenderer(canvas, game, options = {}) {
   // Initial one-time setup (static layers built here, not in draw loop)
   // ------------------------------------------------------------------
   resize();
-  if (isMoonlit) {
+  if (isAuthored) {
+    const load = (key, fallback) => PIXI.Assets.load(sceneArt.assets[key]).catch((error) => {
+      console.warn(`${sceneArt.name} ${key} art unavailable; using ${fallback} fallback.`, error);
+      return null;
+    });
     const [spawnTexture, baseTexture, roadTexture, padTexture] = await Promise.all([
-      PIXI.Assets.load("/td/maps/moonlit-spawn-v1.png").catch((error) => { console.warn("Moonlit spawn art unavailable; using stone gate fallback.", error); return null; }),
-      PIXI.Assets.load("/td/maps/moonlit-base-v1.png").catch((error) => { console.warn("Moonlit base art unavailable; using sanctuary fallback.", error); return null; }),
-      PIXI.Assets.load("/td/maps/moonlit-road-v1.png").catch((error) => { console.warn("Moonlit road art unavailable; using stone paving fallback.", error); return null; }),
-      PIXI.Assets.load("/td/maps/moonlit-pad-v1.png").catch((error) => { console.warn("Moonlit pad art unavailable; using carved pad fallback.", error); return null; }),
+      load("spawn", "stone gate"), load("base", "sanctuary"), load("road", "stone paving"), load("pad", "carved pad"),
       buildBgTexture(),
     ]);
-    moonlitScene = createMoonlitScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture, pad: padTexture } });
+    mapScene = createMapScene(PIXI, game, { ground: layerBg, structures: layerStructures, foreground: layerForeground, overlay: layerHud, reducedMotion, textures: { spawn: spawnTexture, base: baseTexture, road: roadTexture, pad: padTexture } });
   } else buildBgTexture();
   buildBg();
   buildPortals();
@@ -1143,7 +1146,7 @@ export async function createRenderer(canvas, game, options = {}) {
   function destroy() {
     if (destroyed) return;
     destroyed = true;
-    moonlitScene?.destroy?.();
+    mapScene?.destroy?.();
     // Removes the canvas from the DOM; shared textures stay in the Assets cache for the next run.
     app.destroy({ removeView: true }, { children: true });
   }

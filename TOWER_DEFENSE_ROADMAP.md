@@ -4,9 +4,50 @@ Last updated: September 25, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](T
 
 ## What's next (priority order)
 
-Nothing scheduled. Map work is handled separately and archived. Awakening shipped (see archive).
+Map work is handled separately and archived. Awakening shipped (see archive). Milestones below are ordered by size and risk; each one lists what "done" means. Nothing here is started.
 
-Ideas not scheduled: level-3 focus choice (attack, health or small range bonus) if runs feel samey after Awakening.
+### M1: Mobile landscape layout (large, top priority)
+
+- Goal: the game is playable on a landscape phone without hiding rings, entrances or exits.
+- Scope: follow the layout plan in `docs/tower-defense-ui-plan.md` (fit the board to available height, side rails on short screens, no horizontal-scroll HUD).
+- Done when: the checklist sizes in that plan pass (667x375 up to 1440x900) plus one real landscape phone with browser chrome visible.
+
+### M2: Kill-count quest decision (small)
+
+- Goal: decide whether the kill-count quest type joins `noLeaks`, `heroSurvival` and `speedClear`, then ship or drop it.
+- Scope: confirm the rule and reward with the user first (player-facing gate); if yes, add the type in `sim.js` quest roll, name and text in `page/hud.ts`, and a headless check in `npm run test:tower-defense`.
+- Done when: the quest is live and tested, or the idea is recorded as rejected in the archive.
+
+### M3: Level-3 focus choice (unscheduled, conditional)
+
+- Trigger: only start if runs feel samey after Awakening.
+- Goal: at hero level 3 the player picks one focus: attack, health or a small range bonus.
+- Scope: pick UI, sim stat hook, balance check with `npm run test:td-balance` and `npm run td:sweep` so no focus is a clear best pick.
+- Done when: the choice is in the upgrade flow, balance numbers stay inside the current difficulty bands, and the tests cover all three focuses.
+
+### M4: 20-wave and endless mode (medium)
+
+- Goal: longer runs beyond the current wave count; 20-wave mode with a boss every 5th wave, then endless as an extension.
+- Scope: wave generator scaling past the current table, boss cadence, mode picker on the start screen, local best score per mode in the existing `td:v1` save.
+- Done when: both modes finish a headless sweep without runaway or trivial difficulty, and the save stays backward compatible.
+
+### M5: Replays (medium)
+
+- Goal: watch a finished run again.
+- Scope: the sim is already deterministic and seeded, so store seed plus player inputs per run and play them back through `sim.js` and `render.js`; keep the last few runs in local storage.
+- Done when: a replay of a recorded run ends with the same score and wave as the original, verified by a headless test.
+
+### M6: Leaderboard (large, needs design first)
+
+- Goal: shared scores across players.
+- Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1, ideally validating scores by re-running M5 replays server side.
+- Done when: the anti-tamper approach is agreed, then built. Depends on M5.
+
+### M7: New Bosses
+
+- We can add new Motto Immortal Bosses other than only Baphomet.
+We have Lilith, Ishtar, Typhoon, Nian Beast, Spirit of the Night Hag. All bosses are listed in `src/data/bosses.json`. 
+- Bosse could also have Ultimate Abilities. Those are also listed in there. Currently the bosses dont have that.
 
 ## Research notes (September 25, 2026)
 
@@ -35,7 +76,4 @@ node scripts/upload-to-r2.mjs --prefix td/<folder>                 # upload new 
 
 ## Known gaps / deferred
 
-- Sound variants not listening-pass verified
-- Kill-count quest type was offered and not picked
-- Mobile / landscape layout (large scope, deferred)
-- Endless mode, 20-wave mode, leaderboard, replays (deferred per original spec)
+All former gaps are now milestones above (M1, M2, M4 to M7).

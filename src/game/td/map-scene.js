@@ -1,17 +1,63 @@
-// Retained scenery for Moonlit Pass. Coordinates use the game's 960 × 540 world.
+// Retained scenery for authored battlefields. Coordinates use the game's 960 × 540 world.
 // All randomness is local to the scenery: decorating a map never consumes combat RNG.
 const TAU = Math.PI * 2;
-const STONE = [0x424c58, 0x48535e, 0x3b4652, 0x505962, 0x39434f, 0x45525d];
-const GOLD = 0xb69a60;
-const LIGHT = 0xeee1b1;
 
-export function createMoonlitScene(PIXI, game, {
+// Per-map art direction, keyed by tdMaps.json `art`. Assets load from public/td/maps/.
+export const MAP_SCENES = {
+  "moonlit-sanctuary-v1": {
+    name: "Moonlit", baseName: "Sanctuary",
+    assets: {
+      terrain: "/td/maps/moonlit-terrain-v1.png",
+      spawn: "/td/maps/moonlit-spawn-v1.png",
+      base: "/td/maps/moonlit-base-v1.png",
+      road: "/td/maps/moonlit-road-v1.png",
+      pad: "/td/maps/moonlit-pad-v1.png",
+    },
+    ground: 0x202e3d, grade: { color: 0x08101c, alpha: 0.14 },
+    seed: 0x6d6f6f6e,
+    stone: [0x424c58, 0x48535e, 0x3b4652, 0x505962, 0x39434f, 0x45525d],
+    gold: 0xb69a60, light: 0xeee1b1,
+    road: { tint: 0xa4b3c7, bed: [[82, 0x142127, 0.17], [76, 0x29332e, 0.35]], shoulders: [0x566269, 0x3c4d52], shoulderShadow: 0x101c25 },
+    fragments: { count: 105, color: 0x65716e, edge: 0xb1b3a0 },
+    labels: { spawn: ["SPAWN", 0xc2d0e1], base: ["SANCTUARY", 0xe3d4a8], integrity: 0xb6c4cf, stroke: 0x0a1420 },
+    glow: { spawn: 0xb8ceee, base: 0xf5d590, hit: 0xffc0a0, ring: 0xf0c191, place: 0xe4c78d, dust: 0xb6b1a0, mote: 0xe8d9b2 },
+    pad: { platformTint: 0xc7d0f5, road: 0xc4a664, platform: 0x9ca6d6, highlight: 0xf3dba6 },
+  },
+  "verdant-shrine-v1": {
+    name: "Verdant", baseName: "Shrine",
+    assets: {
+      terrain: "/td/maps/verdant-terrain-v1.png",
+      spawn: "/td/maps/verdant-spawn-v1.png",
+      base: "/td/maps/verdant-base-v1.png",
+      road: "/td/maps/verdant-road-v1.png",
+      pad: "/td/maps/verdant-pad-v1.png",
+    },
+    ground: 0x1f2d24, grade: { color: 0x07140f, alpha: 0.12 },
+    seed: 0x76657264,
+    stone: [0x46514a, 0x4b5850, 0x3e4a43, 0x535e55, 0x3b463f, 0x48554d],
+    gold: 0xc0a05a, light: 0xf3e2a8,
+    road: { tint: 0xb3c0ab, bed: [[84, 0x0f1d17, 0.2], [76, 0x2a3a2b, 0.38]], shoulders: [0x5a6a52, 0x3e5140], shoulderShadow: 0x0d1a14 },
+    fragments: { count: 70, color: 0x66735f, edge: 0xb3b99c },
+    labels: { spawn: ["SPAWN", 0xe6b3a4], base: ["SHRINE", 0xecd79b], integrity: 0xbccbb8, stroke: 0x0a1610 },
+    glow: { spawn: 0xff8a6a, base: 0xffd27a, hit: 0xffc0a0, ring: 0xf0c191, place: 0xd8cf8a, dust: 0xa9b095, mote: 0xf0dfa0 },
+    pad: { platformTint: 0xcfe3cb, road: 0xc9a95f, platform: 0x86cfa4, highlight: 0xf1e2a4 },
+    decorate: decorateVerdant,
+  },
+};
+
+export function mapSceneFor(map) {
+  return MAP_SCENES[map?.art] ?? null;
+}
+
+export function createMapScene(PIXI, game, {
   ground, structures, foreground, overlay, reducedMotion = false, textures = {},
 }) {
+  const theme = mapSceneFor(game.map);
+  const STONE = theme.stone, GOLD = theme.gold, LIGHT = theme.light;
   const owned = [];
   const add = (parent, object) => { parent.addChild(object); owned.push(object); return object; };
   const graphic = parent => add(parent, new PIXI.Graphics());
-  let seed = 0x6d6f6f6e;
+  let seed = theme.seed;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   const spawn = game.map.spawn;
   const base = game.map.base;
@@ -38,13 +84,12 @@ export function createMoonlitScene(PIXI, game, {
   // The road has a sunken bed, dusty shoulders and three irregular stone courses.
   const road = graphic(ground);
   if (textures.road) {
-    strokePath(road, 82, 0x142127, 0.17);
-    strokePath(road, 76, 0x29332e, 0.35);
+    for (const [width, color, alpha] of theme.road.bed) strokePath(road, width, color, alpha);
     const mask = graphic(ground);
     strokePath(mask, 70, 0xffffff);
     const surface = add(ground, new PIXI.TilingSprite({ texture: textures.road, width: 960, height: 540 }));
     surface.tileScale.set(0.12);
-    surface.tint = 0xa4b3c7; // moonlight grading keeps pale stone within the terrain's value range
+    surface.tint = theme.road.tint; // grading keeps pale stone within the terrain's value range
     surface.mask = mask;
   } else {
     strokePath(road, 84, 0x141c23, 0.32);
@@ -82,8 +127,8 @@ export function createMoonlitScene(PIXI, game, {
         const across = side * (36 + random() * 2);
         const p = [project(distance, across - 2.3), project(distance + 12, across - 2),
           project(distance + 11, across + 2), project(distance + 1, across + 2.8)];
-        polygon(road, p.map(([x, y]) => [x, y + 2]), 0x101c25, textures.road ? 0.2 : 0.6);
-        polygon(road, p, random() > 0.5 ? 0x566269 : 0x3c4d52, textures.road ? 0.33 : 0.7);
+        polygon(road, p.map(([x, y]) => [x, y + 2]), theme.road.shoulderShadow, textures.road ? 0.2 : 0.6);
+        polygon(road, p, random() > 0.5 ? theme.road.shoulders[0] : theme.road.shoulders[1], textures.road ? 0.33 : 0.7);
       }
     }
   }
@@ -101,14 +146,14 @@ export function createMoonlitScene(PIXI, game, {
     return nearest;
   }
   const fragments = graphic(ground);
-  for (let i = 0; i < 105; i++) {
+  for (let i = 0; i < theme.fragments.count; i++) {
     const x = 22 + random() * 916, y = 24 + random() * 492;
     if (distanceToPath(x, y) < 49 || allSlots.some(([sx, sy]) => Math.hypot(x - sx, y - sy) < 47)
       || Math.hypot(x - base.x, y - base.y) < 86 || Math.hypot(x - spawn.x, y - spawn.y) < 70) continue;
     const w = 2 + random() * 6, h = 1.5 + random() * 3;
     fragments.ellipse(x + 2, y + 3, w + 1, h + 1).fill({ color: 0x07121b, alpha: 0.3 });
-    polygon(fragments, [[x - w, y], [x - w * 0.6, y - h], [x + w * 0.6, y - h * 0.5], [x + w, y + h], [x - w * 0.4, y + h]], 0x65716e, 0.36);
-    fragments.moveTo(x - w * 0.6, y - h).lineTo(x + w * 0.6, y - h * 0.5).stroke({ width: 0.7, color: 0xb1b3a0, alpha: 0.2 });
+    polygon(fragments, [[x - w, y], [x - w * 0.6, y - h], [x + w * 0.6, y - h * 0.5], [x + w, y + h], [x - w * 0.4, y + h]], theme.fragments.color, 0.36);
+    fragments.moveTo(x - w * 0.6, y - h).lineTo(x + w * 0.6, y - h * 0.5).stroke({ width: 0.7, color: theme.fragments.edge, alpha: 0.2 });
   }
 
   function localGraphic(parent, point) {
@@ -216,19 +261,21 @@ export function createMoonlitScene(PIXI, game, {
     const t = add(overlay, new PIXI.Text({ text, style: {
       fontFamily: "Georgia, serif", fontSize: size, fontWeight: "600", fill: color,
       letterSpacing: size >= 10 ? 1.3 : 0.5,
-      stroke: { color: 0x0a1420, width: 3 },
+      stroke: { color: theme.labels.stroke, width: 3 },
     } }));
     t.anchor.set(0.5); t.position.set(x, y); return t;
   }
-  label("SPAWN", spawn.x + 1, spawn.y + 51, 10, 0xc2d0e1);
-  label("SANCTUARY", base.x + 1, base.y + 55, 10, 0xe3d4a8);
-  const integrityLabel = label("", base.x + 1, base.y + 69, 9, 0xb6c4cf);
+  label(theme.labels.spawn[0], spawn.x + 1, spawn.y + 51, 10, theme.labels.spawn[1]);
+  label(theme.labels.base[0], base.x + 1, base.y + 55, 10, theme.labels.base[1]);
+  const integrityLabel = label("", base.x + 1, base.y + 69, 9, theme.labels.integrity);
   const cracks = localGraphic(foreground, base);
   const ambient = graphic(overlay);
   const motes = Array.from({ length: 12 }, (_, i) => ({
     x: i < 6 ? spawn.x : base.x + 9, y: i < 6 ? spawn.y : base.y - 10,
     phase: random() * TAU, span: 10 + random() * 17, speed: 0.1 + random() * 0.15,
   }));
+  const extra = theme.decorate?.({ PIXI, game, add, graphic, random, polygon, star, distanceToPath, allSlots,
+    layers: { ground, structures, foreground, overlay }, reducedMotion, theme });
 
   function draw(now = 0) {
     const seconds = now / 1000;
@@ -251,7 +298,7 @@ export function createMoonlitScene(PIXI, game, {
     if (lastIntegrity !== integrity) {
       lastIntegrity = integrity;
       integrityLabel.text = `${Math.max(0, game.lives)} / ${maxLives} INTEGRITY`;
-      integrityLabel.style.fill = integrity <= 0.3 ? 0xe8a68b : 0xb6c4cf;
+      integrityLabel.style.fill = integrity <= 0.3 ? 0xe8a68b : theme.labels.integrity;
       cracks.clear();
       if (integrity < 0.7) cracks.moveTo(35, -23).lineTo(30, -12).lineTo(35, -5).lineTo(29, 5).stroke({ color: 0x0a1420, width: 2 });
       if (integrity < 0.35) cracks.moveTo(3, 17).lineTo(13, 24).lineTo(11, 30).lineTo(21, 34).stroke({ color: 0x121a20, width: 2 });
@@ -260,11 +307,11 @@ export function createMoonlitScene(PIXI, game, {
     const breath = reducedMotion ? 0.5 : 0.5 + Math.sin(seconds * 1.4) * 0.5;
     const hit = Math.max(0, 1 - (now - hitAt) / 650);
     const wave = reducedMotion ? 0 : Math.max(0, 1 - (now - waveAt) / 1100);
-    ambient.ellipse(spawn.x - 4, spawn.y - 5, 7, 25).fill({ color: 0xb8ceee, alpha: 0.06 + breath * 0.045 + wave * 0.14 });
-    ambient.ellipse(base.x - 5, base.y, 15, 24).fill({ color: hit ? 0xffc0a0 : 0xf5d590, alpha: 0.035 + breath * 0.025 + hit * 0.2 });
+    ambient.ellipse(spawn.x - 4, spawn.y - 5, 7, 25).fill({ color: theme.glow.spawn, alpha: 0.06 + breath * 0.045 + wave * 0.14 });
+    ambient.ellipse(base.x - 5, base.y, 15, 24).fill({ color: hit ? theme.glow.hit : theme.glow.base, alpha: 0.035 + breath * 0.025 + hit * 0.2 });
     if (hit > 0) {
       ambient.ellipse(base.x - 7, base.y, 24 + (reducedMotion ? 0 : (1 - hit) * 9), 33)
-        .stroke({ width: 2, color: 0xf0c191, alpha: hit * 0.75 });
+        .stroke({ width: 2, color: theme.glow.ring, alpha: hit * 0.75 });
     }
     for (let i = placements.length - 1; i >= 0; i--) {
       const placement = placements[i];
@@ -273,13 +320,13 @@ export function createMoonlitScene(PIXI, game, {
       const fade = 1 - progress;
       const radius = reducedMotion ? 27 : 24 + progress * 13;
       ambient.ellipse(placement.x, placement.y + 4, radius, radius * 0.67)
-        .stroke({ width: 1.5, color: 0xe4c78d, alpha: fade * 0.55 });
+        .stroke({ width: 1.5, color: theme.glow.place, alpha: fade * 0.55 });
       if (!reducedMotion) {
         for (let mote = 0; mote < 7; mote++) {
           const a = mote * TAU / 7;
           const x = placement.x + Math.cos(a) * (18 + progress * 22);
           const y = placement.y + 7 + Math.sin(a) * (9 + progress * 13) - Math.sin(progress * Math.PI) * 5;
-          ambient.ellipse(x, y, 1.8 - progress, 1.1).fill({ color: 0xb6b1a0, alpha: fade * 0.4 });
+          ambient.ellipse(x, y, 1.8 - progress, 1.1).fill({ color: theme.glow.dust, alpha: fade * 0.4 });
         }
       }
     }
@@ -288,9 +335,10 @@ export function createMoonlitScene(PIXI, game, {
         const phase = (seconds * mote.speed + mote.phase) % 1;
         const x = mote.x + Math.sin(mote.phase + seconds * 0.35) * mote.span;
         const y = mote.y + 12 - phase * 53;
-        ambient.circle(x, y, 0.7 + Math.sin(mote.phase) * 0.2).fill({ color: 0xe8d9b2, alpha: Math.sin(phase * Math.PI) * 0.35 });
+        ambient.circle(x, y, 0.7 + Math.sin(mote.phase) * 0.2).fill({ color: theme.glow.mote, alpha: Math.sin(phase * Math.PI) * 0.35 });
       }
     }
+    extra?.draw(now, { hit, wave, breath });
   }
 
   // Caller can retain a slot container and repaint only when its state changes.
@@ -299,21 +347,21 @@ export function createMoonlitScene(PIXI, game, {
     g.position.set(x, y);
     container.addChild(g);
     const radius = type === "road" ? 26 : 24;
-    const accent = type === "road" ? 0xc4a664 : 0x9ca6d6;
+    const accent = type === "road" ? theme.pad.road : theme.pad.platform;
     if (textures.pad) {
       g.ellipse(1, 11, 25, 13).fill({ color: 0x07131c, alpha: 0.22 });
       const sprite = new PIXI.Sprite(textures.pad);
       sprite.anchor.set(0.5);
       sprite.position.set(x, y);
       sprite.width = 60; sprite.height = 58;
-      if (type === "platform") sprite.tint = 0xc7d0f5;
+      if (type === "platform") sprite.tint = theme.pad.platformTint;
       container.addChild(sprite);
       if (!occupied || highlighted) {
         const rune = new PIXI.Graphics();
         rune.position.set(x, y - 1);
         rune.ellipse(0, 0, 18, 13).stroke({ color: accent, width: highlighted ? 1.6 : 1, alpha: highlighted ? 0.9 : 0.55 });
         if (!occupied) star(rune, 0, 0, 4.5, accent, highlighted ? 0.9 : 0.5);
-        if (highlighted) rune.ellipse(0, 1, 29, 23).stroke({ color: 0xf3dba6, width: 1.2, alpha: 0.65 });
+        if (highlighted) rune.ellipse(0, 1, 29, 23).stroke({ color: theme.pad.highlight, width: 1.2, alpha: 0.65 });
         container.addChild(rune);
       }
       return g;
@@ -350,6 +398,117 @@ export function createMoonlitScene(PIXI, game, {
     draw, drawSlot,
     destroy() {
       for (const object of owned) if (!object.destroyed) { object.removeFromParent(); object.destroy({ children: true }); }
+    },
+  };
+}
+
+// Verdant Crossing: fallen guardian landmark, root-bound spawn threshold,
+// water glints and fireflies in the sheltered pockets. Pool centers match
+// scripts/build-td-verdant-art.py.
+const VERDANT_POOLS = [[887, 303, 58, 40], [62, 478, 74, 44], [430, 331, 46, 20]];
+
+function decorateVerdant({ PIXI, add, graphic, random, polygon, layers, reducedMotion, theme, game }) {
+  const GOLD = theme.gold;
+  const spawn = game.map.spawn;
+
+  // Corrupted roots spread from the breach across the first flagstones (ground layer, under units).
+  const roots = graphic(layers.ground);
+  for (const [points, width] of [
+    [[[26, 124], [10, 138], [6, 156], [18, 170]], 4.5],
+    [[[70, 124], [84, 136], [80, 150], [96, 160]], 3.5],
+    [[[40, 128], [44, 146], [34, 160], [40, 176]], 3],
+  ]) {
+    roots.moveTo(...points[0]).bezierCurveTo(...points[1], ...points[2], ...points[3]);
+    roots.stroke({ width: width + 1.5, color: 0x0b0e0a, alpha: 0.5, cap: "round" });
+    roots.moveTo(...points[0]).bezierCurveTo(...points[1], ...points[2], ...points[3]);
+    roots.stroke({ width, color: 0x2d2419, alpha: 0.95, cap: "round" });
+    roots.moveTo(points[0][0] - 0.8, points[0][1] - 0.8).bezierCurveTo(points[1][0] - 0.8, points[1][1] - 0.8, points[2][0] - 0.8, points[2][1] - 0.8, points[3][0] - 0.8, points[3][1] - 0.8);
+    roots.stroke({ width: 0.9, color: 0x7d6a4a, alpha: 0.5, cap: "round" });
+  }
+  // Blight veins in the roots pulse with the spawn (overlay would sit above units; keep them low).
+  const veins = graphic(layers.ground);
+
+  // Fallen guardian: toppled helmeted head, broken torso block and a split spear,
+  // lying flat in the top-right thicket, clear of the route and the (860,160) pad.
+  const guardian = add(layers.structures, new PIXI.Graphics());
+  guardian.position.set(893, 62);
+  const g = guardian;
+  g.ellipse(4, 20, 64, 17).fill({ color: 0x050d09, alpha: 0.45 });
+  // Torso: a heavy carved block with a gilded collar, tipped onto its side.
+  polygon(g, [[-8, -10], [44, -20], [58, -6], [56, 16], [4, 24], [-10, 10]].map(([x, y]) => [x + 2, y + 4]), 0x101a14);
+  polygon(g, [[-8, -10], [44, -20], [58, -6], [56, 16], [4, 24], [-10, 10]], 0x5b665c);
+  polygon(g, [[44, -20], [58, -6], [56, 16], [46, 2]], 0x3a453d);
+  polygon(g, [[-8, -10], [44, -20], [46, 2], [-6, 8]], 0x6d786c);
+  g.moveTo(-6, -2).lineTo(45, -10).stroke({ width: 2.2, color: GOLD, alpha: 0.75 });
+  g.moveTo(8, -12).lineTo(12, 6).lineTo(6, 18).stroke({ width: 1, color: 0x1a2219, alpha: 0.7 });
+  g.moveTo(28, -16).lineTo(31, 0).stroke({ width: 1, color: 0x1a2219, alpha: 0.6 });
+  // Head with crested helmet, face turned up, resting against the torso.
+  g.ellipse(-26, 4, 20, 17).fill(0x141e17);
+  g.ellipse(-27, 1, 19, 16).fill(0x646f63);
+  g.ellipse(-31, -3, 12, 10).fill({ color: 0x7f8a7a, alpha: 0.8 });
+  polygon(g, [[-44, -8], [-30, -22], [-10, -16], [-14, -10], [-30, -14]], 0x4b564c);
+  g.moveTo(-44, -8).lineTo(-30, -22).lineTo(-10, -16).stroke({ width: 1.6, color: GOLD, alpha: 0.8 });
+  g.moveTo(-36, 2).lineTo(-28, 1).stroke({ width: 1.8, color: 0x151c16, alpha: 0.9 });
+  g.moveTo(-24, 0).lineTo(-17, 2).stroke({ width: 1.8, color: 0x151c16, alpha: 0.9 });
+  g.moveTo(-28, 9).lineTo(-22, 10).stroke({ width: 1, color: 0x2a332a, alpha: 0.8 });
+  g.moveTo(-40, 12).lineTo(-33, 5).lineTo(-36, -2).stroke({ width: 0.9, color: 0x1a2219, alpha: 0.7 });
+  // Split spear: shaft lies across the thicket, gilded blade broken off beside it.
+  g.moveTo(-58, 28).lineTo(20, 32).stroke({ width: 4, color: 0x1a130c, alpha: 0.55 });
+  g.moveTo(-60, 25).lineTo(18, 29).stroke({ width: 3, color: 0x6a5536 });
+  g.moveTo(-60, 24).lineTo(18, 28).stroke({ width: 0.8, color: 0xb59a6a, alpha: 0.6 });
+  polygon(g, [[26, 30], [44, 25], [52, 30], [44, 34]], 0x8f7437);
+  polygon(g, [[26, 30], [44, 25], [52, 30]], GOLD);
+  // Moss drapes and a few leaves reclaiming the statue.
+  for (let i = 0; i < 22; i++) {
+    const x = -44 + random() * 100, y = -18 + random() * 30;
+    const onStatue = (x > -46 && x < -8 && Math.hypot((x + 27) / 19, (y - 1) / 16) < 1) || (x > -8 && x < 56 && y > -16 && y < 20);
+    if (!onStatue) continue;
+    const r = 1.8 + random() * 3;
+    g.ellipse(x, y, r * 1.5, r).fill({ color: random() > 0.5 ? 0x3f5f2e : 0x5f8340, alpha: 0.85 });
+  }
+  for (let i = 0; i < 7; i++) {
+    const x = -48 + i * 16 + random() * 6, y = 20 + random() * 8;
+    g.ellipse(x, y, 5 + random() * 3, 3).fill({ color: 0x2a4a2a, alpha: 0.9 });
+    g.ellipse(x - 1, y - 1, 3, 1.6).fill({ color: 0x6f9a52, alpha: 0.7 });
+  }
+
+  // Ground-level glints on the pools (below units) and fireflies (above scenery, tiny).
+  const water = graphic(layers.ground);
+  const glints = VERDANT_POOLS.flatMap(([cx, cy, rx, ry]) => Array.from({ length: Math.max(2, Math.round(rx / 18)) }, () => ({
+    x: cx + (random() - 0.5) * rx * 1.1, y: cy + (random() - 0.5) * ry * 0.9,
+    w: 4 + random() * 7, phase: random() * Math.PI * 2,
+  })));
+  const flies = graphic(layers.overlay);
+  const sheltered = [[905, 70], [70, 470], [880, 300], [20, 230], [430, 520], [940, 200], [300, 20], [630, 520]];
+  const fireflies = Array.from({ length: 14 }, (_, i) => {
+    const [x, y] = sheltered[i % sheltered.length];
+    return { x: x + (random() - 0.5) * 50, y: y + (random() - 0.5) * 30, phase: random() * Math.PI * 2, speed: 0.25 + random() * 0.35 };
+  });
+
+  return {
+    draw(now, { wave, breath }) {
+      const seconds = now / 1000;
+      veins.clear();
+      veins.moveTo(26, 124).bezierCurveTo(10, 138, 6, 156, 18, 170)
+        .stroke({ width: 1, color: theme.glow.spawn, alpha: 0.18 + breath * 0.12 + wave * 0.35, cap: "round" });
+      veins.moveTo(70, 124).bezierCurveTo(84, 136, 80, 150, 96, 160)
+        .stroke({ width: 0.8, color: theme.glow.spawn, alpha: 0.14 + breath * 0.1 + wave * 0.3, cap: "round" });
+      water.clear();
+      for (const glint of glints) {
+        const shimmer = reducedMotion ? 0.5 : 0.5 + Math.sin(seconds * 1.1 + glint.phase) * 0.5;
+        const drift = reducedMotion ? 0 : Math.sin(seconds * 0.4 + glint.phase) * 2;
+        water.ellipse(glint.x + drift, glint.y, glint.w, 0.9).fill({ color: 0xcfeede, alpha: 0.06 + shimmer * 0.12 });
+      }
+      flies.clear();
+      if (reducedMotion) return;
+      for (const fly of fireflies) {
+        const t = seconds * fly.speed + fly.phase;
+        const x = fly.x + Math.sin(t) * 16 + Math.sin(t * 2.3) * 4;
+        const y = fly.y + Math.cos(t * 0.8) * 9;
+        const blink = Math.max(0, Math.sin(t * 2.1 + fly.phase * 3));
+        flies.circle(x, y, 3.2).fill({ color: 0xd9f59a, alpha: blink * 0.08 });
+        flies.circle(x, y, 1).fill({ color: 0xf2ffc6, alpha: blink * 0.55 });
+      }
     },
   };
 }

@@ -3,6 +3,7 @@
 // clicks, stage resize and the single frame loop.
 import { buildRunTuning } from "../favor.js";
 import { createRenderer } from "../render.js";
+import { mapSceneFor } from "../map-scene.js";
 import { TowerDefenseGame } from "../sim.js";
 import type { PageContext, Slot } from "./context";
 
@@ -127,7 +128,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     if (!session) return;
     const game = session.game;
     ctx.actions.updateHud();
-    if (type === "leak" && game.lives > 0) ctx.notice(`${game.map.base ? "Sanctuary hit." : "An enemy broke through."} ${game.lives} ${game.lives === 1 ? "life" : "lives"} left.`);
+    if (type === "leak" && game.lives > 0) ctx.notice(`${game.map.base ? `${mapSceneFor(game.map)?.baseName ?? "Sanctuary"} hit.` : "An enemy broke through."} ${game.lives} ${game.lives === 1 ? "life" : "lives"} left.`);
     if (type === "death") {
       const fallen = game.fallenHeroes.at(-1);
       const hero = fallen && heroById.get(fallen.id);

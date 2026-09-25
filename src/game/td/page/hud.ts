@@ -2,7 +2,7 @@
 // and fallen heroes, pause and speed buttons.
 import type { PageContext } from "./context";
 
-const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival: "No hero falls", speedClear: "Speed clear" };
+const QUEST_NAMES: Record<string, string> = { noLeaks: "No leaks", heroSurvival: "No hero falls", speedClear: "Speed clear", heroKills: "Slayer" };
 
 const AUTO_NEXT_KEY = "td:autonext";
 const AUTO_NEXT_MS = 10000;
@@ -102,6 +102,7 @@ export function createHud(ctx: PageContext) {
   function questGoal(quest: any, game: any) {
     if (quest.type === "noLeaks") return "Let no enemy through";
     if (quest.type === "heroSurvival") return "Keep every hero alive";
+    if (quest.type === "heroKills") return `${quest.heroName} lands ${quest.target} kills (${Math.min(quest.kills, quest.target)}/${quest.target})`;
     const lastSpawnAt = game.waveStats?.lastSpawnAt;
     if (lastSpawnAt == null) return `Clear within ${quest.seconds}s of the last spawn`;
     return `${Math.max(0, Math.ceil(quest.seconds - (game.time - lastSpawnAt)))}s left to clear`;

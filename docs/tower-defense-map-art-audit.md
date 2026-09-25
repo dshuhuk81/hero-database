@@ -155,3 +155,21 @@ The simulation suite and focused regressions for doorway crossing, single damage
 | Glass cannon | Win, 13 lives, 9 leaks, 405 seconds | Win, 2 lives, 19 leaks, 455 seconds |
 
 Verdant's harness results are identical before and after. The prototype keeps the proposed geometry without blanket balance compensation; the 10.7% shorter Moonlit route needs a separate balance decision after visual review. No production build was run.
+
+## Verdant Crossing implementation status
+
+Verdant now uses the same scene contract as Moonlit. The rendering code is in `src/game/td/map-scene.js`, which was renamed from `moonlit-scene.js`, and each map's settings live in `MAP_SCENES[map.art]`. Moonlit's settings are the previous constants, unchanged. In `render.js`, the checks that were Moonlit-only now apply to any map with an authored scene (`mapSceneFor(map)`). The lobby previews and the leak notice ("Shrine hit." / "Sanctuary hit.") are generated from the same settings.
+
+Metadata: `art: "verdant-shrine-v1"`, spawn `(48,90)`, base `(880,430)`. The route endpoints moved to these points and the deployment slots did not move. Assets and the in-engine landmark are described in [verdant-art-prompts.md](verdant-art-prompts.md). The v1 textures are adapted from Moonlit's painted art; new painted versions are still to do.
+
+The route is 188px shorter (2,480 → 2,292, −7.6%). Unlike Moonlit, this makes Verdant **easier**. Over seeds 99/1/7/42/123/777 × 5 squads, wins go from 20/30 to 23/30. The budget squad goes from 2/6 to 5/6 wins, and the balanced squad keeps 18.7 lives on average instead of 15.0. Results for seed 99 in the harness:
+
+| Squad | Before | After |
+| --- | --- | --- |
+| Balanced S-tier core | Win, 12 lives, 10 leaks, 612 seconds | Win, 14 lives, 8 leaks, 654 seconds |
+| Budget D-tier | Loss, 0 lives, 20 leaks, 661 seconds | Win, 1 life, 20 leaks, 613 seconds |
+| Road wall | Loss, 0 lives, 26 leaks, 298 seconds | Loss, 0 lives, 25 leaks, 277 seconds |
+| All platform | Win, 22 lives, 1 leak, 468 seconds | Win, 22 lives, 1 leak, 442 seconds |
+| Glass cannon | Win, 20 lives, 2 leaks, 595 seconds | Win, 22 lives, 1 leak, 563 seconds |
+
+No compensation was applied. Balancing both maps is a separate decision: Moonlit got harder and Verdant got easier. `npm run test:tower-defense` and `npm run test:td-balance` pass. The sim test now checks that the route endpoints match the spawn and base on every map that has a base. The legacy leak case uses a copy of Verdant with the base removed. Browser checks on localhost: all assets returned HTTP 200; sanctuary hits, the integrity readout and the notice work; switching Verdant → Moonlit → Verdant works; reduced motion works; the vector fallback works when the four sprite assets are blocked. No production build was run.

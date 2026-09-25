@@ -985,6 +985,63 @@ function runWaveOne(g) {
   assert.ok(limit(long) > limit(short), "longer map allows more time");
 }
 
+// Slayer (heroKills): a named deployed hero must land a target share of the wave's kills.
+{
+  const rollSlayer = () => {
+    const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });
+    g.gold = 10000;
+    g.place("nuwa", "road", 0); g.place("zeus", "platform", 0);
+    for (let seed = 0; seed < 50 && g.quest?.type !== "heroKills"; seed += 1) {
+      g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
+    }
+    return g;
+  };
+  let g = rollSlayer();
+  assert.equal(g.quest.type, "heroKills", "found a slayer roll");
+  const named = g.heroes.find((h) => h.entityId === g.quest.heroEntityId);
+  assert.ok(named, "slayer names a deployed hero");
+  assert.equal(g.quest.heroName, named.name);
+  const enemies = waves[0].spawns.reduce((sum, group) => sum + group.count, 0);
+  assert.equal(g.quest.target, Math.max(1, Math.round((enemies / 2) * tuning.quests.heroKillsShare)), "target = even split x heroKillsShare");
+  // Kills by other heroes do not count; kills by the named hero do.
+  const other = g.heroes.find((h) => h !== named);
+  g.spawnQueue = []; g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
+  g.hit(g.enemies[0], 1e9, other);
+  assert.equal(g.quest.kills, 0, "other hero's kill does not count");
+  g.hit(g.enemies[1], 1e9, named);
+  assert.equal(g.quest.kills, 1, "named hero's kill counts");
+  // Clearing short of the target fails; reaching it pays.
+  g.quest.target = 2;
+  g.enemies = [];
+  g.step(1 / 60);
+  assert.equal(g.quest.status, "failed", "clear below target fails the quest");
+  assert.equal(g.questsDone, 0);
+  g = rollSlayer();
+  g.spawnQueue = [];
+  g.quest.kills = g.quest.target;
+  g.enemies = [];
+  const before = g.gold;
+  g.step(1 / 60);
+  assert.equal(g.quest.status, "done", "reaching the target completes the quest");
+  assert.equal(g.gold, before + tuning.run.waveClearBonus.base + g.quest.gold);
+  // The named hero falling before the target fails it at once.
+  g = rollSlayer();
+  const nuwa = g.heroes.find((h) => h.id === "nuwa");
+  g.quest.heroEntityId = nuwa.entityId;
+  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
+  assert.equal(g.quest.status, "failed", "named hero falling fails slayer");
+}
+
+// Slayer needs two deployed heroes.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 96 });
+  g.place("zeus", "platform", 0);
+  for (let seed = 0; seed < 50; seed += 1) {
+    g.questRng = createRng(seed); g.running = false; g.wave = 0; g.startWave();
+    assert.notEqual(g.quest.type, "heroKills", "no slayer with a single hero");
+  }
+}
+
 // --- M5 ultimates audit: edge cases for every variant ---
 
 // Every roster ultimate survives awkward states: dead target, lone target,
@@ -1079,9 +1136,10 @@ function runWaveOne(g) {
   assert.ok(Math.abs(lost(near) - lost(a)) < lost(a) * 0.3, "enemy inside the blast is not hit again by the bounce");
 }
 
-// Entering Moonlit's visible sanctuary damages the base exactly once, without a kill reward.
-{
-  const map = maps.find((entry) => entry.id === "moonlit-pass");
+// Entering an authored map's visible base damages it exactly once, without a kill reward.
+for (const map of maps.filter((entry) => entry.base)) {
+  assert.deepEqual(map.path[0], [map.spawn.x, map.spawn.y], `${map.id} route starts at the spawn aperture`);
+  assert.deepEqual(map.path.at(-1), [map.base.x, map.base.y], `${map.id} route ends at the base threshold`);
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 104 });
   g.startWave(); g.spawnQueue = []; g.enemies = [];
   g.spawnEnemy("runner");
@@ -1110,7 +1168,10 @@ function runWaveOne(g) {
 
 // Final-life impacts arrive before finish; invincibility reports zero damage; legacy maps stay unchanged.
 for (const scenario of ["last-life", "invincible", "legacy"]) {
-  const map = maps.find((entry) => entry.id === (scenario === "legacy" ? "verdant-crossing" : "moonlit-pass"));
+  const moonlit = maps.find((entry) => entry.id === "moonlit-pass");
+  // Legacy: a map without spawn/base metadata keeps the old offscreen leak behavior.
+  const { spawn: _spawn, base: _base, ...legacy } = maps.find((entry) => entry.id === "verdant-crossing");
+  const map = scenario === "legacy" ? legacy : moonlit;
   const order = [];
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 105,
     onChange: (type) => { if (type === "finish") order.push(type); } });
@@ -1125,7 +1186,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   g.step(1 / 60);
   const hit = g.effects.find((effect) => effect.type === "baseHit");
   if (scenario === "legacy") {
-    assert.equal(hit, undefined, "Verdant does not emit sanctuary effects");
+    assert.equal(hit, undefined, "maps without a base do not emit sanctuary effects");
     assert.equal(enemy.exitReason, undefined, "legacy removal behavior stays intact");
     assert.equal(g.lives, 0, "legacy leak still deducts lives");
   } else if (scenario === "invincible") {

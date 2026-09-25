@@ -1,11 +1,12 @@
 ---
 // Lobby screen: map cards with path previews, personal bests, play and panel buttons.
+import { mapSceneFor } from "../../game/td/map-scene.js";
 interface Props { maps: any[]; maxTeam: number; waveCount: number; bossName: string; }
 const { maps, maxTeam, waveCount, bossName } = Astro.props;
 const previews = maps.map((entry: any) => ({
   id: entry.id,
   name: entry.name,
-  moonlit: entry.art === "moonlit-sanctuary-v1",
+  art: mapSceneFor(entry)?.assets ?? null,
   spawn: entry.spawn,
   base: entry.base,
   points: entry.path.map(([x, y]: number[]) => `${x},${y}`).join(" "),
@@ -36,13 +37,13 @@ const previews = maps.map((entry: any) => ({
       {previews.map((preview: any) => (
         <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
           <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
-            {preview.moonlit && <image href="/td/maps/moonlit-terrain-v1.png" width="960" height="540" opacity="0.55" preserveAspectRatio="none" />}
+            {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.55" preserveAspectRatio="none" />}
             <polyline class="td-map-preview-path" points={preview.points} />
             {preview.road.map((ring: any) => <circle class="td-map-preview-road" cx={ring.x} cy={ring.y} r="20" />)}
             {preview.platform.map((ring: any) => <circle class="td-map-preview-platform" cx={ring.x} cy={ring.y} r="20" />)}
-            {preview.moonlit && <>
-              <image href="/td/maps/moonlit-spawn-v1.png" x={preview.spawn.x - 48} y={preview.spawn.y - 55} width="96" height="110" />
-              <image href="/td/maps/moonlit-base-v1.png" x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />
+            {preview.art && <>
+              <image href={preview.art.spawn} x={preview.spawn.x - 48} y={preview.spawn.y - 55} width="96" height="110" />
+              <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />
             </>}
           </svg>
           <span class="td-map-card-copy">
@@ -60,6 +61,6 @@ const previews = maps.map((entry: any) => ({
       <button class="action-button action-button--quiet" type="button" data-td-open="save">Save data</button>
     </div>
 
-    <p class="td-disclaimer">Minigame balance values are made up for fun and do not reflect in-game numbers.</p>
+    <p class="td-disclaimer">Motto Immortal and all game contents are the property of GOAT Games. All rights reserved.</p>
   </div>
 </section>
