@@ -1,5 +1,7 @@
 // Retained scenery for authored battlefields. Coordinates use the game's 960 × 540 world.
 // All randomness is local to the scenery: decorating a map never consumes combat RNG.
+import { mapLanes, routeStrokes } from "./lanes.js";
+
 const TAU = Math.PI * 2;
 
 // Per-map art direction, keyed by tdMaps.json `art`. Assets load from public/td/maps/.
@@ -43,6 +45,25 @@ export const MAP_SCENES = {
     pad: { platformTint: 0xcfe3cb, road: 0xc9a95f, platform: 0x86cfa4, highlight: 0xf1e2a4 },
     decorate: decorateVerdant,
   },
+  "sunscar-sanctuary-v1": {
+    name: "Sunscar", baseName: "Sanctuary",
+    assets: {
+      terrain: "/td/maps/sunscar-terrain-v1.png",
+      spawn: "/td/maps/sunscar-spawn-v1.png",
+      base: "/td/maps/sunscar-base-v1.png",
+      road: "/td/maps/sunscar-road-v1.png",
+      pad: "/td/maps/sunscar-pad-v1.png",
+    },
+    ground: 0x3a3226, grade: { color: 0x1a1208, alpha: 0.1 },
+    seed: 0x73756e73,
+    stone: [0x6b5f4e, 0x736654, 0x625747, 0x7a6d5a, 0x5c5142, 0x6f6350],
+    gold: 0xc9a45c, light: 0xf6e4b0,
+    road: { tint: 0xd8cbb4, bed: [[82, 0x2a1e12, 0.16], [76, 0x4a3d2c, 0.32]], shoulders: [0x8a7b63, 0x6a5c48], shoulderShadow: 0x2a1f14 },
+    fragments: { count: 60, color: 0x8c7d64, edge: 0xd6c6a2 },
+    labels: { spawn: ["SPAWN", 0xd7c2f0], base: ["SANCTUARY", 0xf2dc9c], integrity: 0xe6d6b4, stroke: 0x241a10 },
+    glow: { spawn: 0xa88be0, base: 0xffd98a, hit: 0xffb08a, ring: 0xf0c191, place: 0xf0d59a, dust: 0xcdb892, mote: 0xf6e2a8 },
+    pad: { platformTint: 0xe6dcc8, road: 0xd2a85a, platform: 0xb49be0, highlight: 0xf8e2a6 },
+  },
 };
 
 export function mapSceneFor(map) {
@@ -59,7 +80,8 @@ export function createMapScene(PIXI, game, {
   const graphic = parent => add(parent, new PIXI.Graphics());
   let seed = theme.seed;
   const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
-  const spawn = game.map.spawn;
+  const spawns = mapLanes(game.map).map((lane) => lane.spawn);
+  const strokes = routeStrokes(game.map);
   const base = game.map.base;
   const maxLives = Math.max(1, game.tuning?.run?.lives ?? game.lives ?? 1);
   const seen = new WeakSet();
@@ -74,12 +96,15 @@ export function createMapScene(PIXI, game, {
     g.poly(points.flat()).fill({ color, alpha });
   }
 
+  // One stroke per route; merged lanes are drawn once, so translucent layers do not double up.
   function strokePath(g, width, color, alpha = 1) {
-    const points = game.map.path;
-    g.moveTo(points[0][0], points[0][1]);
-    for (let i = 1; i < points.length; i++) g.lineTo(points[i][0], points[i][1]);
-    g.stroke({ width, color, alpha, cap: "round", join: "round" });
+    for (const points of strokes) {
+      g.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) g.lineTo(points[i][0], points[i][1]);
+      g.stroke({ width, color, alpha, cap: "round", join: "round" });
+    }
   }
+  const segments = strokes.flatMap((points) => points.slice(1).map((point, i) => [points[i], point]));
 
   // The road has a sunken bed, dusty shoulders and three irregular stone courses.
   const road = graphic(ground);
@@ -96,9 +121,7 @@ export function createMapScene(PIXI, game, {
     strokePath(road, 76, 0x333c40, 0.65);
     strokePath(road, 68, 0x1b252e);
   }
-  for (let segment = 1; segment < game.map.path.length; segment++) {
-    const [ax, ay] = game.map.path[segment - 1];
-    const [bx, by] = game.map.path[segment];
+  for (const [[ax, ay], [bx, by]] of segments) {
     const length = Math.hypot(bx - ax, by - ay);
     if (!length) continue;
     const ux = (bx - ax) / length, uy = (by - ay) / length;
@@ -137,8 +160,7 @@ export function createMapScene(PIXI, game, {
   const allSlots = [...game.map.roadSlots, ...game.map.platformSlots];
   function distanceToPath(x, y) {
     let nearest = Infinity;
-    for (let i = 1; i < game.map.path.length; i++) {
-      const [ax, ay] = game.map.path[i - 1], [bx, by] = game.map.path[i];
+    for (const [[ax, ay], [bx, by]] of segments) {
       const dx = bx - ax, dy = by - ay;
       const t = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy || 1)));
       nearest = Math.min(nearest, Math.hypot(x - ax - t * dx, y - ay - t * dy));
@@ -149,7 +171,7 @@ export function createMapScene(PIXI, game, {
   for (let i = 0; i < theme.fragments.count; i++) {
     const x = 22 + random() * 916, y = 24 + random() * 492;
     if (distanceToPath(x, y) < 49 || allSlots.some(([sx, sy]) => Math.hypot(x - sx, y - sy) < 47)
-      || Math.hypot(x - base.x, y - base.y) < 86 || Math.hypot(x - spawn.x, y - spawn.y) < 70) continue;
+      || Math.hypot(x - base.x, y - base.y) < 86 || spawns.some((spawn) => Math.hypot(x - spawn.x, y - spawn.y) < 70)) continue;
     const w = 2 + random() * 6, h = 1.5 + random() * 3;
     fragments.ellipse(x + 2, y + 3, w + 1, h + 1).fill({ color: 0x07121b, alpha: 0.3 });
     polygon(fragments, [[x - w, y], [x - w * 0.6, y - h], [x + w * 0.6, y - h * 0.5], [x + w, y + h], [x - w * 0.4, y + h]], theme.fragments.color, 0.36);
@@ -193,21 +215,24 @@ export function createMapScene(PIXI, game, {
     g.poly(points).fill({ color, alpha });
   }
 
-  const gate = localGraphic(structures, spawn);
-  foundation(gate, 37, 34);
-  // A narrow, vertical opening presents its bright threshold toward the right.
-  gate.ellipse(-5, -7, 13, 33).fill(0x101529);
-  gate.ellipse(-4, -7, 10, 29).fill({ color: 0x6578ad, alpha: 0.48 });
-  gate.ellipse(-2, -6, 5, 25).fill({ color: 0xacc4e6, alpha: 0.32 });
-  column(gate, -11, -21, 22, 13);
-  polygon(gate, [[-19, -42], [-11, -49], [2, -43], [7, -30], [0, -24], [-4, -36]], 0x74818b);
-  gate.moveTo(-12, -43).lineTo(-2, -37).lineTo(2, -28).stroke({ color: GOLD, alpha: 0.8, width: 1.5 });
-  gate.moveTo(-27, 21).lineTo(27, 21).stroke({ width: 1.2, color: GOLD, alpha: 0.65 });
-  for (let i = 0; i < 4; i++) gate.rect(6 + i * 6, -12, 3, 24).fill({ color: 0xa4afb4, alpha: 0.17 });
-  const gateFront = localGraphic(foreground, spawn);
-  column(gateFront, -10, 29, 21, 14);
-  polygon(gateFront, [[-21, 30], [-18, 23], [0, 23], [5, 29], [1, 35], [-18, 35]], 0x394b5b);
-  star(gateFront, -10, 12, 4.5, LIGHT, 0.8);
+  const gates = spawns.map((spawn) => {
+    const gate = localGraphic(structures, spawn);
+    foundation(gate, 37, 34);
+    // A narrow, vertical opening presents its bright threshold toward the right.
+    gate.ellipse(-5, -7, 13, 33).fill(0x101529);
+    gate.ellipse(-4, -7, 10, 29).fill({ color: 0x6578ad, alpha: 0.48 });
+    gate.ellipse(-2, -6, 5, 25).fill({ color: 0xacc4e6, alpha: 0.32 });
+    column(gate, -11, -21, 22, 13);
+    polygon(gate, [[-19, -42], [-11, -49], [2, -43], [7, -30], [0, -24], [-4, -36]], 0x74818b);
+    gate.moveTo(-12, -43).lineTo(-2, -37).lineTo(2, -28).stroke({ color: GOLD, alpha: 0.8, width: 1.5 });
+    gate.moveTo(-27, 21).lineTo(27, 21).stroke({ width: 1.2, color: GOLD, alpha: 0.65 });
+    for (let i = 0; i < 4; i++) gate.rect(6 + i * 6, -12, 3, 24).fill({ color: 0xa4afb4, alpha: 0.17 });
+    const gateFront = localGraphic(foreground, spawn);
+    column(gateFront, -10, 29, 21, 14);
+    polygon(gateFront, [[-21, 30], [-18, 23], [0, 23], [5, 29], [1, 35], [-18, 35]], 0x394b5b);
+    star(gateFront, -10, 12, 4.5, LIGHT, 0.8);
+    return [spawn, gate, gateFront];
+  });
 
   const sanctuary = localGraphic(structures, base);
   foundation(sanctuary, 51, 39);
@@ -243,7 +268,7 @@ export function createMapScene(PIXI, game, {
   // Painted architecture already carries its own foundation; only a soft contact
   // shadow is needed. Use vector masonry if an image is unavailable.
   for (const [texture, point, back, front, width, height, padWidth, padDepth] of [
-    [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34],
+    ...gates.map(([spawn, gate, gateFront]) => [textures.spawn, spawn, gate, gateFront, 96, 110, 37, 34]),
     [textures.base, base, sanctuary, baseFront, 118, 125, 51, 39],
   ]) {
     if (!texture) continue;
@@ -265,13 +290,13 @@ export function createMapScene(PIXI, game, {
     } }));
     t.anchor.set(0.5); t.position.set(x, y); return t;
   }
-  label(theme.labels.spawn[0], spawn.x + 1, spawn.y + 51, 10, theme.labels.spawn[1]);
+  for (const spawn of spawns) label(theme.labels.spawn[0], spawn.x + 1, spawn.y + 51, 10, theme.labels.spawn[1]);
   label(theme.labels.base[0], base.x + 1, base.y + 55, 10, theme.labels.base[1]);
   const integrityLabel = label("", base.x + 1, base.y + 69, 9, theme.labels.integrity);
   const cracks = localGraphic(foreground, base);
   const ambient = graphic(overlay);
   const motes = Array.from({ length: 12 }, (_, i) => ({
-    x: i < 6 ? spawn.x : base.x + 9, y: i < 6 ? spawn.y : base.y - 10,
+    x: i < 6 ? spawns[i % spawns.length].x : base.x + 9, y: i < 6 ? spawns[i % spawns.length].y : base.y - 10,
     phase: random() * TAU, span: 10 + random() * 17, speed: 0.1 + random() * 0.15,
   }));
   const extra = theme.decorate?.({ PIXI, game, add, graphic, random, polygon, star, distanceToPath, allSlots,
@@ -307,7 +332,7 @@ export function createMapScene(PIXI, game, {
     const breath = reducedMotion ? 0.5 : 0.5 + Math.sin(seconds * 1.4) * 0.5;
     const hit = Math.max(0, 1 - (now - hitAt) / 650);
     const wave = reducedMotion ? 0 : Math.max(0, 1 - (now - waveAt) / 1100);
-    ambient.ellipse(spawn.x - 4, spawn.y - 5, 7, 25).fill({ color: theme.glow.spawn, alpha: 0.06 + breath * 0.045 + wave * 0.14 });
+    for (const spawn of spawns) ambient.ellipse(spawn.x - 4, spawn.y - 5, 7, 25).fill({ color: theme.glow.spawn, alpha: 0.06 + breath * 0.045 + wave * 0.14 });
     ambient.ellipse(base.x - 5, base.y, 15, 24).fill({ color: hit ? theme.glow.hit : theme.glow.base, alpha: 0.035 + breath * 0.025 + hit * 0.2 });
     if (hit > 0) {
       ambient.ellipse(base.x - 7, base.y, 24 + (reducedMotion ? 0 : (1 - hit) * 9), 33)

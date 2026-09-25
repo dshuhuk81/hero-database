@@ -1,4 +1,5 @@
 import { buildWave, MODE_WAVES, isRunMode, wavesForMode } from "./waves.js";
+import { mapLanes } from "./lanes.js";
 
 const K = 260;
 const STEP = 1 / 60;
@@ -52,6 +53,7 @@ export class TowerDefenseGame {
     this.heroesById = new Map(heroes.map((hero) => [hero.id, hero]));
     this.tuning = tuning;
     this.support = tuning.support || { healFraction: 0.18, auraAttackBonus: 0.25, auraDuration: 6 };
+    this.classes = tuning.classes || {}; // class kits (M6): how each class attacks, blocks and supports
     this.virtueEffects = tuning.virtueEffects || {};
     this.favor = tuning.favor || {}; // permanent Divine Blessing bonuses (favor.js)
     // Difficulty knobs (tuning.difficulty); the debug panel edits them live.
@@ -67,7 +69,9 @@ export class TowerDefenseGame {
     this.questRng = createRng((seed ^ 0x7a3d9c1) >>> 0);
     this.onChange = onChange;
     this.onEffect = null; // optional hook (effect) => void, used for audio
-    this.path = pathMetrics(map.path);
+    this.lanes = mapLanes(map).map((lane) => ({ ...lane, ...pathMetrics(lane.path) }));
+    // Longest route: speed quests and tests size their limits by it.
+    this.path = this.lanes.reduce((longest, lane) => (lane.total > longest.total ? lane : longest));
     // Final boss per map (tdMaps.json "boss"); tuning.bosses holds its stat overrides and skills.
     this.bossId = map.boss ?? "baphomet";
     this.bossTuning = tuning.bosses?.[this.bossId] ?? null;
@@ -146,7 +150,7 @@ export class TowerDefenseGame {
     this.totalGoldSpent += cost;
     const hp = this.maxHpFor(base.hp, 1, base.class);
     const skill = this.tuning.heroSkills?.[heroId];
-    this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null });
+    this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null, basic: skill?.basic ?? null });
     // Early Ascension (class blessing): the unit enters at a higher level, below the focus level.
     const startLevel = Math.min(1 + (this.classBonus(base).startLevel || 0), (this.tuning.upgrades.focus?.level ?? Infinity) - 1, this.tuning.upgrades.maxLevel);
     if (startLevel > 1) {
@@ -179,6 +183,12 @@ export class TowerDefenseGame {
   classBonus(heroOrClass) {
     const cls = typeof heroOrClass === "string" ? heroOrClass : heroOrClass?.class;
     return this.favor.classBonus?.[cls] ?? {};
+  }
+
+  // Class kit (tuning.classes) for a hero or class name.
+  kit(heroOrClass) {
+    const cls = typeof heroOrClass === "string" ? heroOrClass : heroOrClass?.class;
+    return this.classes[cls] ?? {};
   }
 
   maxHpFor(baseHp, level, heroClass, awakened = false, focus = null) {
@@ -317,10 +327,9 @@ export class TowerDefenseGame {
   }
 
   defaultRotationFor(x, y) {
-    const path = this.map.path;
     let bestDist = Infinity;
     let bestAngle = 0;
-    for (let i = 0; i < path.length - 1; i++) {
+    for (const { path } of this.lanes) for (let i = 0; i < path.length - 1; i++) {
       const [ax, ay] = path[i];
       const [bx, by] = path[i + 1];
       const dx = bx - ax, dy = by - ay;
@@ -373,9 +382,11 @@ export class TowerDefenseGame {
     this.quest = this.rollQuest();
     this.spawnQueue = [];
     let at = 0;
+    // Several entrances take turns, so each gate sends an even share of every group.
+    let lane = 0;
     for (const group of wave.spawns) {
       for (let i = 0; i < group.count; i += 1) {
-        this.spawnQueue.push({ at, kind: group.kind, scale: group.scale ?? 1 });
+        this.spawnQueue.push({ at, kind: group.kind, scale: group.scale ?? 1, lane: lane++ % this.lanes.length });
         at += group.gapMs / 1000;
       }
       at += 0.8;
@@ -402,7 +413,7 @@ export class TowerDefenseGame {
     this.spawnClock += dt;
     while (this.spawnQueue.length && this.spawnQueue[0].at <= this.spawnClock) {
       const next = this.spawnQueue.shift();
-      this.spawnEnemy(next.kind, { statScale: next.scale ?? 1 });
+      this.spawnEnemy(next.kind, { statScale: next.scale ?? 1, lane: next.lane ?? 0 });
       if (!this.spawnQueue.length && this.waveStats) this.waveStats.lastSpawnAt = this.time;
     }
     this.checkQuestClock();
@@ -420,17 +431,19 @@ export class TowerDefenseGame {
         enemy.attackClock -= dt;
         if (enemy.attackClock <= 0) {
           const mods = this.modifiers();
-          if (this.rng() >= mods.dodge) {
-            this.damageHero(target, resolveDamage(enemy.attack, target.armor * (1 + mods.res), "physical"), enemy);
+          // A veiled Assassin keeps holding its enemy, but nothing can hurt it.
+          if (!this.isVeiled(target) && this.rng() >= mods.dodge) {
+            this.damageHero(target, resolveDamage(enemy.attack, target.armor * (1 + mods.res), "physical") * (1 - this.guardFor(target)), enemy);
             this.emit({ type: "shot", x1: enemy.x, y1: enemy.y, x2: target.x, y2: target.y, life: 0.12, color: "red" });
           }
           enemy.attackClock = enemy.attackPeriod || 0.9;
         }
       } else {
         enemy.distance += enemy.speed * (enemy.slow > 0 ? (enemy.slowFactor ?? 0.55) : 1) * dt;
-        const point = pointOnPath(this.map.path, enemy.distance);
+        const lane = this.laneOf(enemy);
+        const point = pointOnPath(lane.path, enemy.distance);
         enemy.x = point.x; enemy.y = point.y;
-        if (enemy.distance >= this.path.total) {
+        if (enemy.distance >= lane.total) {
           enemy.dead = true;
           const previousLives = this.lives;
           if (!this.difficulty.invincible) this.lives = Math.max(0, this.lives - enemy.damage);
@@ -455,11 +468,7 @@ export class TowerDefenseGame {
       hero.attackClock -= dt;
       hero.ultClock += dt;
       const target = this.findTarget(hero);
-      const mods = this.modifiers();
-      if (target && hero.attackClock <= 0) {
-        const resistance = hero.damageType === "magical" ? target.magicRes : target.armor;
-        const crit = this.rng() < hero.critChance + mods.crit + (this.classBonus(hero).crit || 0);
-        this.hit(target, resolveDamage(this.attackValue(hero), resistance, hero.damageType, crit), hero, { crit });
+      if (hero.attackClock <= 0 && this.basicAttack(hero, target)) {
         hero.attackClock = 1 / (hero.aps * (1 + (this.classBonus(hero).aps || 0)));
       }
       // A basic attack that just killed its target must not spend the ultimate on the corpse.
@@ -498,14 +507,18 @@ export class TowerDefenseGame {
     }
   }
 
-  spawnEnemy(kind, { distance = 0, statScale = 1, extra = null } = {}) {
+  laneOf(enemy) {
+    return this.lanes[enemy.lane] ?? this.lanes[0];
+  }
+
+  spawnEnemy(kind, { distance = 0, statScale = 1, lane = 0, extra = null } = {}) {
     let base = this.tuning.enemies[kind];
     if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
     const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * statScale;
-    const point = pointOnPath(this.map.path, distance);
+    const point = pointOnPath((this.lanes[lane] ?? this.lanes[0]).path, distance);
     const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
-    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale, magicRes: base.armor * 0.8, distance, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    const enemy = { ...base, speed, statScale, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale, magicRes: base.magicRes ?? base.armor * 0.8, distance, lane, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
     this.enemies.push(enemy);
     if (kind === "boss") {
       enemy.bossId = this.bossId;
@@ -530,8 +543,8 @@ export class TowerDefenseGame {
     for (let i = 0; i < cfg.count; i += 1) {
       const goBehind = i % 2 === 1 && behind < behindRoom;
       const offset = goBehind ? -(++behind) * spacing : ++ahead * spacing;
-      const distance = Math.min(this.path.total - 1, boss.distance + offset);
-      this.spawnEnemy(cfg.kind, { distance, statScale, extra: { parentId: boss.entityId } });
+      const distance = Math.min(this.laneOf(boss).total - 1, boss.distance + offset);
+      this.spawnEnemy(cfg.kind, { distance, statScale, lane: boss.lane ?? 0, extra: { parentId: boss.entityId } });
     }
     this.emit({ type: "summon", x: boss.x, y: boss.y, life: 0.7, color: "purple" });
   }
@@ -642,7 +655,7 @@ export class TowerDefenseGame {
   }
 
   damageHero(hero, amount, source) {
-    if (amount <= 0) return;
+    if (amount <= 0 || this.isVeiled(hero)) return;
     hero.hpLeft -= amount;
     hero._hitFlash = true;
     if (hero.hpLeft <= 0) {
@@ -684,6 +697,8 @@ export class TowerDefenseGame {
   }
 
   findTarget(hero) {
+    const loose = this.dashTarget(hero);
+    if (loose) return loose;
     if (hero.variant === "shadow_step") {
       const alive = this.enemies.filter((e) => this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range);
       alive.sort((a, b) => a.hp - b.hp);
@@ -691,11 +706,123 @@ export class TowerDefenseGame {
     }
     // Melee heroes on the road cannot reach flyers; platform coverage is required.
     const targets = this.enemies.filter((enemy) => this.canHit(hero, enemy) && Math.hypot(hero.x - enemy.x, hero.y - enemy.y) <= hero.range);
-    targets.sort(hero.ability === "execute" ? (a, b) => a.hp - b.hp : (a, b) => b.distance - a.distance);
+    targets.sort(this.targetOrder(hero));
     return targets[0] ?? null;
   }
 
-  hit(enemy, amount, hero, { showShot = true, crit = false } = {}) {
+  // Basic attack target order: Assassins finish the weakest, Archers snipe the
+  // toughest (kit target "strongest"), everyone else the enemy furthest along.
+  targetOrder(hero) {
+    if (hero.ability === "execute") return (a, b) => a.hp - b.hp;
+    if (this.kit(hero).target === "strongest") return (a, b) => b.hp - a.hp || b.distance - a.distance;
+    return (a, b) => b.distance - a.distance;
+  }
+
+  // Assassin leak catcher (kit dash): an enemy no blocker holds, within dash reach,
+  // furthest along the path. Held enemies are left to the line.
+  dashTarget(hero) {
+    const reach = this.dashReach(hero);
+    if (!reach) return null;
+    let best = null;
+    for (const enemy of this.enemies) {
+      if (enemy.held || this.isStopped(enemy) || !this.canHit(hero, enemy)) continue;
+      if (Math.hypot(hero.x - enemy.x, hero.y - enemy.y) > reach) continue;
+      if (!best || enemy.distance > best.distance) best = enemy;
+    }
+    return best;
+  }
+
+  dashReach(hero) {
+    const dash = this.kit(hero).dash;
+    return dash ? dash + (this.classBonus(hero).dash || 0) : 0;
+  }
+
+  // Tank passive: a share of incoming damage is shrugged off.
+  guardFor(hero) {
+    return Math.min(0.9, (this.kit(hero).guard || 0) + (this.classBonus(hero).guard || 0));
+  }
+
+  isStopped(enemy) {
+    return (enemy.petrifiedUntil ?? 0) > this.time || (enemy.stunnedUntil ?? 0) > this.time;
+  }
+
+  isVeiled(hero) {
+    return (hero?.veilUntil ?? 0) > this.time;
+  }
+
+  // One basic attack, shaped by the class kit (tuning.classes, M6). Returns false when
+  // the hero had nothing to do, so its attack timer stays ready.
+  //   Support: heals the most injured ally in range, else a weak attack (damageShare).
+  //   Mage: splash around the target, or a chain (hero skill basic "chain", Zeus).
+  //   Warrior: cleaves up to `targets` enemies next to the target.
+  //   Archer: pierces a share of armor or magic resistance.
+  //   Assassin: dashes to loose enemies; while veiled strikes extra enemies too.
+  basicAttack(hero, target) {
+    const kit = this.kit(hero);
+    const cb = this.classBonus(hero);
+    if (kit.heal && this.healPulse(hero, kit, cb)) return true;
+    if (!target) return false;
+    const mods = this.modifiers();
+    const crit = this.rng() < hero.critChance + mods.crit + (cb.crit || 0);
+    const pierce = Math.min(1, (kit.pierce || 0) + (cb.pierce || 0));
+    const value = this.attackValue(hero);
+    // Archer anti-air (kit airBonus) and Assassin strikes on enemies nobody holds (kit looseBonus).
+    const strike = (enemy, share, opts = {}) => {
+      const resistance = (hero.damageType === "magical" ? enemy.magicRes : enemy.armor) * (1 - pierce);
+      const bonus = 1 + (enemy.flying ? kit.airBonus || 0 : 0) + (kit.looseBonus && !enemy.held ? kit.looseBonus : 0);
+      this.hit(enemy, resolveDamage(value * share * bonus, resistance, hero.damageType, crit), hero, { crit, ...opts });
+    };
+    if (kit.dash && Math.hypot(hero.x - target.x, hero.y - target.y) > hero.range) {
+      this.emitHeroEffect(hero, { type: "dash", x1: hero.x, y1: hero.y, x2: target.x, y2: target.y, life: 0.3, color: "purple" });
+    }
+    strike(target, kit.damageShare ?? 1);
+    const others = (radius) => this.enemies
+      .filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(target.x - e.x, target.y - e.y) <= radius)
+      .sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
+    if (hero.basic === "chain" && kit.chain) {
+      let from = target;
+      const struck = new Set([target]);
+      for (const share of kit.chain.falloff) {
+        const next = this.enemies.filter((e) => !struck.has(e) && this.canHit(hero, e) && Math.hypot(from.x - e.x, from.y - e.y) <= kit.chain.reach)
+          .sort((a, b) => Math.hypot(from.x - a.x, from.y - a.y) - Math.hypot(from.x - b.x, from.y - b.y))[0];
+        if (!next) break;
+        this.emitHeroEffect(hero, { type: "shot", x1: from.x, y1: from.y, x2: next.x, y2: next.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" });
+        strike(next, share, { showShot: false });
+        struck.add(next);
+        from = next;
+      }
+    } else if (kit.splash) {
+      const radius = kit.splash.radius * (1 + (cb.splash || 0));
+      this.emitHeroEffect(hero, { type: "splash", x: target.x, y: target.y, radius, life: 0.35, color: "purple" });
+      for (const e of others(radius)) strike(e, kit.splash.share, { showShot: false, showHit: false });
+    } else if (kit.cleave) {
+      const victims = others(kit.cleave.radius).slice(0, kit.cleave.targets);
+      this.emitHeroEffect(hero, { type: "cleave", x: target.x, y: target.y, radius: kit.cleave.radius, life: 0.3, color: "gold" });
+      for (const e of victims) strike(e, kit.cleave.share + (cb.cleave || 0), { showShot: false, showHit: false });
+    }
+    if (kit.veil && this.isVeiled(hero)) {
+      const extra = this.enemies.filter((e) => e !== target && this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= Math.max(hero.range, this.dashReach(hero)))
+        .sort(this.targetOrder(hero)).slice(0, kit.veil.extraTargets);
+      for (const e of extra) strike(e, 1);
+    }
+    return true;
+  }
+
+  // Support basic action: heal the most injured ally in range (by health share).
+  healPulse(hero, kit, cb) {
+    let ally = null;
+    for (const other of this.heroes) {
+      if (other.hpLeft >= other.hp || Math.hypot(hero.x - other.x, hero.y - other.y) > hero.range) continue;
+      if (!ally || other.hpLeft / other.hp < ally.hpLeft / ally.hp) ally = other;
+    }
+    if (!ally) return false;
+    const amount = this.attackValue(hero) * kit.heal * (1 + this.modifiers().heal) * (1 + (cb.support || 0));
+    ally.hpLeft = Math.min(ally.hp, ally.hpLeft + amount);
+    this.emitHeroEffect(hero, { type: "beam", x1: hero.x, y1: hero.y, x2: ally.x, y2: ally.y, life: 0.3, color: "green" });
+    return true;
+  }
+
+  hit(enemy, amount, hero, { showShot = true, showHit = true, crit = false } = {}) {
     if (enemy.dead || enemy.untargetable) return;
     const vuln = (enemy.exposed && enemy.exposed > this.time) ? 1.2 : 1;
     const held = enemy.held ? 1 + (this.tuning.blocking?.heldDamageBonus || 0) : 1;
@@ -704,7 +831,7 @@ export class TowerDefenseGame {
     enemy.hp -= amount * vuln * held * bossHit;
     if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
-    this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
+    if (showHit || crit) this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
     if (enemy.hp <= 0) this.killEnemy(enemy, hero);
   }
 
@@ -774,7 +901,7 @@ export class TowerDefenseGame {
         const slot = slotArr[fallen.slotIndex];
         const fullHp = this.maxHpFor(base.hp, 1, base.class);
         const fSkill = this.tuning.heroSkills?.[fallen.id];
-        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null });
+        this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType: fallen.slotType, slotIndex: fallen.slotIndex, hp: fullHp, hpLeft: Math.round(fullHp * (aw ? 1 : 0.5)), attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: fSkill?.variant ?? null, skillName: fSkill?.skillName ?? null, basic: fSkill?.basic ?? null });
         if (!this.team.includes(fallen.id)) this.team = [...this.team, fallen.id];
         this.lastRevive = { heroId: fallen.id, by: hero.id };
         this.emitHeroEffect(hero, { type: "heal", x: slot[0], y: slot[1], life: 0.7, color: "green" });
@@ -795,7 +922,7 @@ export class TowerDefenseGame {
         this.hit(e, power, hero);
         // Move the body too: a blocked enemy never walks, so only updating distance left it in the pile.
         e.distance = Math.max(0, e.distance - (aw ? 140 : 80));
-        const point = pointOnPath(this.map.path, e.distance);
+        const point = pointOnPath(this.laneOf(e).path, e.distance);
         e.x = point.x; e.y = point.y;
       });
     } else if (variant === "petrify_shot") {
@@ -959,7 +1086,28 @@ export class TowerDefenseGame {
         this.hit(target, target.hp / target.maxHp < this.executeThreshold(hero) ? power * 1.8 : power, hero);
       }
     }
+    this.classUltimate(hero, foes);
     this.emitHeroEffect(hero, { type: "ult", x: target.x, y: target.y, life: 0.55, color: "purple", heroVariant: hero.variant ?? null });
+  }
+
+  // Class part of every ultimate (M6), on top of the hero's own skill.
+  //   Tank (kit hold): taunts and holds every ground enemy in taunt range in place.
+  //   Assassin (kit veil): untargetable for a few seconds, striking extra enemies.
+  classUltimate(hero, foes) {
+    const kit = this.kit(hero);
+    if (kit.hold) {
+      const radius = hero.range * 1.8;
+      const until = this.time + kit.hold + (this.classBonus(hero).hold || 0);
+      for (const e of foes) {
+        if (e.dead || e.flying || Math.hypot(hero.x - e.x, hero.y - e.y) > radius) continue;
+        e.stunnedUntil = Math.max(e.stunnedUntil ?? 0, until);
+      }
+      this.emitHeroEffect(hero, { type: "hold", x: hero.x, y: hero.y, radius, life: 0.8, color: "gold" });
+    }
+    if (kit.veil) {
+      hero.veilUntil = this.time + kit.veil.seconds;
+      this.emitHeroEffect(hero, { type: "veil", x: hero.x, y: hero.y, life: kit.veil.seconds, color: "purple" });
+    }
   }
 
   // Run quests (6B): one objective per wave, except the final wave where gold

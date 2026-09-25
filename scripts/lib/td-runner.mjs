@@ -10,6 +10,8 @@ import waves from "../../src/data/tdWaves.json" with { type: "json" };
 
 export { maps };
 
+const STALL_SECONDS = 120; // one wave running this long counts as a standoff (lost run)
+
 // Every blessing at max level ("trunk": only the Favor trunk). Of each pick-one pair
 // the first node is taken.
 export function maxBlessings(scope = "all") {
@@ -45,6 +47,7 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, mode, seed });
   if (!g.setTeam(ids)) throw new Error(`Invalid squad: ${ids}`);
   let spent = 0;
+  let stalled = false;
   const slotCount = { road: map.roadSlots.length, platform: map.platformSlots.length };
   while (!g.complete && g.wave < maxWave) {
     if (!g.running) {
@@ -71,7 +74,12 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
       if (g.virtueOffer) g.chooseVirtue(g.virtueOffer[0]);
       if (!g.startWave()) break;
     }
+    const waveStart = g.time;
     for (let i = 0; i < 60 * 120 && g.running && !g.complete; i += 1) g.step(1 / 60);
+    // Standoff guard: blockers and heals can outlast enemies nobody can kill. A player
+    // would recruit damage mid-wave; the bot counts it as a lost run.
+    if (g.running && g.time - waveStart >= STALL_SECONDS) { stalled = true; break; }
   }
-  return { won: g.won, complete: g.complete, wave: g.wave, lives: g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: g.perfect };
+  const won = g.won && !stalled;
+  return { won, stalled, complete: g.complete || stalled, wave: g.wave, lives: stalled ? 0 : g.lives, leaks: g.totalLeaks, score: g.score, spent, seconds: Math.round(g.time), perfect: won && g.perfect };
 }

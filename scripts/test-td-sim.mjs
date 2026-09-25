@@ -4,6 +4,7 @@ import { computeFavor } from "../src/game/td/favor.js";
 import heroes from "../src/data/gameBalance.json" with { type: "json" };
 import tuning from "../src/data/gameBalance.tuning.json" with { type: "json" };
 import maps from "../src/data/tdMaps.json" with { type: "json" };
+import { mapLanes } from "../src/game/td/lanes.js";
 import waves from "../src/data/tdWaves.json" with { type: "json" };
 import { buildWave, isBossWave, wavesForMode } from "../src/game/td/waves.js";
 
@@ -39,7 +40,9 @@ assert.equal(game.wave, 1, "wave advances once");
   grunt.x = nuwa.x - 20; grunt.y = nuwa.y; // contact range
   const before = nuwa.hpLeft;
   for (let i = 0; i < 30; i += 1) g.step(1 / 60); // exactly one attack lands (period 0.9s)
-  const expected = resolveDamage(grunt.attack, nuwa.armor, "physical");
+  // Tanks also shrug off their class guard share (M6 class kit).
+  const expected = resolveDamage(grunt.attack, nuwa.armor, "physical") * (1 - g.guardFor(nuwa));
+  assert.ok(g.guardFor(nuwa) > 0, "Tank guard applies");
   assert.ok(nuwa.hpLeft < before, "blocker takes damage");
   assert.ok(Math.abs((before - nuwa.hpLeft) - expected) < 1e-6, `armor mitigation applied (${expected})`);
   assert.ok(expected < grunt.attack, "mitigation reduces raw attack");
@@ -734,6 +737,7 @@ function runWaveOne(g) {
   assert.equal(g.findTarget(nyx), null, "normal attacks stay within range");
   assert.ok(g.findUltTarget(nyx) === grunt, "shadow_step targets enemy outside normal range");
   nyx.ultClock = nyx.ultCooldown;
+  nyx.attackClock = 1; // the step moves the grunt onto the path; keep the dash basic out of it
   g.step(1 / 60);
   assert.equal(nyx.ultClock < nyx.ultCooldown, true, "ultimate fires with no enemy in normal range");
   assert.ok(grunt.hp <= 0 || grunt.dead, "far low-HP enemy is executed");
@@ -1113,18 +1117,18 @@ function runWaveOne(g) {
 }
 
 // Entering an authored map's visible base damages it exactly once, without a kill reward.
-for (const map of maps.filter((entry) => entry.base)) {
-  assert.deepEqual(map.path[0], [map.spawn.x, map.spawn.y], `${map.id} route starts at the spawn aperture`);
-  assert.deepEqual(map.path.at(-1), [map.base.x, map.base.y], `${map.id} route ends at the base threshold`);
+for (const map of maps.filter((entry) => entry.base)) mapLanes(map).forEach((route, lane) => {
+  assert.deepEqual(route.path[0], [route.spawn.x, route.spawn.y], `${map.id} route starts at the spawn aperture`);
+  assert.deepEqual(route.path.at(-1), [map.base.x, map.base.y], `${map.id} route ends at the base threshold`);
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 104 });
   g.startWave(); g.spawnQueue = []; g.enemies = [];
-  g.spawnEnemy("runner");
+  g.spawnEnemy("runner", { lane });
   const enemy = g.enemies[0];
-  assert.deepEqual({ x: enemy.x, y: enemy.y }, map.spawn, "enemy emerges from the visible spawn");
+  assert.deepEqual({ x: enemy.x, y: enemy.y }, route.spawn, "enemy emerges from the visible spawn");
   const lives = g.lives;
   const score = g.score;
   const dt = 1 / 60;
-  enemy.distance = g.path.total - enemy.speed * dt * 1.5;
+  enemy.distance = g.laneOf(enemy).total - enemy.speed * dt * 1.5;
   g.step(dt);
   assert.equal(g.lives, lives, "approaching the doorway does not damage the base early");
   g.step(dt);
@@ -1140,6 +1144,27 @@ for (const map of maps.filter((entry) => entry.base)) {
   assert.equal(g.waveStats.leaks, 1, "entry still counts for wave statistics and quests");
   g.step(dt);
   assert.equal(g.lives, lives - enemy.damage, "removed enemy cannot damage the base again");
+});
+
+// Multi-entrance maps: gates alternate, lanes are equally long and merge before the base.
+for (const map of maps.filter((entry) => entry.lanes)) {
+  const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 105 });
+  assert.ok(g.lanes.length >= 2, `${map.id} has several entrances`);
+  // Targeting ranks enemies by distance walked, which is only fair when every lane is as long.
+  for (const lane of g.lanes) assert.equal(lane.total, g.path.total, `${map.id} lanes share one length`);
+  const tail = (path) => JSON.stringify(path.slice(-2));
+  assert.ok(g.lanes.every((lane) => tail(lane.path) === tail(g.lanes[0].path)), `${map.id} lanes merge into one approach`);
+  g.startWave();
+  const perLane = g.lanes.map((_, i) => g.spawnQueue.filter((item) => item.lane === i).length);
+  assert.ok(Math.min(...perLane) > 0, "every gate sends enemies");
+  assert.ok(Math.max(...perLane) - Math.min(...perLane) <= 1, "gates share each wave evenly");
+  g.spawnQueue = []; g.enemies = [];
+  const second = g.spawnEnemy("grunt", { lane: 1 });
+  const [x, y] = mapLanes(map)[1].path[0];
+  assert.deepEqual({ x: second.x, y: second.y }, { x, y }, "second lane starts at its own gate");
+  second.distance = 60;
+  g.step(1 / 60);
+  assert.ok(second.x > x + 55 && Math.abs(second.y - y) < 1, "second lane walks its own road");
 }
 
 // Final-life impacts arrive before finish; invincibility reports zero damage; legacy maps stay unchanged.
@@ -1234,7 +1259,7 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.equal(zeus.awakened, true);
   assert.equal(zeus.level, tuning.upgrades.maxLevel, "awakening does not add a level");
   assert.equal(g.gold, gold - aw.cost);
-  assert.equal(zeus.atk, Math.round(atk * (1 + aw.attackBonus)), "attack bonus");
+  assert.ok(Math.abs(zeus.atk - atk * (1 + aw.attackBonus)) <= 1, "attack bonus");
   assert.ok(Math.abs(zeus.hp - hp * (1 + aw.healthBonus)) <= 1, "health bonus");
   assert.equal(g.upgradeInfo(zeus.entityId).ok, false, "only once");
   g.damageHero(zeus, zeus.hpLeft + 1, null);

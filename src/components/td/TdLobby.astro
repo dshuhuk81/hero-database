@@ -1,6 +1,7 @@
 ---
 // Lobby screen: map cards with path previews, personal bests, play and panel buttons.
 import { mapSceneFor } from "../../game/td/map-scene.js";
+import { mapLanes, routeStrokes } from "../../game/td/lanes.js";
 interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; }
 const { maps, waveCount, bossNames } = Astro.props;
 const previews = maps.map((entry: any) => ({
@@ -8,9 +9,9 @@ const previews = maps.map((entry: any) => ({
   name: entry.name,
   bossName: bossNames[entry.id],
   art: mapSceneFor(entry)?.assets ?? null,
-  spawn: entry.spawn,
+  spawns: mapLanes(entry).map((lane: any) => lane.spawn),
   base: entry.base,
-  points: entry.path.map(([x, y]: number[]) => `${x},${y}`).join(" "),
+  routes: routeStrokes(entry).map((points: number[][]) => points.map(([x, y]) => `${x},${y}`).join(" ")),
   road: entry.roadSlots.map(([x, y]: number[]) => ({ x, y })),
   platform: entry.platformSlots.map(([x, y]: number[]) => ({ x, y })),
 }));
@@ -39,11 +40,11 @@ const previews = maps.map((entry: any) => ({
         <button type="button" class="td-map-card" data-map-id={preview.id} aria-pressed="false">
           <svg class="td-map-preview" viewBox="0 0 960 540" aria-hidden="true" focusable="false">
             {preview.art && <image href={preview.art.terrain} width="960" height="540" opacity="0.55" preserveAspectRatio="none" />}
-            <polyline class="td-map-preview-path" points={preview.points} />
+            {preview.routes.map((points: string) => <polyline class="td-map-preview-path" points={points} />)}
             {preview.road.map((ring: any) => <circle class="td-map-preview-road" cx={ring.x} cy={ring.y} r="20" />)}
             {preview.platform.map((ring: any) => <circle class="td-map-preview-platform" cx={ring.x} cy={ring.y} r="20" />)}
             {preview.art && <>
-              <image href={preview.art.spawn} x={preview.spawn.x - 48} y={preview.spawn.y - 55} width="96" height="110" />
+              {preview.spawns.map((spawn: any) => <image href={preview.art.spawn} x={spawn.x - 48} y={spawn.y - 55} width="96" height="110" />)}
               <image href={preview.art.base} x={preview.base.x - 59} y={preview.base.y - 62} width="118" height="125" />
             </>}
           </svg>

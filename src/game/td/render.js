@@ -7,6 +7,7 @@ import { fitRect } from "./ui.js";
 import { createZeusFx } from "./zeus-fx.js";
 import { createHeroFx, hasHeroFx } from "./hero-fx.js";
 import { createMapScene, mapSceneFor } from "./map-scene.js";
+import { mapLanes, routeStrokes } from "./lanes.js";
 
 const PIXI_CDN = "https://cdn.jsdelivr.net/npm/pixi.js@8/dist/pixi.mjs";
 const GLOW_CDN = "https://cdn.jsdelivr.net/npm/@pixi/filter-glow@5/dist/filter-glow.mjs";
@@ -240,13 +241,18 @@ export async function createRenderer(canvas, game, options = {}) {
     layerBg.addChild(grid);
 
     // Path: tiled stone texture (when loaded) or 4-layer Graphics fallback
-    const pts = game.map.path;
+    const strokes = routeStrokes(game.map);
+    function tracePaths(g) {
+      for (const pts of strokes) {
+        g.moveTo(pts[0][0], pts[0][1]);
+        for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+      }
+    }
 
     function pathStroke(width, color, alpha) {
       const g = new PIXI.Graphics();
       g.setStrokeStyle({ width, color, alpha, cap: "round", join: "round" });
-      g.moveTo(pts[0][0], pts[0][1]);
-      for (let i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+      tracePaths(g);
       g.stroke();
       layerBg.addChild(g);
       return g;
@@ -258,8 +264,7 @@ export async function createRenderer(canvas, game, options = {}) {
       // TilingSprite masked to path shape
       const pathMask = new PIXI.Graphics();
       pathMask.setStrokeStyle({ width: 74, color: 0xffffff, alpha: 1, cap: "round", join: "round" });
-      pathMask.moveTo(pts[0][0], pts[0][1]);
-      for (let i = 1; i < pts.length; i++) pathMask.lineTo(pts[i][0], pts[i][1]);
+      tracePaths(pathMask);
       pathMask.stroke();
       const ts = new PIXI.TilingSprite({ texture: pathTileTex, width: 960, height: 540 });
       ts.tileScale.set(0.12); // ~2-3 stones visible across 74px path width
@@ -475,9 +480,8 @@ export async function createRenderer(canvas, game, options = {}) {
   // ------------------------------------------------------------------
   function buildPortals() {
     if (isAuthored) return;
-    const entrance = game.map.path[0];
-    const exit     = game.map.path.at(-1);
-    drawPortal(layerHud, entrance[0], entrance[1], 0x82e89a, "ENTRANCE");
+    const exit = mapLanes(game.map)[0].path.at(-1); // every lane ends at the base
+    for (const { path: [entrance] } of mapLanes(game.map)) drawPortal(layerHud, entrance[0], entrance[1], 0x82e89a, "ENTRANCE");
     drawPortal(layerHud, exit[0],     exit[1],     0xff4d4d, "EXIT");
   }
 
@@ -682,7 +686,7 @@ export async function createRenderer(canvas, game, options = {}) {
       updateEnemyContainer(unit, enemyContainers.get(unit.entityId));
       if (isAuthored) {
         // Units emerge from the breach and pass inside the base, instead of dying there.
-        enemyContainers.get(unit.entityId).alpha *= Math.min(1, Math.max(0, unit.distance / 18), Math.max(0, (game.path.total - unit.distance) / 24));
+        enemyContainers.get(unit.entityId).alpha *= Math.min(1, Math.max(0, unit.distance / 18), Math.max(0, (game.laneOf(unit).total - unit.distance) / 24));
       }
     }
     // Keep the boss and its children above the escort that spawns after them.

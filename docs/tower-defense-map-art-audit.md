@@ -1,5 +1,7 @@
 # Tower defense map art audit
 
+Current required asset assignments and Map 3 implementation handoff: [map.md](../map.md).
+
 September 25, 2026. Scope: parallel audit of rendering, map endpoints, and art direction in the current working tree, including existing uncommitted sprite changes. This is an implementation brief; the game has not been modified by this audit.
 
 **Recommendation:** build two authored, dimensional battlefields in the existing Pixi renderer. Start with a visible invasion gate and a celestial sanctuary base, then complete Moonlit Pass as the visual reference for the second map. The largest improvement will come from consistent scale, materials, lighting, and a destination worth defending.

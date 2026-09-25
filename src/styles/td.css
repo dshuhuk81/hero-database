@@ -66,7 +66,7 @@
 .td-map-card:hover, .td-map-card:focus-visible { border-color: var(--border-strong); }
 .td-map-card.is-selected { border-color: var(--accent-gold); background: var(--accent-gold-dim); }
 .td-map-preview { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: var(--radius-md); background: var(--td-stage-bg); }
-.td-map-preview-path { fill: none; stroke: rgba(201, 162, 39, .55); stroke-width: 44; stroke-linecap: round; stroke-linejoin: round; }
+.td-map-preview-path { fill: none; stroke: rgba(201, 162, 39, .3); stroke-width: 44; stroke-linecap: round; stroke-linejoin: round; }
 .td-map-preview-road { fill: rgba(250, 204, 21, .25); stroke: var(--accent-gold); stroke-width: 5; }
 .td-map-preview-platform { fill: rgba(168, 85, 247, .25); stroke: var(--accent-purple); stroke-width: 5; }
 .td-map-card-copy { display: grid; gap: 2px; }

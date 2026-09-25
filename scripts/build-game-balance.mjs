@@ -52,23 +52,33 @@ const basics = roster.map((h, i) => {
 const mitigation = (res) => res / (res + 260);
 const ehpRank = ranks(basics.map((h) => h.hp / (1 - (mitigation(h.armor) + mitigation(h.magicRes)) / 2)));
 const ultRank = ranks(basics.map((h) => (90 / h.ultCooldown) * h.ultPower));
+// Effective damage for pricing: class kits (tuning.classes valueDps) scale single-target
+// DPS by what the kit adds, e.g. Mage splash or Warrior cleave hitting several enemies.
+const effDpsRank = ranks(rawDps.map((dps, i) => dps * (tuning.classes[basics[i].class].valueDps ?? 1)));
 for (let i = 0; i < basics.length; i += 1) {
   const h = basics[i];
   h._value = h.slot === "road"
-    ? 0.3 * dpsRank[i] + 0.5 * ehpRank[i] + 0.2 * ultRank[i]
-    : 0.65 * dpsRank[i] + 0.1 * ehpRank[i] + 0.25 * ultRank[i];
+    ? 0.3 * effDpsRank[i] + 0.5 * ehpRank[i] + 0.2 * ultRank[i]
+    : 0.65 * effDpsRank[i] + 0.1 * ehpRank[i] + 0.25 * ultRank[i];
 }
 for (const slot of ["road", "platform"]) {
   const group = basics.filter((h) => h.slot === slot);
   const groupRanks = ranks(group.map((h) => h._value));
   group.forEach((hero, index) => { hero.cost = round5(lerp(85, 150, groupRanks[index])); });
 }
-// Class durability (tuning.classes hpMult/armorMult) is applied after pricing, so it
-// shifts a whole class without re-ranking costs.
+// Class kits (tuning.classes) are applied after pricing, so they shift a whole class
+// without re-ranking costs: durability (hpMult/armorMult), attack rhythm (apsMult keeps
+// DPS, so fewer but heavier hits; maxAps caps it), class damage (dpsMult), damage type and crit.
 for (const h of basics) {
-  const { hpMult = 1, armorMult = 1 } = tuning.classes[h.class];
+  const { hpMult = 1, armorMult = 1, apsMult = 1, maxAps = 2.2, dpsMult = 1, damageType, crit = 0 } = tuning.classes[h.class];
   h.hp = Math.round(h.hp * hpMult);
   h.armor = Math.round(h.armor * armorMult);
+  const dps = h.dps * dpsMult;
+  h.aps = Math.round(clamp(h.aps * apsMult, 0.3, maxAps) * 100) / 100;
+  h.atk = Math.round(dps / h.aps);
+  h.dps = Math.round(dps);
+  if (damageType) h.damageType = damageType;
+  if (crit) h.critChance = Math.round((h.critChance + crit) * 100) / 100;
 }
 const output = basics.map(({ _value, ...hero }) => hero).sort((a, b) => b.cost - a.cost || a.name.localeCompare(b.name));
 const json = `${JSON.stringify(output, null, 2)}\n`;

@@ -2,6 +2,8 @@
 
 Last updated: September 25, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](TOWER_DEFENSE_ARCHIVE.md).
 
+Map implementation must use the asset assignments in [map.md](map.md), including the prepared Sunscar Ruins art for Map 3.
+
 ## What's next (priority order)
 
 Map work is handled separately and archived. Shipped today (see archive): Slayer quest, landscape re-check, Lilith, level-3 focus, Divine Blessings 2.0. Milestones below are in priority order; each one lists what "done" means.
@@ -53,6 +55,9 @@ I realize that the "system" only to place 5 heroes is not very rewarding. At the
 
 **Original notes (September 25, 2026).** While playing there is no real difference which class goes on the battlefield. Ideas: Tanks only block and survive, little damage, maybe a defense attribute, ultimate makes them invincible. Archers are slow, long range, big single shots, ultimate hits several enemies. Mages deal area and chain damage, high damage but slow, ultimate is a devastating area attack or a channeled beam. Assassins block 1 and deal damage, ultimate makes them untargetable while striking +1 enemy several times. Warriors have decent HP and attack, block +1, ultimate hits several enemies. Supports deal no damage; they heal, buff and revive.
 
+## M7: Remove the ratings from the hero and hero selection
+- i dont find them very helpful and i dont think we should display them. 
+
 **Diagnosis (sim audit, September 25, 2026).**
 
 - Every basic attack is the same single-target hit on a timer ([sim.js:453-465](src/game/td/sim.js#L453-L465)); the only class difference is Assassins targeting the lowest HP.
@@ -70,6 +75,14 @@ I realize that the "system" only to place 5 heroes is not very rewarding. At the
   DPS spread is narrow (24 to 47). Mages attack fastest (the opposite of the concept) and Supports have the highest base attack (38.7).
 - Class identity shows only in the ultimate (every 15 to 27 s), so about 95% of the fight looks the same for every class.
 - Enemies don't ask for specific classes: no enemy has `magicRes`, so magic vs. physical doesn't matter, and nothing punishes single-target damage against swarms. Flyers are the only real counter (road vs. platform).
+
+## M8: Details in the Game & Divine Blessing tree UX/UI
+- we have all class icons (roles are they called in the database) in the correspondent hero json files like e.g. `src/data/heroes/amunra.json`for archer, warrior, tank, mage, support. we can use that and get add them to text labels. e.g. in the Divine Blessing tree. -> Use Icons.
+- The Divine Blessing tree currently has a lot of text issues where text is place inline. In most cases it would be better to make a line break and put text underneath. Analyse the Blessing page for better readability.
+
+## M9: Others
+- It should be possible to remove (sell) heroes from the battlefield.
+- Some enemies just rush through tanks and assassins without being stopped.
 
 **Principles.**
 

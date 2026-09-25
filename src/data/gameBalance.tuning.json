@@ -1,12 +1,12 @@
 {
   "roster": ["nuwa", "prometheus", "momus", "demeter", "poseidon", "amunra", "set", "jormungandr", "nyx", "bastet", "horus", "zeus", "phoenix", "fengyi", "diana", "artemis", "medusa", "caishen", "yuelao", "freya", "anubis"],
   "classes": {
-    "Tank": { "slot": "road", "range": 60, "ability": "taunt", "hpMult": 1.7, "armorMult": 1.5 },
-    "Warrior": { "slot": "road", "range": 70, "ability": "cleave", "hpMult": 1.7, "armorMult": 1.5 },
-    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.7, "armorMult": 1.5 },
-    "Mage": { "slot": "platform", "range": 160, "ability": "nuke" },
-    "Support": { "slot": "platform", "range": 150, "ability": "aura" },
-    "Archer": { "slot": "platform", "range": 190, "ability": "volley" }
+    "Tank": { "slot": "road", "range": 60, "ability": "taunt", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 0.6, "valueDps": 0.6, "guard": 0.3, "hold": 2 },
+    "Warrior": { "slot": "road", "range": 70, "ability": "cleave", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 1.15, "valueDps": 1.4, "cleave": { "share": 0.6, "radius": 60, "targets": 3 } },
+    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.7, "armorMult": 1.5, "dpsMult": 1.3, "valueDps": 1.3, "dash": 170, "looseBonus": 0.8, "veil": { "seconds": 3, "extraTargets": 1 } },
+    "Mage": { "slot": "platform", "range": 160, "ability": "nuke", "apsMult": 0.55, "maxAps": 0.75, "dpsMult": 0.8, "damageType": "magical", "valueDps": 1.5, "splash": { "share": 0.45, "radius": 42 }, "chain": { "falloff": [0.6, 0.35], "reach": 110 } },
+    "Support": { "slot": "platform", "range": 150, "ability": "aura", "valueDps": 1, "damageShare": 0.35, "heal": 1.5 },
+    "Archer": { "slot": "platform", "range": 210, "ability": "volley", "apsMult": 0.5, "maxAps": 0.7, "valueDps": 1.1, "pierce": 0.5, "crit": 0.1, "airBonus": 1, "target": "strongest" }
   },
   "tierUltPower": { "S+": 1.6, "S": 1.45, "A+": 1.3, "A": 1.15, "B": 1.05, "C": 1, "D": 1 },
   "enemies": {
@@ -14,9 +14,9 @@
     "runner": { "hp": 65, "speed": 76, "armor": 18, "reward": 5, "damage": 1, "attack": 18, "attackPeriod": 0.9 },
     "flyer": { "hp": 90, "speed": 62, "armor": 24, "reward": 6, "damage": 1, "flying": true, "attack": 0, "attackPeriod": 1 },
     "archer": { "hp": 120, "speed": 39, "armor": 36, "reward": 7, "damage": 1, "attack": 34, "attackPeriod": 1.2, "attackRange": 110 },
-    "brute": { "hp": 320, "speed": 27, "armor": 90, "reward": 12, "damage": 2, "attack": 60, "attackPeriod": 1.1 },
-    "boss": { "hp": 2200, "speed": 20, "armor": 135, "reward": 50, "damage": 3, "attack": 85, "attackPeriod": 1 },
-    "brood": { "hp": 510, "speed": 20, "armor": 60, "reward": 6, "damage": 1, "attack": 85, "attackPeriod": 1 }
+    "brute": { "hp": 320, "speed": 27, "armor": 150, "magicRes": 30, "reward": 12, "damage": 2, "attack": 60, "attackPeriod": 1.1 },
+    "boss": { "hp": 2200, "speed": 20, "armor": 200, "magicRes": 90, "reward": 50, "damage": 3, "attack": 85, "attackPeriod": 1 },
+    "brood": { "hp": 510, "speed": 20, "armor": 110, "magicRes": 40, "reward": 6, "damage": 1, "attack": 85, "attackPeriod": 1 }
   },
   "bosses": {
     "lilith": { "stats": { "hp": 2600 }, "summon": { "kind": "brood", "count": 3, "resummonScale": 0.6, "spacing": 40, "sharedDamage": 1 } }
@@ -78,7 +78,7 @@
     "nyx":          { "skillName": "Shadow Step",          "variant": "shadow_step" },
     "bastet":       { "skillName": "Claw Sweep",           "variant": "claw_sweep" },
     "horus":        { "skillName": "Rapid Strike",         "variant": "rapid_strike" },
-    "zeus":         { "skillName": "Chain Lightning",      "variant": "chain_lightning" },
+    "zeus":         { "skillName": "Chain Lightning",      "variant": "chain_lightning", "basic": "chain" },
     "phoenix":      { "skillName": "Rebirth Flame",        "variant": "rebirth_flame" },
     "fengyi":       { "skillName": "Weaken Burst",         "variant": "weaken_burst" },
     "diana":        { "skillName": "Moon Barrage",         "variant": "moon_barrage" },
