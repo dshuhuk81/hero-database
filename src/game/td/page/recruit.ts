@@ -10,7 +10,7 @@ const ANIM_VERSION = "v1";
 import type { PageContext, Session, Slot } from "./context";
 
 export function createRecruit(ctx: PageContext) {
-  const { q, state, data, heroById, maxTeam, pause } = ctx;
+  const { q, state, data, heroById, pause } = ctx;
   const stageEl = q("[data-td-stage]");
   const sheetEl = q("[data-td-sheet]");
   const sheetKicker = q("[data-td-sheet-kicker]");
@@ -78,10 +78,8 @@ export function createRecruit(ctx: PageContext) {
     sheetList.querySelectorAll<HTMLButtonElement>("[data-place-hero]").forEach((button) => {
       const hero = heroById.get(button.dataset.placeHero!);
       const deployed = game.heroes.some((unit: any) => unit.id === hero.id);
-      const cap: number = game.tuning.run.maxTeam ?? maxTeam;
-      const teamFull = game.team.length >= cap && !game.team.includes(hero.id);
       const affordable = game.gold >= hero.cost;
-      const reason = deployed ? "Already deployed" : teamFull ? `Team full (${cap} of ${cap})` : !affordable ? `Needs ${hero.cost} gold` : "";
+      const reason = deployed ? "Already deployed" : !affordable ? `Needs ${hero.cost} gold` : "";
       button.disabled = !!reason || game.complete;
       button.classList.toggle("is-unavailable", !!reason);
       button.querySelector<HTMLElement>("[data-place-reason]")!.textContent = reason ? `${hero.cost} gold - ${reason}` : `${hero.class} - ${hero.cost} gold`;
@@ -169,7 +167,7 @@ export function createRecruit(ctx: PageContext) {
       if (hadFocus) session.canvas.focus({ preventScroll: true });
       ctx.notice(session.started || session.game.heroes.length > 1
         ? `${hero.name} deployed.`
-        : `${hero.name} deployed. Add up to ${maxTeam - 1} more heroes, then start wave 1.`);
+        : `${hero.name} deployed. Add more heroes, then start wave 1.`);
     } else {
       update();
     }

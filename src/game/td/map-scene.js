@@ -26,11 +26,11 @@ export const MAP_SCENES = {
   "verdant-shrine-v1": {
     name: "Verdant", baseName: "Shrine",
     assets: {
-      terrain: "/td/maps/verdant-terrain-v1.png",
-      spawn: "/td/maps/verdant-spawn-v1.png",
-      base: "/td/maps/verdant-base-v1.png",
-      road: "/td/maps/verdant-road-v1.png",
-      pad: "/td/maps/verdant-pad-v1.png",
+      terrain: "/td/maps/verdant-terrain-v2.png",
+      spawn: "/td/maps/verdant-spawn-v2.png",
+      base: "/td/maps/verdant-base-v2.png",
+      road: "/td/maps/verdant-road-v2.png",
+      pad: "/td/maps/verdant-pad-v2.png",
     },
     ground: 0x1f2d24, grade: { color: 0x07140f, alpha: 0.12 },
     seed: 0x76657264,
@@ -402,77 +402,11 @@ export function createMapScene(PIXI, game, {
   };
 }
 
-// Verdant Crossing: fallen guardian landmark, root-bound spawn threshold,
-// water glints and fireflies in the sheltered pockets. Pool centers match
-// scripts/build-td-verdant-art.py.
-const VERDANT_POOLS = [[887, 303, 58, 40], [62, 478, 74, 44], [430, 331, 46, 20]];
+// Verdant v2 has painted roots and a guardian in the terrain/building assets.
+// Glints stay inside the two small painted water pockets at the outer edges.
+const VERDANT_POOLS = [[947, 251, 8, 13], [20, 473, 14, 18]];
 
-function decorateVerdant({ PIXI, add, graphic, random, polygon, layers, reducedMotion, theme, game }) {
-  const GOLD = theme.gold;
-  const spawn = game.map.spawn;
-
-  // Corrupted roots spread from the breach across the first flagstones (ground layer, under units).
-  const roots = graphic(layers.ground);
-  for (const [points, width] of [
-    [[[26, 124], [10, 138], [6, 156], [18, 170]], 4.5],
-    [[[70, 124], [84, 136], [80, 150], [96, 160]], 3.5],
-    [[[40, 128], [44, 146], [34, 160], [40, 176]], 3],
-  ]) {
-    roots.moveTo(...points[0]).bezierCurveTo(...points[1], ...points[2], ...points[3]);
-    roots.stroke({ width: width + 1.5, color: 0x0b0e0a, alpha: 0.5, cap: "round" });
-    roots.moveTo(...points[0]).bezierCurveTo(...points[1], ...points[2], ...points[3]);
-    roots.stroke({ width, color: 0x2d2419, alpha: 0.95, cap: "round" });
-    roots.moveTo(points[0][0] - 0.8, points[0][1] - 0.8).bezierCurveTo(points[1][0] - 0.8, points[1][1] - 0.8, points[2][0] - 0.8, points[2][1] - 0.8, points[3][0] - 0.8, points[3][1] - 0.8);
-    roots.stroke({ width: 0.9, color: 0x7d6a4a, alpha: 0.5, cap: "round" });
-  }
-  // Blight veins in the roots pulse with the spawn (overlay would sit above units; keep them low).
-  const veins = graphic(layers.ground);
-
-  // Fallen guardian: toppled helmeted head, broken torso block and a split spear,
-  // lying flat in the top-right thicket, clear of the route and the (860,160) pad.
-  const guardian = add(layers.structures, new PIXI.Graphics());
-  guardian.position.set(893, 62);
-  const g = guardian;
-  g.ellipse(4, 20, 64, 17).fill({ color: 0x050d09, alpha: 0.45 });
-  // Torso: a heavy carved block with a gilded collar, tipped onto its side.
-  polygon(g, [[-8, -10], [44, -20], [58, -6], [56, 16], [4, 24], [-10, 10]].map(([x, y]) => [x + 2, y + 4]), 0x101a14);
-  polygon(g, [[-8, -10], [44, -20], [58, -6], [56, 16], [4, 24], [-10, 10]], 0x5b665c);
-  polygon(g, [[44, -20], [58, -6], [56, 16], [46, 2]], 0x3a453d);
-  polygon(g, [[-8, -10], [44, -20], [46, 2], [-6, 8]], 0x6d786c);
-  g.moveTo(-6, -2).lineTo(45, -10).stroke({ width: 2.2, color: GOLD, alpha: 0.75 });
-  g.moveTo(8, -12).lineTo(12, 6).lineTo(6, 18).stroke({ width: 1, color: 0x1a2219, alpha: 0.7 });
-  g.moveTo(28, -16).lineTo(31, 0).stroke({ width: 1, color: 0x1a2219, alpha: 0.6 });
-  // Head with crested helmet, face turned up, resting against the torso.
-  g.ellipse(-26, 4, 20, 17).fill(0x141e17);
-  g.ellipse(-27, 1, 19, 16).fill(0x646f63);
-  g.ellipse(-31, -3, 12, 10).fill({ color: 0x7f8a7a, alpha: 0.8 });
-  polygon(g, [[-44, -8], [-30, -22], [-10, -16], [-14, -10], [-30, -14]], 0x4b564c);
-  g.moveTo(-44, -8).lineTo(-30, -22).lineTo(-10, -16).stroke({ width: 1.6, color: GOLD, alpha: 0.8 });
-  g.moveTo(-36, 2).lineTo(-28, 1).stroke({ width: 1.8, color: 0x151c16, alpha: 0.9 });
-  g.moveTo(-24, 0).lineTo(-17, 2).stroke({ width: 1.8, color: 0x151c16, alpha: 0.9 });
-  g.moveTo(-28, 9).lineTo(-22, 10).stroke({ width: 1, color: 0x2a332a, alpha: 0.8 });
-  g.moveTo(-40, 12).lineTo(-33, 5).lineTo(-36, -2).stroke({ width: 0.9, color: 0x1a2219, alpha: 0.7 });
-  // Split spear: shaft lies across the thicket, gilded blade broken off beside it.
-  g.moveTo(-58, 28).lineTo(20, 32).stroke({ width: 4, color: 0x1a130c, alpha: 0.55 });
-  g.moveTo(-60, 25).lineTo(18, 29).stroke({ width: 3, color: 0x6a5536 });
-  g.moveTo(-60, 24).lineTo(18, 28).stroke({ width: 0.8, color: 0xb59a6a, alpha: 0.6 });
-  polygon(g, [[26, 30], [44, 25], [52, 30], [44, 34]], 0x8f7437);
-  polygon(g, [[26, 30], [44, 25], [52, 30]], GOLD);
-  // Moss drapes and a few leaves reclaiming the statue.
-  for (let i = 0; i < 22; i++) {
-    const x = -44 + random() * 100, y = -18 + random() * 30;
-    const onStatue = (x > -46 && x < -8 && Math.hypot((x + 27) / 19, (y - 1) / 16) < 1) || (x > -8 && x < 56 && y > -16 && y < 20);
-    if (!onStatue) continue;
-    const r = 1.8 + random() * 3;
-    g.ellipse(x, y, r * 1.5, r).fill({ color: random() > 0.5 ? 0x3f5f2e : 0x5f8340, alpha: 0.85 });
-  }
-  for (let i = 0; i < 7; i++) {
-    const x = -48 + i * 16 + random() * 6, y = 20 + random() * 8;
-    g.ellipse(x, y, 5 + random() * 3, 3).fill({ color: 0x2a4a2a, alpha: 0.9 });
-    g.ellipse(x - 1, y - 1, 3, 1.6).fill({ color: 0x6f9a52, alpha: 0.7 });
-  }
-
-  // Ground-level glints on the pools (below units) and fireflies (above scenery, tiny).
+function decorateVerdant({ graphic, random, layers, reducedMotion }) {
   const water = graphic(layers.ground);
   const glints = VERDANT_POOLS.flatMap(([cx, cy, rx, ry]) => Array.from({ length: Math.max(2, Math.round(rx / 18)) }, () => ({
     x: cx + (random() - 0.5) * rx * 1.1, y: cy + (random() - 0.5) * ry * 0.9,
@@ -486,13 +420,8 @@ function decorateVerdant({ PIXI, add, graphic, random, polygon, layers, reducedM
   });
 
   return {
-    draw(now, { wave, breath }) {
+    draw(now) {
       const seconds = now / 1000;
-      veins.clear();
-      veins.moveTo(26, 124).bezierCurveTo(10, 138, 6, 156, 18, 170)
-        .stroke({ width: 1, color: theme.glow.spawn, alpha: 0.18 + breath * 0.12 + wave * 0.35, cap: "round" });
-      veins.moveTo(70, 124).bezierCurveTo(84, 136, 80, 150, 96, 160)
-        .stroke({ width: 0.8, color: theme.glow.spawn, alpha: 0.14 + breath * 0.1 + wave * 0.3, cap: "round" });
       water.clear();
       for (const glint of glints) {
         const shimmer = reducedMotion ? 0.5 : 0.5 + Math.sin(seconds * 1.1 + glint.phase) * 0.5;

@@ -63,6 +63,13 @@ for (const slot of ["road", "platform"]) {
   const groupRanks = ranks(group.map((h) => h._value));
   group.forEach((hero, index) => { hero.cost = round5(lerp(85, 150, groupRanks[index])); });
 }
+// Class durability (tuning.classes hpMult/armorMult) is applied after pricing, so it
+// shifts a whole class without re-ranking costs.
+for (const h of basics) {
+  const { hpMult = 1, armorMult = 1 } = tuning.classes[h.class];
+  h.hp = Math.round(h.hp * hpMult);
+  h.armor = Math.round(h.armor * armorMult);
+}
 const output = basics.map(({ _value, ...hero }) => hero).sort((a, b) => b.cost - a.cost || a.name.localeCompare(b.name));
 const json = `${JSON.stringify(output, null, 2)}\n`;
 if (process.argv.includes("--check")) {

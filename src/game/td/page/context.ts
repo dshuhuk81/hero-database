@@ -72,7 +72,6 @@ export type PageContext = {
   q<T extends HTMLElement = HTMLElement>(selector: string): T;
   data: any;
   heroById: Map<string, any>;
-  maxTeam: number;
   maxLevel: number;
   bossFor(map: any): any; // bosses.json entry of the map's final boss
   blessingNames: Record<string, string>;

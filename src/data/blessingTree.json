@@ -218,10 +218,10 @@
       "cost": 3000,
       "requiresPoints": 28,
       "effect": {
-        "type": "teamSize",
-        "value": 1
+        "type": "startingGold",
+        "value": 150
       },
-      "text": "Deploy up to {v} more hero."
+      "text": "Starting gold +{v}."
     },
     {
       "tree": "Tank",

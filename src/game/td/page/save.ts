@@ -36,7 +36,7 @@ export function modeBest(save: SaveData, mode: RunMode): number {
   return Math.max(mode === "classic" ? save.bestScore : 0, 0, ...scores);
 }
 
-type SaveRules = { heroIds: Set<string>; maxTeam: number };
+type SaveRules = { heroIds: Set<string> };
 
 export const SAVE_KEY = "td:v1";
 export const SAVE_CODE_PREFIX = "TD1:";
@@ -67,7 +67,7 @@ export function sanitizeSave(candidate: unknown, rules: SaveRules): SaveData | n
   const clean: SaveData = {
     bestScore: candidate.bestScore,
     bestWave: Number(candidate.bestWave) || 0,
-    lastTeam: Array.isArray(candidate.lastTeam) ? candidate.lastTeam.filter((id: string) => rules.heroIds.has(id)).slice(0, rules.maxTeam) : [],
+    lastTeam: Array.isArray(candidate.lastTeam) ? [...new Set<string>(candidate.lastTeam)].filter((id) => rules.heroIds.has(id)) : [],
     perfectDefense: !!candidate.perfectDefense,
     favor: Number(candidate.favor) || 0,
     favLevels: pickCounts(candidate.favLevels),
@@ -137,7 +137,7 @@ export function createSaveStore(rules: SaveRules): SaveStore {
 // Save panel: export (code, file) and import (code, file). Import replaces td:v1.
 export function createSavePanel(ctx: PageContext) {
   const { q, store } = ctx;
-  const rules = { heroIds: new Set(ctx.heroById.keys()), maxTeam: ctx.maxTeam };
+  const rules = { heroIds: new Set(ctx.heroById.keys()) };
   const exportEl = q<HTMLTextAreaElement>("[data-td-save-export]");
   const importEl = q<HTMLTextAreaElement>("[data-td-save-import]");
   const fileInput = q<HTMLInputElement>("[data-td-save-file-input]");

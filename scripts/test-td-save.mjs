@@ -2,22 +2,22 @@ import assert from "node:assert/strict";
 import { findNode, nodeSpent } from "../src/game/td/favor.js";
 import { availableFavor, availableInsight, emptySave, encodeSaveCode, modeBest, parseSaveText, runKey, sanitizeSave, saveFileText, SAVE_CODE_PREFIX } from "../src/game/td/page/save.ts";
 
-const rules = { heroIds: new Set(["zeus", "nuwa", "diana"]), maxTeam: 2 };
+const rules = { heroIds: new Set(["zeus", "nuwa", "diana"]) };
 
 // Not a save: rejected.
 assert.equal(sanitizeSave(null, rules), null, "null rejected");
 assert.equal(sanitizeSave({ favor: 10 }, rules), null, "missing bestScore rejected");
 
-// Cleanup: unknown heroes dropped, team capped, bad blessing levels dropped, broken runs dropped.
+// Cleanup: unknown and repeated heroes dropped, bad blessing levels dropped, broken runs dropped.
 {
   const clean = sanitizeSave({
     bestScore: 900, bestWave: "7", favor: "25", perfectDefense: 1,
-    lastTeam: ["zeus", "ghost", "nuwa", "diana"],
+    lastTeam: ["zeus", "ghost", "nuwa", "zeus", "diana"],
     favLevels: { demeter_bounty: 2, bad: -1, nan: "x", frac: 2.7 },
     insight: { Mage: 12, Tank: 0 },
     mapBests: { "moonlit-pass": { score: 500, wave: 6 }, broken: { wave: 3 } },
   }, rules);
-  assert.deepEqual(clean.lastTeam, ["zeus", "nuwa"], "team filtered and capped");
+  assert.deepEqual(clean.lastTeam, ["zeus", "nuwa", "diana"], "team filtered, no cap");
   assert.deepEqual(clean.favLevels, { demeter_bounty: 2, frac: 2 }, "blessing levels cleaned");
   assert.deepEqual(clean.insight, { Mage: 12 }, "insight cleaned");
   assert.equal(clean.refundNotice, 0, "new saves have nothing to refund");

@@ -37,6 +37,88 @@ Map work is handled separately and archived. Shipped today (see archive): Slayer
 - Scope: balance bots that buy blessings (so `td:sweep` measures real progression), pacing check (trunk about 128 runs, a class branch 11 to 21 runs with two heroes), endless waves as the power sink, maybe a cap on vertical bonuses. Later, if class branches feel alike: per-hero capstones.
 - Done when: a sweep with bought blessings shows endless runs getting longer with progression, and the 10-wave mode is not trivial before about half the trunk.
 
+### M5: Change difficulty and behaviour (done, uncommitted)
+I realize that the "system" only to place 5 heroes is not very rewarding. At the moment ground heroes die too fast and they cant stop rushers good enough. Therefore I think the best would be to remove the "place only 5" heroes.
+
+- Done (September 25, 2026): team cap removed (`tuning.run.maxTeam` gone). Every ring can hold a hero; free rings, gold and "each hero once" are the only limits, and Valkyrie revives are no longer blocked. The deck shows no empty slots any more and scrolls sideways when full. Lobby and help text updated. The save's `lastTeam` is no longer capped.
+- Set's Command (trunk capstone, was +1 team slot) now gives +150 starting gold. The node id stays `set_command`, so saves that bought it keep it.
+- Road classes (Tank, Warrior, Assassin) get `hpMult` 1.7 and `armorMult` 1.5 in `tuning.classes`, applied in `build-game-balance.mjs` after pricing, so costs don't change. Road deaths per run drop by about half (probe at x2.75, 5 squads x 3 seeds: Moonlit 198 -> 101, Verdant 192 -> 122).
+- Difficulty `enemyHp` 2 -> 2.75 (more heroes made runs much easier). Bot squads in `scripts/lib/td-runner.mjs` are now priority lists that fill every ring (the first five are the old squad). 10 waves: 8/10 wins, 1 perfect; mixed squads now beat all-platform, which was the top squad before. 20 waves: Moonlit 1/5, Verdant 4/5. Endless: Moonlit 10-21, Verdant 10-37.
+- Open: leaks barely drop with more HP. Rushers get past mainly because of the block limit (Tank 3, Warrior 2, Assassin 1), not because blockers die. If rushers still leak in real play, raise the block limits or slow runners on contact. The road-wall squad still loses (it has no damage platforms).
+
+### M6: Class identity (large, concept agreed, not started)
+
+- Goal: every class has a unique, visible job on the battlefield, and which classes you place changes the outcome.
+- Done when: the three measurable checks under "Done criteria" pass in `test:td-balance`, and each class is recognizable in play from its basic attack alone.
+
+**Original notes (September 25, 2026).** While playing there is no real difference which class goes on the battlefield. Ideas: Tanks only block and survive, little damage, maybe a defense attribute, ultimate makes them invincible. Archers are slow, long range, big single shots, ultimate hits several enemies. Mages deal area and chain damage, high damage but slow, ultimate is a devastating area attack or a channeled beam. Assassins block 1 and deal damage, ultimate makes them untargetable while striking +1 enemy several times. Warriors have decent HP and attack, block +1, ultimate hits several enemies. Supports deal no damage; they heal, buff and revive.
+
+**Diagnosis (sim audit, September 25, 2026).**
+
+- Every basic attack is the same single-target hit on a timer ([sim.js:453-465](src/game/td/sim.js#L453-L465)); the only class difference is Assassins targeting the lowest HP.
+- Class averages (21 heroes in `gameBalance.json`):
+
+  | Class | DPS | APS | HP | Range |
+  |---|---|---|---|---|
+  | Mage | 47 | 1.43 | 520 | 160 |
+  | Archer | 40 | 1.21 | 448 | 190 |
+  | Assassin | 40 | 1.36 | 923 | 90 |
+  | Warrior | 38 | 1.17 | 1221 | 70 |
+  | Tank | 30 | 0.89 | 1404 | 60 |
+  | Support | 24 | 0.65 | 502 | 150 |
+
+  DPS spread is narrow (24 to 47). Mages attack fastest (the opposite of the concept) and Supports have the highest base attack (38.7).
+- Class identity shows only in the ultimate (every 15 to 27 s), so about 95% of the fight looks the same for every class.
+- Enemies don't ask for specific classes: no enemy has `magicRes`, so magic vs. physical doesn't matter, and nothing punishes single-target damage against swarms. Flyers are the only real counter (road vs. platform).
+
+**Principles.**
+
+1. Class identity lives in the basic attack (always visible). The ultimate amplifies it and does not replace it.
+2. Enemies must demand classes. Without counters, classes only look different and the choice still doesn't matter.
+3. No new stats where an existing one works (armor already reduces damage through `resolveDamage`); use class passives instead.
+4. The 21 hero variants in `tuning.heroSkills` stay as per-hero flavor on top of the class rules.
+
+**Class concept.**
+
+| Class | Role | Basic attack / passive | Ultimate direction | Counters | Visual |
+|---|---|---|---|---|---|
+| Tank | Hold the line | Low damage. Blocks 3. Passive: takes about 30% less damage (instead of a new defense stat). | Taunt and hold every enemy in radius for x s. Stronger than invincibility, since Tanks rarely die after M5, and it answers the open M5 runner leak. | Runners, brutes | Shield icon, taunt ring |
+| Warrior | Frontline damage | Cleave on every hit: main target plus 1 to 2 neighbors at about 50%. Blocks 2. | Whirlwind hitting everyone in melee range | Swarms at the block point | Slash arc |
+| Assassin | Leak catcher | Highest single-target melee DPS, blocks 1. Jumps to the enemy that got past the blockers or is furthest along the path. | Untargetable plus a multi-strike. The enemy it was blocking stays blocked (does not walk on) but cannot damage it. | Runners that slip through, low-HP finishing | Dash trail |
+| Archer | Sniper | Slow, heavy shots, longest range, prefers high-HP targets, higher crit | Volley on several targets | Brutes, bosses, brood, flyers | Arrow projectile |
+| Mage | Area damage | Slow attack speed, splash or chain per hero (e.g. Zeus chains, others splash), magic damage that ignores armor | Big area burst or channeled beam | Swarms, armored enemies | Orb and splash, lightning chain |
+| Support | Force multiplier | No or little damage. Heals road heroes, attack or attack-speed aura, revives. | Stronger version of its support effect | Long waves (keeps the line alive) | Heal beam, aura ring |
+
+**Enemy side (needed so the choice matters).**
+
+- Add `magicRes` to enemy kinds, and make brutes, bosses and brood heavily armored so magic damage counts.
+- Swarm waves (many grunts or runners close together) where area damage clearly wins.
+- Runner-heavy waves that break a pure blocker line without an Assassin or Tank control.
+- Flyers stay the platform check.
+
+**Hidden work.**
+
+- Pricing: `build-game-balance.mjs` prices heroes from single-target DPS. Splash, chain and cleave need an effective-DPS model (for example DPS x expected targets hit), or area heroes come out too cheap.
+- Blessing class branches in `blessingTree.json` are generic today (aps, crit, execute, blockLimit). Remap them so each branch strengthens its class identity.
+- Bots in `scripts/lib/td-runner.mjs` need squads that use Supports and the new counters, or sweeps will rate those classes as useless.
+- Class stats: flip Mage to slow and hard-hitting, drop Support base attack, widen Archer range vs. Mage.
+
+**Done criteria (measurable).**
+
+1. Class-vs-enemy matrix: for each wave type (swarm, armored, runner, flyer, boss) a different class is the sim's best pick.
+2. Removing any one class from a mixed squad lowers the score noticeably.
+3. Squads of only one class lose.
+
+**Steps.**
+
+1. Enemy traits (`magicRes`, swarm and armored waves).
+2. Basic-attack rules and passives per class in `sim.js`.
+3. Visuals per class in `render.js` (projectile types, effects).
+4. Pricing model and rebalance (`build-game-balance.mjs`, `td:sweep`).
+5. Blessing branch remap.
+
+Steps 1 and 2 are the core; without step 1, step 2 only changes how classes look.
+
 ## Research notes (September 25, 2026)
 
 **Sprites from game art** (all three options done, September 25, 2026):

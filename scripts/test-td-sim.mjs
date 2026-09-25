@@ -762,8 +762,8 @@ function runWaveOne(g) {
   assert.ok(revived.hpLeft >= revived.hp * 0.45, "revived hero has at least 45% HP");
 }
 
-// valkyrie_call edge cases: the revived hero counts toward the team; heroes already
-// back on the field, occupied rings and a full team are skipped (fallback: heal).
+// valkyrie_call edge cases: the revived hero rejoins the team; heroes already
+// back on the field and occupied rings are skipped (fallback: heal).
 {
   const make = () => {
     const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 85 });
@@ -778,7 +778,7 @@ function runWaveOne(g) {
     g.castUltimate(freya, g.enemies[0]);
   };
 
-  // A: full team, one falls, Freya revives: the team stays at the limit.
+  // A: five fielded, one falls, Freya revives it; more heroes can still join (no cap).
   {
     const g = make();
     for (const [id, type, index] of [["freya", "platform", 0], ["nuwa", "road", 0], ["zeus", "platform", 1], ["diana", "platform", 2], ["poseidon", "road", 1]]) g.place(id, type, index);
@@ -786,7 +786,7 @@ function runWaveOne(g) {
     castFreya(g);
     assert.ok(g.heroes.some((h) => h.id === "nuwa"), "A: nuwa revived");
     assert.ok(g.team.includes("nuwa"), "A: revived hero is back in the team");
-    assert.equal(g.place("caishen", "platform", 3), false, "A: no sixth hero after a revive");
+    assert.equal(g.place("caishen", "platform", 3), true, "A: sixth hero after a revive");
   }
 
   // B: the fallen hero was redeployed elsewhere first: no second copy.
@@ -810,14 +810,14 @@ function runWaveOne(g) {
     assert.ok(!g.heroes.some((h) => h.id === "nuwa"), "C: nuwa stays fallen");
   }
 
-  // D: full team of five alive plus a fallen hero: no revive past the limit.
+  // D: five alive plus a fallen hero: the revive adds a sixth (no team cap).
   {
     const g = make();
     g.place("freya", "platform", 0); g.place("nuwa", "road", 0);
     kill(g, "nuwa");
     for (const [id, type, index] of [["zeus", "platform", 1], ["diana", "platform", 2], ["poseidon", "road", 1], ["caishen", "platform", 3]]) g.place(id, type, index);
     castFreya(g);
-    assert.equal(g.heroes.length, 5, "D: team limit respected");
+    assert.equal(g.heroes.length, 6, "D: revive past five heroes");
   }
 
   // E: an older eligible fallen hero is revived when the newest one is not eligible.
@@ -852,23 +852,26 @@ function runWaveOne(g) {
   assert.ok(g1.hp <= hpBefore - 119, "exposed enemy takes at least 120 damage from 100 hit");
 }
 
-// Bug repro: a dead hero must free its team slot so a 6th distinct hero can be recruited.
+// No team cap (M5): every ring can hold a distinct hero; rings, gold and uniqueness still apply.
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
-  g.gold = 10000;
-  assert.equal(g.place("nuwa", "road", 0), true, "enlist 1/5");
-  assert.equal(g.place("poseidon", "road", 1), true, "enlist 2/5");
-  assert.equal(g.place("zeus", "platform", 0), true, "enlist 3/5");
-  assert.equal(g.place("diana", "platform", 1), true, "enlist 4/5");
-  assert.equal(g.place("caishen", "platform", 2), true, "enlist 5/5");
-  assert.equal(g.team.length, 5, "team at cap");
-  assert.equal(g.place("amunra", "road", 2), false, "6th distinct hero blocked at cap, as expected");
-  const nuwa = g.heroes.find((h) => h.id === "nuwa");
-  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
-  assert.equal(g.heroes.some((h) => h.id === "nuwa"), false, "nuwa removed from field");
-  assert.equal(g.team.includes("nuwa"), false, "dead hero freed from team roster");
-  assert.equal(g.team.length, 4, "team cap freed up");
-  assert.equal(g.place("amunra", "road", 2), true, "replacement hero can now be recruited");
+  g.gold = 100000;
+  const road = heroes.filter((h) => h.slot === "road").slice(0, maps[0].roadSlots.length);
+  const platform = heroes.filter((h) => h.slot === "platform").slice(0, maps[0].platformSlots.length);
+  road.forEach((h, i) => assert.equal(g.place(h.id, "road", i), true, `road ring ${i} filled`));
+  platform.forEach((h, i) => assert.equal(g.place(h.id, "platform", i), true, `platform ring ${i} filled`));
+  assert.equal(g.heroes.length, maps[0].roadSlots.length + maps[0].platformSlots.length, "every ring holds a hero");
+  assert.equal(g.team.length, g.heroes.length, "team lists every fielded hero");
+  const spare = heroes.find((h) => h.slot === "road" && !g.team.includes(h.id));
+  assert.equal(g.place(spare.id, "road", 0), false, "occupied ring rejected");
+  assert.equal(g.place(spare.id, "road", maps[0].roadSlots.length), false, "missing ring rejected");
+  const fielded = g.heroes.find((h) => h.slotType === "road");
+  g.damageHero(fielded, fielded.hpLeft + 1, null);
+  assert.equal(g.team.includes(fielded.id), false, "dead hero leaves the team roster");
+  assert.equal(g.place(spare.id, "road", fielded.slotIndex), true, "freed ring takes a new hero");
+  const poor = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 91 });
+  poor.gold = road[0].cost - 1;
+  assert.equal(poor.place(road[0].id, "road", 0), false, "gold still limits deploys");
 }
 
 // --- 6B run quests ---
@@ -1407,6 +1410,11 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   const children = () => g.enemies.filter((e) => e.parentId === boss.entityId && !e.dead);
   assert.equal(children().length, cfg.summon.count, "summons her children on entry");
   assert.equal(children()[0].maxHp, tuning.enemies.brood.hp * scale, "first children at full strength");
+  assert.ok(children().every((c) => Math.abs(c.distance - boss.distance) >= cfg.summon.spacing), "no child spawns on her at the path start");
+  const midBoss = g.spawnEnemy("boss", { distance: 300 });
+  const midChildren = g.enemies.filter((e) => e.parentId === midBoss.entityId);
+  assert.ok(midChildren.some((c) => c.distance < 300) && midChildren.some((c) => c.distance > 300), "mid-path summons surround her");
+  for (const e of [midBoss, ...midChildren]) g.enemies.splice(g.enemies.indexOf(e), 1);
   assert.ok(g.effects.some((e) => e.type === "summon"), "summon emits an effect");
   assert.ok(boss.untargetable, "lilith cannot be targeted");
   const zeus = g.heroes[0];

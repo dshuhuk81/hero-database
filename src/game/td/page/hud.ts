@@ -14,11 +14,9 @@ const GOLD_TWEEN_MS = 600;
 const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", brood: "Children" };
 
 export function createHud(ctx: PageContext) {
-  const { q, state, store, pause, heroById, maxTeam } = ctx;
+  const { q, state, store, pause, heroById } = ctx;
   const bossName = () => ctx.bossFor(state.session?.map).name;
   const bossWave = (game: any, n: number) => isBossWave(n, game.mode, ctx.data.tuning.waveGen);
-  // Team size of the current run (Set's Command blessing adds a slot).
-  const teamCap = (): number => state.session?.game.tuning.run.maxTeam ?? maxTeam;
   const previewEl = q("[data-td-preview]");
   const deckEl = q("[data-td-deck]");
   const mainAction = q<HTMLButtonElement>("[data-td-main-action]");
@@ -149,17 +147,15 @@ export function createHud(ctx: PageContext) {
   function renderDeck() {
     const game = state.session?.game;
     const entries = deckEntries();
-    const cap = teamCap();
-    const key = `${cap}#` + entries.map((entry) => `${entry.kind}:${entry.id}:${entry.unit?.entityId ?? ""}`).join("|");
+    const key = entries.map((entry) => `${entry.kind}:${entry.id}:${entry.unit?.entityId ?? ""}`).join("|");
     if (key !== deckKey) {
       deckKey = key;
-      const empties = Math.max(0, cap - entries.length);
       deckEl.innerHTML = entries.map((entry) => {
         const hero = heroById.get(entry.id);
         const attr = entry.kind === "unit" ? `data-deck-unit="${entry.unit.entityId}"` : `data-deck-fallen="${entry.id}"`;
         return `<button type="button" class="td-deck-slot${entry.kind === "fallen" ? " is-fallen" : ""}" ${attr}>` +
           `<img src="${hero.image}" alt="" width="40" height="40"><span class="td-deck-badge" data-deck-badge></span></button>`;
-      }).join("") + `<span class="td-deck-empty" aria-hidden="true"></span>`.repeat(empties);
+      }).join("");
     }
     if (!game) return;
     deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-unit]").forEach((button) => {
@@ -171,10 +167,9 @@ export function createHud(ctx: PageContext) {
     });
     deckEl.querySelectorAll<HTMLButtonElement>("[data-deck-fallen]").forEach((button) => {
       const hero = heroById.get(button.dataset.deckFallen!);
-      const teamFull = game.team.length >= teamCap();
-      button.disabled = game.complete || game.gold < hero.cost || teamFull;
+      button.disabled = game.complete || game.gold < hero.cost;
       button.classList.toggle("is-selected", state.deployHeroId === hero.id);
-      button.setAttribute("aria-label", `${hero.name} has fallen. Redeploy for ${hero.cost} gold${teamFull ? ", team full" : ""}.`);
+      button.setAttribute("aria-label", `${hero.name} has fallen. Redeploy for ${hero.cost} gold.`);
       button.querySelector<HTMLElement>("[data-deck-badge]")!.textContent = `${hero.cost}g`;
     });
   }

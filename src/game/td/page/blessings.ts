@@ -19,7 +19,7 @@ const PAD = 0.6; // grid units around the world
 const GLYPHS: Record<string, string> = {
   startingGold: "Gold", lives: "Life", showHp: "Scout", heroHp: "HP", killGold: "Loot", ultCharge: "Ult",
   synergyTag: "Bond", wave1Speed: "Slow", upgradeDiscount: "Cost", clearBonus: "Clear", contactRange: "Wall",
-  extraOffer: "+1", bossDamage: "Boss", teamSize: "Team", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
+  extraOffer: "+1", bossDamage: "Boss", atk: "ATK", hp: "HP", aps: "SPD", range: "RNG",
   startLevel: "Lv2", blockLimit: "Hold", execute: "Exec", rangeFlat: "RNG", crit: "Crit", support: "Heal",
   ultPower: "Pow", awakenDiscount: "Rite", awakenBonus: "Apex",
 };

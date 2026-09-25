@@ -7,13 +7,12 @@ const { assetBase, heroes, tuning, maps, waves, bosses } = Astro.props;
 const payload = { assetBase, heroes, tuning, maps, waves, bosses };
 const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.boss ?? "baphomet"]?.name ?? "Baphomet"]));
 const isDev = import.meta.env.DEV; // debug panel exists only in local dev builds
-const maxTeam = tuning.run.maxTeam ?? 5;
 ---
 
 <div class="td-shell" data-td-root data-screen="lobby">
-  <TdLobby maps={maps} maxTeam={maxTeam} waveCount={waves.length} bossNames={bossNames} />
+  <TdLobby maps={maps} waveCount={waves.length} bossNames={bossNames} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
-  <TdPanels maxTeam={maxTeam} maps={maps} bossNames={bossNames} waveCount={waves.length} />
+  <TdPanels maps={maps} bossNames={bossNames} waveCount={waves.length} />
 </div>
 
 <script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
@@ -43,12 +42,11 @@ const maxTeam = tuning.run.maxTeam ?? 5;
   setAssetBase(data.assetBase);
   const heroById = new Map<string, any>(data.heroes.map((hero: any) => [hero.id, hero]));
   const maps: any[] = data.maps;
-  const maxTeam: number = data.tuning.run.maxTeam ?? 5;
 
   // ------------------------------------------------------------------
   // Saved progress (td:v1; see page/save.ts) and shared page state
   // ------------------------------------------------------------------
-  const store = createSaveStore({ heroIds: new Set(heroById.keys()), maxTeam });
+  const store = createSaveStore({ heroIds: new Set(heroById.keys()) });
   const state: PageState = { session: null, selectedMap: maps[0], selectedMode: "classic", selectedEntityId: null, deployHeroId: "", pendingSlot: null };
   try {
     const savedMapId = localStorage.getItem("td:map");
@@ -73,7 +71,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
   // Filled below once every module exists; modules only call actions at runtime.
   const actions = {} as PageActions;
   const ctx: PageContext = {
-    root, q, data, heroById, maxTeam,
+    root, q, data, heroById,
     maxLevel: data.tuning.upgrades?.maxLevel ?? 4,
     bossFor: (map: any) => data.bosses?.[map?.boss ?? "baphomet"] ?? { name: "Baphomet" },
     blessingNames: data.tuning.virtueBlessings || {},

@@ -114,42 +114,52 @@ const released = schedule.filter(e => e.status === "released").map(resolveEntry)
         <span>{upcoming.length} projected releases</span>
       </div>
       <div class="spotlight-grid">
-        {upcoming.map((hero, i) => (
-          <a href={`/heroes/${hero.id}`} class="spotlight-card">
-            <div class="spotlight-order">{hero.order}</div>
-            {hero.pullQuality && (
-              <div class={`pull-badge pull-badge-corner ${hero.pullQuality.className}`}>{hero.pullQuality.label}</div>
-            )}
-            <div class="spotlight-img-wrap">
-              <img
-                class="spotlight-img"
-                src={heroCardImg(hero.id)}
-                srcset={heroCardSrcset(hero.id)}
-                sizes={SPOTLIGHT_IMAGE_SIZES}
-                alt={hero.displayName}
-                width="360"
-                height="360"
-                decoding="async"
-                fetchpriority={i === 0 ? "high" : "low"}
-                onerror={`this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')};this.srcset='';this.src='${heroImg(hero.id)}'`}
-              />
-              <div class="spotlight-img-fade"></div>
-            </div>
-            <div class="spotlight-body">
-              <div class="hero-meta-row">
-                {hero.classIconUrl ? <img src={hero.classIconUrl} alt={hero.heroClass} class="meta-icon" title={hero.heroClass} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.heroClass}>?</span>}
-                {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="meta-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
-                {hero.roleIconUrl ? <img src={hero.roleIconUrl} alt={hero.role} class="meta-icon" title={hero.role} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.role}>?</span>}
+        {upcoming.map((hero, i) => {
+          const content = (
+            <>
+              <div class="spotlight-order">{hero.order}</div>
+              {hero.pullQuality && (
+                <div class={`pull-badge pull-badge-corner ${hero.pullQuality.className}`}>{hero.pullQuality.label}</div>
+              )}
+              <div class="spotlight-img-wrap">
+                <img
+                  class="spotlight-img"
+                  src={heroCardImg(hero.id)}
+                  srcset={heroCardSrcset(hero.id)}
+                  sizes={SPOTLIGHT_IMAGE_SIZES}
+                  alt={hero.displayName}
+                  width="360"
+                  height="360"
+                  decoding="async"
+                  fetchpriority={i === 0 ? "high" : "low"}
+                  onerror={`this.onerror=()=>{this.onerror=null;this.src='${HERO_PLACEHOLDER}';this.parentElement.classList.add('img-missing')};this.srcset='';this.src='${heroImg(hero.id)}'`}
+                />
+                <div class="spotlight-img-fade"></div>
               </div>
-              <h3 class="spotlight-name">{hero.displayName}</h3>
-              <div class="hero-detail-row">
-                <p class="hero-role">{hero.role}</p>
-                {hero.releaseDate && <time class="hero-release-date">{hero.releaseDate}</time>}
+              <div class="spotlight-body">
+                <div class="hero-meta-row">
+                  {hero.classIconUrl ? <img src={hero.classIconUrl} alt={hero.heroClass} class="meta-icon" title={hero.heroClass} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.heroClass}>?</span>}
+                  {hero.factionIconUrl ? <img src={hero.factionIconUrl} alt={hero.faction} class="meta-icon" title={hero.faction} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.faction}>?</span>}
+                  {hero.roleIconUrl ? <img src={hero.roleIconUrl} alt={hero.role} class="meta-icon" title={hero.role} onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=\'icon-fallback\'>?</span>')" /> : <span class="icon-fallback" title={hero.role}>?</span>}
+                </div>
+                <h3 class="spotlight-name">{hero.displayName}</h3>
+                <div class="hero-detail-row">
+                  <p class="hero-role">{hero.role}</p>
+                  {hero.releaseDate && <time class="hero-release-date">{hero.releaseDate}</time>}
+                </div>
               </div>
+            </>
+          );
+          return hero.hasDetailPage ? (
+            <a href={`/heroes/${hero.id}`} class="spotlight-card">
+              {content}
+            </a>
+          ) : (
+            <div class="spotlight-card">
+              {content}
             </div>
-
-          </a>
-        ))}
+          );
+        })}
       </div>
     </section>
 

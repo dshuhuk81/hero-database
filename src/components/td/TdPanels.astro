@@ -1,7 +1,7 @@
 ---
 // Modal panels: run length, menu, Blessings, help and save data. Controlled by src/game/td/page/panels.ts and save.ts.
-interface Props { maxTeam: number; maps: any[]; bossNames: Record<string, string>; waveCount: number; }
-const { maxTeam, maps, bossNames, waveCount } = Astro.props;
+interface Props { maps: any[]; bossNames: Record<string, string>; waveCount: number; }
+const { maps, bossNames, waveCount } = Astro.props;
 const modes = [
   { id: "classic", label: `${waveCount} waves`, copy: `The original run with its boss on wave ${waveCount}.` },
   { id: "long", label: "20 waves", copy: "A boss every 5th wave, at full strength on wave 20." },
@@ -95,7 +95,7 @@ const bossList = maps.map((map: any) => `${bossNames[map.id]} on ${map.name}`).j
       </button>
     </div>
     <div class="td-panel-body td-help">
-      <article><strong>Deploy</strong><p>Tap an empty ring to recruit a hero there. Deploy up to {maxTeam} heroes. You can start wave 1 as soon as one hero is on the field.</p></article>
+      <article><strong>Deploy</strong><p>Tap an empty ring to recruit a hero there. Every ring can hold a hero; gold is the only limit. You can start wave 1 as soon as one hero is on the field.</p></article>
       <article><strong>Road</strong><p>Gold rings accept Tanks, Warriors, and Assassins. They stop ground enemies and can fall in battle. A Tank holds up to 3 enemies at once, a Warrior 2 and an Assassin 1; the rest walk past to the next blocker.</p></article>
       <article><strong>Platforms</strong><p>Purple rings accept Mages, Archers, and Supports. Flyers ignore blockers and road heroes (ultimates included), so ranged coverage matters.</p></article>
       <article><strong>Upgrade</strong><p>Tap a deployed hero to upgrade or rotate it. Levels belong to the deployed unit - a fallen hero re-enters at level 1. Level 3 asks for a focus: +10% attack, +25% health or +20% range; it stays with that unit until it falls. At level 4 a hero can Awaken for 220 gold: more attack and health and a stronger ultimate (Details shows what changes). Awakening is lost when the hero falls.</p></article>

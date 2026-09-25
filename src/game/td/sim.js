@@ -115,7 +115,7 @@ export class TowerDefenseGame {
 
   setTeam(ids) {
     const valid = [...new Set(ids)].filter((id) => this.heroesById.has(id));
-    if (!valid.length || valid.length > (this.tuning.run.maxTeam ?? 5)) return false; // a team slot blessing may leave one free
+    if (!valid.length) return false;
     this.team = valid;
     this.onChange("team", this);
     return true;
@@ -135,13 +135,13 @@ export class TowerDefenseGame {
     if (!base || base.slot !== slotType || this.gold < cost) return false;
     if (this.heroes.some((hero) => hero.id === heroId)) return false;
     if (this.heroes.some((hero) => hero.slotType === slotType && hero.slotIndex === slotIndex)) return false;
+    // No team cap: free rings and gold are the only limits. `team` records who was fielded.
+    const slot = (slotType === "road" ? this.map.roadSlots : this.map.platformSlots)[slotIndex];
+    if (!slot) return false;
     if (!this.team.includes(heroId)) {
-      if (this.team.length >= (this.tuning.run.maxTeam ?? 5)) return false;
       this.team = [...this.team, heroId];
       this.onChange("team", this);
     }
-    const slot = (slotType === "road" ? this.map.roadSlots : this.map.platformSlots)[slotIndex];
-    if (!slot) return false;
     this.gold -= cost;
     this.totalGoldSpent += cost;
     const hp = this.maxHpFor(base.hp, 1, base.class);
@@ -521,11 +521,16 @@ export class TowerDefenseGame {
   summonChildren(boss, statScale) {
     const cfg = this.bossTuning.summon;
     boss.untargetable = true;
+    const spacing = cfg.spacing ?? 40;
+    // Alternate ahead of and behind her (+1, -1, +2, ...). A behind slot past the path
+    // start would clamp onto her and, at equal speed, walk inside her sprite, so it goes ahead.
+    const behindRoom = Math.floor(boss.distance / spacing);
+    let ahead = 0;
+    let behind = 0;
     for (let i = 0; i < cfg.count; i += 1) {
-      // Alternate ahead of and behind her (+1, -1, +2, ...) so none hides under her sprite.
-      const k = i + 1;
-      const offset = (k % 2 ? 1 : -1) * Math.ceil(k / 2) * (cfg.spacing ?? 40);
-      const distance = Math.min(this.path.total - 1, Math.max(0, boss.distance + offset));
+      const goBehind = i % 2 === 1 && behind < behindRoom;
+      const offset = goBehind ? -(++behind) * spacing : ++ahead * spacing;
+      const distance = Math.min(this.path.total - 1, boss.distance + offset);
       this.spawnEnemy(cfg.kind, { distance, statScale, extra: { parentId: boss.entityId } });
     }
     this.emit({ type: "summon", x: boss.x, y: boss.y, life: 0.7, color: "purple" });
@@ -662,13 +667,11 @@ export class TowerDefenseGame {
 
   // Removes and returns the newest fallen entry that can be revived, or null.
   takeRevivableFallen() {
-    const teamFull = this.team.length >= (this.tuning.run.maxTeam ?? 5);
     for (let i = this.fallenHeroes.length - 1; i >= 0; i -= 1) {
       const entry = this.fallenHeroes[i];
       const onField = this.heroes.some((h) => h.id === entry.id);
       const ringTaken = this.heroes.some((h) => h.slotType === entry.slotType && h.slotIndex === entry.slotIndex);
-      const needsTeamSpot = !this.team.includes(entry.id);
-      if (onField || ringTaken || (needsTeamSpot && teamFull)) continue;
+      if (onField || ringTaken) continue;
       this.fallenHeroes.splice(i, 1);
       return entry;
     }

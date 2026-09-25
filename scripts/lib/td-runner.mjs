@@ -25,12 +25,14 @@ export function maxBlessings(scope = "all") {
   return levels;
 }
 
+// Priority lists: bots deploy in this order while gold and free rings last. The first
+// five are the original squad; the rest fill the remaining rings (no team cap since M5).
 export const SQUADS = {
-  "balanced (S-tier core)": ["nuwa", "poseidon", "zeus", "diana", "caishen"],
-  "budget (D-tier)": ["demeter", "horus", "fengyi", "artemis", "freya"],
-  "road wall": ["prometheus", "amunra", "momus", "jormungandr", "yuelao"],
-  "all platform (no blockers)": ["zeus", "phoenix", "diana", "artemis", "caishen"],
-  "glass cannon": ["nyx", "bastet", "phoenix", "zeus", "yuelao"],
+  "balanced (S-tier core)": ["nuwa", "poseidon", "zeus", "diana", "caishen", "amunra", "phoenix", "yuelao", "momus", "fengyi", "nyx", "prometheus"],
+  "budget (D-tier)": ["demeter", "horus", "fengyi", "artemis", "freya", "medusa", "jormungandr", "set", "anubis", "prometheus", "diana"],
+  "road wall": ["prometheus", "amunra", "momus", "jormungandr", "yuelao", "nuwa", "demeter", "freya", "caishen", "set"],
+  "all platform (no blockers)": ["zeus", "phoenix", "diana", "artemis", "caishen", "fengyi", "medusa", "yuelao", "freya"],
+  "glass cannon": ["nyx", "bastet", "phoenix", "zeus", "yuelao", "poseidon", "anubis", "fengyi", "diana", "horus", "medusa"],
 };
 
 // `tuning` overrides the base tuning (balance experiments). `focus` is the level focus
@@ -46,7 +48,7 @@ export function playRun(ids, seed, map, { difficulty, favLevels = null, tuning: 
   const slotCount = { road: map.roadSlots.length, platform: map.platformSlots.length };
   while (!g.complete && g.wave < maxWave) {
     if (!g.running) {
-      // deploy every affordable, not-yet-deployed squad member
+      // deploy every affordable, not-yet-deployed squad member that has a free ring
       for (const id of ids) {
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);

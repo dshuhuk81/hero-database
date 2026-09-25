@@ -1,8 +1,8 @@
 ---
 // Lobby screen: map cards with path previews, personal bests, play and panel buttons.
 import { mapSceneFor } from "../../game/td/map-scene.js";
-interface Props { maps: any[]; maxTeam: number; waveCount: number; bossNames: Record<string, string>; }
-const { maps, maxTeam, waveCount, bossNames } = Astro.props;
+interface Props { maps: any[]; waveCount: number; bossNames: Record<string, string>; }
+const { maps, waveCount, bossNames } = Astro.props;
 const previews = maps.map((entry: any) => ({
   id: entry.id,
   name: entry.name,
@@ -31,7 +31,7 @@ const previews = maps.map((entry: any) => ({
     <div class="td-lobby-copy">
       <p class="td-kicker">Motto Immortal - Field exercise</p>
       <h1 id="td-lobby-title">Tower Defense</h1>
-      <p>Deploy up to {maxTeam} heroes and hold the line. Each battlefield has its own boss.</p>
+      <p>Fill the rings with heroes and hold the line. Each battlefield has its own boss.</p>
     </div>
 
     <div class="td-map-cards" role="group" aria-label="Choose battlefield" data-td-maps>

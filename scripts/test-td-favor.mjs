@@ -152,8 +152,10 @@ const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs 
   close(bHp - b.hp, 100 * (1 + trunkNode("bossDamage").effect.value * 4), "boss damage bonus");
   close(gHp - g.hp, 10, "no bonus on other enemies");
 
-  const team = buildRunTuning(tuning, { [trunkNode("teamSize").id]: 1 });
-  assert.equal(team.run.maxTeam, tuning.run.maxTeam + 1, "one more team slot");
+  // Set's Command (former team slot, now starting gold) keeps its id so bought levels carry over.
+  const command = buildRunTuning(tuning, { set_command: 1 });
+  assert.equal(command.run.startingGold, tuning.run.startingGold + findNode("set_command").effect.value, "Set's Command adds starting gold");
+  assert.equal(command.run.maxTeam, undefined, "no team cap");
 
   const wall = make({ [trunkNode("contactRange").id]: 4 });
   const tank = place(wall, heroOf("Tank"));

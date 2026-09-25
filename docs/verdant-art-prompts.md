@@ -1,5 +1,7 @@
 # Verdant Crossing assets
 
+**Current art:** the active scene now uses the painted [v2 asset set](verdant-art-v2.md). The v1 derivation and future-replacement notes below are retained as historical production context; the v1 build script does not regenerate v2.
+
 September 25, 2026. The image-generation tool used for Moonlit was not available in this session, so the v1 set is **derived**, not newly painted: `scripts/build-td-verdant-art.py` (Pillow + numpy, deterministic) re-grades Moonlit's painted materials and adds moss, water, foliage and roots composed around Verdant's route and slots. Rebuild with `python3 scripts/build-td-verdant-art.py` after a route or slot change.
 
 | File | Source | What the script does |

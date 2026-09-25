@@ -126,7 +126,6 @@ export function applyBlessings(levels, tree = TREE) {
       case "contactRange": add(bonuses, "contactRangeBonus", value); break;
       case "extraOffer": add(bonuses, "extraOffer", value); break;
       case "bossDamage": add(bonuses, "bossDamage", value); break;
-      case "teamSize": add(bonuses, "teamSizeBonus", value); break;
       default: break;
     }
   }
@@ -134,7 +133,7 @@ export function applyBlessings(levels, tree = TREE) {
 }
 
 // Snapshot of tuning for one run with the bought blessings applied. Start
-// resources and team size are folded into run; everything else is read by the
+// resources are folded into run; everything else is read by the
 // simulator from tuning.favor. `boost` is a pending run-end shard (6C):
 // { type: "gold", gold } or { type: "virtue", virtue }.
 /** @param {any} tuning @param {Record<string, number>} levels @param {{ type: string, gold?: number, virtue?: string } | null} [boost] */
@@ -144,7 +143,6 @@ export function buildRunTuning(tuning, levels, boost = null) {
     ...tuning.run,
     startingGold: tuning.run.startingGold + (bonuses.startingGoldBonus || 0) + (boost?.type === "gold" ? boost.gold : 0),
     lives: tuning.run.lives + (bonuses.livesBonus || 0),
-    maxTeam: (tuning.run.maxTeam ?? 5) + (bonuses.teamSizeBonus || 0),
   };
   if (boost?.type === "virtue") run.startVirtue = boost.virtue;
   return { ...tuning, favor: bonuses, run };

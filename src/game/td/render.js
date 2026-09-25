@@ -182,6 +182,11 @@ export async function createRenderer(canvas, game, options = {}) {
   const fullBodyTextures = new Map(); // kind -> PIXI.Texture
   // Baphomet's sprite is boss-v1; other final bosses use boss-{id}-vN (the map's boss).
   const bossFile = options.boss?.id && options.boss.id !== "baphomet" ? `boss-${options.boss.id}` : "boss";
+  const bossSpriteSize = { lilith: 108 }[options.boss?.id] ?? 96;
+  const fullSpriteSize = (kind) => (kind === "boss" ? bossSpriteSize : kind === "brute" ? 64 : 44);
+  // Full-body sprites stand on the path: the build script leaves a 10% margin under the
+  // figure, so anchor at 0.9 height and put the feet a little below the path centre line.
+  const FULL_SPRITE_FEET = 6;
   for (const [kind, file] of [...PORTRAIT_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
     PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSIONS[file] ?? "v1"}.webp`))
       .then((tex) => fullBodyTextures.set(kind, tex))
@@ -725,12 +730,13 @@ export async function createRenderer(canvas, game, options = {}) {
     // Full-body sprite: unmasked, larger than the portrait circle, ground shadow.
     const fullTex = fullBodyTextures.get(kind);
     if (fullTex) {
-      const size = kind === "boss" ? 96 : kind === "brute" ? 64 : 44;
+      const size = fullSpriteSize(kind);
       const shadow = new PIXI.Graphics();
-      shadow.ellipse(0, size * 0.36, size * 0.32, size * 0.09).fill({ color: 0x000000, alpha: 0.45 });
+      shadow.ellipse(0, FULL_SPRITE_FEET, size * 0.3, size * 0.08).fill({ color: 0x000000, alpha: 0.45 });
       c.addChild(shadow);
       const sp = new PIXI.Sprite(fullTex);
-      sp.anchor.set(0.5);
+      sp.anchor.set(0.5, 0.9);
+      sp.y = FULL_SPRITE_FEET;
       sp.width = size; sp.height = size;
       c._fullSprite = sp;
       c._fullScale = sp.scale.x;
@@ -947,7 +953,8 @@ export async function createRenderer(canvas, game, options = {}) {
     const g = new PIXI.Graphics();
     for (const unit of game.enemies) {
       const radius = unit.kind === "boss" ? 26 : unit.kind === "brute" ? 17 : 12;
-      drawBar(g, unit.x - radius, unit.y - radius - 9, radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
+      const top = fullBodyTextures.has(unit.kind) ? FULL_SPRITE_FEET - fullSpriteSize(unit.kind) * 0.8 - 4 : -radius - 9;
+      drawBar(g, unit.x - radius, Math.max(2, unit.y + top), radius * 2, unit.hp / unit.maxHp, unit.kind === "boss" ? 0xff4d4d : 0xf4f1ff);
     }
     for (const unit of game.heroes) {
       drawBar(g, unit.x - 24, unit.y + 31, 48, unit.hpLeft / unit.hp, 0x82e89a);

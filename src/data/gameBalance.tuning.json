@@ -1,9 +1,9 @@
 {
   "roster": ["nuwa", "prometheus", "momus", "demeter", "poseidon", "amunra", "set", "jormungandr", "nyx", "bastet", "horus", "zeus", "phoenix", "fengyi", "diana", "artemis", "medusa", "caishen", "yuelao", "freya", "anubis"],
   "classes": {
-    "Tank": { "slot": "road", "range": 60, "ability": "taunt" },
-    "Warrior": { "slot": "road", "range": 70, "ability": "cleave" },
-    "Assassin": { "slot": "road", "range": 90, "ability": "execute" },
+    "Tank": { "slot": "road", "range": 60, "ability": "taunt", "hpMult": 1.7, "armorMult": 1.5 },
+    "Warrior": { "slot": "road", "range": 70, "ability": "cleave", "hpMult": 1.7, "armorMult": 1.5 },
+    "Assassin": { "slot": "road", "range": 90, "ability": "execute", "hpMult": 1.7, "armorMult": 1.5 },
     "Mage": { "slot": "platform", "range": 160, "ability": "nuke" },
     "Support": { "slot": "platform", "range": 150, "ability": "aura" },
     "Archer": { "slot": "platform", "range": 190, "ability": "volley" }
@@ -21,7 +21,7 @@
   "bosses": {
     "lilith": { "stats": { "hp": 2600 }, "summon": { "kind": "brood", "count": 3, "resummonScale": 0.6, "spacing": 40, "sharedDamage": 1 } }
   },
-  "difficulty": { "enemyHp": 2 },
+  "difficulty": { "enemyHp": 2.75 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.1 },
   "upgrades": { "maxLevel": 4, "costs": [0, 80, 120, 160], "attackPerLevel": 0.1, "healthPerLevel": 0.2, "focus": { "level": 3, "attack": 0.1, "health": 0.25, "range": 0.2 } },
   "awakening": { "cost": 220, "attackBonus": 0.15, "healthBonus": 0.25 },
@@ -59,7 +59,7 @@
     { "virtues": ["Grace", "Fervor"], "name": "Divine Flow", "label": "Caishen and Amunra: ultimates charge 10% faster.", "effect": { "type": "regen", "value": 0.10 } },
     { "virtues": ["Insight", "Gnosis"], "name": "True Sight", "label": "Bastet and Nyx: all heroes gain +5% critical chance.", "effect": { "type": "crit", "value": 0.05 } }
   ],
-  "run": { "startingGold": 340, "lives": 25, "maxTeam": 5, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
+  "run": { "startingGold": 340, "lives": 25, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
   "waveGen": { "bossEvery": 5, "midBossScale": 0.4, "countGrowth": 0.02, "gapShrink": 0.02, "gapFloor": 0.55 },
   "blocking": { "blockLimit": { "Tank": 3, "Warrior": 2, "Assassin": 1 } },
   "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5, "heroKillsShare": 0.6 },
