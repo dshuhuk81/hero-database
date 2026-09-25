@@ -108,7 +108,7 @@
 .td-stat strong { color: var(--text-bright); font-size: var(--text-lg); font-variant-numeric: tabular-nums; }
 .td-top-actions { display: flex; gap: var(--space-2); margin-left: auto; }
 
-.td-stage { grid-area: stage; position: relative; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--td-stage-bg); }
+.td-stage { grid-area: stage; container: td-stage / inline-size; position: relative; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--td-stage-bg); }
 .td-canvas { display: block; flex: 0 0 auto; touch-action: manipulation; cursor: crosshair; }
 .td-canvas:focus-visible { outline: 2px solid var(--accent-gold); outline-offset: -3px; }
 .td-stage-loading { position: absolute; margin: 0; color: var(--text-muted); font-size: var(--text-sm); }
@@ -171,6 +171,16 @@
 .td-pop-actions .action-button { padding: 0 var(--space-2); }
 .td-pop-details { display: grid; gap: var(--space-1); padding-top: var(--space-2); border-top: 1px solid var(--border-subtle); }
 .td-pop-details p { margin: 0; color: var(--text-muted); font-size: var(--text-2xs); line-height: var(--leading-normal); }
+/* Wide sheet (landscape phones, tablets): focus options and actions sit side by side to save height. */
+@container td-stage (min-width: 440px) {
+  .td-popover.is-sheet .td-pop-focus { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container td-stage (min-width: 540px) {
+  .td-popover.is-sheet { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); grid-auto-flow: row dense; }
+  .td-popover.is-sheet > * { grid-column: 1 / -1; }
+  .td-popover.is-sheet > .td-pop-upgrade { grid-column: 1; }
+  .td-popover.is-sheet > .td-pop-actions { grid-column: 2; }
+}
 .td-aura-line { color: var(--accent-gold) !important; }
 
 /* Recruitment sheet: docked on the side away from the chosen ring */
