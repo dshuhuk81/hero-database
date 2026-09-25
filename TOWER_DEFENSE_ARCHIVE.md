@@ -49,3 +49,7 @@ One-map prototype. Hero placement, automatic combat, gold/lives/score, 10-wave r
 - Placed at `public/td/enemies/{grunt,runner,flyer,archer,brute}.png`
 - Renderer loads them as circle-masked PIXI.Sprites (primary), falls back to Kenney tiles, then vector shape
 - AI agent sprite spec written at `src/game/td/sprite-spec-for-ai.md` (12 sprites: 5 enemies + 7 bosses, 256x256 transparent PNG, 3/4-view, with reference portraits and color palettes)
+
+## M5 Gameplay (September 25, 2026)
+- **Ultimates audit**: every-variant edge-case tests plus four fixes (corpse targeting, knockback position, chain lightning double hits, actions after the run ended). Details in `docs/tower-defense-ui-plan.md` M5
+- **Blocking balance**: block limit per blocker (Tank 3, Warrior 2, Assassin 1). Mixed squads now match all-platform squads at the live difficulty; details in `docs/tower-defense-ui-plan.md` M5

@@ -49,3 +49,6 @@ export_ratings_to_sheets.py*
 !tests/
 !tests/test_combat_analysis.py
 .env*.local
+
+# build-td-tokens.mjs source art cache
+.cache/

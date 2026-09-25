@@ -111,9 +111,18 @@ export class TowerDefenseGame {
     return true;
   }
 
+  // Deploy price; heroes that fell earlier this run can be cheaper (tuning.blocking.redeployCostFactor).
+  deployCost(heroId) {
+    const base = this.heroesById.get(heroId);
+    const factor = this.tuning.blocking?.redeployCostFactor;
+    if (!base) return Infinity;
+    return factor && this.fallenHeroes.some((entry) => entry.id === heroId) ? Math.round(base.cost * factor) : base.cost;
+  }
+
   place(heroId, slotType, slotIndex) {
     const base = this.heroesById.get(heroId);
-    if (!base || base.slot !== slotType || this.gold < base.cost) return false;
+    const cost = this.deployCost(heroId);
+    if (!base || base.slot !== slotType || this.gold < cost) return false;
     if (this.heroes.some((hero) => hero.id === heroId)) return false;
     if (this.heroes.some((hero) => hero.slotType === slotType && hero.slotIndex === slotIndex)) return false;
     if (!this.team.includes(heroId)) {
@@ -123,8 +132,8 @@ export class TowerDefenseGame {
     }
     const slot = (slotType === "road" ? this.map.roadSlots : this.map.platformSlots)[slotIndex];
     if (!slot) return false;
-    this.gold -= base.cost;
-    this.totalGoldSpent += base.cost;
+    this.gold -= cost;
+    this.totalGoldSpent += cost;
     const hp = this.maxHpFor(base.hp, 1, base.class);
     const skill = this.tuning.heroSkills?.[heroId];
     this.heroes.push({ ...base, range: this.rangeFor(base), entityId: this.entityId++, x: slot[0], y: slot[1], slotType, slotIndex, hp, hpLeft: hp, attackClock: 0, ultClock: 0, rotation: this.defaultRotationFor(slot[0], slot[1]), level: 1, baseAtk: base.atk, baseHp: base.hp, variant: skill?.variant ?? null, skillName: skill?.skillName ?? null });
@@ -328,13 +337,16 @@ export class TowerDefenseGame {
     }
     this.checkQuestClock();
 
+    this.engaged = new Map(); // road hero -> melee enemies it holds this step (block limit)
     for (const enemy of this.enemies) {
       if (enemy.dead) continue;
+      enemy.held = false;
       enemy.slow = Math.max(0, enemy.slow - dt);
       // Petrification stops movement and attacks; simulation time still advances.
       if ((enemy.petrifiedUntil ?? 0) > this.time) continue;
       const target = enemy.flying ? null : this.findEnemyTarget(enemy);
       if (target) {
+        enemy.held = enemy.attackRange === undefined; // stopped by a blocker (melee contact)
         enemy.attackClock -= dt;
         if (enemy.attackClock <= 0) {
           const mods = this.modifiers();
@@ -360,6 +372,8 @@ export class TowerDefenseGame {
       }
     }
 
+    if (this.complete) return; // the last life was lost this step: heroes stand down
+
     for (const hero of this.heroes) {
       hero.attackClock -= dt;
       hero.ultClock += dt;
@@ -371,7 +385,8 @@ export class TowerDefenseGame {
         this.hit(target, resolveDamage(this.attackValue(hero), resistance, hero.damageType, crit), hero, { crit });
         hero.attackClock = 1 / hero.aps;
       }
-      const ultTarget = this.findUltTarget(hero, target);
+      // A basic attack that just killed its target must not spend the ultimate on the corpse.
+      const ultTarget = this.findUltTarget(hero, target?.dead ? this.findTarget(hero) : target);
       if (ultTarget && hero.ultClock >= hero.ultCooldown / this.ultChargeRate()) {
         if (this.castUltimate(hero, ultTarget) !== false) hero.ultClock = 0;
       }
@@ -423,12 +438,18 @@ export class TowerDefenseGame {
   findEnemyTarget(enemy) {
     // Ranged enemies (attackRange) stop and shoot from distance; melee needs contact.
     const reach = enemy.attackRange ?? 42 + (this.favor.contactRangeBonus || 0);
+    const melee = enemy.attackRange === undefined;
+    const limits = this.tuning.blocking?.blockLimit;
     let best = null;
     for (const hero of this.heroes) {
       if (hero.slotType !== "road" || hero.hpLeft <= 0) continue;
+      // Block limit: a blocker that already holds its share lets further melee enemies walk past.
+      const limit = melee ? limits?.[hero.class] : undefined;
+      if (limit !== undefined && (this.engaged?.get(hero) || 0) >= limit) continue;
       const distance = Math.hypot(hero.x - enemy.x, hero.y - enemy.y);
       if (distance <= reach && (!best || distance < best.distance)) best = { hero, distance };
     }
+    if (best && melee && this.engaged) this.engaged.set(best.hero, (this.engaged.get(best.hero) || 0) + 1);
     return best?.hero ?? null;
   }
 
@@ -545,7 +566,8 @@ export class TowerDefenseGame {
   hit(enemy, amount, hero, { showShot = true, crit = false } = {}) {
     if (enemy.dead) return;
     const vuln = (enemy.exposed && enemy.exposed > this.time) ? 1.2 : 1;
-    enemy.hp -= amount * vuln;
+    const held = enemy.held ? 1 + (this.tuning.blocking?.heldDamageBonus || 0) : 1;
+    enemy.hp -= amount * vuln * held;
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
     if (enemy.hp <= 0) {
@@ -606,7 +628,13 @@ export class TowerDefenseGame {
       const around = this.enemies.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
       const victims = (cone.length ? cone : around).sort((a, b) => b.distance - a.distance).slice(0, 3);
-      victims.forEach((e) => { this.hit(e, power, hero); e.distance = Math.max(0, e.distance - 80); });
+      victims.forEach((e) => {
+        this.hit(e, power, hero);
+        // Move the body too: a blocked enemy never walks, so only updating distance left it in the pile.
+        e.distance = Math.max(0, e.distance - 80);
+        const point = pointOnPath(this.map.path, e.distance);
+        e.x = point.x; e.y = point.y;
+      });
     } else if (variant === "petrify_shot") {
       // Gaze catches distinct enemies in the facing cone, furthest along first.
       const skill = this.tuning.heroSkills?.[hero.id];
@@ -632,7 +660,7 @@ export class TowerDefenseGame {
         this.emitHeroEffect(hero, { type: "heal", x: a.x, y: a.y, life: 0.5, color: "green" });
       });
     } else if (variant === "expose") {
-      // Prometheus: taunt + expose enemies (take +30% damage for 4s)
+      // Prometheus: taunt + expose enemies (take +20% damage for 4s, see hit())
       this.enemies.filter((e) => Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range * 1.8).forEach((e) => { e.slow = 3; e.exposed = this.time + 4; });
     } else if (variant === "mass_taunt") {
       // Momus: wide taunt (2.5x range)
@@ -659,7 +687,7 @@ export class TowerDefenseGame {
         this.emitHeroEffect(hero, { type: "heal", x: hero.x, y: hero.y, life: 0.4, color: "green" });
       }
     } else if (variant === "venom_cleave") {
-      // Jormungandr: cleave + vulnerability debuff (+30% dmg taken for 4s)
+      // Jormungandr: cleave + vulnerability debuff (+20% dmg taken for 4s, see hit())
       const around = this.enemies.filter((e) => !e.dead && Math.hypot(hero.x - e.x, hero.y - e.y) <= 72);
       const cone = around.filter((e) => this.inCone(hero, e));
       (cone.length ? cone : around).forEach((e) => { this.hit(e, power, hero); e.exposed = this.time + 4; });
@@ -675,14 +703,16 @@ export class TowerDefenseGame {
       for (let i = 0; i < 3; i += 1) if (!target.dead) this.hit(target, power * 0.5, hero);
     } else if (variant === "chain_lightning") {
       // Zeus: nuke primary cluster + bounce to 2 nearest others
-      this.enemies.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72).forEach((e) => this.hit(e, power, hero));
-      const b1cands = this.enemies.filter((e) => !e.dead && e !== target && Math.hypot(target.x - e.x, target.y - e.y) <= 140);
+      const blasted = this.enemies.filter((e) => Math.hypot(target.x - e.x, target.y - e.y) <= 72);
+      blasted.forEach((e) => this.hit(e, power, hero));
+      // Bounces jump to enemies the blast missed.
+      const b1cands = this.enemies.filter((e) => !e.dead && !blasted.includes(e) && Math.hypot(target.x - e.x, target.y - e.y) <= 140);
       b1cands.sort((a, b) => Math.hypot(target.x - a.x, target.y - a.y) - Math.hypot(target.x - b.x, target.y - b.y));
       const b1 = b1cands[0];
       if (b1) {
         this.hit(b1, power * 0.7, hero);
         this.emitHeroEffect(hero, { type: "shot", x1: target.x, y1: target.y, x2: b1.x, y2: b1.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" });
-        const b2cands = this.enemies.filter((e) => !e.dead && e !== target && e !== b1 && Math.hypot(b1.x - e.x, b1.y - e.y) <= 140);
+        const b2cands = this.enemies.filter((e) => !e.dead && !blasted.includes(e) && e !== b1 && Math.hypot(b1.x - e.x, b1.y - e.y) <= 140);
         b2cands.sort((a, b) => Math.hypot(b1.x - a.x, b1.y - a.y) - Math.hypot(b1.x - b.x, b1.y - b.y));
         const b2 = b2cands[0];
         if (b2) { this.hit(b2, power * 0.45, hero); this.emitHeroEffect(hero, { type: "shot", x1: b1.x, y1: b1.y, x2: b2.x, y2: b2.y, life: 0.2, color: "purple", heroVariant: "chain_lightning" }); }

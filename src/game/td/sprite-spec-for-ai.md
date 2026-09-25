@@ -1,7 +1,7 @@
 # Tower Defense Enemy Sprite Specification (for AI image generation)
 
 ## Goal
-Generate full-body tower defense sprites for 6 enemy types + 7 bosses. These replace portrait crops extracted from the mobile game "MOTTO IMMORTAL" (provided as reference images). The sprites will be displayed as 28-52px circles on a top-down tactical map.
+Generate full-body tower defense sprites for 6 enemy types + 7 bosses. These replace portrait crops extracted from the mobile game "MOTTO IMMORTAL" (provided as reference images). The sprites are displayed at about 44px (enemies), 64px (brute) and 96px (boss) on a top-down tactical map, without a circular mask.
 
 ## Style Requirements
 - **Art style**: Dark fantasy / mobile RPG. Rich colors, strong silhouettes, dramatic lighting. Match the quality of the provided reference portraits.
@@ -9,7 +9,7 @@ Generate full-body tower defense sprites for 6 enemy types + 7 bosses. These rep
 - **Background**: Fully transparent (PNG with alpha channel).
 - **Canvas**: 256x256 pixels, subject centered, fills ~80% of canvas.
 - **Format**: PNG-32 (RGBA), no white background, no drop shadow baked in.
-- **Key constraint**: The sprite will be cropped by a circular mask in-game. Keep the most important visual features (head/core/distinguishing element) centered and inside a ~200px diameter circle.
+- **Key constraint**: The sprite is shown small. Keep the silhouette readable at 44px and face the subject to the right (the game mirrors it when moving left).
 
 ## Enemy Sprites (6 types)
 
@@ -98,5 +98,20 @@ grunt.png, runner.png, flyer.png, archer.png, brute.png
 boss_baphomet.png, boss_ishtar.png, boss_snowman.png, boss_typhoon.png, boss_nian.png, boss_nighthag.png, boss_lilith.png
 ```
 
-## Integration Notes
-Once generated, place files in `/public/td/enemies/` in the hero-database project. The renderer loads them from `/td/enemies/{kind}.png`. Enemy kinds: grunt/runner/flyer/archer/brute. Boss needs separate integration (currently uses `boss` key in renderer, maps to baphomet by default).
+## Priority
+Only the 5 enemy kinds and Baphomet (`boss_baphomet.png`) appear in the game today. The other 6 bosses can wait until they are added as final bosses.
+
+## Prompt template
+Use one generation per sprite with the same style block so the set matches:
+
+> Full-body game sprite of {Sprite concept}. Dark fantasy mobile RPG art style, rich colors, strong silhouette, dramatic rim lighting, slight 3/4 top-down view, facing right, centered, isolated on a fully transparent background, no ground, no shadow, no text. Colors: {Color palette}.
+
+Attach the reference portrait from the spec entry. Generate square (1024x1024 is fine, the pipeline scales it down). If the tool cannot output transparency, remove the background before the next step.
+
+## Integration
+1. Put the images in one folder with the spec file names (`grunt.png` ... `boss_baphomet.png`; `.webp` also works).
+2. `node scripts/build-td-enemy-sprites.mjs <folder>` trims, fits the subject to 80% of a 256x256 transparent canvas and writes `public/td/enemies/sprites/{kind}-v1.webp` (Baphomet becomes `boss-v1.webp`). It warns when the corners are not transparent.
+3. `node scripts/upload-to-r2.mjs --prefix td/enemies/sprites` uploads them.
+4. The renderer picks them up automatically: full-body sprites win over the circle portraits, are drawn unmasked with a ground shadow and face their direction of travel (draw them facing right). Kinds without a file keep the portrait.
+
+Changed art needs a new file name because R2 objects are cached for a year: bump `VERSION` in the script and `ENEMY_SPRITE_VERSION` in `render.js` together.

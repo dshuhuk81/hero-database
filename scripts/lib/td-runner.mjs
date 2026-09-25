@@ -19,8 +19,10 @@ export const SQUADS = {
   "glass cannon": ["nyx", "bastet", "phoenix", "zeus", "yuelao"],
 };
 
-export function playRun(ids, seed, map, { difficulty, favTree = [] } = {}) {
-  const runTuning = favTree.length ? buildRunTuning(baseTuning, favTree) : baseTuning;
+// `tuning` overrides the base tuning (balance experiments).
+export function playRun(ids, seed, map, { difficulty, favTree = [], tuning: tuningOverride } = {}) {
+  const source = tuningOverride ?? baseTuning;
+  const runTuning = favTree.length ? buildRunTuning(source, favTree) : source;
   const tuning = difficulty ? { ...runTuning, difficulty } : runTuning;
   const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed });
   if (!g.setTeam(ids)) throw new Error(`Invalid squad: ${ids}`);
@@ -32,7 +34,7 @@ export function playRun(ids, seed, map, { difficulty, favTree = [] } = {}) {
       for (const id of ids) {
         if (g.heroes.some((h) => h.id === id)) continue;
         const base = g.heroesById.get(id);
-        if (g.gold < base.cost) continue;
+        if (g.gold < g.deployCost(id)) continue;
         for (let i = 0; i < slotCount[base.slot]; i += 1) {
           const before = g.gold;
           if (g.place(id, base.slot, i)) { spent += before - g.gold; break; }

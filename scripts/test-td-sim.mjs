@@ -981,6 +981,158 @@ function runWaveOne(g) {
   assert.ok(limit(long) > limit(short), "longer map allows more time");
 }
 
+// --- M5 ultimates audit: edge cases for every variant ---
+
+// Every roster ultimate survives awkward states: dead target, lone target,
+// crowd, nobody in range. No throw, no NaN, nobody above max health.
+{
+  const roster = heroes.map((h) => h.id);
+  const scenarios = {
+    deadTarget: (g) => { g.spawnEnemy("grunt"); const e = g.enemies[0]; e.hp = 0; e.dead = true; return e; },
+    lone: (g) => { g.spawnEnemy("brute"); return g.enemies[0]; },
+    crowd: (g) => { for (const k of ["grunt", "runner", "flyer", "archer", "brute", "grunt"]) g.spawnEnemy(k); return g.enemies[0]; },
+  };
+  for (const id of roster) {
+    for (const [name, setup] of Object.entries(scenarios)) {
+      const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 96 });
+      g.gold = 100000;
+      const base = g.heroesById.get(id);
+      assert.ok(g.place(id, base.slot, 0), `${id} placed`);
+      g.place(base.slot === "road" ? "zeus" : "nuwa", base.slot === "road" ? "platform" : "road", 0);
+      g.startWave(); g.spawnQueue = []; g.enemies = [];
+      const hero = g.heroes.find((h) => h.id === id);
+      const target = setup(g);
+      // Put everyone on the hero so range and cone checks can pass.
+      for (const e of g.enemies) { e.x = hero.x + 20; e.y = hero.y; }
+      hero.hpLeft = hero.hp * 0.5;
+      assert.doesNotThrow(() => g.castUltimate(hero, target), `${id} ult (${name})`);
+      for (const e of g.enemies) assert.ok(Number.isFinite(e.hp) && Number.isFinite(e.x) && Number.isFinite(e.distance), `${id} (${name}) enemy state finite`);
+      for (const h of g.heroes) assert.ok(h.hpLeft <= h.hp + 1e-9, `${id} (${name}) ${h.id} not overhealed`);
+    }
+  }
+}
+
+// A normal attack that kills its target must not spend the ultimate on the corpse.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 97 });
+  g.gold = 10000;
+  g.place("horus", "road", 0);
+  const horus = g.heroes[0];
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.spawnEnemy("grunt"); g.spawnEnemy("grunt");
+  const [weak, other] = g.enemies;
+  for (const e of g.enemies) { e.x = horus.x + 20; e.y = horus.y; e.distance = 1; }
+  weak.hp = 1; weak.distance = 2; // furthest along: the attack target, dies to the basic hit
+  other.petrifiedUntil = 1e9; // keep it in range (an Assassin blocks only one enemy)
+  horus.attackClock = 0;
+  horus.ultClock = horus.ultCooldown + 1;
+  const hpBefore = other.hp;
+  g.step(1 / 60);
+  assert.ok(weak.dead, "basic attack killed the weak grunt");
+  assert.ok(other.hp < hpBefore, "ultimate went to a living enemy instead of the corpse");
+}
+
+// Poseidon's knockback moves the enemy on the map, not just its path distance,
+// so a blocked enemy is actually pushed out of the pile.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 98 });
+  g.gold = 10000;
+  g.place("poseidon", "road", 1);
+  const pos = g.heroes[0];
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.spawnEnemy("brute");
+  const e = g.enemies[0];
+  // Park the brute on the path next to Poseidon.
+  let best = 0;
+  for (let d = 0; d < g.path.total; d += 2) {
+    const p = pointOnPath(maps[0].path, d);
+    if (Math.hypot(p.x - pos.x, p.y - pos.y) < Math.hypot(pointOnPath(maps[0].path, best).x - pos.x, pointOnPath(maps[0].path, best).y - pos.y)) best = d;
+  }
+  e.distance = best + 20;
+  Object.assign(e, pointOnPath(maps[0].path, e.distance));
+  e.hp = e.maxHp = 1e9;
+  const before = { x: e.x, y: e.y };
+  g.castUltimate(pos, e);
+  const expected = pointOnPath(maps[0].path, e.distance);
+  assert.ok(Math.hypot(e.x - expected.x, e.y - expected.y) < 0.01, "knocked-back enemy position matches its new path distance");
+  assert.ok(Math.hypot(e.x - before.x, e.y - before.y) > 1, "enemy visibly moved");
+}
+
+// Zeus: chain bounces go to enemies the primary blast did not already hit.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 99 });
+  g.gold = 10000;
+  g.place("zeus", "platform", 0);
+  const zeus = g.heroes[0];
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  for (let i = 0; i < 3; i += 1) g.spawnEnemy("brute");
+  const [a, near, far] = g.enemies;
+  for (const e of g.enemies) e.hp = e.maxHp = 1e9;
+  a.x = 400; a.y = 300; near.x = 430; near.y = 300; far.x = 520; far.y = 300; // near is inside the 72px blast, far only bounce range
+  g.castUltimate(zeus, a);
+  const lost = (e) => 1e9 - e.hp;
+  assert.ok(lost(far) > 0, "bounce reached the enemy outside the blast");
+  assert.ok(Math.abs(lost(near) - lost(a)) < lost(a) * 0.3, "enemy inside the blast is not hit again by the bounce");
+}
+
+// Nothing changes after the run is over, even later in the same step.
+{
+  const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 100 });
+  g.gold = 10000;
+  g.place("zeus", "platform", 0);
+  const zeus = g.heroes[0];
+  g.startWave(); g.spawnQueue = []; g.enemies = [];
+  g.lives = 1;
+  g.spawnEnemy("runner"); g.spawnEnemy("grunt");
+  const [leaker, victim] = g.enemies;
+  leaker.distance = g.path.total - 0.01;
+  victim.x = zeus.x + 20; victim.y = zeus.y; victim.distance = 5;
+  victim.petrifiedUntil = 1e9; // hold it in Zeus's range
+  zeus.attackClock = 0; zeus.ultClock = zeus.ultCooldown + 1;
+  const score = g.score;
+  g.step(1 / 60);
+  assert.equal(g.complete, true, "run lost on the leak");
+  assert.equal(g.score, score, "no score after the run ended");
+  assert.equal(zeus.ultClock > zeus.ultCooldown, true, "no ultimate after the run ended");
+}
+
+// --- M5 blocking switches (tuning.blocking; absent = old behavior) ---
+{
+  const setup = (blocking) => {
+    const g = new TowerDefenseGame({ heroes, tuning: { ...tuning, blocking: blocking ?? undefined }, map: maps[0], waves, seed: 101 });
+    g.gold = 10000;
+    g.place("nuwa", "road", 1);
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    const nuwa = g.heroes[0];
+    for (let i = 0; i < 4; i += 1) g.spawnEnemy("grunt");
+    for (const e of g.enemies) { e.x = nuwa.x + 10; e.y = nuwa.y; e.hp = e.maxHp = 1e9; }
+    return g;
+  };
+  // A: block limit. Nuwa (Tank) holds 2 here; the other two walk on.
+  let g = setup({ blockLimit: { Tank: 2 } });
+  g.step(1 / 60);
+  assert.equal(g.enemies.filter((e) => e.held).length, 2, "tank holds its limit");
+  g = setup(null);
+  g.step(1 / 60);
+  assert.equal(g.enemies.filter((e) => e.held).length, 4, "no limit without config");
+  // C: held enemies take bonus damage.
+  g = setup({ heldDamageBonus: 0.5 });
+  g.step(1 / 60);
+  const e = g.enemies[0];
+  const hp = e.hp;
+  g.hit(e, 100, g.heroes[0], { showShot: false });
+  assert.equal(hp - e.hp, 150, "held enemy takes +50%");
+  // B: fallen heroes redeploy at a discount.
+  g = setup({ redeployCostFactor: 0.5 });
+  const nuwa = g.heroes[0];
+  const full = g.deployCost("nuwa");
+  g.damageHero(nuwa, nuwa.hpLeft + 1, null);
+  assert.equal(g.deployCost("nuwa"), Math.round(full * 0.5), "redeploy at half price");
+  const gold = g.gold;
+  assert.ok(g.place("nuwa", "road", 1));
+  assert.equal(gold - g.gold, Math.round(full * 0.5), "discounted price charged");
+}
+
 // --- P5 effect hierarchy: sim flags that the renderer tiers on ---
 {
   const g = new TowerDefenseGame({ heroes, tuning, map: maps[0], waves, seed: 95 });

@@ -111,10 +111,11 @@ export async function createRenderer(canvas, game, options = {}) {
   const fxTex    = new Map(); // name -> PIXI.Texture
   const heroFx = createHeroFx(PIXI, layerParts, fxTex, { reducedMotion });
 
-  // On-board sprite overrides: keyed by hero id, loaded from /td/
-  const BOARD_SPRITE_OVERRIDES = {};
-  for (const [id, url] of Object.entries(BOARD_SPRITE_OVERRIDES)) {
-    PIXI.Assets.load(url).then((tex) => boardSprites.set(id, tex)).catch(() => {});
+  // On-board tokens: transparent head-and-shoulders cutouts (scripts/build-td-tokens.mjs).
+  // A hero without a token keeps the circle portrait.
+  const TOKEN_VERSION = "v1";
+  for (const id of game.heroesById.keys()) {
+    PIXI.Assets.load(tdAsset(`tokens/${id}-${TOKEN_VERSION}.webp`)).then((tex) => boardSprites.set(id, tex)).catch(() => {});
   }
 
   // Version query forces a fresh CORS-enabled fetch: browsers may still hold
@@ -163,6 +164,16 @@ export async function createRenderer(canvas, game, options = {}) {
   for (const kind of PORTRAIT_KINDS) {
     PIXI.Assets.load(tdAsset(`enemies/${kind}.png`))
       .then((tex) => portraitTextures.set(kind, tex))
+      .catch(() => {});
+  }
+
+  // Full-body enemy sprites (scripts/build-td-enemy-sprites.mjs), preferred over
+  // portraits when present. Missing files fail quietly and portraits stay in use.
+  const ENEMY_SPRITE_VERSION = "v1";
+  const fullBodyTextures = new Map(); // kind -> PIXI.Texture
+  for (const kind of [...PORTRAIT_KINDS, "boss"]) {
+    PIXI.Assets.load(tdAsset(`enemies/sprites/${kind}-${ENEMY_SPRITE_VERSION}.webp`))
+      .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }
 
@@ -464,22 +475,28 @@ export async function createRenderer(canvas, game, options = {}) {
     const container = new PIXI.Container();
     container._heroId = unit.id;
 
-    const mask = new PIXI.Graphics();
-    mask.circle(0, 0, 25).fill(0xffffff);
-    container.addChild(mask);
+    // Ground shadow and a dark disc behind the cutout token.
+    const base = new PIXI.Graphics();
+    base.ellipse(0, 24, 25, 7).fill({ color: 0x000000, alpha: 0.45 });
+    base.circle(0, 0, 25).fill({ color: 0x1b1530 });
+    container.addChild(base);
 
-    const tex = boardSprites.get(unit.id) ?? sprites.get(unit.id);
-    const sp = new PIXI.Sprite(tex ?? PIXI.Texture.EMPTY);
-    sp.anchor.set(0.5);
-    sp.width = 50; sp.height = 50;
-    sp.mask = mask;
-    container.addChild(sp);
-    container._img = sp;
-
-    // Border doubles as the level display (drawLevelBorder).
+    // Border doubles as the level display (drawLevelBorder); below the token so the head overlaps it.
     const border = new PIXI.Graphics();
     container._border = border;
     container.addChild(border);
+
+    const mask = new PIXI.Graphics();
+    container._mask = mask;
+    container.addChild(mask);
+
+    const sp = new PIXI.Sprite(PIXI.Texture.EMPTY);
+    sp.anchor.set(0.5);
+    sp.mask = mask;
+    container.addChild(sp);
+    container._img = sp;
+    applyHeroTexture(container, unit.id);
+
 
     const facing = new PIXI.Graphics();
     container._facing = facing;
@@ -507,14 +524,8 @@ export async function createRenderer(canvas, game, options = {}) {
   function updateHeroSprite(unit, container) {
     container.position.set(unit.x, unit.y);
 
-    // Swap texture in once it loads (board override takes priority over CDN portrait)
-    const tex = boardSprites.get(unit.id) ?? sprites.get(unit.id);
-    if (tex && container._img.texture !== tex) {
-      container._img.texture = tex;
-      const mask = container.children.find((c) => c instanceof PIXI.Graphics && c !== container._facing && c !== container._ultRing);
-      if (mask) { mask.clear(); mask.circle(0, 0, 25).fill(0xffffff); }
-    }
-    if (!tex) { container._img.tint = palette.purple; }
+    // Swap texture in once it loads (token takes priority over the CDN portrait)
+    if ((boardSprites.get(unit.id) ?? sprites.get(unit.id) ?? null) !== container._texRef) applyHeroTexture(container, unit.id);
 
     // Facing tick
     const f = container._facing;
@@ -542,6 +553,30 @@ export async function createRenderer(canvas, game, options = {}) {
       container._level = level;
       container._lvlText.text = String(level);
       drawLevelBorder(container._border, level);
+    }
+  }
+
+  // Token: the cutout overflows the ring top so the head pops out of the frame.
+  // Portrait fallback: plain circle crop.
+  function applyHeroTexture(container, heroId) {
+    const token = boardSprites.get(heroId);
+    const tex = token ?? sprites.get(heroId) ?? null;
+    const sp = container._img;
+    const mask = container._mask;
+    container._texRef = tex;
+    mask.clear();
+    if (!tex) { sp.texture = PIXI.Texture.EMPTY; return; }
+    sp.texture = tex;
+    sp.tint = 0xffffff;
+    if (token) {
+      sp.width = 60; sp.height = 60;
+      sp.position.set(0, -7);
+      mask.circle(0, 0, 25).fill(0xffffff);
+      mask.ellipse(0, -16, 18, 24).fill(0xffffff); // head rises about 15px above the ring
+    } else {
+      sp.width = 50; sp.height = 50;
+      sp.position.set(0, 0);
+      mask.circle(0, 0, 25).fill(0xffffff);
     }
   }
 
@@ -612,8 +647,25 @@ export async function createRenderer(canvas, game, options = {}) {
 
     const kind = unit.kind;
 
+    // Full-body sprite: unmasked, larger than the portrait circle, ground shadow.
+    const fullTex = fullBodyTextures.get(kind);
+    if (fullTex) {
+      const size = kind === "boss" ? 96 : kind === "brute" ? 64 : 44;
+      const shadow = new PIXI.Graphics();
+      shadow.ellipse(0, size * 0.36, size * 0.32, size * 0.09).fill({ color: 0x000000, alpha: 0.45 });
+      c.addChild(shadow);
+      const sp = new PIXI.Sprite(fullTex);
+      sp.anchor.set(0.5);
+      sp.width = size; sp.height = size;
+      c._fullSprite = sp;
+      c._fullScale = sp.scale.x;
+      c.addChild(sp);
+      c._shape.visible = false;
+      if (kind === "boss" && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 14, outerStrength: 1, color: 0xff4d4d })];
+    }
+
     // Boss: hero image > Kenney tile > vector circle (handled in buildEnemyShape)
-    if (kind === "boss") {
+    if (kind === "boss" && !fullTex) {
       const heroTex = sprites.get("boss");
       if (heroTex) {
         const mask = new PIXI.Graphics();
@@ -631,8 +683,8 @@ export async function createRenderer(canvas, game, options = {}) {
       }
     }
 
-    // Portrait sprite for non-boss enemies (primary; circular mask like boss portrait)
-    if (kind !== "boss") {
+    // Portrait sprite for non-boss enemies (circular mask like boss portrait)
+    if (kind !== "boss" && !fullTex) {
       const porTex = portraitTextures.get(kind);
       if (porTex) {
         const r = kind === "brute" ? 20 : 14;
@@ -652,7 +704,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Kenney tile sprite fallback (non-boss when portrait not yet loaded; boss when no hero image)
     const kenTex = enemyTextures.get(kind);
-    if (kenTex && !c._portraitSprite && !(kind === "boss" && c._bossSprite)) {
+    if (kenTex && !fullTex && !c._portraitSprite && !(kind === "boss" && c._bossSprite)) {
       const spriteSize = kind === "boss" ? 52 : kind === "brute" ? 40 : 28;
       const sp = new PIXI.Sprite(kenTex);
       sp.anchor.set(0.5);
@@ -740,7 +792,13 @@ export async function createRenderer(canvas, game, options = {}) {
   let dyingClock = null;
 
   function updateEnemyContainer(unit, c) {
+    // Full-body sprites face their direction of travel (art faces right).
+    if (c._fullSprite && c._lastX !== undefined && Math.abs(unit.x - c._lastX) > 0.01) {
+      c._fullSprite.scale.x = (unit.x < c._lastX ? -1 : 1) * c._fullScale;
+    }
+    c._lastX = unit.x;
     c.position.set(unit.x, unit.y);
+    if (c._fullSprite) return updateEnemyOverlays(unit, c);
 
     // Upgrade to portrait if it finished loading after container was built
     if (!c._portraitSprite && unit.kind !== "boss") {
@@ -784,10 +842,14 @@ export async function createRenderer(canvas, game, options = {}) {
 
     // Vector shape: only rebuild when used as fallback; boss ring always redrawn
     if (c._shape.visible || unit.kind === "boss") buildEnemyShape(c._shape, unit);
+    updateEnemyOverlays(unit, c);
+  }
 
+  // Petrify tint and stone shell, hit flash.
+  function updateEnemyOverlays(unit, c) {
     const petrified = (unit.petrifiedUntil ?? 0) > game.time;
     c._stoneOverlay.visible = petrified;
-    for (const sprite of [c._portraitSprite, c._bossSprite, c._enemySprite]) {
+    for (const sprite of [c._fullSprite, c._portraitSprite, c._bossSprite, c._enemySprite]) {
       if (sprite) sprite.tint = petrified ? 0x9ba39f : 0xffffff;
     }
 
