@@ -1401,4 +1401,67 @@ for (const scenario of ["last-life", "invincible", "legacy"]) {
   assert.ok(g.effects.some((e) => e.type === "bossDown"), "boss kill emits bossDown");
 }
 
+// --- Final boss per map: Lilith (Garden of Flesh / Flesh Growth) ---
+{
+  const lilithMap = maps.find((m) => m.boss === "lilith");
+  const baphMap = maps.find((m) => m.boss === "baphomet");
+  assert.ok(lilithMap && baphMap, "one map per boss");
+  const cfg = tuning.bosses.lilith;
+  const setup = (map) => {
+    const g = new TowerDefenseGame({ heroes, tuning, map, waves, seed: 97 });
+    g.gold = 10000;
+    g.place("zeus", "platform", 0);
+    g.startWave(); g.spawnQueue = []; g.enemies = [];
+    return g;
+  };
+  // Baphomet: plain stat block, no summons, targetable.
+  let g = setup(baphMap);
+  let boss = g.spawnEnemy("boss");
+  assert.equal(boss.bossId, "baphomet");
+  assert.equal(g.enemies.length, 1, "baphomet summons nothing");
+  assert.ok(!boss.untargetable);
+  // A map without a boss field falls back to Baphomet.
+  const legacy = new TowerDefenseGame({ heroes, tuning, map: { ...lilithMap, boss: undefined }, waves, seed: 97 });
+  assert.equal(legacy.bossId, "baphomet", "missing boss field falls back to baphomet");
+
+  // Lilith: tougher stat block, summons her children around her, cannot be hit.
+  g = setup(lilithMap);
+  boss = g.spawnEnemy("boss");
+  const scale = g.difficulty.enemyHp; // wave 1
+  assert.equal(boss.bossId, "lilith");
+  assert.equal(boss.maxHp, cfg.stats.hp * scale, "lilith uses her own hp");
+  assert.ok(cfg.stats.hp > tuning.enemies.boss.hp, "lilith is tougher than baphomet");
+  const children = () => g.enemies.filter((e) => e.parentId === boss.entityId && !e.dead);
+  assert.equal(children().length, cfg.summon.count, "summons her children on entry");
+  assert.equal(children()[0].maxHp, tuning.enemies.brood.hp * scale, "first children at full strength");
+  assert.ok(g.effects.some((e) => e.type === "summon"), "summon emits an effect");
+  assert.ok(boss.untargetable, "lilith cannot be targeted");
+  const zeus = g.heroes[0];
+  const hpBefore = boss.hp;
+  g.hit(boss, 1e9, zeus);
+  assert.equal(boss.hp, hpBefore, "direct hits do nothing");
+  assert.ok(!g.canHit(zeus, boss), "heroes skip her when choosing targets");
+  // Damage to a child is shared with Lilith, capped at the child's remaining hp.
+  const child = children()[0];
+  g.hit(child, 100, zeus);
+  assert.equal(boss.hp, hpBefore - 100, "child damage reaches lilith");
+  const left = child.hp;
+  g.hit(child, 1e9, zeus);
+  assert.equal(boss.hp, hpBefore - 100 - left, "overkill on a child is not shared");
+  // When all children fall, she summons them again at resummonScale.
+  for (const c of children()) g.hit(c, 1e9, zeus);
+  g.step(1 / 60);
+  const second = children();
+  assert.equal(second.length, cfg.summon.count, "children return when all have fallen");
+  assert.ok(Math.abs(second[0].maxHp - tuning.enemies.brood.hp * scale * cfg.summon.resummonScale) < 1e-6, "re-summoned children are weaker");
+  assert.ok(Math.abs(second[0].attack - tuning.enemies.brood.attack * cfg.summon.resummonScale) < 1e-6);
+  // Killing her through her children ends her (kill credited, bossDown emitted).
+  boss.hp = 1;
+  g.hit(second[0], 50, zeus);
+  assert.ok(boss.dead, "lilith dies from shared damage");
+  assert.ok(g.effects.some((e) => e.type === "bossDown"));
+  g.step(1 / 60);
+  assert.ok(!g.enemies.some((e) => e.entityId === boss.entityId), "dead lilith leaves the field");
+}
+
 console.log("Tower defense checks passed");

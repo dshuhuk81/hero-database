@@ -18,6 +18,7 @@ const COLORS = {
   archer: 0x82e89a,
   brute:  0xfb923c,
   boss:   0xff4d4d,
+  brood:  0x8b5cf6,
 };
 
 // Kenney Micro Roguelike packed sheet: 128x80, 8x8 tiles, no gaps.
@@ -178,8 +179,10 @@ export async function createRenderer(canvas, game, options = {}) {
   // portraits when present. Missing files fail quietly and portraits stay in use.
   const ENEMY_SPRITE_VERSION = "v1";
   const fullBodyTextures = new Map(); // kind -> PIXI.Texture
-  for (const kind of [...PORTRAIT_KINDS, "boss"]) {
-    PIXI.Assets.load(tdAsset(`enemies/sprites/${kind}-${ENEMY_SPRITE_VERSION}.webp`))
+  // Baphomet's sprite is boss-v1; other final bosses use boss-{id}-v1 (the map's boss).
+  const bossFile = options.boss?.id && options.boss.id !== "baphomet" ? `boss-${options.boss.id}` : "boss";
+  for (const [kind, file] of [...PORTRAIT_KINDS.map((k) => [k, k]), ["boss", bossFile], ["brood", "brood"]]) {
+    PIXI.Assets.load(tdAsset(`enemies/sprites/${file}-${ENEMY_SPRITE_VERSION}.webp`))
       .then((tex) => fullBodyTextures.set(kind, tex))
       .catch(() => {});
   }
@@ -652,6 +655,7 @@ export async function createRenderer(canvas, game, options = {}) {
 
   function syncEnemies() {
     const seen = new Set();
+    let addedPlain = false;
     for (const unit of game.enemies) {
       if (isAuthored && unit.dead && unit.exitReason === "base") continue;
       seen.add(unit.entityId);
@@ -667,11 +671,18 @@ export async function createRenderer(canvas, game, options = {}) {
           layerUnits.removeChild(existing);
           existing.destroy({ children: true });
         } else layerUnits.addChild(c);
+        if (unit.kind !== "boss" && unit.kind !== "brood") addedPlain = true;
       }
       updateEnemyContainer(unit, enemyContainers.get(unit.entityId));
       if (isAuthored) {
         // Units emerge from the breach and pass inside the base, instead of dying there.
-        enemyContainers.get(unit.entityId).alpha = Math.min(1, Math.max(0, unit.distance / 18), Math.max(0, (game.path.total - unit.distance) / 24));
+        enemyContainers.get(unit.entityId).alpha *= Math.min(1, Math.max(0, unit.distance / 18), Math.max(0, (game.path.total - unit.distance) / 24));
+      }
+    }
+    // Keep the boss and its children above the escort that spawns after them.
+    if (addedPlain) {
+      for (const c of enemyContainers.values()) {
+        if (c.tdEnemy?.kind === "boss" || c.tdEnemy?.kind === "brood") layerUnits.setChildIndex(c, layerUnits.children.length - 1);
       }
     }
     for (const [id, c] of enemyContainers) {
@@ -725,6 +736,8 @@ export async function createRenderer(canvas, game, options = {}) {
       c.addChild(sp);
       c._shape.visible = false;
       if (kind === "boss" && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 14, outerStrength: 1, color: 0xff4d4d })];
+      // Lilith's children are dark on dark ground: a thin violet rim keeps them readable in the escort.
+      if (kind === "brood" && GlowFilter && !reducedMotion) sp.filters = [new GlowFilter({ distance: 8, outerStrength: 1.4, color: 0xa855f7 })];
     }
 
     // Boss: hero image > Kenney tile > vector circle (handled in buildEnemyShape)
@@ -861,6 +874,7 @@ export async function createRenderer(canvas, game, options = {}) {
     }
     c._lastX = unit.x;
     c.position.set(unit.x, unit.y);
+    c.alpha = unit.untargetable ? 0.8 : 1; // a summoning Lilith cannot be hit
     if (c._fullSprite) return updateEnemyOverlays(unit, c);
 
     // Upgrade to portrait if it finished loading after container was built
@@ -1006,6 +1020,9 @@ export async function createRenderer(canvas, game, options = {}) {
       spawnParticle("flare_01", effect.x, effect.y, { size: 70 * tier.burst, life: 1, tint: "red" });
       spawnParticle("twirl_01", effect.x, effect.y, { size: 55 * tier.burst, life: 1.1, vr: 4, tint: "red" });
       spawnParticle("flame_04", effect.x, effect.y, { size: 48 * tier.burst, life: 1, vy: -70, tint: "red" });
+    } else if (effect.type === "summon") {
+      spawnParticle("twirl_01", effect.x, effect.y, { size: 90, life: 0.8, vr: -4, tint: "purple" });
+      spawnParticle("magic_01", effect.x, effect.y, { size: 70, life: 0.7, tint: "purple" });
     } else if (effect.type === "awaken") {
       spawnParticle("flare_01", effect.x, effect.y, { size: 110, life: 0.9, tint: "white" });
       spawnParticle("twirl_01", effect.x, effect.y, { size: 90, life: 1, vr: 5, tint: "gold" });

@@ -3,18 +3,18 @@ import favorTree from "../../data/favorTree.json";
 import TdLobby from "../td/TdLobby.astro";
 import TdPlayScreen from "../td/TdPlayScreen.astro";
 import TdPanels from "../td/TdPanels.astro";
-interface Props { assetBase: string; heroes: any[]; tuning: any; maps: any[]; waves: any[]; boss?: any; }
-const { assetBase, heroes, tuning, maps, waves, boss } = Astro.props;
-const payload = { assetBase, heroes, tuning, maps, waves, boss, favorTree };
-const bossName = boss?.name ?? "Baphomet";
+interface Props { assetBase: string; heroes: any[]; tuning: any; maps: any[]; waves: any[]; bosses: Record<string, any>; }
+const { assetBase, heroes, tuning, maps, waves, bosses } = Astro.props;
+const payload = { assetBase, heroes, tuning, maps, waves, bosses, favorTree };
+const bossNames = Object.fromEntries(maps.map((map: any) => [map.id, bosses[map.boss ?? "baphomet"]?.name ?? "Baphomet"]));
 const isDev = import.meta.env.DEV; // debug panel exists only in local dev builds
 const maxTeam = tuning.run.maxTeam ?? 5;
 ---
 
 <div class="td-shell" data-td-root data-screen="lobby">
-  <TdLobby maps={maps} maxTeam={maxTeam} waveCount={waves.length} bossName={bossName} />
+  <TdLobby maps={maps} maxTeam={maxTeam} waveCount={waves.length} bossNames={bossNames} />
   <TdPlayScreen waveCount={waves.length} isDev={isDev} />
-  <TdPanels maxTeam={maxTeam} bossName={bossName} />
+  <TdPanels maxTeam={maxTeam} maps={maps} bossNames={bossNames} />
 </div>
 
 <script type="application/json" id="td-data" set:html={JSON.stringify(payload)}></script>
@@ -74,7 +74,7 @@ const maxTeam = tuning.run.maxTeam ?? 5;
     root, q, data, heroById, maxTeam,
     maxLevel: data.tuning.upgrades?.maxLevel ?? 4,
     totalWaves: data.waves.length,
-    bossName: data.boss?.name ?? "Baphomet",
+    bossFor: (map: any) => data.bosses?.[map?.boss ?? "baphomet"] ?? { name: "Baphomet" },
     blessingNames: data.tuning.virtueBlessings || {},
     store, state, pause,
     getSession: () => state.session,

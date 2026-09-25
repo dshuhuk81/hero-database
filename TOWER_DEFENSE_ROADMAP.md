@@ -6,48 +6,40 @@ Last updated: September 25, 2026. Completed work -> [TOWER_DEFENSE_ARCHIVE.md](T
 
 Map work is handled separately and archived. Awakening shipped (see archive). Milestones below are ordered by size and risk; each one lists what "done" means. Nothing here is started.
 
-### M1: Mobile landscape layout (large, top priority)
-
-- Goal: the game is playable on a landscape phone without hiding rings, entrances or exits.
-- Scope: follow the layout plan in `docs/tower-defense-ui-plan.md` (fit the board to available height, side rails on short screens, no horizontal-scroll HUD).
-- Done when: the checklist sizes in that plan pass (667x375 up to 1440x900) plus one real landscape phone with browser chrome visible.
-
-### M2: Kill-count quest decision (small)
-
-- Goal: decide whether the kill-count quest type joins `noLeaks`, `heroSurvival` and `speedClear`, then ship or drop it.
-- Scope: confirm the rule and reward with the user first (player-facing gate); if yes, add the type in `sim.js` quest roll, name and text in `page/hud.ts`, and a headless check in `npm run test:tower-defense`.
-- Done when: the quest is live and tested, or the idea is recorded as rejected in the archive.
-
-### M3: Level-3 focus choice (unscheduled, conditional)
+### M1: Level-3 focus choice (unscheduled, conditional)
 
 - Trigger: only start if runs feel samey after Awakening.
 - Goal: at hero level 3 the player picks one focus: attack, health or a small range bonus.
 - Scope: pick UI, sim stat hook, balance check with `npm run test:td-balance` and `npm run td:sweep` so no focus is a clear best pick.
 - Done when: the choice is in the upgrade flow, balance numbers stay inside the current difficulty bands, and the tests cover all three focuses.
 
-### M4: 20-wave and endless mode (medium)
+### M2: 20-wave and endless mode (medium)
 
 - Goal: longer runs beyond the current wave count; 20-wave mode with a boss every 5th wave, then endless as an extension.
 - Scope: wave generator scaling past the current table, boss cadence, mode picker on the start screen, local best score per mode in the existing `td:v1` save.
 - Done when: both modes finish a headless sweep without runaway or trivial difficulty, and the save stays backward compatible.
 
-### M5: Replays (medium)
-
-- Goal: watch a finished run again.
-- Scope: the sim is already deterministic and seeded, so store seed plus player inputs per run and play them back through `sim.js` and `render.js`; keep the last few runs in local storage.
-- Done when: a replay of a recorded run ends with the same score and wave as the original, verified by a headless test.
-
-### M6: Leaderboard (large, needs design first)
+### M3: Leaderboard (large, needs design first)
 
 - Goal: shared scores across players.
-- Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1, ideally validating scores by re-running M5 replays server side.
-- Done when: the anti-tamper approach is agreed, then built. Depends on M5.
+- Blocker: needs an anti-tamper design before any code (see spec section 9); a plain client-submitted score endpoint would be a cheat form. Likely path is a Cloudflare Worker plus D1.
+- Done when: the anti-tamper approach is agreed, then built.
 
-### M7: New Bosses
+### M4: New Bosses (in progress)
 
 - We can add new Motto Immortal Bosses other than only Baphomet.
 We have Lilith, Ishtar, Typhoon, Nian Beast, Spirit of the Night Hag. All bosses are listed in `src/data/bosses.json`. 
 - Bosse could also have Ultimate Abilities. Those are also listed in there. Currently the bosses dont have that.
+- Done (September 25, 2026): boss per map (`tdMaps.json` `"boss"`, default Baphomet). Lilith is the final boss of Verdant Crossing: HP 2600 (Baphomet 2200); Garden of Flesh summons 3 children on entry (HP 600% of her ATK, attack 100%); she cannot be hit while summoning, damage her children take also hits her; Flesh Growth re-summons them at 60% when all have fallen. Config in `tuning.bosses.lilith` and `enemies.brood`. Balance: Verdant wins 13/20 with Lilith vs 15/20 with Baphomet (5 squads x 4 seeds).
+- Done (September 25, 2026): Lilith and children sprites (Coplay `gpt_image_1`, sources in the Unity project `Assets/td_sprites/`), built to `boss-lilith-v1.webp` and `brood-v1.webp`, uploaded to R2. Renderer keeps the boss and children above the escort; children have a violet rim and spread ahead of and behind her.
+- Open: End of All (children +200% attack speed) as Lilith's ultimate, other bosses.
+
+### M5: Sound variant listening pass (postponed)
+
+- Postponed until all hero sounds are in. The in-game sound files still carry internal game names, so they have to be sorted and renamed by hand first, then 1 attack and 1 ultimate sound picked per hero from about 8 files.
+- Goal: every sound variant in `src/game/td/audio.ts` has been heard in a real run and judged OK.
+- Scope: play through both maps, trigger each variant, note clipping, volume jumps or repetitive-sounding picks; fix or drop bad variants.
+- Done when: each variant is marked verified (or removed), and the known gap is closed.
 
 ## Research notes (September 25, 2026)
 
@@ -76,4 +68,4 @@ node scripts/upload-to-r2.mjs --prefix td/<folder>                 # upload new 
 
 ## Known gaps / deferred
 
-All former gaps are now milestones above (M1, M2, M4 to M7).
+Former gaps are now milestones above (M2, M3, M5); the kill-count quest shipped as the Slayer quest and the landscape layout was re-verified (see archive). Replays were dropped (September 25, 2026).

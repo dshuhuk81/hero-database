@@ -74,7 +74,7 @@ export type PageContext = {
   maxTeam: number;
   maxLevel: number;
   totalWaves: number;
-  bossName: string;
+  bossFor(map: any): any; // bosses.json entry of the map's final boss
   blessingNames: Record<string, string>;
   store: SaveStore;
   state: PageState;

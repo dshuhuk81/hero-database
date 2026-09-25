@@ -90,16 +90,23 @@ Generate full-body tower defense sprites for 6 enemy types + 7 bosses. These rep
 - **Sprite concept**: Dark cosmic entity. Tall humanoid but alien. Body is black lattice/web-like organic material with purple void energy visible through gaps. Elongated limbs. No clear face, just a glowing purple vortex where the head should be.
 - **Color palette**: Matte black lattice, deep purple glow, void dark background
 
+### lilith_child.png
+- **Reference**: in-game texture `B_LiLiS_xiaoguaii_D_.png` (`~/android/game_images_only/new_role3d_new_b_lilisi_monster_100009/`): glossy black carapace with red accents
+- **Game name**: Lilith's children (summoned by Garden of Flesh)
+- **Sprite concept**: Small hunched creature of the same black biomechanical material as Lilith. Glossy black shell plates, a few glowing red slits or veins. Clearly smaller and simpler than Lilith; shown at 44px.
+- **Color palette**: Glossy black, dark violet highlights, red accents
+
 ---
 
 ## Output Filenames
 ```
 grunt.png, runner.png, flyer.png, archer.png, brute.png
 boss_baphomet.png, boss_ishtar.png, boss_snowman.png, boss_typhoon.png, boss_nian.png, boss_nighthag.png, boss_lilith.png
+lilith_child.png
 ```
 
 ## Priority
-Only the 5 enemy kinds and Baphomet (`boss_baphomet.png`) appear in the game today. The other 6 bosses can wait until they are added as final bosses.
+In the game today: the 5 enemy kinds, Baphomet (Moonlit Pass, `boss_baphomet.png` -> `boss-v1.webp`) and Lilith with her children (Verdant Crossing, `boss_lilith.png` -> `boss-lilith-v1.webp`, `lilith_child.png` -> `brood-v1.webp`). The other 5 bosses can wait until they are added as final bosses.
 
 ## Prompt template
 Use one generation per sprite with the same style block so the set matches:

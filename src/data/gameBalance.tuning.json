@@ -15,7 +15,11 @@
     "flyer": { "hp": 90, "speed": 62, "armor": 24, "reward": 6, "damage": 1, "flying": true, "attack": 0, "attackPeriod": 1 },
     "archer": { "hp": 120, "speed": 39, "armor": 36, "reward": 7, "damage": 1, "attack": 34, "attackPeriod": 1.2, "attackRange": 110 },
     "brute": { "hp": 320, "speed": 27, "armor": 90, "reward": 12, "damage": 2, "attack": 60, "attackPeriod": 1.1 },
-    "boss": { "hp": 2200, "speed": 20, "armor": 135, "reward": 50, "damage": 3, "attack": 85, "attackPeriod": 1 }
+    "boss": { "hp": 2200, "speed": 20, "armor": 135, "reward": 50, "damage": 3, "attack": 85, "attackPeriod": 1 },
+    "brood": { "hp": 510, "speed": 20, "armor": 60, "reward": 6, "damage": 1, "attack": 85, "attackPeriod": 1 }
+  },
+  "bosses": {
+    "lilith": { "stats": { "hp": 2600 }, "summon": { "kind": "brood", "count": 3, "resummonScale": 0.6, "spacing": 40, "sharedDamage": 1 } }
   },
   "difficulty": { "enemyHp": 2 },
   "support": { "healFraction": 0.18, "auraAttackBonus": 0.25, "auraDuration": 6, "passiveAuraBonus": 0.1 },
@@ -57,7 +61,7 @@
   ],
   "run": { "startingGold": 340, "lives": 25, "maxTeam": 5, "stepsPerSecond": 60, "waveClearBonus": { "base": 100, "perWave": 20 } },
   "blocking": { "blockLimit": { "Tank": 3, "Warrior": 2, "Assassin": 1 } },
-  "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5, "heroKillsShare": 0.8 },
+  "quests": { "goldBase": 40, "goldPerWave": 10, "speedClearTravel": 0.5, "heroKillsShare": 0.6 },
   "shards": { "minWave": 3, "favorPct": 0.1, "favorMin": 5, "gold": 60 },
   "favorEarn": { "perWave": 10, "perPerfectWave": 5, "bossKill": 20, "perRemainingLife": 1, "remainingLifeCap": 25 },
   "synergy": { "bonusPerTag": 0.08, "cap": 0.24, "range": 250 },

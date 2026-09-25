@@ -15,8 +15,9 @@ const OUT_DIR = outArg > 0 ? process.argv[outArg + 1] : join(ROOT, "public/td/en
 const VERSION = "v1"; // matches ENEMY_SPRITE_VERSION in render.js; bump both for changed art
 const SIZE = 256;
 const FILL = 0.8;
-// Spec file name -> enemy kind used by the simulator. Only Baphomet is in the game today.
-const FILES = { grunt: "grunt", runner: "runner", flyer: "flyer", archer: "archer", brute: "brute", boss_baphomet: "boss" };
+// Spec file name -> output name. Baphomet is "boss"; other final bosses are boss-{id}
+// (render.js picks the map's boss). lilith_child is her summoned children ("brood").
+const FILES = { grunt: "grunt", runner: "runner", flyer: "flyer", archer: "archer", brute: "brute", boss_baphomet: "boss", boss_lilith: "boss-lilith", lilith_child: "brood" };
 
 const inDir = process.argv[2];
 if (!inDir) { console.error("Usage: node scripts/build-td-enemy-sprites.mjs <input folder>"); process.exit(1); }

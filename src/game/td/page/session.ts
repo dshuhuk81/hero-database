@@ -61,7 +61,7 @@ export function createSessionController(ctx: PageContext, deps: Deps) {
     const game: any = new TowerDefenseGame({ ...data, tuning: buildRunTuning(data.tuning, runFavTree, boost), map });
     let renderer: any;
     try {
-      renderer = await createRenderer(canvas, game, { boss: data.boss });
+      renderer = await createRenderer(canvas, game, { boss: ctx.bossFor(map) });
     } catch (error) {
       canvas.remove();
       if (token === sessionToken) loadingEl.textContent = "The battlefield failed to load. Reload the page to try again.";

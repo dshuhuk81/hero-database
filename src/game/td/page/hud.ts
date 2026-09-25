@@ -10,11 +10,11 @@ const AUTO_NEXT_MS = 10000;
 const GOLD_TWEEN_MIN = 25;
 const GOLD_TWEEN_MS = 600;
 
-const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes" };
+const KIND_NAMES: Record<string, string> = { grunt: "Grunts", runner: "Runners", flyer: "Flyers", archer: "Archers", brute: "Brutes", brood: "Children" };
 
 export function createHud(ctx: PageContext) {
-  const { q, state, store, pause, heroById, maxTeam, totalWaves, bossName } = ctx;
-  const kindNames: Record<string, string> = { ...KIND_NAMES, boss: bossName };
+  const { q, state, store, pause, heroById, maxTeam, totalWaves } = ctx;
+  const bossName = () => ctx.bossFor(state.session?.map).name;
   const previewEl = q("[data-td-preview]");
   const deckEl = q("[data-td-deck]");
   const mainAction = q<HTMLButtonElement>("[data-td-main-action]");
@@ -62,7 +62,7 @@ export function createHud(ctx: PageContext) {
       return;
     }
     mainAction.disabled = false;
-    const label = game.wave === totalWaves - 1 ? `Face ${bossName}` : `Start wave ${game.wave + 1}`;
+    const label = game.wave === totalWaves - 1 ? `Face ${bossName()}` : `Start wave ${game.wave + 1}`;
     mainAction.textContent = countdownActive() ? `${label} - ${Math.ceil(autoLeft / 1000)}s` : label;
   }
 
@@ -102,7 +102,7 @@ export function createHud(ctx: PageContext) {
   function questGoal(quest: any, game: any) {
     if (quest.type === "noLeaks") return "Let no enemy through";
     if (quest.type === "heroSurvival") return "Keep every hero alive";
-    if (quest.type === "heroKills") return `${quest.heroName} lands ${quest.target} kills (${Math.min(quest.kills, quest.target)}/${quest.target})`;
+    if (quest.type === "heroKills") return `${quest.heroName} kills ${Math.min(quest.kills, quest.target)}/${quest.target}`;
     const lastSpawnAt = game.waveStats?.lastSpawnAt;
     if (lastSpawnAt == null) return `Clear within ${quest.seconds}s of the last spawn`;
     return `${Math.max(0, Math.ceil(quest.seconds - (game.time - lastSpawnAt)))}s left to clear`;
@@ -127,7 +127,7 @@ export function createHud(ctx: PageContext) {
     if (!info) { previewEl.hidden = true; return; }
     previewEl.hidden = false;
     previewEl.innerHTML = `<span class="td-wave-chip">Next wave <b>${info.wave}</b></span>` + Object.entries(info.counts)
-      .map(([kind, count]) => `<span class="td-wave-chip">${count}x <b>${kindNames[kind] ?? kind}</b></span>`).join("") +
+      .map(([kind, count]) => `<span class="td-wave-chip">${count}x <b>${kind === "boss" ? bossName() : KIND_NAMES[kind] ?? kind}</b></span>`).join("") +
       (info.totalHp ? `<span class="td-wave-chip td-wave-chip--hp"><b>${info.totalHp.toLocaleString()}</b> enemy HP</span>` : "");
   }
 
@@ -203,7 +203,7 @@ export function createHud(ctx: PageContext) {
     if (game.startWave()) {
       pause.remove("manual"); // starting a wave is an explicit resume
       syncPauseButton();
-      ctx.notice(game.wave === totalWaves ? `${bossName} has entered ${session.map.name}.` : `Wave ${game.wave} incoming. Heroes attack automatically.`);
+      ctx.notice(game.wave === totalWaves ? `${bossName()} has entered ${session.map.name}.` : `Wave ${game.wave} incoming. Heroes attack automatically.`);
     }
     syncMainAction();
     renderPreview();
@@ -278,8 +278,8 @@ export function createHud(ctx: PageContext) {
   // going and the entrance notice covers screen readers.
   function bossIntro() {
     const plate = q("[data-td-boss-plate]");
-    const boss = ctx.data.boss;
-    q("[data-td-boss-name]").textContent = bossName;
+    const boss = ctx.bossFor(state.session?.map);
+    q("[data-td-boss-name]").textContent = boss.name;
     q("[data-td-boss-sub]").textContent = [boss?.faction, boss?.class].filter(Boolean).join(" ");
     const art = q<HTMLImageElement>("[data-td-boss-art]");
     art.hidden = !boss?.image;

@@ -57,6 +57,8 @@ One-map prototype. Hero placement, automatic combat, gold/lives/score, 10-wave r
 - **Road ultimates skip flyers**: matches basic attacks (decision); wins unchanged
 - **Animated heroes**: recruit sheet preview plays the in-game Spine idle loop (pre-rendered sprite sheets)
 - **Tooling**: `npm run check` (`astro check`)
+- **Mobile landscape re-check** (September 25, 2026): the layout itself shipped in UI plan M1 (September 24); re-verified with Playwright after map2, quests, buff bar and recruit animations at 667x375, 844x390, 915x412, 390x844, 1024x768 and 1440x900 on both maps: no document scroll, all rings and both path ends reachable, every hero popover inside the viewport. Fixed: in short landscape the notice now sits bottom-right instead of covering the bottom-left quest chip; Slayer chip text shortened to "Nyx kills 0/3". Dev-only: the DBG button pushes the Menu button below the rail at 375 and 390 px height (not in production)
+- **Slayer quest** (September 25, 2026): fourth run quest `heroKills`. Names a random deployed hero (needs 2 or more deployed) who must land `round(wave enemies / deployed heroes x heroKillsShare)` kills; fails at once if that hero falls, pays at wave clear like the others. `heroKillsShare` 0.6 from a kill-share probe (about 62% success; damage dealers like Zeus and Phoenix average 1.5x an even split, supports like Yuelao and Freya 0.2 to 0.3x, so a support roll is a hard quest). Tests in `test-td-sim.mjs`
 
 ## Map work (archived September 25, 2026, handled separately)
 Map items moved out of the roadmap; the owner does maps separately.

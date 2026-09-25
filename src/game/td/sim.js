@@ -62,6 +62,9 @@ export class TowerDefenseGame {
     this.onChange = onChange;
     this.onEffect = null; // optional hook (effect) => void, used for audio
     this.path = pathMetrics(map.path);
+    // Final boss per map (tdMaps.json "boss"); tuning.bosses holds its stat overrides and skills.
+    this.bossId = map.boss ?? "baphomet";
+    this.bossTuning = tuning.bosses?.[this.bossId] ?? null;
     this.reset();
   }
 
@@ -416,6 +419,7 @@ export class TowerDefenseGame {
     }
 
     this.enemies = this.enemies.filter((enemy) => !enemy.dead);
+    if (!this.complete) this.resummonIfNeeded();
     this.effects = this.effects.filter((effect) => (effect.life -= dt) > 0);
     if (this.running && !this.spawnQueue.length && !this.enemies.length) {
       this.running = false;
@@ -436,14 +440,47 @@ export class TowerDefenseGame {
     }
   }
 
-  spawnEnemy(kind) {
-    const base = this.tuning.enemies[kind];
-    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp;
-    const point = pointOnPath(this.map.path, 0);
+  spawnEnemy(kind, { distance = 0, statScale = 1, extra = null } = {}) {
+    let base = this.tuning.enemies[kind];
+    if (kind === "boss" && this.bossTuning?.stats) base = { ...base, ...this.bossTuning.stats };
+    const scale = (1 + (this.wave - 1) * this.difficulty.waveHpScale) * this.difficulty.enemyHp * statScale;
+    const point = pointOnPath(this.map.path, distance);
     const favorSpeed = this.wave === 1 && this.favor.wave1SpeedDebuff ? 1 - this.favor.wave1SpeedDebuff : 1;
     const speed = base.speed * favorSpeed * this.difficulty.enemySpeed;
-    this.enemies.push({ ...base, speed, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, magicRes: base.armor * 0.8, distance: 0, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0 });
-    if (kind === "boss") this.emit({ type: "boss", x: point.x, y: point.y, life: 0.9, color: "red" });
+    const enemy = { ...base, speed, entityId: this.entityId++, kind, maxHp: base.hp * scale, hp: base.hp * scale, attack: (base.attack || 0) * statScale, magicRes: base.armor * 0.8, distance, x: point.x, y: point.y, dead: false, slow: 0, attackClock: 0, ...extra };
+    this.enemies.push(enemy);
+    if (kind === "boss") {
+      enemy.bossId = this.bossId;
+      this.emit({ type: "boss", x: point.x, y: point.y, life: 0.9, color: "red" });
+      if (this.bossTuning?.summon) this.summonChildren(enemy, 1);
+    }
+    return enemy;
+  }
+
+  // Lilith (Garden of Flesh / Flesh Growth, bosses.json): summons children around
+  // herself on entry and again whenever all of them have fallen (at resummonScale).
+  // She cannot be hit while summoning; damage her children take is dealt to her too.
+  summonChildren(boss, statScale) {
+    const cfg = this.bossTuning.summon;
+    boss.untargetable = true;
+    for (let i = 0; i < cfg.count; i += 1) {
+      // Alternate ahead of and behind her (+1, -1, +2, ...) so none hides under her sprite.
+      const k = i + 1;
+      const offset = (k % 2 ? 1 : -1) * Math.ceil(k / 2) * (cfg.spacing ?? 40);
+      const distance = Math.min(this.path.total - 1, Math.max(0, boss.distance + offset));
+      this.spawnEnemy(cfg.kind, { distance, statScale, extra: { parentId: boss.entityId } });
+    }
+    this.emit({ type: "summon", x: boss.x, y: boss.y, life: 0.7, color: "purple" });
+  }
+
+  resummonIfNeeded() {
+    const cfg = this.bossTuning?.summon;
+    if (!cfg) return;
+    for (const boss of this.enemies) {
+      if (boss.dead || !boss.untargetable) continue;
+      if (this.enemies.some((e) => e.parentId === boss.entityId && !e.dead)) continue;
+      this.summonChildren(boss, cfg.resummonScale ?? 1);
+    }
   }
 
   emit(effect) {
@@ -555,7 +592,7 @@ export class TowerDefenseGame {
   // lowest-HP reachable enemy anywhere on the map (road heroes still cannot hit flyers).
   findUltTarget(hero, attackTarget = this.findTarget(hero)) {
     if (hero.variant !== "shadow_step") return attackTarget;
-    const alive = this.enemies.filter((e) => !e.dead && !(e.flying && hero.slotType === "road"));
+    const alive = this.enemies.filter((e) => this.canHit(hero, e));
     alive.sort((a, b) => a.hp - b.hp);
     return alive[0] ?? null;
   }
@@ -575,39 +612,56 @@ export class TowerDefenseGame {
     return null;
   }
 
+  // Road heroes cannot reach flyers; untargetable enemies (a summoning Lilith) are skipped.
+  canHit(hero, enemy) {
+    return !enemy.dead && !enemy.untargetable && !(enemy.flying && hero.slotType === "road");
+  }
+
   findTarget(hero) {
     if (hero.variant === "shadow_step") {
-      const alive = this.enemies.filter((e) => !e.dead && !(e.flying && hero.slotType === "road") && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range);
+      const alive = this.enemies.filter((e) => this.canHit(hero, e) && Math.hypot(hero.x - e.x, hero.y - e.y) <= hero.range);
       alive.sort((a, b) => a.hp - b.hp);
       return alive[0] ?? null;
     }
     // Melee heroes on the road cannot reach flyers; platform coverage is required.
-    const targets = this.enemies.filter((enemy) => !enemy.dead && !(enemy.flying && hero.slotType === "road") && Math.hypot(hero.x - enemy.x, hero.y - enemy.y) <= hero.range);
+    const targets = this.enemies.filter((enemy) => this.canHit(hero, enemy) && Math.hypot(hero.x - enemy.x, hero.y - enemy.y) <= hero.range);
     targets.sort(hero.ability === "execute" ? (a, b) => a.hp - b.hp : (a, b) => b.distance - a.distance);
     return targets[0] ?? null;
   }
 
   hit(enemy, amount, hero, { showShot = true, crit = false } = {}) {
-    if (enemy.dead) return;
+    if (enemy.dead || enemy.untargetable) return;
     const vuln = (enemy.exposed && enemy.exposed > this.time) ? 1.2 : 1;
     const held = enemy.held ? 1 + (this.tuning.blocking?.heldDamageBonus || 0) : 1;
+    const before = enemy.hp;
     enemy.hp -= amount * vuln * held;
+    if (enemy.parentId) this.shareDamage(enemy, Math.min(before, before - enemy.hp), hero);
     if (showShot) this.emitHeroEffect(hero, { type: "shot", x1: hero.x, y1: hero.y, x2: enemy.x, y2: enemy.y, life: 0.12, color: hero.damageType === "magical" ? "purple" : "gold", heroVariant: hero.variant ?? null });
     this.emitHeroEffect(hero, { type: "hit", x: enemy.x, y: enemy.y, life: 0.18, color: hero.damageType === "magical" ? "purple" : "gold", melee: hero.slotType === "road", crit, heroVariant: hero.variant ?? null });
-    if (enemy.hp <= 0) {
-      enemy.dead = true;
-      if (enemy.kind === "boss") this.emit({ type: "bossDown", x: enemy.x, y: enemy.y, life: 1.2, color: "red" });
-      const reward = this.killReward(enemy.reward);
-      this.gold += reward;
-      this.score += Math.round(enemy.maxHp + enemy.reward * 4);
-      if (this.waveStats) { this.waveStats.kills += 1; this.waveStats.goldEarned += reward; }
-      this.totalGoldEarned += reward;
-      const slot = this.heroKills[hero.entityId];
-      if (slot) slot.kills += 1;
-      else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
-      if (this.quest?.type === "heroKills" && this.quest.status === "active" && this.quest.heroEntityId === hero.entityId) this.quest.kills += 1;
-      this.onChange("kill", this);
-    }
+    if (enemy.hp <= 0) this.killEnemy(enemy, hero);
+  }
+
+  // Damage a child takes also reaches its summoner (capped at what the child had left).
+  shareDamage(child, dealt, hero) {
+    const parent = this.enemies.find((e) => e.entityId === child.parentId);
+    if (!parent || parent.dead || dealt <= 0) return;
+    parent.hp -= dealt * (this.bossTuning?.summon?.sharedDamage ?? 1);
+    if (parent.hp <= 0) this.killEnemy(parent, hero);
+  }
+
+  killEnemy(enemy, hero) {
+    enemy.dead = true;
+    if (enemy.kind === "boss") this.emit({ type: "bossDown", x: enemy.x, y: enemy.y, life: 1.2, color: "red" });
+    const reward = this.killReward(enemy.reward);
+    this.gold += reward;
+    this.score += Math.round(enemy.maxHp + enemy.reward * 4);
+    if (this.waveStats) { this.waveStats.kills += 1; this.waveStats.goldEarned += reward; }
+    this.totalGoldEarned += reward;
+    const slot = this.heroKills[hero.entityId];
+    if (slot) slot.kills += 1;
+    else this.heroKills[hero.entityId] = { name: hero.name, kills: 1 };
+    if (this.quest?.type === "heroKills" && this.quest.status === "active" && this.quest.heroEntityId === hero.entityId) this.quest.kills += 1;
+    this.onChange("kill", this);
   }
 
   inCone(hero, enemy, halfAngle = Math.PI / 3) {
@@ -622,7 +676,7 @@ export class TowerDefenseGame {
     const power = this.attackValue(hero) * 2.5 * hero.ultPower;
     const variant = hero.variant;
     // Road heroes cannot reach flyers with basic attacks, and their ultimates follow the same rule.
-    const foes = hero.slotType === "road" ? this.enemies.filter((e) => !e.flying) : this.enemies;
+    const foes = this.enemies.filter((e) => !e.untargetable && !(e.flying && hero.slotType === "road"));
     // Awakened heroes (level 5 step, tuning.awakening) get the approved per-ultimate upgrade.
     const aw = !!hero.awakened;
 

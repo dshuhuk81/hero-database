@@ -214,7 +214,7 @@ export const summonSchedule: ScheduleEntry[] = [
     status: "upcoming",
     order: 29,
     releaseDate: "November 13, 2026",
-    pullQuality: "pull",
+    pullQuality: "skip",
   },
   {
     id: "venus",

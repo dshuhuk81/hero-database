@@ -65,6 +65,7 @@
 .td-map-card-copy { display: grid; gap: 2px; }
 .td-map-card-copy strong { color: var(--text-bright); font-size: var(--text-lg); }
 .td-map-card-copy small { color: var(--text-muted); font-size: var(--text-xs); }
+.td-map-card-copy .td-map-card-boss { color: var(--accent-gold); }
 .td-lobby-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .td-play-button { min-width: 160px; }
 .td-favor-count { color: var(--accent-gold); }
@@ -411,6 +412,9 @@ button.td-boon:hover, button.td-boon:focus-visible { border-color: var(--boon); 
   .td-buff b { font-size: var(--text-xs); }
   .td-buff svg { width: 14px; height: 14px; }
   .td-wave-preview { top: auto; bottom: var(--space-2); max-width: 45%; }
+  /* Notice shares the bottom edge with the preview: take the right side instead of the centre. */
+  .td-notice { left: auto; right: var(--space-2); bottom: var(--space-2); max-width: calc(55% - var(--space-4)); transform: translateY(6px); }
+  .td-notice.is-visible { transform: none; }
 }
 .td-wave-chip--hp b { color: var(--td-hp); }
 

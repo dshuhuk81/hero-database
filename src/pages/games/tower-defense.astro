@@ -14,10 +14,11 @@ const isDev = import.meta.env.DEV;
 const heroesForGame = isDev
   ? heroes.map((h: any) => ({ ...h, image: h.image.startsWith(R2_BASE) ? h.image.replace(R2_BASE, '/r2') : h.image }))
   : heroes;
-const baphomet = bosses.bosses.find((boss: any) => boss.id === "baphomet");
-const baphometForGame = baphomet && isDev && baphomet.image?.startsWith(R2_BASE)
-  ? { ...baphomet, image: baphomet.image.replace(R2_BASE, '/r2') }
-  : baphomet;
+// Final boss per map (tdMaps.json "boss", default Baphomet), keyed by boss id.
+const bossIds = new Set(maps.map((map: any) => map.boss ?? "baphomet"));
+const bossesForGame = Object.fromEntries(bosses.bosses
+  .filter((boss: any) => bossIds.has(boss.id))
+  .map((boss: any) => [boss.id, isDev && boss.image?.startsWith(R2_BASE) ? { ...boss, image: boss.image.replace(R2_BASE, '/r2') } : boss]));
 ---
 
 <GameLayout
@@ -32,5 +33,5 @@ const baphometForGame = baphomet && isDev && baphomet.image?.startsWith(R2_BASE)
       }
     }</script>
   </Fragment>
-  <TowerDefensePage assetBase={isDev ? "/r2" : R2_BASE} heroes={heroesForGame} tuning={tuning} maps={maps} waves={waves} boss={baphometForGame} />
+  <TowerDefensePage assetBase={isDev ? "/r2" : R2_BASE} heroes={heroesForGame} tuning={tuning} maps={maps} waves={waves} bosses={bossesForGame} />
 </GameLayout>
